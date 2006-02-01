@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*
+ * Copyright 2001-2004 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ -->
+<project>
+    <name>Axis2.0</name>
+	<pomVersion>3</pomVersion>
+	<!-- a unique name for this project -->
+	<name>Apache AXIOM</name>
+	<id>axiom</id>
+	<groupId>ws-commons</groupId>
+	<package>org.apache.commons</package>
+	<currentVersion>${axiom.version}</currentVersion>
+	<!-- details about the organization that 'owns' the project -->
+	<organization>
+		<name>Apache Software Foundation</name>
+		<url>http://www.apache.org/</url>
+		<logo>http://www.apache.org/images/asf-logo.gif</logo>
+	</organization>
+	<inceptionYear>2004</inceptionYear>
+	<package>org.apache.commons</package>
+	<logo>http://www.apache.org/images/asf-logo.gif</logo>
+	<description>AXIOM, The Object Model of Axis 2.0. This helps Axis 2.0 to have a light weight, efficient object model on StAX</description>
+	<shortDescription>AXIOM</shortDescription>
+	<!-- the project home page -->
+	<url>http://ws.apache.org/commons/axiom</url>
+	<issueTrackingUrl>http://issues.apache.org/jira/browse/WS-Commons</issueTrackingUrl>
+	<siteAddress>ws.apache.org/commons/axiom</siteAddress>
+	<siteDirectory>/www/ws.apache.org/commons/axiom/</siteDirectory>
+	<distributionDirectory>/www/ws.apache.org/builds/</distributionDirectory>
+
+    <id>axis2-xml</id>
+    <groupId>axis2</groupId>
+    <description>AXIOM, The Object Model of Axis 2.0. This helps Axis 2.0 to have a light weight, efficient object model on StAX</description>
+
+    <!-- ========== -->
+	<!-- Developers -->
+	<!-- ========== -->
+	<developers>
+		<developer>
+			<name>Davanum Srinivas</name>
+			<id>dims</id>
+			<email>dims AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
+			<name>Sanjiva Weerawarana</name>
+			<id>sanjiva</id>
+			<email>sanjiva AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
+			<name>Glen Daniels</name>
+			<id>gdaniels</id>
+			<email>gdaniels AT apache.org</email>
+			<organization>Sonic Software</organization>
+		</developer>
+		<developer>
+			<name>Aleksander Slominski</name>
+			<id>alek</id>
+			<email>aslom AT cs.indiana.edu</email>
+			<organization>Indiana University Extreme! Computing Lab</organization>
+		</developer>
+		<developer>
+			<name>Srinath Perera</name>
+			<id>hemapani</id>
+			<email>hemapani AT apache.org</email>
+			<organization>Lanka Software Foundation</organization>
+			<url>http://www.apache.org/~hemapani</url>
+		</developer>
+		<developer>
+			<name>Eran Chinthaka</name>
+			<id>chinthaka</id>
+			<email>chinthaka AT wso2.com</email>
+			<organization>WSO2</organization>
+			<url>http://www.apache.org/~chinthaka</url>
+		</developer>
+		<developer>
+			<name>Dasarath Weerathunga</name>
+			<id>dasarath</id>
+			<email>dasarath AT opensource.lk</email>
+			<organization>Lanka Software Foundation</organization>
+		</developer>
+		<developer>
+			<name>Jaliya Ekanayake</name>
+			<id>jaliya</id>
+			<email>jaliya AT opensource.lk</email>
+			<organization>Virtusa / Lanka Software Foundation</organization>
+			<url>http://www.apache.org/~jaliya</url>
+		</developer>
+		<developer>
+			<name>Chathura Herath</name>
+			<id>chathura</id>
+			<email>chathura AT opensource.lk</email>
+			<organization>LSF/MIT</organization>
+			<url>www.apache.org/~chathura</url>
+		</developer>
+		<developer>
+			<name>Deepal Jayasinghe</name>
+			<id>deepal</id>
+			<email>deepal AT wso2.com</email>
+			<organization>WSO2</organization>
+			<url>http://www.apache.org/~deepal</url>
+		</developer>
+		<developer>
+			<name>Ajith Ranabahu</name>
+			<id>ajith</id>
+			<email>ajith AT wso2.com</email>
+			<organization>WSO2</organization>
+			<url>http://www.apache.org/~ajith</url>
+		</developer>
+		<developer>
+			<name>Venkat Reddy</name>
+			<id>venkat</id>
+			<email>vreddyp AT gmail.com</email>
+			<organization>Computer Associates</organization>
+		</developer>
+		<developer>
+			<name>Ashutosh Shahi</name>
+			<id>ashu</id>
+			<email>Ashutosh.Shahi AT ca.com</email>
+			<organization>Computer Associates</organization>
+		</developer>
+		<developer>
+			<name>Jayachandra Sekhara Rao Sunkara</name>
+			<id>jaya</id>
+			<email>jayachandra AT gmail.com</email>
+			<organization>Computer Associates</organization>
+		</developer>
+		<developer>
+			<name>Thilina Gunarathne</name>
+			<id>thilina</id>
+			<email>thilina AT opensource.lk</email>
+			<organization>Lanka Software Foundation</organization>
+		</developer>
+		<developer>
+			<name>Ruchith Fernando</name>
+			<id>ruchith</id>
+			<email>ruchith AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
+			<name>Saminda Abeyruwan</name>
+			<id>saminda</id>
+			<email>saminda AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
+			<name>Chamil Thanthrimudalige</name>
+			<id>chamil</id>
+			<email>chamil AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+
+	</developers>
+	<contributors>
+
+		<contributor>
+			<name>Anushka Kumara</name>
+			<email>anushkakumar AT gmail.com</email>
+			<organization>Lanka Software Foundation / University of Moratuwa</organization>
+		</contributor>
+		<contributor>
+			<name>Chinthaka Thilakarathne</name>
+			<email/>
+			<organization>Lanka Software Foundation / University of Moratuwa</organization>
+		</contributor>
+		<contributor>
+			<name>Dharshana Dias</name>
+			<email/>
+			<organization>Lanka Software Foundation / University of Moratuwa</organization>
+		</contributor>
+		<contributor>
+			<name>Chatra Nakkawita</name>
+			<email>chatra AT WSO2.com</email>
+			<organization>WSO2</organization>
+		</contributor>
+		
+	</contributors>
+
+
+    <build>
+        <nagEmailAddress></nagEmailAddress>
+        <sourceDirectory>src</sourceDirectory>
+        <unitTestSourceDirectory>test</unitTestSourceDirectory>
+
+        <unitTest>
+            <excludes>
+                <exclude>**/*SpacesTest.java</exclude>
+                <exclude>**/*AbstractOMSerializationTest.java</exclude>
+            </excludes>
+            <includes>
+                <include>**/*Test.java</include>
+            </includes>
+
+            <resources>
+                <resource>
+                    <directory>${basedir}/test-resources</directory>
+                </resource>
+                <resource>
+                    <directory>conf</directory>
+                    <includes>
+                        <include>**/*.properties</include>
+                    </includes>
+                </resource>
+                <resource>
+                    <directory>src</directory>
+                    <includes>
+                        <include>**/*.properties</include>
+                        <include>**/*.xml</include>
+                    </includes>
+                </resource>
+            </resources>
+        </unitTest>
+
+        <resources>
+            <resource>
+                <directory>conf</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+    
+    <reports>
+        <report>maven-junit-report-plugin</report>
+    </reports>
+
+    <dependencies>
+        <!-- external JARs -->
+        <!-- dependency>
+            <groupId>ws</groupId>
+            <artifactId>ws-common</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency -->
+        
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>${commons.logging.version}</version>
+            <properties>
+                <module>true</module>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>${stax.impl.groupid}</groupId>
+            <artifactId>${stax.impl.artifactid}</artifactId>
+            <version>${stax.impl.version}</version>
+            <properties>
+                <module>true</module>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>stax</groupId>
+            <artifactId>stax-api</artifactId>
+            <version>${stax.api.version}</version>
+            <properties>
+                <module>true</module>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+            <properties>
+                <module>true</module>
+            </properties>
+            <url>http://dist.codehaus.org/stax/jars/</url>
+        </dependency>
+
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+            <version>${jaxen.version}</version>
+            <properties>
+                <module>true</module>
+            </properties>
+            <url>http://www.ibiblio.org/maven/jaxen/jars/</url>
+        </dependency>
+        <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+            <version>${xmlunit.version}</version>
+            <properties>
+                <module>true</module>
+            </properties>
+            <url>http://www.ibiblio.org/maven/xmlunit/jars/</url>
+        </dependency>
+
+        <dependency>
+            <groupId>geronimo-spec</groupId>
+            <artifactId>geronimo-spec-javamail</artifactId>
+            <version>${geronimo.spec.javamail.version}</version>
+            <properties>
+                <module>true</module>
+            </properties>
+        </dependency>
+        
+        <dependency>
+            <groupId>geronimo-spec</groupId>
+            <artifactId>geronimo-spec-activation</artifactId>
+            <version>${geronimo.spec.activation.version}</version>
+            <properties>
+                <module>true</module>
+            </properties>
+        </dependency>
+    </dependencies>
+
+</project>
