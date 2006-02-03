@@ -77,7 +77,7 @@ public class OMElementImpl extends OMNodeImpl
      * Field noPrefixNamespaceCounter
      */
     protected int noPrefixNamespaceCounter = 0;
-    private OMNode lastChild;
+    protected OMNode lastChild;
     private int lineNumber;
 
     /**

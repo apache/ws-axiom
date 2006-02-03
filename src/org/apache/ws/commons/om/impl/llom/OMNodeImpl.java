@@ -21,6 +21,7 @@ import org.apache.ws.commons.om.OMException;
 import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.OMOutputFormat;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
+import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.impl.OMContainerEx;
 import org.apache.ws.commons.om.impl.OMNodeEx;
 import org.apache.ws.commons.om.impl.OMOutputImpl;
@@ -77,7 +78,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      */
     public OMNodeImpl(OMContainer parent) {
         if ((parent != null)) {
-            this.parent = (OMContainerEx)parent;
+            this.parent = (OMContainerEx) parent;
             parent.addChild(this);
         }
     }
@@ -86,7 +87,6 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * Returns the immediate parent of the node. Parent is always an Element.
      *
      * @return Returns OMContainer.
-     *
      * @throws OMException
      */
     public OMContainer getParent() {
@@ -110,15 +110,16 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
         if (this.parent != null) {
             this.detach();
         }
-        this.parent = (OMContainerEx)element;
+        this.parent = (OMContainerEx) element;
     }
 
     /**
-     * Returns the next sibling. This can be an OMAttribute or 
+     * Returns the next sibling. This can be an OMAttribute or
      * OMText or OMElement for others.
      *
      * @return Returns OMNode.
      * @throws org.apache.ws.commons.om.OMException
+     *
      */
     public OMNode getNextOMSibling() throws OMException {
         if ((nextSibling == null) && (parent != null) && !parent.isComplete()) {
@@ -139,7 +140,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
 
     /**
      * Indicates whether parser has parsed this information item completely or not.
-     * If some information is not available in the item, one has to check this 
+     * If some information is not available in the item, one has to check this
      * attribute to make sure that, this item has been parsed completely or not.
      *
      * @return Returns boolean.
@@ -171,11 +172,16 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
         if (previousSibling == null) {
             parent.setFirstChild(nextSibling);
         } else {
-            ((OMNodeEx)getPreviousOMSibling()).setNextOMSibling(nextSibling);
+            ((OMNodeEx) getPreviousOMSibling()).setNextOMSibling(nextSibling);
         }
         if (nextSibling != null) {
             nextSibling.setPreviousOMSibling(getPreviousOMSibling());
         }
+
+        if ((parent instanceof OMElementImpl) && ((OMElementImpl) parent).lastChild == this) {
+            ((OMElementImpl) parent).lastChild = getPreviousOMSibling();
+        }
+
         this.parent = null;
         return this;
     }
@@ -190,7 +196,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
         if (parent == null) {
             throw new OMException();
         }
-        ((OMNodeEx)sibling).setParent(parent);
+        ((OMNodeEx) sibling).setParent(parent);
         if (sibling instanceof OMNodeImpl) {
             OMNodeImpl siblingImpl = (OMNodeImpl) sibling;
             if (nextSibling == null) {
@@ -200,7 +206,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
             if (nextSibling != null) {
                 nextSibling.setPreviousOMSibling(sibling);
             }
-            ((OMNodeEx)sibling).setNextOMSibling(nextSibling);
+            ((OMNodeEx) sibling).setNextOMSibling(nextSibling);
             nextSibling = siblingImpl;
         }
     }
@@ -235,7 +241,6 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * Gets the type of node, as this is the super class of all the nodes.
      *
      * @return Returns the type of node as indicated by {@link #setType}
-     *
      * @see #setType
      */
     public int getType() {
@@ -273,7 +278,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
 
     /**
      * Parses this node and builds the object structure in memory.
-     * However a node, created programmatically, will have done set to true by 
+     * However a node, created programmatically, will have done set to true by
      * default and this will cause populateyourself not to work properly!
      *
      * @throws OMException
@@ -350,27 +355,27 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
         serializeAndConsume(XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
     }
 
-    public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {    
-        OMOutputImpl omOutput = new  OMOutputImpl(output, format);
+    public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
+        OMOutputImpl omOutput = new OMOutputImpl(output, format);
         serialize(omOutput);
         omOutput.flush();
     }
 
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        OMOutputImpl omOutput = new  OMOutputImpl(XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
+        OMOutputImpl omOutput = new OMOutputImpl(XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
         omOutput.setOutputFormat(format);
         serialize(omOutput);
         omOutput.flush();
     }
 
     public void serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        OMOutputImpl omOutput = new  OMOutputImpl(output, format);
+        OMOutputImpl omOutput = new OMOutputImpl(output, format);
         serializeAndConsume(omOutput);
         omOutput.flush();
     }
 
     public void serializeAndConsume(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        OMOutputImpl omOutput = new  OMOutputImpl(XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
+        OMOutputImpl omOutput = new OMOutputImpl(XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
         omOutput.setOutputFormat(format);
         serializeAndConsume(omOutput);
         omOutput.flush();
