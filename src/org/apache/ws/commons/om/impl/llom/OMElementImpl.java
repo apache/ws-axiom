@@ -482,7 +482,7 @@ public class OMElementImpl extends OMNodeImpl
         if (ns != null) {
             namespace = findNamespace(ns.getName(), ns.getPrefix());
             if (namespace == null) {
-                throw new OMException("Given OMNamespace(" + ns.getName() +
+                throw new OMException("Given OMNamespace(" + ns.getName() + " " +
                         ns.getPrefix()
                         + ") for "
                         +

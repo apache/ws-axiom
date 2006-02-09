@@ -123,6 +123,7 @@ public class OMSerializerUtil {
                             nameSpaceName);
                     writer.writeNamespace(prefix, nameSpaceName);
                     writer.setPrefix(prefix, nameSpaceName);
+
                 }
             } else {
                 writer.writeStartElement(element.getLocalName());
