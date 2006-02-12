@@ -24,6 +24,11 @@ import org.apache.ws.commons.soap.impl.llom.SOAPFaultNodeImpl;
 
 
 public class SOAP12FaultNodeImpl extends SOAPFaultNodeImpl {
+
+    public SOAP12FaultNodeImpl() {
+        super(SOAP12Factory.getNamespace());
+    }
+
     public SOAP12FaultNodeImpl(SOAPFault parent) throws SOAPProcessingException {
         super(parent);
     }

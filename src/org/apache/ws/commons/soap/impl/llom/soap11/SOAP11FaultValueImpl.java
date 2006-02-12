@@ -26,6 +26,10 @@ public class SOAP11FaultValueImpl extends SOAPFaultValueImpl {
         super(parent);
     }
 
+    public SOAP11FaultValueImpl() throws SOAPProcessingException {
+        super(SOAP11Factory.getNamespace());
+    }
+
     public SOAP11FaultValueImpl(OMElement parent, OMXMLParserWrapper builder) {
         super(parent, builder);
     }
@@ -36,7 +40,7 @@ public class SOAP11FaultValueImpl extends SOAPFaultValueImpl {
                 (parent instanceof SOAP11FaultCodeImpl))) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP FaultSubCode or SOAP FaultCode as the parent. But received some other implementation." +
-                    parent.getClass());
+                            parent.getClass());
         }
     }
 }

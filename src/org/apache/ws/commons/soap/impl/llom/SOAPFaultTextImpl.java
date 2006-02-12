@@ -35,6 +35,11 @@ public abstract class SOAPFaultTextImpl extends SOAPElement implements SOAPFault
                     SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
                     SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
 
+
+    protected SOAPFaultTextImpl(OMNamespace ns) {
+        super(SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME, ns);
+    }
+
     protected SOAPFaultTextImpl(SOAPFaultReason parent) throws SOAPProcessingException {
         super(parent, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME, true);
     }

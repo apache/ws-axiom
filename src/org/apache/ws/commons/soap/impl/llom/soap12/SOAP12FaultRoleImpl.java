@@ -27,6 +27,10 @@ public class SOAP12FaultRoleImpl extends SOAPFaultRoleImpl {
         super(parent, true);
     }
 
+    public SOAP12FaultRoleImpl() {
+        super(SOAP12Factory.getNamespace());
+    }
+
     public SOAP12FaultRoleImpl(SOAPFault parent, OMXMLParserWrapper builder) {
         super(parent, builder);
     }

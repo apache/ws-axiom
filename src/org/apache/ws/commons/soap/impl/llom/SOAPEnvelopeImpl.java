@@ -44,6 +44,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
         implements SOAPEnvelope, OMConstants {
     SOAPFactory factory;
 
+
     /**
      * @param builder
      */
@@ -96,7 +97,8 @@ public class SOAPEnvelopeImpl extends SOAPElement
     }
 
     public void addChild(OMNode child) {
-        if ((child instanceof OMElement) && !(child instanceof SOAPHeader || child instanceof SOAPBody)) {
+        if ((child instanceof OMElement) && !(child instanceof SOAPHeader || child instanceof SOAPBody))
+        {
             throw new SOAPProcessingException("SOAP Envelope can not have children other than SOAP Header and Body", SOAP12Constants.FAULT_CODE_SENDER);
         } else {
             super.addChild(child);

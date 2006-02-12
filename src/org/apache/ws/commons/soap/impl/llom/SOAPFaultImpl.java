@@ -16,9 +16,12 @@
 
 package org.apache.ws.commons.soap.impl.llom;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ws.commons.om.OMConstants;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMException;
+import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.om.impl.OMNodeEx;
@@ -35,8 +38,6 @@ import org.apache.ws.commons.soap.SOAPFaultNode;
 import org.apache.ws.commons.soap.SOAPFaultReason;
 import org.apache.ws.commons.soap.SOAPFaultRole;
 import org.apache.ws.commons.soap.SOAPProcessingException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -51,7 +52,11 @@ public abstract class SOAPFaultImpl extends SOAPElement
         implements SOAPFault, OMConstants {
 
     protected Exception e;
-   private Log log = LogFactory.getLog(getClass());
+    private Log log = LogFactory.getLog(getClass());
+
+    protected SOAPFaultImpl(OMNamespace ns) {
+        super(SOAPConstants.SOAPFAULT_LOCAL_NAME, ns);
+    }
 
     /**
      * Constructor SOAPFaultImpl
@@ -200,7 +205,6 @@ public abstract class SOAPFaultImpl extends SOAPElement
             builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(omOutput));
         }
 
-
         // this is a special case. This fault element may contain its children in any order. But spec mandates a specific order
         // the overriding of the method will facilitate that. Not sure this is the best method to do this :(
         build();
@@ -208,29 +212,29 @@ public abstract class SOAPFaultImpl extends SOAPElement
         OMSerializerUtil.serializeStartpart(this, omOutput);
         SOAPFaultCode faultCode = getCode();
         if (faultCode != null) {
-            ((OMNodeEx)faultCode).serialize(omOutput);
+            ((OMNodeEx) faultCode).serialize(omOutput);
         }
         SOAPFaultReason faultReason = getReason();
         if (faultReason != null) {
-            ((OMNodeEx)faultReason).serialize(omOutput);
+            ((OMNodeEx) faultReason).serialize(omOutput);
         }
 
         serializeFaultNode(omOutput);
 
         SOAPFaultRole faultRole = getRole();
         if (faultRole != null) {
-            ((OMNodeEx)faultRole).serialize(omOutput);
+            ((OMNodeEx) faultRole).serialize(omOutput);
         }
 
         SOAPFaultDetail faultDetail = getDetail();
         if (faultDetail != null) {
-            ((OMNodeEx)faultDetail).serialize(omOutput);
+            ((OMNodeEx) faultDetail).serialize(omOutput);
         }
 
         OMSerializerUtil.serializeEndpart(omOutput);
     }
 
     protected abstract void serializeFaultNode(org.apache.ws.commons.om.impl.OMOutputImpl omOutput) throws XMLStreamException;
-        
+
 
 }

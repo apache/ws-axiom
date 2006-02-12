@@ -16,6 +16,7 @@
 
 package org.apache.ws.commons.soap.impl.llom;
 
+import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.om.impl.OMNodeEx;
 import org.apache.ws.commons.om.impl.OMOutputImpl;
@@ -28,6 +29,10 @@ import org.apache.ws.commons.soap.SOAPProcessingException;
 import javax.xml.stream.XMLStreamException;
 
 public abstract class SOAPFaultRoleImpl extends SOAPElement implements org.apache.ws.commons.soap.SOAPFaultRole {
+
+    protected SOAPFaultRoleImpl(OMNamespace ns) {
+        super(SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME, ns);
+    }
 
     public SOAPFaultRoleImpl(SOAPFault parent,
                              boolean extractNamespaceFromParent) throws SOAPProcessingException {

@@ -31,6 +31,10 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
         super(parent, builder);
     }
 
+    public SOAP12FaultReasonImpl() {
+        super(SOAP12Factory.getNamespace());
+    }
+
     /**
      * @param parent
      */

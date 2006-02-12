@@ -18,12 +18,18 @@ package org.apache.ws.commons.soap.impl.llom.soap12;
 
 import org.apache.ws.commons.om.OMException;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
+import org.apache.ws.commons.soap.SOAPConstants;
 import org.apache.ws.commons.soap.SOAPEnvelope;
 import org.apache.ws.commons.soap.SOAPFault;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 import org.apache.ws.commons.soap.impl.llom.SOAPBodyImpl;
 
 public class SOAP12BodyImpl extends SOAPBodyImpl {
+
+    public SOAP12BodyImpl() {
+         super(SOAPConstants.BODY_LOCAL_NAME, SOAP12Factory.getNamespace());
+    }
+
     /**
      * @param envelope
      */

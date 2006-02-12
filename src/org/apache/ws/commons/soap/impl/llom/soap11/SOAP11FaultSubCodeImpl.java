@@ -26,6 +26,12 @@ import org.apache.ws.commons.soap.SOAPProcessingException;
 import org.apache.ws.commons.soap.impl.llom.SOAPFaultSubCodeImpl;
 
 public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
+
+
+    public SOAP11FaultSubCodeImpl() {
+        super(SOAP11Factory.getNamespace());
+    }
+
     //changed
     public SOAP11FaultSubCodeImpl(SOAPFaultCode parent) throws SOAPProcessingException {
         super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
@@ -47,8 +53,7 @@ public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
-        if (!(parent instanceof SOAP11FaultSubCodeImpl) ||
-                (parent instanceof SOAP11FaultCodeImpl)) {
+        if (!((parent instanceof SOAP11FaultSubCodeImpl) ||  (parent instanceof SOAP11FaultCodeImpl))) {
             throw new SOAPProcessingException("Expecting SOAP 1.1 implementation of SOAP FaultSubCode or SOAP FaultCode as the parent. But received some other implementation");
         }
     }

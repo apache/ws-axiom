@@ -33,9 +33,16 @@ import javax.xml.stream.XMLStreamException;
 
 
 public class SOAP12FaultImpl extends SOAPFaultImpl {
+
+
     /**
      * Eran Chinthaka (chinthaka@apache.org)
      */
+
+
+    public SOAP12FaultImpl() {
+        super(SOAP12Factory.getNamespace());
+    }
 
     public SOAP12FaultImpl(SOAPBody parent, Exception e) throws SOAPProcessingException {
         super(parent, e);

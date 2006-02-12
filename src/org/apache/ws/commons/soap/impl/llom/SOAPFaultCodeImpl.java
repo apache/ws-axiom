@@ -16,6 +16,7 @@
 
 package org.apache.ws.commons.soap.impl.llom;
 
+import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.om.impl.OMNodeEx;
 import org.apache.ws.commons.om.impl.OMOutputImpl;
@@ -33,6 +34,10 @@ import javax.xml.stream.XMLStreamException;
 
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFaultCode {
 
+
+    protected SOAPFaultCodeImpl(OMNamespace ns) {
+        super(SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME, ns);
+    }
 
     /**
      * Constructor OMElementImpl

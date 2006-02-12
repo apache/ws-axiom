@@ -38,23 +38,42 @@ import org.apache.ws.commons.soap.SOAPProcessingException;
 import org.apache.ws.commons.soap.impl.llom.SOAPEnvelopeImpl;
 import org.apache.ws.commons.soap.impl.llom.SOAPMessageImpl;
 
-public class SOAPLinkedListImplFactory extends OMLinkedListImplFactory implements SOAPFactory {
+/**
+ * Most of the methods in this class will throw UnsupportedOperationException, as the specific
+ * implementation should implement this.
+ * But the main purpose of this class is as follows.
+ * When we build a SOAPEnvelope through our builder, we should know the correct SOAPFactory. i.e. either
+ * SOAP 1.1 or SOAP 1.2 factory. But for us to determine the correct factory, first we should read the
+ * stream and read the envelope start element. So this is a chicken 'n egg situation.
+ * The solution for this is to have an intermediate factory, just to create SOAPEnvelope, and this
+ * class will server that purpose. Having identified the correct SOAP version, the builder should
+ * switch to the correct factory.
+ */
+public class SOAPLinkedListImplFactory extends
+        OMLinkedListImplFactory implements SOAPFactory {
+
+     /**
+     * Eran Chinthaka (chinthaka@apache.org)
+     */
+
     public String getSoapVersionURI() {
         throw new UnsupportedOperationException();
+    }
+
+    public SOAPMessage createSOAPMessage() {
+        return new SOAPMessageImpl();
     }
 
     public SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
         return new SOAPMessageImpl(builder);
     }
 
-    
+
     public SOAPMessage createSOAPMessage(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper) {
         return new SOAPMessageImpl(envelope, parserWrapper);
     }
 
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
+
 
     public SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder) {
         return new SOAPEnvelopeImpl(builder, this);
@@ -79,6 +98,10 @@ public class SOAPLinkedListImplFactory extends OMLinkedListImplFactory implement
                                                  SOAPHeader parent) throws SOAPProcessingException {
         throw new UnsupportedOperationException();
 
+    }
+
+    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns) throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
@@ -206,6 +229,49 @@ public class SOAPLinkedListImplFactory extends OMLinkedListImplFactory implement
         throw new UnsupportedOperationException();
     }
 
+    public SOAPHeader createSOAPHeader() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPFault createSOAPFault() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPBody createSOAPBody() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPFaultCode createSOAPFaultCode() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPFaultValue createSOAPFaultValue() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPFaultSubCode createSOAPFaultSubCode() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPFaultReason createSOAPFaultReason() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPFaultText createSOAPFaultText() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPFaultNode createSOAPFaultNode() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPFaultRole createSOAPFaultRole() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPFaultDetail createSOAPFaultDetail() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Method getDefaultEnvelope

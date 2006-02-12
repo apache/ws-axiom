@@ -35,6 +35,10 @@ public class SOAP12HeaderImpl extends SOAPHeaderImpl {
      * Eran Chinthaka (chinthaka@apache.org)
      */
 
+    public SOAP12HeaderImpl() {
+        super(SOAP12Factory.getNamespace());
+    }
+
     /**
      * @param envelope
      */
@@ -69,7 +73,7 @@ public class SOAP12HeaderImpl extends SOAPHeaderImpl {
         } catch (SOAPProcessingException e) {
             throw new OMException(e);
         }
-        ((OMNodeEx)soapHeaderBlock).setComplete(true);
+        ((OMNodeEx) soapHeaderBlock).setComplete(true);
         return soapHeaderBlock;
     }
 

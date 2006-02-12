@@ -31,6 +31,10 @@ public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
         super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
     }
 
+     public SOAP12FaultSubCodeImpl() {
+        super(SOAP12Factory.getNamespace());
+    }
+
     //changed
     public SOAP12FaultSubCodeImpl(SOAPFaultCode parent,
                                   OMXMLParserWrapper builder) {

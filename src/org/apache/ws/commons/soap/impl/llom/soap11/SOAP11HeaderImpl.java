@@ -31,6 +31,11 @@ import javax.xml.namespace.QName;
 import java.util.Iterator;
 
 public class SOAP11HeaderImpl extends SOAPHeaderImpl {
+
+    public SOAP11HeaderImpl() {
+        super(SOAP11Factory.getNamespace());
+    }
+
     /**
      * @param envelope
      */

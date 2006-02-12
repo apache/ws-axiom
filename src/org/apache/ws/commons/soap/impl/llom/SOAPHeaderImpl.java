@@ -34,6 +34,12 @@ import java.util.Iterator;
  * Class SOAPHeaderImpl
  */
 public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
+
+
+    protected SOAPHeaderImpl(OMNamespace ns) {
+        super(SOAPConstants.HEADER_LOCAL_NAME, ns);
+    }
+
     /**
      * @param envelope
      */

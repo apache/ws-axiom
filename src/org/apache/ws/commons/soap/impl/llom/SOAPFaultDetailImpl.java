@@ -17,6 +17,7 @@
 package org.apache.ws.commons.soap.impl.llom;
 
 import org.apache.ws.commons.om.OMElement;
+import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.om.impl.OMNodeEx;
 import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
@@ -30,6 +31,11 @@ import javax.xml.stream.XMLStreamException;
 import java.util.Iterator;
 
 public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFaultDetail {
+
+
+    protected SOAPFaultDetailImpl(OMNamespace ns) {
+        super(SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME, ns);
+    }
 
     protected SOAPFaultDetailImpl(SOAPFault parent,
                                   boolean extractNamespaceFromParent) throws SOAPProcessingException {

@@ -28,6 +28,11 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
     /**
      * Eran Chinthaka (chinthaka@apache.org)
      */
+
+    public SOAP12FaultCodeImpl() {
+        super(SOAP12Factory.getNamespace());
+    }
+
     /**
      * Constructor OMElementImpl
      *

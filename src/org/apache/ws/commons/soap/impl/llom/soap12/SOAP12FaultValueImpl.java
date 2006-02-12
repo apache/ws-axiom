@@ -27,6 +27,10 @@ public class SOAP12FaultValueImpl extends SOAPFaultValueImpl {
         super(parent);
     }
 
+    public SOAP12FaultValueImpl() throws SOAPProcessingException {
+        super(SOAP12Factory.getNamespace());
+    }
+
     public SOAP12FaultValueImpl(OMElement parent, OMXMLParserWrapper builder) {
         super(parent, builder);
     }

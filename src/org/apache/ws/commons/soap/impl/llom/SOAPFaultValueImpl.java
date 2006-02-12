@@ -17,6 +17,7 @@
 package org.apache.ws.commons.soap.impl.llom;
 
 import org.apache.ws.commons.om.OMElement;
+import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.soap.SOAP12Constants;
 import org.apache.ws.commons.soap.SOAPFaultValue;
@@ -26,6 +27,10 @@ public abstract class SOAPFaultValueImpl extends SOAPElement implements SOAPFaul
 
     protected SOAPFaultValueImpl(OMElement parent) throws SOAPProcessingException {
         super(parent, SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, true);
+    }
+
+    protected SOAPFaultValueImpl(OMNamespace ns) {
+        super(SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, ns);
     }
 
     protected SOAPFaultValueImpl(OMElement parent, OMXMLParserWrapper builder) {

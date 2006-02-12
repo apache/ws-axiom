@@ -16,6 +16,7 @@
 
 package org.apache.ws.commons.soap.impl.llom;
 
+import org.apache.ws.commons.om.OMContainer;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
@@ -24,11 +25,10 @@ import org.apache.ws.commons.soap.SOAPProcessingException;
 
 public abstract class SOAPElement extends OMElementImpl {
 
-
     /**
      * @param parent
      * @param localName
-     * @param extractNamespaceFromParent     
+     * @param extractNamespaceFromParent
      */
     protected SOAPElement(OMElement parent,
                           String localName,
@@ -37,14 +37,13 @@ public abstract class SOAPElement extends OMElementImpl {
         if (parent == null) {
             throw new SOAPProcessingException(
                     " Can not create " + localName +
-                    " element without a parent !!");
+                            " element without a parent !!");
         }
         checkParent(parent);
 
         if (extractNamespaceFromParent) {
             this.ns = parent.getNamespace();
         }
-        this.localName = localName;
     }
 
 
@@ -55,11 +54,6 @@ public abstract class SOAPElement extends OMElementImpl {
     }
 
     /**
-     * Caution : This Constructor is meant to be used only by the SOAPEnvelope.
-     * <p/>
-     * Reasons : This can be used to create a SOAP Element programmatically. But we need to make sure that the user
-     * always passes a parent for the element being created. But SOAP Envelope has no parent.
-     *
      * @param localName
      * @param ns
      */
@@ -73,7 +67,13 @@ public abstract class SOAPElement extends OMElementImpl {
      */
     protected abstract void checkParent(OMElement parent) throws SOAPProcessingException;
 
+    public void setParent(OMContainer element) {
+        super.setParent(element);
 
-    
+        if (element instanceof OMElement) {
+            checkParent((OMElement) element);
+        }
+    }
+
 
 }

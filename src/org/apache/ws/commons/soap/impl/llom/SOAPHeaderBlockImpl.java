@@ -38,6 +38,11 @@ public abstract class SOAPHeaderBlockImpl extends OMElementImpl
 
     private boolean processed = false;
 
+
+    public SOAPHeaderBlockImpl(String localName, OMNamespace ns) {
+        super(localName, ns);
+    }
+
     /**
      * @param localName
      * @param ns

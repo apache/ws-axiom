@@ -17,6 +17,7 @@
 package org.apache.ws.commons.soap.impl.llom;
 
 import org.apache.ws.commons.om.OMElement;
+import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.om.impl.OMNodeEx;
 import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
@@ -32,6 +33,10 @@ import javax.xml.stream.XMLStreamException;
 
 public abstract class SOAPFaultReasonImpl extends SOAPElement implements SOAPFaultReason {
     protected SOAPFaultText text;
+
+    protected SOAPFaultReasonImpl(OMNamespace ns) {
+        super(SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME, ns);
+    }
 
     /**
      * Constructor OMElementImpl

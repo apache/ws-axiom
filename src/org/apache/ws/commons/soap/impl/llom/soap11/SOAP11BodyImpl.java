@@ -18,6 +18,7 @@ package org.apache.ws.commons.soap.impl.llom.soap11;
 
 import org.apache.ws.commons.om.OMException;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
+import org.apache.ws.commons.soap.SOAPConstants;
 import org.apache.ws.commons.soap.SOAPEnvelope;
 import org.apache.ws.commons.soap.SOAPFault;
 import org.apache.ws.commons.soap.SOAPProcessingException;
@@ -29,6 +30,10 @@ public class SOAP11BodyImpl extends SOAPBodyImpl {
      */
     public SOAP11BodyImpl(SOAPEnvelope envelope) throws SOAPProcessingException {
         super(envelope);
+    }
+
+    public SOAP11BodyImpl() throws SOAPProcessingException {
+        super(SOAPConstants.BODY_LOCAL_NAME, SOAP11Factory.getNamespace());
     }
 
     /**

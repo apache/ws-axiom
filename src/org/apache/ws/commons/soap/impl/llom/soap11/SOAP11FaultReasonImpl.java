@@ -31,9 +31,15 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
+
+
     /**
      * Eran Chinthaka (chinthaka@apache.org)
      */
+
+     public SOAP11FaultReasonImpl() {
+        super(SOAP11Factory.getNamespace());
+    }
 
     public SOAP11FaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder) {
         super(parent, builder);

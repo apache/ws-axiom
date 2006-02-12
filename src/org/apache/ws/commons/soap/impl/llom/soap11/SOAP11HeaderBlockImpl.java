@@ -26,6 +26,11 @@ import org.apache.ws.commons.soap.SOAPProcessingException;
 import org.apache.ws.commons.soap.impl.llom.SOAPHeaderBlockImpl;
 
 public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
+
+    public SOAP11HeaderBlockImpl(String localName, OMNamespace ns) {
+        super(localName, ns);
+    }
+
     /**
      * @param localName
      * @param ns

@@ -19,6 +19,7 @@ package org.apache.ws.commons.soap.impl.llom;
 import org.apache.ws.commons.om.OMConstants;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMException;
+import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.soap.SOAP11Constants;
@@ -38,6 +39,10 @@ public abstract class SOAPBodyImpl extends SOAPElement
      * Field hasSOAPFault
      */
     private boolean hasSOAPFault = false;
+
+    protected SOAPBodyImpl(String localName, OMNamespace ns) {
+        super(localName, ns);
+    }
 
     /**
      * @param envelope
