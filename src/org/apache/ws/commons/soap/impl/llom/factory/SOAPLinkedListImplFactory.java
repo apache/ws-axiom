@@ -292,8 +292,8 @@ public class SOAPLinkedListImplFactory extends
         SOAPFaultReason reason = createSOAPFaultReason(fault);
         SOAPFaultText faultText = createSOAPFaultText(reason);
 
-        SOAPFaultNode faultNode = createSOAPFaultNode(fault);
-        SOAPFaultRole faultRole = createSOAPFaultRole(fault);
+//        SOAPFaultNode faultNode = createSOAPFaultNode(fault);
+//        SOAPFaultRole faultRole = createSOAPFaultRole(fault);
         SOAPFaultDetail faultDetail = createSOAPFaultDetail(fault);
 
         return defaultEnvelope;

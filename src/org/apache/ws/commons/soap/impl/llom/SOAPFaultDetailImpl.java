@@ -18,8 +18,9 @@ package org.apache.ws.commons.soap.impl.llom;
 
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMNamespace;
+import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
-import org.apache.ws.commons.om.impl.OMNodeEx;
+import org.apache.ws.commons.om.impl.llom.OMNodeImpl;
 import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
 import org.apache.ws.commons.om.impl.llom.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.ws.commons.soap.SOAP12Constants;
@@ -28,6 +29,7 @@ import org.apache.ws.commons.soap.SOAPFaultDetail;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.util.Iterator;
 
 public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFaultDetail {
@@ -69,33 +71,30 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
         }
 
 
-        if (!cache) {
-            //No caching
-            if (this.firstChild != null) {
-                OMSerializerUtil.serializeStartpart(this, omOutput);
-                ((OMNodeEx)firstChild).serializeAndConsume(omOutput);
-                OMSerializerUtil.serializeEndpart(omOutput);
-            } else if (!this.done) {
-                if (builderType == PULL_TYPE_BUILDER) {
-                    OMSerializerUtil.serializeByPullStream(this, omOutput);
-                } else {
-                    OMSerializerUtil.serializeStartpart(this, omOutput);
-                    builder.setCache(cache);
-                    builder.next();
-                    OMSerializerUtil.serializeEndpart(omOutput);
-                }
-            } else {
-                OMSerializerUtil.serializeNormal(this, omOutput, cache);
-            }
-            // do not serialise the siblings
-
-
+        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
+        if (this.getNamespace() != null) {
+            String prefix = this.getNamespace().getPrefix();
+            String nameSpaceName = this.getNamespace().getName();
+            writer.writeStartElement(prefix, SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME,
+                    nameSpaceName);
         } else {
-            //Cached
-            OMSerializerUtil.serializeNormal(this, omOutput, cache);
-
-            // do not serialise the siblings
+            writer.writeStartElement(
+                    SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME);
         }
+        OMSerializerUtil.serializeAttributes(this, omOutput);
+        OMSerializerUtil.serializeNamespaces(this, omOutput);
+
+
+        String text = this.getText();
+        writer.writeCharacters(text);
+
+        OMNode child = (OMNodeImpl) firstChild;
+        while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
+            ((OMNodeImpl) child).serializeAndConsume(omOutput);
+            child = child.getNextOMSibling();
+        }
+
+        writer.writeEndElement();
 
 
     }
