@@ -32,7 +32,7 @@ import javax.xml.stream.XMLStreamWriter;
 public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
 
     public SOAP11FaultDetailImpl() {
-        super(SOAP11Factory.getNamespace());
+        super(null);
     }
 
     public SOAP11FaultDetailImpl(SOAPFault parent) throws SOAPProcessingException {

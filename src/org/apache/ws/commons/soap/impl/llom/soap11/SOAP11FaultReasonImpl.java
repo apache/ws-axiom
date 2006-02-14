@@ -38,7 +38,7 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
      */
 
      public SOAP11FaultReasonImpl() {
-        super(SOAP11Factory.getNamespace());
+        super(null);
     }
 
     public SOAP11FaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder) {

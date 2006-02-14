@@ -33,7 +33,7 @@ import javax.xml.stream.XMLStreamWriter;
 public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
 
     public SOAP11FaultCodeImpl() {
-        super(SOAP11Factory.getNamespace());
+        super(null);
     }
 
     /**

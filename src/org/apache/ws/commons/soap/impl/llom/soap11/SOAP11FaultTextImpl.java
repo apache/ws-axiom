@@ -17,6 +17,7 @@
 package org.apache.ws.commons.soap.impl.llom.soap11;
 
 import org.apache.ws.commons.om.OMElement;
+import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.soap.SOAPFaultReason;
 import org.apache.ws.commons.soap.SOAPProcessingException;
@@ -28,7 +29,7 @@ public class SOAP11FaultTextImpl extends SOAPFaultTextImpl {
     }
 
     public SOAP11FaultTextImpl() throws SOAPProcessingException {
-        super(SOAP11Factory.getNamespace());
+        super((OMNamespace) null);
     }
 
     public SOAP11FaultTextImpl(SOAPFaultReason parent,

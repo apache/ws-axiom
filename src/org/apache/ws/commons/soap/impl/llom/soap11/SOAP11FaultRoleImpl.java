@@ -34,7 +34,7 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
     }
 
     public SOAP11FaultRoleImpl() {
-        super(SOAP11Factory.getNamespace());
+        super(null);
     }
 
     public SOAP11FaultRoleImpl(SOAPFault parent, OMXMLParserWrapper builder) {

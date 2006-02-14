@@ -29,7 +29,7 @@ public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
 
 
     public SOAP11FaultSubCodeImpl() {
-        super(SOAP11Factory.getNamespace());
+        super(null);
     }
 
     //changed
