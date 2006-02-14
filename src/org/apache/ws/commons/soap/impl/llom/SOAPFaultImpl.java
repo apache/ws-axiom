@@ -159,16 +159,13 @@ public abstract class SOAPFaultImpl extends SOAPElement
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
         sw.flush();
-        getDetail();
+        SOAPFaultDetail detail = getDetail();
         if (getDetail() == null) {
-            setDetail(getNewSOAPFaultDetail(this));
-
+            detail = getNewSOAPFaultDetail(this);
+            setDetail(detail);
         }
-        OMElement faultDetailEnty = new OMElementImpl(
-                SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,
-                null);
+        OMElement faultDetailEnty = new OMElementImpl(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,null, detail);
         faultDetailEnty.setText(sw.getBuffer().toString());
-        getDetail().addChild(faultDetailEnty);
     }
 
     protected void setNewElement(OMElement myElement, OMElement newElement) {

@@ -17,8 +17,9 @@
 package org.apache.ws.commons.soap.impl.llom.soap11;
 
 import org.apache.ws.commons.om.OMElement;
+import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
-import org.apache.ws.commons.om.impl.OMNodeEx;
+import org.apache.ws.commons.om.impl.llom.OMNodeImpl;
 import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
 import org.apache.ws.commons.om.impl.llom.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.ws.commons.soap.SOAP11Constants;
@@ -79,10 +80,12 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
         String text = this.getText();
         writer.writeCharacters(text);
 
-
-        if (firstChild != null) {
-            ((OMNodeEx)firstChild).serializeAndConsume(omOutput);
+        OMNode child = (OMNodeImpl) firstChild;
+        while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
+           ((OMNodeImpl) child).serializeAndConsume(omOutput);
+            child = child.getNextOMSibling();
         }
+
         writer.writeEndElement();
     }
 
