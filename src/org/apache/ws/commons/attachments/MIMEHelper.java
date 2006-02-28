@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
 import java.util.HashMap;
+import java.util.Set;
 
 public class MIMEHelper {
 
@@ -93,7 +94,7 @@ public class MIMEHelper {
      * @param contentTypeString
      * @param fileCacheEnable
      * @param attachmentRepoDir
-     * @throws OMException 
+     * @throws OMException
      */
     public MIMEHelper(InputStream inStream, String contentTypeString,
                       boolean fileCacheEnable, String attachmentRepoDir,
@@ -111,7 +112,7 @@ public class MIMEHelper {
         } catch (ParseException e) {
             throw new OMException(
                     "Invalid Content Type Field in the Mime Message"
-                            ,e);
+                    , e);
         }
         // Boundary always have the prefix "--".
         this.boundary = ("--" + contentType.getParameter("boundary"))
@@ -120,7 +121,7 @@ public class MIMEHelper {
         // do we need to wrap InputStream from a BufferedInputStream before
         // wrapping from PushbackStream
         pushbackInStream = new PushbackInputStream(inStream,
-                (this.boundary.length + 2));
+                                                   (this.boundary.length + 2));
 
         // Move the read pointer to the beginning of the first part
         // read till the end of first boundary
@@ -131,11 +132,12 @@ public class MIMEHelper {
                 if ((byte) value == boundary[0]) {
                     int boundaryIndex = 0;
                     while ((boundaryIndex < boundary.length)
-                            && ((byte) value == boundary[boundaryIndex])) {
+                           && ((byte) value == boundary[boundaryIndex])) {
                         value = pushbackInStream.read();
-                        if (value == -1)
+                        if (value == -1) {
                             throw new OMException(
                                     "Unexpected End of Stream while searching for first Mime Boundary");
+                        }
                         boundaryIndex++;
                     }
                     if (boundaryIndex == boundary.length) { // boundary found
@@ -199,7 +201,7 @@ public class MIMEHelper {
             return dh.getInputStream();
         } catch (IOException e) {
             throw new OMException(
-                    "Problem with DataHandler of the Root Mime Part. ",e);
+                    "Problem with DataHandler of the Root Mime Part. ", e);
         }
     }
 
@@ -222,9 +224,10 @@ public class MIMEHelper {
             rootContentID.trim();
 
             if ((rootContentID.indexOf("<") > -1)
-                    & (rootContentID.indexOf(">") > -1))
+                & (rootContentID.indexOf(">") > -1)) {
                 rootContentID = rootContentID.substring(1, (rootContentID
                         .length() - 1));
+            }
         }
         // Strips off the "cid" part from content-id
         if ("cid".equalsIgnoreCase(rootContentID.substring(0, 3))) {
@@ -244,8 +247,7 @@ public class MIMEHelper {
     }
 
     /**
-     * @param blobContentID
-     *            (without the surrounding angle brackets and "cid:" prefix)
+     * @param blobContentID (without the surrounding angle brackets and "cid:" prefix)
      * @return The DataHandler of the mime part referred by the Content-Id
      * @throws OMException
      */
@@ -255,7 +257,7 @@ public class MIMEHelper {
             return getPart(blobContentID).getDataHandler();
         } catch (MessagingException e) {
             throw new OMException("Problem with Mime Body Part No " + partIndex
-                    + ".  ", e);
+                                  + ".  ", e);
         }
 
     }
@@ -268,7 +270,6 @@ public class MIMEHelper {
      * @param blobContentID
      * @return The Part referred by the Content-Id
      * @throws OMException
-     * 
      */
     public Part getPart(String blobContentID) {
         Part bodyPart;
@@ -291,16 +292,26 @@ public class MIMEHelper {
         }
     }
 
+    public String[] getAllContentIDs() {
+        Part bodyPart;
+        while (true) {
+            bodyPart = this.getNextPart();
+            if (bodyPart == null) {
+                break;
+            }
+        }
+        Set keys = bodyPartsMap.keySet();
+        return (String[]) keys.toArray(new String[keys.size()]);
+    }
+
     protected void setEndOfStream(boolean value) {
         this.endOfStreamReached = value;
-
     }
 
     /**
      * @return the Next valid MIME part + store the Part in the Parts List
-     * @throws OMException
-     *             throw if content id is null or if two MIME parts contain the
-     *             same content-ID & the exceptions throws by getPart()
+     * @throws OMException throw if content id is null or if two MIME parts contain the
+     *                     same content-ID & the exceptions throws by getPart()
      */
     private Part getNextPart() throws OMException {
         Part nextPart;
@@ -320,7 +331,7 @@ public class MIMEHelper {
                             "Part content ID cannot be blank for non root MIME parts");
                 }
                 if ((partContentID.indexOf("<") > -1)
-                        & (partContentID.indexOf(">") > -1)) {
+                    & (partContentID.indexOf(">") > -1)) {
                     partContentID = partContentID.substring(1, (partContentID
                             .length() - 1));
 
@@ -335,23 +346,24 @@ public class MIMEHelper {
                 return nextPart;
             } catch (MessagingException e) {
                 throw new OMException("Error reading Content-ID from the Part."
-                        + e);
+                                      + e);
             }
-        } else
+        } else {
             return null;
+        }
     }
 
     /**
      * @return This will return the next available MIME part in the stream.
-     * @throws OMException
-     *             if Stream ends while reading the next part...
+     * @throws OMException if Stream ends while reading the next part...
      */
     private Part getPart() throws OMException {
         // endOfStreamReached will be set to true if the message ended in MIME
         // Style having "--" suffix with the last mime boundary
-        if (endOfStreamReached)
+        if (endOfStreamReached) {
             throw new OMException(
                     "Referenced MIME part not found.End of Stream reached.");
+        }
 
         Part part = null;
 
@@ -361,13 +373,13 @@ public class MIMEHelper {
                     MIMEBodyPartInputStream partStream;
                     byte[] buffer = new byte[fileStorageThreshold];
                     partStream = new MIMEBodyPartInputStream(pushbackInStream,
-                            boundary, this);
+                                                             boundary, this);
                     int count = 0;
                     int value;
                     // Make sure not to modify this to a Short Circuit "&". If
                     // removed a byte will be lost
                     while (count != fileStorageThreshold
-                            && (!partStream.getBoundaryStatus())) {
+                           && (!partStream.getBoundaryStatus())) {
                         value = partStream.read();
                         buffer[count] = (byte) value;
                         count++;
@@ -378,7 +390,7 @@ public class MIMEHelper {
                         part = new PartOnFile(filePartStream, attachmentRepoDir);
                     } else {
                         ByteArrayInputStream byteArrayInStream = new ByteArrayInputStream(
-                                buffer,0,count-1);
+                                buffer, 0, count - 1);
                         part = new PartOnMemory(byteArrayInStream);
                     }
                 } catch (Exception e) {
@@ -387,7 +399,7 @@ public class MIMEHelper {
             } else {
                 MIMEBodyPartInputStream partStream;
                 partStream = new MIMEBodyPartInputStream(pushbackInStream,
-                        boundary, this);
+                                                         boundary, this);
                 part = new PartOnMemory(partStream);
             }
             // This will take care if stream ended without having MIME
