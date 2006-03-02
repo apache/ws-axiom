@@ -116,7 +116,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
 
     protected void serializeFaultNode(org.apache.ws.commons.om.impl.OMOutputImpl omOutput) throws XMLStreamException {
         SOAPFaultNode faultNode = getNode();
-        if (faultNode != null) {
+        if (faultNode != null && faultNode.getText() != null && !"".equals(faultNode.getText())) {
             ((OMNodeEx)faultNode).serialize(omOutput);
         }
     }

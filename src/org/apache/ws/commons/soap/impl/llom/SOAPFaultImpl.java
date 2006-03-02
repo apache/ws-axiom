@@ -219,7 +219,7 @@ public abstract class SOAPFaultImpl extends SOAPElement
         serializeFaultNode(omOutput);
 
         SOAPFaultRole faultRole = getRole();
-        if (faultRole != null) {
+        if (faultRole != null && faultRole.getText() != null && !"".equals(faultRole.getText())) {
             ((OMNodeEx) faultRole).serialize(omOutput);
         }
 
