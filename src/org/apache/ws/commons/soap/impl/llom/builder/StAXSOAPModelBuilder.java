@@ -16,6 +16,8 @@
 
 package org.apache.ws.commons.soap.impl.llom.builder;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ws.commons.om.OMAbstractFactory;
 import org.apache.ws.commons.om.OMDocument;
 import org.apache.ws.commons.om.OMElement;
@@ -33,8 +35,6 @@ import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPHeader;
 import org.apache.ws.commons.soap.SOAPMessage;
 import org.apache.ws.commons.soap.SOAPProcessingException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamReader;
 
@@ -144,7 +144,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         String namespaceName = envelopeNamespace.getName();
         if ((soapVersionURIFromTransport != null) && !(soapVersionURIFromTransport.equals(namespaceName))) {
             throw new SOAPProcessingException("Transport level information does not match with SOAP" +
-                    " Message namespace URI", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
+                    " Message namespace URI", envelopeNamespace.getPrefix() + ":" + SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
 
         }
         if(isTempSOAPFactory) {
