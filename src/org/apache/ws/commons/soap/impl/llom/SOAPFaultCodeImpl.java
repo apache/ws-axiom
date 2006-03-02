@@ -18,10 +18,6 @@ package org.apache.ws.commons.soap.impl.llom;
 
 import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
-import org.apache.ws.commons.om.impl.OMNodeEx;
-import org.apache.ws.commons.om.impl.OMOutputImpl;
-import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
-import org.apache.ws.commons.om.impl.llom.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.ws.commons.om.util.ElementHelper;
 import org.apache.ws.commons.soap.SOAP12Constants;
 import org.apache.ws.commons.soap.SOAPFault;
@@ -29,8 +25,6 @@ import org.apache.ws.commons.soap.SOAPFaultCode;
 import org.apache.ws.commons.soap.SOAPFaultSubCode;
 import org.apache.ws.commons.soap.SOAPFaultValue;
 import org.apache.ws.commons.soap.SOAPProcessingException;
-
-import javax.xml.stream.XMLStreamException;
 
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFaultCode {
 
@@ -78,49 +72,6 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
     public SOAPFaultSubCode getSubCode() {
         return (SOAPFaultSubCode) ElementHelper.getChildWithName(this,
                 SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
-    }
-
-    protected void serialize(OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
-        // select the builder
-        short builderType = PULL_TYPE_BUILDER;    // default is pull type
-        if (builder != null) {
-            builderType = this.builder.getBuilderType();
-        }
-        if ((builderType == PUSH_TYPE_BUILDER)
-                && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(omOutput));
-        }
-
-
-        if (!cache) {
-            //No caching
-            if (this.firstChild != null) {
-                OMSerializerUtil.serializeStartpart(this, omOutput);
-                ((OMNodeEx)firstChild).serializeAndConsume(omOutput);
-                OMSerializerUtil.serializeEndpart(omOutput);
-            } else if (!this.done) {
-                if (builderType == PULL_TYPE_BUILDER) {
-                    OMSerializerUtil.serializeByPullStream(this, omOutput);
-                } else {
-                    OMSerializerUtil.serializeStartpart(this, omOutput);
-                    builder.setCache(cache);
-                    builder.next();
-                    OMSerializerUtil.serializeEndpart(omOutput);
-                }
-            } else {
-                OMSerializerUtil.serializeNormal(this, omOutput, cache);
-            }
-            // do not serialise the siblings
-
-
-        } else {
-            //Cached
-            OMSerializerUtil.serializeNormal(this, omOutput, cache);
-
-            // do not serialise the siblings
-        }
-
-
     }
 
 }
