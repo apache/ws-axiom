@@ -64,7 +64,7 @@ public interface SOAP12Constants extends SOAPConstants {
     public static final String FAULT_CODE_RECEIVER = "Receiver";
 
     public static final String SOAP_ROLE_NEXT = "http://www.w3.org/2003/05/soap-envelope/role/next";
-    public static final String SOAP_ROLE_NONE = "http://www.w3.org/2003/05/soap-envelope/role/next";
+    public static final String SOAP_ROLE_NONE = "http://www.w3.org/2003/05/soap-envelope/role/none";
     public static final String SOAP_ROLE_ULTIMATE_RECEIVER = "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver";
     
 }
