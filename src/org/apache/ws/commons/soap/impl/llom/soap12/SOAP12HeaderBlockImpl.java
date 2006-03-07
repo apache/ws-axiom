@@ -21,14 +21,16 @@ import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.soap.SOAP12Constants;
 import org.apache.ws.commons.soap.SOAPConstants;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPHeader;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 import org.apache.ws.commons.soap.impl.llom.SOAPHeaderBlockImpl;
 
 public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
 
-    public SOAP12HeaderBlockImpl(String localName, OMNamespace ns) {
-        super(localName, ns);
+    public SOAP12HeaderBlockImpl(String localName, OMNamespace ns,
+            SOAPFactory factory) {
+        super(localName, ns, factory);
     }
     /**
      * Eran Chinthaka (chinthaka@apache.org)
@@ -39,8 +41,10 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
      */
     public SOAP12HeaderBlockImpl(String localName,
                                  OMNamespace ns,
-                                 SOAPHeader parent) throws SOAPProcessingException {
-        super(localName, ns, parent);
+                                 SOAPHeader parent,
+                                 SOAPFactory factory)
+            throws SOAPProcessingException {
+        super(localName, ns, parent, factory);
         checkParent(parent);
     }
 
@@ -55,15 +59,17 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
     public SOAP12HeaderBlockImpl(String localName,
                                  OMNamespace ns,
                                  SOAPHeader parent,
-                                 OMXMLParserWrapper builder) {
-        super(localName, ns, parent, builder);
+                                 OMXMLParserWrapper builder,
+                                 SOAPFactory factory) {
+        super(localName, ns, parent, builder, factory);
 
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12HeaderImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Body as the parent. But received some other implementation");
+                    "Expecting SOAP 1.2 implementation of SOAP Body as " +
+                    "the parent. But received some other implementation");
         }
     }
 
@@ -86,7 +92,8 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
 
     }
 
-    public void setMustUnderstand(String mustUnderstand) throws SOAPProcessingException {
+    public void setMustUnderstand(String mustUnderstand)
+            throws SOAPProcessingException {
         if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equals(mustUnderstand) ||
                 SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE.equals(mustUnderstand) ||
                 SOAPConstants.ATTR_MUSTUNDERSTAND_0.equals(mustUnderstand) ||
@@ -96,7 +103,8 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
         } else {
             throw new SOAPProcessingException(
-                    "mustUndertand should be one of \"true\", \"false\", \"0\" or \"1\" ");
+                    "mustUndertand should be one of \"true\", " +
+                    "\"false\", \"0\" or \"1\" ");
         }
     }
 

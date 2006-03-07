@@ -16,6 +16,7 @@
 
 package org.apache.ws.commons.om.impl.llom;
 
+import org.apache.ws.commons.om.OMFactory;
 import org.apache.ws.commons.om.OMNamespace;
 
 /**
@@ -31,14 +32,17 @@ public class OMNamespaceImpl implements OMNamespace {
      * Field uri
      */
     private String uri;
+    
+    private OMFactory factory;
 
     /**
      * @param uri
      * @param prefix
      */
-    public OMNamespaceImpl(String uri, String prefix) {
+    public OMNamespaceImpl(String uri, String prefix, OMFactory factory) {
         this.uri = uri;
         this.prefix = prefix;
+        this.factory = factory;
     }
 
     /**
@@ -70,5 +74,12 @@ public class OMNamespaceImpl implements OMNamespace {
      */
     public String getName() {
         return uri;
+    }
+
+    /* (non-Javadoc)
+     * @see org.apache.ws.commons.om.OMNamespace#getOMFactory()
+     */
+    public OMFactory getOMFactory() {
+        return this.factory;
     }
 }

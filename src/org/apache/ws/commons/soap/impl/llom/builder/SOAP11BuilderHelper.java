@@ -38,8 +38,6 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
     private boolean faultcodePresent = false;
     private boolean faultstringPresent = false;
 
-    private OMElement lastProcessedSOAPElement;
-
     public SOAP11BuilderHelper(StAXSOAPModelBuilder builder) {
         super(builder);
         factory = builder.getSoapFactory();

@@ -20,6 +20,9 @@ package org.apache.ws.commons.om;
  * Class OMException
  */
 public class OMException extends RuntimeException {
+    
+    private static final long serialVersionUID = -730218408325095333L;
+
     /**
      * Constructor OMException
      */

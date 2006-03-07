@@ -19,6 +19,7 @@ package org.apache.ws.commons.om.impl.llom;
 import org.apache.ws.commons.om.OMDocument;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMException;
+import org.apache.ws.commons.om.OMFactory;
 import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.OMOutputFormat;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
@@ -75,7 +76,8 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
 
     protected String isStandalone;
 
-
+    protected OMFactory factory;
+    
     /**
      * Default constructor
      */
@@ -99,6 +101,38 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
         this.parserWrapper = parserWrapper;
     }
 
+    /**
+     * Create a <code>OMDocument</code> given the <code>OMFactory</code>
+     * @param factory The <code>OMFactory</code> that created this instace
+     */
+    public OMDocumentImpl(OMFactory factory) {
+        this();
+        this.factory = factory;
+    }
+
+    /**
+     * Create the <code>OMDocument</code> with the factory
+     * @param parserWrapper
+     * @param factory
+     */
+    public OMDocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
+        this(parserWrapper);
+        this.factory = factory;
+    }
+    
+    /**
+     * Create the <code>OMDoucment</code> with the factory and set the given 
+     * <code>OMElement</code> as the document element
+     * @param documentElement
+     * @param parserWrapper
+     * @param factory
+     */
+    public OMDocumentImpl(OMElement documentElement, OMXMLParserWrapper parserWrapper, OMFactory factory) {
+        this(documentElement, parserWrapper);
+        this.factory = factory;
+    }
+
+    
     /**
      * Method getDocumentElement.
      *
@@ -396,6 +430,11 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
                 omNode.serializeAndConsume(omOutput);
             }
         }
+    }
+
+    public OMFactory getOMFactory() {
+        // TODO TODO
+        throw new UnsupportedOperationException("TODO");
     }
 
 

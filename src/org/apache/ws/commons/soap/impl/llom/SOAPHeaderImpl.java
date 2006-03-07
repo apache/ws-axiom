@@ -23,6 +23,7 @@ import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.soap.SOAPConstants;
 import org.apache.ws.commons.soap.SOAPEnvelope;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPHeader;
 import org.apache.ws.commons.soap.SOAPHeaderBlock;
 import org.apache.ws.commons.soap.SOAPProcessingException;
@@ -36,15 +37,16 @@ import java.util.Iterator;
 public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
 
 
-    protected SOAPHeaderImpl(OMNamespace ns) {
-        super(SOAPConstants.HEADER_LOCAL_NAME, ns);
+    protected SOAPHeaderImpl(OMNamespace ns, SOAPFactory factory) {
+        super(SOAPConstants.HEADER_LOCAL_NAME, ns, factory);
     }
 
     /**
      * @param envelope
      */
-    public SOAPHeaderImpl(SOAPEnvelope envelope) throws SOAPProcessingException {
-        super(envelope, SOAPConstants.HEADER_LOCAL_NAME, true);
+    public SOAPHeaderImpl(SOAPEnvelope envelope, SOAPFactory factory)
+            throws SOAPProcessingException {
+        super(envelope, SOAPConstants.HEADER_LOCAL_NAME, true, factory);
 
     }
 
@@ -54,8 +56,9 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
      * @param envelope
      * @param builder
      */
-    public SOAPHeaderImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder) {
-        super(envelope, SOAPConstants.HEADER_LOCAL_NAME, builder);
+    public SOAPHeaderImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
+            SOAPFactory factory) {
+        super(envelope, SOAPConstants.HEADER_LOCAL_NAME, builder, factory);
     }
 
     /**

@@ -21,6 +21,7 @@ import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
 import org.apache.ws.commons.om.impl.llom.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.ws.commons.soap.SOAP11Constants;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;
 import org.apache.ws.commons.soap.SOAPFaultSubCode;
 import org.apache.ws.commons.soap.SOAPFaultValue;
@@ -32,8 +33,8 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
 
-    public SOAP11FaultCodeImpl() {
-        super(null);
+    public SOAP11FaultCodeImpl(SOAPFactory factory) {
+        super(null, factory);
     }
 
     /**
@@ -42,15 +43,15 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
      * @param parent
      * @param builder
      */
-    public SOAP11FaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder) {
-        super(parent, builder);
+    public SOAP11FaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder, SOAPFactory factory) {
+        super(parent, builder, factory);
     }
 
     /**
      * @param parent
      */
-    public SOAP11FaultCodeImpl(SOAPFault parent) throws SOAPProcessingException {
-        super(parent, false);
+    public SOAP11FaultCodeImpl(SOAPFault parent, SOAPFactory factory) throws SOAPProcessingException {
+        super(parent, false, factory);
     }
 
 

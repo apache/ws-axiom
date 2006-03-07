@@ -18,8 +18,10 @@ package org.apache.ws.commons.om.impl.llom;
 
 import org.apache.ws.commons.attachments.ByteArrayDataSource;
 import org.apache.ws.commons.om.AbstractTestCase;
+import org.apache.ws.commons.om.OMAbstractFactory;
 import org.apache.ws.commons.om.OMAttribute;
 import org.apache.ws.commons.om.OMElement;
+import org.apache.ws.commons.om.OMFactory;
 import org.apache.ws.commons.om.OMOutputFormat;
 
 import javax.activation.DataHandler;
@@ -57,26 +59,28 @@ public class OMOutputTest extends AbstractTestCase {
         outMTOMFile = getTempOutputFile(outFileName);
         outBase64File = getTempOutputFile(outBase64FileName);
 
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+        
         OMNamespaceImpl soap = new OMNamespaceImpl(
-                "http://schemas.xmlsoap.org/soap/envelope/", "soap");
-        envelope = new OMElementImpl("Envelope", soap);
-        OMElement body = new OMElementImpl("Body", soap);
+                "http://schemas.xmlsoap.org/soap/envelope/", "soap", fac);
+        envelope = new OMElementImpl("Envelope", soap, fac);
+        OMElement body = new OMElementImpl("Body", soap, fac);
 
         OMNamespaceImpl dataName = new OMNamespaceImpl(
-                "http://www.example.org/stuff", "m");
-        OMElement data = new OMElementImpl("data", dataName);
+                "http://www.example.org/stuff", "m", fac);
+        OMElement data = new OMElementImpl("data", dataName, fac);
 
         OMNamespaceImpl mime = new OMNamespaceImpl(
-                "http://www.w3.org/2003/06/xmlmime", "m");
+                "http://www.w3.org/2003/06/xmlmime", "m", fac);
 
-        OMElement text = new OMElementImpl("name", dataName);
+        OMElement text = new OMElementImpl("name", dataName, fac);
         OMAttribute cType1 = new OMAttributeImpl("contentType", mime,
-                "text/plain");
+                "text/plain", fac);
         text.addAttribute(cType1);
         byte[] byteArray = new byte[]{13, 56, 65, 32, 12, 12, 7, -3, -2, -1,
                                       98};
         dataHandler = new DataHandler(new ByteArrayDataSource(byteArray));
-        OMTextImpl textData = new OMTextImpl(dataHandler, false);
+        OMTextImpl textData = new OMTextImpl(dataHandler, false, fac);
 
         envelope.addChild(body);
         body.addChild(data);

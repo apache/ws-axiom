@@ -19,28 +19,34 @@ package org.apache.ws.commons.soap.impl.llom.soap11;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFaultReason;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 import org.apache.ws.commons.soap.impl.llom.SOAPFaultTextImpl;
 
 public class SOAP11FaultTextImpl extends SOAPFaultTextImpl {
-    public SOAP11FaultTextImpl(SOAPFaultReason parent) throws SOAPProcessingException {
-        super(parent);
+    
+    public SOAP11FaultTextImpl(SOAPFaultReason parent, SOAPFactory factory)
+            throws SOAPProcessingException {
+        super(parent, factory);
     }
 
-    public SOAP11FaultTextImpl() throws SOAPProcessingException {
-        super((OMNamespace) null);
+    public SOAP11FaultTextImpl(SOAPFactory factory)
+            throws SOAPProcessingException {
+        super((OMNamespace) null, factory);
     }
 
     public SOAP11FaultTextImpl(SOAPFaultReason parent,
-                               OMXMLParserWrapper builder) {
-        super(parent, builder);
+                               OMXMLParserWrapper builder, 
+                               SOAPFactory factory) {
+        super(parent, builder, factory);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11FaultReasonImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP FaultReason as the parent. But received some other implementation");
+                    "Expecting SOAP 1.1 implementation of SOAP FaultReason as " +
+                    "the parent. But received some other implementation");
         }
     }
 }

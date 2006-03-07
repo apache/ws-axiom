@@ -19,6 +19,7 @@ package org.apache.ws.commons.soap.impl.llom.soap11;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.soap.SOAP12Constants;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFaultCode;
 import org.apache.ws.commons.soap.SOAPFaultSubCode;
 import org.apache.ws.commons.soap.SOAPFaultValue;
@@ -28,28 +29,34 @@ import org.apache.ws.commons.soap.impl.llom.SOAPFaultSubCodeImpl;
 public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
 
 
-    public SOAP11FaultSubCodeImpl() {
-        super(null);
+    public SOAP11FaultSubCodeImpl(SOAPFactory factory) {
+        super(null, factory);
     }
 
     //changed
-    public SOAP11FaultSubCodeImpl(SOAPFaultCode parent) throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
+    public SOAP11FaultSubCodeImpl(SOAPFaultCode parent, SOAPFactory factory)
+            throws SOAPProcessingException {
+        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, factory);
     }
 
     //changed
     public SOAP11FaultSubCodeImpl(SOAPFaultCode parent,
-                                  OMXMLParserWrapper builder) {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, builder);
+                                  OMXMLParserWrapper builder,
+                                  SOAPFactory factory) {
+        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, builder,
+                factory);
     }
 
-    public SOAP11FaultSubCodeImpl(SOAPFaultSubCode parent) throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
+    public SOAP11FaultSubCodeImpl(SOAPFaultSubCode parent, SOAPFactory factory)
+            throws SOAPProcessingException {
+        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, factory);
     }
 
     public SOAP11FaultSubCodeImpl(SOAPFaultSubCode parent,
-                                  OMXMLParserWrapper builder) {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, builder);
+                                  OMXMLParserWrapper builder,
+                                  SOAPFactory factory) {
+        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, builder,
+                factory);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {

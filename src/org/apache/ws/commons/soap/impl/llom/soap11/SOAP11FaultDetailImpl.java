@@ -23,6 +23,7 @@ import org.apache.ws.commons.om.impl.llom.OMNodeImpl;
 import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
 import org.apache.ws.commons.om.impl.llom.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.ws.commons.soap.SOAP11Constants;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 import org.apache.ws.commons.soap.impl.llom.SOAPFaultDetailImpl;
@@ -32,22 +33,25 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
 
-    public SOAP11FaultDetailImpl() {
-        super(null);
+    public SOAP11FaultDetailImpl(SOAPFactory factory) {
+        super(null, factory);
     }
 
-    public SOAP11FaultDetailImpl(SOAPFault parent) throws SOAPProcessingException {
-        super(parent, false);
+    public SOAP11FaultDetailImpl(SOAPFault parent, SOAPFactory factory)
+            throws SOAPProcessingException {
+        super(parent, false, factory);
     }
 
-    public SOAP11FaultDetailImpl(SOAPFault parent, OMXMLParserWrapper builder) {
-        super(parent, builder);
+    public SOAP11FaultDetailImpl(SOAPFault parent, OMXMLParserWrapper builder,
+            SOAPFactory factory) {
+        super(parent, builder, factory);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11FaultImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault as the parent. But received some other implementation");
+                    "Expecting SOAP 1.1 implementation of SOAP Fault as the " +
+                    "parent. But received some other implementation");
         }
     }
 

@@ -20,21 +20,24 @@ import org.apache.ws.commons.om.OMException;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.soap.SOAPConstants;
 import org.apache.ws.commons.soap.SOAPEnvelope;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 import org.apache.ws.commons.soap.impl.llom.SOAPBodyImpl;
 
 public class SOAP12BodyImpl extends SOAPBodyImpl {
 
-    public SOAP12BodyImpl() {
-         super(SOAPConstants.BODY_LOCAL_NAME, SOAP12Factory.getNamespace());
+    public SOAP12BodyImpl(SOAPFactory factory) {
+         super(SOAPConstants.BODY_LOCAL_NAME, factory.getNamespace(),
+                factory);
     }
 
     /**
      * @param envelope
      */
-    public SOAP12BodyImpl(SOAPEnvelope envelope) throws SOAPProcessingException {
-        super(envelope);
+    public SOAP12BodyImpl(SOAPEnvelope envelope, SOAPFactory factory)
+            throws SOAPProcessingException {
+        super(envelope, factory);
     }
 
     /**
@@ -43,12 +46,14 @@ public class SOAP12BodyImpl extends SOAPBodyImpl {
      * @param envelope
      * @param builder
      */
-    public SOAP12BodyImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder) {
-        super(envelope, builder);
+    public SOAP12BodyImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
+            SOAPFactory factory) {
+        super(envelope, builder, factory);
     }
 
     public SOAPFault addFault(Exception e) throws OMException {
-        SOAPFault soapFault = new SOAP12FaultImpl(this, e);
+        SOAPFault soapFault = new SOAP12FaultImpl(this, e,
+                (SOAPFactory) this.factory);
         return soapFault;
     }
 }

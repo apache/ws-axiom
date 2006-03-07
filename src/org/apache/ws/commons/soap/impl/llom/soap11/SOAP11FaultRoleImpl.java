@@ -21,6 +21,7 @@ import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
 import org.apache.ws.commons.om.impl.llom.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.ws.commons.soap.SOAP11Constants;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 import org.apache.ws.commons.soap.impl.llom.SOAPFaultRoleImpl;
@@ -29,26 +30,32 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
-    public SOAP11FaultRoleImpl(SOAPFault parent) throws SOAPProcessingException {
-        super(parent, false);
+    
+    public SOAP11FaultRoleImpl(SOAPFault parent, SOAPFactory factory)
+            throws SOAPProcessingException {
+        super(parent, false, factory);
     }
 
-    public SOAP11FaultRoleImpl() {
-        super(null);
+    public SOAP11FaultRoleImpl(SOAPFactory factory) {
+        super(null, factory);
     }
 
-    public SOAP11FaultRoleImpl(SOAPFault parent, OMXMLParserWrapper builder) {
-        super(parent, builder);
+    public SOAP11FaultRoleImpl(SOAPFault parent, OMXMLParserWrapper builder,
+            SOAPFactory factory) {
+        super(parent, builder, factory);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11FaultImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault as the parent. But received some other implementation");
+                    "Expecting SOAP 1.1 implementation of SOAP Fault as the " +
+                    "parent. But received some other implementation");
         }
     }
 
-    protected void serialize(org.apache.ws.commons.om.impl.OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
+    protected void serialize(
+            org.apache.ws.commons.om.impl.OMOutputImpl omOutput, boolean cache)
+            throws XMLStreamException {
 
         // select the builder
         short builderType = PULL_TYPE_BUILDER;    // default is pull type
@@ -65,7 +72,8 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
         if (this.getNamespace() != null) {
             String prefix = this.getNamespace().getPrefix();
             String nameSpaceName = this.getNamespace().getName();
-            writer.writeStartElement(prefix, SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME,
+            writer.writeStartElement(prefix, 
+                    SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME,
                     nameSpaceName);
         } else {
             writer.writeStartElement(

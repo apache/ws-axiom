@@ -20,6 +20,7 @@ import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.om.util.ElementHelper;
 import org.apache.ws.commons.soap.SOAP12Constants;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;
 import org.apache.ws.commons.soap.SOAPFaultCode;
 import org.apache.ws.commons.soap.SOAPFaultSubCode;
@@ -29,8 +30,8 @@ import org.apache.ws.commons.soap.SOAPProcessingException;
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFaultCode {
 
 
-    protected SOAPFaultCodeImpl(OMNamespace ns) {
-        super(SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME, ns);
+    protected SOAPFaultCodeImpl(OMNamespace ns, SOAPFactory factory) {
+        super(SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME, ns, factory);
     }
 
     /**
@@ -39,18 +40,21 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
      * @param parent
      * @param builder
      */
-    public SOAPFaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder) {
-        super(parent, SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME, builder);
+    public SOAPFaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder, 
+            SOAPFactory factory) {
+        super(parent, SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME, builder,
+                factory);
     }
 
     /**
      * @param parent
      */
     public SOAPFaultCodeImpl(SOAPFault parent,
-                             boolean extractNamespaceFromParent) throws SOAPProcessingException {
+                             boolean extractNamespaceFromParent,
+                             SOAPFactory factory) throws SOAPProcessingException {
         super(parent,
                 SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME,
-                extractNamespaceFromParent);
+                extractNamespaceFromParent, factory);
     }
 
     /**

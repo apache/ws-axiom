@@ -20,6 +20,7 @@ import org.apache.ws.commons.om.OMComment;
 import org.apache.ws.commons.om.OMContainer;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMException;
+import org.apache.ws.commons.om.OMFactory;
 import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.impl.OMOutputImpl;
 
@@ -35,8 +36,9 @@ public class OMCommentImpl extends OMNodeImpl implements OMComment {
      * @param parentNode
      * @param contentText
      */
-    public OMCommentImpl(OMContainer parentNode, String contentText) {
-        super(parentNode);
+    public OMCommentImpl(OMContainer parentNode, String contentText, 
+            OMFactory factory) {
+        super(parentNode, factory);
         this.value = contentText;
         nodeType = OMNode.COMMENT_NODE;
         this.done = true;
@@ -47,8 +49,8 @@ public class OMCommentImpl extends OMNodeImpl implements OMComment {
      *
      * @param parentNode
      */
-    public OMCommentImpl(OMContainer parentNode) {
-        this(parentNode, null);
+    public OMCommentImpl(OMContainer parentNode, OMFactory factory) {
+        this(parentNode, null, factory);
     }
 
     /**

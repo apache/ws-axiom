@@ -269,4 +269,11 @@ public interface OMNode {
      * Builds itself.
      */
     public void build();
+    
+    /**
+     * Returns the OMFactory that created this object
+     * @return
+     */
+    public OMFactory getOMFactory();
+    
 }

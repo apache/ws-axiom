@@ -42,14 +42,12 @@ import javax.xml.stream.XMLStreamException;
  */
 public class SOAPEnvelopeImpl extends SOAPElement
         implements SOAPEnvelope, OMConstants {
-    SOAPFactory factory;
-
 
     /**
      * @param builder
      */
     public SOAPEnvelopeImpl(OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, builder);
+        super(null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, builder, factory);
         this.factory = factory;
     }
 
@@ -57,7 +55,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
      * @param ns
      */
     public SOAPEnvelopeImpl(OMNamespace ns, SOAPFactory factory) {
-        super(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns);
+        super(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
         this.factory = factory;
     }
 
@@ -80,7 +78,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
                         new QName(SOAPConstants.HEADER_LOCAL_NAME));
         if (builder == null && header == null) {
             inferFactory();
-            header = factory.createSOAPHeader(this);
+            header = ((SOAPFactory)factory).createSOAPHeader(this);
             addChild(header);
         }
         return header;

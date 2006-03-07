@@ -21,14 +21,16 @@ import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.soap.SOAP11Constants;
 import org.apache.ws.commons.soap.SOAPConstants;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPHeader;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 import org.apache.ws.commons.soap.impl.llom.SOAPHeaderBlockImpl;
 
 public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
 
-    public SOAP11HeaderBlockImpl(String localName, OMNamespace ns) {
-        super(localName, ns);
+    public SOAP11HeaderBlockImpl(String localName, OMNamespace ns,
+            SOAPFactory factory) {
+        super(localName, ns, factory);
     }
 
     /**
@@ -37,8 +39,10 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
      */
     public SOAP11HeaderBlockImpl(String localName,
                                  OMNamespace ns,
-                                 SOAPHeader parent) throws SOAPProcessingException {
-        super(localName, ns, parent);
+                                 SOAPHeader parent,
+                                 SOAPFactory factory)
+            throws SOAPProcessingException {
+        super(localName, ns, parent, factory);
         checkParent(parent);
     }
 
@@ -53,8 +57,9 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
     public SOAP11HeaderBlockImpl(String localName,
                                  OMNamespace ns,
                                  OMElement parent,
-                                 OMXMLParserWrapper builder) {
-        super(localName, ns, parent, builder);
+                                 OMXMLParserWrapper builder, 
+                                 SOAPFactory factory) {
+        super(localName, ns, parent, builder, factory);
     }
 
 

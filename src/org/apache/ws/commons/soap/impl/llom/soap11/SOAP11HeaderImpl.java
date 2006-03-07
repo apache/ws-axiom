@@ -23,6 +23,7 @@ import org.apache.ws.commons.om.impl.OMNodeEx;
 import org.apache.ws.commons.om.impl.llom.traverse.OMChildrenWithSpecificAttributeIterator;
 import org.apache.ws.commons.soap.SOAP11Constants;
 import org.apache.ws.commons.soap.SOAPEnvelope;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPHeaderBlock;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 import org.apache.ws.commons.soap.impl.llom.SOAPHeaderImpl;
@@ -32,15 +33,17 @@ import java.util.Iterator;
 
 public class SOAP11HeaderImpl extends SOAPHeaderImpl {
 
-    public SOAP11HeaderImpl() {
-        super(SOAP11Factory.getNamespace());
+    public SOAP11HeaderImpl(SOAPFactory factory)
+        throws SOAPProcessingException {
+        super(factory.getNamespace(), factory);
     }
-
+    
     /**
      * @param envelope
      */
-    public SOAP11HeaderImpl(SOAPEnvelope envelope) throws SOAPProcessingException {
-        super(envelope);
+    public SOAP11HeaderImpl(SOAPEnvelope envelope, SOAPFactory factory)
+            throws SOAPProcessingException {
+        super(envelope, factory);
     }
 
     /**
@@ -49,11 +52,14 @@ public class SOAP11HeaderImpl extends SOAPHeaderImpl {
      * @param envelope
      * @param builder
      */
-    public SOAP11HeaderImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder) {
-        super(envelope, builder);
+    public SOAP11HeaderImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
+            SOAPFactory factory) {
+        super(envelope, builder, factory);
     }
 
-    public SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns) throws OMException {
+    public SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns)
+            throws OMException {
+        
         if (ns == null || ns.getName() == null || "".equals(ns.getName())) {
             throw new OMException(
                     "All the SOAP Header blocks should be namespace qualified");
@@ -66,7 +72,8 @@ public class SOAP11HeaderImpl extends SOAPHeaderImpl {
 
         SOAPHeaderBlock soapHeaderBlock = null;
         try {
-            soapHeaderBlock = new SOAP11HeaderBlockImpl(localName, ns, this);
+            soapHeaderBlock = new SOAP11HeaderBlockImpl(localName, ns, this,
+                    (SOAPFactory)this.factory);
         } catch (SOAPProcessingException e) {
             throw new OMException(e);
         }
@@ -82,6 +89,5 @@ public class SOAP11HeaderImpl extends SOAPHeaderImpl {
                 true);
 
     }
-
 
 }

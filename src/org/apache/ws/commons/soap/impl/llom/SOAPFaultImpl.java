@@ -16,8 +16,13 @@
 
 package org.apache.ws.commons.soap.impl.llom;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Iterator;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.ws.commons.om.OMConstants;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMException;
@@ -31,6 +36,7 @@ import org.apache.ws.commons.om.impl.llom.serialize.StreamWriterToContentHandler
 import org.apache.ws.commons.soap.SOAP12Constants;
 import org.apache.ws.commons.soap.SOAPBody;
 import org.apache.ws.commons.soap.SOAPConstants;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;
 import org.apache.ws.commons.soap.SOAPFaultCode;
 import org.apache.ws.commons.soap.SOAPFaultDetail;
@@ -39,12 +45,6 @@ import org.apache.ws.commons.soap.SOAPFaultReason;
 import org.apache.ws.commons.soap.SOAPFaultRole;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Iterator;
-
 /**
  * Class SOAPFaultImpl
  */
@@ -52,10 +52,9 @@ public abstract class SOAPFaultImpl extends SOAPElement
         implements SOAPFault, OMConstants {
 
     protected Exception e;
-    private Log log = LogFactory.getLog(getClass());
 
-    protected SOAPFaultImpl(OMNamespace ns) {
-        super(SOAPConstants.SOAPFAULT_LOCAL_NAME, ns);
+    protected SOAPFaultImpl(OMNamespace ns, SOAPFactory factory) {
+        super(SOAPConstants.SOAPFAULT_LOCAL_NAME, ns, factory);
     }
 
     /**
@@ -64,8 +63,8 @@ public abstract class SOAPFaultImpl extends SOAPElement
      * @param parent
      * @param e
      */
-    public SOAPFaultImpl(SOAPBody parent, Exception e) throws SOAPProcessingException {
-        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, true);
+    public SOAPFaultImpl(SOAPBody parent, Exception e, SOAPFactory factory) throws SOAPProcessingException {
+        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, true, factory);
         setException(e);
     }
 
@@ -74,8 +73,8 @@ public abstract class SOAPFaultImpl extends SOAPElement
         putExceptionToSOAPFault(e);
     }
 
-    public SOAPFaultImpl(SOAPBody parent) throws SOAPProcessingException {
-        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, true);
+    public SOAPFaultImpl(SOAPBody parent, SOAPFactory factory) throws SOAPProcessingException {
+        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, true, factory);
     }
 
     /**
@@ -84,8 +83,9 @@ public abstract class SOAPFaultImpl extends SOAPElement
      * @param parent
      * @param builder
      */
-    public SOAPFaultImpl(SOAPBody parent, OMXMLParserWrapper builder) {
-        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, builder);
+    public SOAPFaultImpl(SOAPBody parent, OMXMLParserWrapper builder,
+            SOAPFactory factory) {
+        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, builder, factory);
     }
 
 
@@ -164,7 +164,9 @@ public abstract class SOAPFaultImpl extends SOAPElement
             detail = getNewSOAPFaultDetail(this);
             setDetail(detail);
         }
-        OMElement faultDetailEnty = new OMElementImpl(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,null, detail);
+        OMElement faultDetailEnty = new OMElementImpl(
+                SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, null, detail,
+                factory);
         faultDetailEnty.setText(sw.getBuffer().toString());
     }
 

@@ -21,6 +21,7 @@ import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.om.impl.llom.OMElementImpl;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 
 public abstract class SOAPElement extends OMElementImpl {
@@ -32,8 +33,9 @@ public abstract class SOAPElement extends OMElementImpl {
      */
     protected SOAPElement(OMElement parent,
                           String localName,
-                          boolean extractNamespaceFromParent) throws SOAPProcessingException {
-        super(localName, null, parent);
+                          boolean extractNamespaceFromParent,
+                          SOAPFactory factory) throws SOAPProcessingException {
+        super(localName, null, parent, factory);
         if (parent == null) {
             throw new SOAPProcessingException(
                     " Can not create " + localName +
@@ -49,17 +51,18 @@ public abstract class SOAPElement extends OMElementImpl {
 
     protected SOAPElement(OMElement parent,
                           String localName,
-                          OMXMLParserWrapper builder) {
-        super(localName, null, parent, builder);
+                          OMXMLParserWrapper builder,
+                          SOAPFactory factory) {
+        super(localName, null, parent, builder, factory);
     }
 
     /**
      * @param localName
      * @param ns
      */
-    protected SOAPElement(String localName, OMNamespace ns) {
-        super(localName, ns);
-
+    protected SOAPElement(String localName, OMNamespace ns, 
+            SOAPFactory factory) {
+        super(localName, ns, factory);
     }
 
     /**

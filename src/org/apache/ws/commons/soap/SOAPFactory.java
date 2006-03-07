@@ -334,4 +334,6 @@ public interface SOAPFactory extends OMFactory {
 
     public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException;
     
+    public OMNamespace getNamespace();
+    
 }

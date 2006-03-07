@@ -20,6 +20,7 @@ import org.apache.ws.commons.om.OMContainer;
 import org.apache.ws.commons.om.OMDocType;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMException;
+import org.apache.ws.commons.om.OMFactory;
 import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.impl.OMOutputImpl;
 
@@ -35,8 +36,9 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
      * @param parentNode
      * @param contentText
      */
-    public OMDocTypeImpl(OMContainer parentNode, String contentText) {
-        super(parentNode);
+    public OMDocTypeImpl(OMContainer parentNode, String contentText, 
+            OMFactory factory) {
+        super(parentNode, factory);
         this.value = contentText;
         nodeType = OMNode.DTD_NODE;
     }
@@ -46,8 +48,8 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
      *
      * @param parentNode
      */
-    public OMDocTypeImpl(OMContainer parentNode) {
-        this(parentNode, null);
+    public OMDocTypeImpl(OMContainer parentNode, OMFactory factory) {
+        this(parentNode, null, factory);
     }
 
     /**

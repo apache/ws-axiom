@@ -22,6 +22,7 @@ import org.apache.ws.commons.om.impl.OMNodeEx;
 import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
 import org.apache.ws.commons.om.impl.llom.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.ws.commons.soap.SOAP12Constants;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;
 import org.apache.ws.commons.soap.SOAPFaultNode;
 import org.apache.ws.commons.soap.SOAPProcessingException;
@@ -30,16 +31,17 @@ import javax.xml.stream.XMLStreamException;
 
 public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFaultNode {
 
-    protected SOAPFaultNodeImpl(OMNamespace ns) {
-        super(SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, ns);
+    protected SOAPFaultNodeImpl(OMNamespace ns, SOAPFactory factory) {
+        super(SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, ns, factory);
     }
 
-    public SOAPFaultNodeImpl(SOAPFault parent) throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, true);
+    public SOAPFaultNodeImpl(SOAPFault parent, SOAPFactory factory) throws SOAPProcessingException {
+        super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, true, factory);
     }
 
-    public SOAPFaultNodeImpl(SOAPFault parent, OMXMLParserWrapper builder) {
-        super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, builder);
+    public SOAPFaultNodeImpl(SOAPFault parent, OMXMLParserWrapper builder, 
+            SOAPFactory factory) {
+        super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, builder, factory);
     }
 
     public void setNodeValue(String uri) {

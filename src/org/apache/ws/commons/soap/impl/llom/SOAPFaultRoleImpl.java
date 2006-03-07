@@ -23,6 +23,7 @@ import org.apache.ws.commons.om.impl.OMOutputImpl;
 import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
 import org.apache.ws.commons.om.impl.llom.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.ws.commons.soap.SOAP12Constants;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 
@@ -30,19 +31,22 @@ import javax.xml.stream.XMLStreamException;
 
 public abstract class SOAPFaultRoleImpl extends SOAPElement implements org.apache.ws.commons.soap.SOAPFaultRole {
 
-    protected SOAPFaultRoleImpl(OMNamespace ns) {
-        super(SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME, ns);
+    protected SOAPFaultRoleImpl(OMNamespace ns, SOAPFactory factory) {
+        super(SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME, ns, factory);
     }
 
     public SOAPFaultRoleImpl(SOAPFault parent,
-                             boolean extractNamespaceFromParent) throws SOAPProcessingException {
+                             boolean extractNamespaceFromParent,
+                             SOAPFactory factory) throws SOAPProcessingException {
         super(parent,
                 SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME,
-                extractNamespaceFromParent);
+                extractNamespaceFromParent, 
+                factory);
     }
 
-    public SOAPFaultRoleImpl(SOAPFault parent, OMXMLParserWrapper builder) {
-        super(parent, SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME, builder);
+    public SOAPFaultRoleImpl(SOAPFault parent, OMXMLParserWrapper builder,
+            SOAPFactory factory) {
+        super(parent, SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME, builder, factory);
     }
 
     public void setRoleValue(String uri) {

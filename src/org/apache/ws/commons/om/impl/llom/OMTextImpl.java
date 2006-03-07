@@ -21,6 +21,7 @@ import org.apache.ws.commons.om.OMAttribute;
 import org.apache.ws.commons.om.OMConstants;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMException;
+import org.apache.ws.commons.om.OMFactory;
 import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMText;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
@@ -59,8 +60,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     /**
      * Field nameSpace used when serializing Binary stuff as MTOM optimized.
      */
-    protected OMNamespace ns = new OMNamespaceImpl(
-            "http://www.w3.org/2004/08/xop/include", "xop");
+    protected OMNamespace ns = null;
 
     /**
      * Field localName used when serializing Binary stuff as MTOM optimized.
@@ -77,9 +77,12 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      *
      * @param s
      */
-    public OMTextImpl(String s) {
+    public OMTextImpl(String s, OMFactory factory) {
+        super(factory);
         this.value = s;
         this.nodeType = TEXT_NODE;
+        this.ns = new OMNamespaceImpl(
+                "http://www.w3.org/2004/08/xop/include", "xop", factory);
     }
 
     /**
@@ -87,10 +90,13 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * @param nodeType - OMText can handle CHARACTERS, SPACES, CDATA and ENTITY REFERENCES.
      *                 Constants for this can be found in OMNode.
      */
-    public OMTextImpl(String s, int nodeType) {
+    public OMTextImpl(String s, int nodeType, OMFactory factory) {
+        super(factory);
         this.value = s;
         this.nodeType = nodeType;
-    }
+        this.ns = new OMNamespaceImpl(
+                "http://www.w3.org/2004/08/xop/include", "xop", factory);
+    }   
 
     /**
      * Constructor OMTextImpl.
@@ -98,26 +104,32 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * @param parent
      * @param text
      */
-    public OMTextImpl(OMElement parent, String text) {
-        super(parent);
+    public OMTextImpl(OMElement parent, String text, OMFactory factory) {
+        super(parent, factory);
         this.value = text;
         done = true;
         this.nodeType = TEXT_NODE;
+        this.ns = new OMNamespaceImpl(
+                "http://www.w3.org/2004/08/xop/include", "xop", factory);
     }
 
-    public OMTextImpl(OMElement parent, String text, int nodeType) {
-        super(parent);
+    public OMTextImpl(OMElement parent, String text, int nodeType, 
+            OMFactory factory) {
+        super(parent, factory);
         this.value = text;
         done = true;
         this.nodeType = nodeType;
+        this.ns = new OMNamespaceImpl(
+                "http://www.w3.org/2004/08/xop/include", "xop", factory);
     }
 
     /**
      * @param s        - base64 encoded String representation of Binary
      * @param mimeType of the Binary
      */
-    public OMTextImpl(String s, String mimeType, boolean optimize) {
-        this(null, s, mimeType, optimize);
+    public OMTextImpl(String s, String mimeType, boolean optimize, 
+            OMFactory factory) {
+        this(null, s, mimeType, optimize, factory);
     }
 
     /**
@@ -127,8 +139,8 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * @param mimeType of the Binary
      */
     public OMTextImpl(OMElement parent, String s, String mimeType,
-                      boolean optimize) {
-        this(parent, s);
+                      boolean optimize, OMFactory factory) {
+        this(parent, s, factory);
         this.mimeType = mimeType;
         this.optimize = optimize;
         this.isBinary = true;
@@ -139,20 +151,23 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     /**
      * @param dataHandler To send binary optimised content Created programatically.
      */
-    public OMTextImpl(Object dataHandler) {
-        this(dataHandler, true);
+    public OMTextImpl(Object dataHandler, OMFactory factory) {
+        this(dataHandler, true, factory);
     }
 
     /**
      * @param dataHandler
      * @param optimize    To send binary content. Created progrmatically.
      */
-    public OMTextImpl(Object dataHandler, boolean optimize) {
+    public OMTextImpl(Object dataHandler, boolean optimize, OMFactory factory) {
+        super(factory);
         this.dataHandlerObject = dataHandler;
         this.isBinary = true;
         this.optimize = optimize;
         done = true;
         this.nodeType = TEXT_NODE;
+        this.ns = new OMNamespaceImpl(
+                "http://www.w3.org/2004/08/xop/include", "xop", factory);
     }
 
     /**
@@ -163,13 +178,15 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      *                  deferred parsing of MIME messages.
      */
     public OMTextImpl(String contentID, OMElement parent,
-                      OMXMLParserWrapper builder) {
-        super(parent);
+                      OMXMLParserWrapper builder, OMFactory factory) {
+        super(parent, factory);
         this.contentID = contentID;
         this.optimize = true;
         this.isBinary = true;
         this.builder = builder;
         this.nodeType = TEXT_NODE;
+        this.ns = new OMNamespaceImpl(
+                "http://www.w3.org/2004/08/xop/include", "xop", factory);
     }
 
     /**
@@ -316,7 +333,8 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                 }
                 // send binary as MTOM optimised
                 this.attribute = new OMAttributeImpl("href",
-                        new OMNamespaceImpl("", ""), "cid:" + getContentID());
+                        new OMNamespaceImpl("", "", this.factory), "cid:" + getContentID(), 
+                        this.factory);
                 this.serializeStartpart(omOutput);
                 omOutput.writeOptimized(this);
                 omOutput.getXmlStreamWriter().writeEndElement();

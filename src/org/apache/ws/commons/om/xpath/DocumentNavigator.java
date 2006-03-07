@@ -5,6 +5,7 @@ import org.apache.ws.commons.om.OMComment;
 import org.apache.ws.commons.om.OMContainer;
 import org.apache.ws.commons.om.OMDocument;
 import org.apache.ws.commons.om.OMElement;
+import org.apache.ws.commons.om.OMFactory;
 import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.OMProcessingInstruction;
@@ -324,9 +325,9 @@ public class DocumentNavigator extends DefaultNavigator {
             ArrayList attributes = new ArrayList();
             Iterator i = ((OMElement) contextNode).getAllAttributes();
             while (i != null && i.hasNext()) {
-                attributes.add(
-                        new OMAttributeEx((OMAttribute) i.next(),
-                                (OMContainer) contextNode));
+                attributes.add(new OMAttributeEx((OMAttribute) i.next(),
+                        (OMContainer) contextNode, ((OMElement) contextNode)
+                                .getOMFactory()));
             }
             return attributes.iterator();
         }
@@ -371,7 +372,8 @@ public class DocumentNavigator extends DefaultNavigator {
                     String prefix = namespace.getPrefix();
                     if (prefix != null && !prefixes.contains(prefix)) {
                         prefixes.add(prefix);
-                        nsList.add(new OMNamespaceEx(namespace, context));
+                        nsList.add(new OMNamespaceEx(namespace, context,
+                                namespace.getOMFactory()));
                     }
                 }
             }
@@ -379,8 +381,11 @@ public class DocumentNavigator extends DefaultNavigator {
         nsList.add(
                 new OMNamespaceEx(
                         new OMNamespaceImpl(
-                                "http://www.w3.org/XML/1998/namespace", "xml"),
-                        (OMContainer) contextNode));
+                                "http://www.w3.org/XML/1998/namespace", 
+                                "xml", 
+                                ((OMNode)contextNode).getOMFactory()),
+                        (OMContainer) contextNode, 
+                        ((OMNode) contextNode).getOMFactory()));
         return nsList.iterator();
     }
 
@@ -670,10 +675,12 @@ public class DocumentNavigator extends DefaultNavigator {
     class OMNamespaceEx implements OMNamespace {
         OMNamespace originalNsp = null;
         OMContainer parent = null;
+        OMFactory factory = null;
 
-        OMNamespaceEx(OMNamespace nsp, OMContainer parent) {
+        OMNamespaceEx(OMNamespace nsp, OMContainer parent, OMFactory factory) {
             originalNsp = nsp;
             this.parent = parent;
+            this.factory = factory;
         }
 
         public boolean equals(String uri, String prefix) {
@@ -691,13 +698,19 @@ public class DocumentNavigator extends DefaultNavigator {
         public OMContainer getParent() {
             return parent;
         }
+
+        public OMFactory getOMFactory() {
+            return this.factory;
+        }
     }
 
     class OMAttributeEx implements OMAttribute {
         OMAttribute attribute = null;
         OMContainer parent = null;
+        OMFactory factory;
 
-        OMAttributeEx(OMAttribute attribute, OMContainer parent) {
+        OMAttributeEx(OMAttribute attribute, OMContainer parent, 
+                OMFactory factory) {
             this.attribute = attribute;
             this.parent = parent;
         }
@@ -732,6 +745,10 @@ public class DocumentNavigator extends DefaultNavigator {
 
         public OMContainer getParent() {
             return parent;
+        }
+
+        public OMFactory getOMFactory() {
+            return this.factory;
         }
     }
 }

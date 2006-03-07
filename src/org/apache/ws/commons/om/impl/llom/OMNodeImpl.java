@@ -16,21 +16,22 @@
 
 package org.apache.ws.commons.om.impl.llom;
 
-import org.apache.ws.commons.om.OMContainer;
-import org.apache.ws.commons.om.OMException;
-import org.apache.ws.commons.om.OMNode;
-import org.apache.ws.commons.om.OMOutputFormat;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.impl.OMContainerEx;
-import org.apache.ws.commons.om.impl.OMNodeEx;
-import org.apache.ws.commons.om.impl.OMOutputImpl;
+import java.io.OutputStream;
+import java.io.Writer;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.OutputStream;
-import java.io.Writer;
+
+import org.apache.ws.commons.om.OMContainer;
+import org.apache.ws.commons.om.OMException;
+import org.apache.ws.commons.om.OMFactory;
+import org.apache.ws.commons.om.OMNode;
+import org.apache.ws.commons.om.OMOutputFormat;
+import org.apache.ws.commons.om.OMXMLParserWrapper;
+import org.apache.ws.commons.om.impl.OMContainerEx;
+import org.apache.ws.commons.om.impl.OMNodeEx;
+import org.apache.ws.commons.om.impl.OMOutputImpl;
 
 /**
  * Class OMNodeImpl
@@ -64,23 +65,47 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * Field nodeType
      */
     protected int nodeType;
+    
+    protected OMFactory factory;
 
+//    /**
+//     * Constructor OMNodeImpl
+//     */
+//    public OMNodeImpl() {
+//    }
+//
+//    /**
+//     * For a node to exist there must be a parent.
+//     *
+//     * @param parent
+//     */
+//    public OMNodeImpl(OMContainer parent) {
+//        if ((parent != null)) {
+//            this.parent = (OMContainerEx) parent;
+//            parent.addChild(this);
+//        }
+//    }
+    
     /**
      * Constructor OMNodeImpl
+     * @param factory The <code>OMFactory</code> that created this
      */
-    public OMNodeImpl() {
+    public OMNodeImpl(OMFactory factory) {
+        this.factory = factory;
     }
 
     /**
      * For a node to exist there must be a parent.
      *
-     * @param parent
+     * @param parent Parent <code>OMContainer</code> of this node
+     * @param factory The <code>OMFactory</code> that created this
      */
-    public OMNodeImpl(OMContainer parent) {
+    public OMNodeImpl(OMContainer parent, OMFactory factory) {
         if ((parent != null)) {
             this.parent = (OMContainerEx) parent;
             parent.addChild(this);
         }
+        this.factory = factory;
     }
 
     /**
@@ -379,5 +404,9 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
         omOutput.setOutputFormat(format);
         serializeAndConsume(omOutput);
         omOutput.flush();
+    }
+
+    public OMFactory getOMFactory() {
+        return this.factory;
     }
 }

@@ -61,11 +61,11 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns OMElement.
      */
     public OMElement createOMElement(String localName, OMNamespace ns) {
-        return new OMElementImpl(localName, ns);
+        return new OMElementImpl(localName, ns, this);
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent) {
-        return new OMElementImpl(localName, ns, parent);
+        return new OMElementImpl(localName, ns, parent, this);
     }
 
     /**
@@ -81,7 +81,7 @@ public class OMLinkedListImplFactory implements OMFactory {
                                      OMContainer parent,
                                      OMXMLParserWrapper builder) {
         return new OMElementImpl(localName, ns, parent,
-                builder);
+                builder, this);
     }
 
     /**
@@ -109,7 +109,7 @@ public class OMLinkedListImplFactory implements OMFactory {
      */
     public OMElement createOMElement(QName qname, OMContainer parent)
             throws OMException {
-        return new OMElementImpl(qname, parent);
+        return new OMElementImpl(qname, parent, this);
     }
 
     /**
@@ -123,7 +123,7 @@ public class OMLinkedListImplFactory implements OMFactory {
         String key = uri + uriAndPrefixSeparator + prefix;
         OMNamespace existingNamespaceObject = (OMNamespace) namespaceTable.get(key);
         if (existingNamespaceObject == null) {
-            existingNamespaceObject = new OMNamespaceImpl(uri, prefix);
+            existingNamespaceObject = new OMNamespaceImpl(uri, prefix, this);
             namespaceTable.put(key, existingNamespaceObject);
         }
         return existingNamespaceObject;
@@ -137,11 +137,11 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns OMText.
      */
     public OMText createText(OMElement parent, String text) {
-        return new OMTextImpl(parent, text);
+        return new OMTextImpl(parent, text, this);
     }
 
     public OMText createText(OMElement parent, String text, int type) {
-        return new OMTextImpl(parent, text, type);
+        return new OMTextImpl(parent, text, type, this);
     }
 
     /**
@@ -151,11 +151,11 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns OMText.
      */
     public OMText createText(String s) {
-        return new OMTextImpl(s);
+        return new OMTextImpl(s, this);
     }
 
     public OMText createText(String s, int type) {
-        return new OMTextImpl(s, type);
+        return new OMTextImpl(s, type, this);
     }
 
     /**
@@ -167,7 +167,7 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns OMText.
      */
     public OMText createText(String s, String mimeType, boolean optimize) {
-        return new OMTextImpl(s, mimeType, optimize);
+        return new OMTextImpl(s, mimeType, optimize, this);
     }
 
     /**
@@ -178,12 +178,12 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns OMText.
      */
     public OMText createText(Object dataHandler, boolean optimize) {
-        return new OMTextImpl(dataHandler, optimize);
+        return new OMTextImpl(dataHandler, optimize, this);
     }
 
     public OMText createText(String contentID, OMElement parent,
                              OMXMLParserWrapper builder) {
-        return new OMTextImpl(contentID, parent, builder);
+        return new OMTextImpl(contentID, parent, builder, this);
     }
 
     /**
@@ -199,7 +199,7 @@ public class OMLinkedListImplFactory implements OMFactory {
                              String s,
                              String mimeType,
                              boolean optimize) {
-        return new OMTextImpl(parent, s, mimeType, optimize);
+        return new OMTextImpl(parent, s, mimeType, optimize, this);
     }
 
     /**
@@ -213,7 +213,7 @@ public class OMLinkedListImplFactory implements OMFactory {
     public OMAttribute createOMAttribute(String localName,
                                          OMNamespace ns,
                                          String value) {
-        return new OMAttributeImpl(localName, ns, value);
+        return new OMAttributeImpl(localName, ns, value, this);
     }
 
     /**
@@ -224,7 +224,7 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns doctype.
      */
     public OMDocType createOMDocType(OMContainer parent, String content) {
-        return new OMDocTypeImpl(parent, content);
+        return new OMDocTypeImpl(parent, content, this);
     }
 
     /**
@@ -236,7 +236,7 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns OMProcessingInstruction.
      */
     public OMProcessingInstruction createOMProcessingInstruction(OMContainer parent, String piTarget, String piData) {
-        return new OMProcessingInstructionImpl(parent, piTarget, piData);
+        return new OMProcessingInstructionImpl(parent, piTarget, piData, this);
     }
 
     /**
@@ -247,7 +247,7 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns OMComment.
      */
     public OMComment createOMComment(OMContainer parent, String content) {
-        return new OMCommentImpl(parent, content);
+        return new OMCommentImpl(parent, content, this);
     }
 
     /* (non-Javadoc)

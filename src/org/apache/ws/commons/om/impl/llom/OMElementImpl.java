@@ -22,6 +22,7 @@ import org.apache.ws.commons.om.OMConstants;
 import org.apache.ws.commons.om.OMContainer;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMException;
+import org.apache.ws.commons.om.OMFactory;
 import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.OMText;
@@ -84,8 +85,8 @@ public class OMElementImpl extends OMNodeImpl
      * Constructor OMElementImpl.
      */
     public OMElementImpl(String localName, OMNamespace ns, OMContainer parent,
-                         OMXMLParserWrapper builder) {
-        super(parent);
+                         OMXMLParserWrapper builder, OMFactory factory) {
+        super(parent, factory);
         this.localName = localName;
         if (ns != null) {
             setNamespace(ns);
@@ -98,8 +99,8 @@ public class OMElementImpl extends OMNodeImpl
     /**
      * Constructor OMElementImpl.
      */
-    public OMElementImpl(String localName, OMNamespace ns) {
-        this(localName, ns, null);
+    public OMElementImpl(String localName, OMNamespace ns, OMFactory factory) {
+        this(localName, ns, null, factory);
     }
 
     /**
@@ -109,9 +110,11 @@ public class OMElementImpl extends OMNodeImpl
      * @param localName - this MUST always be not null
      * @param ns        - can be null
      * @param parent    - this should be an OMContainer
+     * @param factory   - factory that created this OMElement
      */
-    public OMElementImpl(String localName, OMNamespace ns, OMContainer parent) {
-        super(parent);
+    public OMElementImpl(String localName, OMNamespace ns, OMContainer parent, 
+            OMFactory factory) {
+        super(parent, factory);
         if (localName == null || localName.trim().length() == 0) {
             throw new OMException("localname can not be null or empty");
         }
@@ -128,8 +131,9 @@ public class OMElementImpl extends OMNodeImpl
      * @param qname - this should be valid qname according to javax.xml.namespace.QName
      * @throws OMException
      */
-    public OMElementImpl(QName qname, OMContainer parent) throws OMException {
-        this(qname.getLocalPart(), null, parent);
+    public OMElementImpl(QName qname, OMContainer parent, OMFactory factory) 
+    throws OMException {
+        this(qname.getLocalPart(), null, parent, factory);
         this.ns = handleNamespace(qname);
     }
 
@@ -285,7 +289,7 @@ public class OMElementImpl extends OMNodeImpl
      * @return Returns namespace.
      */
     public OMNamespace declareNamespace(String uri, String prefix) {
-        OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
+        OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix, this.factory);
         return declareNamespace(ns);
     }
 
@@ -348,7 +352,7 @@ public class OMElementImpl extends OMNodeImpl
 
         //If the prefix is available and uri is available and its the xml namespace
         if (prefix != null && prefix.equals(OMConstants.XMLNS_PREFIX) && uri.equals(OMConstants.XMLNS_URI)) {
-            return new OMNamespaceImpl(uri, prefix);
+            return new OMNamespaceImpl(uri, prefix, this.factory);
         }
 
         if (namespaces == null) {
@@ -490,7 +494,7 @@ public class OMElementImpl extends OMNodeImpl
                         + " and then use it with the attribute");
             }
         }
-        return addAttribute(new OMAttributeImpl(attributeName, ns, value));
+        return addAttribute(new OMAttributeImpl(attributeName, ns, value, this.factory));
     }
 
     /**
@@ -859,4 +863,5 @@ public class OMElementImpl extends OMNodeImpl
     public int getLineNumber() {
         return lineNumber;
     }
+
 }

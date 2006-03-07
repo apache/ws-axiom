@@ -20,6 +20,9 @@ package org.apache.ws.commons.om;
  * Class OMFactoryException
  */
 public class OMFactoryException extends OMException {
+    
+    private static final long serialVersionUID = -9107212004470940807L;
+
     /**
      * Constructor OMFactoryException
      */

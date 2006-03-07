@@ -19,7 +19,9 @@ package org.apache.ws.commons.attachments;
 import org.apache.ws.commons.attachments.utils.ImageDataSource;
 import org.apache.ws.commons.attachments.utils.ImageIO;
 import org.apache.ws.commons.om.AbstractTestCase;
+import org.apache.ws.commons.om.OMAbstractFactory;
 import org.apache.ws.commons.om.OMElement;
+import org.apache.ws.commons.om.OMFactory;
 import org.apache.ws.commons.om.OMOutputFormat;
 import org.apache.ws.commons.om.OMText;
 import org.apache.ws.commons.om.impl.llom.OMElementImpl;
@@ -80,14 +82,15 @@ public class ImageSampleTest extends AbstractTestCase {
         OMOutputFormat baseOutputFormat = new OMOutputFormat();
         baseOutputFormat.setDoOptimize(false);
 
+        OMFactory fac = OMAbstractFactory.getOMFactory();
         OMNamespaceImpl soap = new OMNamespaceImpl(
-                "http://schemas.xmlsoap.org/soap/envelope/", "soap");
-        OMElement envelope = new OMElementImpl("Envelope", soap);
-        OMElement body = new OMElementImpl("Body", soap);
+                "http://schemas.xmlsoap.org/soap/envelope/", "soap", fac);
+        OMElement envelope = new OMElementImpl("Envelope", soap, fac);
+        OMElement body = new OMElementImpl("Body", soap, fac);
 
         OMNamespaceImpl dataName = new OMNamespaceImpl(
-                "http://www.example.org/stuff", "m");
-        OMElement data = new OMElementImpl("data", dataName);
+                "http://www.example.org/stuff", "m", fac);
+        OMElement data = new OMElementImpl("data", dataName, fac);
 
         expectedImage =
                 new ImageIO().loadImage(
@@ -96,7 +99,7 @@ public class ImageSampleTest extends AbstractTestCase {
         ImageDataSource dataSource = new ImageDataSource("WaterLilies.jpg",
                 expectedImage);
         expectedDH = new DataHandler(dataSource);
-        OMText binaryNode = new OMTextImpl(expectedDH, true);
+        OMText binaryNode = new OMTextImpl(expectedDH, true, fac);
 
         envelope.addChild(body);
         body.addChild(data);

@@ -287,15 +287,17 @@ public class SOAPLinkedListImplFactory extends
         SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());
 
         SOAPFaultCode faultCode = createSOAPFaultCode(fault);
-        SOAPFaultValue value = createSOAPFaultValue(faultCode);
+        createSOAPFaultValue(faultCode);
 
         SOAPFaultReason reason = createSOAPFaultReason(fault);
-        SOAPFaultText faultText = createSOAPFaultText(reason);
+        createSOAPFaultText(reason);
 
-//        SOAPFaultNode faultNode = createSOAPFaultNode(fault);
-//        SOAPFaultRole faultRole = createSOAPFaultRole(fault);
-        SOAPFaultDetail faultDetail = createSOAPFaultDetail(fault);
+        createSOAPFaultDetail(fault);
 
         return defaultEnvelope;
+    }
+
+    public OMNamespace getNamespace() {
+        throw new UnsupportedOperationException();
     }
 }

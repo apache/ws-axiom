@@ -18,6 +18,7 @@ package org.apache.ws.commons.soap.impl.llom.soap12;
 
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 import org.apache.ws.commons.soap.impl.llom.SOAPFaultNodeImpl;
@@ -25,16 +26,16 @@ import org.apache.ws.commons.soap.impl.llom.SOAPFaultNodeImpl;
 
 public class SOAP12FaultNodeImpl extends SOAPFaultNodeImpl {
 
-    public SOAP12FaultNodeImpl() {
-        super(SOAP12Factory.getNamespace());
+    public SOAP12FaultNodeImpl(SOAPFactory factory) {
+        super(factory.getNamespace(), factory);
     }
 
-    public SOAP12FaultNodeImpl(SOAPFault parent) throws SOAPProcessingException {
-        super(parent);
+    public SOAP12FaultNodeImpl(SOAPFault parent, SOAPFactory factory) throws SOAPProcessingException {
+        super(parent, factory);
     }
 
-    public SOAP12FaultNodeImpl(SOAPFault parent, OMXMLParserWrapper builder) {
-        super(parent, builder);
+    public SOAP12FaultNodeImpl(SOAPFault parent, OMXMLParserWrapper builder, SOAPFactory factory) {
+        super(parent, builder, factory);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {

@@ -20,6 +20,8 @@ import org.apache.ws.commons.om.OMException;
 
 public class SOAPProcessingException extends OMException {
 
+    private static final long serialVersionUID = -5432612295193716211L;
+    
     private String soapFaultCode;
 
     /**

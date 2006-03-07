@@ -56,4 +56,10 @@ public interface OMAttribute {
      * @return Returns javax.xml.namespace.QName
      */
     public QName getQName();
+    
+    /**
+     * Returns the OMFactory that created this object
+     * @return
+     */
+    public OMFactory getOMFactory();
 }

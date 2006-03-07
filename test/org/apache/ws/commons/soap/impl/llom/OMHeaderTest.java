@@ -45,7 +45,7 @@ public class OMHeaderTest extends OMTestCase {
         String newElementName = "MyHeaderElement";
         SOAPHeaderBlock soapHeaderElement = soapHeader.addHeaderBlock(
                 newElementName,
-                new OMNamespaceImpl("http://opensource.lk", "lsf"));
+                new OMNamespaceImpl("http://opensource.lk", "lsf", soapHeader.getOMFactory()));
         assertTrue(
                 "Header Element added has different parent than it should have",
                 soapHeaderElement.getParent() == soapHeader);

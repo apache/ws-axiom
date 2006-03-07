@@ -17,6 +17,7 @@
 package org.apache.ws.commons.om.impl.llom;
 
 import org.apache.ws.commons.om.OMAttribute;
+import org.apache.ws.commons.om.OMFactory;
 import org.apache.ws.commons.om.OMNamespace;
 
 import javax.xml.namespace.QName;
@@ -39,6 +40,11 @@ public class OMAttributeImpl implements OMAttribute {
      * Field namespace
      */
     private OMNamespace namespace;
+    
+    /**
+     * <code>OMFactory</code> that created this <code>OMAttribute</code>
+     */
+    private OMFactory factory;
 
     /**
      * Constructor OMAttributeImpl.
@@ -47,10 +53,12 @@ public class OMAttributeImpl implements OMAttribute {
      * @param ns
      * @param value
      */
-    public OMAttributeImpl(String localName, OMNamespace ns, String value) {
+    public OMAttributeImpl(String localName, OMNamespace ns, String value, 
+            OMFactory factory) {
         setLocalName(localName);
         setAttributeValue(value);
         setOMNamespace(ns);
+        this.factory = factory;
     }
 
     /**
@@ -120,4 +128,9 @@ public class OMAttributeImpl implements OMAttribute {
     public OMNamespace getNamespace() {
         return namespace;
     }
+
+    public OMFactory getOMFactory() {
+        return this.factory;
+    }
+    
 }

@@ -19,6 +19,7 @@ package org.apache.ws.commons.om.impl.llom;
 import org.apache.ws.commons.om.OMContainer;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMException;
+import org.apache.ws.commons.om.OMFactory;
 import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.OMProcessingInstruction;
 
@@ -36,8 +37,9 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
      * @param target
      * @param value
      */
-    public OMProcessingInstructionImpl(OMContainer parentNode, String target, String value) {
-        super(parentNode);
+    public OMProcessingInstructionImpl(OMContainer parentNode, String target, 
+            String value, OMFactory factory) {
+        super(parentNode, factory);
         this.target = (target == null) ? null : target.trim();
         this.value = (value == null) ? null : value.trim();
         nodeType = OMNode.PI_NODE;
@@ -48,8 +50,9 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
      *
      * @param parentNode
      */
-    public OMProcessingInstructionImpl(OMContainer parentNode) {
-        this(parentNode, null, null);
+    public OMProcessingInstructionImpl(OMContainer parentNode, 
+            OMFactory factory) {
+        this(parentNode, null, null, factory);
     }
 
     /**

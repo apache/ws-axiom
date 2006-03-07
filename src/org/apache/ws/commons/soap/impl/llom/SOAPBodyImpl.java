@@ -27,6 +27,7 @@ import org.apache.ws.commons.soap.SOAP12Constants;
 import org.apache.ws.commons.soap.SOAPBody;
 import org.apache.ws.commons.soap.SOAPConstants;
 import org.apache.ws.commons.soap.SOAPEnvelope;
+import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;
 import org.apache.ws.commons.soap.SOAPProcessingException;
 
@@ -40,15 +41,17 @@ public abstract class SOAPBodyImpl extends SOAPElement
      */
     private boolean hasSOAPFault = false;
 
-    protected SOAPBodyImpl(String localName, OMNamespace ns) {
-        super(localName, ns);
+    protected SOAPBodyImpl(String localName, OMNamespace ns, 
+            SOAPFactory factory) {
+        super(localName, ns, factory);
     }
 
     /**
      * @param envelope
      */
-    public SOAPBodyImpl(SOAPEnvelope envelope) throws SOAPProcessingException {
-        super(envelope, SOAPConstants.BODY_LOCAL_NAME, true);
+    public SOAPBodyImpl(SOAPEnvelope envelope, SOAPFactory factory) 
+                            throws SOAPProcessingException {
+        super(envelope, SOAPConstants.BODY_LOCAL_NAME, true, factory);
 
     }
 
@@ -58,8 +61,9 @@ public abstract class SOAPBodyImpl extends SOAPElement
      * @param envelope
      * @param builder
      */
-    public SOAPBodyImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder) {
-        super(envelope, SOAPConstants.BODY_LOCAL_NAME, builder);
+    public SOAPBodyImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder, 
+            SOAPFactory factory) {
+        super(envelope, SOAPConstants.BODY_LOCAL_NAME, builder, factory);
     }
 
     /**
