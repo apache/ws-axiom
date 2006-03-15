@@ -193,11 +193,11 @@ public class OMSerializerUtil {
         serializeEndpart(omOutput);
     }
 
-    public static void serializeByPullStream(OMElement element, org.apache.ws.commons.om.impl.OMOutputImpl omOutput) throws XMLStreamException {
+    public static void serializeByPullStream(OMElement element, OMOutputImpl omOutput) throws XMLStreamException {
         serializeByPullStream(element, omOutput, false);
     }
 
-    public static void serializeByPullStream(OMElement element, org.apache.ws.commons.om.impl.OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
+    public static void serializeByPullStream(OMElement element, OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
         StreamingOMSerializer streamingOMSerializer = new StreamingOMSerializer();
         if (cache) {
             streamingOMSerializer.serialize(element.getXMLStreamReader(),

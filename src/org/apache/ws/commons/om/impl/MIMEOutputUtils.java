@@ -19,9 +19,9 @@ package org.apache.ws.commons.om.impl;
 import org.apache.ws.commons.om.OMException;
 import org.apache.ws.commons.om.OMText;
 
+import javax.activation.DataHandler;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
-import javax.activation.DataHandler;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;

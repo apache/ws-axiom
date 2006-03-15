@@ -16,23 +16,9 @@
 
 package org.apache.ws.commons.soap.impl.llom;
 
-import org.apache.ws.commons.om.OMAbstractFactory;
-import org.apache.ws.commons.om.OMConstants;
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.OMException;
-import org.apache.ws.commons.om.OMNamespace;
-import org.apache.ws.commons.om.OMNode;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
+import org.apache.ws.commons.om.*;
 import org.apache.ws.commons.om.impl.OMOutputImpl;
-import org.apache.ws.commons.soap.SOAP11Constants;
-import org.apache.ws.commons.soap.SOAP12Constants;
-import org.apache.ws.commons.soap.SOAPBody;
-import org.apache.ws.commons.soap.SOAPConstants;
-import org.apache.ws.commons.soap.SOAPEnvelope;
-import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.SOAPHeader;
-import org.apache.ws.commons.soap.SOAPProcessingException;
-import org.apache.ws.commons.soap.impl.llom.factory.SOAPLinkedListImplFactory;
+import org.apache.ws.commons.soap.*;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -85,7 +71,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
     }
 
     private void inferFactory() {
-        if (factory instanceof SOAPLinkedListImplFactory && ns != null) {
+        if (ns != null) {
             if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getName())) {
                 factory = OMAbstractFactory.getSOAP12Factory();
             } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getName())) {

@@ -16,10 +16,10 @@
 
 package org.apache.ws.commons.attachments;
 
-import org.apache.ws.commons.om.OMException;
-import org.apache.ws.commons.om.impl.MTOMConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.ws.commons.om.OMException;
+import org.apache.ws.commons.om.impl.MTOMConstants;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;

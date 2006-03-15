@@ -18,23 +18,10 @@ package org.apache.ws.commons.soap.impl.llom.builder;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ws.commons.om.OMAbstractFactory;
-import org.apache.ws.commons.om.OMDocument;
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.OMException;
-import org.apache.ws.commons.om.OMNamespace;
-import org.apache.ws.commons.om.OMNode;
+import org.apache.ws.commons.om.*;
 import org.apache.ws.commons.om.impl.OMNodeEx;
 import org.apache.ws.commons.om.impl.llom.builder.StAXOMBuilder;
-import org.apache.ws.commons.soap.SOAP11Constants;
-import org.apache.ws.commons.soap.SOAP12Constants;
-import org.apache.ws.commons.soap.SOAPBody;
-import org.apache.ws.commons.soap.SOAPConstants;
-import org.apache.ws.commons.soap.SOAPEnvelope;
-import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.SOAPHeader;
-import org.apache.ws.commons.soap.SOAPMessage;
-import org.apache.ws.commons.soap.SOAPProcessingException;
+import org.apache.ws.commons.soap.*;
 
 import javax.xml.stream.XMLStreamReader;
 
@@ -86,7 +73,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     private String senderfaultCode;
     private String receiverfaultCode;
     private boolean processingMandatoryFaultElements;
-    
+
     // We need to have soap factory, temporary, until we find out the correct SOAP version. If user has not provided
     // a SOAP factory, internally we are creating a default one. This flag will be set if we create one internally, to
     // warn that this should be replaced later.
@@ -95,22 +82,15 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     /**
      * Constructor StAXSOAPModelBuilder
      * soapVersion parameter is to give the soap version from the transport. For example, in HTTP case
-     * you can identify the version of the soap message u have recd by looking at the HTTP headers. 
+     * you can identify the version of the soap message u have recd by looking at the HTTP headers.
      * It is used to check whether the actual soap message contained is of that version.
      * If one is creates the builder from the transport, then can just pass null for version.
      *
      * @param parser
-     * @param soapVersion   parameter is to give the soap version for the transport.  
+     * @param soapVersion parameter is to give the soap version for the transport.
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, String soapVersion) {
         super(parser);
-        soapFactory = OMAbstractFactory.getDefaultSOAPFactory();
-        isTempSOAPFactory = true;
-        soapMessage = soapFactory.createSOAPMessage(this);
-        this.document = soapMessage;
-        if(parser.getCharacterEncodingScheme() != null) {
-            document.setCharsetEncoding(parser.getCharacterEncodingScheme());
-        }
         identifySOAPVersion(soapVersion);
     }
 
@@ -119,8 +99,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      * @param factory
      * @param soapVersion parameter is to give the soap version from the transport. For example, in
      *                    HTTP case you can identify the version of the soap message u have recd by looking at
-     *                    the HTTP headers. It is used to check whether the actual soap message 
-     *                    contained is of that version.If one is creates the builder from the transport, 
+     *                    the HTTP headers. It is used to check whether the actual soap message
+     *                    contained is of that version.If one is creates the builder from the transport,
      *                    then can just pass null for version.
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
@@ -142,23 +122,24 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
         envelopeNamespace = soapEnvelope.getNamespace();
         String namespaceName = envelopeNamespace.getName();
-        if ((soapVersionURIFromTransport != null) && !(soapVersionURIFromTransport.equals(namespaceName))) {
+        if ((soapVersionURIFromTransport != null) && !(soapVersionURIFromTransport.equals(namespaceName)))
+        {
             throw new SOAPProcessingException("Transport level information does not match with SOAP" +
                     " Message namespace URI", envelopeNamespace.getPrefix() + ":" + SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
 
         }
-        if(isTempSOAPFactory) {
-	        if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceName)) {
-	            soapFactory = OMAbstractFactory.getSOAP12Factory();
-	            log.debug("Starting to process SOAP 1.2 message");
-	        } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceName)) {
-	            soapFactory = OMAbstractFactory.getSOAP11Factory();
-	            log.debug("Starting to process SOAP 1.1 message");
-	
-	        } else {
-	            throw new SOAPProcessingException("Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
-	                    " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
-	        }
+        if (isTempSOAPFactory) {
+            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceName)) {
+                soapFactory = OMAbstractFactory.getSOAP12Factory();
+                log.debug("Starting to process SOAP 1.2 message");
+            } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceName)) {
+                soapFactory = OMAbstractFactory.getSOAP11Factory();
+                log.debug("Starting to process SOAP 1.1 message");
+
+            } else {
+                throw new SOAPProcessingException("Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
+                        " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
+            }
         }
     }
 
@@ -224,10 +205,35 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
                                       boolean isEnvelope) {
         OMElement element = null;
         if (parent == null) {
+
+            // Now I've found a SOAP Envelope, now create SOAPDocument and SOAPEnvelope here.
+
             if (!elementName.equalsIgnoreCase(SOAPConstants.SOAPENVELOPE_LOCAL_NAME)) {
                 throw new SOAPProcessingException("First Element must contain the local name, "
                         + SOAPConstants.SOAPENVELOPE_LOCAL_NAME, SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
             }
+
+            // determine SOAP version and from that determine a proper factory here.
+            String namespaceURI = this.parser.getNamespaceURI();
+            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
+                soapFactory = OMAbstractFactory.getSOAP12Factory();
+                log.debug("Starting to process SOAP 1.2 message");
+            } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
+                soapFactory = OMAbstractFactory.getSOAP11Factory();
+                log.debug("Starting to process SOAP 1.1 message");
+
+            } else {
+                throw new SOAPProcessingException("Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
+                        " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
+            }
+
+            // create a SOAPMessage to hold the SOAP envelope and assign the SOAP envelope in that.
+            soapMessage = soapFactory.createSOAPMessage(this);
+            this.document = soapMessage;
+            if (parser.getCharacterEncodingScheme() != null) {
+                document.setCharsetEncoding(parser.getCharacterEncodingScheme());
+            }
+
             envelope = soapFactory.createSOAPEnvelope(this);
             element = envelope;
             processNamespaceData(element, true);
@@ -298,7 +304,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             processingMandatoryFaultElements = true;
             if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getName())) {
                 builderHelper = new SOAP12BuilderHelper(this);
-            } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getName())) {
+            } else
+            if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getName())) {
                 builderHelper = new SOAP11BuilderHelper(this);
             }
 
@@ -380,7 +387,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         if (isSOAPElement) {
             if (node.getNamespace() != null &&
                     !node.getNamespace().getName().equals(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI) &&
-                    !node.getNamespace().getName().equals(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI)) {
+                    !node.getNamespace().getName().equals(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI))
+            {
                 throw new SOAPProcessingException("invalid SOAP namespace URI. " +
                         "Only " + SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI +
                         " and " + SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI +
@@ -417,11 +425,11 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         return (OMDocument) this.soapMessage;
     }
 
-	/**
-	 * @return Returns the soapFactory.
-	 */
-	protected SOAPFactory getSoapFactory() {
-		return soapFactory;
-	}
+    /**
+     * @return Returns the soapFactory.
+     */
+    protected SOAPFactory getSoapFactory() {
+        return soapFactory;
+    }
 
 }

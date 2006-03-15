@@ -19,25 +19,12 @@ package org.apache.ws.commons.soap.impl.llom.soap12;
 import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.om.impl.llom.OMNamespaceImpl;
-import org.apache.ws.commons.soap.SOAP12Constants;
-import org.apache.ws.commons.soap.SOAPBody;
-import org.apache.ws.commons.soap.SOAPEnvelope;
-import org.apache.ws.commons.soap.SOAPFault;
-import org.apache.ws.commons.soap.SOAPFaultCode;
-import org.apache.ws.commons.soap.SOAPFaultDetail;
-import org.apache.ws.commons.soap.SOAPFaultNode;
-import org.apache.ws.commons.soap.SOAPFaultReason;
-import org.apache.ws.commons.soap.SOAPFaultRole;
-import org.apache.ws.commons.soap.SOAPFaultSubCode;
-import org.apache.ws.commons.soap.SOAPFaultText;
-import org.apache.ws.commons.soap.SOAPFaultValue;
-import org.apache.ws.commons.soap.SOAPHeader;
-import org.apache.ws.commons.soap.SOAPHeaderBlock;
-import org.apache.ws.commons.soap.SOAPProcessingException;
+import org.apache.ws.commons.om.impl.llom.factory.OMLinkedListImplFactory;
+import org.apache.ws.commons.soap.*;
 import org.apache.ws.commons.soap.impl.llom.SOAPEnvelopeImpl;
-import org.apache.ws.commons.soap.impl.llom.factory.SOAPLinkedListImplFactory;
+import org.apache.ws.commons.soap.impl.llom.SOAPMessageImpl;
 
-public class SOAP12Factory extends SOAPLinkedListImplFactory {
+public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactory {
     /**
      * Eran Chinthaka (chinthaka@apache.org)
      */
@@ -270,5 +257,41 @@ public class SOAP12Factory extends SOAPLinkedListImplFactory {
 
         return env;
     }
+
+    public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {
+        SOAPEnvelope defaultEnvelope = getDefaultEnvelope();
+        SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());
+
+        SOAPFaultCode faultCode = createSOAPFaultCode(fault);
+        createSOAPFaultValue(faultCode);
+
+        SOAPFaultReason reason = createSOAPFaultReason(fault);
+        createSOAPFaultText(reason);
+
+        createSOAPFaultDetail(fault);
+
+        return defaultEnvelope;
+    }
+
+    public SOAPMessage createSOAPMessage() {
+        return new SOAPMessageImpl();
+    }
+
+    public SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
+        return new SOAPMessageImpl(builder);
+    }
+
+
+    public SOAPMessage createSOAPMessage(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper) {
+        return new SOAPMessageImpl(envelope, parserWrapper);
+    }
+
+
+
+    public SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder) {
+        return new SOAPEnvelopeImpl(builder, this);
+    }
+
+
 
 }

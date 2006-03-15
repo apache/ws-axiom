@@ -16,22 +16,16 @@
 
 package org.apache.ws.commons.om.impl.llom;
 
-import java.io.OutputStream;
-import java.io.Writer;
+import org.apache.ws.commons.om.*;
+import org.apache.ws.commons.om.impl.OMContainerEx;
+import org.apache.ws.commons.om.impl.OMNodeEx;
+import org.apache.ws.commons.om.impl.OMOutputImpl;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.ws.commons.om.OMContainer;
-import org.apache.ws.commons.om.OMException;
-import org.apache.ws.commons.om.OMFactory;
-import org.apache.ws.commons.om.OMNode;
-import org.apache.ws.commons.om.OMOutputFormat;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
-import org.apache.ws.commons.om.impl.OMContainerEx;
-import org.apache.ws.commons.om.impl.OMNodeEx;
-import org.apache.ws.commons.om.impl.OMOutputImpl;
+import java.io.OutputStream;
+import java.io.Writer;
 
 /**
  * Class OMNodeImpl

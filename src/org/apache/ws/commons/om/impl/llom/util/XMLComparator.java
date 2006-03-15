@@ -16,13 +16,13 @@
 
 package org.apache.ws.commons.om.impl.llom.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ws.commons.om.OMAttribute;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.impl.llom.exception.XMLComparisonException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.Iterator;
 import java.util.Vector;

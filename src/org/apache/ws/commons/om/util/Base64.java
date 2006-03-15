@@ -1,7 +1,7 @@
 package org.apache.ws.commons.om.util;
 
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Writer;
 
 /*

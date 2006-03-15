@@ -17,18 +17,11 @@
 package org.apache.ws.commons.om.impl.llom;
 
 
-import org.apache.ws.commons.om.OMAttribute;
-import org.apache.ws.commons.om.OMConstants;
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.OMException;
-import org.apache.ws.commons.om.OMFactory;
-import org.apache.ws.commons.om.OMNamespace;
-import org.apache.ws.commons.om.OMText;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
-import org.apache.ws.commons.om.util.Base64;
-import org.apache.ws.commons.om.util.UUIDGenerator;
+import org.apache.ws.commons.om.*;
 import org.apache.ws.commons.om.impl.OMOutputImpl;
 import org.apache.ws.commons.om.impl.llom.mtom.MTOMStAXSOAPModelBuilder;
+import org.apache.ws.commons.om.util.Base64;
+import org.apache.ws.commons.om.util.UUIDGenerator;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;

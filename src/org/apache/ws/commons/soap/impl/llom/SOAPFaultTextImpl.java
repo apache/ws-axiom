@@ -16,16 +16,11 @@
 
 package org.apache.ws.commons.soap.impl.llom;
 
-import org.apache.ws.commons.om.OMAbstractFactory;
 import org.apache.ws.commons.om.OMAttribute;
 import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.om.impl.llom.OMAttributeImpl;
-import org.apache.ws.commons.soap.SOAP12Constants;
-import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.SOAPFaultReason;
-import org.apache.ws.commons.soap.SOAPFaultText;
-import org.apache.ws.commons.soap.SOAPProcessingException;
+import org.apache.ws.commons.soap.*;
 
 import javax.xml.namespace.QName;
 
