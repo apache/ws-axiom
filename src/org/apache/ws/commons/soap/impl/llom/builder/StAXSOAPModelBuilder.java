@@ -74,10 +74,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     private String receiverfaultCode;
     private boolean processingMandatoryFaultElements;
 
-    // We need to have soap factory, temporary, until we find out the correct SOAP version. If user has not provided
-    // a SOAP factory, internally we are creating a default one. This flag will be set if we create one internally, to
-    // warn that this should be replaced later.
-    private boolean isTempSOAPFactory = true;
 
     /**
      * Constructor StAXSOAPModelBuilder
@@ -106,12 +102,12 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
         super(factory, parser);
         soapFactory = factory;
-        isTempSOAPFactory = false;
-        soapMessage = soapFactory.createSOAPMessage(this);
-        this.document = soapMessage;
         identifySOAPVersion(soapVersion);
     }
 
+    /**
+     * @param soapVersionURIFromTransport
+     */
     protected void identifySOAPVersion(String soapVersionURIFromTransport) {
 
         SOAPEnvelope soapEnvelope = getSOAPEnvelope();
@@ -127,19 +123,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             throw new SOAPProcessingException("Transport level information does not match with SOAP" +
                     " Message namespace URI", envelopeNamespace.getPrefix() + ":" + SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
 
-        }
-        if (isTempSOAPFactory) {
-            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceName)) {
-                soapFactory = OMAbstractFactory.getSOAP12Factory();
-                log.debug("Starting to process SOAP 1.2 message");
-            } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceName)) {
-                soapFactory = OMAbstractFactory.getSOAP11Factory();
-                log.debug("Starting to process SOAP 1.1 message");
-
-            } else {
-                throw new SOAPProcessingException("Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
-                        " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
-            }
         }
     }
 
@@ -214,17 +197,18 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             }
 
             // determine SOAP version and from that determine a proper factory here.
-            String namespaceURI = this.parser.getNamespaceURI();
-            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                soapFactory = OMAbstractFactory.getSOAP12Factory();
-                log.debug("Starting to process SOAP 1.2 message");
-            } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                soapFactory = OMAbstractFactory.getSOAP11Factory();
-                log.debug("Starting to process SOAP 1.1 message");
-
-            } else {
-                throw new SOAPProcessingException("Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
-                        " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
+            if (soapFactory == null) {
+                String namespaceURI = this.parser.getNamespaceURI();
+                if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
+                    soapFactory = OMAbstractFactory.getSOAP12Factory();
+                    log.debug("Starting to process SOAP 1.2 message");
+                } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
+                    soapFactory = OMAbstractFactory.getSOAP11Factory();
+                    log.debug("Starting to process SOAP 1.1 message");
+                } else {
+                    throw new SOAPProcessingException("Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
+                            " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
+                }
             }
 
             // create a SOAPMessage to hold the SOAP envelope and assign the SOAP envelope in that.

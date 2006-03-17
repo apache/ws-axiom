@@ -16,17 +16,7 @@
 
 package org.apache.ws.commons.om.impl.llom;
 
-import org.apache.ws.commons.om.OMAbstractFactory;
-import org.apache.ws.commons.om.OMAttribute;
-import org.apache.ws.commons.om.OMConstants;
-import org.apache.ws.commons.om.OMContainer;
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.OMException;
-import org.apache.ws.commons.om.OMFactory;
-import org.apache.ws.commons.om.OMNamespace;
-import org.apache.ws.commons.om.OMNode;
-import org.apache.ws.commons.om.OMText;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
+import org.apache.ws.commons.om.*;
 import org.apache.ws.commons.om.impl.OMContainerEx;
 import org.apache.ws.commons.om.impl.OMNodeEx;
 import org.apache.ws.commons.om.impl.OMOutputImpl;
@@ -104,7 +94,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     /**
-     * This is the basic constructor for OMElement. All the other constructors 
+     * This is the basic constructor for OMElement. All the other constructors
      * depends on this.
      *
      * @param localName - this MUST always be not null
@@ -112,8 +102,8 @@ public class OMElementImpl extends OMNodeImpl
      * @param parent    - this should be an OMContainer
      * @param factory   - factory that created this OMElement
      */
-    public OMElementImpl(String localName, OMNamespace ns, OMContainer parent, 
-            OMFactory factory) {
+    public OMElementImpl(String localName, OMNamespace ns, OMContainer parent,
+                         OMFactory factory) {
         super(parent, factory);
         if (localName == null || localName.trim().length() == 0) {
             throw new OMException("localname can not be null or empty");
@@ -131,8 +121,8 @@ public class OMElementImpl extends OMNodeImpl
      * @param qname - this should be valid qname according to javax.xml.namespace.QName
      * @throws OMException
      */
-    public OMElementImpl(QName qname, OMContainer parent, OMFactory factory) 
-    throws OMException {
+    public OMElementImpl(QName qname, OMContainer parent, OMFactory factory)
+            throws OMException {
         this(qname.getLocalPart(), null, parent, factory);
         this.ns = handleNamespace(qname);
     }
@@ -161,9 +151,7 @@ public class OMElementImpl extends OMNodeImpl
             if (ns != null) {
                 this.ns = (ns);
             }
-        }
-
-        else
+        } else
 
         {
             // no namespace URI in the given QName. No need to bother about this ??
@@ -250,7 +238,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     /**
-     * Gets the next sibling. This can be an OMAttribute or OMText or 
+     * Gets the next sibling. This can be an OMAttribute or OMText or
      * OMELement for others.
      *
      * @throws OMException
@@ -300,7 +288,12 @@ public class OMElementImpl extends OMNodeImpl
         if (namespaces == null) {
             this.namespaces = new HashMap(5);
         }
-        namespaces.put(namespace.getPrefix(), namespace);
+        String prefix = namespace.getPrefix();
+        if (prefix == null) {
+            prefix = OMSerializerUtil.getNextNSPrefix();
+            namespace = new OMNamespaceImpl(namespace.getName(), prefix, null);
+        }
+        namespaces.put(prefix, namespace);
         return namespace;
     }
 
@@ -351,7 +344,8 @@ public class OMElementImpl extends OMNodeImpl
         }
 
         //If the prefix is available and uri is available and its the xml namespace
-        if (prefix != null && prefix.equals(OMConstants.XMLNS_PREFIX) && uri.equals(OMConstants.XMLNS_URI)) {
+        if (prefix != null && prefix.equals(OMConstants.XMLNS_PREFIX) && uri.equals(OMConstants.XMLNS_URI))
+        {
             return new OMNamespaceImpl(uri, prefix, this.factory);
         }
 
@@ -369,13 +363,12 @@ public class OMElementImpl extends OMNodeImpl
                         (OMNamespace) namespaceListIterator.next();
                 if (omNamespace.getName() != null &&
                         omNamespace.getName().equals(uri)) {
-                       if(ns == null){
+                    if (ns == null) {
                         ns = omNamespace;
-                       }else{
-                               if(omNamespace.getPrefix() == null || omNamespace.getPrefix().length() == 0){
-                                       ns = omNamespace;
-                               }
-                       }
+                    } else if (omNamespace.getPrefix() == null || omNamespace.getPrefix().length() == 0) {
+                            ns = omNamespace;
+
+                    }
                 }
             }
             return ns;
@@ -458,7 +451,8 @@ public class OMElementImpl extends OMNodeImpl
             this.attributes = new HashMap(5);
         }
         OMNamespace namespace = attr.getNamespace();
-        if (namespace != null && this.findNamespace(namespace.getName(), namespace.getPrefix()) == null) {
+        if (namespace != null && this.findNamespace(namespace.getName(), namespace.getPrefix()) == null)
+        {
             this.declareNamespace(namespace.getName(), namespace.getPrefix());
         }
 
@@ -704,11 +698,11 @@ public class OMElementImpl extends OMNodeImpl
             if (this.done) {
                 OMSerializerUtil.serializeStartpart(this, omOutput);
                 OMNodeImpl child = (OMNodeImpl) firstChild;
-                while(child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
+                while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
                     child.serializeAndConsume(omOutput);
                     child = child.nextSibling;
                 }
-                if(child != null) {
+                if (child != null) {
                     OMElement element = (OMElement) child;
                     element.getBuilder().setCache(false);
                     OMSerializerUtil.serializeByPullStream(element, omOutput, cache);
@@ -726,10 +720,10 @@ public class OMElementImpl extends OMNodeImpl
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * This method serializes and consumes without building the object structure in memory. 
-     * Misuse of this method will cause loss of data. So it is advised to use 
-     * populateYourSelf() method, before calling this method, if one wants to 
-     * preserve data in the stream. This was requested during the second Axis2 summit. 
+     * This method serializes and consumes without building the object structure in memory.
+     * Misuse of this method will cause loss of data. So it is advised to use
+     * populateYourSelf() method, before calling this method, if one wants to
+     * preserve data in the stream. This was requested during the second Axis2 summit.
      *
      * @throws XMLStreamException
      */
@@ -839,7 +833,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     /**
-     * Converts a prefix:local qname string into a proper QName, evaluating it 
+     * Converts a prefix:local qname string into a proper QName, evaluating it
      * in the OMElement context. Unprefixed qnames resolve to the local namespace.
      *
      * @param qname prefixed qname string to resolve
