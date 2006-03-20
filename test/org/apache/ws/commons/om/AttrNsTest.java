@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Iterator;
 
 public class AttrNsTest extends AbstractOMSerializationTest {
 
@@ -102,6 +103,13 @@ public class AttrNsTest extends AbstractOMSerializationTest {
             omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS1, "1"));
             omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS2, "2"));
 
+            int nsCount = 0;
+            for (Iterator iterator = omElement.getAllDeclaredNamespaces(); iterator.hasNext();) {
+                iterator.next();
+                nsCount++;
+            }
+            assertTrue(nsCount == 2);
+
             Document document1 = newDocument(expectedXML);
             Document document2 = newDocument(omElement.toString());
 
@@ -117,5 +125,4 @@ public class AttrNsTest extends AbstractOMSerializationTest {
 
 
     }
-
 }
