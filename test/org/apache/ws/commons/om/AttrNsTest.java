@@ -19,9 +19,12 @@ package org.apache.ws.commons.om;
 import org.apache.ws.commons.om.impl.llom.builder.StAXOMBuilder;
 import org.custommonkey.xmlunit.Diff;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 public class AttrNsTest extends AbstractOMSerializationTest {
 
@@ -42,45 +45,77 @@ public class AttrNsTest extends AbstractOMSerializationTest {
         Diff diff = compareXML(document1, document2);
         assertXMLEqual(diff, true);
     }
-    
+
 
     /**
      * Test method to test the XML namespace
+     *
      * @throws Exception
      */
-	public void testAttr() throws Exception{
-		String xml = "<wsp:Policy xml:base=\"uri:thisBase\" " +
-			"xmlns:wsp=\"http://schemas.xmlsoap.org/ws/2004/09/policy\">" + 
-		"</wsp:Policy>";
-		
-		ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes());
-		StAXOMBuilder builder = new StAXOMBuilder(bais);
-		OMElement elem = builder.getDocumentElement();
-		elem.build();
-		assertEquals("Attribute value mismatch", "uri:thisBase", elem.getAttributeValue(new QName(OMConstants.XMLNS_URI,"base")));
-		
-		OMAttribute attr = elem.getAttribute(new QName(OMConstants.XMLNS_URI,"base"));
-		
-		assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI, attr.getNamespace().getName());
-	}
+    public void testAttr() throws Exception {
+        String xml = "<wsp:Policy xml:base=\"uri:thisBase\" " +
+                "xmlns:wsp=\"http://schemas.xmlsoap.org/ws/2004/09/policy\">" +
+                "</wsp:Policy>";
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes());
+        StAXOMBuilder builder = new StAXOMBuilder(bais);
+        OMElement elem = builder.getDocumentElement();
+        elem.build();
+        assertEquals("Attribute value mismatch", "uri:thisBase", elem.getAttributeValue(new QName(OMConstants.XMLNS_URI, "base")));
+
+        OMAttribute attr = elem.getAttribute(new QName(OMConstants.XMLNS_URI, "base"));
+
+        assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI, attr.getNamespace().getName());
+    }
 
     /**
      * Test method to test the XML namespace of an attr without
      * any other ns declarations in the element
+     *
      * @throws Exception
      */
-	public void testAttrWithoutElementNS() throws Exception{
-		String xml = "<Policy xml:base=\"uri:thisBase\"></Policy>";
-		
-		ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes());
-		StAXOMBuilder builder = new StAXOMBuilder(bais);
-		OMElement elem = builder.getDocumentElement();
-		elem.build();
-		assertEquals("Attribute value mismatch", "uri:thisBase", elem.getAttributeValue(new QName(OMConstants.XMLNS_URI,"base")));
-		
-		OMAttribute attr = elem.getAttribute(new QName(OMConstants.XMLNS_URI,"base"));
-		
-		assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI, attr.getNamespace().getName());
-	}
+    public void testAttrWithoutElementNS() throws Exception {
+        String xml = "<Policy xml:base=\"uri:thisBase\"></Policy>";
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes());
+        StAXOMBuilder builder = new StAXOMBuilder(bais);
+        OMElement elem = builder.getDocumentElement();
+        elem.build();
+        assertEquals("Attribute value mismatch", "uri:thisBase", elem.getAttributeValue(new QName(OMConstants.XMLNS_URI, "base")));
+
+        OMAttribute attr = elem.getAttribute(new QName(OMConstants.XMLNS_URI, "base"));
+
+        assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI, attr.getNamespace().getName());
+    }
+
+    public void testAttributesWithProgrammaticalCreation() {
+
+        try {
+            String expectedXML = "<AttributeTester xmlns=\"\" xmlns:myAttr2NS=\"http://test-attributes-2.org\" " +
+                    "xmlns:myAttr1NS=\"http://test-attributes-1.org\" myAttr2NS:attrNumber=\"2\" myAttr1NS:attrNumber=\"1\" />";
+
+            OMFactory omFactory = OMAbstractFactory.getOMFactory();
+
+            OMNamespace attrNS1 = omFactory.createOMNamespace("http://test-attributes-1.org", "myAttr1NS");
+            OMNamespace attrNS2 = omFactory.createOMNamespace("http://test-attributes-2.org", "myAttr2NS");
+            OMElement omElement = omFactory.createOMElement("AttributeTester", null);
+            omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS1, "1"));
+            omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS2, "2"));
+
+            Document document1 = newDocument(expectedXML);
+            Document document2 = newDocument(omElement.toString());
+
+            Diff diff = compareXML(document1, document2);
+            assertXMLEqual(diff, true);
+        } catch (ParserConfigurationException e) {
+            fail(e.getMessage());
+        } catch (SAXException e) {
+            fail(e.getMessage());
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+
+
+    }
 
 }
