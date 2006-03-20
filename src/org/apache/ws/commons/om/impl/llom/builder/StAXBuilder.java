@@ -129,11 +129,18 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             OMNamespace ns = null;
             String uri = parser.getAttributeNamespace(i);
             String prefix = parser.getAttributePrefix(i);
+
             if (uri != null && uri.hashCode() != 0) {
                 ns = node.findNamespace(uri, prefix);
+                if (ns== null) {
+                    ns = node.declareNamespace(uri, prefix);
+                }
             }
+
+
             // todo if the attributes are supposed to namespace qualified all the time
             // todo then this should throw an exception here
+           
             node.addAttribute(parser.getAttributeLocalName(i),
                     parser.getAttributeValue(i), ns);
         }
@@ -353,7 +360,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     public Object getParser() {
         if (parserAccessed){
             throw new IllegalStateException(
-                    "Parser already accessed!");  
+                    "Parser already accessed!");
         }
         if (!cache) {
             parserAccessed = true;
@@ -395,7 +402,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
     /**
      * @return Returns short.
-     */ 
+     */
     public short getBuilderType() {
         return OMConstants.PULL_TYPE_BUILDER;
     }

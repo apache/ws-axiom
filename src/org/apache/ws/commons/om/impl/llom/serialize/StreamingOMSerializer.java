@@ -23,18 +23,22 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.namespace.NamespaceContext;
 
 /**
  * Class StreamingOMSerializer
  */
 public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
 
+    private static int namespaceSuffix = 0;
+    public static final String NAMESPACE_PREFIX = "ns";
+
     /*
-     * The behavior of the serializer is such that it returns when it encounters the
-     * starting element for the second time. The depth variable tracks the depth of the
-     * serilizer and tells it when to return.
-     * Note that it is assumed that this serialization starts on an Element.
-     */
+    * The behavior of the serializer is such that it returns when it encounters the
+    * starting element for the second time. The depth variable tracks the depth of the
+    * serilizer and tells it when to return.
+    * Note that it is assumed that this serialization starts on an Element.
+    */
 
     /**
      * Field depth
@@ -94,7 +98,10 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             } else if (event == END_ELEMENT) {
                 serializeEndElement(writer);
                 depth--;
+            }else if (event == START_DOCUMENT) {
+                depth++; //if a start document is found then increment the depth
             } else if (event == END_DOCUMENT) {
+                if (depth!=0) depth--;  //for the end document - reduce the depth
                 try {
                     serializeEndElement(writer);
                 } catch (Exception e) {
@@ -138,8 +145,6 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             writer.writeStartElement(reader.getLocalName());
         }
 
-        // add attributes
-        serializeAttributes(reader, writer);
 
         // add the namespaces
         int count = reader.getNamespaceCount();
@@ -148,10 +153,14 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             namespacePrefix = reader.getNamespacePrefix(i);
             if(namespacePrefix != null && namespacePrefix.length()==0)
                 continue;
-            
+
             serializeNamespace(namespacePrefix,
                     reader.getNamespaceURI(i), writer);
         }
+
+        // add attributes
+        serializeAttributes(reader, writer);
+
     }
 
     /**
@@ -213,23 +222,66 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         int count = reader.getAttributeCount();
         String prefix = null;
         String namespaceName = null;
+        String writerPrefix=null;
         for (int i = 0; i < count; i++) {
             prefix = reader.getAttributePrefix(i);
             namespaceName = reader.getAttributeNamespace(i);
-            if ((prefix != null) && !namespaceName.equals("")) {
-                writer.writeAttribute(prefix, namespaceName,
-                        reader.getAttributeLocalName(i),
-                        reader.getAttributeValue(i));
-            } else {
+            writerPrefix =writer.getNamespaceContext().getPrefix(namespaceName);
+
+            if (!"".equals(namespaceName)){
+                //prefix has already being declared but this particular attrib has a
+                //no prefix attached. So use the prefix provided by the writer
+                if (writerPrefix!=null && (prefix==null || prefix.equals(""))){
+                    writer.writeAttribute(writerPrefix, namespaceName,
+                            reader.getAttributeLocalName(i),
+                            reader.getAttributeValue(i));
+
+                    //writer prefix is available but different from the current
+                    //prefix of the attrib. We should be decalring the new prefix
+                    //as a namespace declaration
+                }else if (prefix!=null && !"".equals(prefix)&& !prefix.equals(writerPrefix)){
+                    writer.writeNamespace(prefix,namespaceName);
+                    writer.writeAttribute(prefix, namespaceName,
+                            reader.getAttributeLocalName(i),
+                            reader.getAttributeValue(i));
+
+                    //prefix is null (or empty), but the namespace name is valid! it has not
+                    //being written previously also. So we need to generate a prefix
+                    //here
+                }else{
+                    prefix = generateUniquePrefix(writer.getNamespaceContext());
+                    writer.writeNamespace(prefix,namespaceName);
+                    writer.writeAttribute(prefix, namespaceName,
+                            reader.getAttributeLocalName(i),
+                            reader.getAttributeValue(i));
+                }
+            }else{
+                //empty namespace is equal to no namespace!
                 writer.writeAttribute(reader.getAttributeLocalName(i),
                         reader.getAttributeValue(i));
             }
+
+
         }
     }
 
     /**
+     * Generates a unique namespace prefix that is not in the
+     * scope of the NamespaceContext
+     * @param nsCtxt
+     * @return
+     */
+    private String generateUniquePrefix(NamespaceContext nsCtxt){
+        String prefix = NAMESPACE_PREFIX + namespaceSuffix++;
+        //null should be returned if the prefix is not bound!
+        while(nsCtxt.getNamespaceURI(prefix)!=null){
+            prefix = NAMESPACE_PREFIX + namespaceSuffix++;
+        }
+
+        return prefix;
+    }
+    /**
      * Method serializeNamespace.
-     *
      * @param prefix
      * @param URI
      * @param writer
