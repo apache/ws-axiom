@@ -3,7 +3,7 @@ package org.apache.ws.commons.soap;
 import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ws.commons.soap.impl.llom.builder.StAXSOAPModelBuilder;
+import org.apache.ws.commons.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;

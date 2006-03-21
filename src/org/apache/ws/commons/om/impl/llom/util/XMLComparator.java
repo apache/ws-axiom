@@ -22,7 +22,7 @@ import org.apache.ws.commons.om.OMAttribute;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMNode;
-import org.apache.ws.commons.om.impl.llom.exception.XMLComparisonException;
+import org.apache.ws.commons.om.impl.exception.XMLComparisonException;
 
 import java.util.Iterator;
 import java.util.Vector;

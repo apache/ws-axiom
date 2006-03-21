@@ -22,7 +22,7 @@ import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.impl.OMNodeEx;
 import org.apache.ws.commons.om.impl.OMOutputImpl;
-import org.apache.ws.commons.om.impl.llom.serialize.StreamingOMSerializer;
+import org.apache.ws.commons.om.impl.serialize.StreamingOMSerializer;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;

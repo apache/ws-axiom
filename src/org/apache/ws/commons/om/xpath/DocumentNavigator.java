@@ -11,7 +11,7 @@ import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.OMProcessingInstruction;
 import org.apache.ws.commons.om.OMText;
 import org.apache.ws.commons.om.impl.llom.OMNamespaceImpl;
-import org.apache.ws.commons.om.impl.llom.builder.StAXOMBuilder;
+import org.apache.ws.commons.om.impl.builder.StAXOMBuilder;
 import org.jaxen.BaseXPath;
 import org.jaxen.DefaultNavigator;
 import org.jaxen.FunctionCallException;

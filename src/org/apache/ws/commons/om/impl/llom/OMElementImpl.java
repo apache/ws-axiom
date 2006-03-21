@@ -20,10 +20,10 @@ import org.apache.ws.commons.om.*;
 import org.apache.ws.commons.om.impl.OMContainerEx;
 import org.apache.ws.commons.om.impl.OMNodeEx;
 import org.apache.ws.commons.om.impl.OMOutputImpl;
-import org.apache.ws.commons.om.impl.llom.builder.StAXOMBuilder;
-import org.apache.ws.commons.om.impl.llom.traverse.OMChildElementIterator;
-import org.apache.ws.commons.om.impl.llom.traverse.OMChildrenIterator;
-import org.apache.ws.commons.om.impl.llom.traverse.OMChildrenQNameIterator;
+import org.apache.ws.commons.om.impl.builder.StAXOMBuilder;
+import org.apache.ws.commons.om.impl.traverse.OMChildElementIterator;
+import org.apache.ws.commons.om.impl.traverse.OMChildrenIterator;
+import org.apache.ws.commons.om.impl.traverse.OMChildrenQNameIterator;
 import org.apache.ws.commons.om.impl.llom.util.EmptyIterator;
 import org.apache.ws.commons.om.util.ElementHelper;
 

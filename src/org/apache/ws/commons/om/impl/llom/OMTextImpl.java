@@ -19,7 +19,7 @@ package org.apache.ws.commons.om.impl.llom;
 
 import org.apache.ws.commons.om.*;
 import org.apache.ws.commons.om.impl.OMOutputImpl;
-import org.apache.ws.commons.om.impl.llom.mtom.MTOMStAXSOAPModelBuilder;
+import org.apache.ws.commons.om.impl.mtom.MTOMStAXSOAPModelBuilder;
 import org.apache.ws.commons.om.util.Base64;
 import org.apache.ws.commons.om.util.UUIDGenerator;
 

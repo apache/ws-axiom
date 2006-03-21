@@ -1,6 +1,6 @@
 package org.apache.ws.commons.om;
 
-import org.apache.ws.commons.om.impl.llom.builder.StAXOMBuilder;
+import org.apache.ws.commons.om.impl.builder.StAXOMBuilder;
 import org.apache.ws.commons.soap.SOAPBody;
 import org.apache.ws.commons.soap.SOAPEnvelope;
 import org.custommonkey.xmlunit.XMLTestCase;

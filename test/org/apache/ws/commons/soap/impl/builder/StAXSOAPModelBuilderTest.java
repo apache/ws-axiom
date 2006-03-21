@@ -1,4 +1,4 @@
-package org.apache.ws.commons.soap.impl.llom.builder;
+package org.apache.ws.commons.soap.impl.builder;
 
 import junit.framework.TestCase;
 import org.apache.ws.commons.om.OMAttribute;

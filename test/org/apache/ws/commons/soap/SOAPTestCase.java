@@ -19,7 +19,7 @@ package org.apache.ws.commons.soap;
 import org.apache.ws.commons.om.AbstractTestCase;
 import org.apache.ws.commons.om.OMAbstractFactory;
 import org.apache.ws.commons.om.OMFactory;
-import org.apache.ws.commons.soap.impl.llom.builder.StAXSOAPModelBuilder;
+import org.apache.ws.commons.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

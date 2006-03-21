@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.om.impl.llom.serialize;
+package org.apache.ws.commons.om.impl.serialize;
 
 import org.apache.ws.commons.om.OMSerializer;
 import org.apache.ws.commons.om.impl.OMOutputImpl;

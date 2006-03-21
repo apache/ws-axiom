@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap.impl.llom.builder;
+package org.apache.ws.commons.soap.impl.builder;
 
 
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.impl.OMNodeEx;
-import org.apache.ws.commons.om.impl.llom.exception.OMBuilderException;
+import org.apache.ws.commons.om.impl.exception.OMBuilderException;
 import org.apache.ws.commons.soap.SOAP12Constants;
 import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;

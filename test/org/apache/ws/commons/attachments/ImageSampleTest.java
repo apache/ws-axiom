@@ -27,7 +27,7 @@ import org.apache.ws.commons.om.OMText;
 import org.apache.ws.commons.om.impl.llom.OMElementImpl;
 import org.apache.ws.commons.om.impl.llom.OMNamespaceImpl;
 import org.apache.ws.commons.om.impl.llom.OMTextImpl;
-import org.apache.ws.commons.om.impl.llom.mtom.MTOMStAXSOAPModelBuilder;
+import org.apache.ws.commons.om.impl.mtom.MTOMStAXSOAPModelBuilder;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLInputFactory;

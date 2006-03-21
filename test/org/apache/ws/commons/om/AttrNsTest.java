@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.om;
 
-import org.apache.ws.commons.om.impl.llom.builder.StAXOMBuilder;
+import org.apache.ws.commons.om.impl.builder.StAXOMBuilder;
 import org.custommonkey.xmlunit.Diff;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;

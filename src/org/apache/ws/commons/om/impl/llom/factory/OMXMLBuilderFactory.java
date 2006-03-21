@@ -17,9 +17,9 @@
 package org.apache.ws.commons.om.impl.llom.factory;
 
 import org.apache.ws.commons.om.OMFactory;
-import org.apache.ws.commons.om.impl.llom.builder.StAXOMBuilder;
+import org.apache.ws.commons.om.impl.builder.StAXOMBuilder;
 import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.impl.llom.builder.StAXSOAPModelBuilder;
+import org.apache.ws.commons.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLStreamReader;
 

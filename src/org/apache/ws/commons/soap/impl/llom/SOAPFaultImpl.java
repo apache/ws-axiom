@@ -20,7 +20,7 @@ import org.apache.ws.commons.om.*;
 import org.apache.ws.commons.om.impl.OMNodeEx;
 import org.apache.ws.commons.om.impl.llom.OMElementImpl;
 import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
-import org.apache.ws.commons.om.impl.llom.serialize.StreamWriterToContentHandlerConverter;
+import org.apache.ws.commons.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.ws.commons.soap.*;
 
 import javax.xml.namespace.QName;

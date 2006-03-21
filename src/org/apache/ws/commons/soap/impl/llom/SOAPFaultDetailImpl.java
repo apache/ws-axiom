@@ -22,7 +22,7 @@ import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.om.impl.llom.OMNodeImpl;
 import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
-import org.apache.ws.commons.om.impl.llom.serialize.StreamWriterToContentHandlerConverter;
+import org.apache.ws.commons.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.ws.commons.soap.SOAP12Constants;
 import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;

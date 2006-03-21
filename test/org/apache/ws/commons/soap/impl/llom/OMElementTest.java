@@ -24,7 +24,7 @@ import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMTestCase;
 import org.apache.ws.commons.om.OMText;
 import org.apache.ws.commons.soap.SOAPEnvelope;
-import org.apache.ws.commons.soap.impl.llom.builder.StAXSOAPModelBuilder;
+import org.apache.ws.commons.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

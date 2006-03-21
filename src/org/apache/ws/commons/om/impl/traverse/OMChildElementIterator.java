@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.om.impl.llom.traverse;
+package org.apache.ws.commons.om.impl.traverse;
 
+import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMException;
 import org.apache.ws.commons.om.OMNode;
 
 import java.util.Iterator;
 
-/**
- * Class OMChildrenIterator
- */
-public class OMChildrenIterator implements Iterator {
+public class OMChildElementIterator implements Iterator {
+
     /**
      * Field currentChild
      */
@@ -50,13 +49,13 @@ public class OMChildrenIterator implements Iterator {
      *
      * @param currentChild
      */
-    public OMChildrenIterator(OMNode currentChild) {
+    public OMChildElementIterator(OMElement currentChild) {
         this.currentChild = currentChild;
     }
 
     /**
      * Removes the last element returned by the iterator (optional operation) 
-     * from the underlying collection.   This method must be called only once per
+     * from the underlying collection. This method can be called only once per
      * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
      * the underlying collection is modified while the iteration is in
      * progress in any way other than by calling this method.
@@ -106,9 +105,14 @@ public class OMChildrenIterator implements Iterator {
     public Object next() {
         nextCalled = true;
         removeCalled = false;
+
         if (hasNext()) {
             lastChild = currentChild;
-            currentChild = currentChild.getNextOMSibling();
+            do{
+                currentChild = currentChild.getNextOMSibling();
+            }while(currentChild!=null && currentChild.getType()!=OMNode.ELEMENT_NODE);
+
+
             return lastChild;
         }
         return null;

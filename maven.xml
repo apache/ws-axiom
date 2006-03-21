@@ -3,12 +3,12 @@
 <!-- $Revision: 1.21 $ $Date: 2004-10-27 20:54:09 +0600 (Wed, 27 Oct 2004) $ -->
 
 <project default="jar"
-    xmlns:j="jelly:core"
-    xmlns:u="jelly:util"
-    xmlns:maven="jelly:maven"
-    xmlns:util="jelly:util"
-    xmlns:deploy="deploy"
-    xmlns:ant="jelly:ant">
+         xmlns:j="jelly:core"
+         xmlns:u="jelly:util"
+         xmlns:maven="jelly:maven"
+         xmlns:util="jelly:util"
+         xmlns:deploy="deploy"
+         xmlns:ant="jelly:ant">
 
     <preGoal name="itest:compile">
         <u:file var="file" name="${maven.itest.src}"/>
@@ -16,4 +16,9 @@
             <j:expr value="${context.setVariable('maven.itest.skip', 'true')}"/>
         </j:if>
     </preGoal>
+
+    <goal name="jar">
+        <attainGoal name="jar:install"/>
+    </goal>
+    
 </project>

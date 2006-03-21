@@ -22,7 +22,7 @@ import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMOutputFormat;
 import org.apache.ws.commons.soap.SOAPEnvelope;
 import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.impl.llom.builder.StAXSOAPModelBuilder;
+import org.apache.ws.commons.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;

@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.om;
 
-import org.apache.ws.commons.om.impl.llom.builder.StAXOMBuilder;
+import org.apache.ws.commons.om.impl.builder.StAXOMBuilder;
 import org.apache.ws.commons.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -21,7 +21,7 @@ import org.apache.ws.commons.om.OMAbstractFactory;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMFactory;
 import org.apache.ws.commons.om.OMNamespace;
-import org.apache.ws.commons.om.impl.llom.traverse.OMChildrenWithSpecificAttributeIterator;
+import org.apache.ws.commons.om.impl.traverse.OMChildrenWithSpecificAttributeIterator;
 
 import javax.xml.namespace.QName;
 import java.util.Iterator;

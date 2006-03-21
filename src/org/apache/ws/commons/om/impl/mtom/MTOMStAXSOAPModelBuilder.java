@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.om.impl.llom.mtom;
+package org.apache.ws.commons.om.impl.mtom;
 
 import org.apache.ws.commons.attachments.MIMEHelper;
 import org.apache.ws.commons.om.OMElement;
@@ -24,7 +24,7 @@ import org.apache.ws.commons.om.OMText;
 import org.apache.ws.commons.om.impl.MTOMConstants;
 import org.apache.ws.commons.om.impl.OMNodeEx;
 import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.impl.llom.builder.StAXSOAPModelBuilder;
+import org.apache.ws.commons.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;

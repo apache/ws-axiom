@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.om.impl.llom.exception;
+package org.apache.ws.commons.om.impl.exception;
 
 import org.apache.ws.commons.om.OMException;
 

@@ -1,7 +1,7 @@
 package org.apache.ws.commons.om.impl.serializer;
 
 import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.impl.llom.builder.StAXOMBuilder;
+import org.apache.ws.commons.om.impl.builder.StAXOMBuilder;
 import org.custommonkey.xmlunit.XMLTestCase;
 
 import javax.xml.stream.XMLStreamException;

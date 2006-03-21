@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.om.impl.llom.traverse;
+package org.apache.ws.commons.om.impl.traverse;
 
 import org.apache.ws.commons.om.OMAttribute;
 import org.apache.ws.commons.om.OMElement;

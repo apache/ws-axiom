@@ -20,7 +20,7 @@ import org.apache.ws.commons.om.AbstractTestCase;
 import org.apache.ws.commons.om.OMAbstractFactory;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
 import org.apache.ws.commons.om.impl.llom.factory.OMXMLBuilderFactory;
-import org.apache.ws.commons.om.impl.llom.serialize.StreamingOMSerializer;
+import org.apache.ws.commons.om.impl.serialize.StreamingOMSerializer;
 import org.apache.ws.commons.soap.SOAPBody;
 import org.apache.ws.commons.soap.SOAPEnvelope;
 

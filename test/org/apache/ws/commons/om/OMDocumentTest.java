@@ -17,7 +17,7 @@
 package org.apache.ws.commons.om;
 
 import junit.framework.TestCase;
-import org.apache.ws.commons.om.impl.llom.builder.StAXOMBuilder;
+import org.apache.ws.commons.om.impl.builder.StAXOMBuilder;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;

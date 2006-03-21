@@ -19,7 +19,7 @@ package org.apache.ws.commons.xpath;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.apache.ws.commons.om.impl.llom.builder.StAXOMBuilder;
+import org.apache.ws.commons.om.impl.builder.StAXOMBuilder;
 import org.apache.ws.commons.om.xpath.DocumentNavigator;
 import org.jaxen.FunctionCallException;
 import org.jaxen.Navigator;

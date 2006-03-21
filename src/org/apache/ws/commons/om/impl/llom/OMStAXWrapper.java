@@ -24,7 +24,7 @@ import org.apache.ws.commons.om.OMNamespace;
 import org.apache.ws.commons.om.OMNode;
 import org.apache.ws.commons.om.OMText;
 import org.apache.ws.commons.om.OMXMLParserWrapper;
-import org.apache.ws.commons.om.impl.llom.exception.OMStreamingException;
+import org.apache.ws.commons.om.impl.exception.OMStreamingException;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
@@ -792,7 +792,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * Returns the next tag.
      *
      * @return Returns int.
-     * @throws org.apache.ws.commons.om.impl.llom.exception.OMStreamingException
+     * @throws org.apache.ws.commons.om.impl.exception.OMStreamingException
      *
      * @throws XMLStreamException
      */

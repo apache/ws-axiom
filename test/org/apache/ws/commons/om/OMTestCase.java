@@ -18,7 +18,7 @@ package org.apache.ws.commons.om;
 
 import org.apache.ws.commons.soap.SOAPEnvelope;
 import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.impl.llom.builder.StAXSOAPModelBuilder;
+import org.apache.ws.commons.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;

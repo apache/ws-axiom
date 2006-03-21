@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.om.impl.llom.builder;
+package org.apache.ws.commons.om.impl.builder;
 
 import org.apache.ws.commons.om.OMAbstractFactory;
 import org.apache.ws.commons.om.OMConstants;

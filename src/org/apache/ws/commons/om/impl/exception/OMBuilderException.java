@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.om.impl.llom.exception;
+package org.apache.ws.commons.om.impl.exception;
 
-public class XMLComparisonException extends Exception {
-	/**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
+import org.apache.ws.commons.om.OMException;
+
+/**
+ * Class OMBuilderException
+ */
+public class OMBuilderException extends OMException {
 	
-    private static final long serialVersionUID = -7918497983548520994L;
+    private static final long serialVersionUID = -7447667411291193889L;
 
-    public XMLComparisonException(String message) {
-        super(message);
+	/**
+     * Constructor OMBuilderException
+     *
+     * @param s
+     */
+    public OMBuilderException(String s) {
+        super(s);
     }
 
-    public XMLComparisonException(Throwable cause) {
+    public OMBuilderException(Throwable cause) {
         super(cause);
-    }
-
-    public XMLComparisonException(String message, Throwable cause) {
-        super(message, cause);
     }
 }
