@@ -18,13 +18,13 @@
     </preGoal>
 
     <postGoal name="jar">
-        <jar destfile="target/axiom-api-SNAPSHOT.jar">
+        <jar destfile="target/axiom-api-${axiom.version}.jar">
             <ant:fileset dir="target/classes">
                 <ant:exclude name="org/apache/ws/commons/soap/impl/llom/**"/>
                 <ant:exclude name="org/apache/ws/commons/om/impl/llom/**"/>
             </ant:fileset>
         </jar>
-        <jar destfile="target/axiom-impl-SNAPSHOT.jar">
+        <jar destfile="target/axiom-impl-${axiom.version}.jar">
             <ant:fileset dir="target/classes">
                 <ant:include name="org/apache/ws/commons/soap/impl/llom/**"/>
                 <ant:include name="org/apache/ws/commons/om/impl/llom/**"/>
