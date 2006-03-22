@@ -17,8 +17,24 @@
         </j:if>
     </preGoal>
 
+    <postGoal name="jar">
+        <jar destfile="target/axiom-api-SNAPSHOT.jar">
+            <ant:fileset dir="target/classes">
+                <ant:exclude name="org/apache/ws/commons/soap/impl/llom/**"/>
+                <ant:exclude name="org/apache/ws/commons/om/impl/llom/**"/>
+            </ant:fileset>
+        </jar>
+        <jar destfile="target/axiom-impl-SNAPSHOT.jar">
+            <ant:fileset dir="target/classes">
+                <ant:include name="org/apache/ws/commons/soap/impl/llom/**"/>
+                <ant:include name="org/apache/ws/commons/om/impl/llom/**"/>
+            </ant:fileset>
+        </jar>
+
+    </postGoal>
+
     <goal name="jar">
         <attainGoal name="jar:install"/>
     </goal>
-    
+
 </project>
