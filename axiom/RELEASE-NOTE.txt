@@ -1,0 +1,20 @@
+
+ ====================================
+       AXIOM 0.95 Release Note
+ ====================================
+
+This is AXIOM 0.95 release of the Apache WS-Commons.
+
+AXIOM Complete Features List in this Release : 
+
+        Full infoset compliant XML object model
+        StAX based builders
+        MTOM support
+        Convenient SOAP API
+        Linked list based implementation
+
+AXIOM is taking shape, this 0.95 release is a glimpse of 1.0 that should be coming soon. If you like to contribute to AXIOM please help us to shape AXIOM. Any contribution in the form of coding, testing, submitting improvements to the documentation, and reporting bugs are always welcome.
+
+Thanks for your interest in AXIOM!
+
+-The AXIOM Development Team
