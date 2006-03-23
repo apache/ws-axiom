@@ -130,9 +130,11 @@
 
         <ant:property name="${dist}" value="target/dist/temp"/>
 
-        <ant:copy toDir="${dist}/src">
-            <ant:fileset dir="src">
+        <ant:copy toDir="${dist}">
+            <ant:fileset dir=".">
                 <ant:exclude name="**/.svn/**"/>
+                <ant:include name="**/src/**"/>
+                <ant:include name="**/test/**"/>
             </ant:fileset>
         </ant:copy>
 
