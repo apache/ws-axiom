@@ -1,0 +1,10 @@
+
+Commons/AXIOM 0.95 Release Note:
+
+Feature List:
+
+Full infoset compliant XML object model
+StAX based builders
+MTOM support
+Convenient SOAP API
+Linked list based implementation
