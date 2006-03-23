@@ -68,7 +68,7 @@
             <deploy:copy-deps todir="${dist}/lib"
                               projectDescriptor="${x.getFile()}"/>
         </j:forEach>
-        <ant:delete file="${dist}/lib/xmlunit*.jar"/>
+        <ant:delete file="${dist}/lib/xmlunit-${xmlunit.version}.jar"/>
 
         <!--add api docs-->
 
