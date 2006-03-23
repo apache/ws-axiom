@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+	<properties>
+		<title>Releases</title>
+	</properties>
+	
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+		<meta content="text/html; charset=iso-8859-1" />
+		<meta name="generator" content="amaya 9.2.1, see http://www.w3.org/Amaya/" />
+	</head>
+	
+	<body>
+		
+		<section>
+			<h2>Releases</h2>
+			<div align="left">
+				<p>Please select the WS-AXIOM version you want to download. Latest release is 0.95. You can download both
+the binay distribution and the source distribution.</p>
+			</div>
+			<div align="center">
+				
+				<table class="bodyTable">
+					<tbody>
+						<tr class="a">
+							<td align="center" width="45">Name</td>
+							<td align="center" width="80">Type</td>
+							<td align="center" width="300">Distribution</td>
+							<td align="center" width="100">Date</td>
+							<td align="center" width="200">Description</td>
+						</tr>
+						<tr class="b">
+							<td align="center" valign="middle">
+								<a name="05"></a>0.95</td>
+							<td align="center">Release</td>
+							<td>Source Distribution <a href="[preferred]/ws/commons/axiom/0_95/policy-1.0-src.zip" title="[preferred]/ws/commons/axiom/0_95/axiom-0.95-src.zip">zip</a>
+								
+								<a href="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.md5" class="externalLink" title="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.md5">MD5</a>
+								<a href="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.asc" class="externalLink" title="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.asc">PGP</a>
+								<br />
+        Binary Distribution <a href="[preferred]/ws/commons/axiom/0_95/axiom-0.95-bin.zip" title="[preferred]/ws/commons/axiom/0_95/axiom-0.95-bin.zip">zip</a>
+								<a href="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.md5" class="externalLink" title="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.md5">MD5</a>
+								<a href="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.asc" class="externalLink" title="http://www.apache.org/dist/ws/ws/commons/axiom/0_95/axiom-0.95-bin.zip.asc">PGP</a>
+									
+								<br />
+							</td>
+							<td>23 - 03  - 2006</td>
+							<td>0.95 Release (Mirrored)</td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+								
+				</section>
+			</body>
+		</document>
