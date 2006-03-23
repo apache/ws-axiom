@@ -16,11 +16,11 @@ Support
  
 Any problem with this release can be reported to ws-commons mailing list
 . If you are sending an email to the mailing
-list make sure to add the [Axiom] prefix to the subject.
+list make sure to add the [AXIOM] prefix to the subject.
 
 Mailing list subscription:
     commons-dev-subscribe@ws.apache.org
 
-Thank you for using Axiom!
+Thank you for using AXIOM!
 
-The Axis2 Team. 
+The AXIOM Team.
