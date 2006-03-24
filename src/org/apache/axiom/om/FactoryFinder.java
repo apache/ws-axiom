@@ -16,7 +16,7 @@
 
 package org.apache.axiom.om;
 
-import org.apache.ws.commons.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPFactory;
 
 
 /**
