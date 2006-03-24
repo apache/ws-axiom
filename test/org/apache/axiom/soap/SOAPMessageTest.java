@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap;
+package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMTestCase;
-import org.apache.ws.commons.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 public class SOAPMessageTest extends OMTestCase {
 

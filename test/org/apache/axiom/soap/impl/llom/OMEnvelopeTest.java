@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap.impl.llom;
+package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.om.OMTestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ws.commons.soap.SOAPBody;
-import org.apache.ws.commons.soap.SOAPEnvelope;
-import org.apache.ws.commons.soap.SOAPHeader;
-import org.apache.ws.commons.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPProcessingException;
 
 public class OMEnvelopeTest extends OMTestCase {
     private Log log = LogFactory.getLog(getClass());

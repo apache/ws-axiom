@@ -19,8 +19,8 @@ package org.apache.axiom.om;
 import junit.framework.TestCase;
 import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.om.impl.MIMEOutputUtils;
-import org.apache.ws.commons.soap.SOAP12Constants;
-import org.apache.ws.commons.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPFactory;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;

@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap.impl.llom;
+package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
-import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPProcessingException;
 
 public abstract class SOAPElement extends OMElementImpl {
 

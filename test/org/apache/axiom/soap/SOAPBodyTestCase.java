@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap;
+package org.apache.axiom.soap;
 
 public class SOAPBodyTestCase extends SOAPTestCase {
     protected SOAPBody soap11Body;

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap.impl.llom.soap11;
+package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.ws.commons.soap.SOAPConstants;
-import org.apache.ws.commons.soap.SOAPEnvelope;
-import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.SOAPFault;
-import org.apache.ws.commons.soap.SOAPProcessingException;
-import org.apache.ws.commons.soap.impl.llom.SOAPBodyImpl;
+import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.llom.SOAPBodyImpl;
 
 public class SOAP11BodyImpl extends SOAPBodyImpl {
     /**

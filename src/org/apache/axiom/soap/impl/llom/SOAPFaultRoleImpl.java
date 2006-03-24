@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap.impl.llom;
+package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -22,14 +22,14 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.OMOutputImpl;
 import org.apache.axiom.om.impl.llom.OMSerializerUtil;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
-import org.apache.ws.commons.soap.SOAP12Constants;
-import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.SOAPFault;
-import org.apache.ws.commons.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.stream.XMLStreamException;
 
-public abstract class SOAPFaultRoleImpl extends SOAPElement implements org.apache.ws.commons.soap.SOAPFaultRole {
+public abstract class SOAPFaultRoleImpl extends SOAPElement implements org.apache.axiom.soap.SOAPFaultRole {
 
     protected SOAPFaultRoleImpl(OMNamespace ns, SOAPFactory factory) {
         super(SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME, ns, factory);

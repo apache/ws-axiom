@@ -16,7 +16,7 @@
 
 package org.apache.axiom.om;
 
-import org.apache.ws.commons.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap;
+package org.apache.axiom.soap;
 
 public class SOAPFaultValueTest extends SOAPFaultSubCodeTestCase {
 

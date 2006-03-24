@@ -18,7 +18,7 @@ package org.apache.axiom.om;
 
 import junit.framework.TestCase;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
-import org.apache.ws.commons.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;

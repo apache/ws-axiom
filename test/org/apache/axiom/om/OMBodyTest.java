@@ -18,8 +18,8 @@ package org.apache.axiom.om;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ws.commons.soap.SOAPBody;
-import org.apache.ws.commons.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPProcessingException;
 
 public class OMBodyTest extends OMTestCase implements OMConstants {
     SOAPBody soapBody;

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap.impl.llom;
+package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.om.impl.llom.OMNamespaceImpl;
-import org.apache.ws.commons.soap.SOAPHeader;
-import org.apache.ws.commons.soap.SOAPHeaderBlock;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPHeaderBlock;
 
 import java.util.Iterator;
 

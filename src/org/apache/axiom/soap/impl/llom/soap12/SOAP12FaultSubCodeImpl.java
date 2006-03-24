@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap.impl.llom.soap12;
+package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.ws.commons.soap.SOAP12Constants;
-import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.SOAPFaultCode;
-import org.apache.ws.commons.soap.SOAPFaultSubCode;
-import org.apache.ws.commons.soap.SOAPFaultValue;
-import org.apache.ws.commons.soap.SOAPProcessingException;
-import org.apache.ws.commons.soap.impl.llom.SOAPFaultSubCodeImpl;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPFaultCode;
+import org.apache.axiom.soap.SOAPFaultSubCode;
+import org.apache.axiom.soap.SOAPFaultValue;
+import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.llom.SOAPFaultSubCodeImpl;
 
 public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
     //changed

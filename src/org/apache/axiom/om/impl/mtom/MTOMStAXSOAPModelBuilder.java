@@ -23,8 +23,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;

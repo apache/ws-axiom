@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap.impl.llom;
+package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
@@ -26,7 +26,7 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMSerializerUtil;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
-import org.apache.ws.commons.soap.*;
+import org.apache.axiom.soap.*;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;

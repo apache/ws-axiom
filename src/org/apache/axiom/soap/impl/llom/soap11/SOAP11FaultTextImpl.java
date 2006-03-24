@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap.impl.llom.soap11;
+package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.SOAPFaultReason;
-import org.apache.ws.commons.soap.SOAPProcessingException;
-import org.apache.ws.commons.soap.impl.llom.SOAPFaultTextImpl;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPFaultReason;
+import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.llom.SOAPFaultTextImpl;
 
 public class SOAP11FaultTextImpl extends SOAPFaultTextImpl {
     

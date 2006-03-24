@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap;
+package org.apache.axiom.soap;
 
 
 public interface SOAP12Constants extends SOAPConstants {

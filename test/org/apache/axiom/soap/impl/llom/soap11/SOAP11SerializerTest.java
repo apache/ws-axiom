@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap.impl.llom.soap11;
+package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMTestCase;
-import org.apache.ws.commons.soap.SOAPEnvelope;
-import org.apache.ws.commons.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;

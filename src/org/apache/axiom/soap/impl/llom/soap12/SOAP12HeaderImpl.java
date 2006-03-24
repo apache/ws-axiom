@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.soap.impl.llom.soap12;
+package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.traverse.OMChildrenWithSpecificAttributeIterator;
-import org.apache.ws.commons.soap.SOAP12Constants;
-import org.apache.ws.commons.soap.SOAPEnvelope;
-import org.apache.ws.commons.soap.SOAPFactory;
-import org.apache.ws.commons.soap.SOAPHeaderBlock;
-import org.apache.ws.commons.soap.SOAPProcessingException;
-import org.apache.ws.commons.soap.impl.llom.SOAPHeaderImpl;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.llom.SOAPHeaderImpl;
 
 import javax.xml.namespace.QName;
 import java.util.Iterator;

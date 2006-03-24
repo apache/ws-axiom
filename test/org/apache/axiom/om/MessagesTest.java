@@ -16,7 +16,7 @@
 
 package org.apache.axiom.om;
 
-import org.apache.ws.commons.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPEnvelope;
 
 public class MessagesTest extends OMTestCase {
     SOAPEnvelope soapEnvelope;
