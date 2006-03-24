@@ -17,7 +17,7 @@
 package org.apache.ws.commons.om;
 
 import junit.framework.TestCase;
-import org.apache.ws.commons.attachments.ByteArrayDataSource;
+import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.ws.commons.om.impl.MIMEOutputUtils;
 import org.apache.ws.commons.soap.SOAP12Constants;
 import org.apache.ws.commons.soap.SOAPFactory;

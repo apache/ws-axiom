@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.attachments;
+package org.apache.axiom.attachments;
 
-import org.apache.ws.commons.attachments.utils.ImageDataSource;
-import org.apache.ws.commons.attachments.utils.ImageIO;
+import org.apache.axiom.attachments.utils.ImageDataSource;
+import org.apache.axiom.attachments.utils.ImageIO;
 import org.apache.ws.commons.om.AbstractTestCase;
 import org.apache.ws.commons.om.OMAbstractFactory;
 import org.apache.ws.commons.om.OMElement;

@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.om.impl.llom;
 
-import org.apache.ws.commons.attachments.ByteArrayDataSource;
+import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.ws.commons.om.AbstractTestCase;
 import org.apache.ws.commons.om.OMAbstractFactory;
 import org.apache.ws.commons.om.OMAttribute;

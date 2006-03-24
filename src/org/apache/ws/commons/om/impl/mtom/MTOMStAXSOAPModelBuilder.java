@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.om.impl.mtom;
 
-import org.apache.ws.commons.attachments.MIMEHelper;
+import org.apache.axiom.attachments.MIMEHelper;
 import org.apache.ws.commons.om.OMElement;
 import org.apache.ws.commons.om.OMException;
 import org.apache.ws.commons.om.OMNode;

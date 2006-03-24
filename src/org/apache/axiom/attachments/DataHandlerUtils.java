@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package org.apache.ws.commons.attachments;
+package org.apache.axiom.attachments;
 
 
 import org.apache.ws.commons.om.util.Base64;

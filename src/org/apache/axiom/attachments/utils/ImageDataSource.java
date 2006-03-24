@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.ws.commons.attachments.utils;
+package org.apache.axiom.attachments.utils;
 
 import javax.activation.DataSource;
 import java.awt.*;

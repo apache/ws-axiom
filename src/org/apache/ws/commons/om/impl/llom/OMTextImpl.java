@@ -262,7 +262,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
          * reperesented by the Base64 strings stored in OMText
          */
         if (value != null & isBinary) {
-        	return org.apache.ws.commons.attachments.DataHandlerUtils.getDataHandlerFromText(value,mimeType);
+        	return org.apache.axiom.attachments.DataHandlerUtils.getDataHandlerFromText(value,mimeType);
         } else {
 
             if (dataHandlerObject == null) {
