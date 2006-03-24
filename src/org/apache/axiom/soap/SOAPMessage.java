@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.soap;
 
-import org.apache.ws.commons.om.OMDocument;
+import org.apache.axiom.om.OMDocument;
 
 public interface SOAPMessage extends OMDocument {
 

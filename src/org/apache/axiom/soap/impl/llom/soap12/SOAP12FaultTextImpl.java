@@ -16,8 +16,8 @@
 
 package org.apache.ws.commons.soap.impl.llom.soap12;
 
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFaultReason;
 import org.apache.ws.commons.soap.SOAPProcessingException;

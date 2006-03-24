@@ -16,8 +16,8 @@
 
 package org.apache.ws.commons.soap;
 
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.OMException;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
 
 /**
  * Interface SOAPEnvelope
@@ -32,7 +32,7 @@ public interface SOAPEnvelope extends OMElement {
      *
      * @return the <CODE>SOAPHeader</CODE> object or <CODE>
      *         null</CODE> if there is none
-     * @throws org.apache.ws.commons.om.OMException
+     * @throws org.apache.axiom.om.OMException
      *          if there is a problem
      *          obtaining the <CODE>SOAPHeader</CODE> object
      */

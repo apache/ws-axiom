@@ -16,8 +16,8 @@
 
 package org.apache.ws.commons.soap.impl.llom.soap11;
 
-import org.apache.ws.commons.om.OMException;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.ws.commons.soap.SOAPConstants;
 import org.apache.ws.commons.soap.SOAPEnvelope;
 import org.apache.ws.commons.soap.SOAPFactory;

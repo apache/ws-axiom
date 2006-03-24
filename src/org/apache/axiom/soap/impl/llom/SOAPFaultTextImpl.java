@@ -16,10 +16,10 @@
 
 package org.apache.ws.commons.soap.impl.llom;
 
-import org.apache.ws.commons.om.OMAttribute;
-import org.apache.ws.commons.om.OMNamespace;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
-import org.apache.ws.commons.om.impl.llom.OMAttributeImpl;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.ws.commons.soap.*;
 
 import javax.xml.namespace.QName;

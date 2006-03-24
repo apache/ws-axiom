@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.soap;
 
-import org.apache.ws.commons.om.OMAttribute;
+import org.apache.axiom.om.OMAttribute;
 
 public class SOAPFaultTextTest extends SOAPFaultReasonTestCase {
     protected SOAPFaultText soap11FaultText;

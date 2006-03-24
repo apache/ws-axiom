@@ -16,15 +16,15 @@
 
 package org.apache.ws.commons.soap.impl.llom;
 
-import org.apache.ws.commons.om.OMAbstractFactory;
-import org.apache.ws.commons.om.OMTestCase;
-import org.apache.ws.commons.om.OMTestUtils;
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMTestCase;
+import org.apache.axiom.om.OMTestUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ws.commons.soap.SOAPBody;
 import org.apache.ws.commons.soap.SOAPEnvelope;
 import org.apache.ws.commons.soap.SOAPHeader;
 import org.apache.ws.commons.soap.SOAPProcessingException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class OMEnvelopeTest extends OMTestCase {
     private Log log = LogFactory.getLog(getClass());

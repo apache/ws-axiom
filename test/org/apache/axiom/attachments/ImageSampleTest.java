@@ -18,16 +18,16 @@ package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.utils.ImageDataSource;
 import org.apache.axiom.attachments.utils.ImageIO;
-import org.apache.ws.commons.om.AbstractTestCase;
-import org.apache.ws.commons.om.OMAbstractFactory;
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.OMFactory;
-import org.apache.ws.commons.om.OMOutputFormat;
-import org.apache.ws.commons.om.OMText;
-import org.apache.ws.commons.om.impl.llom.OMElementImpl;
-import org.apache.ws.commons.om.impl.llom.OMNamespaceImpl;
-import org.apache.ws.commons.om.impl.llom.OMTextImpl;
-import org.apache.ws.commons.om.impl.mtom.MTOMStAXSOAPModelBuilder;
+import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.impl.llom.OMElementImpl;
+import org.apache.axiom.om.impl.llom.OMNamespaceImpl;
+import org.apache.axiom.om.impl.llom.OMTextImpl;
+import org.apache.axiom.om.impl.mtom.MTOMStAXSOAPModelBuilder;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLInputFactory;

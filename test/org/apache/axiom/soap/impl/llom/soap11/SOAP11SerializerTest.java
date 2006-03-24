@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.soap.impl.llom.soap11;
 
-import org.apache.ws.commons.om.OMTestCase;
+import org.apache.axiom.om.OMTestCase;
 import org.apache.ws.commons.soap.SOAPEnvelope;
 import org.apache.ws.commons.soap.impl.builder.StAXSOAPModelBuilder;
 

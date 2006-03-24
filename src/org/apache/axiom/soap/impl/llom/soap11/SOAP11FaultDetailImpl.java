@@ -16,12 +16,12 @@
 
 package org.apache.ws.commons.soap.impl.llom.soap11;
 
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.OMNode;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
-import org.apache.ws.commons.om.impl.llom.OMNodeImpl;
-import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
-import org.apache.ws.commons.om.impl.serialize.StreamWriterToContentHandlerConverter;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.llom.OMNodeImpl;
+import org.apache.axiom.om.impl.llom.OMSerializerUtil;
+import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.ws.commons.soap.SOAP11Constants;
 import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;
@@ -55,7 +55,7 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
         }
     }
 
-    public void serialize(org.apache.ws.commons.om.impl.OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
+    public void serialize(org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
 
         // select the builder
         short builderType = PULL_TYPE_BUILDER;    // default is pull type

@@ -16,8 +16,8 @@
 
 package org.apache.ws.commons.soap;
 
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.OMException;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
 
 /**
  * An object that represents the contents of the SOAP body
@@ -36,9 +36,9 @@ public interface SOAPBody extends OMElement {
      *
      * @param e
      * @return the new <code>SOAPFault</code> object
-     * @throws org.apache.ws.commons.om.OMException
+     * @throws org.apache.axiom.om.OMException
      *          if there is a SOAP error
-     * @throws org.apache.ws.commons.om.OMException
+     * @throws org.apache.axiom.om.OMException
      *
      */
     public abstract SOAPFault addFault(Exception e) throws OMException;

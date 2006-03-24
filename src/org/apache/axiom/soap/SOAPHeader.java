@@ -16,9 +16,9 @@
 
 package org.apache.ws.commons.soap;
 
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.OMException;
-import org.apache.ws.commons.om.OMNamespace;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNamespace;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,7 +35,7 @@ public interface SOAPHeader extends OMElement {
      * @param ns
      * @return the new <CODE>SOAPHeaderBlock</CODE> object that was inserted
      *         into this <CODE>SOAPHeader</CODE> object
-     * @throws org.apache.ws.commons.om.OMException
+     * @throws org.apache.axiom.om.OMException
      *             if a SOAP error occurs
      */
     public abstract SOAPHeaderBlock addHeaderBlock(String localName,

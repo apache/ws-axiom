@@ -17,9 +17,9 @@
 package org.apache.ws.commons.soap.impl.builder;
 
 
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.impl.OMNodeEx;
-import org.apache.ws.commons.om.impl.exception.OMBuilderException;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.exception.OMBuilderException;
 import org.apache.ws.commons.soap.SOAP12Constants;
 import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;

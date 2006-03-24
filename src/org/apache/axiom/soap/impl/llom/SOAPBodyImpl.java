@@ -16,12 +16,12 @@
 
 package org.apache.ws.commons.soap.impl.llom;
 
-import org.apache.ws.commons.om.OMConstants;
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.OMException;
-import org.apache.ws.commons.om.OMNamespace;
-import org.apache.ws.commons.om.OMNode;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.ws.commons.soap.SOAP11Constants;
 import org.apache.ws.commons.soap.SOAP12Constants;
 import org.apache.ws.commons.soap.SOAPBody;
@@ -72,7 +72,7 @@ public abstract class SOAPBodyImpl extends SOAPElement
      *
      * @param e
      * @return the new <code>SOAPFault</code> object
-     * @throws org.apache.ws.commons.om.OMException
+     * @throws org.apache.axiom.om.OMException
      *                     if there is a SOAP error
      * @throws OMException
      */
@@ -140,7 +140,7 @@ public abstract class SOAPBodyImpl extends SOAPElement
 
     /**
      * @param soapFault
-     * @throws org.apache.ws.commons.om.OMException
+     * @throws org.apache.axiom.om.OMException
      *
      * @throws OMException
      */

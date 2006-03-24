@@ -16,13 +16,13 @@
 
 package org.apache.ws.commons.soap.impl.llom;
 
-import org.apache.ws.commons.om.OMAttribute;
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.OMNamespace;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
-import org.apache.ws.commons.om.impl.llom.OMAttributeImpl;
-import org.apache.ws.commons.om.impl.llom.OMElementImpl;
-import org.apache.ws.commons.om.impl.llom.OMNamespaceImpl;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.llom.OMAttributeImpl;
+import org.apache.axiom.om.impl.llom.OMElementImpl;
+import org.apache.axiom.om.impl.llom.OMNamespaceImpl;
 import org.apache.ws.commons.soap.SOAPConstants;
 import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPHeader;

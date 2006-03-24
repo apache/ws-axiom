@@ -17,7 +17,7 @@
 package org.apache.axiom.attachments;
 
 
-import org.apache.ws.commons.om.util.Base64;
+import org.apache.axiom.om.util.Base64;
 
 import javax.activation.DataHandler;
 

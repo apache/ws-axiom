@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.soap;
 
-import org.apache.ws.commons.om.OMElement;
+import org.apache.axiom.om.OMElement;
 
 import java.util.Iterator;
 

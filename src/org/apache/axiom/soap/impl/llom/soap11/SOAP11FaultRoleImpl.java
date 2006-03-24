@@ -16,10 +16,10 @@
 
 package org.apache.ws.commons.soap.impl.llom.soap11;
 
-import org.apache.ws.commons.om.OMElement;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
-import org.apache.ws.commons.om.impl.llom.OMSerializerUtil;
-import org.apache.ws.commons.om.impl.serialize.StreamWriterToContentHandlerConverter;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.llom.OMSerializerUtil;
+import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.ws.commons.soap.SOAP11Constants;
 import org.apache.ws.commons.soap.SOAPFactory;
 import org.apache.ws.commons.soap.SOAPFault;
@@ -54,7 +54,7 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
     }
 
     protected void serialize(
-            org.apache.ws.commons.om.impl.OMOutputImpl omOutput, boolean cache)
+            org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache)
             throws XMLStreamException {
 
         // select the builder

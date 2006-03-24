@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.soap;
 
-import org.apache.ws.commons.om.OMException;
+import org.apache.axiom.om.OMException;
 
 public class SOAPBodyTest extends SOAPBodyTestCase {
 

@@ -16,8 +16,14 @@
 
 package org.apache.ws.commons.soap.impl.llom;
 
-import org.apache.ws.commons.om.*;
-import org.apache.ws.commons.om.impl.OMOutputImpl;
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.OMOutputImpl;
 import org.apache.ws.commons.soap.*;
 
 import javax.xml.namespace.QName;
@@ -52,7 +58,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
      *
      * @return the <CODE>SOAPHeader</CODE> object or <CODE> null</CODE> if there
      *         is none
-     * @throws org.apache.ws.commons.om.OMException
+     * @throws org.apache.axiom.om.OMException
      *                     if there is a problem obtaining
      *                     the <CODE>SOAPHeader</CODE>
      *                     object
@@ -96,7 +102,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
      *
      * @return the <CODE>SOAPBody</CODE> object for this <CODE>
      *         SOAPEnvelope</CODE> object or <CODE>null</CODE> if there is none
-     * @throws org.apache.ws.commons.om.OMException
+     * @throws org.apache.axiom.om.OMException
      *                     if there is a problem obtaining
      *                     the <CODE>SOAPBody</CODE> object
      * @throws OMException

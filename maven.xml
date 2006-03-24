@@ -30,7 +30,7 @@
                 <ant:include name="org/apache/ws/commons/om/impl/llom/**"/>
             </ant:fileset>
         </jar>
-        <ant:copy toDir="${maven.repo.local}/${groupId}/jars">
+        <ant:copy toDir="${maven.repo.local}/ws-commons/jars">
             <ant:fileset file="target/axiom-api-${axiom.version}.jar"/>
             <ant:fileset file="target/axiom-impl-${axiom.version}.jar"/>
         </ant:copy>

@@ -16,7 +16,7 @@
 
 package org.apache.axiom.attachments;
 
-import org.apache.ws.commons.om.OMException;
+import org.apache.axiom.om.OMException;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;

@@ -16,9 +16,9 @@
 
 package org.apache.ws.commons.soap;
 
-import org.apache.ws.commons.om.OMFactory;
-import org.apache.ws.commons.om.OMNamespace;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMXMLParserWrapper;
 
 
 public interface SOAPFactory extends OMFactory {

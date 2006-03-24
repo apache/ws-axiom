@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.soap;
 
-import org.apache.ws.commons.om.OMElement;
+import org.apache.axiom.om.OMElement;
 
 /**
  * <P>An object representing the contents in the SOAP header part of the SOAP

@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.soap;
 
-import org.apache.ws.commons.om.OMNamespace;
+import org.apache.axiom.om.OMNamespace;
 
 public class SOAPHeaderTestCase extends SOAPTestCase {
     protected SOAPHeader soap11Header;

@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.soap;
 
-import org.apache.ws.commons.om.OMTestCase;
+import org.apache.axiom.om.OMTestCase;
 import org.apache.ws.commons.soap.impl.builder.StAXSOAPModelBuilder;
 
 public class SOAPMessageTest extends OMTestCase {

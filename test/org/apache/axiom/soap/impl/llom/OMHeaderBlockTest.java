@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.soap.impl.llom;
 
-import org.apache.ws.commons.om.OMTestCase;
+import org.apache.axiom.om.OMTestCase;
 import org.apache.ws.commons.soap.SOAPHeader;
 import org.apache.ws.commons.soap.SOAPHeaderBlock;
 

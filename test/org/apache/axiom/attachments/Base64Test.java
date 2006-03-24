@@ -17,13 +17,12 @@
 package org.apache.axiom.attachments;
 
 import junit.framework.TestCase;
+import org.apache.axiom.om.util.Base64;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import org.apache.ws.commons.om.util.Base64;
 
 public class Base64Test extends TestCase {
 

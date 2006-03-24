@@ -17,7 +17,7 @@
 package org.apache.ws.commons.soap;
 
 import junit.framework.TestCase;
-import org.apache.ws.commons.om.impl.builder.StAXBuilder;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.ws.commons.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLInputFactory;

@@ -16,7 +16,7 @@
 
 package org.apache.ws.commons.soap;
 
-import org.apache.ws.commons.om.OMAbstractFactory;
+import org.apache.axiom.om.OMAbstractFactory;
 
 public class SOAPFaultTestCase extends SOAPBodyTestCase {
     protected SOAPFault soap11Fault;

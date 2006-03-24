@@ -16,10 +16,10 @@
 
 package org.apache.ws.commons.soap.impl.llom.soap12;
 
-import org.apache.ws.commons.om.OMNamespace;
-import org.apache.ws.commons.om.OMXMLParserWrapper;
-import org.apache.ws.commons.om.impl.llom.OMNamespaceImpl;
-import org.apache.ws.commons.om.impl.llom.factory.OMLinkedListImplFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.llom.OMNamespaceImpl;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.ws.commons.soap.*;
 import org.apache.ws.commons.soap.impl.llom.SOAPEnvelopeImpl;
 import org.apache.ws.commons.soap.impl.llom.SOAPMessageImpl;
