@@ -22,6 +22,8 @@
             <ant:fileset dir="target/classes">
                 <ant:exclude name="org/apache/ws/commons/soap/impl/llom/**"/>
                 <ant:exclude name="org/apache/ws/commons/om/impl/llom/**"/>
+				<ant:exclude name="org/apache/ws/commons/soap/impl/llom/**"/>
+                <ant:exclude name="org/apache/ws/commons/om/impl/llom/**"/>
             </ant:fileset>
         </jar>
         <jar destfile="target/axiom-impl-${axiom.version}.jar">
@@ -30,9 +32,16 @@
                 <ant:include name="org/apache/ws/commons/om/impl/llom/**"/>
             </ant:fileset>
         </jar>
+        <jar destfile="target/axiom-dom-${axiom.version}.jar">
+            <ant:fileset dir="target/classes">
+                <ant:include name="org/apache/ws/commons/soap/impl/dom/**"/>
+                <ant:include name="org/apache/ws/commons/om/impl/dom/**"/>
+            </ant:fileset>
+        </jar>
         <ant:copy toDir="${maven.repo.local}/ws-commons/jars">
             <ant:fileset file="target/axiom-api-${axiom.version}.jar"/>
             <ant:fileset file="target/axiom-impl-${axiom.version}.jar"/>
+			<ant:fileset file="target/axiom-dom-${axiom.version}.jar"/>
         </ant:copy>
 
     </postGoal>
