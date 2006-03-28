@@ -23,18 +23,20 @@ import javax.xml.namespace.QName;
  */
 public interface OMFactory {
 
-	/**
-	 * Creates a new OMDocument.
-	 */
-	public OMDocument createOMDocument();
-	public OMDocument createOMDocument(OMXMLParserWrapper builder);
-	
-	
+    /**
+     * Creates a new OMDocument.
+     */
+    public OMDocument createOMDocument();
+
+    public OMDocument createOMDocument(OMXMLParserWrapper builder);
+
+
     /**
      * @param localName
      * @param ns
      */
     public OMElement createOMElement(String localName, OMNamespace ns);
+
     public OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent) throws OMException;
 
     /**
@@ -90,14 +92,28 @@ public interface OMFactory {
     public OMText createText(OMElement parent, String text);
 
     /**
-     *
+     * @param parent
+     * @param text   - This text itself can contain a namespace inside it.
+     * @return
+     */
+    public OMText createText(OMElement parent, QName text);
+
+    /**
      * @param parent
      * @param text
-     * @param type - this should be either of XMLStreamConstants.CHARACTERS, XMLStreamConstants.CDATA,
-     * XMLStreamConstants.SPACE, XMLStreamConstants.ENTITY_REFERENCE
+     * @param type   - this should be either of XMLStreamConstants.CHARACTERS, XMLStreamConstants.CDATA,
+     *               XMLStreamConstants.SPACE, XMLStreamConstants.ENTITY_REFERENCE
      * @return Returns OMText.
      */
     public OMText createText(OMElement parent, String text, int type);
+
+    /**
+     * @param parent
+     * @param text   - This text itself can contain a namespace inside it.
+     * @param type
+     * @return
+     */
+    public OMText createText(OMElement parent, QName text, int type);
 
     /**
      * @param s
@@ -106,12 +122,11 @@ public interface OMFactory {
     public OMText createText(String s);
 
     /**
-     *
      * @param s
      * @param type - OMText node can handle SPACE, CHARACTERS, CDATA and ENTITY REFERENCES. For Constants, use either
-     * XMLStreamConstants or constants found in OMNode.
+     *             XMLStreamConstants or constants found in OMNode.
      * @return Returns OMText.
-     */ 
+     */
     public OMText createText(String s, int type);
 
     public OMText createText(String s, String mimeType, boolean optimize);
@@ -122,14 +137,15 @@ public interface OMFactory {
                              boolean optimize);
 
     public OMText createText(String contentID, OMElement parent,
-            OMXMLParserWrapper builder);
-    
+                             OMXMLParserWrapper builder);
+
     public OMAttribute createOMAttribute(String localName,
                                          OMNamespace ns,
                                          String value);
 
     /**
      * Creates DocType/DTD.
+     *
      * @param parent
      * @param content
      * @return Returns doctype.
@@ -138,6 +154,7 @@ public interface OMFactory {
 
     /**
      * Creates a PI.
+     *
      * @param parent
      * @param piTarget
      * @param piData
@@ -147,6 +164,7 @@ public interface OMFactory {
 
     /**
      * Creates a comment.
+     *
      * @param parent
      * @param content
      * @return Returns OMComment.

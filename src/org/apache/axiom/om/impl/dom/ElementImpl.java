@@ -966,9 +966,13 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             child = child.getNextOMSibling();
         }
 
-        TextImpl textNode = (TextImpl) ((DocumentImpl) this.ownerNode)
+        TextImpl textNode = (TextImpl) (this.ownerNode)
                 .createTextNode(text);
         this.addChild(textNode);
+    }
+
+    public void setText(QName text) {
+        throw new UnsupportedOperationException();
     }
 
     /*

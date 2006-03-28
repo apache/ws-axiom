@@ -16,6 +16,8 @@
 
 package org.apache.axiom.om;
 
+import javax.xml.namespace.QName;
+
 
 /**
  * Interface OMText
@@ -27,6 +29,7 @@ public interface OMText extends OMNode {
      * @return Returns String.
      */
     String getText();
+    QName getTextAsQName();
 
     /**
      * Gets the datahandler.
@@ -51,4 +54,5 @@ public interface OMText extends OMNode {
      * @return Returns String.
      */
     String getContentID();
+
 }

@@ -221,6 +221,7 @@ public interface OMElement extends OMNode, OMContainer {
      * @param text
      */
     public void setText(String text);
+    public void setText(QName text);
 
     /**
      * Returns the non-empty text children as a String.

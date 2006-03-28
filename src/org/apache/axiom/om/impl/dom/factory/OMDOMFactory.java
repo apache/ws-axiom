@@ -190,10 +190,18 @@ public class OMDOMFactory implements OMFactory {
         return txt;
     }
 
+    public OMText createText(OMElement parent, QName text) {
+        throw new UnsupportedOperationException();
+    }
+
     public OMText createText(OMElement parent, String text, int type) {
         OMText textNode = createText(parent, text);
         ((OMNodeEx) textNode).setType(type);
         return textNode;
+    }
+
+    public OMText createText(OMElement parent, QName text, int type) {
+        throw new UnsupportedOperationException();
     }
 
     /**

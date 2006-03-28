@@ -140,7 +140,7 @@ public class OMElementImpl extends OMNodeImpl
     /**
      * Method handleNamespace.
      */
-    private OMNamespace handleNamespace(QName qname) {
+    OMNamespace handleNamespace(QName qname) {
         OMNamespace ns = null;
 
         // first try to find a namespace from the scope
@@ -617,6 +617,24 @@ public class OMElementImpl extends OMNodeImpl
      * mixed content) before setting the text.
      */
     public void setText(String text) {
+
+        OMNode child = this.getFirstOMChild();
+        while (child != null) {
+            if (child.getType() == OMNode.TEXT_NODE) {
+                child.detach();
+            }
+            child = child.getNextOMSibling();
+        }
+
+        OMAbstractFactory.getOMFactory().createText(this, text);
+    }
+
+    /**
+     * Sets the text, as a QName, of the given element.
+     * caution - This method will wipe out all the text elements (and hence any
+     * mixed content) before setting the text.
+     */
+    public void setText(QName text) {
 
         OMNode child = this.getFirstOMChild();
         while (child != null) {
