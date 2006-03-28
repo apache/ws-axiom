@@ -20,22 +20,22 @@
     <postGoal name="jar">
         <jar destfile="target/axiom-api-${axiom.version}.jar">
             <ant:fileset dir="target/classes">
-                <ant:exclude name="org/apache/ws/commons/soap/impl/llom/**"/>
-                <ant:exclude name="org/apache/ws/commons/om/impl/llom/**"/>
-				<ant:exclude name="org/apache/ws/commons/soap/impl/llom/**"/>
-                <ant:exclude name="org/apache/ws/commons/om/impl/llom/**"/>
+                <ant:exclude name="org/apache/axiom/soap/impl/llom/**"/>
+                <ant:exclude name="org/apache/axiom/om/impl/llom/**"/>
+				<ant:exclude name="org/apache/axiom/soap/impl/llom/**"/>
+                <ant:exclude name="org/apache/axiom/om/impl/llom/**"/>
             </ant:fileset>
         </jar>
         <jar destfile="target/axiom-impl-${axiom.version}.jar">
             <ant:fileset dir="target/classes">
-                <ant:include name="org/apache/ws/commons/soap/impl/llom/**"/>
-                <ant:include name="org/apache/ws/commons/om/impl/llom/**"/>
+                <ant:include name="org/apache/axiom/soap/impl/llom/**"/>
+                <ant:include name="org/apache/axiom/om/impl/llom/**"/>
             </ant:fileset>
         </jar>
         <jar destfile="target/axiom-dom-${axiom.version}.jar">
             <ant:fileset dir="target/classes">
-                <ant:include name="org/apache/ws/commons/soap/impl/dom/**"/>
-                <ant:include name="org/apache/ws/commons/om/impl/dom/**"/>
+                <ant:include name="org/apache/axiom/soap/impl/dom/**"/>
+                <ant:include name="org/apache/axiom/om/impl/dom/**"/>
             </ant:fileset>
         </jar>
         <ant:copy toDir="${maven.repo.local}/ws-commons/jars">
