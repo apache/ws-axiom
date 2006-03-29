@@ -31,9 +31,9 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import javax.xml.namespace.QName;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -45,9 +45,6 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
 
     private boolean isBinary;
 
-    /**
-     * 
-     */
     private String contentID = null;
 
     /**

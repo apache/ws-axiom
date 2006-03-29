@@ -671,6 +671,29 @@ public class OMElementImpl extends OMNodeImpl
         return childText;
     }
 
+    public QName getTextAsQName() {
+        String childText = "";
+        OMNode child = this.getFirstOMChild();
+        OMText textNode;
+
+        while (child != null) {
+            if (child.getType() == OMNode.TEXT_NODE) {
+                textNode = (OMText) child;
+                if (textNode.getText() != null &&
+                        !"".equals(textNode.getText())) {
+                    String namespaceURI = textNode.getTextAsQName().getNamespaceURI();
+                    if (namespaceURI != null && !"".equals(namespaceURI)) {
+                        return textNode.getTextAsQName();
+                    }
+                    childText += textNode.getText();
+                }
+            }
+            child = child.getNextOMSibling();
+        }
+
+        return new QName(childText);
+    }
+
     /**
      * Returns the concatination string of TRIMMED values of all
      * OMText  child nodes of this element.

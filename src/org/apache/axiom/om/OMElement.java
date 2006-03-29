@@ -229,6 +229,7 @@ public interface OMElement extends OMNode, OMContainer {
      * @return Returns a String representing the concatenation of the child text nodes.
      */
     public String getText();
+    public QName getTextAsQName();
 
     /**
      * Returns the local name of the element.
