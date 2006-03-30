@@ -210,7 +210,8 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createText(java.lang.String)
      */
     public OMText createText(String s) {
-        return new TextImpl(s, this);
+        TextImpl textImpl = new TextImpl(this.document,s, this);
+        return textImpl;
     }
 
     /**
@@ -221,7 +222,7 @@ public class OMDOMFactory implements OMFactory {
     public OMText createText(String text, int type) {
         switch (type) {
         case Node.TEXT_NODE:
-            return new TextImpl(text, this);
+            return new TextImpl(this.document, text, this);
         default:
             throw new OMDOMException("Only Text nodes are supported right now");
         }
@@ -235,7 +236,7 @@ public class OMDOMFactory implements OMFactory {
      *      java.lang.String, boolean)
      */
     public OMText createText(String text, String mimeType, boolean optimize) {
-        return new TextImpl(text, mimeType, optimize, this);
+        return new TextImpl(this.document, text, mimeType, optimize, this);
     }
 
     /**
@@ -245,7 +246,7 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createText(java.lang.Object, boolean)
      */
     public OMText createText(Object dataHandler, boolean optimize) {
-        return new TextImpl(dataHandler, optimize, this);
+        return new TextImpl(this.document, dataHandler, optimize, this);
     }
 
     /**

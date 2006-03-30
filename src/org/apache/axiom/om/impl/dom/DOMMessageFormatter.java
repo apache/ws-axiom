@@ -132,19 +132,19 @@ public class DOMMessageFormatter {
     public static void init() {
         if (locale != null) {
             domResourceBundle = PropertyResourceBundle.getBundle(
-                    "org.apache.axis2.om.impl.dom.msg.DOMMessages", locale);
+                    "org.apache.axiom.om.impl.dom.msg.DOMMessages", locale);
             serResourceBundle = PropertyResourceBundle.getBundle(
-                    "org.apache.axis2.om.impl.dom.msg.XMLSerializerMessages",
+                    "org.apache.axiom.om.impl.dom.msg.XMLSerializerMessages",
                     locale);
             xmlResourceBundle = PropertyResourceBundle.getBundle(
-                    "org.apache.axis2.om.impl.dom.msg.XMLMessages", locale);
+                    "org.apache.axiom.om.impl.dom.msg.XMLMessages", locale);
         } else {
             domResourceBundle = PropertyResourceBundle
-                    .getBundle("org.apache.axis2.om.impl.dom.msg.DOMMessages");
+                    .getBundle("org.apache.axiom.om.impl.dom.msg.DOMMessages");
             serResourceBundle = PropertyResourceBundle
-                    .getBundle("org.apache.axis2.om.impl.dom.msg.XMLSerializerMessages");
+                    .getBundle("org.apache.axiom.om.impl.dom.msg.XMLSerializerMessages");
             xmlResourceBundle = PropertyResourceBundle
-                    .getBundle("org.apache.axis2.om.impl.dom.msg.XMLMessages");
+                    .getBundle("org.apache.axiom.om.impl.dom.msg.XMLMessages");
         }
     }
 

@@ -120,8 +120,8 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
      * @param optimize
      *            To send binary content. Created progrmatically.
      */
-    public TextImpl(Object dataHandler, boolean optimize, OMFactory factory) {
-        super(factory);
+    public TextImpl(DocumentImpl ownerNode, Object dataHandler, boolean optimize, OMFactory factory) {
+        super(ownerNode, factory);
         this.dataHandlerObject = dataHandler;
         this.isBinary = true;
         this.optimize = optimize;
