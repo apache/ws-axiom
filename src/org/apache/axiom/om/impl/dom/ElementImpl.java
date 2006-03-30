@@ -1133,7 +1133,12 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         }
         ArrayList list = new ArrayList();
         for (int i = 0; i < attributes.getLength(); i++) {
-            list.add(attributes.getItem(i));
+            OMAttribute item = (OMAttribute)attributes.getItem(i);
+            if (item.getNamespace() == null
+                    || !(item.getNamespace() != null && OMConstants.XMLNS_NS_URI
+                            .equals(item.getNamespace().getName()))) {
+                list.add(item);
+            }
         }
 
         return list.iterator();
