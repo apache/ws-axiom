@@ -26,13 +26,14 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.llom.OMSerializerUtil;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * OM should be able to be built from any data source. And the model it builds 
- * may be a SOAP specific one or just an XML model. This class will give 
+ * OM should be able to be built from any data source. And the model it builds
+ * may be a SOAP specific one or just an XML model. This class will give
  * some common functionality of OM Building from StAX.
  */
 public abstract class StAXBuilder implements OMXMLParserWrapper {
@@ -74,7 +75,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     protected boolean parserAccessed = false;
     protected OMDocument document;
-
 
 
     /**
@@ -126,23 +126,29 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected void processAttributes(OMElement node) {
         int attribCount = parser.getAttributeCount();
         for (int i = 0; i < attribCount; i++) {
-            OMNamespace ns = null;
             String uri = parser.getAttributeNamespace(i);
             String prefix = parser.getAttributePrefix(i);
 
-            if (uri != null && uri.hashCode() != 0) {
-                ns = node.findNamespace(uri, prefix);
-                if (ns== null) {
-                    ns = node.declareNamespace(uri, prefix);
+
+            OMNamespace namespace = null;
+            if (uri != null && uri.length() > 0) {
+
+                // prefix being null means this elements has a default namespace or it has inherited
+                // a default namespace from its parent
+                namespace = node.findNamespace(uri, prefix);
+                if (namespace == null) {
+                    if (prefix == null || "".equals(prefix)) {
+                        prefix = OMSerializerUtil.getNextNSPrefix();
+                    }
+                    namespace = node.declareNamespace(uri, prefix);
                 }
             }
 
-
             // todo if the attributes are supposed to namespace qualified all the time
             // todo then this should throw an exception here
-           
+
             node.addAttribute(parser.getAttributeLocalName(i),
-                    parser.getAttributeValue(i), ns);
+                    parser.getAttributeValue(i), namespace);
         }
     }
 
@@ -159,7 +165,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         } else if (!lastNode.isComplete()) {
             node = omfactory.createText((OMElement) lastNode, parser.getText(), textType);
         } else if (!(lastNode.getParent() instanceof OMDocument)) {
-            node = omfactory.createText((OMElement)lastNode.getParent(), parser.getText(), textType);
+            node = omfactory.createText((OMElement) lastNode.getParent(), parser.getText(), textType);
         }
         return node;
     }
@@ -195,7 +201,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             } while (!parser.getName().equals(element.getQName()));
             lastNode = element.getPreviousOMSibling();
             if (lastNode != null) {
-                ((OMNodeEx)lastNode).setNextOMSibling(null);
+                ((OMNodeEx) lastNode).setNextOMSibling(null);
             } else {
                 OMElement parent = (OMElement) element.getParent();
                 if (parent == null) {
@@ -223,7 +229,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     }
 
     /**
-     * Method getNamespace. 
+     * Method getNamespace.
      *
      * @return Returns String.
      * @throws OMException
@@ -358,7 +364,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @return Returns Object.
      */
     public Object getParser() {
-        if (parserAccessed){
+        if (parserAccessed) {
             throw new IllegalStateException(
                     "Parser already accessed!");
         }
@@ -392,7 +398,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * Forwards the parser one step further, if parser is not completed yet.
      * If this is called after parser is done, then throw an OMException.
      * If the cache is set to false, then returns the event, *without* building the OM tree.
-     * If the cache is set to true, then handles all the events within this, and 
+     * If the cache is set to true, then handles all the events within this, and
      * builds the object structure appropriately and returns the event.
      *
      * @return Returns int.
@@ -418,7 +424,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
     /**
      * Method getRegisteredContentHandler.
-     * 
+     *
      * @return Returns Object.
      */
     public Object getRegisteredContentHandler() {

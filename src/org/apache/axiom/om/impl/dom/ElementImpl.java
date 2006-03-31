@@ -689,9 +689,16 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (namespaces == null) {
             this.namespaces = new HashMap(5);
         }
-        if (namespace != null
-                && (namespace.getPrefix() != null || "".equals(namespace
-                .getPrefix()))) {
+
+        if (namespace != null) {
+            String prefix = namespace.getPrefix();
+            if ("".equals(prefix)) {
+                namespace = declareDefaultNamespace(namespace.getName());
+            } else if (prefix == null) {
+                prefix = OMSerializerUtil.getNextNSPrefix();
+                namespace = new NamespaceImpl(namespace.getName(), prefix, this.factory);
+            }
+
             if (!namespace.getPrefix().startsWith(OMConstants.XMLNS_NS_PREFIX)) {
                 namespaces.put(namespace.getPrefix(), namespace);
             }
@@ -706,8 +713,40 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      *      String)
      */
     public OMNamespace declareNamespace(String uri, String prefix) {
+        if ("".equals(prefix))
+            prefix = OMSerializerUtil.getNextNSPrefix();
         NamespaceImpl ns = new NamespaceImpl(uri, prefix, this.factory);
         return declareNamespace(ns);
+    }
+
+    /**
+     * We use "" to store the default namespace of this element. As one can see user can not give ""
+     * as the prefix, when he declare a usual namespace.
+     *
+     * @param uri
+     */
+    public OMNamespace declareDefaultNamespace(String uri) {
+        NamespaceImpl ns = new NamespaceImpl(uri, "", this.factory);
+        if (namespaces == null) {
+            this.namespaces = new HashMap(5);
+        }
+        namespaces.put("", ns);
+        return ns;
+    }
+
+    public OMNamespace getDefaultNamespace() {
+        if (namespaces != null) {
+            NamespaceImpl defaultNS = (NamespaceImpl) namespaces.get("");
+            if (defaultNS != null) {
+                return defaultNS;
+            }
+        }
+
+        if (parentNode instanceof ElementImpl) {
+            ElementImpl element = (ElementImpl) parentNode;
+            element.getDefaultNamespace();
+        }
+        return null;
     }
 
     /**
@@ -855,7 +894,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      * @see org.apache.axiom.om.OMElement#getNamespace()
      */
     public OMNamespace getNamespace() throws OMException {
-        return this.namespace;
+        return namespace != null ? namespace : getDefaultNamespace();
     }
 
     /**
@@ -1013,7 +1052,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     protected void serialize(org.apache.axiom.om.impl.OMOutputImpl omOutput,
                              boolean cache) throws XMLStreamException {
 
-        if (cache) {
+        if (!cache) {
             // in this case we don't care whether the elements are built or not
             // we just call the serializeAndConsume methods
             OMSerializerUtil.serializeStartpart(this, omOutput);
@@ -1101,8 +1140,14 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      * @see Object#toString()
      */
     public String toString() {
-        return (this.namespace != null) ? namespace.getPrefix() + ":"
-                + this.localName : "" + this.localName;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+//            this.build();
+            this.serialize(baos);
+        } catch (XMLStreamException e) {
+            throw new RuntimeException("Can not serialize OM Element " + this.getLocalName(), e);
+        }
+        return new String(baos.toByteArray());
     }
 
     /*
@@ -1133,10 +1178,10 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         }
         ArrayList list = new ArrayList();
         for (int i = 0; i < attributes.getLength(); i++) {
-            OMAttribute item = (OMAttribute)attributes.getItem(i);
+            OMAttribute item = (OMAttribute) attributes.getItem(i);
             if (item.getNamespace() == null
                     || !(item.getNamespace() != null && OMConstants.XMLNS_NS_URI
-                            .equals(item.getNamespace().getName()))) {
+                    .equals(item.getNamespace().getName()))) {
                 list.add(item);
             }
         }

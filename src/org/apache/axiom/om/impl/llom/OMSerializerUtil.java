@@ -73,7 +73,10 @@ public class OMSerializerUtil {
                         attr.getAttributeValue());
             }
         } else {
-            writer.writeAttribute(attr.getLocalName(), attr.getAttributeValue());
+            String localName = attr.getLocalName();
+            String attributeValue = attr.getAttributeValue();
+            System.out.println(localName + ":" +attributeValue);
+            writer.writeAttribute(localName, attributeValue);
         }
     }
 
@@ -86,22 +89,27 @@ public class OMSerializerUtil {
      */
     public static void serializeNamespace(OMNamespace namespace, org.apache.axiom.om.impl.OMOutputImpl omOutput)
             throws XMLStreamException {
+        if (namespace == null) {
+            return;
+        }
+        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
+        String uri = namespace.getName();
+        String prefix = namespace.getPrefix();
 
-        if (namespace != null) {
-            XMLStreamWriter writer = omOutput.getXmlStreamWriter();
-            String uri = namespace.getName();
-            String prefix = writer.getPrefix(uri);
-            String ns_prefix = namespace.getPrefix();
+        String prefixFromWriter = writer.getPrefix(uri);
 
-            if (uri != null && !"".equals(uri)) {
-                if (prefix == null) {
-                    ns_prefix = ns_prefix == null ? getNextNSPrefix() : ns_prefix;
-                    writer.writeNamespace(ns_prefix, uri);
-                } else if (ns_prefix != null && !ns_prefix.equals(prefix)) {
-                    writer.writeNamespace(ns_prefix, uri);
+        if (uri != null && !"".equals(uri)) {
+            // lets see whether we have default namespace now
+            if (prefix != null && "".equals(prefix) && prefixFromWriter == null) {
+                // this has not been declared earlier
+                writer.writeDefaultNamespace(uri);
+                writer.setDefaultNamespace(uri);
+            } else {
+                prefix = prefix == null ? getNextNSPrefix() : prefix;
+                if (prefix != null && !prefix.equals(prefixFromWriter)) {
+                    writer.writeNamespace(prefix, uri);
                 }
             }
-
         }
     }
 
@@ -129,7 +137,7 @@ public class OMSerializerUtil {
                     writer.writeStartElement(nameSpaceName,
                             element.getLocalName());
                 } else {
-                    prefix = (prefix == null) ? "" : prefix;
+                    prefix = (prefix == null) ? getNextNSPrefix() : prefix;
                     writer.writeStartElement(prefix, element.getLocalName(),
                             nameSpaceName);
                     writer.writeNamespace(prefix, nameSpaceName);
@@ -141,12 +149,14 @@ public class OMSerializerUtil {
             }
         } else {
             writer.writeStartElement(element.getLocalName());
-            // we need to check whether there's a default namespace visible at this point because
-            // otherwise this element will go into that namespace unintentionally. So we check
-            // whether there is a default NS visible and if so turn it off.
-            if (writer.getNamespaceContext().getNamespaceURI("") != null) {
-                writer.writeDefaultNamespace("");
-            }
+
+            /** // we need to check whether there's a default namespace visible at this point because
+             // otherwise this element will go into that namespace unintentionally. So we check
+             // whether there is a default NS visible and if so turn it off.
+             if (writer.getNamespaceContext().getNamespaceURI("") != null) {
+             writer.writeDefaultNamespace("");
+             }   */
+
         }
 
         // add the namespaces

@@ -46,6 +46,8 @@ public interface OMElement extends OMNode, OMContainer {
      *               caller is expected to ensure that the URI is a valid namespace name.
      * @param prefix The prefix to associate with the given namespace.
      *               The caller is expected to ensure that this is a valid XML prefix.
+     *               If null is given, first this will check for an existing namespace
+     *               with the same uri. If not found, a prefix will be auto-generated.
      * @return Returns the created namespace information item.
      * @see #declareNamespace(OMNamespace)
      * @see #findNamespace(String, String)
@@ -53,10 +55,25 @@ public interface OMElement extends OMNode, OMContainer {
      */
     public OMNamespace declareNamespace(String uri, String prefix);
 
+
+    /**
+     * This will declare a default namespace for this element explicitly
+     * @param uri
+     * @return
+     */
+    public OMNamespace declareDefaultNamespace(String uri);
+
+    /**
+     * This will retrieve the default namespace of this element, if available. null returned if none
+     * is found.
+     * @return
+     */
+    public OMNamespace getDefaultNamespace();
+
     /**
      * Declares a namespace with the element as its scope.
      *
-     * @param namespace The namespace to declare
+     * @param namespace The namespace to declare.
      * @return Returns the namespace parameter passed.
      * @see #declareNamespace(String, String)
      * @see #findNamespace(String, String)

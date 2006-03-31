@@ -86,10 +86,21 @@ import java.io.ByteArrayInputStream;
 
 		        }
 		    }
-		 
+
+        public static void main(String[] args) {
+            String textXML = "<Assertion xmlns=\"urn:oasis:names:tc:SAML:1.0:assertion\">Test</Assertion>";
+            try {
+                StAXOMBuilder builder = new StAXOMBuilder(new ByteArrayInputStream(textXML.getBytes()));
+                System.out.println("builder.getDoc = " + builder.getDocumentElement());
+            } catch (XMLStreamException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+
+        }
 
 
-	}
+
+    }
 
 
 

@@ -156,10 +156,13 @@ public class OMElementImpl extends OMNodeImpl
              */
             if (ns == null) {
                 String prefix = qname.getPrefix();
+                if ("".equals(prefix)) {
+                    prefix = OMSerializerUtil.getNextNSPrefix();
+                }
                 ns = declareNamespace(namespaceURI, prefix);
             }
             if (ns != null) {
-                this.ns = (ns);
+                this.ns = ns;
             }
         } else
 
@@ -287,8 +290,38 @@ public class OMElementImpl extends OMNodeImpl
      * @return Returns namespace.
      */
     public OMNamespace declareNamespace(String uri, String prefix) {
+        if ("".equals(prefix))
+            prefix = OMSerializerUtil.getNextNSPrefix();
         OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix, this.factory);
         return declareNamespace(ns);
+    }
+
+    /**
+     * We use "" to store the default namespace of this element. As one can see user can not give ""
+     * as the prefix, when he declare a usual namespace.
+     *
+     * @param uri
+     */
+    public OMNamespace declareDefaultNamespace(String uri) {
+        OMNamespaceImpl namespace = new OMNamespaceImpl(uri, "", this.factory);
+
+        if (namespaces == null) {
+            this.namespaces = new HashMap(5);
+        }
+        namespaces.put("", namespace);
+        return namespace;
+    }
+
+    public OMNamespace getDefaultNamespace() {
+        OMNamespace defaultNS;
+        if (namespaces != null && (defaultNS = (OMNamespace) namespaces.get("")) != null) {
+            return defaultNS;
+        }
+        if (parent instanceof OMElementImpl) {
+            return ((OMElementImpl) parent).getDefaultNamespace();
+
+        }
+        return null;
     }
 
     /**
@@ -375,8 +408,9 @@ public class OMElementImpl extends OMNodeImpl
                         omNamespace.getName().equals(uri)) {
                     if (ns == null) {
                         ns = omNamespace;
-                    } else if (omNamespace.getPrefix() == null || omNamespace.getPrefix().length() == 0) {
-                            ns = omNamespace;
+                    } else
+                    if (omNamespace.getPrefix() == null || omNamespace.getPrefix().length() == 0) {
+                        ns = omNamespace;
 
                     }
                 }
@@ -821,7 +855,7 @@ public class OMElementImpl extends OMNodeImpl
      * @throws OMException
      */
     public OMNamespace getNamespace() throws OMException {
-        return ns;
+        return ns != null ? ns : getDefaultNamespace();
     }
 
     /**
