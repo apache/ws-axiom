@@ -38,10 +38,18 @@
 	<shortDescription>AXIOM</shortDescription>
 	<!-- the project home page -->
 	<url>http://ws.apache.org/commons/axiom</url>
-	<issueTrackingUrl>http://issues.apache.org/jira/browse/WS-Commons</issueTrackingUrl>
+	<issueTrackingUrl>http://issues.apache.org/jira/browse/WSCOMMONS</issueTrackingUrl>
 	<siteAddress>ws.apache.org/commons/axiom</siteAddress>
 	<siteDirectory>/www/ws.apache.org/commons/axiom/</siteDirectory>
 	<distributionDirectory>/www/ws.apache.org/builds/</distributionDirectory>
+        <mailingLists>
+		<mailingList>
+			<name>Commons Developer List</name>
+			<subscribe>commons-dev-subscribe@ws.apache.org</subscribe>
+			<unsubscribe>commons-dev-unsubscribe@ws.apache.org</unsubscribe>
+			<archive>http://mail-archives.apache.org/mod_mbox/ws-commons-dev/</archive>
+		</mailingList>
+         </mailingLists>
 
     <!-- ========== -->
 	<!-- Developers -->
@@ -246,12 +254,7 @@
 
     <dependencies>
         <!-- external JARs -->
-        <!-- dependency>
-            <groupId>ws</groupId>
-            <artifactId>ws-common</artifactId>
-            <version>${pom.currentVersion}</version>
-        </dependency -->
-        
+              
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
