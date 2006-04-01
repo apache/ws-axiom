@@ -5,7 +5,7 @@
 			<item name="Home" href="index.html"/>
 			<item nane="Downloads">
 				<item name="Releases" href="download.cgi"/>
-				<item name="Source Code" href="http://svn.apache.org/repos/asf/webservices/commons/modules/axiom"/>
+				<item name="Source Code" href="http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/"/>
 			</item>
 			<item name="Documentation">
 				<item name="OM Tutorial" href="OMTutorial.html"/>
@@ -14,7 +14,9 @@
 			<item name="Project Information">
 				<item name="Mailing Lists" href="/mail-lists.html"/>
 				<item name="Project Team" href="/team-list.html"/>
-			</item>
+				<item name="Issue Tracking" href="http://issues.apache.org/jira/browse/WSCOMMONS"/>
+				<item name="Dependencies" href="/dependencies.html"/>
+                        </item>
 		</menu>
 	</body>
 	
