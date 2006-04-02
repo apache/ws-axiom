@@ -92,13 +92,11 @@ public class UUIDGenerator {
             UUIDGenerator.getInitialUUID();
         }
         long endTime = new Date().getTime();
-        System.out.println("getInitialUUID Difference = " + (endTime - startTime));
 
         startTime = new Date().getTime();
         for (int i = 0; i < 100000; i++) {
             UUIDGenerator.getUUID();
         }
         endTime = new Date().getTime();
-        System.out.println("getUUID Difference = " + (endTime - startTime));
     }
 }

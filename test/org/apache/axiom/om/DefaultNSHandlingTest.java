@@ -35,8 +35,6 @@ public class DefaultNSHandlingTest extends TestCase {
             StAXOMBuilder stAXOMBuilder = new StAXOMBuilder(new ByteArrayInputStream(testXML.getBytes()));
             OMElement documentElement = stAXOMBuilder.getDocumentElement();
 
-            System.out.println("documentElement = " + documentElement);
-
             checkNS(documentElement);
 
             checkNSWithChildren(documentElement);
@@ -88,11 +86,9 @@ public class DefaultNSHandlingTest extends TestCase {
             XMLStreamWriter xmlStreamWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(System.out);
 
             xmlStreamWriter.writeStartElement("Foo");
-            System.out.println(xmlStreamWriter.getPrefix("test.org"));
             xmlStreamWriter.writeDefaultNamespace("test.org");
             xmlStreamWriter.setDefaultNamespace("test.org");
             xmlStreamWriter.writeStartElement("Bar");
-            System.out.println("*"+xmlStreamWriter.getPrefix("test.org")+ "*");
 
             xmlStreamWriter.writeEndElement();
             xmlStreamWriter.writeEndElement();
