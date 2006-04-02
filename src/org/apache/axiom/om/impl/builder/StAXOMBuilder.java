@@ -303,7 +303,6 @@ public class StAXOMBuilder extends StAXBuilder {
 
         OMNamespace namespace = null;
         if (namespaceURI != null && namespaceURI.length() > 0) {
-            System.out.println(prefix+ ":" + namespaceURI);
             
 
             // prefix being null means this elements has a default namespace or it has inherited

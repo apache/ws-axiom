@@ -75,7 +75,6 @@ public class OMSerializerUtil {
         } else {
             String localName = attr.getLocalName();
             String attributeValue = attr.getAttributeValue();
-            System.out.println(localName + ":" +attributeValue);
             writer.writeAttribute(localName, attributeValue);
         }
     }

@@ -27,6 +27,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 
 
@@ -69,8 +71,12 @@ public class OMOutputImpl {
             bufferedSOAPBody = new StringWriter();
             xmlWriter = factory.createXMLStreamWriter(bufferedSOAPBody);
         } else {
-            xmlWriter = factory.createXMLStreamWriter(outStream,
-                    format.getCharSetEncoding());
+            try {
+                xmlWriter = factory.createXMLStreamWriter(new java.io.BufferedWriter(new OutputStreamWriter(outStream,
+                        format.getCharSetEncoding())));
+            } catch (UnsupportedEncodingException e) {
+                throw new XMLStreamException(e);
+            }
         }
     }
 
