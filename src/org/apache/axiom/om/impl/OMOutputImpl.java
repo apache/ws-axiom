@@ -38,6 +38,7 @@ import java.util.LinkedList;
  * also looking at the OM tree whether it has any optimizable content.
  */
 public class OMOutputImpl {
+    private static XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
     private XMLStreamWriter xmlWriter;
     private OutputStream outStream;
     private LinkedList binaryNodeList = new LinkedList();
@@ -65,14 +66,12 @@ public class OMOutputImpl {
         if (format.getCharSetEncoding() == null) //Default encoding is UTF-8
             format.setCharSetEncoding(OMOutputFormat.DEFAULT_CHAR_SET_ENCODING);
 
-        XMLOutputFactory factory = XMLOutputFactory.newInstance();
-
         if (format.isOptimized()) {
             bufferedSOAPBody = new StringWriter();
-            xmlWriter = factory.createXMLStreamWriter(bufferedSOAPBody);
+            xmlWriter = outputFactory.createXMLStreamWriter(bufferedSOAPBody);
         } else {
             try {
-                xmlWriter = factory.createXMLStreamWriter(new java.io.BufferedWriter(new OutputStreamWriter(outStream,
+                xmlWriter = outputFactory.createXMLStreamWriter(new java.io.BufferedWriter(new OutputStreamWriter(outStream,
                         format.getCharSetEncoding())));
             } catch (UnsupportedEncodingException e) {
                 throw new XMLStreamException(e);
