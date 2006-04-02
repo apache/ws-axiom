@@ -47,6 +47,7 @@ public class StAXOMBuilder extends StAXBuilder {
 
     private boolean doDebug = false;
     private static int nsCount = 0;
+    private static XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 
     /**
      * Constructor StAXOMBuilder.
@@ -65,7 +66,7 @@ public class StAXOMBuilder extends StAXBuilder {
      * @throws FileNotFoundException
      */
     public StAXOMBuilder(String filePath) throws XMLStreamException, FileNotFoundException {
-        this(XMLInputFactory.newInstance().createXMLStreamReader(new FileInputStream(filePath)));
+        this(inputFactory.createXMLStreamReader(new FileInputStream(filePath)));
     }
 
     /**
@@ -73,7 +74,7 @@ public class StAXOMBuilder extends StAXBuilder {
      * @throws XMLStreamException
      */
     public StAXOMBuilder(InputStream inStream) throws XMLStreamException {
-        this(XMLInputFactory.newInstance().createXMLStreamReader(inStream));
+        this(inputFactory.createXMLStreamReader(inStream));
     }
 
     /**
