@@ -240,13 +240,13 @@ public class OMElementImpl extends OMNodeImpl
 
         if (firstChild == null) {
             firstChild = child;
-            child.setPreviousOMSibling(null);
+            child.previousSibling = null;
         } else {
-            child.setPreviousOMSibling(lastChild);
-            ((OMNodeEx) lastChild).setNextOMSibling(child);
+            child.previousSibling = (OMNodeImpl) lastChild;
+             ((OMNodeImpl) lastChild).nextSibling = child;
         }
 
-        child.setNextOMSibling(null);
+        child.nextSibling = null;
         lastChild = child;
 
     }

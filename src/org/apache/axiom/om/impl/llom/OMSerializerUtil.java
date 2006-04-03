@@ -123,9 +123,9 @@ public class OMSerializerUtil {
                     element, OMOutputImpl
                     omOutput)
             throws XMLStreamException {
-        String nameSpaceName = null;
-        String writer_prefix = null;
-        String prefix = null;
+        String nameSpaceName;
+        String writer_prefix;
+        String prefix;
         XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (element.getNamespace() != null) {
             nameSpaceName = element.getNamespace().getName();
