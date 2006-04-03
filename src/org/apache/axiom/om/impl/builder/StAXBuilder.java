@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.llom.OMSerializerUtil;
 
@@ -162,8 +163,11 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             return null;
         } else if (!lastNode.isComplete()) {
             node = omfactory.createText((OMElement) lastNode, parser.getText(), textType);
-        } else if (!(lastNode.getParent() instanceof OMDocument)) {
-            node = omfactory.createText((OMElement) lastNode.getParent(), parser.getText(), textType);
+        } else {
+            OMContainer parent = lastNode.getParent();
+            if (!(parent instanceof OMDocument)) {
+                node = omfactory.createText((OMElement) parent, parser.getText(), textType);
+            }
         }
         return node;
     }
