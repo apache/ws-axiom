@@ -183,10 +183,10 @@ public class OMSerializerUtil {
                     element,
              org.apache.axiom.om.impl.OMOutputImpl
                      omOutput) throws XMLStreamException {
-        if (element.getAllAttributes() != null) {
-            Iterator attributesList = element.getAllAttributes();
-            while (attributesList.hasNext()) {
-                serializeAttribute((OMAttribute) attributesList.next(),
+        Iterator attributes = element.getAllAttributes();
+        if (attributes != null && attributes.hasNext()) {
+            while (attributes.hasNext()) {
+                serializeAttribute((OMAttribute) attributes.next(),
                         omOutput);
             }
         }
