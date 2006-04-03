@@ -435,19 +435,7 @@ public class OMElementImpl extends OMNodeImpl
      */
     public Iterator getAllDeclaredNamespaces() {
         if (namespaces == null) {
-            return new Iterator() {
-                public void remove() {
-                    throw new UnsupportedOperationException();
-                }
-
-                public boolean hasNext() {
-                    return false;
-                }
-
-                public Object next() {
-                    return null;
-                }
-            };
+            return EMPTY_ITERATOR;
         }
         return namespaces.values().iterator();
     }

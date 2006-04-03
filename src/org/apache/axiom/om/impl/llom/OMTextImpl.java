@@ -384,7 +384,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     }
 
     public boolean isComplete() {
-        return done;
+        return true;
     }
 
     public void serializeAndConsume(OMOutputImpl omOutput)
