@@ -66,6 +66,8 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     private HashMap namespaces;
 
+    private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
+    
     /**
      * @param ownerDocument
      */
@@ -1178,7 +1180,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      */
     public Iterator getAllAttributes() {
         if (attributes == null) {
-            return new EmptyIterator();
+            return EMPTY_ITERATOR;
         }
         ArrayList list = new ArrayList();
         for (int i = 0; i < attributes.getLength(); i++) {
