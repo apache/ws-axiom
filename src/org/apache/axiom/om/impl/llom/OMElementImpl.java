@@ -869,6 +869,10 @@ public class OMElementImpl extends OMNodeImpl
         this.ns = nsObject;
     }
 
+    public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
+        this.ns = namespace;
+    }
+
     /**
      * Method getQName.
      *

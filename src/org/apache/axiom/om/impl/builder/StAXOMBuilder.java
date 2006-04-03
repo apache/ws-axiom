@@ -316,7 +316,7 @@ public class StAXOMBuilder extends StAXBuilder {
                     namespace = node.declareNamespace(namespaceURI, prefix);
                 }
             }
-            node.setNamespace(namespace);
+            node.setNamespaceWithNoFindInCurrentScope(namespace);
         }
 
 

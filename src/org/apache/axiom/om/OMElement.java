@@ -269,11 +269,21 @@ public interface OMElement extends OMNode, OMContainer {
     public OMNamespace getNamespace() throws OMException;
 
     /**
-     * Sets the Namespace.
+     * Sets the Namespace. This will first search for a namespace in the current scope with the given
+     * namespace. If no namespace is found with the given details, then it will declare a new one. Then
+     * that namespace will be assigned to this element.
      *
      * @param namespace
      */
     public void setNamespace(OMNamespace namespace);
+
+    /**
+     * This will not search the namespace in the scope nor will declare in the current element, as
+     * in setNamespace(OMNamespace). This will just assign the given namespace to the element. 
+     * @param namespace
+     */
+    public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace);
+
 
     /**
      * Gets the QName of this node.

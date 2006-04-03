@@ -1003,6 +1003,10 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         this.namespace = namespace;
     }
 
+    public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
+        this.namespace = namespace;
+    }
+
     /**
      * Creates a text node with the given value and adds it to the element.
      *

@@ -98,11 +98,11 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     }
 
     /**
-     * Method setOmbuilderFactory.
+     * Method setOMBuilderFactory.
      *
      * @param ombuilderFactory
      */
-    public void setOmbuilderFactory(OMFactory ombuilderFactory) {
+    public void setOMBuilderFactory(OMFactory ombuilderFactory) {
         this.omfactory = ombuilderFactory;
     }
 
