@@ -24,9 +24,17 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.soap.SOAP11Constants;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPMessage;
+import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.axiom.soap.*;
 
 import javax.xml.stream.XMLStreamReader;
 
@@ -371,7 +379,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      */
     protected void processNamespaceData(OMElement node, boolean isSOAPElement) {
 
-        super.processNamespaceData(node, isSOAPElement);
+        super.processNamespaceData(node);
 
         if (isSOAPElement) {
             if (node.getNamespace() != null &&

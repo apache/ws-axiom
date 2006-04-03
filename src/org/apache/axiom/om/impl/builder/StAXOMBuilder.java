@@ -111,7 +111,7 @@ public class StAXOMBuilder extends StAXBuilder {
             e.setFirstChild(node);
         }
         // create the namespaces
-        processNamespaceData(node, false);
+        processNamespaceData(node);
         // fill in the attributes
         processAttributes(node);
         node.setLineNumber(parser.getLocation().getLineNumber());
@@ -294,9 +294,8 @@ public class StAXOMBuilder extends StAXBuilder {
      * Method processNamespaceData.
      *
      * @param node
-     * @param isSOAPElement
      */
-    protected void processNamespaceData(OMElement node, boolean isSOAPElement) {
+    protected void processNamespaceData(OMElement node) {
         // set the own namespace
         String namespaceURI = parser.getNamespaceURI();
         String prefix = parser.getPrefix();

@@ -110,10 +110,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * Method processNamespaceData.
      *
      * @param node
-     * @param isSOAPElement
      */
-    protected abstract void processNamespaceData(OMElement node,
-                                                 boolean isSOAPElement);
+    protected abstract void processNamespaceData(OMElement node);
 
     // since the behaviors are different when it comes to namespaces
     // this must be implemented differently
