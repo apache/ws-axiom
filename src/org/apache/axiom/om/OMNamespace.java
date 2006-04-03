@@ -42,10 +42,4 @@ public interface OMNamespace {
      * @return Returns String.
      */
     public String getName();
-    
-    /**
-     * Returns the OMFactory that created this object
-     * @return
-     */
-    public OMFactory getOMFactory();
 }

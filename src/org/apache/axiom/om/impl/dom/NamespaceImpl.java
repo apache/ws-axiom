@@ -63,12 +63,4 @@ public class NamespaceImpl implements OMNamespace {
     public String getName() {
         return this.nsUri;
     }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNamespace#getOMFactory()
-     */
-    public OMFactory getOMFactory() {
-        return this.factory;
-    }
-
 }
