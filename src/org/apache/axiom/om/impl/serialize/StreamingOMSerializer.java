@@ -17,7 +17,6 @@
 package org.apache.axiom.om.impl.serialize;
 
 import org.apache.axiom.om.OMSerializer;
-import org.apache.axiom.om.impl.OMOutputImpl;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamConstants;
@@ -54,34 +53,20 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
      */
     public void serialize(XMLStreamReader node, XMLStreamWriter writer)
             throws XMLStreamException {
-        serializeNode(node, new OMOutputImpl(writer));
-    }
-
-    /**
-     * Method serialize.
-     *
-     * @param obj
-     * @param omOutput
-     * @throws XMLStreamException
-     */
-    public void serialize(XMLStreamReader obj, OMOutputImpl omOutput)
-            throws XMLStreamException {
-        XMLStreamReader node = obj;
-        serializeNode(node, omOutput);
+        serializeNode(node, writer);
     }
 
     /**
      * Method serializeNode.
      *
      * @param reader
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
      */
-    protected void serializeNode(XMLStreamReader reader, OMOutputImpl omOutput)
+    protected void serializeNode(XMLStreamReader reader, XMLStreamWriter writer)
             throws XMLStreamException {
         //TODO We get the StAXWriter at this point and uses it hereafter assuming that this is the only entry point to this class.
         // If there can be other classes calling methodes of this we might need to change methode signatures to OMOutputer
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         while (reader.hasNext()) {
             int event = reader.next();
             if (event == START_ELEMENT) {
@@ -269,7 +254,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
      * Generates a unique namespace prefix that is not in the
      * scope of the NamespaceContext
      * @param nsCtxt
-     * @return
+     * @return string
      */
     private String generateUniquePrefix(NamespaceContext nsCtxt){
         String prefix = NAMESPACE_PREFIX + namespaceSuffix++;

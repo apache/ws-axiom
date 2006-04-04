@@ -88,8 +88,8 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
             writer.writeStartElement(
                     SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME);
         }
-        OMSerializerUtil.serializeAttributes(this, omOutput);
-        OMSerializerUtil.serializeNamespaces(this, omOutput);
+        OMSerializerUtil.serializeAttributes(this, writer);
+        OMSerializerUtil.serializeNamespaces(this, writer);
 
         String text = this.getSOAPText().getText();
         writer.writeCharacters(text);

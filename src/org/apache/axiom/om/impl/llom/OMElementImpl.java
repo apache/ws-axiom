@@ -41,6 +41,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -754,23 +755,23 @@ public class OMElementImpl extends OMNodeImpl
 //////////////////////////////////////////////////////////////////////////////////////////////
 
     protected void serialize(OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
-
+        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (cache) {
             //in this case we don't care whether the elements are built or not
             //we just call the serializeAndConsume methods
-            OMSerializerUtil.serializeStartpart(this, omOutput);
+            OMSerializerUtil.serializeStartpart(this, writer);
             //serialize children
             Iterator children = this.getChildren();
             while (children.hasNext()) {
                 ((OMNodeEx) children.next()).serialize(omOutput);
             }
-            OMSerializerUtil.serializeEndpart(omOutput);
+            OMSerializerUtil.serializeEndpart(writer);
 
         } else {
             //Now the caching is supposed to be off. However caching been switched off
             //has nothing to do if the element is already built!
             if (this.done) {
-                OMSerializerUtil.serializeStartpart(this, omOutput);
+                OMSerializerUtil.serializeStartpart(this, writer);
                 OMNodeImpl child = (OMNodeImpl) firstChild;
                 while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
                     child.serializeAndConsume(omOutput);
@@ -779,11 +780,11 @@ public class OMElementImpl extends OMNodeImpl
                 if (child != null) {
                     OMElement element = (OMElement) child;
                     element.getBuilder().setCache(false);
-                    OMSerializerUtil.serializeByPullStream(element, omOutput, cache);
+                    OMSerializerUtil.serializeByPullStream(element, writer, cache);
                 }
-                OMSerializerUtil.serializeEndpart(omOutput);
+                OMSerializerUtil.serializeEndpart(writer);
             } else {
-                OMSerializerUtil.serializeByPullStream(this, omOutput, cache);
+                OMSerializerUtil.serializeByPullStream(this, writer, cache);
             }
 
 

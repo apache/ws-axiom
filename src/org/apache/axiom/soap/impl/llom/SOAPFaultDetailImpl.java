@@ -85,8 +85,8 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
             writer.writeStartElement(
                     SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME);
         }
-        OMSerializerUtil.serializeAttributes(this, omOutput);
-        OMSerializerUtil.serializeNamespaces(this, omOutput);
+        OMSerializerUtil.serializeAttributes(this, writer);
+        OMSerializerUtil.serializeNamespaces(this, writer);
 
 
         String text = this.getText();

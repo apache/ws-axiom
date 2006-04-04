@@ -75,8 +75,8 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
             writer.writeStartElement(
                     SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME);
         }
-        OMSerializerUtil.serializeAttributes(this, omOutput);
-        OMSerializerUtil.serializeNamespaces(this, omOutput);
+        OMSerializerUtil.serializeAttributes(this, writer);
+        OMSerializerUtil.serializeNamespaces(this, writer);
 
         String text = this.getText();
         writer.writeCharacters(text);

@@ -77,8 +77,8 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
             writer.writeStartElement(
                     SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME);
         }
-        OMSerializerUtil.serializeAttributes(this, omOutput);
-        OMSerializerUtil.serializeNamespaces(this, omOutput);
+        OMSerializerUtil.serializeAttributes(this, writer);
+        OMSerializerUtil.serializeNamespaces(this, writer);
 
 
         String text = this.getText();

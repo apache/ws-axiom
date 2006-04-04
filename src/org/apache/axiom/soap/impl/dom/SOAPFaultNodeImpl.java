@@ -26,6 +26,7 @@ import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFaultNode {
 
@@ -35,7 +36,7 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
     }
 
     public SOAPFaultNodeImpl(SOAPFault parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                             SOAPFactory factory) {
         super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, builder,
                 factory);
     }
@@ -62,31 +63,31 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
                             omOutput));
             }
 
-
+            XMLStreamWriter writer = omOutput.getXmlStreamWriter();
             if (!cache) {
                 //No caching
                 if (this.firstChild != null) {
-                    OMSerializerUtil.serializeStartpart(this, omOutput);
+                    OMSerializerUtil.serializeStartpart(this, writer);
                     firstChild.serializeAndConsume(omOutput);
-                    OMSerializerUtil.serializeEndpart(omOutput);
+                    OMSerializerUtil.serializeEndpart(writer);
                 } else if (!this.done) {
                     if (builderType == PULL_TYPE_BUILDER) {
-                        OMSerializerUtil.serializeByPullStream(this, omOutput);
+                        OMSerializerUtil.serializeByPullStream(this, writer);
                     } else {
-                        OMSerializerUtil.serializeStartpart(this, omOutput);
+                        OMSerializerUtil.serializeStartpart(this, writer);
                         builder.setCache(cache);
                         builder.next();
-                        OMSerializerUtil.serializeEndpart(omOutput);
+                        OMSerializerUtil.serializeEndpart(writer);
                     }
                 } else {
-                    OMSerializerUtil.serializeNormal(this, omOutput, cache);
+                    OMSerializerUtil.serializeNormal(this, writer, cache);
                 }
                 // do not serialise the siblings
 
 
             } else {
                 //Cached
-                OMSerializerUtil.serializeNormal(this, omOutput, cache);
+                OMSerializerUtil.serializeNormal(this, writer, cache);
 
                 // do not serialise the siblings
             }

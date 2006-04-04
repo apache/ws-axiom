@@ -44,6 +44,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1057,24 +1058,24 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     protected void serialize(org.apache.axiom.om.impl.OMOutputImpl omOutput,
                              boolean cache) throws XMLStreamException {
-
+        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (!cache) {
             // in this case we don't care whether the elements are built or not
             // we just call the serializeAndConsume methods
-            OMSerializerUtil.serializeStartpart(this, omOutput);
+            OMSerializerUtil.serializeStartpart(this, writer);
             // serilize children
             Iterator children = this.getChildren();
             while (children.hasNext()) {
                 ((OMNodeEx) children.next()).serialize(omOutput);
             }
-            OMSerializerUtil.serializeEndpart(omOutput);
+            OMSerializerUtil.serializeEndpart(writer);
 
         } else {
             // Now the caching is supposed to be off. However caching been
             // switched off
             // has nothing to do if the element is already built!
             if (this.done) {
-                OMSerializerUtil.serializeStartpart(this, omOutput);
+                OMSerializerUtil.serializeStartpart(this, writer);
                 ChildNode child = this.firstChild;
                 while (child != null
                         && ((!(child instanceof OMElement)) || child
@@ -1085,15 +1086,15 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                 if (child != null) {
                     OMElement element = (OMElement) child;
                     element.getBuilder().setCache(false);
-                    OMSerializerUtil.serializeByPullStream(element, omOutput,
+                    OMSerializerUtil.serializeByPullStream(element, writer,
                             cache);
                 }
-                OMSerializerUtil.serializeEndpart(omOutput);
+                OMSerializerUtil.serializeEndpart(writer);
             } else {
                 // take the XMLStream reader and feed it to the stream
                 // serilizer.
                 // todo is this right ?????
-                OMSerializerUtil.serializeByPullStream(this, omOutput, cache);
+                OMSerializerUtil.serializeByPullStream(this, writer, cache);
             }
 
         }

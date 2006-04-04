@@ -29,6 +29,7 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 public abstract class SOAPFaultReasonImpl extends SOAPElement implements
         SOAPFaultReason {
@@ -41,7 +42,7 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
      * @param builder
      */
     public SOAPFaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                               SOAPFactory factory) {
         super(parent, SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME, builder,
                 factory);
     }
@@ -50,7 +51,7 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
      * @param parent
      */
     public SOAPFaultReasonImpl(OMElement parent,
-            boolean extractNamespaceFromParent, SOAPFactory factory)
+                               boolean extractNamespaceFromParent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent,SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME,
                 extractNamespaceFromParent,factory);
@@ -79,31 +80,32 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
             builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(omOutput));
         }
 
+        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
 
         if (!cache) {
             //No caching
             if (this.firstChild != null) {
-                OMSerializerUtil.serializeStartpart(this, omOutput);
+                OMSerializerUtil.serializeStartpart(this, writer);
                 firstChild.serializeAndConsume(omOutput);
-                OMSerializerUtil.serializeEndpart(omOutput);
+                OMSerializerUtil.serializeEndpart(writer);
             } else if (!this.done) {
                 if (builderType == PULL_TYPE_BUILDER) {
-                    OMSerializerUtil.serializeByPullStream(this, omOutput);
+                    OMSerializerUtil.serializeByPullStream(this, writer);
                 } else {
-                    OMSerializerUtil.serializeStartpart(this, omOutput);
+                    OMSerializerUtil.serializeStartpart(this, writer);
                     builder.setCache(cache);
                     builder.next();
-                    OMSerializerUtil.serializeEndpart(omOutput);
+                    OMSerializerUtil.serializeEndpart(writer);
                 }
             } else {
-                OMSerializerUtil.serializeNormal(this, omOutput, cache);
+                OMSerializerUtil.serializeNormal(this, writer, cache);
             }
             // do not serialise the siblings
 
 
         } else {
             //Cached
-            OMSerializerUtil.serializeNormal(this, omOutput, cache);
+            OMSerializerUtil.serializeNormal(this, writer, cache);
 
             // do not serialise the siblings
         }

@@ -104,8 +104,8 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
                     SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME);
         }
 
-        OMSerializerUtil.serializeAttributes(this, omOutput);
-        OMSerializerUtil.serializeNamespaces(this, omOutput);
+        OMSerializerUtil.serializeAttributes(this, writer);
+        OMSerializerUtil.serializeNamespaces(this, writer);
 
 
         String text = this.getValue().getText();

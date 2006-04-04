@@ -21,7 +21,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.OMOutputImpl;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 
 import javax.xml.stream.XMLStreamException;
@@ -36,30 +35,29 @@ public class OMSerializerUtil {
     /**
      * Method serializeEndpart.
      *
-     * @param omOutput
+     * @param writer
      * @throws javax.xml.stream.XMLStreamException
      *
      */
-    public static void serializeEndpart(OMOutputImpl omOutput)
+    public static void serializeEndpart(XMLStreamWriter writer)
             throws XMLStreamException {
-        omOutput.getXmlStreamWriter().writeEndElement();
+        writer.writeEndElement();
     }
 
     /**
      * Method serializeAttribute.
      *
      * @param attr
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
      */
-    public static void serializeAttribute(OMAttribute attr, OMOutputImpl omOutput)
+    public static void serializeAttribute(OMAttribute attr, XMLStreamWriter writer)
             throws XMLStreamException {
 
         // first check whether the attribute is associated with a namespace
         OMNamespace ns = attr.getNamespace();
         String prefix = null;
         String namespaceName = null;
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (ns != null) {
 
             // add the prefix if it's availble
@@ -83,15 +81,14 @@ public class OMSerializerUtil {
      * Method serializeNamespace.
      *
      * @param namespace
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
      */
-    public static void serializeNamespace(OMNamespace namespace, org.apache.axiom.om.impl.OMOutputImpl omOutput)
+    public static void serializeNamespace(OMNamespace namespace, XMLStreamWriter writer)
             throws XMLStreamException {
         if (namespace == null) {
             return;
         }
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         String uri = namespace.getName();
         String prefix = namespace.getPrefix();
 
@@ -115,18 +112,16 @@ public class OMSerializerUtil {
     /**
      * Method serializeStartpart.
      *
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
      */
     public static void serializeStartpart
             (OMElement
-                    element, OMOutputImpl
-                    omOutput)
+                    element, XMLStreamWriter writer)
             throws XMLStreamException {
         String nameSpaceName;
         String writer_prefix;
         String prefix;
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (element.getNamespace() != null) {
             nameSpaceName = element.getNamespace().getName();
             writer_prefix = writer.getPrefix(nameSpaceName);
@@ -159,21 +154,20 @@ public class OMSerializerUtil {
         }
 
         // add the namespaces
-        serializeNamespaces(element, omOutput);
+        serializeNamespaces(element, writer);
 
         // add the elements attributes
-        serializeAttributes(element, omOutput);
+        serializeAttributes(element, writer);
     }
 
     public static void serializeNamespaces
             (OMElement
                     element,
-             org.apache.axiom.om.impl.OMOutputImpl
-                     omOutput) throws XMLStreamException {
+             XMLStreamWriter writer) throws XMLStreamException {
         Iterator namespaces = element.getAllDeclaredNamespaces();
         if (namespaces != null) {
             while (namespaces.hasNext()) {
-                serializeNamespace((OMNamespace) namespaces.next(), omOutput);
+                serializeNamespace((OMNamespace) namespaces.next(), writer);
             }
         }
     }
@@ -181,13 +175,12 @@ public class OMSerializerUtil {
     public static void serializeAttributes
             (OMElement
                     element,
-             org.apache.axiom.om.impl.OMOutputImpl
-                     omOutput) throws XMLStreamException {
+             XMLStreamWriter writer) throws XMLStreamException {
         Iterator attributes = element.getAllAttributes();
         if (attributes != null && attributes.hasNext()) {
             while (attributes.hasNext()) {
                 serializeAttribute((OMAttribute) attributes.next(),
-                        omOutput);
+                        writer);
             }
         }
     }
@@ -195,51 +188,48 @@ public class OMSerializerUtil {
     /**
      * Method serializeNormal.
      *
-     * @param omOutput
+     * @param writer
      * @param cache
      * @throws XMLStreamException
      */
     public static void serializeNormal
             (OMElement
-                    element, OMOutputImpl
-                    omOutput, boolean cache)
+                    element, XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
 
         if (cache) {
             element.build();
         }
 
-        serializeStartpart(element, omOutput);
+        serializeStartpart(element, writer);
         OMNode firstChild = element.getFirstOMChild();
         if (firstChild != null) {
             if (cache) {
-                ((OMNodeEx) firstChild).serialize(omOutput);
+                ((OMNodeEx) firstChild).serialize(writer);
             } else {
-                ((OMNodeEx) firstChild).serializeAndConsume(omOutput);
+                ((OMNodeEx) firstChild).serializeAndConsume(writer);
             }
         }
-        serializeEndpart(omOutput);
+        serializeEndpart(writer);
     }
 
     public static void serializeByPullStream
             (OMElement
-                    element, OMOutputImpl
-                    omOutput) throws XMLStreamException {
-        serializeByPullStream(element, omOutput, false);
+                    element, XMLStreamWriter writer) throws XMLStreamException {
+        serializeByPullStream(element, writer, false);
     }
 
     public static void serializeByPullStream
             (OMElement
-                    element, OMOutputImpl
-                    omOutput, boolean cache) throws XMLStreamException {
+                    element, XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         StreamingOMSerializer streamingOMSerializer = new StreamingOMSerializer();
         if (cache) {
             streamingOMSerializer.serialize(element.getXMLStreamReader(),
-                    omOutput);
+                    writer);
         } else {
             XMLStreamReader xmlStreamReaderWithoutCaching = element.getXMLStreamReaderWithoutCaching();
             streamingOMSerializer.serialize(xmlStreamReaderWithoutCaching,
-                    omOutput);
+                    writer);
         }
     }
 

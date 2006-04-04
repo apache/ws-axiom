@@ -40,6 +40,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
@@ -210,7 +211,8 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
 		// the best method to do this :(
 		build();
 
-		OMSerializerUtil.serializeStartpart(this, omOutput);
+        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
+        OMSerializerUtil.serializeStartpart(this, writer);
 		SOAPFaultCode faultCode = getCode();
 		if (faultCode != null) {
 			((OMNodeEx)faultCode).serialize(omOutput);
@@ -232,7 +234,7 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
 			((OMNodeEx)faultDetail).serialize(omOutput);
 		}
 
-		OMSerializerUtil.serializeEndpart(omOutput);
+		OMSerializerUtil.serializeEndpart(writer);
 	}
 
 	protected abstract void serializeFaultNode(
