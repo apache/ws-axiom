@@ -41,7 +41,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * Field nameSpace used when serializing Binary stuff as MTOM optimized.
      */
     public static final OMNamespace XOP_NS = new OMNamespaceImpl(
-                "http://www.w3.org/2004/08/xop/include", "xop");
+            "http://www.w3.org/2004/08/xop/include", "xop");
 
     protected String value = null;
 
@@ -196,7 +196,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      */
     public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
         internalSerializeLocal(omOutput);
-
     }
 
     /**
@@ -222,7 +221,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     public String getText() throws OMException {
         if (textNS != null) {
             return getTextString();
-        }else if (this.value != null) {
+        } else if (this.value != null) {
             return this.value;
         } else {
             try {
@@ -249,7 +248,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     }
 
 
-/**
+    /**
      * Returns the value.
      */
     public QName getTextAsQName() throws OMException {
@@ -257,10 +256,10 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             String prefix = textNS.getPrefix();
             if (prefix == null || "".equals(prefix)) {
                 return new QName(textNS.getName(), value);
-            }else {
-               return new QName(textNS.getName(), value, prefix);
+            } else {
+                return new QName(textNS.getName(), value, prefix);
             }
-        }else if (this.value != null) {
+        } else if (this.value != null) {
             return new QName(value);
         } else {
             try {
@@ -304,15 +303,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * @return Returns javax.activation.DataHandler
      */
     public Object getDataHandler() {
-        /*
-         * this should return a DataHandler containing the binary data
-         * reperesented by the Base64 strings stored in OMText
-         */
-
-        if(isBinary){
-
-        }
-
         if ((value != null || textNS != null) & isBinary) {
             String text = textNS == null ? value : getTextString();
             return org.apache.axiom.attachments.DataHandlerUtils.getDataHandlerFromText(text, mimeType);
@@ -330,11 +320,11 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     }
 
     private String getTextString() {
-        if(textNS != null){
+        if (textNS != null) {
             String prefix = textNS.getPrefix();
             if (prefix == null || "".equals(prefix)) {
                 return value;
-            }else {
+            } else {
                 return prefix + ":" + value;
             }
         }
@@ -415,7 +405,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         String prefix = XOP_NS.getPrefix();
         if (writer_prefix != null) {
             writer.writeStartElement(nameSpaceName, this
-                            .getLocalName());
+                    .getLocalName());
         } else {
             writer.writeStartElement(prefix, this.getLocalName(),
                     nameSpaceName);
