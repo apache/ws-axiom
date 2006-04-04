@@ -16,6 +16,8 @@
 
 package org.apache.axiom.soap;
 
+import org.apache.axiom.om.OMAbstractFactory;
+
 public class SOAPFaultReasonTest extends SOAPFaultReasonTestCase {
 
     public SOAPFaultReasonTest(String testName) {
@@ -94,4 +96,11 @@ public class SOAPFaultReasonTest extends SOAPFaultReasonTestCase {
                 "SOAP 1.2 FaultReason Test With Parser : - getFirstSOAPText method returns null",
                 soap12FaultReasonWithParser.getFirstSOAPText() == null);
     }
+
+//    public void testMultipleSOAPReasonTexts() {
+//        SOAPFactory soapFactory = OMAbstractFactory.getSOAP11Factory();
+//
+//        SOAPFaultReason soapFaultReason = soapFactory.createSOAPFaultReason();
+////        soap
+//    }
 }

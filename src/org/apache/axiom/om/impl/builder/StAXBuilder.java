@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.llom.OMSerializerUtil;
 
@@ -76,6 +77,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     protected boolean parserAccessed = false;
     protected OMDocument document;
+    private static final String IS_BINARY = "IsOptimized";
+    private static final String DATA_HANDLER = "DataHandler";
 
 
     /**
@@ -162,14 +165,39 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         if (lastNode == null) {
             return null;
         } else if (!lastNode.isComplete()) {
-            node = omfactory.createText((OMElement) lastNode, parser.getText(), textType);
+            node = createOMText((OMElement) lastNode, textType);
+//            node = omfactory.createText((OMElement) lastNode, parser.getText(), textType);
         } else {
             OMContainer parent = lastNode.getParent();
             if (!(parent instanceof OMDocument)) {
-                node = omfactory.createText((OMElement) parent, parser.getText(), textType);
+                node = createOMText((OMElement) parent, textType);
+//                node = omfactory.createText((OMElement) parent, parser.getText(), textType);
             }
         }
         return node;
+    }
+
+    /**
+     * This method will check whether the text can be optimizable using IS_BINARY flag.
+     * If that is set then we try to get the data handler.
+     *
+     * @param omElement
+     * @param textType
+     * @return omNode
+     */
+    private OMNode createOMText(OMElement omElement, int textType) {
+        try {
+            if (Boolean.TRUE == parser.getProperty(IS_BINARY)) {
+                Object dataHandler = parser.getProperty(DATA_HANDLER);
+                OMText text = omfactory.createText(dataHandler, true);
+                omElement.addChild(text);
+                return text;
+            } else {
+                return omfactory.createText(omElement, parser.getText(), textType);
+            }
+        } catch (IllegalArgumentException e) {
+            return omfactory.createText(omElement, parser.getText(), textType);
+        }
     }
 
     /**
