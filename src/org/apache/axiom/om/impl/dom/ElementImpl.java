@@ -1042,22 +1042,17 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         throw new UnsupportedOperationException();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMNode#serialize(org.apache.axiom.om.OMOutput)
-     */
-    public void serialize(OMOutputImpl omOutput) throws XMLStreamException {
-        serialize(omOutput, true);
+    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
+        internalSerialize(omOutput, true);
     }
 
-    public void serializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(OMOutputImpl omOutput)
             throws XMLStreamException {
-        this.serialize(omOutput, false);
+        this.internalSerialize(omOutput, false);
     }
 
-    protected void serialize(org.apache.axiom.om.impl.OMOutputImpl omOutput,
-                             boolean cache) throws XMLStreamException {
+    protected void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput,
+                                     boolean cache) throws XMLStreamException {
         XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (!cache) {
             // in this case we don't care whether the elements are built or not
@@ -1066,7 +1061,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             // serilize children
             Iterator children = this.getChildren();
             while (children.hasNext()) {
-                ((OMNodeEx) children.next()).serialize(omOutput);
+                ((OMNodeEx) children.next()).internalSerialize(omOutput);
             }
             OMSerializerUtil.serializeEndpart(writer);
 
@@ -1080,7 +1075,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                 while (child != null
                         && ((!(child instanceof OMElement)) || child
                         .isComplete())) {
-                    child.serializeAndConsume(omOutput);
+                    child.internalSerializeAndConsume(omOutput);
                     child = child.nextSibling;
                 }
                 if (child != null) {
@@ -1102,7 +1097,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.apache.axiom.om.OMElement#getXMLStreamReaderWithoutCaching()
      */
     public XMLStreamReader getXMLStreamReaderWithoutCaching() {
@@ -1111,7 +1106,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.apache.axiom.om.OMElement#getXMLStreamReader()
      */
     public XMLStreamReader getXMLStreamReader() {

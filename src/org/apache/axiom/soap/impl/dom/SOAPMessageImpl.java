@@ -54,12 +54,12 @@ public class SOAPMessageImpl extends DocumentImpl implements SOAPMessage {
     	this.addChild(envelope);
     }
 
-    protected void serialize(OMOutputImpl omOutput, boolean cache,
-            boolean includeXMLDeclaration) throws XMLStreamException {
+    protected void internalSerialize(OMOutputImpl omOutput, boolean cache,
+                                     boolean includeXMLDeclaration) throws XMLStreamException {
         if (cache) {
-            ((OMNodeEx)this.ownerNode.getDocumentElement()).serialize(omOutput);
+            ((OMNodeEx)this.ownerNode.getDocumentElement()).internalSerialize(omOutput);
         } else {
-        	((OMNodeEx)this.ownerNode.getDocumentElement()).serializeAndConsume(omOutput);
+        	((OMNodeEx)this.ownerNode.getDocumentElement()).internalSerializeAndConsume(omOutput);
         }
     }
 }

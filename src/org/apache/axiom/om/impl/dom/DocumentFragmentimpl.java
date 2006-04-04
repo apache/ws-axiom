@@ -70,23 +70,7 @@ public class DocumentFragmentimpl extends ParentNode implements
         // DO Nothing :-?
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMNode#serializeWithCache(org.apache.axiom.om.OMOutput)
-     */
-    public void serializeWithCache(OMOutputImpl omOutput)
-            throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMNode#serialize(org.apache.axiom.om.OMOutput)
-     */
-    public void serialize(OMOutputImpl omOutput) throws XMLStreamException {
+    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
@@ -96,7 +80,7 @@ public class DocumentFragmentimpl extends ParentNode implements
         throw new UnsupportedOperationException("TODO");
     }
 
-    public void serializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(OMOutputImpl omOutput)
             throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException("TODO");

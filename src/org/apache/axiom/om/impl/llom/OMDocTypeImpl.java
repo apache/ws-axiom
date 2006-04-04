@@ -57,9 +57,8 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
      *
      * @param omOutput
      * @throws XMLStreamException
-     * @see #serialize(org.apache.axiom.om.impl.OMOutputImpl)
      */
-    public void serialize(OMOutputImpl omOutput) throws XMLStreamException {
+    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
         XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         writer.writeDTD(this.value);
     }
@@ -69,10 +68,10 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
      *
      * @param omOutput
      * @throws XMLStreamException
-     * @see #serializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl)
+     * @see #internalSerializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl)
      */
-    public void serializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl omOutput) throws XMLStreamException {
-        serialize(omOutput);
+    public void internalSerializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl omOutput) throws XMLStreamException {
+        internalSerialize(omOutput);
     }
 
     /**

@@ -54,7 +54,7 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
         }
     }
 
-    public void serialize(OMOutputImpl omOutput, boolean cache)
+    public void internalSerialize(OMOutputImpl omOutput, boolean cache)
             throws XMLStreamException {
 
         // select the builder
@@ -86,7 +86,7 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
 
 
         if (firstChild != null) {
-            firstChild.serializeAndConsume(omOutput);
+            firstChild.internalSerializeAndConsume(omOutput);
         }
         writer.writeEndElement();
     }

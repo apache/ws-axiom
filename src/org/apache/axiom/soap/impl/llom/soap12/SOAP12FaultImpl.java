@@ -31,6 +31,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPFaultImpl;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 
 public class SOAP12FaultImpl extends SOAPFaultImpl {
@@ -51,7 +52,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     }
 
     public SOAP12FaultImpl(SOAPBody parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                           SOAPFactory factory) {
         super(parent, builder, factory);
     }
 
@@ -126,12 +127,12 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     }
 
     protected void serializeFaultNode(
-            org.apache.axiom.om.impl.OMOutputImpl omOutput)
+            XMLStreamWriter writer)
             throws XMLStreamException {
         SOAPFaultNode faultNode = getNode();
         if (faultNode != null && faultNode.getText() != null
                 && !"".equals(faultNode.getText())) {
-            ((OMNodeEx)faultNode).serialize(omOutput);
+            ((OMNodeEx)faultNode).serialize(writer);
         }
     }
 

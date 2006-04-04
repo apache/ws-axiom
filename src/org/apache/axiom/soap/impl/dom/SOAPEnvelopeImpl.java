@@ -150,7 +150,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
 		// here do nothing as SOAPEnvelope doesn't have a parent !!!
 	}
 
-	protected void serialize(OMOutputImpl omOutput, boolean cache)
+	protected void internalSerialize(OMOutputImpl omOutput, boolean cache)
 			throws XMLStreamException {
 
 		if (!omOutput.isIgnoreXMLDeclaration()) {
@@ -164,7 +164,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
 							xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION
 									: xmlVersion);
 		}
-		super.serialize(omOutput, cache);
+		super.internalSerialize(omOutput, cache);
 	}
 
 }

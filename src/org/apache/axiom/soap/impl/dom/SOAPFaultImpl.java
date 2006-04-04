@@ -191,8 +191,8 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
 		return null;
 	}
 
-	protected void serialize(org.apache.axiom.om.impl.OMOutputImpl omOutput,
-			boolean cache) throws XMLStreamException {
+	protected void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput,
+                                     boolean cache) throws XMLStreamException {
 		// select the builder
 		short builderType = PULL_TYPE_BUILDER; // default is pull type
 		if (builder != null) {
@@ -215,30 +215,30 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
         OMSerializerUtil.serializeStartpart(this, writer);
 		SOAPFaultCode faultCode = getCode();
 		if (faultCode != null) {
-			((OMNodeEx)faultCode).serialize(omOutput);
+			((OMNodeEx)faultCode).serialize(writer);
 		}
 		SOAPFaultReason faultReason = getReason();
 		if (faultReason != null) {
-			((OMNodeEx)faultReason).serialize(omOutput);
+			((OMNodeEx)faultReason).serialize(writer);
 		}
 
-		serializeFaultNode(omOutput);
+		serializeFaultNode(writer);
 
 		SOAPFaultRole faultRole = getRole();
 		if (faultRole != null) {
-			((OMNodeEx)faultRole).serialize(omOutput);
+			((OMNodeEx)faultRole).serialize(writer);
 		}
 
 		SOAPFaultDetail faultDetail = getDetail();
 		if (faultDetail != null) {
-			((OMNodeEx)faultDetail).serialize(omOutput);
+			((OMNodeEx)faultDetail).serialize(writer);
 		}
 
 		OMSerializerUtil.serializeEndpart(writer);
 	}
 
 	protected abstract void serializeFaultNode(
-			org.apache.axiom.om.impl.OMOutputImpl omOutput)
+			XMLStreamWriter writer)
 			throws XMLStreamException;
 
 }

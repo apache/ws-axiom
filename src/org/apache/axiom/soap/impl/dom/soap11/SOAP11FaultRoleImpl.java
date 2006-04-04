@@ -51,7 +51,7 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
         }
     }
 
-    protected void serialize(OMOutputImpl omOutput, boolean cache)
+    protected void internalSerialize(OMOutputImpl omOutput, boolean cache)
             throws XMLStreamException {
 
         // select the builder

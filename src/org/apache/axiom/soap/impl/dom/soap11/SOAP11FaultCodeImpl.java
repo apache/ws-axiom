@@ -78,7 +78,7 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
         }
     }
 
-    protected void serialize(
+    protected void internalSerialize(
             org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache)
             throws XMLStreamException {
 

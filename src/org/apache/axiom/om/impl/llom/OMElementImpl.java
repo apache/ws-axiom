@@ -743,18 +743,18 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     /**
-     * Method serialize.
+     * Method internalSerialize.
      *
      * @throws XMLStreamException
      */
-    public void serialize(OMOutputImpl omOutput) throws XMLStreamException {
-        serialize(omOutput, true);
+    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
+        internalSerialize(omOutput, true);
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-    protected void serialize(OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
+    protected void internalSerialize(OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
         XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (cache) {
             //in this case we don't care whether the elements are built or not
@@ -763,7 +763,7 @@ public class OMElementImpl extends OMNodeImpl
             //serialize children
             Iterator children = this.getChildren();
             while (children.hasNext()) {
-                ((OMNodeEx) children.next()).serialize(omOutput);
+                ((OMNodeEx) children.next()).internalSerialize(omOutput);
             }
             OMSerializerUtil.serializeEndpart(writer);
 
@@ -774,7 +774,7 @@ public class OMElementImpl extends OMNodeImpl
                 OMSerializerUtil.serializeStartpart(this, writer);
                 OMNodeImpl child = (OMNodeImpl) firstChild;
                 while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
-                    child.serializeAndConsume(omOutput);
+                    child.internalSerializeAndConsume(omOutput);
                     child = child.nextSibling;
                 }
                 if (child != null) {
@@ -802,8 +802,8 @@ public class OMElementImpl extends OMNodeImpl
      *
      * @throws XMLStreamException
      */
-    public void serializeAndConsume(OMOutputImpl omOutput) throws XMLStreamException {
-        this.serialize(omOutput, false);
+    public void internalSerializeAndConsume(OMOutputImpl omOutput) throws XMLStreamException {
+        this.internalSerialize(omOutput, false);
     }
 
     /**

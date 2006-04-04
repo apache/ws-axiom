@@ -90,7 +90,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
                 "In OM Document object doesn't have a type");
     }
 
-    public void serialize(OMOutputImpl omOutput) throws XMLStreamException {
+    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
         // TODO Auto-generated method stub
     }
 
@@ -339,7 +339,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         throw new UnsupportedOperationException("TODO");
     }
 
-    public void serializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(OMOutputImpl omOutput)
             throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException("TODO");
@@ -363,18 +363,6 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public String isStandalone() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public void serialize(OMOutputImpl omOutput, boolean includeXMLDeclaration)
-            throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public void serializeAndConsume(OMOutputImpl omOutput,
-            boolean includeXMLDeclaration) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }

@@ -76,7 +76,7 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements SOAPFau
                 SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME);
     }
 
-    protected void serialize(org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
+    protected void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
         // select the builder
         short builderType = PULL_TYPE_BUILDER;    // default is pull type
         if (builder != null) {
@@ -93,7 +93,7 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements SOAPFau
             //No caching
             if (this.firstChild != null) {
                 OMSerializerUtil.serializeStartpart(this, writer);
-                ((OMNodeEx)firstChild).serializeAndConsume(omOutput);
+                ((OMNodeEx)firstChild).internalSerializeAndConsume(omOutput);
                 OMSerializerUtil.serializeEndpart(writer);
             } else if (!this.done) {
                 if (builderType == PULL_TYPE_BUILDER) {

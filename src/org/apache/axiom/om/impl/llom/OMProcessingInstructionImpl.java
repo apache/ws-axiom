@@ -60,9 +60,9 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
      *
      * @param omOutput
      * @throws XMLStreamException
-     * @see #serialize(org.apache.axiom.om.impl.OMOutputImpl)
+     * @see #internalSerialize(org.apache.axiom.om.impl.OMOutputImpl)
      */
-    public void serialize(org.apache.axiom.om.impl.OMOutputImpl omOutput) throws XMLStreamException {
+    public void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput) throws XMLStreamException {
         XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         writer.writeProcessingInstruction(this.target+" ", this.value);
     }
@@ -72,10 +72,10 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
      *
      * @param omOutput
      * @throws XMLStreamException
-     * @see #serializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl)
+     * @see #internalSerializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl)
      */
-    public void serializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl omOutput) throws XMLStreamException {
-        serialize(omOutput);
+    public void internalSerializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl omOutput) throws XMLStreamException {
+        internalSerialize(omOutput);
     }
 
     /**

@@ -235,18 +235,13 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         // Its not clear why we should let someone change the type of a node
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMNode#serialize(org.apache.axiom.om.OMOutput)
-     */
-    public void serialize(OMOutputImpl omOutput) throws XMLStreamException {
-        serializeLocal(omOutput);
+    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
+        internalSerializeLocal(omOutput);
     }
 
-    public void serializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(OMOutputImpl omOutput)
             throws XMLStreamException {
-        serializeLocal(omOutput);
+        internalSerializeLocal(omOutput);
     }
 
     public boolean isOptimized() {
@@ -268,11 +263,10 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     /**
      * Writes the relevant output.
      * 
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
      */
-    private void writeOutput(OMOutputImpl omOutput) throws XMLStreamException {
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
+    private void writeOutput(XMLStreamWriter writer) throws XMLStreamException {
         int type = getType();
         if (type == Node.TEXT_NODE || type == SPACE_NODE) {
             writer.writeCharacters(this.getText());
@@ -365,10 +359,11 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         }
     }
 
-    private void serializeLocal(OMOutputImpl omOutput)
+    private void internalSerializeLocal(OMOutputImpl omOutput)
             throws XMLStreamException {
+        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (!this.isBinary) {
-            writeOutput(omOutput);
+            writeOutput(writer);
         } else {
             if (omOutput.isOptimized()) {
                 if (contentID == null) {
@@ -379,11 +374,11 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
                         new NamespaceImpl("", "", this.factory), 
                         "cid:" + getContentID(),
                         this.factory);
-                this.serializeStartpart(omOutput);
+                this.serializeStartpart(writer);
                 omOutput.writeOptimized(this);
-                omOutput.getXmlStreamWriter().writeEndElement();
+                writer.writeEndElement();
             } else {
-                omOutput.getXmlStreamWriter().writeCharacters(this.getText());
+                writer.writeCharacters(this.getText());
             }
         }
     }
@@ -391,12 +386,11 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     /*
      * Methods to copy from OMSerialize utils.
      */
-    private void serializeStartpart(OMOutputImpl omOutput)
+    private void serializeStartpart(XMLStreamWriter writer)
             throws XMLStreamException {
         String nameSpaceName;
         String writer_prefix;
         String prefix;
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (this.ns != null) {
             nameSpaceName = this.ns.getName();
             writer_prefix = writer.getPrefix(nameSpaceName);
@@ -427,9 +421,9 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
             writer.writeStartElement(this.getLocalName());
         }
         // add the elements attribute "href"
-        serializeAttribute(this.attribute, omOutput);
+        serializeAttribute(this.attribute, writer);
         // add the namespace
-        serializeNamespace(this.ns, omOutput);
+        serializeNamespace(this.ns, writer);
     }
 
     /**
@@ -439,9 +433,8 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
      * @param omOutput
      * @throws XMLStreamException
      */
-    static void serializeAttribute(OMAttribute attr, OMOutputImpl omOutput)
+    static void serializeAttribute(OMAttribute attr, XMLStreamWriter writer)
             throws XMLStreamException {
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         // first check whether the attribute is associated with a namespace
         OMNamespace ns = attr.getNamespace();
         String prefix;
@@ -468,12 +461,11 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
      * Method serializeNamespace.
      * 
      * @param namespace
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
      */
-    static void serializeNamespace(OMNamespace namespace, OMOutputImpl omOutput)
+    static void serializeNamespace(OMNamespace namespace, XMLStreamWriter writer)
             throws XMLStreamException {
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (namespace != null) {
             String uri = namespace.getName();
             String ns_prefix = namespace.getPrefix();

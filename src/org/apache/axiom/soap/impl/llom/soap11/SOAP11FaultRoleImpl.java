@@ -53,7 +53,7 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
         }
     }
 
-    protected void serialize(
+    protected void internalSerialize(
             org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache)
             throws XMLStreamException {
 

@@ -151,7 +151,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
         // here do nothing as SOAPEnvelope doesn't have a parent !!!
     }
 
-    protected void serialize(OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
+    protected void internalSerialize(OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
 
         if (!omOutput.isIgnoreXMLDeclaration()) {
             String charSetEncoding = omOutput.getCharSetEncoding();
@@ -160,6 +160,6 @@ public class SOAPEnvelopeImpl extends SOAPElement
                     OMConstants.DEFAULT_CHAR_SET_ENCODING : charSetEncoding,
                     xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION : xmlVersion);
         }
-        super.serialize(omOutput, cache);
+        super.internalSerialize(omOutput, cache);
     }
 }

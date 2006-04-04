@@ -324,24 +324,24 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
     /**
      * Serialize the docuement with/without the XML declaration
      */
-    public void serializeAndConsume(OMOutputImpl omOutput, boolean includeXMLDeclaration) throws XMLStreamException {
-        serialize(omOutput, false, includeXMLDeclaration);
+    public void internalSerializeAndConsume(OMOutputImpl omOutput, boolean includeXMLDeclaration) throws XMLStreamException {
+        internalSerialize(omOutput, false, includeXMLDeclaration);
     }
 
     /**
      * Serializes the document with the XML declaration.
      */
-    public void serializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(OMOutputImpl omOutput)
             throws XMLStreamException {
-        serialize(omOutput, false, !omOutput.isIgnoreXMLDeclaration());
+        internalSerialize(omOutput, false, !omOutput.isIgnoreXMLDeclaration());
     }
 
 
     /**
      * Serializes the document with cache.
      */
-    public void serialize(OMOutputImpl omOutput) throws XMLStreamException {
-        serialize(omOutput, true, !omOutput.isIgnoreXMLDeclaration());
+    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
+        internalSerialize(omOutput, true, !omOutput.isIgnoreXMLDeclaration());
 
     }
 
@@ -353,7 +353,7 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
      */
     public void serializeAndConsume(OutputStream output) throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(output, new OMOutputFormat());
-        serializeAndConsume(omOutput);
+        internalSerializeAndConsume(omOutput);
         omOutput.flush();
     }
 
@@ -365,7 +365,7 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
      */
     public void serialize(OutputStream output) throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(output, new OMOutputFormat());
-        serialize(omOutput);
+        internalSerialize(omOutput);
         omOutput.flush();
     }
 
@@ -378,7 +378,7 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
      */
     public void serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(output, format);
-        serializeAndConsume(omOutput);
+        internalSerializeAndConsume(omOutput);
         omOutput.flush();
     }
 
@@ -391,19 +391,19 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
      */
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(output, format);
-        serialize(omOutput);
+        internalSerialize(omOutput);
         omOutput.flush();
     }
 
     /**
      * Serializes the document with cache.
      */
-    public void serialize(OMOutputImpl omOutput, boolean includeXMLDeclaration) throws XMLStreamException {
-        serialize(omOutput, true, includeXMLDeclaration);
+    public void internalSerialize(OMOutputImpl omOutput, boolean includeXMLDeclaration) throws XMLStreamException {
+        internalSerialize(omOutput, true, includeXMLDeclaration);
 
     }
 
-    protected void serialize(OMOutputImpl omOutput, boolean cache, boolean includeXMLDeclaration) throws XMLStreamException {
+    protected void internalSerialize(OMOutputImpl omOutput, boolean cache, boolean includeXMLDeclaration) throws XMLStreamException {
         if (includeXMLDeclaration) {
             //Check whether the OMOutput char encoding and OMDocument char
             //encoding matches, if not use char encoding of OMOutput
@@ -422,12 +422,12 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
         if (cache) {
             while (children.hasNext()) {
                 OMNodeEx omNode = (OMNodeEx) children.next();
-                omNode.serialize(omOutput);
+                omNode.internalSerialize(omOutput);
             }
         } else {
             while (children.hasNext()) {
                 OMNodeEx omNode = (OMNodeEx) children.next();
-                omNode.serializeAndConsume(omOutput);
+                omNode.internalSerializeAndConsume(omOutput);
             }
         }
     }

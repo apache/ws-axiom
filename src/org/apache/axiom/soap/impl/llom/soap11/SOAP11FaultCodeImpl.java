@@ -78,7 +78,7 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
         }
     }
 
-    protected void serialize(org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
+    protected void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
 
         // select the builder
         short builderType = PULL_TYPE_BUILDER;    // default is pull type

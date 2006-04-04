@@ -77,7 +77,7 @@ public abstract class SOAPFaultCodeImpl  extends SOAPElement implements SOAPFaul
                 SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
     }
 
-    protected void serialize(OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
+    protected void internalSerialize(OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
         // select the builder
         short builderType = PULL_TYPE_BUILDER;    // default is pull type
         if (builder != null) {
@@ -93,7 +93,7 @@ public abstract class SOAPFaultCodeImpl  extends SOAPElement implements SOAPFaul
             //No caching
             if (this.firstChild != null) {
                 OMSerializerUtil.serializeStartpart(this, writer);
-                firstChild.serializeAndConsume(omOutput);
+                firstChild.internalSerializeAndConsume(omOutput);
                 OMSerializerUtil.serializeEndpart(writer);
             } else if (!this.done) {
                 if (builderType == PULL_TYPE_BUILDER) {

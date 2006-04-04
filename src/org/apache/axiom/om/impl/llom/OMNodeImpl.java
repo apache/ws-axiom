@@ -318,12 +318,10 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      *
      * @param xmlWriter
      * @throws javax.xml.stream.XMLStreamException
-     *
-     * @see #serialize(org.apache.axiom.om.impl.OMOutputImpl)
      */
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(xmlWriter);
-        serialize(omOutput);
+        internalSerialize(omOutput);
         omOutput.flush();
     }
 
@@ -333,11 +331,11 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * @param xmlWriter
      * @throws javax.xml.stream.XMLStreamException
      *
-     * @see #serializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl)
+     * @see #internalSerializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl)
      */
     public void serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(xmlWriter);
-        serializeAndConsume(omOutput);
+        internalSerializeAndConsume(omOutput);
         omOutput.flush();
     }
 
@@ -346,9 +344,9 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      *
      * @param omOutput
      * @throws XMLStreamException
-     * @see #serialize(org.apache.axiom.om.impl.OMOutputImpl)
+     * @see #internalSerialize(org.apache.axiom.om.impl.OMOutputImpl)
      */
-    public void serialize(OMOutputImpl omOutput) throws XMLStreamException {
+    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
         throw new RuntimeException("Not implemented yet!");
     }
 
@@ -357,9 +355,9 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      *
      * @param omOutput
      * @throws XMLStreamException
-     * @see #serializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl)
+     * @see #internalSerializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl)
      */
-    public void serializeAndConsume(OMOutputImpl omOutput) throws XMLStreamException {
+    public void internalSerializeAndConsume(OMOutputImpl omOutput) throws XMLStreamException {
         throw new RuntimeException("Not implemented yet!");
     }
 
@@ -381,27 +379,27 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
 
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(output, format);
-        serialize(omOutput);
+        internalSerialize(omOutput);
         omOutput.flush();
     }
 
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
         omOutput.setOutputFormat(format);
-        serialize(omOutput);
+        internalSerialize(omOutput);
         omOutput.flush();
     }
 
     public void serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(output, format);
-        serializeAndConsume(omOutput);
+        internalSerializeAndConsume(omOutput);
         omOutput.flush();
     }
 
     public void serializeAndConsume(Writer writer, OMOutputFormat format) throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
         omOutput.setOutputFormat(format);
-        serializeAndConsume(omOutput);
+        internalSerializeAndConsume(omOutput);
         omOutput.flush();
     }
 

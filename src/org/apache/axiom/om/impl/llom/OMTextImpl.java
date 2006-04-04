@@ -203,15 +203,15 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * @param omOutput
      * @throws XMLStreamException
      */
-    public void serialize(OMOutputImpl omOutput) throws XMLStreamException {
-        serializeLocal(omOutput);
+    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
+        internalSerializeLocal(omOutput);
 
     }
 
     /**
      * Writes the relevant output.
      *
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
      */
     private void writeOutput(XMLStreamWriter writer) throws XMLStreamException {
@@ -386,12 +386,12 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         return true;
     }
 
-    public void serializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(OMOutputImpl omOutput)
             throws XMLStreamException {
-        serializeLocal(omOutput);
+        internalSerializeLocal(omOutput);
     }
 
-    private void serializeLocal(OMOutputImpl omOutput) throws XMLStreamException {
+    private void internalSerializeLocal(OMOutputImpl omOutput) throws XMLStreamException {
         XMLStreamWriter xmlStreamWriter = omOutput.getXmlStreamWriter();
 
         if (!this.isBinary) {
@@ -490,7 +490,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * Method serializeNamespace.
      *
      * @param namespace
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
      */
     static void serializeNamespace(OMNamespace namespace, XMLStreamWriter writer)

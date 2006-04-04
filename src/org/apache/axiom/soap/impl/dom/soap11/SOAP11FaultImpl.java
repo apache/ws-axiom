@@ -31,6 +31,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultImpl;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 public class SOAP11FaultImpl extends SOAPFaultImpl {
 
@@ -40,7 +41,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
     }
 
     public SOAP11FaultImpl(SOAPBody parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                           SOAPFactory factory) {
         super(parent, builder, factory);
     }
 
@@ -59,15 +60,15 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
         return new SOAP11FaultDetailImpl(fault, (SOAPFactory)this.factory);
     }
 
-    public void serialize(org.apache.axiom.om.impl.OMOutputImpl omOutput)
+    public void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput)
             throws XMLStreamException {
-        super.serialize(omOutput);
+        super.internalSerialize(omOutput);
     }
 
-    public void serializeAndConsume(
+    public void internalSerializeAndConsume(
             org.apache.axiom.om.impl.OMOutputImpl omOutput)
             throws XMLStreamException {
-        super.serializeAndConsume(omOutput);
+        super.internalSerializeAndConsume(omOutput);
     }
 
     public void setCode(SOAPFaultCode soapFaultCode)
@@ -125,14 +126,14 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
     }
 
     protected void serializeFaultNode(
-            org.apache.axiom.om.impl.OMOutputImpl omOutput)
+            XMLStreamWriter writer)
             throws XMLStreamException {
-        
+
     }
-    
+
     public SOAPFaultRole getRole() {
-		return (SOAP11FaultRoleImpl) this
-				.getChildWithName(SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME);
-	}
+        return (SOAP11FaultRoleImpl) this
+                .getChildWithName(SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME);
+    }
 
 }

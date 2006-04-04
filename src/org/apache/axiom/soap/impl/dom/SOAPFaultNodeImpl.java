@@ -49,7 +49,7 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
         return this.getText();
     }
 
-    protected void serialize(
+    protected void internalSerialize(
             org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache)
             throws XMLStreamException {
             // select the builder
@@ -68,7 +68,7 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
                 //No caching
                 if (this.firstChild != null) {
                     OMSerializerUtil.serializeStartpart(this, writer);
-                    firstChild.serializeAndConsume(omOutput);
+                    firstChild.internalSerializeAndConsume(omOutput);
                     OMSerializerUtil.serializeEndpart(writer);
                 } else if (!this.done) {
                     if (builderType == PULL_TYPE_BUILDER) {

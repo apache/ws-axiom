@@ -89,22 +89,6 @@ public class NoNamespaceSerializerTest extends TestCase {
                         OMAbstractFactory.getSOAP11Factory(), readerTwo);
     }
 
-
-//    public void testSerilizationWithCacheOff() throws Exception {
-//        SOAPEnvelope env = (SOAPEnvelope) builderOne.getDocumentElement();
-//        env.serializeAndConsume(writer, false);
-//        writer.flush();
-//
-//
-//    }
-//
-//    public void testSerilizationWithCacheOn() throws Exception {
-//        SOAPEnvelope env = (SOAPEnvelope) builderOne.getDocumentElement();
-//        env.serializeAndConsume(writer, true);
-//        writer.flush();
-//    }
-
-
     public void testSerilizationWithDefaultNamespaces() throws Exception {
         SOAPEnvelope env = (SOAPEnvelope) builderTwo.getDocumentElement();
         env.serialize(writer);

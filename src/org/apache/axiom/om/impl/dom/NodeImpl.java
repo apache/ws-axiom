@@ -397,9 +397,9 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
     /**
      * There no concept of caching in this OM-DOM implementation.
      */
-    public void serializeWithCache(OMOutputImpl omOutput)
+    public void internalSerializeWithCache(OMOutputImpl omOutput)
             throws XMLStreamException {
-        this.serialize(omOutput);
+        this.internalSerialize(omOutput);
     }
 
     /*
@@ -480,14 +480,14 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
 
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(xmlWriter);
-        serialize(omOutput);
+        internalSerialize(omOutput);
         omOutput.flush();
     }
 
     public void serializeAndConsume(XMLStreamWriter xmlWriter)
             throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(xmlWriter);
-        serializeAndConsume(omOutput);
+        internalSerializeAndConsume(omOutput);
         omOutput.flush();
     }
 
@@ -580,7 +580,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
     public void serialize(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(output, format);
-        serialize(omOutput);
+        internalSerialize(omOutput);
         omOutput.flush();
     }
 
@@ -589,14 +589,14 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         OMOutputImpl omOutput = new OMOutputImpl(XMLOutputFactory.newInstance()
                 .createXMLStreamWriter(writer));
         omOutput.setOutputFormat(format);
-        serialize(omOutput);
+        internalSerialize(omOutput);
         omOutput.flush();
     }
 
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
         OMOutputImpl omOutput = new OMOutputImpl(output, format);
-        serializeAndConsume(omOutput);
+        internalSerializeAndConsume(omOutput);
         omOutput.flush();
     }
 
@@ -605,7 +605,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         OMOutputImpl omOutput = new OMOutputImpl(XMLOutputFactory.newInstance()
                 .createXMLStreamWriter(writer));
         omOutput.setOutputFormat(format);
-        serializeAndConsume(omOutput);
+        internalSerializeAndConsume(omOutput);
         omOutput.flush();
     }
 

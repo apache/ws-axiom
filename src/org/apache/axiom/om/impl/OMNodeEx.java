@@ -21,6 +21,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Interface OMNodeEx
@@ -44,9 +45,8 @@ public interface OMNodeEx extends OMNode {
      *
      * @param omOutput
      * @throws javax.xml.stream.XMLStreamException
-     * @see #serialize(org.apache.axiom.om.impl.OMOutputImpl)
      */
-    public void serialize(org.apache.axiom.om.impl.OMOutputImpl omOutput)
+    public void internalSerialize(OMOutputImpl omOutput)
             throws XMLStreamException;
 
     /**
@@ -55,5 +55,5 @@ public interface OMNodeEx extends OMNode {
      * @param omOutput
      * @throws XMLStreamException
      */
-    public void serializeAndConsume(OMOutputImpl omOutput) throws XMLStreamException;
+    public void internalSerializeAndConsume(OMOutputImpl omOutput) throws XMLStreamException;
 }

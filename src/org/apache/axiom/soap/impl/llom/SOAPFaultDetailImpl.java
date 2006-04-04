@@ -63,7 +63,7 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
         return this.getChildren();
     }
 
-    protected void serialize(org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
+    protected void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
         // select the builder
         short builderType = PULL_TYPE_BUILDER;    // default is pull type
         if (builder != null) {
@@ -94,7 +94,7 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
 
         OMNode child = (OMNodeImpl) firstChild;
         while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
-            ((OMNodeImpl) child).serializeAndConsume(omOutput);
+            ((OMNodeImpl) child).internalSerializeAndConsume(omOutput);
             child = child.getNextOMSibling();
         }
 
