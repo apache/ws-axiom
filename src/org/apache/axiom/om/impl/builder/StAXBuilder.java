@@ -77,8 +77,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     protected boolean parserAccessed = false;
     protected OMDocument document;
-    private static final String IS_BINARY = "IsOptimized";
-    private static final String DATA_HANDLER = "DataHandler";
+    private static final String IS_BINARY = "Axiom.IsBinary";
+    private static final String DATA_HANDLER = "Axiom.DataHandler";
 
 
     /**
@@ -192,11 +192,12 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                 OMText text = omfactory.createText(dataHandler, true);
                 omElement.addChild(text);
                 return text;
-            } else {
-                return omfactory.createText(omElement, parser.getText(), textType);
             }
         } catch (IllegalArgumentException e) {
+            // nothing to be done here. This is handled in finally case
+        } finally {
             return omfactory.createText(omElement, parser.getText(), textType);
+
         }
     }
 

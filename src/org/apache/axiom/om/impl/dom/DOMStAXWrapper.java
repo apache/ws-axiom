@@ -877,7 +877,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * @throws IllegalArgumentException
      */
     public Object getProperty(String s) throws IllegalArgumentException {
-        throw new UnsupportedOperationException();
+        throw new IllegalArgumentException();
     }
 
     /**
