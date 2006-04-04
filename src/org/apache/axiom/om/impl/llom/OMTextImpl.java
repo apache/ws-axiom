@@ -37,6 +37,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
+    /**
+     * Field nameSpace used when serializing Binary stuff as MTOM optimized.
+     */
+    public static final OMNamespace XOP_NS = new OMNamespaceImpl(
+                "http://www.w3.org/2004/08/xop/include", "xop");
+
     protected String value = null;
 
     protected OMNamespace textNS;
@@ -59,11 +65,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * Javax.activation.DataHandler
      */
     private Object dataHandlerObject = null;
-
-    /**
-     * Field nameSpace used when serializing Binary stuff as MTOM optimized.
-     */
-    protected OMNamespace xopNS = null;
 
     /**
      * Field localName used when serializing Binary stuff as MTOM optimized.
@@ -93,8 +94,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         super(factory);
         this.value = s;
         this.nodeType = nodeType;
-        this.xopNS = new OMNamespaceImpl(
-                "http://www.w3.org/2004/08/xop/include", "xop");
     }
 
     /**
@@ -113,8 +112,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.value = text;
         done = true;
         this.nodeType = nodeType;
-        this.xopNS = new OMNamespaceImpl(
-                "http://www.w3.org/2004/08/xop/include", "xop");
     }
 
 
@@ -129,8 +126,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.value = text.getLocalPart();
         done = true;
         this.nodeType = nodeType;
-        this.xopNS = new OMNamespaceImpl(
-                "http://www.w3.org/2004/08/xop/include", "xop");
     }
 
     /**
@@ -176,8 +171,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.optimize = optimize;
         done = true;
         this.nodeType = TEXT_NODE;
-        this.xopNS = new OMNamespaceImpl(
-                "http://www.w3.org/2004/08/xop/include", "xop");
     }
 
     /**
@@ -195,8 +188,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.isBinary = true;
         this.builder = builder;
         this.nodeType = TEXT_NODE;
-        this.xopNS = new OMNamespaceImpl(
-                "http://www.w3.org/2004/08/xop/include", "xop");
     }
 
     /**
@@ -419,42 +410,21 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      */
     private void serializeStartpart(XMLStreamWriter writer)
             throws XMLStreamException {
-        String nameSpaceName;
-        String writer_prefix;
-        String prefix;
-        if (this.xopNS != null) {
-            nameSpaceName = this.xopNS.getName();
-            writer_prefix = writer.getPrefix(nameSpaceName);
-            prefix = this.xopNS.getPrefix();
-            if (nameSpaceName != null) {
-                if (writer_prefix != null) {
-                    writer
-                            .writeStartElement(nameSpaceName, this
-                                    .getLocalName());
-                } else {
-                    if (prefix != null) {
-                        writer.writeStartElement(prefix, this.getLocalName(),
-                                nameSpaceName);
-                        //TODO FIX ME
-                        //writer.writeNamespace(prefix, nameSpaceName);
-                        writer.setPrefix(prefix, nameSpaceName);
-                    } else {
-                        writer.writeStartElement(nameSpaceName, this
-                                .getLocalName());
-                        writer.writeDefaultNamespace(nameSpaceName);
-                        writer.setDefaultNamespace(nameSpaceName);
-                    }
-                }
-            } else {
-                writer.writeStartElement(this.getLocalName());
-            }
+        String nameSpaceName = XOP_NS.getName();
+        String writer_prefix = writer.getPrefix(nameSpaceName);
+        String prefix = XOP_NS.getPrefix();
+        if (writer_prefix != null) {
+            writer.writeStartElement(nameSpaceName, this
+                            .getLocalName());
         } else {
-            writer.writeStartElement(this.getLocalName());
+            writer.writeStartElement(prefix, this.getLocalName(),
+                    nameSpaceName);
+            writer.setPrefix(prefix, nameSpaceName);
         }
         // add the elements attribute "href"
         serializeAttribute(this.attribute, writer);
         // add the namespace
-        serializeNamespace(this.xopNS, writer);
+        serializeNamespace(XOP_NS, writer);
     }
 
     /**
