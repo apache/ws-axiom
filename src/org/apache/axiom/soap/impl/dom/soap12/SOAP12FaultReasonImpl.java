@@ -24,10 +24,12 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultReasonImpl;
 
+import java.util.List;
+
 public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
 
     public SOAP12FaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                                 SOAPFactory factory) {
         super(parent, builder, factory);
     }
 
@@ -39,14 +41,14 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
         super(parent, true, factory);
     }
 
-    public void setSOAPText(SOAPFaultText soapFaultText)
+    public void addSOAPText(SOAPFaultText soapFaultText)
             throws SOAPProcessingException {
         if (!(soapFaultText instanceof SOAP12FaultTextImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault Text. " +
                     "But received some other implementation");
         }
-        super.setSOAPText(soapFaultText);
+        super.addSOAPText(soapFaultText);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {

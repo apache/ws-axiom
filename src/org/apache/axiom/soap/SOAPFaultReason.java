@@ -18,12 +18,18 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMElement;
 
+import java.util.List;
+
 public interface SOAPFaultReason extends OMElement {
     /**
      * Eran Chinthaka (chinthaka@apache.org)
      */
 
-    public void setSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException;
+    public void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException;
 
-    public SOAPFaultText getSOAPText();
+    public SOAPFaultText getFirstSOAPText();
+
+    public List getAllSoapTexts();
+
+    public SOAPFaultText getSOAPFaultText(String language);
 }

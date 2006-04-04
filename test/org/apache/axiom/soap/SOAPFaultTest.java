@@ -387,7 +387,7 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
                     envelope.getBody().getFault().getReason());
             assertNotNull(
                     "Default FaultEnvelope must have a SOAPFaultText in it",
-                    envelope.getBody().getFault().getReason().getSOAPText());
+                    envelope.getBody().getFault().getReason().getFirstSOAPText());
 
             SOAPEnvelope soapEnvelope = soapFactory.getDefaultFaultEnvelope();
             String errorCodeString = "Some Error occurred !!";

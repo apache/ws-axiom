@@ -158,7 +158,7 @@ public class StAXSOAPModelBuilderTest extends TestCase {
             assertTrue("SOAP 1.2 :- Role attribute name mismatch",
                     roleAttribute.getLocalName().equals(
                             SOAP12Constants.SOAP_ROLE));
-            
+
 
             assertTrue("SOAP 1.2 :- Role value mismatch",
                     roleAttribute.getAttributeValue().trim().equals(
@@ -460,7 +460,7 @@ public class StAXSOAPModelBuilderTest extends TestCase {
                     reason.getNamespace().getName().equals(
                             SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
             assertTrue("SOAP 1.1 :- Fault string value mismatch",
-                    reason.getSOAPText().getText().trim().equals("Sender Timeout"));
+                    reason.getFirstSOAPText().getText().trim().equals("Sender Timeout"));
 
             iteratorInFault.next();
             role = (SOAPFaultRole) iteratorInFault.next();

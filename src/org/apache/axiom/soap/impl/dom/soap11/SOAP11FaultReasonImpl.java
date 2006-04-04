@@ -46,14 +46,14 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
         super(parent, false, factory);
     }
 
-    public void setSOAPText(SOAPFaultText soapFaultText)
+    public void addSOAPText(SOAPFaultText soapFaultText)
             throws SOAPProcessingException {
         if (!(soapFaultText instanceof SOAP11FaultTextImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault Text. " +
                     "But received some other implementation");
         }
-        super.setSOAPText(soapFaultText);
+        super.addSOAPText(soapFaultText);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -91,7 +91,7 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
         OMSerializerUtil.serializeAttributes(this, writer);
         OMSerializerUtil.serializeNamespaces(this, writer);
 
-        String text = this.getSOAPText().getText();
+        String text = this.getFirstSOAPText().getText();
         writer.writeCharacters(text);
         writer.writeEndElement();
     }

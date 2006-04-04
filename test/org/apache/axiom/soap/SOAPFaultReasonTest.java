@@ -28,13 +28,13 @@ public class SOAPFaultReasonTest extends SOAPFaultReasonTestCase {
 
     //SOAP 1.1 Fault Reason Test (Programaticaly Created)
     public void testSOAP11SetSOAPText() {
-        soap11FaultReason.setSOAPText(
+        soap11FaultReason.addSOAPText(
                 soap11Factory.createSOAPFaultText(soap11FaultReason));
         assertFalse(
-                "SOAP 1.1 FaultReason Test : - After calling setSOAPText, getSOAPText returns null",
-                soap11FaultReason.getSOAPText() == null);
+                "SOAP 1.1 FaultReason Test : - After calling addSOAPText, getFirstSOAPText returns null",
+                soap11FaultReason.getFirstSOAPText() == null);
         try {
-            soap11FaultReason.setSOAPText(
+            soap11FaultReason.addSOAPText(
                     soap12Factory.createSOAPFaultText(soap12FaultReason));
             fail("SOAP12FaultText should not be added to SOAP11FaultReason");
 
@@ -46,23 +46,23 @@ public class SOAPFaultReasonTest extends SOAPFaultReasonTestCase {
     public void testSOAP11GetSOAPText() {
         assertTrue(
                 "SOAP 1.1 FaultReason Test : - After creating SOAP11FaultReason, it has a SOAPFaultText",
-                soap11FaultReason.getSOAPText() == null);
-        soap11FaultReason.setSOAPText(
+                soap11FaultReason.getFirstSOAPText() == null);
+        soap11FaultReason.addSOAPText(
                 soap11Factory.createSOAPFaultText(soap11FaultReason));
         assertFalse(
-                "SOAP 1.1 FaultReason Test : - After calling setSOAPText, getSOAPText returns null",
-                soap11FaultReason.getSOAPText() == null);
+                "SOAP 1.1 FaultReason Test : - After calling addSOAPText, getFirstSOAPText returns null",
+                soap11FaultReason.getFirstSOAPText() == null);
     }
 
     //SOAP 1.2 Fault Reason Test (Programaticaly Created)
     public void testSOAP12SetSOAPText() {
-        soap12FaultReason.setSOAPText(
+        soap12FaultReason.addSOAPText(
                 soap12Factory.createSOAPFaultText(soap12FaultReason));
         assertFalse(
-                "SOAP 1.2 FaultReason Test : - After calling setSOAPText, getSOAPText returns null",
-                soap12FaultReason.getSOAPText() == null);
+                "SOAP 1.2 FaultReason Test : - After calling addSOAPText, getFirstSOAPText returns null",
+                soap12FaultReason.getFirstSOAPText() == null);
         try {
-            soap12FaultReason.setSOAPText(
+            soap12FaultReason.addSOAPText(
                     soap11Factory.createSOAPFaultText(soap11FaultReason));
             fail("SOAP11FaultText should not be added to SOAP12FaultReason");
         } catch (Exception e) {
@@ -73,25 +73,25 @@ public class SOAPFaultReasonTest extends SOAPFaultReasonTestCase {
     public void testSOAP12GetSOAPText() {
         assertTrue(
                 "SOAP 1.2 FaultReason Test : - After creating SOAP12FaultReason, it has a SOAPFaultText",
-                soap12FaultReason.getSOAPText() == null);
-        soap12FaultReason.setSOAPText(
+                soap12FaultReason.getFirstSOAPText() == null);
+        soap12FaultReason.addSOAPText(
                 soap12Factory.createSOAPFaultText(soap12FaultReason));
         assertFalse(
-                "SOAP 1.2 FaultReason Test : - After calling setSOAPText, getSOAPText returns null",
-                soap12FaultReason.getSOAPText() == null);
+                "SOAP 1.2 FaultReason Test : - After calling addSOAPText, getFirstSOAPText returns null",
+                soap12FaultReason.getFirstSOAPText() == null);
     }
 
     //SOAP 1.1 Fault Reason Test (With Parser)
     public void testSOAP11GetSOAPTextWithParser() {
         assertFalse(
-                "SOAP 1.1 FaultReason Test With Parser : - getSOAPText method returns null",
-                soap11FaultReasonWithParser.getSOAPText() == null);
+                "SOAP 1.1 FaultReason Test With Parser : - getFirstSOAPText method returns null",
+                soap11FaultReasonWithParser.getFirstSOAPText() == null);
     }
 
     //SOAP 1.2 Fault Reason Test (With Parser)
     public void testSOAP12GetSOAPTextWithParser() {
         assertFalse(
-                "SOAP 1.2 FaultReason Test With Parser : - getSOAPText method returns null",
-                soap12FaultReasonWithParser.getSOAPText() == null);
+                "SOAP 1.2 FaultReason Test With Parser : - getFirstSOAPText method returns null",
+                soap12FaultReasonWithParser.getFirstSOAPText() == null);
     }
 }

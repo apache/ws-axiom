@@ -32,8 +32,8 @@ public class SOAPFaultTextTest extends SOAPFaultReasonTestCase {
         super.setUp();
         soap11FaultText = soap11Factory.createSOAPFaultText(soap11FaultReason);
         soap12FaultText = soap12Factory.createSOAPFaultText(soap12FaultReason);
-        soap11FaultTextWithParser = soap11FaultReasonWithParser.getSOAPText();
-        soap12FaultTextWithParser = soap12FaultReasonWithParser.getSOAPText();
+        soap11FaultTextWithParser = soap11FaultReasonWithParser.getFirstSOAPText();
+        soap12FaultTextWithParser = soap12FaultReasonWithParser.getFirstSOAPText();
     }
 
     //SOAP 1.1 Fault Text Test (Programaticaly Created)

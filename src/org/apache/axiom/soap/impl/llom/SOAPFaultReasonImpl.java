@@ -19,6 +19,7 @@ package org.apache.axiom.soap.impl.llom;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.llom.OMSerializerUtil;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
@@ -31,10 +32,11 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public abstract class SOAPFaultReasonImpl extends SOAPElement implements SOAPFaultReason {
-    protected SOAPFaultText text;
 
     protected SOAPFaultReasonImpl(OMNamespace ns, SOAPFactory factory) {
         super(SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME, ns, factory);
@@ -64,60 +66,38 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements SOAPFau
                 factory);
     }
 
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
-    public void setSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException {
-        ElementHelper.setNewElement(this, text, soapFaultText);
+    public void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException {
+        this.addChild(soapFaultText);
     }
 
-    public SOAPFaultText getSOAPText() {
+    public SOAPFaultText getFirstSOAPText() {
         return (SOAPFaultText) ElementHelper.getChildWithName(this,
                 SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME);
     }
 
-    protected void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
-        // select the builder
-        short builderType = PULL_TYPE_BUILDER;    // default is pull type
-        if (builder != null) {
-            builderType = this.builder.getBuilderType();
-        }
-        if ((builderType == PUSH_TYPE_BUILDER)
-                && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(omOutput.getXmlStreamWriter()));
-        }
-
-
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
-        if (!cache) {
-            //No caching
-            if (this.firstChild != null) {
-                OMSerializerUtil.serializeStartpart(this, writer);
-                ((OMNodeEx)firstChild).internalSerializeAndConsume(omOutput);
-                OMSerializerUtil.serializeEndpart(writer);
-            } else if (!this.done) {
-                if (builderType == PULL_TYPE_BUILDER) {
-                    OMSerializerUtil.serializeByPullStream(this, writer);
-                } else {
-                    OMSerializerUtil.serializeStartpart(this, writer);
-                    builder.setCache(cache);
-                    builder.next();
-                    OMSerializerUtil.serializeEndpart(writer);
-                }
-            } else {
-                OMSerializerUtil.serializeNormal(this, writer, cache);
+    public List getAllSoapTexts() {
+        List faultTexts = new ArrayList(1);
+        Iterator childrenIter = this.getChildren();
+        while (childrenIter.hasNext()) {
+            OMNode node = (OMNode) childrenIter.next();
+            if (node.getType() == OMNode.ELEMENT_NODE && (node instanceof SOAPFaultTextImpl)) {
+                faultTexts.add(((SOAPFaultTextImpl) node));
             }
-            // do not serialise the siblings
+        }
+        return faultTexts;
+    }
 
-
-        } else {
-            //Cached
-            OMSerializerUtil.serializeNormal(this, writer, cache);
-
-            // do not serialise the siblings
+    public SOAPFaultText getSOAPFaultText(String language) {
+        Iterator childrenIter = this.getChildren();
+        while (childrenIter.hasNext()) {
+            OMNode node = (OMNode) childrenIter.next();
+            if (node.getType() == OMNode.ELEMENT_NODE && (node instanceof SOAPFaultTextImpl) && language.equals(((SOAPFaultTextImpl) node).getLang()))
+            {
+                return (SOAPFaultText) node;
+            }
         }
 
-
+        return null;
     }
 
 }

@@ -30,6 +30,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.util.List;
 
 public abstract class SOAPFaultReasonImpl extends SOAPElement implements
         SOAPFaultReason {
@@ -60,11 +61,11 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
     /**
      * Eran Chinthaka (chinthaka@apache.org)
      */
-    public void setSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException {
+    public void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException {
         ElementHelper.setNewElement(this, text, soapFaultText);
     }
 
-    public SOAPFaultText getSOAPText() {
+    public SOAPFaultText getFirstSOAPText() {
         return (SOAPFaultText) ElementHelper.getChildWithName(this,
                 SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME);
     }
@@ -109,7 +110,15 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
 
             // do not serialise the siblings
         }
+    }
 
+    public List getAllSoapTexts() {
+        //TODO Ruchith
+        throw new UnsupportedOperationException();
+    }
 
+    public SOAPFaultText getSOAPFaultText(String language) {
+        //TODO Ruchith
+        throw new UnsupportedOperationException();
     }
 }
