@@ -62,16 +62,16 @@ public class OMOutputTest extends AbstractTestCase {
         OMFactory fac = OMAbstractFactory.getOMFactory();
         
         OMNamespaceImpl soap = new OMNamespaceImpl(
-                "http://schemas.xmlsoap.org/soap/envelope/", "soap", fac);
+                "http://schemas.xmlsoap.org/soap/envelope/", "soap");
         envelope = new OMElementImpl("Envelope", soap, fac);
         OMElement body = new OMElementImpl("Body", soap, fac);
 
         OMNamespaceImpl dataName = new OMNamespaceImpl(
-                "http://www.example.org/stuff", "m", fac);
+                "http://www.example.org/stuff", "m");
         OMElement data = new OMElementImpl("data", dataName, fac);
 
         OMNamespaceImpl mime = new OMNamespaceImpl(
-                "http://www.w3.org/2003/06/xmlmime", "m", fac);
+                "http://www.w3.org/2003/06/xmlmime", "m");
 
         OMElement text = new OMElementImpl("name", dataName, fac);
         OMAttribute cType1 = new OMAttributeImpl("contentType", mime,

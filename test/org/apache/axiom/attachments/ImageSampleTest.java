@@ -84,12 +84,12 @@ public class ImageSampleTest extends AbstractTestCase {
 
         OMFactory fac = OMAbstractFactory.getOMFactory();
         OMNamespaceImpl soap = new OMNamespaceImpl(
-                "http://schemas.xmlsoap.org/soap/envelope/", "soap", fac);
+                "http://schemas.xmlsoap.org/soap/envelope/", "soap");
         OMElement envelope = new OMElementImpl("Envelope", soap, fac);
         OMElement body = new OMElementImpl("Body", soap, fac);
 
         OMNamespaceImpl dataName = new OMNamespaceImpl(
-                "http://www.example.org/stuff", "m", fac);
+                "http://www.example.org/stuff", "m");
         OMElement data = new OMElementImpl("data", dataName, fac);
 
         expectedImage =

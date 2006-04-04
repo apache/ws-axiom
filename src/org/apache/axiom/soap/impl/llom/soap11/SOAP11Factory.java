@@ -48,7 +48,7 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
 
     public OMNamespace getNamespace() {
         return new OMNamespaceImpl(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX, this);
+                SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
     }
 
     public String getSoapVersionURI() {
@@ -59,8 +59,7 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
         return new SOAPEnvelopeImpl(
                 new OMNamespaceImpl(
                         SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                        SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX, 
-                        this),
+                        SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX),
                 this);
     }
 
@@ -269,8 +268,7 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
         OMNamespace ns =
                 new OMNamespaceImpl(
                         SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                        SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX, 
-                        this);
+                        SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(ns, this);
         createSOAPHeader(env);
         createSOAPBody(env);

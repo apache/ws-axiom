@@ -294,7 +294,7 @@ public class OMElementImpl extends OMNodeImpl
     public OMNamespace declareNamespace(String uri, String prefix) {
         if ("".equals(prefix))
             prefix = OMSerializerUtil.getNextNSPrefix();
-        OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix, this.factory);
+        OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
         return declareNamespace(ns);
     }
 
@@ -305,7 +305,7 @@ public class OMElementImpl extends OMNodeImpl
      * @param uri
      */
     public OMNamespace declareDefaultNamespace(String uri) {
-        OMNamespaceImpl namespace = new OMNamespaceImpl(uri, "", this.factory);
+        OMNamespaceImpl namespace = new OMNamespaceImpl(uri, "");
 
         if (namespaces == null) {
             this.namespaces = new HashMap(5);
@@ -336,7 +336,7 @@ public class OMElementImpl extends OMNodeImpl
         String prefix = namespace.getPrefix();
         if (prefix == null) {
             prefix = OMSerializerUtil.getNextNSPrefix();
-            namespace = new OMNamespaceImpl(namespace.getName(), prefix, null);
+            namespace = new OMNamespaceImpl(namespace.getName(), prefix);
         }
         namespaces.put(prefix, namespace);
         return namespace;
@@ -391,7 +391,7 @@ public class OMElementImpl extends OMNodeImpl
         //If the prefix is available and uri is available and its the xml namespace
         if (prefix != null && prefix.equals(OMConstants.XMLNS_PREFIX) && uri.equals(OMConstants.XMLNS_URI))
         {
-            return new OMNamespaceImpl(uri, prefix, this.factory);
+            return new OMNamespaceImpl(uri, prefix);
         }
 
         if (namespaces == null) {

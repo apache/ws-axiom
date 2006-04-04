@@ -94,7 +94,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.value = s;
         this.nodeType = nodeType;
         this.xopNS = new OMNamespaceImpl(
-                "http://www.w3.org/2004/08/xop/include", "xop", factory);
+                "http://www.w3.org/2004/08/xop/include", "xop");
     }
 
     /**
@@ -114,7 +114,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         done = true;
         this.nodeType = nodeType;
         this.xopNS = new OMNamespaceImpl(
-                "http://www.w3.org/2004/08/xop/include", "xop", factory);
+                "http://www.w3.org/2004/08/xop/include", "xop");
     }
 
 
@@ -130,7 +130,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         done = true;
         this.nodeType = nodeType;
         this.xopNS = new OMNamespaceImpl(
-                "http://www.w3.org/2004/08/xop/include", "xop", factory);
+                "http://www.w3.org/2004/08/xop/include", "xop");
     }
 
     /**
@@ -177,7 +177,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         done = true;
         this.nodeType = TEXT_NODE;
         this.xopNS = new OMNamespaceImpl(
-                "http://www.w3.org/2004/08/xop/include", "xop", factory);
+                "http://www.w3.org/2004/08/xop/include", "xop");
     }
 
     /**
@@ -196,7 +196,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.builder = builder;
         this.nodeType = TEXT_NODE;
         this.xopNS = new OMNamespaceImpl(
-                "http://www.w3.org/2004/08/xop/include", "xop", factory);
+                "http://www.w3.org/2004/08/xop/include", "xop");
     }
 
     /**
@@ -404,8 +404,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                 }
                 // send binary as MTOM optimised
                 this.attribute = new OMAttributeImpl("href",
-                        new OMNamespaceImpl("", "", this.factory), "cid:" + getContentID(),
-                        this.factory);
+                        new OMNamespaceImpl("", ""), "cid:" + getContentID(), this.factory);
                 this.serializeStartpart(xmlStreamWriter);
                 omOutput.writeOptimized(this);
                 xmlStreamWriter.writeEndElement();

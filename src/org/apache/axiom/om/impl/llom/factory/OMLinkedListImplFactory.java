@@ -123,7 +123,7 @@ public class OMLinkedListImplFactory implements OMFactory {
         String key = uri + uriAndPrefixSeparator + prefix;
         OMNamespace existingNamespaceObject = (OMNamespace) namespaceTable.get(key);
         if (existingNamespaceObject == null) {
-            existingNamespaceObject = new OMNamespaceImpl(uri, prefix, this);
+            existingNamespaceObject = new OMNamespaceImpl(uri, prefix);
             namespaceTable.put(key, existingNamespaceObject);
         }
         return existingNamespaceObject;

@@ -87,8 +87,7 @@ public abstract class SOAPHeaderBlockImpl extends OMElementImpl
         } else {
             OMAttribute attribute = new OMAttributeImpl(attributeName,
                     new OMNamespaceImpl(soapEnvelopeNamespaceURI,
-                            SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX, 
-                            this.factory),
+                            SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
                     attrValue, this.factory);
             this.addAttribute(attribute);
         }

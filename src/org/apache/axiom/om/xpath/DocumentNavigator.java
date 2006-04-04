@@ -381,8 +381,7 @@ public class DocumentNavigator extends DefaultNavigator {
                 new OMNamespaceEx(
                         new OMNamespaceImpl(
                                 "http://www.w3.org/XML/1998/namespace", 
-                                "xml", 
-                                ((OMNode)contextNode).getOMFactory()),
+                                "xml"),
                         (OMContainer) contextNode));
         return nsList.iterator();
     }

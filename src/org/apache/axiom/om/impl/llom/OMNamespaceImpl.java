@@ -32,17 +32,14 @@ public class OMNamespaceImpl implements OMNamespace {
      * Field uri
      */
     private String uri;
-    
-    private OMFactory factory;
 
     /**
      * @param uri
      * @param prefix
      */
-    public OMNamespaceImpl(String uri, String prefix, OMFactory factory) {
+    public OMNamespaceImpl(String uri, String prefix) {
         this.uri = uri;
         this.prefix = prefix;
-        this.factory = factory;
     }
 
     /**

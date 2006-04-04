@@ -67,24 +67,6 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     
     protected OMFactory factory;
 
-//    /**
-//     * Constructor OMNodeImpl
-//     */
-//    public OMNodeImpl() {
-//    }
-//
-//    /**
-//     * For a node to exist there must be a parent.
-//     *
-//     * @param parent
-//     */
-//    public OMNodeImpl(OMContainer parent) {
-//        if ((parent != null)) {
-//            this.parent = (OMContainerEx) parent;
-//            parent.addChild(this);
-//        }
-//    }
-    
     /**
      * Constructor OMNodeImpl
      * @param factory The <code>OMFactory</code> that created this
