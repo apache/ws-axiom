@@ -84,7 +84,7 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
         if ((builderType == PUSH_TYPE_BUILDER)
                 && (builder.getRegisteredContentHandler() == null)) {
             builder.registerExternalContentHandler(
-                    new StreamWriterToContentHandlerConverter(omOutput));
+                    new StreamWriterToContentHandlerConverter(omOutput.getXmlStreamWriter()));
         }
 
         XMLStreamWriter writer = omOutput.getXmlStreamWriter();

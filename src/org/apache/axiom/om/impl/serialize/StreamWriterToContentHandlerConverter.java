@@ -43,10 +43,10 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
     /**
      * Constructor StreamWriterToContentHandlerConverter.
      *
-     * @param omOutput
+     * @param writer
      */
-    public StreamWriterToContentHandlerConverter(org.apache.axiom.om.impl.OMOutputImpl omOutput) {
-        this.writer = omOutput.getXmlStreamWriter();
+    public StreamWriterToContentHandlerConverter(XMLStreamWriter writer) {
+        this.writer = writer;
     }
 
     /**

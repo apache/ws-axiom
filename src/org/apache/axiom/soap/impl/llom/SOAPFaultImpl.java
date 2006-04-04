@@ -191,7 +191,7 @@ public abstract class SOAPFaultImpl extends SOAPElement
         }
         if ((builderType == PUSH_TYPE_BUILDER)
                 && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(omOutput));
+            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(omOutput.getXmlStreamWriter()));
         }
 
         // this is a special case. This fault element may contain its children in any order. But spec mandates a specific order

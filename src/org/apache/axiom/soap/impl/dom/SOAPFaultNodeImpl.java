@@ -60,7 +60,7 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
             if ((builderType == PUSH_TYPE_BUILDER)
                     && (builder.getRegisteredContentHandler() == null)) {
                 builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(
-                            omOutput));
+                            omOutput.getXmlStreamWriter()));
             }
 
             XMLStreamWriter writer = omOutput.getXmlStreamWriter();

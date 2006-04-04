@@ -90,7 +90,7 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
         if ((builderType == PUSH_TYPE_BUILDER)
                 && (builder.getRegisteredContentHandler() == null)) {
             builder.registerExternalContentHandler(
-                    new StreamWriterToContentHandlerConverter(omOutput));
+                    new StreamWriterToContentHandlerConverter(omOutput.getXmlStreamWriter()));
         }
 
         XMLStreamWriter writer = omOutput.getXmlStreamWriter();

@@ -65,7 +65,7 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
         if ((builderType == PUSH_TYPE_BUILDER)
                 && (builder.getRegisteredContentHandler() == null)) {
             builder.registerExternalContentHandler(
-                    new StreamWriterToContentHandlerConverter(omOutput));
+                    new StreamWriterToContentHandlerConverter(omOutput.getXmlStreamWriter()));
         }
         XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (this.getNamespace() != null) {

@@ -66,7 +66,7 @@ public abstract class SOAPFaultRoleImpl extends SOAPElement implements org.apach
         }
         if ((builderType == PUSH_TYPE_BUILDER)
                 && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(omOutput));
+            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(omOutput.getXmlStreamWriter()));
         }
 
 

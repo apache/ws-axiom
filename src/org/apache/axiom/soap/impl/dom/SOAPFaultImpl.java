@@ -202,7 +202,7 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
 				&& (builder.getRegisteredContentHandler() == null)) {
 			builder
 					.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(
-							omOutput));
+							omOutput.getXmlStreamWriter()));
 		}
 
 		// this is a special case. This fault element may contain its children

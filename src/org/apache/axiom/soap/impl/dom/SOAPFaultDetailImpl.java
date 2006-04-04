@@ -68,7 +68,7 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
         }
         if ((builderType == PUSH_TYPE_BUILDER)
                 && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(omOutput));
+            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(omOutput.getXmlStreamWriter()));
         }
 
         XMLStreamWriter writer = omOutput.getXmlStreamWriter();
