@@ -1069,6 +1069,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             // switched off
             // has nothing to do if the element is already built!
             if (this.done) {
+                System.out.println(this.localName);
                 OMSerializerUtil.serializeStartpart(this, writer);
                 ChildNode child = this.firstChild;
                 while (child != null
@@ -1239,9 +1240,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      * @see org.apache.axiom.om.OMElement#cloneOMElement()
      */
     public OMElement cloneOMElement() {
-        ElementImpl elem = (ElementImpl) (new StAXOMBuilder(new OMDOMFactory(),
-                this.getXMLStreamReader(true))).getDocumentElement();
-        return elem;
+        return (ElementImpl)this.cloneNode(true);
     }
 
     public void setLineNumber(int lineNumber) {

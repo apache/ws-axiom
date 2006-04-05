@@ -155,17 +155,17 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
     public Attr createAttributeNS(String namespaceURI, String qualifiedName)
             throws DOMException {
-//        if (!namespaceURI.equals(OMConstants.XMLNS_NS_URI)) {
-            String localName = DOMUtil.getLocalName(qualifiedName);
-            String prefix = DOMUtil.getPrefix(qualifiedName);
+        String localName = DOMUtil.getLocalName(qualifiedName);
+        String prefix = DOMUtil.getPrefix(qualifiedName);
 
+        if(!OMConstants.XMLNS_NS_PREFIX.equals(localName)) {
             this.checkQName(prefix, localName);
+        } else {
+            return this.createAttribute(localName);
+        }
 
-            return new AttrImpl(this, localName, new NamespaceImpl(
-                    namespaceURI, prefix, this.factory), this.factory);
-//        } else {
-//            return null;
-//        }
+        return new AttrImpl(this, localName, new NamespaceImpl(
+                namespaceURI, prefix, this.factory), this.factory);
     }
 
     public CDATASection createCDATASection(String arg0) throws DOMException {
