@@ -29,7 +29,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.util.EmptyIterator;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
@@ -403,29 +402,24 @@ public class OMElementImpl extends OMNodeImpl
 
             OMNamespace ns = null;
 
+            String nsUri;
+
             while (namespaceListIterator.hasNext()) {
                 OMNamespace omNamespace =
                         (OMNamespace) namespaceListIterator.next();
-                if (omNamespace.getName() != null &&
-                        omNamespace.getName().equals(uri)) {
-                    if (ns == null) {
-                        ns = omNamespace;
-                    } else
-                    if (omNamespace.getPrefix() == null || omNamespace.getPrefix().length() == 0) {
-                        ns = omNamespace;
-
-                    }
+                nsUri = omNamespace.getName();
+                if (nsUri != null &&
+                        nsUri.equals(uri)) {
+                    return omNamespace;
                 }
             }
-            return ns;
         } else {
             OMNamespace namespace = (OMNamespace) namespaces.get(prefix);
             if (namespace != null && uri.equalsIgnoreCase(namespace.getName())) {
                 return namespace;
-            } else {
-                return null;
             }
         }
+        return null;
     }
 
 

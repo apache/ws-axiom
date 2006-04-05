@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.llom.OMSerializerUtil;
@@ -818,8 +817,9 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             while (namespaceListIterator.hasNext()) {
                 OMNamespace omNamespace = (OMNamespace) namespaceListIterator
                         .next();
-                if (omNamespace.getName() != null
-                        && omNamespace.getName().equals(uri)) {
+                String nsURI = omNamespace.getName();
+                if (nsURI != null
+                        && nsURI.equals(uri)) {
                     return omNamespace;
                 }
             }
