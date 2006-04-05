@@ -75,9 +75,11 @@ import java.io.ByteArrayInputStream;
 		        	StAXOMBuilder builder = new StAXOMBuilder(new ByteArrayInputStream(originalXML.getBytes()));
 		            OMElement documentElement = builder.getDocumentElement();
 		            //assertXMLEqual(originalXML, documentElement.toString());
-		            
-		            String outstr  = documentElement.toString();
-		            assertTrue(outstr.indexOf("xmlns:saml=") > 0);
+		            documentElement.build();
+
+                    String outstr  = documentElement.toString();
+                    System.out.println("outstr = " + outstr);
+                    assertTrue(outstr.indexOf("xmlns:saml=") > 0);
 		            assertTrue(outstr.indexOf("<Assertion") == 0);
 		            
 		        } catch (XMLStreamException e) {

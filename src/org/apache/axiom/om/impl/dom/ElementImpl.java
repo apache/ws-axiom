@@ -823,15 +823,15 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     return omNamespace;
                 }
             }
-            return null;
+
         } else {
             OMNamespace namespace = (OMNamespace) namespaces.get(prefix);
             if (namespace != null && uri.equalsIgnoreCase(namespace.getName())) {
                 return namespace;
-            } else {
-                return null;
             }
         }
+
+        return null;
     }
 
     /**

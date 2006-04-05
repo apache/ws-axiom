@@ -398,6 +398,11 @@ public class OMElementImpl extends OMNodeImpl
         }
 
         if (prefix == null || "".equals(prefix)) {
+
+            OMNamespace defaultNamespace = this.getDefaultNamespace();
+            if (defaultNamespace != null && uri.equals(defaultNamespace.getName())) {
+               return defaultNamespace;
+            }
             Iterator namespaceListIterator = namespaces.values().iterator();
 
             OMNamespace ns = null;

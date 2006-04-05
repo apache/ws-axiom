@@ -301,13 +301,24 @@ public class StAXOMBuilder extends StAXBuilder {
         String prefix = parser.getPrefix();
 
 
-        OMNamespace namespace = null;
-        if (namespaceURI != null && namespaceURI.length() > 0) {
-            
+        int namespaceCount = parser.getNamespaceCount();
+        String nsprefix;
+        String namespaceURIFromParser;
+        for (int i = 0; i < namespaceCount; i++) {
+            nsprefix = parser.getNamespacePrefix(i);
 
-            // prefix being null means this elements has a default namespace or it has inherited
-            // a default namespace from its parent
-            namespace = node.findNamespace(namespaceURI, prefix);
+            //if the namespace is not defined already when we write the start tag declare it
+            // check whether this is the default namespace and make sure we have not declared that earlier
+            namespaceURIFromParser = parser.getNamespaceURI(i);
+            if (nsprefix == null || "".equals(nsprefix)) {
+                node.declareDefaultNamespace(parser.getNamespaceURI(i));
+            } else {
+                node.declareNamespace(namespaceURIFromParser, nsprefix);
+            }
+        }
+
+        if (namespaceURI != null && namespaceURI.length() > 0) {
+            OMNamespace namespace = node.findNamespace(namespaceURI, prefix);
             if (namespace == null) {
                 if (prefix == null || "".equals(prefix)) {
                     namespace = node.declareDefaultNamespace(namespaceURI);
@@ -319,24 +330,6 @@ public class StAXOMBuilder extends StAXBuilder {
         }
 
 
-        int namespaceCount = parser.getNamespaceCount();
-        String nsprefix;
-        String namespaceURIFromParser;
-        for (int i = 0; i < namespaceCount; i++) {
-            nsprefix = parser.getNamespacePrefix(i);
-            //if the namespace is not defined already when we write the start tag declare it
-
-            // check whether this is the default namespace and make sure we have not declared that earlier
-            namespaceURIFromParser = parser.getNamespaceURI(i);
-            if (nsprefix == null && namespace != null && !namespaceURIFromParser.equals(namespace.getName()))
-            {
-                node.declareDefaultNamespace(parser.getNamespaceURI(i));
-            } else if (nsprefix != null && !"".equals(nsprefix) && !nsprefix.equals(prefix)) {
-
-                node.declareNamespace(parser.getNamespaceURI(i),
-                        parser.getNamespacePrefix(i));
-            }
-        }
     }
 
 
