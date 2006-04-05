@@ -20,13 +20,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.llom.OMDocumentImpl;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 public class SOAPMessageImpl extends OMDocumentImpl implements SOAPMessage {
 
@@ -60,11 +61,11 @@ public class SOAPMessageImpl extends OMDocumentImpl implements SOAPMessage {
         throw new UnsupportedOperationException("This is not allowed. Use set SOAPEnvelope instead");
     }
 
-    protected void internalSerialize(OMOutputImpl omOutput, boolean cache, boolean includeXMLDeclaration) throws XMLStreamException {
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache, boolean includeXMLDeclaration) throws XMLStreamException {
         if (cache) {
-            ((OMNodeEx)this.documentElement).internalSerialize(omOutput);
+            ((OMNodeEx)this.documentElement).internalSerialize(writer);
         } else {
-            ((OMNodeEx)this.documentElement).internalSerializeAndConsume(omOutput);
+            ((OMNodeEx)this.documentElement).internalSerializeAndConsume(writer);
         }
     }
 }

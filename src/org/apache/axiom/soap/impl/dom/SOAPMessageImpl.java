@@ -18,7 +18,7 @@ package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -26,6 +26,7 @@ import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 public class SOAPMessageImpl extends DocumentImpl implements SOAPMessage {
 
@@ -34,9 +35,9 @@ public class SOAPMessageImpl extends DocumentImpl implements SOAPMessage {
     }
 
     public SOAPMessageImpl(SOAPEnvelope envelope,
-            OMXMLParserWrapper parserWrapper, SOAPFactory factory) {
-    	this(parserWrapper, factory);
-    	this.setSOAPEnvelope(envelope);
+                           OMXMLParserWrapper parserWrapper, SOAPFactory factory) {
+        this(parserWrapper, factory);
+        this.setSOAPEnvelope(envelope);
     }
 
     public SOAPMessageImpl(OMXMLParserWrapper parserWrapper, SOAPFactory factory) {
@@ -51,15 +52,15 @@ public class SOAPMessageImpl extends DocumentImpl implements SOAPMessage {
 
     public void setSOAPEnvelope(SOAPEnvelope envelope)
             throws SOAPProcessingException {
-    	this.addChild(envelope);
+        this.addChild(envelope);
     }
 
-    protected void internalSerialize(OMOutputImpl omOutput, boolean cache,
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache,
                                      boolean includeXMLDeclaration) throws XMLStreamException {
         if (cache) {
-            ((OMNodeEx)this.ownerNode.getDocumentElement()).internalSerialize(omOutput);
+            ((OMNodeEx)this.ownerNode.getDocumentElement()).internalSerialize(writer);
         } else {
-        	((OMNodeEx)this.ownerNode.getDocumentElement()).internalSerializeAndConsume(omOutput);
+            ((OMNodeEx)this.ownerNode.getDocumentElement()).internalSerializeAndConsume(writer);
         }
     }
 }

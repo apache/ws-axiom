@@ -191,7 +191,7 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
 		return null;
 	}
 
-	protected void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput,
+	protected void internalSerialize(XMLStreamWriter writer,
                                      boolean cache) throws XMLStreamException {
 		// select the builder
 		short builderType = PULL_TYPE_BUILDER; // default is pull type
@@ -202,7 +202,7 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
 				&& (builder.getRegisteredContentHandler() == null)) {
 			builder
 					.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(
-							omOutput.getXmlStreamWriter()));
+							writer));
 		}
 
 		// this is a special case. This fault element may contain its children
@@ -211,7 +211,6 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
 		// the best method to do this :(
 		build();
 
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         OMSerializerUtil.serializeStartpart(this, writer);
 		SOAPFaultCode faultCode = getCode();
 		if (faultCode != null) {

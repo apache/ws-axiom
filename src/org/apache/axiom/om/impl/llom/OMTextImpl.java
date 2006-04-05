@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.mtom.MTOMStAXSOAPModelBuilder;
 import org.apache.axiom.om.util.Base64;
 import org.apache.axiom.om.util.UUIDGenerator;
@@ -191,11 +191,11 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     }
 
     /**
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
      */
-    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
-        internalSerializeLocal(omOutput);
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
+        internalSerializeLocal(writer);
     }
 
     /**
@@ -367,30 +367,30 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         return true;
     }
 
-    public void internalSerializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(XMLStreamWriter writer)
             throws XMLStreamException {
-        internalSerializeLocal(omOutput);
+        internalSerializeLocal(writer);
     }
 
-    private void internalSerializeLocal(OMOutputImpl omOutput) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = omOutput.getXmlStreamWriter();
+    private void internalSerializeLocal(XMLStreamWriter writer2) throws XMLStreamException {
+        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
 
         if (!this.isBinary) {
-            writeOutput(xmlStreamWriter);
+            writeOutput(writer);
         } else {
 
-            if (omOutput.isOptimized()) {
+            if (writer.isOptimized()) {
                 if (contentID == null) {
-                    contentID = omOutput.getNextContentId();
+                    contentID = writer.getNextContentId();
                 }
                 // send binary as MTOM optimised
                 this.attribute = new OMAttributeImpl("href",
                         new OMNamespaceImpl("", ""), "cid:" + getContentID(), this.factory);
-                this.serializeStartpart(xmlStreamWriter);
-                omOutput.writeOptimized(this);
-                xmlStreamWriter.writeEndElement();
+                this.serializeStartpart(writer);
+                writer.writeOptimized(this);
+                writer.writeEndElement();
             } else {
-                xmlStreamWriter.writeCharacters(this.getText());
+                writer.writeCharacters(this.getText());
             }
         }
     }

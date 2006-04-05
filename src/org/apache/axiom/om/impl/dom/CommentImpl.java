@@ -19,7 +19,7 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Node;
 
@@ -64,14 +64,13 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
                 "You should not set the node type of a comment");
     }
 
-    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeComment(this.textValue.toString());
     }
 
-    public void internalSerializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(XMLStreamWriter writer)
             throws XMLStreamException {
-        internalSerialize(omOutput);
+        internalSerialize(writer);
     }
 
 }

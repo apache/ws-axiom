@@ -58,24 +58,21 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
     /**
      * Serializes the node with caching.
      *
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
-     * @see #internalSerialize(org.apache.axiom.om.impl.OMOutputImpl)
      */
-    public void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput) throws XMLStreamException {
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeProcessingInstruction(this.target+" ", this.value);
     }
 
     /**
      * Serializes the node without caching.
      *
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
-     * @see #internalSerializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl)
      */
-    public void internalSerializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl omOutput) throws XMLStreamException {
-        internalSerialize(omOutput);
+    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
+        internalSerialize(writer);
     }
 
     /**

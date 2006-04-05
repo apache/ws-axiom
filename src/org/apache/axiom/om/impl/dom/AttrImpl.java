@@ -22,7 +22,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -31,6 +31,7 @@ import org.w3c.dom.TypeInfo;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Implementation of <code>org.w3c.dom.Attr</code> and
@@ -62,13 +63,13 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      * Owner of this attribute
      */
     protected ParentNode parent;
-    
+
     protected AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String localName,
-            OMNamespace ns, String value, OMFactory factory) {
+                    OMNamespace ns, String value, OMFactory factory) {
         super(ownerDocument, factory);
         this.attrName = localName;
         this.attrValue = new TextImpl(ownerDocument, value, factory);
@@ -76,7 +77,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String name, String value,
-            OMFactory factory) {
+                    OMFactory factory) {
         super(ownerDocument, factory);
         this.attrName = name;
         this.attrValue = new TextImpl(ownerDocument, value, factory);
@@ -94,7 +95,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String localName,
-            OMNamespace namespace, OMFactory factory) {
+                    OMNamespace namespace, OMFactory factory) {
         super(ownerDocument, factory);
         this.attrName = localName;
         this.namespace = (NamespaceImpl) namespace;
@@ -108,7 +109,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      */
     public String getNodeName() {
         return (this.namespace != null
-                && !"".equals(this.namespace.getPrefix()) && !(OMConstants.XMLNS_NS_PREFIX.equals(this.attrName))) 
+                && !"".equals(this.namespace.getPrefix()) && !(OMConstants.XMLNS_NS_PREFIX.equals(this.attrName)))
                 ? this.namespace.getPrefix()+ ":" + this.attrName
                 : this.attrName;
     }
@@ -197,7 +198,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      * This is not supported since attributes serialization is handled by the
      * serialization of the owner nodes.
      */
-    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
         throw new UnsupportedOperationException("Not supported");
     }
 
@@ -206,9 +207,9 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      * serialization of the owner nodes.
      * 
      * @see org.apache.axiom.om.impl.OMNodeEx#internalSerializeAndConsume
-     * (org.apache.axiom.om.impl.OMOutputImpl)
+     * (org.apache.axiom.om.impl.MTOMXMLStreamWriter)
      */
-    public void internalSerializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(XMLStreamWriter writer)
             throws XMLStreamException {
         throw new UnsupportedOperationException("Not supported");
     }

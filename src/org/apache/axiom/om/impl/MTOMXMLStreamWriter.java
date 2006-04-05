@@ -21,6 +21,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -37,7 +38,7 @@ import java.util.LinkedList;
  * to optimize or not by looking at whether the MTOM optimize is enabled &
  * also looking at the OM tree whether it has any optimizable content.
  */
-public class OMOutputImpl {
+public class MTOMXMLStreamWriter implements XMLStreamWriter {
     private static XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
     private XMLStreamWriter xmlWriter;
     private OutputStream outStream;
@@ -45,12 +46,12 @@ public class OMOutputImpl {
     private StringWriter bufferedSOAPBody;
     private OMOutputFormat format = new OMOutputFormat();
 
-    public OMOutputImpl(XMLStreamWriter xmlWriter) {
+    public MTOMXMLStreamWriter(XMLStreamWriter xmlWriter) {
         this.xmlWriter = xmlWriter;
     }
 
     /**
-     * Creates a new OMOutputImpl with specified encoding.
+     * Creates a new MTOMXMLStreamWriter with specified encoding.
      *
      * @param outStream
      * @param format
@@ -58,7 +59,7 @@ public class OMOutputImpl {
      * @throws FactoryConfigurationError
      * @see OMOutputFormat#DEFAULT_CHAR_SET_ENCODING
      */
-    public OMOutputImpl(OutputStream outStream, OMOutputFormat format)
+    public MTOMXMLStreamWriter(OutputStream outStream, OMOutputFormat format)
             throws XMLStreamException, FactoryConfigurationError {
         this.format = format;
         this.outStream = outStream;
@@ -79,6 +80,42 @@ public class OMOutputImpl {
         }
     }
 
+    public void writeStartElement(String string) throws XMLStreamException {
+        xmlWriter.writeStartElement(string);
+    }
+
+    public void writeStartElement(String string, String string1) throws XMLStreamException {
+        xmlWriter.writeStartElement(string, string1);
+    }
+
+    public void writeStartElement(String string, String string1, String string2) throws XMLStreamException {
+        xmlWriter.writeStartElement(string, string1, string2);
+    }
+
+    public void writeEmptyElement(String string, String string1) throws XMLStreamException {
+        xmlWriter.writeStartElement(string, string1);
+    }
+
+    public void writeEmptyElement(String string, String string1, String string2) throws XMLStreamException {
+        xmlWriter.writeStartElement(string, string1, string2);
+    }
+
+    public void writeEmptyElement(String string) throws XMLStreamException {
+        xmlWriter.writeStartElement(string);
+    }
+
+    public void writeEndElement() throws XMLStreamException {
+        xmlWriter.writeEndElement();
+    }
+
+    public void writeEndDocument() throws XMLStreamException {
+        xmlWriter.writeEndDocument();
+    }
+
+    public void close() throws XMLStreamException {
+        xmlWriter.close();
+    }
+
     public void flush() throws XMLStreamException {
         xmlWriter.flush();
         String SOAPContentType;
@@ -96,6 +133,94 @@ public class OMOutputImpl {
                     format.getRootContentId(),
                     format.getCharSetEncoding(), SOAPContentType);
         }
+    }
+
+    public void writeAttribute(String string, String string1) throws XMLStreamException {
+        xmlWriter.writeAttribute(string, string1);
+    }
+
+    public void writeAttribute(String string, String string1, String string2, String string3) throws XMLStreamException {
+        xmlWriter.writeAttribute(string, string1, string2, string3);
+    }
+
+    public void writeAttribute(String string, String string1, String string2) throws XMLStreamException {
+        xmlWriter.writeAttribute(string, string1, string2);
+    }
+
+    public void writeNamespace(String string, String string1) throws XMLStreamException {
+        xmlWriter.writeNamespace(string, string1);
+    }
+
+    public void writeDefaultNamespace(String string) throws XMLStreamException {
+        xmlWriter.writeDefaultNamespace(string);
+    }
+
+    public void writeComment(String string) throws XMLStreamException {
+        xmlWriter.writeComment(string);
+    }
+
+    public void writeProcessingInstruction(String string) throws XMLStreamException {
+        xmlWriter.writeProcessingInstruction(string);
+    }
+
+    public void writeProcessingInstruction(String string, String string1) throws XMLStreamException {
+        xmlWriter.writeProcessingInstruction(string, string1);
+    }
+
+    public void writeCData(String string) throws XMLStreamException {
+        xmlWriter.writeCData(string);
+    }
+
+    public void writeDTD(String string) throws XMLStreamException {
+        xmlWriter.writeDTD(string);
+    }
+
+    public void writeEntityRef(String string) throws XMLStreamException {
+        xmlWriter.writeEntityRef(string);
+    }
+
+    public void writeStartDocument() throws XMLStreamException {
+        xmlWriter.writeStartDocument();
+    }
+
+    public void writeStartDocument(String string) throws XMLStreamException {
+        xmlWriter.writeStartDocument(string);
+    }
+
+    public void writeStartDocument(String string, String string1) throws XMLStreamException {
+        xmlWriter.writeStartDocument(string, string1);
+    }
+
+    public void writeCharacters(String string) throws XMLStreamException {
+        xmlWriter.writeCharacters(string);
+    }
+
+    public void writeCharacters(char[] chars, int i, int i1) throws XMLStreamException {
+        xmlWriter.writeCharacters(chars, i, i1);
+    }
+
+    public String getPrefix(String string) throws XMLStreamException {
+        return xmlWriter.getPrefix(string);
+    }
+
+    public void setPrefix(String string, String string1) throws XMLStreamException {
+        xmlWriter.setPrefix(string, string1);
+    }
+
+    public void setDefaultNamespace(String string) throws XMLStreamException {
+        xmlWriter.setDefaultNamespace(string);
+    }
+
+    public void setNamespaceContext(NamespaceContext namespaceContext) throws XMLStreamException {
+        xmlWriter.setNamespaceContext(namespaceContext);
+    }
+
+    public NamespaceContext getNamespaceContext() {
+        return xmlWriter.getNamespaceContext();
+    }
+
+    public Object getProperty(String string) throws IllegalArgumentException {
+        return xmlWriter.getProperty(string);
     }
 
     public boolean isOptimized() {

@@ -17,7 +17,7 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
@@ -70,7 +70,7 @@ public class DocumentFragmentimpl extends ParentNode implements
         // DO Nothing :-?
     }
 
-    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
@@ -80,7 +80,7 @@ public class DocumentFragmentimpl extends ParentNode implements
         throw new UnsupportedOperationException("TODO");
     }
 
-    public void internalSerializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(XMLStreamWriter writer)
             throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException("TODO");

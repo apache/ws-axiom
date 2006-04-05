@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.llom.OMSerializerUtil;
@@ -1042,18 +1042,18 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         throw new UnsupportedOperationException();
     }
 
-    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
-        internalSerialize(omOutput, true);
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
+        internalSerialize(writer, true);
     }
 
-    public void internalSerializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(XMLStreamWriter writer)
             throws XMLStreamException {
-        this.internalSerialize(omOutput, false);
+        this.internalSerialize(writer, false);
     }
 
-    protected void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput,
+    protected void internalSerialize(XMLStreamWriter writer,
                                      boolean cache) throws XMLStreamException {
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
+
         if (!cache) {
             // in this case we don't care whether the elements are built or not
             // we just call the serializeAndConsume methods
@@ -1061,7 +1061,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             // serilize children
             Iterator children = this.getChildren();
             while (children.hasNext()) {
-                ((OMNodeEx) children.next()).internalSerialize(omOutput);
+                ((OMNodeEx) children.next()).internalSerialize(writer);
             }
             OMSerializerUtil.serializeEndpart(writer);
 
@@ -1075,7 +1075,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                 while (child != null
                         && ((!(child instanceof OMElement)) || child
                         .isComplete())) {
-                    child.internalSerializeAndConsume(omOutput);
+                    child.internalSerializeAndConsume(writer);
                     child = child.nextSibling;
                 }
                 if (child != null) {

@@ -18,7 +18,7 @@ package org.apache.axiom.soap.impl.dom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.llom.OMSerializerUtil;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -51,7 +51,7 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
         }
     }
 
-    protected void internalSerialize(OMOutputImpl omOutput, boolean cache)
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
 
         // select the builder
@@ -62,10 +62,9 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
         if ((builderType == PUSH_TYPE_BUILDER)
                 && (builder.getRegisteredContentHandler() == null)) {
             builder.registerExternalContentHandler(
-                    new StreamWriterToContentHandlerConverter(omOutput.getXmlStreamWriter()));
+                    new StreamWriterToContentHandlerConverter(writer));
         }
 
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (this.getNamespace() != null) {
             String prefix = this.getNamespace().getPrefix();
             String nameSpaceName = this.getNamespace().getName();

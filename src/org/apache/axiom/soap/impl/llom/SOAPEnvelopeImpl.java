@@ -23,7 +23,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
@@ -35,6 +35,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Class SOAPEnvelopeImpl
@@ -151,15 +152,15 @@ public class SOAPEnvelopeImpl extends SOAPElement
         // here do nothing as SOAPEnvelope doesn't have a parent !!!
     }
 
-    protected void internalSerialize(OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
-
-        if (!omOutput.isIgnoreXMLDeclaration()) {
-            String charSetEncoding = omOutput.getCharSetEncoding();
-            String xmlVersion = omOutput.getXmlVersion();
-            omOutput.getXmlStreamWriter().writeStartDocument(charSetEncoding == null ?
+    protected void internalSerialize(XMLStreamWriter writer2, boolean cache) throws XMLStreamException {
+        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
+        if (!writer.isIgnoreXMLDeclaration()) {
+            String charSetEncoding = writer.getCharSetEncoding();
+            String xmlVersion = writer.getXmlVersion();
+            writer.getXmlStreamWriter().writeStartDocument(charSetEncoding == null ?
                     OMConstants.DEFAULT_CHAR_SET_ENCODING : charSetEncoding,
                     xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION : xmlVersion);
         }
-        super.internalSerialize(omOutput, cache);
+        super.internalSerialize(writer, cache);
     }
 }

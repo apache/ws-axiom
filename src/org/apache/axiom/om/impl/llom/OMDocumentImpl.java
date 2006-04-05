@@ -25,12 +25,13 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
 import java.util.Iterator;
 
@@ -324,24 +325,24 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
     /**
      * Serialize the docuement with/without the XML declaration
      */
-    public void internalSerializeAndConsume(OMOutputImpl omOutput, boolean includeXMLDeclaration) throws XMLStreamException {
-        internalSerialize(omOutput, false, includeXMLDeclaration);
+    public void internalSerializeAndConsume(XMLStreamWriter writer, boolean includeXMLDeclaration) throws XMLStreamException {
+        internalSerialize(writer, false, includeXMLDeclaration);
     }
 
     /**
      * Serializes the document with the XML declaration.
      */
-    public void internalSerializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(XMLStreamWriter writer)
             throws XMLStreamException {
-        internalSerialize(omOutput, false, !omOutput.isIgnoreXMLDeclaration());
+        internalSerialize(writer, false, !((MTOMXMLStreamWriter)writer).isIgnoreXMLDeclaration());
     }
 
 
     /**
      * Serializes the document with cache.
      */
-    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
-        internalSerialize(omOutput, true, !omOutput.isIgnoreXMLDeclaration());
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
+        internalSerialize(writer, true, !((MTOMXMLStreamWriter)writer).isIgnoreXMLDeclaration());
 
     }
 
@@ -352,9 +353,9 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
      * @throws XMLStreamException
      */
     public void serializeAndConsume(OutputStream output) throws XMLStreamException {
-        OMOutputImpl omOutput = new OMOutputImpl(output, new OMOutputFormat());
-        internalSerializeAndConsume(omOutput);
-        omOutput.flush();
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, new OMOutputFormat());
+        internalSerializeAndConsume(writer);
+        writer.flush();
     }
 
     /**
@@ -364,9 +365,9 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
      * @throws XMLStreamException
      */
     public void serialize(OutputStream output) throws XMLStreamException {
-        OMOutputImpl omOutput = new OMOutputImpl(output, new OMOutputFormat());
-        internalSerialize(omOutput);
-        omOutput.flush();
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, new OMOutputFormat());
+        internalSerialize(writer);
+        writer.flush();
     }
 
     /**
@@ -377,9 +378,9 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
      * @throws XMLStreamException
      */
     public void serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        OMOutputImpl omOutput = new OMOutputImpl(output, format);
-        internalSerializeAndConsume(omOutput);
-        omOutput.flush();
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
+        internalSerializeAndConsume(writer);
+        writer.flush();
     }
 
     /**
@@ -390,29 +391,30 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
      * @throws XMLStreamException
      */
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        OMOutputImpl omOutput = new OMOutputImpl(output, format);
-        internalSerialize(omOutput);
-        omOutput.flush();
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
+        internalSerialize(writer);
+        writer.flush();
     }
 
     /**
      * Serializes the document with cache.
      */
-    public void internalSerialize(OMOutputImpl omOutput, boolean includeXMLDeclaration) throws XMLStreamException {
-        internalSerialize(omOutput, true, includeXMLDeclaration);
+    public void internalSerialize(XMLStreamWriter writer, boolean includeXMLDeclaration) throws XMLStreamException {
+        internalSerialize(writer, true, includeXMLDeclaration);
 
     }
 
-    protected void internalSerialize(OMOutputImpl omOutput, boolean cache, boolean includeXMLDeclaration) throws XMLStreamException {
+    protected void internalSerialize(XMLStreamWriter writer2, boolean cache, boolean includeXMLDeclaration) throws XMLStreamException {
+        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
         if (includeXMLDeclaration) {
             //Check whether the OMOutput char encoding and OMDocument char
             //encoding matches, if not use char encoding of OMOutput
-            String outputCharEncoding = omOutput.getCharSetEncoding();
+            String outputCharEncoding = writer.getCharSetEncoding();
             if (outputCharEncoding == null || "".equals(outputCharEncoding)) {
-                omOutput.getXmlStreamWriter().writeStartDocument(charSetEncoding,
+                writer.getXmlStreamWriter().writeStartDocument(charSetEncoding,
                         xmlVersion);
             } else {
-                omOutput.getXmlStreamWriter().writeStartDocument(outputCharEncoding,
+                writer.getXmlStreamWriter().writeStartDocument(outputCharEncoding,
                         xmlVersion);
             }
         }
@@ -422,12 +424,12 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
         if (cache) {
             while (children.hasNext()) {
                 OMNodeEx omNode = (OMNodeEx) children.next();
-                omNode.internalSerialize(omOutput);
+                omNode.internalSerialize(writer);
             }
         } else {
             while (children.hasNext()) {
                 OMNodeEx omNode = (OMNodeEx) children.next();
-                omNode.internalSerializeAndConsume(omOutput);
+                omNode.internalSerializeAndConsume(writer);
             }
         }
     }

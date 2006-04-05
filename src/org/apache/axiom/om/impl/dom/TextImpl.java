@@ -23,7 +23,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.mtom.MTOMStAXSOAPModelBuilder;
 import org.apache.axiom.om.util.Base64;
 import org.apache.axiom.om.util.UUIDGenerator;
@@ -235,13 +235,13 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         // Its not clear why we should let someone change the type of a node
     }
 
-    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
-        internalSerializeLocal(omOutput);
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
+        internalSerializeLocal(writer);
     }
 
-    public void internalSerializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(XMLStreamWriter writer)
             throws XMLStreamException {
-        internalSerializeLocal(omOutput);
+        internalSerializeLocal(writer);
     }
 
     public boolean isOptimized() {
@@ -359,15 +359,15 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         }
     }
 
-    private void internalSerializeLocal(OMOutputImpl omOutput)
+    private void internalSerializeLocal(XMLStreamWriter writer2)
             throws XMLStreamException {
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
+        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
         if (!this.isBinary) {
             writeOutput(writer);
         } else {
-            if (omOutput.isOptimized()) {
+            if (writer.isOptimized()) {
                 if (contentID == null) {
-                    contentID = omOutput.getNextContentId();
+                    contentID = writer.getNextContentId();
                 }
                 // send binary as MTOM optimised
                 this.attribute = new AttrImpl(this.ownerNode, "href",
@@ -375,7 +375,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
                         "cid:" + getContentID(),
                         this.factory);
                 this.serializeStartpart(writer);
-                omOutput.writeOptimized(this);
+                writer.writeOptimized(this);
                 writer.writeEndElement();
             } else {
                 writer.writeCharacters(this.getText());
@@ -430,7 +430,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
      * Method serializeAttribute.
      * 
      * @param attr
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
      */
     static void serializeAttribute(OMAttribute attr, XMLStreamWriter writer)

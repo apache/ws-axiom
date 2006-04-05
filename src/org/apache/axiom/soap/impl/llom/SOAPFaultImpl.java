@@ -193,7 +193,7 @@ public abstract class SOAPFaultImpl extends SOAPElement
         return null;
     }
 
-    protected void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         // select the builder
         short builderType = PULL_TYPE_BUILDER;    // default is pull type
         if (builder != null) {
@@ -201,14 +201,13 @@ public abstract class SOAPFaultImpl extends SOAPElement
         }
         if ((builderType == PUSH_TYPE_BUILDER)
                 && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(omOutput.getXmlStreamWriter()));
+            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(writer));
         }
 
         // this is a special case. This fault element may contain its children in any order. But spec mandates a specific order
         // the overriding of the method will facilitate that. Not sure this is the best method to do this :(
         build();
 
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         OMSerializerUtil.serializeStartpart(this, writer);
         SOAPFaultCode faultCode = getCode();
         if (faultCode != null) {

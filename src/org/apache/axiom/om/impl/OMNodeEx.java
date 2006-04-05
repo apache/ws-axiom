@@ -43,17 +43,17 @@ public interface OMNodeEx extends OMNode {
     /**
      * Serializes the node with caching.
      *
-     * @param omOutput
+     * @param writer
      * @throws javax.xml.stream.XMLStreamException
      */
-    public void internalSerialize(OMOutputImpl omOutput)
+    public void internalSerialize(XMLStreamWriter writer)
             throws XMLStreamException;
 
     /**
      * Serializes the node without caching.
      *
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
      */
-    public void internalSerializeAndConsume(OMOutputImpl omOutput) throws XMLStreamException;
+    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException;
 }

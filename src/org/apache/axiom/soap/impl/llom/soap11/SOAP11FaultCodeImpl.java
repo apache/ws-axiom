@@ -78,7 +78,7 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
         }
     }
 
-    protected void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
 
         // select the builder
         short builderType = PULL_TYPE_BUILDER;    // default is pull type
@@ -88,10 +88,9 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
         if ((builderType == PUSH_TYPE_BUILDER)
                 && (builder.getRegisteredContentHandler() == null)) {
             builder.registerExternalContentHandler(
-                    new StreamWriterToContentHandlerConverter(omOutput.getXmlStreamWriter()));
+                    new StreamWriterToContentHandlerConverter(writer));
         }
 
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (this.getNamespace() != null) {
             String prefix = this.getNamespace().getPrefix();
             String nameSpaceName = this.getNamespace().getName();

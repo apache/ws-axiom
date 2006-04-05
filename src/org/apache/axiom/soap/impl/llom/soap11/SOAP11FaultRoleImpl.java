@@ -54,7 +54,7 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
     }
 
     protected void internalSerialize(
-            org.apache.axiom.om.impl.OMOutputImpl omOutput, boolean cache)
+            XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
 
         // select the builder
@@ -65,10 +65,9 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
         if ((builderType == PUSH_TYPE_BUILDER)
                 && (builder.getRegisteredContentHandler() == null)) {
             builder.registerExternalContentHandler(
-                    new StreamWriterToContentHandlerConverter(omOutput.getXmlStreamWriter()));
+                    new StreamWriterToContentHandlerConverter(writer));
         }
 
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
         if (this.getNamespace() != null) {
             String prefix = this.getNamespace().getPrefix();
             String nameSpaceName = this.getNamespace().getName();

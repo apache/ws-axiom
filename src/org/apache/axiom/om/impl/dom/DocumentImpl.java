@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
@@ -90,7 +90,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
                 "In OM Document object doesn't have a type");
     }
 
-    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
         // TODO Auto-generated method stub
     }
 
@@ -339,7 +339,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         throw new UnsupportedOperationException("TODO");
     }
 
-    public void internalSerializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(XMLStreamWriter writer)
             throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException("TODO");

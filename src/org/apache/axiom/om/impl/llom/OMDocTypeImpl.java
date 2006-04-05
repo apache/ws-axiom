@@ -22,7 +22,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -55,23 +55,21 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
     /**
      * Serializes the node with caching.
      *
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
      */
-    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeDTD(this.value);
     }
 
     /**
      * Serializes the node without caching.
      *
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
-     * @see #internalSerializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl)
      */
-    public void internalSerializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl omOutput) throws XMLStreamException {
-        internalSerialize(omOutput);
+    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
+        internalSerialize(writer);
     }
 
     /**

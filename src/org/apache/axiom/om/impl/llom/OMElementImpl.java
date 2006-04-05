@@ -29,7 +29,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.util.EmptyIterator;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
@@ -747,15 +747,15 @@ public class OMElementImpl extends OMNodeImpl
      *
      * @throws XMLStreamException
      */
-    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
-        internalSerialize(omOutput, true);
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
+        internalSerialize(writer, true);
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-    protected void internalSerialize(OMOutputImpl omOutput, boolean cache) throws XMLStreamException {
-        XMLStreamWriter writer = omOutput.getXmlStreamWriter();
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+
         if (cache) {
             //in this case we don't care whether the elements are built or not
             //we just call the serializeAndConsume methods
@@ -763,7 +763,7 @@ public class OMElementImpl extends OMNodeImpl
             //serialize children
             Iterator children = this.getChildren();
             while (children.hasNext()) {
-                ((OMNodeEx) children.next()).internalSerialize(omOutput);
+                ((OMNodeEx) children.next()).internalSerialize(writer);
             }
             OMSerializerUtil.serializeEndpart(writer);
 
@@ -774,7 +774,7 @@ public class OMElementImpl extends OMNodeImpl
                 OMSerializerUtil.serializeStartpart(this, writer);
                 OMNodeImpl child = (OMNodeImpl) firstChild;
                 while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
-                    child.internalSerializeAndConsume(omOutput);
+                    child.internalSerializeAndConsume(writer);
                     child = child.nextSibling;
                 }
                 if (child != null) {
@@ -802,8 +802,8 @@ public class OMElementImpl extends OMNodeImpl
      *
      * @throws XMLStreamException
      */
-    public void internalSerializeAndConsume(OMOutputImpl omOutput) throws XMLStreamException {
-        this.internalSerialize(omOutput, false);
+    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
+        this.internalSerialize(writer, false);
     }
 
     /**

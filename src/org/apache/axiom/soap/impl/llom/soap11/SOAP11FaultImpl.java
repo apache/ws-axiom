@@ -18,7 +18,7 @@ package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -70,14 +70,14 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
         return new SOAP11FaultDetailImpl(fault, (SOAPFactory)this.factory);
     }
 
-    public void internalSerialize(OMOutputImpl omOutput)
+    public void internalSerialize(XMLStreamWriter writer)
             throws XMLStreamException {
-        super.internalSerialize(omOutput);
+        super.internalSerialize(writer);
     }
 
-    public void internalSerializeAndConsume(OMOutputImpl omOutput)
+    public void internalSerializeAndConsume(XMLStreamWriter writer)
             throws XMLStreamException {
-        super.internalSerializeAndConsume(omOutput);
+        super.internalSerializeAndConsume(writer);
     }
 
     public void setCode(SOAPFaultCode soapFaultCode)

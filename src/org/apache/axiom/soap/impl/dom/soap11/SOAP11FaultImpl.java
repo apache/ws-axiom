@@ -60,15 +60,15 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
         return new SOAP11FaultDetailImpl(fault, (SOAPFactory)this.factory);
     }
 
-    public void internalSerialize(org.apache.axiom.om.impl.OMOutputImpl omOutput)
+    public void internalSerialize(XMLStreamWriter writer)
             throws XMLStreamException {
-        super.internalSerialize(omOutput);
+        super.internalSerialize(writer);
     }
 
     public void internalSerializeAndConsume(
-            org.apache.axiom.om.impl.OMOutputImpl omOutput)
+            XMLStreamWriter writer)
             throws XMLStreamException {
-        super.internalSerializeAndConsume(omOutput);
+        super.internalSerializeAndConsume(writer);
     }
 
     public void setCode(SOAPFaultCode soapFaultCode)

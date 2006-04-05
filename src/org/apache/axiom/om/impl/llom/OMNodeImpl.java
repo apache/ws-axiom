@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.OMOutputImpl;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -302,9 +302,9 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * @throws javax.xml.stream.XMLStreamException
      */
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        OMOutputImpl omOutput = new OMOutputImpl(xmlWriter);
-        internalSerialize(omOutput);
-        omOutput.flush();
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(xmlWriter);
+        internalSerialize(writer);
+        writer.flush();
     }
 
     /**
@@ -313,33 +313,33 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * @param xmlWriter
      * @throws javax.xml.stream.XMLStreamException
      *
-     * @see #internalSerializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl)
+     * @see #internalSerializeAndConsume(org.apache.axiom.om.impl.MTOMXMLStreamWriter)
      */
     public void serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        OMOutputImpl omOutput = new OMOutputImpl(xmlWriter);
-        internalSerializeAndConsume(omOutput);
-        omOutput.flush();
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(xmlWriter);
+        internalSerializeAndConsume(writer);
+        writer.flush();
     }
 
     /**
      * Serializes the node with caching.
      *
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
-     * @see #internalSerialize(org.apache.axiom.om.impl.OMOutputImpl)
+     * @see #internalSerialize(org.apache.axiom.om.impl.MTOMXMLStreamWriter)
      */
-    public void internalSerialize(OMOutputImpl omOutput) throws XMLStreamException {
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
         throw new RuntimeException("Not implemented yet!");
     }
 
     /**
      * Serializes the node without caching.
      *
-     * @param omOutput
+     * @param writer
      * @throws XMLStreamException
-     * @see #internalSerializeAndConsume(org.apache.axiom.om.impl.OMOutputImpl)
+     * @see #internalSerializeAndConsume(org.apache.axiom.om.impl.MTOMXMLStreamWriter)
      */
-    public void internalSerializeAndConsume(OMOutputImpl omOutput) throws XMLStreamException {
+    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
         throw new RuntimeException("Not implemented yet!");
     }
 
@@ -360,29 +360,29 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     }
 
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        OMOutputImpl omOutput = new OMOutputImpl(output, format);
-        internalSerialize(omOutput);
-        omOutput.flush();
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
+        internalSerialize(writer);
+        writer.flush();
     }
 
-    public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        OMOutputImpl omOutput = new OMOutputImpl(XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
-        omOutput.setOutputFormat(format);
-        internalSerialize(omOutput);
-        omOutput.flush();
+    public void serialize(Writer writer2, OMOutputFormat format) throws XMLStreamException {
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(XMLOutputFactory.newInstance().createXMLStreamWriter(writer2));
+        writer.setOutputFormat(format);
+        internalSerialize(writer);
+        writer.flush();
     }
 
     public void serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        OMOutputImpl omOutput = new OMOutputImpl(output, format);
-        internalSerializeAndConsume(omOutput);
-        omOutput.flush();
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
+        internalSerializeAndConsume(writer);
+        writer.flush();
     }
 
-    public void serializeAndConsume(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        OMOutputImpl omOutput = new OMOutputImpl(XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
-        omOutput.setOutputFormat(format);
-        internalSerializeAndConsume(omOutput);
-        omOutput.flush();
+    public void serializeAndConsume(Writer writer2, OMOutputFormat format) throws XMLStreamException {
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(XMLOutputFactory.newInstance().createXMLStreamWriter(writer2));
+        writer.setOutputFormat(format);
+        internalSerializeAndConsume(writer);
+        writer.flush();
     }
 
     public OMFactory getOMFactory() {
