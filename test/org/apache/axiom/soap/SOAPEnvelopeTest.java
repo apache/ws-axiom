@@ -108,11 +108,12 @@ public class SOAPEnvelopeTest extends SOAPTestCase {
     public void testRandomSOAPHeader() {
         SOAPFactory soapFac = OMAbstractFactory.getSOAP12Factory();
         SOAPEnvelope defaultEnvelope = soapFac.getDefaultEnvelope();
+        defaultEnvelope.build();
         defaultEnvelope.getHeader().detach();
 
         soapFac.createSOAPHeader(defaultEnvelope);
 
-        System.out.println(defaultEnvelope.getHeader());
+        System.out.println(defaultEnvelope);
 
 //        System.out.println("defaultEnvelope = " + defaultEnvelope);
     }

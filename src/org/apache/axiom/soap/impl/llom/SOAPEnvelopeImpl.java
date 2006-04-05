@@ -78,7 +78,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
                         new QName(SOAPConstants.HEADER_LOCAL_NAME));
         if (builder == null && header == null) {
             inferFactory();
-            header = ((SOAPFactory)factory).createSOAPHeader(this);
+            header = ((SOAPFactory) factory).createSOAPHeader(this);
             addChild(header);
         }
         return header;
@@ -99,6 +99,13 @@ public class SOAPEnvelopeImpl extends SOAPElement
         {
             throw new SOAPProcessingException("SOAP Envelope can not have children other than SOAP Header and Body", SOAP12Constants.FAULT_CODE_SENDER);
         } else {
+            if (this.done && (child instanceof SOAPHeader)) {
+                SOAPBody body = getBody();
+                if (body != null) {
+                    body.insertSiblingBefore(child);
+                    return;
+                }
+            }
             super.addChild(child);
         }
     }
