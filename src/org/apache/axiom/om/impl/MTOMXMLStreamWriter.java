@@ -192,7 +192,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     }
 
     public void writeCharacters(String string) throws XMLStreamException {
-        xmlWriter.writeCharacters(string);
+        char[] array = string.toCharArray();
+        xmlWriter.writeCharacters(array, 0, array.length);
     }
 
     public void writeCharacters(char[] chars, int i, int i1) throws XMLStreamException {
