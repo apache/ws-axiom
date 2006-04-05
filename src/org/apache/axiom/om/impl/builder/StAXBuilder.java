@@ -186,19 +186,19 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @return omNode
      */
     private OMNode createOMText(OMElement omElement, int textType) {
-        try {
-            if (Boolean.TRUE == parser.getProperty(IS_BINARY)) {
-                Object dataHandler = parser.getProperty(DATA_HANDLER);
-                OMText text = omfactory.createText(dataHandler, true);
-                omElement.addChild(text);
-                return text;
-            }
-        } catch (IllegalArgumentException e) {
-            // nothing to be done here. This is handled in finally case
-        } finally {
+//        try {
+//            if (Boolean.TRUE == parser.getProperty(IS_BINARY)) {
+//                Object dataHandler = parser.getProperty(DATA_HANDLER);
+//                OMText text = omfactory.createText(dataHandler, true);
+//                omElement.addChild(text);
+//                return text;
+//            }
+//        } catch (IllegalArgumentException e) {
+//            // nothing to be done here. This is handled in finally case
+//        } finally {
             return omfactory.createText(omElement, parser.getText(), textType);
-
-        }
+//
+//        }
     }
 
     /**
