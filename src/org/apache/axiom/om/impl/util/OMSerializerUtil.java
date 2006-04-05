@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.axiom.om.impl.llom;
+package org.apache.axiom.om.impl.util;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
@@ -92,9 +92,9 @@ public class OMSerializerUtil {
         String uri = namespace.getName();
         String prefix = namespace.getPrefix();
 
-        if (uri != null && !"".equals(uri)) {
-            String prefixFromWriter = writer.getPrefix(uri);
+        String prefixFromWriter = writer.getPrefix(uri);
 
+        if (uri != null && !"".equals(uri)) {
             // lets see whether we have default namespace now
             if (prefix != null && "".equals(prefix) && prefixFromWriter == null) {
                 // this has not been declared earlier
@@ -124,9 +124,9 @@ public class OMSerializerUtil {
         String prefix;
         if (element.getNamespace() != null) {
             nameSpaceName = element.getNamespace().getName();
+            writer_prefix = writer.getPrefix(nameSpaceName);
             prefix = element.getNamespace().getPrefix();
             if (nameSpaceName != null) {
-                writer_prefix = writer.getPrefix(nameSpaceName);
                 if (writer_prefix != null) {
                     writer.writeStartElement(nameSpaceName,
                             element.getLocalName());

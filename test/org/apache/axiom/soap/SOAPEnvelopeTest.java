@@ -16,6 +16,8 @@
 
 package org.apache.axiom.soap;
 
+import org.apache.axiom.om.OMAbstractFactory;
+
 
 public class SOAPEnvelopeTest extends SOAPTestCase {
     protected SOAPEnvelope soap11Envelope;
@@ -101,5 +103,17 @@ public class SOAPEnvelopeTest extends SOAPTestCase {
         assertTrue("SOAP 1.2 Body Test : - Body namespace mismatch",
                 body.getNamespace().getName().equals(
                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
+    }
+
+    public void testRandomSOAPHeader() {
+        SOAPFactory soapFac = OMAbstractFactory.getSOAP12Factory();
+        SOAPEnvelope defaultEnvelope = soapFac.getDefaultEnvelope();
+        defaultEnvelope.getHeader().detach();
+
+        soapFac.createSOAPHeader(defaultEnvelope);
+
+        System.out.println(defaultEnvelope.getHeader());
+
+//        System.out.println("defaultEnvelope = " + defaultEnvelope);
     }
 }
