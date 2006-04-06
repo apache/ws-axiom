@@ -26,6 +26,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -45,6 +47,7 @@ public class StAXOMBuilder extends StAXBuilder {
      * Field document
      */
 
+    private Log log = LogFactory.getLog(getClass());
     private boolean doDebug = false;
     private static int nsCount = 0;
     private static XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -58,6 +61,7 @@ public class StAXOMBuilder extends StAXBuilder {
     public StAXOMBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
         super(ombuilderFactory, parser);
         document = ombuilderFactory.createOMDocument(this);
+        doDebug = log.isDebugEnabled();
     }
 
     /**
@@ -67,6 +71,7 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     public StAXOMBuilder(String filePath) throws XMLStreamException, FileNotFoundException {
         this(inputFactory.createXMLStreamReader(new FileInputStream(filePath)));
+        doDebug = log.isDebugEnabled();
     }
 
     /**
@@ -75,6 +80,7 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     public StAXOMBuilder(InputStream inStream) throws XMLStreamException {
         this(inputFactory.createXMLStreamReader(inStream));
+        doDebug = log.isDebugEnabled();
     }
 
     /**
@@ -86,6 +92,7 @@ public class StAXOMBuilder extends StAXBuilder {
         super(parser);
         omfactory = OMAbstractFactory.getOMFactory();
         document = omfactory.createOMDocument(this);
+        doDebug = log.isDebugEnabled();
     }
 
     /**
@@ -201,7 +208,7 @@ public class StAXOMBuilder extends StAXBuilder {
             switch (token) {
                 case XMLStreamConstants.START_ELEMENT:
                     if (doDebug) {
-                        System.out.println("START_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
+                        log.debug("START_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
                     }
                     lastNode = createOMElement();
                     break;
@@ -212,61 +219,61 @@ public class StAXOMBuilder extends StAXBuilder {
                     document.setCharsetEncoding(parser.getEncoding());
                     document.setStandalone(parser.isStandalone() ? "yes" : "no");
                     if (doDebug) {
-                        System.out.println("START_DOCUMENT: ");
+                        log.debug("START_DOCUMENT: ");
                     }
                     break;
                 case XMLStreamConstants.CHARACTERS:
                     if (doDebug) {
-                        System.out.println("CHARACTERS: [" + parser.getText() + "]");
+                        log.debug("CHARACTERS: [" + parser.getText() + "]");
                     }
                     lastNode = createOMText(XMLStreamConstants.CHARACTERS);
                     break;
                 case XMLStreamConstants.CDATA:
                     if (doDebug) {
-                        System.out.println("CDATA: [" + parser.getText() + "]");
+                        log.debug("CDATA: [" + parser.getText() + "]");
                     }
                     lastNode = createOMText(XMLStreamConstants.CDATA);
                     break;
                 case XMLStreamConstants.END_ELEMENT:
                     if (doDebug) {
-                        System.out.println("END_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
+                        log.debug("END_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
                     }
                     endElement();
                     break;
                 case XMLStreamConstants.END_DOCUMENT:
                     if (doDebug) {
-                        System.out.println("END_DOCUMENT: ");
+                        log.debug("END_DOCUMENT: ");
                     }
                     done = true;
                     ((OMContainerEx) this.document).setComplete(true);
                     break;
                 case XMLStreamConstants.SPACE:
                     if (doDebug) {
-                        System.out.println("SPACE: [" + parser.getText() + "]");
+                        log.debug("SPACE: [" + parser.getText() + "]");
                     }
                     lastNode = createOMText(XMLStreamConstants.SPACE);
                     break;
                 case XMLStreamConstants.COMMENT:
                     if (doDebug) {
-                        System.out.println("COMMENT: [" + parser.getText() + "]");
+                        log.debug("COMMENT: [" + parser.getText() + "]");
                     }
                     createComment();
                     break;
                 case XMLStreamConstants.DTD:
                     if (doDebug) {
-                        System.out.println("DTD: [" + parser.getText() + "]");
+                        log.debug("DTD: [" + parser.getText() + "]");
                     }
                     createDTD();
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
                     if (doDebug) {
-                        System.out.println("PROCESSING_INSTRUCTION: [" + parser.getPITarget() + "][" + parser.getPIData() + "]");
+                        log.debug("PROCESSING_INSTRUCTION: [" + parser.getPITarget() + "][" + parser.getPIData() + "]");
                     }
                     createPI();
                     break;
                 case XMLStreamConstants.ENTITY_REFERENCE:
                     if (doDebug) {
-                        System.out.println("ENTITY_REFERENCE: " + parser.getLocalName() + "[" + parser.getText() + "]");
+                        log.debug("ENTITY_REFERENCE: " + parser.getLocalName() + "[" + parser.getText() + "]");
                     }
                     lastNode = createOMText(XMLStreamConstants.ENTITY_REFERENCE);
                     break;
