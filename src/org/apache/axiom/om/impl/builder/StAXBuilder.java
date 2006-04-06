@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
@@ -76,8 +77,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     protected boolean parserAccessed = false;
     protected OMDocument document;
-    private static final String IS_BINARY = "Axiom.IsBinary";
-    private static final String DATA_HANDLER = "Axiom.DataHandler";
+
+    protected boolean isDataHandlerAware = false;
 
 
     /**
@@ -89,6 +90,18 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected StAXBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
         this.parser = parser;
         omfactory = ombuilderFactory;
+
+        // check whether data handlers are treated seperately
+        try {
+            if (parser != null && (Boolean.TRUE == parser.getProperty(OMConstants.IS_DATA_HANDLERS_AWARE)))
+            {
+                isDataHandlerAware = true;
+            }
+        } catch (IllegalArgumentException e) {
+            // according to the parser api, get property will return IllegalArgumentException, when that
+            // property is not found.
+            isDataHandlerAware = false;
+        }
     }
 
     /**
@@ -185,19 +198,18 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @return omNode
      */
     private OMNode createOMText(OMElement omElement, int textType) {
-//        try {
-//            if (Boolean.TRUE == parser.getProperty(IS_BINARY)) {
-//                Object dataHandler = parser.getProperty(DATA_HANDLER);
-//                OMText text = omfactory.createText(dataHandler, true);
-//                omElement.addChild(text);
-//                return text;
-//            } else {
-        return omfactory.createText(omElement, parser.getText(), textType);
-
-//    }
-//        } catch (IllegalArgumentException e) {
-//           return omfactory.createText(omElement, parser.getText(), textType);
-//        }
+        try {
+            if (isDataHandlerAware && Boolean.TRUE == parser.getProperty(OMConstants.IS_BINARY)) {
+                Object dataHandler = parser.getProperty(OMConstants.DATA_HANDLER);
+                OMText text = omfactory.createText(dataHandler, true);
+                omElement.addChild(text);
+                return text;
+            } else {
+                return omfactory.createText(omElement, parser.getText(), textType);
+            }
+        } catch (IllegalArgumentException e) {
+            return omfactory.createText(omElement, parser.getText(), textType);
+        }
     }
 
     /**

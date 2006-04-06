@@ -72,4 +72,7 @@ public interface OMConstants {
     
     public static final String XMLNS_PREFIX =
         "xml";
+    String IS_BINARY = "Axiom.IsBinary";
+    String DATA_HANDLER = "Axiom.DataHandler";
+    String IS_DATA_HANDLERS_AWARE = "IsDatahandlersAwareParsing";
 }
