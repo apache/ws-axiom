@@ -1069,7 +1069,6 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             // switched off
             // has nothing to do if the element is already built!
             if (this.done) {
-                System.out.println(this.localName);
                 OMSerializerUtil.serializeStartpart(this, writer);
                 ChildNode child = this.firstChild;
                 while (child != null
