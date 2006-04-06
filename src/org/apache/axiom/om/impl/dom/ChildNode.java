@@ -201,6 +201,7 @@ public abstract class ChildNode extends NodeImpl {
         newnode.previousSibling = null;
         newnode.nextSibling = null;
         newnode.isFirstChild(false);
+        newnode.parentNode = null;
 
         return newnode;
     }
