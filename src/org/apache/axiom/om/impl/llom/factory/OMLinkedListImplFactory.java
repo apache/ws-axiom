@@ -162,7 +162,7 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @param s
      * @return Returns OMText.
      */
-    public OMText createText(String s) {
+    public OMText createOMText(String s) {
         return new OMTextImpl(s, this);
     }
 

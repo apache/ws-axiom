@@ -54,7 +54,7 @@ public class CharacterEncodingTest extends TestCase {
 		String ln = "Child";
 		
 		OMElement bodyChild = factory.createOMElement(ln,namespace);
-		bodyChild.addChild(factory.createText(value));
+		bodyChild.addChild(factory.createOMText(value));
 		
 		envelope.getBody().addChild(bodyChild);
 

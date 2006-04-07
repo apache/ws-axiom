@@ -213,9 +213,9 @@ public class OMDOMFactory implements OMFactory {
     /**
      * Creates a OMDOM Text node carrying the given value.
      * 
-     * @see org.apache.axiom.om.OMFactory#createText(java.lang.String)
+     * @see org.apache.axiom.om.OMFactory#createOMText(java.lang.String)
      */
-    public OMText createText(String s) {
+    public OMText createOMText(String s) {
         TextImpl textImpl = new TextImpl(this.document,s, this);
         return textImpl;
     }

@@ -120,7 +120,7 @@ public interface OMFactory {
      * @param s
      * @return Returns OMText.
      */
-    public OMText createText(String s);
+    public OMText createOMText(String s);
 
     /**
      * @param s
