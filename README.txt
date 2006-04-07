@@ -1,5 +1,5 @@
 ======================================================
-Apache AXIOM 0.95 build  (March 23rd, 2006)
+Apache AXIOM 1.0 RC1 (April 7, 2006)
 
 http://ws.apache.org/commons/axiom/
 ------------------------------------------------------
