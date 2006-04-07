@@ -118,7 +118,7 @@ public class OMTest extends AbstractTestCase {
         //        OMElement relatesTo= fac.createOMElement ("RelatesTo", wsa);
         //        relatesTo.addAttribute(fac.createOMAttribute("RelationshipType", null, "wsa:Reply", relatesTo));
         //        relatesTo.addAttribute(fac.createOMAttribute("mustUnderstand", soapenv, "0", relatesTo));
-        //        relatesTo.addChild(fac.createText(relatesTo, "uuid:3821F4F0-D020-11D8-A10A-E4EE6425FCB0"));
+        //        relatesTo.addChild(fac.createOMText(relatesTo, "uuid:3821F4F0-D020-11D8-A10A-E4EE6425FCB0"));
         //        relatesTo.setComplete(true);
         //
         //        root.addChild(relatesTo);

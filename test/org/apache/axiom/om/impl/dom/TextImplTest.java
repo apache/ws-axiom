@@ -39,7 +39,7 @@ public class TextImplTest extends TestCase {
 		String tempText = "The quick brown fox jumps over the lazy dog";
 
 		OMElement elem = factory.createOMElement(localName, namespace, prefix);
-		OMText textNode = factory.createText(elem, tempText);
+		OMText textNode = factory.createOMText(elem, tempText);
 
 		assertEquals("Text value mismatch", tempText, textNode.getText());
 	}
@@ -53,7 +53,7 @@ public class TextImplTest extends TestCase {
 		String textToAppend = " followed by another fox";
 
 		OMElement elem = factory.createOMElement(localName, namespace, prefix);
-		OMText textNode = factory.createText(elem, tempText);
+		OMText textNode = factory.createOMText(elem, tempText);
 
 		((Text) textNode).appendData(textToAppend);
 

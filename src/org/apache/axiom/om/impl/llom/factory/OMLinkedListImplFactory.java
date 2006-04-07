@@ -130,34 +130,34 @@ public class OMLinkedListImplFactory implements OMFactory {
     }
 
     /**
-     * Method createText.
+     * Method createOMText.
      *
      * @param parent
      * @param text
      * @return Returns OMText.
      */
-    public OMText createText(OMElement parent, String text) {
+    public OMText createOMText(OMElement parent, String text) {
         return new OMTextImpl(parent, text, this);
     }
 
-    public OMText createText(OMElement parent, QName text) {
+    public OMText createOMText(OMElement parent, QName text) {
         return new OMTextImpl(parent, text, this);
     }
 
-    public OMText createText(OMElement parent, String text, int type) {
+    public OMText createOMText(OMElement parent, String text, int type) {
         return new OMTextImpl(parent, text, type, this);
     }
 
-    public OMText createText(OMElement parent, char[] charArary, int type) {
+    public OMText createOMText(OMElement parent, char[] charArary, int type) {
         return new OMTextImpl(parent, charArary, type, this);
     }
 
-    public OMText createText(OMElement parent, QName text, int type) {
+    public OMText createOMText(OMElement parent, QName text, int type) {
         return new OMTextImpl(parent, text, type, this);
     }
 
     /**
-     * Method createText.
+     * Method createOMText.
      *
      * @param s
      * @return Returns OMText.
@@ -166,7 +166,7 @@ public class OMLinkedListImplFactory implements OMFactory {
         return new OMTextImpl(s, this);
     }
 
-    public OMText createText(String s, int type) {
+    public OMText createOMText(String s, int type) {
         return new OMTextImpl(s, type, this);
     }
 
@@ -178,7 +178,7 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @param optimize
      * @return Returns OMText.
      */
-    public OMText createText(String s, String mimeType, boolean optimize) {
+    public OMText createOMText(String s, String mimeType, boolean optimize) {
         return new OMTextImpl(s, mimeType, optimize, this);
     }
 
@@ -189,12 +189,12 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @param optimize
      * @return Returns OMText.
      */
-    public OMText createText(Object dataHandler, boolean optimize) {
+    public OMText createOMText(Object dataHandler, boolean optimize) {
         return new OMTextImpl(dataHandler, optimize, this);
     }
 
-    public OMText createText(String contentID, OMElement parent,
-                             OMXMLParserWrapper builder) {
+    public OMText createOMText(String contentID, OMElement parent,
+                               OMXMLParserWrapper builder) {
         return new OMTextImpl(contentID, parent, builder, this);
     }
 
@@ -207,10 +207,10 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @param optimize
      * @return Returns OMText.
      */
-    public OMText createText(OMElement parent,
-                             String s,
-                             String mimeType,
-                             boolean optimize) {
+    public OMText createOMText(OMElement parent,
+                               String s,
+                               String mimeType,
+                               boolean optimize) {
         return new OMTextImpl(parent, s, mimeType, optimize, this);
     }
 

@@ -141,14 +141,14 @@ public class SAXOMBuilder extends DefaultHandler {
         OMNode node;
         if (lastNode.isComplete()) {
             node =
-                    factory.createText((OMElement) lastNode.getParent(),
+                    factory.createOMText((OMElement) lastNode.getParent(),
                             new String(ch,
                                     start, length));
             ((OMNodeEx)lastNode).setNextOMSibling(node);
             ((OMNodeEx)node).setPreviousOMSibling(lastNode);
         } else {
             OMElement e = (OMElement) lastNode;
-            node = factory.createText(e, new String(ch, start, length));
+            node = factory.createOMText(e, new String(ch, start, length));
             e.setFirstChild(node);
         }
         lastNode = node;

@@ -99,7 +99,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
         OMElement omElement = omFactory.createOMElement("chinthaka",
                 namespace);
         String text = "sampleText";
-        OMText omText = omFactory.createText(omElement, text);
+        OMText omText = omFactory.createOMText(omElement, text);
         assertTrue("Programatically created OMText should have done = true ",
                 omText.isComplete());
         assertTrue(

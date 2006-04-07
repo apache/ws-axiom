@@ -51,12 +51,12 @@ public class MIMEOutputUtilsTest extends TestCase {
 						omOutput.getCharSetEncoding(),SOAP12Constants.SOAP_12_CONTENT_TYPE);
         DataHandler dataHandler;
         dataHandler = new DataHandler(new ByteArrayDataSource(byteArray));
-        OMText textData = factory.createText(dataHandler, true);
+        OMText textData = factory.createOMText(dataHandler, true);
         assertNotNull(textData.getContentID());
 
         DataHandler dataHandler2 = new DataHandler(
                 "Apache Software Foundation", "text/plain");
-        OMText text = factory.createText(dataHandler2, true);
+        OMText text = factory.createOMText(dataHandler2, true);
         assertNotNull(text.getContentID());
         outStream = new ByteArrayOutputStream();
         outStream.write(("Content-Type: " + contentType).getBytes());

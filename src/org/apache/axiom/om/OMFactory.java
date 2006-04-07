@@ -89,14 +89,14 @@ public interface OMFactory {
      * @param text
      * @return Returns OMText.
      */
-    public OMText createText(OMElement parent, String text);
+    public OMText createOMText(OMElement parent, String text);
 
     /**
      * @param parent
      * @param text   - This text itself can contain a namespace inside it.
      * @return
      */
-    public OMText createText(OMElement parent, QName text);
+    public OMText createOMText(OMElement parent, QName text);
 
     /**
      * @param parent
@@ -105,8 +105,8 @@ public interface OMFactory {
      *               XMLStreamConstants.SPACE, XMLStreamConstants.ENTITY_REFERENCE
      * @return Returns OMText.
      */
-    public OMText createText(OMElement parent, String text, int type);
-    public OMText createText(OMElement parent, char[] charArary, int type);
+    public OMText createOMText(OMElement parent, String text, int type);
+    public OMText createOMText(OMElement parent, char[] charArary, int type);
 
     /**
      * @param parent
@@ -114,7 +114,7 @@ public interface OMFactory {
      * @param type
      * @return
      */
-    public OMText createText(OMElement parent, QName text, int type);
+    public OMText createOMText(OMElement parent, QName text, int type);
 
     /**
      * @param s
@@ -128,17 +128,17 @@ public interface OMFactory {
      *             XMLStreamConstants or constants found in OMNode.
      * @return Returns OMText.
      */
-    public OMText createText(String s, int type);
+    public OMText createOMText(String s, int type);
 
-    public OMText createText(String s, String mimeType, boolean optimize);
+    public OMText createOMText(String s, String mimeType, boolean optimize);
 
-    public OMText createText(Object dataHandler, boolean optimize);
+    public OMText createOMText(Object dataHandler, boolean optimize);
 
-    public OMText createText(OMElement parent, String s, String mimeType,
-                             boolean optimize);
+    public OMText createOMText(OMElement parent, String s, String mimeType,
+                               boolean optimize);
 
-    public OMText createText(String contentID, OMElement parent,
-                             OMXMLParserWrapper builder);
+    public OMText createOMText(String contentID, OMElement parent,
+                               OMXMLParserWrapper builder);
 
     public OMAttribute createOMAttribute(String localName,
                                          OMNamespace ns,

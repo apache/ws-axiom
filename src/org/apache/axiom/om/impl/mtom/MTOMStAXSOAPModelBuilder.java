@@ -110,7 +110,7 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements MT
             try {
                 OMElement e = (OMElement) lastNode;
                 //node = new OMTextImpl(contentID, (OMElement) lastNode, this);
-                node = this.omfactory.createText(contentID, (OMElement) lastNode, this);
+                node = this.omfactory.createOMText(contentID, (OMElement) lastNode, this);
                 e.setFirstChild(node);
             } catch (ClassCastException e) {
                 throw new OMException(

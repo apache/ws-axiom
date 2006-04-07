@@ -63,7 +63,7 @@ public class ElementImplTest extends TestCase {
 		String textToAppend = " followed by another";
 		
 		OMElement elem = factory.createOMElement(localName,namespace,prefix);
-		OMText textNode = factory.createText(elem,tempText);
+		OMText textNode = factory.createOMText(elem,tempText);
 		
 		((Text)textNode).appendData(textToAppend);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

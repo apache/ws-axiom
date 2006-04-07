@@ -119,7 +119,7 @@ public class ElementSerializerTest extends AbstractTestCase {
         OMNamespace ns2 = root.declareNamespace("bar", "y");
         OMElement elt1 = factory.createOMElement("foo", ns1);
         OMElement elt2 = factory.createOMElement("yuck", ns2);
-        OMText txt1 = factory.createText(elt2, "blah");
+        OMText txt1 = factory.createOMText(elt2, "blah");
         elt2.addChild(txt1);
         elt1.addChild(elt2);
         root.addChild(elt1);

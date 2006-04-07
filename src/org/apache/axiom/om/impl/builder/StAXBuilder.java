@@ -199,14 +199,14 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         try {
             if (isDataHandlerAware && Boolean.TRUE == parser.getProperty(OMConstants.IS_BINARY)) {
                 Object dataHandler = parser.getProperty(OMConstants.DATA_HANDLER);
-                OMText text = omfactory.createText(dataHandler, true);
+                OMText text = omfactory.createOMText(dataHandler, true);
                 omElement.addChild(text);
                 return text;
             } else {
-                return omfactory.createText(omElement, parser.getText(), textType);
+                return omfactory.createOMText(omElement, parser.getText(), textType);
             }
         } catch (IllegalArgumentException e) {
-            return omfactory.createText(omElement, parser.getText(), textType);
+            return omfactory.createOMText(omElement, parser.getText(), textType);
         }
     }
 

@@ -154,7 +154,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
             int token = parser.next();
             while (token != XMLStreamReader.END_ELEMENT) {
                 if (token == XMLStreamReader.CHARACTERS) {
-                    OMText text = factory.createText(value, parser.getText());
+                    OMText text = factory.createOMText(value, parser.getText());
                     value.addChild(text);
                 } else {
                     throw new SOAPProcessingException(

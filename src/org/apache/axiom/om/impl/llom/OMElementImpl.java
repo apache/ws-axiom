@@ -650,7 +650,7 @@ public class OMElementImpl extends OMNodeImpl
             child = child.getNextOMSibling();
         }
 
-        OMAbstractFactory.getOMFactory().createText(this, text);
+        OMAbstractFactory.getOMFactory().createOMText(this, text);
     }
 
     /**
@@ -668,7 +668,7 @@ public class OMElementImpl extends OMNodeImpl
             child = child.getNextOMSibling();
         }
 
-        OMAbstractFactory.getOMFactory().createText(this, text);
+        OMAbstractFactory.getOMFactory().createOMText(this, text);
     }
 
     /**

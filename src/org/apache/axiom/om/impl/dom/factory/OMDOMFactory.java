@@ -179,10 +179,10 @@ public class OMDOMFactory implements OMFactory {
      * Creates a new OMDOM Text node with the given value and appends it to the
      * given parent element.
      * 
-     * @see org.apache.axiom.om.OMFactory#createText(
+     * @see org.apache.axiom.om.OMFactory#createOMText(
      *      org.apache.axiom.om.OMElement,java.lang.String)
      */
-    public OMText createText(OMElement parent, String text) {
+    public OMText createOMText(OMElement parent, String text) {
         ElementImpl parentElem = (ElementImpl) parent;
         TextImpl txt = new TextImpl((DocumentImpl) parentElem
                 .getOwnerDocument(), text, this);
@@ -190,22 +190,22 @@ public class OMDOMFactory implements OMFactory {
         return txt;
     }
 
-    public OMText createText(OMElement parent, QName text) {
+    public OMText createOMText(OMElement parent, QName text) {
         throw new UnsupportedOperationException();
     }
 
-    public OMText createText(OMElement parent, String text, int type) {
-        OMText textNode = createText(parent, text);
+    public OMText createOMText(OMElement parent, String text, int type) {
+        OMText textNode = createOMText(parent, text);
         ((OMNodeEx) textNode).setType(type);
         return textNode;
     }
 
-    public OMText createText(OMElement parent, char[] charArary, int type) {
+    public OMText createOMText(OMElement parent, char[] charArary, int type) {
         // TODO : Fix me
         throw new UnsupportedOperationException();
     }
 
-    public OMText createText(OMElement parent, QName text, int type) {
+    public OMText createOMText(OMElement parent, QName text, int type) {
         // TODO : Fix me
         throw new UnsupportedOperationException();
     }
@@ -223,9 +223,9 @@ public class OMDOMFactory implements OMFactory {
     /**
      * Creates a Character node of the given type.
      * 
-     * @see org.apache.axiom.om.OMFactory#createText(java.lang.String, int)
+     * @see org.apache.axiom.om.OMFactory#createOMText(java.lang.String, int)
      */
-    public OMText createText(String text, int type) {
+    public OMText createOMText(String text, int type) {
         switch (type) {
         case Node.TEXT_NODE:
             return new TextImpl(this.document, text, this);
@@ -238,10 +238,10 @@ public class OMDOMFactory implements OMFactory {
      * Creates a new OMDOM Text node with the value of the given text value
      * along with the MTOM optimization parameters and returns it.
      * 
-     * @see org.apache.axiom.om.OMFactory#createText(java.lang.String,
+     * @see org.apache.axiom.om.OMFactory#createOMText(java.lang.String,
      *      java.lang.String, boolean)
      */
-    public OMText createText(String text, String mimeType, boolean optimize) {
+    public OMText createOMText(String text, String mimeType, boolean optimize) {
         return new TextImpl(this.document, text, mimeType, optimize, this);
     }
 
@@ -249,9 +249,9 @@ public class OMDOMFactory implements OMFactory {
      * Creates a new OMDOM Text node with the given datahandler and the given
      * MTOM optimization configuration and returns it.
      * 
-     * @see org.apache.axiom.om.OMFactory#createText(java.lang.Object, boolean)
+     * @see org.apache.axiom.om.OMFactory#createOMText(java.lang.Object, boolean)
      */
-    public OMText createText(Object dataHandler, boolean optimize) {
+    public OMText createOMText(Object dataHandler, boolean optimize) {
         return new TextImpl(this.document, dataHandler, optimize, this);
     }
 
@@ -259,19 +259,19 @@ public class OMDOMFactory implements OMFactory {
      * Creates an OMDOM Text node, adds it to the give parent element and
      * returns it.
      * 
-     * @see org.apache.axiom.om.OMFactory#createText(org.apache.axiom.om.OMElement,
+     * @see org.apache.axiom.om.OMFactory#createOMText(org.apache.axiom.om.OMElement,
      *      java.lang.String, java.lang.String, boolean)
      */
-    public OMText createText(OMElement parent, String s, String mimeType,
-            boolean optimize) {
+    public OMText createOMText(OMElement parent, String s, String mimeType,
+                               boolean optimize) {
         TextImpl text = new TextImpl((DocumentImpl) ((ElementImpl) parent)
                 .getOwnerDocument(), s, mimeType, optimize, this);
         parent.addChild(text);
         return text;
     }
 
-    public OMText createText(String contentID, OMElement parent,
-            OMXMLParserWrapper builder) {
+    public OMText createOMText(String contentID, OMElement parent,
+                               OMXMLParserWrapper builder) {
         TextImpl text = new TextImpl(contentID, parent, builder, this);
         parent.addChild(text);
         return text;
