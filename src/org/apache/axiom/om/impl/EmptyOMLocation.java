@@ -1,4 +1,4 @@
-package org.apache.axiom.om.impl.llom;
+package org.apache.axiom.om.impl;
 
 import javax.xml.stream.Location;
 

@@ -24,8 +24,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.EmptyOMLocation;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
-import org.apache.axiom.om.impl.llom.EmptyOMLocation;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 

@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.EmptyOMLocation;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 
 import javax.xml.namespace.NamespaceContext;

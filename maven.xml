@@ -110,6 +110,7 @@
         <ant:copy toDir="${dist}/build">
             <ant:fileset file="target/axiom-api-${axiom.version}.jar"/>
             <ant:fileset file="target/axiom-impl-${axiom.version}.jar"/>
+            <ant:fileset file="target/axiom-dom-${axiom.version}.jar"/>
         </ant:copy>
 
         <!--add documents-->

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.axiom.om.impl.llom.util;
+package org.apache.axiom.om.impl.util;
 
 import java.util.Iterator;
 
