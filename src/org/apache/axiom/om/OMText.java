@@ -20,7 +20,9 @@ import javax.xml.namespace.QName;
 
 
 /**
- * Interface OMText
+ * Interface OMText.
+ *
+ * OMText can contain data as a String, char[] or a DataHandler.
  */
 public interface OMText extends OMNode {
     /**
@@ -29,6 +31,10 @@ public interface OMText extends OMNode {
      * @return Returns String.
      */
     String getText();
+
+    char[] getTextCharacters();
+    boolean isCharacters();
+
     QName getTextAsQName();
 
     /**

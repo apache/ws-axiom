@@ -44,6 +44,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             "http://www.w3.org/2004/08/xop/include", "xop");
 
     protected String value = null;
+    protected char[] charArray;
 
     protected OMNamespace textNS;
 
@@ -110,6 +111,14 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                       OMFactory factory) {
         super(parent, factory);
         this.value = text;
+        done = true;
+        this.nodeType = nodeType;
+    }
+
+    public OMTextImpl(OMElement parent, char[] charArray, int nodeType,
+                      OMFactory factory) {
+        super(parent, factory);
+        this.charArray = charArray;
         done = true;
         this.nodeType = nodeType;
     }
@@ -221,8 +230,8 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     public String getText() throws OMException {
         if (textNS != null) {
             return getTextString();
-        } else if (this.value != null) {
-            return this.value;
+        } else if (charArray != null || this.value != null) {
+            return getTextFromProperPlace();
         } else {
             try {
                 InputStream inStream;
@@ -247,6 +256,22 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         }
     }
 
+    public char[] getTextCharacters() {
+        return charArray != null ? charArray : value.toCharArray();
+    }
+
+    public boolean isCharacters() {
+        return charArray != null;
+    }
+
+    /**
+     * This OMText contains two data source:value and charArray. This method will return text from
+     * correct place.
+     */
+    private String getTextFromProperPlace() {
+        return charArray != null ? new String(charArray) : value;
+    }
+
 
     /**
      * Returns the value.
@@ -254,13 +279,14 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     public QName getTextAsQName() throws OMException {
         if (textNS != null) {
             String prefix = textNS.getPrefix();
+            String name = textNS.getName();
             if (prefix == null || "".equals(prefix)) {
-                return new QName(textNS.getName(), value);
+                return new QName(name, getTextFromProperPlace());
             } else {
-                return new QName(textNS.getName(), value, prefix);
+                return new QName(textNS.getName(), getTextFromProperPlace(), prefix);
             }
-        } else if (this.value != null) {
-            return new QName(value);
+        } else if (this.value != null || charArray != null) {
+            return new QName(getTextFromProperPlace());
         } else {
             try {
                 InputStream inStream;
@@ -303,8 +329,8 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * @return Returns javax.activation.DataHandler
      */
     public Object getDataHandler() {
-        if ((value != null || textNS != null) & isBinary) {
-            String text = textNS == null ? value : getTextString();
+        if ((value != null || charArray != null || textNS != null) & isBinary) {
+            String text = textNS == null ? getTextFromProperPlace() : getTextString();
             return org.apache.axiom.attachments.DataHandlerUtils.getDataHandlerFromText(text, mimeType);
         } else {
 
@@ -323,9 +349,9 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         if (textNS != null) {
             String prefix = textNS.getPrefix();
             if (prefix == null || "".equals(prefix)) {
-                return value;
+                return getTextFromProperPlace();
             } else {
-                return prefix + ":" + value;
+                return prefix + ":" + getTextFromProperPlace();
             }
         }
 

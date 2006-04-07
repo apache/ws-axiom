@@ -96,101 +96,6 @@ public class StAXOMBuilder extends StAXBuilder {
     }
 
     /**
-     * Method createOMElement.
-     *
-     * @return Returns OMNode.
-     * @throws OMException
-     */
-    protected OMNode createOMElement() throws OMException {
-        OMElement node;
-        String elementName = parser.getLocalName();
-        if (lastNode == null) {
-            node = omfactory.createOMElement(elementName, null, document, this);
-        } else if (lastNode.isComplete()) {
-            node = omfactory.createOMElement(elementName, null,
-                    lastNode.getParent(), this);
-            ((OMNodeEx) lastNode).setNextOMSibling(node);
-            ((OMNodeEx) node).setPreviousOMSibling(lastNode);
-        } else {
-            OMElement e = (OMElement) lastNode;
-            node = omfactory.createOMElement(elementName, null,
-                    (OMElement) lastNode, this);
-            e.setFirstChild(node);
-        }
-        // create the namespaces
-        processNamespaceData(node);
-        // fill in the attributes
-        processAttributes(node);
-        node.setLineNumber(parser.getLocation().getLineNumber());
-        return node;
-    }
-
-    /**
-     * Method createOMText.
-     *
-     * @return Returns OMNode.
-     * @throws OMException
-     */
-    protected OMNode createComment() throws OMException {
-        OMNode node;
-        if (lastNode == null) {
-            node = omfactory.createOMComment(document, parser.getText());
-        } else if (lastNode.isComplete()) {
-            node = omfactory.createOMComment(lastNode.getParent(), parser.getText());
-        } else {
-            node = omfactory.createOMComment((OMElement) lastNode, parser.getText());
-        }
-        return node;
-    }
-
-    /**
-     * Method createDTD.
-     *
-     * @return Returns OMNode.
-     * @throws OMException
-     */
-    protected OMNode createDTD() throws OMException {
-        if (!parser.hasText())
-            return null;
-        return omfactory.createOMDocType(document, parser.getText());
-    }
-
-    /**
-     * Method createPI.
-     *
-     * @return Returns OMNode.
-     * @throws OMException
-     */
-    protected OMNode createPI() throws OMException {
-        OMNode node;
-        String target = parser.getPITarget();
-        String data = parser.getPIData();
-        if (lastNode == null) {
-            node = omfactory.createOMProcessingInstruction(document, target, data);
-        } else if (lastNode.isComplete()) {
-            node = omfactory.createOMProcessingInstruction(lastNode.getParent(), target, data);
-        } else if (lastNode instanceof OMText) {
-            node = omfactory.createOMProcessingInstruction(lastNode.getParent(), target, data);
-        } else {
-            node = omfactory.createOMProcessingInstruction((OMContainer) lastNode, target, data);
-        }
-        return node;
-    }
-
-    protected void endElement() {
-        if (lastNode.isComplete()) {
-            OMElement parent = (OMElement) lastNode.getParent();
-            ((OMNodeEx) parent).setComplete(true);
-            lastNode = parent;
-        } else {
-            OMElement e = (OMElement) lastNode;
-            ((OMNodeEx) e).setComplete(true);
-        }
-
-        //return lastNode;
-    }
-
-    /**
      * Method next.
      *
      * @return Returns int.
@@ -286,6 +191,102 @@ public class StAXOMBuilder extends StAXBuilder {
         } catch (Exception e) {
             throw new OMException(e);
         }
+    }
+    
+
+    /**
+     * Method createOMElement.
+     *
+     * @return Returns OMNode.
+     * @throws OMException
+     */
+    protected OMNode createOMElement() throws OMException {
+        OMElement node;
+        String elementName = parser.getLocalName();
+        if (lastNode == null) {
+            node = omfactory.createOMElement(elementName, null, document, this);
+        } else if (lastNode.isComplete()) {
+            node = omfactory.createOMElement(elementName, null,
+                    lastNode.getParent(), this);
+            ((OMNodeEx) lastNode).setNextOMSibling(node);
+            ((OMNodeEx) node).setPreviousOMSibling(lastNode);
+        } else {
+            OMElement e = (OMElement) lastNode;
+            node = omfactory.createOMElement(elementName, null,
+                    (OMElement) lastNode, this);
+            e.setFirstChild(node);
+        }
+        // create the namespaces
+        processNamespaceData(node);
+        // fill in the attributes
+        processAttributes(node);
+        node.setLineNumber(parser.getLocation().getLineNumber());
+        return node;
+    }
+
+    /**
+     * Method createOMText.
+     *
+     * @return Returns OMNode.
+     * @throws OMException
+     */
+    protected OMNode createComment() throws OMException {
+        OMNode node;
+        if (lastNode == null) {
+            node = omfactory.createOMComment(document, parser.getText());
+        } else if (lastNode.isComplete()) {
+            node = omfactory.createOMComment(lastNode.getParent(), parser.getText());
+        } else {
+            node = omfactory.createOMComment((OMElement) lastNode, parser.getText());
+        }
+        return node;
+    }
+
+    /**
+     * Method createDTD.
+     *
+     * @return Returns OMNode.
+     * @throws OMException
+     */
+    protected OMNode createDTD() throws OMException {
+        if (!parser.hasText())
+            return null;
+        return omfactory.createOMDocType(document, parser.getText());
+    }
+
+    /**
+     * Method createPI.
+     *
+     * @return Returns OMNode.
+     * @throws OMException
+     */
+    protected OMNode createPI() throws OMException {
+        OMNode node;
+        String target = parser.getPITarget();
+        String data = parser.getPIData();
+        if (lastNode == null) {
+            node = omfactory.createOMProcessingInstruction(document, target, data);
+        } else if (lastNode.isComplete()) {
+            node = omfactory.createOMProcessingInstruction(lastNode.getParent(), target, data);
+        } else if (lastNode instanceof OMText) {
+            node = omfactory.createOMProcessingInstruction(lastNode.getParent(), target, data);
+        } else {
+            node = omfactory.createOMProcessingInstruction((OMContainer) lastNode, target, data);
+        }
+        return node;
+    }
+
+    protected void endElement() {
+        if (lastNode.isComplete()) {
+            OMElement parent = (OMElement) lastNode.getParent();
+            ((OMNodeEx) parent).setComplete(true);
+            lastNode = parent;
+        } else {
+            OMElement e = (OMElement) lastNode;
+            ((OMNodeEx) e).setComplete(true);
+        }
+
+        //return lastNode;
     }
 
     /**

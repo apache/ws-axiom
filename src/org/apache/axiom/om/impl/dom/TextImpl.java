@@ -304,6 +304,14 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         }
     }
 
+    public char[] getTextCharacters() {
+        return textValue.toString().toCharArray();
+    }
+
+    public boolean isCharacters() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     public QName getTextAsQName() {
         throw new UnsupportedOperationException();
     }

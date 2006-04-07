@@ -106,6 +106,7 @@ public interface OMFactory {
      * @return Returns OMText.
      */
     public OMText createText(OMElement parent, String text, int type);
+    public OMText createText(OMElement parent, char[] charArary, int type);
 
     /**
      * @param parent

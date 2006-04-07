@@ -148,6 +148,10 @@ public class OMLinkedListImplFactory implements OMFactory {
         return new OMTextImpl(parent, text, type, this);
     }
 
+    public OMText createText(OMElement parent, char[] charArary, int type) {
+        return new OMTextImpl(parent, charArary, type, this);
+    }
+
     public OMText createText(OMElement parent, QName text, int type) {
         return new OMTextImpl(parent, text, type, this);
     }

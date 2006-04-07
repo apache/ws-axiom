@@ -200,7 +200,13 @@ public class OMDOMFactory implements OMFactory {
         return textNode;
     }
 
+    public OMText createText(OMElement parent, char[] charArary, int type) {
+        // TODO : Fix me
+        throw new UnsupportedOperationException();
+    }
+
     public OMText createText(OMElement parent, QName text, int type) {
+        // TODO : Fix me
         throw new UnsupportedOperationException();
     }
 
