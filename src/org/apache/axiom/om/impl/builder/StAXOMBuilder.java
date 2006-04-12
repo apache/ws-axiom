@@ -327,7 +327,7 @@ public class StAXOMBuilder extends StAXBuilder {
 
         if (namespaceURI != null && namespaceURI.length() > 0) {
             OMNamespace namespace = node.findNamespace(namespaceURI, prefix);
-            if (namespace == null) {
+            if (namespace == null || namespace.getPrefix() != prefix) {
                 if (prefix == null || "".equals(prefix)) {
                     namespace = node.declareDefaultNamespace(namespaceURI);
                 } else {
