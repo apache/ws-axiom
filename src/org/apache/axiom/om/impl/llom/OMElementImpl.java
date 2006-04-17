@@ -402,7 +402,7 @@ public class OMElementImpl extends OMNodeImpl
 
             OMNamespace defaultNamespace = this.getDefaultNamespace();
             if (defaultNamespace != null && uri.equals(defaultNamespace.getName())) {
-               return defaultNamespace;
+                return defaultNamespace;
             }
             Iterator namespaceListIterator = namespaces.values().iterator();
 
@@ -578,9 +578,8 @@ public class OMElementImpl extends OMNodeImpl
     public OMNode detach() throws OMException {
         if (!done) {
             build();
-        } else {
-            super.detach();
         }
+        super.detach();
         return this;
     }
 
