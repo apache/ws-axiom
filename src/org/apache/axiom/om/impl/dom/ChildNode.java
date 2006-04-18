@@ -109,6 +109,9 @@ public abstract class ChildNode extends NodeImpl {
         if (this.parentNode == null) {
             throw new OMException("Parent level elements cannot be detached");
         } else {
+            if (!done) {
+                build();
+            }
             if (previousSibling == null) { // This is the first child
                 if (nextSibling != null) {
                     this.parentNode.setFirstChild(nextSibling);
