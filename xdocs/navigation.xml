@@ -10,7 +10,8 @@
 			<item name="Documentation">
 				<item name="OM Tutorial" href="OMTutorial.html"/>
 				<item name="Javadocs" href="/apidocs/index.html"/>
-			</item>
+                <item name="Checkout Source" href="svn.html"/>
+            </item>
 			<item name="Project Information">
 				<item name="Mailing Lists" href="/mail-lists.html"/>
 				<item name="Project Team" href="/team-list.html"/>
