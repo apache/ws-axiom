@@ -73,9 +73,10 @@ public class OMOutputFormat {
 
     public String getMimeBoundary() {
         if (mimeBoundary == null) {
-            mimeBoundary =
-                    "MIMEBoundary"
-                            + UUIDGenerator.getUUID();
+        	mimeBoundary =
+                "MIMEBoundary"
+                        + UUIDGenerator.getUUID().replace(':','_');
+
         }
         return mimeBoundary;
     }
