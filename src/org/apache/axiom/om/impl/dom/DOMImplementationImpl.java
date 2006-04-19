@@ -38,7 +38,7 @@ public class DOMImplementationImpl implements DOMImplementation {
 
         new ElementImpl(doc, DOMUtil.getLocalName(qualifiedName),
                 new NamespaceImpl(namespaceURI, DOMUtil
-                        .getPrefix(qualifiedName),fac),fac);
+                        .getPrefix(qualifiedName)),fac);
 
         return doc;
     }

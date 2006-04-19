@@ -142,8 +142,7 @@ public class OMDOMFactory implements OMFactory {
      */
     public OMElement createOMElement(String localName, String namespaceURI,
             String namespacePrefix) {
-        NamespaceImpl ns = new NamespaceImpl(namespaceURI, namespacePrefix,
-                this);
+        NamespaceImpl ns = new NamespaceImpl(namespaceURI, namespacePrefix);
         return this.createOMElement(localName, ns);
     }
 
@@ -158,9 +157,9 @@ public class OMDOMFactory implements OMFactory {
             throws OMException {
         NamespaceImpl ns;
         if (qname.getPrefix() != null) {
-            ns = new NamespaceImpl(qname.getNamespaceURI(), qname.getPrefix(), this);
+            ns = new NamespaceImpl(qname.getNamespaceURI(), qname.getPrefix());
         } else {
-            ns = new NamespaceImpl(qname.getNamespaceURI(), this);
+            ns = new NamespaceImpl(qname.getNamespaceURI());
         }
         return createOMElement(qname.getLocalPart(), ns, parent);
     }
@@ -172,7 +171,7 @@ public class OMDOMFactory implements OMFactory {
      *      java.lang.String)
      */
     public OMNamespace createOMNamespace(String uri, String prefix) {
-        return new NamespaceImpl(uri, prefix, this);
+        return new NamespaceImpl(uri, prefix);
     }
 
     /**

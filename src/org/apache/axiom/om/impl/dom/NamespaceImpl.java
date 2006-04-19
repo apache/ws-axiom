@@ -15,7 +15,6 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 
 public class NamespaceImpl implements OMNamespace {
@@ -24,15 +23,12 @@ public class NamespaceImpl implements OMNamespace {
 
     private String nsPrefix;
     
-    private OMFactory factory;
-
-    public NamespaceImpl(String uri, OMFactory factory) {
-        this.factory = factory;
+    public NamespaceImpl(String uri) {
         this.nsUri = uri;
     }
 
-    public NamespaceImpl(String uri, String prefix, OMFactory factory) {
-        this(uri, factory);
+    public NamespaceImpl(String uri, String prefix) {
+        this(uri);
         this.nsPrefix = prefix;
     }
 

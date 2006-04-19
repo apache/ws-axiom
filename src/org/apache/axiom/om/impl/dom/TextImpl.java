@@ -79,7 +79,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         this.textValue = new StringBuffer(text);
         this.done = true;
         this.ns = new NamespaceImpl("http://www.w3.org/2004/08/xop/include",
-                "xop", factory);
+                "xop");
     }
 
     /**
@@ -99,7 +99,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         this.done = true;
         this.builder = builder;
         this.ns = new NamespaceImpl("http://www.w3.org/2004/08/xop/include",
-                "xop", factory);
+                "xop");
     }
 
     public TextImpl(String text, String mimeType, boolean optimize,
@@ -127,7 +127,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         this.optimize = optimize;
         done = true;
         this.ns = new NamespaceImpl("http://www.w3.org/2004/08/xop/include",
-                "xop", factory);
+                "xop");
     }
 
     /**
@@ -137,7 +137,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         super(ownerNode, factory);
         this.done = true;
         this.ns = new NamespaceImpl("http://www.w3.org/2004/08/xop/include",
-                "xop", factory);
+                "xop");
     }
 
     /**
@@ -148,7 +148,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         super(ownerNode, value, factory);
         this.done = true;
         this.ns = new NamespaceImpl("http://www.w3.org/2004/08/xop/include",
-                "xop", factory);
+                "xop");
     }
 
     /**
@@ -379,7 +379,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
                 }
                 // send binary as MTOM optimised
                 this.attribute = new AttrImpl(this.ownerNode, "href",
-                        new NamespaceImpl("", "", this.factory), 
+                        new NamespaceImpl("", ""), 
                         "cid:" + getContentID(),
                         this.factory);
                 this.serializeStartpart(writer);

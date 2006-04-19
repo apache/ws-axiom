@@ -17,7 +17,6 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 

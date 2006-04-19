@@ -54,8 +54,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
         return new SOAPEnvelopeImpl(
                 new NamespaceImpl(
                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                        SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX,
-                        this),
+                        SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX),
                 this);
     }
 
@@ -201,8 +200,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
         OMNamespace ns =
                 new NamespaceImpl(
                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                        SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX,
-                        this);
+                        SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(ns, this);
         createSOAPHeader(env);
         createSOAPBody(env);

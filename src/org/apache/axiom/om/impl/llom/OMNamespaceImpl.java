@@ -16,7 +16,6 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 
 /**

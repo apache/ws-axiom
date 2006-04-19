@@ -167,7 +167,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         }
 
         return new AttrImpl(this, localName, new NamespaceImpl(
-                namespaceURI, prefix, this.factory), this.factory);
+                namespaceURI, prefix), this.factory);
     }
 
     public CDATASection createCDATASection(String arg0) throws DOMException {
@@ -197,7 +197,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
             this.checkQName(prefix, localName);
         }
 
-        NamespaceImpl namespace = new NamespaceImpl(ns, prefix, this.factory);
+        NamespaceImpl namespace = new NamespaceImpl(ns, prefix);
         return new ElementImpl(this, localName, namespace, this.factory);
     }
 

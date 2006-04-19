@@ -22,7 +22,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -89,8 +88,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
         //If this is a default namespace attr
         if(OMConstants.XMLNS_NS_PREFIX.equals(name)) {
             this.namespace = new NamespaceImpl(
-                    OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX,
-                    this.factory);
+                    OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX);
         }
     }
 

@@ -24,8 +24,6 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultReasonImpl;
 
-import java.util.List;
-
 public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
 
     public SOAP12FaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,

@@ -123,18 +123,18 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         return elements.iterator();
     }
 
-    private Iterator returnAllSOAPHeaders(Iterator children) {
-        ArrayList headers = new ArrayList();
-        while (children.hasNext()) {
-            Object o = children.next();
-            if (o instanceof SOAPHeaderBlock) {
-                headers.add(o);
-            }
-        }
-
-        return headers.iterator();
-
-    }
+//    private Iterator returnAllSOAPHeaders(Iterator children) {
+//        ArrayList headers = new ArrayList();
+//        while (children.hasNext()) {
+//            Object o = children.next();
+//            if (o instanceof SOAPHeaderBlock) {
+//                headers.add(o);
+//            }
+//        }
+//
+//        return headers.iterator();
+//
+//    }
 
     /**
      * Returns a list of all the <CODE>SOAPHeaderBlock</CODE> objects in this
