@@ -406,8 +406,6 @@ public class OMElementImpl extends OMNodeImpl
             }
             Iterator namespaceListIterator = namespaces.values().iterator();
 
-            OMNamespace ns = null;
-
             String nsUri;
 
             while (namespaceListIterator.hasNext()) {

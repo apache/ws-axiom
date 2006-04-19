@@ -672,12 +672,10 @@ public class DocumentNavigator extends DefaultNavigator {
     class OMNamespaceEx implements OMNamespace {
         OMNamespace originalNsp = null;
         OMContainer parent = null;
-        OMFactory factory = null;
 
         OMNamespaceEx(OMNamespace nsp, OMContainer parent) {
             originalNsp = nsp;
             this.parent = parent;
-            this.factory = factory;
         }
 
         public boolean equals(String uri, String prefix) {

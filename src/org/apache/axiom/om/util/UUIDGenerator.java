@@ -87,16 +87,12 @@ public class UUIDGenerator {
     }
 
     public static void main(String[] args) {
-        long startTime = new Date().getTime();
         for (int i = 0; i < 100000; i++) {
             UUIDGenerator.getInitialUUID();
         }
-        long endTime = new Date().getTime();
 
-        startTime = new Date().getTime();
         for (int i = 0; i < 100000; i++) {
             UUIDGenerator.getUUID();
         }
-        endTime = new Date().getTime();
     }
 }
