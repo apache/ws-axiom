@@ -19,6 +19,7 @@ package org.apache.axiom.attachments.utils;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -29,7 +30,7 @@ import java.util.Iterator;
  * JDK1.4 based Image I/O
  */
 public class ImageIO extends Component {
-	
+
     private static final long serialVersionUID = 4697911685739683266L;
 
 	/**
@@ -48,7 +49,8 @@ public class ImageIO extends Component {
         if (iter.hasNext()) {
             writer = (ImageWriter) iter.next();
         }
-        writer.setOutput(javax.imageio.ImageIO.createImageOutputStream(os));
+        ImageOutputStream ios = javax.imageio.ImageIO.createImageOutputStream(os);
+        writer.setOutput(ios);
         BufferedImage rendImage = null;
         if (image instanceof BufferedImage) {
             rendImage = (BufferedImage) image;
@@ -61,6 +63,7 @@ public class ImageIO extends Component {
             g.drawImage(image, 0, 0, null);
         }
         writer.write(new IIOImage(rendImage, null, null));
+        ios.flush();
         writer.dispose();
     } // saveImage
 
