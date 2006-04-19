@@ -19,6 +19,7 @@ package org.apache.axiom.om.impl.llom.factory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -35,6 +36,7 @@ import org.apache.axiom.om.impl.llom.OMDocumentImpl;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
+import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.om.impl.llom.OMTextImpl;
 
 import javax.xml.namespace.QName;
@@ -110,6 +112,17 @@ public class OMLinkedListImplFactory implements OMFactory {
     public OMElement createOMElement(QName qname, OMContainer parent)
             throws OMException {
         return new OMElementImpl(qname, parent, this);
+    }
+
+    /**
+     * Construct element with arbitrary data source.
+     * 
+     * @param source
+     * @param localName
+     * @param ns
+     */
+    public OMElement createOMElement(OMDataSource source, String localName, OMNamespace ns) {
+        return new OMSourcedElementImpl(localName, ns, this, source);
     }
 
     /**

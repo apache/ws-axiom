@@ -18,6 +18,7 @@ package org.apache.axiom.om.impl.dom.factory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -132,6 +133,20 @@ public class OMDOMFactory implements OMFactory {
                     "The parent container can only be an ELEMENT, DOCUMENT " +
                     "or a DOCUMENT FRAGMENT");
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.apache.axiom.om.OMFactory#createOMElement(org.apache.axiom.om.OMDataSource, java.lang.String, org.apache.axiom.om.OMNamespace, org.apache.axiom.om.OMContainer)
+     */
+    public OMElement createOMElement(OMDataSource source, String localName, OMNamespace ns, OMContainer parent) {
+        throw new UnsupportedOperationException("Not supported for DOM");
+    }
+
+    /* (non-Javadoc)
+     * @see org.apache.axiom.om.OMFactory#createOMElement(org.apache.axiom.om.OMDataSource, java.lang.String, org.apache.axiom.om.OMNamespace)
+     */
+    public OMElement createOMElement(OMDataSource source, String localName, OMNamespace ns) {
+        throw new UnsupportedOperationException("Not supported for DOM");
     }
 
     /**

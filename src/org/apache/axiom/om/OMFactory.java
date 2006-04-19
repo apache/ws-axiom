@@ -50,6 +50,17 @@ public interface OMFactory {
                                      OMXMLParserWrapper builder);
 
     /**
+     * Construct element with arbitrary data source. This is an optional
+     * operation which may not be supported by all factories.
+     * 
+     * @param source
+     * @param localName
+     * @param ns
+     */
+    public OMElement createOMElement(OMDataSource source, String localName,
+                                     OMNamespace ns);
+
+    /**
      * This is almost the same as as createOMElement(localName,OMNamespace) method above.
      * But some people may, for some reason, need to use the conventional method of putting a namespace.
      * Or in other words people might not want to use the new OMNamespace.
