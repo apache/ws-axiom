@@ -16,11 +16,6 @@
 
 package org.apache.axiom.attachments;
 
-import org.apache.axiom.om.OMException;
-
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-import javax.mail.MessagingException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,7 +23,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.Hashtable;
+
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.mail.Header;
+import javax.mail.MessagingException;
+
+import org.apache.axiom.om.OMException;
 
 public class PartOnFile implements Part {
 
@@ -40,12 +42,12 @@ public class PartOnFile implements Part {
 
     String contentID;
 
-    HashMap headers;
+    Hashtable headers;
 
     public PartOnFile(PushbackFilePartInputStream inStream, String repoDir) {
         super();
 
-        headers = new HashMap();
+        headers = new Hashtable();
 
         if (repoDir == null) {
             repoDir = ".";
@@ -104,23 +106,27 @@ public class PartOnFile implements Part {
     private void putToMap(StringBuffer header) {
         String headerString = header.toString();
         int delimiter = headerString.indexOf(":");
-        headers.put(headerString.substring(0, delimiter).trim(), headerString
-                .substring(delimiter + 1, headerString.length()).trim());
+        
+        String name = headerString.substring(0, delimiter).trim();
+        String value= headerString.substring(delimiter + 1, headerString.length()).trim();
+
+        Header headerObj = new Header(name, value);
+        headers.put(name, headerObj);
     }
 
     public String getContentID() {
-        String cID = (String) headers.get("Content-ID");
+        Header cID = (Header) headers.get("Content-ID");
         if (cID == null) {
-            cID = (String) headers.get("Content-Id");
+            cID = (Header) headers.get("Content-Id");
             if (cID == null) {
-                cID = (String) headers.get("Content-id");
+                cID = (Header) headers.get("Content-id");
                 if (cID == null) {
-                    cID = (String) headers.get("content-id");
+                    cID = (Header) headers.get("content-id");
                 }
             }
 
         }
-        return cID;
+        return (String) cID.getValue();
     }
 
     public int getSize() throws MessagingException {
@@ -161,24 +167,27 @@ public class PartOnFile implements Part {
     }
 
     public String getHeader(String arg0) throws MessagingException {
-        String header;
-        header = (String) headers.get(arg0);
-        return header;
+    	return (String) ((Header) headers.get(arg0)).getValue();
+    }
+
+    public void addHeader(String arg0, String arg1) throws MessagingException {
+    	Header headerObj = new Header(arg0, arg1);
+        headers.put(arg0, headerObj);
     }
 
     public Enumeration getAllHeaders() throws MessagingException {
-        return null;
+        return headers.elements();
     }
 
     public String getContentType() throws MessagingException {
-        String cType = (String) headers.get("Content-Type");
+        Header cType = (Header) headers.get("Content-Type");
         if (cType == null) {
-            cType = (String) headers.get("Content-type");
+            cType = (Header) headers.get("Content-type");
             if (cType == null) {
-                cType = (String) headers.get("content-type");
+                cType = (Header) headers.get("content-type");
             }
         }
-        return cType;
+        return (String) cType.getValue();
     }
 
 }

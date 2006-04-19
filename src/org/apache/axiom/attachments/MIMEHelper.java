@@ -16,21 +16,22 @@
 
 package org.apache.axiom.attachments;
 
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.MTOMConstants;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.activation.DataHandler;
-import javax.mail.MessagingException;
-import javax.mail.internet.ContentType;
-import javax.mail.internet.ParseException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
 import java.util.HashMap;
 import java.util.Set;
+
+import javax.activation.DataHandler;
+import javax.mail.MessagingException;
+import javax.mail.internet.ContentType;
+import javax.mail.internet.ParseException;
+
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.impl.MTOMConstants;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class MIMEHelper {
 
@@ -63,11 +64,20 @@ public class MIMEHelper {
      * Parts. This Map will be keyed using the content-ID's
      */
     HashMap bodyPartsMap;
-
+    
     /**
      * <code>partIndex</code>- Number of Mime parts parsed
      */
     int partIndex = 0;
+    
+    /** Container to hold streams for direct access */
+    IncomingAttachmentStreams streams = null;
+    
+    /** <code>boolean</code> Indicating if any streams have been directly requested */
+    boolean streamsRequested = false;
+    
+    /** <code>boolean</code> Indicating if any data handlers have been directly requested */
+    boolean partsRequested = false;
 
     /**
      * <code>endOfStreamReached</code> flag which is to be set by
@@ -152,6 +162,13 @@ public class MIMEHelper {
                 throw new OMException("Stream Error" + e1.toString(), e1);
             }
         }
+        
+        // Read the SOAP part and cache it
+        getPart(getSOAPPartContentID());
+        
+        // Now reset partsRequested. SOAP part is a special case which is always 
+        // read beforehand, regardless of request.
+        partsRequested = false;
     }
 
     /**
@@ -251,8 +268,8 @@ public class MIMEHelper {
      * @return The DataHandler of the mime part referred by the Content-Id
      * @throws OMException
      */
-    public DataHandler getDataHandler(String blobContentID) throws OMException {
-
+    public DataHandler getDataHandler(String blobContentID) throws OMException, IllegalStateException {
+    	
         try {
             return getPart(blobContentID).getDataHandler();
         } catch (MessagingException e) {
@@ -262,6 +279,30 @@ public class MIMEHelper {
 
     }
 
+    /**
+     * Stream based access
+     * 
+     * @return The stream container of type <code>IncomingAttachmentStreams</code>
+     * @throws IllegalStateException if application has alreadt started using Part's directly
+     */
+    public IncomingAttachmentStreams getIncomingAttachmentStreams() throws IllegalStateException {
+    	if (partsRequested) {
+    		throw new IllegalStateException("The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
+    	}
+
+    	streamsRequested = true;
+
+    	if (this.streams == null) {
+       		BoundaryDelimitedStream boundaryDelimitedStream =
+                new BoundaryDelimitedStream(pushbackInStream,
+                        boundary, 1024);
+
+       		this.streams = new MultipartAttachmentStreams(boundaryDelimitedStream);
+    	}
+
+    	return this.streams;
+    }
+    
     /**
      * Checks whether the MIME part is already parsed by checking the
      * parts HashMap. If it is not parsed yet then call the getNextPart()
@@ -358,6 +399,13 @@ public class MIMEHelper {
      * @throws OMException if Stream ends while reading the next part...
      */
     private Part getPart() throws OMException {
+
+    	if (streamsRequested) {
+    		throw new IllegalStateException("The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
+    	}
+    	
+    	partsRequested = true;
+    	
         // endOfStreamReached will be set to true if the message ended in MIME
         // Style having "--" suffix with the last mime boundary
         if (endOfStreamReached) {
@@ -402,12 +450,14 @@ public class MIMEHelper {
                                                          boundary, this);
                 part = new PartOnMemory(partStream);
             }
+            
             // This will take care if stream ended without having MIME
             // message terminator
             if (part.getSize() <= 0) {
                 throw new OMException(
                         "Referenced MIME part not found.End of Stream reached.");
             }
+
         } catch (MessagingException e) {
             throw new OMException(e);
         }

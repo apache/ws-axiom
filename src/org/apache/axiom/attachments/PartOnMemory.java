@@ -51,6 +51,10 @@ public class PartOnMemory implements Part{
         return part.getDataHandler();
     }
 
+    public void addHeader(String arg0, String arg1) throws MessagingException {
+        part.addHeader(arg0, arg1);
+    }
+
     public String getHeader(String arg0) throws MessagingException {
        return part.getHeader(arg0)[0];
     }

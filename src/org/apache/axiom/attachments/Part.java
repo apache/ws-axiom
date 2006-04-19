@@ -37,6 +37,8 @@ public interface Part{
     
     public DataHandler getDataHandler() throws MessagingException ;
     
+    public void addHeader(String arg0, String arg1) throws MessagingException ;
+    
     public String getHeader(String arg0) throws MessagingException ;
     
     public Enumeration getAllHeaders() throws MessagingException ;
