@@ -169,4 +169,11 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         super.internalSerialize(writer, cache);
     }
 
+    public OMNode getNextOMSibling() throws OMException {
+        if(this.ownerNode != null && !this.ownerNode.isComplete()) {
+            this.ownerNode.setComplete(true);
+        }
+        return null;
+    }
+    
 }

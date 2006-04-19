@@ -24,7 +24,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
@@ -45,6 +44,7 @@ import org.w3c.dom.Text;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+
 import java.io.OutputStream;
 import java.util.Hashtable;
 
@@ -64,6 +64,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     public DocumentImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
         ((OMDOMFactory)factory).setDocument(this);
+        this.done = true;
     }
 
     public DocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
@@ -75,6 +76,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     public DocumentImpl(OMFactory factory) {
         super(factory);
         ((OMDOMFactory)factory).setDocument(this);
+        this.done = true;
     }
 
     // /
@@ -451,6 +453,13 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         }
     }
 
+    public void build() {
+        if(this.firstChild != null && !this.firstChild.done) {
+            this.firstChild.build();
+        }
+        this.done = true;
+    }
+    
     /*
      * DOM-Level 3 methods
      */
