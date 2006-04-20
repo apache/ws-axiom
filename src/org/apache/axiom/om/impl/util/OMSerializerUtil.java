@@ -95,7 +95,7 @@ public class OMSerializerUtil {
         if (uri != null && !"".equals(uri)) {
             String prefixFromWriter = writer.getPrefix(uri);
             // lets see whether we have default namespace now
-            if (prefix != null && "".equals(prefix) && prefixFromWriter == null) {
+            if (prefix != null && "".equals(prefix) && (prefixFromWriter == null || !prefix.equals(prefixFromWriter))) {
                 // this has not been declared earlier
                 writer.writeDefaultNamespace(uri);
                 writer.setDefaultNamespace(uri);
@@ -103,6 +103,7 @@ public class OMSerializerUtil {
                 prefix = prefix == null ? getNextNSPrefix() : prefix;
                 if (prefix != null && !prefix.equals(prefixFromWriter)) {
                     writer.writeNamespace(prefix, uri);
+                    writer.setPrefix(prefix, uri);
                 }
             }
         }
