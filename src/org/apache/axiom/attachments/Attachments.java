@@ -33,7 +33,7 @@ import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class MIMEHelper {
+public class Attachments {
 
     /**
      * <code>ContentType</code> of the MIME message
@@ -106,9 +106,9 @@ public class MIMEHelper {
      * @param attachmentRepoDir
      * @throws OMException
      */
-    public MIMEHelper(InputStream inStream, String contentTypeString,
-                      boolean fileCacheEnable, String attachmentRepoDir,
-                      String fileThreshold) throws OMException {
+    public Attachments(InputStream inStream, String contentTypeString,
+                       boolean fileCacheEnable, String attachmentRepoDir,
+                       String fileThreshold) throws OMException {
         this.attachmentRepoDir = attachmentRepoDir;
         this.fileCacheEnable = fileCacheEnable;
         if (fileThreshold != null && (!"".equals(fileThreshold))) {
@@ -178,7 +178,7 @@ public class MIMEHelper {
      * @param contentTypeString
      * @throws OMException
      */
-    public MIMEHelper(InputStream inStream, String contentTypeString)
+    public Attachments(InputStream inStream, String contentTypeString)
             throws OMException {
         this(inStream, contentTypeString, false, null, null);
     }

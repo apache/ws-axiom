@@ -48,16 +48,16 @@ public class MIMEHelperTest extends AbstractTestCase {
 
     public void testSimultaneousStreamAccess() throws Exception {
         InputStream inStream;
-        MIMEHelper mimeHelper;
+        Attachments attachments;
 
         inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
-        mimeHelper = new MIMEHelper(inStream, contentTypeString);
+        attachments = new Attachments(inStream, contentTypeString);
 
-        mimeHelper.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+        attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
 
         // This should throw an error
         try {
-        	mimeHelper.getIncomingAttachmentStreams();
+        	attachments.getIncomingAttachmentStreams();
         	fail("No exception caught when attempting to access datahandler and stream at the same time");
         } catch (IllegalStateException ise) {
         	// Nothing
@@ -67,27 +67,27 @@ public class MIMEHelperTest extends AbstractTestCase {
 
         // Try the other way around.
         inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
-        mimeHelper = new MIMEHelper(inStream, contentTypeString);
+        attachments = new Attachments(inStream, contentTypeString);
 
-        mimeHelper.getIncomingAttachmentStreams();
+        attachments.getIncomingAttachmentStreams();
 
         // These should NOT throw error even though they are using part based access
         try {
-            assertEquals("application/xop+xml; charset=UTF-8; type=\"application/soap+xml\";", mimeHelper.getSOAPPartContentType());
+            assertEquals("application/xop+xml; charset=UTF-8; type=\"application/soap+xml\";", attachments.getSOAPPartContentType());
         } catch (IllegalStateException ise) {
         	fail("No exception expected when requesting SOAP part data");
         	ise.printStackTrace();
         }
 
         try {
-            mimeHelper.getSOAPPartInputStream();
+            attachments.getSOAPPartInputStream();
         } catch (IllegalStateException ise) {
         	fail("No exception expected when requesting SOAP part data");
         }
 
         // These should throw an error
         try {
-            mimeHelper.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+            attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
         	fail("No exception caught when attempting to access stream and datahandler at the same time");
         } catch (IllegalStateException ise) {
         	// Nothing
@@ -97,14 +97,14 @@ public class MIMEHelperTest extends AbstractTestCase {
         // tries to access part data directly
 
         try {
-            mimeHelper.getAllContentIDs();
+            attachments.getAllContentIDs();
         	fail("No exception caught when attempting to access stream and contentids list at the same time");
         } catch (IllegalStateException ise) {
         	// Nothing
         }
 
         try {
-            mimeHelper.getPart("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+            attachments.getPart("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
         	fail("No exception caught when attempting to access stream and part at the same time");
         } catch (IllegalStateException ise) {
         	// Nothing
@@ -119,16 +119,16 @@ public class MIMEHelperTest extends AbstractTestCase {
         InputStream expectedDataIs;
 
         InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
-        MIMEHelper mimeHelper = new MIMEHelper(inStream, contentTypeString);
+        Attachments attachments = new Attachments(inStream, contentTypeString);
 
         // Since SOAP part operated independently of other streams, access it
         // directly, and then get to the streams. If this sequence throws an
         // error, something is wrong with the stream handling code.
-        InputStream is = mimeHelper.getSOAPPartInputStream();
+        InputStream is = attachments.getSOAPPartInputStream();
         while (is.read() != -1);
 
         // Get the inputstream container
-        IncomingAttachmentStreams ias = mimeHelper.getIncomingAttachmentStreams();
+        IncomingAttachmentStreams ias = attachments.getIncomingAttachmentStreams();
 
         dataIs = ias.getNextStream();
         expectedImage = ImageIO.read(new FileInputStream(getTestResourceFile(img1FileName)));
@@ -147,7 +147,7 @@ public class MIMEHelperTest extends AbstractTestCase {
 
         // After all is done, we should *still* be able to access and
         // re-consume the SOAP part stream, as it should be cached.. can we?
-        is = mimeHelper.getSOAPPartInputStream();
+        is = attachments.getSOAPPartInputStream();
         while (is.read() != -1);
     }
 
@@ -164,9 +164,9 @@ public class MIMEHelperTest extends AbstractTestCase {
     public void testGetDataHandler() throws Exception {
 
         InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
-        MIMEHelper mimeHelper = new MIMEHelper(inStream, contentTypeString);
+        Attachments attachments = new Attachments(inStream, contentTypeString);
 
-        DataHandler dh = mimeHelper.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+        DataHandler dh = attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
         InputStream dataIs = dh.getDataSource().getInputStream();
 
         Image expectedImage = ImageIO.read(new FileInputStream(getTestResourceFile(img2FileName)));

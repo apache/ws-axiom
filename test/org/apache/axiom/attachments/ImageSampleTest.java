@@ -112,14 +112,14 @@ public class ImageSampleTest extends AbstractTestCase {
     public void testImageSampleDeserialize() throws Exception {
         InputStream inStream = new FileInputStream(
                 getTestResourceFile(inMimeFileName));
-        MIMEHelper mimeHelper = new MIMEHelper(inStream, contentTypeString);
+        Attachments attachments = new Attachments(inStream, contentTypeString);
         XMLStreamReader reader = XMLInputFactory.newInstance()
                 .createXMLStreamReader(
                         new BufferedReader(
                                 new InputStreamReader(
-                                        mimeHelper
+                                        attachments
                 .getSOAPPartInputStream())));
-        builder = new MTOMStAXSOAPModelBuilder(reader, mimeHelper, null);
+        builder = new MTOMStAXSOAPModelBuilder(reader, attachments, null);
         OMElement root = builder.getDocumentElement();
         OMElement body = (OMElement) root.getFirstOMChild();
         OMElement data = (OMElement) body.getFirstOMChild();

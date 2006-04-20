@@ -25,7 +25,7 @@ public class MIMEBodyPartInputStream extends InputStream {
 
     boolean boundaryFound;
 
-    MIMEHelper parent;
+    Attachments parent;
 
     byte[] boundary;
 
@@ -36,7 +36,7 @@ public class MIMEBodyPartInputStream extends InputStream {
     }
 
     public MIMEBodyPartInputStream(PushbackInputStream inStream,
-            byte[] boundary, MIMEHelper parent) {
+            byte[] boundary, Attachments parent) {
         this(inStream, boundary);
         this.parent = parent;
     }

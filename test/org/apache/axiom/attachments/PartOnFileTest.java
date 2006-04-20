@@ -52,9 +52,9 @@ public class PartOnFileTest extends AbstractTestCase {
 	public void testHeaderGetSet() throws Exception {
 
         InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
-		MIMEHelper mimeHelper = new MIMEHelper(inStream, contentTypeString, true, temp.getPath(), "1");
+		Attachments attachments = new Attachments(inStream, contentTypeString, true, temp.getPath(), "1");
 
-		Part p = mimeHelper.getPart("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
+		Part p = attachments.getPart("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
 		
 		if (!(p instanceof PartOnFile)) {
 			fail("Expected PartOnFile");
@@ -70,9 +70,9 @@ public class PartOnFileTest extends AbstractTestCase {
 	public void testGetAllheaders() throws Exception {
 
         InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
-		MIMEHelper mimeHelper = new MIMEHelper(inStream, contentTypeString, true, temp.getPath(), "1");
+		Attachments attachments = new Attachments(inStream, contentTypeString, true, temp.getPath(), "1");
 
-		Part p = mimeHelper.getPart("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
+		Part p = attachments.getPart("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
 		
 		if (!(p instanceof PartOnFile)) {
 			fail("Expected PartOnFile");

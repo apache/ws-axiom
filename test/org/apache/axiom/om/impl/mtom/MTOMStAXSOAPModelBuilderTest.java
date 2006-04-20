@@ -16,7 +16,7 @@
 
 package org.apache.axiom.om.impl.mtom;
 
-import org.apache.axiom.attachments.MIMEHelper;
+import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMText;
@@ -33,7 +33,7 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 
 public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
-    MIMEHelper mimeHelper;
+    Attachments attachments;
 
     String inFileName;
 
@@ -52,11 +52,11 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         super.setUp();
         inFileName = "mtom/MTOMBuilderTestIn.txt";
         InputStream inStream = new FileInputStream(getTestResourceFile(inFileName));
-        mimeHelper = new MIMEHelper(inStream, contentTypeString);
+        attachments = new Attachments(inStream, contentTypeString);
         XMLStreamReader reader = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new BufferedReader(new InputStreamReader(mimeHelper
+                .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
                 .getSOAPPartInputStream())));
-        builder = new MTOMStAXSOAPModelBuilder(reader, mimeHelper, SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        builder = new MTOMStAXSOAPModelBuilder(reader, attachments, SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
 
     public void testCreateOMElement() throws Exception {

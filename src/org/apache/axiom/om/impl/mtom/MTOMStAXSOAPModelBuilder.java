@@ -16,7 +16,7 @@
 
 package org.apache.axiom.om.impl.mtom;
 
-import org.apache.axiom.attachments.MIMEHelper;
+import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
@@ -34,28 +34,28 @@ import java.net.URLDecoder;
 public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements MTOMConstants {
 	
     /**
-     * <code>mimeHelper</code> handles deferred parsing of incoming MIME
+     * <code>Attachments</code> handles deferred parsing of incoming MIME
      * Messages.
      */
-    MIMEHelper mimeHelper;
+    Attachments attachments;
 
     int partIndex = 0;
 
     public MTOMStAXSOAPModelBuilder(XMLStreamReader parser,
                                     SOAPFactory factory,
-                                    MIMEHelper mimeHelper, String soapVersion) {
+                                    Attachments attachments, String soapVersion) {
         super(parser, factory, soapVersion);
-        this.mimeHelper = mimeHelper;
+        this.attachments = attachments;
     }
 
     /**
      * @param reader
-     * @param mimeHelper
+     * @param attachments
      */
     public MTOMStAXSOAPModelBuilder(XMLStreamReader reader,
-                                    MIMEHelper mimeHelper, String soapVersion) {
+                                    Attachments attachments, String soapVersion) {
         super(reader, soapVersion);
-        this.mimeHelper = mimeHelper;
+        this.attachments = attachments;
     }
 
     protected OMNode createOMElement() throws OMException {
@@ -148,6 +148,6 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements MT
     }
 
     public DataHandler getDataHandler(String blobContentID) throws OMException {
-        return mimeHelper.getDataHandler(blobContentID);
+        return attachments.getDataHandler(blobContentID);
     }
 }

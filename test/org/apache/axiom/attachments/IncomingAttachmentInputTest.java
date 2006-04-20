@@ -39,10 +39,10 @@ public class IncomingAttachmentInputTest extends AbstractTestCase {
 
 	public void testIncomingAttachmentInputStreamFunctions() throws Exception {
         InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
-        MIMEHelper mimeHelper = new MIMEHelper(inStream, contentTypeString);
+        Attachments attachments = new Attachments(inStream, contentTypeString);
 
         // Get the inputstream container
-        IncomingAttachmentStreams ias = mimeHelper.getIncomingAttachmentStreams();
+        IncomingAttachmentStreams ias = attachments.getIncomingAttachmentStreams();
         
         IncomingAttachmentInputStream dataIs;
 
