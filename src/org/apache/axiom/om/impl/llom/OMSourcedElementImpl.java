@@ -634,7 +634,7 @@ public class OMSourcedElementImpl extends OMElementImpl
         if (isParserSet) {
             return super.isComplete();
         } else {
-            return false;
+            return true;
         }
     }
 
