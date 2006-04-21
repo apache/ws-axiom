@@ -65,21 +65,6 @@ public class StAXOMBuilder extends StAXBuilder {
     }
 
     /**
-     * Constructor linked to existing element.
-     *
-     * @param factory
-     * @param parser
-     * @param element
-     */
-    public StAXOMBuilder(OMFactory factory, XMLStreamReader parser, OMElement element) {
-        this(factory, parser);
-        lastNode = element;
-        document.setOMDocumentElement(element);
-        doDebug = log.isDebugEnabled();
-        populateOMElement(element);
-    }
-
-    /**
      * @param filePath - Path to the XML file
      * @throws XMLStreamException
      * @throws FileNotFoundException
@@ -207,21 +192,7 @@ public class StAXOMBuilder extends StAXBuilder {
             throw new OMException(e);
         }
     }
-    
-    /**
-     * Populate element with data from parser START_ELEMENT event. This is used
-     * when the source of data for an element needs to be parsed on demand. The
-     * supplied element must already be set to the proper name and namespace.
-     * 
-     * @param node element to be populated
-     */
-    private void populateOMElement(OMElement node) {
-        // create the namespaces
-        processNamespaceData(node);
-        // fill in the attributes
-        processAttributes(node);
-        node.setLineNumber(parser.getLocation().getLineNumber());
-    }
+
 
     /**
      * Method createOMElement.
@@ -245,7 +216,11 @@ public class StAXOMBuilder extends StAXBuilder {
                     (OMElement) lastNode, this);
             e.setFirstChild(node);
         }
-        populateOMElement(node);
+        // create the namespaces
+        processNamespaceData(node);
+        // fill in the attributes
+        processAttributes(node);
+        node.setLineNumber(parser.getLocation().getLineNumber());
         return node;
     }
 
@@ -343,7 +318,7 @@ public class StAXOMBuilder extends StAXBuilder {
             //if the namespace is not defined already when we write the start tag declare it
             // check whether this is the default namespace and make sure we have not declared that earlier
             namespaceURIFromParser = parser.getNamespaceURI(i);
-            if ("".equals(nsprefix) || nsprefix == null) {
+            if (nsprefix == null || "".equals(nsprefix)) {
                 node.declareDefaultNamespace(parser.getNamespaceURI(i));
             } else {
                 node.declareNamespace(namespaceURIFromParser, nsprefix);
