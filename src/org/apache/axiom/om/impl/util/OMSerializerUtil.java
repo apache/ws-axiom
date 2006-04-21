@@ -103,8 +103,9 @@ public class OMSerializerUtil {
             // Case 2 :
             //        The passed in namespace is a default ns, but there is a non-default ns declared
             //        in the current scope.
-            if ( ("".equals(prefix) && "".equals(prefixFromWriter) && !uri.equals(writer.getNamespaceContext().getNamespaceURI(""))) ||
-                 (prefix != null && "".equals(prefix) && (prefixFromWriter == null || !prefix.equals(prefixFromWriter)))){
+            if (("".equals(prefix) && "".equals(prefixFromWriter) && !uri.equals(writer.getNamespaceContext().getNamespaceURI(""))) ||
+                    (prefix != null && "".equals(prefix) && (prefixFromWriter == null || !prefix.equals(prefixFromWriter))))
+            {
                 // this has not been declared earlier
                 writer.writeDefaultNamespace(uri);
                 writer.setDefaultNamespace(uri);
@@ -184,25 +185,35 @@ public class OMSerializerUtil {
                         writer.writeDefaultNamespace(nameSpaceName);
                         writer.setDefaultNamespace(nameSpaceName);
                     } else {
-                        writer.writeStartElement(prefix, element.getLocalName(),
-                                nameSpaceName);
-                        writer.writeNamespace(prefix, nameSpaceName);
-                        writer.setPrefix(prefix, nameSpaceName);
+                        // now the left scenario is this
+                        // 1. prefix != "" && writer_prefix != "" but writer_prefix != prefix
+                        // 2. prefix != "" && writer_prefix == ""
+
+                        // In both the above cases this xml may contain more than one prefix for the
+                        // same URI. Check them all.
+
+                        Iterator prefixesIter = writer.getNamespaceContext().getPrefixes(nameSpaceName);
+                        boolean found = false;                                                    sen
+                        while (prefixesIter.hasNext()) {
+                            String prefix_w = (String) prefixesIter.next();
+                            if (prefix_w.equals(prefix)) {
+                                // if found do not declare the ns
+                                writer.writeStartElement(nameSpaceName, element.getLocalName());
+                                found = true;
+                            }
+                        }
+
+                        if (!found) {
+                            // seems we haven't found one in the current scope. So declare it.
+                            writer.writeStartElement(prefix, element.getLocalName(),
+                                    nameSpaceName);
+                            writer.writeNamespace(prefix, nameSpaceName);
+                            writer.setPrefix(prefix, nameSpaceName);
+                        }
+
                     }
                 }
 
-//                if (writer_prefix != null) {
-//                    writer.writeStartElement(nameSpaceName,
-//                            element.getLocalName());
-//                } else {
-//                    prefix = (prefix == null) ? getNextNSPrefix() : prefix;
-//                    writer.writeStartElement(prefix, element.getLocalName(),
-//                            nameSpaceName);
-//                    writer.writeNamespace(prefix, nameSpaceName);
-//                    writer.setPrefix(prefix, nameSpaceName);
-//
-//                }
-                
             } else {
                 writer.writeStartElement(element.getLocalName());
             }
@@ -304,7 +315,7 @@ public class OMSerializerUtil {
 
     public static String getNextNSPrefix(XMLStreamWriter writer) {
         String prefix = getNextNSPrefix();
-        while (writer.getNamespaceContext().getNamespaceURI(prefix) != null){
+        while (writer.getNamespaceContext().getNamespaceURI(prefix) != null) {
             prefix = getNextNSPrefix();
         }
 

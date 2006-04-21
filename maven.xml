@@ -114,11 +114,11 @@
         </ant:copy>
 
         <!--add documents-->
-        <ant:copy toDir="${dist}/docs">
-            <ant:fileset dir="xdocs">
-                <ant:exclude name="**/.svn/**"/>
-            </ant:fileset>
-        </ant:copy>
+        <!--<ant:copy toDir="${dist}/docs">-->
+            <!--<ant:fileset dir="xdocs">-->
+                <!--<ant:exclude name="**/.svn/**"/>-->
+            <!--</ant:fileset>-->
+        <!--</ant:copy>-->
 
         <!--copy release notes, etc-->
         <ant:copy toDir="${dist}">
