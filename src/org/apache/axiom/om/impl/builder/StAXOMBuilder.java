@@ -343,7 +343,7 @@ public class StAXOMBuilder extends StAXBuilder {
             //if the namespace is not defined already when we write the start tag declare it
             // check whether this is the default namespace and make sure we have not declared that earlier
             namespaceURIFromParser = parser.getNamespaceURI(i);
-            if (nsprefix == null || "".equals(nsprefix)) {
+            if ("".equals(nsprefix) || nsprefix == null) {
                 node.declareDefaultNamespace(parser.getNamespaceURI(i));
             } else {
                 node.declareNamespace(namespaceURIFromParser, nsprefix);

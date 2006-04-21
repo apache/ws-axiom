@@ -94,13 +94,22 @@ public class OMSerializerUtil {
 
         if (uri != null && !"".equals(uri)) {
             String prefixFromWriter = writer.getPrefix(uri);
-            // lets see whether we have default namespace now
-            if (prefix != null && "".equals(prefix) && (prefixFromWriter == null || !prefix.equals(prefixFromWriter))) {
+
+            // Handling Default Namespaces First
+            // Case 1 :
+            //        here we are trying define a default namespace. But has this been defined in the current context.
+            //        yes, there can be a default namespace, but it may have a different URI. If its a different URI
+            //        then explicitly define the default namespace here.
+            // Case 2 :
+            //        The passed in namespace is a default ns, but there is a non-default ns declared
+            //        in the current scope.
+            if ( ("".equals(prefix) && "".equals(prefixFromWriter) && !uri.equals(writer.getNamespaceContext().getNamespaceURI(""))) ||
+                 (prefix != null && "".equals(prefix) && (prefixFromWriter == null || !prefix.equals(prefixFromWriter)))){
                 // this has not been declared earlier
                 writer.writeDefaultNamespace(uri);
                 writer.setDefaultNamespace(uri);
             } else {
-                prefix = prefix == null ? getNextNSPrefix() : prefix;
+                prefix = prefix == null ? getNextNSPrefix(writer) : prefix;
                 if (prefix != null && !prefix.equals(prefixFromWriter)) {
                     writer.writeNamespace(prefix, uri);
                     writer.setPrefix(prefix, uri);
@@ -125,19 +134,75 @@ public class OMSerializerUtil {
         if (element.getNamespace() != null) {
             nameSpaceName = element.getNamespace().getName();
             prefix = element.getNamespace().getPrefix();
-            if (nameSpaceName != null) {
+            if (nameSpaceName != null && !"".equals(nameSpaceName)) {
                 writer_prefix = writer.getPrefix(nameSpaceName);
-                if (writer_prefix != null) {
-                    writer.writeStartElement(nameSpaceName,
-                            element.getLocalName());
-                } else {
-                    prefix = (prefix == null) ? getNextNSPrefix() : prefix;
+
+                // if the writer has no prefix registered for the given namespace, no matter what prefix the
+                // ns contains, use that to handle the ns
+                if (writer_prefix == null && !"".equals(prefix)) {
+                    prefix = (prefix == null) ? getNextNSPrefix(writer) : prefix;
                     writer.writeStartElement(prefix, element.getLocalName(),
                             nameSpaceName);
                     writer.writeNamespace(prefix, nameSpaceName);
                     writer.setPrefix(prefix, nameSpaceName);
-
+                } else if (prefix == null) {
+                    // by this time prefix is null and writer_prefix is not null
+                    writer.writeStartElement(nameSpaceName,
+                            element.getLocalName());
+                } else {
+                    // now lets handle the case where (prefix != null && writer_prefix != null)
+                    if ("".equals(prefix) && "".equals(writer_prefix)) {
+                        // now this element is trying to use a default namespace and at the same point
+                        // exists a default namespace with the given ns URI.
+                        // but the problem here is that, what if the xml is like the following
+                        // <One xmlns="one.org" >
+                        //    <Two xmlns="two.org">
+                        //         <Three xmlns="one.org" />
+                        //    </Two>
+                        // </One>
+                        //
+                        // if we ask the prefix registered with one.org, the parser will return ""
+                        // which is the default ns. But if we do not declare a new default ns explicitly here
+                        // then this causes problem as element Two has already overriden the default ns.
+                        //
+                        // Solution for this is to ask from the parser the nsURI attached to "" at this
+                        // moment and compare the return uri with namespace name
+                        if (nameSpaceName.equals(writer.getNamespaceContext().getNamespaceURI("")))
+                        {
+                            writer.writeStartElement(nameSpaceName, element.getLocalName());
+                        } else {
+                            writer.writeStartElement(prefix, element.getLocalName(),
+                                    nameSpaceName);
+                            writer.writeDefaultNamespace(nameSpaceName);
+                            writer.setDefaultNamespace(nameSpaceName);
+                        }
+                    } else if (prefix.equals(writer_prefix)) {
+                        writer.writeStartElement(nameSpaceName, element.getLocalName());
+                    } else if ("".equals(prefix)) {
+                        writer.writeStartElement(prefix, element.getLocalName(),
+                                nameSpaceName);
+                        writer.writeDefaultNamespace(nameSpaceName);
+                        writer.setDefaultNamespace(nameSpaceName);
+                    } else {
+                        writer.writeStartElement(prefix, element.getLocalName(),
+                                nameSpaceName);
+                        writer.writeNamespace(prefix, nameSpaceName);
+                        writer.setPrefix(prefix, nameSpaceName);
+                    }
                 }
+
+//                if (writer_prefix != null) {
+//                    writer.writeStartElement(nameSpaceName,
+//                            element.getLocalName());
+//                } else {
+//                    prefix = (prefix == null) ? getNextNSPrefix() : prefix;
+//                    writer.writeStartElement(prefix, element.getLocalName(),
+//                            nameSpaceName);
+//                    writer.writeNamespace(prefix, nameSpaceName);
+//                    writer.setPrefix(prefix, nameSpaceName);
+//
+//                }
+                
             } else {
                 writer.writeStartElement(element.getLocalName());
             }
@@ -235,5 +300,14 @@ public class OMSerializerUtil {
 
     public static String getNextNSPrefix() {
         return "axis2ns" + ++nsCounter % Long.MAX_VALUE;
+    }
+
+    public static String getNextNSPrefix(XMLStreamWriter writer) {
+        String prefix = getNextNSPrefix();
+        while (writer.getNamespaceContext().getNamespaceURI(prefix) != null){
+            prefix = getNextNSPrefix();
+        }
+
+        return prefix;
     }
 }

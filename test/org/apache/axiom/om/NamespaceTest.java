@@ -5,6 +5,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.util.Iterator;
 /*
@@ -72,6 +73,59 @@ public class NamespaceTest extends XMLTestCase {
 
         OMNamespace namespace2 = elem.findNamespace("http://test2.org", null);
         assertTrue(namespace2 != null && namespace2.getPrefix() != null && "".equals(namespace2.getPrefix()));
+    }
+
+    /**
+     * Here a namespace will be defined with a certain prefix in the root element. But later the same ns
+     * is defined with the same uri in a child element, but this time with a different prefix.
+     */
+    public void testNamespaceProblem() throws XMLStreamException {
+
+        /**
+         * <RootElement xmlns:ns1="http://ws.apache.org/axis2">
+         *    <ns2:ChildElement xmlns:ns2="http://ws.apache.org/axis2"/>
+         * </RootElement>
+         *
+         */
+
+        OMFactory omFac = OMAbstractFactory.getOMFactory();
+
+        OMElement documentElement = omFac.createOMElement("RootElement", null);
+        documentElement.declareNamespace("http://ws.apache.org/axis2", "ns1");
+
+        OMNamespace ns = omFac.createOMNamespace("http://ws.apache.org/axis2", "ns2");
+        omFac.createOMElement("ChildElement", ns, documentElement);
+
+        assertTrue(documentElement.toStringWithConsume().indexOf("ns2:ChildElement") > -1);
+    }
+
+    public void testNamespaceProblem2() throws XMLStreamException {
+
+        /**
+         * <RootElement xmlns="http://one.org">
+         *   <ns2:ChildElementOne xmlns:ns2="http://ws.apache.org/axis2" xmlns="http://two.org">
+         *      <ChildElementTwo xmlns="http://one.org" />
+         *   </ns2:ChildElementOne>
+         * </RootElement>
+         */
+
+        OMFactory omFac = OMAbstractFactory.getOMFactory();
+
+        OMElement documentElement = omFac.createOMElement("RootElement", null);
+        documentElement.declareDefaultNamespace("http://one.org");
+
+        OMNamespace ns = omFac.createOMNamespace("http://ws.apache.org/axis2", "ns2");
+        OMElement childOne = omFac.createOMElement("ChildElementOne", ns, documentElement);
+        childOne.declareDefaultNamespace("http://two.org");
+
+        OMElement childTwo = omFac.createOMElement("ChildElementTwo", null, childOne);
+        childTwo.declareDefaultNamespace("http://one.org");
+
+        StringBuffer element = new StringBuffer(documentElement.toStringWithConsume());
+
+        int firstIndex = element.indexOf("xmlns=\"http://one.org\"");
+        assertTrue(firstIndex > -1);
+        assertTrue(element.lastIndexOf("xmlns=\"http://one.org\"") != firstIndex);
     }
 
 
