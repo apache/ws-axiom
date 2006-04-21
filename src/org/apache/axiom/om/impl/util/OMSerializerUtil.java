@@ -193,7 +193,7 @@ public class OMSerializerUtil {
                         // same URI. Check them all.
 
                         Iterator prefixesIter = writer.getNamespaceContext().getPrefixes(nameSpaceName);
-                        boolean found = false;                                                    sen
+                        boolean found = false;
                         while (prefixesIter.hasNext()) {
                             String prefix_w = (String) prefixesIter.next();
                             if (prefix_w.equals(prefix)) {
