@@ -68,7 +68,7 @@
         <mkdir dir="${dist}"/>
         <mkdir dir="${dist}/apidocs"/>
         <mkdir dir="${dist}/build"/>
-        <mkdir dir="${dist}/docs"/>
+        <!--<mkdir dir="${dist}/docs"/>-->
         <mkdir dir="${dist}/lib"/>
 
         <!--copy dependent jars-->
