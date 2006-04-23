@@ -65,6 +65,21 @@ public class StAXOMBuilder extends StAXBuilder {
     }
 
     /**
+     * Constructor linked to existing element.
+     *
+     * @param factory
+     * @param parser
+     * @param element
+     */
+    public StAXOMBuilder(OMFactory factory, XMLStreamReader parser, OMElement element) {
+        this(factory, parser);
+        lastNode = element;
+        document.setOMDocumentElement(element);
+        doDebug = log.isDebugEnabled();
+        populateOMElement(element);
+    }
+
+    /**
      * @param filePath - Path to the XML file
      * @throws XMLStreamException
      * @throws FileNotFoundException
@@ -193,6 +208,20 @@ public class StAXOMBuilder extends StAXBuilder {
         }
     }
 
+    /**
+     * Populate element with data from parser START_ELEMENT event. This is used
+     * when the source of data for an element needs to be parsed on demand. The
+     * supplied element must already be set to the proper name and namespace.
+     *
+     * @param node element to be populated
+     */
+    private void populateOMElement(OMElement node) {
+        // create the namespaces
+        processNamespaceData(node);
+        // fill in the attributes
+        processAttributes(node);
+        node.setLineNumber(parser.getLocation().getLineNumber());
+    }
 
     /**
      * Method createOMElement.
@@ -216,11 +245,7 @@ public class StAXOMBuilder extends StAXBuilder {
                     (OMElement) lastNode, this);
             e.setFirstChild(node);
         }
-        // create the namespaces
-        processNamespaceData(node);
-        // fill in the attributes
-        processAttributes(node);
-        node.setLineNumber(parser.getLocation().getLineNumber());
+        populateOMElement(node);
         return node;
     }
 
