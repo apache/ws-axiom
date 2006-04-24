@@ -111,7 +111,8 @@ public class OMSerializerUtil {
                 writer.setDefaultNamespace(uri);
             } else {
                 prefix = prefix == null ? getNextNSPrefix(writer) : prefix;
-                if (prefix != null && !prefix.equals(prefixFromWriter) && !checkForPrefixInTheCurrentContext(writer, uri, prefix)) {
+                if (prefix != null && !prefix.equals(prefixFromWriter) && !checkForPrefixInTheCurrentContext(writer, uri, prefix))
+                {
                     writer.writeNamespace(prefix, uri);
                     writer.setPrefix(prefix, uri);
                 }
@@ -192,6 +193,8 @@ public class OMSerializerUtil {
                         // In both the above cases this xml may contain more than one prefix for the
                         // same URI. Check them all.
 
+                        // this flag will remember whether this ns is declared in the scope with the
+                        // given prefix or not
                         boolean found = checkForPrefixInTheCurrentContext(writer, nameSpaceName, prefix);
 
                         if (!found) {
@@ -200,8 +203,8 @@ public class OMSerializerUtil {
                                     nameSpaceName);
                             writer.writeNamespace(prefix, nameSpaceName);
                             writer.setPrefix(prefix, nameSpaceName);
-                        }else {
-                            writer.writeStartElement(nameSpaceName, element.getLocalName());
+                        } else {
+                            writer.writeStartElement(prefix, element.getLocalName(), nameSpaceName);
                         }
 
                     }

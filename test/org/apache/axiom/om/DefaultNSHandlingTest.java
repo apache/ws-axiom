@@ -1,5 +1,6 @@
 package org.apache.axiom.om;
 
+import junit.framework.TestCase;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
 import javax.xml.namespace.QName;
@@ -8,11 +9,8 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-
 import java.io.ByteArrayInputStream;
 import java.util.Iterator;
-
-import junit.framework.TestCase;
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -108,23 +106,24 @@ public class DefaultNSHandlingTest extends TestCase {
         }
     }
    
-//    public void testChildReDeclaringGrandParentsDefaultNSWithPrefix() {
-//        try {
-//            OMFactory fac = OMAbstractFactory.getOMFactory();
-//            OMElement elem = fac.createOMElement("RequestSecurityToken", null);
-//            elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
-//            fac.createOMElement(new QName("TokenType"), elem).setText("test");
-//            fac.createOMElement(new QName("RequestType"), elem).setText("test1");
-//
-//            OMElement entElem = fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust","Entropy", "wst"), elem);
-//            OMElement binSecElem = fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust","Binarysecret", "wst"), entElem);
-//            binSecElem.setText("secret value");
-//            String xml = elem.toString();
-//            assertTrue("Binarysecret element should have \'wst\' ns prefix", xml.indexOf("<wst:Binarysecret xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\" />") != -1);
-//        }catch (Exception e) {
-//            fail(e.getMessage());
-//        }
-//    }
+    public void testChildReDeclaringGrandParentsDefaultNSWithPrefix() {
+        try {
+            OMFactory fac = OMAbstractFactory.getOMFactory();
+            OMElement elem = fac.createOMElement("RequestSecurityToken", null);
+            elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
+            fac.createOMElement(new QName("TokenType"), elem).setText("test");
+            fac.createOMElement(new QName("RequestType"), elem).setText("test1");
+
+            OMElement entElem = fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust","Entropy", "wst"), elem);
+            OMElement binSecElem = fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust","Binarysecret", "wst"), entElem);
+            binSecElem.setText("secret value");
+            String xml = elem.toString();
+            System.out.println("xml = " + xml);
+            assertTrue("Binarysecret element should have \'wst\' ns prefix", xml.indexOf("<wst:Binarysecret") != -1);
+        }catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
     
     public static void main(String[] args) {
         try {
