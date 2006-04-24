@@ -107,7 +107,25 @@ public class DefaultNSHandlingTest extends TestCase {
             fail(e.getMessage());
         }
     }
-
+   
+//    public void testChildReDeclaringGrandParentsDefaultNSWithPrefix() {
+//        try {
+//            OMFactory fac = OMAbstractFactory.getOMFactory();
+//            OMElement elem = fac.createOMElement("RequestSecurityToken", null);
+//            elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
+//            fac.createOMElement(new QName("TokenType"), elem).setText("test");
+//            fac.createOMElement(new QName("RequestType"), elem).setText("test1");
+//
+//            OMElement entElem = fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust","Entropy", "wst"), elem);
+//            OMElement binSecElem = fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust","Binarysecret", "wst"), entElem);
+//            binSecElem.setText("secret value");
+//            String xml = elem.toString();
+//            assertTrue("Binarysecret element should have \'wst\' ns prefix", xml.indexOf("<wst:Binarysecret xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\" />") != -1);
+//        }catch (Exception e) {
+//            fail(e.getMessage());
+//        }
+//    }
+    
     public static void main(String[] args) {
         try {
             XMLStreamWriter xmlStreamWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(System.out);
