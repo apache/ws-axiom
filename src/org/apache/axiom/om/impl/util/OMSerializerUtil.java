@@ -111,7 +111,7 @@ public class OMSerializerUtil {
                 writer.setDefaultNamespace(uri);
             } else {
                 prefix = prefix == null ? getNextNSPrefix(writer) : prefix;
-                if (prefix != null && !prefix.equals(prefixFromWriter)) {
+                if (prefix != null && !prefix.equals(prefixFromWriter) && !checkForPrefixInTheCurrentContext(writer, uri, prefix)) {
                     writer.writeNamespace(prefix, uri);
                     writer.setPrefix(prefix, uri);
                 }
@@ -192,16 +192,7 @@ public class OMSerializerUtil {
                         // In both the above cases this xml may contain more than one prefix for the
                         // same URI. Check them all.
 
-                        Iterator prefixesIter = writer.getNamespaceContext().getPrefixes(nameSpaceName);
-                        boolean found = false;
-                        while (prefixesIter.hasNext()) {
-                            String prefix_w = (String) prefixesIter.next();
-                            if (prefix_w.equals(prefix)) {
-                                // if found do not declare the ns
-                                writer.writeStartElement(nameSpaceName, element.getLocalName());
-                                found = true;
-                            }
-                        }
+                        boolean found = checkForPrefixInTheCurrentContext(writer, nameSpaceName, prefix);
 
                         if (!found) {
                             // seems we haven't found one in the current scope. So declare it.
@@ -209,6 +200,8 @@ public class OMSerializerUtil {
                                     nameSpaceName);
                             writer.writeNamespace(prefix, nameSpaceName);
                             writer.setPrefix(prefix, nameSpaceName);
+                        }else {
+                            writer.writeStartElement(nameSpaceName, element.getLocalName());
                         }
 
                     }
@@ -234,6 +227,18 @@ public class OMSerializerUtil {
 
         // add the elements attributes
         serializeAttributes(element, writer);
+    }
+
+    private static boolean checkForPrefixInTheCurrentContext(XMLStreamWriter writer, String nameSpaceName, String prefix) throws XMLStreamException {
+        Iterator prefixesIter = writer.getNamespaceContext().getPrefixes(nameSpaceName);
+        while (prefixesIter.hasNext()) {
+            String prefix_w = (String) prefixesIter.next();
+            if (prefix_w.equals(prefix)) {
+                // if found do not declare the ns
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void serializeNamespaces

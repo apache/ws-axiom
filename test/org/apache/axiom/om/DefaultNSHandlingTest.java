@@ -86,25 +86,27 @@ public class DefaultNSHandlingTest extends TestCase {
 
     }
     
-//    public void testChildReDeclaringParentsDefaultNSWithPrefix() {
-//        try {
-//            OMFactory fac = OMAbstractFactory.getOMFactory();
-//            OMElement elem = fac.createOMElement("RequestSecurityToken", null);
-//            elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
-//            fac.createOMElement(new QName("TokenType"), elem).setText("test");
-//            fac.createOMElement(new QName("RequestType"), elem).setText("test1");;
-//            
-//            fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust","Entropy", "wst"), elem);
-//            String xml = elem.toString();
-//            
-//            XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
-//            
-//            StAXOMBuilder builder = new StAXOMBuilder(reader);
-//            builder.getDocumentElement().build();
-//        }catch (Exception e) {
-//            fail(e.getMessage());
-//        }
-//    }
+    public void testChildReDeclaringParentsDefaultNSWithPrefix() {
+        try {
+            OMFactory fac = OMAbstractFactory.getOMFactory();
+            OMElement elem = fac.createOMElement("RequestSecurityToken", null);
+            elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
+            fac.createOMElement(new QName("TokenType"), elem).setText("test");
+            fac.createOMElement(new QName("RequestType"), elem).setText("test1");
+
+            fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust","Entropy", "wst"), elem);
+            String xml = elem.toString();
+
+            XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
+
+            StAXOMBuilder builder = new StAXOMBuilder(reader);
+            builder.getDocumentElement().build();
+
+            assertTrue(xml.indexOf("<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\" />") != -1);
+        }catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
 
     public static void main(String[] args) {
         try {
