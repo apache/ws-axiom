@@ -272,6 +272,8 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
         SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(ns, this);
         createSOAPHeader(env);
         createSOAPBody(env);
+        SOAPMessageImpl msg = new SOAPMessageImpl();
+        msg.setSOAPEnvelope(env);
         return env;
     }
 
