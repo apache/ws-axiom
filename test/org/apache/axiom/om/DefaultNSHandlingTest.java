@@ -1,13 +1,18 @@
 package org.apache.axiom.om;
 
-import junit.framework.TestCase;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+
 import java.io.ByteArrayInputStream;
 import java.util.Iterator;
+
+import junit.framework.TestCase;
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -80,6 +85,26 @@ public class DefaultNSHandlingTest extends TestCase {
 
 
     }
+    
+//    public void testChildReDeclaringParentsDefaultNSWithPrefix() {
+//        try {
+//            OMFactory fac = OMAbstractFactory.getOMFactory();
+//            OMElement elem = fac.createOMElement("RequestSecurityToken", null);
+//            elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
+//            fac.createOMElement(new QName("TokenType"), elem).setText("test");
+//            fac.createOMElement(new QName("RequestType"), elem).setText("test1");;
+//            
+//            fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust","Entropy", "wst"), elem);
+//            String xml = elem.toString();
+//            
+//            XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
+//            
+//            StAXOMBuilder builder = new StAXOMBuilder(reader);
+//            builder.getDocumentElement().build();
+//        }catch (Exception e) {
+//            fail(e.getMessage());
+//        }
+//    }
 
     public static void main(String[] args) {
         try {
