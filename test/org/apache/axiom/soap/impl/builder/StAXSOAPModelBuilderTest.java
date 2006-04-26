@@ -1,3 +1,23 @@
+/*
+ * Copyright 2004,2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*
+ * Copyright 2006 International Business Machines Corp.
+ *       re: JIRA WSCOMMONS-8
+ *       @author: scheu@us.ibm.com
+ */
 package org.apache.axiom.soap.impl.builder;
 
 import junit.framework.TestCase;
@@ -23,105 +43,111 @@ import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
 import java.util.Iterator;
 
+/**
+ * @author scheu
+ */
 public class StAXSOAPModelBuilderTest extends TestCase {
 
     private Log log = LogFactory.getLog(getClass());
+
     public void setUp() {
 
     }
 
+
     public void testStAXSOAPModelBuilder() {
         String soap12Message =
                 "<env:Envelope xmlns:env=\"http://www.w3.org/2003/05/soap-envelope\">\n" +
-                "   <env:Header>\n" +
-                "       <test:echoOk xmlns:test=\"http://example.org/ts-tests\"\n" +
-                "                    env:role=\"http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver\"\n" +
-                "                    env:mustUnderstand=\"true\">\n" +
-                "                       foo\n" +
-                "       </test:echoOk>\n" +
-                "   </env:Header>\n" +
-                "   <env:Body>\n" +
-                "       <env:Fault>\n" +
-                "           <env:Code>\n" +
-                "               <env:Value>env:Sender</env:Value>\n" +
-                "               <env:Subcode>\n" +
-                "                   <env:Value>m:MessageTimeout</env:Value>\n" +
-                "                   <env:Subcode>\n" +
-                "                       <env:Value>m:MessageTimeout</env:Value>\n" +
-                "                   </env:Subcode>\n" +
-                "               </env:Subcode>\n" +
-                "           </env:Code>\n" +
-                "           <env:Reason>\n" +
-                "               <env:Text>Sender Timeout</env:Text>\n" +
-                "           </env:Reason>\n" +
-                "           <env:Node>\n" +
-                "               http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver\n" +
-                "           </env:Node>\n" +
-                "           <env:Role>\n" +
-                "               ultimateReceiver\n" +
-                "           </env:Role>\n" +
-                "           <env:Detail xmlns:m=\"http:www.sample.org\">\n" +
-                "               Details of error\n" +
-                "               <m:MaxTime m:detail=\"This is only a test\">\n" +
-                "                   P5M\n" +
-                "               </m:MaxTime>\n" +
-                "               <m:AveTime>\n" +
-                "                   <m:Time>\n" +
-                "                       P3M\n" +
-                "                   </m:Time>\n" +
-                "               </m:AveTime>\n" +
-                "           </env:Detail>\n" +
-                "       </env:Fault>\n" +
-                "   </env:Body>\n" +
-                "</env:Envelope>";
+                        "   <env:Header>\n" +
+                        "       <test:echoOk xmlns:test=\"http://example.org/ts-tests\"\n" +
+                        "                    env:role=\"http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver\"\n" +
+                        "                    env:mustUnderstand=\"true\">\n" +
+                        "                       foo\n" +
+                        "       </test:echoOk>\n" +
+                        "   </env:Header>\n" +
+                        "   <env:Body>\n" +
+                        "       <env:Fault>\n" +
+                        "           <env:Code>\n" +
+                        "               <env:Value>env:Sender</env:Value>\n" +
+                        "               <env:Subcode>\n" +
+                        "                   <env:Value>m:MessageTimeout</env:Value>\n" +
+                        "                   <env:Subcode>\n" +
+                        "                       <env:Value>m:MessageTimeout</env:Value>\n" +
+                        "                   </env:Subcode>\n" +
+                        "               </env:Subcode>\n" +
+                        "           </env:Code>\n" +
+                        "           <env:Reason>\n" +
+                        "               <env:Text>Sender Timeout</env:Text>\n" +
+                        "           </env:Reason>\n" +
+                        "           <env:Node>\n" +
+                        "               http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver\n" +
+                        "           </env:Node>\n" +
+                        "           <env:Role>\n" +
+                        "               ultimateReceiver\n" +
+                        "           </env:Role>\n" +
+                        "           <env:Detail xmlns:m=\"http:www.sample.org\">\n" +
+                        "               Details of error\n" +
+                        "               <m:MaxTime m:detail=\"This is only a test\">\n" +
+                        "                   P5M\n" +
+                        "               </m:MaxTime>\n" +
+                        "               <m:AveTime>\n" +
+                        "                   <m:Time>\n" +
+                        "                       P3M\n" +
+                        "                   </m:Time>\n" +
+                        "               </m:AveTime>\n" +
+                        "           </env:Detail>\n" +
+                        "       </env:Fault>\n" +
+                        "   </env:Body>\n" +
+                        "</env:Envelope>";
 
         String soap11Message =
                 "<?xml version='1.0' ?>" +
-                "<env:Envelope xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
-                "   <env:Header>\n" +
-                "       <test:echoOk xmlns:test=\"http://example.org/ts-tests\"\n" +
-                "                    env:actor=\"http://schemas.xmlsoap.org/soap/actor/next\"\n" +
-                "                    env:mustUnderstand=\"1\"" +
-                "       >\n" +
-                "                       foo\n" +
-                "       </test:echoOk>\n" +
-                "   </env:Header>\n" +
-                "   <env:Body>\n" +
-                "       <env:Fault>\n" +
-                "           <env:faultcode>\n" +
-                "               env:Sender\n" +
-                "           </env:faultcode>\n" +
-                "           <env:faultstring>\n" +
-                "               Sender Timeout\n" +
-                "           </env:faultstring>\n" +
-                "           <env:faultactor>\n" +
-                "               http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver\n" +
-                "           </env:faultactor>\n" +
-                "           <env:detail xmlns:m=\"http:www.sample.org\">\n" +
-                "               Details of error\n" +
-                "               <m:MaxTime m:detail=\"This is only a test\">\n" +
-                "                   P5M\n" +
-                "               </m:MaxTime>\n" +
-                "               <m:AveTime>\n" +
-                "                   <m:Time>\n" +
-                "                       P3M\n" +
-                "                   </m:Time>\n" +
-                "               </m:AveTime>\n" +
-                "           </env:detail>\n" +
-                "           <n:Test xmlns:n=\"http:www.Test.org\">\n" +
-                "               <n:TestElement>\n" +
-                "                   This is only a test\n" +
-                "               </n:TestElement>\n" +
-                "           </n:Test>\n" +
-                "       </env:Fault>\n" +
-                "   </env:Body>\n" +
-                "</env:Envelope>";
+                        "<env:Envelope xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                        "   <env:Header>\n" +
+                        "       <test:echoOk xmlns:test=\"http://example.org/ts-tests\"\n" +
+                        "                    env:actor=\"http://schemas.xmlsoap.org/soap/actor/next\"\n" +
+                        "                    env:mustUnderstand=\"1\"" +
+                        "       >\n" +
+                        "                       foo\n" +
+                        "       </test:echoOk>\n" +
+                        "   </env:Header>\n" +
+                        "   <env:Body>\n" +
+                        "       <env:Fault>\n" +
+                        "           <faultcode>\n" +
+                        "               env:Sender\n" +
+                        "           </faultcode>\n" +
+                        "           <faultstring>\n" +
+                        "               Sender Timeout\n" +
+                        "           </faultstring>\n" +
+                        "           <faultactor>\n" +
+                        "               http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver\n" +
+                        "           </faultactor>\n" +
+                        "           <detail xmlns:m=\"http:www.sample.org\">\n" +
+                        "               Details of error\n" +
+                        "               <m:MaxTime m:detail=\"This is only a test\">\n" +
+                        "                   P5M\n" +
+                        "               </m:MaxTime>\n" +
+                        "               <m:AveTime>\n" +
+                        "                   <m:Time>\n" +
+                        "                       P3M\n" +
+                        "                   </m:Time>\n" +
+                        "               </m:AveTime>\n" +
+                        "           </detail>\n" +
+                        "           <n:Test xmlns:n=\"http:www.Test.org\">\n" +
+                        "               <n:TestElement>\n" +
+                        "                   This is only a test\n" +
+                        "               </n:TestElement>\n" +
+                        "           </n:Test>\n" +
+                        "       </env:Fault>\n" +
+                        "   </env:Body>\n" +
+                        "</env:Envelope>";
 
 
         try {
@@ -151,36 +177,35 @@ public class StAXSOAPModelBuilderTest extends TestCase {
             assertTrue("SOAP 1.2 :- Header block name space uri mismatch",
                     headerBlock.getNamespace().getName().equals(
                             "http://example.org/ts-tests"));
-            assertEquals("SOAP 1.2 :- Header block text mismatch",headerBlock.getText().trim(),"foo");
+            assertEquals("SOAP 1.2 :- Header block text mismatch", headerBlock.getText().trim(), "foo");
 
-            Iterator headerBlockAttributes = headerBlock.getAllAttributes();
-            OMAttribute roleAttribute = (OMAttribute) headerBlockAttributes.next();
-            assertTrue("SOAP 1.2 :- Role attribute name mismatch",
-                    roleAttribute.getLocalName().equals(
-                            SOAP12Constants.SOAP_ROLE));
+            // Attribute iteration is not in any guaranteed order.
+            // Use QNames to get the OMAttributes.
+            QName roleQName = new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP12Constants.SOAP_ROLE);
+            QName mustUnderstandQName = new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP12Constants.ATTR_MUSTUNDERSTAND);
+
+            OMAttribute roleAttribute = headerBlock.getAttribute(roleQName);
+            OMAttribute mustUnderstandAttribute = headerBlock.getAttribute(mustUnderstandQName);
+
+
+            assertTrue("SOAP 1.2 :- Role attribute name not found",
+                    roleAttribute != null);
 
 
             assertTrue("SOAP 1.2 :- Role value mismatch",
                     roleAttribute.getAttributeValue().trim().equals(
                             SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI + "/" +
-                    SOAP12Constants.SOAP_ROLE +
-                    "/" +
-                    "ultimateReceiver"));
-            assertTrue("SOAP 1.2 :- Role attribute namespace uri mismatch",
-                    roleAttribute.getNamespace().getName().equals(
-                            SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
+                                    SOAP12Constants.SOAP_ROLE +
+                                    "/" +
+                                    "ultimateReceiver"));
 
-            OMAttribute mustUnderstandAttribute = (OMAttribute) headerBlockAttributes.next();
-            assertTrue("SOAP 1.2 :- Mustunderstand attribute name mismatch",
-                    mustUnderstandAttribute.getLocalName().equals(
-                            SOAPConstants.ATTR_MUSTUNDERSTAND));
+            assertTrue("SOAP 1.2 :- Mustunderstand attribute not found",
+                    mustUnderstandAttribute != null);
+
             assertTrue("SOAP 1.2 :- Mustunderstand value mismatch",
                     mustUnderstandAttribute.getAttributeValue().equals(
                             SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE));
-            assertTrue(
-                    "SOAP 1.2 :- Mustunderstand attribute namespace uri mismatch",
-                    mustUnderstandAttribute.getNamespace().getName().equals(
-                            SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
+
 
             SOAPBody body = soap12Envelope.getBody();
             assertTrue("SOAP 1.2 :- Body local name mismatch",
@@ -397,13 +422,16 @@ public class StAXSOAPModelBuilderTest extends TestCase {
             assertTrue("SOAP 1.1 :- Headaer block text mismatch",
                     headerBlock.getText().trim().equals("foo"));
 
-            headerBlockAttributes = headerBlock.getAllAttributes();
+            // Attribute iteration is not in any guaranteed order.
+            // Use QNames to get the OMAttributes.
+            QName actorQName = new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP11Constants.ATTR_ACTOR);
+            mustUnderstandQName = new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP11Constants.ATTR_MUSTUNDERSTAND);
 
-            mustUnderstandAttribute =
-                    (OMAttribute) headerBlockAttributes.next();
-            assertTrue("SOAP 1.1 :- Mustunderstand attribute name mismatch",
-                    mustUnderstandAttribute.getLocalName().equals(
-                            SOAPConstants.ATTR_MUSTUNDERSTAND));
+            OMAttribute actorAttribute = headerBlock.getAttribute(actorQName);
+            mustUnderstandAttribute = headerBlock.getAttribute(mustUnderstandQName);
+
+            assertTrue("SOAP 1.1 :- Mustunderstand attribute not found",
+                    mustUnderstandAttribute != null);
             assertTrue("SOAP 1.1 :- Mustunderstand value mismatch",
                     mustUnderstandAttribute.getAttributeValue().equals(
                             SOAPConstants.ATTR_MUSTUNDERSTAND_1));
@@ -412,16 +440,14 @@ public class StAXSOAPModelBuilderTest extends TestCase {
                     mustUnderstandAttribute.getNamespace().getName().equals(
                             SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
 
-            OMAttribute actorAttribute = (OMAttribute) headerBlockAttributes.next();
-            assertTrue("SOAP 1.1 :- Actor attribute name mismatch",
-                    actorAttribute.getLocalName().equals(
-                            SOAP11Constants.ATTR_ACTOR));
+            assertTrue("SOAP 1.1 :- Actor attribute name not found",
+                    actorAttribute != null);
             assertTrue("SOAP 1.1 :- Actor value mismatch",
                     actorAttribute.getAttributeValue().trim().equals(
                             "http://schemas.xmlsoap.org/soap/" +
-                    SOAP11Constants.ATTR_ACTOR +
-                    "/" +
-                    "next"));
+                                    SOAP11Constants.ATTR_ACTOR +
+                                    "/" +
+                                    "next"));
             assertTrue("SOAP 1.1 :- Actor attribute namespace uri mismatch",
                     actorAttribute.getNamespace().getName().equals(
                             SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
@@ -446,8 +472,8 @@ public class StAXSOAPModelBuilderTest extends TestCase {
                     code.getLocalName(),
                     (SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME));
             assertTrue("SOAP 1.1 :- Fault code namespace uri mismatch",
-                    code.getNamespace().getName().equals(
-                            SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
+                    code.getNamespace() == null);
+
             assertEquals("SOAP 1.1 :- Fault code value mismatch", code.getValue().getText().trim(),
                     "env:Sender");
 
@@ -456,9 +482,8 @@ public class StAXSOAPModelBuilderTest extends TestCase {
             assertTrue("SOAP 1.1 :- Fault string local name mismatch",
                     reason.getLocalName().equals(
                             SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME));
-            assertTrue("SOAP 1.2 :- Fault string namespace uri mismatch",
-                    reason.getNamespace().getName().equals(
-                            SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
+            assertTrue("SOAP 1.1 :- Fault string namespace uri mismatch",
+                    reason.getNamespace() == null);
             assertTrue("SOAP 1.1 :- Fault string value mismatch",
                     reason.getFirstSOAPText().getText().trim().equals("Sender Timeout"));
 
@@ -468,8 +493,7 @@ public class StAXSOAPModelBuilderTest extends TestCase {
                     role.getLocalName().equals(
                             SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME));
             assertTrue("SOAP 1.1 :- Fault actor namespace uri mismatch",
-                    role.getNamespace().getName().equals(
-                            SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
+                    role.getNamespace() == null);
             assertTrue("SOAP 1.1 :- Actor value mismatch",
                     role.getText().trim().equals(
                             "http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver"));
@@ -480,8 +504,7 @@ public class StAXSOAPModelBuilderTest extends TestCase {
                     detail.getLocalName().equals(
                             SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME));
             assertTrue("SOAP 1.1 :- Fault detail namespace uri mismatch",
-                    detail.getNamespace().getName().equals(
-                            SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
+                    detail.getNamespace() == null);
             assertTrue("SOAP 1.2 :- Text in detail mismatch",
                     detail.getText().trim().equals("Details of error"));
 
