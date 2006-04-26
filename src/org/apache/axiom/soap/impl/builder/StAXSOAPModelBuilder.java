@@ -87,6 +87,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     private String receiverfaultCode;
     private boolean processingMandatoryFaultElements;
 
+    private String charEncoding = null;
+    private String parserVersion = null;
 
     /**
      * Constructor StAXSOAPModelBuilder
@@ -100,6 +102,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, String soapVersion) {
         super(parser);
+        charEncoding = parser.getCharacterEncodingScheme();
+        parserVersion = parser.getVersion();
         identifySOAPVersion(soapVersion);
     }
 
@@ -115,6 +119,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
         super(factory, parser);
         soapFactory = factory;
+        charEncoding = parser.getCharacterEncodingScheme();
+        parserVersion = parser.getVersion();
         identifySOAPVersion(soapVersion);
     }
 
@@ -186,8 +192,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
     protected void setSOAPEnvelope(OMElement node) {
         soapMessage.setSOAPEnvelope((SOAPEnvelope) node);
-        soapMessage.setXMLVersion(parser.getVersion());
-        soapMessage.setCharsetEncoding(parser.getCharacterEncodingScheme());
+        soapMessage.setXMLVersion(parserVersion);
+        soapMessage.setCharsetEncoding(charEncoding);
     }
 
     /**
@@ -199,7 +205,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      */
     protected OMElement constructNode(OMElement parent, String elementName,
                                       boolean isEnvelope) {
-        OMElement element = null;
+        OMElement element;
         if (parent == null) {
 
             // Now I've found a SOAP Envelope, now create SOAPDocument and SOAPEnvelope here.
@@ -227,9 +233,9 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             // create a SOAPMessage to hold the SOAP envelope and assign the SOAP envelope in that.
             soapMessage = soapFactory.createSOAPMessage(this);
             this.document = soapMessage;
-            if (parser.getCharacterEncodingScheme() != null) {
-                document.setCharsetEncoding(parser.getCharacterEncodingScheme());
-            }
+            if (charEncoding != null) {
+            	document.setCharsetEncoding(charEncoding);
+             }
 
             envelope = soapFactory.createSOAPEnvelope(this);
             element = envelope;
@@ -419,7 +425,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     }
 
     public OMDocument getDocument() {
-        return (OMDocument) this.soapMessage;
+        return this.soapMessage;
     }
 
     /**
