@@ -223,7 +223,6 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                                     (SOAPFaultReason) parent, builder);
                     ((OMNodeEx)element).setComplete(false);
                     reasonProcessing = false;
-                    builder.setBooleanProcessingMandatoryFaultElements(false);
                 } else {
                     throw new OMBuilderException(
                             parser.getLocalName() +

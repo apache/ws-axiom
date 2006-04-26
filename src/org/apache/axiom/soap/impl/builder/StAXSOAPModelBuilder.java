@@ -85,7 +85,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     private SOAPBuilderHelper builderHelper;
     private String senderfaultCode;
     private String receiverfaultCode;
-    private boolean processingMandatoryFaultElements;
 
     private String charEncoding = null;
     private String parserVersion = null;
@@ -304,7 +303,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
 
             processingFault = true;
-            processingMandatoryFaultElements = true;
             if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getName())) {
                 builderHelper = new SOAP12BuilderHelper(this);
             } else
@@ -406,10 +404,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
     public OMNamespace getEnvelopeNamespace() {
         return envelopeNamespace;
-    }
-
-    public void setBooleanProcessingMandatoryFaultElements(boolean value) {
-        this.processingMandatoryFaultElements = value;
     }
 
     public boolean isProcessingDetailElements() {

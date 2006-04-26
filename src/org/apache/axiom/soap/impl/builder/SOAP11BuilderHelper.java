@@ -54,9 +54,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
         if (elementLevel == 4) {
 
             if (SOAP_FAULT_CODE_LOCAL_NAME.equals(localName)) {
-                if (faultstringPresent) {
-                    builder.setBooleanProcessingMandatoryFaultElements(false);
-                }
+
                 SOAPFaultCode code = factory.createSOAPFaultCode(
                         (SOAPFault) parent, builder);
                 SOAPFaultValue value = factory.createSOAPFaultValue(code);
@@ -70,10 +68,6 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
 
                 faultcodePresent = true;
             } else if (SOAP_FAULT_STRING_LOCAL_NAME.equals(localName)) {
-                if (faultcodePresent) {
-                    builder.setBooleanProcessingMandatoryFaultElements(false);
-                }
-
 
                 SOAPFaultReason reason = factory.createSOAPFaultReason(
                         (SOAPFault) parent, builder);
