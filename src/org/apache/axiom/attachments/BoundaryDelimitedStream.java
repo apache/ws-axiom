@@ -22,8 +22,6 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * This class takes the input stream and turns it multiple streams.
- *
- * @author Rick Rineholt
  */
 public class BoundaryDelimitedStream extends java.io.FilterInputStream {
 

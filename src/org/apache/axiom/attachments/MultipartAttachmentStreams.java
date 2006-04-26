@@ -37,10 +37,6 @@ import org.apache.axiom.om.OMException;
  * the stream. But since SwA has no such guarantee, we must fall back to caching
  * these first parts. Afterwards, we can stream the rest of the attachments that
  * are after the SOAP part of the request message.
- * 
- * @author David Wong
- * @author Brian Husted
- *  
  */
 public final class MultipartAttachmentStreams extends IncomingAttachmentStreams {
     private BoundaryDelimitedStream _delimitedStream = null;

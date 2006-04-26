@@ -13,11 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Copyright 2006 International Business Machines Corp.
- *       re: JIRA WSCOMMONS-8
- *       @author: scheu@us.ibm.com
- */
 package org.apache.axiom.soap.impl.builder;
 
 import junit.framework.TestCase;
@@ -50,9 +45,6 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
 import java.util.Iterator;
 
-/**
- * @author scheu
- */
 public class StAXSOAPModelBuilderTest extends TestCase {
 
     private Log log = LogFactory.getLog(getClass());
