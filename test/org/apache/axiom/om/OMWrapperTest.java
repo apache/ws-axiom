@@ -55,52 +55,19 @@ public class OMWrapperTest extends TestCase {
 
 
             XMLStreamReader reader = wrap2Element.getXMLStreamReaderWithoutCaching();
-//            XMLStreamReader reader = wrap2Element.getXMLStreamReader();
+            int count = 0;
             while(reader.hasNext()){
-                System.out.println(getEventString(reader.next()));
-                System.out.println(reader.hasName()?reader.getLocalName():"");
+               reader.next();
+               count ++;
             }
+
+            assertEquals(3,count);
         } catch (XMLStreamException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+           fail(e.getMessage());
         }
 
 
     }
 
-    private static String getEventString(int eventCode) {
-            String event = "";
 
-            switch (eventCode) {
-                case 1 :
-                    event = "START_ELEMENT";
-                    break;
-                case 2 :
-                    event = "END_ELEMENT";
-                    break;
-                case 3 :
-                    event = "PROCESSING_INSTRUCTION";
-                    break;
-                case 4 :
-                    event = "CHARACTERS";
-                    break;
-                case 5 :
-                    event = "COMMENT";
-                    break;
-                case 6 :
-                    event = "SPACE";
-                    break;
-                case 7 :
-                    event = "START_DOCUMENT";
-                    break;
-                case 8 :
-                    event = "END_DOCUMENT";
-                    break;
-                case 9 :
-                    event = "ENTITY_REFERENCE";
-                    break;
-                default:
-                    break;
-            }
-        return event;
-    }
 }

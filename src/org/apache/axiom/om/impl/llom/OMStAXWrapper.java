@@ -859,7 +859,6 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                 }
 
                 // We should throw an END_DOCUMENT
-                needToThrowEndDocument = true;
                 if ((currentEvent == START_DOCUMENT) &&
                         (currentEvent == parser.getEventType())) {
                     currentEvent = parser.next();
@@ -867,11 +866,6 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                     currentEvent = parser.getEventType();
                 }
 
-                if(currentEvent == START_ELEMENT) {
-                    depth = 0;
-                } else if(currentEvent == END_ELEMENT) {
-                    depth ++;
-                }
                 updateCompleteStatus();
                 break;
             case NAVIGABLE:
@@ -937,11 +931,17 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                     nextNode = navigator.next();
                 }
             } else {
-
+                //at this point check whether the navigator is done
+                //if the navigator is done then we are fine and can directly
+                // jump to the complete state ?
+               if (navigator.isCompleted()) {
+                    nextNode = null;
+               }else{
                 // reset caching (the default is ON so it was not needed in the
                 // earlier case!
                 builder.setCache(false);
                 state = SWITCH_AT_NEXT;
+               }
             }
         }
     }
