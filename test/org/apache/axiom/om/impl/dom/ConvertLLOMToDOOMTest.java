@@ -17,6 +17,8 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -103,7 +105,15 @@ public class ConvertLLOMToDOOMTest extends TestCase {
             
             doomEnv.build();
             
-            String xml = doomEnv.toString();
+            OMElement payload = doomEnv.getBody().getFirstElement();
+            
+            StAXOMBuilder llomBuilder = new StAXOMBuilder(payload.getXMLStreamReaderWithoutCaching());
+            
+            OMElement llomPayload = llomBuilder.getDocumentElement(); 
+            
+            llomPayload.build();
+            
+            String xml = llomPayload.toString();
             
             assertTrue("Conversion failed", xml.indexOf("</RequestSecurityToken>") != -1);
             
