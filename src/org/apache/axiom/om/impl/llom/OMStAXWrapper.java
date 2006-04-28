@@ -855,7 +855,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                 try {
                     parser = (XMLStreamReader) builder.getParser();
                 } catch (Exception e) {
-                    throw new XMLStreamException("problem accessing the parser", e);
+                    throw new XMLStreamException("problem accessing the parser. " + e.getMessage(), e);
                 }
 
                 // We should throw an END_DOCUMENT
