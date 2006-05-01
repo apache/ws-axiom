@@ -244,7 +244,7 @@ public class OMElementImpl extends OMNodeImpl
             child.previousSibling = null;
         } else {
             child.previousSibling = (OMNodeImpl) lastChild;
-             ((OMNodeImpl) lastChild).nextSibling = child;
+            ((OMNodeImpl) lastChild).nextSibling = child;
         }
 
         child.nextSibling = null;
@@ -369,7 +369,10 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public OMNamespace findNamespaceURI(String prefix) {
-        OMNamespace ns = (OMNamespace) this.namespaces.get(prefix);
+        OMNamespace ns =  this.namespaces==null?
+                null:
+                (OMNamespace)this.namespaces.get(prefix);
+
         if (ns == null && this.parent instanceof OMElement) {
             // try with the parent
             ns = ((OMElement) this.parent).findNamespaceURI(prefix);

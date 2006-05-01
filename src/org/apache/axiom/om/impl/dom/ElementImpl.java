@@ -782,7 +782,10 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     }
 
     public OMNamespace findNamespaceURI(String prefix) {
-        OMNamespace ns = (OMNamespace) this.namespaces.get(prefix);
+        OMNamespace ns =  this.namespaces==null?
+                null:
+                (OMNamespace)this.namespaces.get(prefix);
+
         if (ns == null && this.parentNode instanceof OMElement) {
             // try with the parent
             ns = ((OMElement) this.parentNode).findNamespaceURI(prefix);

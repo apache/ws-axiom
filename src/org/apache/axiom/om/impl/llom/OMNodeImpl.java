@@ -64,7 +64,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * Field nodeType
      */
     protected int nodeType;
-    
+
     protected OMFactory factory;
 
     /**
@@ -112,11 +112,15 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
 
         //If we are asked to assign a new parent in place 
         //of an existing one. We should detach this node
-        //from the aegis of previous parent.
-        if (this.parent != null) {
-            this.detach();
+        //from the previous parent.
+        if (element!=null){
+            if (this.parent != null) {
+                this.detach();
+            }
+            this.parent = (OMContainerEx) element;
+        }else{
+            this.parent = null;
         }
-        this.parent = (OMContainerEx) element;
     }
 
     /**
