@@ -14,7 +14,6 @@ The Complete Features List :
         Linked list based implementation
         AXIOM based DOM implementation
 
-AXIOM is taking shape, this 1.0 is the release candidate of 1.0 that should be coming soon.
 If you like to contribute to AXIOM please help us to shape AXIOM. Any contribution in the form of
 coding, testing, submitting improvements to the documentation, and reporting bugs are always welcome.
 
