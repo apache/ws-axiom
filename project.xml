@@ -57,35 +57,16 @@
     <!-- ========== -->
     <developers>
         <developer>
-            <name>Davanum Srinivas</name>
-            <id>dims</id>
-            <email>dims AT wso2.com</email>
+            <name>Saminda Abeyruwan</name>
+            <id>saminda</id>
+            <email>saminda AT wso2.com</email>
             <organization>WSO2</organization>
         </developer>
         <developer>
-            <name>Sanjiva Weerawarana</name>
-            <id>sanjiva</id>
-            <email>sanjiva AT wso2.com</email>
+            <name>Afkham Azeez</name>
+            <id>azeez</id>
+            <email>azeez AT wso2.com</email>
             <organization>WSO2</organization>
-        </developer>
-        <developer>
-            <name>Glen Daniels</name>
-            <id>gdaniels</id>
-            <email>gdaniels AT apache.org</email>
-            <organization>Sonic Software</organization>
-        </developer>
-        <developer>
-            <name>Aleksander Slominski</name>
-            <id>alek</id>
-            <email>aslom AT cs.indiana.edu</email>
-            <organization>Indiana University Extreme! Computing Lab</organization>
-        </developer>
-        <developer>
-            <name>Srinath Perera</name>
-            <id>hemapani</id>
-            <email>hemapani AT apache.org</email>
-            <organization>Lanka Software Foundation</organization>
-            <url>http://www.apache.org/~hemapani</url>
         </developer>
         <developer>
             <name>Eran Chinthaka</name>
@@ -95,10 +76,10 @@
             <url>http://www.apache.org/~chinthaka</url>
         </developer>
         <developer>
-            <name>Dasarath Weerathunga</name>
-            <id>dasarath</id>
-            <email>dasarath AT opensource.lk</email>
-            <organization>Lanka Software Foundation</organization>
+            <name>Glen Daniels</name>
+            <id>gdaniels</id>
+            <email>gdaniels AT apache.org</email>
+            <organization>Sonic Software</organization>
         </developer>
         <developer>
             <name>Jaliya Ekanayake</name>
@@ -106,6 +87,18 @@
             <email>jaliya AT opensource.lk</email>
             <organization>Virtusa / Lanka Software Foundation</organization>
             <url>http://www.apache.org/~jaliya</url>
+        </developer>
+        <developer>
+            <name>Ruchith Fernando</name>
+            <id>ruchith</id>
+            <email>ruchith AT wso2.com</email>
+            <organization>WSO2</organization>
+        </developer>
+        <developer>
+            <name>Thilina Gunarathne</name>
+            <id>thilina</id>
+            <email>thilina AT opensource.lk</email>
+            <organization>Lanka Software Foundation</organization>
         </developer>
         <developer>
             <name>Chathura Herath</name>
@@ -120,6 +113,13 @@
             <email>deepal AT wso2.com</email>
             <organization>WSO2</organization>
             <url>http://www.apache.org/~deepal</url>
+        </developer>
+        <developer>
+            <name>Srinath Perera</name>
+            <id>hemapani</id>
+            <email>hemapani AT apache.org</email>
+            <organization>Lanka Software Foundation</organization>
+            <url>http://www.apache.org/~hemapani</url>
         </developer>
         <developer>
             <name>Ajith Ranabahu</name>
@@ -141,53 +141,46 @@
             <organization>Computer Associates</organization>
         </developer>
         <developer>
+            <name>Aleksander Slominski</name>
+            <id>alek</id>
+            <email>aslom AT cs.indiana.edu</email>
+            <organization>Indiana University Extreme! Computing Lab</organization>
+        </developer>
+        <developer>
+            <name>Davanum Srinivas</name>
+            <id>dims</id>
+            <email>dims AT wso2.com</email>
+            <organization>WSO2</organization>
+        </developer>
+        <developer>
             <name>Jayachandra Sekhara Rao Sunkara</name>
             <id>jaya</id>
             <email>jayachandra AT gmail.com</email>
             <organization>Computer Associates</organization>
         </developer>
         <developer>
-            <name>Thilina Gunarathne</name>
-            <id>thilina</id>
-            <email>thilina AT opensource.lk</email>
+            <name>Dasarath Weerathunga</name>
+            <id>dasarath</id>
+            <email>dasarath AT opensource.lk</email>
             <organization>Lanka Software Foundation</organization>
         </developer>
         <developer>
-            <name>Ruchith Fernando</name>
-            <id>ruchith</id>
-            <email>ruchith AT wso2.com</email>
+            <name>Sanjiva Weerawarana</name>
+            <id>sanjiva</id>
+            <email>sanjiva AT wso2.com</email>
             <organization>WSO2</organization>
         </developer>
-        <developer>
-            <name>Saminda Abeyruwan</name>
-            <id>saminda</id>
-            <email>saminda AT wso2.com</email>
-            <organization>WSO2</organization>
-        </developer>
-        <developer>
-            <name>Afkham Azeez</name>
-            <id>azeez</id>
-            <email>azeez AT wso2.com</email>
-            <organization>WSO2</organization>
-        </developer>
-
-
     </developers>
     <contributors>
 
         <contributor>
-            <name>Anushka Kumara</name>
-            <email>anushkakumar AT gmail.com</email>
-            <organization>Lanka Software Foundation / University of Moratuwa</organization>
-        </contributor>
-        <contributor>
-            <name>Chinthaka Thilakarathne</name>
-            <email/>
-            <organization>Lanka Software Foundation / University of Moratuwa</organization>
-        </contributor>
-        <contributor>
             <name>Dharshana Dias</name>
             <email/>
+            <organization>Lanka Software Foundation / University of Moratuwa</organization>
+        </contributor>
+        <contributor>
+            <name>Anushka Kumara</name>
+            <email>anushkakumar AT gmail.com</email>
             <organization>Lanka Software Foundation / University of Moratuwa</organization>
         </contributor>
         <contributor>
@@ -195,7 +188,11 @@
             <email>chatra AT WSO2.com</email>
             <organization>WSO2</organization>
         </contributor>
-
+        <contributor>
+            <name>Chinthaka Thilakarathne</name>
+            <email/>
+            <organization>Lanka Software Foundation / University of Moratuwa</organization>
+        </contributor>
     </contributors>
 
 
