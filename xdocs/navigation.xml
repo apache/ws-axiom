@@ -17,8 +17,10 @@
 				<item name="Project Team" href="/team-list.html"/>
 				<item name="Issue Tracking" href="http://issues.apache.org/jira/browse/WSCOMMONS"/>
 				<item name="Dependencies" href="/dependencies.html"/>
-                        </item>
-		</menu>
+
+            </item>
+            <item name="License" href="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+        </menu>
 	</body>
 	
 </project>
