@@ -44,6 +44,16 @@ public class StAXUtils {
         xmlInputFactoryPool.push(factory);
     }
 
+    public static XMLStreamReader createXMLStreamReader(InputStream in, String encoding)
+            throws XMLStreamException {
+        XMLInputFactory inputFactory = getXMLInputFactory();
+        try {
+            return inputFactory.createXMLStreamReader(in, encoding);
+        } finally {
+            releaseXMLInputFactory(inputFactory);
+        }
+    }
+
     public static XMLStreamReader createXMLStreamReader(InputStream in)
             throws XMLStreamException {
         XMLInputFactory inputFactory = getXMLInputFactory();
