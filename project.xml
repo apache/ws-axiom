@@ -165,11 +165,12 @@
             <organization>WSO2</organization>
         </developer>
         <developer>
-            <name>Chamil Thanthrimudalige</name>
-            <id>chamil</id>
-            <email>chamil AT wso2.com</email>
+            <name>Afkham Azeez</name>
+            <id>azeez</id>
+            <email>azeez AT wso2.com</email>
             <organization>WSO2</organization>
         </developer>
+
 
     </developers>
     <contributors>

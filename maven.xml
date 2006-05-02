@@ -56,7 +56,7 @@
 
     </goal>
 
-    <goal name="dist-bin" prereqs="jar,javadocs">
+    <goal name="dist-bin" prereqs="jar">
 
         <ant:echo>+----------------------------------------------</ant:echo>
         <ant:echo>| Creating: Axiom Binary Distribution</ant:echo>
@@ -83,6 +83,11 @@
                               projectDescriptor="${x.getFile()}"/>
         </j:forEach>
         <ant:delete file="${dist}/lib/xmlunit-${xmlunit.version}.jar"/>
+
+        <!--Add the licenses of jars-->
+        <ant:copy toDir="${dist}/lib" >
+            <ant:fileset dir="legal"/>
+        </ant:copy>
 
         <!--add api docs-->
 
