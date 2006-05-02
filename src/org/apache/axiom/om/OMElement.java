@@ -46,7 +46,7 @@ public interface OMElement extends OMNode, OMContainer {
      *               caller is expected to ensure that the URI is a valid namespace name.
      * @param prefix The prefix to associate with the given namespace.
      *               The caller is expected to ensure that this is a valid XML prefix.
-     *               If null is given, first this will check for an existing namespace
+     *               If "" is given, first this will check for an existing namespace
      *               with the same uri. If not found, a prefix will be auto-generated.
      * @return Returns the created namespace information item.
      * @see #declareNamespace(OMNamespace)
@@ -246,6 +246,11 @@ public interface OMElement extends OMNode, OMContainer {
      * @return Returns a String representing the concatenation of the child text nodes.
      */
     public String getText();
+
+    /**
+     * OMText can contain its information as a QName as well. This will return the text as a QName 
+     * @return
+     */
     public QName getTextAsQName();
 
     /**

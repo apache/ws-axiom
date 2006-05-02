@@ -33,7 +33,7 @@ public interface OMFactory {
 
     /**
      * @param localName
-     * @param ns
+     * @param ns - This can be null
      */
     public OMElement createOMElement(String localName, OMNamespace ns);
 
@@ -41,7 +41,7 @@ public interface OMFactory {
 
     /**
      * @param localName
-     * @param ns
+     * @param ns - this can be null
      * @param parent
      * @param builder
      */
