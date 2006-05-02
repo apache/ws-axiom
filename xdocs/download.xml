@@ -32,21 +32,39 @@ the binary distribution and the source distribution.</p>
 						</tr>
 						<tr class="b">
 							<td align="center" valign="middle">
+								<a name="09"></a>1.0</td>
+							<td align="center">Release</td>
+							<td>Source Distribution <a href="[preferred]/ws/commons/axiom/1_0/axiom-1.0-src.zip" title="[preferred]/ws/commons/axiom/1_0/axiom-1.0-src.zip">zip</a>
+								
+								<a href="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.md5" class="externalLink" title="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.md5">MD5</a>
+								<a href="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.asc" class="externalLink" title="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.asc">PGP</a>
+								<br />
+        Binary Distribution <a href="[preferred]/ws/commons/axiom/1_0/axiom-1.0-bin.zip" title="[preferred]/ws/commons/axiom/1_0/axiom-0.95-bin.zip">zip</a>
+								<a href="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip.md5" class="externalLink" title="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip.md5">MD5</a>
+								<a href="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip.asc" class="externalLink" title="http://www.apache.org/dist/ws/ws/commons/axiom/1_0/axiom-1.0-bin.zip.asc">PGP</a>
+									
+								<br />
+							</td>
+							<td>02 - 05  - 2006</td>
+							<td>1.0 Release (Mirrored)</td>
+						</tr>
+						<tr class="b">
+							<td align="center" valign="middle">
 								<a name="09"></a>0.95</td>
 							<td align="center">Release</td>
-							<td>Source Distribution <a href="[preferred]/ws/commons/axiom/0_95/axiom-0.95-src.zip" title="[preferred]/ws/commons/axiom/0_95/axiom-0.95-src.zip">zip</a>
+							<td>Source Distribution <a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip" title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip">zip</a>
 								
-								<a href="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.md5" class="externalLink" title="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.md5">MD5</a>
-								<a href="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.asc" class="externalLink" title="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.asc">PGP</a>
+								<a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.md5" class="externalLink" title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.md5">MD5</a>
+								<a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.asc" class="externalLink" title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.asc">PGP</a>
 								<br />
         Binary Distribution <a href="[preferred]/ws/commons/axiom/0_95/axiom-0.95-bin.zip" title="[preferred]/ws/commons/axiom/0_95/axiom-0.95-bin.zip">zip</a>
-								<a href="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.md5" class="externalLink" title="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.md5">MD5</a>
-								<a href="http://www.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.asc" class="externalLink" title="http://www.apache.org/dist/ws/ws/commons/axiom/0_95/axiom-0.95-bin.zip.asc">PGP</a>
+								<a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.md5" class="externalLink" title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.md5">MD5</a>
+								<a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.asc" class="externalLink" title="http://archive.apache.org/dist/ws/ws/commons/axiom/0_95/axiom-0.95-bin.zip.asc">PGP</a>
 									
 								<br />
 							</td>
 							<td>23 - 03  - 2006</td>
-							<td>0.95 Release (Mirrored)</td>
+							<td>0.95 Release (Archived)</td>
 						</tr>
 						
 					</tbody>
