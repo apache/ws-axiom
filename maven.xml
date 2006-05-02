@@ -114,16 +114,17 @@
         </ant:copy>
 
         <!--add documents-->
-        <!--<ant:copy toDir="${dist}/docs">-->
-            <!--<ant:fileset dir="xdocs">-->
-                <!--<ant:exclude name="**/.svn/**"/>-->
-            <!--</ant:fileset>-->
-        <!--</ant:copy>-->
+        <ant:copy toDir="${dist}/docs">
+            <ant:fileset dir="xdocs">
+                <ant:exclude name="**/.svn/**"/>
+            </ant:fileset>
+        </ant:copy>
 
         <!--copy release notes, etc-->
         <ant:copy toDir="${dist}">
             <ant:fileset file="RELEASE-NOTE.txt"/>
             <ant:fileset file="README.txt"/>
+            <ant:fileset file="NOTICE.txt"/>
             <ant:fileset file="LICENSE.txt"/>
         </ant:copy>
 
@@ -159,6 +160,7 @@
             <ant:fileset file="project.xml"/>
             <ant:fileset file="project.properties"/>
             <ant:fileset file="RELEASE-NOTE.txt"/>
+            <ant:fileset file="NOTICE.txt"/>
             <ant:fileset file="LICENSE.txt"/>
         </ant:copy>
 
