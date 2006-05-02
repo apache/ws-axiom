@@ -24,12 +24,12 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -50,7 +50,6 @@ public class StAXOMBuilder extends StAXBuilder {
     private Log log = LogFactory.getLog(getClass());
     private boolean doDebug = false;
     private static int nsCount = 0;
-    private static XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 
     /**
      * Constructor StAXOMBuilder.
@@ -85,7 +84,7 @@ public class StAXOMBuilder extends StAXBuilder {
      * @throws FileNotFoundException
      */
     public StAXOMBuilder(String filePath) throws XMLStreamException, FileNotFoundException {
-        this(inputFactory.createXMLStreamReader(new FileInputStream(filePath)));
+        this(StAXUtils.createXMLStreamReader(new FileInputStream(filePath)));
         doDebug = log.isDebugEnabled();
     }
 
@@ -94,7 +93,7 @@ public class StAXOMBuilder extends StAXBuilder {
      * @throws XMLStreamException
      */
     public StAXOMBuilder(InputStream inStream) throws XMLStreamException {
-        this(inputFactory.createXMLStreamReader(inStream));
+        this(StAXUtils.createXMLStreamReader(inStream));
         doDebug = log.isDebugEnabled();
     }
 

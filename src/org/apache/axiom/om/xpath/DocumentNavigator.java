@@ -10,6 +10,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.OMNamespaceImpl;
 import org.jaxen.BaseXPath;
@@ -543,15 +544,23 @@ public class DocumentNavigator extends DefaultNavigator {
             throws FunctionCallException {
         try {
             XMLStreamReader parser;
-            XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-            xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-            if (uri.indexOf(':') == -1) {
-                parser = xmlInputFactory.createXMLStreamReader(
-                                new FileInputStream(uri));
-            } else {
-                URL url = new URL(uri);
-                parser = xmlInputFactory.createXMLStreamReader(
-                                url.openStream());
+            XMLInputFactory xmlInputFactory = StAXUtils.getXMLInputFactory();
+            Boolean oldValue = (Boolean) xmlInputFactory.getProperty(XMLInputFactory.IS_COALESCING);
+            try {
+                xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
+                if (uri.indexOf(':') == -1) {
+                    parser = xmlInputFactory.createXMLStreamReader(
+                            new FileInputStream(uri));
+                } else {
+                    URL url = new URL(uri);
+                    parser = xmlInputFactory.createXMLStreamReader(
+                            url.openStream());
+                }
+            } finally {
+                if (oldValue != null) {
+                    xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, oldValue);
+                }
+                StAXUtils.releaseXMLInputFactory(xmlInputFactory);
             }
             StAXOMBuilder builder =
                     new StAXOMBuilder(parser);

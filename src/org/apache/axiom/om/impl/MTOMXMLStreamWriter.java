@@ -18,12 +18,12 @@ package org.apache.axiom.om.impl;
 
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
@@ -39,7 +39,6 @@ import java.util.LinkedList;
  * also looking at the OM tree whether it has any optimizable content.
  */
 public class MTOMXMLStreamWriter implements XMLStreamWriter {
-    private static XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
     private XMLStreamWriter xmlWriter;
     private OutputStream outStream;
     private LinkedList binaryNodeList = new LinkedList();
@@ -69,10 +68,10 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
 
         if (format.isOptimized()) {
             bufferedSOAPBody = new StringWriter();
-            xmlWriter = outputFactory.createXMLStreamWriter(bufferedSOAPBody);
+            xmlWriter = StAXUtils.createXMLStreamWriter(bufferedSOAPBody);
         } else {
             try {
-                xmlWriter = outputFactory.createXMLStreamWriter(new java.io.BufferedWriter(new OutputStreamWriter(outStream,
+                xmlWriter = StAXUtils.createXMLStreamWriter(new java.io.BufferedWriter(new OutputStreamWriter(outStream,
                         format.getCharSetEncoding())));
             } catch (UnsupportedEncodingException e) {
                 throw new XMLStreamException(e);

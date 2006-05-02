@@ -20,6 +20,7 @@ import org.apache.axiom.om.impl.dom.DOMImplementationImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
+import org.apache.axiom.om.util.StAXUtils;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -28,7 +29,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.File;
@@ -94,7 +94,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         try {
             OMDOMFactory factory = new OMDOMFactory();
             // Not really sure whether this will work :-?
-            XMLStreamReader reader = XMLInputFactory.newInstance()
+            XMLStreamReader reader = StAXUtils
                     .createXMLStreamReader(inputSource.getCharacterStream());
             StAXOMBuilder builder = new StAXOMBuilder(factory, reader);
             DocumentImpl doc = (DocumentImpl) builder.getDocument();
@@ -111,7 +111,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
     public Document parse(InputStream is) throws SAXException, IOException {
         try {
             OMDOMFactory factory = new OMDOMFactory();
-            XMLStreamReader reader = XMLInputFactory.newInstance()
+            XMLStreamReader reader = StAXUtils
                     .createXMLStreamReader(is);
             StAXOMBuilder builder = new StAXOMBuilder(factory, reader);
             return (DocumentImpl) builder.getDocument();
@@ -126,7 +126,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
     public Document parse(File file) throws SAXException, IOException {
         try {
             OMDOMFactory factory = new OMDOMFactory();
-            XMLStreamReader reader = XMLInputFactory.newInstance()
+            XMLStreamReader reader = StAXUtils
                     .createXMLStreamReader(new FileInputStream(file));
             StAXOMBuilder builder = new StAXOMBuilder(factory, reader);
             return (DocumentImpl) builder.getDocument();

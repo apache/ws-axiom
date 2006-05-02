@@ -22,11 +22,11 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
@@ -348,19 +348,19 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     }
 
     public void serialize(OutputStream output) throws XMLStreamException {
-        serialize(XMLOutputFactory.newInstance().createXMLStreamWriter(output));
+        serialize(StAXUtils.createXMLStreamWriter(output));
     }
 
     public void serialize(Writer writer) throws XMLStreamException {
-        serialize(XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
+        serialize(StAXUtils.createXMLStreamWriter(writer));
     }
 
     public void serializeAndConsume(OutputStream output) throws XMLStreamException {
-        serializeAndConsume(XMLOutputFactory.newInstance().createXMLStreamWriter(output));
+        serializeAndConsume(StAXUtils.createXMLStreamWriter(output));
     }
 
     public void serializeAndConsume(Writer writer) throws XMLStreamException {
-        serializeAndConsume(XMLOutputFactory.newInstance().createXMLStreamWriter(writer));
+        serializeAndConsume(StAXUtils.createXMLStreamWriter(writer));
     }
 
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
@@ -370,7 +370,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     }
 
     public void serialize(Writer writer2, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(XMLOutputFactory.newInstance().createXMLStreamWriter(writer2));
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
         writer.setOutputFormat(format);
         internalSerialize(writer);
         writer.flush();
@@ -383,7 +383,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     }
 
     public void serializeAndConsume(Writer writer2, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(XMLOutputFactory.newInstance().createXMLStreamWriter(writer2));
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
         writer.setOutputFormat(format);
         internalSerializeAndConsume(writer);
         writer.flush();
