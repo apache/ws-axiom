@@ -115,6 +115,12 @@
             <url>http://www.apache.org/~deepal</url>
         </developer>
         <developer>
+            <name>Chatra Nakkawita</name>
+            <id>chatra</id>
+            <email>chatra AT WSO2.com</email>
+            <organization>WSO2</organization>
+        </developer>
+        <developer>
             <name>Srinath Perera</name>
             <id>hemapani</id>
             <email>hemapani AT apache.org</email>
@@ -182,11 +188,6 @@
             <name>Anushka Kumara</name>
             <email>anushkakumar AT gmail.com</email>
             <organization>Lanka Software Foundation / University of Moratuwa</organization>
-        </contributor>
-        <contributor>
-            <name>Chatra Nakkawita</name>
-            <email>chatra AT WSO2.com</email>
-            <organization>WSO2</organization>
         </contributor>
         <contributor>
             <name>Chinthaka Thilakarathne</name>
