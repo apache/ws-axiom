@@ -47,7 +47,7 @@ public class StAXOMBuilder extends StAXBuilder {
      * Field document
      */
 
-    private Log log = LogFactory.getLog(getClass());
+    private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
     private boolean doDebug = false;
     private static int nsCount = 0;
 
