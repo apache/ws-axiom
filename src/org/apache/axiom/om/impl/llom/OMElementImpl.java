@@ -305,10 +305,8 @@ public class OMElementImpl extends OMNodeImpl
      * @param uri
      */
     public OMNamespace declareDefaultNamespace(String uri) {
-        if (uri == null || "".equals(uri)) {
-            return null;
-        }
-        OMNamespaceImpl namespace = new OMNamespaceImpl(uri, "");
+
+        OMNamespaceImpl namespace = new OMNamespaceImpl(uri == null ? "" : uri, "");
 
         if (namespaces == null) {
             this.namespaces = new HashMap(5);

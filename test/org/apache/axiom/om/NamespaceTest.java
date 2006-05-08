@@ -1,11 +1,16 @@
 package org.apache.axiom.om;
 
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Iterator;
 /*
@@ -147,6 +152,29 @@ public class NamespaceTest extends XMLTestCase {
         OMElement childTwo = omFac.createOMElement("ChildElementTwo", ns1, childOne);
 
         assertEquals(1, getNumberOfOccurrences(documentElement.toStringWithConsume(), "xmlns:ns2=\"http://one.org\""));
+    }
+
+
+    public void testNamespaceProblem4() throws Exception {
+        String xml = "<getCreditScoreResponse xmlns=\"http://www.example.org/creditscore/doclitwrapped/\"><score xmlns=\"\">750</score></getCreditScoreResponse>";
+        XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(OMAbstractFactory.getOMFactory(), parser);
+        OMElement root = builder.getDocumentElement();
+        String actualXML = root.toString();
+        assertTrue(actualXML.indexOf("xmlns=\"\"")!=-1);
+    }
+
+    public void testNamespaceProblem5() {
+        String xml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"><soapenv:Header /><soapenv:Body><ns1:createAccountRequest xmlns:ns1=\"http://www.wso2.com/types\"><clientinfo xmlns=\"http://www.wso2.com/types\"><name>bob</name><ssn>123456789</ssn></clientinfo><password xmlns=\"\">passwd</password></ns1:createAccountRequest></soapenv:Body></soapenv:Envelope>";
+
+        try {
+            OMElement documentElement = new StAXOMBuilder(new ByteArrayInputStream(xml.getBytes())).getDocumentElement();
+            String actualXML = documentElement.toString();
+            assertXMLEqual(xml, actualXML);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     private int getNumberOfOccurrences(String xml, String pattern){

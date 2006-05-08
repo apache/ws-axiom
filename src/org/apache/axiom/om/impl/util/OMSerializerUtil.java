@@ -117,6 +117,16 @@ public class OMSerializerUtil {
                     writer.setPrefix(prefix, uri);
                 }
             }
+        } else {
+            // now the nsURI passed is "" or null. Meaning we gonna work with defaultNS.
+            // check whether there is a defaultNS already declared. If yes, is it the same as this ?
+            String currentDefaultNSURI = writer.getNamespaceContext().getNamespaceURI("");
+            if( (currentDefaultNSURI != null && !currentDefaultNSURI.equals(uri)) ||
+                    uri != null && !uri.equals(currentDefaultNSURI)){
+                // this has not been declared earlier
+                writer.writeDefaultNamespace(uri);
+                writer.setDefaultNamespace(uri);
+            }
         }
     }
 
