@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.llom.OMNamespaceImpl;
 import org.apache.axiom.om.impl.mtom.MTOMStAXSOAPModelBuilder;
 import org.apache.axiom.om.util.Base64;
 import org.apache.axiom.om.util.UUIDGenerator;
@@ -69,6 +70,12 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     protected OMAttribute attribute;
 
     /**
+     * Field nameSpace used when serializing Binary stuff as MTOM optimized.
+     */
+    public static final OMNamespace XOP_NS = new OMNamespaceImpl(
+            "http://www.w3.org/2004/08/xop/include", "xop");
+    
+    /**
      * Creates a text node with the given text required by the OMDOMFactory. The
      * owner document should be set properly when appending this to a DOM tree.
      * 
@@ -78,8 +85,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         super(factory);
         this.textValue = new StringBuffer(text);
         this.done = true;
-        this.ns = new NamespaceImpl("http://www.w3.org/2004/08/xop/include",
-                "xop");
+        this.ns = XOP_NS;
     }
 
     /**
@@ -98,8 +104,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         this.isBinary = true;
         this.done = true;
         this.builder = builder;
-        this.ns = new NamespaceImpl("http://www.w3.org/2004/08/xop/include",
-                "xop");
+        this.ns = XOP_NS;
     }
 
     public TextImpl(String text, String mimeType, boolean optimize,
@@ -126,8 +131,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         this.isBinary = true;
         this.optimize = optimize;
         done = true;
-        this.ns = new NamespaceImpl("http://www.w3.org/2004/08/xop/include",
-                "xop");
+        this.ns = XOP_NS;
     }
 
     /**
@@ -136,8 +140,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     public TextImpl(DocumentImpl ownerNode, OMFactory factory) {
         super(ownerNode, factory);
         this.done = true;
-        this.ns = new NamespaceImpl("http://www.w3.org/2004/08/xop/include",
-                "xop");
+        this.ns = XOP_NS;
     }
 
     /**
@@ -147,8 +150,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     public TextImpl(DocumentImpl ownerNode, String value, OMFactory factory) {
         super(ownerNode, value, factory);
         this.done = true;
-        this.ns = new NamespaceImpl("http://www.w3.org/2004/08/xop/include",
-                "xop");
+        this.ns = XOP_NS;
     }
 
     /**
@@ -250,6 +252,9 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
 
     public void setOptimize(boolean value) {
         this.optimize = value;
+        if (value) {
+            isBinary = true;
+        }
     }
 
     public void discard() throws OMException {
@@ -396,42 +401,21 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
      */
     private void serializeStartpart(XMLStreamWriter writer)
             throws XMLStreamException {
-        String nameSpaceName;
-        String writer_prefix;
-        String prefix;
-        if (this.ns != null) {
-            nameSpaceName = this.ns.getName();
-            writer_prefix = writer.getPrefix(nameSpaceName);
-            prefix = this.ns.getPrefix();
-            if (nameSpaceName != null) {
-                if (writer_prefix != null) {
-                    writer
-                            .writeStartElement(nameSpaceName, this
-                                    .getLocalName());
-                } else {
-                    if (prefix != null) {
-                        writer.writeStartElement(prefix, this.getLocalName(),
-                                nameSpaceName);
-                        // TODO FIX ME
-                        // writer.writeNamespace(prefix, nameSpaceName);
-                        writer.setPrefix(prefix, nameSpaceName);
-                    } else {
-                        writer.writeStartElement(nameSpaceName, this
-                                .getLocalName());
-                        writer.writeDefaultNamespace(nameSpaceName);
-                        writer.setDefaultNamespace(nameSpaceName);
-                    }
-                }
-            } else {
-                writer.writeStartElement(this.getLocalName());
-            }
+        String nameSpaceName = XOP_NS.getName();
+        String writer_prefix = writer.getPrefix(nameSpaceName);
+        String prefix = XOP_NS.getPrefix();
+        if (writer_prefix != null) {
+            writer.writeStartElement(nameSpaceName, this
+                    .getLocalName());
         } else {
-            writer.writeStartElement(this.getLocalName());
+            writer.writeStartElement(prefix, this.getLocalName(),
+                    nameSpaceName);
+            writer.setPrefix(prefix, nameSpaceName);
         }
         // add the elements attribute "href"
         serializeAttribute(this.attribute, writer);
         // add the namespace
-        serializeNamespace(this.ns, writer);
+        serializeNamespace(XOP_NS, writer);
     }
 
     /**
@@ -488,10 +472,16 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         return textImpl;
     }
 
+    public String getLocalName() {
+        return this.localName;
+    }
+    
+    
     /*
      * DOM-Level 3 methods
      */
-
+    
+    
     public String getWholeText() {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
