@@ -83,7 +83,8 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
      */
     public TextImpl(String text, OMFactory factory) {
         super(factory);
-        this.textValue = new StringBuffer(text);
+        this.textValue = (text != null) ? new StringBuffer(text)
+                : new StringBuffer("");
         this.done = true;
         this.ns = XOP_NS;
     }

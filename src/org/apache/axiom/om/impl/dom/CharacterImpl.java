@@ -40,7 +40,8 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
 
 	public CharacterImpl(DocumentImpl ownerNode, String value, OMFactory factory){
 		super(ownerNode, factory);
-		this.textValue = new StringBuffer(value);
+        this.textValue = (value != null) ? new StringBuffer(value)
+                : new StringBuffer("");
 	}
 	
 	///
@@ -111,7 +112,7 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
 	 * Inserts a string at the specified offset.
 	 */
 	public void insertData(int offset, String data) throws DOMException {
-		int length = this.textValue.length();
+		int length = this.getLength();
 		
 		if (this.isReadonly()) {
 			throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
@@ -136,7 +137,7 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
 	 */
 	public void setData(String data) throws DOMException {
 		if (!this.isReadonly()) {
-			this.textValue.replace(0,textValue.length(), data);
+			this.textValue.replace(0,this.getLength(), data);
 		} else {
 			throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
 					DOMMessageFormatter.formatMessage(
@@ -152,7 +153,7 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
      * returned.
 	 */
 	public String substringData(int offset, int count) throws DOMException {
-		if(offset < 0 || offset > this.textValue.length() || count < 0) {
+		if(offset < 0 || offset > this.getLength() || count < 0) {
 			throw new DOMException(DOMException.INDEX_SIZE_ERR,
 					DOMMessageFormatter.formatMessage(
 							DOMMessageFormatter.DOM_DOMAIN,
@@ -167,7 +168,7 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
 	 * Returns the length of the string value.
 	 */
 	public int getLength() {
-		return this.textValue.length();
+		return (this.textValue != null) ? this.textValue.length() : 0;
 	}
 		
 }
