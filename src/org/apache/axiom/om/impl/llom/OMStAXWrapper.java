@@ -408,6 +408,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         String returnString = null;
         if (parser != null) {
             returnString = parser.getNamespaceURI(i);
+
         } else {
             if (isStartElement() || isEndElement()
                     || (currentEvent == NAMESPACE)) {
@@ -418,6 +419,18 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                         : ns.getName();
             }
         }
+
+         /*
+           The following line is necessary to overcome an issue where the empty
+           namespace URI returning null rather than the empty string. Our resolution
+           is to return "" if the return is actually null
+
+           Note that this is not the case for  getNamespaceURI(prefix) method
+           where the contract clearly specifies that the return may be null
+
+         */
+        if (returnString==null) returnString = "";
+
         return returnString;
     }
 
@@ -748,17 +761,24 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * @param s
      * @return Returns String.
      */
-    public String getNamespaceURI(String s) {
+    public String getNamespaceURI(String prefix) {
+
         String returnString = null;
         if (parser != null) {
-            returnString = parser.getNamespaceURI(s);
+            returnString = parser.getNamespaceURI(prefix);
         } else {
             if (isStartElement() || isEndElement()
                     || (currentEvent == NAMESPACE)) {
 
-                // Nothing to do here! How to get the namespacace references
+               if (rootNode instanceof OMElement){
+                   OMNamespace namespaceURI =
+                           ((OMElement) rootNode).findNamespaceURI(prefix);
+                   return namespaceURI!=null?namespaceURI.getName():null;
+               }
             }
         }
+
+
         return returnString;
     }
 
