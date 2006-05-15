@@ -65,7 +65,7 @@ public class MIMEBodyPartInputStream extends InputStream {
                     return 13;
                 }
             }
-        } else if ((byte) value != boundary[0]) {
+        } else {
             return value;
         }
 
@@ -100,8 +100,10 @@ public class MIMEBodyPartInputStream extends InputStream {
         if (value != -1) { // Stream might have ended
             inStream.unread(value);
         }
-        inStream.unread(boundary, 1, boundaryIndex - 1);
-        return boundary[0];
+
+        inStream.unread(boundary, 0, boundaryIndex);
+        inStream.unread(10);
+        return 13;
     }
     
     public boolean getBoundaryStatus()
