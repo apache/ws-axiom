@@ -211,6 +211,14 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         for (int i = 0; i < count; i++) {
             prefix = reader.getAttributePrefix(i);
             namespaceName = reader.getAttributeNamespace(i);
+            /*
+               Due to parser implementations returning null as the namespace URI
+              (for the empty namespace) we need to make sure that we deal with
+              a namespace name that is not null. The best way to work around this
+              issue is to set the namespace uri to "" if it is null
+            */
+            if (namespaceName==null) namespaceName="";
+            
             writerPrefix =writer.getNamespaceContext().getPrefix(namespaceName);
 
             if (!"".equals(namespaceName)){
