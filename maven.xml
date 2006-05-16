@@ -23,8 +23,8 @@
             <ant:fileset dir="target/classes">
                 <ant:exclude name="org/apache/axiom/soap/impl/llom/**"/>
                 <ant:exclude name="org/apache/axiom/om/impl/llom/**"/>
-                <ant:exclude name="org/apache/axiom/soap/impl/llom/**"/>
-                <ant:exclude name="org/apache/axiom/om/impl/llom/**"/>
+                <ant:exclude name="org/apache/axiom/soap/impl/dom/**"/>
+                <ant:exclude name="org/apache/axiom/om/impl/dom/**"/>
             </ant:fileset>
         </jar>
         <jar destfile="target/axiom-impl-${axiom.version}.jar">
