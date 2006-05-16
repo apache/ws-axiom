@@ -381,13 +381,16 @@ public class OMElementImpl extends OMNodeImpl
         return ns;
     }
 
+    // Constant
+    static final OMNamespaceImpl xmlns =
+            new OMNamespaceImpl(OMConstants.XMLNS_URI,
+                                OMConstants.XMLNS_PREFIX);
+
     /**
      * Checks for the namespace <B>only</B> in the current Element.
      * This is also used to retrieve the prefix of a known namespace URI.
      */
     private OMNamespace findDeclaredNamespace(String uri, String prefix) {
-
-
         if (uri == null) {
             return null;
         }
@@ -395,7 +398,7 @@ public class OMElementImpl extends OMNodeImpl
         //If the prefix is available and uri is available and its the xml namespace
         if (prefix != null && prefix.equals(OMConstants.XMLNS_PREFIX) && uri.equals(OMConstants.XMLNS_URI))
         {
-            return new OMNamespaceImpl(uri, prefix);
+            return xmlns;
         }
 
         if (namespaces == null) {
