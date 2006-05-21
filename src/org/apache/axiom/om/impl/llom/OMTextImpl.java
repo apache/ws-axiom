@@ -389,10 +389,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         return this.contentID;
     }
 
-    public boolean isComplete() {
-        return true;
-    }
-
     public void internalSerializeAndConsume(XMLStreamWriter writer)
             throws XMLStreamException {
         internalSerializeLocal(writer);
