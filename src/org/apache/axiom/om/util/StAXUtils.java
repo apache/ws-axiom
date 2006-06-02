@@ -11,8 +11,13 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Stack;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class StAXUtils {
 
+	private static Log log = LogFactory.getLog(StAXUtils.class);
+	   
     /**
      * Pool of XMLOutputFactory instances
      */
@@ -48,7 +53,9 @@ public class StAXUtils {
             throws XMLStreamException {
         XMLInputFactory inputFactory = getXMLInputFactory();
         try {
-            return inputFactory.createXMLStreamReader(in, encoding);
+        	XMLStreamReader reader = inputFactory.createXMLStreamReader(in, encoding);
+        	log.info("XMLStreamReader is " + reader.getClass().getName());
+            return reader;
         } finally {
             releaseXMLInputFactory(inputFactory);
         }
@@ -58,7 +65,9 @@ public class StAXUtils {
             throws XMLStreamException {
         XMLInputFactory inputFactory = getXMLInputFactory();
         try {
-            return inputFactory.createXMLStreamReader(in);
+            XMLStreamReader reader = inputFactory.createXMLStreamReader(in);
+            log.info("XMLStreamReader is " + reader.getClass().getName());
+            return reader;
         } finally {
             releaseXMLInputFactory(inputFactory);
         }
@@ -68,7 +77,9 @@ public class StAXUtils {
             throws XMLStreamException {
         XMLInputFactory inputFactory = getXMLInputFactory();
         try {
-            return inputFactory.createXMLStreamReader(in);
+            XMLStreamReader reader = inputFactory.createXMLStreamReader(in);
+            log.info("XMLStreamReader is " + reader.getClass().getName());
+            return reader;
         } finally {
             releaseXMLInputFactory(inputFactory);
         }
@@ -99,7 +110,9 @@ public class StAXUtils {
             throws XMLStreamException {
         XMLOutputFactory outputFactory = getXMLOutputFactory();
         try {
-            return outputFactory.createXMLStreamWriter(out);
+            XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out);
+            log.info("XMLStreamWriter is " + writer.getClass().getName());
+            return writer;
         } finally {
             releaseXMLOutputFactory(outputFactory);
         }
@@ -109,7 +122,9 @@ public class StAXUtils {
             throws XMLStreamException {
         XMLOutputFactory outputFactory = getXMLOutputFactory();
         try {
-            return outputFactory.createXMLStreamWriter(out);
+            XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out);
+            log.info("XMLStreamWriter is " + writer.getClass().getName());
+            return writer;
         } finally {
             releaseXMLOutputFactory(outputFactory);
         }
