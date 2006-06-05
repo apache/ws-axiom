@@ -54,7 +54,7 @@ public class StAXUtils {
         XMLInputFactory inputFactory = getXMLInputFactory();
         try {
         	XMLStreamReader reader = inputFactory.createXMLStreamReader(in, encoding);
-        	log.info("XMLStreamReader is " + reader.getClass().getName());
+        	log.debug("XMLStreamReader is " + reader.getClass().getName());
             return reader;
         } finally {
             releaseXMLInputFactory(inputFactory);
@@ -66,7 +66,7 @@ public class StAXUtils {
         XMLInputFactory inputFactory = getXMLInputFactory();
         try {
             XMLStreamReader reader = inputFactory.createXMLStreamReader(in);
-            log.info("XMLStreamReader is " + reader.getClass().getName());
+            log.debug("XMLStreamReader is " + reader.getClass().getName());
             return reader;
         } finally {
             releaseXMLInputFactory(inputFactory);
@@ -78,7 +78,7 @@ public class StAXUtils {
         XMLInputFactory inputFactory = getXMLInputFactory();
         try {
             XMLStreamReader reader = inputFactory.createXMLStreamReader(in);
-            log.info("XMLStreamReader is " + reader.getClass().getName());
+            log.debug("XMLStreamReader is " + reader.getClass().getName());
             return reader;
         } finally {
             releaseXMLInputFactory(inputFactory);
@@ -111,7 +111,7 @@ public class StAXUtils {
         XMLOutputFactory outputFactory = getXMLOutputFactory();
         try {
             XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out);
-            log.info("XMLStreamWriter is " + writer.getClass().getName());
+            log.debug("XMLStreamWriter is " + writer.getClass().getName());
             return writer;
         } finally {
             releaseXMLOutputFactory(outputFactory);
@@ -123,7 +123,7 @@ public class StAXUtils {
         XMLOutputFactory outputFactory = getXMLOutputFactory();
         try {
             XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out);
-            log.info("XMLStreamWriter is " + writer.getClass().getName());
+            log.debug("XMLStreamWriter is " + writer.getClass().getName());
             return writer;
         } finally {
             releaseXMLOutputFactory(outputFactory);
