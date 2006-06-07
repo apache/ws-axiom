@@ -24,7 +24,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.impl.EmptyOMLocation;
+import org.apache.axiom.om.impl.llom.util.NamespaceContextImpl;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 
 import javax.xml.namespace.NamespaceContext;
@@ -35,6 +37,12 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.util.Iterator;
 import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.HashMap;
 
 /**
  * Note  - This class also implements the streaming constants interface
@@ -758,7 +766,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
     /**
      * Method getNamespaceURI.
      *
-     * @param s
+     * @param prefix
      * @return Returns String.
      */
     public String getNamespaceURI(String prefix) {
@@ -829,9 +837,9 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
          if (eventType != XMLStreamConstants.START_ELEMENT && eventType != XMLStreamConstants.END_ELEMENT) {
              throw new XMLStreamException("expected start or end tag", getLocation());
          }
-         return eventType;    
+         return eventType;
     }
-    
+
     /**
      * @return Returns String.
      * @throws XMLStreamException
@@ -1001,7 +1009,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * @return Returns NamespaceContext.
      */
     public NamespaceContext getNamespaceContext() {
-        throw new UnsupportedOperationException();
+        return new NamespaceContextImpl(getAllNamespaces(lastNode));
     }
 
     /**
@@ -1251,4 +1259,33 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         this.parser = parser;
     }
 
+    private Map getAllNamespaces(Object contextNode) {
+        if (!(contextNode instanceof OMContainer &&
+                contextNode instanceof OMElement)) {
+            return new HashMap();
+        }
+        Map nsMap = new LinkedHashMap();
+        for (OMContainer context = (OMContainer) contextNode;
+             context != null && !(context instanceof OMDocument);
+             context = ((OMElement) context).getParent()) {
+            OMElement element = (OMElement) context;
+            Iterator i = element.getAllDeclaredNamespaces();
+            while (i != null && i.hasNext()) {
+                addNamespaceToMap((OMNamespace) i.next(),  nsMap);
+            }
+            addNamespaceToMap(element.getNamespace(),  nsMap);
+            for (Iterator iter = element.getAllAttributes();
+                 iter != null && iter.hasNext();) {
+                OMAttribute attr = (OMAttribute) iter.next();
+                addNamespaceToMap(attr.getNamespace(),  nsMap);
+            }
+        }
+        return nsMap;
+    }
+    
+    private void addNamespaceToMap(OMNamespace ns, Map map) {
+        if(map.get(ns.getPrefix())==null) {
+            map.put(ns.getPrefix(), ns.getName());        
+        }
+    }
 }
