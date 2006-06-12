@@ -80,16 +80,30 @@ public class OMSourcedElementImpl extends OMElementImpl
         dataSource = source;
         definedNamespace = ns;
     }
+    
+    /**
+     * Generate element name for output.
+     * @return name
+     */
+    private String getPrintableName() {
+        String uri = getNamespace().getName();
+        if (uri == null || uri.length() == 0) {
+            return getLocalName();
+        } else {
+            return "{" + uri + '}' + getLocalName();
+        }
+    }
 
     /**
      * Get parser from data source.
+     * @return parser
      */
     private XMLStreamReader getDirectReader() {
         try {
             return dataSource.getReader();
         } catch (XMLStreamException e) {
-            log.error("OMSourcedElementImpl.getDirectReader: could not get parser from data source for element " +
-                getLocalName(), e);
+            log.error("Could not get parser from data source for element " +
+                getPrintableName(), e);
             throw new RuntimeException("Error obtaining parser from data source:" +
                 e.getMessage());
         }
@@ -102,15 +116,17 @@ public class OMSourcedElementImpl extends OMElementImpl
     private void forceExpand() {
         if (!isParserSet) {
             
-            log.debug("OMSourcedElementImpl.forceExpand: expanding element " +
-                getLocalName());
+            if (log.isDebugEnabled()) {
+                log.debug("forceExpand: expanding element " +
+                    getPrintableName());
+            }
             
             // position reader to start tag
             XMLStreamReader reader = getDirectReader();
             try {
                 while (reader.next() != XMLStreamConstants.START_ELEMENT);
             } catch (XMLStreamException e) {
-                log.error("OMSourcedElementImpl.forceExpand: error parsing data soruce document for element " +
+                log.error("forceExpand: error parsing data soruce document for element " +
                     getLocalName(), e);
                 throw new RuntimeException("Error parsing data source document:" +
                     e.getMessage());
@@ -118,14 +134,14 @@ public class OMSourcedElementImpl extends OMElementImpl
             
             // make sure element name matches what was expected
             if (!reader.getLocalName().equals(getLocalName())) {
-                log.error("OMSourcedElementImpl.forceExpand: expected element name " +
+                log.error("forceExpand: expected element name " +
                     getLocalName() + ", found " + reader.getLocalName());
                 throw new RuntimeException("Element name from data source is " +
                     reader.getLocalName() + ", not the expected " + getLocalName());
             }
             if (!reader.getNamespaceURI().equals(getNamespace().getName())) {
                 String uri = getNamespace().getName();
-                log.error("OMSourcedElementImpl.forceExpand: expected element namespace " +
+                log.error("forceExpand: expected element namespace " +
                     getLocalName() + ", found " + uri);
                 throw new RuntimeException("Element namespace from data source is " +
                     reader.getNamespaceURI() + ", not the expected " + uri);
@@ -294,6 +310,9 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMElement#getXMLStreamReader()
      */
     public XMLStreamReader getXMLStreamReader() {
+        if (log.isDebugEnabled()) {
+            log.debug("getting XMLStreamReader for " + getPrintableName());
+        }
         if (isParserSet) {
             return super.getXMLStreamReader();
         } else {
@@ -305,7 +324,15 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMElement#getXMLStreamReaderWithoutCaching()
      */
     public XMLStreamReader getXMLStreamReaderWithoutCaching() {
-        return getXMLStreamReader();
+        if (log.isDebugEnabled()) {
+            log.debug("getting XMLStreamReader without caching for " +
+                getPrintableName());
+        }
+        if (isParserSet) {
+            return super.getXMLStreamReaderWithoutCaching();
+        } else {
+            return getDirectReader();
+        }
     }
 
     /* (non-Javadoc)
@@ -456,20 +483,23 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#internalSerialize(javax.xml.stream.XMLStreamWriter)
      */
     public void internalSerialize(javax.xml.stream.XMLStreamWriter writer) throws XMLStreamException {
-        dataSource.serialize(writer);
+        internalSerializeAndConsume(writer);
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.impl.llom.OMElementImpl#internalSerialize(javax.xml.stream.XMLStreamWriter, boolean)
      */
     protected void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        dataSource.serialize(writer);
+        internalSerializeAndConsume(writer);
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#internalSerializeAndConsume(javax.xml.stream.XMLStreamWriter)
      */
     public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
+        if (log.isDebugEnabled()) {
+            log.debug("serialize " + getPrintableName() + " to XMLStreamWriter");
+        }
         dataSource.serialize(writer);
     }
 
@@ -477,48 +507,51 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#serialize(javax.xml.stream.XMLStreamWriter)
      */
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        dataSource.serialize(xmlWriter);
+        internalSerializeAndConsume(xmlWriter);
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serialize(java.io.OutputStream)
      */
     public void serialize(OutputStream output) throws XMLStreamException {
-        dataSource.serialize(output, null);
+        serializeAndConsume(output);
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serialize(java.io.Writer)
      */
     public void serialize(Writer writer) throws XMLStreamException {
-        dataSource.serialize(writer, null);
+        serializeAndConsume(writer);
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serialize(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
      */
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        dataSource.serialize(output, format);
+        serializeAndConsume(output, format);
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serialize(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
      */
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        dataSource.serialize(writer, format);
+        serializeAndConsume(writer, format);
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serializeAndConsume(javax.xml.stream.XMLStreamWriter)
      */
     public void serializeAndConsume(javax.xml.stream.XMLStreamWriter xmlWriter) throws XMLStreamException {
-        dataSource.serialize(xmlWriter);
+        internalSerializeAndConsume(xmlWriter);
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.OutputStream)
      */
     public void serializeAndConsume(OutputStream output) throws XMLStreamException {
+        if (log.isDebugEnabled()) {
+            log.debug("serialize " + getPrintableName() + " to output stream");
+        }
         dataSource.serialize(output, null);
     }
 
@@ -526,6 +559,9 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.Writer)
      */
     public void serializeAndConsume(Writer writer) throws XMLStreamException {
+        if (log.isDebugEnabled()) {
+            log.debug("serialize " + getPrintableName() + " to writer");
+        }
         dataSource.serialize(writer, null);
     }
 
@@ -533,6 +569,10 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
      */
     public void serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
+        if (log.isDebugEnabled()) {
+            log.debug("serialize formatted " + getPrintableName() +
+                " to output stream");
+        }
         dataSource.serialize(output, format);
     }
 
@@ -540,6 +580,10 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
      */
     public void serializeAndConsume(Writer writer, OMOutputFormat format) throws XMLStreamException {
+        if (log.isDebugEnabled()) {
+            log.debug("serialize formatted " + getPrintableName() +
+                " to writer");
+        }
         dataSource.serialize(writer, format);
     }
 
