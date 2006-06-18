@@ -31,6 +31,8 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.validation.Schema;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -38,8 +40,14 @@ import java.io.InputStream;
 
 public class DocumentBuilderImpl extends DocumentBuilder {
 
-    public DocumentBuilderImpl() {
+    /**
+     * The DocumentBuilderFactory used to create this document builder
+     */
+    private DocumentBuilderFactoryImpl factory;
+    
+    protected DocumentBuilderImpl(DocumentBuilderFactoryImpl fac) {
         super();
+        this.factory = fac;
     }
 
     /**
@@ -81,12 +89,10 @@ public class DocumentBuilderImpl extends DocumentBuilder {
 
     public void setEntityResolver(EntityResolver arg0) {
         // TODO
-        throw new UnsupportedOperationException("TODO");
     }
 
     public void setErrorHandler(ErrorHandler arg0) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        // TODO 
     }
 
     public Document parse(InputSource inputSource) throws SAXException,
@@ -153,4 +159,14 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         throw new UnsupportedOperationException("TODO");
     }
 
+    /* (non-Javadoc)
+     * @see javax.xml.parsers.DocumentBuilder#getSchema()
+     */
+    public Schema getSchema() {
+        //HACK : To get opensaml working 
+        return this.factory.schema;
+    }
+
+    
+    
 }

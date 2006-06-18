@@ -18,6 +18,7 @@ package org.apache.axiom.om.impl.dom.jaxp;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.validation.Schema;
 
 public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
 
@@ -29,6 +30,8 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
     private static DocumentBuilderFactory originalDocumentBuilderFactory = null;
     private static String originalDocumentBuilderFactoryClassName = null;
     private static ThreadLocal documentBuilderFactoryTracker = new ThreadLocal();
+    
+    protected Schema schema;
     
     public static boolean isDOOMRequired() {
         Object value = documentBuilderFactoryTracker.get();
@@ -68,7 +71,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
          * Determine which DocumentBuilder implementation should be returned
          */
         return isDOOMRequired()
-                ? new DocumentBuilderImpl()
+                ? new DocumentBuilderImpl(this)
                 : originalDocumentBuilderFactory.newDocumentBuilder();
     }
 
@@ -87,14 +90,33 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
         return new DocumentBuilderFactoryImpl();
     }
 
-    public void setFeature(String arg0, boolean arg1)
+    public void setFeature(String name, boolean value)
             throws ParserConfigurationException {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+        // TODO TODO OS
     }
 
     public boolean getFeature(String arg0) throws ParserConfigurationException {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
+
+    /* (non-Javadoc)
+     * @see javax.xml.parsers.DocumentBuilderFactory#setSchema(javax.xml.validation.Schema)
+     */
+    public void setSchema(Schema schema) {
+        //HACK: Overriding to get opensaml working !!
+        this.schema = schema;
+    }
+
+    /* (non-Javadoc)
+     * @see javax.xml.parsers.DocumentBuilderFactory#getSchema()
+     */
+    public Schema getSchema() {
+        //HACK: Overriding to get opensaml working !!
+        return this.schema;
+    }
+    
+    
+    
+    
 }

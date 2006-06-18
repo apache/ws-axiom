@@ -63,6 +63,11 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      */
     protected ParentNode parent;
 
+    /**
+     * Flag used to mark an attribute as per the DOM Level 3 specification
+     */
+    protected boolean isId;
+    
     protected AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
     }
@@ -389,8 +394,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     }
 
     public boolean isId() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+        return isId;
     }
 
     public String toString() {

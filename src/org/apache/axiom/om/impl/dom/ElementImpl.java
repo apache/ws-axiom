@@ -1206,7 +1206,6 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      * @see org.w3c.dom.Node#getPrefix()
      */
     public String getPrefix() {
-        // TODO Error checking
         return (this.namespace == null) ? null : this.namespace.getPrefix();
     }
 
@@ -1299,7 +1298,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
                 // check if the parent of this element has the same namespace
                 // as the default and if NOT add the attr
-                if (this.parentNode.getNamespaceURI() != this.getNamespaceURI()) {
+                if (this.parentNode != null && this.parentNode.getNamespaceURI() != this.getNamespaceURI()) {
                     AttrImpl attr = new AttrImpl(this.ownerNode, "xmlns",
                             this.namespace.getName(), this.factory);
                     attr.setOMNamespace(new NamespaceImpl(
@@ -1364,23 +1363,80 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      * DOM-Level 3 methods
      */
 
-    public TypeInfo getSchemaTypeInfo() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+    public void setIdAttribute(String name, boolean isId) throws DOMException {
+        if (this.isReadonly()) {
+            String msg = DOMMessageFormatter.formatMessage(
+                    DOMMessageFormatter.DOM_DOMAIN,
+                    "NO_MODIFICATION_ALLOWED_ERR", null);
+            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
+                    msg);
+        }
+        //find the attr
+        AttrImpl tempAttr = (AttrImpl)this.getAttributeNode(name);
+        if(tempAttr == null) {
+            String msg = DOMMessageFormatter.formatMessage(
+                    DOMMessageFormatter.DOM_DOMAIN,
+                    "NOT_FOUND_ERR", null);
+            throw new DOMException(DOMException.NOT_FOUND_ERR,
+                    msg);
+        }
+        
+        tempAttr.isId = isId;
     }
 
-    public void setIdAttribute(String arg0, boolean arg1) throws DOMException {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public void setIdAttributeNode(Attr arg0, boolean arg1) throws DOMException {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public void setIdAttributeNS(String arg0, String arg1, boolean arg2)
+    public void setIdAttributeNS(String namespaceURI, String localName, boolean isId)
             throws DOMException {
+        if (this.isReadonly()) {
+            String msg = DOMMessageFormatter.formatMessage(
+                    DOMMessageFormatter.DOM_DOMAIN,
+                    "NO_MODIFICATION_ALLOWED_ERR", null);
+            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
+                    msg);
+        }
+        //find the attr
+        AttrImpl tempAttr = (AttrImpl)this.getAttributeNodeNS(namespaceURI, localName);
+        if(tempAttr == null) {
+            String msg = DOMMessageFormatter.formatMessage(
+                    DOMMessageFormatter.DOM_DOMAIN,
+                    "NOT_FOUND_ERR", null);
+            throw new DOMException(DOMException.NOT_FOUND_ERR,
+                    msg);
+        }
+        
+        tempAttr.isId = isId;
+    }
+    
+    public void setIdAttributeNode(Attr idAttr, boolean isId) throws DOMException {
+        if (this.isReadonly()) {
+            String msg = DOMMessageFormatter.formatMessage(
+                    DOMMessageFormatter.DOM_DOMAIN,
+                    "NO_MODIFICATION_ALLOWED_ERR", null);
+            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
+                    msg);
+        }
+        //find the attr
+        Iterator attrIter = this.getAllAttributes();
+        AttrImpl tempAttr = null;
+        while (attrIter.hasNext()) {
+            AttrImpl attr = (AttrImpl) attrIter.next();
+            if(attr.equals(idAttr)) {
+                tempAttr = attr;
+                break;
+            }
+        }
+        
+        if(tempAttr == null) {
+            String msg = DOMMessageFormatter.formatMessage(
+                    DOMMessageFormatter.DOM_DOMAIN,
+                    "NOT_FOUND_ERR", null);
+            throw new DOMException(DOMException.NOT_FOUND_ERR,
+                    msg);
+        }
+        
+        tempAttr.isId = isId;
+    }
+    
+    public TypeInfo getSchemaTypeInfo() {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
