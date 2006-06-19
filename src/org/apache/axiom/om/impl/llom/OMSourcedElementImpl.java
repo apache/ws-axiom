@@ -80,6 +80,24 @@ public class OMSourcedElementImpl extends OMElementImpl
         dataSource = source;
         definedNamespace = ns;
     }
+
+    /**
+     * Constructor that takes a QName instead of the
+     * local name and the namespace seperately
+     *
+     * @param QName
+     * @param factory
+     * @param source
+     */
+    public OMSourcedElementImpl(QName qName, OMFactory factory, OMDataSource source) {
+        //create a namespace
+        this(qName.getLocalPart(),
+            factory.createOMNamespace(qName.getNamespaceURI(),
+                                      qName.getPrefix()),
+            factory,
+            source);
+
+    }
     
     /**
      * Generate element name for output.
