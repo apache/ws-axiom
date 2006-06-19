@@ -197,7 +197,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
             this.checkQName(prefix, localName);
         }
 
-        NamespaceImpl namespace = new NamespaceImpl(ns, prefix);
+        NamespaceImpl namespace = new NamespaceImpl(ns, prefix == null ? "" : prefix);
         return new ElementImpl(this, localName, namespace, this.factory);
     }
 
