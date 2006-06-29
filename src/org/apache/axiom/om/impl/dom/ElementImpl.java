@@ -1387,7 +1387,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     msg);
         }
         
-        tempAttr.isId = isId;
+        this.updateIsId(isId, tempAttr);
     }
 
     public void setIdAttributeNS(String namespaceURI, String localName, boolean isId)
@@ -1409,7 +1409,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     msg);
         }
         
-        tempAttr.isId = isId;
+        this.updateIsId(isId, tempAttr);
     }
     
     public void setIdAttributeNode(Attr idAttr, boolean isId) throws DOMException {
@@ -1439,7 +1439,21 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     msg);
         }
         
+        this.updateIsId(isId, tempAttr);
+    }
+    
+    /**
+     * Updates the id state of the attr and notifies the document 
+     * @param isId
+     * @param tempAttr
+     */
+    private void updateIsId(boolean isId, AttrImpl tempAttr) {
         tempAttr.isId = isId;
+        if(isId) {
+            this.ownerNode.addIdAttr(tempAttr);
+        } else {
+            this.ownerNode.removeIdAttr(tempAttr);
+        }
     }
     
     public TypeInfo getSchemaTypeInfo() {

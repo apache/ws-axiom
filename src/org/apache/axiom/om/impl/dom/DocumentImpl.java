@@ -46,17 +46,21 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import java.io.OutputStream;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Vector;
 
 public class DocumentImpl extends ParentNode implements Document, OMDocument {
-
-    protected Hashtable identifiers;
 
     private String xmlVersion;
 
     private String charEncoding;
 
+    private Vector idAttrs;
+    
     protected ElementImpl documentElement;
+    
+    protected Hashtable identifiers;
 
     /**
      * @param ownerDocument
@@ -222,9 +226,23 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         throw new UnsupportedOperationException("TODO");
     }
 
-    public Element getElementById(String arg0) {
-        // TODO getElementById
-        throw new UnsupportedOperationException("TODO: getElementById");
+    public Element getElementById(String elementId) {
+        
+        //If there are no id attrs
+        if(this.idAttrs == null) {
+            return null;
+        }
+        
+        Enumeration attrEnum = this.idAttrs.elements();
+        while(attrEnum.hasMoreElements()) {
+            Attr tempAttr = (Attr)attrEnum.nextElement();
+            if(tempAttr.getValue().equals(elementId)) {
+                return tempAttr.getOwnerElement();
+            }
+        }
+        
+        //If we reach this point then, there's no such attr 
+        return null;
     }
 
     public NodeList getElementsByTagName(String arg0) {
@@ -458,6 +476,20 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
             this.firstChild.build();
         }
         this.done = true;
+    }
+    
+    protected void addIdAttr(Attr attr) {
+        if(this.idAttrs == null) {
+            this.idAttrs = new Vector();
+        }
+        this.idAttrs.add(attr);
+    }
+    
+    protected void removeIdAttr(Attr attr) {
+        if(this.idAttrs != null) {
+            this.idAttrs.remove(attr);
+        }
+        
     }
     
     /*

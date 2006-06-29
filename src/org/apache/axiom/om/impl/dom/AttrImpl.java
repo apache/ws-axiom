@@ -160,7 +160,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     public Element getOwnerElement() {
         // Owned is set to an element instance when the attribute is added to an
         // element
-        return (Element) (isOwned() ? ownerNode : null);
+        return (Element) (isOwned() ? parent : null);
     }
 
     public boolean getSpecified() {
