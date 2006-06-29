@@ -464,9 +464,9 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
      * DOM-Level 3 methods
      */
 
-    public Node adoptNode(Node arg0) throws DOMException {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+    public Node adoptNode(Node node) throws DOMException {
+        //OK... I'm cheating here,  a BIG TODO
+        return this.importNode(node, true);
     }
 
     public String getDocumentURI() {

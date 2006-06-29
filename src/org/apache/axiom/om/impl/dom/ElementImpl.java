@@ -262,7 +262,13 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     msg);
         }
 
-        if (this.attributes != null) {
+        if(OMConstants.XMLNS_NS_URI.equals(namespaceURI)) {
+            //look in the ns list
+            if(this.namespaces != null) {
+                this.namespaces.remove(DOMUtil.getLocalName(localName));
+            }
+            
+        } else if (this.attributes != null) {
             this.attributes.removeNamedItemNS(namespaceURI, localName);
         }
     }
