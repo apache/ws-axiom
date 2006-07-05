@@ -96,7 +96,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.value = s;
         this.nodeType = nodeType;
     }
-
+ 
     /**
      * Constructor OMTextImpl.
      *
@@ -322,6 +322,14 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         }
     }
 
+    /**
+     * Receiving binary can happen as either MTOM attachments or as Base64 Text
+     * In the case of Base64 user has to explicitly specify that the content is 
+     * binary, before calling getDataHandler(), getInputStream()....
+     */
+    public void setBinary(boolean value) {     
+            isBinary = value;
+    }
 
     /**
      * Gets the datahandler.
