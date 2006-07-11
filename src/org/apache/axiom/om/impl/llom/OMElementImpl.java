@@ -45,6 +45,7 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 /**
  * Class OMElementImpl
@@ -487,7 +488,7 @@ public class OMElementImpl extends OMNodeImpl
      */
     public OMAttribute addAttribute(OMAttribute attr) {
         if (attributes == null) {
-            this.attributes = new HashMap(5);
+            this.attributes = new LinkedHashMap(5);
         }
         OMNamespace namespace = attr.getNamespace();
         if (namespace != null && this.findNamespace(namespace.getName(), namespace.getPrefix()) == null)
