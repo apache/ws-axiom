@@ -152,7 +152,13 @@ public class SOAPEnvelopeImpl extends SOAPElement
      * @throws OMException
      */
     public OMNode detach() throws OMException {
-        throw new OMException("Root Element can not be detached");
+//        throw new OMException("Root Element can not be detached");
+        // I'm confused why this threw an exception as above. One should be able to create
+        // a SOAP envelope and be able to detach from the its parent document.
+        // The example is if I want to send a SOAPEnvelope inside another SOAP message, then this will
+        // not allow to do that.
+        // Must be an idea of a DOM guy ;)
+        return this;
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {

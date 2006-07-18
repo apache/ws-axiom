@@ -22,10 +22,10 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -317,7 +317,6 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * @param xmlWriter
      * @throws javax.xml.stream.XMLStreamException
      *
-     * @see #internalSerializeAndConsume(org.apache.axiom.om.impl.MTOMXMLStreamWriter)
      */
     public void serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(xmlWriter);
@@ -330,7 +329,6 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      *
      * @param writer
      * @throws XMLStreamException
-     * @see #internalSerialize(org.apache.axiom.om.impl.MTOMXMLStreamWriter)
      */
     public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
         throw new RuntimeException("Not implemented yet!");
@@ -341,7 +339,6 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      *
      * @param writer
      * @throws XMLStreamException
-     * @see #internalSerializeAndConsume(org.apache.axiom.om.impl.MTOMXMLStreamWriter)
      */
     public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
         throw new RuntimeException("Not implemented yet!");

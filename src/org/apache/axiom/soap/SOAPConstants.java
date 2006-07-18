@@ -65,12 +65,6 @@ public interface SOAPConstants {
      */
     public static final String SOAPFAULT_DETAIL_LOCAL_NAME = "detail";
 
-    /**
-     * Field SOAPFAULT_NAMESPACE_PREFIX
-     */
-    public static final String SOAPFAULT_NAMESPACE_PREFIX =
-            SOAP_DEFAULT_NAMESPACE_PREFIX;
-
     public static final String SOAP_FAULT_DETAIL_EXCEPTION_ENTRY = "Exception";
 
     // -------- SOAP Fault Codes ------------------------------
