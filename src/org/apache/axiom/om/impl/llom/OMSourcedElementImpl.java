@@ -142,7 +142,9 @@ public class OMSourcedElementImpl extends OMElementImpl
             // position reader to start tag
             XMLStreamReader reader = getDirectReader();
             try {
-                while (reader.next() != XMLStreamConstants.START_ELEMENT);
+            	if (reader.getEventType()!= XMLStreamConstants.START_ELEMENT) {
+                   while (reader.next() != XMLStreamConstants.START_ELEMENT);
+            	}
             } catch (XMLStreamException e) {
                 log.error("forceExpand: error parsing data soruce document for element " +
                     getLocalName(), e);
