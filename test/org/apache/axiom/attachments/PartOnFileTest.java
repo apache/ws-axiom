@@ -37,7 +37,7 @@ public class PartOnFileTest extends AbstractTestCase {
     }
 
     String inMimeFileName = "mtom/MTOMAttachmentStream.bin";
-    String contentTypeString = "multipart/related; boundary=MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
+    String contentTypeString = "multipart/related; boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
 
     File temp;
 
