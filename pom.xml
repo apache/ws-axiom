@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.ws.commons</groupId>
+  <artifactId>axiom</artifactId>
+  <name>Axiom</name>
+  <version>SNAPSHOT</version>
+  <description>AXIOM API</description>
+  <url>http://ws.apache.org/commons/axiom/</url>
+  <issueManagement>
+    <url>http://issues.apache.org/jira/browse/WSCOMMONS</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Continuum</system>
+    <url>unknown</url>
+    <notifiers>
+      <notifier>
+        <configuration>
+          <address>commons-dev@ws.apache.org</address>
+        </configuration>
+      </notifier>
+    </notifiers>
+  </ciManagement>
+  <inceptionYear>2004</inceptionYear>
+  <developers>
+    <developer>
+      <id>dims</id>
+      <name>Davanum Srinivas</name>
+      <email>dims AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <id>sanjiva</id>
+      <name>Sanjiva Weerawarana</name>
+      <email>sanjiva AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <id>gdaniels</id>
+      <name>Glen Daniels</name>
+      <email>gdaniels AT apache.org</email>
+      <organization>Sonic Software</organization>
+    </developer>
+    <developer>
+      <id>alek</id>
+      <name>Aleksander Slominski</name>
+      <email>aslom AT cs.indiana.edu</email>
+      <organization>Indiana University Extreme! Computing Lab</organization>
+    </developer>
+    <developer>
+      <id>hemapani</id>
+      <name>Srinath Perera</name>
+      <email>hemapani AT apache.org</email>
+      <url>http://www.apache.org/~hemapani</url>
+      <organization>Lanka Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>chinthaka</id>
+      <name>Eran Chinthaka</name>
+      <email>chinthaka AT wso2.com</email>
+      <url>http://www.apache.org/~chinthaka</url>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <id>dasarath</id>
+      <name>Dasarath Weerathunga</name>
+      <email>dasarath AT opensource.lk</email>
+      <organization>Lanka Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>jaliya</id>
+      <name>Jaliya Ekanayake</name>
+      <email>jaliya AT opensource.lk</email>
+      <url>http://www.apache.org/~jaliya</url>
+      <organization>Virtusa / Lanka Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>chathura</id>
+      <name>Chathura Herath</name>
+      <email>chathura AT opensource.lk</email>
+      <url>www.apache.org/~chathura</url>
+      <organization>LSF/MIT</organization>
+    </developer>
+    <developer>
+      <id>deepal</id>
+      <name>Deepal Jayasinghe</name>
+      <email>deepal AT wso2.com</email>
+      <url>http://www.apache.org/~deepal</url>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <id>ajith</id>
+      <name>Ajith Ranabahu</name>
+      <email>ajith AT wso2.com</email>
+      <url>http://www.apache.org/~ajith</url>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <id>venkat</id>
+      <name>Venkat Reddy</name>
+      <email>vreddyp AT gmail.com</email>
+      <organization>Computer Associates</organization>
+    </developer>
+    <developer>
+      <id>ashu</id>
+      <name>Ashutosh Shahi</name>
+      <email>Ashutosh.Shahi AT ca.com</email>
+      <organization>Computer Associates</organization>
+    </developer>
+    <developer>
+      <id>jaya</id>
+      <name>Jayachandra Sekhara Rao Sunkara</name>
+      <email>jayachandra AT gmail.com</email>
+      <organization>Computer Associates</organization>
+    </developer>
+    <developer>
+      <id>thilina</id>
+      <name>Thilina Gunarathne</name>
+      <email>thilina AT opensource.lk</email>
+      <organization>Lanka Software Foundation</organization>
+    </developer>
+    <developer>
+      <id>ruchith</id>
+      <name>Ruchith Fernando</name>
+      <email>ruchith AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <id>saminda</id>
+      <name>Saminda Abeyruwan</name>
+      <email>saminda AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <id>chamil</id>
+      <name>Chamil Thanthrimudalige</name>
+      <email>chamil AT wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <id>dandiep</id>
+      <name>Dan Diephouse</name>
+      <email>dandiep AT apache.org</email>
+      <organization>Envoi Solutions</organization>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/trunk/modules/axiom</url>
+  </scm>
+  <organization>
+    <name>Apache Software Foundation</name>
+    <url>http://www.apache.org/</url>
+  </organization>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>test</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <includes>
+          <include>**/*.xml</include>
+        </includes>
+        <excludes>
+          <exclude>**/package.html</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <targetPath>META-INF</targetPath>
+        <directory>${basedir}</directory>
+        <includes>
+          <include>LICENSE*</include>
+        </includes>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>test-resources</directory>
+        <includes>
+          <include>**/*.xml</include>
+          <include>**/*.xsd</include>
+        </includes>
+      </testResource>
+    </testResources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkMode>once</forkMode>
+          <childDelegation>false</childDelegation>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+          <excludes>
+              <exclude>**/*SpacesTest.java</exclude>
+              <exclude>**/*AbstractOMSerializationTest.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <siteDirectory>${basedir}/site</siteDirectory>
+          <resourcesDirectory>${basedir}/site/resources</resourcesDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-one-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>install-maven-one-repository</goal>
+              <goal>deploy-maven-one-repository</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <remoteRepositoryId>apache</remoteRepositoryId>
+          <remoteRepositoryUrl>scp://people.apache.org/www/cvs.apache.org/repository</remoteRepositoryUrl>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <tagBase>https://svn.apache.org/repos/asf/webservices/commons/tags/axiom</tagBase>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <profile>
+      <id>release</id>
+      <activation>
+        <property>
+          <name>release</name>
+          <value></value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>src-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>assembly</goal>
+                </goals>
+                <configuration>
+                  <descriptor>assembly-src.xml</descriptor>
+                  <finalName>axiom-${project.version}</finalName>
+                  <outputDirectory>target/src-package</outputDirectory>
+                  <workDirectory>target/assembly/work</workDirectory>
+                </configuration>
+              </execution>
+              <execution>
+                <id>bin-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>assembly</goal>
+                </goals>
+                <configuration>
+                  <descriptor>assembly-bin.xml</descriptor>
+                  <finalName>axiom-${project.version}</finalName>
+                  <outputDirectory>target/src-package</outputDirectory>
+                  <workDirectory>target/assembly/work</workDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>snapshot</id>
+      <name>Snapshot repository</name>
+      <url>http://snapshots.maven.codehaus.org/maven2/</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <dependencies>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>avalon-framework</artifactId>
+          <groupId>avalon-framework</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>logkit</artifactId>
+          <groupId>logkit</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>geronimo-spec</groupId>
+      <artifactId>geronimo-spec-javamail</artifactId>
+      <version>1.3.1-rc5</version>
+    </dependency>
+    <dependency>
+      <groupId>geronimo-spec</groupId>
+      <artifactId>geronimo-spec-activation</artifactId>
+      <version>1.0.2-rc4</version>
+    </dependency>
+    <!--
+    <dependency>
+      <groupId>javax.activation</groupId>
+      <artifactId>activation</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4</version>
+    </dependency>
+    -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>xmlunit</groupId>
+      <artifactId>xmlunit</artifactId>
+      <version>1.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>stax</groupId>
+      <artifactId>stax-api</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>woodstox</groupId>
+      <artifactId>wstx-asl</artifactId>
+      <version>2.9.3</version>
+    </dependency>
+    <dependency>
+      <groupId>jaxen</groupId>
+      <artifactId>jaxen</artifactId>
+      <version>1.1-beta-8</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>dom4j</artifactId>
+          <groupId>dom4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>xom</artifactId>
+          <groupId>xom</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jdom</artifactId>
+          <groupId>jdom</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jdepend-maven-plugin</artifactId>
+        <version>2.0-beta-1-SNAPSHOT</version>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jxr-maven-plugin</artifactId>
+        <version>2.0-beta-2-SNAPSHOT</version>
+      </plugin>
+    </plugins>
+  </reporting>
+  <distributionManagement>
+    <repository>
+      <id>apache-repo</id>
+      <name>Maven Central Repository</name>
+      <url>scpexe://people.apache.org/www/www.apache.org/dist/maven-repository</url>
+    </repository>
+    <snapshotRepository>
+      <id>apache-snapshots</id>
+      <name>Apache Development Repository</name>
+      <url>scpexe://minotaur.apache.org/www/cvs.apache.org/maven-snapshot-repository</url>
+    </snapshotRepository>
+    <site>
+      <id>website</id>
+      <url>scpexe://people.apache.org/www/ws.apache.org/commons/axiom</url>
+    </site>
+  </distributionManagement>
+</project>
