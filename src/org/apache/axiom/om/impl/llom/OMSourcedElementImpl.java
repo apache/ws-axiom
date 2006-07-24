@@ -19,6 +19,7 @@ package org.apache.axiom.om.impl.llom;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.io.IOException;
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -521,6 +522,7 @@ public class OMSourcedElementImpl extends OMElementImpl
             log.debug("serialize " + getPrintableName() + " to XMLStreamWriter");
         }
         dataSource.serialize(writer);
+        writer.flush();
     }
 
     /* (non-Javadoc)
