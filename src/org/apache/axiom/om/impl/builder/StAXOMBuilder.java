@@ -302,12 +302,12 @@ public class StAXOMBuilder extends StAXBuilder {
 
     protected void endElement() {
         if (lastNode.isComplete()) {
-            OMElement parent = (OMElement) lastNode.getParent();
-            ((OMNodeEx) parent).setComplete(true);
+            OMNodeEx parent = (OMNodeEx) lastNode.getParent();
+            parent.setComplete(true);
             lastNode = parent;
         } else {
-            OMElement e = (OMElement) lastNode;
-            ((OMNodeEx) e).setComplete(true);
+            OMNodeEx e = (OMNodeEx) lastNode;
+            e.setComplete(true);
         }
 
         //return lastNode;
