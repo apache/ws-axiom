@@ -67,18 +67,9 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
                     new StreamWriterToContentHandlerConverter(writer));
         }
 
-        if (this.getNamespace() != null) {
-            String prefix = this.getNamespace().getPrefix();
-            String nameSpaceName = this.getNamespace().getName();
-            writer.writeStartElement(prefix, SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME,
-                    nameSpaceName);
-        } else {
-            writer.writeStartElement(
-                    SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME);
-        }
-        OMSerializerUtil.serializeAttributes(this, writer);
-        OMSerializerUtil.serializeNamespaces(this, writer);
-
+        OMSerializerUtil.serializeStartpart(this, 
+        		SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME, 
+        		writer);
 
         String text = this.getText();
         writer.writeCharacters(text);

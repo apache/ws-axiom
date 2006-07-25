@@ -46,9 +46,12 @@ public class OMElementCloneTest extends XMLTestCase {
         OMElement secondClonedBodyElement = new StAXOMBuilder(body.getXMLStreamReader()).getDocumentElement();
 
         // first check whether both have the same information
-        assertXMLEqual(newDocument(body.toString()), newDocument(firstClonedBodyElement.toString()));
-        assertXMLEqual(newDocument(body.toString()), newDocument(secondClonedBodyElement.toString()));
-        assertXMLEqual(newDocument(firstClonedBodyElement.toString()), newDocument(secondClonedBodyElement.toString()));
+        String firstClonedBodyElementText = firstClonedBodyElement.toString();
+        String secondClonedBodyElementText = secondClonedBodyElement.toString();
+        String bodyText = body.toString();
+        assertXMLEqual(newDocument(bodyText), newDocument(firstClonedBodyElementText));
+        assertXMLEqual(newDocument(bodyText), newDocument(secondClonedBodyElementText));
+        assertXMLEqual(newDocument(firstClonedBodyElementText), newDocument(secondClonedBodyElementText));
 
         // lets check some links. They must not be equal
         assertNotSame(body.getParent(), firstClonedBodyElement.getParent());

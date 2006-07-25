@@ -100,7 +100,12 @@ public class DefaultNSHandlingTest extends TestCase {
             StAXOMBuilder builder = new StAXOMBuilder(reader);
             builder.getDocumentElement().build();
 
-            assertTrue(xml.indexOf("<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\" />") != -1);
+            // The StAX implementation may or may not have a trailing blank in the tag
+            String assertText1 = "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\" />";
+            String assertText2 = "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"/>";
+            
+            assertTrue((xml.indexOf(assertText1) != -1) ||
+            		   (xml.indexOf(assertText2) != -1));
         }catch (Exception e) {
             fail(e.getMessage());
         }

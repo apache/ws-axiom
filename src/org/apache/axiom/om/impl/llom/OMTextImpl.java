@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.mtom.MTOMStAXSOAPModelBuilder;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.Base64;
 import org.apache.axiom.om.util.UUIDGenerator;
 
@@ -437,9 +438,17 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             writer.writeStartElement(nameSpaceName, this
                     .getLocalName());
         } else {
-            writer.writeStartElement(prefix, this.getLocalName(),
-                    nameSpaceName);
-            writer.setPrefix(prefix, nameSpaceName);
+        	// According to StAX, setPrefix must occur before
+        	// writeStartElement
+        	if (OMSerializerUtil.isSetPrefixBeforeStartElement(writer)) {
+        		writer.setPrefix(prefix, nameSpaceName);
+        		writer.writeStartElement(prefix, this.getLocalName(),
+        				nameSpaceName);
+        	} else {
+        		writer.writeStartElement(prefix, this.getLocalName(),
+        				nameSpaceName);
+        		writer.setPrefix(prefix, nameSpaceName);
+        	}
         }
         // add the elements attribute "href"
         serializeAttribute(this.attribute, writer);

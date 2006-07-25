@@ -16,7 +16,10 @@
 
 package org.apache.axiom.om.impl.serialize;
 
+import java.util.ArrayList;
+
 import org.apache.axiom.om.OMSerializer;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamConstants;
@@ -107,47 +110,200 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
     protected void serializeElement(XMLStreamReader reader,
                                     XMLStreamWriter writer)
             throws XMLStreamException {
-        String prefix = reader.getPrefix();
-        String nameSpaceName = reader.getNamespaceURI();
-        if (nameSpaceName != null) {
-            String writer_prefix = writer.getPrefix(nameSpaceName);
-            if (writer_prefix != null) {
-                writer.writeStartElement(nameSpaceName, reader.getLocalName());
-            } else {
-                if (prefix != null) {
-                    writer.writeStartElement(prefix, reader.getLocalName(),
-                            nameSpaceName);
-                    writer.writeNamespace(prefix, nameSpaceName);
-                    writer.setPrefix(prefix, nameSpaceName);
-                } else {
-                    writer.writeStartElement(nameSpaceName,
-                            reader.getLocalName());
-                    writer.writeDefaultNamespace(nameSpaceName);
-                    writer.setDefaultNamespace(nameSpaceName);
-                }
+        
+    	// Note: To serialize the start tag, we must follow the order dictated by the JSR-173 (StAX) specification.
+    	// Please keep this code in sync with the code in OMSerializerUtil.serializeStartpart
+    
+        // The algorithm is:
+        // ... generate setPrefix/setDefaultNamespace for each namespace declaration if the prefix is unassociated.
+    	// ... generate setPrefix/setDefaultNamespace if the prefix of the element is unassociated
+    	// ... generate setPrefix/setDefaultNamespace for each unassociated prefix of the attributes.
+    	//
+    	// ... generate writeStartElement (See NOTE_A)
+    	//
+    	// ... generate writeNamespace/writerDefaultNamespace for each namespace declaration on the element
+    	// ... generate writeNamespace/writeDefaultNamespace for any new "autogen" namespace/prefixes
+    	// ... generate writeAttribute for each attribute	
+    	
+    	// NOTE_A: To confuse matters, some StAX vendors (including woodstox), believe that the setPrefix bindings 
+    	// should occur after the writeStartElement.  If this is the case, the writeStartElement is generated first.
+    	
+    	ArrayList  prefixList = null;
+    	ArrayList  nsList = null;
+    	
+
+    	// Get the prefix and namespace of the element.  "" and null are identical.
+        String ePrefix = reader.getPrefix();
+    	ePrefix = (ePrefix != null && ePrefix.length() == 0) ? null : ePrefix;
+    	String eNamespace = reader.getNamespaceURI();
+    	eNamespace = (eNamespace != null && eNamespace.length() == 0) ? null : eNamespace;
+    	
+    	// Write the startElement if required
+		boolean setPrefixFirst = OMSerializerUtil.isSetPrefixBeforeStartElement(writer);
+        if (!setPrefixFirst) {
+        	if (eNamespace != null) {
+        		if (ePrefix == null) {
+        			writer.writeStartElement("", reader.getLocalName(), eNamespace);
+        		} else {
+        			writer.writeStartElement(ePrefix, reader.getLocalName(), eNamespace);
+        		}
+        	} else {
+        		writer.writeStartElement(reader.getLocalName());
+        	}
+        }
+    	
+        // Generate setPrefix for the namespace declarations
+        int count = reader.getNamespaceCount();
+        for (int i = 0; i < count; i++) {
+        	String prefix = reader.getNamespacePrefix(i);
+        	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
+        	String namespace = reader.getNamespaceURI(i);
+        	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
+        	
+        	generateSetPrefix(prefix, namespace, writer);
+        }
+        
+        // Generate setPrefix for the element
+        // If the prefix is not associated with a namespace yet, remember it so that we can
+    	// write out a namespace declaration
+    	String newPrefix = generateSetPrefix(ePrefix, eNamespace, writer);
+    	
+    	if (newPrefix != null) {
+    		if (prefixList == null) {
+    			prefixList= new ArrayList();
+    			nsList = new ArrayList();
+    		}
+    		if (!prefixList.contains(newPrefix)) {
+    			prefixList.add(newPrefix);
+    			nsList.add(eNamespace);
+    		}
+    	}
+    
+        // Now write the namespaces for each attribute
+        count = reader.getAttributeCount();
+        for (int i = 0; i < count; i++) {
+            String prefix = reader.getAttributePrefix(i);
+            prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
+            String namespace = reader.getAttributeNamespace(i);
+            namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
+            
+            // Default prefix referencing is not allowed on an attribute
+            if (prefix == null && namespace != null) {
+            	String writerPrefix = writer.getPrefix(namespace);
+            	writerPrefix = (writerPrefix != null && writerPrefix.length() == 0) ? null : writerPrefix;
+            	prefix = (writerPrefix != null) ? 
+            			writerPrefix :
+            	        generateUniquePrefix(writer.getNamespaceContext());
             }
-        } else {
-            writer.writeStartElement(reader.getLocalName());
+            newPrefix = generateSetPrefix(prefix, namespace, writer);
+            // If the prefix is not associated with a namespace yet, remember it so that we can
+        	// write out a namespace declaration
+        	if (newPrefix != null) {
+        		if (prefixList == null) {
+        			prefixList= new ArrayList();
+        			nsList = new ArrayList();
+        		}
+        		if (!prefixList.contains(newPrefix)) {
+        			prefixList.add(newPrefix);
+        			nsList.add(namespace);
+        		}
+        	}
+        }
+        
+        // Now write the startElement
+        if (setPrefixFirst) {
+        	if (eNamespace != null) {
+        		if (ePrefix == null) {
+        			writer.writeStartElement("", reader.getLocalName(), eNamespace);
+        		} else {
+        			writer.writeStartElement(ePrefix, reader.getLocalName(), eNamespace);
+        		}
+        	} else {
+        		writer.writeStartElement(reader.getLocalName());
+        	}
         }
 
 
         // add the namespaces
-        int count = reader.getNamespaceCount();
+        count = reader.getNamespaceCount();
         String namespacePrefix;
         for (int i = 0; i < count; i++) {
-            namespacePrefix = reader.getNamespacePrefix(i);
-            if(namespacePrefix != null && namespacePrefix.length()==0)
-                continue;
-
-            serializeNamespace(namespacePrefix,
-                    reader.getNamespaceURI(i), writer);
+        	String prefix = reader.getNamespacePrefix(i);
+        	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
+        	String namespace = reader.getNamespaceURI(i);
+        	if (prefix != null && namespace != null) {
+        		writer.writeNamespace(prefix, namespace);
+        	} else {
+        		writer.writeDefaultNamespace(namespace);
+        	}
+        	// If this prefix is in the unassociated list, remove it.
+        	if (prefixList != null) {
+        		int j = prefixList.indexOf((prefix == null)?"":prefix);
+        		if (j >= 0) {
+        			prefixList.remove(j);
+        			nsList.remove(j);
+        		}
+        	}
         }
-
-        // add attributes
-        serializeAttributes(reader, writer);
-
+        
+        // Now write out the namespaces that for prefixes that are not associated
+        if (prefixList != null) {
+        	for (int i=0; i<prefixList.size(); i++) {
+        		String prefix = (String) prefixList.get(i);
+        		String namespace = (String) nsList.get(i);
+        		
+        		if (prefix != null) {
+            		writer.writeNamespace(prefix, namespace);
+            	} else {
+            		writer.writeDefaultNamespace(namespace);
+            	}
+        	}
+        }
+        
+        // Now write the attributes
+        count = reader.getAttributeCount();
+        for (int i = 0; i < count; i++) {
+            String prefix = reader.getAttributePrefix(i);
+            prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
+            String namespace = reader.getAttributeNamespace(i);
+            namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
+            
+            
+            if (prefix == null && namespace != null) {
+            	// Default namespaces are not allowed on an attribute reference.
+                // Earlier in this code, a unique prefix was added for this case...now obtain and use it
+            	prefix = writer.getPrefix(namespace);
+            } else if (namespace != null) {
+            	// Use the writer's prefix if it is different
+            	String writerPrefix = writer.getPrefix(namespace);
+            	if (!prefix.equals(writerPrefix)) {
+            		prefix = writerPrefix;
+            	}
+            }
+            if (namespace != null) {
+            	// Qualified attribute
+            	writer.writeAttribute(prefix, namespace,
+                    reader.getAttributeLocalName(i),
+                    reader.getAttributeValue(i));
+            } else {
+            	// Unqualified attribute
+            	writer.writeAttribute(reader.getAttributeLocalName(i),
+                        reader.getAttributeValue(i));
+            }
+        }
     }
 
+    /**
+     * Generate setPrefix/setDefaultNamespace if the prefix is not associated
+     * @param prefix
+     * @param namespace
+     * @param writer
+     * @return prefix name if a setPrefix/setDefaultNamespace is performed
+     */
+    private String generateSetPrefix(String prefix, String namespace, XMLStreamWriter writer) throws XMLStreamException {
+    	return OMSerializerUtil.generateSetPrefix(prefix, namespace, writer);
+    }
+    
     /**
      * Method serializeEndElement.
      *

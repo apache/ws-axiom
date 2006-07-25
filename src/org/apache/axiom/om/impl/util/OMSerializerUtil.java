@@ -23,9 +23,12 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class OMSerializerUtil {
@@ -50,6 +53,7 @@ public class OMSerializerUtil {
      * @param attr
      * @param writer
      * @throws XMLStreamException
+     * @deprecated use serializeStartpart instead
      */
     public static void serializeAttribute(OMAttribute attr, XMLStreamWriter writer)
             throws XMLStreamException {
@@ -83,6 +87,7 @@ public class OMSerializerUtil {
      * @param namespace
      * @param writer
      * @throws XMLStreamException
+     * @deprecated Use serializeStartpart instead
      */
     public static void serializeNamespace(OMNamespace namespace, XMLStreamWriter writer)
             throws XMLStreamException {
@@ -131,115 +136,257 @@ public class OMSerializerUtil {
     }
 
     /**
-     * Method serializeStartpart.
+     * Unfortunately there is disagreement in the user community about the semantics of
+     * setPrefix on the XMLStreamWriter.  An example will explain the difference:
+     * writer.startElement("a")
+     * writer.setPrefix("pre", "urn://sample")
+     * writer.startElement("b")
+     * 
+     * Some user communities (woodstox) believe that the setPrefix is associate with the scope
+     * for "a" and thus remains in scope until the end of a.  The basis for this believe is 
+     * XMLStreamWriter javadoc (which some would argue is incomplete).
+     * 
+     * Some user communities believe that the setPrefix is associated with the "b" element.
+     * These communities reference an example in the specification and historical usage of SAX.
      *
+     * This method will return true if the setPrefix is associated with the next writeStartElement.
+     * 
+     * @param writer
+     * @return true if setPrefix should be generated before startElement
+     */
+    public static boolean isSetPrefixBeforeStartElement(XMLStreamWriter writer) {
+    	NamespaceContext nc = writer.getNamespaceContext();
+    	return(nc ==null || !nc.getClass().getName().contains("wstx"));
+    }
+    
+    /**
+     * Method serializeStartpart.
+     * Serialize the start tag of an element.
+     *
+     * @param element
      * @param writer
      * @throws XMLStreamException
      */
-    public static void serializeStartpart
-            (OMElement
-                    element, XMLStreamWriter writer)
+    public static void serializeStartpart(OMElement element, 
+    		XMLStreamWriter writer) throws XMLStreamException {
+    	serializeStartpart(element, element.getLocalName(), writer);
+    }
+    
+    /**
+     * Method serializeStartpart.
+     * Serialize the start tag of an element.
+     *
+     * @param element
+     * @param localName (in some cases, the caller wants to force a different localName)
+     * @param writer
+     * @throws XMLStreamException
+     */
+    public static void serializeStartpart(OMElement element, String localName, XMLStreamWriter writer)
             throws XMLStreamException {
-        String nameSpaceName;
-        String writer_prefix;
-        String prefix;
-        if (element.getNamespace() != null) {
-            nameSpaceName = element.getNamespace().getName();
-            prefix = element.getNamespace().getPrefix();
-            if (nameSpaceName != null && !"".equals(nameSpaceName)) {
-                writer_prefix = writer.getPrefix(nameSpaceName);
-
-                // if the writer has no prefix registered for the given namespace, no matter what prefix the
-                // ns contains, use that to handle the ns
-                if (writer_prefix == null && !"".equals(prefix)) {
-                    prefix = (prefix == null) ? getNextNSPrefix(writer) : prefix;
-                    writer.writeStartElement(prefix, element.getLocalName(),
-                            nameSpaceName);
-                    writer.writeNamespace(prefix, nameSpaceName);
-                    writer.setPrefix(prefix, nameSpaceName);
-                } else if (prefix == null) {
-                    // by this time prefix is null and writer_prefix is not null
-                    writer.writeStartElement(nameSpaceName,
-                            element.getLocalName());
-                } else {
-                    // now lets handle the case where (prefix != null && writer_prefix != null)
-                    if ("".equals(prefix) && "".equals(writer_prefix)) {
-                        // now this element is trying to use a default namespace and at the same point
-                        // exists a default namespace with the given ns URI.
-                        // but the problem here is that, what if the xml is like the following
-                        // <One xmlns="one.org" >
-                        //    <Two xmlns="two.org">
-                        //         <Three xmlns="one.org" />
-                        //    </Two>
-                        // </One>
-                        //
-                        // if we ask the prefix registered with one.org, the parser will return ""
-                        // which is the default ns. But if we do not declare a new default ns explicitly here
-                        // then this causes problem as element Two has already overriden the default ns.
-                        //
-                        // Solution for this is to ask from the parser the nsURI attached to "" at this
-                        // moment and compare the return uri with namespace name
-                        if (nameSpaceName.equals(writer.getNamespaceContext().getNamespaceURI("")))
-                        {
-                            writer.writeStartElement(nameSpaceName, element.getLocalName());
-                        } else {
-                            writer.writeStartElement(prefix, element.getLocalName(),
-                                    nameSpaceName);
-                            writer.writeDefaultNamespace(nameSpaceName);
-                            writer.setDefaultNamespace(nameSpaceName);
-                        }
-                    } else if (prefix.equals(writer_prefix)) {
-                        writer.writeStartElement(nameSpaceName, element.getLocalName());
-                    } else if ("".equals(prefix)) {
-                        writer.writeStartElement(prefix, element.getLocalName(),
-                                nameSpaceName);
-                        writer.writeDefaultNamespace(nameSpaceName);
-                        writer.setDefaultNamespace(nameSpaceName);
-                    } else {
-                        // now the left scenario is this
-                        // 1. prefix != "" && writer_prefix != "" but writer_prefix != prefix
-                        // 2. prefix != "" && writer_prefix == ""
-
-                        // In both the above cases this xml may contain more than one prefix for the
-                        // same URI. Check them all.
-
-                        // this flag will remember whether this ns is declared in the scope with the
-                        // given prefix or not
-                        boolean found = checkForPrefixInTheCurrentContext(writer, nameSpaceName, prefix);
-
-                        if (!found) {
-                            // seems we haven't found one in the current scope. So declare it.
-                            writer.writeStartElement(prefix, element.getLocalName(),
-                                    nameSpaceName);
-                            writer.writeNamespace(prefix, nameSpaceName);
-                            writer.setPrefix(prefix, nameSpaceName);
-                        } else {
-                            writer.writeStartElement(prefix, element.getLocalName(), nameSpaceName);
-                        }
-
-                    }
-                }
-
-            } else {
-                writer.writeStartElement(element.getLocalName());
-            }
-        } else {
-            writer.writeStartElement(element.getLocalName());
-
-            /** // we need to check whether there's a default namespace visible at this point because
-             // otherwise this element will go into that namespace unintentionally. So we check
-             // whether there is a default NS visible and if so turn it off.
-             if (writer.getNamespaceContext().getNamespaceURI("") != null) {
-             writer.writeDefaultNamespace("");
-             }   */
-
+    	
+    	// Note: To serialize the start tag, we must follow the order dictated by the JSR-173 (StAX) specification.
+    	// Please keep this code in sync with the code in StreamingOMSerializer.serializeElement
+    
+        // The algorithm is:
+        // ... generate setPrefix/setDefaultNamespace for each namespace declaration if the prefix is unassociated.
+    	// ... generate setPrefix/setDefaultNamespace if the prefix of the element is unassociated
+    	// ... generate setPrefix/setDefaultNamespace for each unassociated prefix of the attributes.
+    	//
+    	// ... generate writeStartElement (See NOTE_A)
+    	//
+    	// ... generate writeNamespace/writerDefaultNamespace for each namespace declaration on the element
+    	// ... generate writeNamespace/writeDefaultNamespace for any new "autogen" namespace/prefixes
+    	// ... generate writeAttribute for each attribute	
+    	
+    	// NOTE_A: To confuse matters, some StAX vendors (including woodstox), believe that the setPrefix bindings 
+    	// should occur after the writeStartElement.  If this is the case, the writeStartElement is generated first.
+    	
+    
+    	ArrayList  prefixList = null;
+    	ArrayList  nsList = null;
+    
+    	// Get the namespace and prefix of the element
+    	OMNamespace eOMNamespace = element.getNamespace();
+    	String ePrefix = null;
+		String eNamespace = null;
+		if (eOMNamespace != null) {
+			ePrefix = eOMNamespace.getPrefix();
+			eNamespace = eOMNamespace.getName();
+		}
+		ePrefix = (ePrefix != null && ePrefix.length() == 0) ? null : ePrefix;
+		eNamespace = (eNamespace != null && eNamespace.length() == 0) ? null : eNamespace;
+		
+		// Write the startElement if required
+		boolean setPrefixFirst = isSetPrefixBeforeStartElement(writer);
+        if (!setPrefixFirst) {
+        	if (eNamespace != null) {
+        		if (ePrefix == null) {
+        			writer.writeStartElement("", localName, eNamespace);
+        		} else {
+        			writer.writeStartElement(ePrefix, localName, eNamespace);
+        		}
+        	} else {
+        		writer.writeStartElement(localName);
+        	}
         }
-
-        // add the namespaces
-        serializeNamespaces(element, writer);
-
-        // add the elements attributes
-        serializeAttributes(element, writer);
+		
+    	// Generate setPrefix for the namespace declarations
+    	Iterator it = element.getAllDeclaredNamespaces();
+    	while (it != null && it.hasNext()) {
+    		OMNamespace omNamespace = (OMNamespace) it.next();
+    		String prefix = null;
+    		String namespace = null;
+    		if (omNamespace != null) {
+    			prefix = omNamespace.getPrefix();
+    			namespace = omNamespace.getName();
+    		}
+        	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
+        	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
+        	
+        	generateSetPrefix(prefix, namespace, writer);
+        }
+    	
+    	// Generate setPrefix for the element
+    	// Get the prefix and namespace of the element.  "" and null are identical.
+    	
+    	String newPrefix = generateSetPrefix(ePrefix, eNamespace, writer);
+    	if (newPrefix != null) {
+    		if (prefixList == null) {
+    			prefixList= new ArrayList();
+    			nsList = new ArrayList();
+    		}
+    		if (!prefixList.contains(newPrefix)) {
+    			prefixList.add(newPrefix);
+    			nsList.add(eNamespace);
+    		}
+    	}
+    	
+    	// Now Generate setPrefix for each attribute
+    	Iterator attrs = element.getAllAttributes();
+        while (attrs != null && attrs.hasNext()) {
+        	OMAttribute attr = (OMAttribute) attrs.next();
+        	OMNamespace omNamespace = attr.getNamespace();
+        	String prefix = null;
+    		String namespace = null;
+    		if (omNamespace != null) {
+    			prefix = omNamespace.getPrefix();
+    			namespace = omNamespace.getName();
+    		}
+        	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
+        	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
+            
+            // Default prefix referencing is not allowed on an attribute
+            if (prefix == null && namespace != null) {
+            	String writerPrefix = writer.getPrefix(namespace);
+            	writerPrefix = (writerPrefix != null && writerPrefix.length() == 0) ? null : writerPrefix;
+            	prefix = (writerPrefix != null) ? 
+            			writerPrefix : getNextNSPrefix();
+            }
+            newPrefix = generateSetPrefix(prefix, namespace, writer);
+            // If the prefix is not associated with a namespace yet, remember it so that we can
+        	// write out a namespace declaration
+        	if (newPrefix != null) {
+        		if (prefixList == null) {
+        			prefixList= new ArrayList();
+        			nsList = new ArrayList();
+        		}
+        		if (!prefixList.contains(newPrefix)) {
+        			prefixList.add(newPrefix);
+        			nsList.add(namespace);
+        		}
+        	}
+        }
+        
+        // Write the startElement if required
+        if (setPrefixFirst) {
+        	if (eNamespace != null) {
+        		if (ePrefix == null) {
+        			writer.writeStartElement("", localName, eNamespace);
+        		} else {
+        			writer.writeStartElement(ePrefix, localName, eNamespace);
+        		}
+        	} else {
+        		writer.writeStartElement(localName);
+        	}
+        }
+        
+        // Now write the namespace declarations
+    	it = element.getAllDeclaredNamespaces();
+    	while (it != null && it.hasNext()) {
+    		OMNamespace omNamespace = (OMNamespace) it.next();
+    		String prefix = null;
+    		String namespace = null;
+    		if (omNamespace != null) {
+    			prefix = omNamespace.getPrefix();
+    			namespace = omNamespace.getName();
+    		}
+        	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
+        	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
+        	if (prefix != null && namespace != null) {
+        		writer.writeNamespace(prefix, namespace);
+        	} else {
+        		writer.writeDefaultNamespace(namespace);
+        	}
+        	
+        	// If this prefix is in the unassociated list, remove it.
+        	if (prefixList != null) {
+        		int i = prefixList.indexOf((prefix == null)?"":prefix);
+        		if (i >= 0) {
+        			prefixList.remove(i);
+        			nsList.remove(i);
+        		}
+        	}
+        }
+    	
+    	// Now write out the namespaces that for prefixes that are not associated (i.e. auto-generated)
+        if (prefixList != null) {
+        	for (int i=0; i<prefixList.size(); i++) {
+        		String prefix = (String) prefixList.get(i);
+        		String namespace = (String) nsList.get(i);	
+        		if (prefix != null) {
+            		writer.writeNamespace(prefix, namespace);
+            	} else {
+            		writer.writeDefaultNamespace(namespace);
+            	}
+        	}
+        }
+        
+        // Now write the attributes
+    	attrs = element.getAllAttributes();
+        while (attrs != null && attrs.hasNext()) {
+        	OMAttribute attr = (OMAttribute) attrs.next();
+        	OMNamespace omNamespace = attr.getNamespace();
+        	String prefix = null;
+    		String namespace = null;
+    		if (omNamespace != null) {
+    			prefix = omNamespace.getPrefix();
+    			namespace = omNamespace.getName();
+    		}
+        	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
+        	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
+        
+            if (prefix == null && namespace != null) {
+            	// Default namespaces are not allowed on an attribute reference.
+                // Earlier in this code, a unique prefix was added for this case...now obtain and use it
+            	prefix = writer.getPrefix(namespace);
+            } else if (namespace != null) {
+            	// Use the writer's prefix if it is different
+            	String writerPrefix = writer.getPrefix(namespace);
+            	if (!prefix.equals(writerPrefix)) {
+            		prefix = writerPrefix;
+            	}
+            }
+            if (namespace != null) {
+            	// Qualified attribute
+            	writer.writeAttribute(prefix, namespace,
+                    attr.getLocalName(),
+                    attr.getAttributeValue());
+            } else {
+            	// Unqualified attribute
+            	writer.writeAttribute(attr.getLocalName(),
+                        attr.getAttributeValue());
+            }
+        }
     }
 
     private static boolean checkForPrefixInTheCurrentContext(XMLStreamWriter writer, String nameSpaceName, String prefix) throws XMLStreamException {
@@ -254,6 +401,14 @@ public class OMSerializerUtil {
         return false;
     }
 
+    /**
+     * serializeNamespaces
+     *
+     * @param element
+     * @param writer
+     * @throws XMLStreamException
+     * @deprecated Use serializeStartpart instead
+     */
     public static void serializeNamespaces
             (OMElement
                     element,
@@ -266,6 +421,13 @@ public class OMSerializerUtil {
         }
     }
 
+    /**
+     * Serialize attributes
+     * @param element
+     * @param writer
+     * @throws XMLStreamException
+     * @deprecated Consider using serializeStartpart instead
+     */
     public static void serializeAttributes
             (OMElement
                     element,
@@ -338,5 +500,47 @@ public class OMSerializerUtil {
         }
 
         return prefix;
+    }
+    
+    /**
+     * Generate setPrefix/setDefaultNamespace if the prefix is not associated
+     * @param prefix
+     * @param namespace
+     * @param writer
+     * @return prefix name if a setPrefix/setDefaultNamespace is performed
+     */
+    public static String generateSetPrefix(String prefix, String namespace, XMLStreamWriter writer) throws XMLStreamException {
+    	// Generate setPrefix/setDefaultNamespace if the prefix is not associated.
+    	String newPrefix = null;
+        if (namespace != null) {
+        	
+        	
+        	// Get the namespace associated with this writer
+        	String writerNS = writer.getNamespaceContext().getNamespaceURI((prefix==null) ? "" : prefix);
+        	writerNS = (writerNS != null && writerNS.length() == 0) ? null : writerNS;
+        	if (writerNS != null) {
+        		String writerPrefix = writer.getPrefix(writerNS);
+        		if (writerPrefix == null) {
+        			;
+        		}
+        	}
+        	
+        	if (writerNS == null || !writerNS.equals(namespace)) {
+        		// Writer has not associated this namespace with a prefix
+        		if (prefix == null) {
+        			writer.setDefaultNamespace(namespace);
+        			newPrefix = "";
+        		} else {
+        			writer.setPrefix(prefix, namespace);
+        			newPrefix = prefix;
+        		}
+        	} else {
+        		// No Action needed..The writer already has associated this prefix to this namespace
+        	}
+        } else {
+        	// Disable the default namespace
+        	writer.setDefaultNamespace("");
+        }
+        return newPrefix;
     }
 }

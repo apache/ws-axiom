@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+<S:Header>
+<Action xmlns="http://www.w3.org/2005/08/addressing">http://www.w3.org/2005/08/addressing/fault</Action>
+<FaultDetail xmlns="http://www.w3.org/2005/08/addressing">
+<ProblemHeaderQName xmlns="http://www.w3.org/2005/08/addressing">ReplyTo</ProblemHeaderQName>
+</FaultDetail>
+<RelatesTo xmlns="http://www.w3.org/2005/08/addressing">urn:uuid:C6E4970C03887FC5C31153324076046143</RelatesTo>
+</S:Header>
+<S:Body>
+<SOAP-ENV:Fault xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+<faultcode xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns="" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">wsa:OnlyAnonymousAddressSupported</faultcode>
+<faultstring xmlns="">A header representing a Message Addressing Property is not valid and the message cannot be processed</faultstring>
+</SOAP-ENV:Fault>
+</S:Body>
+</S:Envelope>

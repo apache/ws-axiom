@@ -77,18 +77,10 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
                     new StreamWriterToContentHandlerConverter(writer));
         }
 
-        if (this.getNamespace() != null) {
-            String prefix = this.getNamespace().getPrefix();
-            String nameSpaceName = this.getNamespace().getName();
-            writer.writeStartElement(prefix, SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME,
-                    nameSpaceName);
-        } else {
-            writer.writeStartElement(
-                    SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME);
-        }
-        OMSerializerUtil.serializeAttributes(this, writer);
-        OMSerializerUtil.serializeNamespaces(this, writer);
-
+        OMSerializerUtil.serializeStartpart(this, 
+        		SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME, 
+        		writer);
+      
         String text = this.getFirstSOAPText().getText();
         writer.writeCharacters(text);
         writer.writeEndElement();
