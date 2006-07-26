@@ -16,11 +16,17 @@
 
 package org.apache.axiom.om;
 
+import org.apache.axiom.attachments.utils.ImageDataSource;
+import org.apache.axiom.attachments.utils.ImageIO;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
+import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
+import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.Iterator;
 
@@ -55,9 +61,9 @@ public class IteratorTest extends AbstractTestCase {
         int counter = 0;
         while (iter.hasNext()) {
             counter ++;
-            assertNotNull("Must return not null objects!",iter.next());
+            assertNotNull("Must return not null objects!", iter.next());
         }
-        assertEquals("This element should contain only five children including the text ",5,counter);
+        assertEquals("This element should contain only five children including the text ", 5, counter);
     }
 
     /**
@@ -70,10 +76,10 @@ public class IteratorTest extends AbstractTestCase {
         while (iter.hasNext()) {
             counter ++;
             Object o = iter.next();
-            assertNotNull("Must return not null objects!",o);
-            assertTrue("All these should be elements!",((OMNode)o).getType()==OMNode.ELEMENT_NODE);
+            assertNotNull("Must return not null objects!", o);
+            assertTrue("All these should be elements!", ((OMNode) o).getType() == OMNode.ELEMENT_NODE);
         }
-        assertEquals("This element should contain only two elements ",2,counter);
+        assertEquals("This element should contain only two elements ", 2, counter);
     }
 
     /**
@@ -81,16 +87,16 @@ public class IteratorTest extends AbstractTestCase {
      */
     public void testElementQNameIterator() {
         OMElement elt = envelope;
-        QName qname = new QName("http://schemas.xmlsoap.org/soap/envelope/","body");
+        QName qname = new QName("http://schemas.xmlsoap.org/soap/envelope/", "body");
         Iterator iter = elt.getChildrenWithName(qname);
         int counter = 0;
         while (iter.hasNext()) {
             counter ++;
             Object o = iter.next();
-            assertNotNull("Must return not null objects!",o);
-            assertTrue("All these should be elements!",((OMNode)o).getType()==OMNode.ELEMENT_NODE);
+            assertNotNull("Must return not null objects!", o);
+            assertTrue("All these should be elements!", ((OMNode) o).getType() == OMNode.ELEMENT_NODE);
         }
-        assertEquals("This element should contain only one element with the given QName ",1,counter);
+        assertEquals("This element should contain only one element with the given QName ", 1, counter);
     }
 
     /**
@@ -178,6 +184,95 @@ public class IteratorTest extends AbstractTestCase {
                 firstChildrenCount - 1,
                 secondChildrenCount);
 
+    }
+
+    /**
+     * This will test the errrors mentioned in @link http://issues.apache.org/jira/browse/WSCOMMONS-12
+     */
+    public void testScenariosInJIRA() {
+        try {
+            OMElement mtomSampleElement = createSampleXMLForTesting();
+            testScenarioOne(mtomSampleElement);
+            testScenarioTwo(mtomSampleElement);
+
+
+        } catch (Exception e) {
+            fail("Exception occurred whilst running the test " + e);
+        }
+
+    }
+
+    private OMElement createSampleXMLForTesting() throws Exception {
+        try {
+            File imageSource = new File("test-resources/mtom/img/test.jpg");
+            OMFactory fac = OMAbstractFactory.getOMFactory();
+            OMNamespace omNs = fac.createOMNamespace("http://localhost/my", "my");
+
+            OMElement data = fac.createOMElement("mtomSample", omNs);
+            OMElement image = fac.createOMElement("image", omNs);
+            Image expectedImage;
+            expectedImage = new ImageIO()
+                    .loadImage(new FileInputStream(imageSource));
+
+            ImageDataSource dataSource = new ImageDataSource("test.jpg",
+                    expectedImage);
+            DataHandler expectedDH = new DataHandler(dataSource);
+            OMText textData = fac.createOMText(expectedDH, true);
+            image.addChild(textData);
+
+            OMElement imageName = fac.createOMElement("fileName", omNs);
+            if (imageSource != null) {
+                imageName.setText(imageSource.getAbsolutePath());
+            }
+            data.addChild(image);
+            data.addChild(imageName);
+
+            return data;
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return null;
+    }
+
+    private void testScenarioOne(OMElement mtomSampleElement) {
+        Iterator imageElementIter = mtomSampleElement.getChildrenWithName(new QName("image"));
+        // do something with the iterator
+        while (imageElementIter.hasNext()) {
+            OMNode omNode = (OMNode) imageElementIter.next();
+            // do nothing
+        }
+
+        Iterator fileNameElementIter = mtomSampleElement.getChildrenWithName(new QName("fileName"));
+        // do something with the iterator
+        while (fileNameElementIter.hasNext()) {
+            OMNode omNode = (OMNode) fileNameElementIter.next();
+            if (omNode instanceof OMElement) {
+                OMElement fileNameElement = (OMElement) omNode;
+                assertTrue("fileName".equalsIgnoreCase(fileNameElement.getLocalName()));
+            }
+        }
+    }
+
+    private void testScenarioTwo(OMElement mtomSampleElement) {
+        Iterator childElementsIter = mtomSampleElement.getChildElements();
+
+        boolean imageElementFound = false;
+        boolean fileNameElementFound = false;
+
+        while (childElementsIter.hasNext()) {
+            OMNode omNode = (OMNode) childElementsIter.next();
+            if (omNode instanceof OMElement) {
+                OMElement omElement = (OMElement) omNode;
+                if (omElement.getLocalName().equals("fileName")) {
+                    fileNameElementFound = true;
+                } else if (omElement.getLocalName().equals("image")) {
+                    imageElementFound = true;
+                }
+            }
+        }
+
+        assertTrue(fileNameElementFound && imageElementFound);
     }
 
 
