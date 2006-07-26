@@ -16,6 +16,20 @@
 
 package org.apache.axiom.om.impl.llom;
 
+import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
+import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,21 +40,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Iterator;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
-import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 
 public class OMSourcedElementTest extends AbstractTestCase {
     private static String testDocument =
@@ -132,7 +131,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMElement child = element.getFirstElement();
         assertEquals("Child element name", "type", child.getLocalName());
         assertEquals("Child element namespace",
-            "http://www.sosnoski.com/uwjws/library", child.getNamespace().getName());
+            "http://www.sosnoski.com/uwjws/library", child.getNamespace().getNamespaceURI());
         OMNode next = child.getNextOMSibling();
         assertTrue("Expected child element", next instanceof OMElement);
         next = next.getNextOMSibling();
@@ -140,7 +139,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         child = (OMElement)next;
         assertEquals("Child element name", "book", child.getLocalName());
         assertEquals("Child element namespace",
-            "http://www.sosnoski.com/uwjws/library", child.getNamespace().getName());
+            "http://www.sosnoski.com/uwjws/library", child.getNamespace().getNamespaceURI());
         assertEquals("Attribute value error", "xml",
             child.getAttributeValue(new QName("type")));
     }

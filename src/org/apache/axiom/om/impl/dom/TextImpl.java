@@ -402,7 +402,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
      */
     private void serializeStartpart(XMLStreamWriter writer)
             throws XMLStreamException {
-        String nameSpaceName = XOP_NS.getName();
+        String nameSpaceName = XOP_NS.getNamespaceURI();
         String writer_prefix = writer.getPrefix(nameSpaceName);
         String prefix = XOP_NS.getPrefix();
         if (writer_prefix != null) {
@@ -435,7 +435,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         if (ns != null) {
             // add the prefix if it's availble
             prefix = ns.getPrefix();
-            namespaceName = ns.getName();
+            namespaceName = ns.getNamespaceURI();
             if (prefix != null) {
                 writer.writeAttribute(prefix, namespaceName, attr
                         .getLocalName(), attr.getAttributeValue());
@@ -460,9 +460,9 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     static void serializeNamespace(OMNamespace namespace, XMLStreamWriter writer)
             throws XMLStreamException {
         if (namespace != null) {
-            String uri = namespace.getName();
+            String uri = namespace.getNamespaceURI();
             String ns_prefix = namespace.getPrefix();
-            writer.writeNamespace(ns_prefix, namespace.getName());
+            writer.writeNamespace(ns_prefix, namespace.getNamespaceURI());
             writer.setPrefix(ns_prefix, uri);
         }
     }

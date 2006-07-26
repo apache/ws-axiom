@@ -95,7 +95,7 @@ public class ElementImplTest extends TestCase {
 		while (it.hasNext()) {
 			OMElement child = (OMElement) it.next();
 			assertEquals("Child local name mismatch", childLocalName, child.getLocalName());
-			assertEquals("Child namespace mismatch", namespace, child.getNamespace().getName());
+			assertEquals("Child namespace mismatch", namespace, child.getNamespace().getNamespaceURI());
 			count ++;
 		}
 		assertEquals("In correct number of children", 1, count );

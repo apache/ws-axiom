@@ -66,7 +66,7 @@ public class AttrNsTest extends AbstractOMSerializationTest {
 
         OMAttribute attr = elem.getAttribute(new QName(OMConstants.XMLNS_URI, "base"));
 
-        assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI, attr.getNamespace().getName());
+        assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI, attr.getNamespace().getNamespaceURI());
     }
 
     /**
@@ -86,7 +86,7 @@ public class AttrNsTest extends AbstractOMSerializationTest {
 
         OMAttribute attr = elem.getAttribute(new QName(OMConstants.XMLNS_URI, "base"));
 
-        assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI, attr.getNamespace().getName());
+        assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI, attr.getNamespace().getNamespaceURI());
     }
 
     public void testAttributesWithProgrammaticalCreation() {

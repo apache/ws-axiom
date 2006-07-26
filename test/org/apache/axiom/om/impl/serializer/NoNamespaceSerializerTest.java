@@ -94,13 +94,13 @@ public class NoNamespaceSerializerTest extends TestCase {
         env.serialize(writer);
         OMElement balanceElement = env.getBody().getFirstElement();
         assertEquals("Deafualt namespace has not been set properly",
-                balanceElement.getNamespace().getName(),
+                balanceElement.getNamespace().getNamespaceURI(),
                 "http://localhost:8081/axis/services/BankPort/");
 
         OMElement accountNo = balanceElement.getFirstElement();
         assertEquals(
                 "Deafualt namespace of children has not been set properly",
-                accountNo.getNamespace().getName(),
+                accountNo.getNamespace().getNamespaceURI(),
                 "http://localhost:8081/axis/services/BankPort/");
 
     }

@@ -74,7 +74,7 @@ public class OMTest extends AbstractTestCase {
     public void isNameSpacesMissing(OMElement omeleent) {
         OMNamespace omns = omeleent.getNamespace();
         assertNotNull(omns);
-        assertNotNull(omns.getName());
+        assertNotNull(omns.getNamespaceURI());
         Iterator it = omeleent.getChildren();
         while (it.hasNext()) {
             OMNode node = (OMNode) it.next();

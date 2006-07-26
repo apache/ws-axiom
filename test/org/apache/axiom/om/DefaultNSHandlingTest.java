@@ -57,7 +57,7 @@ public class DefaultNSHandlingTest extends TestCase {
     }
 
     private void checkNS(OMElement element) {
-        assertTrue("http://www.w3.org/TR/REC-html40".equals(element.getNamespace().getName()));
+        assertTrue("http://www.w3.org/TR/REC-html40".equals(element.getNamespace().getNamespaceURI()));
     }
 
     public void testMultipleDefaultNS() {
@@ -77,8 +77,8 @@ public class DefaultNSHandlingTest extends TestCase {
         OMElement omElementThree = omFactory.createOMElement("Bar", defaultNS1, omElementTwo);
         omElementThree.declareDefaultNamespace("http://defaultNS1.org");
 
-        assertTrue("http://defaultNS1.org".equals(omElementOneChild.getNamespace().getName()));
-        assertTrue("http://defaultNS2.org".equals(omElementTwoChild.getNamespace().getName()));
+        assertTrue("http://defaultNS1.org".equals(omElementOneChild.getNamespace().getNamespaceURI()));
+        assertTrue("http://defaultNS2.org".equals(omElementTwoChild.getNamespace().getNamespaceURI()));
 
 
 

@@ -35,7 +35,7 @@ public class SOAPEnvelopeTest extends SOAPTestCase {
         assertTrue("SOAP 1.1 Header Test : - Header local name mismatch",
                 header.getLocalName().equals(SOAPConstants.HEADER_LOCAL_NAME));
         assertTrue("SOAP 1.1 Header Test : - Header namespace mismatch",
-                header.getNamespace().getName().equals(
+                header.getNamespace().getNamespaceURI().equals(
                         SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
     }
 
@@ -44,7 +44,7 @@ public class SOAPEnvelopeTest extends SOAPTestCase {
         assertTrue("SOAP 1.1 Body Test : - Body local name mismatch",
                 body.getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME));
         assertTrue("SOAP 1.1 Body Test : - Body namespace mismatch",
-                body.getNamespace().getName().equals(
+                body.getNamespace().getNamespaceURI().equals(
                         SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
     }
 
@@ -54,7 +54,7 @@ public class SOAPEnvelopeTest extends SOAPTestCase {
         assertTrue("SOAP 1.2 Header Test : - Header local name mismatch",
                 header.getLocalName().equals(SOAPConstants.HEADER_LOCAL_NAME));
         assertTrue("SOAP 1.2 Header Test : - Header namespace mismatch",
-                header.getNamespace().getName().equals(
+                header.getNamespace().getNamespaceURI().equals(
                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
     }
 
@@ -63,7 +63,7 @@ public class SOAPEnvelopeTest extends SOAPTestCase {
         assertTrue("SOAP 1.2 Body Test : - Body local name mismatch",
                 body.getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME));
         assertTrue("SOAP 1.2 Body Test : - Body namespace mismatch",
-                body.getNamespace().getName().equals(
+                body.getNamespace().getNamespaceURI().equals(
                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
     }
 
@@ -73,7 +73,7 @@ public class SOAPEnvelopeTest extends SOAPTestCase {
         assertTrue("SOAP 1.1 Header Test : - Header local name mismatch",
                 header.getLocalName().equals(SOAPConstants.HEADER_LOCAL_NAME));
         assertTrue("SOAP 1.1 Header Test : - Header namespace mismatch",
-                header.getNamespace().getName().equals(
+                header.getNamespace().getNamespaceURI().equals(
                         SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
     }
 
@@ -82,7 +82,7 @@ public class SOAPEnvelopeTest extends SOAPTestCase {
         assertTrue("SOAP 1.1 Body Test : - Body local name mismatch",
                 body.getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME));
         assertTrue("SOAP 1.1 Body Test : - Body namespace mismatch",
-                body.getNamespace().getName().equals(
+                body.getNamespace().getNamespaceURI().equals(
                         SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
     }
 
@@ -92,7 +92,7 @@ public class SOAPEnvelopeTest extends SOAPTestCase {
         assertTrue("SOAP 1.2 Header Test : - Header local name mismatch",
                 header.getLocalName().equals(SOAPConstants.HEADER_LOCAL_NAME));
         assertTrue("SOAP 1.2 Header Test : - Header namespace mismatch",
-                header.getNamespace().getName().equals(
+                header.getNamespace().getNamespaceURI().equals(
                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
     }
 
@@ -101,7 +101,7 @@ public class SOAPEnvelopeTest extends SOAPTestCase {
         assertTrue("SOAP 1.2 Body Test : - Body local name mismatch",
                 body.getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME));
         assertTrue("SOAP 1.2 Body Test : - Body namespace mismatch",
-                body.getNamespace().getName().equals(
+                body.getNamespace().getNamespaceURI().equals(
                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
     }
 

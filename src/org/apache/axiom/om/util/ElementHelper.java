@@ -52,7 +52,7 @@ public class ElementHelper {
             if (defaultToParentNameSpace) {
                 //get the parent ns and use it for the child
                 OMNamespace namespace = element.getNamespace();
-                return new QName(namespace.getName(), qname, namespace.getPrefix());
+                return new QName(namespace.getNamespaceURI(), qname, namespace.getPrefix());
             } else {
                 //else things without no prefix are local.
                 return new QName(qname);
@@ -69,7 +69,7 @@ public class ElementHelper {
         if (namespace == null) {
             return null;
         }
-        return new QName(namespace.getName(), local, prefix);
+        return new QName(namespace.getNamespaceURI(), local, prefix);
     }
 
     /**

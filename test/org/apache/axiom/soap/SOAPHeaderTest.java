@@ -43,7 +43,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 headerBlock1.getLocalName().equals("echoOk1"));
         assertTrue(
                 "SOAP 1.1 Header Test : - HeaderBlock1 namespace uri mismatch",
-                headerBlock1.getNamespace().getName().equals(
+                headerBlock1.getNamespace().getNamespaceURI().equals(
                         "http://www.example.org"));
 
         SOAPHeaderBlock headerBlock2 = (SOAPHeaderBlock) iterator.next();
@@ -54,7 +54,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 headerBlock2.getLocalName().equals("echoOk2"));
         assertTrue(
                 "SOAP 1.1 Header Test : - HeaderBlock2 namespace uri mismatch",
-                headerBlock2.getNamespace().getName().equals(
+                headerBlock2.getNamespace().getNamespaceURI().equals(
                         "http://www.example.org"));
 
         assertTrue(
@@ -104,7 +104,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 headerBlock1.getLocalName().equals("echoOk1"));
         assertTrue(
                 "SOAP 1.1 Header Test : - HeaderBlock1 namespace uri mismatch",
-                headerBlock1.getNamespace().getName().equals(
+                headerBlock1.getNamespace().getNamespaceURI().equals(
                         "http://www.example.org"));
 
         iterator.hasNext();
@@ -116,7 +116,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 headerBlock2.getLocalName().equals("echoOk2"));
         assertTrue(
                 "SOAP 1.1 Header Test : - HeaderBlock2 namespace uri mismatch",
-                headerBlock2.getNamespace().getName().equals(
+                headerBlock2.getNamespace().getNamespaceURI().equals(
                         "http://www.example.org"));
 
         assertFalse(
@@ -141,7 +141,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 arrayList.size() == 1);
         assertTrue(
                 "SOAP 1.1 Header Test : - headerBlock of given namespace uri mismatch",
-                ((SOAPHeaderBlock) arrayList.get(0)).getNamespace().getName()
+                ((SOAPHeaderBlock) arrayList.get(0)).getNamespace().getNamespaceURI()
                 .equals("http://www.test1.org"));
     }
 
@@ -158,7 +158,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 headerBlock1.getLocalName().equals("echoOk1"));
         assertTrue(
                 "SOAP 1.2 Header Test : - HeaderBlock1 namespace uri mismatch",
-                headerBlock1.getNamespace().getName().equals(
+                headerBlock1.getNamespace().getNamespaceURI().equals(
                         "http://www.example.org"));
 
         SOAPHeaderBlock headerBlock2 = (SOAPHeaderBlock) iterator.next();
@@ -169,7 +169,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 headerBlock2.getLocalName().equals("echoOk2"));
         assertTrue(
                 "SOAP 1.2 Header Test : - HeaderBlock2 namespace uri mismatch",
-                headerBlock2.getNamespace().getName().equals(
+                headerBlock2.getNamespace().getNamespaceURI().equals(
                         "http://www.example.org"));
 
         assertTrue(
@@ -243,7 +243,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 headerBlock1.getLocalName().equals("echoOk1"));
         assertTrue(
                 "SOAP 1.2 Header Test : - HeaderBlock1 namespace uri mismatch",
-                headerBlock1.getNamespace().getName().equals(
+                headerBlock1.getNamespace().getNamespaceURI().equals(
                         "http://www.example.org"));
 
         SOAPHeaderBlock headerBlock2 = (SOAPHeaderBlock) iterator.next();
@@ -254,7 +254,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 headerBlock2.getLocalName().equals("echoOk2"));
         assertTrue(
                 "SOAP 1.2 Header Test : - HeaderBlock2 namespace uri mismatch",
-                headerBlock2.getNamespace().getName().equals(
+                headerBlock2.getNamespace().getNamespaceURI().equals(
                         "http://www.example.org"));
 
         assertFalse(
@@ -276,7 +276,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 arrayList.size() == 1);
         assertTrue(
                 "SOAP 1.2 Header Test : - headerBlock of given namespace uri, mismatch",
-                ((SOAPHeaderBlock) arrayList.get(0)).getNamespace().getName()
+                ((SOAPHeaderBlock) arrayList.get(0)).getNamespace().getNamespaceURI()
                 .equals("http://www.test1.org"));
     }
 
@@ -362,7 +362,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                         "MessageID"));
         assertTrue(
                 "SOAP 1.1 Header Test With Parser : - headerBlock of given namespace uri, mismatch",
-                ((SOAPHeaderBlock) arrayList.get(0)).getNamespace().getName()
+                ((SOAPHeaderBlock) arrayList.get(0)).getNamespace().getNamespaceURI()
                 .equals("http://example.org/ts-tests"));
     }
 
@@ -459,7 +459,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                         "echoOk"));
         assertTrue(
                 "SOAP 1.2 Header Test With Parser : - headerBlock of given namespace uri, mismatch",
-                ((SOAPHeaderBlock) arrayList.get(0)).getNamespace().getName()
+                ((SOAPHeaderBlock) arrayList.get(0)).getNamespace().getNamespaceURI()
                 .equals("http://example.org/ts-tests"));
     }
 }

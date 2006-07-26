@@ -16,18 +16,6 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.io.IOException;
-import java.util.Iterator;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
@@ -40,6 +28,16 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Iterator;
 
 /**
  * <p>Element backed by an arbitrary data source. When necessary, this element
@@ -105,7 +103,7 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @return name
      */
     private String getPrintableName() {
-        String uri = getNamespace().getName();
+        String uri = getNamespace().getNamespaceURI();
         if (uri == null || uri.length() == 0) {
             return getLocalName();
         } else {
@@ -160,8 +158,8 @@ public class OMSourcedElementImpl extends OMElementImpl
                 throw new RuntimeException("Element name from data source is " +
                     reader.getLocalName() + ", not the expected " + getLocalName());
             }
-            if (!reader.getNamespaceURI().equals(getNamespace().getName())) {
-                String uri = getNamespace().getName();
+            if (!reader.getNamespaceURI().equals(getNamespace().getNamespaceURI())) {
+                String uri = getNamespace().getNamespaceURI();
                 log.error("forceExpand: expected element namespace " +
                     getLocalName() + ", found " + uri);
                 throw new RuntimeException("Element namespace from data source is " +
@@ -435,7 +433,7 @@ public class OMSourcedElementImpl extends OMElementImpl
             return super.getQName();
         } else if (definedNamespace != null) {
             // always ignore prefix on name from sourced element
-            return new QName(definedNamespace.getName(), getLocalName());
+            return new QName(definedNamespace.getNamespaceURI(), getLocalName());
             
         } else {
             return new QName(getLocalName());

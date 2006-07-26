@@ -97,10 +97,10 @@ public abstract class SOAPBodyImpl extends SOAPElement
                             element.getLocalName())
                     &&
                     (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                            element.getNamespace().getName())
+                            element.getNamespace().getNamespaceURI())
                     ||
                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                            element.getNamespace().getName()))) {  //added this line
+                            element.getNamespace().getNamespaceURI()))) {  //added this line
                 hasSOAPFault = true;
                 return true;
             } else {
@@ -126,10 +126,10 @@ public abstract class SOAPBodyImpl extends SOAPElement
                         element.getLocalName())
                 &&
                 (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                        element.getNamespace().getName())
+                        element.getNamespace().getNamespaceURI())
                 ||
                 SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                        element.getNamespace().getName()))) {     //added this line
+                        element.getNamespace().getNamespaceURI()))) {     //added this line
             hasSOAPFault = true;
             return (SOAPFault) element;
         } else {

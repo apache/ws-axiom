@@ -230,7 +230,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                     || (currentEvent == END_ELEMENT)
                     || (currentEvent == NAMESPACE)) {
                 OMNamespace ns = ((OMElement) lastNode).getNamespace();
-                returnStr = (ns == null) ? null : ns.getName();
+                returnStr = (ns == null) ? null : ns.getNamespaceURI();
             }
         }
         return returnStr;
@@ -412,7 +412,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                     || (currentEvent == NAMESPACE)) {
                 OMNamespace ns = (OMNamespace) getItemFromIterator(
                         ((OMElement) lastNode).getAllDeclaredNamespaces(), i);
-                returnString = (ns == null) ? null : ns.getName();
+                returnString = (ns == null) ? null : ns.getNamespaceURI();
             }
         }
         return returnString;
@@ -589,7 +589,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                 if (attrib != null) {
                     OMNamespace nameSpace = attrib.getNamespace();
                     if (nameSpace != null) {
-                        returnString = nameSpace.getName();
+                        returnString = nameSpace.getNamespaceURI();
                     }
                 }
             } else {
@@ -1165,7 +1165,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         String localPart = element.getLocalName();
         if (ns != null) {
             String prefix = ns.getPrefix();
-            String uri = ns.getName();
+            String uri = ns.getNamespaceURI();
             if ((prefix == null) || prefix.equals("")) {
                 returnName = new QName(uri, localPart);
             } else {

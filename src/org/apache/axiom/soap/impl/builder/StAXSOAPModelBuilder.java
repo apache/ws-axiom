@@ -135,7 +135,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         }
 
         envelopeNamespace = soapEnvelope.getNamespace();
-        String namespaceName = envelopeNamespace.getName();
+        String namespaceName = envelopeNamespace.getNamespaceURI();
         if ((soapVersionURIFromTransport != null) && !(soapVersionURIFromTransport.equals(namespaceName)))
         {
             throw new SOAPProcessingException("Transport level information does not match with SOAP" +
@@ -303,10 +303,10 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
 
             processingFault = true;
-            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getName())) {
+            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getNamespaceURI())) {
                 builderHelper = new SOAP12BuilderHelper(this);
             } else
-            if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getName())) {
+            if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getNamespaceURI())) {
                 builderHelper = new SOAP11BuilderHelper(this);
             }
 
@@ -326,14 +326,14 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
     private String getSenderFaultCode() {
         if (senderfaultCode == null) {
-            senderfaultCode = SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getName()) ? SOAP12Constants.FAULT_CODE_SENDER : SOAP11Constants.FAULT_CODE_SENDER;
+            senderfaultCode = SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getNamespaceURI()) ? SOAP12Constants.FAULT_CODE_SENDER : SOAP11Constants.FAULT_CODE_SENDER;
         }
         return senderfaultCode;
     }
 
     private String getReceiverFaultCode() {
         if (receiverfaultCode == null) {
-            receiverfaultCode = SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getName()) ? SOAP12Constants.FAULT_CODE_RECEIVER : SOAP11Constants.FAULT_CODE_RECEIVER;
+            receiverfaultCode = SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getNamespaceURI()) ? SOAP12Constants.FAULT_CODE_RECEIVER : SOAP11Constants.FAULT_CODE_RECEIVER;
         }
         return receiverfaultCode;
     }
@@ -387,8 +387,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
         if (isSOAPElement) {
             if (node.getNamespace() != null &&
-                    !node.getNamespace().getName().equals(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI) &&
-                    !node.getNamespace().getName().equals(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI))
+                    !node.getNamespace().getNamespaceURI().equals(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI) &&
+                    !node.getNamespace().getNamespaceURI().equals(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI))
             {
                 throw new SOAPProcessingException("invalid SOAP namespace URI. " +
                         "Only " + SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI +

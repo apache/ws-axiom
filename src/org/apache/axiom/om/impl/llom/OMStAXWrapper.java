@@ -18,16 +18,16 @@ package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.impl.EmptyOMLocation;
-import org.apache.axiom.om.impl.llom.util.NamespaceContextImpl;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
+import org.apache.axiom.om.impl.llom.util.NamespaceContextImpl;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
@@ -35,14 +35,11 @@ import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.util.Iterator;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-import java.util.LinkedHashMap;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Stack;
 
 /**
  * Note  - This class also implements the streaming constants interface
@@ -238,7 +235,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                 OMNamespace ns = ((OMElement) lastNode).getNamespace();
                 returnStr = (ns == null)
                         ? null
-                        : ns.getName();
+                        : ns.getNamespaceURI();
             }
         }
         return returnStr;
@@ -424,7 +421,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                         ((OMElement) lastNode).getAllDeclaredNamespaces(), i);
                 returnString = (ns == null)
                         ? null
-                        : ns.getName();
+                        : ns.getNamespaceURI();
             }
         }
 
@@ -612,7 +609,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                 if (attrib != null) {
                     OMNamespace nameSpace = attrib.getNamespace();
                     if (nameSpace != null) {
-                        returnString = nameSpace.getName();
+                        returnString = nameSpace.getNamespaceURI();
                     }
                 }
             } else {
@@ -781,7 +778,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                if (rootNode instanceof OMElement){
                    OMNamespace namespaceURI =
                            ((OMElement) rootNode).findNamespaceURI(prefix);
-                   return namespaceURI!=null?namespaceURI.getName():null;
+                   return namespaceURI!=null?namespaceURI.getNamespaceURI():null;
                }
             }
         }
@@ -1254,7 +1251,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         String localPart = element.getLocalName();
         if (ns != null) {
             String prefix = ns.getPrefix();
-            String uri = ns.getName();
+            String uri = ns.getNamespaceURI();
             if ((prefix == null) || prefix.equals("")) {
                 returnName = new QName(uri, localPart);
             } else {
@@ -1311,7 +1308,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
     
     private void addNamespaceToMap(OMNamespace ns, Map map) {
         if(map.get(ns.getPrefix())==null) {
-            map.put(ns.getPrefix(), ns.getName());        
+            map.put(ns.getPrefix(), ns.getNamespaceURI());
         }
     }
 }

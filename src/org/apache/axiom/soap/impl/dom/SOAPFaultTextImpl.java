@@ -62,7 +62,7 @@ public abstract class SOAPFaultTextImpl extends SOAPElement implements SOAPFault
         if (langAttr == null) {
             langAttr =
                     this.getAttribute(
-                            new QName(langNamespace.getName(),
+                            new QName(langNamespace.getNamespaceURI(),
                                     SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
                                     SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
         }

@@ -27,7 +27,6 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -66,7 +65,7 @@ public class OMSerializerUtil {
 
             // add the prefix if it's availble
             prefix = ns.getPrefix();
-            namespaceName = ns.getName();
+            namespaceName = ns.getNamespaceURI();
             if (prefix != null) {
                 writer.writeAttribute(prefix, namespaceName,
                         attr.getLocalName(), attr.getAttributeValue());
@@ -94,7 +93,7 @@ public class OMSerializerUtil {
         if (namespace == null) {
             return;
         }
-        String uri = namespace.getName();
+        String uri = namespace.getNamespaceURI();
         String prefix = namespace.getPrefix();
 
         if (uri != null && !"".equals(uri)) {
@@ -211,7 +210,7 @@ public class OMSerializerUtil {
 		String eNamespace = null;
 		if (eOMNamespace != null) {
 			ePrefix = eOMNamespace.getPrefix();
-			eNamespace = eOMNamespace.getName();
+			eNamespace = eOMNamespace.getNamespaceURI();
 		}
 		ePrefix = (ePrefix != null && ePrefix.length() == 0) ? null : ePrefix;
 		eNamespace = (eNamespace != null && eNamespace.length() == 0) ? null : eNamespace;
@@ -238,7 +237,7 @@ public class OMSerializerUtil {
     		String namespace = null;
     		if (omNamespace != null) {
     			prefix = omNamespace.getPrefix();
-    			namespace = omNamespace.getName();
+    			namespace = omNamespace.getNamespaceURI();
     		}
         	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
         	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
@@ -270,7 +269,7 @@ public class OMSerializerUtil {
     		String namespace = null;
     		if (omNamespace != null) {
     			prefix = omNamespace.getPrefix();
-    			namespace = omNamespace.getName();
+    			namespace = omNamespace.getNamespaceURI();
     		}
         	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
         	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
@@ -318,7 +317,7 @@ public class OMSerializerUtil {
     		String namespace = null;
     		if (omNamespace != null) {
     			prefix = omNamespace.getPrefix();
-    			namespace = omNamespace.getName();
+    			namespace = omNamespace.getNamespaceURI();
     		}
         	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
         	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
@@ -360,7 +359,7 @@ public class OMSerializerUtil {
     		String namespace = null;
     		if (omNamespace != null) {
     			prefix = omNamespace.getPrefix();
-    			namespace = omNamespace.getName();
+    			namespace = omNamespace.getNamespaceURI();
     		}
         	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
         	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;

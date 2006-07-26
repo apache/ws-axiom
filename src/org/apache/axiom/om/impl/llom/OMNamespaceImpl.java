@@ -51,8 +51,8 @@ public class OMNamespaceImpl implements OMNamespace {
     public boolean equals(String uri, String prefix) {
         return (((prefix == null) && (this.prefix == null)) ||
                 ((prefix != null) && prefix.equals(this.prefix))) &&
-               ((uri == null) && (this.uri == null) ||
-                (uri != null) && uri.equals(this.uri));
+                ((uri == null) && (this.uri == null) ||
+                        (uri != null) && uri.equals(this.uri));
 
     }
 
@@ -71,6 +71,10 @@ public class OMNamespaceImpl implements OMNamespace {
      * @return Returns String.
      */
     public String getName() {
+        return uri;
+    }
+
+    public String getNamespaceURI() {
         return uri;
     }
 }

@@ -60,12 +60,12 @@ public class SOAP11HeaderImpl extends SOAPHeaderImpl {
     public SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns)
             throws OMException {
         
-        if (ns == null || ns.getName() == null || "".equals(ns.getName())) {
+        if (ns == null || ns.getNamespaceURI() == null || "".equals(ns.getNamespaceURI())) {
             throw new OMException(
                     "All the SOAP Header blocks should be namespace qualified");
         }
 
-        OMNamespace namespace = findNamespace(ns.getName(), ns.getPrefix());
+        OMNamespace namespace = findNamespace(ns.getNamespaceURI(), ns.getPrefix());
         if (namespace != null) {
             ns = namespace;
         }

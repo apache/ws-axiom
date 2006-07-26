@@ -23,10 +23,10 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.om.OMText;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.QName;
 import java.util.Iterator;
@@ -89,10 +89,10 @@ public class OMElementTest extends OMTestCase implements OMConstants {
         OMNamespace testNamespace2 = factory.createOMNamespace("ftp://anotherTest.ws.org", "ws");
         firstElement.declareNamespace(testNamespace2);
 
-        OMNamespace inheritedSecondNamespace = secondElement.findNamespace(testNamespace2.getName(),
+        OMNamespace inheritedSecondNamespace = secondElement.findNamespace(testNamespace2.getNamespaceURI(),
                 testNamespace2.getPrefix());
         assertNotNull("Children should inherit namespaces declared in parent", inheritedSecondNamespace);
-        assertEquals("inherited namespace uri should be equal", inheritedSecondNamespace.getName(), testNamespace2.getName());
+        assertEquals("inherited namespace uri should be equal", inheritedSecondNamespace.getNamespaceURI(), testNamespace2.getNamespaceURI());
         assertEquals("inherited namespace prefix should be equal", inheritedSecondNamespace.getPrefix(), testNamespace2.getPrefix());
 
 
@@ -105,7 +105,7 @@ public class OMElementTest extends OMTestCase implements OMConstants {
         assertTrue("OMElement children detachment has not worked properly", !secondElement.equals(firstElement.getFirstElement()));
         assertNull("First Element should not contain elements after detaching. ", firstElement.getFirstElement());
         assertNull("First Element should not contain elements after detaching. ", firstElement.getFirstOMChild());
-        assertNull(secondElement.findNamespace(testNamespace2.getName(), testNamespace2.getPrefix()));
+        assertNull(secondElement.findNamespace(testNamespace2.getNamespaceURI(), testNamespace2.getPrefix()));
 
         firstElement.addChild(secondElement);
         firstElement.setText("Some Sample Text");

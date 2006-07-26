@@ -39,7 +39,15 @@ public interface OMNamespace {
     /**
      * Method getName.
      *
+     * @deprecated This method is deprecated. Please use getNamespaceURI() method instead.
+     *
      * @return Returns String.
      */
     public String getName();
+
+    /**
+     * Provides the namespace URI of this namespace.
+     * @return - the namespace URI of the namespace.
+     */
+    public String getNamespaceURI();
 }

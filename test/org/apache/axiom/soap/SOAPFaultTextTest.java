@@ -54,7 +54,7 @@ public class SOAPFaultTextTest extends SOAPFaultReasonTestCase {
                         SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
         assertTrue(
                 "SOAP 1.1 Fault Text Test : - After calling setLang method, Lang attribute namespace uri mismatch",
-                langAttribute.getNamespace().getName().equals(
+                langAttribute.getNamespace().getNamespaceURI().equals(
                         SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI));
     }
 
@@ -106,7 +106,7 @@ public class SOAPFaultTextTest extends SOAPFaultReasonTestCase {
                         SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
         assertTrue(
                 "SOAP 1.2 Fault Text Test : - After calling setLang method, Lang attribute namespace uri mismatch",
-                langAttribute.getNamespace().getName().equals(
+                langAttribute.getNamespace().getNamespaceURI().equals(
                         SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI));
     }
 
@@ -163,7 +163,7 @@ public class SOAPFaultTextTest extends SOAPFaultReasonTestCase {
                         SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
         assertTrue(
                 "SOAP 1.2 Fault Text Test With Parser : - Lang attribute namespace uri mismatch",
-                langAttribute.getNamespace().getName().equals(
+                langAttribute.getNamespace().getNamespaceURI().equals(
                         SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI));
     }
 

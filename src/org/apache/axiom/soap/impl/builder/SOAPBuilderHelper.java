@@ -72,9 +72,9 @@ public abstract class SOAPBuilderHelper {
         // }
         if (isSOAPElement) {
             if (node.getNamespace() != null &&
-                    !node.getNamespace().getName().equals(
+                    !node.getNamespace().getNamespaceURI().equals(
                             SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI) &&
-                    !node.getNamespace().getName().equals(
+                    !node.getNamespace().getNamespaceURI().equals(
                             SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI)) {
                 throw new OMBuilderException("invalid SOAP namespace URI");
             }

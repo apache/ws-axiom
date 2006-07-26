@@ -10,9 +10,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.OMNamespaceImpl;
+import org.apache.axiom.om.util.StAXUtils;
 import org.jaxen.BaseXPath;
 import org.jaxen.DefaultNavigator;
 import org.jaxen.FunctionCallException;
@@ -33,10 +33,10 @@ import java.util.Iterator;
 import java.util.List;
 
 public class DocumentNavigator extends DefaultNavigator {
-	
+
     private static final long serialVersionUID = 7325116153349780805L;
 
-	/**
+    /**
      * Returns a parsed form of the given xpath string, which will be suitable
      * for queries on documents that use the same navigator as this one.
      *
@@ -87,7 +87,7 @@ public class DocumentNavigator extends DefaultNavigator {
         if (prefix == null || "".equals(prefix)) {
             return attr.getQName().getLocalPart();
         }
-        return prefix + ":" + attr.getNamespace().getName();
+        return prefix + ":" + attr.getNamespace().getNamespaceURI();
     }
 
     /**
@@ -124,7 +124,7 @@ public class DocumentNavigator extends DefaultNavigator {
         if (prefix == null || "".equals(prefix)) {
             return attr.getQName().getLocalPart();
         }
-        return prefix + ":" + attr.getNamespace().getName();
+        return prefix + ":" + attr.getNamespace().getNamespaceURI();
     }
 
     /**
@@ -266,7 +266,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @return Returns the string-value of the node.
      */
     public String getNamespaceStringValue(Object object) {
-        return ((OMNamespace) object).getName();
+        return ((OMNamespace) object).getNamespaceURI();
     }
 
     /**
@@ -328,7 +328,7 @@ public class DocumentNavigator extends DefaultNavigator {
             while (i != null && i.hasNext()) {
                 attributes.add(new OMAttributeEx((OMAttribute) i.next(),
                         (OMContainer) contextNode, ((OMElement) contextNode)
-                                .getOMFactory()));
+                        .getOMFactory()));
             }
             return attributes.iterator();
         }
@@ -381,7 +381,7 @@ public class DocumentNavigator extends DefaultNavigator {
         nsList.add(
                 new OMNamespaceEx(
                         new OMNamespaceImpl(
-                                "http://www.w3.org/XML/1998/namespace", 
+                                "http://www.w3.org/XML/1998/namespace",
                                 "xml"),
                         (OMContainer) contextNode));
         return nsList.iterator();
@@ -628,7 +628,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @return Returns the target of the processing-instruction node.
      */
     public String getProcessingInstructionTarget(Object object) {
-        return ((OMProcessingInstruction)object).getTarget();
+        return ((OMProcessingInstruction) object).getTarget();
     }
 
     /**
@@ -638,7 +638,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @return Returns the data of the processing-instruction node.
      */
     public String getProcessingInstructionData(Object object) {
-        return ((OMProcessingInstruction)object).getValue();
+        return ((OMProcessingInstruction) object).getValue();
     }
 
     /**
@@ -696,7 +696,11 @@ public class DocumentNavigator extends DefaultNavigator {
         }
 
         public String getName() {
-            return originalNsp.getName();
+            return originalNsp.getNamespaceURI();
+        }
+
+        public String getNamespaceURI() {
+            return originalNsp.getNamespaceURI();
         }
 
         public OMContainer getParent() {
@@ -709,8 +713,8 @@ public class DocumentNavigator extends DefaultNavigator {
         OMContainer parent = null;
         OMFactory factory;
 
-        OMAttributeEx(OMAttribute attribute, OMContainer parent, 
-                OMFactory factory) {
+        OMAttributeEx(OMAttribute attribute, OMContainer parent,
+                      OMFactory factory) {
             this.attribute = attribute;
             this.parent = parent;
         }

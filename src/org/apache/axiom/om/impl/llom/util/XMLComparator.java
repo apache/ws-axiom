@@ -120,7 +120,7 @@ public class XMLComparator {
         if (elt!=null){
             OMNamespace namespace = elt.getNamespace();
             if (namespace!=null){
-            return ignorableNamespaceList.contains(namespace.getName());
+            return ignorableNamespaceList.contains(namespace.getNamespaceURI());
             }else{
                 return false; 
             }
@@ -212,7 +212,7 @@ public class XMLComparator {
                     "First Namespace is null. But the second is NOT null");
         }
 
-        if (!one.getName().equals(two.getName())) {
+        if (!one.getNamespaceURI().equals(two.getNamespaceURI())) {
             throw new XMLComparisonException(
                     failureNotice + one + " != " + two);
         }

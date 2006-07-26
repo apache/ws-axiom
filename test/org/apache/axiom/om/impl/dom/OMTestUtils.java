@@ -77,7 +77,7 @@ public class OMTestUtils {
             if (omele.getNamespace() != null) {
                 TestCase.assertEquals("Namespace URI not correct",
                         ele.getNamespaceURI(),
-                        omele.getNamespace().getName());
+                        omele.getNamespace().getNamespaceURI());
 
             }
 
@@ -88,7 +88,7 @@ public class OMTestUtils {
             while (attIterator != null && attIterator.hasNext() && map == null) {
                 omattribute = (OMAttribute) attIterator.next();
                 Node node = map.getNamedItemNS(
-                        omattribute.getNamespace().getName(),
+                        omattribute.getNamespace().getNamespaceURI(),
                         omattribute.getLocalName());
                 if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
                     Attr attr = (Attr) node;

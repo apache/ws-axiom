@@ -59,4 +59,8 @@ public class NamespaceImpl implements OMNamespace {
     public String getName() {
         return this.nsUri;
     }
+
+    public String getNamespaceURI() {
+        return this.nsUri;
+    }
 }

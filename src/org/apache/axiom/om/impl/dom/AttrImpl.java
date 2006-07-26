@@ -233,7 +233,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      */
     public QName getQName() {
         return (this.namespace == null) ? new QName(this.attrName) : new QName(
-                this.namespace.getName(), this.attrName, this.namespace
+                this.namespace.getNamespaceURI(), this.attrName, this.namespace
                         .getPrefix());
 
     }
@@ -353,7 +353,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      */
     public String getNamespaceURI() {
         if (this.namespace != null) {
-            return namespace.getName();
+            return namespace.getNamespaceURI();
         }
         return null;
     }

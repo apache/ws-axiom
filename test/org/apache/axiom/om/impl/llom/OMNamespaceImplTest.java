@@ -17,16 +17,13 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
-import junit.textui.TestRunner;            
-            
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import junit.textui.TestRunner;
 
-import org.apache.axiom.om.impl.llom.OMNamespaceImpl;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * This class will test the methods and fields of
@@ -71,9 +68,9 @@ public class OMNamespaceImplTest extends TestCase {
             new OMNamespaceImpl("http://www.w3.org/XML/1998/namespace",
                                 "xml");
         assertEquals("http://www.w3.org/XML/1998/namespace",
-                     omNsImpl.getName());
+                     omNsImpl.getNamespaceURI());
         omNsImpl = new OMNamespaceImpl(null, null);
-        assertNull(omNsImpl.getName());
+        assertNull(omNsImpl.getNamespaceURI());
     }
 
     /**

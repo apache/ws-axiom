@@ -280,11 +280,11 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     public QName getTextAsQName() throws OMException {
         if (textNS != null) {
             String prefix = textNS.getPrefix();
-            String name = textNS.getName();
+            String name = textNS.getNamespaceURI();
             if (prefix == null || "".equals(prefix)) {
                 return new QName(name, getTextFromProperPlace());
             } else {
-                return new QName(textNS.getName(), getTextFromProperPlace(), prefix);
+                return new QName(textNS.getNamespaceURI(), getTextFromProperPlace(), prefix);
             }
         } else if (this.value != null || charArray != null) {
             return new QName(getTextFromProperPlace());
@@ -431,7 +431,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      */
     private void serializeStartpart(XMLStreamWriter writer)
             throws XMLStreamException {
-        String nameSpaceName = XOP_NS.getName();
+        String nameSpaceName = XOP_NS.getNamespaceURI();
         String writer_prefix = writer.getPrefix(nameSpaceName);
         String prefix = XOP_NS.getPrefix();
         if (writer_prefix != null) {
@@ -471,7 +471,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         if (ns != null) {
             // add the prefix if it's availble
             prefix = ns.getPrefix();
-            namespaceName = ns.getName();
+            namespaceName = ns.getNamespaceURI();
             if (prefix != null) {
                 writer.writeAttribute(prefix, namespaceName, attr
                         .getLocalName(), attr.getAttributeValue());
@@ -494,9 +494,9 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     static void serializeNamespace(OMNamespace namespace, XMLStreamWriter writer)
             throws XMLStreamException {
         if (namespace != null) {
-            String uri = namespace.getName();
+            String uri = namespace.getNamespaceURI();
             String ns_prefix = namespace.getPrefix();
-            writer.writeNamespace(ns_prefix, namespace.getName());
+            writer.writeNamespace(ns_prefix, namespace.getNamespaceURI());
             writer.setPrefix(ns_prefix, uri);
         }
     }

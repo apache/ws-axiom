@@ -86,9 +86,9 @@ public class SOAPEnvelopeImpl extends SOAPElement
 
     private void inferFactory() {
         if (ns != null) {
-            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getName())) {
+            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI())) {
                 factory = OMAbstractFactory.getSOAP12Factory();
-            } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getName())) {
+            } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI())) {
                 factory = OMAbstractFactory.getSOAP11Factory();
             }
         }

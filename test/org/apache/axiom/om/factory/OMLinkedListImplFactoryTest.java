@@ -23,8 +23,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMTestUtils;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -33,6 +31,8 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * User: Eran Chinthaka (eran.chinthaka@gmail.com)
@@ -90,7 +90,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
 
     public void testCreateOMNamespace() {
         assertTrue("OMNamespace uri not correct",
-                nsUri.equals(namespace.getName()));   // here equalsIgnoreCase should not be used as case does matter
+                nsUri.equals(namespace.getNamespaceURI()));   // here equalsIgnoreCase should not be used as case does matter
         assertTrue("OMNamespace prefix not correct",
                 nsPrefix.equals(namespace.getPrefix()));  // here equalsIgnoreCase should not be used as case does matter
     }

@@ -182,7 +182,7 @@ public class OMElementImpl extends OMNodeImpl
      * @return Returns namespace.
      */
     private OMNamespace handleNamespace(OMNamespace ns) {
-        OMNamespace namespace = findNamespace(ns.getName(),
+        OMNamespace namespace = findNamespace(ns.getNamespaceURI(),
                 ns.getPrefix());
         if (namespace == null) {
             namespace = declareNamespace(ns);
@@ -338,7 +338,7 @@ public class OMElementImpl extends OMNodeImpl
         String prefix = namespace.getPrefix();
         if (prefix == null) {
             prefix = OMSerializerUtil.getNextNSPrefix();
-            namespace = new OMNamespaceImpl(namespace.getName(), prefix);
+            namespace = new OMNamespaceImpl(namespace.getNamespaceURI(), prefix);
         }
         namespaces.put(prefix, namespace);
         return namespace;
@@ -409,7 +409,7 @@ public class OMElementImpl extends OMNodeImpl
         if (prefix == null || "".equals(prefix)) {
 
             OMNamespace defaultNamespace = this.getDefaultNamespace();
-            if (defaultNamespace != null && uri.equals(defaultNamespace.getName())) {
+            if (defaultNamespace != null && uri.equals(defaultNamespace.getNamespaceURI())) {
                 return defaultNamespace;
             }
             Iterator namespaceListIterator = namespaces.values().iterator();
@@ -419,7 +419,7 @@ public class OMElementImpl extends OMNodeImpl
             while (namespaceListIterator.hasNext()) {
                 OMNamespace omNamespace =
                         (OMNamespace) namespaceListIterator.next();
-                nsUri = omNamespace.getName();
+                nsUri = omNamespace.getNamespaceURI();
                 if (nsUri != null &&
                         nsUri.equals(uri)) {
                     return omNamespace;
@@ -427,7 +427,7 @@ public class OMElementImpl extends OMNodeImpl
             }
         } else {
             OMNamespace namespace = (OMNamespace) namespaces.get(prefix);
-            if (namespace != null && uri.equalsIgnoreCase(namespace.getName())) {
+            if (namespace != null && uri.equalsIgnoreCase(namespace.getNamespaceURI())) {
                 return namespace;
             }
         }
@@ -491,9 +491,9 @@ public class OMElementImpl extends OMNodeImpl
             this.attributes = new LinkedHashMap(5);
         }
         OMNamespace namespace = attr.getNamespace();
-        if (namespace != null && this.findNamespace(namespace.getName(), namespace.getPrefix()) == null)
+        if (namespace != null && this.findNamespace(namespace.getNamespaceURI(), namespace.getPrefix()) == null)
         {
-            this.declareNamespace(namespace.getName(), namespace.getPrefix());
+            this.declareNamespace(namespace.getNamespaceURI(), namespace.getPrefix());
         }
 
         attributes.put(attr.getQName(), attr);
@@ -518,9 +518,9 @@ public class OMElementImpl extends OMNodeImpl
                                     OMNamespace ns) {
         OMNamespace namespace;
         if (ns != null) {
-            namespace = findNamespace(ns.getName(), ns.getPrefix());
+            namespace = findNamespace(ns.getNamespaceURI(), ns.getPrefix());
             if (namespace == null) {
-                throw new OMException("Given OMNamespace(" + ns.getName() + " " +
+                throw new OMException("Given OMNamespace(" + ns.getNamespaceURI() + " " +
                         ns.getPrefix()
                         + ") for "
                         +
@@ -877,9 +877,9 @@ public class OMElementImpl extends OMNodeImpl
         QName qName;
         if (ns != null) {
             if (ns.getPrefix() != null) {
-                qName = new QName(ns.getName(), localName, ns.getPrefix());
+                qName = new QName(ns.getNamespaceURI(), localName, ns.getPrefix());
             } else {
-                qName = new QName(ns.getName(), localName);
+                qName = new QName(ns.getNamespaceURI(), localName);
             }
         } else {
             qName = new QName(localName);
