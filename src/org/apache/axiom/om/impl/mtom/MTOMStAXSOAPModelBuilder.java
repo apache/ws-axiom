@@ -138,6 +138,12 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements MT
                 e.setFirstChild(node);
             }
 
+            
+            // This code seems suspicious.  The constructNode call
+            // does the attribute processing.  The parser is now at a different node,
+            // and thus processAttributes will either throw an exception or get the
+            // wrong attributes. (scheu)
+            
             // fill in the attributes
             processAttributes(node);
             //TODO Exception when trying to log . check this

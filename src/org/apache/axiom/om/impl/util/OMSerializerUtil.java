@@ -321,8 +321,12 @@ public class OMSerializerUtil {
     		}
         	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
         	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
-        	if (prefix != null && namespace != null) {
-        		writer.writeNamespace(prefix, namespace);
+        	if (prefix != null) {
+        		// For some reason, prefixes are sometimes bound to an empty namespace on the OMElement.
+        		// This does not seem correct, the following code is a safeguard against errors.
+        		if (namespace != null) {
+        			writer.writeNamespace(prefix, namespace);
+        		}
         	} else {
         		writer.writeDefaultNamespace(namespace);
         	}
