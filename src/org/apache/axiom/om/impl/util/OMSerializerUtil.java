@@ -155,7 +155,7 @@ public class OMSerializerUtil {
      */
     public static boolean isSetPrefixBeforeStartElement(XMLStreamWriter writer) {
     	NamespaceContext nc = writer.getNamespaceContext();
-    	return(nc ==null || !nc.getClass().getName().contains("wstx"));
+    	return(nc ==null || nc.getClass().getName().indexOf("wstx") == -1);
     }
     
     /**
