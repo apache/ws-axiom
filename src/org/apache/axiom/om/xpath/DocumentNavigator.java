@@ -600,7 +600,13 @@ public class DocumentNavigator extends DefaultNavigator {
         if (contextNode instanceof OMDocument) {
             return contextNode;
         }
-        return getDocumentNode(((OMNode) contextNode).getParent());
+        OMContainer parent = ((OMNode) contextNode).getParent();
+        if (parent == null) {
+            // this node doesn't have a parent Document. So return the document element itself
+            return contextNode;
+        } else {
+            return getDocumentNode(parent);
+        }
     }
 
     /**
