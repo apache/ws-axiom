@@ -402,7 +402,7 @@ public class StAXSOAPModelBuilderTest extends TestCase {
                     header.getLocalName().equals(
                             SOAPConstants.HEADER_LOCAL_NAME));
             assertTrue("SOAP 1.1 :- Header namespace uri mismatch",
-                    header.getNamespace().getName().equals(
+                    header.getNamespace().getNamespaceURI().equals(
                             SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
 
             headerBlock = (SOAPHeaderBlock) header.getFirstElement();

@@ -70,7 +70,7 @@ public class SOAPFaultDetailTest extends SOAPFaultTestCase {
                 detailEntry2.getLocalName().equals("DetailEntry2"));
         assertTrue(
                 "SOAP 1.1 Fault Detail Test : - detailEntry2 namespace uri mismatch",
-                detailEntry2.getNamespace().getName().equals(
+                detailEntry2.getNamespace().getNamespaceURI().equals(
                         "http://www.test.org"));
         assertTrue(
                 "SOAP 1.1 Fault Detail Test : - After calling addDetailEntry method twice, getAllDetailEntries method returns an iterator with three objects",
