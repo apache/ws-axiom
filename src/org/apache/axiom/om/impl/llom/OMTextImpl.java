@@ -404,25 +404,34 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     }
 
     private void internalSerializeLocal(XMLStreamWriter writer2) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
-
+        
         if (!this.isBinary) {
-            writeOutput(writer);
+            writeOutput(writer2);
         } else {
-
-            if (writer.isOptimized()) {
-                if (contentID == null) {
-                    contentID = writer.getNextContentId();
+            //check whether we have a MTOMXMLStreamWriter. if so
+            //we can optimize the writing!
+            if (writer2 instanceof MTOMXMLStreamWriter){
+                MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
+                if (writer.isOptimized()) {
+                    if (contentID == null) {
+                        contentID = writer.getNextContentId();
+                    }
+                    // send binary as MTOM optimised
+                    this.attribute = new OMAttributeImpl("href",
+                            new OMNamespaceImpl("", ""), "cid:" + getContentID(), this.factory);
+                    this.serializeStartpart(writer);
+                    writer.writeOptimized(this);
+                    writer.writeEndElement();
+                } else {
+                    //do normal base64
+                    writeOutput(writer);
                 }
-                // send binary as MTOM optimised
-                this.attribute = new OMAttributeImpl("href",
-                        new OMNamespaceImpl("", ""), "cid:" + getContentID(), this.factory);
-                this.serializeStartpart(writer);
-                writer.writeOptimized(this);
-                writer.writeEndElement();
-            } else {
-                writer.writeCharacters(this.getText());
+            }else{
+               //we do not have a optimized writer. Just do the normal
+               //base64 writing
+                writeOutput(writer2);
             }
+
         }
     }
 
