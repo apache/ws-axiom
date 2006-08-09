@@ -37,7 +37,7 @@ public class StAXUtils {
         if (!xmlInputFactoryPool.empty()) {
             return (XMLInputFactory) xmlInputFactoryPool.pop();
         }
-        return XMLInputFactory.newInstance();
+        return XMLInputFactory.newInstance("javax.xml.stream.XMLInputFactory", StAXUtils.class.getClassLoader());
     }
 
     /**
@@ -94,7 +94,7 @@ public class StAXUtils {
         if (!xmlOutputFactoryPool.empty()) {
             return (XMLOutputFactory) xmlOutputFactoryPool.pop();
         }
-        return XMLOutputFactory.newInstance();
+        return XMLOutputFactory.newInstance("javax.xml.stream.XMLOutputFactory", StAXUtils.class.getClassLoader());
     }
 
     /**
