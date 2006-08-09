@@ -17,7 +17,7 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMTestCase;
-import org.apache.axiom.om.impl.llom.OMNamespaceImpl;
+import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 

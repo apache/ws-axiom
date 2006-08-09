@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.axiom.om.impl.llom;
+package org.apache.axiom.om.impl;
 
 import org.apache.axiom.om.OMNamespace;
 

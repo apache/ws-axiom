@@ -25,6 +25,8 @@ import junit.textui.TestRunner;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import org.apache.axiom.om.impl.OMNamespaceImpl;
+
 /**
  * This class will test the methods and fields of
  * the OMNamespaceImpl class. 
