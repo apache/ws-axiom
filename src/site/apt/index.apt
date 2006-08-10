@@ -1,0 +1,42 @@
+           -----------------------------------
+           Apache Axiom - The XML Object Model
+           -----------------------------------
+
+Welcome to Apache Axiom
+
+  AXIOM stands for AXis Object Model (also known as OM - Object Model) and refers to the XML
+  infoset model that was initially developed for Apache Axis2. XML infoset refers to the
+  information included inside the XML and for programmatical manipulation it is convenient
+  to have a representation of this XML infoset in a language specific manner. For an object
+  oriented language the obvious choice is a model made up of objects. DOM and JDOM are two
+  such XML models. OM is conceptually similar to such an XML model by its external behavior
+  but deep down it is very much different.
+
+Latest Release
+
+  02 May 2006 - Apache Axiom Version 1.0 Released!
+
+  After nearly 2 years of development and numerous incremental releases, we are proud to
+  announce the release of Version 1.0 of Apache AXIOM!
+
+  Apache AXIOM is a StAX-based, XML Infoset compliant object model which supports on-demand
+  building of the object tree. It supports a novel "pull-through" model which allows one to
+  turn off the tree building and directly access the underlying pull event stream. It also
+  has built in support for XML Optimized Packaging (XOP) and MTOM, the combination of which
+  allows XML to carry binary data efficiently and in a transparent manner. The combination
+  of these is an easy to use API with a very high performant architecture!
+
+  Developed as part of Apache Axis2, Apache AXIOM is the core of Apache Axis2. However,
+  it is a pure standalone XML Infoset model with novel features and can be used
+  independently of Apache Axis2.
+
+Key Features
+
+  * Full XML Infoset compliant XML object model
+  * StAX based builders with on-demand building and pull-through
+  * XOP/MTOM support offering direct binary support
+  * Convenient SOAP Infoset API on top of AXIOM
+    * Two implementations included:
+      * Linked list based implementation
+      * W3C DOM supporting implementation
+    * High performant
