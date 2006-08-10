@@ -1,9 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.ws.commons</groupId>
-  <artifactId>axiom</artifactId>
+  <groupId>org.apache.ws.commons.axiom</groupId>
+  <artifactId>axiom-parent</artifactId>
   <name>Axiom</name>
-  <version>SNAPSHOT</version>
+  <version>SNAPSHOT</version> <!-- Should better be ${axiom.version} -->
+  <packaging>pom</packaging>
   <description>AXIOM API</description>
   <url>http://ws.apache.org/commons/axiom/</url>
   <issueManagement>
@@ -20,6 +25,15 @@
       </notifier>
     </notifiers>
   </ciManagement>
+    <mailingLists>
+      <mailingList>
+        <name>WS Commons Developers</name>
+        <subscribe>commons-dev-subscribe@ws.apache.org</subscribe>
+        <unsubscribe>commons-dev-unsubscribe@ws.apache.org</unsubscribe>
+        <post>commons-dev@ws.apache.org</post>
+        <archive>http://mail-archives.apache.org/mod_mbox/ws-commons-dev/</archive>
+      </mailingList>
+    </mailingLists>
   <inceptionYear>2004</inceptionYear>
     <developers>
         <developer>
@@ -160,7 +174,18 @@
             <email/>
             <organization>Lanka Software Foundation / University of Moratuwa</organization>
         </contributor>
+        <contributor>
+            <name>Jochen Wiedmann</name>
+            <email>jochen.wiedmann AT gmail.com</email>
+        </contributor>
     </contributors>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</developerConnection>
@@ -170,81 +195,6 @@
     <name>Apache Software Foundation</name>
     <url>http://www.apache.org/</url>
   </organization>
-  <build>
-    <sourceDirectory>src</sourceDirectory>
-    <testSourceDirectory>test</testSourceDirectory>
-    <resources>
-      <resource>
-        <directory>src</directory>
-        <includes>
-          <include>**/*.xml</include>
-        </includes>
-        <excludes>
-          <exclude>**/package.html</exclude>
-        </excludes>
-      </resource>
-      <resource>
-        <targetPath>META-INF</targetPath>
-        <directory>${basedir}</directory>
-        <includes>
-          <include>LICENSE*</include>
-        </includes>
-      </resource>
-    </resources>
-    <testResources>
-      <testResource>
-        <directory>test-resources</directory>
-        <includes>
-          <include>**/*.xml</include>
-          <include>**/*.xsd</include>
-        </includes>
-      </testResource>
-    </testResources>
-    <plugins>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <forkMode>once</forkMode>
-          <childDelegation>false</childDelegation>
-          <includes>
-            <include>**/*Test.java</include>
-          </includes>
-          <excludes>
-              <exclude>**/*SpacesTest.java</exclude>
-              <exclude>**/*AbstractOMSerializationTest.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <siteDirectory>${basedir}/site</siteDirectory>
-          <resourcesDirectory>${basedir}/site/resources</resourcesDirectory>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-one-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>install-maven-one-repository</goal>
-              <goal>deploy-maven-one-repository</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <remoteRepositoryId>apache</remoteRepositoryId>
-          <remoteRepositoryUrl>scp://people.apache.org/www/cvs.apache.org/repository</remoteRepositoryUrl>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <tagBase>https://svn.apache.org/repos/asf/webservices/commons/tags/axiom</tagBase>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
   <profiles>
     <profile>
       <id>release</id>
@@ -256,10 +206,10 @@
       </activation>
       <build>
         <plugins>
-<!--
-  Commented out, because the descriptor files are missing.
           <plugin>
+            <inherited>false</inherited>
             <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.1</version>
             <executions>
               <execution>
                 <id>src-assembly</id>
@@ -268,10 +218,9 @@
                   <goal>assembly</goal>
                 </goals>
                 <configuration>
-                  <descriptor>assembly-src.xml</descriptor>
+                  <descriptor>src/main/assembly/src.xml</descriptor>
                   <finalName>axiom-${project.version}</finalName>
-                  <outputDirectory>target/src-package</outputDirectory>
-                  <workDirectory>target/assembly/work</workDirectory>
+                  <tarLongFileMode>gnu</tarLongFileMode>
                 </configuration>
               </execution>
               <execution>
@@ -281,15 +230,13 @@
                   <goal>assembly</goal>
                 </goals>
                 <configuration>
-                  <descriptor>assembly-bin.xml</descriptor>
+                  <descriptor>src/main/assembly/bin.xml</descriptor>
                   <finalName>axiom-${project.version}</finalName>
-                  <outputDirectory>target/src-package</outputDirectory>
-                  <workDirectory>target/assembly/work</workDirectory>
+                  <tarLongFileMode>gnu</tarLongFileMode>
                 </configuration>
               </execution>
             </executions>
           </plugin>
--->
           <plugin>
             <artifactId>maven-source-plugin</artifactId>
             <executions>
@@ -301,6 +248,14 @@
             </executions>
             <configuration>
               <attach>true</attach>
+            </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <inherited>true</inherited>
+            <configuration>
+              <source>1.3</source>
+              <target>1.3</target>
             </configuration>
           </plugin>
           <plugin>
@@ -344,74 +299,105 @@
       </releases>
     </pluginRepository>
   </pluginRepositories>
-  <dependencies>
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.0.4</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>avalon-framework</artifactId>
-          <groupId>avalon-framework</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>logkit</artifactId>
-          <groupId>logkit</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>stax</groupId>
-      <artifactId>stax-api</artifactId>
-      <version>1.0.1</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>woodstox</groupId>
-      <artifactId>wstx-asl</artifactId>
-      <version>2.9.3</version>
-    </dependency>
-    <dependency>
-      <groupId>jaxen</groupId>
-      <artifactId>jaxen</artifactId>
-      <version>1.1-beta-8</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>dom4j</artifactId>
-          <groupId>dom4j</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>xom</artifactId>
-          <groupId>xom</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jdom</artifactId>
-          <groupId>jdom</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-javamail_1.3.1_spec</artifactId>
-      <version>1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>xmlunit</groupId>
-      <artifactId>xmlunit</artifactId>
-      <version>1.0</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.ws.commons.axiom</groupId>
+        <artifactId>axiom-api</artifactId>
+        <version>${axiom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.ws.commons.axiom</groupId>
+        <artifactId>axiom-impl</artifactId>
+        <version>${axiom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.ws.commons.axiom</groupId>
+        <artifactId>axiom-dom</artifactId>
+        <version>${axiom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.0.4</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>avalon-framework</artifactId>
+            <groupId>avalon-framework</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>logkit</artifactId>
+            <groupId>logkit</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>stax</groupId>
+        <artifactId>stax-api</artifactId>
+        <version>1.0</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>woodstox</groupId>
+        <artifactId>wstx-asl</artifactId>
+        <version>2.9.3</version>
+      </dependency>
+      <dependency>
+        <groupId>jaxen</groupId>
+        <artifactId>jaxen</artifactId>
+        <version>1.1-beta-8</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>dom4j</artifactId>
+            <groupId>dom4j</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>xom</artifactId>
+            <groupId>xom</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>jdom</artifactId>
+            <groupId>jdom</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-javamail_1.3.1_spec</artifactId>
+        <version>1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>3.8.2</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>xmlunit</groupId>
+        <artifactId>xmlunit</artifactId>
+        <version>1.0</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <reporting>
     <plugins>
       <plugin>
+        <inherited>false</inherited>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <aggregate>true</aggregate>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-changes-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>changes-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
       </plugin>
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
@@ -425,6 +411,10 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jxr-maven-plugin</artifactId>
         <version>2.0-beta-2-SNAPSHOT</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <inherited>false</inherited>
       </plugin>
     </plugins>
   </reporting>
@@ -444,4 +434,13 @@
       <url>scpexe://people.apache.org/www/ws.apache.org/commons/axiom</url>
     </site>
   </distributionManagement>
+  <modules>
+    <module>modules/axiom-api</module>
+    <module>modules/axiom-impl</module>
+    <module>modules/axiom-dom</module>
+    <module>modules/axiom-tests</module>
+  </modules>
+  <properties>
+    <axiom.version>SNAPSHOT</axiom.version>
+  </properties>
 </project>

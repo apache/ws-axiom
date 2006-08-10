@@ -1,0 +1,7 @@
+TODO list for completing build with Maven 2:
+============================================
+
+* Create axiom.jar (bundle of axiom-api.jar, axiom-dom.jar and
+  axiom-impl.jar) or decide to drop it.
+* Add LICENSE and NOTICE files to the generated jar files.
+  See http://jira.codehaus.org/browse/MJAR-42.

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry path="modules/axiom-api/src/main/java" kind="src"/>
+	<classpathentry path="modules/axiom-impl/src/main/java" kind="src"/>
+	<classpathentry path="modules/axiom-dom/src/main/java" kind="src"/>
+	<classpathentry path="modules/axiom-tests/src/test/java" kind="src"/>
+	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
+	<classpathentry path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER" kind="con"/>
+	<classpathentry path="bin" kind="output"/>
+</classpath>
