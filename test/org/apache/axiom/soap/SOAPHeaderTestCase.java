@@ -18,7 +18,7 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMNamespace;
 
-public class SOAPHeaderTestCase extends SOAPTestCase {
+public abstract class SOAPHeaderTestCase extends SOAPTestCase {
     protected SOAPHeader soap11Header;
     protected SOAPHeader soap12Header;
     protected SOAPHeader soap11HeaderWithParser;

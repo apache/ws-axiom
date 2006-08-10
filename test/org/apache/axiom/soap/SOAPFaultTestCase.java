@@ -18,7 +18,7 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMAbstractFactory;
 
-public class SOAPFaultTestCase extends SOAPBodyTestCase {
+public abstract class SOAPFaultTestCase extends SOAPBodyTestCase {
     protected SOAPFault soap11Fault;
     protected SOAPFault soap12Fault;
     protected SOAPFault soap11FaultWithParser;

@@ -16,7 +16,7 @@
 
 package org.apache.axiom.soap;
 
-public class SOAPBodyTestCase extends SOAPTestCase {
+public abstract class SOAPBodyTestCase extends SOAPTestCase {
     protected SOAPBody soap11Body;
     protected SOAPBody soap12Body;
 

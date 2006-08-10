@@ -16,7 +16,7 @@
 
 package org.apache.axiom.soap;
 
-public class SOAPFaultReasonTestCase extends SOAPFaultTestCase {
+public abstract class SOAPFaultReasonTestCase extends SOAPFaultTestCase {
 
     protected SOAPFaultReason soap11FaultReason;
     protected SOAPFaultReason soap12FaultReason;

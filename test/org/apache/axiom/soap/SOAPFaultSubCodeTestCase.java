@@ -16,7 +16,7 @@
 
 package org.apache.axiom.soap;
 
-public class SOAPFaultSubCodeTestCase extends SOAPFaultCodeTestCase {
+public abstract class SOAPFaultSubCodeTestCase extends SOAPFaultCodeTestCase {
     protected SOAPFaultValue soap11FaultValue;
     protected SOAPFaultValue soap12FaultValueInFaultCode;
     protected SOAPFaultSubCode soap12FaultSubCodeInCode;

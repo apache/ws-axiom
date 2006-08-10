@@ -29,7 +29,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-public class SOAPTestCase extends AbstractTestCase {
+public abstract class SOAPTestCase extends AbstractTestCase {
     protected SOAPFactory soap11Factory;
     protected SOAPFactory soap12Factory;
     protected OMFactory omFactory;
