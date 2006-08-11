@@ -17,6 +17,16 @@
         </j:if>
     </preGoal>
 
+    <preGoal name="test:test">
+	  <copy todir="test-resources">
+		<fileset dir="modules/axiom-tests/test-resources"/>
+	  </copy>
+    </preGoal>
+
+    <postGoal name="test:test">
+	  <delete dir="test-resources"/>
+    </postGoal>
+
     <postGoal name="java:compile">
         <javac destdir="${basedir}/target/classes/" srcdir="${basedir}/modules"
 			  debug="true"

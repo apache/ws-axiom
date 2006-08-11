@@ -200,7 +200,7 @@
     <build>
         <nagEmailAddress></nagEmailAddress>
         <sourceDirectory>src</sourceDirectory>
-        <unitTestSourceDirectory>test</unitTestSourceDirectory>
+        <unitTestSourceDirectory>modules/axiom-tests/src/test/java</unitTestSourceDirectory>
 
         <unitTest>
             <excludes>
@@ -213,7 +213,7 @@
 
             <resources>
                 <resource>
-                    <directory>${basedir}/test-resources</directory>
+                    <directory>${basedir}/modules/axiom-tests/test-resources</directory>
                 </resource>
                 <resource>
                     <directory>conf</directory>
