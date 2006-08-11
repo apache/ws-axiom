@@ -17,6 +17,17 @@
         </j:if>
     </preGoal>
 
+    <postGoal name="java:compile">
+        <javac destdir="${basedir}/target/classes/" srcdir="${basedir}/modules"
+			  debug="true"
+			  source="1.3"
+			  classpathref="maven.dependency.classpath">
+			  <include name="axiom-api/src/**/*.java"/>
+			  <include name="axiom-dom/src/**/*.java"/>
+			  <include name="axiom-impl/src/**/*.java"/>
+        </javac>
+    </postGoal>
+
     <postGoal name="jar">
         <mkdir dir="target/classes/META-INF"/>
         <jar destfile="target/axiom-api-${axiom.version}.jar">
