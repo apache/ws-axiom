@@ -19,19 +19,23 @@
       <directory>.settings</directory>
     </fileSet>
     <fileSet>
-      <directory>examples</directory>
+      <directory>legal</directory>
+    </fileSet>
+    <fileSet>
+      <directory>modules</directory>
+      <excludes>
+        <exclude>axiom-api/target</exclude>
+        <exclude>axiom-api/target/**/*</exclude>
+        <exclude>axiom-impl/target</exclude>
+        <exclude>axiom-impl/target/**/*</exclude>
+        <exclude>axiom-dom/target</exclude>
+        <exclude>axiom-dom/target/**/*</exclude>
+        <exclude>axiom-tests/target</exclude>
+        <exclude>axiom-tests/target/**/*</exclude>
+      </excludes>
     </fileSet>
     <fileSet>
       <directory>src</directory>
-    </fileSet>
-    <fileSet>
-      <directory>test2</directory>
-    </fileSet>
-    <fileSet>
-      <directory>test3</directory>
-    </fileSet>
-    <fileSet>
-      <directory>test-resources</directory>
     </fileSet>
   </fileSets>
 </assembly>
