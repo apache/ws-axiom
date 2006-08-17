@@ -4,11 +4,7 @@ import junit.framework.TestCase;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.*;
 import java.io.ByteArrayInputStream;
 import java.util.Iterator;
 /*
@@ -125,7 +121,6 @@ public class DefaultNSHandlingTest extends TestCase {
             OMElement binSecElem = fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust","Binarysecret", "wst"), entElem);
             binSecElem.setText("secret value");
             String xml = elem.toString();
-            System.out.println("xml = " + xml);
             assertTrue("Binarysecret element should have \'wst\' ns prefix", xml.indexOf("<wst:Binarysecret") != -1);
         }catch (Exception e) {
             fail(e.getMessage());

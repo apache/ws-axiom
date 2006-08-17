@@ -113,8 +113,5 @@ public class SOAPEnvelopeTest extends SOAPTestCase {
 
         soapFac.createSOAPHeader(defaultEnvelope);
 
-        System.out.println(defaultEnvelope);
-
-//        System.out.println("defaultEnvelope = " + defaultEnvelope);
     }
 }

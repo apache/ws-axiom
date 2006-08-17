@@ -212,7 +212,6 @@ public class NamespaceTest extends XMLTestCase {
             paramElement.addChild(actionElem);
         }
 
-        System.out.println("paramElement = " + paramElement);
     }
 
 

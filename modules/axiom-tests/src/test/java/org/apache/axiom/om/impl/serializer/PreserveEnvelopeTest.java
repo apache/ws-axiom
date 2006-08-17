@@ -78,7 +78,6 @@ import java.io.ByteArrayInputStream;
 		            documentElement.build();
 
                     String outstr  = documentElement.toString();
-                    System.out.println("outstr = " + outstr);
                     assertTrue(outstr.indexOf("xmlns:saml=") > 0);
 		            assertTrue(outstr.indexOf("<Assertion") == 0);
 		            
