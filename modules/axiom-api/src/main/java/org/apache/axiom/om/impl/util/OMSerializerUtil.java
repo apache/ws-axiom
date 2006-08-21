@@ -193,16 +193,14 @@ public class OMSerializerUtil {
     	//
     	// ... generate writeStartElement (See NOTE_A)
     	//
-    	// ... generate writeNamespace/writerDefaultNamespace for each namespace declaration on the element
-    	// ... generate writeNamespace/writeDefaultNamespace for any new "autogen" namespace/prefixes
+    	// ... generate writeNamespace/writerDefaultNamespace for the new namespace declarations determine during the "set" processing
     	// ... generate writeAttribute for each attribute	
     	
     	// NOTE_A: To confuse matters, some StAX vendors (including woodstox), believe that the setPrefix bindings 
     	// should occur after the writeStartElement.  If this is the case, the writeStartElement is generated first.
     	
-    
-    	ArrayList  prefixList = null;
-    	ArrayList  nsList = null;
+    	ArrayList  writePrefixList = null;
+    	ArrayList  writeNSList = null;
     
     	// Get the namespace and prefix of the element
     	OMNamespace eOMNamespace = element.getNamespace();
@@ -242,21 +240,33 @@ public class OMSerializerUtil {
         	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
         	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
         	
-        	generateSetPrefix(prefix, namespace, writer);
+        	
+        	String newPrefix = generateSetPrefix(prefix, namespace, writer);
+        	// If this is a new association, remember it so that it can written out later
+        	if (newPrefix != null) {
+        		if (writePrefixList == null) {
+        			writePrefixList= new ArrayList();
+        			writeNSList = new ArrayList();
+        		}
+        		if (!writePrefixList.contains(newPrefix)) {
+        			writePrefixList.add(newPrefix);
+        			writeNSList.add(namespace);
+        		}
+        	}
         }
     	
     	// Generate setPrefix for the element
     	// Get the prefix and namespace of the element.  "" and null are identical.
-    	
     	String newPrefix = generateSetPrefix(ePrefix, eNamespace, writer);
+    	// If this is a new association, remember it so that it can written out later
     	if (newPrefix != null) {
-    		if (prefixList == null) {
-    			prefixList= new ArrayList();
-    			nsList = new ArrayList();
+    		if (writePrefixList == null) {
+    			writePrefixList= new ArrayList();
+    			writeNSList = new ArrayList();
     		}
-    		if (!prefixList.contains(newPrefix)) {
-    			prefixList.add(newPrefix);
-    			nsList.add(eNamespace);
+    		if (!writePrefixList.contains(newPrefix)) {
+    			writePrefixList.add(newPrefix);
+    			writeNSList.add(eNamespace);
     		}
     	}
     	
@@ -285,13 +295,13 @@ public class OMSerializerUtil {
             // If the prefix is not associated with a namespace yet, remember it so that we can
         	// write out a namespace declaration
         	if (newPrefix != null) {
-        		if (prefixList == null) {
-        			prefixList= new ArrayList();
-        			nsList = new ArrayList();
+        		if (writePrefixList == null) {
+        			writePrefixList= new ArrayList();
+        			writeNSList = new ArrayList();
         		}
-        		if (!prefixList.contains(newPrefix)) {
-        			prefixList.add(newPrefix);
-        			nsList.add(namespace);
+        		if (!writePrefixList.contains(newPrefix)) {
+        			writePrefixList.add(newPrefix);
+        			writeNSList.add(namespace);
         		}
         	}
         }
@@ -309,43 +319,12 @@ public class OMSerializerUtil {
         	}
         }
         
-        // Now write the namespace declarations
-    	it = element.getAllDeclaredNamespaces();
-    	while (it != null && it.hasNext()) {
-    		OMNamespace omNamespace = (OMNamespace) it.next();
-    		String prefix = null;
-    		String namespace = null;
-    		if (omNamespace != null) {
-    			prefix = omNamespace.getPrefix();
-    			namespace = omNamespace.getNamespaceURI();
-    		}
-        	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
-        	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
-        	if (prefix != null) {
-        		// For some reason, prefixes are sometimes bound to an empty namespace on the OMElement.
-        		// This does not seem correct, the following code is a safeguard against errors.
-        		if (namespace != null) {
-        			writer.writeNamespace(prefix, namespace);
-        		}
-        	} else {
-        		writer.writeDefaultNamespace(namespace);
-        	}
-        	
-        	// If this prefix is in the unassociated list, remove it.
-        	if (prefixList != null) {
-        		int i = prefixList.indexOf((prefix == null)?"":prefix);
-        		if (i >= 0) {
-        			prefixList.remove(i);
-        			nsList.remove(i);
-        		}
-        	}
-        }
-    	
-    	// Now write out the namespaces that for prefixes that are not associated (i.e. auto-generated)
-        if (prefixList != null) {
-        	for (int i=0; i<prefixList.size(); i++) {
-        		String prefix = (String) prefixList.get(i);
-        		String namespace = (String) nsList.get(i);	
+        // Now write out the list of namespace declarations in this list that we constructed
+    	// while doing the "set" processing.
+    	if (writePrefixList != null) {
+        	for (int i=0; i<writePrefixList.size(); i++) {
+        		String prefix = (String) writePrefixList.get(i);
+        		String namespace = (String) writeNSList.get(i);	
         		if (prefix != null) {
             		writer.writeNamespace(prefix, namespace);
             	} else {
@@ -516,7 +495,7 @@ public class OMSerializerUtil {
     	// Generate setPrefix/setDefaultNamespace if the prefix is not associated.
     	String newPrefix = null;
         if (namespace != null) {
-        	
+        	// Qualified Namespace
         	
         	// Get the namespace associated with this writer
         	String writerNS = writer.getNamespaceContext().getNamespaceURI((prefix==null) ? "" : prefix);
@@ -541,8 +520,15 @@ public class OMSerializerUtil {
         		// No Action needed..The writer already has associated this prefix to this namespace
         	}
         } else {
-        	// Disable the default namespace
-        	writer.setDefaultNamespace("");
+        	// Unqualified Namespace
+        	
+        	// Make sure the default namespace is either not used or disabled (set to "")
+        	String writerNS = writer.getNamespaceContext().getNamespaceURI("");
+        	if (writerNS != null && writerNS.length() > 0) {
+        		// Disable the default namespace
+        		writer.setDefaultNamespace("");
+        		newPrefix = "";
+        	}
         }
         return newPrefix;
     }

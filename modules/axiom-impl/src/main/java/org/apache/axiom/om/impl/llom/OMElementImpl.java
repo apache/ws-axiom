@@ -87,6 +87,7 @@ public class OMElementImpl extends OMNodeImpl
 
     /**
      * Constructor OMElementImpl.
+     * A null namespace indicates that the default namespace in scope is used
      */
     public OMElementImpl(String localName, OMNamespace ns, OMContainer parent,
                          OMXMLParserWrapper builder, OMFactory factory) {
@@ -115,6 +116,8 @@ public class OMElementImpl extends OMNodeImpl
      * @param ns        - can be null
      * @param parent    - this should be an OMContainer
      * @param factory   - factory that created this OMElement
+     * 
+     * A null namespace indicates that the default namespace in scope is used
      */
     public OMElementImpl(String localName, OMNamespace ns, OMContainer parent,
                          OMFactory factory) {

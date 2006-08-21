@@ -114,22 +114,21 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
     	// Note: To serialize the start tag, we must follow the order dictated by the JSR-173 (StAX) specification.
     	// Please keep this code in sync with the code in OMSerializerUtil.serializeStartpart
     
-        // The algorithm is:
+    	// The algorithm is:
         // ... generate setPrefix/setDefaultNamespace for each namespace declaration if the prefix is unassociated.
     	// ... generate setPrefix/setDefaultNamespace if the prefix of the element is unassociated
     	// ... generate setPrefix/setDefaultNamespace for each unassociated prefix of the attributes.
     	//
     	// ... generate writeStartElement (See NOTE_A)
     	//
-    	// ... generate writeNamespace/writerDefaultNamespace for each namespace declaration on the element
-    	// ... generate writeNamespace/writeDefaultNamespace for any new "autogen" namespace/prefixes
-    	// ... generate writeAttribute for each attribute	
+    	// ... generate writeNamespace/writerDefaultNamespace for the new namespace declarations determine during the "set" processing
+    	// ... generate writeAttribute for each attribute
     	
     	// NOTE_A: To confuse matters, some StAX vendors (including woodstox), believe that the setPrefix bindings 
     	// should occur after the writeStartElement.  If this is the case, the writeStartElement is generated first.
     	
-    	ArrayList  prefixList = null;
-    	ArrayList  nsList = null;
+    	ArrayList  writePrefixList = null;
+    	ArrayList  writeNSList = null;
     	
 
     	// Get the prefix and namespace of the element.  "" and null are identical.
@@ -160,26 +159,37 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         	String namespace = reader.getNamespaceURI(i);
         	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
         	
-        	generateSetPrefix(prefix, namespace, writer);
+        	String newPrefix = generateSetPrefix(prefix, namespace, writer);
+        	// If this is a new association, remember it so that it can written out later
+        	if (newPrefix != null) {
+        		if (writePrefixList == null) {
+        			writePrefixList= new ArrayList();
+        			writeNSList = new ArrayList();
+        		}
+        		if (!writePrefixList.contains(newPrefix)) {
+        			writePrefixList.add(newPrefix);
+        			writeNSList.add(namespace);
+        		}
+        	}
         }
         
         // Generate setPrefix for the element
         // If the prefix is not associated with a namespace yet, remember it so that we can
     	// write out a namespace declaration
     	String newPrefix = generateSetPrefix(ePrefix, eNamespace, writer);
-    	
+    	// If this is a new association, remember it so that it can written out later
     	if (newPrefix != null) {
-    		if (prefixList == null) {
-    			prefixList= new ArrayList();
-    			nsList = new ArrayList();
+    		if (writePrefixList == null) {
+    			writePrefixList= new ArrayList();
+    			writeNSList = new ArrayList();
     		}
-    		if (!prefixList.contains(newPrefix)) {
-    			prefixList.add(newPrefix);
-    			nsList.add(eNamespace);
+    		if (!writePrefixList.contains(newPrefix)) {
+    			writePrefixList.add(newPrefix);
+    			writeNSList.add(eNamespace);
     		}
     	}
     
-        // Now write the namespaces for each attribute
+        // Now Generate setPrefix for each attribute
         count = reader.getAttributeCount();
         for (int i = 0; i < count; i++) {
             String prefix = reader.getAttributePrefix(i);
@@ -199,13 +209,13 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             // If the prefix is not associated with a namespace yet, remember it so that we can
         	// write out a namespace declaration
         	if (newPrefix != null) {
-        		if (prefixList == null) {
-        			prefixList= new ArrayList();
-        			nsList = new ArrayList();
+        		if (writePrefixList == null) {
+        			writePrefixList= new ArrayList();
+        			writeNSList = new ArrayList();
         		}
-        		if (!prefixList.contains(newPrefix)) {
-        			prefixList.add(newPrefix);
-        			nsList.add(namespace);
+        		if (!writePrefixList.contains(newPrefix)) {
+        			writePrefixList.add(newPrefix);
+        			writeNSList.add(namespace);
         		}
         	}
         }
@@ -223,35 +233,12 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         	}
         }
 
-
-        // add the namespaces
-        count = reader.getNamespaceCount();
-        String namespacePrefix;
-        for (int i = 0; i < count; i++) {
-        	String prefix = reader.getNamespacePrefix(i);
-        	prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
-        	String namespace = reader.getNamespaceURI(i);
-        	if (prefix != null && namespace != null) {
-        		writer.writeNamespace(prefix, namespace);
-        	} else {
-        		writer.writeDefaultNamespace(namespace);
-        	}
-        	// If this prefix is in the unassociated list, remove it.
-        	if (prefixList != null) {
-        		int j = prefixList.indexOf((prefix == null)?"":prefix);
-        		if (j >= 0) {
-        			prefixList.remove(j);
-        			nsList.remove(j);
-        		}
-        	}
-        }
-        
-        // Now write out the namespaces that for prefixes that are not associated
-        if (prefixList != null) {
-        	for (int i=0; i<prefixList.size(); i++) {
-        		String prefix = (String) prefixList.get(i);
-        		String namespace = (String) nsList.get(i);
-        		
+        // Now write out the list of namespace declarations in this list that we constructed
+    	// while doing the "set" processing.
+    	if (writePrefixList != null) {
+        	for (int i=0; i<writePrefixList.size(); i++) {
+        		String prefix = (String) writePrefixList.get(i);
+        		String namespace = (String) writeNSList.get(i);	
         		if (prefix != null) {
             		writer.writeNamespace(prefix, namespace);
             	} else {
@@ -259,7 +246,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             	}
         	}
         }
-        
+    	
         // Now write the attributes
         count = reader.getAttributeCount();
         for (int i = 0; i < count; i++) {
