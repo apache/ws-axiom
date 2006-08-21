@@ -69,7 +69,7 @@ public class ElementImplTest extends TestCase {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
 			elem.serialize(baos);
-			System.out.println(new String(baos.toByteArray()));
+//			System.out.println(new String(baos.toByteArray()));
 			//TODO TEMPORARY: remove this
 		} catch (Exception e) {
 			e.printStackTrace();
