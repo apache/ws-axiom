@@ -69,8 +69,8 @@ public class ElementImplTest extends TestCase {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
 			elem.serialize(baos);
-//			System.out.println(new String(baos.toByteArray()));
-			//TODO TEMPORARY: remove this
+			String xml = new String(baos.toByteArray());
+            assertEquals("Incorrect serialized xml", 0, xml.indexOf("<axis2:TestLocalName"));
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getMessage());
