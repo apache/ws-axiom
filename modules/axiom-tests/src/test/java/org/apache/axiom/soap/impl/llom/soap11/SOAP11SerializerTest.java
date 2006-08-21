@@ -20,8 +20,8 @@ import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.XMLStreamException;
+
 public class SOAP11SerializerTest extends OMTestCase {
 
     public SOAP11SerializerTest(String testName) {
@@ -39,13 +39,16 @@ public class SOAP11SerializerTest extends OMTestCase {
                 .getDocumentElement();
     }
 
+    /**
+     * This will check whether we can call the serialize method two times, if the first calls makes the object model.
+     * @throws Exception
+     */
     public void testSerialize() throws Exception {
-        XMLStreamWriter output = XMLOutputFactory.newInstance().
-                createXMLStreamWriter(System.out);
-        soapEnvelope.serialize(output);
-
-        output = XMLOutputFactory.newInstance().
-                createXMLStreamWriter(System.out);
-        soapEnvelope.serializeAndConsume(output);
+        try {
+            soapEnvelope.toString();
+            soapEnvelope.toStringWithConsume();
+        } catch (XMLStreamException e) {
+            fail("This test should not fail as one must be able to serialize twice if the object model is built in the first time");
+        }
     }
 }
