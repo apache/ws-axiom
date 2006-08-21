@@ -29,6 +29,7 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 
 public class NoNamespaceSerializerTest extends TestCase {
@@ -117,18 +118,33 @@ public class NoNamespaceSerializerTest extends TestCase {
                                 new ByteArrayInputStream(xmlText2.getBytes()))));
         env.getBody().addChild(builder.getDocumentElement());
 
-        env.serialize(System.out);
+        // not sure why this test was created. Just checking whether serialization has worked or not. Someone
+        // wanna check the correct thing later?
+        String outputString = env.toString();
+        assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
     }
 
+    /**
+     * Will just do a probe test to check serialize with caching on works without any exception
+     */
     public void testSerilizationWithCacheOn() throws Exception {
+        writer = XMLOutputFactory.newInstance().
+                createXMLStreamWriter(new ByteArrayOutputStream());
+
         SOAPEnvelope env = (SOAPEnvelope) builderOne.getDocumentElement();
         env.serialize(writer);
         writer.flush();
     }
 
+    /**
+     * Will just do a probe test to check serialize with caching off works without any exception
+     */
     public void testSerilizationWithCacheOff() throws Exception {
+        writer = XMLOutputFactory.newInstance().
+                createXMLStreamWriter(new ByteArrayOutputStream());
+
         SOAPEnvelope env = (SOAPEnvelope) builderOne.getDocumentElement();
-        env.serialize(writer);
+        env.serializeAndConsume(writer);
         writer.flush();
     }
 }
