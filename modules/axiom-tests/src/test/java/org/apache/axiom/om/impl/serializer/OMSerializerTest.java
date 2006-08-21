@@ -24,11 +24,8 @@ import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.*;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 
@@ -51,17 +48,24 @@ public class OMSerializerTest extends AbstractTestCase {
 //        writer =
 //                XMLOutputFactory.newInstance().
 //                        createXMLStreamWriter(new FileOutputStream(tempFile));
-        writer =
-                XMLOutputFactory.newInstance().
-                        createXMLStreamWriter(System.out);
+
+
+
+
     }
 
     public void testRawSerializer() throws Exception {
         StreamingOMSerializer serializer = new StreamingOMSerializer();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        writer =
+                XMLOutputFactory.newInstance().
+                        createXMLStreamWriter(byteArrayOutputStream);
         //serializer.setNamespacePrefixStack(new Stack());
         serializer.serialize(reader, writer);
         writer.flush();
 
+        String outputString = new String(byteArrayOutputStream.toByteArray());
+        assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
 
     }
 
@@ -71,18 +75,33 @@ public class OMSerializerTest extends AbstractTestCase {
                 reader);
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
         StreamingOMSerializer serializer = new StreamingOMSerializer();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        writer =
+                XMLOutputFactory.newInstance().
+                        createXMLStreamWriter(byteArrayOutputStream);
+
         serializer.serialize(env.getXMLStreamReaderWithoutCaching(), writer);
         writer.flush();
+
+        String outputString = new String(byteArrayOutputStream.toByteArray());
+        assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
     }
 
     public void testElementPullStream1WithCacheOff() throws Exception {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
                 reader);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        writer =
+                XMLOutputFactory.newInstance().
+                        createXMLStreamWriter(byteArrayOutputStream);
 
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
         env.serializeAndConsume(writer);
         writer.flush();
+
+        String outputString = new String(byteArrayOutputStream.toByteArray());
+        assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
 
         //now we should not be able to serilaize anything ! this should throw
         //an error
@@ -100,12 +119,20 @@ public class OMSerializerTest extends AbstractTestCase {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
                 reader);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        writer =
+                XMLOutputFactory.newInstance().
+                        createXMLStreamWriter(byteArrayOutputStream);
+
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
         SOAPBody body = env.getBody();
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         serializer.serialize(body.getXMLStreamReaderWithoutCaching(),
                 writer);
         writer.flush();
+
+        String outputString = new String(byteArrayOutputStream.toByteArray());
+        assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
     }
 
     protected void tearDown() throws Exception {
