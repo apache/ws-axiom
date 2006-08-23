@@ -77,7 +77,7 @@ take place independently and swapped without affecting the program later.</p>
 
 <h3>Features of OM</h3>
 
-<p>OM is a lightweight, differed built XML info set representation based on
+<p>OM is a lightweight, deferred built XML info set representation based on
 StAX (<a
 href="http://www.jcp.org/en/jsr/detail?id=173">JSR
 173</a>), which is the standard streaming pull parser API. The object model
@@ -90,11 +90,11 @@ memory intensive programming. Following is a short feature overview of OM.</p>
     achieved by reducing the depth of the hierarchy, number of methods and
     the attributes enclosed in the objects. This makes the objects less
     memory intensive.</li>
-  <li>Differed building: By far this is the most important feature of OM. The
+  <li>deferred building: By far this is the most important feature of OM. The
     objects are not made unless a need arises for them. This passes the
     control of building over to the object model itself rather than an
     external builder.</li>
-  <li>Pull based: For a differed building mechanism a pull based parser is
+  <li>Pull based: For a deferred building mechanism a pull based parser is
     required. OM is based on StAX, the standard pull parser API.</li>
 </ul>
 <!-- Special section -->
@@ -129,7 +129,7 @@ Hence the complexities of the pull event stream is transparent to the user.</p>
 
 <h3>A Bit About Caching</h3>
 
-<p>Since OM is a differed built object model, It incorporates the concept of
+<p>Since OM is a deferred built object model, It incorporates the concept of
 caching. Caching refers to the creation of the objects while parsing the pull
 stream. The reason why this is so important is because caching can be turned
 off in certain situations. If so the  parser proceeds without building the
@@ -149,7 +149,7 @@ href="http://www.w3schools.com/SOAP/soap_intro.asp"> here </a> to learn more
 about SOAP.</p>
 <!--<p>This abstraction provides</p>
 <ul>
-<li>differed building support</li>
+<li>deferred building support</li>
 <li>Caching</li>
 </ul>
 <p>AXIOM has the flexibility to plug in any builder which implements the given builders interface.  The upcoming sections of this tutorial deal with the creation and usage of OM for manipulating SOAP (and to some extent nonSOAP) based XML documents.</p>
