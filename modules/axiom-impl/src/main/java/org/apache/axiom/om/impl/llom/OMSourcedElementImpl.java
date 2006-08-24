@@ -520,7 +520,6 @@ public class OMSourcedElementImpl extends OMElementImpl
             log.debug("serialize " + getPrintableName() + " to XMLStreamWriter");
         }
         dataSource.serialize(writer);
-        writer.flush();
     }
 
     /* (non-Javadoc)
