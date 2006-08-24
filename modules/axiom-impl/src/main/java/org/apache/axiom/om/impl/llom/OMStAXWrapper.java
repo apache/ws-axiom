@@ -1311,4 +1311,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
             map.put(ns.getPrefix(), ns.getNamespaceURI());
         }
     }
+    public OMXMLParserWrapper getBuilder() {
+        return builder;
+    }
 }

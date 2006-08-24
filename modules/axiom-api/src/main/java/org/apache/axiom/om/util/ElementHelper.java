@@ -18,10 +18,13 @@ package org.apache.axiom.om.util;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMException;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamReader;
 import java.util.Iterator;
-
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 /**
  * Helper class to provide extra utility stuff against elements.
  * The code is designed to work with any element implementation.
@@ -105,4 +108,33 @@ public class ElementHelper {
         }
         return null;
     }
+
+    public static String getContentID(XMLStreamReader parser, String charsetEncoding) {
+        String contentID;
+        String contentIDName;
+        if (parser.getAttributeCount() > 0) {
+            contentID = parser.getAttributeValue(0);
+            contentID = contentID.trim();
+            contentIDName = parser.getAttributeLocalName(0);
+            if (contentIDName.equalsIgnoreCase("href")
+                    & contentID.substring(0, 3).equalsIgnoreCase("cid")) {
+                contentID = contentID.substring(4);
+                String charEnc = charsetEncoding == null || "".equals(charsetEncoding) ? "UTF-8" : charsetEncoding;
+                try {
+                    contentID = URLDecoder.decode(contentID, charEnc);
+                } catch (UnsupportedEncodingException e) {
+                    throw new OMException("Unsupported Character Encoding Found", e);
+                }
+            } else if (!(contentIDName.equalsIgnoreCase("href")
+                    & (!contentID.equals("")))) {
+                throw new OMException(
+                        "contentID not Found in XOP:Include element");
+            }
+        } else {
+            throw new OMException(
+                    "Href attribute not found in XOP:Include element");
+        }
+        return contentID;
+    }
+
 }

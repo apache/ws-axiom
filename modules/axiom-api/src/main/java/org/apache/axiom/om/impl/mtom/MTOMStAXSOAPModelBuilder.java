@@ -21,6 +21,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.soap.SOAPFactory;
@@ -74,36 +75,13 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements MT
 
 
             OMText node;
-            String contentID = null;
-            String contentIDName = null;
             if (lastNode == null) {
                 // Decide whether to ckeck the level >3 or not
                 throw new OMException(
                         "XOP:Include element is not supported here");
             }
-            if (parser.getAttributeCount() > 0) {
-                contentID = parser.getAttributeValue(0);
-                contentID = contentID.trim();
-                contentIDName = parser.getAttributeLocalName(0);
-                if (contentIDName.equalsIgnoreCase("href")
-                        & contentID.substring(0, 3).equalsIgnoreCase("cid")) {
-                    contentID = contentID.substring(4);
-                    String charsetEncoding = getDocument().getCharsetEncoding();
-                    String charEnc = charsetEncoding == null || "".equals(charsetEncoding) ? "UTF-8" : charsetEncoding;
-                    try {
-                        contentID = URLDecoder.decode(contentID, charEnc);
-                    } catch (UnsupportedEncodingException e) {
-                        throw new OMException("Unsupported Character Encoding Found", e);
-                    }
-                } else if (!(contentIDName.equalsIgnoreCase("href")
-                        & (!contentID.equals("")))) {
-                    throw new OMException(
-                            "contentID not Found in XOP:Include element");
-                }
-            } else {
-                throw new OMException(
-                        "Href attribute not found in XOP:Include element");
-            }
+            
+            String contentID = ElementHelper.getContentID(parser, getDocument().getCharsetEncoding());
 
             // This cannot happen. XOP:Include is always the only child of an parent element
             // cause it is same as having some text
