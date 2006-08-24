@@ -16,17 +16,7 @@
 
 package org.apache.axiom.om.impl.builder;
 
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
@@ -93,8 +83,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
         // check whether data handlers are treated seperately
         try {
-            if (parser != null && (Boolean.TRUE == parser.getProperty(OMConstants.IS_DATA_HANDLERS_AWARE)))
-            {
+            if (parser != null && (Boolean.TRUE == parser.getProperty(OMConstants.IS_DATA_HANDLERS_AWARE))) {
                 isDataHandlerAware = true;
             }
         } catch (IllegalArgumentException e) {
@@ -179,10 +168,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         } else if (!lastNode.isComplete()) {
             node = createOMText((OMElement) lastNode, textType);
         } else {
-            OMContainer parent = lastNode.getParent();
-            if (!(parent instanceof OMDocument)) {
-                node = createOMText((OMElement) parent, textType);
-            }
+            node = createOMText(lastNode.getParent(), textType);
         }
         return node;
     }
@@ -191,22 +177,22 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * This method will check whether the text can be optimizable using IS_BINARY flag.
      * If that is set then we try to get the data handler.
      *
-     * @param omElement
+     * @param omContainer
      * @param textType
      * @return omNode
      */
-    private OMNode createOMText(OMElement omElement, int textType) {
+    private OMNode createOMText(OMContainer omContainer, int textType) {
         try {
             if (isDataHandlerAware && Boolean.TRUE == parser.getProperty(OMConstants.IS_BINARY)) {
                 Object dataHandler = parser.getProperty(OMConstants.DATA_HANDLER);
                 OMText text = omfactory.createOMText(dataHandler, true);
-                omElement.addChild(text);
+                omContainer.addChild(text);
                 return text;
             } else {
-                return omfactory.createOMText(omElement, parser.getText(), textType);
+                return omfactory.createOMText(omContainer, parser.getText(), textType);
             }
         } catch (IllegalArgumentException e) {
-            return omfactory.createOMText(omElement, parser.getText(), textType);
+            return omfactory.createOMText(omContainer, parser.getText(), textType);
         }
     }
 

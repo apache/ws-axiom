@@ -100,14 +100,14 @@ public interface OMFactory {
      * @param text
      * @return Returns OMText.
      */
-    public OMText createOMText(OMElement parent, String text);
+    public OMText createOMText(OMContainer parent, String text);
 
     /**
      * @param parent
      * @param text   - This text itself can contain a namespace inside it.
      * @return
      */
-    public OMText createOMText(OMElement parent, QName text);
+    public OMText createOMText(OMContainer parent, QName text);
 
     /**
      * @param parent
@@ -116,8 +116,8 @@ public interface OMFactory {
      *               XMLStreamConstants.SPACE, XMLStreamConstants.ENTITY_REFERENCE
      * @return Returns OMText.
      */
-    public OMText createOMText(OMElement parent, String text, int type);
-    public OMText createOMText(OMElement parent, char[] charArary, int type);
+    public OMText createOMText(OMContainer parent, String text, int type);
+    public OMText createOMText(OMContainer parent, char[] charArary, int type);
 
     /**
      * @param parent
@@ -125,7 +125,7 @@ public interface OMFactory {
      * @param type
      * @return
      */
-    public OMText createOMText(OMElement parent, QName text, int type);
+    public OMText createOMText(OMContainer parent, QName text, int type);
 
     /**
      * @param s
@@ -145,10 +145,10 @@ public interface OMFactory {
 
     public OMText createOMText(Object dataHandler, boolean optimize);
 
-    public OMText createOMText(OMElement parent, String s, String mimeType,
+    public OMText createOMText(OMContainer parent, String s, String mimeType,
                                boolean optimize);
 
-    public OMText createOMText(String contentID, OMElement parent,
+    public OMText createOMText(String contentID, OMContainer parent,
                                OMXMLParserWrapper builder);
 
     public OMAttribute createOMAttribute(String localName,

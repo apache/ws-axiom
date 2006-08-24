@@ -16,17 +16,10 @@
 
 package org.apache.axiom.om.impl.builder;
 
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -275,7 +268,8 @@ public class StAXOMBuilder extends StAXBuilder {
     protected OMNode createDTD() throws OMException {
         if (!parser.hasText())
             return null;
-        return omfactory.createOMDocType(document, parser.getText());
+        lastNode = omfactory.createOMDocType(document, parser.getText());
+        return lastNode;
     }
 
     /**

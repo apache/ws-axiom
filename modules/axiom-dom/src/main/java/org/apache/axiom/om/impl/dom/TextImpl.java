@@ -16,13 +16,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.attachments.DataHandlerUtils;
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.mtom.MTOMStAXSOAPModelBuilder;
@@ -97,7 +91,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
      *            Stores a reference to the builder and the content-id. Supports
      *            deffered parsing of MIME messages
      */
-    public TextImpl(String contentID, OMElement parent,
+    public TextImpl(String contentID, OMContainer parent,
             OMXMLParserWrapper builder, OMFactory factory) {
         super((DocumentImpl) ((ParentNode) parent).getOwnerDocument(), factory);
         this.contentID = contentID;

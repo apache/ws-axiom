@@ -109,6 +109,7 @@ public class OMSerializerTest extends AbstractTestCase {
            env.serializeAndConsume(writer);
            fail();
         } catch (XMLStreamException e) {
+            e.printStackTrace();
            assertTrue(true);
         } catch (Exception e) {
            assertTrue(true);

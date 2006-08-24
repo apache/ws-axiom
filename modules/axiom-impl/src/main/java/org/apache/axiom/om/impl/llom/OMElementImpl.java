@@ -16,17 +16,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -267,7 +257,7 @@ public class OMElementImpl extends OMNodeImpl
         while (!done) {
             int token = builder.next();
             if (token == XMLStreamConstants.END_DOCUMENT) {
-                throw new OMException();
+                throw new OMException("Parser has already reached end of the document. No siblings found");
             }
         }
         return super.getNextOMSibling();

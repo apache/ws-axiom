@@ -15,29 +15,9 @@
  */
 package org.apache.axiom.om.impl.dom.factory;
 
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMComment;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.dom.AttrImpl;
-import org.apache.axiom.om.impl.dom.CommentImpl;
-import org.apache.axiom.om.impl.dom.DocumentFragmentimpl;
-import org.apache.axiom.om.impl.dom.DocumentImpl;
-import org.apache.axiom.om.impl.dom.ElementImpl;
-import org.apache.axiom.om.impl.dom.NamespaceImpl;
-import org.apache.axiom.om.impl.dom.OMDOMException;
-import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.om.impl.dom.TextImpl;
+import org.apache.axiom.om.impl.dom.*;
 import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
@@ -196,7 +176,7 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText(
      *      org.apache.axiom.om.OMElement,java.lang.String)
      */
-    public OMText createOMText(OMElement parent, String text) {
+    public OMText createOMText(OMContainer parent, String text) {
         ElementImpl parentElem = (ElementImpl) parent;
         TextImpl txt = new TextImpl((DocumentImpl) parentElem
                 .getOwnerDocument(), text, this);
@@ -204,22 +184,22 @@ public class OMDOMFactory implements OMFactory {
         return txt;
     }
 
-    public OMText createOMText(OMElement parent, QName text) {
+    public OMText createOMText(OMContainer parent, QName text) {
         throw new UnsupportedOperationException();
     }
 
-    public OMText createOMText(OMElement parent, String text, int type) {
+    public OMText createOMText(OMContainer parent, String text, int type) {
         OMText textNode = createOMText(parent, text);
         ((OMNodeEx) textNode).setType(type);
         return textNode;
     }
 
-    public OMText createOMText(OMElement parent, char[] charArary, int type) {
+    public OMText createOMText(OMContainer parent, char[] charArary, int type) {
         // TODO : Fix me
         throw new UnsupportedOperationException();
     }
 
-    public OMText createOMText(OMElement parent, QName text, int type) {
+    public OMText createOMText(OMContainer parent, QName text, int type) {
         // TODO : Fix me
         throw new UnsupportedOperationException();
     }
@@ -273,10 +253,10 @@ public class OMDOMFactory implements OMFactory {
      * Creates an OMDOM Text node, adds it to the give parent element and
      * returns it.
      * 
-     * @see org.apache.axiom.om.OMFactory#createOMText(org.apache.axiom.om.OMElement,
+     * @see org.apache.axiom.om.OMFactory#createOMText(OMContainer,
      *      java.lang.String, java.lang.String, boolean)
      */
-    public OMText createOMText(OMElement parent, String s, String mimeType,
+    public OMText createOMText(OMContainer parent, String s, String mimeType,
                                boolean optimize) {
         TextImpl text = new TextImpl((DocumentImpl) ((ElementImpl) parent)
                 .getOwnerDocument(), s, mimeType, optimize, this);
@@ -284,7 +264,7 @@ public class OMDOMFactory implements OMFactory {
         return text;
     }
 
-    public OMText createOMText(String contentID, OMElement parent,
+    public OMText createOMText(String contentID, OMContainer parent,
                                OMXMLParserWrapper builder) {
         TextImpl text = new TextImpl(contentID, parent, builder, this);
         parent.addChild(text);

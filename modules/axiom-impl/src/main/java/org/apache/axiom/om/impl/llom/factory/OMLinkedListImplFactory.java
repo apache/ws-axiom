@@ -16,28 +16,9 @@
 
 package org.apache.axiom.om.impl.llom.factory;
 
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMComment;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
-import org.apache.axiom.om.impl.llom.OMAttributeImpl;
-import org.apache.axiom.om.impl.llom.OMCommentImpl;
-import org.apache.axiom.om.impl.llom.OMDocTypeImpl;
-import org.apache.axiom.om.impl.llom.OMDocumentImpl;
-import org.apache.axiom.om.impl.llom.OMElementImpl;
-import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
-import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
-import org.apache.axiom.om.impl.llom.OMTextImpl;
+import org.apache.axiom.om.impl.llom.*;
 
 import javax.xml.namespace.QName;
 import java.util.HashMap;
@@ -149,23 +130,23 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @param text
      * @return Returns OMText.
      */
-    public OMText createOMText(OMElement parent, String text) {
+    public OMText createOMText(OMContainer parent, String text) {
         return new OMTextImpl(parent, text, this);
     }
 
-    public OMText createOMText(OMElement parent, QName text) {
+    public OMText createOMText(OMContainer parent, QName text) {
         return new OMTextImpl(parent, text, this);
     }
 
-    public OMText createOMText(OMElement parent, String text, int type) {
+    public OMText createOMText(OMContainer parent, String text, int type) {
         return new OMTextImpl(parent, text, type, this);
     }
 
-    public OMText createOMText(OMElement parent, char[] charArary, int type) {
+    public OMText createOMText(OMContainer parent, char[] charArary, int type) {
         return new OMTextImpl(parent, charArary, type, this);
     }
 
-    public OMText createOMText(OMElement parent, QName text, int type) {
+    public OMText createOMText(OMContainer parent, QName text, int type) {
         return new OMTextImpl(parent, text, type, this);
     }
 
@@ -206,7 +187,7 @@ public class OMLinkedListImplFactory implements OMFactory {
         return new OMTextImpl(dataHandler, optimize, this);
     }
 
-    public OMText createOMText(String contentID, OMElement parent,
+    public OMText createOMText(String contentID, OMContainer parent,
                                OMXMLParserWrapper builder) {
         return new OMTextImpl(contentID, parent, builder, this);
     }
@@ -220,7 +201,7 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @param optimize
      * @return Returns OMText.
      */
-    public OMText createOMText(OMElement parent,
+    public OMText createOMText(OMContainer parent,
                                String s,
                                String mimeType,
                                boolean optimize) {

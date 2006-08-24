@@ -17,14 +17,7 @@
 package org.apache.axiom.om.impl.llom;
 
 
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.mtom.MTOMStAXSOAPModelBuilder;
@@ -105,11 +98,11 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * @param parent
      * @param text
      */
-    public OMTextImpl(OMElement parent, String text, OMFactory factory) {
+    public OMTextImpl(OMContainer parent, String text, OMFactory factory) {
         this(parent, text, TEXT_NODE, factory);
     }
 
-    public OMTextImpl(OMElement parent, String text, int nodeType,
+    public OMTextImpl(OMContainer parent, String text, int nodeType,
                       OMFactory factory) {
         super(parent, factory);
         this.value = text;
@@ -117,7 +110,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.nodeType = nodeType;
     }
 
-    public OMTextImpl(OMElement parent, char[] charArray, int nodeType,
+    public OMTextImpl(OMContainer parent, char[] charArray, int nodeType,
                       OMFactory factory) {
         super(parent, factory);
         this.charArray = charArray;
@@ -126,11 +119,11 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     }
 
 
-    public OMTextImpl(OMElement parent, QName text, OMFactory factory) {
+    public OMTextImpl(OMContainer parent, QName text, OMFactory factory) {
         this(parent, text, TEXT_NODE, factory);
     }
 
-    public OMTextImpl(OMElement parent, QName text, int nodeType,
+    public OMTextImpl(OMContainer parent, QName text, int nodeType,
                       OMFactory factory) {
         super(parent, factory);
         this.textNS = ((OMElementImpl) parent).handleNamespace(text);
@@ -154,7 +147,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      *                 base64 encoded String representation of Binary
      * @param mimeType of the Binary
      */
-    public OMTextImpl(OMElement parent, String s, String mimeType,
+    public OMTextImpl(OMContainer parent, String s, String mimeType,
                       boolean optimize, OMFactory factory) {
         this(parent, s, factory);
         this.mimeType = mimeType;
@@ -191,7 +184,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      *                  Stores a reference to the builder and the content-id. Supports
      *                  deferred parsing of MIME messages.
      */
-    public OMTextImpl(String contentID, OMElement parent,
+    public OMTextImpl(String contentID, OMContainer parent,
                       OMXMLParserWrapper builder, OMFactory factory) {
         super(parent, factory);
         this.contentID = contentID;
