@@ -495,5 +495,15 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     public String toString() {
         return (this.textValue != null) ? textValue.toString() : "";
     }
-
+    
+	/* (non-Javadoc)
+	 * @see org.apache.axiom.om.OMNode#buildAll()
+	 */
+	public void buildWithAttachments() {
+		this.build();
+		if (isOptimized())
+		{
+			this.getDataHandler();
+		}
+	}
 }

@@ -517,4 +517,16 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         }
     }
 
+	/* (non-Javadoc)
+	 * @see org.apache.axiom.om.OMNode#buildAll()
+	 */
+	public void buildWithAttachments() {
+		if (!this.done) {
+			this.build();
+		}
+		if (isOptimized()) {
+			this.getDataHandler();
+		}
+	}
+
 }

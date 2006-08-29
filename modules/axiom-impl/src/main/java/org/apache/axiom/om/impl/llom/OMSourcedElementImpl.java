@@ -708,4 +708,20 @@ public class OMSourcedElementImpl extends OMElementImpl
         forceExpand();
         return super.toString();
     }
+    
+	/* (non-Javadoc)
+	 * @see org.apache.axiom.om.OMNode#buildAll()
+	 */
+	public void buildWithAttachments() {
+		if (!done)
+		{
+			this.build();
+		}
+		Iterator iterator = getChildren();
+		while(iterator.hasNext())
+		{
+			OMNode node = (OMNode)iterator.next();
+			node.buildWithAttachments();
+		}
+	}
 }
