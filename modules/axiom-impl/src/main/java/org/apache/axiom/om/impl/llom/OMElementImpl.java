@@ -161,12 +161,7 @@ public class OMElementImpl extends OMNodeImpl
             if (ns != null) {
                 this.ns = ns;
             }
-        } else
-
-        {
-            // no namespace URI in the given QName. No need to bother about this ??
-        }
-
+        } 
         return ns;
     }
 

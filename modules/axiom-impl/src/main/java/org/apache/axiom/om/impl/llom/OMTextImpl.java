@@ -71,6 +71,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * Field attributes used when serializing Binary stuff as MTOM optimized.
      */
     protected OMAttribute attribute;
+    private static final String EMTPY_STRING = "";
 
     /**
      * Constructor OMTextImpl.
@@ -88,7 +89,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      */
     public OMTextImpl(String s, int nodeType, OMFactory factory) {
         super(factory);
-        this.value = s;
+        this.value = s == null ? EMTPY_STRING : s;
         this.nodeType = nodeType;
     }
  
@@ -105,7 +106,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     public OMTextImpl(OMContainer parent, String text, int nodeType,
                       OMFactory factory) {
         super(parent, factory);
-        this.value = text;
+        this.value = text == null ? EMTPY_STRING : text;
         done = true;
         this.nodeType = nodeType;
     }
@@ -127,7 +128,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                       OMFactory factory) {
         super(parent, factory);
         this.textNS = ((OMElementImpl) parent).handleNamespace(text);
-        this.value = text.getLocalPart();
+        this.value = text == null ? EMTPY_STRING : text.getLocalPart();
         done = true;
         this.nodeType = nodeType;
     }
