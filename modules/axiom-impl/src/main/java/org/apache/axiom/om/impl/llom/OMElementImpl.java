@@ -43,10 +43,13 @@ import java.util.LinkedHashMap;
  */
 public class OMElementImpl extends OMNodeImpl
         implements OMElement, OMConstants, OMContainerEx {
+
+    public static final OMNamespace DEFAULT_DEFAULT_NS_OBJECT = new OMNamespaceImpl("", "");
+
     /**
      * Field ns
      */
-    protected OMNamespace ns;
+    protected OMNamespace ns = DEFAULT_DEFAULT_NS_OBJECT;
 
     /**
      * Field localName
@@ -839,7 +842,7 @@ public class OMElementImpl extends OMNodeImpl
      * @throws OMException
      */
     public OMNamespace getNamespace() throws OMException {
-        return ns != null ? ns : getDefaultNamespace();
+        return ns != null ? ns : DEFAULT_DEFAULT_NS_OBJECT;
     }
 
     /**

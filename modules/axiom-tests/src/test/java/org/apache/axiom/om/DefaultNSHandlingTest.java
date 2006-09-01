@@ -75,11 +75,8 @@ public class DefaultNSHandlingTest extends TestCase {
 
         System.out.println("omElementOne = " + omElementOne);
 
-        assertTrue("http://defaultNS1.org".equals(omElementOneChild.getNamespace().getNamespaceURI()));
-        assertTrue("http://defaultNS2.org".equals(omElementTwoChild.getNamespace().getNamespaceURI()));
-
-
-
+        assertTrue("".equals(omElementOneChild.getNamespace().getNamespaceURI()));
+        assertTrue("".equals(omElementTwoChild.getNamespace().getNamespaceURI()));
     }
     
     public void testChildReDeclaringParentsDefaultNSWithPrefix() {

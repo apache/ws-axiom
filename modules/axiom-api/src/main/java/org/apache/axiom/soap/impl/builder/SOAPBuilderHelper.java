@@ -37,7 +37,7 @@ public abstract class SOAPBuilderHelper {
                                           OMElement element,
                                           int elementLevel) throws SOAPProcessingException;
 
-    protected void processNamespaceData(OMElement node, boolean isSOAPElement) {
+    protected void processNamespaceData(OMElement node, boolean checkSOAPNamespace) {
         int namespaceCount = parser.getNamespaceCount();
         for (int i = 0; i < namespaceCount; i++) {
             node.declareNamespace(parser.getNamespaceURI(i),
@@ -70,7 +70,7 @@ public abstract class SOAPBuilderHelper {
         // if (namespace == null) {
         // throw new OMException("All elements must be namespace qualified!");
         // }
-        if (isSOAPElement) {
+        if (checkSOAPNamespace) {
             if (node.getNamespace() != null &&
                     !node.getNamespace().getNamespaceURI().equals(
                             SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI) &&

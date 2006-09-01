@@ -463,8 +463,6 @@ public class StAXSOAPModelBuilderTest extends TestCase {
             assertEquals("SOAP Fault code local name mismatch",
                     code.getLocalName(),
                     (SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME));
-            assertTrue("SOAP 1.1 :- Fault code namespace uri mismatch",
-                    code.getNamespace() == null);
 
             assertEquals("SOAP 1.1 :- Fault code value mismatch", code.getValue().getText().trim(),
                     "env:Sender");
@@ -474,8 +472,6 @@ public class StAXSOAPModelBuilderTest extends TestCase {
             assertTrue("SOAP 1.1 :- Fault string local name mismatch",
                     reason.getLocalName().equals(
                             SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME));
-            assertTrue("SOAP 1.1 :- Fault string namespace uri mismatch",
-                    reason.getNamespace() == null);
             assertTrue("SOAP 1.1 :- Fault string value mismatch",
                     reason.getFirstSOAPText().getText().trim().equals("Sender Timeout"));
 
@@ -484,8 +480,6 @@ public class StAXSOAPModelBuilderTest extends TestCase {
             assertTrue("SOAP 1.1 :- Fault actor local name mismatch",
                     role.getLocalName().equals(
                             SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME));
-            assertTrue("SOAP 1.1 :- Fault actor namespace uri mismatch",
-                    role.getNamespace() == null);
             assertTrue("SOAP 1.1 :- Actor value mismatch",
                     role.getText().trim().equals(
                             "http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver"));
@@ -495,8 +489,6 @@ public class StAXSOAPModelBuilderTest extends TestCase {
             assertTrue("SOAP 1.1 :- Fault detail local name mismatch",
                     detail.getLocalName().equals(
                             SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME));
-            assertTrue("SOAP 1.1 :- Fault detail namespace uri mismatch",
-                    detail.getNamespace() == null);
             assertTrue("SOAP 1.2 :- Text in detail mismatch",
                     detail.getText().trim().equals("Details of error"));
 

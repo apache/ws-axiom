@@ -58,7 +58,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
                 SOAPFaultCode code = factory.createSOAPFaultCode(
                         (SOAPFault) parent, builder);
                 SOAPFaultValue value = factory.createSOAPFaultValue(code);
-                processNamespaceData(code, true);
+                processNamespaceData(code, false);
                 processAttributes(code);
 
                 processText(parser, value);
@@ -72,7 +72,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
                 SOAPFaultReason reason = factory.createSOAPFaultReason(
                         (SOAPFault) parent, builder);
                 SOAPFaultText faultText = factory.createSOAPFaultText(reason);
-                processNamespaceData(reason, true);
+                processNamespaceData(reason, false);
                 processAttributes(reason);
 
                 processText(parser, faultText);
@@ -86,13 +86,13 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
                 element =
                         factory.createSOAPFaultRole((SOAPFault) parent,
                                 builder);
-                processNamespaceData(element, true);
+                processNamespaceData(element, false);
                 processAttributes(element);
             } else if (SOAP_FAULT_DETAIL_LOCAL_NAME.equals(localName)) {
                 element =
                         factory.createSOAPFaultDetail((SOAPFault) parent,
                                 builder);
-                processNamespaceData(element, true);
+                processNamespaceData(element, false);
                 processAttributes(element);
             } else {
                 element =

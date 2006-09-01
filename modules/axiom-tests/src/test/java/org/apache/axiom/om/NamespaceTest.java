@@ -202,14 +202,88 @@ public class NamespaceTest extends XMLTestCase {
 
             for (int j = 0; j < 5; j++) {
                 // Create an element with the name of the key
-                OMElement elem = fac.createOMElement("someKey"+j, ns);
+                OMElement elem = fac.createOMElement("someKey" + j, ns);
                 // Set the text value of the element
-                elem.setText("someValue"+j);
+                elem.setText("someValue" + j);
                 // Add the element as a child of this action element
                 actionElem.addChild(elem);
             }
 
             paramElement.addChild(actionElem);
+        }
+
+    }
+
+    /**
+     * This is re-producing and testing the bug mentioned in
+     * http://issues.apache.org/jira/browse/WSCOMMONS-74
+     */
+    public void testNamespaceProblem7() {
+
+        String expectedString = "<person xmlns=\"http://ws.apache.org/axis2/apacheconasia/06\">" +
+                "<name>John</name>" +
+                "<age>34</age>" +
+                "<weight>50</weight>" +
+                "</person>";
+
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+
+        OMNamespace ns = fac.createOMNamespace("http://ws.apache.org/axis2/apacheconasia/06", "");
+        OMElement personElem = fac.createOMElement("person", ns);
+        OMElement nameElem = fac.createOMElement("name", ns);
+        nameElem.setText("John");
+
+        OMElement ageElem = fac.createOMElement("age", ns);
+        ageElem.setText("34");
+
+        OMElement weightElem = fac.createOMElement("weight", ns);
+        weightElem.setText("50");
+
+        //Add children to the person element
+        personElem.addChild(nameElem);
+        personElem.addChild(ageElem);
+        personElem.addChild(weightElem);
+
+        String result = personElem.toString();
+
+
+        try {
+            assertXMLEqual(expectedString, result);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    /**
+     * This is re-producing and testing the bug mentioned in
+     * http://issues.apache.org/jira/browse/WSCOMMONS-74
+     */
+    public void testNamespaceProblem8() {
+
+        String expectedXML = "<person xmlns=\"http://ws.apache.org/axis2/apacheconasia/06\"><name xmlns=\"\">John</name><age>34</age><weight>50</weight></person>";
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+        OMNamespace ns = fac.createOMNamespace("http://ws.apache.org/axis2/apacheconasia/06", "");
+        OMElement personElem = fac.createOMElement("person", ns);
+
+        //Create and add an unqualified element
+        OMElement nameElem = fac.createOMElement("name", null);
+        nameElem.setText("John");
+        personElem.addChild(nameElem);
+
+        OMElement ageElem = fac.createOMElement("age", ns);
+        ageElem.setText("34");
+
+        OMElement weightElem = fac.createOMElement("weight", ns);
+        weightElem.setText("50");
+
+        personElem.addChild(ageElem);
+        personElem.addChild(weightElem);
+        System.out.println("personElem = " + personElem);
+
+        try {
+            assertXMLEqual(expectedXML, personElem.toString());
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
 
     }

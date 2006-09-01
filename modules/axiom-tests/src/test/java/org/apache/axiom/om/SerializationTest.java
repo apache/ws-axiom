@@ -283,7 +283,7 @@ public class SerializationTest extends TestCase {
     
     /**
      * Special case when OMElement is created with a null OMNamespace.
-     * In this case, the created OMElement uses that default namespace of the parent.
+     * In this case, that element must always belongs to the default, default namespace
      */
     public void testNullOMNamespace() {
         OMFactory fac = OMAbstractFactory.getOMFactory();
@@ -298,7 +298,7 @@ public class SerializationTest extends TestCase {
         String xml = personElem.toString();
         
         assertEquals("Incorrect namespace serialization",2, xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
-        assertEquals("Incorrect serialization", 1, xml.split("xmlns=\"\"").length);
+        assertEquals("Incorrect serialization", 2, xml.split("xmlns=\"\"").length);
         
     }
     
