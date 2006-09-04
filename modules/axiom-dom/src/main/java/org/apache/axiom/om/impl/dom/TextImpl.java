@@ -15,7 +15,7 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.attachments.DataHandlerUtils;
+import org.apache.axiom.attachments.utils.DataHandlerUtils;
 import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNamespaceImpl;

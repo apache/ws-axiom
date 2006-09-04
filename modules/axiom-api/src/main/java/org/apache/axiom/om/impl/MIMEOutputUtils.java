@@ -16,6 +16,7 @@
 
 package org.apache.axiom.om.impl;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMText;
 
@@ -27,6 +28,7 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class MIMEOutputUtils {
 
@@ -122,18 +124,8 @@ public class MIMEOutputUtils {
         outStream.write(new byte[]{45, 45});
     }
 
-    public static String getContentTypeForMime(String boundary, String contentId, String charSetEncoding, String SOAPContentType) {
-        StringBuffer sb = new StringBuffer();
-        sb.append("multipart/related");
-        sb.append("; ");
-        sb.append("boundary=");
-        sb.append(boundary);
-        sb.append("; ");
-        sb.append("type=\"application/xop+xml\"");
-        sb.append("; ");
-        sb.append("start=\"<" + contentId + ">\"");
-        sb.append("; ");
-        sb.append("start-info=\""+SOAPContentType+"\"");
-        return sb.toString();
+    public static void writeSOAPWithAttachementsMessage(OMElement element,OutputStream outputStream, Map attachmentMap)
+    {
+    	
     }
 }

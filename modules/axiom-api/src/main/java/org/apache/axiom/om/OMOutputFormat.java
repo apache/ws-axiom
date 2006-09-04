@@ -16,7 +16,6 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.impl.MIMEOutputUtils;
 import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -24,12 +23,17 @@ import org.apache.axiom.soap.SOAP12Constants;
 
 /**
  * Formats options for OM Output.
+ * 
+ * Setting of all the properties in a OMOutputFormat should be done before
+ * calling the getContentType() method. It is advised to set all the properties
+ * at the creation time of the OMOutputFormat and not to change them later.
  */
 public class OMOutputFormat {
     private String mimeBoundary = null;
     private String rootContentId = null;
     private int nextid = 0;
     private boolean doOptimize;
+    private boolean doingSWA;
     private boolean isSoap11 = true;
 
     /**
@@ -58,10 +62,7 @@ public class OMOutputFormat {
             } else {
                 SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
             }
-            return MIMEOutputUtils.getContentTypeForMime(
-                    getMimeBoundary(),
-                    getRootContentId(),
-                    this.getCharSetEncoding(), SOAPContentType);
+            return this.getContentTypeForMime(SOAPContentType);
         } else {
             if (!isSoap11) {
                 return SOAP12Constants.SOAP_12_CONTENT_TYPE;
@@ -140,4 +141,27 @@ public class OMOutputFormat {
     public void setDoOptimize(boolean b) {
         doOptimize = b;
     }
+
+	public boolean isDoingSWA() {
+		return doingSWA;
+	}
+
+	public void setDoingSWA(boolean doingSWA) {
+		this.doingSWA = doingSWA;
+	}
+
+	public String getContentTypeForMime(String SOAPContentType) {
+	    StringBuffer sb = new StringBuffer();
+	    sb.append("multipart/related");
+	    sb.append("; ");
+	    sb.append("boundary=");
+	    sb.append(getMimeBoundary());
+	    sb.append("; ");
+	    sb.append("type=\"application/xop+xml\"");
+	    sb.append("; ");
+	    sb.append("start=\"<" + getRootContentId() + ">\"");
+	    sb.append("; ");
+	    sb.append("start-info=\""+SOAPContentType+"\"");
+	    return sb.toString();
+	}
 }

@@ -45,10 +45,9 @@ public class MIMEOutputUtilsTest extends TestCase {
         
         OMOutputFormat omOutput = new OMOutputFormat();
         boundary = omOutput.getMimeBoundary();
+        omOutput.setSOAP11(false);
 
-        String contentType = org.apache.axiom.om.impl.MIMEOutputUtils
-				.getContentTypeForMime(boundary, omOutput.getRootContentId(),
-						omOutput.getCharSetEncoding(),SOAP12Constants.SOAP_12_CONTENT_TYPE);
+        String contentType = omOutput.getContentType();
         DataHandler dataHandler;
         dataHandler = new DataHandler(new ByteArrayDataSource(byteArray));
         OMText textData = factory.createOMText(dataHandler, true);

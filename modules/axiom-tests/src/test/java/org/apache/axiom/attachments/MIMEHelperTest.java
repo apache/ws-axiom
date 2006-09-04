@@ -16,16 +16,15 @@
 
 package org.apache.axiom.attachments;
 
-import java.awt.Image;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
 import javax.activation.DataHandler;
-import javax.imageio.ImageIO;
+import javax.activation.FileDataSource;
 
-import org.apache.axiom.attachments.utils.ImageDataSource;
-import org.apache.axiom.attachments.utils.IOUtils;
 import org.apache.axiom.om.AbstractTestCase;
 
 public class MIMEHelperTest extends AbstractTestCase {
@@ -113,9 +112,8 @@ public class MIMEHelperTest extends AbstractTestCase {
 
     public void testGetInputAttachhmentStreams() throws Exception {
 
-        Image expectedImage;
         IncomingAttachmentInputStream dataIs;
-        ImageDataSource dataSource;
+        FileDataSource dataSource;
         InputStream expectedDataIs;
 
         InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
@@ -131,14 +129,12 @@ public class MIMEHelperTest extends AbstractTestCase {
         IncomingAttachmentStreams ias = attachments.getIncomingAttachmentStreams();
 
         dataIs = ias.getNextStream();
-        expectedImage = ImageIO.read(new FileInputStream(getTestResourceFile(img1FileName)));
-        dataSource = new ImageDataSource("test1.jpg", expectedImage);
+        dataSource = new FileDataSource(getTestResourceFile(img1FileName));
         expectedDataIs = dataSource.getInputStream();
         compareStreams(dataIs, expectedDataIs);
 
         dataIs = ias.getNextStream();
-        expectedImage = ImageIO.read(new FileInputStream(getTestResourceFile(img2FileName)));
-        dataSource = new ImageDataSource("test2.jpg", expectedImage);
+        dataSource = new FileDataSource(getTestResourceFile(img2FileName));
         expectedDataIs = dataSource.getInputStream();
         compareStreams(dataIs, expectedDataIs);
 
@@ -152,8 +148,8 @@ public class MIMEHelperTest extends AbstractTestCase {
     }
 
     private void compareStreams(InputStream data, InputStream expected) throws Exception {
-        byte[] dataArray = IOUtils.getStreamAsByteArray(data);
-        byte[] expectedArray = IOUtils.getStreamAsByteArray(expected);
+        byte[] dataArray = this.getStreamAsByteArray(data,-1);
+        byte[] expectedArray = this.getStreamAsByteArray(expected,-1);
         if(dataArray.length == expectedArray.length) {
             assertTrue(Arrays.equals(dataArray, expectedArray));
         } else {
@@ -169,11 +165,36 @@ public class MIMEHelperTest extends AbstractTestCase {
         DataHandler dh = attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
         InputStream dataIs = dh.getDataSource().getInputStream();
 
-        Image expectedImage = ImageIO.read(new FileInputStream(getTestResourceFile(img2FileName)));
-        ImageDataSource dataSource = new ImageDataSource("test.jpg", expectedImage);
+        FileDataSource dataSource = new FileDataSource(getTestResourceFile(img2FileName));
         InputStream expectedDataIs = dataSource.getInputStream();
 
         // Compare data across streams
         compareStreams(dataIs, expectedDataIs);
+    }
+    
+    /**
+     * Returns the contents of the input stream as byte array.
+     *
+     * @param stream the <code>InputStream</code>
+     * @param length the number of bytes to copy, if length < 0,
+     *               the number is unlimited
+     * @return the stream content as byte array
+     */
+    private byte[] getStreamAsByteArray(InputStream stream, int length) throws IOException {
+        if (length == 0) return new byte[0];
+        boolean checkLength = true;
+        if (length < 0) {
+            length = Integer.MAX_VALUE;
+            checkLength = false;
+        }
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        int nextValue = stream.read();
+        if (checkLength) length--;
+        while (-1 != nextValue && length >= 0) {
+            byteStream.write(nextValue);
+            nextValue = stream.read();
+            if (checkLength) length--;
+        }
+        return byteStream.toByteArray();
     }
 }

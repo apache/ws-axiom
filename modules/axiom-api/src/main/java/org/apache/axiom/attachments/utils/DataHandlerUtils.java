@@ -14,9 +14,10 @@
  *  limitations under the License.
  *
  */
-package org.apache.axiom.attachments;
+package org.apache.axiom.attachments.utils;
 
 
+import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.om.util.Base64;
 
 import javax.activation.DataHandler;

@@ -16,19 +16,17 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.attachments.utils.ImageDataSource;
-import org.apache.axiom.attachments.utils.ImageIO;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
-
-import javax.activation.DataHandler;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
-import java.awt.*;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.Iterator;
+
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLInputFactory;
+
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 public class IteratorTest extends AbstractTestCase {
     private OMElement envelope = null;
@@ -210,12 +208,8 @@ public class IteratorTest extends AbstractTestCase {
 
             OMElement data = fac.createOMElement("mtomSample", omNs);
             OMElement image = fac.createOMElement("image", omNs);
-            Image expectedImage;
-            expectedImage = new ImageIO()
-                    .loadImage(new FileInputStream(imageSource));
-
-            ImageDataSource dataSource = new ImageDataSource("test.jpg",
-                    expectedImage);
+ 
+            FileDataSource dataSource = new FileDataSource(imageSource);
             DataHandler expectedDH = new DataHandler(dataSource);
             OMText textData = fac.createOMText(expectedDH, true);
             image.addChild(textData);
@@ -229,7 +223,7 @@ public class IteratorTest extends AbstractTestCase {
 
             return data;
         } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace(); 
         }
 
         return null;

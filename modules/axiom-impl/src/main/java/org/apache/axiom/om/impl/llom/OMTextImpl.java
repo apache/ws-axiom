@@ -335,7 +335,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     public Object getDataHandler() {
         if ((value != null || charArray != null || textNS != null) & isBinary) {
             String text = textNS == null ? getTextFromProperPlace() : getTextString();
-            return org.apache.axiom.attachments.DataHandlerUtils.getDataHandlerFromText(text, mimeType);
+            return org.apache.axiom.attachments.utils.DataHandlerUtils.getDataHandlerFromText(text, mimeType);
         } else {
 
             if (dataHandlerObject == null) {

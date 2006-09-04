@@ -16,8 +16,27 @@
 
 package org.apache.axiom.attachments;
 
-import org.apache.axiom.attachments.utils.ImageDataSource;
-import org.apache.axiom.attachments.utils.ImageIO;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.util.Iterator;
+
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
+
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
@@ -29,16 +48,7 @@ import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMTextImpl;
 import org.apache.axiom.om.impl.mtom.MTOMStAXSOAPModelBuilder;
 
-import javax.activation.DataHandler;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
 public class ImageSampleTest extends AbstractTestCase {
 
@@ -92,12 +102,7 @@ public class ImageSampleTest extends AbstractTestCase {
                 "http://www.example.org/stuff", "m");
         OMElement data = new OMElementImpl("data", dataName, fac);
 
-        expectedImage =
-                new ImageIO().loadImage(
-                        new FileInputStream(
-                                getTestResourceFile(imageInFileName)));
-        ImageDataSource dataSource = new ImageDataSource("WaterLilies.jpg",
-                expectedImage);
+        FileDataSource dataSource = new FileDataSource(getTestResourceFile(imageInFileName));
         expectedDH = new DataHandler(dataSource);
         OMText binaryNode = new OMTextImpl(expectedDH, true, fac);
 
@@ -133,12 +138,32 @@ public class ImageSampleTest extends AbstractTestCase {
 
         DataHandler actualDH;
         actualDH = (DataHandler)blob.getDataHandler();
-        Image actualObject = new ImageIO().loadImage(actualDH.getDataSource()
-                .getInputStream());
-        FileOutputStream imageOutStream = new FileOutputStream(
-                new File(imageOutFileName));
-        new ImageIO().saveImage("image/jpeg", actualObject, imageOutStream);
-
+        BufferedImage bufferedImage = ImageIO.read(actualDH.getDataSource().getInputStream());
+        ImageWriter writer = null;
+        this.saveImage("image/jpeg",bufferedImage, new FileOutputStream(imageOutFileName) );
     }
+	/**
+     * Saves an image.
+     *
+     * @param mimeType the mime-type of the format to save the image
+     * @param image    the image to save
+     * @param os       the stream to write to
+     * @throws Exception if an error prevents image encoding
+     */
+    public void saveImage(String mimeType, BufferedImage image, OutputStream os)
+            throws Exception {
+
+        ImageWriter writer = null;
+        Iterator iter = javax.imageio.ImageIO.getImageWritersByMIMEType(mimeType);
+        if (iter.hasNext()) {
+            writer = (ImageWriter) iter.next();
+        }
+        ImageOutputStream ios = javax.imageio.ImageIO.createImageOutputStream(os);
+        writer.setOutput(ios);
+        
+        writer.write(new IIOImage(image, null, null));
+        ios.flush();
+        writer.dispose();
+    } // saveImage
 
 }
