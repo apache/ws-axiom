@@ -18,14 +18,17 @@ package org.apache.axiom.om.impl;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
@@ -44,10 +47,10 @@ public class MIMEOutputUtils {
                     "text/xml; charset=" + charSetEncoding);
             MimeBodyPart rootMimeBodyPart = new MimeBodyPart();
             rootMimeBodyPart.setDataHandler(dh);
-            
+
             rootMimeBodyPart.addHeader("content-type",
-                    "application/xop+xml; charset=" + charSetEncoding + 
-					"; type=\""+SOAPContentType+"\";");
+                    "application/xop+xml; charset=" + charSetEncoding +
+                    "; type=\""+SOAPContentType+"\";");
             rootMimeBodyPart.addHeader("content-transfer-encoding", "binary");
             rootMimeBodyPart.addHeader("content-id","<"+contentId+">");
 
@@ -107,7 +110,7 @@ public class MIMEOutputUtils {
      * @throws MessagingException
      */
     public static void writeBodyPart(OutputStream outStream,
-                                     MimeBodyPart part, 
+                                     MimeBodyPart part,
                                      String boundary) throws IOException,
             MessagingException {
         outStream.write(CRLF);
@@ -126,6 +129,10 @@ public class MIMEOutputUtils {
 
     public static void writeSOAPWithAttachementsMessage(OMElement element,OutputStream outputStream, Map attachmentMap)
     {
-    	
+
+    }
+
+    public static void writeSOAPWithAttachmentsMessage(StringWriter bufferedSOAPBody, ByteArrayOutputStream bytesOut, HashMap hashMap, OMOutputFormat format2) {
+        //TODO : Thilina please implement this :)
     }
 }
