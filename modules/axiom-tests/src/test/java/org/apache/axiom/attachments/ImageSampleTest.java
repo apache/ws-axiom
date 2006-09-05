@@ -16,7 +16,6 @@
 
 package org.apache.axiom.attachments;
 
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -47,8 +46,6 @@ import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMTextImpl;
 import org.apache.axiom.om.impl.mtom.MTOMStAXSOAPModelBuilder;
-
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
 public class ImageSampleTest extends AbstractTestCase {
 
@@ -139,7 +136,6 @@ public class ImageSampleTest extends AbstractTestCase {
         DataHandler actualDH;
         actualDH = (DataHandler)blob.getDataHandler();
         BufferedImage bufferedImage = ImageIO.read(actualDH.getDataSource().getInputStream());
-        ImageWriter writer = null;
         this.saveImage("image/jpeg",bufferedImage, new FileOutputStream(imageOutFileName) );
     }
 	/**

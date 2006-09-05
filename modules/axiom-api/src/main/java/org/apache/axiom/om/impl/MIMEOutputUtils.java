@@ -20,6 +20,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.soap.SOAP11Constants;
+import org.apache.axiom.soap.SOAP12Constants;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;
@@ -127,12 +129,36 @@ public class MIMEOutputUtils {
         outStream.write(new byte[]{45, 45});
     }
 
-    public static void writeSOAPWithAttachementsMessage(OMElement element,OutputStream outputStream, Map attachmentMap)
+    public static void writeSOAPWithAttachmentsMessage(StringWriter writer,OutputStream outputStream, Map attachmentMap,OMOutputFormat format)
     {
+//    	String SOAPContentType;
+//    	if (format.isSOAP11()) {
+//            SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
+//        } else {
+//            SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
+//        }
+//        startWritingMime(outputStream, format.getMimeBoundary());
+//
+//        javax.activation.DataHandler dh = new javax.activation.DataHandler(writer.toString(),
+//                "text/xml; charset=" + format.getCharSetEncoding());
+//        MimeBodyPart rootMimeBodyPart = new MimeBodyPart();
+//        rootMimeBodyPart.setDataHandler(dh);
+//        
+//        rootMimeBodyPart.addHeader("content-type",
+//                "application/xop+xml; charset=" + format.getCharSetEncoding() + 
+//				"; type=\""+SOAPContentType+"\";");
+//        rootMimeBodyPart.addHeader("content-transfer-encoding", "binary");
+//        rootMimeBodyPart.addHeader("content-id","<"+format.getRootContentId()+">");
+//
+//        writeBodyPart(outputStream, rootMimeBodyPart, format.getMimeBoundary());
+//
+//        Iterator attachmentIDIterator = attachmentMap.keySet().iterator();
+//        while (binaryNodeIterator.hasNext()) {
+//            OMText binaryNode = (OMText) binaryNodeIterator.next();
+//            writeBodyPart(outStream, createMimeBodyPart(binaryNode),
+//                    boundary);
+//        }
+//        finishWritingMime(outStream);
 
-    }
-
-    public static void writeSOAPWithAttachmentsMessage(StringWriter bufferedSOAPBody, ByteArrayOutputStream bytesOut, HashMap hashMap, OMOutputFormat format2) {
-        //TODO : Thilina please implement this :)
     }
 }

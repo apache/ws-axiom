@@ -16,6 +16,7 @@
 
 package org.apache.axiom.om;
 
+import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -56,19 +57,20 @@ public class OMOutputFormat {
 
     public String getContentType() {
         String SOAPContentType;
-        if (isOptimized()) {
-            if (isSoap11) {
-                SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
-            } else {
-                SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
-            }
-            return this.getContentTypeForMime(SOAPContentType);
+        if (isSoap11) {
+            SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
         } else {
-            if (!isSoap11) {
-                return SOAP12Constants.SOAP_12_CONTENT_TYPE;
-            } else {
-                return SOAP11Constants.SOAP_11_CONTENT_TYPE;
-            }
+            SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
+        }
+        // MTOM is given priority
+        if (isOptimized()) {
+            return this.getContentTypeForMime(SOAPContentType, MTOMConstants.MTOM_TYPE);
+        } else if (isDoingSWA())
+        {
+        	return this.getContentTypeForMime(SOAPContentType, MTOMConstants.SWA_TYPE);
+        }
+        else {
+            return SOAPContentType;
         }
     }
 
@@ -150,14 +152,14 @@ public class OMOutputFormat {
 		this.doingSWA = doingSWA;
 	}
 
-	public String getContentTypeForMime(String SOAPContentType) {
+	public String getContentTypeForMime(String SOAPContentType, String type) {
 	    StringBuffer sb = new StringBuffer();
 	    sb.append("multipart/related");
 	    sb.append("; ");
 	    sb.append("boundary=");
 	    sb.append(getMimeBoundary());
-	    sb.append("; ");
-	    sb.append("type=\"application/xop+xml\"");
+	    sb.append("; ");  
+	  	sb.append("type=\""+type+"\"");
 	    sb.append("; ");
 	    sb.append("start=\"<" + getRootContentId() + ">\"");
 	    sb.append("; ");
