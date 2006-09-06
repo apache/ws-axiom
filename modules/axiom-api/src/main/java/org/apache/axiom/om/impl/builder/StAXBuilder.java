@@ -460,4 +460,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     public OMDocument getDocument() {
         return document;
     }
+
+    public OMNode getLastNode() {
+        return this.lastNode;
+    }
 }
