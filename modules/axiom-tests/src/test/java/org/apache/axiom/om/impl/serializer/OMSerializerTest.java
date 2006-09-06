@@ -23,11 +23,10 @@ import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.*;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 
 public class OMSerializerTest extends AbstractTestCase {
     private XMLStreamReader reader;
@@ -48,8 +47,6 @@ public class OMSerializerTest extends AbstractTestCase {
 //        writer =
 //                XMLOutputFactory.newInstance().
 //                        createXMLStreamWriter(new FileOutputStream(tempFile));
-
-
 
 
     }
@@ -88,31 +85,36 @@ public class OMSerializerTest extends AbstractTestCase {
     }
 
     public void testElementPullStream1WithCacheOff() throws Exception {
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                OMAbstractFactory.getSOAP11Factory(),
-                reader);
+
+        StAXSOAPModelBuilder soapBuilder = new StAXSOAPModelBuilder(reader, null);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         writer =
                 XMLOutputFactory.newInstance().
                         createXMLStreamWriter(byteArrayOutputStream);
 
-        SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
+        SOAPEnvelope env = (SOAPEnvelope) soapBuilder.getDocumentElement();
         env.serializeAndConsume(writer);
         writer.flush();
 
         String outputString = new String(byteArrayOutputStream.toByteArray());
         assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
 
+        writer =
+                XMLOutputFactory.newInstance().
+                        createXMLStreamWriter(byteArrayOutputStream);
+
+        StringWriter stringWriter = new StringWriter();
+
         //now we should not be able to serilaize anything ! this should throw
         //an error
         try {
-           env.serializeAndConsume(writer);
-           fail();
+            env.serializeAndConsume(writer);
+            fail();
         } catch (XMLStreamException e) {
-            e.printStackTrace();
-           assertTrue(true);
+            e.printStackTrace(new PrintWriter(stringWriter, true));
+            assertTrue(stringWriter.toString().indexOf("problem accessing the parser. Parser already accessed!") > -1);
         } catch (Exception e) {
-           assertTrue(true);
+            fail("Expecting an XMLStreamException " + e.getMessage());
         }
     }
 

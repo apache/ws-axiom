@@ -16,15 +16,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMComment;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.EmptyOMLocation;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.om.impl.llom.util.NamespaceContextImpl;
@@ -35,11 +27,7 @@ import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Note  - This class also implements the streaming constants interface
