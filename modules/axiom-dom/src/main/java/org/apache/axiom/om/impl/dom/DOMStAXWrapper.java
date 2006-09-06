@@ -1080,6 +1080,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * Method generateTextEvents.
      * 
      * @return Returns int.
+     * @noinspection SameReturnValue
      */
     private int generateTextEvents() {
         return CHARACTERS;
@@ -1089,6 +1090,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * Method generateCommentEvents.
      * 
      * @return Returns int.
+     * @noinspection SameReturnValue
      */
     private int generateCommentEvents() {
         return COMMENT;

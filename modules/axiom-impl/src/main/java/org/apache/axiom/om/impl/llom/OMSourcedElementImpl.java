@@ -386,21 +386,6 @@ public class OMSourcedElementImpl extends OMElementImpl
         return super.getTextAsQName();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getLocalName()
-     */
-    public String getLocalName() {
-        // no need to set the parser, just call base method directly
-        return super.getLocalName();
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#setLocalName(java.lang.String)
-     */
-    public void setLocalName(String localName) {
-        // no need to expand the tree, just call base method directly
-        super.setLocalName(localName);
-    }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMElement#getNamespace()
@@ -466,36 +451,12 @@ public class OMSourcedElementImpl extends OMElementImpl
     }
 
     /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#setLineNumber(int)
-     */
-    public void setLineNumber(int lineNumber) {
-        // no need to expand the tree, just call base method directly
-        super.setLineNumber(lineNumber);
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getLineNumber()
-     */
-    public int getLineNumber() {
-        // no need to expand the tree, just call base method directly
-        return super.getLineNumber();
-    }
-
-    /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#discard()
      */
     public void discard() throws OMException {
         // discard without expanding the tree
         setComplete(true);
         super.detach();
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#getType()
-     */
-    public int getType() {
-        // no need to expand the tree, just call base method directly
-        return super.getType();
     }
 
     /* (non-Javadoc)
@@ -664,14 +625,6 @@ public class OMSourcedElementImpl extends OMElementImpl
         OMNode result = super.detach();
         setComplete(complete);
         return result;
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.impl.llom.OMElementImpl#getNextOMSibling()
-     */
-    public OMNode getNextOMSibling() throws OMException {
-        // no need to expand the tree, just call base method directly
-        return super.getNextOMSibling();
     }
 
     /* (non-Javadoc)

@@ -166,7 +166,7 @@ public class BoundaryDelimitedStream extends java.io.FilterInputStream {
      * @param readbufsz lets you have some control over the amount of buffering.
      *   by buffering you can some effiency in searching.
      *
-     * @throws org.apache.axis.AxisFault
+     * @throws OMException
      */
     BoundaryDelimitedStream(
             java.io.InputStream is, byte[] boundary, int readbufsz)
