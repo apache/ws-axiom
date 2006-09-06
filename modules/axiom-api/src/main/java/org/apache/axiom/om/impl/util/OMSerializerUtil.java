@@ -500,13 +500,7 @@ public class OMSerializerUtil {
         	// Get the namespace associated with this writer
         	String writerNS = writer.getNamespaceContext().getNamespaceURI((prefix==null) ? "" : prefix);
         	writerNS = (writerNS != null && writerNS.length() == 0) ? null : writerNS;
-        	if (writerNS != null) {
-        		String writerPrefix = writer.getPrefix(writerNS);
-        		if (writerPrefix == null) {
-        			;
-        		}
-        	}
-        	
+
         	if (writerNS == null || !writerNS.equals(namespace)) {
         		// Writer has not associated this namespace with a prefix
         		if (prefix == null) {
