@@ -18,11 +18,7 @@ package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.*;
 import org.apache.axiom.soap.impl.llom.SOAPBodyImpl;
 
 public class SOAP12BodyImpl extends SOAPBodyImpl {
@@ -52,8 +48,7 @@ public class SOAP12BodyImpl extends SOAPBodyImpl {
     }
 
     public SOAPFault addFault(Exception e) throws OMException {
-        SOAPFault soapFault = new SOAP12FaultImpl(this, e,
+        return new SOAP12FaultImpl(this, e,
                 (SOAPFactory) this.factory);
-        return soapFault;
     }
 }

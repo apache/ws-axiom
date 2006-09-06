@@ -16,21 +16,8 @@
 
 package org.apache.axiom.om.factory;
 
-import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMTestUtils;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAPBody;
-import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.om.*;
+import org.apache.axiom.soap.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -38,7 +25,6 @@ import org.apache.commons.logging.LogFactory;
  * User: Eran Chinthaka (eran.chinthaka@gmail.com)
  * Date: Feb 8, 2005
  * Time: 11:06:09 AM
- * All Rights Reserved.
  */
 public class OMLinkedListImplFactoryTest extends AbstractTestCase {
 

@@ -15,28 +15,14 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.ElementHelper;
-import org.w3c.dom.Attr;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.TypeInfo;
+import org.w3c.dom.*;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
@@ -292,9 +278,8 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     DOMMessageFormatter.DOM_DOMAIN, "NOT_FOUND_ERR", null);
             throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
         }
-        AttrImpl tempAttr = (AttrImpl) this.attributes.removeNamedItem(oldAttr
+        return (AttrImpl) this.attributes.removeNamedItem(oldAttr
                 .getName());
-        return tempAttr;
     }
 
     /*

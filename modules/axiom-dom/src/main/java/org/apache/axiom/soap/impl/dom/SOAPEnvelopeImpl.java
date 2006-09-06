@@ -16,21 +16,10 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPBody;
-import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.*;
 import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
 
 import javax.xml.namespace.QName;
@@ -80,9 +69,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
      * @throws OMException
      */
     public SOAPHeader getHeader() throws OMException {
-        SOAPHeader header =
-                (SOAPHeader) getFirstChildWithName(new QName(SOAPConstants.HEADER_LOCAL_NAME));
-        return header;
+        return (SOAPHeader) getFirstChildWithName(new QName(SOAPConstants.HEADER_LOCAL_NAME));
     }
 
     public void addChild(OMNode child) {

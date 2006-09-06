@@ -66,15 +66,13 @@ public class OMDOMFactory implements OMFactory {
 
         case Node.DOCUMENT_NODE:
             DocumentImpl docImpl = (DocumentImpl) parent;
-            ElementImpl elem2 = new ElementImpl(docImpl, localName,
+            return new ElementImpl(docImpl, localName,
                     (NamespaceImpl) ns, this);
-            return elem2;
 
         case Node.DOCUMENT_FRAGMENT_NODE:
             DocumentFragmentimpl docFragImpl = (DocumentFragmentimpl) parent;
-            ElementImpl elem3 = new ElementImpl((DocumentImpl) docFragImpl
+            return new ElementImpl((DocumentImpl) docFragImpl
                     .getOwnerDocument(), localName, (NamespaceImpl) ns, this);
-            return elem3;
         default:
             throw new OMDOMException(
                     "The parent container can only be an ELEMENT, DOCUMENT " +
@@ -104,10 +102,9 @@ public class OMDOMFactory implements OMFactory {
 
         case Node.DOCUMENT_FRAGMENT_NODE:
             DocumentFragmentimpl docFragImpl = (DocumentFragmentimpl) parent;
-            ElementImpl elem3 = new ElementImpl((DocumentImpl) docFragImpl
+            return new ElementImpl((DocumentImpl) docFragImpl
                     .getOwnerDocument(), localName, (NamespaceImpl) ns,
                     builder, this);
-            return elem3;
         default:
             throw new OMDOMException(
                     "The parent container can only be an ELEMENT, DOCUMENT " +
@@ -210,8 +207,7 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText(java.lang.String)
      */
     public OMText createOMText(String s) {
-        TextImpl textImpl = new TextImpl(this.document,s, this);
-        return textImpl;
+        return new TextImpl(this.document,s, this);
     }
 
     /**
