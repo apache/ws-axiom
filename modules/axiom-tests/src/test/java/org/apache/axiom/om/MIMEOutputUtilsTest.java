@@ -30,6 +30,9 @@ import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.channels.WritableByteChannel;
+import java.util.HashMap;
 import java.util.Properties;
 
 public class MIMEOutputUtilsTest extends TestCase {
@@ -63,10 +66,12 @@ public class MIMEOutputUtilsTest extends TestCase {
         outStream.write(new byte[]{13,10});
 
         MIMEOutputUtils.startWritingMime(outStream, boundary);
-        MimeBodyPart part1 = MIMEOutputUtils.createMimeBodyPart(textData);
-        MIMEOutputUtils.writeBodyPart(outStream, part1, boundary);
-        MimeBodyPart part2 = MIMEOutputUtils.createMimeBodyPart(text);
-        MIMEOutputUtils.writeBodyPart(outStream, part2, boundary);
+		MimeBodyPart part1 = MIMEOutputUtils.createMimeBodyPart(textData
+				.getContentID(), (DataHandler) textData.getDataHandler());
+		MIMEOutputUtils.writeBodyPart(outStream, part1, boundary);
+		MimeBodyPart part2 = MIMEOutputUtils.createMimeBodyPart(text
+				.getContentID(), (DataHandler) text.getDataHandler());
+		MIMEOutputUtils.writeBodyPart(outStream, part2, boundary);
         MIMEOutputUtils.finishWritingMime(outStream);
         buffer = outStream.toByteArray();
     }
@@ -87,4 +92,25 @@ public class MIMEOutputUtilsTest extends TestCase {
         assertNotNull(object1);
         assertEquals(multiPart.getCount(),2);
     }
+//    public void testWriteSOAPWithAttachmentsMessage()
+//    {
+//    	ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();
+//        ByteArrayOutputStream outStream;
+//        String boundary;
+//        
+//        OMOutputFormat omOutput = new OMOutputFormat();
+//        boundary = omOutput.getMimeBoundary();
+//        omOutput.setCharSetEncoding(OMConstants.DEFAULT_CHAR_SET_ENCODING);
+//        omOutput.setSOAP11(false);
+//        
+//        StringWriter stringWriter = new StringWriter();
+//        stringWriter.write("Apache Axis2");
+//        DataHandler dataHandler = new DataHandler(
+//                "Apache Software Foundation", "text/plain");
+//        HashMap map = new HashMap();
+//        map.put("uuid_dsjkjkda",dataHandler);
+//        MIMEOutputUtils.writeSOAPWithAttachmentsMessage(stringWriter,byteArrayOutputStream,map,omOutput);
+//        System.out.println(byteArrayOutputStream.toString());
+//    }
 }

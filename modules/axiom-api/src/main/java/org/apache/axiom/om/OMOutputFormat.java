@@ -64,10 +64,10 @@ public class OMOutputFormat {
         }
         // MTOM is given priority
         if (isOptimized()) {
-            return this.getContentTypeForMime(SOAPContentType, MTOMConstants.MTOM_TYPE);
+            return this.getContentTypeForMTOM(SOAPContentType);
         } else if (isDoingSWA())
         {
-        	return this.getContentTypeForMime(SOAPContentType, MTOMConstants.SWA_TYPE);
+        	return this.getContentTypeForSwA(SOAPContentType);
         }
         else {
             return SOAPContentType;
@@ -152,18 +152,31 @@ public class OMOutputFormat {
 		this.doingSWA = doingSWA;
 	}
 
-	public String getContentTypeForMime(String SOAPContentType, String type) {
+	public String getContentTypeForMTOM(String SOAPContentType) {
 	    StringBuffer sb = new StringBuffer();
 	    sb.append("multipart/related");
 	    sb.append("; ");
 	    sb.append("boundary=");
 	    sb.append(getMimeBoundary());
 	    sb.append("; ");  
-	  	sb.append("type=\""+type+"\"");
+	  	sb.append("type=\""+MTOMConstants.MTOM_TYPE+"\"");
 	    sb.append("; ");
 	    sb.append("start=\"<" + getRootContentId() + ">\"");
 	    sb.append("; ");
 	    sb.append("start-info=\""+SOAPContentType+"\"");
+	    return sb.toString();
+	}
+	
+	public String getContentTypeForSwA(String SOAPContentType) {
+	    StringBuffer sb = new StringBuffer();
+	    sb.append("multipart/related");
+	    sb.append("; ");
+	    sb.append("boundary=");
+	    sb.append(getMimeBoundary());
+	    sb.append("; ");  
+	  	sb.append("type=\""+MTOMConstants.SWA_TYPE+"\"");
+	    sb.append("; ");
+	    sb.append("start=\"<" + getRootContentId() + ">\"");
 	    return sb.toString();
 	}
 }

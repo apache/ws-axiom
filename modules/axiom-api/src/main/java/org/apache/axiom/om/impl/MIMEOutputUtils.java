@@ -16,24 +16,23 @@
 
 package org.apache.axiom.om.impl;
 
-import org.apache.axiom.om.OMElement;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+
+import javax.activation.DataHandler;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeBodyPart;
+
+import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
-
-import javax.activation.DataHandler;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeBodyPart;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
 
 public class MIMEOutputUtils {
 
@@ -60,24 +59,24 @@ public class MIMEOutputUtils {
 
             Iterator binaryNodeIterator = binaryNodeList.iterator();
             while (binaryNodeIterator.hasNext()) {
-                OMText binaryNode = (OMText) binaryNodeIterator.next();
-                writeBodyPart(outStream, createMimeBodyPart(binaryNode),
-                        boundary);
-            }
-            finishWritingMime(outStream);
+				OMText binaryNode = (OMText) binaryNodeIterator.next();
+				writeBodyPart(outStream, createMimeBodyPart(binaryNode
+						.getContentID(), (DataHandler) binaryNode
+						.getDataHandler()), boundary);
+			}
+			finishWritingMime(outStream);
         } catch (IOException e) {
-            throw new OMException("Problem with the OutputStream.", e);
+            throw new OMException("Error while writing to the OutputStream.", e);
         } catch (MessagingException e) {
             throw new OMException("Problem writing Mime Parts.", e);
         }
     }
 
-    public static MimeBodyPart createMimeBodyPart(OMText node)
+    public static MimeBodyPart createMimeBodyPart(String contentID, DataHandler dataHandler)
             throws MessagingException {
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
-        final DataHandler dataHandler = (DataHandler) node.getDataHandler();
         mimeBodyPart.setDataHandler(dataHandler);
-        mimeBodyPart.addHeader("content-id", "<"+node.getContentID()+">");
+        mimeBodyPart.addHeader("content-id", "<"+contentID+">");
         mimeBodyPart.addHeader("content-type", dataHandler.getContentType());
         mimeBodyPart.addHeader("content-transfer-encoding", "binary");
         return mimeBodyPart;
@@ -129,36 +128,46 @@ public class MIMEOutputUtils {
         outStream.write(new byte[]{45, 45});
     }
 
-    public static void writeSOAPWithAttachmentsMessage(StringWriter writer,OutputStream outputStream, Map attachmentMap,OMOutputFormat format)
-    {
-//    	String SOAPContentType;
-//    	if (format.isSOAP11()) {
-//            SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
-//        } else {
-//            SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
-//        }
-//        startWritingMime(outputStream, format.getMimeBoundary());
-//
-//        javax.activation.DataHandler dh = new javax.activation.DataHandler(writer.toString(),
-//                "text/xml; charset=" + format.getCharSetEncoding());
-//        MimeBodyPart rootMimeBodyPart = new MimeBodyPart();
-//        rootMimeBodyPart.setDataHandler(dh);
-//        
-//        rootMimeBodyPart.addHeader("content-type",
-//                "application/xop+xml; charset=" + format.getCharSetEncoding() + 
-//				"; type=\""+SOAPContentType+"\";");
-//        rootMimeBodyPart.addHeader("content-transfer-encoding", "binary");
-//        rootMimeBodyPart.addHeader("content-id","<"+format.getRootContentId()+">");
-//
-//        writeBodyPart(outputStream, rootMimeBodyPart, format.getMimeBoundary());
-//
-//        Iterator attachmentIDIterator = attachmentMap.keySet().iterator();
-//        while (binaryNodeIterator.hasNext()) {
-//            OMText binaryNode = (OMText) binaryNodeIterator.next();
-//            writeBodyPart(outStream, createMimeBodyPart(binaryNode),
-//                    boundary);
-//        }
-//        finishWritingMime(outStream);
+    public static void writeSOAPWithAttachmentsMessage(StringWriter writer,
+			OutputStream outputStream, Map attachmentMap, OMOutputFormat format) {
+		String SOAPContentType;
+		try {
+			if (format.isSOAP11()) {
+				SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
+			} else {
+				SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
+			}
+			startWritingMime(outputStream, format.getMimeBoundary());
 
-    }
+			javax.activation.DataHandler dh = new javax.activation.DataHandler(
+					writer.toString(), "text/xml; charset="
+							+ format.getCharSetEncoding());
+			MimeBodyPart rootMimeBodyPart = new MimeBodyPart();
+			rootMimeBodyPart.setDataHandler(dh);
+
+			rootMimeBodyPart.addHeader("content-type",
+					MTOMConstants.SWA_TYPE+"; charset="
+							+ format.getCharSetEncoding());
+			rootMimeBodyPart.addHeader("content-transfer-encoding", "8bit");
+			rootMimeBodyPart.addHeader("content-id", "<"
+					+ format.getRootContentId() + ">");
+
+			writeBodyPart(outputStream, rootMimeBodyPart, format
+					.getMimeBoundary());
+
+			Iterator attachmentIDIterator = attachmentMap.keySet().iterator();
+			while (attachmentIDIterator.hasNext()) {
+				String contentID = (String) attachmentIDIterator.next();
+				DataHandler dataHandler = (DataHandler) attachmentMap
+						.get(contentID);
+				writeBodyPart(outputStream, createMimeBodyPart(contentID,
+						dataHandler), format.getMimeBoundary());
+			}
+			finishWritingMime(outputStream);
+		} catch (IOException e) {
+			throw new OMException("Error while writing to the OutputStream.", e);
+		} catch (MessagingException e) {
+			throw new OMException("Problem writing Mime Parts.", e);
+		}
+	}
 }
