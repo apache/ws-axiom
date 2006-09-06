@@ -126,7 +126,7 @@ public class PartOnFile implements Part {
             }
 
         }
-        return (String) cID.getValue();
+        return cID.getValue();
     }
 
     public int getSize() throws MessagingException {
@@ -167,7 +167,7 @@ public class PartOnFile implements Part {
     }
 
     public String getHeader(String arg0) throws MessagingException {
-    	return (String) ((Header) headers.get(arg0)).getValue();
+    	return ((Header) headers.get(arg0)).getValue();
     }
 
     public void addHeader(String arg0, String arg1) throws MessagingException {
@@ -187,7 +187,7 @@ public class PartOnFile implements Part {
                 cType = (Header) headers.get("content-type");
             }
         }
-        return (String) cType.getValue();
+        return cType.getValue();
     }
 
 }

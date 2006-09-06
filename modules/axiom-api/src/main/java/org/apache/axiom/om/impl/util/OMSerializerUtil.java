@@ -443,9 +443,9 @@ public class OMSerializerUtil {
         OMNode firstChild = element.getFirstOMChild();
         if (firstChild != null) {
             if (cache) {
-                ((OMNodeEx) firstChild).serialize(writer);
+                (firstChild).serialize(writer);
             } else {
-                ((OMNodeEx) firstChild).serializeAndConsume(writer);
+                (firstChild).serializeAndConsume(writer);
             }
         }
         serializeEndpart(writer);

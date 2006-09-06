@@ -142,7 +142,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
      * context the Node was created). The Node may or may not
      */
     public Document getOwnerDocument() {
-        return (Document) this.ownerNode;
+        return this.ownerNode;
     }
 
     /**

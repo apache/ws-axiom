@@ -72,7 +72,7 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
         		SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME, 
         		writer);
         
-        OMNode child = (OMNodeImpl) firstChild;
+        OMNode child = firstChild;
         while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
            ((OMNodeImpl) child).internalSerializeAndConsume(writer);
             child = child.getNextOMSibling();

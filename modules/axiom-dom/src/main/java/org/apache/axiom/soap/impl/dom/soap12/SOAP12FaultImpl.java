@@ -111,7 +111,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     protected void serializeFaultNode(XMLStreamWriter writer) throws XMLStreamException {
         SOAPFaultNode faultNode = getNode();
         if (faultNode != null) {
-            ((OMNodeEx)faultNode).serialize(writer);
+            (faultNode).serialize(writer);
         }
     }
 }

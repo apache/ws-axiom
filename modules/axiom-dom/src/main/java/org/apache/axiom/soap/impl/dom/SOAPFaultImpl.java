@@ -162,7 +162,7 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
 			setDetail(getNewSOAPFaultDetail(this));
 
 		}
-		OMElement faultDetailEnty = new ElementImpl((ParentNode) this,
+		OMElement faultDetailEnty = new ElementImpl(this,
 				SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,
 				null, this.factory);
 		faultDetailEnty.setText(sw.getBuffer().toString());
@@ -214,23 +214,23 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
         OMSerializerUtil.serializeStartpart(this, writer);
 		SOAPFaultCode faultCode = getCode();
 		if (faultCode != null) {
-			((OMNodeEx)faultCode).serialize(writer);
+			(faultCode).serialize(writer);
 		}
 		SOAPFaultReason faultReason = getReason();
 		if (faultReason != null) {
-			((OMNodeEx)faultReason).serialize(writer);
+			(faultReason).serialize(writer);
 		}
 
 		serializeFaultNode(writer);
 
 		SOAPFaultRole faultRole = getRole();
 		if (faultRole != null) {
-			((OMNodeEx)faultRole).serialize(writer);
+			(faultRole).serialize(writer);
 		}
 
 		SOAPFaultDetail faultDetail = getDetail();
 		if (faultDetail != null) {
-			((OMNodeEx)faultDetail).serialize(writer);
+			(faultDetail).serialize(writer);
 		}
 
 		OMSerializerUtil.serializeEndpart(writer);

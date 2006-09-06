@@ -82,7 +82,7 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
         String text = this.getText();
         writer.writeCharacters(text);
 
-        OMNode child = (OMNodeImpl) firstChild;
+        OMNode child = firstChild;
         while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
             ((OMNodeImpl) child).internalSerializeAndConsume(writer);
             child = child.getNextOMSibling();
