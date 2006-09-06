@@ -195,12 +195,12 @@ public class BoundaryDelimitedStream extends java.io.FilterInputStream {
         this.readbufsz = Math.max((boundaryBufLen) * 2, readbufsz);
     }
 
-    private final int readFromStream(final byte[] b)
+    private int readFromStream(final byte[] b)
             throws java.io.IOException {
         return readFromStream(b, 0, b.length);
     }
 
-    private final int readFromStream(
+    private int readFromStream(
             final byte[] b, final int start, final int length)
             throws java.io.IOException {
 
