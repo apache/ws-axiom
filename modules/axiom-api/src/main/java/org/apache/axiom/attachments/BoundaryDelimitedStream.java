@@ -75,7 +75,6 @@ public class BoundaryDelimitedStream extends java.io.FilterInputStream {
     /**
      * Signal that a new stream has been created.
      *
-     * @return
      */
     protected static synchronized int newStreamNo() {
 
@@ -186,7 +185,7 @@ public class BoundaryDelimitedStream extends java.io.FilterInputStream {
         System.arraycopy(boundary, 0, this.boundary, 0, boundary.length);
 
         this.boundaryLen = this.boundary.length;
-        
+
         // 2 for preceeding, and 2 for proceeding CRLF's
         this.boundaryBufLen = boundaryLen + 4;
 
@@ -212,7 +211,7 @@ public class BoundaryDelimitedStream extends java.io.FilterInputStream {
         int brTotal = 0;
 
         do {
-        	
+
        		br = is.read(b, brTotal + start, length - brTotal);
 
             if (br > 0) {
@@ -267,7 +266,7 @@ public class BoundaryDelimitedStream extends java.io.FilterInputStream {
 
         // read and copy bytes in.
         do {                                // Always allow to have a boundary length left in the buffer.
-        	
+
         	bwritten = 0;
             int bcopy = Math.min(readBufEnd - readBufPos - boundaryBufLen,
                     len - bwritten);
@@ -287,7 +286,7 @@ public class BoundaryDelimitedStream extends java.io.FilterInputStream {
 
                 log.debug("atEOS" + streamNo);
             } else if (bwritten < len) {    // need to get more data.
-            	
+
                 byte[] dstbuf = readbuf;
 
                 if (readbuf.length < len) {
@@ -397,7 +396,7 @@ public class BoundaryDelimitedStream extends java.io.FilterInputStream {
 
             // Easy way to flush through the stream;
             byte[] readrest = new byte[1024 * 16];
-            int bread = 0;
+            int bread;
 
             do {
                 bread = read(readrest);
@@ -430,7 +429,6 @@ public class BoundaryDelimitedStream extends java.io.FilterInputStream {
      * markSupported
      * return false;
      *
-     * @return
      */
     public boolean markSupported() {
         return false;
@@ -476,14 +474,14 @@ public class BoundaryDelimitedStream extends java.io.FilterInputStream {
                     // If there really was no crlf at then end then this is not a boundary.
                     foundAt = BOUNDARY_NOT_FOUND;
                 }
-                
-                if ((foundAt != BOUNDARY_NOT_FOUND) 
+
+                if ((foundAt != BOUNDARY_NOT_FOUND)
                 		&& (searchbuf[foundAt - 2] == 13)
                         && (searchbuf[foundAt - 1] == 10)) {
 
-                	// Section 7.2.1 of the MIME RFC (#1521) states that CRLF 
-                	// preceeding boundary is part of the encapsulation 
-                	// boundary 
+                	// Section 7.2.1 of the MIME RFC (#1521) states that CRLF
+                	// preceeding boundary is part of the encapsulation
+                	// boundary
                 	foundAt -= 2;
                 }
             }
@@ -528,16 +526,14 @@ public class BoundaryDelimitedStream extends java.io.FilterInputStream {
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
                 StringBuffer sb = new StringBuffer();
-                sb.append(
-                        ">>>"
-                        + e);    // rr temporary till a boundary issue is resolved.
-                sb.append("start=" + start);
-                sb.append("k=" + k);
-                sb.append("text.length=" + text.length);
-                sb.append("i=" + i);
-                sb.append("boundary.length=" + boundary.length);
-                sb.append("j=" + j);
-                sb.append("end=" + end);
+                sb.append(">>>").append(e);    // rr temporary till a boundary issue is resolved.
+                sb.append("start=").append(start);
+                sb.append("k=").append(k);
+                sb.append("text.length=").append(text.length);
+                sb.append("i=").append(i);
+                sb.append("boundary.length=").append(boundary.length);
+                sb.append("j=").append(j);
+                sb.append("end=").append(end);
                 log.warn("exception01" + sb.toString());
                 throw e;
             }
