@@ -278,7 +278,6 @@ public class NamespaceTest extends XMLTestCase {
 
         personElem.addChild(ageElem);
         personElem.addChild(weightElem);
-        System.out.println("personElem = " + personElem);
 
         try {
             assertXMLEqual(expectedXML, personElem.toString());

@@ -16,10 +16,10 @@
 
 package org.apache.axiom.om;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class OMBodyTest extends OMTestCase implements OMConstants {
     SOAPBody soapBody;
@@ -41,7 +41,7 @@ public class OMBodyTest extends OMTestCase implements OMConstants {
      * Class under test for SOAPFault addFault()
      */
     public void testAddFault() {
-        log.info("Adding SOAP fault to body ....");
+        log.debug("Adding SOAP fault to body ....");
         try {
             soapBody.addChild(
                     soapFactory.createSOAPFault(soapBody,
@@ -50,9 +50,9 @@ public class OMBodyTest extends OMTestCase implements OMConstants {
             log.info(e.getMessage());
             fail(e.getMessage());
         }
-        log.info("\t checking for SOAP Fault ...");
+        log.debug("\t checking for SOAP Fault ...");
         assertTrue("SOAP body has no SOAP fault", soapBody.hasFault());
-        log.info("\t checking for not-nullity ...");
+        log.debug("\t checking for not-nullity ...");
         assertTrue("SOAP body has no SOAP fault", soapBody.getFault() != null);
     }
 

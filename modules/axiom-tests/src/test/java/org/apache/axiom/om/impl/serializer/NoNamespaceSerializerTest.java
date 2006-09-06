@@ -81,7 +81,7 @@ public class NoNamespaceSerializerTest extends TestCase {
                         new InputStreamReader(
                                 new ByteArrayInputStream(xmlTextTwo.getBytes())));
         writer = XMLOutputFactory.newInstance().
-                createXMLStreamWriter(System.out);
+                createXMLStreamWriter(new ByteArrayOutputStream());
         builderOne =
                 OMXMLBuilderFactory.createStAXSOAPModelBuilder(
                         OMAbstractFactory.getSOAP11Factory(), readerOne);
@@ -128,12 +128,14 @@ public class NoNamespaceSerializerTest extends TestCase {
      * Will just do a probe test to check serialize with caching on works without any exception
      */
     public void testSerilizationWithCacheOn() throws Exception {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         writer = XMLOutputFactory.newInstance().
-                createXMLStreamWriter(new ByteArrayOutputStream());
+                createXMLStreamWriter(byteArrayOutputStream);
 
         SOAPEnvelope env = (SOAPEnvelope) builderOne.getDocumentElement();
         env.serialize(writer);
         writer.flush();
+        assertTrue(new String(byteArrayOutputStream.toByteArray()).length() > 1);
     }
 
     /**

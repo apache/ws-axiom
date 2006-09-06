@@ -73,8 +73,6 @@ public class DefaultNSHandlingTest extends TestCase {
         OMElement omElementThree = omFactory.createOMElement("Bar", defaultNS1, omElementTwo);
         omElementThree.declareDefaultNamespace("http://defaultNS1.org");
 
-        System.out.println("omElementOne = " + omElementOne);
-
         assertTrue("".equals(omElementOneChild.getNamespace().getNamespaceURI()));
         assertTrue("".equals(omElementTwoChild.getNamespace().getNamespaceURI()));
     }
