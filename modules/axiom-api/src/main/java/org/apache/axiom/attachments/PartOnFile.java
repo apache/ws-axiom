@@ -26,6 +26,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.Header;
 import javax.mail.MessagingException;
@@ -65,7 +66,6 @@ public class PartOnFile implements Part {
                 if (!inStream.getBoundaryStatus()) {
                     fileOutStream.write(value);
                 }
-
             }
 
             fileOutStream.flush();
@@ -154,7 +154,9 @@ public class PartOnFile implements Part {
     }
 
     public DataHandler getDataHandler() throws MessagingException {
-        return new DataHandler(new FileDataSource(cacheFile));
+    	CachedFileDataSource dataSource = new CachedFileDataSource(cacheFile);
+    	dataSource.setContentType(getContentType());
+        return new DataHandler(dataSource);
     }
 
     public Object getContent() throws IOException, MessagingException {

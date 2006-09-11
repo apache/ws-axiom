@@ -27,6 +27,7 @@ import javax.activation.DataHandler;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 
+import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
@@ -129,7 +130,7 @@ public class MIMEOutputUtils {
     }
 
     public static void writeSOAPWithAttachmentsMessage(StringWriter writer,
-			OutputStream outputStream, Map attachmentMap, OMOutputFormat format) {
+			OutputStream outputStream, Attachments attachments, OMOutputFormat format) {
 		String SOAPContentType;
 		try {
 			if (format.isSOAP11()) {
@@ -146,7 +147,7 @@ public class MIMEOutputUtils {
 			rootMimeBodyPart.setDataHandler(dh);
 
 			rootMimeBodyPart.addHeader("content-type",
-					MTOMConstants.SWA_TYPE+"; charset="
+					SOAPContentType+"; charset="
 							+ format.getCharSetEncoding());
 			rootMimeBodyPart.addHeader("content-transfer-encoding", "8bit");
 			rootMimeBodyPart.addHeader("content-id", "<"
@@ -155,11 +156,10 @@ public class MIMEOutputUtils {
 			writeBodyPart(outputStream, rootMimeBodyPart, format
 					.getMimeBoundary());
 
-			Iterator attachmentIDIterator = attachmentMap.keySet().iterator();
+			Iterator attachmentIDIterator = attachments.getContentIDSet().iterator();
 			while (attachmentIDIterator.hasNext()) {
 				String contentID = (String) attachmentIDIterator.next();
-				DataHandler dataHandler = (DataHandler) attachmentMap
-						.get(contentID);
+				DataHandler dataHandler = attachments.getDataHandler(contentID);
 				writeBodyPart(outputStream, createMimeBodyPart(contentID,
 						dataHandler), format.getMimeBoundary());
 			}

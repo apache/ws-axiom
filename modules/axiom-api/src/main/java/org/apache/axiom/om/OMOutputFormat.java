@@ -174,7 +174,7 @@ public class OMOutputFormat {
 	    sb.append("boundary=");
 	    sb.append(getMimeBoundary());
 	    sb.append("; ");  
-	  	sb.append("type=\""+MTOMConstants.SWA_TYPE+"\"");
+	  	sb.append("type=\""+SOAPContentType+"\"");
 	    sb.append("; ");
 	    sb.append("start=\"<" + getRootContentId() + ">\"");
 	    return sb.toString();

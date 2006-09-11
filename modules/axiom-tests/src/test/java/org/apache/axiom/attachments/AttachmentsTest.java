@@ -21,15 +21,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 
 import org.apache.axiom.om.AbstractTestCase;
 
-public class MIMEHelperTest extends AbstractTestCase {
+public class AttachmentsTest extends AbstractTestCase {
 
-    public MIMEHelperTest(String testName) {
+    public AttachmentsTest(String testName) {
         super(testName);
     }
 
@@ -103,7 +105,7 @@ public class MIMEHelperTest extends AbstractTestCase {
         }
 
         try {
-            attachments.getPart("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+            attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
         	fail("No exception caught when attempting to access stream and part at the same time");
         } catch (IllegalStateException ise) {
         	// Nothing
@@ -170,6 +172,32 @@ public class MIMEHelperTest extends AbstractTestCase {
 
         // Compare data across streams
         compareStreams(dataIs, expectedDataIs);
+    }
+    
+    public void testNonExistingMIMEPart() throws Exception {
+
+        InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
+        Attachments attachments = new Attachments(inStream, contentTypeString);
+
+        DataHandler dh = attachments.getDataHandler("ThisShouldReturnNull");
+        assertNull(dh);
+    }
+    
+    public void testGetAllContentIDs() throws Exception {
+
+        InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
+        Attachments attachments = new Attachments(inStream, contentTypeString);
+
+        String[] contentIDs = attachments.getAllContentIDs();
+        assertEquals(contentIDs.length,3);
+        assertEquals(contentIDs[0],"0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org");
+        assertEquals(contentIDs[1],"1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
+        assertEquals(contentIDs[2],"2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+        
+        Set idSet = attachments.getContentIDSet();
+        assertTrue(idSet.contains("0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org"));
+        assertTrue(idSet.contains("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"));
+        assertTrue(idSet.contains("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));
     }
     
     /**

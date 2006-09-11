@@ -16,24 +16,24 @@
 
 package org.apache.axiom.om;
 
-import junit.framework.TestCase;
-import org.apache.axiom.attachments.ByteArrayDataSource;
-import org.apache.axiom.om.impl.MIMEOutputUtils;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFactory;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.nio.channels.WritableByteChannel;
-import java.util.HashMap;
-import java.util.Properties;
+
+import junit.framework.TestCase;
+
+import org.apache.axiom.attachments.ByteArrayDataSource;
+import org.apache.axiom.om.impl.MIMEOutputUtils;
+import org.apache.axiom.soap.SOAPFactory;
 
 public class MIMEOutputUtilsTest extends TestCase {
     byte[] buffer;
@@ -92,17 +92,15 @@ public class MIMEOutputUtilsTest extends TestCase {
         assertNotNull(object1);
         assertEquals(multiPart.getCount(),2);
     }
-//    public void testWriteSOAPWithAttachmentsMessage()
-//    {
+    
+    public void testWriteSOAPWithAttachmentsMessage() throws IOException
+    {
 //    	ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();
-//        ByteArrayOutputStream outStream;
-//        String boundary;
-//        
+// 
 //        OMOutputFormat omOutput = new OMOutputFormat();
-//        boundary = omOutput.getMimeBoundary();
 //        omOutput.setCharSetEncoding(OMConstants.DEFAULT_CHAR_SET_ENCODING);
 //        omOutput.setSOAP11(false);
+//        omOutput.setDoingSWA(true);
 //        
 //        StringWriter stringWriter = new StringWriter();
 //        stringWriter.write("Apache Axis2");
@@ -110,7 +108,8 @@ public class MIMEOutputUtilsTest extends TestCase {
 //                "Apache Software Foundation", "text/plain");
 //        HashMap map = new HashMap();
 //        map.put("uuid_dsjkjkda",dataHandler);
+//        byteArrayOutputStream.write((omOutput.getContentType()+"\n").getBytes());
 //        MIMEOutputUtils.writeSOAPWithAttachmentsMessage(stringWriter,byteArrayOutputStream,map,omOutput);
 //        System.out.println(byteArrayOutputStream.toString());
-//    }
+    }
 }

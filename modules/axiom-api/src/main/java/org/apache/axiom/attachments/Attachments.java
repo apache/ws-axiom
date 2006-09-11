@@ -16,21 +16,23 @@
 
 package org.apache.axiom.attachments;
 
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.MTOMConstants;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PushbackInputStream;
+import java.util.Set;
+import java.util.TreeMap;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.ParseException;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PushbackInputStream;
-import java.util.HashMap;
-import java.util.Set;
+
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.impl.MTOMConstants;
+import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class Attachments {
 
@@ -59,10 +61,10 @@ public class Attachments {
     PushbackInputStream pushbackInStream;
 
     /**
-     * <code>mimeBodyPartsMap</code> stores the already parsed Mime Body
-     * Parts. This Map will be keyed using the content-ID's
+     * <code>attachmentsMap</code> stores the Data Handlers of the already parsed Mime Body
+     * Parts. This ordered Map is keyed using the content-ID's. 
      */
-    HashMap bodyPartsMap;
+    TreeMap attachmentsMap;
     
     /**
      * <code>partIndex</code>- Number of Mime parts parsed
@@ -73,24 +75,32 @@ public class Attachments {
     IncomingAttachmentStreams streams = null;
     
     /** <code>boolean</code> Indicating if any streams have been directly requested */
-    boolean streamsRequested = false;
+    private boolean streamsRequested = false;
     
     /** <code>boolean</code> Indicating if any data handlers have been directly requested */
-    boolean partsRequested = false;
+    private boolean partsRequested = false;
 
     /**
      * <code>endOfStreamReached</code> flag which is to be set by
      * MIMEBodyPartStream when MIME message terminator is found.
      */
-    boolean endOfStreamReached;
+    private boolean endOfStreamReached;
+    
+    
+    /**
+	 * <code>noStreams</code> flag which is to be set when this class is
+	 * instantiated by the SwA API to handle programatic added attachements. An
+	 * InputStream with attachments is not present at that occation.
+	 */
+    private boolean noStreams = false;
 
-    String firstPartId;
+    private String firstPartId;
 
-    boolean fileCacheEnable;
+    private boolean fileCacheEnable;
 
-    String attachmentRepoDir;
+    private String attachmentRepoDir;
 
-    int fileStorageThreshold;
+    private int fileStorageThreshold;
 
     protected Log log = LogFactory.getLog(getClass());
 
@@ -115,7 +125,7 @@ public class Attachments {
         } else {
             this.fileStorageThreshold = 1;
         }
-        bodyPartsMap = new HashMap();
+        attachmentsMap = new TreeMap();
         try {
             contentType = new ContentType(contentTypeString);
         } catch (ParseException e) {
@@ -163,7 +173,7 @@ public class Attachments {
         }
         
         // Read the SOAP part and cache it
-        getPart(getSOAPPartContentID());
+        getDataHandler(getSOAPPartContentID());
         
         // Now reset partsRequested. SOAP part is a special case which is always 
         // read beforehand, regardless of request.
@@ -181,6 +191,15 @@ public class Attachments {
             throws OMException {
         this(inStream, contentTypeString, false, null, null);
     }
+    
+    /**
+     * Use this constructor when instantiating this to store the attachments set programatically through the SwA API.
+     */
+    public Attachments()
+    {
+    	attachmentsMap = new TreeMap();
+    	noStreams= true;
+    }
 
     /**
      * @return whether Message Type is SOAP with Attachments or MTOM optimized,
@@ -195,10 +214,49 @@ public class Attachments {
                 this.applicationType = MTOMConstants.SWA_TYPE;
             } else {
                 throw new OMException(
-                        "Invalid Application type. Support available for MTOM/SOAP 1.2 & SwA/SOAP 1.l only.");
+                        "Invalid Application type. Support available for MTOM & SwA/SOAP 1.l only.");
             }
         }
         return this.applicationType;
+    }
+    
+    /**
+     * Checks whether the MIME part is already parsed by checking the
+     * attachments HashMap. If it is not parsed yet then call the getNextPart()
+     * till the required part is found.
+     * 
+     * @param blobContentID (without the surrounding angle brackets and "cid:" prefix)
+     * @return The DataHandler of the mime part referred by the Content-Id
+     * @return *null* if the mime part referred by the content-id does  not exist
+     */
+    public DataHandler getDataHandler(String blobContentID) {
+        DataHandler dataHandler;
+        if (attachmentsMap.containsKey(blobContentID)) {
+            dataHandler = (DataHandler) attachmentsMap.get(blobContentID);
+            return dataHandler;
+        } else if (!noStreams){
+            //This loop will be terminated by the Exceptions thrown if the Mime
+            // part searching was not found
+            while ((dataHandler = this.getNextPartDataHandler())!=null) {
+                if (attachmentsMap.containsKey(blobContentID)) {
+                    dataHandler = (DataHandler) attachmentsMap.get(blobContentID);
+                    return dataHandler;
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+	 * Programatically adding an SOAP with Attachments(SwA) Attachment. These
+	 * attachments will get serialized only if SOAP with Attachments is enabled.
+	 * 
+	 * @param contentID
+	 * @param dataHandler
+	 */
+    public void addDataHandler(String contentID, DataHandler dataHandler)
+    {
+    	attachmentsMap.put(contentID,dataHandler);
     }
 
     /**
@@ -208,6 +266,10 @@ public class Attachments {
      */
     public InputStream getSOAPPartInputStream() throws OMException {
         DataHandler dh;
+        if (noStreams)
+        {
+        	throw new OMException("Invalid operation. Attachments are created programatically.");
+        }
         try {
             dh = getDataHandler(getSOAPPartContentID());
             if (dh == null) {
@@ -233,7 +295,7 @@ public class Attachments {
         // to handle the Start parameter not mentioned situation
         if (rootContentID == null) {
             if (partIndex == 0) {
-                getNextPart();
+                getNextPartDataHandler();
             }
             rootContentID = firstPartId;
         } else {
@@ -253,40 +315,30 @@ public class Attachments {
     }
 
     public String getSOAPPartContentType() {
-        Part soapPart = getPart(getSOAPPartContentID());
-        try {
-            return soapPart.getContentType();
-        } catch (MessagingException e) {
-            log.error(e.getMessage());
-            throw new OMException(e);
-        }
+    	if (!noStreams) {
+			DataHandler soapPart = getDataHandler(getSOAPPartContentID());
+			return soapPart.getContentType();
+		}else
+		{
+			throw new OMException("The attachments map was created programatically. Unsupported operation.");
+		}
     }
 
     /**
-     * @param blobContentID (without the surrounding angle brackets and "cid:" prefix)
-     * @return The DataHandler of the mime part referred by the Content-Id
-     * @throws OMException
-     */
-    public DataHandler getDataHandler(String blobContentID) throws OMException, IllegalStateException {
-    	
-        try {
-            return getPart(blobContentID).getDataHandler();
-        } catch (MessagingException e) {
-            throw new OMException("Problem with Mime Body Part No " + partIndex
-                                  + ".  ", e);
-        }
-
-    }
-
-    /**
-     * Stream based access
-     * 
-     * @return The stream container of type <code>IncomingAttachmentStreams</code>
-     * @throws IllegalStateException if application has alreadt started using Part's directly
-     */
+	 * Stream based access
+	 * 
+	 * @return The stream container of type
+	 *         <code>IncomingAttachmentStreams</code>
+	 * @throws IllegalStateException
+	 *             if application has alreadt started using Part's directly
+	 */
     public IncomingAttachmentStreams getIncomingAttachmentStreams() throws IllegalStateException {
     	if (partsRequested) {
     		throw new IllegalStateException("The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
+    	}
+    	if (noStreams)
+    	{
+    		throw new IllegalStateException("The attachments map was created programatically. No streams are available.");
     	}
 
     	streamsRequested = true;
@@ -301,49 +353,29 @@ public class Attachments {
 
     	return this.streams;
     }
-    
-    /**
-     * Checks whether the MIME part is already parsed by checking the
-     * parts HashMap. If it is not parsed yet then call the getNextPart()
-     * till the required part is found.
-     *
-     * @param blobContentID
-     * @return The Part referred by the Content-Id
-     * @throws OMException
-     */
-    public Part getPart(String blobContentID) {
-        Part bodyPart;
-        if (bodyPartsMap.containsKey(blobContentID)) {
-            bodyPart = (Part) bodyPartsMap.get(blobContentID);
-            return bodyPart;
-        } else {
-            //This loop will be terminated by the Exceptions thrown if the Mime
-            // part searching was not found
-            while (true) {
-                bodyPart = this.getNextPart();
-                if (bodyPart == null) {
-                    return null;
-                }
-                if (bodyPartsMap.containsKey(blobContentID)) {
-                    bodyPart = (Part) bodyPartsMap.get(blobContentID);
-                    return bodyPart;
-                }
-            }
-        }
-    }
 
     public String[] getAllContentIDs() {
-        Part bodyPart;
-        while (true) {
-            bodyPart = this.getNextPart();
-            if (bodyPart == null) {
+        Set keys = getContentIDSet();
+        return (String[]) keys.toArray(new String[keys.size()]);
+    }
+    
+    public Set getContentIDSet() {
+        DataHandler dataHandler;
+        while (!noStreams & true) {
+            dataHandler = this.getNextPartDataHandler();
+            if (dataHandler == null) {
                 break;
             }
         }
-        Set keys = bodyPartsMap.keySet();
-        return (String[]) keys.toArray(new String[keys.size()]);
+        return attachmentsMap.keySet();
     }
 
+    /**
+	 * endOfStreamReached will be set to true if the message ended in MIME Style
+	 * having "--" suffix with the last mime boundary
+	 * 
+	 * @param value
+	 */
     protected void setEndOfStream(boolean value) {
         this.endOfStreamReached = value;
     }
@@ -353,44 +385,59 @@ public class Attachments {
      * @throws OMException throw if content id is null or if two MIME parts contain the
      *                     same content-ID & the exceptions throws by getPart()
      */
-    private Part getNextPart() throws OMException {
+    private DataHandler getNextPartDataHandler() throws OMException {
+    	if (endOfStreamReached)
+    	{
+    		return null;
+    	}
         Part nextPart;
         nextPart = getPart();
-        if (nextPart != null) {
-            String partContentID;
-            try {
-                partContentID = nextPart.getContentID();
+        if (nextPart==null)
+        {
+        	return null;
+        } else
+			try {
+				if (nextPart.getSize()>0) {
+				    String partContentID;
+				    try {
+				        partContentID = nextPart.getContentID();
 
-                if (partContentID == null & partIndex == 1) {
-                    bodyPartsMap.put("firstPart", nextPart);
-                    firstPartId = "firstPart";
-                    return nextPart;
-                }
-                if (partContentID == null) {
-                    throw new OMException(
-                            "Part content ID cannot be blank for non root MIME parts");
-                }
-                if ((partContentID.indexOf("<") > -1)
-                    & (partContentID.indexOf(">") > -1)) {
-                    partContentID = partContentID.substring(1, (partContentID
-                            .length() - 1));
+				        if (partContentID == null & partIndex == 1) {
+				        	String id = "firstPart_"+UUIDGenerator.getUUID();
+				            attachmentsMap.put(id, nextPart);
+				            firstPartId = id;
+				            return nextPart.getDataHandler();
+				        }
+				        if (partContentID == null) {
+				            throw new OMException(
+				                    "Part content ID cannot be blank for non root MIME parts");
+				        }
+				        if ((partContentID.indexOf("<") > -1)
+				            & (partContentID.indexOf(">") > -1)) {
+				            partContentID = partContentID.substring(1, (partContentID
+				                    .length() - 1));
 
-                } else if (partIndex == 1) {
-                    firstPartId = partContentID;
-                }
-                if (bodyPartsMap.containsKey(partContentID)) {
-                    throw new OMException(
-                            "Two MIME parts with the same Content-ID not allowed.");
-                }
-                bodyPartsMap.put(partContentID, nextPart);
-                return nextPart;
-            } catch (MessagingException e) {
-                throw new OMException("Error reading Content-ID from the Part."
-                                      + e);
-            }
-        } else {
-            return null;
-        }
+				        } else if (partIndex == 1) {
+				            firstPartId = partContentID;
+				        }
+				        if (attachmentsMap.containsKey(partContentID)) {
+				            throw new OMException(
+				                    "Two MIME parts with the same Content-ID not allowed.");
+				        }
+				        attachmentsMap.put(partContentID, nextPart.getDataHandler());
+				        return nextPart.getDataHandler();
+				    } catch (MessagingException e) {
+				        throw new OMException("Error reading Content-ID from the Part."
+				                              + e);
+				    }
+				} // This will take care if stream ended without having MIME
+				// message terminator
+				else {
+					return null;
+				}
+			} catch (MessagingException e) {
+				throw new OMException(e);
+			}
     }
 
     /**
@@ -404,13 +451,6 @@ public class Attachments {
     	}
     	
     	partsRequested = true;
-    	
-        // endOfStreamReached will be set to true if the message ended in MIME
-        // Style having "--" suffix with the last mime boundary
-        if (endOfStreamReached) {
-            throw new OMException(
-                    "Referenced MIME part not found.End of Stream reached.");
-        }
 
         Part part;
 
@@ -423,7 +463,7 @@ public class Attachments {
                                                              boundary, this);
                     int count = 0;
                     int value;
-                    // Make sure not to modify this to a Short Circuit "&". If
+                    // Make sure *not* to modify this to a Short Circuit "&". If
                     // removed a byte will be lost
                     while (count != fileStorageThreshold
                            && (!partStream.getBoundaryStatus())) {
@@ -448,13 +488,6 @@ public class Attachments {
                 partStream = new MIMEBodyPartInputStream(pushbackInStream,
                                                          boundary, this);
                 part = new PartOnMemory(partStream);
-            }
-            
-            // This will take care if stream ended without having MIME
-            // message terminator
-            if (part.getSize() <= 0) {
-                throw new OMException(
-                        "Referenced MIME part not found.End of Stream reached.");
             }
 
         } catch (MessagingException e) {
