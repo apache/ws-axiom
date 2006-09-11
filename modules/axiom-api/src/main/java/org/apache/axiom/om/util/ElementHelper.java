@@ -15,16 +15,15 @@
  */
 package org.apache.axiom.om.util;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.*;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
-import java.util.Iterator;
-import java.net.URLDecoder;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.Iterator;
+
 /**
  * Helper class to provide extra utility stuff against elements.
  * The code is designed to work with any element implementation.
@@ -36,6 +35,7 @@ public class ElementHelper {
 
     /**
      * Constructs and binds to an element.
+     *
      * @param element element to work with
      */
     public ElementHelper(OMElement element) {
@@ -135,6 +135,26 @@ public class ElementHelper {
                     "Href attribute not found in XOP:Include element");
         }
         return contentID;
+    }
+
+    /**
+     * Some times two OMElements needs to be added to the same object tree. But in Axiom, a single tree should always
+     * contain object created from the same type of factory (eg: LinkedListImplFactory, DOMFactory, etc.,). If one OMElement
+     * is created from a different factory than that of the factory which was used to create the object in the existing
+     * tree, we need to convert the new OMElement to match to the factory of existing object tree.
+     * This method will oonvert omElement to the given omFactory.
+     *
+     */
+    public static OMElement importOMElement(OMElement omElement, OMFactory omFactory) {
+        // first check whether the given OMElement has the same omFactory
+        if (omElement.getOMFactory().getClass().isInstance(omFactory)) {
+            return omElement;
+        }else {
+            OMElement documentElement = new StAXOMBuilder(omFactory, omElement.getXMLStreamReader()).getDocumentElement();
+            documentElement.build();
+            return documentElement;
+        }
+
     }
 
 }
