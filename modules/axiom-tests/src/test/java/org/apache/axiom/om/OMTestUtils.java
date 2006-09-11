@@ -17,13 +17,9 @@
 package org.apache.axiom.om;
 
 import junit.framework.TestCase;
-import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.w3c.dom.*;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -35,8 +31,7 @@ public class OMTestUtils {
     public static OMXMLParserWrapper getOMBuilder(File file) throws Exception {
         XMLStreamReader parser = XMLInputFactory.newInstance()
                 .createXMLStreamReader(new FileReader(file));
-        return OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                OMAbstractFactory.getSOAP11Factory(), parser);
+        return new StAXSOAPModelBuilder(parser, null);
     }
 
     public static void walkThrough(OMElement omEle) {

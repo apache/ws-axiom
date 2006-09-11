@@ -20,6 +20,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Class OMChildrenIterator
@@ -45,6 +46,8 @@ public class OMChildrenIterator implements Iterator {
      */
     protected boolean removeCalled = false;
 
+    protected boolean isExceptionThrownInAdvancingToNextElement = false;
+
     /**
      * Constructor OMChildrenIterator.
      *
@@ -55,7 +58,7 @@ public class OMChildrenIterator implements Iterator {
     }
 
     /**
-     * Removes the last element returned by the iterator (optional operation) 
+     * Removes the last element returned by the iterator (optional operation)
      * from the underlying collection.   This method must be called only once per
      * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
      * the underlying collection is modified while the iteration is in
@@ -90,10 +93,11 @@ public class OMChildrenIterator implements Iterator {
      * words, returns <tt>true</tt> if <tt>next</tt> would return an element
      * rather than throwing an exception.)
      *
-     * @return Returns <tt>true</tt> if the iterator has more elements.
+     * @return Returns <tt>true</tt> if the iterator has more elements. This will never throw an exception even there is an
+     * exception thrown underneath.
      */
     public boolean hasNext() {
-        return (currentChild != null);
+        return (currentChild != null && !isExceptionThrownInAdvancingToNextElement);
     }
 
     /**
@@ -108,9 +112,14 @@ public class OMChildrenIterator implements Iterator {
         removeCalled = false;
         if (hasNext()) {
             lastChild = currentChild;
-            currentChild = currentChild.getNextOMSibling();
+            try {
+                currentChild = currentChild.getNextOMSibling();
+            } catch (OMException e) {
+                isExceptionThrownInAdvancingToNextElement = true;
+            }
             return lastChild;
+        } else {
+            throw new NoSuchElementException();
         }
-        return null;
     }
 }

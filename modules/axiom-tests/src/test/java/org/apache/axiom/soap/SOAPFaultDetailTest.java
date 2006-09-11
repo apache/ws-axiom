@@ -74,14 +74,14 @@ public class SOAPFaultDetailTest extends SOAPFaultTestCase {
                         "http://www.test.org"));
         assertTrue(
                 "SOAP 1.1 Fault Detail Test : - After calling addDetailEntry method twice, getAllDetailEntries method returns an iterator with three objects",
-                iterator.next() == null);
+                !iterator.hasNext());
     }
 
     public void testSOAP11GetAllDetailEntries() {
         Iterator iterator = soap11FaultDetail.getAllDetailEntries();
         assertTrue(
                 "SOAP 1.1 Fault Detail Test : - After creating SOAP11FaultDetail element, it has DetailEntries",
-                iterator.next() == null);
+                !iterator.hasNext());
         soap11FaultDetail.addDetailEntry(
                 omFactory.createOMElement("DetailEntry", omNamespace));
         iterator = soap11FaultDetail.getAllDetailEntries();
@@ -98,7 +98,7 @@ public class SOAPFaultDetailTest extends SOAPFaultTestCase {
                         "http://www.test.org"));
         assertTrue(
                 "SOAP 1.1 Fault Detail Test : - After calling addDetailEntry method once, getAllDetailEntries method returns an iterator with two objects",
-                iterator.next() == null);
+                !iterator.hasNext());
     }
 
     //SOAP 1.2 Fault Detail Test (Programaticaly Created)
@@ -132,14 +132,14 @@ public class SOAPFaultDetailTest extends SOAPFaultTestCase {
                         "http://www.test.org"));
         assertTrue(
                 "SOAP 1.2 Fault Detail Test : - After calling addDetailEntry method twice, getAllDetailEntries method returns an iterator with three objects",
-                iterator.next() == null);
+                !iterator.hasNext());
     }
 
     public void testSOAP12GetAllDetailEntries() {
         Iterator iterator = soap12FaultDetail.getAllDetailEntries();
         assertTrue(
                 "SOAP 1.2 Fault Detail Test : - After creating SOAP11FaultDetail element, it has DetailEntries",
-                iterator.next() == null);
+                !iterator.hasNext());
         soap12FaultDetail.addDetailEntry(
                 omFactory.createOMElement("DetailEntry", omNamespace));
         iterator = soap12FaultDetail.getAllDetailEntries();
@@ -156,7 +156,7 @@ public class SOAPFaultDetailTest extends SOAPFaultTestCase {
                         "http://www.test.org"));
         assertTrue(
                 "SOAP 1.2 Fault Detail Test : - After calling addDetailEntry method once, getAllDetailEntries method returns an iterator with two objects",
-                iterator.next() == null);
+                !iterator.hasNext());
     }
 
     //SOAP 1.1 Fault Detail Test (With Parser)
@@ -187,7 +187,7 @@ public class SOAPFaultDetailTest extends SOAPFaultTestCase {
         iterator.next();
         assertTrue(
                 "SOAP 1.1 Fault Detail Test With Parser : - getAllDetailEntries method returns an itrator with more than two detail entries",
-                iterator.next() == null);
+                !iterator.hasNext());
     }
 
     //SOAP 1.2 Fault Detail Test (With Parser)
@@ -218,6 +218,6 @@ public class SOAPFaultDetailTest extends SOAPFaultTestCase {
         iterator.next();
         assertTrue(
                 "SOAP 1.2 Fault Detail Test With Parser : - getAllDetailEntries method returns an itrator with more than two detail entries",
-                iterator.next() == null);
+                !iterator.hasNext());
     }
 }

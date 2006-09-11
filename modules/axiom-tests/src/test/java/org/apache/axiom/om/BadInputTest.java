@@ -47,7 +47,7 @@ public class BadInputTest extends OMTestCase {
                     (SOAPEnvelope) OMTestUtils.getOMBuilder(
                             getTestResourceFile(TestConstants.BAD_HEADER_BODY_WRONG_ORDER))
                     .getDocumentElement();
-            OMTestUtils.walkThrough(soapEnvelope);
+            soapEnvelope.build();
             fail("this must failed gracefully with OMException or AxisFault");
         } catch (OMException e) {
             return;
@@ -92,7 +92,7 @@ public class BadInputTest extends OMTestCase {
                     (SOAPEnvelope) OMTestUtils.getOMBuilder(
                             getTestResourceFile(TestConstants.BAD_TWO_BODY))
                     .getDocumentElement();
-            OMTestUtils.walkThrough(soapEnvelope);
+            soapEnvelope.build();
             fail("this must failed gracefully with OMException or AxisFault");
         } catch (OMException e) {
             return;
@@ -107,7 +107,7 @@ public class BadInputTest extends OMTestCase {
                     (SOAPEnvelope) OMTestUtils.getOMBuilder(
                             getTestResourceFile(TestConstants.BAD_TWO_HEADERS))
                     .getDocumentElement();
-            OMTestUtils.walkThrough(soapEnvelope);
+            soapEnvelope.build();
             fail("this must failed gracefully with OMException or AxisFault");
         } catch (OMException e) {
             return;

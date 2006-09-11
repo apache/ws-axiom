@@ -59,7 +59,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
 
         assertTrue(
                 "SOAP 1.1 Header Test : - After calling addHeaderBlock method twice, getChildren method returns an iterator with more than two object",
-                iterator.next() == null);
+                !iterator.hasNext());
     }
 
     public void testSOAP11ExamineHeaderBlocks() {
@@ -88,7 +88,6 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
 //    public void testSOAP11ExtractHeaderBlocks() {
 
 //    }
-
 
 
     public void testSOAP11ExamineAllHeaderBlocks() {
@@ -142,7 +141,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
         assertTrue(
                 "SOAP 1.1 Header Test : - headerBlock of given namespace uri mismatch",
                 ((SOAPHeaderBlock) arrayList.get(0)).getNamespace().getNamespaceURI()
-                .equals("http://www.test1.org"));
+                        .equals("http://www.test1.org"));
     }
 
     //SOAP 1.2 Header Test (Programaticaly Created)----------------------------------------------------------------------------------
@@ -174,7 +173,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
 
         assertTrue(
                 "SOAP 1.2 Header Test : - After calling addHeaderBlock method twice, getChildren method returns an iterator with more than two elements",
-                iterator.next() == null);
+                !iterator.hasNext());
     }
 
     public void testSOAP12ExamineHeaderBlocks() {
@@ -277,7 +276,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
         assertTrue(
                 "SOAP 1.2 Header Test : - headerBlock of given namespace uri, mismatch",
                 ((SOAPHeaderBlock) arrayList.get(0)).getNamespace().getNamespaceURI()
-                .equals("http://www.test1.org"));
+                        .equals("http://www.test1.org"));
     }
 
     //SOAP 1.1 Header Test (With Parser)---------------------------------------------------------------------------------------------
@@ -363,7 +362,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
         assertTrue(
                 "SOAP 1.1 Header Test With Parser : - headerBlock of given namespace uri, mismatch",
                 ((SOAPHeaderBlock) arrayList.get(0)).getNamespace().getNamespaceURI()
-                .equals("http://example.org/ts-tests"));
+                        .equals("http://example.org/ts-tests"));
     }
 
     //SOAP 1.2 Header Test (With Parser)-------------------------------------------------------------------------------------------
@@ -460,6 +459,6 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
         assertTrue(
                 "SOAP 1.2 Header Test With Parser : - headerBlock of given namespace uri, mismatch",
                 ((SOAPHeaderBlock) arrayList.get(0)).getNamespace().getNamespaceURI()
-                .equals("http://example.org/ts-tests"));
+                        .equals("http://example.org/ts-tests"));
     }
 }
