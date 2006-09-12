@@ -16,12 +16,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -204,7 +199,9 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      */
     public void insertSiblingAfter(OMNode sibling) throws OMException {
         if (parent == null) {
-            throw new OMException();
+            throw new OMException("Parent can not be null");
+        }else if(this == sibling){
+            throw new OMException("Inserting self as the sibling is not allowed");
         }
         ((OMNodeEx) sibling).setParent(parent);
         if (sibling instanceof OMNodeImpl) {
@@ -229,7 +226,9 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      */
     public void insertSiblingBefore(OMNode sibling) throws OMException {
         if (parent == null) {
-            throw new OMException();
+            throw new OMException("Parent can not be null");
+        } else if(this == sibling){
+            throw new OMException("Inserting self as the sibling is not allowed");
         }
         if (sibling instanceof OMNodeImpl) {
             OMNodeImpl siblingImpl = (OMNodeImpl) sibling;
