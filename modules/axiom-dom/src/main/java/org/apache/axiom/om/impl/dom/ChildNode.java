@@ -147,6 +147,8 @@ public abstract class ChildNode extends NodeImpl {
 
         if (this.parentNode != null) {
             ((OMNodeEx) sibling).setParent(this.parentNode);
+        } else if(this == sibling){
+            throw new OMException("Inserting self as the sibling is not allowed");
         }
 
         if (sibling instanceof ChildNode) {
@@ -169,6 +171,9 @@ public abstract class ChildNode extends NodeImpl {
      */
     public void insertSiblingBefore(OMNode sibling) throws OMException {
         // ((OMNodeEx)sibling).setParent(this.parentNode);
+        if(this == sibling){
+            throw new OMException("Inserting self as the sibling is not allowed");
+        }
         if (sibling instanceof ChildNode) {
             // ChildNode domSibling = (ChildNode)sibling;
             // domSibling.nextSibling = this;
