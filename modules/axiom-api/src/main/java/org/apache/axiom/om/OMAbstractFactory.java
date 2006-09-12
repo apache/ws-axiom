@@ -28,14 +28,22 @@ public class OMAbstractFactory {
     private static final String DEFAULT_SOAP12_FACTORY_CLASS_NAME = "org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory";
 
 
-
     public static OMFactory getOMFactory() {
+
+        String omFactory;
         try {
-            String omFactory = System.getProperty(OM_FACTORY_NAME_PROPERTY);
+            omFactory = System.getProperty(OM_FACTORY_NAME_PROPERTY);
             if (omFactory == null || "".equals(omFactory)) {
-               omFactory = DEFAULT_OM_FACTORY_CLASS_NAME;
+                omFactory = DEFAULT_OM_FACTORY_CLASS_NAME;
             }
-            return (OMFactory) Class.forName(omFactory).newInstance();
+        } catch (SecurityException e) {
+            // security exception can be thrown when trying to access system variables within a sand box like an applet.
+            // please refer : http://issues.apache.org/jira/browse/WSCOMMONS-57
+            omFactory = DEFAULT_OM_FACTORY_CLASS_NAME;
+        }
+
+        try {
+           return (OMFactory) Class.forName(omFactory).newInstance();
         } catch (InstantiationException e) {
             throw new OMException(e);
         } catch (IllegalAccessException e) {
@@ -52,10 +60,10 @@ public class OMAbstractFactory {
      * @return Returns SOAPFactory.
      */
     public static SOAPFactory getSOAP11Factory() {
-       try {
+        try {
             String omFactory = System.getProperty(SOAP11_FACTORY_NAME_PROPERTY);
             if (omFactory == null || "".equals(omFactory)) {
-               omFactory = DEFAULT_SOAP11_FACTORY_CLASS_NAME;
+                omFactory = DEFAULT_SOAP11_FACTORY_CLASS_NAME;
             }
             return (SOAPFactory) Class.forName(omFactory).newInstance();
         } catch (InstantiationException e) {
@@ -77,7 +85,7 @@ public class OMAbstractFactory {
         try {
             String omFactory = System.getProperty(SOAP12_FACTORY_NAME_PROPERTY);
             if (omFactory == null || "".equals(omFactory)) {
-               omFactory = DEFAULT_SOAP12_FACTORY_CLASS_NAME;
+                omFactory = DEFAULT_SOAP12_FACTORY_CLASS_NAME;
             }
             return (SOAPFactory) Class.forName(omFactory).newInstance();
         } catch (InstantiationException e) {
