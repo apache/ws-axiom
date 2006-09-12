@@ -17,6 +17,7 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 
@@ -137,7 +138,7 @@ public class OMNavigator {
             OMContainer parent = next.getParent();
             if (nextSibling != null) {
                 next = nextSibling;
-            } else if ((parent != null) && parent.isComplete()) {
+            } else if ((parent != null) && parent.isComplete() && !(parent instanceof OMDocument)) {
                 next = (OMNodeImpl) parent;
                 backtracked = true;
             } else {
