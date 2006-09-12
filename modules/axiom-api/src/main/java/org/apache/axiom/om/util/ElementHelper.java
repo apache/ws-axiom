@@ -142,7 +142,7 @@ public class ElementHelper {
      * contain object created from the same type of factory (eg: LinkedListImplFactory, DOMFactory, etc.,). If one OMElement
      * is created from a different factory than that of the factory which was used to create the object in the existing
      * tree, we need to convert the new OMElement to match to the factory of existing object tree.
-     * This method will oonvert omElement to the given omFactory.
+     * This method will convert omElement to the given omFactory.
      *
      */
     public static OMElement importOMElement(OMElement omElement, OMFactory omFactory) {
