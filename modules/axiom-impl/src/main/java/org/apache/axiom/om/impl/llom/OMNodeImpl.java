@@ -76,7 +76,8 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * @param parent Parent <code>OMContainer</code> of this node
      * @param factory The <code>OMFactory</code> that created this
      */
-    public OMNodeImpl(OMContainer parent, OMFactory factory) {
+    public OMNodeImpl(OMContainer parent, OMFactory factory, boolean done) {
+        this.done = done;
         if ((parent != null)) {
             this.parent = (OMContainerEx) parent;
             parent.addChild(this);
@@ -161,6 +162,13 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      */
     public void setComplete(boolean state) {
         this.done = state;
+        if(parent != null){
+            if(!done) {
+                parent.setComplete(false);
+            }else if(parent instanceof OMElementImpl){
+                ((OMElementImpl) parent).notifyChildComplete();
+            }
+        }
     }
 
     /**
@@ -296,21 +304,21 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
             builder.next();
         }
     }
-    
-	/**
-	 * Parses this node and builds the object structure in memory. AXIOM
-	 * supports two levels of deffered building. First is deffered building of
-	 * AXIOM using StAX. Second level is the deffered building of attachments.
-	 * AXIOM reads in the attachements from the stream only when user asks by
-	 * calling getDataHandler(). build() method builds the OM without the
-	 * attachments. buildAll() builds the OM together with attachement data.
-	 * This becomes handy when user wants to free the input stream.
-	 */
-	public void buildWithAttachments() {
-		if (!this.done) {
-			this.build();
-		}
-	}
+
+    /**
+     * Parses this node and builds the object structure in memory. AXIOM
+     * supports two levels of deffered building. First is deffered building of
+     * AXIOM using StAX. Second level is the deffered building of attachments.
+     * AXIOM reads in the attachements from the stream only when user asks by
+     * calling getDataHandler(). build() method builds the OM without the
+     * attachments. buildAll() builds the OM together with attachement data.
+     * This becomes handy when user wants to free the input stream.
+     */
+    public void buildWithAttachments() {
+        if (!this.done) {
+            this.build();
+        }
+    }
 
     /**
      * Serializes the node with caching.

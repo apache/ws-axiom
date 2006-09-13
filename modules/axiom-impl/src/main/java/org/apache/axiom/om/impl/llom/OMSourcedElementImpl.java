@@ -16,15 +16,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -724,4 +716,12 @@ public class OMSourcedElementImpl extends OMElementImpl
 			node.buildWithAttachments();
 		}
 	}
+
+    public void build() throws OMException {
+        super.build();
+    }
+
+    protected void notifyChildComplete() {
+        super.notifyChildComplete();    
+    }
 }

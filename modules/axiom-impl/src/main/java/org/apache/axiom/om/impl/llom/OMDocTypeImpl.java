@@ -32,10 +32,9 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
      */
     public OMDocTypeImpl(OMContainer parentNode, String contentText, 
             OMFactory factory) {
-        super(parentNode, factory);
+        super(parentNode, factory, true);
         this.value = contentText;
         nodeType = OMNode.DTD_NODE;
-        this.done = true;
     }
 
     /**

@@ -88,9 +88,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      *                 Constants for this can be found in OMNode.
      */
     public OMTextImpl(String s, int nodeType, OMFactory factory) {
-        super(factory);
-        this.value = s == null ? EMTPY_STRING : s;
-        this.nodeType = nodeType;
+        this(null, s, nodeType, factory);
     }
  
     /**
@@ -105,17 +103,15 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
 
     public OMTextImpl(OMContainer parent, String text, int nodeType,
                       OMFactory factory) {
-        super(parent, factory);
+        super(parent, factory, true);
         this.value = text == null ? EMTPY_STRING : text;
-        done = true;
         this.nodeType = nodeType;
     }
 
     public OMTextImpl(OMContainer parent, char[] charArray, int nodeType,
                       OMFactory factory) {
-        super(parent, factory);
+        super(parent, factory, true);
         this.charArray = charArray;
-        done = true;
         this.nodeType = nodeType;
     }
 
@@ -126,10 +122,9 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
 
     public OMTextImpl(OMContainer parent, QName text, int nodeType,
                       OMFactory factory) {
-        super(parent, factory);
+        super(parent, factory, true);
         this.textNS = ((OMElementImpl) parent).handleNamespace(text);
         this.value = text == null ? EMTPY_STRING : text.getLocalPart();
-        done = true;
         this.nodeType = nodeType;
     }
 
@@ -187,7 +182,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      */
     public OMTextImpl(String contentID, OMContainer parent,
                       OMXMLParserWrapper builder, OMFactory factory) {
-        super(parent, factory);
+        super(parent, factory, false);
         this.contentID = contentID;
         this.optimize = true;
         this.isBinary = true;

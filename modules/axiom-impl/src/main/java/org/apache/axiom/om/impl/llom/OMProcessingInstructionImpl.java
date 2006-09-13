@@ -16,12 +16,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.*;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -39,7 +34,7 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
      */
     public OMProcessingInstructionImpl(OMContainer parentNode, String target, 
             String value, OMFactory factory) {
-        super(parentNode, factory);
+        super(parentNode, factory, true);
         this.target = (target == null) ? null : target.trim();
         this.value = (value == null) ? null : value.trim();
         nodeType = OMNode.PI_NODE;
