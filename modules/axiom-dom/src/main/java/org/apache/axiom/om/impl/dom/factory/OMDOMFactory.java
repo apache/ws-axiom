@@ -182,9 +182,13 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMText createOMText(OMContainer parent, QName text) {
-        throw new UnsupportedOperationException();
+        return new TextImpl(parent, text, this);
     }
-
+    
+    public OMText createOMText(OMContainer parent, QName text, int type) {
+        return new TextImpl(parent, text, type, this);
+    }
+    
     public OMText createOMText(OMContainer parent, String text, int type) {
         OMText textNode = createOMText(parent, text);
         ((OMNodeEx) textNode).setType(type);
@@ -192,13 +196,11 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMText createOMText(OMContainer parent, char[] charArary, int type) {
-        // TODO : Fix me
-        throw new UnsupportedOperationException();
-    }
-
-    public OMText createOMText(OMContainer parent, QName text, int type) {
-        // TODO : Fix me
-        throw new UnsupportedOperationException();
+        ElementImpl parentElem = (ElementImpl) parent;
+        TextImpl txt = new TextImpl((DocumentImpl) parentElem
+                .getOwnerDocument(), charArary, this);
+        parentElem.addChild(txt);
+        return txt;
     }
 
     /**

@@ -41,6 +41,10 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     private boolean isBinary;
 
     private String contentID = null;
+    
+    protected OMNamespace textNS = null;
+    
+    protected char[] charArray;
 
     /**
      * Field dataHandler contains the DataHandler. Declaring as Object to remove
@@ -148,6 +152,14 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         this.ns = XOP_NS;
     }
 
+
+    public TextImpl(DocumentImpl ownerNode, char[] value, OMFactory factory) {
+        super(ownerNode, factory);
+        this.charArray = value;
+        this.done = true;
+        this.ns = XOP_NS;
+    }
+    
     /**
      * @param ownerNode
      * @param value
@@ -161,6 +173,22 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         done = true;
     }
 
+    public TextImpl(OMContainer parent, QName text,OMFactory factory) {
+        this(parent, text, OMNode.TEXT_NODE, factory);
+        
+    }
+    
+    public TextImpl(OMContainer parent, QName text, int nodeType,
+            OMFactory factory) {
+        this(((ElementImpl)parent).ownerNode, factory);
+        if(text != null) {
+            this.textNS = ((ElementImpl) parent).findNamespace(text.getNamespaceURI(), text.getPrefix());
+        } else {
+            
+        }
+        this.textValue = new StringBuffer((text == null) ? "" : text.getLocalPart());
+        this.done = true;
+    }
     /**
      * Breaks this node into two nodes at the specified offset, keeping both in
      * the tree as siblings. After being split, this node will contain all the
@@ -278,8 +306,10 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     }
 
     public String getText() {
-        if (this.textValue != null) {
-            return this.textValue.toString();
+        if (this.textNS != null) {
+            return getTextString();
+        } else if (this.charArray != null || this.textValue != null) {
+            return getTextFromProperPlace();
         } else {
             try {
                 InputStream inStream;
@@ -305,15 +335,64 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     }
 
     public char[] getTextCharacters() {
-        return textValue.toString().toCharArray();
+        return charArray != null ? charArray : this.textValue.toString()
+                .toCharArray();
     }
 
     public boolean isCharacters() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return charArray != null;
+    }
+    
+    private String getTextFromProperPlace() {
+        return charArray != null ? new String(charArray) : textValue.toString();
+    }
+
+    private String getTextString() {
+        if (textNS != null) {
+            String prefix = textNS.getPrefix();
+            if (prefix == null || "".equals(prefix)) {
+                return getTextFromProperPlace();
+            } else {
+                return prefix + ":" + getTextFromProperPlace();
+            }
+        }
+
+        return null;
     }
 
     public QName getTextAsQName() {
-        throw new UnsupportedOperationException();
+        if (textNS != null) {
+            String prefix = textNS.getPrefix();
+            String name = textNS.getNamespaceURI();
+            if (prefix == null || "".equals(prefix)) {
+                return new QName(name, getTextFromProperPlace());
+            } else {
+                return new QName(textNS.getNamespaceURI(), getTextFromProperPlace(), prefix);
+            }
+        } else if (this.textValue != null || charArray != null) {
+            return new QName(getTextFromProperPlace());
+        } else {
+            try {
+                InputStream inStream;
+                inStream = this.getInputStream();
+                byte[] data;
+                StringBuffer text = new StringBuffer();
+                do {
+                    data = new byte[1024];
+                    int len;
+                    while ((len = inStream.read(data)) > 0) {
+                        byte[] temp = new byte[len];
+                        System.arraycopy(data, 0, temp, 0, len);
+                        text.append(Base64.encode(temp));
+                    }
+
+                } while (inStream.available() > 0);
+
+                return new QName(text.toString());
+            } catch (Exception e) {
+                throw new OMException(e);
+            }
+        }
     }
 
     public String getNodeValue() throws DOMException {
@@ -332,9 +411,10 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
          * this should return a DataHandler containing the binary data
          * reperesented by the Base64 strings stored in OMText
          */
-        if (textValue != null & isBinary) {
+        if ((textValue != null|| charArray != null || textNS != null) & isBinary) {
+            String text = textNS == null ? getTextFromProperPlace() : getTextString();
             return DataHandlerUtils
-                    .getDataHandlerFromText(textValue.toString(), mimeType);
+                    .getDataHandlerFromText(text, mimeType);
         } else {
 
             if (dataHandlerObject == null) {
