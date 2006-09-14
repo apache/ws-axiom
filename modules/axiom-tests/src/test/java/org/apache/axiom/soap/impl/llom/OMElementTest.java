@@ -23,12 +23,16 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.dom.DOOMAbstractFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+
 import java.util.Iterator;
 
 public class OMElementTest extends OMTestCase implements OMConstants {
@@ -122,7 +126,41 @@ public class OMElementTest extends OMTestCase implements OMConstants {
         secondElement.detach();
         assertTrue("First child should be the text child", firstElement.getFirstOMChild() instanceof OMText);
 
-
     }
 
+    public void testAddDOOMElementAsChild() throws XMLStreamException {
+    	OMFactory doomFactory = DOOMAbstractFactory.getOMFactory();
+    	OMFactory llomFactory = OMAbstractFactory.getOMFactory();
+    	String text = "This was a DOOM Text";
+    	
+    	OMElement llomRoot = llomFactory.createOMElement("root",null);
+    	
+    	OMElement doomElement = doomFactory.createOMElement("second","test","a");
+    	doomElement.setText(text);
+    	llomRoot.addChild(doomElement);
+    	
+    	OMElement newElement = (new StAXOMBuilder(this.factory, llomRoot
+				.getXMLStreamReader())).getDocumentElement();
+		newElement.build();
+		OMElement secondElement = newElement.getFirstElement();
+		assertNotNull(secondElement);
+		assertEquals(secondElement.getText(),text);		
+    }
+    
+    public void testAddDOOMTextAsChild() throws XMLStreamException {
+    	OMFactory doomFactory = DOOMAbstractFactory.getOMFactory();
+    	OMFactory llomFactory = OMAbstractFactory.getOMFactory();
+    	String text = "This was a DOOM Text";
+    	
+    	OMElement llomRoot = llomFactory.createOMElement("root",null);
+    	
+    	OMText doomText = doomFactory.createOMText(text);
+    	llomRoot.addChild(doomText);
+    	
+    	OMElement newElement = (new StAXOMBuilder(this.factory, llomRoot
+				.getXMLStreamReader())).getDocumentElement();
+		newElement.build();
+		assertEquals(newElement.getText(),text);		
+    }
+    
 }

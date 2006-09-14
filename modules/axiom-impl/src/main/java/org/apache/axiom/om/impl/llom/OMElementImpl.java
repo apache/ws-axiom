@@ -21,6 +21,7 @@ import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
@@ -186,8 +187,13 @@ public class OMElementImpl extends OMNodeImpl
      * front of the children list.
      */
     public void addChild(OMNode child) {
-        addChild((OMNodeImpl) child);
+		if (child.getOMFactory() instanceof OMLinkedListImplFactory) {
+			addChild((OMNodeImpl) child);
+		} else {
+			addChild(importNode(child));
+		}
     }
+    
 
     /**
      * Searches for children with a given QName and returns an iterator to traverse through

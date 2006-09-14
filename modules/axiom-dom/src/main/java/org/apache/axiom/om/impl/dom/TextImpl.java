@@ -586,4 +586,21 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
 			this.getDataHandler();
 		}
 	}
+	public boolean isBinary() {
+		return isBinary;
+	}
+
+    /**
+     * Receiving binary can happen as either MTOM attachments or as Base64 Text
+     * In the case of Base64 user has to explicitly specify that the content is 
+     * binary, before calling getDataHandler(), getInputStream()....
+     */
+	public void setBinary(boolean value) {
+		this.isBinary = value;
+		
+	}
+
+	public OMNamespace getNamespace() {
+		return textNS;
+	}
 }

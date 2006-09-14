@@ -301,6 +301,13 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             }
         }
     }
+    
+	/* (non-Javadoc)
+	 * @see org.apache.axiom.om.OMText#getNamespace()
+	 */
+	public OMNamespace getNamespace() {
+		return textNS;
+	}
 
     public boolean isOptimized() {
         return optimize;
@@ -321,6 +328,12 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     public void setBinary(boolean value) {     
             isBinary = value;
     }
+    
+    public boolean isBinary()
+    {
+    	return isBinary;
+    }
+
 
     /**
      * Gets the datahandler.

@@ -36,6 +36,13 @@ public interface OMText extends OMNode {
     boolean isCharacters();
 
     QName getTextAsQName();
+    
+    /**
+     * Returns the Namespace if this contains a QName
+     * Return null otherwise
+     * @return OMNamespace 
+     */
+    OMNamespace getNamespace();
 
     /**
      * Gets the datahandler.
@@ -54,6 +61,19 @@ public interface OMText extends OMNode {
      * @param value
      */
     void setOptimize(boolean value);
+    
+    /**
+     * @return Returns boolean flag saying whether the node contains
+     *         binary or not.
+     */
+    boolean isBinary();
+
+    /**
+     * Sets the isBinary flag.
+     * @param value
+     */
+    void setBinary(boolean value);
+    
 
     /**
      * Gets the content id.

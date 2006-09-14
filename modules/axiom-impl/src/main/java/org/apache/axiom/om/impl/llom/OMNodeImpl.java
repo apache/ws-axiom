@@ -20,6 +20,8 @@ import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -78,11 +80,12 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      */
     public OMNodeImpl(OMContainer parent, OMFactory factory, boolean done) {
         this.done = done;
+        this.factory = factory;
         if ((parent != null)) {
             this.parent = (OMContainerEx) parent;
             parent.addChild(this);
         }
-        this.factory = factory;
+        
     }
 
     /**
@@ -140,6 +143,11 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * @param node
      */
     public void setNextOMSibling(OMNode node) {
+		if (node ==null || node.getOMFactory() instanceof OMLinkedListImplFactory) {
+			this.nextSibling = (OMNodeImpl) node;
+		} else {
+			this.nextSibling = (OMNodeImpl)importNode(node);
+		}
         this.nextSibling = (OMNodeImpl) node;
     }
 
@@ -289,7 +297,11 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * @param previousSibling
      */
     public void setPreviousOMSibling(OMNode previousSibling) {
-        this.previousSibling = (OMNodeImpl) previousSibling;
+		if (previousSibling ==null || previousSibling.getOMFactory() instanceof OMLinkedListImplFactory) {
+			this.previousSibling = (OMNodeImpl) previousSibling;
+		} else {
+			this.previousSibling = (OMNodeImpl)importNode(previousSibling);
+		}   
     }
 
     /**
@@ -410,4 +422,70 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     public OMFactory getOMFactory() {
         return this.factory;
     }
+    
+ 	/**	
+	 * This method is intended only to be used by Axiom intenals when merging Objects
+	 * from different Axiom implementations to the LLOM implementation.
+	 * 
+	 * @param child
+	 * @return
+	 */
+ 	protected OMNode importNode(OMNode child)
+ 	{
+ 		int type = child.getType();
+		switch (type) {
+		case (OMNode.ELEMENT_NODE): 
+		{
+			OMElement childElement = (OMElement) child;
+			OMElement newElement = (new StAXOMBuilder(this.factory, childElement
+					.getXMLStreamReader())).getDocumentElement();
+			newElement.build();
+			return newElement;
+		}
+		case (OMNode.TEXT_NODE): 
+		{
+			OMText importedText = (OMText) child;
+			OMText newText;
+			if (importedText.isBinary()) {
+				boolean isOptimize = importedText.isOptimized();
+				newText = this.factory.createOMText(importedText
+						.getDataHandler(), isOptimize);
+			}
+			else if (importedText.getNamespace()!=null)
+			{
+				newText = this.factory.createOMText(null,importedText.getTextAsQName(),importedText.getType());
+			}
+			else if (importedText.isCharacters()) {
+				newText = this.factory.createOMText(null, importedText
+						.getTextCharacters(), importedText.getType());
+			} else {
+				newText = this.factory.createOMText(null, importedText
+						.getText()/*, importedText.getOMNodeType()*/);
+			}
+			return newText;
+		}
+		
+		case (OMNode.PI_NODE): {
+			OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
+			OMProcessingInstruction newPI = this.factory
+					.createOMProcessingInstruction(null, importedPI
+							.getTarget(), importedPI.getValue());
+			return newPI;
+		}
+		case (OMNode.COMMENT_NODE): {
+			OMComment importedComment = (OMComment) child;
+			OMComment newComment = this.factory.createOMComment(null,
+					importedComment.getValue());
+			return newComment;
+		}
+		case (OMNode.DTD_NODE) :{
+			OMDocType importedDocType = (OMDocType)child;
+			OMDocType newDocType = this.factory.createOMDocType(null,importedDocType.getValue());
+			return newDocType;
+		}
+		default: {
+			throw new UnsupportedOperationException("Not Implemented Yet for the given node type");
+		}
+		}
+ 	}
 }
