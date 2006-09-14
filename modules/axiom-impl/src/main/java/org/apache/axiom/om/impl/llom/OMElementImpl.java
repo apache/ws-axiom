@@ -49,7 +49,7 @@ public class OMElementImpl extends OMNodeImpl
     /**
      * Field ns
      */
-    protected OMNamespace ns = DEFAULT_DEFAULT_NS_OBJECT;
+    protected OMNamespace ns;
 
     /**
      * Field localName
@@ -862,7 +862,19 @@ public class OMElementImpl extends OMNodeImpl
      * @throws OMException
      */
     public OMNamespace getNamespace() throws OMException {
-        return ns != null ? ns : DEFAULT_DEFAULT_NS_OBJECT;
+//        return ns != null ? ns : DEFAULT_DEFAULT_NS_OBJECT;
+        if (ns == null) {
+            // User wants to keep this element in the default default namespace. Let's try to see the default namespace
+            // is overriden by some one up in the tree
+            OMNamespace parentDefaultNS = this.findNamespaceURI("");
+
+            if(parentDefaultNS != null && !"".equals(parentDefaultNS.getNamespaceURI())){
+                // if it was overriden, then we must explicitly declare default default namespace as the namespace
+                // of this element
+                ns = DEFAULT_DEFAULT_NS_OBJECT;
+            }
+        }
+        return ns;
     }
 
     /**

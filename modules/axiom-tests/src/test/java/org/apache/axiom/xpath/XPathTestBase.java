@@ -65,17 +65,7 @@ package org.apache.axiom.xpath;
 import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jaxen.BaseXPath;
-import org.jaxen.Context;
-import org.jaxen.ContextSupport;
-import org.jaxen.FunctionCallException;
-import org.jaxen.JaxenException;
-import org.jaxen.Navigator;
-import org.jaxen.SimpleNamespaceContext;
-import org.jaxen.SimpleVariableContext;
-import org.jaxen.UnsupportedAxisException;
-import org.jaxen.XPath;
-import org.jaxen.XPathFunctionContext;
+import org.jaxen.*;
 import org.jaxen.function.StringFunction;
 import org.jaxen.pattern.Pattern;
 import org.jaxen.saxpath.helpers.XPathReaderFactory;
@@ -255,7 +245,7 @@ public abstract class XPathTestBase extends TestCase
                 assertEquals("Node type mismatch", Pattern.NAMESPACE_NODE, nav.getNodeType(o));
             }
         }
-        assertEquals(34, count);
+        assertEquals(25, count);
     }
 
 
@@ -1715,60 +1705,60 @@ public abstract class XPathTestBase extends TestCase
         }
     }
 
-//    public void testid55739() throws JaxenException
-//    {
-//        Navigator nav = getNavigator();
-//        String url = TESTS_ROOT + "xml/testNamespaces.xml";
-//        log("Document [" + url + "]");
-//        Object document = nav.getDocument(url);
-//        XPath contextpath = new BaseXPath("/", nav);
-//        log("Initial Context :: " + contextpath);
-//        List list = contextpath.selectNodes(document);
-//        Iterator iter = list.iterator();
-//        while (iter.hasNext())
-//        {
-//            Object context = iter.next();
-//            /* the root is not an element, so no namespaces
-//            */
-//            assertCountXPath(0, context, "namespace::*");
-//            assertCountXPath(0, context, "/namespace::*");
-//            /* must count the default xml: prefix as well
-//            */
-//            assertCountXPath(3, context, "/Template/Application1/namespace::*");
-//            assertCountXPath(3, context, "/Template/Application2/namespace::*");
-//            /* every element has separate copies
-//            */
-//            assertCountXPath(25, context, "//namespace::*");
-//        }
-//    }
+    public void testid55739() throws JaxenException
+    {
+        Navigator nav = getNavigator();
+        String url = TESTS_ROOT + "xml/testNamespaces.xml";
+        log("Document [" + url + "]");
+        Object document = nav.getDocument(url);
+        XPath contextpath = new BaseXPath("/", nav);
+        log("Initial Context :: " + contextpath);
+        List list = contextpath.selectNodes(document);
+        Iterator iter = list.iterator();
+        while (iter.hasNext())
+        {
+            Object context = iter.next();
+            /* the root is not an element, so no namespaces
+            */
+            assertCountXPath(0, context, "namespace::*");
+            assertCountXPath(0, context, "/namespace::*");
+            /* must count the default xml: prefix as well
+            */
+            assertCountXPath(3, context, "/Template/Application1/namespace::*");
+            assertCountXPath(3, context, "/Template/Application2/namespace::*");
+            /* every element has separate copies
+            */
+            assertCountXPath(25, context, "//namespace::*");
+        }
+    }
 
-//    public void testid55797() throws JaxenException
-//    {
-//        Navigator nav = getNavigator();
-//        String url = TESTS_ROOT + "xml/testNamespaces.xml";
-//        log("Document [" + url + "]");
-//        Object document = nav.getDocument(url);
-//        XPath contextpath = new BaseXPath("/Template/Application1", nav);
-//        log("Initial Context :: " + contextpath);
-//        List list = contextpath.selectNodes(document);
-//        Iterator iter = list.iterator();
-//        while (iter.hasNext())
-//        {
-//            Object context = iter.next();
-//            /* must count the default xml: prefix as well
-//            */
-//            assertCountXPath(3, context, "namespace::*");
-//            assertCountXPath(0, context, "/namespace::*");
-//            assertCountXPath(3, context, "/Template/Application1/namespace::*");
-//            assertCountXPath(3, context, "/Template/Application2/namespace::*");
-//            assertCountXPath(25, context, "//namespace::*");
-//            assertCountXPath(8, context, "//namespace::xplt");
-//            /* the name test literally matches the prefix as given in the
-//              document, and does not use the uri
-//            */
-//            assertCountXPath(0, context, "//namespace::somethingelse");
-//        }
-//    }
+    public void testid55797() throws JaxenException
+    {
+        Navigator nav = getNavigator();
+        String url = TESTS_ROOT + "xml/testNamespaces.xml";
+        log("Document [" + url + "]");
+        Object document = nav.getDocument(url);
+        XPath contextpath = new BaseXPath("/Template/Application1", nav);
+        log("Initial Context :: " + contextpath);
+        List list = contextpath.selectNodes(document);
+        Iterator iter = list.iterator();
+        while (iter.hasNext())
+        {
+            Object context = iter.next();
+            /* must count the default xml: prefix as well
+            */
+            assertCountXPath(3, context, "namespace::*");
+            assertCountXPath(0, context, "/namespace::*");
+            assertCountXPath(3, context, "/Template/Application1/namespace::*");
+            assertCountXPath(3, context, "/Template/Application2/namespace::*");
+            assertCountXPath(25, context, "//namespace::*");
+            assertCountXPath(8, context, "//namespace::xplt");
+            /* the name test literally matches the prefix as given in the
+              document, and does not use the uri
+            */
+            assertCountXPath(0, context, "//namespace::somethingelse");
+        }
+    }
 
     public void testid55873() throws JaxenException
     {

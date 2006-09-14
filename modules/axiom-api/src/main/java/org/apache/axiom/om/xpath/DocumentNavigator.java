@@ -1,24 +1,10 @@
 package org.apache.axiom.om.xpath;
 
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMComment;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
-import org.jaxen.BaseXPath;
-import org.jaxen.DefaultNavigator;
-import org.jaxen.FunctionCallException;
-import org.jaxen.JaxenConstants;
-import org.jaxen.UnsupportedAxisException;
-import org.jaxen.XPath;
+import org.jaxen.*;
 import org.jaxen.saxpath.SAXPathException;
 import org.jaxen.util.SingleObjectIterator;
 
@@ -364,7 +350,10 @@ public class DocumentNavigator extends DefaultNavigator {
             for (Iterator iter = element.getAllAttributes();
                  iter != null && iter.hasNext();) {
                 OMAttribute attr = (OMAttribute) iter.next();
-                declaredNS.add(attr.getNamespace());
+                OMNamespace namespace = attr.getNamespace();
+                if (namespace != null) {
+                    declaredNS.add(namespace);
+                }
             }
             for (Iterator iter = declaredNS.iterator();
                  iter != null && iter.hasNext();) {
