@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.EmptyOMLocation;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.w3c.dom.Attr;
-import org.w3c.dom.Node;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
@@ -1040,17 +1039,17 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         int returnEvent = 0;
         int nodeType = node.getType();
         switch (nodeType) {
-        case Node.ELEMENT_NODE:
+        case OMNode.ELEMENT_NODE:
             OMElement element = (OMElement) node;
             returnEvent = generateElementEvents(element);
             break;
-        case Node.TEXT_NODE:
+        case OMNode.TEXT_NODE:
             returnEvent = generateTextEvents();
             break;
-        case Node.COMMENT_NODE:
+        case OMNode.COMMENT_NODE:
             returnEvent = generateCommentEvents();
             break;
-        case Node.CDATA_SECTION_NODE:
+        case OMNode.CDATA_SECTION_NODE:
             returnEvent = generateCdataEvents();
             break;
         default:

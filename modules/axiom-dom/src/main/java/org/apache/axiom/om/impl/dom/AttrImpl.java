@@ -194,7 +194,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      * @see org.apache.axiom.om.OMNode#getType()
      */
     public int getType() {
-        return Node.ATTRIBUTE_NODE;
+        return -1;
     }
 
     /**

@@ -57,7 +57,7 @@ public class DocumentFragmentimpl extends ParentNode implements
      * @see org.apache.axiom.om.OMNode#getType()
      */
     public int getType() throws OMException {
-        return Node.DOCUMENT_FRAGMENT_NODE;
+        return -1;
     }
 
     /*

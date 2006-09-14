@@ -15,9 +15,31 @@
  */
 package org.apache.axiom.om.impl.dom.factory;
 
-import org.apache.axiom.om.*;
+
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMDocType;
+import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.dom.*;
+import org.apache.axiom.om.impl.dom.AttrImpl;
+import org.apache.axiom.om.impl.dom.CommentImpl;
+import org.apache.axiom.om.impl.dom.DocumentFragmentimpl;
+import org.apache.axiom.om.impl.dom.DocumentImpl;
+import org.apache.axiom.om.impl.dom.ElementImpl;
+import org.apache.axiom.om.impl.dom.NamespaceImpl;
+import org.apache.axiom.om.impl.dom.OMDOMException;
+import org.apache.axiom.om.impl.dom.ParentNode;
+import org.apache.axiom.om.impl.dom.TextImpl;
 import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
@@ -219,7 +241,7 @@ public class OMDOMFactory implements OMFactory {
      */
     public OMText createOMText(String text, int type) {
         switch (type) {
-        case Node.TEXT_NODE:
+        case OMNode.TEXT_NODE:
             return new TextImpl(this.document, text, this);
         default:
             throw new OMDOMException("Only Text nodes are supported right now");

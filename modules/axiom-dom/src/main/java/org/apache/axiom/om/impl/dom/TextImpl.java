@@ -247,7 +247,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
      * @see org.apache.axiom.om.OMNode#getType()
      */
     public int getType() throws OMException {
-        return Node.TEXT_NODE;
+        return OMNode.TEXT_NODE;
     }
 
     /*
@@ -296,11 +296,11 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
      */
     private void writeOutput(XMLStreamWriter writer) throws XMLStreamException {
         int type = getType();
-        if (type == Node.TEXT_NODE || type == SPACE_NODE) {
+        if (type == OMNode.TEXT_NODE || type == SPACE_NODE) {
             writer.writeCharacters(this.getText());
-        } else if (type == Node.CDATA_SECTION_NODE) {
+        } else if (type == OMNode.CDATA_SECTION_NODE) {
             writer.writeCData(this.getText());
-        } else if (type == Node.ENTITY_REFERENCE_NODE) {
+        } else if (type == OMNode.ENTITY_REFERENCE_NODE) {
             writer.writeEntityRef(this.getText());
         }
     }

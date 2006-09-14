@@ -15,20 +15,36 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.*;
+
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.ElementHelper;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.TypeInfo;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -179,7 +195,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      * @see org.apache.axiom.om.OMNode#getType()
      */
     public int getType() throws OMException {
-        return Node.ELEMENT_NODE;
+        return OMNode.ELEMENT_NODE;
     }
 
     /*
@@ -922,7 +938,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         OMText textNode;
 
         while (child != null) {
-            if (child.getType() == Node.TEXT_NODE) {
+            if (child.getType() == OMNode.TEXT_NODE) {
                 textNode = (OMText) child;
                 if (textNode.getText() != null
                         && !"".equals(textNode.getText())) {
@@ -941,7 +957,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         OMText textNode;
 
         while (child != null) {
-            if (child.getType() == Node.TEXT_NODE) {
+            if (child.getType() == OMNode.TEXT_NODE) {
                 textNode = (OMText) child;
                 if (textNode.getText() != null
                         && !"".equals(textNode.getText())) {
