@@ -1,13 +1,12 @@
 ===========================================
 
-     Apache AXIOM 1.0 Release Note
+     Apache AXIOM 1.1 Release Note
 
 ===========================================
 
 http://ws.apache.org/commons/axiom
 
-After nearly 2 years of development and numerous incremental releases, we are proud to announce the
-release of Version 1.0 of Apache AXIOM!
+This is Apache AXIOM 1.1 release, the next major version since v1.0.
 
 Apache AXIOM is a StAX-based, XML Infoset compliant object model which supports on-demand building
 of the object tree. It supports a novel "pull-through" model which allows one to turn off the tree
@@ -31,6 +30,14 @@ Key Features
           o W3C DOM supporting implementation
     * High performant
 
+What's New in This Release
+==========================
+
+    * Improved XML serialization
+    * DOM Hash implementation
+    * Improved MTOM handling
+    * Improved tree handling with multiple partial built elements
+    * Numerous bug fixes
 
 Thanks for your interest in Apache AXIOM!
 
