@@ -1,4 +1,4 @@
-TODO list for completing build with Maven 2:
+TODO List for Completing Build with Maven 2:
 ============================================
 
 * Create axiom.jar (bundle of axiom-api.jar, axiom-dom.jar and
