@@ -21,6 +21,7 @@
             <item name="Documentation">
                 <item name="OM Tutorial" href="OMTutorial.html"/>
                 <item name="Javadocs" href="/apidocs/index.html"/>
+                <item name="View Source" href="http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/?root=Apache-SVN"/>
             </item>
             <item name="Project Information">
                 <item name="Mailing Lists" href="/mail-lists.html"/>
