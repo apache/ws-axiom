@@ -20,7 +20,7 @@ end of header section -->
 <h2>Content</h2>
 
 <ul>
-  <li><a href="#intro">Introduction
+  <li><a href="#intro">Introduction</li>
     <ul>
       <li><a href="#what">What is OM?</li>
       <li><a href="#whom">For whom is this Tutorial?</li>
@@ -30,8 +30,8 @@ end of header section -->
       <li><a href="#caching">A Bit About Caching</li>
       <li><a href="#soap">Where Does SOAP Comes in to Play?</li>
     </ul>
-  </li>
-  <li><a href="#working">Working with OM
+
+  <li><a href="#working">Working with OM</li>
     <ul>
       <li><a href="#binary">Obtaining the OM Binary</li>
       <li><a href="#creation">Creation</li>
@@ -41,25 +41,25 @@ end of header section -->
       <li><a href="#code">Complete Code for the OM based Document Building and
       Serialization</li>
     </ul>
-  </li>
-  <li><a href="#advanced">Advanced Operations with OM
+
+  <li><a href="#advanced">Advanced Operations with OM</li>
     <ul>
       <li><a href="#omnavigator">Use of the OMNavigator for Traversal</li>
       <li><a href="#accesspull">Accessing the Pull Parser</li>
     </ul>
-  </li>
-  <li><a href="#limit">Known Limitations of OM
+  
+  <li><a href="#limit">Known Limitations of OM</li>
     <ul>
       <li><a href="#namespace">Inefficient Namespace Serialization</li>
     </ul>
-  </li>
+  
   <li><a href="#summary">Summary</li>
-  <li><a href="#appendix">Appendix
+  <li><a href="#appendix">Appendix</li>
     <ul>
       <li><a href="#1">Program Listing for Complete OM - Build and Serialize</li>
       <li><a href="#links">Links</li>
     </ul>
-  </li>
+  
 </ul>
 <a name="intro"></a>
 <h2>Introduction</h2>
@@ -92,7 +92,7 @@ understanding OM, mainly to highlight the differences and similarities
 between the two, but such knowledge is not assumed. Several links are listed
 in the <a href="#links">Appendix</a> that will help understand the basics of
 XML.</p>
-<a name="pullparser"></a>
+<a name="pullparsing"></a>
 <h3>What is Pull Parsing?</h3>
 Pull parsing is a recent trend in XML processing. The previously popular XML
 processing frameworks such as <a
@@ -107,7 +107,7 @@ discard events generated from the parser. OM is based on pull parsing. To
 learn more about XML pull parsing see the <a
 href="http://www.bearcave.com/software/java/xml/xmlpull.html">XML pull
 parsing introduction</a>.
-
+<a name="history"></a>
 <h3>A Bit of History</h3>
 
 <p>The original OM was proposed as a store for the pull parser events for
@@ -130,7 +130,7 @@ deliberately made <a
 href="http://en.wikipedia.org/wiki/Application_programming_interface">API</a>
 centric. It allows the implementations to take place independently and
 swapped without affecting the program later.</p>
-
+<a name="features"></a>
 <h3>Features of OM</h3>
 
 <p>OM is a lightweight, deferred built XML infoset representation based on
@@ -184,7 +184,7 @@ class="img" width="490" height="282"></p>
 <p>OM Builder wraps the raw xml character stream through the StAX reader API.
 Hence, the complexities of the pull event stream is transparent to the
 user.</p>
-
+<a name="caching"></a>
 <h3>A Bit About Caching</h3>
 
 <p>Since OM is a deferred built object model, It incorporates the concept of
@@ -196,7 +196,7 @@ instead of the OM. In this case it is sometimes beneficial to switch off
 caching. The <a href="#advanced">Advanced Operations</a> section explains
 more on accessing the raw pull stream and switching on and off the
 caching.</p>
-
+<a name="soap"></a>
 <h3>Where Does SOAP Come into Play?</h3>
 
 <p>In a nutshell <a
@@ -212,9 +212,9 @@ with OM. These SOAP Objects are extensions of the general OM objects. <!--<p>Thi
 <p>AXIOM has the flexibility to plug in any builder which implements the given builders interface.  The upcoming sections of this tutorial deal with the creation and usage of OM for manipulating SOAP (and to some extent nonSOAP) based XML documents.</p>
 -->
 </p>
-
+<a name="working"></a>
 <h2>Working with OM</h2>
-
+<a name="binary"></a>
 <h3>Obtaining the OM Binary</h3>
 
 <p>There are two methods through which the OM-binary can be obtained:</p>
@@ -341,7 +341,7 @@ document either with the abstraction of SOAP or drill down to the underlying
 XML Object model with a simple casting.</p>
 <!--  The following illustration of the actual class diagram will be helpful in understanding this.
 Need an image here -->
-
+<a name="nodes"></a>
 <h3>Addition of Nodes</h3>
 
 <p>Addition and removal methods are primarily defined in the OMElement
@@ -425,7 +425,7 @@ root.addChild(elt1);</pre>
 
 <p>Serialization of the root element produces the following XML:</p>
 <pre class="xml">&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</pre>
-
+<a name="traversing"></a>
 <h3>Traversing</h3>
 
 <p>Traversing the object structure can be done in the usual way by using the
@@ -528,13 +528,13 @@ Serialization of the root element produces the following:</p>
 
 <p>Note how the serializer puts the relevant namespace declarations in
 place.</p>
-
+<a name="code"></a>
 <h3>Complete Code for the OM based Document Building and Serialization</h3>
 
 <p>The following code segment shows how to use the OM for completely building
 a document and then serializing it into text pushing the output to the
 console. Only the important sections are shown here. The complete program
-listing can be found in the <a href="#appaendix">Appendix</a>.</p>
+listing can be found in the <a href="#appendix">Appendix</a>.</p>
 
 <div align="left">
 <p><b>Code Listing 9</b></p>
@@ -552,7 +552,7 @@ System.out.println(documentElement.toStringWithConsume()); </pre>
 <a name="advanced"></a>
 
 <h2>Advanced Operations with OM</h2>
-
+<a name="omnavigator"></a>
 <h3>Use of the OMNavigator for Traversal</h3>
 
 <p>OM provides a utility class to navigate the OM structure. The navigator
@@ -579,7 +579,7 @@ OMNode node = null;
 while (navigator.isNavigable()) {
      node = navigator.next();
 }</pre>
-
+<a name="accesspull"></a>
 <h3>Accessing the Pull Parser</h3>
 
 <p>OM is tightly integrated with StAX and the
@@ -618,9 +618,9 @@ models. This makes such operations faster and efficient.</p>
   </tbody>
 </table>
 <!-- End of special section -->
-
+<a name="limit"></a>
 <h2>Known Limitations of OM</h2>
-
+<a name="namespace"></a>
 <h3>Inefficient Namespace Serialization</h3>
 
 <p>Although the serializer acts correctly in every situation, the code that
@@ -659,16 +659,16 @@ namespace declaration on the parent element. This behavior is due to the
 nature of the serialization where it tries to be accurate but not optimal. It
 is deliberately kept unchanged since such optimizations slow down the common
 case.</p>
-
+<a name="summary"></a>
 <h2>Summary</h2>
 
 <p>This is meant to be a small yet comprehensive introduction to AXIOM. AXIOM
 however, is a lot more than what is described in this tutorial. Readers are
 welcome to explore AXIOM, especially it's capabilities to handle binary
 content.</p>
-
+<a name="appendix"></a>
 <h2>Appendix</h2>
-
+<a name="1"></a>
 <h3>Program Listing for Complete OM - Build and Serialize</h3>
 <pre class="code">import org.apache.axiom.om.SOAPEnvelope;
 import org.apache.axiom.om.OMFactory;
