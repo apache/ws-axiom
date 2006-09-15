@@ -46,10 +46,11 @@
                 <ant:exclude name="org/apache/axiom/om/impl/llom/**"/>
                 <ant:exclude name="org/apache/axiom/soap/impl/dom/**"/>
                 <ant:exclude name="org/apache/axiom/om/impl/dom/**"/>
+                <ant:include name="org/**"/>
             </ant:fileset>
             <ant:fileset dir="${basedir}">
                 <ant:include name="LICENSE.txt"/>
-                <ant:exclude name="NOTICE.txt"/>
+                <ant:include name="NOTICE.txt"/>
             </ant:fileset>
         </jar>
         <jar destfile="target/axiom-impl-${axiom.version}.jar">
@@ -59,7 +60,7 @@
             </ant:fileset>
             <ant:fileset dir="${basedir}">
                 <ant:include name="LICENSE.txt"/>
-                <ant:exclude name="NOTICE.txt"/>
+                <ant:include name="NOTICE.txt"/>
             </ant:fileset>
         </jar>
         <jar destfile="target/axiom-dom-${axiom.version}.jar">
@@ -69,7 +70,7 @@
             </ant:fileset>
             <ant:fileset dir="${basedir}">
                 <ant:include name="LICENSE.txt"/>
-                <ant:exclude name="NOTICE.txt"/>
+                <ant:include name="NOTICE.txt"/>
             </ant:fileset>
         </jar>
         <ant:copy toDir="${maven.repo.local}/ws-commons/jars">
@@ -191,6 +192,7 @@
         <ant:copy toDir="${dist}">
             <ant:fileset dir=".">
                 <ant:exclude name="**/.svn/**"/>
+                <ant:exclude name="**/target/**"/>
                 <ant:include name="**/src/**"/>
                 <ant:include name="**/test/**"/>
             </ant:fileset>
@@ -201,6 +203,7 @@
             <ant:fileset file="maven.xml"/>
             <ant:fileset file="project.xml"/>
             <ant:fileset file="project.properties"/>
+            <ant:fileset file="pom.xml"/>
             <ant:fileset file="RELEASE-NOTE.txt"/>
             <ant:fileset file="NOTICE.txt"/>
             <ant:fileset file="LICENSE.txt"/>
