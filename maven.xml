@@ -10,7 +10,7 @@
          xmlns:deploy="deploy"
          xmlns:ant="jelly:ant">
 
-    <preGoal name="itest:compile">
+        <preGoal name="itest:compile">
         <u:file var="file" name="${maven.itest.src}"/>
         <j:if test="${!file.exists()}">
             <j:expr value="${context.setVariable('maven.itest.skip', 'true')}"/>
@@ -18,23 +18,23 @@
     </preGoal>
 
     <preGoal name="test:test">
-	  <copy todir="test-resources">
-		<fileset dir="modules/axiom-tests/test-resources"/>
-	  </copy>
+        <copy todir="test-resources">
+            <fileset dir="modules/axiom-tests/test-resources"/>
+        </copy>
     </preGoal>
 
     <postGoal name="test:test">
-	  <delete dir="test-resources"/>
+        <delete dir="test-resources"/>
     </postGoal>
 
     <postGoal name="java:compile">
         <javac destdir="${basedir}/target/classes/" srcdir="${basedir}/modules"
-			  debug="true"
-			  source="1.3"
-			  classpathref="maven.dependency.classpath">
-			  <include name="axiom-api/src/**/*.java"/>
-			  <include name="axiom-dom/src/**/*.java"/>
-			  <include name="axiom-impl/src/**/*.java"/>
+               debug="true"
+               source="1.3"
+               classpathref="maven.dependency.classpath">
+            <include name="axiom-api/src/**/*.java"/>
+            <include name="axiom-dom/src/**/*.java"/>
+            <include name="axiom-impl/src/**/*.java"/>
         </javac>
     </postGoal>
 
@@ -96,7 +96,6 @@
         <mkdir dir="${dist}"/>
         <mkdir dir="${dist}/apidocs"/>
         <mkdir dir="${dist}/build"/>
-        <!--<mkdir dir="${dist}/docs"/>-->
         <mkdir dir="${dist}/lib"/>
 
         <!--copy dependent jars-->
@@ -129,8 +128,11 @@
                      windowtitle="AXIOM API">
             <ant:arg
                     line="-J-Dhttp.proxy.port=${maven.proxy.port} -J-Dhttp.proxy.host=${maven.proxy.host}"/>
+
             <ant:sourcepath>
-                <ant:pathelement location="src"/>
+                <ant:pathelement location="modules/axiom-impl/src/main/java"/>
+                <ant:pathelement location="modules/axiom-dom/src/main/java"/>
+                <ant:pathelement location="modules/axiom-api/src/main/java"/>
             </ant:sourcepath>
             <ant:classpath>
                 <ant:fileset dir="${dist}/lib">
@@ -148,8 +150,9 @@
 
         <!--add documents-->
         <ant:copy toDir="${dist}/docs">
-            <ant:fileset dir="xdocs">
+            <ant:fileset dir="src/site">
                 <ant:exclude name="**/.svn/**"/>
+                <ant:include name="resources/*"/>
             </ant:fileset>
         </ant:copy>
 
