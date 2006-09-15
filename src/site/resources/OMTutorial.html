@@ -1,11 +1,11 @@
 <html>
 <head>
-  <meta http-equiv="content-type" content="">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <title>OM Tutorial</title>
   <link href="css/axis-docs.css" type="text/css" rel="stylesheet">
 </head>
 
-<body>
+<body lang="en">
 <!-- Header section 
 <table width="100%">
 <tr>
@@ -17,14 +17,59 @@ end of header section -->
 
 <h1>OM Tutorial</h1>
 
-<h2>Introduction</h2>
+<h2>Content</h2>
 
+<ul>
+  <li><a href="#intro">Introduction
+    <ul>
+      <li><a href="#what">What is OM?</li>
+      <li><a href="#whom">For whom is this Tutorial?</li>
+      <li><a href="#pullparsing">What is Pull Parsing?</li>
+      <li><a href="#history">A Bit of History</li>
+      <li><a href="#features">Features of OM</li>
+      <li><a href="#caching">A Bit About Caching</li>
+      <li><a href="#soap">Where Does SOAP Comes in to Play?</li>
+    </ul>
+  </li>
+  <li><a href="#working">Working with OM
+    <ul>
+      <li><a href="#binary">Obtaining the OM Binary</li>
+      <li><a href="#creation">Creation</li>
+      <li><a href="#nodes">Additions of Nodes</li>
+      <li><a href="#traversing">Traversing</li>
+      <li><a href="#serializer">Serializer</li>
+      <li><a href="#code">Complete Code for the OM based Document Building and
+      Serialization</li>
+    </ul>
+  </li>
+  <li><a href="#advanced">Advanced Operations with OM
+    <ul>
+      <li><a href="#omnavigator">Use of the OMNavigator for Traversal</li>
+      <li><a href="#accesspull">Accessing the Pull Parser</li>
+    </ul>
+  </li>
+  <li><a href="#limit">Known Limitations of OM
+    <ul>
+      <li><a href="#namespace">Inefficient Namespace Serialization</li>
+    </ul>
+  </li>
+  <li><a href="#summary">Summary</li>
+  <li><a href="#appendix">Appendix
+    <ul>
+      <li><a href="#1">Program Listing for Complete OM - Build and Serialize</li>
+      <li><a href="#links">Links</li>
+    </ul>
+  </li>
+</ul>
+<a name="intro"></a>
+<h2>Introduction</h2>
+<a name="what"></a>
 <h3>What is OM?</h3>
 
 <p>OM stands for Object Model (also known as AXIOM - AXis Object Model) and
-refers to the XML infoset model that is initialy developed for Apache Axis2.
+refers to the XML infoset model that is initially developed for Apache Axis2.
 XML infoset refers to the information included inside the XML, and for
-programmatical manipulation it is convenient to have a representation of this
+programmatic manipulation it is convenient to have a representation of this
 XML infoset in a language specific manner. For an object oriented language
 the obvious choice is a model made up of objects. <a
 href="http://www.w3.org/DOM/">DOM</a> and <a
@@ -34,7 +79,7 @@ down it is very much different. The objective of this tutorial is to
 introduce the basics of OM and explain the best practices to be followed
 while using OM. However, before diving in to the deep end of OM it is better
 to skim the surface and see what it is all about!</p>
-
+<a name="whom"></a>
 <h3>For whom is this Tutorial?</h3>
 
 <p>This tutorial can be used by anyone who is interested in OM and needs to
@@ -47,8 +92,8 @@ understanding OM, mainly to highlight the differences and similarities
 between the two, but such knowledge is not assumed. Several links are listed
 in the <a href="#links">Appendix</a> that will help understand the basics of
 XML.</p>
-
-<h3>What is Pull Parsing ?</h3>
+<a name="pullparser"></a>
+<h3>What is Pull Parsing?</h3>
 Pull parsing is a recent trend in XML processing. The previously popular XML
 processing frameworks such as <a
 href="http://en.wikipedia.org/wiki/Simple_API_for_XML">SAX</a> and <a
@@ -217,6 +262,8 @@ following piece of code shows the correct method of creating an OM document
 from an input stream.</p>
 
 <div align="left">
+<a name="list1"></a>
+
 <p><b>Code Listing 1</b></p>
 </div>
 <source><pre>//create the parser<br>
@@ -344,23 +391,25 @@ namespaces.</p>
 public OMNamespace declareNamespace(OMNamespace namespace);
 public OMNamespace findNamespace(String uri, String prefix) throws OMException;</pre>
 
-<p>The declareNamespaceXX methods are fairly straightforward. They add a
-namespace to namespace declarations section. Note that a namespace
-declaration that has already being added will not be added twice.
-findNamespace is a very handy method to locate a namespace object higher up
-the object tree. It searches for a matching namespace in its own declarations
-section and jumps to the parent if it's not found. The search progresses up
-the tree until a matching namespace is found or the root has been reached.</p>
+<p>The declareNamespaceXX methods are fairly straightforward. Add a namespace
+to namespace declarations section. Note that a namespace declaration that has
+already being added will not be added twice. findNamespace is a very handy
+method to locate a namespace object higher up the object tree. It searches
+for a matching namespace in its own declarations section and jumps to the
+parent if it's not found. The search progresses up the tree until a matching
+namespace is found or the root has been reached.</p>
 
 <p>During the serialization a directly created namespace from the factory
 will only be added to the declarations when that prefix is encountered by the
-serializer. More of the serialization matters will be discussed in the
-serializer section.</p>
+serializer. More of the serialization matters will be discussed in the <a
+href="#serializer">Serializer</a> section.</p>
 
-<p>The following simple code segment shows how the namespaces are dealt with
-in OM</p>
+<p>The following simple code segment shows how the namespaces are dealt in
+OM</p>
 
 <div align="left">
+<a name="list6"></a>
+
 <p><b>Code Listing 6</b></p>
 </div>
 <pre class="code">OMFactory factory = OMAbstractFactory.getOMFactory();
@@ -374,13 +423,13 @@ elt2.addChild(txt1);
 elt1.addChild(elt2);
 root.addChild(elt1);</pre>
 
-<p>Serialization of the root element produces the following XML</p>
+<p>Serialization of the root element produces the following XML:</p>
 <pre class="xml">&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</pre>
 
 <h3>Traversing</h3>
 
 <p>Traversing the object structure can be done in the usual way by using the
-list of children. Note however that the child nodes are returned as an
+list of children. Note however, that the child nodes are returned as an
 iterator. The Iterator supports the 'OM way' of accessing elements and is
 more convenient than a list for sequential access. The following code sample
 shows how the children can be accessed. The children are of the type OMNode
@@ -421,19 +470,22 @@ object structure at once, until its required.</p>
   </tbody>
 </table>
 <!-- End of special section -->
+<a name="serializer"></a>
+
+<h3>Serializer</h3>
 
 <p>OM can be serialized either as the pure object model or the pull event
 stream. The serialization uses a XMLStreamWriter object to write out the
-output and hence the same serialization mechanism can be used to write
-different types of outputs (such as text, binary, etc.,).</p>
+output and hence, the same serialization mechanism can be used to write
+different types of outputs (such as text, binary, etc.).</p>
 
 <p>A caching flag is provided by OM to control the building of the in-memory
 OM. The OMNode has two methods, serializeAndConsume and serialize. When
 serializeAndConsume is called the cache flag is reset and the serializer does
-not cache the stream. Hence the object model will not be built if the cache
+not cache the stream. Hence, the object model will not be built if the cache
 flag is not set.</p>
 
-<p>The serializer serializes namespaces in the following way.</p>
+<p>The serializer serializes namespaces in the following way:</p>
 <ol>
   <li>When a namespace that is in the scope but not yet declared is
     encountered, it will then be declared.</li>
@@ -449,8 +501,8 @@ also be <i>namespace qualified</i> with the necessary namespace
 declarations.</p>
 
 <p>Here is an example that shows how to write the output to the console, with
-reference to the earlier code sample (Code listing 1 ) that created a SOAP
-envelope.</p>
+reference to the earlier code sample- <a href="#list1">Code Listing 1</a>
+that created a SOAP envelope.</p>
 
 <div align="left">
 <p><b>Code Listing 8</b></p>
@@ -459,28 +511,30 @@ envelope.</p>
 //dump the output to console with caching
 envelope.serialize(writer); 
 writer.flush();</pre>
-or simply
-<pre class="code"> System.out.println(root.toStringWithConsume()); </pre>
+
+<p>or simply</p>
+<pre class="code">System.out.println(root.toStringWithConsume()); </pre>
 
 <p>The above mentioned features of the serializer forces a correct
 serialization even if only a part of the OM tree is serialized. The following
 serializations show how the serialization mechanism takes the trouble to
-accurately figure out the namespaces. The example is from Code Listing 6
-which creates a small OM programmatically. Serialization of the root element
-produces the following,</p>
+accurately figure out the namespaces. The example is from <a
+href="#list6">Code Listing 6</a> which creates a small OM programmatically.
+Serialization of the root element produces the following:</p>
 <pre class="xml">&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</pre>
 
-<p>However serialization of only the foo element produces the following</p>
+<p>However, serialization of only the foo element produces the following:</p>
 <pre class="xml">&lt;x:foo xmlns:x="bar"&gt;&lt;y:yuck xmlns:y="bar1"&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;</pre>
 
 <p>Note how the serializer puts the relevant namespace declarations in
 place.</p>
-<b>Complete code for the OM based document building and serialization </b>
+
+<h3>Complete Code for the OM based Document Building and Serialization</h3>
 
 <p>The following code segment shows how to use the OM for completely building
 a document and then serializing it into text pushing the output to the
 console. Only the important sections are shown here. The complete program
-listing can be found in the appendix.</p>
+listing can be found in the <a href="#appaendix">Appendix</a>.</p>
 
 <div align="left">
 <p><b>Code Listing 9</b></p>
@@ -512,7 +566,7 @@ reached the complete status its navigation is done and it cannot proceed.</p>
 <p>It is possible that the OM tree does not get built completely when it is
 navigated. The navigable status shows whether the tree structure is
 navigable. When the navigator is complete it is not navigable anymore.
-However it is possible for a navigator to become non-navigable without being
+However, it is possible for a navigator to become non-navigable without being
 complete. The following code sample shows how the navigator should be used
 and handled using its states.</p>
 
@@ -532,19 +586,19 @@ while (navigator.isNavigable()) {
 getXMLStreamReader()/getXMLStreamReaderWithoutCaching() methods in the
 OMElement provides a XMLStreamReader object. This XMLStreamReader instance
 has a special capability of switching between the underlying stream and the
-OM object tree if the cache setting is off. However this functionality is
+OM object tree if the cache setting is off. However, this functionality is
 completely transparent to the user. This is further explained in the
 following paragraphs.</p>
 
 <p>OM has the concept of caching, and OM is the actual cache of the events
-fired. However the requester can choose to get the pull events from the
+fired. However, the requester can choose to get the pull events from the
 underlying stream rather than the OM tree. This can be achieved by getting
 the pull parser with the cache off. If the pull parser was obtained without
 switching off cache, the new events fired will be cached and the tree
 updated. This returned pull parser will switch between the object structure
-and the stream underneath and the users need not worry about the differences
+and the stream underneath, and the users need not worry about the differences
 caused by the switching. The exact pull stream the original document would
-have provided would be produced even if the OM tree was fully/partially
+have provided would be produced even if the OM tree was fully or partially
 built. The getXMLStreamReaderWithoutCaching() method is very useful when the
 events need to be handled in a pull based manner without any intermediate
 models. This makes such operations faster and efficient.</p>
@@ -565,9 +619,9 @@ models. This makes such operations faster and efficient.</p>
 </table>
 <!-- End of special section -->
 
-<h3>Known Limitations of OM</h3>
+<h2>Known Limitations of OM</h2>
 
-<h3>Inefficient Namespace serialization</h3>
+<h3>Inefficient Namespace Serialization</h3>
 
 <p>Although the serializer acts correctly in every situation, the code that
 it produces may not be efficient all the time. Take the following case where
@@ -592,11 +646,11 @@ elt1.addChild(elt2);
 <b>elt1.addChild(elt3);</b>
 root.addChild(elt1);</pre>
 
-<p>Serialization of the root element provides the following XML</p>
+<p>Serialization of the root element provides the following XML:</p>
 <pre class="xml">&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blahblah&lt;/y:yuck&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</pre>
 
-<p>However if the serialization is carried on the foo element then the
-following XML is produced</p>
+<p>However, if the serialization is carried on the foo element then the
+following XML is produced:</p>
 <pre class="xml">&lt;x:foo xmlns:x="bar" &gt;&lt;y:yuck xmlns:y="bar1"&gt;blahblah&lt;/y:yuck&gt;&lt;y:yuck xmlns:y="bar1"&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;</pre>
 
 <p>Note that the same Namespace is serialized twice. This XML is semantically
@@ -609,13 +663,13 @@ case.</p>
 <h2>Summary</h2>
 
 <p>This is meant to be a small yet comprehensive introduction to AXIOM. AXIOM
-however is a lot more than what is described in this tutorial. Readers are
-welcome to explore AXIOM, specially it's capabilities to handle binary
+however, is a lot more than what is described in this tutorial. Readers are
+welcome to explore AXIOM, especially it's capabilities to handle binary
 content.</p>
 
 <h2>Appendix</h2>
 
-<h3>Program Listing for complete OM - build and serialize</h3>
+<h3>Program Listing for Complete OM - Build and Serialize</h3>
 <pre class="code">import org.apache.axiom.om.SOAPEnvelope;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
