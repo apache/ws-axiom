@@ -1,108 +1,207 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <document>
-	<properties>
-		<title>Releases</title>
-	</properties>
-	
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-		<meta content="text/html; charset=iso-8859-1" />
-	</head>
-	
-	<body>
-		
-		<section>
-			<h2>Releases</h2>
-			<div align="left">
-				<p>AXIOM is still under active development and has not yet reached version 1.0. However, official 0.9.x releases are available for download as source or binary. For more information, please see <a href="http://www.apache.org/dev/release.html">Apache Release FAQ</a></p>
-				<p>Please select the AXIOM version you want to download. Latest release is 0.95. You can download both
-the binary distribution and the source distribution.</p>
-			</div>
-			<div align="center">
-				
-				<table class="bodyTable">
-					<tbody>
-						<tr class="a">
-							<td align="center" width="45">Name</td>
-							<td align="center" width="80">Type</td>
-							<td align="center" width="300">Distribution</td>
-							<td align="center" width="100">Date</td>
-							<td align="center" width="200">Description</td>
-						</tr>
-						<tr class="b">
-							<td align="center" valign="middle">
-								<a name="09"></a>1.0</td>
-							<td align="center">Release</td>
-							<td>Source Distribution <a href="[preferred]/ws/commons/axiom/1_0/axiom-1.0-src.zip" title="[preferred]/ws/commons/axiom/1_0/axiom-1.0-src.zip">zip</a>
-								
-								<a href="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.md5" class="externalLink" title="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.md5">MD5</a>
-								<a href="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.asc" class="externalLink" title="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.asc">PGP</a>
-								<br />
-        Binary Distribution <a href="[preferred]/ws/commons/axiom/1_0/axiom-1.0-bin.zip" title="[preferred]/ws/commons/axiom/1_0/axiom-0.95-bin.zip">zip</a>
-								<a href="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip.md5" class="externalLink" title="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip.md5">MD5</a>
-								<a href="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip.asc" class="externalLink" title="http://www.apache.org/dist/ws/ws/commons/axiom/1_0/axiom-1.0-bin.zip.asc">PGP</a>
-									
-								<br />
-							</td>
-							<td>02 - 05  - 2006</td>
-							<td>1.0 Release (Mirrored)</td>
-						</tr>
-						<tr class="b">
-							<td align="center" valign="middle">
-								<a name="09"></a>0.95</td>
-							<td align="center">Release</td>
-							<td>Source Distribution <a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip" title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip">zip</a>
-								
-								<a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.md5" class="externalLink" title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.md5">MD5</a>
-								<a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.asc" class="externalLink" title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.asc">PGP</a>
-								<br />
-        Binary Distribution <a href="[preferred]/ws/commons/axiom/0_95/axiom-0.95-bin.zip" title="[preferred]/ws/commons/axiom/0_95/axiom-0.95-bin.zip">zip</a>
-								<a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.md5" class="externalLink" title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.md5">MD5</a>
-								<a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.asc" class="externalLink" title="http://archive.apache.org/dist/ws/ws/commons/axiom/0_95/axiom-0.95-bin.zip.asc">PGP</a>
-									
-								<br />
-							</td>
-							<td>23 - 03  - 2006</td>
-							<td>0.95 Release (Archived)</td>
-						</tr>
-						
-					</tbody>
-				</table>
-			</div>
-			<div align="left">
-				<p>[if-any logo] <a href="[link]"><img align="right" src="[logo]"
-								border="0" /></a>[end] The currently selected mirror is <b>[preferred]</b>.  If
-you encounter a problem with this mirror, please select another mirror.  If
-all mirrors are failing, there are <i>backup</i> mirrors (at the end of the
-mirrors list) that should be available.</p>
+    <properties>
+        <title>:: Apache AXIOM Releases ::</title>
+    </properties>
 
-					<form action="[location]" method="get" id="SelectMirror">
-  Other mirrors: 
-  <select name="Preferred">[if-any http][for http]
-    <option value="[http]"
-									selected="selected">[http]</option>[end][end][if-any ftp][for ftp]
-    <option value="[ftp]">[ftp]</option>[end][end][if-any backup][for backup]
-    <option value="[backup]">[backup] (backup)</option>[end][end]
-  </select>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+        <meta content="text/html; charset=iso-8859-1"/>
+    </head>
 
-						<input type="submit" value="Change" /></form>
+    <body>
 
-						<p>You may also consult the <a href="http://www.apache.org/mirrors/">complete
-list of mirrors</a>.</p>
+        <section>
+            <h2>Releases</h2>
+            <div align="left">
+                <p>AXIOM is becoming more and more stable and the latest official version available for download is
+                    AXIOM 1.1. All the releases are available for download as source or binary. For more information,
+                    please see
+                    <a href="http://www.apache.org/dev/release.html">Apache Release FAQ</a>
+                </p>
+                <p>Please select the AXIOM version you want to download.</p>
+            </div>
+            <div align="center">
 
-						<p>
-							<strong>Note:</strong> when downloading from a mirror please check the <a
-									href="http://www.apache.org/dev/release-signing#md5">md5sum</a> and verify
-the <a href="http://www.apache.org/dev/release-signing#openpgp">OpenPGP</a>
-compatible signature from the main Apache site. These can be downloaded by
-following the links above. This <a
-									href="http://www.apache.org/dist/ws/commons/axiom/KEYS">KEYS</a> file contains the
-public keys used for signing release. It is recommended that (when possible)
-a <a href="http://www.apache.org/dev/release-signing#web-of-trust">web of
-trust</a> is used to confirm the identity of these keys.</p>
-					</div>
-						
-				</section>
-			</body>
-		</document>
+                <table class="bodyTable">
+                    <tbody>
+                        <tr class="a">
+                            <td align="center" width="45">Name</td>
+                            <td align="center" width="80">Type</td>
+                            <td align="center" width="300">Distribution</td>
+                            <td align="center" width="100">Date</td>
+                            <td align="center" width="200">Description</td>
+                        </tr>
+                        <tr class="b">
+                            <td align="center" valign="middle">
+                                <a name="09"></a>
+                                1.0
+                            </td>
+                            <td align="center">Release</td>
+                            <td>Source Distribution
+                                <a href="[preferred]/ws/commons/axiom/1_1/axiom-1.1-src.zip"
+                                   title="[preferred]/ws/commons/axiom/1_1/axiom-1.1-src.zip">zip</a>
+
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-src.zip.md5"
+                                   class="externalLink"
+                                   title="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-src.zip.md5">MD5</a>
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-src.zip.asc"
+                                   class="externalLink"
+                                   title="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-src.zip.asc">PGP</a>
+                                <br/>
+                                Binary Distribution
+                                <a href="[preferred]/ws/commons/axiom/1_1/axiom-1.1-bin.zip"
+                                   title="[preferred]/ws/commons/axiom/1_1/axiom-1.1-bin.zip">zip</a>
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-bin.zip.md5"
+                                   class="externalLink"
+                                   title="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-bin.zip.md5">MD5</a>
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_1/axiom-1.1-bin.zip.asc"
+                                   class="externalLink"
+                                   title="http://www.apache.org/dist/ws/ws/commons/axiom/1_1/axiom-1.1-bin.zip.asc">
+                                    PGP</a>
+
+                                <br/>
+                            </td>
+                            <td>15 - 09 - 2006</td>
+                            <td>1.0 Release (Mirrored)</td>
+                        </tr>
+
+
+                        <tr class="b">
+                            <td align="center" valign="middle">
+                                <a name="09"></a>
+                                1.0
+                            </td>
+                            <td align="center">Release</td>
+                            <td>Source Distribution
+                                <a href="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip"
+                                   title="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip">zip</a>
+
+                                <a href="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.md5"
+                                   class="externalLink"
+                                   title="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.md5">MD5</a>
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.asc"
+                                   class="externalLink"
+                                   title="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-src.zip.asc">PGP</a>
+                                <br/>
+                                Binary Distribution
+                                <a href="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip"
+                                   title="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-0.95-bin.zip">zip</a>
+                                <a href="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip.md5"
+                                   class="externalLink"
+                                   title="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip.md5">MD5</a>
+                                <a href="http://archive.apache.org/dist/ws/commons/axiom/1_0/axiom-1.0-bin.zip.asc"
+                                   class="externalLink"
+                                   title="http://archive.apache.org/dist/ws/ws/commons/axiom/1_0/axiom-1.0-bin.zip.asc">
+                                    PGP</a>
+
+                                <br/>
+                            </td>
+                            <td>02 - 05 - 2006</td>
+                            <td>1.0 Release (Archived)</td>
+                        </tr>
+
+
+                        <tr class="b">
+                            <td align="center" valign="middle">
+                                <a name="09"></a>
+                                0.95
+                            </td>
+                            <td align="center">Release</td>
+                            <td>Source Distribution
+                                <a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip"
+                                   title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip">
+                                    zip</a>
+
+                                <a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.md5"
+                                   class="externalLink"
+                                   title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.md5">
+                                    MD5</a>
+                                <a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.asc"
+                                   class="externalLink"
+                                   title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-src.zip.asc">
+                                    PGP</a>
+                                <br/>
+                                Binary Distribution
+                                <a href="[preferred]/ws/commons/axiom/0_95/axiom-0.95-bin.zip"
+                                   title="[preferred]/ws/commons/axiom/0_95/axiom-0.95-bin.zip">zip</a>
+                                <a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.md5"
+                                   class="externalLink"
+                                   title="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.md5">
+                                    MD5</a>
+                                <a href="http://archive.apache.org/dist/ws/commons/axiom/0_95/axiom-0.95-bin.zip.asc"
+                                   class="externalLink"
+                                   title="http://archive.apache.org/dist/ws/ws/commons/axiom/0_95/axiom-0.95-bin.zip.asc">
+                                    PGP</a>
+
+                                <br/>
+                            </td>
+                            <td>23 - 03 - 2006</td>
+                            <td>0.95 Release (Archived)</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div align="left">
+                <p>[if-any logo]
+                    <a href="[link]">
+                        <img align="right" src="[logo]"
+                             border="0"/>
+                    </a>
+                    [end] The currently selected mirror is
+                    <b>[preferred]</b>
+                    . If
+                    you encounter a problem with this mirror, please select another mirror. If
+                    all mirrors are failing, there are
+                    <i>backup</i>
+                    mirrors (at the end of the
+                    mirrors list) that should be available.
+                </p>
+
+                <form action="[location]" method="get" id="SelectMirror">
+                    Other mirrors:
+                    <select name="Preferred">[if-any http][for http]
+                        <option value="[http]"
+                                selected="selected">[http]</option>
+                        [end][end][if-any ftp][for ftp]
+                        <option value="[ftp]">[ftp]</option>
+                        [end][end][if-any backup][for backup]
+                        <option value="[backup]">[backup] (backup)</option>
+                        [end][end]
+                    </select>
+
+                    <input type="submit" value="Change"/>
+                </form>
+
+                <p>You may also consult the
+                    <a href="http://www.apache.org/mirrors/">complete
+                        list of mirrors</a>
+                    .
+                </p>
+
+                <p>
+                    <strong>Note:</strong>
+                    when downloading from a mirror please check the
+                    <a
+                            href="http://www.apache.org/dev/release-signing#md5">md5sum</a>
+                    and verify
+                    the
+                    <a href="http://www.apache.org/dev/release-signing#openpgp">OpenPGP</a>
+                    compatible signature from the main Apache site. These can be downloaded by
+                    following the links above. This
+                    <a
+                            href="http://www.apache.org/dist/ws/commons/axiom/KEYS">KEYS</a>
+                    file contains the
+                    public keys used for signing release. It is recommended that (when possible)
+                    a
+                    <a href="http://www.apache.org/dev/release-signing#web-of-trust">web of
+                        trust</a>
+                    is used to confirm the identity of these keys.
+                </p>
+            </div>
+
+        </section>
+    </body>
+</document>
