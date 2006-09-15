@@ -20,7 +20,7 @@
 	<menu name="AXIOM">
       <item name="About" href="index.html"/>
 	  <item name="Downloads">
-		<item name="Releases" href="http://www.apache.org/dyn/closer.cgi/ws/commons/axiom/"/>
+		<item name="Releases" href="download.cgi"/>
 		<item name="Source Code" href="source-repository.html"/>
 	  </item>
 	  <item name="Documentation">
@@ -31,7 +31,6 @@
 		<item name="Mailing Lists" href="/mail-lists.html"/>
 		<item name="Project Team" href="/team-list.html"/>
 		<item name="Issue Tracking" href="issue-tracking.html"/>
-		<item name="Dependencies" href="/dependencies.html"/>
       </item>
       <item name="License" href="/license.html"/>
     </menu>

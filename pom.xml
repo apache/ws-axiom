@@ -13,6 +13,7 @@
     <description>AXIOM API</description>
     <url>http://ws.apache.org/commons/axiom/</url>
     <issueManagement>
+        <system>JIRA</system>
         <url>http://issues.apache.org/jira/browse/WSCOMMONS</url>
     </issueManagement>
     <ciManagement>

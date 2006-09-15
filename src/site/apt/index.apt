@@ -29,20 +29,30 @@ Latest Release
 Key Features
 
     * Full XML Infoset compliant XML object model
+
     * StAX based builders with on-demand building and pull-through
+
     * XOP/MTOM support offering direct binary support
+
     * Convenient SOAP Infoset API on top of AXIOM
+
     * Two implementations included:
-          o Linked list based implementation
-          o W3C DOM supporting implementation
+
+        * Linked list based implementation
+
+        * W3C DOM supporting implementation
+
     * High performant
-    []
 
 What's New in This Release
 
     * Improved XML serialization
+
     * DOM Hash implementation
+
     * Improved MTOM handling
+
     * Improved tree handling with multiple partial built elements
+    
     * Numerous bug fixes
-    []
+
