@@ -1,9 +1,14 @@
 <project name="Axiom">
   <bannerLeft>
+    <name>Apache Software Foundation</name>
+    <src>http://www.apache.org/images/asf_logo_wide.gif</src>
+    <href>http://www.apache.org/</href>
+  </bannerLeft>
+    <bannerRight>
     <name>Apache Axiom</name>
     <src>http://ws.apache.org/images/project-logo.jpg</src>
     <href>http://ws.apache.org/</href>
-  </bannerLeft>
+  </bannerRight>
   <body>
     <links>
       <item name="Apache" href="http://www.apache.org/" />
@@ -30,8 +35,5 @@
       </item>
       <item name="License" href="/license.html"/>
     </menu>
-
-    ${reports}
-
   </body>
 </project>
