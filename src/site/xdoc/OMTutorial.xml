@@ -2,7 +2,7 @@
 
 <document>
     <properties>
-        <title>:: OM Tutorial ::</title>
+        <title>OM Tutorial</title>
     </properties>
 
     <head>
@@ -20,7 +20,7 @@
 </table>
 end of header section -->
 
-<h1>OM Tutorial</h1>
+
 <a name="intro"></a>
 <h2>Introduction</h2>
 <a name="what"></a>
@@ -636,6 +636,9 @@ For basics in XML
   <li><a
     href="http://www.bearcave.com/software/java/xml/xmlpull.html">Introduction
     to Pull parsing</a></li>
+    <li><a
+    href="http://today.java.net/pub/a/today/2006/07/20/introduction-to-stax.html">Introduction
+    to StAX</a></li>
 </ul>
 <!-- Start of footer -->
 <hr/>
