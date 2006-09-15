@@ -1,0 +1,45 @@
+===========================================
+
+     Apache AXIOM 1.1 Release Note
+
+===========================================
+
+http://ws.apache.org/commons/axiom
+
+This is Apache AXIOM 1.1 release, the next major version since v1.0.
+
+Apache AXIOM is a StAX-based, XML Infoset compliant object model which supports on-demand building
+of the object tree. It supports a novel "pull-through" model which allows one to turn off the tree
+building and directly access the underlying pull event stream. It also has built-in support for XML
+Optimized Packaging (XOP) and MTOM, the combination of which allows XML to carry binary data
+efficiently and in a transparent manner. The combination of these results in a easy to use API with a very
+high performant architecture!
+
+Developed as part of Apache Axis2, Apache AXIOM (AXIs Object Model)is the core of Apache Axis2. However, it is a pure
+standalone XML Infoset model with novel features and can be used independently of Apache Axis2.
+
+Key Features
+============
+
+    * Full XML Infoset compliant XML object model
+    * StAX based builders with on-demand building and pull-through
+    * XOP/MTOM support offering direct binary support
+    * Convenient SOAP Infoset API on top of AXIOM
+    * Two implementations included:
+          o Linked list based implementation
+          o W3C DOM supporting implementation
+    * High performant
+
+What's New in This Release
+==========================
+
+    * Improved XML serialization
+    * DOM Hash implementation
+    * Improved MTOM handling
+    * Improved tree handling with multiple partial built elements
+    * Numerous bug fixes
+
+Thanks for your interest in Apache AXIOM!
+
+
+-The Apache AXIOM Development Team
