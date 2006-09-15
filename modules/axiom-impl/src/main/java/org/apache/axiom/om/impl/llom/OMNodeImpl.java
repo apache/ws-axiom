@@ -439,7 +439,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
 			OMElement childElement = (OMElement) child;
 			OMElement newElement = (new StAXOMBuilder(this.factory, childElement
 					.getXMLStreamReader())).getDocumentElement();
-			newElement.build();
+			newElement.buildWithAttachments();
 			return newElement;
 		}
 		case (OMNode.TEXT_NODE): 
