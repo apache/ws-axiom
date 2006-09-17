@@ -45,7 +45,6 @@ class DOMUtil {
      * Get the local name from a qualified name
      * 
      * @param qualifiedName
-     * @return
      */
     public static String getLocalName(String qualifiedName) {
         if (qualifiedName.indexOf(":") > -1
@@ -60,7 +59,6 @@ class DOMUtil {
      * Get the prefix from a qualified name
      * 
      * @param qualifiedName
-     * @return
      */
     public static String getPrefix(String qualifiedName) {
         if (qualifiedName.indexOf(":") > -1) {

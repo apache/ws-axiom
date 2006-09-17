@@ -428,7 +428,6 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
 	 * from different Axiom implementations to the LLOM implementation.
 	 * 
 	 * @param child
-	 * @return
 	 */
  	protected OMNode importNode(OMNode child)
  	{

@@ -299,8 +299,6 @@ public interface OMNode {
 
 	/**
 	 * Returns the OMFactory that created this object
-	 * 
-	 * @return
 	 */
 	public OMFactory getOMFactory();
 

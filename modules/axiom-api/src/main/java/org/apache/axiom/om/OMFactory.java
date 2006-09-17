@@ -105,7 +105,6 @@ public interface OMFactory {
     /**
      * @param parent
      * @param text   - This text itself can contain a namespace inside it.
-     * @return
      */
     public OMText createOMText(OMContainer parent, QName text);
 
@@ -123,7 +122,6 @@ public interface OMFactory {
      * @param parent
      * @param text   - This text itself can contain a namespace inside it.
      * @param type
-     * @return
      */
     public OMText createOMText(OMContainer parent, QName text, int type);
 

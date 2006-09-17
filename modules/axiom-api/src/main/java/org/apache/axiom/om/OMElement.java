@@ -59,14 +59,12 @@ public interface OMElement extends OMNode, OMContainer {
     /**
      * This will declare a default namespace for this element explicitly
      * @param uri
-     * @return
      */
     public OMNamespace declareDefaultNamespace(String uri);
 
     /**
      * This will retrieve the default namespace of this element, if available. null returned if none
      * is found.
-     * @return
      */
     public OMNamespace getDefaultNamespace();
 
@@ -249,7 +247,6 @@ public interface OMElement extends OMNode, OMContainer {
 
     /**
      * OMText can contain its information as a QName as well. This will return the text as a QName 
-     * @return
      */
     public QName getTextAsQName();
 

@@ -81,7 +81,6 @@ public class XMLConformanceUnit extends XMLTestCase implements EntityResolver {
      * Method newDocument
      *
      * @param in
-     * @return
      * @throws javax.xml.parsers.ParserConfigurationException
      *
      * @throws org.xml.sax.SAXException

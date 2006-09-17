@@ -110,7 +110,6 @@ public interface OMDocument extends OMContainer {
     
     /**
      * Returns the OMFactory that created this object
-     * @return
      */
     public OMFactory getOMFactory();
     
