@@ -38,7 +38,7 @@ public class DigestGenerator {
      * @param digestAlgorithm
      * @return Returns a byte array representing the calculated digest
      */
-    public byte[] getDigest(OMDocument document, String digestAlgorithm) {
+    public byte[] getDigest(OMDocument document, String digestAlgorithm) throws OMException {
         byte[] digest = new byte[0];
         try {
             MessageDigest md = MessageDigest.getInstance(digestAlgorithm);
@@ -59,9 +59,9 @@ public class DigestGenerator {
             md.update(baos.toByteArray());
             digest = md.digest();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new OMException(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new OMException(e);
         }
         return digest;
     }
@@ -87,7 +87,7 @@ public class DigestGenerator {
      * @param digestAlgorithm
      * @return Returns a byte array representing the calculated digest value
      */
-    public byte[] getDigest(OMElement element, String digestAlgorithm) {
+    public byte[] getDigest(OMElement element, String digestAlgorithm) throws OMException {
         byte[] digest = new byte[0];
         try {
             MessageDigest md = MessageDigest.getInstance(digestAlgorithm);
@@ -121,9 +121,9 @@ public class DigestGenerator {
             md.update(baos.toByteArray());
             digest = md.digest();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new OMException(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new OMException(e);
         }
         return digest;
     }
@@ -135,7 +135,7 @@ public class DigestGenerator {
      * @param digestAlgorithm
      * @return Returns a byte array representing the calculated digest value
      */
-    public byte[] getDigest(OMProcessingInstruction pi, String digestAlgorithm) {
+    public byte[] getDigest(OMProcessingInstruction pi, String digestAlgorithm) throws OMException {
         byte[] digest = new byte[0];
         try {
             MessageDigest md = MessageDigest.getInstance(digestAlgorithm);
@@ -149,9 +149,9 @@ public class DigestGenerator {
             md.update(pi.getValue().getBytes("UnicodeBigUnmarked"));
             digest = md.digest();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new OMException(e);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            throw new OMException(e);
         }
         return digest;
     }
@@ -163,7 +163,7 @@ public class DigestGenerator {
      * @param digestAlgorithm
      * @return Returns a byte array representing the calculated digest value
      */
-    public byte[] getDigest(OMAttribute attribute, String digestAlgorithm) {
+    public byte[] getDigest(OMAttribute attribute, String digestAlgorithm) throws OMException {
         byte[] digest = new byte[0];
         if (!(attribute.getLocalName().equals("xmlns") || attribute.getLocalName().startsWith("xmlns:"))) try {
             MessageDigest md = MessageDigest.getInstance(digestAlgorithm);
@@ -177,9 +177,9 @@ public class DigestGenerator {
             md.update(attribute.getAttributeValue().getBytes("UnicodeBigUnmarked"));
             digest = md.digest();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new OMException(e);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            throw new OMException(e);
         }
         return digest;
     }
@@ -191,7 +191,7 @@ public class DigestGenerator {
      * @param digestAlgorithm
      * @return Returns a byte array representing the calculated digest value
      */
-    public byte[] getDigest(OMText text, String digestAlgorithm) {
+    public byte[] getDigest(OMText text, String digestAlgorithm)  throws OMException  {
         byte[] digest = new byte[0];
         try {
             MessageDigest md = MessageDigest.getInstance(digestAlgorithm);
@@ -202,9 +202,9 @@ public class DigestGenerator {
             md.update(text.getText().getBytes("UnicodeBigUnmarked"));
             digest = md.digest();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new OMException(e);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            throw new OMException(e);
         }
         return digest;
     }
