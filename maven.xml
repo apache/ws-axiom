@@ -196,6 +196,8 @@
                 <ant:exclude name="**/target/**"/>
                 <ant:include name="**/src/**"/>
                 <ant:include name="**/test/**"/>
+                <ant:include name="**/test-resources/**/*.*"/>
+                <ant:include name="**/pom.xml"/>
             </ant:fileset>
         </ant:copy>
 
