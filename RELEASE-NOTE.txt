@@ -6,7 +6,7 @@
 
 http://ws.apache.org/commons/axiom
 
-Note : AXIOM 1.1 release was compiled in JDK1.5. But AXIOM has a minimum requirement for it to have jdk 1.4 compatible
+Note : AXIOM 1.1 release was compiled in JDK1.5. AXIOM has a minimum requirement of jdk 1.4 compatible
 distributables. This is a minor release, which has all the features in AXIOM 1.1 but compiles with JDK 1.4.
 
 Apache AXIOM is a StAX-based, XML Infoset compliant object model which supports on-demand building
