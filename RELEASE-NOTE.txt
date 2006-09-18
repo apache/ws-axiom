@@ -1,12 +1,13 @@
 ===========================================
 
-     Apache AXIOM 1.1 Release Note
+     Apache AXIOM 1.1.1 Release Note
 
 ===========================================
 
 http://ws.apache.org/commons/axiom
 
-This is Apache AXIOM 1.1 release, the next major version since v1.0.
+Note : AXIOM 1.1 release was compiled in JDK1.5. But AXIOM has a minimum requirement for it to have jdk 1.4 compatible
+distributable. This is a minor release, which has all the features in AXIOM 1.1 but compiles in JDK 1.4.
 
 Apache AXIOM is a StAX-based, XML Infoset compliant object model which supports on-demand building
 of the object tree. It supports a novel "pull-through" model which allows one to turn off the tree
