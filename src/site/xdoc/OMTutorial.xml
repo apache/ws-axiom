@@ -347,9 +347,9 @@ namespaces.</p>
 <div align="left">
 <p><b>Code Listing 5</b></p>
 </div>
-<pre class="code">public OMNamespace declareNamespace(String uri, String prefix);
+<source><pre class="code">public OMNamespace declareNamespace(String uri, String prefix);
 public OMNamespace declareNamespace(OMNamespace namespace);
-public OMNamespace findNamespace(String uri, String prefix) throws OMException;</pre>
+public OMNamespace findNamespace(String uri, String prefix) throws OMException;</pre></source>
 
 <p>The declareNamespaceXX methods are fairly straightforward. Add a namespace
 to namespace declarations section. Note that a namespace declaration that has
@@ -640,18 +640,6 @@ For basics in XML
     href="http://today.java.net/pub/a/today/2006/07/20/introduction-to-stax.html">Introduction
     to StAX</a></li>
 </ul>
-<!-- Start of footer -->
-<hr/>
-
-<table width="100%">
-  <tbody>
-    <tr>
-      <td align="center">All rights reserved by Apache Software
-      Foundation</td>
-    </tr>
-  </tbody>
-</table>
-<!-- End of footer -->
 </body>
 </document>
 	
