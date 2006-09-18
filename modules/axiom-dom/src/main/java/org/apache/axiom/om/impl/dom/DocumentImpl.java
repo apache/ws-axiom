@@ -104,11 +104,11 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     // /Overrides ChildNode specific methods.
     // /
     public OMNode getNextOMSibling() throws OMException {
-        throw new UnsupportedOperationException("This is the document node");
+        return null;
     }
 
     public Node getNextSibling() {
-        throw new UnsupportedOperationException("This is the document node");
+        return null;
     }
 
     public OMContainer getParent() throws OMException {
@@ -120,7 +120,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public Node getPreviousSibling() {
-        throw new UnsupportedOperationException("This is the document node");
+        return null;
     }
 
     public void setNextOMSibling(OMNode node) {

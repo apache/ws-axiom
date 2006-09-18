@@ -15,11 +15,17 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import junit.framework.TestCase;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
+import org.apache.axiom.om.impl.dom.jaxp.DocumentBuilderFactoryImpl;
 import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.Text;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import junit.framework.TestCase;
 
 public class DocumentImplTest extends TestCase {
 
@@ -79,5 +85,25 @@ public class DocumentImplTest extends TestCase {
 		
 		assertEquals("Text value mismatch", textValue, txt.getData());
 	}
+    
+    public void testDocumentSiblings() {
+        try {
+            DocumentBuilderFactoryImpl.setDOOMRequired(true);
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Element elem = doc.createElement("test");
+            doc.appendChild(elem);
+            
+            Node node = doc.getNextSibling();
+            assertNull("Document's next sibling has to be null", node);
+            Node node2 = doc.getPreviousSibling();
+            assertNull("Document's previous sibling has to be null", node2);
+            Node node3 = doc.getParentNode();
+            assertNull("Document's parent has to be null", node3);
+            DocumentBuilderFactoryImpl.setDOOMRequired(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
 
 }

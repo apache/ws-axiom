@@ -75,9 +75,6 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     public ElementImpl(DocumentImpl ownerDocument, String tagName,
                        OMFactory factory) {
         super(ownerDocument, factory);
-        if (ownerDocument.firstChild == null) {
-            ownerDocument.firstChild = this;
-        }
         this.localName = tagName;
         this.attributes = new AttributeMap(this);
         this.done = true;
@@ -113,8 +110,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     public ElementImpl(ParentNode parentNode, String tagName, NamespaceImpl ns,
                        OMFactory factory) {
         this((DocumentImpl) parentNode.getOwnerDocument(), tagName, ns, factory);
-        this.parentNode = parentNode;
-        this.parentNode.addChild(this);
+        parentNode.addChild(this);
         this.done = true;
     }
 
@@ -124,8 +120,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (parentNode != null) {
             this.ownerNode = (DocumentImpl) parentNode.getOwnerDocument();
             this.isOwned(true);
-            this.parentNode = parentNode;
-            this.parentNode.addChild(this);
+            parentNode.addChild(this);
         }
 
     }

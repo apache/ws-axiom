@@ -154,6 +154,13 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                             DOMMessageFormatter.DOM_DOMAIN,
                             "HIERARCHY_REQUEST_ERR", null));
         }
+        
+        if(newDomChild.parentNode == this) {
+            throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
+                    DOMMessageFormatter.formatMessage(
+                            DOMMessageFormatter.DOM_DOMAIN,
+                            "HIERARCHY_REQUEST_ERR", null));
+        }
 
         if (!(this instanceof Document)
                 && !(this.ownerNode == newDomChild.getOwnerDocument())) {
