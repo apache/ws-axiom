@@ -1,0 +1,137 @@
+/*
+ * Copyright 2004,2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.apache.axiom.om.impl.mtom;
+
+import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.util.ElementHelper;
+import org.apache.axiom.om.impl.MTOMConstants;
+import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+
+import javax.activation.DataHandler;
+import javax.xml.stream.XMLStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
+public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements MTOMConstants {
+	
+    /**
+     * <code>Attachments</code> handles deferred parsing of incoming MIME
+     * Messages.
+     */
+    Attachments attachments;
+
+    int partIndex = 0;
+
+    public MTOMStAXSOAPModelBuilder(XMLStreamReader parser,
+                                    SOAPFactory factory,
+                                    Attachments attachments, String soapVersion) {
+        super(parser, factory, soapVersion);
+        this.attachments = attachments;
+    }
+
+    /**
+     * @param reader
+     * @param attachments
+     */
+    public MTOMStAXSOAPModelBuilder(XMLStreamReader reader,
+                                    Attachments attachments, String soapVersion) {
+        super(reader, soapVersion);
+        this.attachments = attachments;
+    }
+
+    protected OMNode createOMElement() throws OMException {
+
+        elementLevel++;
+        String elementName = parser.getLocalName();
+
+        String namespaceURI = parser.getNamespaceURI();
+
+        // create an OMBlob if the element is an <xop:Include>
+
+        if (XOP_INCLUDE.equalsIgnoreCase(elementName)
+                && XOP_NAMESPACE_URI
+                .equalsIgnoreCase(namespaceURI)) {
+            // do we need to check prfix as well. Meaning, should it be "XOP" ?
+
+
+            OMText node;
+            if (lastNode == null) {
+                // Decide whether to ckeck the level >3 or not
+                throw new OMException(
+                        "XOP:Include element is not supported here");
+            }
+            
+            String contentID = ElementHelper.getContentID(parser, getDocument().getCharsetEncoding());
+
+            // This cannot happen. XOP:Include is always the only child of an parent element
+            // cause it is same as having some text
+            try {
+                OMElement e = (OMElement) lastNode;
+                //node = new OMTextImpl(contentID, (OMElement) lastNode, this);
+                node = this.omfactory.createOMText(contentID, (OMElement) lastNode, this);
+                e.setFirstChild(node);
+            } catch (ClassCastException e) {
+                throw new OMException(
+                        "Last Node & Parent of an OMText should be an Element" +
+                                e);
+            }
+
+            return node;
+
+        } else {
+            OMElement node;
+            if (lastNode == null) {
+                node = constructNode(null, elementName, true);
+                setSOAPEnvelope(node);
+            } else if (lastNode.isComplete()) {
+                node =
+                        constructNode((OMElement) lastNode.getParent(),
+                                elementName,
+                                false);
+                ((OMNodeEx)lastNode).setNextOMSibling(node);
+                ((OMNodeEx)node).setPreviousOMSibling(lastNode);
+            } else {
+                OMElement e = (OMElement) lastNode;
+                node = constructNode((OMElement) lastNode, elementName, false);
+                e.setFirstChild(node);
+            }
+
+            
+            // This code seems suspicious.  The constructNode call
+            // does the attribute processing.  The parser is now at a different node,
+            // and thus processAttributes will either throw an exception or get the
+            // wrong attributes. (scheu)
+            
+            // fill in the attributes
+            processAttributes(node);
+            //TODO Exception when trying to log . check this
+            //			log.info("Build the OMElelment {" + node.getLocalName() + '}'
+            //					+ node.getLocalName() + "By the StaxSOAPModelBuilder");
+            return node;
+        }
+    }
+
+    public DataHandler getDataHandler(String blobContentID) throws OMException {
+        return attachments.getDataHandler(blobContentID);
+    }
+}
