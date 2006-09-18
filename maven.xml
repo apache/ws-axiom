@@ -160,7 +160,7 @@
             <ant:fileset dir="src/site">
                 <ant:exclude name="**/.svn/**"/>
                 <ant:include name="resources/*"/>
-                <ant:include name="xdoc/*"/>
+                <ant:include name="xdoc/**/*"/>
             </ant:fileset>
         </ant:copy>
 
