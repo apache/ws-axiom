@@ -361,8 +361,10 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
         if (namespaceURI == OMConstants.XMLNS_NS_URI) {
             OMNamespace ns = this.findNamespaceURI(localName);
-            AttrImpl namespaceAttr = new AttrImpl(this.ownerNode, localName, ns
-                    .getNamespaceURI(), this.factory);
+            String nsuri = ns != null ? ns.getNamespaceURI() : "";
+            
+            AttrImpl namespaceAttr = new AttrImpl(this.ownerNode,
+                    localName, nsuri, this.factory);
             NamespaceImpl xmlNs = new NamespaceImpl(OMConstants.XMLNS_NS_URI);
             namespaceAttr.setOMNamespace(xmlNs);
             return namespaceAttr;
