@@ -38,6 +38,10 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
         super(localName, ns, parent, factory);
         checkParent(parent);
     }
+    
+    public SOAP12HeaderBlockImpl(String localName, OMNamespace ns, SOAPFactory factory) {
+        super(localName, ns, factory);
+    }
 
     /**
      * Constructor SOAPHeaderBlockImpl

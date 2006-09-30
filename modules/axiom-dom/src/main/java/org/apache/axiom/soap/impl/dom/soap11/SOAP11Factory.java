@@ -69,6 +69,11 @@ public class SOAP11Factory extends DOMSOAPFactory {
         return new SOAP11HeaderImpl(envelope, builder, this);
     }
 
+    
+    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns) throws SOAPProcessingException {
+        return new SOAP11HeaderBlockImpl(localName, ns, this);
+    }
+
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
             OMNamespace ns, SOAPHeader parent) throws SOAPProcessingException {
         return new SOAP11HeaderBlockImpl(localName, ns, parent, this);

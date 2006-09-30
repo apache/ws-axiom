@@ -37,6 +37,7 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
+import org.apache.axiom.soap.impl.dom.soap11.SOAP11HeaderBlockImpl;
 
 public class SOAP12Factory extends DOMSOAPFactory {
 	
@@ -65,6 +66,10 @@ public class SOAP12Factory extends DOMSOAPFactory {
     public SOAPHeader createSOAPHeader(SOAPEnvelope envelope,
                                        OMXMLParserWrapper builder) {
         return new SOAP12HeaderImpl(envelope, builder, this);
+    }
+    
+    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns) throws SOAPProcessingException {
+        return new SOAP12HeaderBlockImpl(localName, ns, this);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
