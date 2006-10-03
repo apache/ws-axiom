@@ -16,17 +16,8 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.om.*;
+import org.apache.axiom.soap.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -214,7 +205,12 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         while (node != null) {
             if (node.getType() == OMNode.ELEMENT_NODE) {
                 header = (OMElement) node;
-                if (nsURI.equals(header.getNamespace().getNamespaceURI())) {
+                OMNamespace namespace = header.getNamespace();
+                if (nsURI == null) {
+                    if(namespace == null) {
+                        headers.add(header);
+                    }
+                } else if (nsURI.equals(namespace.getNamespaceURI())) {
                     headers.add(header);
                 }
             }
