@@ -54,8 +54,20 @@ public class PartOnFile implements Part {
             repoDir = ".";
         }
         try {
+        	File repoDirFile = null; 
+        	if (repoDir!=null)
+        	{
+        		repoDirFile= new File(repoDir);
+        		if (!repoDirFile.exists())
+        		{
+					repoDirFile.mkdirs();
+				}
+        	}
+        	if (!repoDirFile.isDirectory()){
+        		throw new IllegalArgumentException("Given Axis2 Attachment File Cache Location "+repoDir+"  should be a directory.");
+        	}
             cacheFile = File.createTempFile("Axis2", ".att",
-                    (repoDir == null) ? null : new File(repoDir));
+                    repoDirFile);
 
             FileOutputStream fileOutStream = new FileOutputStream(cacheFile);
             int value;
