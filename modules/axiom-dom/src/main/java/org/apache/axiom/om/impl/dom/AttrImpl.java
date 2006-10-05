@@ -149,7 +149,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     // /
     public String getName() {
         return (this.namespace == null) ? this.attrName
-                : OMConstants.XMLNS_NS_PREFIX + ":" + this.attrName;
+                : (OMConstants.XMLNS_NS_PREFIX.equals(this.attrName) ? this.attrName : OMConstants.XMLNS_NS_PREFIX + ":" + this.attrName);
     }
 
     /**

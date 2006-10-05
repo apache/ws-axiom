@@ -31,6 +31,7 @@ public class DocumentFragmentimpl extends ParentNode implements
      */
     public DocumentFragmentimpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
+        this.done = true;
     }
 
     /*

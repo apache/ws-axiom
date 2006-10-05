@@ -296,6 +296,10 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         ChildNode newDomChild = (ChildNode) newChild;
         ChildNode oldDomChild = (ChildNode) oldChild;
 
+        if(newChild == null) {
+            return this.removeChild(oldChild);
+        }
+        
         if (this == newChild || !isAncestor(newChild)) {
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                     DOMMessageFormatter.formatMessage(
@@ -303,7 +307,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                             "HIERARCHY_REQUEST_ERR", null));
         }
 
-        if (!this.ownerNode.equals(newDomChild.ownerNode)) {
+        if (newDomChild != null && !this.ownerNode.equals(newDomChild.ownerNode)) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
                     DOMMessageFormatter.formatMessage(
                             DOMMessageFormatter.DOM_DOMAIN,
@@ -326,12 +330,12 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                     DocumentFragmentimpl docFrag = 
                                             (DocumentFragmentimpl) newDomChild;
                     ChildNode child = (ChildNode) docFrag.getFirstChild();
-                    child.parentNode = this;
                     this.replaceChild(child, oldChild);
+                    if(child != null) {
+                        child.parentNode = this;
+                    }
                 } else {
                     if (this.firstChild == oldDomChild) {
-                        
-                        newDomChild.parentNode = this;
                         
                         if(this.firstChild.nextSibling != null) {
                             this.firstChild.nextSibling.previousSibling = newDomChild;
@@ -358,10 +362,9 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                             this.lastChild = newDomChild;
                         }
 
-                        if (newDomChild.parentNode == null) {
-                            newDomChild.parentNode = this;
-                        }
                     }
+                
+                    newDomChild.parentNode = this;
                 }
                 found = true;
 
