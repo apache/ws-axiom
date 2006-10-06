@@ -171,8 +171,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             node = constructNode(null, elementName, true);
             setSOAPEnvelope(node);
         } else if (lastNode.isComplete()) {
-            node =
-                    constructNode((OMElement) lastNode.getParent(),
+            node =constructNode((OMElement) lastNode.getParent(),
                             elementName,
                             false);
             ((OMNodeEx) lastNode).setNextOMSibling(node);

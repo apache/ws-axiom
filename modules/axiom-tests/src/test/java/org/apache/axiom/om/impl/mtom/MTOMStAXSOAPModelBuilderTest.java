@@ -22,6 +22,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLInputFactory;
@@ -61,17 +62,10 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
 
     public void testCreateOMElement() throws Exception {
         OMElement root = builder.getDocumentElement();
-//        System.out.println(root.getLocalName() + " : "
-//                + root.getNamespace().getName());
         OMElement body = (OMElement) root.getFirstOMChild();
-//        System.out.println(body.getLocalName() + " : "
-//                + body.getNamespace().getName());
-
         OMElement data = (OMElement) body.getFirstOMChild();
-//        System.out.println(data.getLocalName() + " : "
-//                + data.getNamespace().getName());
+
         Iterator childIt = data.getChildren();
-        //while (childIt.hasNext()) {
         OMElement child = (OMElement) childIt.next();
         OMText blob = (OMText) child.getFirstOMChild();
         /*

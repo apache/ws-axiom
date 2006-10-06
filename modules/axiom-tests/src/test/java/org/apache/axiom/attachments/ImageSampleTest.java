@@ -45,7 +45,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMTextImpl;
-import org.apache.axiom.om.impl.mtom.MTOMStAXSOAPModelBuilder;
+import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 
 public class ImageSampleTest extends AbstractTestCase {
 
