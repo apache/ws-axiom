@@ -22,7 +22,7 @@
     <!-- a unique name for this project -->
     <name>Apache AXIOM</name>
     <id>axiom</id>
-    <groupId>ws-commons</groupId>
+    <groupId>org.apache.ws.commons.axiom</groupId>
     <package>org.apache.commons</package>
     <currentVersion>${axiom.version}</currentVersion>
     <!-- details about the organization that 'owns' the project -->
