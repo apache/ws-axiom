@@ -73,7 +73,7 @@
                 <ant:include name="NOTICE.txt"/>
             </ant:fileset>
         </jar>
-        <ant:copy toDir="${maven.repo.local}/ws-commons/jars">
+        <ant:copy toDir="${maven.repo.local}/org.apache.ws.commons.axiom/jars">
             <ant:fileset file="target/axiom-api-${axiom.version}.jar"/>
             <ant:fileset file="target/axiom-impl-${axiom.version}.jar"/>
             <ant:fileset file="target/axiom-dom-${axiom.version}.jar"/>
