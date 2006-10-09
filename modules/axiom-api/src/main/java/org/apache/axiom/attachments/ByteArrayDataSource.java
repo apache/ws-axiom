@@ -51,7 +51,7 @@ public class ByteArrayDataSource implements DataSource {
     }
 
     public InputStream getInputStream() throws IOException {
-        return new ByteArrayInputStream(data);
+        return new ByteArrayInputStream(data == null ? new byte[0] : data);
     }
 
     public String getName() {
