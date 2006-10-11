@@ -15,25 +15,17 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
+import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.util.StAXUtils;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -41,6 +33,7 @@ import org.w3c.dom.UserDataHandler;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Hashtable;

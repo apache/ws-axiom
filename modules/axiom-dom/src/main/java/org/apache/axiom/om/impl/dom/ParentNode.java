@@ -27,8 +27,6 @@ import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.apache.axiom.om.impl.llom.OMNodeImpl;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
 import org.w3c.dom.DOMException;
@@ -38,6 +36,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.namespace.QName;
+
 import java.util.Iterator;
 
 public abstract class ParentNode extends ChildNode implements OMContainerEx {
@@ -63,7 +62,12 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
     public void addChild(OMNode omNode) {
 		if (omNode.getOMFactory() instanceof OMDOMFactory) {
-			this.appendChild((Node) omNode);
+            Node domNode= (Node)omNode;
+            if(this.ownerNode != null && !domNode.getOwnerDocument().equals(this.ownerNode)) {
+                this.appendChild(this.ownerNode.importNode(domNode, true));
+            } else {
+                this.appendChild(domNode);
+            }
 		} else {
 			addChild(importNode(omNode));
 		}

@@ -141,4 +141,27 @@ public class ConvertLLOMToDOOMTest extends TestCase {
             fail(e.getMessage());
         }
     }
+    
+    public void testAddChild() {
+        try {
+            SOAPFactory fac = DOOMAbstractFactory.getSOAP11Factory();
+            SOAPEnvelope env = fac.getDefaultEnvelope();
+            fac.createOMElement(new QName("http://test.org", "Test"), env.getBody());
+            env.build();
+            
+            SOAPFactory llomFac = DOOMAbstractFactory.getSOAP11Factory();
+            OMElement elem = llomFac.createOMElement("newDomElement", null);
+            
+            OMElement firstElement = env.getBody().getFirstElement();
+            firstElement.addChild(elem);
+            
+            assertTrue("New DOM child missing", 
+                    env.toString().indexOf("newDomElement") > 0);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+    
 }
