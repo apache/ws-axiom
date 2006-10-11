@@ -17,6 +17,7 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -134,7 +135,6 @@ public class OMElementTest extends OMTestCase implements OMConstants {
     	String text = "This was a DOOM Text";
     	
     	OMElement llomRoot = llomFactory.createOMElement("root",null);
-    	
     	OMElement doomElement = doomFactory.createOMElement("second","test","a");
     	doomElement.setText(text);
     	llomRoot.addChild(doomElement);
@@ -153,11 +153,44 @@ public class OMElementTest extends OMTestCase implements OMConstants {
     	String text = "This was a DOOM Text";
     	
     	OMElement llomRoot = llomFactory.createOMElement("root",null);
-    	
     	OMText doomText = doomFactory.createOMText(text);
     	llomRoot.addChild(doomText);
     	
     	OMElement newElement = (new StAXOMBuilder(this.factory, llomRoot
+				.getXMLStreamReader())).getDocumentElement();
+		newElement.build();
+		assertEquals(newElement.getText(),text);		
+    }
+    public void testAddLLOMElementChildToDOOM() throws XMLStreamException {
+    	OMFactory doomFactory = DOOMAbstractFactory.getOMFactory();
+    	OMFactory llomFactory = OMAbstractFactory.getOMFactory();
+    	String text = "This was a LLOM Text";
+    	
+    	OMElement doomRoot = doomFactory.createOMElement("root",null);
+    	OMElement llomElement = llomFactory.createOMElement("second","test","a");
+    	llomElement.setText(text);
+    	doomRoot.addChild(llomElement);
+    	
+    	OMElement newElement = (new StAXOMBuilder(this.factory, doomRoot
+				.getXMLStreamReader())).getDocumentElement();
+		newElement.build();
+		OMElement secondElement = newElement.getFirstElement();
+		assertNotNull(secondElement);
+		assertEquals(secondElement.getText(),text);		
+    }
+    
+    public void testAddLLOMTextChildToDOOM() throws XMLStreamException {
+    	OMFactory doomFactory = DOOMAbstractFactory.getOMFactory();
+    	OMFactory llomFactory = OMAbstractFactory.getOMFactory();
+    	String text = "This was a DOOM Text";
+    	
+    	OMElement doomRoot = doomFactory.createOMElement("root",null);
+    	OMText llomText = llomFactory.createOMText(text);
+    	OMComment comment = llomFactory.createOMComment(null,"comment");
+    	doomRoot.addChild(llomText);
+    	doomRoot.addChild(comment);
+    	
+    	OMElement newElement = (new StAXOMBuilder(this.factory, doomRoot
 				.getXMLStreamReader())).getDocumentElement();
 		newElement.build();
 		assertEquals(newElement.getText(),text);		
