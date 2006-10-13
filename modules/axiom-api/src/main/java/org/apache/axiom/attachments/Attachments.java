@@ -404,7 +404,7 @@ public class Attachments {
 
 				        if (partContentID == null & partIndex == 1) {
 				        	String id = "firstPart_"+UUIDGenerator.getUUID();
-				            attachmentsMap.put(id, nextPart);
+				            attachmentsMap.put(id, nextPart.getDataHandler());
 				            firstPartId = id;
 				            return nextPart.getDataHandler();
 				        }
