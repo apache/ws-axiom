@@ -19,9 +19,9 @@ import org.apache.axiom.attachments.utils.DataHandlerUtils;
 import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
+import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.util.Base64;
 import org.apache.axiom.om.util.UUIDGenerator;
-import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
@@ -421,7 +421,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
                 if (contentID == null) {
                     throw new RuntimeException("ContentID is null");
                 }
-                dataHandlerObject = ((MTOMStAXSOAPModelBuilder) builder)
+                dataHandlerObject = ((XOPBuilder) builder)
                         .getDataHandler(contentID);
             }
             return dataHandlerObject;
