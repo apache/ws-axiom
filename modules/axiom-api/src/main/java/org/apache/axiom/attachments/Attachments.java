@@ -332,14 +332,17 @@ public class Attachments {
 	 * @throws IllegalStateException
 	 *             if application has alreadt started using Part's directly
 	 */
-    public IncomingAttachmentStreams getIncomingAttachmentStreams() throws IllegalStateException {
-    	if (partsRequested) {
-    		throw new IllegalStateException("The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
-    	}
-    	if (noStreams)
-    	{
-    		throw new IllegalStateException("The attachments map was created programatically. No streams are available.");
-    	}
+    public IncomingAttachmentStreams getIncomingAttachmentStreams()
+			throws IllegalStateException {
+		if (partsRequested) {
+			throw new IllegalStateException(
+					"The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a " +
+					"collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
+		}
+		if (noStreams) {
+			throw new IllegalStateException(
+					"The attachments map was created programatically. No streams are available.");
+		}
 
     	streamsRequested = true;
 

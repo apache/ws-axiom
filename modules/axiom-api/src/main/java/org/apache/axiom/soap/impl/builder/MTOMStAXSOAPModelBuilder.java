@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,7 +35,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
-		MTOMConstants {
+		MTOMConstants, XOPBuilder {
 
 	/**
 	 * <code>Attachments</code> handles deferred parsing of incoming MIME
@@ -96,6 +97,9 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.apache.axiom.soap.impl.builder.XOPBuilder#getDataHandler(java.lang.String)
+	 */
 	public DataHandler getDataHandler(String blobContentID) throws OMException {
 		DataHandler dataHandler = attachments.getDataHandler(blobContentID);
 		if (dataHandler == null) {

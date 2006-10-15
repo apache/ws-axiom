@@ -37,7 +37,7 @@ import org.apache.commons.logging.LogFactory;
 
 import sun.misc.GC.LatencyRequest;
 
-public class XOPAwareStAXOMBuilder extends StAXOMBuilder {
+public class XOPAwareStAXOMBuilder extends StAXOMBuilder implements XOPBuilder{
 
 	/**
 	 * <code>Attachments</code> handles deferred parsing of incoming MIME
