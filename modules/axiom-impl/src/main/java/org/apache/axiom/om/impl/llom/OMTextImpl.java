@@ -225,12 +225,13 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             return getTextFromProperPlace();
         } else {
             try {
-                InputStream inStream;
+				// TODO we have the following code duplicated in getTextAsQName
+				InputStream inStream;
                 inStream = this.getInputStream();
                 byte[] data;
                 StringBuffer text = new StringBuffer();
                 do {
-                    data = new byte[1024];
+                    data = new byte[1023];
                     int len;
                     while ((len = inStream.read(data)) > 0) {
                         byte[] temp = new byte[len];
@@ -285,7 +286,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                 byte[] data;
                 StringBuffer text = new StringBuffer();
                 do {
-                    data = new byte[1024];
+                    data = new byte[1023];
                     int len;
                     while ((len = inStream.read(data)) > 0) {
                         byte[] temp = new byte[len];
