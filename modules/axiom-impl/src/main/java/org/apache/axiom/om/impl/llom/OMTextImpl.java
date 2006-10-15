@@ -20,10 +20,10 @@ package org.apache.axiom.om.impl.llom;
 import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
+import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.Base64;
 import org.apache.axiom.om.util.UUIDGenerator;
-import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -351,7 +351,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                 if (contentID == null) {
                     throw new RuntimeException("ContentID is null");
                 }
-                dataHandlerObject = ((MTOMStAXSOAPModelBuilder) builder)
+                dataHandlerObject = ((XOPBuilder) builder)
                         .getDataHandler(contentID);
             }
             return dataHandlerObject;
