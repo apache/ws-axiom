@@ -87,7 +87,7 @@ public abstract class SOAPBuilderHelper {
         for (int i = 0; i < attribCount; i++) {
             OMNamespace ns = null;
             String uri = parser.getAttributeNamespace(i);
-            if (uri.hashCode() != 0) {
+            if (uri != null && uri.hashCode() != 0) {
                 ns = node.findNamespace(uri,
                         parser.getAttributePrefix(i));
             }
