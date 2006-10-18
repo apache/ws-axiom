@@ -91,6 +91,10 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             // property is not found.
             isDataHandlerAware = false;
         }
+        
+        if(parser instanceof BuilderAwareReader) {
+            ((BuilderAwareReader) parser).setBuilder(this);
+        }
     }
 
     /**
