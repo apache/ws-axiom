@@ -22,7 +22,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 
 /**
- * Refer to the testClass to find out how to use
+ * Refer to the test, org.apache.axiom.om.OMNavigatorTest, to find out how to use
  * features like isNavigable, isComplete and step.
  */
 public class OMNavigator {
@@ -123,28 +123,63 @@ public class OMNavigator {
      * Private method to encapsulate the searching logic.
      */
     private void updateNextNode() {
-        if ((next instanceof OMElement) && !visited) {
-            OMElementImpl e = (OMElementImpl) next;
-            if (e.firstChild != null) {
-                next = e.firstChild;
-            } else if (e.isComplete()) {
-                backtracked = true;
-            } else {
-                next = null;
-            }
-        } else {
-            OMNode nextSibling = ((OMNodeImpl) next).nextSibling;
-            //OMNode parent = next.getParent();
-            OMContainer parent = next.getParent();
-            if (nextSibling != null) {
-                next = nextSibling;
-            } else if ((parent != null) && parent.isComplete() && !(parent instanceof OMDocument)) {
-                next = (OMNodeImpl) parent;
-                backtracked = true;
-            } else {
-                next = null;
-            }
-        }
+    	
+    	if ((next instanceof OMElement) && !visited) {
+    		OMNode firstChild = _getFirstChild((OMElement) next);
+    		if (firstChild != null) {
+    			next = firstChild;
+    		} else if (next.isComplete()) {
+    			backtracked = true;
+    		} else {
+    			next = null;
+    		}
+    	} else {
+    		OMContainer parent = next.getParent();
+    		OMNode nextSibling = _getNextSibling(next);
+    		if (nextSibling != null) {
+    			next = nextSibling;
+    		} else if ((parent != null) && parent.isComplete() && !(parent instanceof OMDocument)) {
+    			next = (OMNodeImpl) parent;
+    			backtracked = true;
+    		} else {
+    			next = null;
+    		}
+    	}
+    }
+    
+    /**
+     * @param node
+     * @return first child or null
+     */
+    private OMNode _getFirstChild(OMElement node) {
+    	if (node instanceof OMSourcedElementImpl) {
+    		OMNode first = node.getFirstOMChild();
+    		OMNode sibling = first;
+    		while (sibling != null) {
+    			sibling = sibling.getNextOMSibling();
+    		}
+    		return first;
+    	} else {
+    		// Field access is used to prevent advancing the parser.
+    		// Some tests fail if the following is used
+    		// return node.getFirstOMChild()
+    		return ((OMElementImpl)node).firstChild;
+    	}
+    }
+    
+    /**
+     * @param node
+     * @return next sibling or null
+     */
+    private OMNode _getNextSibling(OMNode node) {
+    	if (node instanceof OMSourcedElementImpl) {
+    		return node.getNextOMSibling();
+    	} else {
+    		// Field access is used to prevent advancing the parser.
+    		// Some tests fail if the following is used
+    		// return node.getNextOMSibling()
+    		return ((OMNodeImpl)node).nextSibling;
+    	}
     }
 
     /**

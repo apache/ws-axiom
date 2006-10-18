@@ -109,7 +109,13 @@ public class OMSourcedElementImpl extends OMElementImpl
      */
     private XMLStreamReader getDirectReader() {
         try {
-            return dataSource.getReader();
+        	// If expansion has occurred, then the reader from the datasource is consumed or stale.
+        	// In such cases use the stream reader from the OMElementImpl
+        	if (isDataSourceConsumed()) {
+        		return super.getXMLStreamReader();
+        	} else {
+        		return dataSource.getReader();
+        	}
         } catch (XMLStreamException e) {
             log.error("Could not get parser from data source for element " +
                 getPrintableName(), e);
@@ -150,12 +156,14 @@ public class OMSourcedElementImpl extends OMElementImpl
                 throw new RuntimeException("Element name from data source is " +
                     reader.getLocalName() + ", not the expected " + getLocalName());
             }
-            if (!reader.getNamespaceURI().equals(getNamespace().getNamespaceURI())) {
-                String uri = getNamespace().getNamespaceURI();
+            String readerURI = reader.getNamespaceURI();
+            readerURI = (readerURI == null) ? "" : readerURI;
+            String uri = getNamespace().getNamespaceURI();
+            if (!readerURI.equals(uri)) {
                 log.error("forceExpand: expected element namespace " +
                     getLocalName() + ", found " + uri);
                 throw new RuntimeException("Element namespace from data source is " +
-                    reader.getNamespaceURI() + ", not the expected " + uri);
+                    readerURI + ", not the expected " + uri);
             }
             
             // set the builder for this element
@@ -172,6 +180,16 @@ public class OMSourcedElementImpl extends OMElementImpl
      */
     public boolean isExpanded() {
         return isParserSet;
+    }
+    
+    /**
+     * Returns whether the datasource is consumed
+     */
+    private boolean isDataSourceConsumed() {
+    	// The datasource might be consumed when it is touched/read.  
+    	// For now I am going to assume that it is since the OMDataSource currently has
+    	// no way to convey this information.
+    	return isExpanded();
     }
 
     /* (non-Javadoc)
@@ -421,7 +439,7 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMElement#getQName()
      */
     public QName getQName() {
-        if (isParserSet) {
+        if (isExpanded()) {
             return super.getQName();
         } else if (definedNamespace != null) {
             // always ignore prefix on name from sourced element
@@ -436,9 +454,13 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMElement#toStringWithConsume()
      */
     public String toStringWithConsume() throws XMLStreamException {
-        StringWriter writer = new StringWriter();
-        dataSource.serialize(writer, null);
-        return writer.toString();
+    	if (isDataSourceConsumed()) {
+        	return super.toStringWithConsume();
+        } else {
+        	StringWriter writer = new StringWriter();
+        	dataSource.serialize(writer, null);
+        	return writer.toString();
+        }
     }
 
     /* (non-Javadoc)
@@ -494,14 +516,22 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#internalSerialize(javax.xml.stream.XMLStreamWriter)
      */
     public void internalSerialize(javax.xml.stream.XMLStreamWriter writer) throws XMLStreamException {
-        internalSerializeAndConsume(writer);
+    	if (isDataSourceConsumed()) {
+    		super.internalSerialize(writer);
+    	} else {
+    		internalSerializeAndConsume(writer);
+    	}
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.impl.llom.OMElementImpl#internalSerialize(javax.xml.stream.XMLStreamWriter, boolean)
      */
     protected void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        internalSerializeAndConsume(writer);
+    	if (isDataSourceConsumed()) {
+    		super.internalSerialize(writer, cache);
+    	} else {
+    		internalSerializeAndConsume(writer);
+    	}
     }
 
     /* (non-Javadoc)
@@ -511,7 +541,11 @@ public class OMSourcedElementImpl extends OMElementImpl
         if (log.isDebugEnabled()) {
             log.debug("serialize " + getPrintableName() + " to XMLStreamWriter");
         }
-        dataSource.serialize(writer);
+        if (isDataSourceConsumed()) {
+        	super.internalSerializeAndConsume(writer);
+        } else {
+        	dataSource.serialize(writer);
+        }
     }
 
     /* (non-Javadoc)
@@ -563,7 +597,11 @@ public class OMSourcedElementImpl extends OMElementImpl
         if (log.isDebugEnabled()) {
             log.debug("serialize " + getPrintableName() + " to output stream");
         }
-        dataSource.serialize(output, null);
+        if (isDataSourceConsumed()) {
+        	super.serializeAndConsume(output, null);
+        } else {
+        	dataSource.serialize(output, null);
+        }
     }
 
     /* (non-Javadoc)
@@ -573,7 +611,11 @@ public class OMSourcedElementImpl extends OMElementImpl
         if (log.isDebugEnabled()) {
             log.debug("serialize " + getPrintableName() + " to writer");
         }
-        dataSource.serialize(writer, null);
+        if (isDataSourceConsumed()) {
+        	super.serializeAndConsume(writer);
+        } else {
+        	dataSource.serialize(writer, null);
+        }
     }
 
     /* (non-Javadoc)
@@ -584,7 +626,11 @@ public class OMSourcedElementImpl extends OMElementImpl
             log.debug("serialize formatted " + getPrintableName() +
                 " to output stream");
         }
-        dataSource.serialize(output, format);
+        if (isDataSourceConsumed()) {
+        	super.serializeAndConsume(output, format);
+        } else {
+        	dataSource.serialize(output, format);
+        }
     }
 
     /* (non-Javadoc)
@@ -595,7 +641,11 @@ public class OMSourcedElementImpl extends OMElementImpl
             log.debug("serialize formatted " + getPrintableName() +
                 " to writer");
         }
-        dataSource.serialize(writer, format);
+        if (isDataSourceConsumed()) {
+        	super.serializeAndConsume(writer, format);
+    	} else {
+    		dataSource.serialize(writer, format);
+    	}
     }
 
     /* (non-Javadoc)
