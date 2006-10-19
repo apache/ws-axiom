@@ -237,6 +237,15 @@ public class StAXSOAPModelBuilderTest extends TestCase {
                             SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
             assertTrue("SOAP 1.2 :- Value1 text mismatch",
                     value1.getText().equals("env:Sender"));
+            
+            QName valueQName = value1.getTextAsQName();
+            assertTrue("SOAP 1.2 :- Fault code value's qname local name mismatch",
+                    valueQName.getLocalPart().equals("Sender"));
+                           
+            assertTrue("SOAP 1.2 :- Fault code value's qname namespace uri mismatch",
+                    valueQName.getNamespaceURI().equals(
+                            SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI));
+            
 
             iteratorInCode.next();
             SOAPFaultSubCode subCode1 = (SOAPFaultSubCode) iteratorInCode.next();

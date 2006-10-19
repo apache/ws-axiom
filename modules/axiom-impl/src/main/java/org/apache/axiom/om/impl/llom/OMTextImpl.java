@@ -41,6 +41,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     protected String value = null;
     protected char[] charArray;
 
+    private boolean calcNS;  // Set to true after textNS is calculated
     protected OMNamespace textNS;
 
     protected String mimeType;
@@ -123,6 +124,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     public OMTextImpl(OMContainer parent, QName text, int nodeType,
                       OMFactory factory) {
         super(parent, factory, true);
+        this.calcNS = true;
         this.textNS = ((OMElementImpl) parent).handleNamespace(text);
         this.value = text == null ? EMTPY_STRING : text.getLocalPart();
         this.nodeType = nodeType;
@@ -219,7 +221,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * Returns the value.
      */
     public String getText() throws OMException {
-        if (textNS != null) {
+        if (getNamespace() != null) {
             return getTextString();
         } else if (charArray != null || this.value != null) {
             return getTextFromProperPlace();
@@ -269,13 +271,14 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * Returns the value.
      */
     public QName getTextAsQName() throws OMException {
-        if (textNS != null) {
-            String prefix = textNS.getPrefix();
-            String name = textNS.getNamespaceURI();
+        OMNamespace ns = getNamespace();
+        if (ns != null) { 
+            String prefix = ns.getPrefix();
+            String name = ns.getNamespaceURI();
             if (prefix == null || "".equals(prefix)) {
                 return new QName(name, getTextFromProperPlace());
             } else {
-                return new QName(textNS.getNamespaceURI(), getTextFromProperPlace(), prefix);
+                return new QName(ns.getNamespaceURI(), getTextFromProperPlace(), prefix);
             }
         } else if (this.value != null || charArray != null) {
             return new QName(getTextFromProperPlace());
@@ -307,6 +310,27 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
 	 * @see org.apache.axiom.om.OMText#getNamespace()
 	 */
 	public OMNamespace getNamespace() {
+        // If the namespace has already been determined, return it
+        // Otherwise calculate the namespace if the text contains a colon and is not detached.
+        if (calcNS) {
+            return textNS;
+        } else {
+            calcNS = true;
+            if (getParent() != null) {
+                String text = getTextFromProperPlace();
+                if (text != null) {
+                    int colon = text.indexOf(':');
+                    if (colon > 0) {
+                        textNS = ((OMElementImpl) getParent()).
+                            findNamespaceURI(text.substring(0,colon));
+                        if (textNS != null) {
+                            charArray = null;
+                            value = text.substring(colon+1);
+                        }
+                    }
+                }
+            }
+        }
 		return textNS;
 	}
 
@@ -342,8 +366,9 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * @return Returns javax.activation.DataHandler
      */
     public Object getDataHandler() {
-        if ((value != null || charArray != null || textNS != null) & isBinary) {
-            String text = textNS == null ? getTextFromProperPlace() : getTextString();
+        OMNamespace ns = getNamespace();
+        if ((value != null || charArray != null || ns != null) & isBinary) {
+            String text = ns == null ? getTextFromProperPlace() : getTextString();
             return org.apache.axiom.attachments.utils.DataHandlerUtils.getDataHandlerFromText(text, mimeType);
         } else {
 
@@ -359,8 +384,9 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     }
 
     private String getTextString() {
-        if (textNS != null) {
-            String prefix = textNS.getPrefix();
+        OMNamespace ns = getNamespace();
+        if (ns != null) {
+            String prefix = ns.getPrefix();
             if (prefix == null || "".equals(prefix)) {
                 return getTextFromProperPlace();
             } else {
