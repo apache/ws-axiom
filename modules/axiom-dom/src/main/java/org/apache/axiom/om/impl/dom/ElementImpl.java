@@ -1302,7 +1302,11 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
                 // check if the parent of this element has the same namespace
                 // as the default and if NOT add the attr
-                if (this.parentNode != null && this.parentNode.getNamespaceURI() != this.getNamespaceURI()) {
+                boolean parentHasSameDefaultNS = this.parentNode != null && 
+                this.parentNode.getNamespaceURI() == this.getNamespaceURI() &&
+                (this.parentNode.getPrefix() == null || this.parentNode.getPrefix().equals("")); 
+                
+                if (!parentHasSameDefaultNS) {
                     AttrImpl attr = new AttrImpl(this.ownerNode, "xmlns",
                             this.namespace.getNamespaceURI(), this.factory);
                     attr.setOMNamespace(new NamespaceImpl(
