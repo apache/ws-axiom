@@ -490,7 +490,6 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 	 * from different Axiom implementations to the DOOM implementation.
 	 * 
 	 * @param child
-	 * @return
 	 */
 	protected OMNode importNode(OMNode child) {
 		int type = child.getType();
