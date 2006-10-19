@@ -458,7 +458,7 @@ public class OMSourcedElementImpl extends OMElementImpl
         	return super.toStringWithConsume();
         } else {
         	StringWriter writer = new StringWriter();
-        	dataSource.serialize(writer, null);
+        	dataSource.serialize(writer, new OMOutputFormat());
         	return writer.toString();
         }
     }
@@ -598,9 +598,9 @@ public class OMSourcedElementImpl extends OMElementImpl
             log.debug("serialize " + getPrintableName() + " to output stream");
         }
         if (isDataSourceConsumed()) {
-        	super.serializeAndConsume(output, null);
+        	super.serializeAndConsume(output, new OMOutputFormat());
         } else {
-        	dataSource.serialize(output, null);
+        	dataSource.serialize(output, new OMOutputFormat());
         }
     }
 
@@ -614,7 +614,7 @@ public class OMSourcedElementImpl extends OMElementImpl
         if (isDataSourceConsumed()) {
         	super.serializeAndConsume(writer);
         } else {
-        	dataSource.serialize(writer, null);
+        	dataSource.serialize(writer, new OMOutputFormat());
         }
     }
 
