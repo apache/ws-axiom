@@ -28,6 +28,7 @@ import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.ElementHelper;
+import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
@@ -35,6 +36,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -918,19 +920,23 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public String toStringWithConsume() throws XMLStreamException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        this.serializeAndConsume(baos);
-        return new String(baos.toByteArray());
+        StringWriter writer = new StringWriter();
+        XMLStreamWriter writer2 = StAXUtils.createXMLStreamWriter(writer);
+        this.serializeAndConsume(writer2);
+        writer2.flush();
+        return writer.toString();
     }
 
     public String toString() {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        StringWriter writer = new StringWriter();
         try {
-            this.serialize(baos);
+            XMLStreamWriter writer2 = StAXUtils.createXMLStreamWriter(writer);
+            this.serialize(writer2);
+            writer2.flush();
         } catch (XMLStreamException e) {
             throw new RuntimeException("Can not serialize OM Element " + this.getLocalName(), e);
         }
-        return new String(baos.toByteArray());
+        return writer.toString();
     }
 
     /**

@@ -76,8 +76,8 @@
             <email>ruchith AT wso2.com</email>
             <organization>WSO2</organization>
         </developer>
-    	<developer>
-      	    <id>thilina</id>
+     <developer>
+           <id>thilina</id>
             <name>Thilina Gunarathne</name>
             <email>thilina AT wso2.com</email>
             <url>http://www.apache.org/~thilina</url>
@@ -259,6 +259,21 @@
                 <configuration>
                     <attach>true</attach>
                 </configuration>
+            </plugin>
+            <plugin>
+               <artifactId>maven-one-plugin</artifactId>
+               <executions>
+                 <execution>
+                    <goals>
+                      <goal>install-maven-one-repository</goal>
+                      <goal>deploy-maven-one-repository</goal>
+                    </goals>
+                 </execution>
+               </executions>
+               <configuration>
+                 <remoteRepositoryId>apache</remoteRepositoryId>
+                 <remoteRepositoryUrl>scp://people.apache.org/www/cvs.apache.org/repository</remoteRepositoryUrl>
+               </configuration>
             </plugin>
         </plugins>
     </build>

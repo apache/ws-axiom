@@ -17,6 +17,7 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.*;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -458,8 +459,10 @@ public class OMSourcedElementImpl extends OMElementImpl
         	return super.toStringWithConsume();
         } else {
         	StringWriter writer = new StringWriter();
-        	dataSource.serialize(writer, new OMOutputFormat());
-        	return writer.toString();
+            XMLStreamWriter writer2 = StAXUtils.createXMLStreamWriter(writer);
+        	dataSource.serialize(writer2);
+            writer2.flush();
+            return writer.toString();
         }
     }
 
