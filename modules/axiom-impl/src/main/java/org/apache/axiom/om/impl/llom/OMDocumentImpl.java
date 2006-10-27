@@ -134,7 +134,7 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
      * @return Returns OMElement.
      */
     public OMElement getOMDocumentElement() {
-        while (documentElement == null) {
+        while (documentElement == null && parserWrapper != null) {
             parserWrapper.next();
         }
         return documentElement;
@@ -173,8 +173,9 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
      * Forces the parser to proceed, if parser has not yet finished with the XML input.
      */
     public void buildNext() {
-        if (!parserWrapper.isCompleted())
+        if (parserWrapper != null && !parserWrapper.isCompleted()) {
             parserWrapper.next();
+        }
     }
 
     /**
