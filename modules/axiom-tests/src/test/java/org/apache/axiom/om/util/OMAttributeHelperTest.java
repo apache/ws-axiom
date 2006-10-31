@@ -46,5 +46,21 @@ public class OMAttributeHelperTest extends TestCase {
         AttributeHelper.importOMAttribute(attr2, ome2);
         assertNotSame(attr2, ome2.getAttribute(attr2.getQName()));
         assertEquals(attr2.getAttributeValue(), ome2.getAttribute(attr2.getQName()).getAttributeValue());
+        
+        //OM only.
+        OMNamespace ns3 = omf.createOMNamespace("http://nsurl","prefix");
+        OMAttribute attr3 = omf.createOMAttribute("attr3",ns3,"attr3value");
+        
+        OMElement ome3 = omf.createOMElement("element", ns3.getNamespaceURI(), ns3.getPrefix());
+        AttributeHelper.importOMAttribute(attr3, ome3);
+        assertSame(attr3, ome3.getAttribute(attr3.getQName()));
+        
+        //DOOM only.
+        OMNamespace ns4 = doomf.createOMNamespace("http://nsurl","prefix");
+        OMAttribute attr4 = doomf.createOMAttribute("attr4",ns4,"attr4value");
+        
+        OMElement ome4 = doomf.createOMElement("element", ns4.getNamespaceURI(), ns4.getPrefix());
+        AttributeHelper.importOMAttribute(attr4, ome4);
+        assertSame(attr4, ome4.getAttribute(attr4.getQName()));
     }
 }
