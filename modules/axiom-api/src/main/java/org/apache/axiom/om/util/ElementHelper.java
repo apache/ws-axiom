@@ -144,7 +144,7 @@ public class ElementHelper {
      * tree, we need to convert the new OMElement to match to the factory of existing object tree.
      * This method will convert omElement to the given omFactory.
      *
-     * @see AttributeHelper#importOMAttribute(OMAttribute, OMFactory) to convert instances of OMAttribute
+     * @see AttributeHelper#importOMAttribute(OMAttribute, OMElement) to convert instances of OMAttribute
      */
     public static OMElement importOMElement(OMElement omElement, OMFactory omFactory) {
         // first check whether the given OMElement has the same omFactory

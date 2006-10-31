@@ -18,7 +18,6 @@ package org.apache.axiom.om.util;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
 /**
  * Helper class for attributes.
@@ -31,16 +30,13 @@ public class AttributeHelper {
     * 
     * @see ElementHelper#importOMElement(OMElement, OMFactory) to convert instances of OMElement
     */
-    public static OMAttribute importOMAttribute(OMAttribute omAttribute, OMFactory omFactory) {
+    public static void importOMAttribute(OMAttribute omAttribute, OMElement omElement) {
         // first check whether the given OMAttribute has the same OMFactory
-        if (omAttribute.getOMFactory().getClass().isInstance(omFactory)) {
-            return omAttribute;
-        }else {
-            OMElement omElement = omAttribute.getOMFactory().createOMElement("localName", "namespace", "prefix");
+        if (omAttribute.getOMFactory().getClass().isInstance(omElement.getOMFactory())) {
             omElement.addAttribute(omAttribute);
-            OMElement documentElement = new StAXOMBuilder(omFactory, omElement.getXMLStreamReader()).getDocumentElement();
-            documentElement.build();
-            return (OMAttribute) documentElement.getAllAttributes().next();
+        }
+        else {
+            omElement.addAttribute(omAttribute.getLocalName(), omAttribute.getAttributeValue(), omAttribute.getNamespace());
         }
     }
 }
