@@ -27,7 +27,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
      * Use ThreadLocal to determine whether or not DOOM implementation is required.
      * By default (isDOOMRequired() == false), we will use the one from JDK (Crimson)
      */
-    private static DocumentBuilderFactory originalDocumentBuilderFactory = null;
+    private static DocumentBuilderFactory originalDocumentBuilderFactory = DocumentBuilderFactory.newInstance();
     private static String originalDocumentBuilderFactoryClassName = null;
     private static ThreadLocal documentBuilderFactoryTracker = new ThreadLocal();
     
