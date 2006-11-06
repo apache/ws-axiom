@@ -326,7 +326,8 @@ public interface SOAPFactory extends OMFactory {
 
 
     /**
-     * Method getDefaultEnvelope
+     * Method getDefaultEnvelope. This returns a SOAP envelope consisting with an empty Header and a Body.
+     * This is just a util method which can be used everywhere. 
      *
      * @return Returns SOAPEnvelope.
      */

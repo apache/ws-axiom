@@ -1,7 +1,11 @@
 package org.apache.axiom.om;
 
-import junit.framework.TestCase;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.xpath.AXIOMXPath;
+import org.custommonkey.xmlunit.XMLTestCase;
+import org.jaxen.JaxenException;
+import org.jaxen.SimpleNamespaceContext;
+import org.jaxen.XPath;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.*;
@@ -23,7 +27,7 @@ import java.util.Iterator;
  * limitations under the License.
  */
 
-public class DefaultNSHandlingTest extends TestCase {
+public class DefaultNSHandlingTest extends XMLTestCase {
 
     public void testDefaultNamespaceWithSameDefaultNSForAll() {
         String testXML = "<html xmlns='http://www.w3.org/TR/REC-html40'>" +
@@ -122,6 +126,51 @@ public class DefaultNSHandlingTest extends TestCase {
         }catch (Exception e) {
             fail(e.getMessage());
         }
+    }
+
+//    public void testForIssueWSCOMMONS119() {
+//
+//        try {
+//            String planXML = "test-resources/xml/defaultNamespace2.xml";
+//            XMLStreamReader parser = XMLInputFactory.newInstance().
+//                   createXMLStreamReader(new FileInputStream(new File(planXML)));
+//            StAXOMBuilder staxOMBuilder = new StAXOMBuilder(parser);
+//            OMElement docEle = staxOMBuilder.getDocumentElement();
+//            OMElement omElement = getOMElement("//ns:config-property-setting[@name='ConnectionURL']",
+//                                               docEle);
+//            omElement.setText("jdbc:derby:/home/azeez/.tungsten/database/TUNGSTEN_DB");
+//
+//            String serializedXML = docEle.toString();
+//
+//            System.out.println("serializedXML = " + serializedXML);
+//
+//            assertTrue(serializedXML.indexOf("xmlns=\"\"") == -1);
+//
+//        } catch (XMLStreamException e) {
+//            fail();
+//            e.printStackTrace();
+//        } catch (FileNotFoundException e) {
+//            fail();
+//            e.printStackTrace();
+//        } catch (JaxenException e) {
+//            fail();
+//            e.printStackTrace();
+//        }
+//    }
+
+
+    private OMElement getOMElement(String xpathString,
+                                   OMElement parentElement) throws JaxenException {
+        XPath xpath = getXPath(xpathString);
+        return (OMElement) xpath.selectSingleNode(parentElement);
+    }
+
+    private XPath getXPath(String xpathString) throws JaxenException {
+        SimpleNamespaceContext nsCtx = new SimpleNamespaceContext();
+        nsCtx.addNamespace("ns", "http://geronimo.apache.org/xml/ns/j2ee/connector-1.1");
+        XPath xpath = new AXIOMXPath(xpathString);
+        xpath.setNamespaceContext(nsCtx);
+        return xpath;
     }
     
     public static void main(String[] args) {
