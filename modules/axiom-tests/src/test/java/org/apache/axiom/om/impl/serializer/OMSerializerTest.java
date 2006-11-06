@@ -19,6 +19,7 @@ package org.apache.axiom.om.impl.serializer;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.soap.SOAPBody;
@@ -26,6 +27,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.*;
+
 import java.io.*;
 
 public class OMSerializerTest extends AbstractTestCase {
@@ -136,6 +138,17 @@ public class OMSerializerTest extends AbstractTestCase {
 
         String outputString = new String(byteArrayOutputStream.toByteArray());
         assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
+    }
+    
+    public void testDefaultNsSerialization() {
+        try {
+            StAXOMBuilder builder = new StAXOMBuilder("test-resources/xml/original.xml");
+            String xml = builder.getDocumentElement().toString();
+            assertEquals("There shouldn't be any xmlns=\"\"", -1, xml.indexOf("xmlns=\"\""));
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
     }
 
     protected void tearDown() throws Exception {

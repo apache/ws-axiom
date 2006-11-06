@@ -241,7 +241,7 @@ public class OMSerializerUtil {
         	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
         	
         	
-        	String newPrefix = generateSetPrefix(prefix, namespace, writer);
+        	String newPrefix = generateSetPrefix(prefix, namespace, writer, false);
         	// If this is a new association, remember it so that it can written out later
         	if (newPrefix != null) {
         		if (writePrefixList == null) {
@@ -257,7 +257,7 @@ public class OMSerializerUtil {
     	
     	// Generate setPrefix for the element
     	// Get the prefix and namespace of the element.  "" and null are identical.
-    	String newPrefix = generateSetPrefix(ePrefix, eNamespace, writer);
+    	String newPrefix = generateSetPrefix(ePrefix, eNamespace, writer, false);
     	// If this is a new association, remember it so that it can written out later
     	if (newPrefix != null) {
     		if (writePrefixList == null) {
@@ -291,7 +291,7 @@ public class OMSerializerUtil {
             	prefix = (writerPrefix != null) ? 
             			writerPrefix : getNextNSPrefix();
             }
-            newPrefix = generateSetPrefix(prefix, namespace, writer);
+            newPrefix = generateSetPrefix(prefix, namespace, writer, true);
             // If the prefix is not associated with a namespace yet, remember it so that we can
         	// write out a namespace declaration
         	if (newPrefix != null) {
@@ -489,9 +489,10 @@ public class OMSerializerUtil {
      * @param prefix
      * @param namespace
      * @param writer
+     * @param attr 
      * @return prefix name if a setPrefix/setDefaultNamespace is performed
      */
-    public static String generateSetPrefix(String prefix, String namespace, XMLStreamWriter writer) throws XMLStreamException {
+    public static String generateSetPrefix(String prefix, String namespace, XMLStreamWriter writer, boolean attr) throws XMLStreamException {
     	// Generate setPrefix/setDefaultNamespace if the prefix is not associated.
     	String newPrefix = null;
         if (namespace != null) {
@@ -518,7 +519,7 @@ public class OMSerializerUtil {
         	
         	// Make sure the default namespace is either not used or disabled (set to "")
         	String writerNS = writer.getNamespaceContext().getNamespaceURI("");
-        	if (writerNS != null && writerNS.length() > 0) {
+        	if (writerNS != null && writerNS.length() > 0 && !attr) {
         		// Disable the default namespace
         		writer.setDefaultNamespace("");
         		newPrefix = "";

@@ -159,7 +159,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         	String namespace = reader.getNamespaceURI(i);
         	namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
         	
-        	String newPrefix = generateSetPrefix(prefix, namespace, writer);
+        	String newPrefix = OMSerializerUtil.generateSetPrefix(prefix, namespace, writer, false);
         	// If this is a new association, remember it so that it can written out later
         	if (newPrefix != null) {
         		if (writePrefixList == null) {
@@ -176,7 +176,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         // Generate setPrefix for the element
         // If the prefix is not associated with a namespace yet, remember it so that we can
     	// write out a namespace declaration
-    	String newPrefix = generateSetPrefix(ePrefix, eNamespace, writer);
+    	String newPrefix = OMSerializerUtil.generateSetPrefix(ePrefix, eNamespace, writer, false);
     	// If this is a new association, remember it so that it can written out later
     	if (newPrefix != null) {
     		if (writePrefixList == null) {
@@ -205,7 +205,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             			writerPrefix :
             	        generateUniquePrefix(writer.getNamespaceContext());
             }
-            newPrefix = generateSetPrefix(prefix, namespace, writer);
+            newPrefix = OMSerializerUtil.generateSetPrefix(prefix, namespace, writer, true);
             // If the prefix is not associated with a namespace yet, remember it so that we can
         	// write out a namespace declaration
         	if (newPrefix != null) {
@@ -280,17 +280,6 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         }
     }
 
-    /**
-     * Generate setPrefix/setDefaultNamespace if the prefix is not associated
-     * @param prefix
-     * @param namespace
-     * @param writer
-     * @return prefix name if a setPrefix/setDefaultNamespace is performed
-     */
-    private String generateSetPrefix(String prefix, String namespace, XMLStreamWriter writer) throws XMLStreamException {
-    	return OMSerializerUtil.generateSetPrefix(prefix, namespace, writer);
-    }
-    
     /**
      * Method serializeEndElement.
      *
