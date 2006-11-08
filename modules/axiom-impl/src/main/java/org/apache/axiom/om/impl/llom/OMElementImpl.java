@@ -493,7 +493,9 @@ public class OMElementImpl extends OMNodeImpl
             this.attributes = new LinkedHashMap(5);
         }
         OMNamespace namespace = attr.getNamespace();
-        if (namespace != null && this.findNamespace(namespace.getNamespaceURI(), namespace.getPrefix()) == null) {
+        if (namespace != null && namespace.getNamespaceURI() != null && 
+                !"".equals(namespace.getNamespaceURI()) && 
+                this.findNamespace(namespace.getNamespaceURI(), namespace.getPrefix()) == null) {
             this.declareNamespace(namespace.getNamespaceURI(), namespace.getPrefix());
         }
 

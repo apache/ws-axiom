@@ -650,7 +650,8 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      */
     public OMAttribute addAttribute(OMAttribute attr) {
         OMNamespace namespace = attr.getNamespace();
-        if (namespace != null
+        if (namespace != null && namespace.getNamespaceURI() != null 
+                && !"".equals(namespace.getNamespaceURI())
                 && this.findNamespace(namespace.getNamespaceURI(), namespace
                 .getPrefix()) == null) {
             this.declareNamespace(namespace.getNamespaceURI(), namespace.getPrefix());
