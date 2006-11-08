@@ -210,8 +210,12 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
                     if(namespace == null) {
                         headers.add(header);
                     }
-                } else if (nsURI.equals(namespace.getNamespaceURI())) {
-                    headers.add(header);
+                } else{
+                    if(namespace!=null){
+                        if (nsURI.equals(namespace.getNamespaceURI())) {
+                            headers.add(header);
+                        }
+                    }
                 }
             }
             node = node.getNextOMSibling();
