@@ -223,6 +223,69 @@
                             <attach>true</attach>
                         </configuration>
                     </plugin>
+                    <plugin>
+                        <artifactId>maven-one-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>install-maven-one-repository</goal>
+                                    <goal>deploy-maven-one-repository</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <remoteRepositoryId>apache-snapshots</remoteRepositoryId>
+                            <remoteRepositoryUrl>scp://people.apache.org/www/people.apache.org/repo/m1-ibiblio-rsync-repository</remoteRepositoryUrl>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <configuration>
+                            <tagBase>http://svn.apache.org/repos/asf/webservices/commons/tags/axiom</tagBase>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>rc</id>
+            <activation>
+                <property>
+                    <name>rc</name>
+                    <value></value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <attach>true</attach>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-one-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>install-maven-one-repository</goal>
+                                    <goal>deploy-maven-one-repository</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <remoteRepositoryId>apache-snapshots</remoteRepositoryId>
+                            <remoteRepositoryUrl>scp://people.apache.org/www/people.apache.org/repo/m1-snapshot-repository</remoteRepositoryUrl>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -259,21 +322,6 @@
                 <configuration>
                     <attach>true</attach>
                 </configuration>
-            </plugin>
-            <plugin>
-               <artifactId>maven-one-plugin</artifactId>
-               <executions>
-                 <execution>
-                    <goals>
-                      <goal>install-maven-one-repository</goal>
-                      <goal>deploy-maven-one-repository</goal>
-                    </goals>
-                 </execution>
-               </executions>
-               <configuration>
-                 <remoteRepositoryId>apache</remoteRepositoryId>
-                 <remoteRepositoryUrl>scp://people.apache.org/www/cvs.apache.org/repository</remoteRepositoryUrl>
-               </configuration>
             </plugin>
         </plugins>
     </build>
@@ -415,7 +463,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jdepend-maven-plugin</artifactId>
-                <version>2.0-beta-1-SNAPSHOT</version>
             </plugin>
             <!--<plugin>-->
                 <!--<groupId>org.codehaus.mojo</groupId>-->
