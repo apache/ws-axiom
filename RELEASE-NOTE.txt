@@ -1,13 +1,10 @@
 ===========================================
 
-     Apache AXIOM 1.1.1 Release Note
+     Apache AXIOM 1.2 Release Note
 
 ===========================================
 
 http://ws.apache.org/commons/axiom
-
-NOTE: This is a bug-fix release: AXIOM 1.1 release was compiled in JDK1.5, when we have a minimum requirement of jdk 1.4 compatible
-distributables. There are no new features or fixes in this release other than being compiled on JDK 1.4. The original release note follows.
 
 Apache AXIOM is a StAX-based, XML Infoset compliant object model which supports on-demand building
 of the object tree. It supports a novel "pull-through" model which allows one to turn off the tree
@@ -35,9 +32,8 @@ What's New in This Release
 ==========================
 
     * Improved XML serialization
-    * DOM Hash implementation
+    * Improved Builder hierarchy
     * Improved MTOM handling
-    * Improved tree handling with multiple partial built elements
     * Numerous bug fixes
 
 Thanks for your interest in Apache AXIOM!

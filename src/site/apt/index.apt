@@ -50,6 +50,8 @@ What's New in This Release
 
     * Improved XML serialization
 
+    * Improved Builder hierarchy
+
     * Improved MTOM handling
 
     * Numerous bug fixes
