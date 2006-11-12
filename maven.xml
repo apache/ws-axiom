@@ -212,6 +212,12 @@
             <ant:fileset file="LICENSE.txt"/>
         </ant:copy>
 
+        <ant:copy toDir="${dist}">
+            <ant:fileset dir=".">
+                <ant:include name="legal/*.txt"/>
+            </ant:fileset>
+        </ant:copy>
+
         <ant:zip file="target/dist/axiom-${axiom.version}-src.zip">
             <ant:fileset dir="${dist}/"/>
         </ant:zip>
