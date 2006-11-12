@@ -650,6 +650,10 @@ public class OMElementImpl extends OMNodeImpl
      * @return Returns reader.
      */
     private XMLStreamReader getXMLStreamReader(boolean cache) {
+        // The om tree was built by hand and is already complete
+        if ((builder == null) && done) {
+            return new OMStAXWrapper(null, this, false);
+        }
         if ((builder == null) && !cache) {
             throw new UnsupportedOperationException(
                     "This element was not created in a manner to be switched");
