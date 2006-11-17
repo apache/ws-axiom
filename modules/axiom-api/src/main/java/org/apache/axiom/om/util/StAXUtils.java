@@ -9,35 +9,92 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class StAXUtils {
 
+public class StAXUtils {
+	private static interface ObjectCreator {
+		Object newObject();
+	}
+
+	private static class Pool {
+		private final int MAX_POOL_SIZE = 100;
+		private final List objects = new ArrayList();
+		private final ObjectCreator objectCreator;
+		Pool(ObjectCreator[] creators) {
+			ObjectCreator oc = null;
+			for (int i = 0;  i < creators.length;  i++) {
+				try {
+					Object o = creators[i].newObject();
+					oc = creators[i];
+					break;
+				} catch (Throwable t) {
+					// Ignore me
+				}
+			}
+			if (oc == null) {
+				throw new IllegalStateException("No valid ObjectCreator found.");
+			}
+			objectCreator = oc;
+		}
+		synchronized Object getInstance() {
+			final int size = objects.size();
+			if (size > 0) {
+				return objects.remove(size-1);
+			}
+			return objectCreator.newObject();
+		}
+		synchronized void releaseInstance(Object object) {
+			if (objects.size() < MAX_POOL_SIZE) {
+				objects.add(object);
+			}
+		}
+		synchronized void clear() {
+			objects.clear();
+		}
+	}
+
+	private static final Pool xmlInputFactoryPool = new Pool(new ObjectCreator[]{
+	 	new ObjectCreator(){
+			public Object newObject() {
+		        return XMLInputFactory.newInstance("javax.xml.stream.XMLInputFactory", StAXUtils.class.getClassLoader());
+			}
+	 	},
+	 	new ObjectCreator(){
+			public Object newObject() {
+				return XMLInputFactory.newInstance();
+			}
+	 	}
+	});
+
+	private static final Pool xmlOutputFactoryPool = new Pool(new ObjectCreator[]{
+		new ObjectCreator(){
+			public Object newObject() {
+				return XMLOutputFactory.newInstance("javax.xml.stream.XMLOutputFactory", StAXUtils.class.getClassLoader());
+			}
+	 	},
+	 	new ObjectCreator(){
+	 		public Object newObject() {
+	 			return XMLOutputFactory.newInstance();
+			}
+	 	}
+	});
+
+	
 	private static Log log = LogFactory.getLog(StAXUtils.class);
 	   
-    /**
-     * Pool of XMLOutputFactory instances
-     */
-    private static Stack xmlOutputFactoryPool = new Stack();
 
-    /**
-     * Pool of XMLInputFactory instances
-     */
-    private static Stack xmlInputFactoryPool = new Stack();
-
-    /**
+	/**
      * Gets an XMLInputFactory instance from pool.
      *
      * @return an XMLInputFactory instance.
      */
-    synchronized public static XMLInputFactory getXMLInputFactory() {
-        if (!xmlInputFactoryPool.empty()) {
-            return (XMLInputFactory) xmlInputFactoryPool.pop();
-        }
-        return XMLInputFactory.newInstance("javax.xml.stream.XMLInputFactory", StAXUtils.class.getClassLoader());
+	public static XMLInputFactory getXMLInputFactory() {
+		return (XMLInputFactory) xmlInputFactoryPool.getInstance();
     }
 
     /**
@@ -45,8 +102,8 @@ public class StAXUtils {
      *
      * @param factory An XMLInputFactory instance that is available for reuse
      */
-    synchronized public static void releaseXMLInputFactory(XMLInputFactory factory) {
-        xmlInputFactoryPool.push(factory);
+	public static void releaseXMLInputFactory(XMLInputFactory factory) {
+		xmlInputFactoryPool.releaseInstance(factory);
     }
 
     public static XMLStreamReader createXMLStreamReader(InputStream in, String encoding)
@@ -90,11 +147,8 @@ public class StAXUtils {
      *
      * @return an XMLOutputFactory instance.
      */
-    synchronized public static XMLOutputFactory getXMLOutputFactory() {
-        if (!xmlOutputFactoryPool.empty()) {
-            return (XMLOutputFactory) xmlOutputFactoryPool.pop();
-        }
-        return XMLOutputFactory.newInstance("javax.xml.stream.XMLOutputFactory", StAXUtils.class.getClassLoader());
+    public static XMLOutputFactory getXMLOutputFactory() {
+    	return (XMLOutputFactory) xmlOutputFactoryPool.getInstance();
     }
 
     /**
@@ -102,8 +156,8 @@ public class StAXUtils {
      *
      * @param factory An XMLOutputFactory instance that is available for reuse.
      */
-    synchronized public static void releaseXMLOutputFactory(XMLOutputFactory factory) {
-        xmlOutputFactoryPool.push(factory);
+    public static void releaseXMLOutputFactory(XMLOutputFactory factory) {
+    	xmlOutputFactoryPool.releaseInstance(factory);
     }
 
     public static XMLStreamWriter createXMLStreamWriter(OutputStream out)
@@ -131,7 +185,7 @@ public class StAXUtils {
     }
 
     public static void reset() {
-        xmlOutputFactoryPool.removeAllElements();
-        xmlInputFactoryPool.removeAllElements();
+        xmlOutputFactoryPool.clear();
+        xmlInputFactoryPool.clear();
     }
 }
