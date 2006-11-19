@@ -412,6 +412,14 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             // This is a ns declaration
             this.declareNamespace(attr.getNodeValue(), DOMUtil
                     .getLocalName(attr.getName()));
+            
+            //Don't add this to attr list, since its a namespace
+            return attr;
+        } else if(attr.getNodeName().equals(OMConstants.XMLNS_NS_PREFIX)) {
+            this.declareDefaultNamespace(attr.getValue());
+            
+            //Don't add this to attr list, since its a namespace
+            return attr;
         }
         if (this.attributes == null) {
             this.attributes = new AttributeMap(this);
@@ -437,6 +445,8 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (name.startsWith(OMConstants.XMLNS_NS_PREFIX + ":")) {
             // This is a ns declaration
             this.declareNamespace(value, DOMUtil.getLocalName(name));
+        } else if(name.equals(OMConstants.XMLNS_NS_PREFIX)) {
+            this.declareDefaultNamespace(value);
         } else {
             this.setAttributeNode(new AttrImpl(this.ownerNode, name, value,
                     this.factory));

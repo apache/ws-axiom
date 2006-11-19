@@ -343,7 +343,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         }
 
         // If deep, replicate and attach the kids.
-        if (deep) {
+        if (deep && !(importedNode instanceof Attr)) {
             for (Node srckid = importedNode.getFirstChild(); srckid != null; 
                     srckid = srckid.getNextSibling()) {
                 newNode.appendChild(importNode(srckid, true));
