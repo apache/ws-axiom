@@ -102,7 +102,7 @@ public class Attachments {
 
     private int fileStorageThreshold;
 
-    protected Log log = LogFactory.getLog(getClass());
+    protected static Log log = LogFactory.getLog(Attachments.class);
 
 
     /**
