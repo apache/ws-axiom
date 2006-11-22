@@ -52,8 +52,11 @@ public class OMSourcedElementImpl extends OMElementImpl
     private final OMDataSource dataSource;
     
     /** Namespace for element, needed in order to bypass base class handling. */
-    private OMNamespace definedNamespace;
+    private OMNamespace definedNamespace = null;
     
+    /** Namespace for element, needed in order to bypass base class handling. */
+    private QName definedQName = null;
+
     /** Flag for parser provided to base element class. */
     private boolean isParserSet;
     
@@ -83,12 +86,9 @@ public class OMSourcedElementImpl extends OMElementImpl
      */
     public OMSourcedElementImpl(QName qName, OMFactory factory, OMDataSource source) {
         //create a namespace
-        this(qName.getLocalPart(),
-            factory.createOMNamespace(qName.getNamespaceURI(),
-                                      qName.getPrefix()),
-            factory,
-            source);
-
+        super(qName.getLocalPart(), null, factory);
+        dataSource = source;
+        definedQName = qName;
     }
     
     /**
@@ -417,6 +417,9 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMElement#getNamespace()
      */
     public OMNamespace getNamespace() throws OMException {
+        if(definedNamespace == null && definedQName != null) {
+            definedNamespace = factory.createOMNamespace(definedQName.getNamespaceURI(), definedQName.getPrefix());
+        }
         return definedNamespace;
     }
 
@@ -442,10 +445,9 @@ public class OMSourcedElementImpl extends OMElementImpl
     public QName getQName() {
         if (isExpanded()) {
             return super.getQName();
-        } else if (definedNamespace != null) {
+        } else if (getNamespace() != null) {
             // always ignore prefix on name from sourced element
             return new QName(definedNamespace.getNamespaceURI(), getLocalName());
-
         } else {
             return new QName(getLocalName());
         }

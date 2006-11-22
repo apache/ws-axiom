@@ -114,7 +114,10 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns OMNamespace.
      */
     public OMNamespace createOMNamespace(String uri, String prefix) {
-        String key = uri + uriAndPrefixSeparator + prefix;
+        String key = uri;
+        if(prefix != null && prefix.length() > 0) {
+            key = key + uriAndPrefixSeparator + prefix;
+        }
         OMNamespace existingNamespaceObject = (OMNamespace) namespaceTable.get(key);
         if (existingNamespaceObject == null) {
             existingNamespaceObject = new OMNamespaceImpl(uri, prefix);
