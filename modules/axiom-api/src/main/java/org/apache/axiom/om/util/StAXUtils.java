@@ -17,7 +17,8 @@ import org.apache.commons.logging.LogFactory;
 
 
 public class StAXUtils {
-	private static interface ObjectCreator {
+
+    private static interface ObjectCreator {
 		Object newObject();
 	}
 
@@ -86,6 +87,7 @@ public class StAXUtils {
 
 	
 	private static Log log = LogFactory.getLog(StAXUtils.class);
+    private static boolean isDebugEnabled = log.isDebugEnabled();
 	   
 
 	/**
@@ -111,7 +113,9 @@ public class StAXUtils {
         XMLInputFactory inputFactory = getXMLInputFactory();
         try {
         	XMLStreamReader reader = inputFactory.createXMLStreamReader(in, encoding);
-        	log.debug("XMLStreamReader is " + reader.getClass().getName());
+            if(isDebugEnabled) {
+                log.debug("XMLStreamReader is " + reader.getClass().getName());
+            }
             return reader;
         } finally {
             releaseXMLInputFactory(inputFactory);
@@ -123,7 +127,9 @@ public class StAXUtils {
         XMLInputFactory inputFactory = getXMLInputFactory();
         try {
             XMLStreamReader reader = inputFactory.createXMLStreamReader(in);
-            log.debug("XMLStreamReader is " + reader.getClass().getName());
+            if(isDebugEnabled) {
+                log.debug("XMLStreamReader is " + reader.getClass().getName());
+            }
             return reader;
         } finally {
             releaseXMLInputFactory(inputFactory);
@@ -135,7 +141,9 @@ public class StAXUtils {
         XMLInputFactory inputFactory = getXMLInputFactory();
         try {
             XMLStreamReader reader = inputFactory.createXMLStreamReader(in);
-            log.debug("XMLStreamReader is " + reader.getClass().getName());
+            if(isDebugEnabled) {
+                log.debug("XMLStreamReader is " + reader.getClass().getName());
+            }
             return reader;
         } finally {
             releaseXMLInputFactory(inputFactory);
@@ -165,7 +173,9 @@ public class StAXUtils {
         XMLOutputFactory outputFactory = getXMLOutputFactory();
         try {
             XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out);
-            log.debug("XMLStreamWriter is " + writer.getClass().getName());
+            if(isDebugEnabled) {
+                log.debug("XMLStreamWriter is " + writer.getClass().getName());
+            }
             return writer;
         } finally {
             releaseXMLOutputFactory(outputFactory);
@@ -177,7 +187,9 @@ public class StAXUtils {
         XMLOutputFactory outputFactory = getXMLOutputFactory();
         try {
             XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out);
-            log.debug("XMLStreamWriter is " + writer.getClass().getName());
+            if(isDebugEnabled) {
+                log.debug("XMLStreamWriter is " + writer.getClass().getName());
+            }
             return writer;
         } finally {
             releaseXMLOutputFactory(outputFactory);
