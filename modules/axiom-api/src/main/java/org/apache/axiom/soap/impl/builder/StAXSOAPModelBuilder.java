@@ -88,6 +88,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
     private String charEncoding = null;
     private String parserVersion = null;
+    private static final boolean isDebugEnabled = log.isDebugEnabled();
 
     /**
      * Constructor StAXSOAPModelBuilder
@@ -184,9 +185,10 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             e.setFirstChild(node);
         }
 
-
-        log.debug("Build the OMElelment " + node.getLocalName() +
-                "By the StaxSOAPModelBuilder");
+        if(isDebugEnabled) {
+            log.debug("Build the OMElelment " + node.getLocalName() +
+                    "By the StaxSOAPModelBuilder");
+        }
         return node;
     }
 
