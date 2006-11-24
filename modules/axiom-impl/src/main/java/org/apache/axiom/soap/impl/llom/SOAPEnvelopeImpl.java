@@ -43,6 +43,8 @@ import javax.xml.stream.XMLStreamWriter;
 public class SOAPEnvelopeImpl extends SOAPElement
         implements SOAPEnvelope, OMConstants {
 
+    private static final QName HEADER_QNAME = new QName(SOAPConstants.HEADER_LOCAL_NAME);
+
     /**
      * @param builder
      */
@@ -75,7 +77,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
     public SOAPHeader getHeader() throws OMException {
         SOAPHeader header =
                 (SOAPHeader) getFirstChildWithName(
-                        new QName(SOAPConstants.HEADER_LOCAL_NAME));
+                        HEADER_QNAME);
         if (builder == null && header == null) {
             inferFactory();
             header = ((SOAPFactory) factory).createSOAPHeader(this);

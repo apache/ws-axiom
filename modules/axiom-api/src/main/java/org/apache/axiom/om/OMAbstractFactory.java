@@ -27,9 +27,14 @@ public class OMAbstractFactory {
     private static final String DEFAULT_SOAP11_FACTORY_CLASS_NAME = "org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory";
     private static final String DEFAULT_SOAP12_FACTORY_CLASS_NAME = "org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory";
 
+    private static OMFactory defaultOMFactory = null;
+    private static SOAPFactory defaultSOAP11OMFactory = null;
+    private static SOAPFactory defaultSOAP12OMFactory = null;
 
     public static OMFactory getOMFactory() {
-
+        if(defaultOMFactory != null) {
+            return defaultOMFactory;
+        }
         String omFactory;
         try {
             omFactory = System.getProperty(OM_FACTORY_NAME_PROPERTY);
@@ -37,13 +42,11 @@ public class OMAbstractFactory {
                 omFactory = DEFAULT_OM_FACTORY_CLASS_NAME;
             }
         } catch (SecurityException e) {
-            // security exception can be thrown when trying to access system variables within a sand box like an applet.
-            // please refer : http://issues.apache.org/jira/browse/WSCOMMONS-57
             omFactory = DEFAULT_OM_FACTORY_CLASS_NAME;
         }
 
         try {
-           return (OMFactory) Class.forName(omFactory).newInstance();
+           defaultOMFactory = (OMFactory) Class.forName(omFactory).newInstance();
         } catch (InstantiationException e) {
             throw new OMException(e);
         } catch (IllegalAccessException e) {
@@ -51,6 +54,7 @@ public class OMAbstractFactory {
         } catch (ClassNotFoundException e) {
             throw new OMException(e);
         }
+        return defaultOMFactory;
     }
 
 
@@ -60,12 +64,15 @@ public class OMAbstractFactory {
      * @return Returns SOAPFactory.
      */
     public static SOAPFactory getSOAP11Factory() {
+        if(defaultSOAP11OMFactory != null) {
+            return defaultSOAP11OMFactory;
+        }
         try {
             String omFactory = System.getProperty(SOAP11_FACTORY_NAME_PROPERTY);
             if (omFactory == null || "".equals(omFactory)) {
                 omFactory = DEFAULT_SOAP11_FACTORY_CLASS_NAME;
             }
-            return (SOAPFactory) Class.forName(omFactory).newInstance();
+            defaultSOAP11OMFactory = (SOAPFactory) Class.forName(omFactory).newInstance();
         } catch (InstantiationException e) {
             throw new OMException(e);
         } catch (IllegalAccessException e) {
@@ -73,6 +80,7 @@ public class OMAbstractFactory {
         } catch (ClassNotFoundException e) {
             throw new OMException(e);
         }
+        return defaultSOAP11OMFactory;
     }
 
 
@@ -82,12 +90,15 @@ public class OMAbstractFactory {
      * @return Returns SOAPFactory.
      */
     public static SOAPFactory getSOAP12Factory() {
+        if(defaultSOAP12OMFactory != null) {
+            return defaultSOAP12OMFactory;
+        }
         try {
             String omFactory = System.getProperty(SOAP12_FACTORY_NAME_PROPERTY);
             if (omFactory == null || "".equals(omFactory)) {
                 omFactory = DEFAULT_SOAP12_FACTORY_CLASS_NAME;
             }
-            return (SOAPFactory) Class.forName(omFactory).newInstance();
+            defaultSOAP12OMFactory = (SOAPFactory) Class.forName(omFactory).newInstance();
         } catch (InstantiationException e) {
             throw new OMException(e);
         } catch (IllegalAccessException e) {
@@ -95,7 +106,6 @@ public class OMAbstractFactory {
         } catch (ClassNotFoundException e) {
             throw new OMException(e);
         }
+        return defaultSOAP12OMFactory;
     }
-
-
 }

@@ -66,7 +66,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     /**
      * Field log
      */
-    private Log log = LogFactory.getLog(getClass());
+    private static final Log log = LogFactory.getLog(StAXSOAPModelBuilder.class);
 
     /**
      * element level 1 = envelope level element level 2 = Header or Body level
