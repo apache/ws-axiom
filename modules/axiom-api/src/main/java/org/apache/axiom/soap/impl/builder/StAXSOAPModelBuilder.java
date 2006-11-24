@@ -135,13 +135,15 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         }
 
         envelopeNamespace = soapEnvelope.getNamespace();
-        String namespaceName = envelopeNamespace.getNamespaceURI();
-        if ((soapVersionURIFromTransport != null) && !(soapVersionURIFromTransport.equals(namespaceName)))
-        {
-            throw new SOAPProcessingException("Transport level information does not match with SOAP" +
-                    " Message namespace URI", envelopeNamespace.getPrefix() + ":" + SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
 
+        if (soapVersionURIFromTransport != null) {
+            String namespaceName = envelopeNamespace.getNamespaceURI();
+            if (!(soapVersionURIFromTransport.equals(namespaceName))){
+                throw new SOAPProcessingException("Transport level information does not match with SOAP" +
+                        " Message namespace URI", envelopeNamespace.getPrefix() + ":" + SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
+            }
         }
+
     }
 
     /**
@@ -171,9 +173,9 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             node = constructNode(null, elementName, true);
             setSOAPEnvelope(node);
         } else if (lastNode.isComplete()) {
-            node =constructNode((OMElement) lastNode.getParent(),
-                            elementName,
-                            false);
+            node = constructNode((OMElement) lastNode.getParent(),
+                    elementName,
+                    false);
             ((OMNodeEx) lastNode).setNextOMSibling(node);
             ((OMNodeEx) node).setPreviousOMSibling(lastNode);
         } else {
@@ -232,8 +234,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             soapMessage = soapFactory.createSOAPMessage(this);
             this.document = soapMessage;
             if (charEncoding != null) {
-            	document.setCharsetEncoding(charEncoding);
-             }
+                document.setCharsetEncoding(charEncoding);
+            }
 
             envelope = soapFactory.createSOAPEnvelope(this);
             element = envelope;
@@ -302,10 +304,12 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
 
             processingFault = true;
-            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getNamespaceURI())) {
+            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getNamespaceURI()))
+            {
                 builderHelper = new SOAP12BuilderHelper(this);
             } else
-            if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getNamespaceURI())) {
+            if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getNamespaceURI()))
+            {
                 builderHelper = new SOAP11BuilderHelper(this);
             }
 
@@ -371,7 +375,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      * @return Returns OMElement.
      */
     public OMElement getDocumentElement() {
-        return getSOAPEnvelope();
+        return envelope != null ? envelope : getSOAPEnvelope();
     }
 
     /**
