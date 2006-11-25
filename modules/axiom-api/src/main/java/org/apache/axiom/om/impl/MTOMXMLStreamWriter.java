@@ -71,8 +71,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             xmlWriter = StAXUtils.createXMLStreamWriter(bufferedSOAPBody);
         } else {
             try {
-                xmlWriter = StAXUtils.createXMLStreamWriter(new java.io.BufferedWriter(new OutputStreamWriter(outStream,
-                        format.getCharSetEncoding())));
+                xmlWriter = StAXUtils.createXMLStreamWriter(new OutputStreamWriter(outStream,
+                        format.getCharSetEncoding()));
             } catch (UnsupportedEncodingException e) {
                 throw new XMLStreamException(e);
             }
