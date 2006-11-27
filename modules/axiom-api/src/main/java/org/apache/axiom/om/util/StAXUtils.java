@@ -182,6 +182,20 @@ public class StAXUtils {
         }
     }
 
+    public static XMLStreamWriter createXMLStreamWriter(OutputStream out, String encoding)
+            throws XMLStreamException {
+        XMLOutputFactory outputFactory = getXMLOutputFactory();
+        try {
+            XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out, encoding);
+            if(isDebugEnabled) {
+                log.debug("XMLStreamWriter is " + writer.getClass().getName());
+            }
+            return writer;
+        } finally {
+            releaseXMLOutputFactory(outputFactory);
+        }
+    }
+
     public static XMLStreamWriter createXMLStreamWriter(Writer out)
             throws XMLStreamException {
         XMLOutputFactory outputFactory = getXMLOutputFactory();
