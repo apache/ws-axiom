@@ -22,6 +22,7 @@ import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamException;
 
 /**
  * OM should be able to be built from any data source. And the model it builds
@@ -467,5 +468,13 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
     public OMNode getLastNode() {
         return this.lastNode;
+    }
+
+    public void close() {
+        try {
+            parser.close();
+        } catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
