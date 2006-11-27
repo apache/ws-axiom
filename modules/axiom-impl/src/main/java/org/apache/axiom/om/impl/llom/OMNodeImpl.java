@@ -397,6 +397,9 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
         internalSerialize(writer);
         writer.flush();
+        if(format.isAutoCloseWriter()){
+            writer.close();
+        }
     }
 
     public void serialize(Writer writer2, OMOutputFormat format) throws XMLStreamException {
@@ -404,12 +407,18 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
         writer.setOutputFormat(format);
         internalSerialize(writer);
         writer.flush();
+        if(format.isAutoCloseWriter()){
+            writer.close();
+        }
     }
 
     public void serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
         internalSerializeAndConsume(writer);
         writer.flush();
+        if(format.isAutoCloseWriter()){
+            writer.close();
+        }
     }
 
     public void serializeAndConsume(Writer writer2, OMOutputFormat format) throws XMLStreamException {
@@ -417,6 +426,9 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
         writer.setOutputFormat(format);
         internalSerializeAndConsume(writer);
         writer.flush();
+        if(format.isAutoCloseWriter()){
+            writer.close();
+        }
     }
 
     public OMFactory getOMFactory() {

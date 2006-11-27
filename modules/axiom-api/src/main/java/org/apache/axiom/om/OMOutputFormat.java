@@ -46,6 +46,7 @@ public class OMOutputFormat {
     private String charSetEncoding;
     private String xmlVersion;
     private boolean ignoreXMLDeclaration = false;
+    private boolean autoCloseWriter = false;
 
 
     public OMOutputFormat() {
@@ -179,4 +180,12 @@ public class OMOutputFormat {
 	    sb.append("start=\"<" + getRootContentId() + ">\"");
 	    return sb.toString();
 	}
+
+    public boolean isAutoCloseWriter() {
+        return autoCloseWriter;
+    }
+
+    public void setAutoCloseWriter(boolean autoCloseWriter) {
+        this.autoCloseWriter = autoCloseWriter;
+    }
 }
