@@ -498,6 +498,6 @@
         <module>modules/axiom-tests</module>
     </modules>
     <properties>
-        <axiom.version>SNAPSHOT</axiom.version>
+        <axiom.version>${pom.version}</axiom.version>
     </properties>
 </project>
