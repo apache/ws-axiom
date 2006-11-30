@@ -1,5 +1,7 @@
 package org.apache.axiom.om.util;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
@@ -62,5 +64,15 @@ public class OMAttributeHelperTest extends TestCase {
         OMElement ome4 = doomf.createOMElement("element", ns4.getNamespaceURI(), ns4.getPrefix());
         AttributeHelper.importOMAttribute(attr4, ome4);
         assertSame(attr4, ome4.getAttribute(attr4.getQName()));
+    }
+    
+    public void testDetachedElement(){
+        OMNamespace top = DOOMAbstractFactory.getOMFactory().createOMNamespace("urn:test1", "t1");
+        OMElement ome = DOOMAbstractFactory.getOMFactory().createOMElement("test", top);
+        OMElement child = DOOMAbstractFactory.getOMFactory().createOMElement(new QName("test"), ome);
+        OMAttribute oma = child.addAttribute("attr", "value", top);
+        
+        OMElement target = OMAbstractFactory.getOMFactory().createOMElement("test2", "urn:test2", "t2");
+        AttributeHelper.importOMAttribute(oma, target);
     }
 }

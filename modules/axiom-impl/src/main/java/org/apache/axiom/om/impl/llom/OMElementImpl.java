@@ -523,12 +523,7 @@ public class OMElementImpl extends OMNodeImpl
         if (ns != null) {
             namespace = findNamespace(ns.getNamespaceURI(), ns.getPrefix());
             if (namespace == null) {
-                throw new OMException("Given OMNamespace(" + ns.getNamespaceURI() + " " +
-                        ns.getPrefix()
-                        + ") for "
-                        +
-                        "this attribute is not declared in the scope of this element. First declare the namespace"
-                        + " and then use it with the attribute");
+                namespace = new OMNamespaceImpl(ns.getNamespaceURI(), ns.getPrefix());
             }
         }
         return addAttribute(new OMAttributeImpl(attributeName, ns, value, this.factory));
