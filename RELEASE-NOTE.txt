@@ -1,21 +1,24 @@
-===========================================
-
-     Apache AXIOM 1.2 Release Note
 
 ===========================================
 
-http://ws.apache.org/commons/axiom
+     Apache AXIOM 1.2.1 Release Note
 
-Apache AXIOM is a StAX-based, XML Infoset compliant object model which supports on-demand building
-of the object tree. It supports a novel "pull-through" model which allows one to turn off the tree
-building and directly access the underlying pull event stream. It also has built-in support for XML
-Optimized Packaging (XOP) and MTOM, the combination of which allows XML to carry binary data
-efficiently and in a transparent manner. The combination of these results in a easy to use API with
-a very high performant architecture!
+===========================================
 
-Initialy developed as part of Apache Axis2, Apache AXIOM (AXIs Object Model) is the core of Apache
-Axis2. However, it is a pure standalone XML Infoset model with novel features and can be used
-independently of Apache Axis2.
+Apache AXIOM is a StAX-based, XML Infoset compliant object model which supports 
+on-demand building of the object tree. It supports a novel "pull-through" model 
+which allows one to turn off the tree building and directly access the underlying
+pull event stream. It also has built-in support for XML Optimized Packaging (XOP)
+and MTOM, the combination of which allows XML to carry binary data efficiently 
+and in a transparent manner. The combination of these results in a easy to use 
+API with a very high performant architecture!
+
+Initialy developed as part of Apache Axis2, Apache AXIOM (AXIs Object Model) is 
+the core of Apache Axis2. However, it is a pure standalone XML Infoset model with
+novel features and can be used independently of Apache Axis2.
+
+Please visit: http://ws.apache.org/commons/axiom/
+
 
 Key Features
 ============
@@ -29,15 +32,16 @@ Key Features
           o W3C DOM supporting implementation
     * High performant
 
+    
+
 What's New in This Release
 ==========================
 
-    * Improved XML serialization
-    * Improved Builder hierarchy
-    * Improved MTOM handling
-    * Numerous bug fixes
+This is release includes only bug fixes for the following issues.
 
-Thanks for your interest in Apache AXIOM!
+WSCOMMONS-129 : org.apache.axiom.om.impl.dom.DocumentImpl#importNode() does 
+		not work properly.
+WSCOMMONS-131 : axiom-parent-1.2.pom still references SNAPSHOT versions.
 
 
--The Apache AXIOM Development Team
+- The Apache Axiom Team.
