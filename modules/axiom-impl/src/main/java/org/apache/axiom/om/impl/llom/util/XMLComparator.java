@@ -27,6 +27,10 @@ import org.apache.commons.logging.LogFactory;
 import java.util.Iterator;
 import java.util.Vector;
 
+
+/**
+ * @deprecated This class is outdated. Please use XmlUnit to compate two xml files.
+ */
 public class XMLComparator {
     /**
      * Eran Chinthaka (chinthaka@apache.org)

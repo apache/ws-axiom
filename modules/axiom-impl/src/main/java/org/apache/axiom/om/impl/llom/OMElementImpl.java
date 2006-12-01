@@ -148,8 +148,9 @@ public class OMElementImpl extends OMNodeImpl
         // first try to find a namespace from the scope
         String namespaceURI = qname.getNamespaceURI();
         if (namespaceURI != null && namespaceURI.length() > 0) {
+            String prefix = qname.getPrefix();
             ns = findNamespace(qname.getNamespaceURI(),
-                    qname.getPrefix());
+                    prefix);
 
             /**
              * What is left now is
@@ -157,7 +158,6 @@ public class OMElementImpl extends OMNodeImpl
              *  2. nsURI != null, (parent doesn't have an ns with given URI), but ns = null
              */
             if (ns == null) {
-                String prefix = qname.getPrefix();
                 if ("".equals(prefix)) {
                     prefix = OMSerializerUtil.getNextNSPrefix();
                 }
@@ -493,10 +493,12 @@ public class OMElementImpl extends OMNodeImpl
             this.attributes = new LinkedHashMap(5);
         }
         OMNamespace namespace = attr.getNamespace();
-        if (namespace != null && namespace.getNamespaceURI() != null && 
-                !"".equals(namespace.getNamespaceURI()) && 
-                this.findNamespace(namespace.getNamespaceURI(), namespace.getPrefix()) == null) {
-            this.declareNamespace(namespace.getNamespaceURI(), namespace.getPrefix());
+        String nsURI;
+        String nsPrefix;
+        if (namespace != null && (nsURI = namespace.getNamespaceURI()) != null &&
+                !"".equals(nsURI) &&
+                this.findNamespace(nsURI, (nsPrefix = namespace.getPrefix())) == null) {
+            this.declareNamespace(nsURI, nsPrefix);
         }
 
         attributes.put(attr.getQName(), attr);
@@ -519,14 +521,14 @@ public class OMElementImpl extends OMNodeImpl
      */
     public OMAttribute addAttribute(String attributeName, String value,
                                     OMNamespace ns) {
-        OMNamespace namespace;
+        OMNamespace namespace = null;
         if (ns != null) {
             namespace = findNamespace(ns.getNamespaceURI(), ns.getPrefix());
             if (namespace == null) {
                 namespace = new OMNamespaceImpl(ns.getNamespaceURI(), ns.getPrefix());
             }
         }
-        return addAttribute(new OMAttributeImpl(attributeName, ns, value, this.factory));
+        return addAttribute(new OMAttributeImpl(attributeName, namespace, value, this.factory));
     }
 
     /**
@@ -709,9 +711,10 @@ public class OMElementImpl extends OMNodeImpl
         while (child != null) {
             if (child.getType() == OMNode.TEXT_NODE) {
                 textNode = (OMText) child;
-                if (textNode.getText() != null &&
-                        !"".equals(textNode.getText())) {
-                    childText += textNode.getText();
+                String textValue = textNode.getText();
+                if (textValue != null &&
+                        !"".equals(textValue)) {
+                    childText += textValue;
                 }
             }
             child = child.getNextOMSibling();
@@ -728,13 +731,14 @@ public class OMElementImpl extends OMNodeImpl
         while (child != null) {
             if (child.getType() == OMNode.TEXT_NODE) {
                 textNode = (OMText) child;
-                if (textNode.getText() != null &&
-                        !"".equals(textNode.getText())) {
+                String textValue = textNode.getText();
+                if (textValue != null &&
+                        !"".equals(textValue)) {
                     String namespaceURI = textNode.getTextAsQName().getNamespaceURI();
                     if (namespaceURI != null && !"".equals(namespaceURI)) {
                         return textNode.getTextAsQName();
                     }
-                    childText += textNode.getText();
+                    childText += textValue;
                 }
             }
             child = child.getNextOMSibling();
@@ -756,9 +760,10 @@ public class OMElementImpl extends OMNodeImpl
         while (child != null) {
             if (child.getType() == OMNode.TEXT_NODE) {
                 textNode = (OMText) child;
-                if (textNode.getText() != null &&
-                        !"".equals(textNode.getText().trim())) {
-                    childText += textNode.getText().trim();
+                String textValue = textNode.getText();
+                if (textValue != null &&
+                        !"".equals(textValue.trim())) {
+                    childText += textValue.trim();
                 }
             }
             child = child.getNextOMSibling();

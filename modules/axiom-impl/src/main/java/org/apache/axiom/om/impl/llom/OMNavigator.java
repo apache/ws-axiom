@@ -135,7 +135,7 @@ public class OMNavigator {
     		}
     	} else {
     		OMContainer parent = next.getParent();
-    		OMNode nextSibling = _getNextSibling(next);
+    		OMNode nextSibling = getNextSibling(next);
     		if (nextSibling != null) {
     			next = nextSibling;
     		} else if ((parent != null) && parent.isComplete() && !(parent instanceof OMDocument)) {
@@ -171,7 +171,7 @@ public class OMNavigator {
      * @param node
      * @return next sibling or null
      */
-    private OMNode _getNextSibling(OMNode node) {
+    private OMNode getNextSibling(OMNode node) {
     	if (node instanceof OMSourcedElementImpl) {
     		return node.getNextOMSibling();
     	} else {

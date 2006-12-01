@@ -55,9 +55,9 @@ public class OMAttributeImpl implements OMAttribute {
      */
     public OMAttributeImpl(String localName, OMNamespace ns, String value, 
             OMFactory factory) {
-        setLocalName(localName);
-        setAttributeValue(value);
-        setOMNamespace(ns);
+        this.localName = localName;
+        this.value = value;
+        this.namespace = ns; 
         this.factory = factory;
     }
 
