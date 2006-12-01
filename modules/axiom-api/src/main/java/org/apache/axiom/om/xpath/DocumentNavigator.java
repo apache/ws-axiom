@@ -67,13 +67,14 @@ public class DocumentNavigator extends DefaultNavigator {
     public String getElementQName(Object object) {
         OMElement attr = (OMElement) object;
         String prefix = null;
-        if (attr.getNamespace() != null) {
-            prefix = attr.getNamespace().getPrefix();
+        OMNamespace namespace = attr.getNamespace();
+        if (namespace != null) {
+            prefix = namespace.getPrefix();
         }
         if (prefix == null || "".equals(prefix)) {
             return attr.getQName().getLocalPart();
         }
-        return prefix + ":" + attr.getNamespace().getNamespaceURI();
+        return prefix + ":" + namespace.getNamespaceURI();
     }
 
     /**

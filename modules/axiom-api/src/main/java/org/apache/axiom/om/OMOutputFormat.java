@@ -57,21 +57,21 @@ public class OMOutputFormat {
     }
 
     public String getContentType() {
-        String SOAPContentType;
+        String soapContentType;
         if (isSoap11) {
-            SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
+            soapContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
         } else {
-            SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
+            soapContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
         }
         // MTOM is given priority
         if (isOptimized()) {
-            return this.getContentTypeForMTOM(SOAPContentType);
+            return this.getContentTypeForMTOM(soapContentType);
         } else if (isDoingSWA())
         {
-        	return this.getContentTypeForSwA(SOAPContentType);
+        	return this.getContentTypeForSwA(soapContentType);
         }
         else {
-            return SOAPContentType;
+            return soapContentType;
         }
     }
 
@@ -162,9 +162,9 @@ public class OMOutputFormat {
 	    sb.append("; ");  
 	  	sb.append("type=\""+MTOMConstants.MTOM_TYPE+"\"");
 	    sb.append("; ");
-	    sb.append("start=\"<" + getRootContentId() + ">\"");
+        sb.append("start=\"<").append(getRootContentId()).append(">\"");
 	    sb.append("; ");
-	    sb.append("start-info=\""+SOAPContentType+"\"");
+        sb.append("start-info=\"").append(SOAPContentType).append("\"");
 	    return sb.toString();
 	}
 	
@@ -174,10 +174,10 @@ public class OMOutputFormat {
 	    sb.append("; ");
 	    sb.append("boundary=");
 	    sb.append(getMimeBoundary());
-	    sb.append("; ");  
-	  	sb.append("type=\""+SOAPContentType+"\"");
 	    sb.append("; ");
-	    sb.append("start=\"<" + getRootContentId() + ">\"");
+        sb.append("type=\"").append(SOAPContentType).append("\"");
+	    sb.append("; ");
+        sb.append("start=\"<").append(getRootContentId()).append(">\"");
 	    return sb.toString();
 	}
 

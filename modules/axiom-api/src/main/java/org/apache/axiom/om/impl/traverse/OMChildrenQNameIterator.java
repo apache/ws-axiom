@@ -120,22 +120,24 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
         }
 
         // if the given localname is null, whatever value this.qname has, its a match. But can one give a QName without a localName ??
+        String localPart = qNameToBeMatched.getLocalPart();
         boolean localNameMatch =
-                (qNameToBeMatched.getLocalPart() == null)
-                || (qNameToBeMatched.getLocalPart() == "")
+                (localPart == null)
+                || (localPart.equals(""))
                 ||
                 ((elementQName != null)
                 &&
                 elementQName.getLocalPart().equalsIgnoreCase(
-                        qNameToBeMatched.getLocalPart()));
+                        localPart));
+        String namespaceURI = qNameToBeMatched.getNamespaceURI();
         boolean namespaceURIMatch =
-                (qNameToBeMatched.getNamespaceURI() == null)
-                || (qNameToBeMatched.getNamespaceURI() == "")
+                (namespaceURI == null)
+                || (namespaceURI.equals(""))
                 ||
                 ((elementQName != null)
                 &&
                 elementQName.getNamespaceURI().equalsIgnoreCase(
-                        qNameToBeMatched.getNamespaceURI()));
+                        namespaceURI));
         return localNameMatch && namespaceURIMatch;
     }
 }
