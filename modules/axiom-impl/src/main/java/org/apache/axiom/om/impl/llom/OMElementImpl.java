@@ -523,9 +523,11 @@ public class OMElementImpl extends OMNodeImpl
                                     OMNamespace ns) {
         OMNamespace namespace = null;
         if (ns != null) {
-            namespace = findNamespace(ns.getNamespaceURI(), ns.getPrefix());
+            String namespaceURI = ns.getNamespaceURI();
+            String prefix = ns.getPrefix();
+            namespace = findNamespace(namespaceURI, prefix);
             if (namespace == null) {
-                namespace = new OMNamespaceImpl(ns.getNamespaceURI(), ns.getPrefix());
+                namespace = new OMNamespaceImpl(namespaceURI, prefix);
             }
         }
         return addAttribute(new OMAttributeImpl(attributeName, namespace, value, this.factory));
