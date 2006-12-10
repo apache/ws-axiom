@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -180,7 +181,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             ((OMNodeEx) lastNode).setNextOMSibling(node);
             ((OMNodeEx) node).setPreviousOMSibling(lastNode);
         } else {
-            OMElement e = (OMElement) lastNode;
+            OMContainerEx e = (OMContainerEx) lastNode;
             node = constructNode((OMElement) lastNode, elementName, false);
             e.setFirstChild(node);
         }

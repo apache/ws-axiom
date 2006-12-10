@@ -18,6 +18,7 @@ package org.apache.axiom.om.impl.builder;
 
 import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 import javax.xml.stream.XMLStreamConstants;
@@ -238,7 +239,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                 if (parent == null) {
                     throw new OMException();
                 }
-                parent.setFirstChild(null);
+                ((OMContainerEx) parent).setFirstChild(null);
                 lastNode = parent;
             }
             cache = true;

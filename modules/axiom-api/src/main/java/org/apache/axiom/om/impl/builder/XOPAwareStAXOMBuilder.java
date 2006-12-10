@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -130,9 +131,9 @@ public class XOPAwareStAXOMBuilder extends StAXOMBuilder implements XOPBuilder{
 				((OMNodeEx) lastNode).setNextOMSibling(node);
 				((OMNodeEx) node).setPreviousOMSibling(lastNode);
 			} else {
-				OMElement e = (OMElement) lastNode;
+				OMContainerEx e = (OMContainerEx) lastNode;
 				node = omfactory.createOMText(contentID, (OMElement) lastNode,this);
-				e.setFirstChild(node);
+                e.setFirstChild(node);
 			}
 			return node;
 		} else {

@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.commons.logging.Log;
@@ -85,10 +86,10 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
 				((OMNodeEx) lastNode).setNextOMSibling(node);
 				((OMNodeEx) node).setPreviousOMSibling(lastNode);
 			} else {
-				OMElement e = (OMElement) lastNode;
+				OMContainerEx e = (OMContainerEx) lastNode;
 				node = omfactory.createOMText(contentID, (OMElement) lastNode,
 						this);
-				e.setFirstChild(node);
+                 e.setFirstChild(node);
 			}
 			return node;
 

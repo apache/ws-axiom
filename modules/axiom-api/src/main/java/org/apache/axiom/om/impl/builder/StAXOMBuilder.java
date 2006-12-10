@@ -232,7 +232,7 @@ public class StAXOMBuilder extends StAXBuilder {
             ((OMNodeEx) lastNode).setNextOMSibling(node);
             ((OMNodeEx) node).setPreviousOMSibling(lastNode);
         } else {
-            OMElement e = (OMElement) lastNode;
+            OMContainerEx e = (OMContainerEx) lastNode;
             node = omfactory.createOMElement(elementName, null,
                     (OMElement) lastNode, this);
             e.setFirstChild(node);

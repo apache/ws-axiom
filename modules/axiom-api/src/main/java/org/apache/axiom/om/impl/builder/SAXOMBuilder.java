@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.OMContainerEx;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -62,7 +63,7 @@ public class SAXOMBuilder extends DefaultHandler {
             ((OMNodeEx)lastNode).setNextOMSibling(e);
             ((OMNodeEx)e).setPreviousOMSibling(lastNode);
         } else {
-            OMElement parent = (OMElement) lastNode;
+            OMContainerEx parent = (OMContainerEx) lastNode;
             e = factory.createOMElement(localName, null, (OMElement) lastNode,
                     null);
             parent.setFirstChild(e);
@@ -147,7 +148,7 @@ public class SAXOMBuilder extends DefaultHandler {
             ((OMNodeEx)lastNode).setNextOMSibling(node);
             ((OMNodeEx)node).setPreviousOMSibling(lastNode);
         } else {
-            OMElement e = (OMElement) lastNode;
+            OMContainerEx e = (OMContainerEx) lastNode;
             node = factory.createOMText(e, new String(ch, start, length));
             e.setFirstChild(node);
         }

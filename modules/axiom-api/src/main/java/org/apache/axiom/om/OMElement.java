@@ -199,6 +199,10 @@ public interface OMElement extends OMNode, OMContainer {
     /**
      * Sets the first child.
      *
+     * @deprecated This method should not be called, un-intentionally. When some one randomly set the
+     * first child, all the links handling will not happen inside this method. So we have moved this
+     * method to the less visible interface, OMContainerEx.
+     *
      * @param node
      */
     public void setFirstChild(OMNode node);

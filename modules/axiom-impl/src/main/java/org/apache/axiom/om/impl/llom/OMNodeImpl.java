@@ -203,6 +203,8 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
             ((OMElementImpl) parent).lastChild = getPreviousOMSibling();
         }
 
+        this.previousSibling = null;
+        this.nextSibling = null;
         this.parent = null;
         return this;
     }
