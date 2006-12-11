@@ -184,7 +184,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public DocumentFragment createDocumentFragment() {
-        return new DocumentFragmentimpl(this, this.factory);
+        return new DocumentFragmentImpl(this, this.factory);
     }
 
     public Element createElement(String tagName) throws DOMException {

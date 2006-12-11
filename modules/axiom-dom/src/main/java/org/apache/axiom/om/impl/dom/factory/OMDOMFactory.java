@@ -33,7 +33,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;
-import org.apache.axiom.om.impl.dom.DocumentFragmentimpl;
+import org.apache.axiom.om.impl.dom.DocumentFragmentImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.NamespaceImpl;
@@ -92,7 +92,7 @@ public class OMDOMFactory implements OMFactory {
                     (NamespaceImpl) ns, this);
 
         case Node.DOCUMENT_FRAGMENT_NODE:
-            DocumentFragmentimpl docFragImpl = (DocumentFragmentimpl) parent;
+            DocumentFragmentImpl docFragImpl = (DocumentFragmentImpl) parent;
             return new ElementImpl((DocumentImpl) docFragImpl
                     .getOwnerDocument(), localName, (NamespaceImpl) ns, this);
         default:
@@ -123,7 +123,7 @@ public class OMDOMFactory implements OMFactory {
             return elem2;
 
         case Node.DOCUMENT_FRAGMENT_NODE:
-            DocumentFragmentimpl docFragImpl = (DocumentFragmentimpl) parent;
+            DocumentFragmentImpl docFragImpl = (DocumentFragmentImpl) parent;
             return new ElementImpl((DocumentImpl) docFragImpl
                     .getOwnerDocument(), localName, (NamespaceImpl) ns,
                     builder, this);

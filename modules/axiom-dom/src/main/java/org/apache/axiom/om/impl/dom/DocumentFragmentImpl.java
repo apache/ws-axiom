@@ -23,13 +23,13 @@ import org.w3c.dom.Node;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public class DocumentFragmentimpl extends ParentNode implements
+public class DocumentFragmentImpl extends ParentNode implements
         DocumentFragment {
 
     /**
      * @param ownerDocument
      */
-    public DocumentFragmentimpl(DocumentImpl ownerDocument, OMFactory factory) {
+    public DocumentFragmentImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
         this.done = true;
     }

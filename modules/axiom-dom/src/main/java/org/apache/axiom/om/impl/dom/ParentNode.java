@@ -239,10 +239,10 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                     if (this.firstChild == tempNode) { // If the refChild is the
                                                     // first child
 
-                        if (newChild instanceof DocumentFragmentimpl) {
+                        if (newChild instanceof DocumentFragmentImpl) {
                             // The new child is a DocumentFragment
-                            DocumentFragmentimpl docFrag = 
-                                                (DocumentFragmentimpl) newChild;
+                            DocumentFragmentImpl docFrag =
+                                                (DocumentFragmentImpl) newChild;
                             this.firstChild = docFrag.firstChild;
                             docFrag.lastChild.nextSibling = refDomChild;
                             refDomChild.previousSibling = 
@@ -265,10 +265,10 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                     } else { // If the refChild is not the fist child
                         ChildNode previousNode = refDomChild.previousSibling;
 
-                        if (newChild instanceof DocumentFragmentimpl) {
+                        if (newChild instanceof DocumentFragmentImpl) {
                             // the newChild is a document fragment
-                            DocumentFragmentimpl docFrag = 
-                                                (DocumentFragmentimpl) newChild;
+                            DocumentFragmentImpl docFrag =
+                                                (DocumentFragmentImpl) newChild;
 
                             previousNode.nextSibling = docFrag.firstChild;
                             docFrag.firstChild.previousSibling = previousNode;
@@ -342,9 +342,9 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         while (children.hasNext()) {
             ChildNode tempNode = (ChildNode) children.next();
             if (tempNode.equals(oldChild)) {
-                if (newChild instanceof DocumentFragmentimpl) {
-                    DocumentFragmentimpl docFrag = 
-                                            (DocumentFragmentimpl) newDomChild;
+                if (newChild instanceof DocumentFragmentImpl) {
+                    DocumentFragmentImpl docFrag =
+                                            (DocumentFragmentImpl) newDomChild;
                     ChildNode child = (ChildNode) docFrag.getFirstChild();
                     this.replaceChild(child, oldChild);
                     if(child != null) {
