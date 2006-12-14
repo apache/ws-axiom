@@ -184,6 +184,15 @@ public class OMElementImpl extends OMNodeImpl
         return namespace;
     }
 
+    OMNamespace handleNamespace(String namespaceURI, String prefix) {
+        OMNamespace namespace = findNamespace(namespaceURI,
+                prefix);
+        if (namespace == null) {
+            namespace = declareNamespace(namespaceURI, prefix);
+        }
+        return namespace;
+    }
+
     /**
      * Adds child to the element. One can decide whether to append the child or to add to the
      * front of the children list.

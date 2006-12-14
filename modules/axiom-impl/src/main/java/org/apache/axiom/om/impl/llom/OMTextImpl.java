@@ -125,7 +125,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                       OMFactory factory) {
         super(parent, factory, true);
         this.calcNS = true;
-        this.textNS = ((OMElementImpl) parent).handleNamespace(text);
+        this.textNS = ((OMElementImpl) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
         this.value = text == null ? EMTPY_STRING : text.getLocalPart();
         this.nodeType = nodeType;
     }

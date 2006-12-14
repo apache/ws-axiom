@@ -779,4 +779,9 @@ public class OMSourcedElementImpl extends OMElementImpl
     protected void notifyChildComplete() {
         super.notifyChildComplete();    
     }
+
+
+    OMNamespace handleNamespace(String namespaceURI, String prefix) {
+        return super.handleNamespace(namespaceURI, prefix);    //To change body of overridden methods use File | Settings | File Templates.
+    }
 }
