@@ -435,7 +435,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
 
     private void internalSerializeLocal(XMLStreamWriter writer2) throws XMLStreamException {
         
-        if (!this.isBinary) {
+        if ((!this.isBinary) ||(!this.isOptimized()) ) {
             writeOutput(writer2);
         } else {
             //check whether we have a MTOMXMLStreamWriter. if so
