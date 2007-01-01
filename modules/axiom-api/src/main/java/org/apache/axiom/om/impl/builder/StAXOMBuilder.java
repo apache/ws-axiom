@@ -41,7 +41,7 @@ public class StAXOMBuilder extends StAXBuilder {
      */
 
     private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
-    private boolean doDebug = false;
+    private boolean doDebug = log.isDebugEnabled();
     private static int nsCount = 0;
 
     /**
@@ -53,7 +53,6 @@ public class StAXOMBuilder extends StAXBuilder {
     public StAXOMBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
         super(ombuilderFactory, parser);
         document = ombuilderFactory.createOMDocument(this);
-        doDebug = log.isDebugEnabled();
     }
 
     /**
@@ -67,7 +66,6 @@ public class StAXOMBuilder extends StAXBuilder {
         this(factory, parser);
         lastNode = element;
         document.setOMDocumentElement(element);
-        doDebug = log.isDebugEnabled();
         populateOMElement(element);
     }
 
@@ -78,7 +76,6 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     public StAXOMBuilder(String filePath) throws XMLStreamException, FileNotFoundException {
         this(StAXUtils.createXMLStreamReader(new FileInputStream(filePath)));
-        doDebug = log.isDebugEnabled();
     }
 
     /**
@@ -87,7 +84,6 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     public StAXOMBuilder(InputStream inStream) throws XMLStreamException {
         this(StAXUtils.createXMLStreamReader(inStream));
-        doDebug = log.isDebugEnabled();
     }
 
     /**
@@ -99,7 +95,6 @@ public class StAXOMBuilder extends StAXBuilder {
         super(parser);
         omfactory = OMAbstractFactory.getOMFactory();
         document = omfactory.createOMDocument(this);
-        doDebug = log.isDebugEnabled();
     }
 
     /**

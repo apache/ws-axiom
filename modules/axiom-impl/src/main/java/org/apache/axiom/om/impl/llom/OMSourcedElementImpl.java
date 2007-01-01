@@ -61,7 +61,8 @@ public class OMSourcedElementImpl extends OMElementImpl
     private boolean isParserSet;
     
     private static Log log = LogFactory.getLog(OMSourcedElementImpl.class);
-    
+    private static final boolean isDebugEnabled = log.isDebugEnabled();
+
     /**
      * Constructor.
      * 
@@ -132,7 +133,7 @@ public class OMSourcedElementImpl extends OMElementImpl
     private void forceExpand() {
         if (!isParserSet) {
             
-            if (log.isDebugEnabled()) {
+            if (isDebugEnabled) {
                 log.debug("forceExpand: expanding element " +
                     getPrintableName());
             }
@@ -340,7 +341,7 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMElement#getXMLStreamReader()
      */
     public XMLStreamReader getXMLStreamReader() {
-        if (log.isDebugEnabled()) {
+        if (isDebugEnabled) {
             log.debug("getting XMLStreamReader for " + getPrintableName());
         }
         if (isParserSet) {
@@ -354,7 +355,7 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMElement#getXMLStreamReaderWithoutCaching()
      */
     public XMLStreamReader getXMLStreamReaderWithoutCaching() {
-        if (log.isDebugEnabled()) {
+        if (isDebugEnabled) {
             log.debug("getting XMLStreamReader without caching for " +
                 getPrintableName());
         }
@@ -543,7 +544,7 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#internalSerializeAndConsume(javax.xml.stream.XMLStreamWriter)
      */
     public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
-        if (log.isDebugEnabled()) {
+        if (isDebugEnabled) {
             log.debug("serialize " + getPrintableName() + " to XMLStreamWriter");
         }
         if (isDataSourceConsumed()) {
@@ -599,7 +600,7 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.OutputStream)
      */
     public void serializeAndConsume(OutputStream output) throws XMLStreamException {
-        if (log.isDebugEnabled()) {
+        if (isDebugEnabled) {
             log.debug("serialize " + getPrintableName() + " to output stream");
         }
         if (isDataSourceConsumed()) {
@@ -613,7 +614,7 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.Writer)
      */
     public void serializeAndConsume(Writer writer) throws XMLStreamException {
-        if (log.isDebugEnabled()) {
+        if (isDebugEnabled) {
             log.debug("serialize " + getPrintableName() + " to writer");
         }
         if (isDataSourceConsumed()) {
@@ -627,7 +628,7 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
      */
     public void serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        if (log.isDebugEnabled()) {
+        if (isDebugEnabled) {
             log.debug("serialize formatted " + getPrintableName() +
                 " to output stream");
         }
@@ -642,7 +643,7 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
      */
     public void serializeAndConsume(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        if (log.isDebugEnabled()) {
+        if (isDebugEnabled) {
             log.debug("serialize formatted " + getPrintableName() +
                 " to writer");
         }
