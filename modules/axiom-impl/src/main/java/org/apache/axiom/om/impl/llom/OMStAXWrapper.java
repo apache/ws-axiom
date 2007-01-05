@@ -1290,7 +1290,9 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
             for (Iterator iter = element.getAllAttributes();
                  iter != null && iter.hasNext();) {
                 OMAttribute attr = (OMAttribute) iter.next();
-                addNamespaceToMap(attr.getNamespace(),  nsMap);
+                if (attr.getNamespace() != null) {
+                    addNamespaceToMap(attr.getNamespace(),  nsMap);
+                }
             }
         }
         return nsMap;
