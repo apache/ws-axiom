@@ -326,7 +326,11 @@ public class OMSerializerUtil {
         		String prefix = (String) writePrefixList.get(i);
         		String namespace = (String) writeNSList.get(i);	
         		if (prefix != null) {
-            		writer.writeNamespace(prefix, namespace);
+                    if(namespace==null){
+                        writer.writeNamespace(prefix, "");
+                    } else{
+                        writer.writeNamespace(prefix, namespace);
+                    }
             	} else {
             		writer.writeDefaultNamespace(namespace);
             	}
