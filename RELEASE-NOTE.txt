@@ -1,7 +1,7 @@
 
 ===========================================
 
-     Apache AXIOM 1.2.1 Release Note
+     Apache AXIOM 1.2.2 Release Note
 
 ===========================================
 
@@ -37,11 +37,9 @@ Key Features
 What's New in This Release
 ==========================
 
-This is release includes only bug fixes for the following issues.
+This is release includes few bug fixes, specially following issues.
 
-WSCOMMONS-129 : org.apache.axiom.om.impl.dom.DocumentImpl#importNode() does 
-		not work properly.
-WSCOMMONS-131 : axiom-parent-1.2.pom still references SNAPSHOT versions.
+WSCOMMONS-144 : Axiom having problem when serializing name spaces with null nameSpaceUri.
 
 
 - The Apache Axiom Team.
