@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom-parent</artifactId>
-    <version>SNAPSHOT</version> <!-- Should better be ${axiom.version} -->
+    <version>1.2.2</version> <!-- Should better be ${axiom.version} -->
   </parent>
   <artifactId>axiom-impl</artifactId>
   <name>Axiom Impl</name>
