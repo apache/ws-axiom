@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.apache.ws.commons.axiom</groupId>
-    <artifactId>axiom-parent</artifactId>
-    <version>1.2.2</version> <!-- Should better be ${axiom.version} -->
-  </parent>
-  <artifactId>axiom-dom</artifactId>
-  <name>Axiom DOM</name>
-  <description>The Axiom DOM implementation.</description>
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.ws.commons.axiom</groupId>
-      <artifactId>axiom-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>stax</groupId>
-      <artifactId>stax-api</artifactId>
-    </dependency>
-  </dependencies>
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.apache.ws.commons.axiom</groupId>
+        <artifactId>axiom-parent</artifactId>
+        <version>1.2.2-SNAPSHOT</version>
+        <!-- Should better be ${axiom.version} -->
+    </parent>
+    <artifactId>axiom-dom</artifactId>
+    <name>Axiom DOM</name>
+    <version>1.2.2-SNAPSHOT</version>
+    <description>The Axiom DOM implementation.</description>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>stax</groupId>
+            <artifactId>stax-api</artifactId>
+        </dependency>
+    </dependencies>
 </project>
