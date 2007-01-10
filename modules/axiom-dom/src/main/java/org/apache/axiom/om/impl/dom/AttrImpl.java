@@ -148,18 +148,8 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     // /org.w3c.dom.Attr methods
     // /
     public String getName() {
-    	if(this.namespace != null)
-    	{
-    		if((OMConstants.XMLNS_NS_PREFIX.equals(this.attrName))){
-    			return this.attrName;
-    		}else if(OMConstants.XMLNS_NS_URI.equals(this.namespace.getNamespaceURI())){
-    			return OMConstants.XMLNS_NS_PREFIX + ":" + this.attrName;
-    		}else{
-    			return this.namespace.getPrefix()+":"+this.attrName;
-    		}
-    	}else{
-    		return this.attrName;
-    	}
+        return (this.namespace == null) ? this.attrName
+                : (OMConstants.XMLNS_NS_PREFIX.equals(this.attrName) ? this.attrName : OMConstants.XMLNS_NS_PREFIX + ":" + this.attrName);
     }
 
     /**

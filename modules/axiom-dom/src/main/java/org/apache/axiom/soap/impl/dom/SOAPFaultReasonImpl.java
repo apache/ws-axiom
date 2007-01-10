@@ -18,8 +18,6 @@ package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -28,8 +26,6 @@ import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.util.List;
 
 public abstract class SOAPFaultReasonImpl extends SOAPElement implements
@@ -68,46 +64,6 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
     public SOAPFaultText getFirstSOAPText() {
         return (SOAPFaultText) ElementHelper.getChildWithName(this,
                 SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME);
-    }
-
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        // select the builder
-        short builderType = PULL_TYPE_BUILDER;    // default is pull type
-        if (builder != null) {
-            builderType = this.builder.getBuilderType();
-        }
-        if ((builderType == PUSH_TYPE_BUILDER)
-                && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(writer));
-        }
-
-        if (!cache) {
-            //No caching
-            if (this.firstChild != null) {
-                OMSerializerUtil.serializeStartpart(this, writer);
-                firstChild.internalSerializeAndConsume(writer);
-                OMSerializerUtil.serializeEndpart(writer);
-            } else if (!this.done) {
-                if (builderType == PULL_TYPE_BUILDER) {
-                    OMSerializerUtil.serializeByPullStream(this, writer);
-                } else {
-                    OMSerializerUtil.serializeStartpart(this, writer);
-                    builder.setCache(cache);
-                    builder.next();
-                    OMSerializerUtil.serializeEndpart(writer);
-                }
-            } else {
-                OMSerializerUtil.serializeNormal(this, writer, cache);
-            }
-            // do not serialise the siblings
-
-
-        } else {
-            //Cached
-            OMSerializerUtil.serializeNormal(this, writer, cache);
-
-            // do not serialise the siblings
-        }
     }
 
     public List getAllSoapTexts() {

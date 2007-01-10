@@ -56,11 +56,6 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
      */
     protected boolean done = false;
 
-    /**
-     * Field nodeType
-     */
-    protected int nodeType;
-
     protected DocumentImpl ownerNode;
     
     /**
