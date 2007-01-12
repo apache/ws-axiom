@@ -33,8 +33,8 @@ public class OMOutputFormat {
     private String mimeBoundary = null;
     private String rootContentId = null;
     private int nextid = 0;
-    private boolean doOptimize;
-    private boolean doingSWA;
+    private boolean doOptimize=false;
+    private boolean doingSWA=false;
     private boolean isSoap11 = true;
 
     /**
@@ -188,4 +188,8 @@ public class OMOutputFormat {
     public void setAutoCloseWriter(boolean autoCloseWriter) {
         this.autoCloseWriter = autoCloseWriter;
     }
+
+	public void setMimeBoundary(String mimeBoundary) {
+		this.mimeBoundary = mimeBoundary;
+	}
 }
