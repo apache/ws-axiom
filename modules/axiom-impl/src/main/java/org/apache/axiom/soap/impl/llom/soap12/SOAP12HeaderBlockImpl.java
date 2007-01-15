@@ -87,7 +87,7 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
 
     public void setMustUnderstand(boolean mustUnderstand) {
         setAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
-                mustUnderstand ? "1" : "0",
+                mustUnderstand ? SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE : SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE,
                 SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
 
     }
