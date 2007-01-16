@@ -16,10 +16,13 @@
 
 package org.apache.axiom.om.impl.builder;
 
+import java.io.InputStream;
+
 import org.apache.axiom.om.*;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
+import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
@@ -106,6 +109,22 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, OMBuilder {
      */
     protected StAXBuilder(XMLStreamReader parser) {
         this(OMAbstractFactory.getOMFactory(), parser);
+    }
+    
+    /**
+     * Init() *must* be called after creating the builder using this constructor.
+     */
+    protected StAXBuilder()
+    {
+    }
+    public void init (InputStream inputStream) throws OMException
+    {
+        try {
+			this.parser = StAXUtils.createXMLStreamReader(inputStream);
+		} catch (XMLStreamException e1) {
+			throw new OMException(e1);
+		}
+        omfactory = OMAbstractFactory.getOMFactory();
     }
 
     /**
@@ -481,5 +500,10 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, OMBuilder {
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    public String getMessageType()
+    {
+    	return null;
     }
 }

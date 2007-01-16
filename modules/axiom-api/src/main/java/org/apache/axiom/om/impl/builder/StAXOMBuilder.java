@@ -79,14 +79,6 @@ public class StAXOMBuilder extends StAXBuilder {
     }
 
     /**
-     * @param inStream - instream which contains the XML
-     * @throws XMLStreamException
-     */
-    public StAXOMBuilder(InputStream inStream) throws XMLStreamException {
-        this(StAXUtils.createXMLStreamReader(inStream));
-    }
-
-    /**
      * Constructor StAXOMBuilder.
      *
      * @param parser
@@ -95,6 +87,24 @@ public class StAXOMBuilder extends StAXBuilder {
         super(parser);
         omfactory = OMAbstractFactory.getOMFactory();
         document = omfactory.createOMDocument(this);
+        doDebug = log.isDebugEnabled();
+    }
+
+    /**
+     * @param inStream - instream which contains the XML
+     * @throws XMLStreamException
+     */
+    public StAXOMBuilder(InputStream inStream) throws XMLStreamException {
+        this(StAXUtils.createXMLStreamReader(inStream));
+    }
+    
+    /**
+     * Init() *must* be called after creating the builder using this constructor.
+     * @param inStream - instream which contains the XML
+     * @throws XMLStreamException
+     */
+    public StAXOMBuilder() throws XMLStreamException {
+        super();
     }
 
     /**
