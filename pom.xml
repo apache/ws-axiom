@@ -21,6 +21,10 @@
         <url>unknown</url>
         <notifiers>
             <notifier>
+                <sendOnError>false</sendOnError>
+                <sendOnFailure>false</sendOnFailure>
+                <sendOnSuccess>false</sendOnSuccess>
+                <sendOnWarning>false</sendOnWarning>
                 <configuration>
                     <address>commons-dev@ws.apache.org</address>
                 </configuration>
