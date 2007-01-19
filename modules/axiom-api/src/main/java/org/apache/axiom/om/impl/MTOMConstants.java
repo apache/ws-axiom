@@ -28,6 +28,8 @@ public interface MTOMConstants {
      * If the message is Soap with Attachments <code>SWA_TYPE</code>
      */
     String SWA_TYPE = "text/xml";
+    String SWA_TYPE_12 = "application/soap+xml";
+    
     /**
      * <code>rootPart</code> is used as the key for the root BodyPart in the
      * Parts HashMap

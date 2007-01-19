@@ -212,9 +212,11 @@ public class Attachments {
                 this.applicationType = MTOMConstants.MTOM_TYPE;
             } else if ((MTOMConstants.SWA_TYPE).equalsIgnoreCase(applicationType)) {
                 this.applicationType = MTOMConstants.SWA_TYPE;
+            } else if ((MTOMConstants.SWA_TYPE_12).equalsIgnoreCase(applicationType)) {
+                this.applicationType = MTOMConstants.SWA_TYPE_12;
             } else {
                 throw new OMException(
-                        "Invalid Application type. Support available for MTOM & SwA/SOAP 1.l only.");
+                        "Invalid Application type. Support available for MTOM & SwA only.");
             }
         }
         return this.applicationType;
