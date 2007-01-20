@@ -207,29 +207,31 @@ public class MIMEOutputUtils {
 			MimeBodyPart rootMimeBodyPart = new MimeBodyPart();
 			rootMimeBodyPart.setDataHandler(dh);
 
-			rootMimeBodyPart.addHeader("content-type",
+			rootMimeBodyPart.addHeader("Content-Type",
 					SOAPContentType+"; charset="+ format.getCharSetEncoding());
-			rootMimeBodyPart.addHeader("content-transfer-encoding", "8bit");
+//			rootMimeBodyPart.addHeader("content-transfer-encoding", "quoted-printable");
 			rootMimeBodyPart.addHeader("content-id", "<"
 					+ format.getRootContentId() + ">");
 
 			writeBodyPart(outputStream, rootMimeBodyPart, format
 					.getMimeBoundary());
 
+			if (attachments.getContentIDSet().size()!=0){
 			outputStream.write(CRLF);  
 		    StringBuffer sb = new StringBuffer();
-		    sb.append("content-type: multipart/related");
+		    sb.append("Content-Type: multipart/related");
 		    sb.append("; ");
 		    sb.append("boundary=");
 		    sb.append("\""+innerBoundary+"\"");
 		    outputStream.write(sb.toString().getBytes());
-		    outputStream.write(CRLF);   
+		    outputStream.write(CRLF); 
 		    StringBuffer sb1 = new StringBuffer();
 		    sb1.append("content-id: ");
 		    sb1.append("<");
 		    sb1.append(innerPartCID);
 		    sb1.append(">");
 			outputStream.write(sb1.toString().getBytes());
+		    outputStream.write(CRLF);
 		    outputStream.write(CRLF);
 			startWritingMime(outputStream, innerBoundary);
 			Iterator attachmentIDIterator = attachments.getContentIDSet().iterator();
@@ -242,6 +244,7 @@ public class MIMEOutputUtils {
 			finishWritingMime(outputStream);
 			outputStream.write(CRLF);
 			writeMimeBoundary(outputStream, format.getMimeBoundary());
+			}
 			finishWritingMime(outputStream);
 		} catch (IOException e) {
 			throw new OMException("Error while writing to the OutputStream.", e);
