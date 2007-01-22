@@ -37,7 +37,7 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
-import org.apache.axiom.soap.impl.dom.soap11.SOAP11HeaderBlockImpl;
+import org.apache.axiom.soap.impl.dom.soap11.SOAP11FaultImpl;
 
 public class SOAP12Factory extends DOMSOAPFactory {
 	
@@ -212,5 +212,10 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
         return env;
     }
+
+	public SOAPFault createSOAPFault() throws SOAPProcessingException {
+		return new SOAP12FaultImpl(this.getDefaultEnvelope().getBody(),this);
+	}
+    
 
 }

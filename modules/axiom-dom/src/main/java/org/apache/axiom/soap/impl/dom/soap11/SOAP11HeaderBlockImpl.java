@@ -79,6 +79,17 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
                 SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
 
+    //TODO : implement
+    public void setRelay(boolean relay) {
+    	throw new UnsupportedOperationException("Not supported for SOAP 1.1");
+    }
+
+    //TODO : implement
+    public boolean getRelay() {
+    	throw new UnsupportedOperationException("Not supported for SOAP 1.1");
+    }
+
+    
     public void setMustUnderstand(boolean mustUnderstand) {
         setAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
                 mustUnderstand ? "1" : "0",

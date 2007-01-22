@@ -16,7 +16,12 @@
 
 package org.apache.axiom.soap.impl.dom;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -25,8 +30,6 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
-
-import java.util.List;
 
 public abstract class SOAPFaultReasonImpl extends SOAPElement implements
         SOAPFaultReason {
@@ -67,8 +70,16 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
     }
 
     public List getAllSoapTexts() {
-        //TODO Ruchith
-        throw new UnsupportedOperationException();
+        //TODO Ruchith check
+    	List faultTexts = new ArrayList();
+        Iterator childrenIter = this.getChildren();
+        while (childrenIter.hasNext()) {
+            OMNode node = (OMNode) childrenIter.next();
+            if (node.getType() == OMNode.ELEMENT_NODE && (node instanceof SOAPFaultTextImpl)) {
+                faultTexts.add(((SOAPFaultTextImpl) node));
+            }
+        }
+        return faultTexts;
     }
 
     public SOAPFaultText getSOAPFaultText(String language) {

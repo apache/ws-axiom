@@ -126,4 +126,17 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
         return false;
 
     }
+    
+    public void setRelay(boolean relay) {
+        setAttribute(SOAP12Constants.SOAP_RELAY,
+                String.valueOf(relay),
+                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+    }    
+
+    public boolean getRelay() {
+        return Boolean.valueOf(getAttribute(SOAP12Constants.SOAP_RELAY,
+                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI)).booleanValue();
+
+    }
+    
 }

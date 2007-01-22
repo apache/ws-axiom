@@ -114,11 +114,19 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         Collection elements = new ArrayList();
         for (Iterator iter = examineAllHeaderBlocks(); iter.hasNext();) {
             SOAPHeaderBlock headerBlock = (SOAPHeaderBlock) iter.next();
+            /*
             if (headerBlock.getRole() == null ||
                 headerBlock.getRole().trim().length() == 0 ||
                 headerBlock.getRole().equals(paramRole)) {
                 elements.add(headerBlock);
             }
+            */
+            if (headerBlock.getRole() != null &&
+                    headerBlock.getRole().trim().length() > 0 &&
+                    headerBlock.getRole().equals(paramRole)) {
+                    elements.add(headerBlock);
+            }
+            
         }
         return elements.iterator();
     }

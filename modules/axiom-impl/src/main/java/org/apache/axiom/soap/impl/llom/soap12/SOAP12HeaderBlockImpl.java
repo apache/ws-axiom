@@ -134,4 +134,14 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
         return false;
 
     }
+    
+    //TODO : implement
+    public void setRelay(boolean relay) {
+    	throw new UnsupportedOperationException("Not supported for SOAP 1.1");
+    }
+
+    //TODO : implement
+    public boolean getRelay() {
+    	throw new UnsupportedOperationException("Not supported for SOAP 1.1");
+    }
 }

@@ -85,5 +85,22 @@ public interface SOAPHeaderBlock extends OMElement {
      * by calling setProcessed()
      */
     public abstract void setProcessed();
-
+    
+    
+    /**
+     * Sets the relay attribute for this SOAPHeaderBlock to be either true or false.
+     * The SOAP relay attribute is set to true to indicate that the SOAP header block must be 
+     * relayed by any node that is targeted by the header block but not actually process it.
+     *  
+     * @param relay a <CODE>boolean</CODE> giving the value to be set
+     */
+    public abstract void setRelay(boolean relay);
+ 
+    /**
+     * Returns the relay  status associated with this <CODE>
+     * SOAPHeaderBlock</CODE> object.
+     *
+     * @return a <CODE>boolean</CODE> giving the relay status
+     */
+    public abstract boolean getRelay();
 }

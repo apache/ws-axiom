@@ -38,6 +38,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.SOAPMessageImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11FaultDetailImpl;
+import org.apache.axiom.soap.impl.dom.soap12.SOAP12FaultImpl;
 
 public class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
 
@@ -92,8 +93,8 @@ public class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
 	}
 
 	public SOAPFault createSOAPFault(SOAPBody parent) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+        return new SOAP12FaultImpl(parent,this);
+	}	
 
 	public SOAPFault createSOAPFault(SOAPBody parent, OMXMLParserWrapper builder) {
 		throw new UnsupportedOperationException();
@@ -220,8 +221,11 @@ public class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
         throw new UnsupportedOperationException("TODO");
     }
 
+    /**
+     * @see SOAP11Factory,SOAP12Factory
+     */
     public SOAPFault createSOAPFault() throws SOAPProcessingException {
-        throw new UnsupportedOperationException("TODO");
+        return null;
     }
 
     public SOAPBody createSOAPBody() throws SOAPProcessingException {

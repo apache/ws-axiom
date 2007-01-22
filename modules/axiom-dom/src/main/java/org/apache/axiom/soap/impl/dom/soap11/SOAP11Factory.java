@@ -231,5 +231,10 @@ public class SOAP11Factory extends DOMSOAPFactory {
         return new NamespaceImpl(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
                 SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
     }
+
+	public SOAPFault createSOAPFault() throws SOAPProcessingException {
+		return new SOAP11FaultImpl(this.getDefaultEnvelope().getBody(),this);
+	}
+    
     
 }
