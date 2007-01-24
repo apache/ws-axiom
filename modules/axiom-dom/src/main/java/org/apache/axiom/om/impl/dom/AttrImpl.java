@@ -154,6 +154,8 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     			return this.attrName;
     		}else if(OMConstants.XMLNS_NS_URI.equals(this.namespace.getNamespaceURI())){
     			return OMConstants.XMLNS_NS_PREFIX + ":" + this.attrName;
+    		}else if(this.namespace.getPrefix().equals("")){
+    			return this.attrName;
     		}else{
     			return this.namespace.getPrefix()+":"+this.attrName;
     		}
