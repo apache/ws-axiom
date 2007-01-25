@@ -785,4 +785,13 @@ public class OMSourcedElementImpl extends OMElementImpl
     OMNamespace handleNamespace(String namespaceURI, String prefix) {
         return super.handleNamespace(namespaceURI, prefix);    //To change body of overridden methods use File | Settings | File Templates.
     }
+
+	/**
+	 * Provide access to the data source encapsulated in OMSourcedEle. This is usesfull
+	 * when we want to access the raw data in the data source.
+	 * @return the internal datasource
+	 */
+	public OMDataSource getDataSource() {
+		return dataSource;
+	}
 }
