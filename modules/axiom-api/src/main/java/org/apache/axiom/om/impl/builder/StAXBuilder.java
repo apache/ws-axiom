@@ -506,4 +506,15 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, OMBuilder {
     {
     	return null;
     }
+
+    /**
+     * Get the value of a feature/property from the underlying XMLStreamReader implementation
+     * without accessing the XMLStreamReader.
+     * https://issues.apache.org/jira/browse/WSCOMMONS-155
+     * @param name
+     * @return 
+     */
+    public Object getReaderProperty(String name) throws IllegalArgumentException {
+      return parser.getProperty(name);
+    }    
 }
