@@ -356,9 +356,11 @@ public class OMSerializerUtil {
                 // Earlier in this code, a unique prefix was added for this case...now obtain and use it
             	prefix = writer.getPrefix(namespace);
             } else if (namespace != null) {
-            	// Use the writer's prefix if it is different
-            	String writerPrefix = writer.getPrefix(namespace);
-            	if (!prefix.equals(writerPrefix)) {
+                // Use the writer's prefix if it is different, but if the writers 
+                // prefix is empty then do not replace because attributes do not
+                // default to the default namespace like elements do.
+                String writerPrefix = writer.getPrefix(namespace);
+                if (!prefix.equals(writerPrefix) && !"".equals(writerPrefix)) {
             		prefix = writerPrefix;
             	}
             }

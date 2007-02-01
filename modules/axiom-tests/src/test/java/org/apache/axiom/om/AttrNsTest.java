@@ -23,8 +23,12 @@ import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Iterator;
 
 public class AttrNsTest extends AbstractOMSerializationTest {
@@ -122,7 +126,36 @@ public class AttrNsTest extends AbstractOMSerializationTest {
         } catch (IOException e) {
             fail(e.getMessage());
         }
+    }
 
 
+    public void testAttributesWithNamespaceSerialization() {
+        try {
+            String xmlString = "<root xmlns='http://custom.com'><node cust:id='123' xmlns:cust='http://custom.com' /></root>";
+            XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xmlString));
+            
+            // copied code from the generated stub class toOM method
+            org.apache.axiom.om.impl.builder.StAXOMBuilder builder = new org.apache.axiom.om.impl.builder.StAXOMBuilder(xmlStreamReader);
+            org.apache.axiom.om.OMElement documentElement = builder
+                    .getDocumentElement( );
+    
+            ((org.apache.axiom.om.impl.OMNodeEx) documentElement).setParent( null );
+            // end copied code
+    
+            // now print the object after it has been processed
+            System.out.println( "after - '" + documentElement.toString( ) + "'" );
+            Document document1 = newDocument(xmlString);
+            Document document2 = newDocument(documentElement.toString());
+            Diff diff = compareXML(document1, document2);
+            assertXMLEqual(diff, true);
+        } catch (ParserConfigurationException e) {
+            fail(e.getMessage());
+        } catch (SAXException e) {
+            fail(e.getMessage());
+        } catch (IOException e) {
+            fail(e.getMessage());
+        } catch (javax.xml.stream.XMLStreamException e) {
+            fail(e.getMessage());
+        }
     }
 }
