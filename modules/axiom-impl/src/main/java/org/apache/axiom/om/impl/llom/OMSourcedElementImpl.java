@@ -18,6 +18,7 @@ package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.*;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -107,6 +108,7 @@ public class OMSourcedElementImpl extends OMElementImpl
 
     /**
      * Get parser from data source.
+     * Note that getDataReader may consume the underlying data source.
      * @return parser
      */
     private XMLStreamReader getDirectReader() {
@@ -116,7 +118,7 @@ public class OMSourcedElementImpl extends OMElementImpl
         	if (isDataSourceConsumed()) {
         		return super.getXMLStreamReader();
         	} else {
-        		return dataSource.getReader();
+        		return dataSource.getReader();  // This call may consume the underlying data source
         	}
         } catch (XMLStreamException e) {
             log.error("Could not get parser from data source for element " +
@@ -347,7 +349,7 @@ public class OMSourcedElementImpl extends OMElementImpl
         if (isParserSet) {
             return super.getXMLStreamReader();
         } else {
-            return getDirectReader();
+            return getDirectReader();  // Note that this may consume the underlying data source
         }
     }
 
@@ -463,7 +465,7 @@ public class OMSourcedElementImpl extends OMElementImpl
         } else {
         	StringWriter writer = new StringWriter();
             XMLStreamWriter writer2 = StAXUtils.createXMLStreamWriter(writer);
-        	dataSource.serialize(writer2);
+        	dataSource.serialize(writer2);  // dataSource.serialize consumes the data
             writer2.flush();
             return writer.toString();
         }
@@ -522,10 +524,12 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#internalSerialize(javax.xml.stream.XMLStreamWriter)
      */
     public void internalSerialize(javax.xml.stream.XMLStreamWriter writer) throws XMLStreamException {
+        // The contract of internalSerialize is to "cache" the om
     	if (isDataSourceConsumed()) {
     		super.internalSerialize(writer);
     	} else {
-    		internalSerializeAndConsume(writer);
+            forceExpand();
+            super.internalSerialize(writer);
     	}
     }
 
@@ -535,7 +539,10 @@ public class OMSourcedElementImpl extends OMElementImpl
     protected void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
     	if (isDataSourceConsumed()) {
     		super.internalSerialize(writer, cache);
-    	} else {
+    	} else if (cache) {
+            forceExpand();
+            super.internalSerialize(writer, true);
+        } else {
     		internalSerializeAndConsume(writer);
     	}
     }
@@ -550,7 +557,7 @@ public class OMSourcedElementImpl extends OMElementImpl
         if (isDataSourceConsumed()) {
         	super.internalSerializeAndConsume(writer);
         } else {
-        	dataSource.serialize(writer);
+        	dataSource.serialize(writer);  // dataSource.serialize() consumes the data
         }
     }
 
@@ -558,35 +565,44 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#serialize(javax.xml.stream.XMLStreamWriter)
      */
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        internalSerializeAndConsume(xmlWriter);
+        // The contract is to serialize with caching
+        internalSerialize(xmlWriter);
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serialize(java.io.OutputStream)
      */
     public void serialize(OutputStream output) throws XMLStreamException {
-        serializeAndConsume(output);
+       forceExpand();
+       XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
+       serialize(xmlStreamWriter);
+       xmlStreamWriter.flush();
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serialize(java.io.Writer)
      */
     public void serialize(Writer writer) throws XMLStreamException {
-        serializeAndConsume(writer);
+        forceExpand();
+        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
+        serialize(xmlStreamWriter);
+        xmlStreamWriter.flush();
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serialize(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
      */
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        serializeAndConsume(output, format);
+        forceExpand();
+        super.serialize(output, format);
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serialize(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
      */
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        serializeAndConsume(writer, format);
+        forceExpand();
+        super.serialize(writer, format);
     }
 
     /* (non-Javadoc)
@@ -606,7 +622,7 @@ public class OMSourcedElementImpl extends OMElementImpl
         if (isDataSourceConsumed()) {
         	super.serializeAndConsume(output, new OMOutputFormat());
         } else {
-        	dataSource.serialize(output, new OMOutputFormat());
+        	dataSource.serialize(output, new OMOutputFormat());  // consumes the datasource
         }
     }
 
@@ -620,7 +636,7 @@ public class OMSourcedElementImpl extends OMElementImpl
         if (isDataSourceConsumed()) {
         	super.serializeAndConsume(writer);
         } else {
-        	dataSource.serialize(writer, new OMOutputFormat());
+        	dataSource.serialize(writer, new OMOutputFormat()); // consumes the datasource
         }
     }
 
@@ -635,7 +651,7 @@ public class OMSourcedElementImpl extends OMElementImpl
         if (isDataSourceConsumed()) {
         	super.serializeAndConsume(output, format);
         } else {
-        	dataSource.serialize(output, format);
+        	dataSource.serialize(output, format); // consumes the datasource
         }
     }
 
@@ -650,7 +666,7 @@ public class OMSourcedElementImpl extends OMElementImpl
         if (isDataSourceConsumed()) {
         	super.serializeAndConsume(writer, format);
     	} else {
-    		dataSource.serialize(writer, format);
+    		dataSource.serialize(writer, format);  // consumes the datasource
     	}
     }
 
