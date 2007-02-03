@@ -61,6 +61,26 @@ public class OMSourcedElementTest extends AbstractTestCase {
         "<author>DuCharme, Bob</author><publisher>Manning</publisher>" +
         "<price>29.95</price></book></library>";
     
+    // Same as testDocument except that an non-default prefix is used
+    private static String testDocument2 =
+        "<pre:library xmlns:pre=\"http://www.sosnoski.com/uwjws/library\" books=\"1\">" +
+        "<pre:type id=\"java\" category=\"professional\" deductable=\"true\">"+
+        "<pre:name>Java Reference</pre:name></pre:type><pre:type id=\"xml\" "+
+        "category=\"professional\" deductable=\"true\"><pre:name>XML Reference</pre:name>" +
+        "</pre:type><pre:book isbn=\"1930110111\" type=\"xml\"><pre:title>XSLT Quickly</pre:title>" +
+        "<pre:author>DuCharme, Bob</pre:author><pre:publisher>Manning</pre:publisher>" +
+        "<pre:price>29.95</pre:price></pre:book></pre:library>";
+    
+    // Same as testDocument exception that the elements are unqualified
+    private static String testDocument3 =
+        "<library books=\"1\">" +
+        "<type id=\"java\" category=\"professional\" deductable=\"true\">"+
+        "<name>Java Reference</name></type><type id=\"xml\" "+
+        "category=\"professional\" deductable=\"true\"><name>XML Reference</name>" +
+        "</type><book isbn=\"1930110111\" type=\"xml\"><title>XSLT Quickly</title>" +
+        "<author>DuCharme, Bob</author><publisher>Manning</publisher>" +
+        "<price>29.95</price></book></library>";
+    
     private OMSourcedElementImpl element;
     private OMElement root;
 
@@ -121,8 +141,6 @@ public class OMSourcedElementTest extends AbstractTestCase {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         element.serialize(bos);
         String newText = new String(bos.toByteArray());
-        System.out.println(testDocument);
-        System.out.println(newText);
         assertEquals("Serialized text error", testDocument, newText);
         assertTrue("Element not expanded when serializing", element.isExpanded());
         
@@ -235,6 +253,609 @@ public class OMSourcedElementTest extends AbstractTestCase {
     }
     
     /**
+     * Tests the OMSourcedElement localName, namespace and prefix settings
+     * before and after serialization
+     *   Document: testDocument (which uses the default namespace)
+     *   Type of Serialization: Serialize and cache
+     *   Prefix test
+     * @throws Exception
+     */
+    public void testName1DefaultPrefix() throws Exception {
+        
+        OMFactory f = new OMLinkedListImplFactory();
+        
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = new OMNamespaceImpl("http://www.sosnoski.com/uwjws/library", "DUMMYPREFIX");
+        OMElement element = new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument));
+        OMElement root = f.createOMElement("root", rootNS);
+        root.addChild(element);
+        
+        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
+        
+        // Serialize and cache.  This should cause expansion.  The prefix should be updated to match the testDocument string
+        StringWriter writer = new StringWriter();
+        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serialize(writer);
+        xmlwriter.flush();
+        String result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(element.getDefaultNamespace() != null);
+        assertTrue(!result.contains("DUMMYPREFIX"));  // Make sure that the serialized string does not contain DUMMYPREFIX
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        
+        // Serialize again
+        writer = new StringWriter();
+        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serialize(writer);
+        xmlwriter.flush();
+        result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(element.getDefaultNamespace() != null);
+        assertTrue(!result.contains("DUMMYPREFIX"));  // Make sure that the serialized string does not contain DUMMYPREFIX
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        
+    }
+    
+    /**
+     * Tests the OMSourcedElement localName, namespace and prefix settings
+     * before and after serialization
+     *   Document: testDocument (which uses the default namespace)
+     *   Type of Serialization: Serialize and consume
+     *   Tests update of prefix
+     * @throws Exception
+     */
+    public void testName2DefaultPrefix() throws Exception {
+        
+        OMFactory f = new OMLinkedListImplFactory();
+        
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = new OMNamespaceImpl("http://www.sosnoski.com/uwjws/library", "DUMMYPREFIX");
+        OMElement element = new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument));
+        OMElement root = f.createOMElement("root", rootNS);
+        root.addChild(element);
+        
+        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
+        
+        // Serialize and consume.  This should not cause expansion and currently won't update
+        // the name of the element.
+        StringWriter writer = new StringWriter();
+        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serializeAndConsume(writer);
+        xmlwriter.flush();
+        String result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
+        assertTrue(!result.contains("DUMMYPREFIX"));  // Make sure that the serialized string does not contain DUMMYPREFIX
+        
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+    }
+    
+    /**
+     * Tests the OMSourcedElement localName, namespace and prefix settings
+     * before and after serialization
+     *   Document: testDocument (which uses the default namespace)
+     *   Type of Serialization: Serialize and cache
+     *   Tests attempt to rename namespace and localpart, which is not allowed
+     * @throws Exception
+     */
+    public void testName3DefaultPrefix() throws Exception {
+        
+        OMFactory f = new OMLinkedListImplFactory();
+        
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = new OMNamespaceImpl("http://DUMMYNS", "DUMMYPREFIX");
+        OMElement element = new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument));
+        OMElement root = f.createOMElement("root", rootNS);
+        root.addChild(element);
+        
+        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        assertTrue(element.getLocalName().equals("DUMMYNAME"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
+        assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
+        
+        // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
+        StringWriter writer = new StringWriter();
+        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        
+        try {
+            root.serialize(writer);
+        } catch (Exception e) {
+            // Current Behavior
+            // The current OMSourceElementImpl ensures that the namespace and localName
+            // are consistent with the original setting.
+            return;
+        } 
+       
+        xmlwriter.flush();
+        String result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        
+        // Serialize again
+        writer = new StringWriter();
+        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serialize(writer);
+        xmlwriter.flush();
+        result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        
+        
+        
+    }
+    
+    /**
+     * Tests the OMSourcedElement localName, namespace and prefix settings
+     * before and after serialization
+     *   Document: testDocument (which uses the default namespace)
+     *   Type of Serialization: Serialize and consume
+     *   Tests that the namespace and localName are not affected by the serializeAndConsume
+     * @throws Exception
+     */
+    public void testName4DefaultPrefix() throws Exception {
+        
+        OMFactory f = new OMLinkedListImplFactory();
+        
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = new OMNamespaceImpl("http://DUMMYNS", "DUMMYPREFIX");
+        OMElement element = new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument));
+        OMElement root = f.createOMElement("root", rootNS);
+        root.addChild(element);
+        
+        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        assertTrue(element.getLocalName().equals("DUMMYNAME"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
+        assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
+        
+        // Serialize and consume.  This should not cause expansion and currently won't update
+        // the name of the element.
+        StringWriter writer = new StringWriter();
+        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serializeAndConsume(writer);
+        xmlwriter.flush();
+        String result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("DUMMYNAME"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
+        assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
+        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+    }
+    
+    /**
+     * Tests the OMSourcedElement localName, namespace and prefix settings
+     * before and after serialization
+     *   Document: testDocument2 (which uses a qualified prefix)
+     *   Type of Serialization: Serialize and cache
+     *   Prefix test
+     * @throws Exception
+     */
+    public void testName1QualifiedPrefix() throws Exception {
+        
+        OMFactory f = new OMLinkedListImplFactory();
+        
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = new OMNamespaceImpl("http://www.sosnoski.com/uwjws/library", "");
+        OMElement element = new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument2));
+        OMElement root = f.createOMElement("root", rootNS);
+        root.addChild(element);
+        
+        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        
+        // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
+        StringWriter writer = new StringWriter();
+        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serialize(writer);
+        xmlwriter.flush();
+        String result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals("pre"));
+        assertTrue(element.getDefaultNamespace() == null);
+        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        
+        // Serialize again
+        writer = new StringWriter();
+        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serialize(writer);
+        xmlwriter.flush();
+        result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals("pre"));
+        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue(element.getDefaultNamespace() == null);
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        
+    }
+    
+    /**
+     * Tests the OMSourcedElement localName, namespace and prefix settings
+     * before and after serialization
+     *   Document: testDocument2 (which uses a qualified prefix)
+     *   Type of Serialization: Serialize and consume
+     *   Tests update of prefix
+     * @throws Exception
+     */
+    public void testName2QualifiedPrefix() throws Exception {
+        
+        OMFactory f = new OMLinkedListImplFactory();
+        
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = new OMNamespaceImpl("http://www.sosnoski.com/uwjws/library", "");
+        OMElement element = new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument2));
+        OMElement root = f.createOMElement("root", rootNS);
+        root.addChild(element);
+        
+        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        
+        // Serialize and consume.  This should not cause expansion and currently won't update
+        // the name of the element.
+        StringWriter writer = new StringWriter();
+        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serializeAndConsume(writer);
+        xmlwriter.flush();
+        String result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain default prefix declaration
+        
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+    }
+    
+    /**
+     * Tests the OMSourcedElement localName, namespace and prefix settings
+     * before and after serialization
+     *   Document: testDocument2 (which uses a qualified prefix)
+     *   Type of Serialization: Serialize and cache
+     *   Tests attempt to rename namespace and localpart, which is not allowed
+     * @throws Exception
+     */
+    public void testName3QualifiedPrefix() throws Exception {
+        
+        OMFactory f = new OMLinkedListImplFactory();
+        
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = new OMNamespaceImpl("http://DUMMYNS", "DUMMYPREFIX");
+        OMElement element = new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument2));
+        OMElement root = f.createOMElement("root", rootNS);
+        root.addChild(element);
+        
+        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        assertTrue(element.getLocalName().equals("DUMMYNAME"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
+        assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
+        
+        // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
+        StringWriter writer = new StringWriter();
+        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        
+        try {
+            root.serialize(writer);
+        } catch (Exception e) {
+            // Current Behavior
+            // The current OMSourceElementImpl ensures that the namespace and localName
+            // are consistent with the original setting.
+            return;
+        } 
+        
+       
+        xmlwriter.flush();
+        String result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        
+        // Serialize again
+        writer = new StringWriter();
+        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serialize(writer);
+        xmlwriter.flush();
+        result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        
+        
+        
+    }
+    
+    /**
+     * Tests the OMSourcedElement localName, namespace and prefix settings
+     * before and after serialization
+     *   Document: testDocument2 (which uses a qualified prefix)
+     *   Type of Serialization: Serialize and cache
+     *   Tests attempt to rename namespace and localpart, which is not allowed
+     * @throws Exception
+     */
+    public void testName4QualifiedPrefix() throws Exception {
+        
+        OMFactory f = new OMLinkedListImplFactory();
+        
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = new OMNamespaceImpl("http://DUMMYNS", "");
+        OMElement element = new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument2));
+        OMElement root = f.createOMElement("root", rootNS);
+        root.addChild(element);
+        
+        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        assertTrue(element.getLocalName().equals("DUMMYNAME"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        
+        // Serialize and consume.  This should not cause expansion and currently won't update
+        // the name of the element.
+        StringWriter writer = new StringWriter();
+        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serializeAndConsume(writer);
+        xmlwriter.flush();
+        String result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("DUMMYNAME"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain the default prefix declaration
+        
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+    }
+    
+    /**
+     * Tests the OMSourcedElement localName, namespace and prefix settings
+     * before and after serialization
+     *   Document: testDocument3 (which uses unqualified names)
+     *   Type of Serialization: Serialize and cache
+     *   Prefix test
+     * @throws Exception
+     */
+    public void testName1Unqualified() throws Exception {
+        
+        OMFactory f = new OMLinkedListImplFactory();
+        
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = new OMNamespaceImpl("", "");
+        OMElement element = new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument3));
+        OMElement root = f.createOMElement("root", rootNS);
+        root.addChild(element);
+        
+        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals(""));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        
+        // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
+        StringWriter writer = new StringWriter();
+        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serialize(writer);
+        xmlwriter.flush();
+        String result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals(""));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(element.getDefaultNamespace() == null || element.getDefaultNamespace().getNamespaceURI().length() == 0);
+        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        
+        // Serialize again
+        writer = new StringWriter();
+        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serialize(writer);
+        xmlwriter.flush();
+        result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals(""));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue(element.getDefaultNamespace() == null || element.getDefaultNamespace().getNamespaceURI().length() == 0);
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        
+    }
+    
+    /**
+     * Tests the OMSourcedElement localName, namespace and prefix settings
+     * before and after serialization
+     *   Document: testDocument3 (which uses unqualified names)
+     *   Type of Serialization: Serialize and consume
+     *   Tests update of prefix
+     * @throws Exception
+     */
+    public void testName2Unqualified() throws Exception {
+        
+        OMFactory f = new OMLinkedListImplFactory();
+        
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = new OMNamespaceImpl("", "");
+        OMElement element = new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument3));
+        OMElement root = f.createOMElement("root", rootNS);
+        root.addChild(element);
+        
+        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals(""));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        
+        // Serialize and consume.  This should not cause expansion and currently won't update
+        // the name of the element.
+        StringWriter writer = new StringWriter();
+        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serializeAndConsume(writer);
+        xmlwriter.flush();
+        String result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals(""));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain default prefix declaration
+        
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+    }
+    
+    /**
+     * Tests the OMSourcedElement localName, namespace and prefix settings
+     * before and after serialization
+     *   Document: testDocument3 (which uses unqualified names)
+     *   Type of Serialization: Serialize and cache
+     *   Tests attempt to rename namespace and localpart, which is not allowed
+     * @throws Exception
+     */
+    public void testName3Unqualified() throws Exception {
+        
+        OMFactory f = new OMLinkedListImplFactory();
+        
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = new OMNamespaceImpl("http://DUMMYNS", "DUMMYPREFIX");
+        OMElement element = new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument3));
+        OMElement root = f.createOMElement("root", rootNS);
+        root.addChild(element);
+        
+        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        assertTrue(element.getLocalName().equals("DUMMYNAME"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
+        assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
+        
+        // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
+        StringWriter writer = new StringWriter();
+        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        
+        try {
+            root.serialize(writer);
+        } catch (Exception e) {
+            // Current Behavior
+            // The current OMSourceElementImpl ensures that the namespace and localName
+            // are consistent with the original setting.
+            return;
+        } 
+        
+       
+        xmlwriter.flush();
+        String result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals(""));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        
+        // Serialize again
+        writer = new StringWriter();
+        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serialize(writer);
+        xmlwriter.flush();
+        result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("library"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+        
+        
+        
+    }
+    
+    /**
+     * Tests the OMSourcedElement localName, namespace and prefix settings
+     * before and after serialization
+     *   Document: testDocument3 (which uses unqualified names)
+     *   Type of Serialization: Serialize and cache
+     *   Tests attempt to rename namespace and localpart, which is not allowed
+     * @throws Exception
+     */
+    public void testName4Unqualified() throws Exception {
+        
+        OMFactory f = new OMLinkedListImplFactory();
+        
+        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = new OMNamespaceImpl("http://DUMMYNS", "");
+        OMElement element = new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument3));
+        OMElement root = f.createOMElement("root", rootNS);
+        root.addChild(element);
+        
+        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        assertTrue(element.getLocalName().equals("DUMMYNAME"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        
+        // Serialize and consume.  This should not cause expansion and currently won't update
+        // the name of the element.
+        StringWriter writer = new StringWriter();
+        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        root.serializeAndConsume(writer);
+        xmlwriter.flush();
+        String result = writer.toString();
+        
+        assertTrue(element.getLocalName().equals("DUMMYNAME"));
+        assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
+        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain the default prefix declaration
+        
+        assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
+    }
+    
+    
+    
+    /**
      * Tests OMSourcedElement serialization when the root (parent) is serialized.
      * @throws Exception
      */
@@ -244,6 +865,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         root.serializeAndConsume(writer);
         xmlwriter.flush();
         String result = writer.toString();
+        
         // We can't test for equivalence because the underlying OMSourceElement is 
         // streamed as it is serialized.  So I am testing for an internal value.
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
@@ -268,6 +890,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         
         xmlwriter.flush();
         String result = writer.toString();
+        
         // We can't test for equivalence because the underlying OMSourceElement is 
         // changed as it is serialized.  So I am testing for an internal value.
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);

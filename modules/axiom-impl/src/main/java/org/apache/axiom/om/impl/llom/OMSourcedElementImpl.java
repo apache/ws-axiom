@@ -54,9 +54,6 @@ public class OMSourcedElementImpl extends OMElementImpl
     
     /** Namespace for element, needed in order to bypass base class handling. */
     private OMNamespace definedNamespace = null;
-    
-    /** Namespace for element, needed in order to bypass base class handling. */
-    private QName definedQName = null;
 
     /** Flag for parser provided to base element class. */
     private boolean isParserSet;
@@ -90,7 +87,7 @@ public class OMSourcedElementImpl extends OMElementImpl
         //create a namespace
         super(qName.getLocalPart(), null, factory);
         dataSource = source;
-        definedQName = qName;
+        definedNamespace = new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
     }
     
     /**
@@ -153,7 +150,7 @@ public class OMSourcedElementImpl extends OMElementImpl
                     e.getMessage());
             }
             
-            // make sure element name matches what was expected
+            // make sure element local name and namespace matches what was expected
             if (!reader.getLocalName().equals(getLocalName())) {
                 log.error("forceExpand: expected element name " +
                     getLocalName() + ", found " + reader.getLocalName());
@@ -170,10 +167,27 @@ public class OMSourcedElementImpl extends OMElementImpl
                     readerURI + ", not the expected " + uri);
             }
             
+            // Get the current prefix and the reader's prefix
+            String readerPrefix = reader.getPrefix();
+            readerPrefix = (readerPrefix == null) ? "" : readerPrefix;
+            String prefix = getNamespace().getPrefix();
+            
             // set the builder for this element
             isParserSet = true;
             super.setBuilder(new StAXOMBuilder(getOMFactory(), reader, this));
             setComplete(false);
+            
+            // Update the prefix if necessary.  This must be done after
+            // isParserSet to avoid a recursive call
+            
+            if (!readerPrefix.equals(prefix) || 
+                    getNamespace() == null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("forceExpand: changing prefix from " + prefix + " to " + readerPrefix);
+                }
+                setNamespace(new OMNamespaceImpl(readerURI, readerPrefix));
+            }
+            
         }
     }
     
@@ -420,8 +434,8 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMElement#getNamespace()
      */
     public OMNamespace getNamespace() throws OMException {
-        if(definedNamespace == null && definedQName != null) {
-            definedNamespace = factory.createOMNamespace(definedQName.getNamespaceURI(), definedQName.getPrefix());
+        if (isExpanded()) {
+            return super.getNamespace();
         }
         return definedNamespace;
     }
@@ -450,7 +464,7 @@ public class OMSourcedElementImpl extends OMElementImpl
             return super.getQName();
         } else if (getNamespace() != null) {
             // always ignore prefix on name from sourced element
-            return new QName(definedNamespace.getNamespaceURI(), getLocalName());
+            return new QName(getNamespace().getNamespaceURI(), getLocalName());
         } else {
             return new QName(getLocalName());
         }
