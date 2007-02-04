@@ -223,10 +223,14 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
                 String namespaceURI = this.parser.getNamespaceURI();
                 if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
                     soapFactory = OMAbstractFactory.getSOAP12Factory();
-                    log.debug("Starting to process SOAP 1.2 message");
+                    if(isDebugEnabled) {
+                        log.debug("Starting to process SOAP 1.2 message");
+                    }
                 } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
                     soapFactory = OMAbstractFactory.getSOAP11Factory();
-                    log.debug("Starting to process SOAP 1.1 message");
+                    if(isDebugEnabled) {
+                        log.debug("Starting to process SOAP 1.1 message");
+                    }
                 } else {
                     throw new SOAPProcessingException("Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
                             " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
