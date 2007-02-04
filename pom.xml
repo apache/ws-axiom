@@ -393,12 +393,16 @@
                         <artifactId>logkit</artifactId>
                         <groupId>logkit</groupId>
                     </exclusion>
+                    <exclusion>
+                        <artifactId>log4j</artifactId>
+                        <groupId>log4j</groupId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
                 <groupId>woodstox</groupId>
                 <artifactId>wstx-asl</artifactId>
-                <version>3.0.0</version>
+                <version>3.2.0</version>
             </dependency>
             <dependency>
                 <groupId>jaxen</groupId>

@@ -73,9 +73,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, OMBuilder {
     protected boolean parserAccessed = false;
     protected OMDocument document;
 
-    protected boolean isDataHandlerAware = false;
-
-
     /**
      * Constructor StAXBuilder.
      *
@@ -86,17 +83,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, OMBuilder {
         this.parser = parser;
         omfactory = ombuilderFactory;
 
-        // check whether data handlers are treated seperately
-        try {
-            if (parser != null && (Boolean.TRUE == parser.getProperty(OMConstants.IS_DATA_HANDLERS_AWARE))) {
-                isDataHandlerAware = true;
-            }
-        } catch (IllegalArgumentException e) {
-            // according to the parser api, get property will return IllegalArgumentException, when that
-            // property is not found.
-            isDataHandlerAware = false;
-        }
-        
         if(parser instanceof BuilderAwareReader) {
             ((BuilderAwareReader) parser).setBuilder(this);
         }
@@ -208,7 +194,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, OMBuilder {
      */
     private OMNode createOMText(OMContainer omContainer, int textType) {
         try {
-            if (isDataHandlerAware && Boolean.TRUE == parser.getProperty(OMConstants.IS_BINARY)) {
+            if (isDataHandlerAware(parser) && Boolean.TRUE == parser.getProperty(OMConstants.IS_BINARY)) {
                 Object dataHandler = parser.getProperty(OMConstants.DATA_HANDLER);
                 OMText text = omfactory.createOMText(dataHandler, true);
                 omContainer.addChild(text);
@@ -516,5 +502,24 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, OMBuilder {
      */
     public Object getReaderProperty(String name) throws IllegalArgumentException {
       return parser.getProperty(name);
-    }    
+    }
+
+    /**
+     * Check if the underlying parse is aware of data handlers. (example ADB generated code)
+     * 
+     * @param parser
+     * @return
+     */
+    private boolean isDataHandlerAware(XMLStreamReader parser) {
+        // check whether data handlers are treated seperately
+        try {
+            if (parser != null && (Boolean.TRUE == parser.getProperty(OMConstants.IS_DATA_HANDLERS_AWARE))) {
+                return true;
+            }
+        } catch (IllegalArgumentException e) {
+            // according to the parser api, get property will return IllegalArgumentException, when that
+            // property is not found.
+        }
+        return false;
+    }
 }
