@@ -58,7 +58,6 @@ public class SpacesTest extends XMLTestCase {
                     createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
                             factory.createXMLStreamReader(
                                     iStream));
-            staxOMBuilder.setDoDebug(true);
             rootElement = staxOMBuilder.getDocumentElement();
             boolean hasCDataNode = hasCDataNode(rootElement);
             String file = hasCDataNode ? filePath : filePath2;

@@ -28,7 +28,6 @@ public class OMDTDTest extends TestCase {
     protected void setUp() throws Exception {
         try {
             StAXOMBuilder stAXOMBuilder = new StAXOMBuilder("test-resources/xml/dtd.xml");
-            stAXOMBuilder.setDoDebug(true);
             document = this.document = stAXOMBuilder.getDocument();
         } catch (Exception e) {
             e.printStackTrace();

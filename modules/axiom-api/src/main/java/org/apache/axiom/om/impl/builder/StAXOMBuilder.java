@@ -87,7 +87,6 @@ public class StAXOMBuilder extends StAXBuilder {
         super(parser);
         omfactory = OMAbstractFactory.getOMFactory();
         document = omfactory.createOMDocument(this);
-        doDebug = log.isDebugEnabled();
     }
 
     /**
@@ -359,11 +358,12 @@ public class StAXOMBuilder extends StAXBuilder {
             }
             node.setNamespaceWithNoFindInCurrentScope(namespace);
         }
-
-
     }
 
-
+    /**
+     * @deprecated
+     * @param doDebug
+     */
     public void setDoDebug(boolean doDebug) {
         this.doDebug = doDebug;
     }

@@ -73,7 +73,6 @@ public class AbstractOMSerializationTest extends XMLTestCase {
             StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
                     createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
                             factory.createXMLStreamReader(byteArrayInputStream));
-            staxOMBuilder.setDoDebug(true);
             OMElement rootElement = staxOMBuilder.getDocumentElement();
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -97,7 +96,6 @@ public class AbstractOMSerializationTest extends XMLTestCase {
             StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
                     createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
                             factory.createXMLStreamReader(inStream));
-            staxOMBuilder.setDoDebug(true);
             OMElement rootElement = staxOMBuilder.getDocumentElement();
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
