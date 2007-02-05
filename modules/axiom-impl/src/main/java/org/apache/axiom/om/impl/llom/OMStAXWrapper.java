@@ -98,7 +98,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
     /**
      * Field elementStack
      */
-    private Stack elementStack = new Stack();
+    private Stack elementStack = null;
 
     // keeps the next event. The parser actually keeps one step ahead to
     // detect the end of navigation. (at the end of the stream the navigator
@@ -1140,6 +1140,9 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * @return Returns int.
      */
     private int generateElementEvents(OMElement elt) {
+        if (elementStack == null) {
+            elementStack = new Stack();
+        }
         int returnValue = START_ELEMENT;
         if (!elementStack.isEmpty() && elementStack.peek().equals(elt)) {
             returnValue = END_ELEMENT;
