@@ -260,12 +260,27 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             	// Default namespaces are not allowed on an attribute reference.
                 // Earlier in this code, a unique prefix was added for this case...now obtain and use it
             	prefix = writer.getPrefix(namespace);
+                //XMLStreamWriter doesn't allow for getPrefix to know whether you're asking for the prefix
+                //for an attribute or an element. So if the namespace matches the default namespace getPrefix will return
+                //the empty string, as if it were an element, in all cases (even for attributes, and even if 
+                //there was a prefix specifically set up for this), which is not the desired behavior.
+                //Since the interface is base java, we can't fix it where we need to (by adding an attr boolean to 
+                //XMLStreamWriter.getPrefix), so we hack it in here...
+                if ( prefix == null || "".equals( prefix ) ) {
+                    for (int j=0; j<writePrefixList.size(); j++) {
+                        if ( namespace.equals( (String)writeNSList.get( j ) ) ) {
+                            prefix = (String)writePrefixList.get( j );
+                        }
+                    }
+                }
             } else if (namespace != null) {
-            	// Use the writer's prefix if it is different
-            	String writerPrefix = writer.getPrefix(namespace);
-            	if (!prefix.equals(writerPrefix)) {
-            		prefix = writerPrefix;
-            	}
+                // Use the writer's prefix if it is different, but if the writers 
+                // prefix is empty then do not replace because attributes do not
+                // default to the default namespace like elements do.
+                String writerPrefix = writer.getPrefix(namespace);
+                if (!prefix.equals(writerPrefix) && !"".equals(writerPrefix)) {
+                    prefix = writerPrefix;
+                }
             }
             if (namespace != null) {
             	// Qualified attribute
