@@ -8,7 +8,7 @@ import javax.activation.DataSource;
 /**
  * This Axiom DataHandler inplementation allows the user to set custom values
  * for the following MIME body part headers. 
- *    <ul><li>content-id</li> 
+ *    <ul>
  *    <li>content-transfer-encoding</li> 
  *    <li>content-type</li>
  *    </ul> 
@@ -44,13 +44,13 @@ public class ConfigurableDataHandler extends DataHandler {
 		super(arg0);
 	}
 
-	public String getContentID() {
-		return contentID;
-	}
-
-	public void setContentID(String contentID) {
-		this.contentID = contentID;
-	}
+//	public String getContentID() {
+//		return contentID;
+//	}
+//
+//	public void setContentID(String contentID) {
+//		this.contentID = contentID;
+//	}
 
 	public String getContentType() {
 		if (contentType != null) {

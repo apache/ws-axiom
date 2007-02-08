@@ -21,7 +21,6 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;
@@ -29,7 +28,6 @@ import javax.mail.internet.MimeBodyPart;
 
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.attachments.ConfigurableDataHandler;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
