@@ -20,6 +20,7 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -287,7 +288,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
         assertTrue(element.getDefaultNamespace() != null);
-        assertTrue(!result.contains("DUMMYPREFIX"));  // Make sure that the serialized string does not contain DUMMYPREFIX
+        assertTrue(result.indexOf("DUMMYPREFIX")<0);  // Make sure that the serialized string does not contain DUMMYPREFIX
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
         
         // Serialize again
@@ -301,7 +302,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
         assertTrue(element.getDefaultNamespace() != null);
-        assertTrue(!result.contains("DUMMYPREFIX"));  // Make sure that the serialized string does not contain DUMMYPREFIX
+        assertTrue(result.indexOf("DUMMYPREFIX")<0);  // Make sure that the serialized string does not contain DUMMYPREFIX
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
         
     }
@@ -341,7 +342,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("library"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
-        assertTrue(!result.contains("DUMMYPREFIX"));  // Make sure that the serialized string does not contain DUMMYPREFIX
+        assertTrue(result.indexOf("DUMMYPREFIX")<0);   // Make sure that the serialized string does not contain DUMMYPREFIX
         
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
     }
@@ -389,7 +390,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("library"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
-        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(result.indexOf("DUMMY")<0);   // Make sure that the serialized string does not contain the DUMMY values
         
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
         
@@ -403,7 +404,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("library"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
-        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(result.indexOf("DUMMY")<0);   // Make sure that the serialized string does not contain the DUMMY values
         
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
         
@@ -446,7 +447,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("DUMMYNAME"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
         assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
-        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(result.indexOf("DUMMY")<0);   // Make sure that the serialized string does not contain the DUMMY values
         
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
     }
@@ -486,7 +487,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals("pre"));
         assertTrue(element.getDefaultNamespace() == null);
-        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue(result.indexOf("xmlns=")<0);// Make sure that the serialized string does not contain default prefix declaration
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
         
         // Serialize again
@@ -499,7 +500,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("library"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals("pre"));
-        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue(result.indexOf("xmlns=")<0); // Make sure that the serialized string does not contain default prefix declaration
         assertTrue(element.getDefaultNamespace() == null);
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
         
@@ -540,7 +541,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("library"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
-        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue(result.indexOf("xmlns=")<0);  // Make sure that the serialized string does not contain default prefix declaration
         
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
     }
@@ -589,7 +590,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("library"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
-        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(result.indexOf("DUMMY")<0);// Make sure that the serialized string does not contain the DUMMY values
         
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
         
@@ -603,7 +604,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("library"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
-        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(result.indexOf("DUMMY")<0);// Make sure that the serialized string does not contain the DUMMY values
         
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
         
@@ -646,8 +647,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("DUMMYNAME"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
-        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
-        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain the default prefix declaration
+        assertTrue(result.indexOf("DUMMY")<0); // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(result.indexOf("xmlns=")<0);// Make sure that the serialized string does not contain the default prefix declaration
         
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
     }
@@ -687,7 +688,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getNamespace().getNamespaceURI().equals(""));
         assertTrue(element.getNamespace().getPrefix().equals(""));
         assertTrue(element.getDefaultNamespace() == null || element.getDefaultNamespace().getNamespaceURI().length() == 0);
-        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue(result.indexOf("xmlns=")<0); // Make sure that the serialized string does not contain default prefix declaration
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
         
         // Serialize again
@@ -700,7 +701,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("library"));
         assertTrue(element.getNamespace().getNamespaceURI().equals(""));
         assertTrue(element.getNamespace().getPrefix().equals(""));
-        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue(result.indexOf("xmlns=")<0);// Make sure that the serialized string does not contain default prefix declaration
         assertTrue(element.getDefaultNamespace() == null || element.getDefaultNamespace().getNamespaceURI().length() == 0);
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
         
@@ -741,7 +742,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("library"));
         assertTrue(element.getNamespace().getNamespaceURI().equals(""));
         assertTrue(element.getNamespace().getPrefix().equals(""));
-        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain default prefix declaration
+        assertTrue(result.indexOf("xmlns=")<0);// Make sure that the serialized string does not contain default prefix declaration
         
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
     }
@@ -790,7 +791,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("library"));
         assertTrue(element.getNamespace().getNamespaceURI().equals(""));
         assertTrue(element.getNamespace().getPrefix().equals(""));
-        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(result.indexOf("DUMMY")<0); // Make sure that the serialized string does not contain the DUMMY values
         
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
         
@@ -804,7 +805,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("library"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
-        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(result.indexOf("DUMMY")<0);  // Make sure that the serialized string does not contain the DUMMY values
         
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
         
@@ -847,8 +848,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue(element.getLocalName().equals("DUMMYNAME"));
         assertTrue(element.getNamespace().getNamespaceURI().equals("http://DUMMYNS"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
-        assertTrue(!result.contains("DUMMY"));  // Make sure that the serialized string does not contain the DUMMY values
-        assertTrue(!result.contains("xmlns="));  // Make sure that the serialized string does not contain the default prefix declaration
+        assertTrue(result.indexOf("DUMMY")<0);  // Make sure that the serialized string does not contain the DUMMY values
+        assertTrue(result.indexOf("xmlns=")<0); // Make sure that the serialized string does not contain the default prefix declaration
         
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
     }
