@@ -65,6 +65,7 @@ public class MIMEOutputUtils {
 						.getDataHandler()), boundary);
 			}
 			finishWritingMime(outStream);
+			outStream.flush();
         } catch (IOException e) {
             throw new OMException("Error while writing to the OutputStream.", e);
         } catch (MessagingException e) {
@@ -126,6 +127,7 @@ public class MIMEOutputUtils {
         part.writeTo(outStream);
         outStream.write(CRLF);
         writeMimeBoundary(outStream, boundary);
+        outStream.flush();
     }
 
     /**
