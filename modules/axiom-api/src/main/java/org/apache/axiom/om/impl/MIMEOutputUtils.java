@@ -51,7 +51,7 @@ public class MIMEOutputUtils {
 
             rootMimeBodyPart.addHeader("content-type",
                     "application/xop+xml; charset=" + charSetEncoding +
-                    "; type=\""+SOAPContentType+"\";");
+                    "; type=\""+SOAPContentType+"\"");
             rootMimeBodyPart.addHeader("content-transfer-encoding", "binary");
             rootMimeBodyPart.addHeader("content-id","<"+contentId+">");
 
@@ -97,8 +97,12 @@ public class MIMEOutputUtils {
 	 */
     public static void writeMimeBoundary(OutputStream outStream,
                                          String boundary) throws IOException {
+        // REVIEW: This conversion is hard-coded to UTF-8.
+        // The complete solution is to respect the charset setting of the message.
+        // However this may cause problems in BoundaryDelimittedStream and other
+        // lower level classes.
         outStream.write(new byte[]{45, 45});
-        outStream.write(boundary.getBytes());
+        outStream.write(boundary.getBytes("UTF-8"));
     }
 
     /**
@@ -223,6 +227,7 @@ public class MIMEOutputUtils {
 		    sb.append("; ");
 		    sb.append("boundary=");
 		    sb.append("\""+innerBoundary+"\"");
+            // REVIEW Should this be getBytes("UTF-8") or getBytes(charset)
 		    outputStream.write(sb.toString().getBytes());
 		    outputStream.write(CRLF); 
 		    StringBuffer sb1 = new StringBuffer();
@@ -230,6 +235,7 @@ public class MIMEOutputUtils {
 		    sb1.append("<");
 		    sb1.append(innerPartCID);
 		    sb1.append(">");
+		    // REVIEW Should this be getBytes("UTF-8") or getBytes(charset)
 			outputStream.write(sb1.toString().getBytes());
 		    outputStream.write(CRLF);
 		    outputStream.write(CRLF);

@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -133,9 +134,18 @@ public class Attachments {
                     "Invalid Content Type Field in the Mime Message"
                     , e);
         }
+        // REVIEW: This conversion is hard-coded to UTF-8.
+        // The complete solution is to respect the charset setting of the message.
+        // However this may cause problems in BoundaryDelimittedStream and other
+        // lower level classes.
+        
         // Boundary always have the prefix "--".
-        this.boundary = ("--" + contentType.getParameter("boundary"))
-                .getBytes();
+        try {
+            this.boundary = ("--" + contentType.getParameter("boundary"))
+                    .getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new OMException(e);
+        }
 
         // do we need to wrap InputStream from a BufferedInputStream before
         // wrapping from PushbackStream
