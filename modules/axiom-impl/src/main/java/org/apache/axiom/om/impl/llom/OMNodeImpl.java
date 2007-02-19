@@ -50,7 +50,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     /**
      * Field builder
      */
-    protected OMXMLParserWrapper builder;
+    public OMXMLParserWrapper builder;
 
     /**
      * Field done
