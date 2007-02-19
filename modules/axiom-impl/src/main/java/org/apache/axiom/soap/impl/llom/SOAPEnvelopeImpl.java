@@ -42,6 +42,8 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
 
+import com.sun.corba.se.internal.ior.WireObjectKeyTemplate;
+
 /**
  * Class SOAPEnvelopeImpl
  */
@@ -190,7 +192,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
 			OMSerializerUtil.serializeStartpart(this, writer);
 			//serialize children
 			OMElement header = getFirstChildWithName(HEADER_QNAME);
-			if ((header != null) && (header.getFirstOMChild() == null)) {
+			if ((header != null) && (header.getFirstOMChild() != null)) {
 				((SOAPHeaderImpl) header).internalSerialize(writer);
 			}
 			SOAPBody body = getBody();
