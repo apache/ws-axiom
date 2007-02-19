@@ -16,8 +16,6 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import java.util.Iterator;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -30,7 +28,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -41,8 +38,6 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
-
-import com.sun.corba.se.internal.ior.WireObjectKeyTemplate;
 
 /**
  * Class SOAPEnvelopeImpl
