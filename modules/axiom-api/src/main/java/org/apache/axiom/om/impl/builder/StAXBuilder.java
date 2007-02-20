@@ -103,7 +103,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper, OMBuilder {
     protected StAXBuilder()
     {
     }
-    public void init (InputStream inputStream, String charSetEncoding) throws OMException
+    
+    public void init (InputStream inputStream, String charSetEncoding, String url, String contentType) throws OMException
     {
         try {
 			this.parser = StAXUtils.createXMLStreamReader(inputStream);
