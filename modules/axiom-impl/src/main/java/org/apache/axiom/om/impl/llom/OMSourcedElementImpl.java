@@ -824,4 +824,14 @@ public class OMSourcedElementImpl extends OMElementImpl
 	public OMDataSource getDataSource() {
 		return dataSource;
 	}
+    
+    /**
+     * setComplete override
+     * The OMSourcedElement has its own isolated builder/reader during the expansion process.
+     * Thus calls to setCompete should stop here and not propogate up to the 
+     * parent (which may have a different builder or no builder).
+     */
+    public void setComplete(boolean value) {
+        done = value;
+    }
 }
