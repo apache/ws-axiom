@@ -270,6 +270,28 @@ public class Attachments {
     {
     	attachmentsMap.put(contentID,dataHandler);
     }
+    
+    /**
+     * Removes the DataHandler corresponding to the given contenID.
+     * If it is not present, then trying to find it calling the getNextPart()
+     * till the required part is found.
+     * 
+     * @param blobContentID 
+     */
+    public void removeDataHandler(String blobContentID) {
+        DataHandler dataHandler;
+        if (attachmentsMap.containsKey(blobContentID)) {
+            attachmentsMap.remove(blobContentID);
+        } else if (!noStreams){
+            //This loop will be terminated by the Exceptions thrown if the Mime
+            // part searching was not found
+            while ((dataHandler = this.getNextPartDataHandler())!=null) {
+                if (attachmentsMap.containsKey(blobContentID)) {
+                	attachmentsMap.remove(blobContentID);
+                }
+            }
+        }
+    }
 
     /**
      * @return the InputStream which includes the SOAP Envelope. It assumes that
@@ -301,7 +323,7 @@ public class Attachments {
      *         the MIME message. Else it'll be the content-id of the first MIME
      *         part of the MIME message
      */
-    private String getSOAPPartContentID() {
+    public String getSOAPPartContentID() {
         String rootContentID = contentType.getParameter("start");
 
         // to handle the Start parameter not mentioned situation
