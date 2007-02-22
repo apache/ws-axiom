@@ -177,6 +177,7 @@ public class MIMEOutputUtils {
 						dataHandler), format.getMimeBoundary());
 			}
 			finishWritingMime(outputStream);
+			outputStream.flush();
 		} catch (IOException e) {
 			throw new OMException("Error while writing to the OutputStream.", e);
 		} catch (MessagingException e) {
@@ -252,6 +253,7 @@ public class MIMEOutputUtils {
 			writeMimeBoundary(outputStream, format.getMimeBoundary());
 			}
 			finishWritingMime(outputStream);
+			outputStream.flush();
 		} catch (IOException e) {
 			throw new OMException("Error while writing to the OutputStream.", e);
 		} catch (MessagingException e) {
