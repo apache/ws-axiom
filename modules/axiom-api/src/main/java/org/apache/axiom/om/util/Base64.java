@@ -210,6 +210,46 @@ public class Base64 {
     }
 
     /**
+     * Outputs base64 representation of the specified byte array to the specified String Buffer
+     */
+    public static void encode(byte[] data, int off, int len, StringBuffer buffer) {
+        if (len <= 0) {
+            return;
+        }
+
+        char[] out = new char[4];
+        int rindex = off;
+        int rest = len - off;
+        while (rest >= 3) {
+            int i = ((data[rindex] & 0xff) << 16)
+                    + ((data[rindex + 1] & 0xff) << 8)
+                    + (data[rindex + 2] & 0xff);
+            out[0] = S_BASE64CHAR[i >> 18];
+            out[1] = S_BASE64CHAR[(i >> 12) & 0x3f];
+            out[2] = S_BASE64CHAR[(i >> 6) & 0x3f];
+            out[3] = S_BASE64CHAR[i & 0x3f];
+            buffer.append(out);
+            rindex += 3;
+            rest -= 3;
+        }
+        if (rest == 1) {
+            int i = data[rindex] & 0xff;
+            out[0] = S_BASE64CHAR[i >> 2];
+            out[1] = S_BASE64CHAR[(i << 4) & 0x3f];
+            out[2] = S_BASE64PAD;
+            out[3] = S_BASE64PAD;
+            buffer.append(out);
+        } else if (rest == 2) {
+            int i = ((data[rindex] & 0xff) << 8) + (data[rindex + 1] & 0xff);
+            out[0] = S_BASE64CHAR[i >> 10];
+            out[1] = S_BASE64CHAR[(i >> 4) & 0x3f];
+            out[2] = S_BASE64CHAR[(i << 2) & 0x3f];
+            out[3] = S_BASE64PAD;
+            buffer.append(out);
+        }
+    }
+
+    /**
      * Outputs base64 representation of the specified byte array to a byte
      * stream.
      */

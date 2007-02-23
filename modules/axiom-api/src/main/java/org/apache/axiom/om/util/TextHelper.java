@@ -28,7 +28,7 @@ public class TextHelper {
             data = new byte[1023];
             int len;
             while ((len = inStream.read(data)) > 0) {
-                text.append(Base64.encode(data, 0, len));
+                Base64.encode(data, 0, len, text);
             }
         } while (inStream.available() > 0);
         return text.toString();
