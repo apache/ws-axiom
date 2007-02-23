@@ -22,6 +22,7 @@ import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.util.Base64;
 import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.axiom.om.util.TextHelper;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
@@ -312,22 +313,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
             return getTextFromProperPlace();
         } else {
             try {
-                InputStream inStream;
-                inStream = this.getInputStream();
-                // int x = inStream.available();
-                byte[] data;
-                StringBuffer text = new StringBuffer();
-                do {
-                    data = new byte[1024];
-                    int len;
-                    while ((len = inStream.read(data)) > 0) {
-                        byte[] temp = new byte[len];
-                        System.arraycopy(data, 0, temp, 0, len);
-                        text.append(Base64.encode(temp));
-                    }
-
-                } while (inStream.available() > 0);
-                return text.toString();
+                return TextHelper.toString(getInputStream());
             } catch (Exception e) {
                 throw new OMException(e);
             }
@@ -373,22 +359,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
             return new QName(getTextFromProperPlace());
         } else {
             try {
-                InputStream inStream;
-                inStream = this.getInputStream();
-                byte[] data;
-                StringBuffer text = new StringBuffer();
-                do {
-                    data = new byte[1024];
-                    int len;
-                    while ((len = inStream.read(data)) > 0) {
-                        byte[] temp = new byte[len];
-                        System.arraycopy(data, 0, temp, 0, len);
-                        text.append(Base64.encode(temp));
-                    }
-
-                } while (inStream.available() > 0);
-
-                return new QName(text.toString());
+                return new QName(TextHelper.toString(getInputStream()));
             } catch (Exception e) {
                 throw new OMException(e);
             }

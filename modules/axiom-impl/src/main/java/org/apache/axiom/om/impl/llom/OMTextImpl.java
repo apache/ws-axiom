@@ -24,6 +24,7 @@ import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.Base64;
 import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.axiom.om.util.TextHelper;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -227,23 +228,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             return getTextFromProperPlace();
         } else {
             try {
-				// TODO we have the following code duplicated in getTextAsQName
-				InputStream inStream;
-                inStream = this.getInputStream();
-                byte[] data;
-                StringBuffer text = new StringBuffer();
-                do {
-                    data = new byte[1023];
-                    int len;
-                    while ((len = inStream.read(data)) > 0) {
-                        byte[] temp = new byte[len];
-                        System.arraycopy(data, 0, temp, 0, len);
-                        text.append(Base64.encode(temp));
-                    }
-
-                } while (inStream.available() > 0);
-
-                return text.toString();
+                return TextHelper.toString(getInputStream());
             } catch (Exception e) {
                 throw new OMException(e);
             }
@@ -284,22 +269,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             return new QName(getTextFromProperPlace());
         } else {
             try {
-                InputStream inStream;
-                inStream = this.getInputStream();
-                byte[] data;
-                StringBuffer text = new StringBuffer();
-                do {
-                    data = new byte[1023];
-                    int len;
-                    while ((len = inStream.read(data)) > 0) {
-                        byte[] temp = new byte[len];
-                        System.arraycopy(data, 0, temp, 0, len);
-                        text.append(Base64.encode(temp));
-                    }
-
-                } while (inStream.available() > 0);
-
-                return new QName(text.toString());
+                return new QName(TextHelper.toString(getInputStream()));
             } catch (Exception e) {
                 throw new OMException(e);
             }
