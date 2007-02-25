@@ -41,7 +41,7 @@ public class StAXOMBuilder extends StAXBuilder {
      */
 
     private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
-    private boolean doDebug = log.isDebugEnabled();
+    private boolean doTrace = log.isDebugEnabled();
     private static int nsCount = 0;
 
     /**
@@ -123,8 +123,8 @@ public class StAXOMBuilder extends StAXBuilder {
             }
             switch (token) {
                 case XMLStreamConstants.START_ELEMENT:
-                    if (doDebug) {
-                        log.debug("START_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
+                    if (doTrace) {
+                        log.trace("START_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
                     }
                     lastNode = createOMElement();
                     break;
@@ -134,62 +134,62 @@ public class StAXOMBuilder extends StAXBuilder {
                     document.setXMLVersion(parser.getVersion());
                     document.setCharsetEncoding(parser.getEncoding());
                     document.setStandalone(parser.isStandalone() ? "yes" : "no");
-                    if (doDebug) {
-                        log.debug("START_DOCUMENT: ");
+                    if (doTrace) {
+                        log.trace("START_DOCUMENT: ");
                     }
                     break;
                 case XMLStreamConstants.CHARACTERS:
-                    if (doDebug) {
-                        log.debug("CHARACTERS: [" + parser.getText() + "]");
+                    if (doTrace) {
+                        log.trace("CHARACTERS: [" + parser.getText() + "]");
                     }
                     lastNode = createOMText(XMLStreamConstants.CHARACTERS);
                     break;
                 case XMLStreamConstants.CDATA:
-                    if (doDebug) {
-                        log.debug("CDATA: [" + parser.getText() + "]");
+                    if (doTrace) {
+                        log.trace("CDATA: [" + parser.getText() + "]");
                     }
                     lastNode = createOMText(XMLStreamConstants.CDATA);
                     break;
                 case XMLStreamConstants.END_ELEMENT:
-                    if (doDebug) {
-                        log.debug("END_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
+                    if (doTrace) {
+                        log.trace("END_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
                     }
                     endElement();
                     break;
                 case XMLStreamConstants.END_DOCUMENT:
-                    if (doDebug) {
-                        log.debug("END_DOCUMENT: ");
+                    if (doTrace) {
+                        log.trace("END_DOCUMENT: ");
                     }
                     done = true;
                     ((OMContainerEx) this.document).setComplete(true);
                     break;
                 case XMLStreamConstants.SPACE:
-                    if (doDebug) {
-                        log.debug("SPACE: [" + parser.getText() + "]");
+                    if (doTrace) {
+                        log.trace("SPACE: [" + parser.getText() + "]");
                     }
                     lastNode = createOMText(XMLStreamConstants.SPACE);
                     break;
                 case XMLStreamConstants.COMMENT:
-                    if (doDebug) {
-                        log.debug("COMMENT: [" + parser.getText() + "]");
+                    if (doTrace) {
+                        log.trace("COMMENT: [" + parser.getText() + "]");
                     }
                     createComment();
                     break;
                 case XMLStreamConstants.DTD:
-                    if (doDebug) {
-                        log.debug("DTD: [" + parser.getText() + "]");
+                    if (doTrace) {
+                        log.trace("DTD: [" + parser.getText() + "]");
                     }
                     createDTD();
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    if (doDebug) {
-                        log.debug("PROCESSING_INSTRUCTION: [" + parser.getPITarget() + "][" + parser.getPIData() + "]");
+                    if (doTrace) {
+                        log.trace("PROCESSING_INSTRUCTION: [" + parser.getPITarget() + "][" + parser.getPIData() + "]");
                     }
                     createPI();
                     break;
                 case XMLStreamConstants.ENTITY_REFERENCE:
-                    if (doDebug) {
-                        log.debug("ENTITY_REFERENCE: " + parser.getLocalName() + "[" + parser.getText() + "]");
+                    if (doTrace) {
+                        log.trace("ENTITY_REFERENCE: " + parser.getLocalName() + "[" + parser.getText() + "]");
                     }
                     lastNode = createOMText(XMLStreamConstants.ENTITY_REFERENCE);
                     break;
@@ -365,7 +365,7 @@ public class StAXOMBuilder extends StAXBuilder {
      * @param doDebug
      */
     public void setDoDebug(boolean doDebug) {
-        this.doDebug = doDebug;
+        this.doTrace = doDebug;
     }
 
     protected String createPrefix() {
