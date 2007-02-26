@@ -33,7 +33,7 @@ import javax.xml.stream.XMLStreamException;
  * may be a SOAP specific one or just an XML model. This class will give
  * some common functionality of OM Building from StAX.
  */
-public abstract class StAXBuilder implements OMXMLParserWrapper, OMBuilder {
+public abstract class StAXBuilder implements OMXMLParserWrapper {
 
     /**
      * Field parser
