@@ -107,6 +107,23 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         parserVersion = parser.getVersion();
         identifySOAPVersion(soapVersion);
     }
+    
+    /**
+	 * Constructor StAXSOAPModelBuilder Users of this constructor needs to
+	 * externally take care validating the transport level soap version with the
+	 * Envelope version.
+	 * 
+	 * @param parser
+	 * @param soapVersion
+	 *            parameter is to give the soap version for the transport.
+	 */
+    public StAXSOAPModelBuilder(XMLStreamReader parser) {
+        super(parser);
+        charEncoding = parser.getCharacterEncodingScheme();
+        parserVersion = parser.getVersion();
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope();
+        envelopeNamespace = soapEnvelope.getNamespace();
+    }
 
     /**
      * @param parser

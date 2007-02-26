@@ -63,6 +63,12 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
 		super(reader, soapVersion);
 		this.attachments = attachments;
 	}
+	
+	public MTOMStAXSOAPModelBuilder(XMLStreamReader reader,
+			Attachments attachments) {
+		super(reader);
+		this.attachments = attachments;
+	}
 
 	protected OMNode createOMElement() throws OMException {
 
