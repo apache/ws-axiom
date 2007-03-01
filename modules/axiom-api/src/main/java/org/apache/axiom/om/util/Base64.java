@@ -122,6 +122,30 @@ public class Base64 {
     }
 
     /**
+     * checks input string for invalid Base64 characters 
+     * @param data
+     * @return true, if String contains only valid Base64 characters.
+     *         false, otherwise 
+     */
+    public static boolean isValidBase64Encoding(String data) {
+        for (int i = 0; i < data.length(); i++) {
+            char ch = data.charAt(i);
+            
+            if (ch == S_BASE64PAD || ch < S_DECODETABLE.length
+                    && S_DECODETABLE[ch] != Byte.MAX_VALUE) {
+            	//valid character.Do nothing
+            }else if(ch == '\r' || ch == '\n'){
+            	//do nothing
+            }
+            else{
+            	return false;
+            }
+        }//iterate over all characters in the string
+        return true;
+    }  
+    
+    
+    /**
      *
      */
     public static void decode(char[] data, int off, int len,
