@@ -49,7 +49,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
     /**
      * Field builder
      */
-    protected OMXMLParserWrapper builder;
+    public OMXMLParserWrapper builder;
 
     /**
      * Field done

@@ -16,19 +16,33 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.*;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.dom.DocumentImpl;
-import org.apache.axiom.soap.*;
-import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.dom.DocumentImpl;
+import org.apache.axiom.om.impl.dom.NodeImpl;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
+
 public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         OMConstants {
-
+	
+    private static final QName HEADER_QNAME = new QName(SOAPConstants.HEADER_LOCAL_NAME);
 
     /**
      * @param builder
@@ -145,16 +159,59 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         if (!writer.isIgnoreXMLDeclaration()) {
             String charSetEncoding = writer.getCharSetEncoding();
             String xmlVersion = writer.getXmlVersion();
-            writer
-                    .getXmlStreamWriter()
-                    .writeStartDocument(
+            writer.getXmlStreamWriter().writeStartDocument(
                             charSetEncoding == null ? OMConstants.DEFAULT_CHAR_SET_ENCODING
                                     : charSetEncoding,
                             xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION
                                     : xmlVersion);
         }
-        super.internalSerialize(writer, cache);
-    }
+		if (cache) {
+			//in this case we don't care whether the elements are built or not
+			//we just call the serializeAndConsume methods
+			OMSerializerUtil.serializeStartpart(this, writer);
+			//serialize children
+			OMElement header = getFirstChildWithName(HEADER_QNAME);
+			if ((header != null) && (header.getFirstOMChild() != null)) {
+				((SOAPHeaderImpl) header).internalSerialize(writer);
+			}
+			SOAPBody body = getBody();
+			//REVIEW: getBody has statements to return null..Can it be null in any case?
+			if (body != null) {
+				((org.apache.axiom.soap.impl.dom.SOAPBodyImpl) body).internalSerialize(writer);
+			}
+			OMSerializerUtil.serializeEndpart(writer);
+
+		} else {
+			//Now the caching is supposed to be off. However caching been switched off
+			//has nothing to do if the element is already built!
+			if (this.done || (this.builder == null)) {
+				OMSerializerUtil.serializeStartpart(this, writer);
+				OMElement header = getFirstChildWithName(HEADER_QNAME);
+				if ((header != null) && (header.getFirstOMChild() != null)) {
+					serializeInternally((NodeImpl) header, writer);
+				}
+				SOAPBody body = getBody();
+				if (body != null) {
+					serializeInternally((NodeImpl) body, writer);
+				}
+				OMSerializerUtil.serializeEndpart(writer);
+			} else {
+				OMSerializerUtil.serializeByPullStream(this, writer, cache);
+			}
+		}
+	}
+
+	private void serializeInternally(NodeImpl child, MTOMXMLStreamWriter writer)
+			throws XMLStreamException {
+		if ((!(child instanceof OMElement)) || child.isComplete() || child.builder == null) {
+			child.internalSerializeAndConsume(writer);
+		} else {
+			OMElement element = (OMElement) child;
+			element.getBuilder().setCache(false);
+			OMSerializerUtil.serializeByPullStream(element, writer, false);
+		}
+		child = (NodeImpl) child.getNextOMSibling();
+	}
 
     public OMNode getNextOMSibling() throws OMException {
         if(this.ownerNode != null && !this.ownerNode.isComplete()) {
