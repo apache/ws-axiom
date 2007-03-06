@@ -471,18 +471,18 @@ public class StAXSOAPModelBuilderTest extends TestCase {
             code = (SOAPFaultCode) iteratorInFault.next();
             assertEquals("SOAP Fault code local name mismatch",
                     code.getLocalName(),
-                    (SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME));
+                    (SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME));
 
-            assertEquals("SOAP 1.1 :- Fault code value mismatch", code.getValue().getText().trim(),
+            assertEquals("SOAP 1.1 :- Fault code value mismatch", code.getText().trim(),
                     "env:Sender");
 
             iteratorInFault.next();
             reason = (SOAPFaultReason) iteratorInFault.next();
             assertTrue("SOAP 1.1 :- Fault string local name mismatch",
                     reason.getLocalName().equals(
-                            SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME));
+                            SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME));
             assertTrue("SOAP 1.1 :- Fault string value mismatch",
-                    reason.getFirstSOAPText().getText().trim().equals("Sender Timeout"));
+                    reason.getText().trim().equals("Sender Timeout"));
 
             iteratorInFault.next();
             role = (SOAPFaultRole) iteratorInFault.next();
@@ -564,6 +564,7 @@ public class StAXSOAPModelBuilderTest extends TestCase {
             log.info(e.getMessage());
             fail("Test failed. Reason -> " + e.getMessage());
         } catch (Exception e) {
+            e.printStackTrace();
             log.info(e.getMessage());
             fail("Test failed. Reason -> " + e.getMessage());
 

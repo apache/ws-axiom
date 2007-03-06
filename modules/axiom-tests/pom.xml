@@ -74,7 +74,6 @@
                         <include>**/*Test.java</include>
                     </includes>
 		    <excludes>
-  		        <exclude>**/*SOAP11FaultImplConversionTest.java</exclude>
 			<exclude>**/*AbstractOMSerializationTest.java</exclude>
 		    </excludes>
                 </configuration>

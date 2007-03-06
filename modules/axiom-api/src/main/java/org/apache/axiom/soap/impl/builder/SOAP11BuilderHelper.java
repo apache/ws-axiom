@@ -57,11 +57,10 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
 
                 SOAPFaultCode code = factory.createSOAPFaultCode(
                         (SOAPFault) parent, builder);
-                SOAPFaultValue value = factory.createSOAPFaultValue(code);
                 processNamespaceData(code, false);
                 processAttributes(code);
 
-                processText(parser, value);
+                processText(parser, code);
                 ((OMNodeEx)code).setComplete(true);
                 element = code;
                 builder.elementLevel--;
@@ -71,11 +70,10 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
 
                 SOAPFaultReason reason = factory.createSOAPFaultReason(
                         (SOAPFault) parent, builder);
-                SOAPFaultText faultText = factory.createSOAPFaultText(reason);
                 processNamespaceData(reason, false);
                 processAttributes(reason);
 
-                processText(parser, faultText);
+                processText(parser, reason);
                 ((OMNodeEx)reason).setComplete(true);
                 element = reason;
                 builder.elementLevel--;

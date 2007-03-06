@@ -85,8 +85,8 @@ public class SOAPFaultReasonTest extends SOAPFaultReasonTestCase {
 
     //SOAP 1.1 Fault Reason Test (With Parser)
     public void testSOAP11GetSOAPTextWithParser() {
-        assertFalse(
-                "SOAP 1.1 FaultReason Test With Parser : - getFirstSOAPText method returns null",
+        assertTrue(
+                "SOAP 1.1 FaultReason Test With Parser : - getFirstSOAPText should return null",
                 soap11FaultReasonWithParser.getFirstSOAPText() == null);
     }
 

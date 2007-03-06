@@ -21,7 +21,7 @@ import org.apache.axiom.om.OMAttribute;
 public class SOAPFaultTextTest extends SOAPFaultReasonTestCase {
     protected SOAPFaultText soap11FaultText;
     protected SOAPFaultText soap12FaultText;
-    protected SOAPFaultText soap11FaultTextWithParser;
+    protected String soap11FaultTextWithParser;
     protected SOAPFaultText soap12FaultTextWithParser;
 
     public SOAPFaultTextTest(String testName) {
@@ -32,7 +32,7 @@ public class SOAPFaultTextTest extends SOAPFaultReasonTestCase {
         super.setUp();
         soap11FaultText = soap11Factory.createSOAPFaultText(soap11FaultReason);
         soap12FaultText = soap12Factory.createSOAPFaultText(soap12FaultReason);
-        soap11FaultTextWithParser = soap11FaultReasonWithParser.getFirstSOAPText();
+        soap11FaultTextWithParser = soap11FaultReasonWithParser.getText();
         soap12FaultTextWithParser = soap12FaultReasonWithParser.getFirstSOAPText();
     }
 
@@ -143,7 +143,7 @@ public class SOAPFaultTextTest extends SOAPFaultReasonTestCase {
     public void testSOAP11GetTextWithParser() {
         assertTrue(
                 "SOAP 1.1 Fault Text Test With Parser : - getText method returns incorrect string",
-                soap11FaultTextWithParser.getText().trim().equals("Sender Timeout"));
+                soap11FaultTextWithParser.trim().equals("Sender Timeout"));
     }
 
     //SOAP 1.2 Fault Text Test (With Parser)

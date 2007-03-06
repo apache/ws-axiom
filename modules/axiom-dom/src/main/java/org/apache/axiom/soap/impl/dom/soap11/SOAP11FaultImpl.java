@@ -125,4 +125,13 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
                 .getChildWithName(SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME);
     }
 
+    public SOAPFaultCode getCode() {
+        return (SOAPFaultCode) this.getChildWithName(
+                SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME);
+    }
+
+    public SOAPFaultReason getReason() {
+        return (SOAPFaultReason) this.getChildWithName(
+                SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME);
+    }
 }

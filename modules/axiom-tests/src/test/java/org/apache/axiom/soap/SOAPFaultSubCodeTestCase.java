@@ -24,7 +24,7 @@ public abstract class SOAPFaultSubCodeTestCase extends SOAPFaultCodeTestCase {
     protected SOAPFaultValue soap12FaultValueInFaultSubCode;
     protected SOAPFaultSubCode soap12FaultSubCodeInSubCode;
 
-    protected SOAPFaultValue soap11FaultValueWithParser;
+    protected String soap11FaultValueWithParser;
     protected SOAPFaultValue soap12FaultValueInFaultCodeWithParser;
     protected SOAPFaultSubCode soap12FaultSubCodeInFaultCodeWithParser;
 
@@ -48,7 +48,7 @@ public abstract class SOAPFaultSubCodeTestCase extends SOAPFaultCodeTestCase {
         soap12FaultSubCodeInSubCode =
                 soap12Factory.createSOAPFaultSubCode(soap12FaultSubCodeInCode);
 
-        soap11FaultValueWithParser = soap11FaultCodeWithParser.getValue();
+        soap11FaultValueWithParser = soap11FaultCodeWithParser.getText();
         soap12FaultValueInFaultCodeWithParser =
                 soap12FaultCodeWithParser.getValue();
         soap12FaultSubCodeInFaultCodeWithParser =

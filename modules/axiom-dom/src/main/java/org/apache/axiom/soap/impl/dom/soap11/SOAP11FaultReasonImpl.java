@@ -81,9 +81,13 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
         		SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME, 
         		writer);
       
-        String text = this.getFirstSOAPText().getText();
+        String text = this.getText();
         writer.writeCharacters(text);
         writer.writeEndElement();
+    }
+
+    public String getLocalName() {
+        return SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME;
     }
 
 }
