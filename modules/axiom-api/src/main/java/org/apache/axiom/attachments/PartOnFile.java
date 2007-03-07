@@ -16,6 +16,11 @@
 
 package org.apache.axiom.attachments;
 
+import org.apache.axiom.om.OMException;
+
+import javax.activation.DataHandler;
+import javax.mail.Header;
+import javax.mail.MessagingException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,15 +29,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
-
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
-import javax.mail.Header;
-import javax.mail.MessagingException;
-
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.util.Base64;
 
 public class PartOnFile implements Part {
 
@@ -48,9 +44,9 @@ public class PartOnFile implements Part {
 
     public PartOnFile(PushbackFilePartInputStream inStream, String repoDir) {
         super();
-        
+
         headers = new Hashtable();
-        
+
         if (repoDir == null) {
             repoDir = ".";
         }
@@ -67,7 +63,7 @@ public class PartOnFile implements Part {
                         + repoDir + "  should be a directory.");
             }
             cacheFile = File.createTempFile("Axis2", ".att", repoDirFile);
-            
+
             FileOutputStream fileOutStream = new FileOutputStream(cacheFile);
             int value;
             value = parseTheHeaders(inStream);
@@ -117,9 +113,9 @@ public class PartOnFile implements Part {
     private void putToMap(StringBuffer header) {
         String headerString = header.toString();
         int delimiter = headerString.indexOf(":");
-        
+
         String name = headerString.substring(0, delimiter).trim();
-        String value= headerString.substring(delimiter + 1, headerString.length()).trim();
+        String value = headerString.substring(delimiter + 1, headerString.length()).trim();
 
         Header headerObj = new Header(name, value);
         headers.put(name, headerObj);
@@ -165,8 +161,8 @@ public class PartOnFile implements Part {
     }
 
     public DataHandler getDataHandler() throws MessagingException {
-    	CachedFileDataSource dataSource = new CachedFileDataSource(cacheFile);
-    	dataSource.setContentType(getContentType());
+        CachedFileDataSource dataSource = new CachedFileDataSource(cacheFile);
+        dataSource.setContentType(getContentType());
         return new DataHandler(dataSource);
     }
 
@@ -180,11 +176,11 @@ public class PartOnFile implements Part {
     }
 
     public String getHeader(String arg0) throws MessagingException {
-    	return ((Header) headers.get(arg0)).getValue();
+        return ((Header) headers.get(arg0)).getValue();
     }
 
     public void addHeader(String arg0, String arg1) throws MessagingException {
-    	Header headerObj = new Header(arg0, arg1);
+        Header headerObj = new Header(arg0, arg1);
         headers.put(arg0, headerObj);
     }
 

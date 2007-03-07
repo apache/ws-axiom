@@ -15,6 +15,7 @@
  */
 package org.apache.axiom.om.impl.dom;
 
+import junit.framework.TestCase;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.dom.jaxp.DocumentBuilderFactoryImpl;
 import org.w3c.dom.Attr;
@@ -25,74 +26,72 @@ import org.w3c.dom.Text;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import junit.framework.TestCase;
-
 public class DocumentImplTest extends TestCase {
 
-	public DocumentImplTest() {
-		super();
-	}
+    public DocumentImplTest() {
+        super();
+    }
 
-	public DocumentImplTest(String name) {
-		super(name);
-	}
-	
-	public void testCreateElement() {
-		String tagName = "LocalName";
-		String namespace = "http://ws.apache.org/axis2/ns";
-        OMDOMFactory fac = new OMDOMFactory();
-		DocumentImpl doc = new DocumentImpl(fac);
-		Element elem = doc.createElement(tagName);
-		
-		assertEquals("Local name misnatch",tagName, elem.getNodeName());
-		
-		elem = doc.createElementNS(namespace, "axis2:" + tagName);
-		assertEquals("Local name misnatch",tagName,elem.getLocalName());
-		assertEquals("Namespace misnatch",namespace,elem.getNamespaceURI());
-		
-	}
-	
-	public void testCreateAttribute() {
-		String attrName = "attrIdentifier";
-		String attrValue = "attrValue";
-		String attrNs = "http://ws.apache.org/axis2/ns";
-		String attrNsPrefix = "axis2";
-		
+    public DocumentImplTest(String name) {
+        super(name);
+    }
+
+    public void testCreateElement() {
+        String tagName = "LocalName";
+        String namespace = "http://ws.apache.org/axis2/ns";
         OMDOMFactory fac = new OMDOMFactory();
         DocumentImpl doc = new DocumentImpl(fac);
-		Attr attr = doc.createAttribute(attrName);
+        Element elem = doc.createElement(tagName);
 
-		assertEquals("Attr name mismatch",attrName,attr.getName());
-		assertNull("Namespace value should be null", attr.getNamespaceURI());
-		
-		
-		attr = doc.createAttributeNS(attrNs,attrNsPrefix + ":" + attrName);
-		assertEquals("Attr name mismatch",attrName,attr.getLocalName());
-		assertNotNull("Namespace value should not be null", attr.getNamespaceURI());
-		assertEquals("NamsspaceURI mismatch", attrNs, attr.getNamespaceURI());
-		assertEquals("namespace prefix mismatch", attrNsPrefix, attr.getPrefix());
-		
-		attr.setValue(attrValue);
-		
-	}
-	
-	public void testCreateText() {
-		String textValue = "temp text value";
-		
+        assertEquals("Local name misnatch", tagName, elem.getNodeName());
+
+        elem = doc.createElementNS(namespace, "axis2:" + tagName);
+        assertEquals("Local name misnatch", tagName, elem.getLocalName());
+        assertEquals("Namespace misnatch", namespace, elem.getNamespaceURI());
+
+    }
+
+    public void testCreateAttribute() {
+        String attrName = "attrIdentifier";
+        String attrValue = "attrValue";
+        String attrNs = "http://ws.apache.org/axis2/ns";
+        String attrNsPrefix = "axis2";
+
         OMDOMFactory fac = new OMDOMFactory();
         DocumentImpl doc = new DocumentImpl(fac);
-		Text txt = doc.createTextNode(textValue);
-		
-		assertEquals("Text value mismatch", textValue, txt.getData());
-	}
-    
+        Attr attr = doc.createAttribute(attrName);
+
+        assertEquals("Attr name mismatch", attrName, attr.getName());
+        assertNull("Namespace value should be null", attr.getNamespaceURI());
+
+
+        attr = doc.createAttributeNS(attrNs, attrNsPrefix + ":" + attrName);
+        assertEquals("Attr name mismatch", attrName, attr.getLocalName());
+        assertNotNull("Namespace value should not be null", attr.getNamespaceURI());
+        assertEquals("NamsspaceURI mismatch", attrNs, attr.getNamespaceURI());
+        assertEquals("namespace prefix mismatch", attrNsPrefix, attr.getPrefix());
+
+        attr.setValue(attrValue);
+
+    }
+
+    public void testCreateText() {
+        String textValue = "temp text value";
+
+        OMDOMFactory fac = new OMDOMFactory();
+        DocumentImpl doc = new DocumentImpl(fac);
+        Text txt = doc.createTextNode(textValue);
+
+        assertEquals("Text value mismatch", textValue, txt.getData());
+    }
+
     public void testDocumentSiblings() {
         try {
             DocumentBuilderFactoryImpl.setDOOMRequired(true);
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element elem = doc.createElement("test");
             doc.appendChild(elem);
-            
+
             Node node = doc.getNextSibling();
             assertNull("Document's next sibling has to be null", node);
             Node node2 = doc.getPreviousSibling();

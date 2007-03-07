@@ -22,7 +22,7 @@ public class NamespaceImpl implements OMNamespace {
     private String nsUri;
 
     private String nsPrefix;
-    
+
     public NamespaceImpl(String uri) {
         this.nsUri = uri;
     }

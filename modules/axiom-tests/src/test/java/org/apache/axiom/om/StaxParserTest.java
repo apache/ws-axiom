@@ -118,7 +118,7 @@ public class StaxParserTest extends AbstractTestCase {
     }
 
 
-    public void testParserBehaviornonCaching() throws Exception{
+    public void testParserBehaviornonCaching() throws Exception {
 
         OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createStAXOMBuilder(
                 OMAbstractFactory.getOMFactory(),
@@ -131,7 +131,7 @@ public class StaxParserTest extends AbstractTestCase {
 
         //consume the parser. this should force the xml stream to be exhausted without
         //building the tree
-        while(originalParser.hasNext()){
+        while (originalParser.hasNext()) {
             originalParser.next();
         }
 
@@ -149,7 +149,7 @@ public class StaxParserTest extends AbstractTestCase {
     }
 
 
-    public void testParserBehaviorCaching() throws Exception{
+    public void testParserBehaviorCaching() throws Exception {
 
         OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createStAXOMBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
@@ -162,7 +162,7 @@ public class StaxParserTest extends AbstractTestCase {
 
         //consume the parser. this should force the xml stream to be exhausted but the
         //tree to be fully built
-        while(originalParser.hasNext()){
+        while (originalParser.hasNext()) {
             originalParser.next();
         }
 
@@ -179,11 +179,11 @@ public class StaxParserTest extends AbstractTestCase {
             fail("The object tree needs to be built and traversing the children is to be a success!");
         }
 
-        assertEquals("Number of elements need to be 2",count,2);
+        assertEquals("Number of elements need to be 2", count, 2);
     }
 
 
-    public void testParserBehaviorNonCaching2() throws Exception{
+    public void testParserBehaviorNonCaching2() throws Exception {
 
         OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createStAXOMBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
@@ -197,7 +197,7 @@ public class StaxParserTest extends AbstractTestCase {
 
         //consume the parser. this should force the xml stream to be exhausted without
         //building the tree
-        while(originalParser.hasNext()){
+        while (originalParser.hasNext()) {
             originalParser.next();
         }
 
@@ -210,10 +210,10 @@ public class StaxParserTest extends AbstractTestCase {
                             createXMLStreamWriter(System.out);
             documentElement.serializeAndConsume(writer);
             fail("Stream should be consumed by now");
-        }catch(XMLStreamException e){
-           //wea re cool
+        } catch (XMLStreamException e) {
+            //wea re cool
         } catch (Exception e) {
-           fail("This should throw an XMLStreamException");
+            fail("This should throw an XMLStreamException");
         }
     }
 

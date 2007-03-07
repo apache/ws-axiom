@@ -38,15 +38,17 @@ public class OMChildrenWithSpecificAttributeIteratorTest extends TestCase {
         OMElement documentElement = getSampleDocumentElement(testNamespace);
 
         Iterator childrenIter = new OMChildrenWithSpecificAttributeIterator(
-                documentElement.getFirstOMChild(), new QName(testNamespace.getNamespaceURI(), "myAttr",
-                testNamespace.getPrefix()), "Axis2", true);
+                documentElement.getFirstOMChild(),
+                new QName(testNamespace.getNamespaceURI(), "myAttr",
+                          testNamespace.getPrefix()), "Axis2", true);
 
         int childCount = getChidrenCount(childrenIter);
         assertEquals("Iterator must return 5 children with the given attribute", childCount, 5);
 
         Iterator children = documentElement.getChildren();
         childCount = getChidrenCount(children);
-        assertEquals("Iterator must return only one child, having detached the other children", childCount, 1);
+        assertEquals("Iterator must return only one child, having detached the other children",
+                     childCount, 1);
 
     }
 
@@ -57,19 +59,21 @@ public class OMChildrenWithSpecificAttributeIteratorTest extends TestCase {
         OMElement documentElement = getSampleDocumentElement(testNamespace);
 
         Iterator childrenIter = new OMChildrenWithSpecificAttributeIterator(
-                documentElement.getFirstOMChild(), new QName(testNamespace.getNamespaceURI(), "myAttr",
-                testNamespace.getPrefix()), "Axis2", false);
+                documentElement.getFirstOMChild(),
+                new QName(testNamespace.getNamespaceURI(), "myAttr",
+                          testNamespace.getPrefix()), "Axis2", false);
 
         int childCount = getChidrenCount(childrenIter);
         assertEquals("Iterator must return 5 children with the given attribute", childCount, 5);
 
         Iterator children = documentElement.getChildren();
         childCount = getChidrenCount(children);
-        assertEquals("Iterator must return 6 children, having not detached the children", childCount, 6);
+        assertEquals("Iterator must return 6 children, having not detached the children",
+                     childCount, 6);
 
     }
 
-    private OMElement getSampleDocumentElement(OMNamespace testNamespace){
+    private OMElement getSampleDocumentElement(OMNamespace testNamespace) {
         OMFactory factory = OMAbstractFactory.getOMFactory();
 
         OMElement documentElement = factory.createOMElement("Employees", testNamespace);
@@ -80,7 +84,7 @@ public class OMChildrenWithSpecificAttributeIteratorTest extends TestCase {
 
         for (int i = 0; i < 5; i++) {
             employee = factory.createOMElement("Employee", testNamespace, documentElement);
-            name = factory.createOMElement("Name"+i, testNamespace);
+            name = factory.createOMElement("Name" + i, testNamespace);
             employee.addAttribute("myAttr", "Axis2", testNamespace);
             name.setText("Apache Developer");
             employee.addChild(name);
@@ -99,7 +103,7 @@ public class OMChildrenWithSpecificAttributeIteratorTest extends TestCase {
     private int getChidrenCount(Iterator childrenIter) {
         int childCount = 0;
         while (childrenIter.hasNext()) {
-        	childrenIter.next();
+            childrenIter.next();
             childCount++;
         }
 

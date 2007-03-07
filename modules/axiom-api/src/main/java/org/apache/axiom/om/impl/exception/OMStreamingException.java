@@ -18,16 +18,12 @@ package org.apache.axiom.om.impl.exception;
 
 import org.apache.axiom.om.OMException;
 
-/**
- * Class OMStreamingException
- */
+/** Class OMStreamingException */
 public class OMStreamingException extends OMException {
-	
+
     private static final long serialVersionUID = 8108888406034145092L;
 
-	/**
-     * Constructor OMStreamingException
-     */
+    /** Constructor OMStreamingException */
     public OMStreamingException() {
     }
 

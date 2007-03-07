@@ -26,9 +26,7 @@ import java.io.FileReader;
 public class OMCachingTest extends AbstractTestCase {
     private XMLStreamReader xmlStreamReader;
 
-    /**
-     * @param testName
-     */
+    /** @param testName  */
     public OMCachingTest(String testName) {
         super(testName);
     }
@@ -37,10 +35,7 @@ public class OMCachingTest extends AbstractTestCase {
 
     }
 
-    /**
-     * This will first serialize the element without caching. Then it tries to serialize again
-     * .
-     */
+    /** This will first serialize the element without caching. Then it tries to serialize again . */
     public void testCachingOne() {
 
         OMElement documentElement = null;
@@ -64,9 +59,7 @@ public class OMCachingTest extends AbstractTestCase {
 
     }
 
-    /**
-     * This will first serialize the OMElement with caching and again will try to serialize.
-     */
+    /** This will first serialize the OMElement with caching and again will try to serialize. */
     public void testCachingTwo() {
 
         OMElement documentElement = null;

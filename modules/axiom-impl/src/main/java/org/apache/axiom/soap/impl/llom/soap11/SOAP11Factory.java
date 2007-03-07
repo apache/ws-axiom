@@ -40,15 +40,13 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.llom.SOAPMessageImpl;
 
-public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactory  {
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
+public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactory {
+    /** Eran Chinthaka (chinthaka@apache.org) */
 
 
     public OMNamespace getNamespace() {
         return new OMNamespaceImpl(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+                                   SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
     }
 
     public String getSoapVersionURI() {
@@ -78,12 +76,13 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-            OMNamespace ns, SOAPHeader parent) throws SOAPProcessingException {
+                                                 OMNamespace ns, SOAPHeader parent)
+            throws SOAPProcessingException {
         return new SOAP11HeaderBlockImpl(localName, ns, parent, this);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-            OMNamespace ns) throws SOAPProcessingException {
+                                                 OMNamespace ns) throws SOAPProcessingException {
         return new SOAP11HeaderBlockImpl(localName, ns, this);
     }
 
@@ -302,7 +301,6 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
     public SOAPMessage createSOAPMessage(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper) {
         return new SOAPMessageImpl(envelope, parserWrapper);
     }
-
 
 
     public SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder) {

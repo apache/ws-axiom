@@ -69,7 +69,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 } else {
                     element =
                             factory.createSOAPFaultCode((SOAPFault) parent,
-                                    builder);
+                                                        builder);
                     codePresent = true;
                     codeprocessing = true;
                 }
@@ -90,7 +90,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     } else {
                         throw new OMBuilderException(
                                 "Wrong element order encountred at " +
-                                parser.getLocalName());
+                                        parser.getLocalName());
                     }
                 } else {
                     if (codeprocessing) {
@@ -118,7 +118,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     } else {
                         throw new OMBuilderException(
                                 "wrong element order encountered at " +
-                                parser.getLocalName());
+                                        parser.getLocalName());
                     }
                 } else {
                     throw new OMBuilderException(
@@ -140,7 +140,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     } else {
                         throw new OMBuilderException(
                                 "Wrong element order encountered at " +
-                                parser.getLocalName());
+                                        parser.getLocalName());
                     }
                 } else {
                     throw new OMBuilderException(
@@ -162,7 +162,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     } else {
                         throw new OMBuilderException(
                                 "wrong element order encountered at " +
-                                parser.getLocalName());
+                                        parser.getLocalName());
                     }
                 } else {
                     throw new OMBuilderException(
@@ -171,7 +171,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
             } else {
                 throw new OMBuilderException(
                         parser.getLocalName() +
-                        " unsupported element in SOAPFault element");
+                                " unsupported element in SOAPFault element");
             }
 
         } else if (elementLevel == 5) {
@@ -211,7 +211,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 } else {
                     throw new OMBuilderException(
                             parser.getLocalName() +
-                            " is not supported inside the code element");
+                                    " is not supported inside the code element");
                 }
 
             } else if (parent.getLocalName().equals(
@@ -221,12 +221,12 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     element =
                             factory.createSOAPFaultText(
                                     (SOAPFaultReason) parent, builder);
-                    ((OMNodeEx)element).setComplete(false);
+                    ((OMNodeEx) element).setComplete(false);
                     reasonProcessing = false;
                 } else {
                     throw new OMBuilderException(
                             parser.getLocalName() +
-                            " is not supported inside the reason");
+                                    " is not supported inside the reason");
                 }
             } else if (parent.getLocalName().equals(
                     SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME)) {
@@ -240,7 +240,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
             } else {
                 throw new OMBuilderException(
                         parent.getLocalName() +
-                        " should not have child element");
+                                " should not have child element");
             }
 
 
@@ -282,7 +282,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 } else {
                     throw new OMBuilderException(
                             parser.getLocalName() +
-                            " is not supported inside the subCode element");
+                                    " is not supported inside the subCode element");
                 }
             } else if (builder.isProcessingDetailElements()) {
                 int detailElementLevel = 0;
@@ -308,8 +308,8 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
             } else {
                 throw new OMBuilderException(
                         parent.getLocalName() +
-                        " should not have child at element level " +
-                        elementLevel);
+                                " should not have child at element level " +
+                                elementLevel);
             }
         }
 

@@ -21,27 +21,27 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 
 import javax.xml.namespace.QName;
 
-public class OMDOMFactoryTest extends TestCase{
+public class OMDOMFactoryTest extends TestCase {
 
-	public OMDOMFactoryTest() {
-		super();
-	}
-	
-	public OMDOMFactoryTest(String name) {
-		super(name);
-	}
-	
-	public void testCreateElement() {
-		OMDOMFactory factory = new OMDOMFactory();
-		String localName = "TestLocalName";
-		String namespace = "http://ws.apache.org/axis2/ns";
-		String prefix = "axis2";
-		OMElement elem = factory.createOMElement(localName,namespace,prefix);
-		QName qname = elem.getQName();
-		
-		assertEquals("Localname mismatch",localName,qname.getLocalPart());
-		assertEquals("Namespace mismatch",namespace,qname.getNamespaceURI());
-		assertEquals("namespace prefix mismatch", prefix, qname.getPrefix());
-	}
+    public OMDOMFactoryTest() {
+        super();
+    }
+
+    public OMDOMFactoryTest(String name) {
+        super(name);
+    }
+
+    public void testCreateElement() {
+        OMDOMFactory factory = new OMDOMFactory();
+        String localName = "TestLocalName";
+        String namespace = "http://ws.apache.org/axis2/ns";
+        String prefix = "axis2";
+        OMElement elem = factory.createOMElement(localName, namespace, prefix);
+        QName qname = elem.getQName();
+
+        assertEquals("Localname mismatch", localName, qname.getLocalPart());
+        assertEquals("Namespace mismatch", namespace, qname.getNamespaceURI());
+        assertEquals("namespace prefix mismatch", prefix, qname.getPrefix());
+    }
 
 }

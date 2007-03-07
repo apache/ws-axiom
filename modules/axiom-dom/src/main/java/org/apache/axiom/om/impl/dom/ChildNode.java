@@ -30,9 +30,7 @@ public abstract class ChildNode extends NodeImpl {
 
     protected ParentNode parentNode;
 
-    /**
-     * @param ownerDocument
-     */
+    /** @param ownerDocument  */
     protected ChildNode(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
     }
@@ -100,7 +98,7 @@ public abstract class ChildNode extends NodeImpl {
             this.parentNode = (ParentNode) element;
         } else {
             throw new OMException("The given parent is not of the type "
-                                  + ParentNode.class);
+                    + ParentNode.class);
         }
 
     }
@@ -121,7 +119,7 @@ public abstract class ChildNode extends NodeImpl {
                 }
             } else {
                 this.previousSibling.setNextOMSibling(nextSibling);
-                if(nextSibling == null){
+                if (nextSibling == null) {
                     this.previousSibling.parentNode.done = true;
                 }
             }
@@ -140,14 +138,12 @@ public abstract class ChildNode extends NodeImpl {
         throw new UnsupportedOperationException("Cannot discard this node");
     }
 
-    /**
-     * Inserts the given sibling next to this item.
-     */
+    /** Inserts the given sibling next to this item. */
     public void insertSiblingAfter(OMNode sibling) throws OMException {
 
         if (this.parentNode != null) {
             ((OMNodeEx) sibling).setParent(this.parentNode);
-        } else if(this == sibling){
+        } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
 
@@ -162,16 +158,14 @@ public abstract class ChildNode extends NodeImpl {
 
         } else {
             throw new OMException("The given child is not of type "
-                                  + ChildNode.class);
+                    + ChildNode.class);
         }
     }
 
-    /**
-     * Inserts the given sibling before this item.
-     */
+    /** Inserts the given sibling before this item. */
     public void insertSiblingBefore(OMNode sibling) throws OMException {
         // ((OMNodeEx)sibling).setParent(this.parentNode);
-        if(this == sibling){
+        if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
         if (sibling instanceof ChildNode) {
@@ -196,7 +190,7 @@ public abstract class ChildNode extends NodeImpl {
 
         } else {
             throw new OMException("The given child is not of type "
-                                  + ChildNode.class);
+                    + ChildNode.class);
         }
 
     }

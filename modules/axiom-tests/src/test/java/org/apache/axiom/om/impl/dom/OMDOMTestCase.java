@@ -32,24 +32,24 @@ import java.io.FileReader;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public abstract class OMDOMTestCase extends AbstractTestCase{
+public abstract class OMDOMTestCase extends AbstractTestCase {
 
-	protected static final String IN_FILE_NAME = "soap/soapmessage.xml";
+    protected static final String IN_FILE_NAME = "soap/soapmessage.xml";
     protected StAXSOAPModelBuilder builder;
     protected OMFactory ombuilderFactory;
     protected SOAPFactory soapFactory;
-    
+
     protected SOAPEnvelope soapEnvelope;
-	
+
     public OMDOMTestCase(String testName) {
-		super(testName);
-	}
-    
+        super(testName);
+    }
+
     protected void setUp() throws Exception {
         super.setUp();
         soapEnvelope = (SOAPEnvelope) getOMBuilder("").getDocumentElement();
     }
-	
+
     protected StAXSOAPModelBuilder getOMBuilder(String fileName) throws Exception {
         if ("".equals(fileName) || fileName == null) {
             fileName = IN_FILE_NAME;
@@ -60,8 +60,7 @@ public abstract class OMDOMTestCase extends AbstractTestCase{
         builder = new StAXSOAPModelBuilder(parser, new SOAP11Factory(), null);
         return builder;
     }
-    
-    
+
 
     protected StAXSOAPModelBuilder getOMBuilder(InputStream in) throws Exception {
         XMLStreamReader parser = XMLInputFactory.newInstance()

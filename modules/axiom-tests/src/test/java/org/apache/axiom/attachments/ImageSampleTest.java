@@ -16,26 +16,6 @@
 
 package org.apache.axiom.attachments;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.util.Iterator;
-
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriter;
-import javax.imageio.stream.ImageOutputStream;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
@@ -46,6 +26,25 @@ import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMTextImpl;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
+
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.util.Iterator;
 
 public class ImageSampleTest extends AbstractTestCase {
 
@@ -76,8 +75,8 @@ public class ImageSampleTest extends AbstractTestCase {
 
     String inMimeFileName = "mtom/ImageMTOMOut.bin";
 
-    String contentTypeString = "multipart/Related; type=\"application/xop+xml\";start=\"<SOAPPart>\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"";
-
+    String contentTypeString =
+            "multipart/Related; type=\"application/xop+xml\";start=\"<SOAPPart>\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"";
 
 
     public void testImageSampleSerialize() throws Exception {
@@ -85,7 +84,7 @@ public class ImageSampleTest extends AbstractTestCase {
         outMTOMFile = new File(outFileName);
         outBase64File = new File(outBase64FileName);
         OMOutputFormat mtomOutputFormat = new OMOutputFormat();
-        mtomOutputFormat.setDoOptimize(true); 
+        mtomOutputFormat.setDoOptimize(true);
         OMOutputFormat baseOutputFormat = new OMOutputFormat();
         baseOutputFormat.setDoOptimize(false);
 
@@ -120,7 +119,7 @@ public class ImageSampleTest extends AbstractTestCase {
                         new BufferedReader(
                                 new InputStreamReader(
                                         attachments
-                .getSOAPPartInputStream())));
+                                                .getSOAPPartInputStream())));
         builder = new MTOMStAXSOAPModelBuilder(reader, attachments, null);
         OMElement root = builder.getDocumentElement();
         OMElement body = (OMElement) root.getFirstOMChild();
@@ -134,11 +133,12 @@ public class ImageSampleTest extends AbstractTestCase {
          */
 
         DataHandler actualDH;
-        actualDH = (DataHandler)blob.getDataHandler();
+        actualDH = (DataHandler) blob.getDataHandler();
         BufferedImage bufferedImage = ImageIO.read(actualDH.getDataSource().getInputStream());
-        this.saveImage("image/jpeg",bufferedImage, new FileOutputStream(imageOutFileName) );
+        this.saveImage("image/jpeg", bufferedImage, new FileOutputStream(imageOutFileName));
     }
-	/**
+
+    /**
      * Saves an image.
      *
      * @param mimeType the mime-type of the format to save the image
@@ -156,7 +156,7 @@ public class ImageSampleTest extends AbstractTestCase {
         }
         ImageOutputStream ios = javax.imageio.ImageIO.createImageOutputStream(os);
         writer.setOutput(ios);
-        
+
         writer.write(new IIOImage(image, null, null));
         ios.flush();
         writer.dispose();

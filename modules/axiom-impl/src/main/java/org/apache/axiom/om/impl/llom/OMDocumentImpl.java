@@ -16,7 +16,13 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.*;
+import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -29,53 +35,34 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
 import java.util.Iterator;
 
-/**
- * Class OMDocumentImpl
- */
+/** Class OMDocumentImpl */
 public class OMDocumentImpl implements OMDocument, OMContainerEx {
-    /**
-     * Field documentElement
-     */
+    /** Field documentElement */
     protected OMElement documentElement;
 
-    /**
-     * Field firstChild
-     */
+    /** Field firstChild */
     protected OMNode firstChild;
 
-    /**
-     * Field lastChild
-     */
+    /** Field lastChild */
     protected OMNode lastChild;
 
-    /**
-     * Field done
-     */
+    /** Field done */
     protected boolean done = false;
 
-    /**
-     * Field parserWrapper
-     */
+    /** Field parserWrapper */
     protected OMXMLParserWrapper parserWrapper;
 
-    /**
-     * Field charSetEncoding
-     * Default : UTF-8
-     */
+    /** Field charSetEncoding Default : UTF-8 */
     protected String charSetEncoding = "UTF-8";
 
-    /**
-     * Field xmlVersion
-     */
+    /** Field xmlVersion */
     protected String xmlVersion = "1.0";
 
     protected String isStandalone;
 
     protected OMFactory factory;
-    
-    /**
-     * Default constructor
-     */
+
+    /** Default constructor */
     public OMDocumentImpl() {
         this.done = true;
     }
@@ -89,15 +76,14 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
         this.parserWrapper = parserWrapper;
     }
 
-    /**
-     * @param parserWrapper
-     */
+    /** @param parserWrapper  */
     public OMDocumentImpl(OMXMLParserWrapper parserWrapper) {
         this.parserWrapper = parserWrapper;
     }
 
     /**
      * Create a <code>OMDocument</code> given the <code>OMFactory</code>
+     *
      * @param factory The <code>OMFactory</code> that created this instace
      */
     public OMDocumentImpl(OMFactory factory) {
@@ -107,6 +93,7 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
 
     /**
      * Create the <code>OMDocument</code> with the factory
+     *
      * @param parserWrapper
      * @param factory
      */
@@ -114,20 +101,22 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
         this(parserWrapper);
         this.factory = factory;
     }
-    
+
     /**
-     * Create the <code>OMDoucment</code> with the factory and set the given 
-     * <code>OMElement</code> as the document element
+     * Create the <code>OMDoucment</code> with the factory and set the given <code>OMElement</code>
+     * as the document element
+     *
      * @param documentElement
      * @param parserWrapper
      * @param factory
      */
-    public OMDocumentImpl(OMElement documentElement, OMXMLParserWrapper parserWrapper, OMFactory factory) {
+    public OMDocumentImpl(OMElement documentElement, OMXMLParserWrapper parserWrapper,
+                          OMFactory factory) {
         this(documentElement, parserWrapper);
         this.factory = factory;
     }
 
-    
+
     /**
      * Method getDocumentElement.
      *
@@ -150,9 +139,9 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
     }
 
     /**
-     * Indicates whether parser has parsed this information item completely or not.
-     * If some information is not available in the item, one has to check this 
-     * attribute to make sure that, this item has been parsed completely or not.
+     * Indicates whether parser has parsed this information item completely or not. If some
+     * information is not available in the item, one has to check this attribute to make sure that,
+     * this item has been parsed completely or not.
      *
      * @return Returns boolean.
      */
@@ -169,9 +158,7 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
         this.done = state;
     }
 
-    /**
-     * Forces the parser to proceed, if parser has not yet finished with the XML input.
-     */
+    /** Forces the parser to proceed, if parser has not yet finished with the XML input. */
     public void buildNext() {
         if (parserWrapper != null && !parserWrapper.isCompleted()) {
             parserWrapper.next();
@@ -179,22 +166,22 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
     }
 
     /**
-     * Adds child to the element. One can decide whether to append the child or to add to the
-     * front of the children list.
+     * Adds child to the element. One can decide whether to append the child or to add to the front
+     * of the children list.
      *
      * @param child
      */
     public void addChild(OMNode child) {
-    	if(child instanceof OMElement) {
-    		if(this.documentElement == null) {
-    			addChild((OMNodeImpl) child);
-    			this.documentElement = (OMElement)child;
-    		} else {
-    			throw new OMException("Document element already exists");
-    		}
-    	} else {
-    		addChild((OMNodeImpl) child);
-    	}
+        if (child instanceof OMElement) {
+            if (this.documentElement == null) {
+                addChild((OMNodeImpl) child);
+                this.documentElement = (OMElement) child;
+            } else {
+                throw new OMException("Document element already exists");
+            }
+        } else {
+            addChild((OMNodeImpl) child);
+        }
     }
 
     /**
@@ -208,7 +195,7 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
             child.setPreviousOMSibling(null);
         } else {
             child.setPreviousOMSibling(lastChild);
-            ((OMNodeEx)lastChild).setNextOMSibling(child);
+            ((OMNodeEx) lastChild).setNextOMSibling(child);
         }
         child.setNextOMSibling(null);
         child.setParent(this);
@@ -217,8 +204,7 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
     }
 
     /**
-     * Returns a collection of this element.
-     * Children can be of types OMElement, OMText.
+     * Returns a collection of this element. Children can be of types OMElement, OMText.
      *
      * @return Returns iterator.
      */
@@ -227,17 +213,17 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
     }
 
     /**
-     * Searches for children with a given QName and returns an iterator to traverse through
-     * the OMNodes.
-     * The QName can contain any combination of prefix, localname and URI.
+     * Searches for children with a given QName and returns an iterator to traverse through the
+     * OMNodes. The QName can contain any combination of prefix, localname and URI.
      *
      * @param elementQName
      * @return Returns Iterator.
      * @throws org.apache.axiom.om.OMException
+     *
      */
     public Iterator getChildrenWithName(QName elementQName) {
         return new OMChildrenQNameIterator(getFirstOMChild(),
-                elementQName);
+                                           elementQName);
     }
 
     /**
@@ -262,7 +248,7 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
     public OMElement getFirstChildWithName(QName elementQName) throws OMException {
         OMChildrenQNameIterator omChildrenQNameIterator =
                 new OMChildrenQNameIterator(getFirstOMChild(),
-                        elementQName);
+                                            elementQName);
         OMNode omNode = null;
         if (omChildrenQNameIterator.hasNext()) {
             omNode = (OMNode) omChildrenQNameIterator.next();
@@ -317,33 +303,28 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
         this.xmlVersion = xmlVersion;
     }
 
-    /**
-     * Serialize the docuement with/without the XML declaration
-     */
-    public void internalSerializeAndConsume(XMLStreamWriter writer, boolean includeXMLDeclaration) throws XMLStreamException {
+    /** Serialize the docuement with/without the XML declaration */
+    public void internalSerializeAndConsume(XMLStreamWriter writer, boolean includeXMLDeclaration)
+            throws XMLStreamException {
         internalSerialize(writer, false, includeXMLDeclaration);
     }
 
-    /**
-     * Serializes the document with the XML declaration.
-     */
+    /** Serializes the document with the XML declaration. */
     public void internalSerializeAndConsume(XMLStreamWriter writer)
             throws XMLStreamException {
-        internalSerialize(writer, false, !((MTOMXMLStreamWriter)writer).isIgnoreXMLDeclaration());
+        internalSerialize(writer, false, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
     }
 
 
-    /**
-     * Serializes the document with cache.
-     */
+    /** Serializes the document with cache. */
     public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, true, !((MTOMXMLStreamWriter)writer).isIgnoreXMLDeclaration());
+        internalSerialize(writer, true, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
 
     }
 
     /**
      * Serializes the document directly to the output stream with caching disabled.
-     * 
+     *
      * @param output
      * @throws XMLStreamException
      */
@@ -355,7 +336,7 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
 
     /**
      * Serializes the document directly to the output stream with caching enabled.
-     * 
+     *
      * @param output
      * @throws XMLStreamException
      */
@@ -367,12 +348,13 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
 
     /**
      * Serializes the document directly to the output stream with caching disabled.
-     * 
+     *
      * @param output
      * @param format
      * @throws XMLStreamException
      */
-    public void serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
+    public void serializeAndConsume(OutputStream output, OMOutputFormat format)
+            throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
         internalSerializeAndConsume(writer);
         writer.flush();
@@ -380,7 +362,7 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
 
     /**
      * Serializes the document directly to the output stream with caching enabled.
-     * 
+     *
      * @param output
      * @param format
      * @throws XMLStreamException
@@ -391,15 +373,15 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
         writer.flush();
     }
 
-    /**
-     * Serializes the document with cache.
-     */
-    public void internalSerialize(XMLStreamWriter writer, boolean includeXMLDeclaration) throws XMLStreamException {
+    /** Serializes the document with cache. */
+    public void internalSerialize(XMLStreamWriter writer, boolean includeXMLDeclaration)
+            throws XMLStreamException {
         internalSerialize(writer, true, includeXMLDeclaration);
 
     }
 
-    protected void internalSerialize(XMLStreamWriter writer2, boolean cache, boolean includeXMLDeclaration) throws XMLStreamException {
+    protected void internalSerialize(XMLStreamWriter writer2, boolean cache,
+                                     boolean includeXMLDeclaration) throws XMLStreamException {
         MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
         if (includeXMLDeclaration) {
             //Check whether the OMOutput char encoding and OMDocument char
@@ -407,10 +389,10 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
             String outputCharEncoding = writer.getCharSetEncoding();
             if (outputCharEncoding == null || "".equals(outputCharEncoding)) {
                 writer.getXmlStreamWriter().writeStartDocument(charSetEncoding,
-                        xmlVersion);
+                                                               xmlVersion);
             } else {
                 writer.getXmlStreamWriter().writeStartDocument(outputCharEncoding,
-                        xmlVersion);
+                                                               xmlVersion);
             }
         }
 

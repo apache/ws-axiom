@@ -57,7 +57,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
 
     protected SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault)
             throws SOAPProcessingException {
-        return new SOAP11FaultDetailImpl(fault, (SOAPFactory)this.factory);
+        return new SOAP11FaultDetailImpl(fault, (SOAPFactory) this.factory);
     }
 
     public void setCode(SOAPFaultCode soapFaultCode)
@@ -65,7 +65,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
         if (!(soapFaultCode instanceof SOAP11FaultCodeImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault Code. " +
-                    "But received some other implementation");
+                            "But received some other implementation");
         }
         super.setCode(soapFaultCode);
     }
@@ -74,7 +74,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
         if (!(reason instanceof SOAP11FaultReasonImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault Reason. " +
-                    "But received some other implementation");
+                            "But received some other implementation");
         }
         super.setReason(reason);
     }
@@ -83,7 +83,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
         if (!(node instanceof SOAP11FaultNodeImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault Node. " +
-                    "But received some other implementation");
+                            "But received some other implementation");
         }
         super.setNode(node);
     }
@@ -92,7 +92,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
         if (!(role instanceof SOAP11FaultRoleImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault Role. " +
-                    "But received some other implementation");
+                            "But received some other implementation");
         }
         super.setRole(role);
     }
@@ -101,7 +101,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
         if (!(parent instanceof SOAP11BodyImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Body as the " +
-                    "parent. But received some other implementation");
+                            "parent. But received some other implementation");
         }
     }
 
@@ -109,7 +109,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
         if (!(detail instanceof SOAP11FaultDetailImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault Detail. " +
-                    "But received some other implementation");
+                            "But received some other implementation");
         }
         super.setDetail(detail);
     }

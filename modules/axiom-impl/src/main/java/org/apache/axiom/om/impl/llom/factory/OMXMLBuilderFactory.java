@@ -23,28 +23,18 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLStreamReader;
 
-/**
- * Class OMXMLBuilderFactory
- */
+/** Class OMXMLBuilderFactory */
 public class OMXMLBuilderFactory {
-    /**
-     * Field PARSER_XPP
-     */
+    /** Field PARSER_XPP */
     public static final String PARSER_XPP = "XPP";
 
-    /**
-     * Field PARSER_STAX
-     */
+    /** Field PARSER_STAX */
     public static final String PARSER_STAX = "StAX";
 
-    /**
-     * Field MODEL_SOAP_SPECIFIC
-     */
+    /** Field MODEL_SOAP_SPECIFIC */
     public static final String MODEL_SOAP_SPECIFIC = "SOAP_SPECIFIC";
 
-    /**
-     * Field MODEL_OM
-     */
+    /** Field MODEL_OM */
     public static final String MODEL_OM = "OM_ONLY";
 
     /**

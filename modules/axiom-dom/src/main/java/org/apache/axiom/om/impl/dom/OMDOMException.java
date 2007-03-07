@@ -16,27 +16,26 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMException;
-/**
- * OMDOM specific exception
- */
+
+/** OMDOM specific exception */
 public class OMDOMException extends OMException {
 
-	private static final long serialVersionUID = 8763119035210190906L;
+    private static final long serialVersionUID = 8763119035210190906L;
 
-	public OMDOMException() {
-		super();
-	}
+    public OMDOMException() {
+        super();
+    }
 
-	public OMDOMException(String arg0) {
-		super(arg0);
-	}
+    public OMDOMException(String arg0) {
+        super(arg0);
+    }
 
-	public OMDOMException(Throwable arg0) {
-		super(arg0);
-	}
+    public OMDOMException(Throwable arg0) {
+        super(arg0);
+    }
 
-	public OMDOMException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-	}
+    public OMDOMException(String arg0, Throwable arg1) {
+        super(arg0, arg1);
+    }
 
 }

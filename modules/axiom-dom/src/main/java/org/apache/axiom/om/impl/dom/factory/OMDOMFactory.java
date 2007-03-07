@@ -73,71 +73,70 @@ public class OMDOMFactory implements OMFactory {
 
     public OMElement createOMElement(String localName, OMNamespace ns) {
         return new ElementImpl((DocumentImpl) this.createOMDocument(),
-                localName, (NamespaceImpl) ns, this);
+                               localName, (NamespaceImpl) ns, this);
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns,
-            OMContainer parent) throws OMDOMException {
+                                     OMContainer parent) throws OMDOMException {
         switch (((ParentNode) parent).getNodeType()) {
-        case Node.ELEMENT_NODE: // We are adding a new child to an elem
-            ElementImpl parentElem = (ElementImpl) parent;
-            ElementImpl elem = new ElementImpl((DocumentImpl) parentElem
-                    .getOwnerDocument(), localName, (NamespaceImpl) ns, this);
-            parentElem.appendChild(elem);
-            return elem;
+            case Node.ELEMENT_NODE: // We are adding a new child to an elem
+                ElementImpl parentElem = (ElementImpl) parent;
+                ElementImpl elem = new ElementImpl((DocumentImpl) parentElem
+                        .getOwnerDocument(), localName, (NamespaceImpl) ns, this);
+                parentElem.appendChild(elem);
+                return elem;
 
-        case Node.DOCUMENT_NODE:
-            DocumentImpl docImpl = (DocumentImpl) parent;
-            return new ElementImpl(docImpl, localName,
-                    (NamespaceImpl) ns, this);
+            case Node.DOCUMENT_NODE:
+                DocumentImpl docImpl = (DocumentImpl) parent;
+                return new ElementImpl(docImpl, localName,
+                                       (NamespaceImpl) ns, this);
 
-        case Node.DOCUMENT_FRAGMENT_NODE:
-            DocumentFragmentImpl docFragImpl = (DocumentFragmentImpl) parent;
-            return new ElementImpl((DocumentImpl) docFragImpl
-                    .getOwnerDocument(), localName, (NamespaceImpl) ns, this);
-        default:
-            throw new OMDOMException(
-                    "The parent container can only be an ELEMENT, DOCUMENT " +
-                    "or a DOCUMENT FRAGMENT");
+            case Node.DOCUMENT_FRAGMENT_NODE:
+                DocumentFragmentImpl docFragImpl = (DocumentFragmentImpl) parent;
+                return new ElementImpl((DocumentImpl) docFragImpl
+                        .getOwnerDocument(), localName, (NamespaceImpl) ns, this);
+            default:
+                throw new OMDOMException(
+                        "The parent container can only be an ELEMENT, DOCUMENT " +
+                                "or a DOCUMENT FRAGMENT");
         }
     }
 
-    /**
-     * Creates an OMElement with the builder.
-     */
+    /** Creates an OMElement with the builder. */
     public OMElement createOMElement(String localName, OMNamespace ns,
-            OMContainer parent, OMXMLParserWrapper builder) {
+                                     OMContainer parent, OMXMLParserWrapper builder) {
         switch (((ParentNode) parent).getNodeType()) {
-        case Node.ELEMENT_NODE: // We are adding a new child to an elem
-            ElementImpl parentElem = (ElementImpl) parent;
-            ElementImpl elem = new ElementImpl((DocumentImpl) parentElem
-                    .getOwnerDocument(), localName, (NamespaceImpl) ns,
-                    builder, this);
-            parentElem.appendChild(elem);
-            return elem;
-        case Node.DOCUMENT_NODE:
-            DocumentImpl docImpl = (DocumentImpl) parent;
-            ElementImpl elem2 = new ElementImpl(docImpl, localName,
-                    (NamespaceImpl) ns, builder, this);
-            docImpl.appendChild(elem2);
-            return elem2;
+            case Node.ELEMENT_NODE: // We are adding a new child to an elem
+                ElementImpl parentElem = (ElementImpl) parent;
+                ElementImpl elem = new ElementImpl((DocumentImpl) parentElem
+                        .getOwnerDocument(), localName, (NamespaceImpl) ns,
+                                             builder, this);
+                parentElem.appendChild(elem);
+                return elem;
+            case Node.DOCUMENT_NODE:
+                DocumentImpl docImpl = (DocumentImpl) parent;
+                ElementImpl elem2 = new ElementImpl(docImpl, localName,
+                                                    (NamespaceImpl) ns, builder, this);
+                docImpl.appendChild(elem2);
+                return elem2;
 
-        case Node.DOCUMENT_FRAGMENT_NODE:
-            DocumentFragmentImpl docFragImpl = (DocumentFragmentImpl) parent;
-            return new ElementImpl((DocumentImpl) docFragImpl
-                    .getOwnerDocument(), localName, (NamespaceImpl) ns,
-                    builder, this);
-        default:
-            throw new OMDOMException(
-                    "The parent container can only be an ELEMENT, DOCUMENT " +
-                    "or a DOCUMENT FRAGMENT");
+            case Node.DOCUMENT_FRAGMENT_NODE:
+                DocumentFragmentImpl docFragImpl = (DocumentFragmentImpl) parent;
+                return new ElementImpl((DocumentImpl) docFragImpl
+                        .getOwnerDocument(), localName, (NamespaceImpl) ns,
+                                             builder, this);
+            default:
+                throw new OMDOMException(
+                        "The parent container can only be an ELEMENT, DOCUMENT " +
+                                "or a DOCUMENT FRAGMENT");
         }
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMFactory#createOMElement(org.apache.axiom.om.OMDataSource, java.lang.String, org.apache.axiom.om.OMNamespace, org.apache.axiom.om.OMContainer)
      */
-    public OMElement createOMElement(OMDataSource source, String localName, OMNamespace ns, OMContainer parent) {
+    public OMElement createOMElement(OMDataSource source, String localName, OMNamespace ns,
+                                     OMContainer parent) {
         throw new UnsupportedOperationException("Not supported for DOM");
     }
 
@@ -150,22 +149,22 @@ public class OMDOMFactory implements OMFactory {
 
     /**
      * Creates an OMElement.
-     * 
-     * @see org.apache.axiom.om.OMFactory#createOMElement(java.lang.String,
-     *      java.lang.String, java.lang.String)
+     *
+     * @see org.apache.axiom.om.OMFactory#createOMElement(String, String,
+     *      String)
      */
     public OMElement createOMElement(String localName, String namespaceURI,
-            String namespacePrefix) {
+                                     String namespacePrefix) {
         NamespaceImpl ns = new NamespaceImpl(namespaceURI, namespacePrefix);
         return this.createOMElement(localName, ns);
     }
 
     /**
      * Creates a new OMDOM Element node and adds it to the given parent.
-     * 
+     *
      * @see #createOMElement(String, OMNamespace, OMContainer)
-     * @see org.apache.axiom.om.OMFactory#createOMElement(
-     * javax.xml.namespace.QName, org.apache.axiom.om.OMContainer)
+     * @see org.apache.axiom.om.OMFactory#createOMElement( javax.xml.namespace.QName,
+     *      org.apache.axiom.om.OMContainer)
      */
     public OMElement createOMElement(QName qname, OMContainer parent)
             throws OMException {
@@ -180,20 +179,18 @@ public class OMDOMFactory implements OMFactory {
 
     /**
      * Creates a new OMNamespace.
-     * 
-     * @see org.apache.axiom.om.OMFactory#createOMNamespace(java.lang.String,
-     *      java.lang.String)
+     *
+     * @see org.apache.axiom.om.OMFactory#createOMNamespace(String, String)
      */
     public OMNamespace createOMNamespace(String uri, String prefix) {
         return new NamespaceImpl(uri, prefix);
     }
 
     /**
-     * Creates a new OMDOM Text node with the given value and appends it to the
-     * given parent element.
-     * 
-     * @see org.apache.axiom.om.OMFactory#createOMText(
-     *      org.apache.axiom.om.OMElement,java.lang.String)
+     * Creates a new OMDOM Text node with the given value and appends it to the given parent
+     * element.
+     *
+     * @see org.apache.axiom.om.OMFactory#createOMText( org.apache.axiom.om.OMElement,String)
      */
     public OMText createOMText(OMContainer parent, String text) {
         ElementImpl parentElem = (ElementImpl) parent;
@@ -206,11 +203,11 @@ public class OMDOMFactory implements OMFactory {
     public OMText createOMText(OMContainer parent, QName text) {
         return new TextImpl(parent, text, this);
     }
-    
+
     public OMText createOMText(OMContainer parent, QName text, int type) {
         return new TextImpl(parent, text, type, this);
     }
-    
+
     public OMText createOMText(OMContainer parent, String text, int type) {
         OMText textNode = createOMText(parent, text);
         ((OMNodeEx) textNode).setType(type);
@@ -227,54 +224,52 @@ public class OMDOMFactory implements OMFactory {
 
     /**
      * Creates a OMDOM Text node carrying the given value.
-     * 
-     * @see org.apache.axiom.om.OMFactory#createOMText(java.lang.String)
+     *
+     * @see org.apache.axiom.om.OMFactory#createOMText(String)
      */
     public OMText createOMText(String s) {
-        return new TextImpl(this.document,s, this);
+        return new TextImpl(this.document, s, this);
     }
 
     /**
      * Creates a Character node of the given type.
-     * 
-     * @see org.apache.axiom.om.OMFactory#createOMText(java.lang.String, int)
+     *
+     * @see org.apache.axiom.om.OMFactory#createOMText(String, int)
      */
     public OMText createOMText(String text, int type) {
         switch (type) {
-        case OMNode.TEXT_NODE:
-            return new TextImpl(this.document, text, this);
-        default:
-            throw new OMDOMException("Only Text nodes are supported right now");
+            case OMNode.TEXT_NODE:
+                return new TextImpl(this.document, text, this);
+            default:
+                throw new OMDOMException("Only Text nodes are supported right now");
         }
     }
 
     /**
-     * Creates a new OMDOM Text node with the value of the given text value
-     * along with the MTOM optimization parameters and returns it.
-     * 
-     * @see org.apache.axiom.om.OMFactory#createOMText(java.lang.String,
-     *      java.lang.String, boolean)
+     * Creates a new OMDOM Text node with the value of the given text value along with the MTOM
+     * optimization parameters and returns it.
+     *
+     * @see org.apache.axiom.om.OMFactory#createOMText(String, String, boolean)
      */
     public OMText createOMText(String text, String mimeType, boolean optimize) {
         return new TextImpl(this.document, text, mimeType, optimize, this);
     }
 
     /**
-     * Creates a new OMDOM Text node with the given datahandler and the given
-     * MTOM optimization configuration and returns it.
-     * 
-     * @see org.apache.axiom.om.OMFactory#createOMText(java.lang.Object, boolean)
+     * Creates a new OMDOM Text node with the given datahandler and the given MTOM optimization
+     * configuration and returns it.
+     *
+     * @see org.apache.axiom.om.OMFactory#createOMText(Object, boolean)
      */
     public OMText createOMText(Object dataHandler, boolean optimize) {
         return new TextImpl(this.document, dataHandler, optimize, this);
     }
 
     /**
-     * Creates an OMDOM Text node, adds it to the give parent element and
-     * returns it.
-     * 
-     * @see org.apache.axiom.om.OMFactory#createOMText(OMContainer,
-     *      java.lang.String, java.lang.String, boolean)
+     * Creates an OMDOM Text node, adds it to the give parent element and returns it.
+     *
+     * @see org.apache.axiom.om.OMFactory#createOMText(OMContainer, String,
+     *      String, boolean)
      */
     public OMText createOMText(OMContainer parent, String s, String mimeType,
                                boolean optimize) {
@@ -292,7 +287,7 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMAttribute createOMAttribute(String localName, OMNamespace ns,
-            String value) {
+                                         String value) {
         return new AttrImpl(this.getDocument(), localName, ns, value, this);
     }
 

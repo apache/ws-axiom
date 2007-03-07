@@ -32,7 +32,7 @@ public class PushbackFilePartInputStream extends InputStream {
      * @param buffer
      */
     public PushbackFilePartInputStream(MIMEBodyPartInputStream inStream,
-            byte[] buffer) {
+                                       byte[] buffer) {
         super();
         this.inStream = inStream;
         this.buffer = buffer;
@@ -51,7 +51,7 @@ public class PushbackFilePartInputStream extends InputStream {
         }
         return data;
     }
-    
+
     public int read(byte b[], int off, int len) throws IOException {
         if (count > 0) {
             if (b == null) {
@@ -66,7 +66,7 @@ public class PushbackFilePartInputStream extends InputStream {
             if (count < len) {
                 System.arraycopy(buffer, (buffer.length - count), b, off, count);
                 bytesCopied = count;
-                count=0;
+                count = 0;
                 return bytesCopied;
             }
             System.arraycopy(buffer, (buffer.length - count), b, off, len);
@@ -75,8 +75,8 @@ public class PushbackFilePartInputStream extends InputStream {
         }
         return inStream.read(b, off, len);
     }
-    
+
     public int available() throws IOException {
-        return count+inStream.available();
+        return count + inStream.available();
     }
 }

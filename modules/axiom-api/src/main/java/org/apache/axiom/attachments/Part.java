@@ -22,25 +22,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 
-public interface Part{
+public interface Part {
 
-    
-    public int getSize() throws MessagingException ;
+
+    public int getSize() throws MessagingException;
 
     public String getContentType() throws MessagingException;
-    
+
     public String getContentID() throws MessagingException;
-    
+
     public String getFileName() throws MessagingException;
 
-    public InputStream getInputStream() throws IOException, MessagingException ;
-    
-    public DataHandler getDataHandler() throws MessagingException ;
-    
-    public void addHeader(String arg0, String arg1) throws MessagingException ;
-    
-    public String getHeader(String arg0) throws MessagingException ;
-    
-    public Enumeration getAllHeaders() throws MessagingException ;
-    
+    public InputStream getInputStream() throws IOException, MessagingException;
+
+    public DataHandler getDataHandler() throws MessagingException;
+
+    public void addHeader(String arg0, String arg1) throws MessagingException;
+
+    public String getHeader(String arg0) throws MessagingException;
+
+    public Enumeration getAllHeaders() throws MessagingException;
+
 }

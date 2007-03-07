@@ -23,24 +23,16 @@ public interface SOAPFaultCode extends OMElement {
      * Eran Chinthaka (chinthaka@apache.org)
      */
 
-    /**
-     * @param value
-     */
+    /** @param value  */
     public void setValue(SOAPFaultValue value) throws SOAPProcessingException;
 
-    /**
-     * @return Returns SOAPFaultValue.
-     */
+    /** @return Returns SOAPFaultValue. */
     public SOAPFaultValue getValue();
 
-    /**
-     * @param value
-     */
+    /** @param value  */
     public void setSubCode(SOAPFaultSubCode value) throws SOAPProcessingException;
 
-    /**
-     * @return Returns SOAPFaultSubCode.
-     */
+    /** @return Returns SOAPFaultSubCode. */
     public SOAPFaultSubCode getSubCode();
 
 }

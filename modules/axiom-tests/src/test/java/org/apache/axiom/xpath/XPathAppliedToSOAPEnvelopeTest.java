@@ -25,49 +25,49 @@ import org.apache.axiom.soap.SOAPFactory;
 
 public class XPathAppliedToSOAPEnvelopeTest extends TestCase {
 
-    public void testDocumentNotAdded () throws Exception {
-		SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();
+    public void testDocumentNotAdded() throws Exception {
+        SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();
 
-		OMElement elem1 = factory.createOMElement("elem1",null);
-		OMElement elem2 = factory.createOMElement("elem2",null);
-		OMElement elem3 = factory.createOMElement("elem3",null);
-		elem2.addChild(elem3);
-		elem1.addChild(elem2);
-		SOAPEnvelope envelope = factory.getDefaultEnvelope();
-		envelope.getBody().addChild(elem1);
+        OMElement elem1 = factory.createOMElement("elem1", null);
+        OMElement elem2 = factory.createOMElement("elem2", null);
+        OMElement elem3 = factory.createOMElement("elem3", null);
+        elem2.addChild(elem3);
+        elem1.addChild(elem2);
+        SOAPEnvelope envelope = factory.getDefaultEnvelope();
+        envelope.getBody().addChild(elem1);
 
-		//The only difference of the two test methods is the following line.
+        //The only difference of the two test methods is the following line.
 //		factory.createOMDocument().addChild(envelope);
 
-		String XPathString = "//elem1";
+        String XPathString = "//elem1";
 
-		AXIOMXPath XPath = new AXIOMXPath (XPathString);
-		OMNode node = (OMNode) XPath.selectSingleNode(envelope);
-
-
-		assertNotNull(node);
-	}
-
-	public void testDocumentAdded () throws Exception {
-		SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();
-
-		OMElement elem1 = factory.createOMElement("elem1",null);
-		OMElement elem2 = factory.createOMElement("elem2",null);
-		OMElement elem3 = factory.createOMElement("elem3",null);
-		elem2.addChild(elem3);
-		elem1.addChild(elem2);
-		SOAPEnvelope envelope = factory.getDefaultEnvelope();
-		envelope.getBody().addChild(elem1);
-
-		//The only difference of the two test methods is the following line.
-		factory.createOMDocument().addChild(envelope);
-
-		String XPathString = "//elem1";
-
-		AXIOMXPath XPath = new AXIOMXPath (XPathString);
-		OMNode node = (OMNode) XPath.selectSingleNode(envelope);
+        AXIOMXPath XPath = new AXIOMXPath(XPathString);
+        OMNode node = (OMNode) XPath.selectSingleNode(envelope);
 
 
-		assertNotNull(node);
-	}
+        assertNotNull(node);
+    }
+
+    public void testDocumentAdded() throws Exception {
+        SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();
+
+        OMElement elem1 = factory.createOMElement("elem1", null);
+        OMElement elem2 = factory.createOMElement("elem2", null);
+        OMElement elem3 = factory.createOMElement("elem3", null);
+        elem2.addChild(elem3);
+        elem1.addChild(elem2);
+        SOAPEnvelope envelope = factory.getDefaultEnvelope();
+        envelope.getBody().addChild(elem1);
+
+        //The only difference of the two test methods is the following line.
+        factory.createOMDocument().addChild(envelope);
+
+        String XPathString = "//elem1";
+
+        AXIOMXPath XPath = new AXIOMXPath(XPathString);
+        OMNode node = (OMNode) XPath.selectSingleNode(envelope);
+
+
+        assertNotNull(node);
+    }
 }

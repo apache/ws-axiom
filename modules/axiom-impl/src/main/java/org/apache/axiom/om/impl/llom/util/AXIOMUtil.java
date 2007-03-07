@@ -32,8 +32,9 @@ public class AXIOMUtil {
      * @throws XMLStreamException
      */
     public static OMElement stringToOM(String xmlFragment) throws XMLStreamException {
-        if(xmlFragment != null){
-            return new StAXOMBuilder(new ByteArrayInputStream(xmlFragment.getBytes())).getDocumentElement();
+        if (xmlFragment != null) {
+            return new StAXOMBuilder(new ByteArrayInputStream(xmlFragment.getBytes()))
+                    .getDocumentElement();
         }
         return null;
     }

@@ -18,7 +18,6 @@ package org.apache.axiom.soap.impl.dom.soap12;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -55,7 +54,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     }
 
     protected SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault) {
-        return new SOAP12FaultDetailImpl(fault, (SOAPFactory)this.factory);
+        return new SOAP12FaultDetailImpl(fault, (SOAPFactory) this.factory);
 
     }
 
@@ -63,7 +62,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
         if (!(soapFaultCode instanceof SOAP12FaultCodeImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault Code. " +
-                    "But received some other implementation");
+                            "But received some other implementation");
         }
         super.setCode(soapFaultCode);
     }

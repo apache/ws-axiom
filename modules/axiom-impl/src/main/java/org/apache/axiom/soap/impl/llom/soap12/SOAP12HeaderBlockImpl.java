@@ -29,7 +29,7 @@ import org.apache.axiom.soap.impl.llom.SOAPHeaderBlockImpl;
 public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
 
     public SOAP12HeaderBlockImpl(String localName, OMNamespace ns,
-            SOAPFactory factory) {
+                                 SOAPFactory factory) {
         super(localName, ns, factory);
     }
     /**
@@ -69,26 +69,27 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
         if (!(parent instanceof SOAP12HeaderImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Body as " +
-                    "the parent. But received some other implementation");
+                            "the parent. But received some other implementation");
         }
     }
 
     public void setRole(String roleURI) {
         setAttribute(SOAP12Constants.SOAP_ROLE,
-                roleURI,
-                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+                     roleURI,
+                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
 
     public String getRole() {
         return getAttribute(SOAP12Constants.SOAP_ROLE,
-                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+                            SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
 
     }
 
     public void setMustUnderstand(boolean mustUnderstand) {
         setAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
-                mustUnderstand ? SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE : SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE,
-                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+                     mustUnderstand ? SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE :
+                             SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE,
+                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
 
     }
 
@@ -99,12 +100,12 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
                 SOAPConstants.ATTR_MUSTUNDERSTAND_0.equals(mustUnderstand) ||
                 SOAPConstants.ATTR_MUSTUNDERSTAND_1.equals(mustUnderstand)) {
             setAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
-                    mustUnderstand,
-                    SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+                         mustUnderstand,
+                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
         } else {
             throw new SOAPProcessingException(
                     "mustUndertand should be one of \"true\", " +
-                    "\"false\", \"0\" or \"1\" ");
+                            "\"false\", \"0\" or \"1\" ");
         }
     }
 
@@ -112,7 +113,7 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
         String mustUnderstand = "";
         if ((mustUnderstand =
                 getAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
-                        SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI))
+                             SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI))
                 != null) {
             if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equalsIgnoreCase(
                     mustUnderstand) ||
@@ -127,21 +128,21 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
             } else {
                 throw new SOAPProcessingException(
                         "Invalid value found in mustUnderstand value of " +
-                        this.getLocalName() +
-                        " header block");
+                                this.getLocalName() +
+                                " header block");
             }
         }
         return false;
 
     }
-    
+
     //TODO : implement
     public void setRelay(boolean relay) {
-    	throw new UnsupportedOperationException("Not supported for SOAP 1.1");
+        throw new UnsupportedOperationException("Not supported for SOAP 1.1");
     }
 
     //TODO : implement
     public boolean getRelay() {
-    	throw new UnsupportedOperationException("Not supported for SOAP 1.1");
+        throw new UnsupportedOperationException("Not supported for SOAP 1.1");
     }
 }

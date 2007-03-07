@@ -42,8 +42,10 @@ public class OMElementCloneTest extends XMLTestCase {
                         .getDocumentElement();
         SOAPBody body = soapEnvelope.getBody();
 
-        OMElement firstClonedBodyElement = new StAXOMBuilder(body.getXMLStreamReader()).getDocumentElement();
-        OMElement secondClonedBodyElement = new StAXOMBuilder(body.getXMLStreamReader()).getDocumentElement();
+        OMElement firstClonedBodyElement =
+                new StAXOMBuilder(body.getXMLStreamReader()).getDocumentElement();
+        OMElement secondClonedBodyElement =
+                new StAXOMBuilder(body.getXMLStreamReader()).getDocumentElement();
 
         // first check whether both have the same information
         String firstClonedBodyElementText = firstClonedBodyElement.toString();
@@ -51,7 +53,8 @@ public class OMElementCloneTest extends XMLTestCase {
         String bodyText = body.toString();
         assertXMLEqual(newDocument(bodyText), newDocument(firstClonedBodyElementText));
         assertXMLEqual(newDocument(bodyText), newDocument(secondClonedBodyElementText));
-        assertXMLEqual(newDocument(firstClonedBodyElementText), newDocument(secondClonedBodyElementText));
+        assertXMLEqual(newDocument(firstClonedBodyElementText),
+                       newDocument(secondClonedBodyElementText));
 
         // lets check some links. They must not be equal
         assertNotSame(body.getParent(), firstClonedBodyElement.getParent());
@@ -71,9 +74,12 @@ public class OMElementCloneTest extends XMLTestCase {
         OMElement secondClonedBodyElement = body.cloneOMElement();
 
         // first check whether both have the same information
-        assertXMLEqual(newDocument(body.toString()), newDocument(firstClonedBodyElement.toString()));
-        assertXMLEqual(newDocument(body.toString()), newDocument(secondClonedBodyElement.toString()));
-        assertXMLEqual(newDocument(firstClonedBodyElement.toString()), newDocument(secondClonedBodyElement.toString()));
+        assertXMLEqual(newDocument(body.toString()),
+                       newDocument(firstClonedBodyElement.toString()));
+        assertXMLEqual(newDocument(body.toString()),
+                       newDocument(secondClonedBodyElement.toString()));
+        assertXMLEqual(newDocument(firstClonedBodyElement.toString()),
+                       newDocument(secondClonedBodyElement.toString()));
 
         // lets check some links. They must not be equal
         assertNotSame(body.getParent(), firstClonedBodyElement.getParent());

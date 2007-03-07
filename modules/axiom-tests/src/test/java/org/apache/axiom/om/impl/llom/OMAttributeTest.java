@@ -16,17 +16,22 @@ package org.apache.axiom.om.impl.llom;
  */
 
 import junit.framework.TestCase;
-import org.apache.axiom.om.*;
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
 
 public class OMAttributeTest extends TestCase {
 
     public void testAddAttribute() {
-        String xmlString = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"><soapenv:Header name = \"jhon\"/><soapenv:Body><my:uploadFileUsingMTOM xmlns:my=\"http://localhost/my\"><my:folderName>/home/saliya/Desktop</my:folderName></my:uploadFileUsingMTOM></soapenv:Body><Body>TTTT</Body> </soapenv:Envelope>";
+        String xmlString =
+                "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"><soapenv:Header name = \"jhon\"/><soapenv:Body><my:uploadFileUsingMTOM xmlns:my=\"http://localhost/my\"><my:folderName>/home/saliya/Desktop</my:folderName></my:uploadFileUsingMTOM></soapenv:Body><Body>TTTT</Body> </soapenv:Envelope>";
 
 
         String test1 = "";
@@ -42,13 +47,13 @@ public class OMAttributeTest extends TestCase {
         XMLStreamReader parser2;
 
         try {
-            parser2 = XMLInputFactory.newInstance().createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
+            parser2 = XMLInputFactory.newInstance()
+                    .createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
             StAXOMBuilder builder2 = new StAXOMBuilder(parser2);
             OMElement doc = builder2.getDocumentElement();
 
             OMFactory factory = OMAbstractFactory.getOMFactory();
             OMNamespace ns = factory.createOMNamespace("http://www.me.com", "axiom");
-
 
             //code line to be tested
             OMAttribute at = factory.createOMAttribute("id", ns, "value");
@@ -67,7 +72,8 @@ public class OMAttributeTest extends TestCase {
         XMLStreamReader parser2;
 
         try {
-            parser2 = XMLInputFactory.newInstance().createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
+            parser2 = XMLInputFactory.newInstance()
+                    .createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
             StAXOMBuilder builder2 = new StAXOMBuilder(parser2);
             OMElement doc = builder2.getDocumentElement();
 

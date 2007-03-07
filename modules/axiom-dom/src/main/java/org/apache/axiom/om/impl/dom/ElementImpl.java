@@ -44,16 +44,12 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-/**
- * Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element
- * interfaces.
- */
+/** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
 public class ElementImpl extends ParentNode implements Element, OMElement,
         OMConstants {
 
@@ -68,10 +64,8 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     private HashMap namespaces;
 
     private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
-    
-    /**
-     * @param ownerDocument
-     */
+
+    /** @param ownerDocument  */
     public ElementImpl(DocumentImpl ownerDocument, String tagName,
                        OMFactory factory) {
         super(ownerDocument, factory);
@@ -173,9 +167,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         }
     }
 
-    /**
-     * Returns the value of the namespace URI.
-     */
+    /** Returns the value of the namespace URI. */
     public String getNamespaceURI() {
         return (this.namespace != null) ? this.namespace.getNamespaceURI() : null;
     }
@@ -228,7 +220,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
 
         if (name.startsWith(OMConstants.XMLNS_NS_PREFIX)) {
@@ -256,15 +248,15 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
 
-        if(OMConstants.XMLNS_NS_URI.equals(namespaceURI)) {
+        if (OMConstants.XMLNS_NS_URI.equals(namespaceURI)) {
             //look in the ns list
-            if(this.namespaces != null) {
+            if (this.namespaces != null) {
                 this.namespaces.remove(DOMUtil.getLocalName(localName));
             }
-            
+
         } else if (this.attributes != null) {
             this.attributes.removeNamedItemNS(namespaceURI, localName);
         }
@@ -281,7 +273,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
         if (this.attributes == null
                 || this.attributes.getNamedItem(oldAttr.getName()) == null) {
@@ -305,16 +297,15 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     /**
      * Returns whether the given attribute is available or not.
      *
-     * @see org.w3c.dom.Element#hasAttributeNS(String,
-     *      String)
+     * @see org.w3c.dom.Element#hasAttributeNS(String, String)
      */
     public boolean hasAttributeNS(String namespaceURI, String localName) {
         return this.getAttributeNodeNS(namespaceURI, localName) != null;
     }
 
     /**
-     * Looks in the local list of attributes and returns if found. If the local
-     * list is null, returns "".
+     * Looks in the local list of attributes and returns if found. If the local list is null,
+     * returns "".
      *
      * @see org.w3c.dom.Element#getAttribute(String)
      */
@@ -340,8 +331,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     /**
      * Retrieves an attribute value by local name and namespace URI.
      *
-     * @see org.w3c.dom.Element#getAttributeNS(String,
-     *      String)
+     * @see org.w3c.dom.Element#getAttributeNS(String, String)
      */
     public String getAttributeNS(String namespaceURI, String localName) {
         if (this.attributes == null) {
@@ -354,17 +344,16 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     /**
      * Retrieves an attribute node by local name and namespace URI.
      *
-     * @see org.w3c.dom.Element#getAttributeNodeNS(String,
-     *      String)
+     * @see org.w3c.dom.Element#getAttributeNodeNS(String, String)
      */
     public Attr getAttributeNodeNS(String namespaceURI, String localName) {
 
         if (namespaceURI == OMConstants.XMLNS_NS_URI) {
             OMNamespace ns = this.findNamespaceURI(localName);
             String nsuri = ns != null ? ns.getNamespaceURI() : "";
-            
+
             AttrImpl namespaceAttr = new AttrImpl(this.ownerNode,
-                    localName, nsuri, this.factory);
+                                                  localName, nsuri, this.factory);
             NamespaceImpl xmlNs = new NamespaceImpl(OMConstants.XMLNS_NS_URI);
             namespaceAttr.setOMNamespace(xmlNs);
             return namespaceAttr;
@@ -397,14 +386,14 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
 
         // check whether the attr is in use
         if (attrImpl.isUsed()) {
             String msg = DOMMessageFormatter
                     .formatMessage(DOMMessageFormatter.DOM_DOMAIN,
-                            "INUSE_ATTRIBUTE_ERR", null);
+                                   "INUSE_ATTRIBUTE_ERR", null);
             throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR, msg);
         }
 
@@ -412,12 +401,12 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             // This is a ns declaration
             this.declareNamespace(attr.getNodeValue(), DOMUtil
                     .getLocalName(attr.getName()));
-            
+
             //Don't add this to attr list, since its a namespace
             return attr;
-        } else if(attr.getNodeName().equals(OMConstants.XMLNS_NS_PREFIX)) {
+        } else if (attr.getNodeName().equals(OMConstants.XMLNS_NS_PREFIX)) {
             this.declareDefaultNamespace(attr.getValue());
-            
+
             //Don't add this to attr list, since its a namespace
             return attr;
         }
@@ -445,11 +434,11 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (name.startsWith(OMConstants.XMLNS_NS_PREFIX + ":")) {
             // This is a ns declaration
             this.declareNamespace(value, DOMUtil.getLocalName(name));
-        } else if(name.equals(OMConstants.XMLNS_NS_PREFIX)) {
+        } else if (name.equals(OMConstants.XMLNS_NS_PREFIX)) {
             this.declareDefaultNamespace(value);
         } else {
             this.setAttributeNode(new AttrImpl(this.ownerNode, name, value,
-                    this.factory));
+                                               this.factory));
         }
 
     }
@@ -506,7 +495,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                 // TODO checkwhether the same ns is declared with a different
                 // prefix and remove it
                 this.declareNamespace(new NamespaceImpl(attr.getNamespaceURI(),
-                        attr.getPrefix()));
+                                                        attr.getPrefix()));
             }
 
             return (Attr) this.attributes.setNamedItemNS(attr);
@@ -516,8 +505,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     /**
      * Adds a new attribute.
      *
-     * @see org.w3c.dom.Element#setAttributeNS(String,
-     *      String, String)
+     * @see org.w3c.dom.Element#setAttributeNS(String, String, String)
      */
     public void setAttributeNS(String namespaceURI, String qualifiedName,
                                String value) throws DOMException {
@@ -557,7 +545,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
 
         if (this.attributes == null) {
@@ -605,9 +593,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         }
     }
 
-    /**
-     * Returns whether this element contains any attribute or not.
-     */
+    /** Returns whether this element contains any attribute or not. */
     public boolean hasAttributes() {
 
         boolean flag = false;
@@ -654,13 +640,10 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     // /OmElement methods
     // /
 
-    /**
-     * @see org.apache.axiom.om.OMElement#addAttribute
-     *      (org.apache.axiom.om.OMAttribute)
-     */
+    /** @see org.apache.axiom.om.OMElement#addAttribute (org.apache.axiom.om.OMAttribute) */
     public OMAttribute addAttribute(OMAttribute attr) {
         OMNamespace namespace = attr.getNamespace();
-        if (namespace != null && namespace.getNamespaceURI() != null 
+        if (namespace != null && namespace.getNamespaceURI() != null
                 && !"".equals(namespace.getNamespaceURI())
                 && this.findNamespace(namespace.getNamespaceURI(), namespace
                 .getPrefix()) == null) {
@@ -677,8 +660,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     /**
      * The behaviour of this is the same as org.w3c.dom.Element#setAttributeNS
      *
-     * @see org.apache.axiom.om.OMElement#addAttribute(String,
-     *      String, org.apache.axiom.om.OMNamespace)
+     * @see org.apache.axiom.om.OMElement#addAttribute(String, String, org.apache.axiom.om.OMNamespace)
      */
     public OMAttribute addAttribute(String attributeName, String value,
                                     OMNamespace ns) {
@@ -697,8 +679,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     /**
      * Allows overriding an existing declaration if the same prefix was used.
      *
-     * @see org.apache.axiom.om.OMElement#declareNamespace
-     *      (org.apache.axiom.om.OMNamespace)
+     * @see org.apache.axiom.om.OMElement#declareNamespace (org.apache.axiom.om.OMNamespace)
      */
     public OMNamespace declareNamespace(OMNamespace namespace) {
         if (namespaces == null) {
@@ -724,8 +705,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     /**
      * Allows overriding an existing declaration if the same prefix was used.
      *
-     * @see org.apache.axiom.om.OMElement#declareNamespace(String,
-     *      String)
+     * @see org.apache.axiom.om.OMElement#declareNamespace(String, String)
      */
     public OMNamespace declareNamespace(String uri, String prefix) {
         if ("".equals(prefix))
@@ -764,10 +744,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         return null;
     }
 
-    /**
-     * @see org.apache.axiom.om.OMElement#findNamespace(java.lang.String,
-     *      java.lang.String)
-     */
+    /** @see org.apache.axiom.om.OMElement#findNamespace(String, String) */
     public OMNamespace findNamespace(String uri, String prefix) {
 
         // check in the current element
@@ -783,7 +760,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             // element should be enough.
             if (parentNode instanceof OMElement) {
                 namespace = ((ElementImpl) parentNode).findNamespace(uri,
-                        prefix);
+                                                                     prefix);
             }
         }
 
@@ -797,9 +774,9 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     }
 
     public OMNamespace findNamespaceURI(String prefix) {
-        OMNamespace ns =  this.namespaces==null?
-                null:
-                (OMNamespace)this.namespaces.get(prefix);
+        OMNamespace ns = this.namespaces == null ?
+                null :
+                (OMNamespace) this.namespaces.get(prefix);
 
         if (ns == null && this.parentNode instanceof OMElement) {
             // try with the parent
@@ -809,8 +786,8 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     }
 
     /**
-     * Checks for the namespace <B>only</B> in the current Element. This can
-     * also be used to retrieve the prefix of a known namespace URI.
+     * Checks for the namespace <B>only</B> in the current Element. This can also be used to
+     * retrieve the prefix of a known namespace URI.
      */
     private OMNamespace findDeclaredNamespace(String uri, String prefix) {
 
@@ -852,8 +829,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     /**
      * Returns a named attribute if present.
      *
-     * @see org.apache.axiom.om.OMElement#getAttribute
-     *      (javax.xml.namespace.QName)
+     * @see org.apache.axiom.om.OMElement#getAttribute (javax.xml.namespace.QName)
      */
     public OMAttribute getAttribute(QName qname) {
         if (this.attributes == null) {
@@ -865,7 +841,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             return (AttrImpl) this.getAttributeNode(qname.getLocalPart());
         } else {
             return (AttrImpl) this.getAttributeNodeNS(qname.getNamespaceURI(),
-                    qname.getLocalPart());
+                                                      qname.getLocalPart());
         }
     }
 
@@ -925,7 +901,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (namespace != null) {
             if (namespace.getPrefix() != null) {
                 qName = new QName(namespace.getNamespaceURI(), this.localName,
-                        namespace.getPrefix());
+                                  namespace.getPrefix());
             } else {
                 qName = new QName(namespace.getNamespaceURI(), this.localName);
             }
@@ -985,8 +961,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     /**
      * Removes an attribute from the element.
      *
-     * @see org.apache.axiom.om.OMElement#removeAttribute
-     *      (org.apache.axiom.om.OMAttribute)
+     * @see org.apache.axiom.om.OMElement#removeAttribute (org.apache.axiom.om.OMAttribute)
      */
     public void removeAttribute(OMAttribute attr) {
         this.removeAttributeNode((AttrImpl) attr);
@@ -995,8 +970,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     /**
      * Sets the OM builder.
      *
-     * @see org.apache.axiom.om.OMElement#setBuilder
-     *      (org.apache.axiom.om.OMXMLParserWrapper)
+     * @see org.apache.axiom.om.OMElement#setBuilder (org.apache.axiom.om.OMXMLParserWrapper)
      */
     public void setBuilder(OMXMLParserWrapper wrapper) {
         this.builder = wrapper;
@@ -1014,8 +988,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     /**
      * Sets the namespace.
      *
-     * @see org.apache.axiom.om.OMElement#setNamespace
-     *      (org.apache.axiom.om.OMNamespace)
+     * @see org.apache.axiom.om.OMElement#setNamespace (org.apache.axiom.om.OMNamespace)
      */
     public void setNamespace(OMNamespace namespace) {
         this.namespace = namespace;
@@ -1036,7 +1009,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
 
         // if we already have other text nodes remove them
@@ -1097,7 +1070,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     OMElement element = (OMElement) child;
                     element.getBuilder().setCache(false);
                     OMSerializerUtil.serializeByPullStream(element, writer,
-                            cache);
+                                                           cache);
                 }
                 OMSerializerUtil.serializeEndpart(writer);
             } else {
@@ -1176,9 +1149,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         return new OMChildElementIterator(getFirstElement());
     }
 
-    /**
-     * @see org.apache.axiom.om.OMElement#getAllDeclaredNamespaces()
-     */
+    /** @see org.apache.axiom.om.OMElement#getAllDeclaredNamespaces() */
     public Iterator getAllDeclaredNamespaces() throws OMException {
         if (namespaces == null) {
             return null;
@@ -1186,9 +1157,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         return namespaces.values().iterator();
     }
 
-    /**
-     * @see org.apache.axiom.om.OMElement#getAllAttributes()
-     */
+    /** @see org.apache.axiom.om.OMElement#getAllAttributes() */
     public Iterator getAllAttributes() {
         if (attributes == null) {
             return EMPTY_ITERATOR;
@@ -1224,10 +1193,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         return (this.namespace == null) ? null : this.namespace.getPrefix();
     }
 
-    /**
-     * @see NodeImpl#setOwnerDocument
-     *      (org.apache.axiom.om.impl.dom.DocumentImpl)
-     */
+    /** @see NodeImpl#setOwnerDocument (org.apache.axiom.om.impl.dom.DocumentImpl) */
     protected void setOwnerDocument(DocumentImpl document) {
         this.ownerNode = document;
         this.isOwned(true);
@@ -1237,8 +1203,8 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     }
 
     /**
-     * Turn a prefix:local qname string into a proper QName, evaluating it in
-     * the OMElement context unprefixed qnames resolve to the local namespace
+     * Turn a prefix:local qname string into a proper QName, evaluating it in the OMElement context
+     * unprefixed qnames resolve to the local namespace
      *
      * @param qname prefixed qname string to resolve
      * @return Returns null for any failure to extract a qname.
@@ -1254,7 +1220,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      * @see org.apache.axiom.om.OMElement#cloneOMElement()
      */
     public OMElement cloneOMElement() {
-        return (ElementImpl)this.cloneNode(true);
+        return (ElementImpl) this.cloneNode(true);
     }
 
     public void setLineNumber(int lineNumber) {
@@ -1276,10 +1242,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     }
 
-    /**
-     * Returns the set of attributes of this node and the namespace declarations
-     * available.
-     */
+    /** Returns the set of attributes of this node and the namespace declarations available. */
     public NamedNodeMap getAttributes() {
         AttributeMap attributeMap = new AttributeMap(this);
 
@@ -1313,13 +1276,14 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
                 // check if the parent of this element has the same namespace
                 // as the default and if NOT add the attr
-                boolean parentHasSameDefaultNS = this.parentNode != null && 
-                this.parentNode.getNamespaceURI() == this.getNamespaceURI() &&
-                (this.parentNode.getPrefix() == null || this.parentNode.getPrefix().equals("")); 
-                
+                boolean parentHasSameDefaultNS = this.parentNode != null &&
+                        this.parentNode.getNamespaceURI() == this.getNamespaceURI() &&
+                        (this.parentNode.getPrefix() == null ||
+                                this.parentNode.getPrefix().equals(""));
+
                 if (!parentHasSameDefaultNS) {
                     AttrImpl attr = new AttrImpl(this.ownerNode, "xmlns",
-                            this.namespace.getNamespaceURI(), this.factory);
+                                                 this.namespace.getNamespaceURI(), this.factory);
                     attr.setOMNamespace(new NamespaceImpl(
                             OMConstants.XMLNS_NS_URI,
                             OMConstants.XMLNS_NS_PREFIX));
@@ -1332,8 +1296,8 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     }
 
     /**
-     * Returns the namespace uri, given the prefix. If it is not found at this
-     * element, searches the parent.
+     * Returns the namespace uri, given the prefix. If it is not found at this element, searches the
+     * parent.
      *
      * @param prefix
      * @return Returns namespace.
@@ -1347,8 +1311,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      * Removes a declared namespace given its prefix.
      *
      * @param prefix
-     * @return Returns whether the namespace relevant to the given prefix was
-     *         removed or not
+     * @return Returns whether the namespace relevant to the given prefix was removed or not
      */
     public boolean removeNamespace(String prefix) {
         Object ns = this.namespaces.get(prefix);
@@ -1388,18 +1351,18 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
         //find the attr
-        AttrImpl tempAttr = (AttrImpl)this.getAttributeNode(name);
-        if(tempAttr == null) {
+        AttrImpl tempAttr = (AttrImpl) this.getAttributeNode(name);
+        if (tempAttr == null) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NOT_FOUND_ERR", null);
             throw new DOMException(DOMException.NOT_FOUND_ERR,
-                    msg);
+                                   msg);
         }
-        
+
         this.updateIsId(isId, tempAttr);
     }
 
@@ -1410,83 +1373,82 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
         //find the attr
-        AttrImpl tempAttr = (AttrImpl)this.getAttributeNodeNS(namespaceURI, localName);
-        if(tempAttr == null) {
+        AttrImpl tempAttr = (AttrImpl) this.getAttributeNodeNS(namespaceURI, localName);
+        if (tempAttr == null) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NOT_FOUND_ERR", null);
             throw new DOMException(DOMException.NOT_FOUND_ERR,
-                    msg);
+                                   msg);
         }
-        
+
         this.updateIsId(isId, tempAttr);
     }
-    
+
     public void setIdAttributeNode(Attr idAttr, boolean isId) throws DOMException {
         if (this.isReadonly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
         //find the attr
         Iterator attrIter = this.getAllAttributes();
         AttrImpl tempAttr = null;
         while (attrIter.hasNext()) {
             AttrImpl attr = (AttrImpl) attrIter.next();
-            if(attr.equals(idAttr)) {
+            if (attr.equals(idAttr)) {
                 tempAttr = attr;
                 break;
             }
         }
-        
-        if(tempAttr == null) {
+
+        if (tempAttr == null) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NOT_FOUND_ERR", null);
             throw new DOMException(DOMException.NOT_FOUND_ERR,
-                    msg);
+                                   msg);
         }
-        
+
         this.updateIsId(isId, tempAttr);
     }
-    
+
     /**
-     * Updates the id state of the attr and notifies the document 
+     * Updates the id state of the attr and notifies the document
+     *
      * @param isId
      * @param tempAttr
      */
     private void updateIsId(boolean isId, AttrImpl tempAttr) {
         tempAttr.isId = isId;
-        if(isId) {
+        if (isId) {
             this.ownerNode.addIdAttr(tempAttr);
         } else {
             this.ownerNode.removeIdAttr(tempAttr);
         }
     }
-    
+
     public TypeInfo getSchemaTypeInfo() {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
-    
-	/* (non-Javadoc)
-	 * @see org.apache.axiom.om.OMNode#buildAll()
-	 */
-	public void buildWithAttachments() {
-		if (!done)
-		{
-			this.build();
-		}
-		Iterator iterator = getChildren();
-		while(iterator.hasNext())
-		{
-			OMNode node = (OMNode)iterator.next();
-			node.buildWithAttachments();
-		}
-	}
+
+    /* (non-Javadoc)
+      * @see org.apache.axiom.om.OMNode#buildAll()
+      */
+    public void buildWithAttachments() {
+        if (!done) {
+            this.build();
+        }
+        Iterator iterator = getChildren();
+        while (iterator.hasNext()) {
+            OMNode node = (OMNode) iterator.next();
+            node.buildWithAttachments();
+        }
+    }
 }

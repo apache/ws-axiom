@@ -16,36 +16,32 @@
 
 package org.apache.axiom.om;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Properties;
+import junit.framework.TestCase;
+import org.apache.axiom.attachments.ByteArrayDataSource;
+import org.apache.axiom.om.impl.MIMEOutputUtils;
+import org.apache.axiom.soap.SOAPFactory;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
-import junit.framework.TestCase;
-
-import org.apache.axiom.attachments.ByteArrayDataSource;
-import org.apache.axiom.om.impl.MIMEOutputUtils;
-import org.apache.axiom.soap.SOAPFactory;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class MIMEOutputUtilsTest extends TestCase {
     byte[] buffer;
-    byte[] byteArray = new byte[]{13, 56, 65, 32, 12, 12, 7, -3, -2, -1,
-                                  98};
+    byte[] byteArray = new byte[] { 13, 56, 65, 32, 12, 12, 7, -3, -2, -1,
+            98 };
 
     protected void setUp() throws Exception {
         super.setUp();
         SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();
         ByteArrayOutputStream outStream;
         String boundary;
-        
+
         OMOutputFormat omOutput = new OMOutputFormat();
         boundary = omOutput.getMimeBoundary();
         omOutput.setSOAP11(false);
@@ -62,16 +58,16 @@ public class MIMEOutputUtilsTest extends TestCase {
         assertNotNull(text.getContentID());
         outStream = new ByteArrayOutputStream();
         outStream.write(("Content-Type: " + contentType).getBytes());
-        outStream.write(new byte[]{13,10});
-        outStream.write(new byte[]{13,10});
+        outStream.write(new byte[] { 13, 10 });
+        outStream.write(new byte[] { 13, 10 });
 
         MIMEOutputUtils.startWritingMime(outStream, boundary);
-		MimeBodyPart part1 = MIMEOutputUtils.createMimeBodyPart(textData
-				.getContentID(), (DataHandler) textData.getDataHandler());
-		MIMEOutputUtils.writeBodyPart(outStream, part1, boundary);
-		MimeBodyPart part2 = MIMEOutputUtils.createMimeBodyPart(text
-				.getContentID(), (DataHandler) text.getDataHandler());
-		MIMEOutputUtils.writeBodyPart(outStream, part2, boundary);
+        MimeBodyPart part1 = MIMEOutputUtils.createMimeBodyPart(textData
+                .getContentID(), (DataHandler) textData.getDataHandler());
+        MIMEOutputUtils.writeBodyPart(outStream, part1, boundary);
+        MimeBodyPart part2 = MIMEOutputUtils.createMimeBodyPart(text
+                .getContentID(), (DataHandler) text.getDataHandler());
+        MIMEOutputUtils.writeBodyPart(outStream, part2, boundary);
         MIMEOutputUtils.finishWritingMime(outStream);
         buffer = outStream.toByteArray();
     }
@@ -90,11 +86,10 @@ public class MIMEOutputUtilsTest extends TestCase {
         MimeBodyPart mimeBodyPart1 = (MimeBodyPart) multiPart.getBodyPart(1);
         Object object1 = mimeBodyPart1.getContent();
         assertNotNull(object1);
-        assertEquals(multiPart.getCount(),2);
+        assertEquals(multiPart.getCount(), 2);
     }
-    
-    public void testWriteSOAPWithAttachmentsMessage() throws IOException
-    {
+
+    public void testWriteSOAPWithAttachmentsMessage() throws IOException {
 //    	ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 // 
 //        OMOutputFormat omOutput = new OMOutputFormat();

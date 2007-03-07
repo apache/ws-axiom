@@ -38,36 +38,26 @@ import java.util.Iterator;
 import java.util.Stack;
 
 /**
- * This is exactly the same as org.apache.axiom.om.impl.llom.OMStAXWrapper. BUT
- * this uses the org.apache.axis2.om.impl.dom.DOMNavigator.
- * 
- * Note - This class also implements the streaming constants interface to get
- * access to the StAX constants.
+ * This is exactly the same as org.apache.axiom.om.impl.llom.OMStAXWrapper. BUT this uses the
+ * org.apache.axis2.om.impl.dom.DOMNavigator.
+ * <p/>
+ * Note - This class also implements the streaming constants interface to get access to the StAX
+ * constants.
  */
 public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
-    /**
-     * Field navigator
-     */
+    /** Field navigator */
     private DOMNavigator navigator;
 
-    /**
-     * Field builder
-     */
+    /** Field builder */
     private OMXMLParserWrapper builder;
 
-    /**
-     * Field parser
-     */
+    /** Field parser */
     private XMLStreamReader parser;
 
-    /**
-     * Field rootNode
-     */
+    /** Field rootNode */
     private OMNode rootNode;
 
-    /**
-     * Field isFirst
-     */
+    /** Field isFirst */
     private boolean isFirst = true;
 
     // Navigable means the output should be taken from the navigator
@@ -75,9 +65,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
     // to false and the subsequent events will be taken from the builder
     // or the parser directly.
 
-    /**
-     * Field NAVIGABLE
-     */
+    /** Field NAVIGABLE */
     private static final short NAVIGABLE = 0;
 
     private static final short SWITCH_AT_NEXT = 1;
@@ -88,14 +76,10 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     private static final short DOCUMENT_COMPLETE = 4;
 
-    /**
-     * Field state
-     */
+    /** Field state */
     private short state;
 
-    /**
-     * Field currentEvent Default set to START_DOCUMENT
-     */
+    /** Field currentEvent Default set to START_DOCUMENT */
     private int currentEvent = START_DOCUMENT;
 
     // SwitchingAllowed is set to false by default
@@ -103,45 +87,35 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
     // that he wants things not to be cached, everything will
     // be cached
 
-    /**
-     * Field switchingAllowed
-     */
+    /** Field switchingAllowed */
     boolean switchingAllowed = false;
 
-    /**
-     * Field elementStack
-     */
+    /** Field elementStack */
     private Stack elementStack = new Stack();
 
     // keeps the next event. The parser actually keeps one step ahead to
     // detect the end of navigation. (at the end of the stream the navigator
     // returns a null
 
-    /**
-     * Field nextNode
-     */
+    /** Field nextNode */
     private OMNode nextNode = null;
 
     // holder for the current node. Needs this to generate events from the
     // current node
 
-    /**
-     * Field currentNode
-     */
+    /** Field currentNode */
     private OMNode currentNode = null;
 
     // needs this to refer to the last known node
 
-    /**
-     * Field lastNode
-     */
+    /** Field lastNode */
     private OMNode lastNode = null;
 
     private boolean needToThrowEndDocument = false;
 
     /**
      * Method setAllowSwitching.
-     * 
+     *
      * @param b
      */
     public void setAllowSwitching(boolean b) {
@@ -150,7 +124,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method isAllowSwitching.
-     * 
+     *
      * @return Returns boolean.
      */
     public boolean isAllowSwitching() {
@@ -158,12 +132,11 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
     }
 
     /**
-     * When constructing the OMStaxWrapper, the creator must produce the builder
-     * (an instance of the OMXMLparserWrapper of the input) and the Element Node
-     * to start parsing. The wrapper parses(proceed) until the end of the given
-     * element. Hence care must be taken to pass the root element if the entire
-     * document is needed.
-     * 
+     * When constructing the OMStaxWrapper, the creator must produce the builder (an instance of the
+     * OMXMLparserWrapper of the input) and the Element Node to start parsing. The wrapper
+     * parses(proceed) until the end of the given element. Hence care must be taken to pass the root
+     * element if the entire document is needed.
+     *
      * @param builder
      * @param startNode
      */
@@ -173,13 +146,13 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Constructor OMStAXWrapper
-     * 
+     *
      * @param builder
      * @param startNode
      * @param cache
      */
     public DOMStAXWrapper(OMXMLParserWrapper builder, OMElement startNode,
-            boolean cache) {
+                          boolean cache) {
 
         // create a navigator
         this.navigator = new DOMNavigator(startNode);
@@ -243,7 +216,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         if (parser != null) {
             return parser.hasName();
         } else {
-            return ((currentEvent == START_ELEMENT) || 
+            return ((currentEvent == START_ELEMENT) ||
                     (currentEvent == END_ELEMENT));
         }
     }
@@ -329,8 +302,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * @param i2
      * @return Returns int.
      * @throws XMLStreamException
-     * @see javax.xml.stream.XMLStreamReader#getTextCharacters(int, char[], int,
-     *      int)
+     * @see javax.xml.stream.XMLStreamReader#getTextCharacters(int, char[], int, int)
      */
     public int getTextCharacters(int i, char[] chars, int i1, int i2)
             throws XMLStreamException {
@@ -644,7 +616,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method getAttributeValue.
-     * 
+     *
      * @param s
      * @param s1
      * @return Returns String.
@@ -670,7 +642,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method isWhiteSpace.
-     * 
+     *
      * @return Returns boolean.
      */
     public boolean isWhiteSpace() {
@@ -685,7 +657,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method isCharacters.
-     * 
+     *
      * @return Returns boolean.
      */
     public boolean isCharacters() {
@@ -700,7 +672,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method isEndElement.
-     * 
+     *
      * @return Returns boolean.
      */
     public boolean isEndElement() {
@@ -726,7 +698,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method isStartElement.
-     * 
+     *
      * @return Returns boolean.
      */
     public boolean isStartElement() {
@@ -741,7 +713,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method getNamespaceURI.
-     * 
+     *
      * @param s
      * @return Returns String.
      */
@@ -761,7 +733,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method close.
-     * 
+     *
      * @throws XMLStreamException
      */
     public void close() throws XMLStreamException {
@@ -774,7 +746,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method hasNext.
-     * 
+     *
      * @return Returns boolean.
      * @throws XMLStreamException
      */
@@ -788,10 +760,10 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Not implemented yet
-     * 
+     *
      * @return Returns int.
      * @throws org.apache.axiom.om.impl.exception.OMStreamingException
-     * 
+     *
      * @throws XMLStreamException
      */
     public int nextTag() throws XMLStreamException {
@@ -823,54 +795,54 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method next.
-     * 
+     *
      * @return Returns int.
      * @throws XMLStreamException
      */
     public int next() throws XMLStreamException {
         switch (state) {
-        case DOCUMENT_COMPLETE:
-            throw new XMLStreamException("End of the document reached");
-        case COMPLETED:
-            state = DOCUMENT_COMPLETE;
-            currentEvent = END_DOCUMENT;
-            break;
-        case SWITCH_AT_NEXT:
-            state = SWITCHED;
+            case DOCUMENT_COMPLETE:
+                throw new XMLStreamException("End of the document reached");
+            case COMPLETED:
+                state = DOCUMENT_COMPLETE;
+                currentEvent = END_DOCUMENT;
+                break;
+            case SWITCH_AT_NEXT:
+                state = SWITCHED;
 
-            // load the parser
-            try {
-                parser = (XMLStreamReader) builder.getParser();
-            } catch (Exception e) {
-                throw new XMLStreamException("problem accessing the parser", e);
-            }
+                // load the parser
+                try {
+                    parser = (XMLStreamReader) builder.getParser();
+                } catch (Exception e) {
+                    throw new XMLStreamException("problem accessing the parser", e);
+                }
 
-            if ((currentEvent == START_DOCUMENT)
-                    && (currentEvent == parser.getEventType())) {
+                if ((currentEvent == START_DOCUMENT)
+                        && (currentEvent == parser.getEventType())) {
+                    currentEvent = parser.next();
+                } else {
+                    currentEvent = parser.getEventType();
+                }
+                updateCompleteStatus();
+                break;
+            case NAVIGABLE:
+                currentEvent = generateEvents(currentNode);
+                updateCompleteStatus();
+                updateLastNode();
+                break;
+            case SWITCHED:
                 currentEvent = parser.next();
-            } else {
-                currentEvent = parser.getEventType();
-            }
-            updateCompleteStatus();
-            break;
-        case NAVIGABLE:
-            currentEvent = generateEvents(currentNode);
-            updateCompleteStatus();
-            updateLastNode();
-            break;
-        case SWITCHED:
-            currentEvent = parser.next();
-            updateCompleteStatus();
-            break;
-        default:
-            throw new OMStreamingException("unsuppported state!");
+                updateCompleteStatus();
+                break;
+            default:
+                throw new OMStreamingException("unsuppported state!");
         }
         return currentEvent;
     }
 
     /**
      * Method getProperty.
-     * 
+     *
      * @param s
      * @return Returns Object.
      * @throws IllegalArgumentException
@@ -880,11 +852,10 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
     }
 
     /**
-     * This is a very important method. This keeps the navigator one step ahead
-     * and pushes the navigator one event ahead. If the nextNode is null then
-     * navigable is set to false; At the same time the parser and builder are
-     * set up for the upcoming event generation
-     * 
+     * This is a very important method. This keeps the navigator one step ahead and pushes the
+     * navigator one event ahead. If the nextNode is null then navigable is set to false; At the
+     * same time the parser and builder are set up for the upcoming event generation
+     *
      * @throws XMLStreamException
      */
     private void updateLastNode() throws XMLStreamException {
@@ -897,9 +868,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         }
     }
 
-    /**
-     * Method updateNextNode.
-     */
+    /** Method updateNextNode. */
     private void updateNextNode() {
         if (navigator.isNavigable()) {
             nextNode = navigator.next();
@@ -923,9 +892,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         }
     }
 
-    /**
-     * Method updateCompleteStatus.
-     */
+    /** Method updateCompleteStatus. */
     private void updateCompleteStatus() {
         if (state == NAVIGABLE) {
             if (rootNode == currentNode) {
@@ -942,7 +909,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method getNamespaceContext.
-     * 
+     *
      * @return Returns NamespaceContext.
      */
     public NamespaceContext getNamespaceContext() {
@@ -951,7 +918,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method getEncoding.
-     * 
+     *
      * @return Returns String.
      */
     public String getEncoding() {
@@ -960,7 +927,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method getLocation.
-     * 
+     *
      * @return Returns Location.
      */
     public Location getLocation() {
@@ -969,7 +936,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method getVersion.
-     * 
+     *
      * @return Returns String.
      */
     public String getVersion() {
@@ -978,7 +945,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method isStandalone.
-     * 
+     *
      * @return Returns boolean.
      */
     public boolean isStandalone() {
@@ -987,7 +954,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method standaloneSet.
-     * 
+     *
      * @return Returns boolean.
      */
     public boolean standaloneSet() {
@@ -996,7 +963,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method getCharacterEncodingScheme.
-     * 
+     *
      * @return Returns String.
      */
     public String getCharacterEncodingScheme() {
@@ -1005,7 +972,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method getPITarget.
-     * 
+     *
      * @return Returns String.
      */
     public String getPITarget() {
@@ -1014,7 +981,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method getPIData.
-     * 
+     *
      * @return Returns String.
      */
     public String getPIData() {
@@ -1031,7 +998,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method generateEvents
-     * 
+     *
      * @param node
      * @return Returns int.
      */
@@ -1039,28 +1006,28 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         int returnEvent = 0;
         int nodeType = node.getType();
         switch (nodeType) {
-        case OMNode.ELEMENT_NODE:
-            OMElement element = (OMElement) node;
-            returnEvent = generateElementEvents(element);
-            break;
-        case OMNode.TEXT_NODE:
-            returnEvent = generateTextEvents();
-            break;
-        case OMNode.COMMENT_NODE:
-            returnEvent = generateCommentEvents();
-            break;
-        case OMNode.CDATA_SECTION_NODE:
-            returnEvent = generateCdataEvents();
-            break;
-        default:
-            break; // just ignore any other nodes
+            case OMNode.ELEMENT_NODE:
+                OMElement element = (OMElement) node;
+                returnEvent = generateElementEvents(element);
+                break;
+            case OMNode.TEXT_NODE:
+                returnEvent = generateTextEvents();
+                break;
+            case OMNode.COMMENT_NODE:
+                returnEvent = generateCommentEvents();
+                break;
+            case OMNode.CDATA_SECTION_NODE:
+                returnEvent = generateCdataEvents();
+                break;
+            default:
+                break; // just ignore any other nodes
         }
         return returnEvent;
     }
 
     /**
      * Method generateElementEvents.
-     * 
+     *
      * @param elt
      * @return Returns int.
      */
@@ -1077,7 +1044,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method generateTextEvents.
-     * 
+     *
      * @return Returns int.
      * @noinspection SameReturnValue
      */
@@ -1087,7 +1054,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method generateCommentEvents.
-     * 
+     *
      * @return Returns int.
      * @noinspection SameReturnValue
      */
@@ -1097,7 +1064,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Method generateCdataEvents.
-     * 
+     *
      * @return Returns int.
      */
     private int generateCdataEvents() {
@@ -1112,7 +1079,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * helper method.
-     * 
+     *
      * @param it
      * @return Returns int.
      */
@@ -1129,7 +1096,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Helper method.
-     * 
+     *
      * @param it
      * @param index
      * @return Returns Object.
@@ -1156,7 +1123,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /**
      * Helper method.
-     * 
+     *
      * @param element
      * @return Returns QName.
      */

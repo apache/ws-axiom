@@ -40,14 +40,13 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
 
     OMXMLParserWrapper builder;
 
-    /**
-     * @param testName
-     */
+    /** @param testName  */
     public MTOMStAXSOAPModelBuilderTest(String testName) {
         super(testName);
     }
 
-    String contentTypeString = "multipart/Related; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
+    String contentTypeString =
+            "multipart/Related; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -56,8 +55,9 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         attachments = new Attachments(inStream, contentTypeString);
         XMLStreamReader reader = XMLInputFactory.newInstance()
                 .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
-                .getSOAPPartInputStream())));
-        builder = new MTOMStAXSOAPModelBuilder(reader, attachments, SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+                        .getSOAPPartInputStream())));
+        builder = new MTOMStAXSOAPModelBuilder(reader, attachments,
+                                               SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
 
     public void testCreateOMElement() throws Exception {
@@ -74,10 +74,10 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
          * If it is not he has to use a Custom Defined DataSource to get the
          * Object.
          */
-        byte[] expectedObject = new byte[]{13, 56, 65, 32, 12, 12, 7, -3, -2,
-                                           -1, 98};
+        byte[] expectedObject = new byte[] { 13, 56, 65, 32, 12, 12, 7, -3, -2,
+                -1, 98 };
         DataHandler actualDH;
-        actualDH = (DataHandler)blob.getDataHandler();
+        actualDH = (DataHandler) blob.getDataHandler();
         //ByteArrayInputStream object = (ByteArrayInputStream) actualDH
         //.getContent();
         //byte[] actualObject= null;

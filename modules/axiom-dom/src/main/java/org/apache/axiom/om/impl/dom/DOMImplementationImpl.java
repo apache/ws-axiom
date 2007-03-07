@@ -29,22 +29,22 @@ public class DOMImplementationImpl implements DOMImplementation {
     }
 
     public Document createDocument(String namespaceURI, String qualifiedName,
-            DocumentType doctype) throws DOMException {
-        
+                                   DocumentType doctype) throws DOMException {
+
         // TODO Handle docType stuff
         OMDOMFactory fac = new OMDOMFactory();
         DocumentImpl doc = new DocumentImpl(fac);
         fac.setDocument(doc);
 
         new ElementImpl(doc, DOMUtil.getLocalName(qualifiedName),
-                new NamespaceImpl(namespaceURI, DOMUtil
-                        .getPrefix(qualifiedName)),fac);
+                        new NamespaceImpl(namespaceURI, DOMUtil
+                                .getPrefix(qualifiedName)), fac);
 
         return doc;
     }
 
     public DocumentType createDocumentType(String qualifiedName,
-            String publicId, String systemId) throws DOMException {
+                                           String publicId, String systemId) throws DOMException {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }

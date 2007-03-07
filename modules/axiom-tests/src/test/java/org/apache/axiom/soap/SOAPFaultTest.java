@@ -155,8 +155,8 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
                 "SOAP 1.2 Fault Test:- After calling setCode method, Fault has no code",
                 soap12Fault.getCode() == null);
         assertTrue("SOAP 1.2 Fault Test:- Code local name mismatch",
-                soap12Fault.getCode().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME));
+                   soap12Fault.getCode().getLocalName().equals(
+                           SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME));
         try {
             soap12Fault.setCode(soap11Factory.createSOAPFaultCode(soap11Fault));
             fail("SOAP11FaultCode should not be set in to a SOAP12Fault");
@@ -174,8 +174,8 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
                 "SOAP 1.2 Fault Test:- After calling setCode method, Fault has no code",
                 soap12Fault.getCode() == null);
         assertTrue("SOAP 1.2 Fault Test:- Fault code local name mismatch",
-                soap12Fault.getCode().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME));
+                   soap12Fault.getCode().getLocalName().equals(
+                           SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME));
     }
 
     public void testSOAP12SetReason() {
@@ -184,8 +184,8 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
                 "SOAP 1.2 Fault Test:- After calling setReason method, Fault has no reason",
                 soap12Fault.getReason() == null);
         assertTrue("SOAP 1.2 Fault Test:- Fault reason local name mismatch",
-                soap12Fault.getReason().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME));
+                   soap12Fault.getReason().getLocalName().equals(
+                           SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME));
         try {
             soap12Fault.setReason(
                     soap11Factory.createSOAPFaultReason(soap11Fault));
@@ -205,8 +205,8 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
                 "SOAP 1.2 Fault Test:- After calling setReason method, Fault has no reason",
                 soap12Fault.getReason() == null);
         assertTrue("SOAP 1.2 Fault Test:- Fault reason local name mismatch",
-                soap12Fault.getReason().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME));
+                   soap12Fault.getReason().getLocalName().equals(
+                           SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME));
     }
 
     public void testSOAP12SetNode() {
@@ -215,8 +215,8 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
                 "SOAP 1.2 Fault Test:- After calling setNode method, Fault has no node",
                 soap12Fault.getNode() == null);
         assertTrue("SOAP 1.2 Fault Test:- Fault node local name mismatch",
-                soap12Fault.getNode().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME));
+                   soap12Fault.getNode().getLocalName().equals(
+                           SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME));
         try {
             soap12Fault.setNode(soap11Factory.createSOAPFaultNode(soap11Fault));
             fail("SOAP11FaultNode should nott be set in to a SOAP12Fault");
@@ -235,8 +235,8 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
                 "SOAP 1.2 Fault Test:- After calling setNode method, Fault has no node",
                 soap12Fault.getNode() == null);
         assertTrue("SOAP 1.2 Fault Test:- Fault node local name mismatch",
-                soap12Fault.getNode().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME));
+                   soap12Fault.getNode().getLocalName().equals(
+                           SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME));
     }
 
     public void testSOAP12SetRole() {
@@ -245,8 +245,8 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
                 "SOAP 1.2 :- After calling setRole method, Fault has no role",
                 soap12Fault.getRole() == null);
         assertTrue("SOAP 1.2 Fault Test:- Fault role local name mismatch",
-                soap12Fault.getRole().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME));
+                   soap12Fault.getRole().getLocalName().equals(
+                           SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME));
         try {
             soap12Fault.setRole(soap11Factory.createSOAPFaultRole(soap11Fault));
             fail("SOAP11FaultRole should not be set in to a SOAP12Fault");
@@ -264,8 +264,8 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
                 "SOAP 1.2 Fault Test:- After calling setRole method, Fault has no role",
                 soap12Fault.getRole() == null);
         assertTrue("SOAP 1.2 Fault Test:- Fault role local name mismatch",
-                soap12Fault.getRole().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME));
+                   soap12Fault.getRole().getLocalName().equals(
+                           SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME));
     }
 
     public void testSOAP12SetDetail() {
@@ -274,8 +274,8 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
                 "SOAP 1.2 Fault Test:- After calling setDetaile method, Fault has no detail",
                 soap12Fault.getDetail() == null);
         assertTrue("SOAP 1.2 Fault Test:- Fault detail local name mismatch",
-                soap12Fault.getDetail().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME));
+                   soap12Fault.getDetail().getLocalName().equals(
+                           SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME));
         try {
             soap12Fault.setDetail(
                     soap11Factory.createSOAPFaultDetail(soap11Fault));
@@ -295,8 +295,8 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
                 "SOAP 1.2 Fault Test:- After calling setDetail method, Fault has no detail",
                 soap12Fault.getDetail() == null);
         assertTrue("SOAP 1.2 Fault Test:- Fault detail local name mismatch",
-                soap12Fault.getDetail().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME));
+                   soap12Fault.getDetail().getLocalName().equals(
+                           SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME));
     }
 
     //SOAP 1.1 Fault Test (With parser)
@@ -375,7 +375,7 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
             SOAPEnvelope envelope = soapFactory.getDefaultFaultEnvelope();
 
             assertNotNull("Default FaultEnvelope must have a SOAPFault in it",
-                    envelope.getBody().getFault());
+                          envelope.getBody().getFault());
             assertNotNull(
                     "Default FaultEnvelope must have a SOAPFaultCode in it",
                     envelope.getBody().getFault().getCode());
@@ -398,14 +398,14 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
             envelope.getBody().getFault().setCode(code);
 
             assertTrue("Parent Value of Code has not been set to new fault",
-                    code.getParent() == envelope.getBody().getFault());
+                       code.getParent() == envelope.getBody().getFault());
             assertTrue("Parent Value of Code is still pointing to old fault",
-                    code.getParent() != soapEnvelope.getBody().getFault());
+                       code.getParent() != soapEnvelope.getBody().getFault());
             assertNull("Old fault must not have a fault code",
-                    soapEnvelope.getBody().getFault().getCode());
+                       soapEnvelope.getBody().getFault().getCode());
             assertEquals("The SOAP Code value must be " + errorCodeString,
-                    errorCodeString,
-                    envelope.getBody().getFault().getCode().getValue().getText());
+                         errorCodeString,
+                         envelope.getBody().getFault().getCode().getValue().getText());
 
         } catch (Exception e) {
             fail(e.getMessage());

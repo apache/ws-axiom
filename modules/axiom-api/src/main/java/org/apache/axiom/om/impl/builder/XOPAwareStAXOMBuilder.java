@@ -16,13 +16,6 @@
 
 package org.apache.axiom.om.impl.builder;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-
-import javax.activation.DataHandler;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -30,118 +23,116 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.MTOMConstants;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.util.ElementHelper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import sun.misc.GC.LatencyRequest;
+import javax.activation.DataHandler;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
-public class XOPAwareStAXOMBuilder extends StAXOMBuilder implements XOPBuilder{
+public class XOPAwareStAXOMBuilder extends StAXOMBuilder implements XOPBuilder {
 
-	/**
-	 * <code>Attachments</code> handles deferred parsing of incoming MIME
-	 * Messages.
-	 */
-	Attachments attachments;
+    /** <code>Attachments</code> handles deferred parsing of incoming MIME Messages. */
+    Attachments attachments;
 
-	/**
-	 * Constructor StAXOMBuilder.
-	 * 
-	 * @param ombuilderFactory
-	 * @param parser
-	 */
-	public XOPAwareStAXOMBuilder(OMFactory ombuilderFactory,
-			XMLStreamReader parser, Attachments attachments) {
-		super(ombuilderFactory, parser);
-		this.attachments = attachments;
-	}
+    /**
+     * Constructor StAXOMBuilder.
+     *
+     * @param ombuilderFactory
+     * @param parser
+     */
+    public XOPAwareStAXOMBuilder(OMFactory ombuilderFactory,
+                                 XMLStreamReader parser, Attachments attachments) {
+        super(ombuilderFactory, parser);
+        this.attachments = attachments;
+    }
 
-	/**
-	 * Constructor linked to existing element.
-	 * 
-	 * @param factory
-	 * @param parser
-	 * @param element
-	 */
-	public XOPAwareStAXOMBuilder(OMFactory factory, XMLStreamReader parser,
-			OMElement element,Attachments attachments) {
-		super(factory, parser, element);
-		this.attachments = attachments;
-	}
+    /**
+     * Constructor linked to existing element.
+     *
+     * @param factory
+     * @param parser
+     * @param element
+     */
+    public XOPAwareStAXOMBuilder(OMFactory factory, XMLStreamReader parser,
+                                 OMElement element, Attachments attachments) {
+        super(factory, parser, element);
+        this.attachments = attachments;
+    }
 
-	/**
-	 * @param filePath -
-	 *            Path to the XML file
-	 * @throws XMLStreamException
-	 * @throws FileNotFoundException
-	 */
-	public XOPAwareStAXOMBuilder(String filePath,Attachments attachments) throws XMLStreamException,
-			FileNotFoundException {
-		super(filePath);
-		this.attachments = attachments;
-	}
+    /**
+     * @param filePath - Path to the XML file
+     * @throws XMLStreamException
+     * @throws FileNotFoundException
+     */
+    public XOPAwareStAXOMBuilder(String filePath, Attachments attachments)
+            throws XMLStreamException,
+            FileNotFoundException {
+        super(filePath);
+        this.attachments = attachments;
+    }
 
-	/**
-	 * @param inStream -
-	 *            instream which contains the XML
-	 * @throws XMLStreamException
-	 */
-	public XOPAwareStAXOMBuilder(InputStream inStream,Attachments attachments)
-			throws XMLStreamException {
-		super(inStream);
-		this.attachments = attachments;
-	}
+    /**
+     * @param inStream - instream which contains the XML
+     * @throws XMLStreamException
+     */
+    public XOPAwareStAXOMBuilder(InputStream inStream, Attachments attachments)
+            throws XMLStreamException {
+        super(inStream);
+        this.attachments = attachments;
+    }
 
-	/**
-	 * Constructor StAXXOPAwareOMBuilder.
-	 * 
-	 * @param parser
-	 */
-	public XOPAwareStAXOMBuilder(XMLStreamReader parser,Attachments attachments) {
-		super(parser);
-		this.attachments = attachments;
-	}
+    /**
+     * Constructor StAXXOPAwareOMBuilder.
+     *
+     * @param parser
+     */
+    public XOPAwareStAXOMBuilder(XMLStreamReader parser, Attachments attachments) {
+        super(parser);
+        this.attachments = attachments;
+    }
 
-	/**
-	 * Method createOMElement. Overriding the createOMElement of StAXOMBuilder
-	 * to to XOP aware building
-	 * 
-	 * @return Returns OMNode.
-	 * @throws OMException
-	 */
-	protected OMNode createOMElement() throws OMException {
+    /**
+     * Method createOMElement. Overriding the createOMElement of StAXOMBuilder to to XOP aware
+     * building
+     *
+     * @return Returns OMNode.
+     * @throws OMException
+     */
+    protected OMNode createOMElement() throws OMException {
 
-		String elementName = parser.getLocalName();
-		String namespaceURI = parser.getNamespaceURI();
-		if (MTOMConstants.XOP_INCLUDE.equalsIgnoreCase(elementName)
-				&& MTOMConstants.XOP_NAMESPACE_URI
-						.equalsIgnoreCase(namespaceURI)) {
-			OMText node;
-			String contentID = ElementHelper.getContentID(parser, getDocument()
-					.getCharsetEncoding());
+        String elementName = parser.getLocalName();
+        String namespaceURI = parser.getNamespaceURI();
+        if (MTOMConstants.XOP_INCLUDE.equalsIgnoreCase(elementName)
+                && MTOMConstants.XOP_NAMESPACE_URI
+                .equalsIgnoreCase(namespaceURI)) {
+            OMText node;
+            String contentID = ElementHelper.getContentID(parser, getDocument()
+                    .getCharsetEncoding());
 
-			if (lastNode == null) {
-				throw new OMException(
-						"XOP:Include element is not supported here");
-			} else if (lastNode.isComplete() & lastNode.getParent() != null) {
-				node = omfactory.createOMText(contentID, (OMElement) lastNode
-						.getParent(), this);
-				((OMNodeEx) lastNode).setNextOMSibling(node);
-				((OMNodeEx) node).setPreviousOMSibling(lastNode);
-			} else {
-				OMContainerEx e = (OMContainerEx) lastNode;
-				node = omfactory.createOMText(contentID, (OMElement) lastNode,this);
+            if (lastNode == null) {
+                throw new OMException(
+                        "XOP:Include element is not supported here");
+            } else if (lastNode.isComplete() & lastNode.getParent() != null) {
+                node = omfactory.createOMText(contentID, (OMElement) lastNode
+                        .getParent(), this);
+                ((OMNodeEx) lastNode).setNextOMSibling(node);
+                ((OMNodeEx) node).setPreviousOMSibling(lastNode);
+            } else {
+                OMContainerEx e = (OMContainerEx) lastNode;
+                node = omfactory.createOMText(contentID, (OMElement) lastNode, this);
                 e.setFirstChild(node);
-			}
-			return node;
-		} else {
-			return super.createOMElement();
-		}
-	}
-	
-	public DataHandler getDataHandler(String blobContentID) throws OMException {
-		return attachments.getDataHandler(blobContentID);
+            }
+            return node;
+        } else {
+            return super.createOMElement();
+        }
+    }
+
+    public DataHandler getDataHandler(String blobContentID) throws OMException {
+        return attachments.getDataHandler(blobContentID);
 	}
 }

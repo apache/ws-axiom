@@ -21,9 +21,7 @@ import org.apache.axiom.om.OMElement;
 import java.util.List;
 
 public interface SOAPFaultReason extends OMElement {
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
+    /** Eran Chinthaka (chinthaka@apache.org) */
 
     public void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException;
 

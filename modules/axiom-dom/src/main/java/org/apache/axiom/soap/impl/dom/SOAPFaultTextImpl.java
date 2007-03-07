@@ -29,9 +29,9 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import javax.xml.namespace.QName;
 
 public abstract class SOAPFaultTextImpl extends SOAPElement implements SOAPFaultText {
-    
+
     protected OMAttribute langAttr;
-    
+
     protected OMNamespace langNamespace = null;
 
     protected SOAPFaultTextImpl(SOAPFaultReason parent, SOAPFactory factory)
@@ -45,16 +45,16 @@ public abstract class SOAPFaultTextImpl extends SOAPElement implements SOAPFault
     protected SOAPFaultTextImpl(SOAPFaultReason parent,
                                 OMXMLParserWrapper builder, SOAPFactory factory) {
         super(parent, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME, builder,
-                factory);
+              factory);
     }
 
 
     public void setLang(String lang) {
         langAttr =
-                new AttrImpl(this.ownerNode, 
-                        SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
-                        langNamespace,
-                        lang, this.factory);
+                new AttrImpl(this.ownerNode,
+                             SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
+                             langNamespace,
+                             lang, this.factory);
         this.addAttribute(langAttr);
     }
 
@@ -63,8 +63,8 @@ public abstract class SOAPFaultTextImpl extends SOAPElement implements SOAPFault
             langAttr =
                     this.getAttribute(
                             new QName(langNamespace.getNamespaceURI(),
-                                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
-                                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
+                                      SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
+                                      SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
         }
 
         return langAttr == null ? null : langAttr.getAttributeValue();

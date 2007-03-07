@@ -16,20 +16,6 @@
 
 package org.apache.axiom.om;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Iterator;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.custommonkey.xmlunit.Diff;
@@ -37,6 +23,19 @@ import org.custommonkey.xmlunit.XMLTestCase;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Iterator;
 
 
 public class SpacesTest extends XMLTestCase {
@@ -56,8 +55,8 @@ public class SpacesTest extends XMLTestCase {
 
             StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
                     createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
-                            factory.createXMLStreamReader(
-                                    iStream));
+                                        factory.createXMLStreamReader(
+                                                iStream));
             rootElement = staxOMBuilder.getDocumentElement();
             boolean hasCDataNode = hasCDataNode(rootElement);
             String file = hasCDataNode ? filePath : filePath2;
@@ -88,21 +87,21 @@ public class SpacesTest extends XMLTestCase {
     }
 
     private boolean hasCDataNode(OMNode pNode) {
-    	switch (pNode.getType()) {
-    		case OMNode.CDATA_SECTION_NODE:
-    			return true;
-    		case OMNode.ELEMENT_NODE:
-    	    	OMElement e = (OMElement) pNode;
-    	    	for (Iterator iter = e.getChildren();  iter.hasNext();  ) {
-    	    		if (hasCDataNode((OMNode) iter.next())) {
-    	    			return true;
-    	    		}
-    	    	}
-    			break;
-    		default:
-    			break;
-    	}
-    	return false;
+        switch (pNode.getType()) {
+            case OMNode.CDATA_SECTION_NODE:
+                return true;
+            case OMNode.ELEMENT_NODE:
+                OMElement e = (OMElement) pNode;
+                for (Iterator iter = e.getChildren(); iter.hasNext();) {
+                    if (hasCDataNode((OMNode) iter.next())) {
+                        return true;
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 
     public Document newDocument(InputSource in)

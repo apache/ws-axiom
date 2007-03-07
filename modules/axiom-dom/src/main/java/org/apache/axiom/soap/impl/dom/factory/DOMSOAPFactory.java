@@ -42,11 +42,12 @@ import org.apache.axiom.soap.impl.dom.soap12.SOAP12FaultImpl;
 
 public class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
 
-	public DOMSOAPFactory() {}
-	
-	public DOMSOAPFactory(DocumentImpl doc) {
-		super(doc);
-	}
+    public DOMSOAPFactory() {
+    }
+
+    public DOMSOAPFactory(DocumentImpl doc) {
+        super(doc);
+    }
 
     public String getSoapVersionURI() {
         throw new UnsupportedOperationException();
@@ -58,141 +59,152 @@ public class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
         return messageImpl;
     }
 
-	public SOAPMessage createSOAPMessage(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper) {
-		SOAPMessageImpl messageImpl = new SOAPMessageImpl(envelope, parserWrapper, this);
-		this.document = messageImpl;
-		return messageImpl;
-	}
+    public SOAPMessage createSOAPMessage(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper) {
+        SOAPMessageImpl messageImpl = new SOAPMessageImpl(envelope, parserWrapper, this);
+        this.document = messageImpl;
+        return messageImpl;
+    }
 
-	public SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder) {
-		return new SOAPEnvelopeImpl((DocumentImpl)this.createOMDocument(), builder, this);
-	}
+    public SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder) {
+        return new SOAPEnvelopeImpl((DocumentImpl) this.createOMDocument(), builder, this);
+    }
 
-	public SOAPEnvelope createSOAPEnvelope() throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPEnvelope createSOAPEnvelope() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPHeader createSOAPHeader(SOAPEnvelope envelope) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPHeader createSOAPHeader(SOAPEnvelope envelope) throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPHeader createSOAPHeader(SOAPEnvelope envelope, OMXMLParserWrapper builder) {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPHeader createSOAPHeader(SOAPEnvelope envelope, OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, SOAPHeader parent) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns,
+                                                 SOAPHeader parent) throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, SOAPHeader parent, OMXMLParserWrapper builder) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns,
+                                                 SOAPHeader parent, OMXMLParserWrapper builder)
+            throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFault createSOAPFault(SOAPBody parent, Exception e) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFault createSOAPFault(SOAPBody parent, Exception e) throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFault createSOAPFault(SOAPBody parent) throws SOAPProcessingException {
-        return new SOAP12FaultImpl(parent,this);
-	}	
+    public SOAPFault createSOAPFault(SOAPBody parent) throws SOAPProcessingException {
+        return new SOAP12FaultImpl(parent, this);
+    }
 
-	public SOAPFault createSOAPFault(SOAPBody parent, OMXMLParserWrapper builder) {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFault createSOAPFault(SOAPBody parent, OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPBody createSOAPBody(SOAPEnvelope envelope) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPBody createSOAPBody(SOAPEnvelope envelope) throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPBody createSOAPBody(SOAPEnvelope envelope, OMXMLParserWrapper builder) {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPBody createSOAPBody(SOAPEnvelope envelope, OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultCode createSOAPFaultCode(SOAPFault parent) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultCode createSOAPFaultCode(SOAPFault parent) throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultCode createSOAPFaultCode(SOAPFault parent, OMXMLParserWrapper builder) {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultCode createSOAPFaultCode(SOAPFault parent, OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent)
+            throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent, OMXMLParserWrapper builder) {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent, OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent)
+            throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent, OMXMLParserWrapper builder) {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent,
+                                               OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent)
+            throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent, OMXMLParserWrapper builder) {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent,
+                                                   OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent)
+            throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent, OMXMLParserWrapper builder) {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent,
+                                                   OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultReason createSOAPFaultReason(SOAPFault parent) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultReason createSOAPFaultReason(SOAPFault parent) throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultReason createSOAPFaultReason(SOAPFault parent, OMXMLParserWrapper builder) {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultReason createSOAPFaultReason(SOAPFault parent, OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent)
+            throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent, OMXMLParserWrapper builder) {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent, OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultNode createSOAPFaultNode(SOAPFault parent) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultNode createSOAPFaultNode(SOAPFault parent) throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultNode createSOAPFaultNode(SOAPFault parent, OMXMLParserWrapper builder) {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultNode createSOAPFaultNode(SOAPFault parent, OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultRole createSOAPFaultRole(SOAPFault parent) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultRole createSOAPFaultRole(SOAPFault parent) throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultRole createSOAPFaultRole(SOAPFault parent, OMXMLParserWrapper builder) {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultRole createSOAPFaultRole(SOAPFault parent, OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent) throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent) throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent, OMXMLParserWrapper builder) {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent, OMXMLParserWrapper builder) {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
-		throw new UnsupportedOperationException();
-	}
+    public SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
+        throw new UnsupportedOperationException();
+    }
 
-	public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {
+    public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {
         SOAPEnvelope defaultEnvelope = getDefaultEnvelope();
         SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());
 
@@ -207,7 +219,7 @@ public class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
         createSOAPFaultDetail(fault);
 
         return defaultEnvelope;
-	}
+    }
 
     public SOAPMessage createSOAPMessage() {
         return new SOAPMessageImpl(this);
@@ -217,13 +229,12 @@ public class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
         throw new UnsupportedOperationException("TODO");
     }
 
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns) throws SOAPProcessingException {
+    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns)
+            throws SOAPProcessingException {
         throw new UnsupportedOperationException("TODO");
     }
 
-    /**
-     * @see SOAP11Factory,SOAP12Factory
-     */
+    /** @see SOAP11Factory,SOAP12Factory */
     public SOAPFault createSOAPFault() throws SOAPProcessingException {
         return null;
     }
@@ -253,7 +264,7 @@ public class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
     }
 
     public SOAPFaultNode createSOAPFaultNode() throws SOAPProcessingException {
-         throw new UnsupportedOperationException("TODO");
+        throw new UnsupportedOperationException("TODO");
     }
 
     public SOAPFaultRole createSOAPFaultRole() throws SOAPProcessingException {

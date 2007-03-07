@@ -16,18 +16,18 @@
 
 package org.apache.axiom.om;
 
-/**
- * Interface OMDocType
- */
+/** Interface OMDocType */
 public interface OMDocType extends OMNode {
     /**
      * Returns the value of this DocType.
+     *
      * @return Returns String.
      */
     public String getValue();
 
     /**
      * Sets the content of this DocType to the specified string.
+     *
      * @param text
      */
     public void setValue(String text);

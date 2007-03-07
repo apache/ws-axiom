@@ -18,8 +18,8 @@ package org.apache.axiom.soap.impl.dom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -30,15 +30,15 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
-    
+
     public SOAP11FaultRoleImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME, false,
-                factory);
+              factory);
     }
 
     public SOAP11FaultRoleImpl(SOAPFault parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                               SOAPFactory factory) {
         super(parent, builder, factory);
     }
 
@@ -46,7 +46,7 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
         if (!(parent instanceof SOAP11FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault as the " +
-                    "parent. But received some other implementation");
+                            "parent. But received some other implementation");
         }
     }
 
@@ -64,10 +64,10 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
                     new StreamWriterToContentHandlerConverter(writer));
         }
 
-        OMSerializerUtil.serializeStartpart(this, 
-        		SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME, 
-        		writer);
-       
+        OMSerializerUtil.serializeStartpart(this,
+                                            SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME,
+                                            writer);
+
         String text = this.getText();
         writer.writeCharacters(text);
         writer.writeEndElement();

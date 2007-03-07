@@ -16,15 +16,22 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.*;
-import org.apache.axiom.soap.*;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.soap.SOAPProcessingException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-/**
- * Class SOAPHeaderImpl
- */
+/** Class SOAPHeaderImpl */
 public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
 
 
@@ -32,9 +39,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         super(SOAPConstants.HEADER_LOCAL_NAME, ns, factory);
     }
 
-    /**
-     * @param envelope
-     */
+    /** @param envelope  */
     public SOAPHeaderImpl(SOAPEnvelope envelope, SOAPFactory factory)
             throws SOAPProcessingException {
         super(envelope, SOAPConstants.HEADER_LOCAL_NAME, true, factory);
@@ -48,18 +53,18 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
      * @param builder
      */
     public SOAPHeaderImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                          SOAPFactory factory) {
         super(envelope, SOAPConstants.HEADER_LOCAL_NAME, builder, factory);
     }
 
     /**
-     * Creates a new <CODE>SOAPHeaderBlock</CODE> object initialized with the
-     * specified name and adds it to this <CODE>SOAPHeader</CODE> object.
+     * Creates a new <CODE>SOAPHeaderBlock</CODE> object initialized with the specified name and
+     * adds it to this <CODE>SOAPHeader</CODE> object.
      *
      * @param localName
      * @param ns
-     * @return the new <CODE>SOAPHeaderBlock</CODE> object that was inserted
-     *         into this <CODE>SOAPHeader</CODE> object
+     * @return the new <CODE>SOAPHeaderBlock</CODE> object that was inserted into this
+     *         <CODE>SOAPHeader</CODE> object
      * @throws org.apache.axiom.om.OMException
      *                     if a SOAP error occurs
      * @throws OMException
@@ -70,28 +75,25 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
 
     /**
      * Returns a list of all the <CODE>SOAPHeaderBlock</CODE> objects in this
-     * <CODE>SOAPHeader</CODE> object that have the the specified actor. An
-     * actor is a global attribute that indicates the intermediate parties to
-     * whom the message should be sent. An actor receives the message and then
-     * sends it to the next actor. The default actor is the ultimate intended
-     * recipient for the message, so if no actor attribute is included in a
-     * <CODE>SOAPHeader</CODE> object, the message is sent to its ultimate
-     * destination.
+     * <CODE>SOAPHeader</CODE> object that have the the specified actor. An actor is a global
+     * attribute that indicates the intermediate parties to whom the message should be sent. An
+     * actor receives the message and then sends it to the next actor. The default actor is the
+     * ultimate intended recipient for the message, so if no actor attribute is included in a
+     * <CODE>SOAPHeader</CODE> object, the message is sent to its ultimate destination.
      *
-     * @param paramRole a <CODE>String</CODE> giving the URI of the actor for
-     *                  which to search
-     * @return an <CODE>Iterator</CODE> object over all the <CODE>
-     *         SOAPHeaderBlock</CODE> objects that contain the specified actor
+     * @param paramRole a <CODE>String</CODE> giving the URI of the actor for which to search
+     * @return an <CODE>Iterator</CODE> object over all the <CODE> SOAPHeaderBlock</CODE> objects
+     *         that contain the specified actor
      * @see #extractHeaderBlocks(String) extractHeaderBlocks(java.lang.String)
      */
     public Iterator examineHeaderBlocks(String paramRole) {
         Iterator headerBlocksIter = this.getChildren();
         ArrayList headersWithGivenActor = new ArrayList();
-        
-        if(paramRole == null || "".equals(paramRole)){
-    		return returnAllSOAPHeaders(this.getChildren());
-    	}
-        
+
+        if (paramRole == null || "".equals(paramRole)) {
+            return returnAllSOAPHeaders(this.getChildren());
+        }
+
         while (headerBlocksIter.hasNext()) {
             Object o = headerBlocksIter.next();
             if (o instanceof SOAPHeaderBlock) {
@@ -106,45 +108,40 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     }
 
     private Iterator returnAllSOAPHeaders(Iterator children) {
-    	ArrayList headers = new ArrayList();
-    	while (children.hasNext()) {
+        ArrayList headers = new ArrayList();
+        while (children.hasNext()) {
             Object o = children.next();
             if (o instanceof SOAPHeaderBlock) {
                 headers.add(o);
             }
         }
-    	
-    	return headers.iterator();
-		
-	}
 
-	/**
+        return headers.iterator();
+
+    }
+
+    /**
      * Returns a list of all the <CODE>SOAPHeaderBlock</CODE> objects in this
-     * <CODE>SOAPHeader</CODE> object that have the the specified role and
-     * detaches them from this <CODE> SOAPHeader</CODE> object. <P>This method
-     * allows an role to process only the parts of the <CODE>SOAPHeader</CODE>
-     * object that apply to it and to remove them before passing the message on
-     * to the next role.
+     * <CODE>SOAPHeader</CODE> object that have the the specified role and detaches them from this
+     * <CODE> SOAPHeader</CODE> object. <P>This method allows an role to process only the parts of
+     * the <CODE>SOAPHeader</CODE> object that apply to it and to remove them before passing the
+     * message on to the next role.
      *
-     * @param role a <CODE>String</CODE> giving the URI of the role for which to
-     *             search
-     * @return an <CODE>Iterator</CODE> object over all the <CODE>
-     *         SOAPHeaderBlock</CODE> objects that contain the specified role
+     * @param role a <CODE>String</CODE> giving the URI of the role for which to search
+     * @return an <CODE>Iterator</CODE> object over all the <CODE> SOAPHeaderBlock</CODE> objects
+     *         that contain the specified role
      * @see #examineHeaderBlocks(String) examineHeaderBlocks(java.lang.String)
      */
     public abstract Iterator extractHeaderBlocks(String role);
 
     /**
-     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code>
-     * objects in this <code>SOAPHeader</code> object that have the specified
-     * actor and that have a MustUnderstand attribute whose value is equivalent
-     * to <code>true</code>.
+     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code> objects in this
+     * <code>SOAPHeader</code> object that have the specified actor and that have a MustUnderstand
+     * attribute whose value is equivalent to <code>true</code>.
      *
-     * @param actor a <code>String</code> giving the URI of the actor for which
-     *              to search
-     * @return an <code>Iterator</code> object over all the
-     *         <code>SOAPHeaderBlock</code> objects that contain the specified
-     *         actor and are marked as MustUnderstand
+     * @param actor a <code>String</code> giving the URI of the actor for which to search
+     * @return an <code>Iterator</code> object over all the <code>SOAPHeaderBlock</code> objects
+     *         that contain the specified actor and are marked as MustUnderstand
      */
     public Iterator examineMustUnderstandHeaderBlocks(String actor) {
         Iterator headerBlocksIter = this.getChildren();
@@ -165,27 +162,23 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     }
 
     /**
-     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code>
-     * objects in this <code>SOAPHeader</code> object. Not that this will return
-     * elements containing the QName (http://schemas.xmlsoap.org/soap/envelope/,
-     * Header)
+     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code> objects in this
+     * <code>SOAPHeader</code> object. Not that this will return elements containing the QName
+     * (http://schemas.xmlsoap.org/soap/envelope/, Header)
      *
-     * @return an <code>Iterator</code> object over all the
-     *         <code>SOAPHeaderBlock</code> objects contained by this
-     *         <code>SOAPHeader</code>
+     * @return an <code>Iterator</code> object over all the <code>SOAPHeaderBlock</code> objects
+     *         contained by this <code>SOAPHeader</code>
      */
     public Iterator examineAllHeaderBlocks() {
         return this.getChildrenWithName(null);
     }
 
     /**
-     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code>
-     * objects in this <code>SOAPHeader </code> object and detaches them from
-     * this <code>SOAPHeader</code> object.
+     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code> objects in this
+     * <code>SOAPHeader </code> object and detaches them from this <code>SOAPHeader</code> object.
      *
-     * @return an <code>Iterator</code> object over all the
-     *         <code>SOAPHeaderBlock</code> objects contained by this
-     *         <code>SOAPHeader</code>
+     * @return an <code>Iterator</code> object over all the <code>SOAPHeaderBlock</code> objects
+     *         contained by this <code>SOAPHeader</code>
      */
     public Iterator extractAllHeaderBlocks() {
         throw new UnsupportedOperationException(); // TODO implement this
@@ -207,11 +200,11 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
                 header = (OMElement) node;
                 OMNamespace namespace = header.getNamespace();
                 if (nsURI == null) {
-                    if(namespace == null) {
+                    if (namespace == null) {
                         headers.add(header);
                     }
-                } else{
-                    if(namespace!=null){
+                } else {
+                    if (namespace != null) {
                         if (nsURI.equals(namespace.getNamespaceURI())) {
                             headers.add(header);
                         }

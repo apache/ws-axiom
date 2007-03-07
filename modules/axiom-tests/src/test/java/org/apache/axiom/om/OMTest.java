@@ -25,15 +25,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.Iterator;
 
-/**
- * This test case tests the basic expectations of the engine from the OM.
- */
+/** This test case tests the basic expectations of the engine from the OM. */
 public class OMTest extends AbstractTestCase {
     private SOAPEnvelope envelope;
 
-    /**
-     * Constructor.
-     */
+    /** Constructor. */
     public OMTest(String testName) {
         super(testName);
     }
@@ -46,15 +42,14 @@ public class OMTest extends AbstractTestCase {
         envelope = (SOAPEnvelope) builder.getDocumentElement();
     }
 
-    /**
-     * Sometime the hasNext() in the childeren iterator is true yet the next() is null
-     */
+    /** Sometime the hasNext() in the childeren iterator is true yet the next() is null */
     public void testNullInChilderen() {
         isNullChildrenThere(envelope);
     }
 
     /**
-     * the envelope is completly namesapce qulified so all the OMElements got to have namespace values not null
+     * the envelope is completly namesapce qulified so all the OMElements got to have namespace
+     * values not null
      */
     public void test4MissingNamespaces() {
         isNameSpacesMissing(envelope);

@@ -18,8 +18,8 @@ package org.apache.axiom.soap.impl.dom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -32,14 +32,12 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
 
-	public SOAP11FaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+    public SOAP11FaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,
+                                 SOAPFactory factory) {
         super(parent, builder, factory);
     }
 
-    /**
-     * @param parent
-     */
+    /** @param parent  */
     public SOAP11FaultReasonImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, false, factory);
@@ -50,7 +48,7 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
         if (!(soapFaultText instanceof SOAP11FaultTextImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault Text. " +
-                    "But received some other implementation");
+                            "But received some other implementation");
         }
         super.addSOAPText(soapFaultText);
     }
@@ -59,7 +57,7 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
         if (!(parent instanceof SOAP11FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault as the " +
-                    "parent. But received some other implementation");
+                            "parent. But received some other implementation");
         }
     }
 
@@ -77,10 +75,10 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
                     new StreamWriterToContentHandlerConverter(writer));
         }
 
-        OMSerializerUtil.serializeStartpart(this, 
-        		SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME, 
-        		writer);
-      
+        OMSerializerUtil.serializeStartpart(this,
+                                            SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME,
+                                            writer);
+
         String text = this.getText();
         writer.writeCharacters(text);
         writer.writeEndElement();

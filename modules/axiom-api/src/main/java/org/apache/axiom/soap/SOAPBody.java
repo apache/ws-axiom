@@ -20,19 +20,17 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 
 /**
- * An object that represents the contents of the SOAP body
- * element in a SOAP message. B SOAP body element consists of XML data
- * that affects the way the application-specific content is processed.
- * <P>
- * B <code>SOAPBody</code> object contains <code>OMBodyBlock</code>
- * objects, which have the content for the SOAP body.
- * B <code>SOAPFault</code> object, which carries status and/or
- * error information, is an example of a <code>OMBodyBlock</code> object.
+ * An object that represents the contents of the SOAP body element in a SOAP message. B SOAP body
+ * element consists of XML data that affects the way the application-specific content is processed.
+ * <p/>
+ * B <code>SOAPBody</code> object contains <code>OMBodyBlock</code> objects, which have the content
+ * for the SOAP body. B <code>SOAPFault</code> object, which carries status and/or error
+ * information, is an example of a <code>OMBodyBlock</code> object.
  */
 public interface SOAPBody extends OMElement {
     /**
-     * Creates a new <code>SOAPFault</code> object and adds it to
-     * this <code>SOAPBody</code> object.
+     * Creates a new <code>SOAPFault</code> object and adds it to this <code>SOAPBody</code>
+     * object.
      *
      * @param e
      * @return the new <code>SOAPFault</code> object
@@ -44,21 +42,18 @@ public interface SOAPBody extends OMElement {
     public abstract SOAPFault addFault(Exception e) throws OMException;
 
     /**
-     * Indicates whether a <code>SOAPFault</code> object exists in
-     * this <code>SOAPBody</code> object.
+     * Indicates whether a <code>SOAPFault</code> object exists in this <code>SOAPBody</code>
+     * object.
      *
-     * @return <code>true</code> if a <code>SOAPFault</code> object exists in
-     *         this <code>SOAPBody</code> object; <code>false</code>
-     *         otherwise
+     * @return <code>true</code> if a <code>SOAPFault</code> object exists in this
+     *         <code>SOAPBody</code> object; <code>false</code> otherwise
      */
     public abstract boolean hasFault();
 
     /**
-     * Returns the <code>SOAPFault</code> object in this <code>SOAPBody</code>
-     * object.
+     * Returns the <code>SOAPFault</code> object in this <code>SOAPBody</code> object.
      *
-     * @return the <code>SOAPFault</code> object in this <code>SOAPBody</code>
-     *         object
+     * @return the <code>SOAPFault</code> object in this <code>SOAPBody</code> object
      */
     public abstract SOAPFault getFault();
 

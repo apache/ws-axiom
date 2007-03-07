@@ -16,16 +16,25 @@
 
 package org.apache.axiom.om.factory;
 
-import org.apache.axiom.om.*;
-import org.apache.axiom.soap.*;
+import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMTestUtils;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.soap.SOAP11Constants;
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * User: Eran Chinthaka (eran.chinthaka@gmail.com)
- * Date: Feb 8, 2005
- * Time: 11:06:09 AM
- */
+/** User: Eran Chinthaka (eran.chinthaka@gmail.com) Date: Feb 8, 2005 Time: 11:06:09 AM */
 public class OMLinkedListImplFactoryTest extends AbstractTestCase {
 
     private Log log = LogFactory.getLog(getClass());
@@ -47,7 +56,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
 
     public void testCreateOMElementWithNoBuilder() {
         OMElement omElement = omFactory.createOMElement("chinthaka",
-                namespace);
+                                                        namespace);
         assertTrue(
                 "Programatically created OMElement should have done = true ",
                 omElement.isComplete());
@@ -60,14 +69,14 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
                     getTestResourceFile("soap/whitespacedMessage.xml"));
             OMElement documentElement = omBuilder.getDocumentElement();
             OMElement child = omFactory.createOMElement("child",
-                    namespace,
-                    documentElement,
-                    omBuilder);
+                                                        namespace,
+                                                        documentElement,
+                                                        omBuilder);
             assertTrue(
                     "OMElement with a builder should start with done = false ",
                     !child.isComplete());
             assertTrue("This OMElement must have a builder ",
-                    child.getBuilder() instanceof OMXMLParserWrapper);
+                       child.getBuilder() instanceof OMXMLParserWrapper);
 
         } catch (Exception e) {
             log.info(e.getMessage());
@@ -76,18 +85,20 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
 
     public void testCreateOMNamespace() {
         assertTrue("OMNamespace uri not correct",
-                nsUri.equals(namespace.getNamespaceURI()));   // here equalsIgnoreCase should not be used as case does matter
+                   nsUri.equals(
+                           namespace.getNamespaceURI()));   // here equalsIgnoreCase should not be used as case does matter
         assertTrue("OMNamespace prefix not correct",
-                nsPrefix.equals(namespace.getPrefix()));  // here equalsIgnoreCase should not be used as case does matter
+                   nsPrefix.equals(
+                           namespace.getPrefix()));  // here equalsIgnoreCase should not be used as case does matter
     }
 
     public void testCreateText() {
         OMElement omElement = omFactory.createOMElement("chinthaka",
-                namespace);
+                                                        namespace);
         String text = "sampleText";
         OMText omText = omFactory.createOMText(omElement, text);
         assertTrue("Programatically created OMText should have done = true ",
-                omText.isComplete());
+                   omText.isComplete());
         assertTrue(
                 "Programatically created OMText should have correct text value ",
                 text.equals(omText.getText()));
@@ -105,12 +116,12 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
                     soapBodyOne.isComplete());
             soapBodyOne.detach();
             SOAPBody soapBodyTwo = omFactory.createSOAPBody(soapEnvelope,
-                    omBuilder);
+                                                            omBuilder);
             assertTrue(
                     "SOAPBody with a builder should start with done = false ",
                     !soapBodyTwo.isComplete());
             assertTrue("This SOAPBody must have a builder ",
-                    soapBodyTwo.getBuilder() instanceof OMXMLParserWrapper);
+                       soapBodyTwo.getBuilder() instanceof OMXMLParserWrapper);
 
 
         } catch (Exception e) {
@@ -134,7 +145,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
                     "SOAPEnvelope with a builder should start with done = false ",
                     !soapEnvelope.isComplete());
             assertTrue("This SOAPEnvelope must have a builder ",
-                    soapEnvelope.getBuilder() instanceof OMXMLParserWrapper);
+                       soapEnvelope.getBuilder() instanceof OMXMLParserWrapper);
 
 
         } catch (Exception e) {
@@ -153,12 +164,12 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
                     soapHeader.isComplete());
             soapHeader.detach();
             SOAPHeader soapHeaderTwo = omFactory.createSOAPHeader(soapEnvelope,
-                    omBuilder);
+                                                                  omBuilder);
             assertTrue(
                     "SOAPHeader with a builder should start with done = false ",
                     !soapHeaderTwo.isComplete());
             assertTrue("This SOAPHeader must have a builder ",
-                    soapHeaderTwo.getBuilder() instanceof OMXMLParserWrapper);
+                       soapHeaderTwo.getBuilder() instanceof OMXMLParserWrapper);
 
 
         } catch (Exception e) {
@@ -183,7 +194,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
                     "SOAPHeaderBlock with a builder should start with done = false ",
                     !soapHeaderBlockTwo.isComplete());
             assertTrue("This SOAPHeaderBlock must have a builder ",
-                    soapHeaderBlockTwo.getBuilder() instanceof OMXMLParserWrapper);
+                       soapHeaderBlockTwo.getBuilder() instanceof OMXMLParserWrapper);
 
 
         } catch (Exception e) {
@@ -198,18 +209,18 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
             SOAPEnvelope soapEnvelope = (SOAPEnvelope) omBuilder.getDocumentElement();
             SOAPBody soapBody = soapEnvelope.getBody();
             SOAPFault soapFault = omFactory.createSOAPFault(soapBody,
-                    new Exception(" this is just a test "));
+                                                            new Exception(" this is just a test "));
             assertTrue(
                     "Programatically created SOAPFault should have done = true ",
                     soapFault.isComplete());
             soapFault.detach();
             SOAPFault soapFaultTwo = omFactory.createSOAPFault(soapBody,
-                    omBuilder);
+                                                               omBuilder);
             assertTrue(
                     "SOAPFault with a builder should start with done = false ",
                     !soapFaultTwo.isComplete());
             assertTrue("This SOAPFault must have a builder ",
-                    soapFaultTwo.getBuilder() instanceof OMXMLParserWrapper);
+                       soapFaultTwo.getBuilder() instanceof OMXMLParserWrapper);
 
 
         } catch (Exception e) {

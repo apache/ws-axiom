@@ -23,65 +23,65 @@ import org.w3c.dom.Text;
 
 public class TextImplTest extends TestCase {
 
-	public TextImplTest() {
-		super();
-	}
+    public TextImplTest() {
+        super();
+    }
 
-	public TextImplTest(String name) {
-		super(name);
-	}
+    public TextImplTest(String name) {
+        super(name);
+    }
 
-	public void testSetText() {
-		OMDOMFactory factory = new OMDOMFactory();
-		String localName = "TestLocalName";
-		String namespace = "http://ws.apache.org/axis2/ns";
-		String prefix = "axis2";
-		String tempText = "The quick brown fox jumps over the lazy dog";
+    public void testSetText() {
+        OMDOMFactory factory = new OMDOMFactory();
+        String localName = "TestLocalName";
+        String namespace = "http://ws.apache.org/axis2/ns";
+        String prefix = "axis2";
+        String tempText = "The quick brown fox jumps over the lazy dog";
 
-		OMElement elem = factory.createOMElement(localName, namespace, prefix);
-		OMText textNode = factory.createOMText(elem, tempText);
+        OMElement elem = factory.createOMElement(localName, namespace, prefix);
+        OMText textNode = factory.createOMText(elem, tempText);
 
-		assertEquals("Text value mismatch", tempText, textNode.getText());
-	}
+        assertEquals("Text value mismatch", tempText, textNode.getText());
+    }
 
-	public void testAppendText() {
-		OMDOMFactory factory = new OMDOMFactory();
-		String localName = "TestLocalName";
-		String namespace = "http://ws.apache.org/axis2/ns";
-		String prefix = "axis2";
-		String tempText = "The quick brown fox jumps over the lazy dog";
-		String textToAppend = " followed by another fox";
+    public void testAppendText() {
+        OMDOMFactory factory = new OMDOMFactory();
+        String localName = "TestLocalName";
+        String namespace = "http://ws.apache.org/axis2/ns";
+        String prefix = "axis2";
+        String tempText = "The quick brown fox jumps over the lazy dog";
+        String textToAppend = " followed by another fox";
 
-		OMElement elem = factory.createOMElement(localName, namespace, prefix);
-		OMText textNode = factory.createOMText(elem, tempText);
+        OMElement elem = factory.createOMElement(localName, namespace, prefix);
+        OMText textNode = factory.createOMText(elem, tempText);
 
-		((Text) textNode).appendData(textToAppend);
+        ((Text) textNode).appendData(textToAppend);
 
-		assertEquals("Text value mismatch", tempText + textToAppend, textNode
-				.getText());
-	}
+        assertEquals("Text value mismatch", tempText + textToAppend, textNode
+                .getText());
+    }
 
-	public void testSplitText() {
-		String textValue = "temp text value";
+    public void testSplitText() {
+        String textValue = "temp text value";
 
         OMDOMFactory fac = new OMDOMFactory();
         DocumentImpl doc = new DocumentImpl(fac);
 
-		Text txt = doc.createTextNode(textValue);
-		txt.splitText(3);
+        Text txt = doc.createTextNode(textValue);
+        txt.splitText(3);
 
-		assertNotNull("Text value missing in the original Text node", txt
-				.getNodeValue());
+        assertNotNull("Text value missing in the original Text node", txt
+                .getNodeValue());
 
-		assertNotNull("Sibling missing after split", txt.getNextSibling());
-		assertNotNull("Text value missing in the new split Text node", txt
-				.getNextSibling().getNodeValue());
+        assertNotNull("Sibling missing after split", txt.getNextSibling());
+        assertNotNull("Text value missing in the new split Text node", txt
+                .getNextSibling().getNodeValue());
 
-		assertEquals("Incorrect split point", textValue.substring(0, 3), txt
-				.getNodeValue());
-		assertEquals("Incorrect split point", textValue.substring(3, textValue
-				.length()), txt.getNextSibling().getNodeValue());
+        assertEquals("Incorrect split point", textValue.substring(0, 3), txt
+                .getNodeValue());
+        assertEquals("Incorrect split point", textValue.substring(3, textValue
+                .length()), txt.getNextSibling().getNodeValue());
 
-	}
+    }
 
 }

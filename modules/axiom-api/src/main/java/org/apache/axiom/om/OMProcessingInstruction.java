@@ -16,31 +16,33 @@
 
 package org.apache.axiom.om;
 
-/**
- * Interface OMProcessingInstruction
- */
+/** Interface OMProcessingInstruction */
 public interface OMProcessingInstruction extends OMNode {
     /**
      * Sets the target of this Processing Instruction.
+     *
      * @param target
      */
     public void setTarget(String target);
 
     /**
      * Gets the target of this Processing Instruction.
-      * @return Returns string.
+     *
+     * @return Returns string.
      */
     public String getTarget();
 
     /**
      * Sets the value of this Processing Instruction.
+     *
      * @param value
      */
     public void setValue(String value);
 
     /**
      * Gets the value of this Processing Instruction.
-      * @return Returns String.
+     *
+     * @return Returns String.
      */
     public String getValue();
 }

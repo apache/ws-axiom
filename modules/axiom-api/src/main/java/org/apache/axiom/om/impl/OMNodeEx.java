@@ -25,9 +25,9 @@ import javax.xml.stream.XMLStreamWriter;
 
 /**
  * Interface OMNodeEx
- *
- * Internal Implementation detail. Adding special interface to stop folks from accidently using OMNode.
- * Please use at your own risk. May corrupt the data integrity.
+ * <p/>
+ * Internal Implementation detail. Adding special interface to stop folks from accidently using
+ * OMNode. Please use at your own risk. May corrupt the data integrity.
  */
 public interface OMNodeEx extends OMNode {
     public void setNextOMSibling(OMNode node);
@@ -45,6 +45,7 @@ public interface OMNodeEx extends OMNode {
      *
      * @param writer
      * @throws javax.xml.stream.XMLStreamException
+     *
      */
     public void internalSerialize(XMLStreamWriter writer)
             throws XMLStreamException;

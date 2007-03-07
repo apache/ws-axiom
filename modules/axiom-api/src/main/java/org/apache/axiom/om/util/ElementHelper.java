@@ -15,7 +15,12 @@
  */
 package org.apache.axiom.om.util;
 
-import org.apache.axiom.om.*;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
 import javax.xml.namespace.QName;
@@ -25,8 +30,8 @@ import java.net.URLDecoder;
 import java.util.Iterator;
 
 /**
- * Helper class to provide extra utility stuff against elements.
- * The code is designed to work with any element implementation.
+ * Helper class to provide extra utility stuff against elements. The code is designed to work with
+ * any element implementation.
  */
 
 public class ElementHelper {
@@ -43,7 +48,8 @@ public class ElementHelper {
     }
 
     /**
-     * Turns a prefix:local qname string into a proper QName, evaluating it in the OMElement context.
+     * Turns a prefix:local qname string into a proper QName, evaluating it in the OMElement
+     * context.
      *
      * @param qname                    qname to resolve
      * @param defaultToParentNameSpace flag that controls behaviour when there is no namespace.
@@ -76,8 +82,8 @@ public class ElementHelper {
     }
 
     /**
-     * Turns a prefix:local qname string into a proper QName, evaluating it in the OMElement context.
-     * Unprefixed qnames resolve to the local namespace.
+     * Turns a prefix:local qname string into a proper QName, evaluating it in the OMElement
+     * context. Unprefixed qnames resolve to the local namespace.
      *
      * @param qname prefixed qname string to resolve
      * @return Returns null for any failure to extract a qname.
@@ -119,7 +125,8 @@ public class ElementHelper {
             if (contentIDName.equalsIgnoreCase("href")
                     & contentID.substring(0, 3).equalsIgnoreCase("cid")) {
                 contentID = contentID.substring(4);
-                String charEnc = charsetEncoding == null || "".equals(charsetEncoding) ? "UTF-8" : charsetEncoding;
+                String charEnc = charsetEncoding == null || "".equals(charsetEncoding) ? "UTF-8" :
+                        charsetEncoding;
                 try {
                     contentID = URLDecoder.decode(contentID, charEnc);
                 } catch (UnsupportedEncodingException e) {
@@ -138,20 +145,23 @@ public class ElementHelper {
     }
 
     /**
-     * Some times two OMElements needs to be added to the same object tree. But in Axiom, a single tree should always
-     * contain object created from the same type of factory (eg: LinkedListImplFactory, DOMFactory, etc.,). If one OMElement
-     * is created from a different factory than that of the factory which was used to create the object in the existing
-     * tree, we need to convert the new OMElement to match to the factory of existing object tree.
-     * This method will convert omElement to the given omFactory.
+     * Some times two OMElements needs to be added to the same object tree. But in Axiom, a single
+     * tree should always contain object created from the same type of factory (eg:
+     * LinkedListImplFactory, DOMFactory, etc.,). If one OMElement is created from a different
+     * factory than that of the factory which was used to create the object in the existing tree, we
+     * need to convert the new OMElement to match to the factory of existing object tree. This
+     * method will convert omElement to the given omFactory.
      *
-     * @see AttributeHelper#importOMAttribute(OMAttribute, OMElement) to convert instances of OMAttribute
+     * @see AttributeHelper#importOMAttribute(OMAttribute, OMElement) to convert instances of
+     *      OMAttribute
      */
     public static OMElement importOMElement(OMElement omElement, OMFactory omFactory) {
         // first check whether the given OMElement has the same omFactory
         if (omElement.getOMFactory().getClass().isInstance(omFactory)) {
             return omElement;
-        }else {
-            OMElement documentElement = new StAXOMBuilder(omFactory, omElement.getXMLStreamReader()).getDocumentElement();
+        } else {
+            OMElement documentElement = new StAXOMBuilder(omFactory, omElement.getXMLStreamReader())
+                    .getDocumentElement();
             documentElement.build();
             return documentElement;
         }

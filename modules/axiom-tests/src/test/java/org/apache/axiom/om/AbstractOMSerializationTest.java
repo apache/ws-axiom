@@ -54,9 +54,7 @@ public class AbstractOMSerializationTest extends XMLTestCase {
     protected Log log = LogFactory.getLog(getClass());
 
 
-    /**
-     * @param xmlString - remember this is not the file path. this is the xml string
-     */
+    /** @param xmlString - remember this is not the file path. this is the xml string */
     public Diff getDiffForComparison(String xmlString) throws Exception {
         return getDiffForComparison(new ByteArrayInputStream(xmlString.getBytes()));
     }
@@ -69,10 +67,11 @@ public class AbstractOMSerializationTest extends XMLTestCase {
         try {
             XMLInputFactory factory = XMLInputFactory.newInstance();
 
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(xmlString.getBytes());
+            ByteArrayInputStream byteArrayInputStream =
+                    new ByteArrayInputStream(xmlString.getBytes());
             StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
                     createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
-                            factory.createXMLStreamReader(byteArrayInputStream));
+                                        factory.createXMLStreamReader(byteArrayInputStream));
             OMElement rootElement = staxOMBuilder.getDocumentElement();
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -95,7 +94,7 @@ public class AbstractOMSerializationTest extends XMLTestCase {
 
             StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
                     createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
-                            factory.createXMLStreamReader(inStream));
+                                        factory.createXMLStreamReader(inStream));
             OMElement rootElement = staxOMBuilder.getDocumentElement();
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

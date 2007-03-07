@@ -26,9 +26,16 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
-import javax.xml.stream.*;
-
-import java.io.*;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class OMSerializerTest extends AbstractTestCase {
     private XMLStreamReader reader;
@@ -114,7 +121,8 @@ public class OMSerializerTest extends AbstractTestCase {
             fail();
         } catch (XMLStreamException e) {
             e.printStackTrace(new PrintWriter(stringWriter, true));
-            assertTrue(stringWriter.toString().indexOf("problem accessing the parser. Parser already accessed!") > -1);
+            assertTrue(stringWriter.toString()
+                    .indexOf("problem accessing the parser. Parser already accessed!") > -1);
         } catch (Exception e) {
             fail("Expecting an XMLStreamException " + e.getMessage());
         }
@@ -133,13 +141,13 @@ public class OMSerializerTest extends AbstractTestCase {
         SOAPBody body = env.getBody();
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         serializer.serialize(body.getXMLStreamReaderWithoutCaching(),
-                writer);
+                             writer);
         writer.flush();
 
         String outputString = new String(byteArrayOutputStream.toByteArray());
         assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
     }
-    
+
     public void testDefaultNsSerialization() {
         try {
             StAXOMBuilder builder = new StAXOMBuilder("test-resources/xml/original.xml");

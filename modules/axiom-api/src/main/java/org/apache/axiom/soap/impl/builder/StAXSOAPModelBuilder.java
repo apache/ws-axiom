@@ -22,8 +22,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -39,15 +39,11 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamReader;
 
-/**
- * Class StAXSOAPModelBuilder
- */
+/** Class StAXSOAPModelBuilder */
 public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
     SOAPMessage soapMessage;
-    /**
-     * Field envelope
-     */
+    /** Field envelope */
     private SOAPEnvelope envelope;
     private OMNamespace envelopeNamespace;
     private String namespaceURI;
@@ -55,24 +51,18 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
     private SOAPFactory soapFactory;
 
-    /**
-     * Field headerPresent
-     */
+    /** Field headerPresent */
     private boolean headerPresent = false;
 
-    /**
-     * Field bodyPresent
-     */
+    /** Field bodyPresent */
     private boolean bodyPresent = false;
 
-    /**
-     * Field log
-     */
+    /** Field log */
     private static final Log log = LogFactory.getLog(StAXSOAPModelBuilder.class);
 
     /**
-     * element level 1 = envelope level element level 2 = Header or Body level
-     * element level 3 = HeaderElement or BodyElement level
+     * element level 1 = envelope level element level 2 = Header or Body level element level 3 =
+     * HeaderElement or BodyElement level
      */
     protected int elementLevel = 0;
 
@@ -93,11 +83,11 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     private static final boolean isDebugEnabled = log.isDebugEnabled();
 
     /**
-     * Constructor StAXSOAPModelBuilder
-     * soapVersion parameter is to give the soap version from the transport. For example, in HTTP case
-     * you can identify the version of the soap message u have recd by looking at the HTTP headers.
-     * It is used to check whether the actual soap message contained is of that version.
-     * If one is creates the builder from the transport, then can just pass null for version.
+     * Constructor StAXSOAPModelBuilder soapVersion parameter is to give the soap version from the
+     * transport. For example, in HTTP case you can identify the version of the soap message u have
+     * recd by looking at the HTTP headers. It is used to check whether the actual soap message
+     * contained is of that version. If one is creates the builder from the transport, then can just
+     * pass null for version.
      *
      * @param parser
      * @param soapVersion parameter is to give the soap version for the transport.
@@ -108,16 +98,14 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         parserVersion = parser.getVersion();
         identifySOAPVersion(soapVersion);
     }
-    
+
     /**
-	 * Constructor StAXSOAPModelBuilder Users of this constructor needs to
-	 * externally take care validating the transport level soap version with the
-	 * Envelope version.
-	 * 
-	 * @param parser
-	 * @param soapVersion
-	 *            parameter is to give the soap version for the transport.
-	 */
+     * Constructor StAXSOAPModelBuilder Users of this constructor needs to externally take care
+     * validating the transport level soap version with the Envelope version.
+     *
+     * @param parser
+     * @param soapVersion parameter is to give the soap version for the transport.
+     */
     public StAXSOAPModelBuilder(XMLStreamReader parser) {
         super(parser);
         charEncoding = parser.getCharacterEncodingScheme();
@@ -130,10 +118,10 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      * @param parser
      * @param factory
      * @param soapVersion parameter is to give the soap version from the transport. For example, in
-     *                    HTTP case you can identify the version of the soap message u have recd by looking at
-     *                    the HTTP headers. It is used to check whether the actual soap message
-     *                    contained is of that version.If one is creates the builder from the transport,
-     *                    then can just pass null for version.
+     *                    HTTP case you can identify the version of the soap message u have recd by
+     *                    looking at the HTTP headers. It is used to check whether the actual soap
+     *                    message contained is of that version.If one is creates the builder from
+     *                    the transport, then can just pass null for version.
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
         super(factory, parser);
@@ -143,24 +131,24 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         identifySOAPVersion(soapVersion);
     }
 
-    /**
-     * @param soapVersionURIFromTransport
-     */
+    /** @param soapVersionURIFromTransport  */
     protected void identifySOAPVersion(String soapVersionURIFromTransport) {
 
         SOAPEnvelope soapEnvelope = getSOAPEnvelope();
         if (soapEnvelope == null) {
             throw new SOAPProcessingException("SOAP Message does not contain an Envelope",
-                    SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
+                                              SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
         }
 
         envelopeNamespace = soapEnvelope.getNamespace();
 
         if (soapVersionURIFromTransport != null) {
             String namespaceName = envelopeNamespace.getNamespaceURI();
-            if (!(soapVersionURIFromTransport.equals(namespaceName))){
-                throw new SOAPProcessingException("Transport level information does not match with SOAP" +
-                        " Message namespace URI", envelopeNamespace.getPrefix() + ":" + SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
+            if (!(soapVersionURIFromTransport.equals(namespaceName))) {
+                throw new SOAPProcessingException(
+                        "Transport level information does not match with SOAP" +
+                                " Message namespace URI", envelopeNamespace.getPrefix() + ":" +
+                        SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
             }
         }
 
@@ -194,8 +182,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             setSOAPEnvelope(node);
         } else if (lastNode.isComplete()) {
             node = constructNode((OMElement) lastNode.getParent(),
-                    elementName,
-                    false);
+                                 elementName,
+                                 false);
             ((OMNodeEx) lastNode).setNextOMSibling(node);
             ((OMNodeEx) node).setPreviousOMSibling(lastNode);
         } else {
@@ -204,7 +192,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             e.setFirstChild(node);
         }
 
-        if(isDebugEnabled) {
+        if (isDebugEnabled) {
             log.debug("Build the OMElelment " + node.getLocalName() +
                     "By the StaxSOAPModelBuilder");
         }
@@ -241,17 +229,18 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
                 namespaceURI = this.parser.getNamespaceURI();
                 if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
                     soapFactory = OMAbstractFactory.getSOAP12Factory();
-                    if(isDebugEnabled) {
+                    if (isDebugEnabled) {
                         log.debug("Starting to process SOAP 1.2 message");
                     }
                 } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
                     soapFactory = OMAbstractFactory.getSOAP11Factory();
-                    if(isDebugEnabled) {
+                    if (isDebugEnabled) {
                         log.debug("Starting to process SOAP 1.1 message");
                     }
                 } else {
-                    throw new SOAPProcessingException("Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
-                            " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
+                    throw new SOAPProcessingException(
+                            "Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
+                                    " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
                 }
             } else {
                 namespaceURI = soapFactory.getSoapVersionURI();
@@ -275,36 +264,40 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             String elementNS = parser.getNamespaceURI();
 
             if (!(namespaceURI.equals(elementNS))) {
-                if (!bodyPresent || !SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
+                if (!bodyPresent ||
+                        !SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
                     throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
-                                                        + elementNS + "}" + elementName);
+                            + elementNS + "}" + elementName);
                 }
             }
 
             // this is either a header or a body
             if (elementName.equals(SOAPConstants.HEADER_LOCAL_NAME)) {
                 if (headerPresent) {
-                    throw new SOAPProcessingException("Multiple headers encountered!", getSenderFaultCode());
+                    throw new SOAPProcessingException("Multiple headers encountered!",
+                                                      getSenderFaultCode());
                 }
                 if (bodyPresent) {
-                    throw new SOAPProcessingException("Header Body wrong order!", getSenderFaultCode());
+                    throw new SOAPProcessingException("Header Body wrong order!",
+                                                      getSenderFaultCode());
                 }
                 headerPresent = true;
                 element =
                         soapFactory.createSOAPHeader((SOAPEnvelope) parent,
-                                this);
+                                                     this);
 
                 processNamespaceData(element, true);
                 processAttributes(element);
 
             } else if (elementName.equals(SOAPConstants.BODY_LOCAL_NAME)) {
                 if (bodyPresent) {
-                    throw new SOAPProcessingException("Multiple body elements encountered", getSenderFaultCode());
+                    throw new SOAPProcessingException("Multiple body elements encountered",
+                                                      getSenderFaultCode());
                 }
                 bodyPresent = true;
                 element =
                         soapFactory.createSOAPBody((SOAPEnvelope) parent,
-                                this);
+                                                   this);
 
                 processNamespaceData(element, true);
                 processAttributes(element);
@@ -312,7 +305,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             } else {
                 throw new SOAPProcessingException(elementName
                         +
-                        " is not supported here. Envelope can not have elements other than Header and Body.", getSenderFaultCode());
+                        " is not supported here. Envelope can not have elements other than Header and Body.",
+                                                  getSenderFaultCode());
             }
         } else if ((elementLevel == 3)
                 &&
@@ -322,9 +316,10 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             try {
                 element =
                         soapFactory.createSOAPHeaderBlock(elementName, null,
-                                (SOAPHeader) parent, this);
+                                                          (SOAPHeader) parent, this);
             } catch (SOAPProcessingException e) {
-                throw new SOAPProcessingException("Can not create SOAPHeader block", getReceiverFaultCode(), e);
+                throw new SOAPProcessingException("Can not create SOAPHeader block",
+                                                  getReceiverFaultCode(), e);
             }
             processNamespaceData(element, false);
             processAttributes(element);
@@ -340,12 +335,11 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
 
             processingFault = true;
-            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getNamespaceURI()))
-            {
+            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI
+                    .equals(envelopeNamespace.getNamespaceURI())) {
                 builderHelper = new SOAP12BuilderHelper(this);
-            } else
-            if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getNamespaceURI()))
-            {
+            } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI
+                    .equals(envelopeNamespace.getNamespaceURI())) {
                 builderHelper = new SOAP11BuilderHelper(this);
             }
 
@@ -355,7 +349,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
             // this is neither of above. Just create an element
             element = soapFactory.createOMElement(elementName, null,
-                    parent, this);
+                                                  parent, this);
             processNamespaceData(element, false);
             processAttributes(element);
 
@@ -365,14 +359,18 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
     private String getSenderFaultCode() {
         if (senderfaultCode == null) {
-            senderfaultCode = SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getNamespaceURI()) ? SOAP12Constants.FAULT_CODE_SENDER : SOAP11Constants.FAULT_CODE_SENDER;
+            senderfaultCode = SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI
+                    .equals(envelopeNamespace.getNamespaceURI()) ?
+                    SOAP12Constants.FAULT_CODE_SENDER : SOAP11Constants.FAULT_CODE_SENDER;
         }
         return senderfaultCode;
     }
 
     private String getReceiverFaultCode() {
         if (receiverfaultCode == null) {
-            receiverfaultCode = SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(envelopeNamespace.getNamespaceURI()) ? SOAP12Constants.FAULT_CODE_RECEIVER : SOAP11Constants.FAULT_CODE_RECEIVER;
+            receiverfaultCode = SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI
+                    .equals(envelopeNamespace.getNamespaceURI()) ?
+                    SOAP12Constants.FAULT_CODE_RECEIVER : SOAP11Constants.FAULT_CODE_RECEIVER;
         }
         return receiverfaultCode;
     }
@@ -389,18 +387,12 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         elementLevel--;
     }
 
-    /**
-     * Method createDTD.
-     * Overriding the default behaviour as a SOAPMessage should not have a DTD.
-     */
+    /** Method createDTD. Overriding the default behaviour as a SOAPMessage should not have a DTD. */
     protected OMNode createDTD() throws OMException {
         throw new OMException("SOAP message MUST NOT contain a Document Type Declaration(DTD)");
     }
 
-    /**
-     * Method createPI.
-     * Overriding the default behaviour as a SOAP Message should not have a PI.
-     */
+    /** Method createPI. Overriding the default behaviour as a SOAP Message should not have a PI. */
     protected OMNode createPI() throws OMException {
         throw new OMException("SOAP message MUST NOT contain Processing Instructions(PI)");
     }
@@ -426,9 +418,10 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
         if (isSOAPElement) {
             if (node.getNamespace() != null &&
-                    !node.getNamespace().getNamespaceURI().equals(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI) &&
-                    !node.getNamespace().getNamespaceURI().equals(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI))
-            {
+                    !node.getNamespace().getNamespaceURI()
+                            .equals(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI) &&
+                    !node.getNamespace().getNamespaceURI()
+                            .equals(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI)) {
                 throw new SOAPProcessingException("invalid SOAP namespace URI. " +
                         "Only " + SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI +
                         " and " + SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI +
@@ -461,9 +454,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         return this.soapMessage;
     }
 
-    /**
-     * @return Returns the soapFactory.
-     */
+    /** @return Returns the soapFactory. */
     protected SOAPFactory getSoapFactory() {
         return soapFactory;
     }

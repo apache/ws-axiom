@@ -36,7 +36,7 @@ public class MIMEBodyPartInputStream extends InputStream {
     }
 
     public MIMEBodyPartInputStream(PushbackInputStream inStream,
-            byte[] boundary, Attachments parent) {
+                                   byte[] boundary, Attachments parent) {
         this(inStream, boundary);
         this.parent = parent;
     }
@@ -83,7 +83,7 @@ public class MIMEBodyPartInputStream extends InputStream {
             if ((value = inStream.read()) == 45) {
                 //check whether end of stream
                 //Last mime boundary should have a succeeding "--"
-                if ((value = inStream.read()) == 45 && parent!=null) {
+                if ((value = inStream.read()) == 45 && parent != null) {
                     parent.setEndOfStream(true);
                 }
             } else {

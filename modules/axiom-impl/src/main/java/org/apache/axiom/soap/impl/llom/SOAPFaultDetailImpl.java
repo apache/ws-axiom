@@ -21,9 +21,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMNodeImpl;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
-import org.apache.axiom.soap.SOAP11Constants;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -42,18 +41,18 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
     }
 
     protected SOAPFaultDetailImpl(SOAPFault parent,
-                                  boolean extractNamespaceFromParent, 
+                                  boolean extractNamespaceFromParent,
                                   SOAPFactory factory) throws SOAPProcessingException {
         super(parent,
-                SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME,
-                extractNamespaceFromParent, factory);
+              SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME,
+              extractNamespaceFromParent, factory);
     }
 
     protected SOAPFaultDetailImpl(SOAPFault parent,
                                   OMXMLParserWrapper builder,
                                   SOAPFactory factory) {
         super(parent, SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME, builder,
-                factory);
+              factory);
     }
 
     public void addDetailEntry(OMElement detailElement) {
@@ -64,7 +63,8 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
         return this.getChildren();
     }
 
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
+            throws XMLStreamException {
         // select the builder
         short builderType = PULL_TYPE_BUILDER;    // default is pull type
         if (builder != null) {
@@ -72,12 +72,13 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
         }
         if ((builderType == PUSH_TYPE_BUILDER)
                 && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(writer));
+            builder.registerExternalContentHandler(
+                    new StreamWriterToContentHandlerConverter(writer));
         }
 
-        OMSerializerUtil.serializeStartpart(this, 
-        		SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME, 
-        		writer);
+        OMSerializerUtil.serializeStartpart(this,
+                                            SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME,
+                                            writer);
 
         String text = this.getText();
         writer.writeCharacters(text);

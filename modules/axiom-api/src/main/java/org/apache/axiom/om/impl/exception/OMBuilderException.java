@@ -18,14 +18,12 @@ package org.apache.axiom.om.impl.exception;
 
 import org.apache.axiom.om.OMException;
 
-/**
- * Class OMBuilderException
- */
+/** Class OMBuilderException */
 public class OMBuilderException extends OMException {
-	
+
     private static final long serialVersionUID = -7447667411291193889L;
 
-	/**
+    /**
      * Constructor OMBuilderException
      *
      * @param s

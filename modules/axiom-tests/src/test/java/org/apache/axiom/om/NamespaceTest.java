@@ -31,7 +31,8 @@ import java.util.Iterator;
 
 public class NamespaceTest extends XMLTestCase {
 
-    public void testNoPrefixNamespaces() throws IOException, ParserConfigurationException, SAXException {
+    public void testNoPrefixNamespaces()
+            throws IOException, ParserConfigurationException, SAXException {
 
         String expectedXML = "<axis2:DocumentElement xmlns:axis2=\"http://ws.apache.org/axis2\" " +
                 "xmlns:axis2ns1=\"http://undefined-ns-1.org\" xmlns:axis2ns2=\"http://undefined-ns-2.org\">" +
@@ -47,7 +48,8 @@ public class NamespaceTest extends XMLTestCase {
 
         omFactory.createOMElement("FirstChild", axis2NS, docElement);
 
-        OMElement secondChild = omFactory.createOMElement(new QName("http://undefined-ns-2.org", "SecondChild"), docElement);
+        OMElement secondChild = omFactory
+                .createOMElement(new QName("http://undefined-ns-2.org", "SecondChild"), docElement);
         secondChild.addAttribute("testAttr", "testValue", firstOrphanNS);
 
 
@@ -59,7 +61,8 @@ public class NamespaceTest extends XMLTestCase {
         }
         assertTrue(namespaceCount == 3);
 
-        assertTrue(secondChild.getNamespace().getPrefix().equals(docElement.findNamespace("http://undefined-ns-2.org", null).getPrefix()));
+        assertTrue(secondChild.getNamespace().getPrefix().equals(
+                docElement.findNamespace("http://undefined-ns-2.org", null).getPrefix()));
 
 
     }
@@ -74,15 +77,18 @@ public class NamespaceTest extends XMLTestCase {
         elem.addAttribute(fac.createOMAttribute("testAttr", ns2, "attrValue"));
 
         OMNamespace namespace = elem.findNamespace("http://test.org", null);
-        assertTrue(namespace != null && namespace.getPrefix() != null && "".equals(namespace.getPrefix()));
+        assertTrue(namespace != null && namespace.getPrefix() != null &&
+                "".equals(namespace.getPrefix()));
 
         OMNamespace namespace2 = elem.findNamespace("http://test2.org", null);
-        assertTrue(namespace2 != null && namespace2.getPrefix() != null && "".equals(namespace2.getPrefix()));
+        assertTrue(namespace2 != null && namespace2.getPrefix() != null &&
+                "".equals(namespace2.getPrefix()));
     }
 
     /**
-     * Here a namespace will be defined with a certain prefix in the root element. But later the same ns
-     * is defined with the same uri in a child element, but this time with a different prefix.
+     * Here a namespace will be defined with a certain prefix in the root element. But later the
+     * same ns is defined with the same uri in a child element, but this time with a different
+     * prefix.
      */
     public void testNamespaceProblem() throws XMLStreamException {
 
@@ -127,7 +133,8 @@ public class NamespaceTest extends XMLTestCase {
         childTwo.declareDefaultNamespace("http://one.org");
 
 
-        assertEquals(2, getNumberOfOccurrences(documentElement.toStringWithConsume(), "xmlns=\"http://one.org\""));
+        assertEquals(2, getNumberOfOccurrences(documentElement.toStringWithConsume(),
+                                               "xmlns=\"http://one.org\""));
     }
 
     public void testNamespaceProblem3() throws XMLStreamException {
@@ -151,24 +158,30 @@ public class NamespaceTest extends XMLTestCase {
 
         OMElement childTwo = omFac.createOMElement("ChildElementTwo", ns1, childOne);
 
-        assertEquals(1, getNumberOfOccurrences(documentElement.toStringWithConsume(), "xmlns:ns2=\"http://one.org\""));
+        assertEquals(1, getNumberOfOccurrences(documentElement.toStringWithConsume(),
+                                               "xmlns:ns2=\"http://one.org\""));
     }
 
 
     public void testNamespaceProblem4() throws Exception {
-        String xml = "<getCreditScoreResponse xmlns=\"http://www.example.org/creditscore/doclitwrapped/\"><score xmlns=\"\">750</score></getCreditScoreResponse>";
-        XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(OMAbstractFactory.getOMFactory(), parser);
+        String xml =
+                "<getCreditScoreResponse xmlns=\"http://www.example.org/creditscore/doclitwrapped/\"><score xmlns=\"\">750</score></getCreditScoreResponse>";
+        XMLStreamReader parser = XMLInputFactory.newInstance()
+                .createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createStAXOMBuilder(OMAbstractFactory.getOMFactory(), parser);
         OMElement root = builder.getDocumentElement();
         String actualXML = root.toString();
         assertTrue(actualXML.indexOf("xmlns=\"\"") != -1);
     }
 
     public void testNamespaceProblem5() {
-        String xml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"><soapenv:Header /><soapenv:Body><ns1:createAccountRequest xmlns:ns1=\"http://www.wso2.com/types\"><clientinfo xmlns=\"http://www.wso2.com/types\"><name>bob</name><ssn>123456789</ssn></clientinfo><password xmlns=\"\">passwd</password></ns1:createAccountRequest></soapenv:Body></soapenv:Envelope>";
+        String xml =
+                "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"><soapenv:Header /><soapenv:Body><ns1:createAccountRequest xmlns:ns1=\"http://www.wso2.com/types\"><clientinfo xmlns=\"http://www.wso2.com/types\"><name>bob</name><ssn>123456789</ssn></clientinfo><password xmlns=\"\">passwd</password></ns1:createAccountRequest></soapenv:Body></soapenv:Envelope>";
 
         try {
-            OMElement documentElement = new StAXOMBuilder(new ByteArrayInputStream(xml.getBytes())).getDocumentElement();
+            OMElement documentElement = new StAXOMBuilder(new ByteArrayInputStream(xml.getBytes()))
+                    .getDocumentElement();
             String actualXML = documentElement.toString();
             assertXMLEqual(xml, actualXML);
         } catch (Exception e) {
@@ -214,10 +227,7 @@ public class NamespaceTest extends XMLTestCase {
 
     }
 
-    /**
-     * This is re-producing and testing the bug mentioned in
-     * http://issues.apache.org/jira/browse/WSCOMMONS-74
-     */
+    /** This is re-producing and testing the bug mentioned in http://issues.apache.org/jira/browse/WSCOMMONS-74 */
     public void testNamespaceProblem7() {
 
         String expectedString = "<person xmlns=\"http://ws.apache.org/axis2/apacheconasia/06\">" +
@@ -254,13 +264,11 @@ public class NamespaceTest extends XMLTestCase {
         }
     }
 
-    /**
-     * This is re-producing and testing the bug mentioned in
-     * http://issues.apache.org/jira/browse/WSCOMMONS-74
-     */
+    /** This is re-producing and testing the bug mentioned in http://issues.apache.org/jira/browse/WSCOMMONS-74 */
     public void testNamespaceProblem8() {
 
-        String expectedXML = "<person xmlns=\"http://ws.apache.org/axis2/apacheconasia/06\"><name xmlns=\"\">John</name><age>34</age><weight>50</weight></person>";
+        String expectedXML =
+                "<person xmlns=\"http://ws.apache.org/axis2/apacheconasia/06\"><name xmlns=\"\">John</name><age>34</age><weight>50</weight></person>";
         OMFactory fac = OMAbstractFactory.getOMFactory();
         OMNamespace ns = fac.createOMNamespace("http://ws.apache.org/axis2/apacheconasia/06", "");
         OMElement personElem = fac.createOMElement("person", ns);

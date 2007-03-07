@@ -58,7 +58,7 @@ public class OMDocumentTest extends TestCase {
             } else if (omNode instanceof OMProcessingInstruction) {
                 piFound = true;
             } else if (omNode instanceof OMElement && !commentFound && !piFound) {
-               fail("OMElement should come after Comment and PI");
+                fail("OMElement should come after Comment and PI");
 
             }
         }
@@ -69,7 +69,8 @@ public class OMDocumentTest extends TestCase {
 
     private OMDocument getSampleOMDocument(String xml) {
         try {
-            XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
+            XMLStreamReader xmlStreamReader =
+                    XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
             StAXOMBuilder builder = new StAXOMBuilder(xmlStreamReader);
             return builder.getDocument();
         } catch (XMLStreamException e) {

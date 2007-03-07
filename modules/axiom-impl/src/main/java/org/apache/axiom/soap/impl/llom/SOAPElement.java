@@ -60,14 +60,12 @@ public abstract class SOAPElement extends OMElementImpl {
      * @param localName
      * @param ns
      */
-    protected SOAPElement(String localName, OMNamespace ns, 
-            SOAPFactory factory) {
+    protected SOAPElement(String localName, OMNamespace ns,
+                          SOAPFactory factory) {
         super(localName, ns, factory);
     }
 
-    /**
-     * This has to be implemented by all the derived classes to check for the correct parent.
-     */
+    /** This has to be implemented by all the derived classes to check for the correct parent. */
     protected abstract void checkParent(OMElement parent) throws SOAPProcessingException;
 
     public void setParent(OMContainer element) {

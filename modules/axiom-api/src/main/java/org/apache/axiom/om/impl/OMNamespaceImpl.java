@@ -18,18 +18,12 @@ package org.apache.axiom.om.impl;
 
 import org.apache.axiom.om.OMNamespace;
 
-/**
- * Class OMNamespaceImpl
- */
+/** Class OMNamespaceImpl */
 public class OMNamespaceImpl implements OMNamespace {
-    /**
-     * Field prefix
-     */
+    /** Field prefix */
     private String prefix;
 
-    /**
-     * Field uri
-     */
+    /** Field uri */
     private String uri;
 
     /**

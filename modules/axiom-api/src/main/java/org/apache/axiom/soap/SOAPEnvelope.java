@@ -19,37 +19,27 @@ package org.apache.axiom.soap;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 
-/**
- * Interface SOAPEnvelope
- */
+/** Interface SOAPEnvelope */
 public interface SOAPEnvelope extends OMElement {
     /**
-     * Returns the <CODE>SOAPHeader</CODE> object for this <CODE>
-     * SOAPEnvelope</CODE> object.
-     * <P> This SOAPHeader will just be a container for all the headers in the
-     * <CODE>OMMessage</CODE>
+     * Returns the <CODE>SOAPHeader</CODE> object for this <CODE> SOAPEnvelope</CODE> object. <P>
+     * This SOAPHeader will just be a container for all the headers in the <CODE>OMMessage</CODE>
      * </P>
      *
-     * @return the <CODE>SOAPHeader</CODE> object or <CODE>
-     *         null</CODE> if there is none
+     * @return the <CODE>SOAPHeader</CODE> object or <CODE> null</CODE> if there is none
      * @throws org.apache.axiom.om.OMException
-     *          if there is a problem
-     *          obtaining the <CODE>SOAPHeader</CODE> object
+     *          if there is a problem obtaining the <CODE>SOAPHeader</CODE> object
      */
     public abstract SOAPHeader getHeader() throws OMException;
 
     /**
-     * Returns the <CODE>SOAPBody</CODE> object associated with
-     * this <CODE>SOAPEnvelope</CODE> object.
-     * <P> This SOAPBody will just be a container for all the BodyElements in the
-     * <CODE>OMMessage</CODE>
-     * </P>
+     * Returns the <CODE>SOAPBody</CODE> object associated with this <CODE>SOAPEnvelope</CODE>
+     * object. <P> This SOAPBody will just be a container for all the BodyElements in the
+     * <CODE>OMMessage</CODE> </P>
      *
-     * @return the <CODE>SOAPBody</CODE> object for this <CODE>
-     *         SOAPEnvelope</CODE> object or <CODE>null</CODE> if there
-     *         is none
-     * @throws OMException if there is a problem
-     *                     obtaining the <CODE>SOAPBody</CODE> object
+     * @return the <CODE>SOAPBody</CODE> object for this <CODE> SOAPEnvelope</CODE> object or
+     *         <CODE>null</CODE> if there is none
+     * @throws OMException if there is a problem obtaining the <CODE>SOAPBody</CODE> object
      */
     public abstract SOAPBody getBody() throws OMException;
 }

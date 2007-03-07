@@ -16,84 +16,78 @@
 
 package org.apache.axiom.attachments;
 
-import java.io.IOException;
-import java.util.Enumeration;
+import org.apache.axiom.om.OMException;
 
 import javax.mail.Header;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetHeaders;
+import java.io.IOException;
+import java.util.Enumeration;
 
-import org.apache.axiom.om.OMException;
 /**
- * The MultipartAttachmentStreams class is used to create
- * IncomingAttachmentInputStream objects when the HTTP stream shows a marked
- * separation between the SOAP and each attachment parts. Unlike the DIME
- * version, this class will use the BoundaryDelimitedStream to parse data in the
- * SwA format. Another difference between the two is that the
- * MultipartAttachmentStreams class must also provide a way to hold attachment
- * parts parsed prior to where the SOAP part appears in the HTTP stream (i.e.
- * the root part of the multipart-related message). Our DIME counterpart didn't
- * have to worry about this since the SOAP part is guaranteed to be the first in
- * the stream. But since SwA has no such guarantee, we must fall back to caching
- * these first parts. Afterwards, we can stream the rest of the attachments that
- * are after the SOAP part of the request message.
+ * The MultipartAttachmentStreams class is used to create IncomingAttachmentInputStream objects when
+ * the HTTP stream shows a marked separation between the SOAP and each attachment parts. Unlike the
+ * DIME version, this class will use the BoundaryDelimitedStream to parse data in the SwA format.
+ * Another difference between the two is that the MultipartAttachmentStreams class must also provide
+ * a way to hold attachment parts parsed prior to where the SOAP part appears in the HTTP stream
+ * (i.e. the root part of the multipart-related message). Our DIME counterpart didn't have to worry
+ * about this since the SOAP part is guaranteed to be the first in the stream. But since SwA has no
+ * such guarantee, we must fall back to caching these first parts. Afterwards, we can stream the
+ * rest of the attachments that are after the SOAP part of the request message.
  */
 public final class MultipartAttachmentStreams extends IncomingAttachmentStreams {
     private BoundaryDelimitedStream _delimitedStream = null;
 
     public MultipartAttachmentStreams(BoundaryDelimitedStream delimitedStream)
             throws OMException {
-    	this._delimitedStream = delimitedStream;
+        this._delimitedStream = delimitedStream;
     }
 
-    /**
-     * 
-     * @see org.apache.axis.attachments.IncomingAttachmentStreams#getNextStream()
-     */
+    /** @see org.apache.axis.attachments.IncomingAttachmentStreams#getNextStream() */
     public IncomingAttachmentInputStream getNextStream() throws OMException {
-    	IncomingAttachmentInputStream stream;
-    	
-    	if (!isReadyToGetNextStream()) {
-    		throw new IllegalStateException("nextStreamNotReady");
-    	}
-    	
-    	InternetHeaders headers;
-    	
-    	try {
-    		_delimitedStream = _delimitedStream.getNextStream();
-    		if (_delimitedStream == null) {
-    			return null;
-    		}
-    		
-        	headers = new InternetHeaders(_delimitedStream);
+        IncomingAttachmentInputStream stream;
 
-    	} catch (IOException ioe) {
-    		ioe.printStackTrace();
-    		throw new OMException(ioe);
-    	} catch (MessagingException me) {
-    		me.printStackTrace();
-    		throw new OMException(me);
-    	}
+        if (!isReadyToGetNextStream()) {
+            throw new IllegalStateException("nextStreamNotReady");
+        }
 
-    	stream = new IncomingAttachmentInputStream(_delimitedStream, this);
-    	
-    	Header header;
-    	String name;
-    	String value;
-    	Enumeration e = headers.getAllHeaders();
-    	while (e != null && e.hasMoreElements()) {
-    		header = (Header) e.nextElement();
-    		name = header.getName().toLowerCase();
-    		value = header.getValue();
-    		if (IncomingAttachmentInputStream.HEADER_CONTENT_ID.equals(name)
-    				|| IncomingAttachmentInputStream.HEADER_CONTENT_TYPE.equals(name)
-    				|| IncomingAttachmentInputStream.HEADER_CONTENT_LOCATION.equals(name)) {
-    			value = value.trim();
-    		}
-    		stream.addHeader(name, value);
-    	}
+        InternetHeaders headers;
 
-    	setReadyToGetNextStream(false);
-    	return stream;
+        try {
+            _delimitedStream = _delimitedStream.getNextStream();
+            if (_delimitedStream == null) {
+                return null;
+            }
+
+            headers = new InternetHeaders(_delimitedStream);
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            throw new OMException(ioe);
+        } catch (MessagingException me) {
+            me.printStackTrace();
+            throw new OMException(me);
+        }
+
+        stream = new IncomingAttachmentInputStream(_delimitedStream, this);
+
+        Header header;
+        String name;
+        String value;
+        Enumeration e = headers.getAllHeaders();
+        while (e != null && e.hasMoreElements()) {
+            header = (Header) e.nextElement();
+            name = header.getName().toLowerCase();
+            value = header.getValue();
+            if (IncomingAttachmentInputStream.HEADER_CONTENT_ID.equals(name)
+                    || IncomingAttachmentInputStream.HEADER_CONTENT_TYPE.equals(name)
+                    || IncomingAttachmentInputStream.HEADER_CONTENT_LOCATION.equals(name)) {
+                value = value.trim();
+            }
+            stream.addHeader(name, value);
+        }
+
+        setReadyToGetNextStream(false);
+        return stream;
     }
 }

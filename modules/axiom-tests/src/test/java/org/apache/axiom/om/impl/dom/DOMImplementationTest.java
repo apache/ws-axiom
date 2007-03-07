@@ -26,29 +26,32 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class DOMImplementationTest extends TestCase {
 
-	public DOMImplementationTest(String name) {
-		super(name);
-	}
-	
-	public void testDOMImpl() {
-		try {
+    public DOMImplementationTest(String name) {
+        super(name);
+    }
+
+    public void testDOMImpl() {
+        try {
 //			System.setProperty("javax.xml.parsers.DocumentBuilderFactory",DocumentBuilderFactoryImpl.class.getName());
-		    
+
             DocumentBuilderFactoryImpl.setDOOMRequired(true);
-            
-			DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = fac.newDocumentBuilder();
-			Document doc = builder.newDocument();
-			
-			assertEquals("Incorrect DocumentBuilderFactory instance", DocumentBuilderFactoryImpl.class.getName(),fac.getClass().getName());
-			assertEquals("Incorrect DocumentBuilder instance", DocumentBuilderImpl.class.getName(),builder.getClass().getName());
-			assertEquals("Incorrect Document instance", DocumentImpl.class.getName(),doc.getClass().getName());
-            
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail(e.getMessage());
-		} finally {
+
+            DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = fac.newDocumentBuilder();
+            Document doc = builder.newDocument();
+
+            assertEquals("Incorrect DocumentBuilderFactory instance",
+                         DocumentBuilderFactoryImpl.class.getName(), fac.getClass().getName());
+            assertEquals("Incorrect DocumentBuilder instance", DocumentBuilderImpl.class.getName(),
+                         builder.getClass().getName());
+            assertEquals("Incorrect Document instance", DocumentImpl.class.getName(),
+                         doc.getClass().getName());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        } finally {
             DocumentBuilderFactoryImpl.setDOOMRequired(false);
         }
-	}
+    }
 }

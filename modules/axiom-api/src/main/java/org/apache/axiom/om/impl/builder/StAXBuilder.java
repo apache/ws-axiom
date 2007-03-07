@@ -16,60 +16,57 @@
 
 package org.apache.axiom.om.impl.builder;
 
-import java.io.InputStream;
-
-import org.apache.axiom.om.*;
-import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.InputStream;
 
 /**
- * OM should be able to be built from any data source. And the model it builds
- * may be a SOAP specific one or just an XML model. This class will give
- * some common functionality of OM Building from StAX.
+ * OM should be able to be built from any data source. And the model it builds may be a SOAP
+ * specific one or just an XML model. This class will give some common functionality of OM Building
+ * from StAX.
  */
 public abstract class StAXBuilder implements OMXMLParserWrapper {
 
-    /**
-     * Field parser
-     */
+    /** Field parser */
     protected XMLStreamReader parser;
 
-    /**
-     * Field omfactory
-     */
+    /** Field omfactory */
     protected OMFactory omfactory;
 
-    /**
-     * Field lastNode
-     */
+    /** Field lastNode */
     protected OMNode lastNode;
 
     // returns the state of completion
 
-    /**
-     * Field done
-     */
+    /** Field done */
     protected boolean done = false;
 
     // keeps the state of the cache
 
-    /**
-     * Field cache
-     */
+    /** Field cache */
     protected boolean cache = true;
 
     // keeps the state of the parser access. if the parser is
     // accessed atleast once,this flag will be set
 
-    /**
-     * Field parserAccessed
-     */
+    /** Field parserAccessed */
     protected boolean parserAccessed = false;
     protected OMDocument document;
 
@@ -83,7 +80,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         this.parser = parser;
         omfactory = ombuilderFactory;
 
-        if(parser instanceof BuilderAwareReader) {
+        if (parser instanceof BuilderAwareReader) {
             ((BuilderAwareReader) parser).setBuilder(this);
         }
     }
@@ -96,21 +93,18 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected StAXBuilder(XMLStreamReader parser) {
         this(OMAbstractFactory.getOMFactory(), parser);
     }
-    
-    /**
-     * Init() *must* be called after creating the builder using this constructor.
-     */
-    protected StAXBuilder()
-    {
+
+    /** Init() *must* be called after creating the builder using this constructor. */
+    protected StAXBuilder() {
     }
-    
-    public void init (InputStream inputStream, String charSetEncoding, String url, String contentType) throws OMException
-    {
+
+    public void init(InputStream inputStream, String charSetEncoding, String url,
+                     String contentType) throws OMException {
         try {
-			this.parser = StAXUtils.createXMLStreamReader(inputStream);
-		} catch (XMLStreamException e1) {
-			throw new OMException(e1);
-		}
+            this.parser = StAXUtils.createXMLStreamReader(inputStream);
+        } catch (XMLStreamException e1) {
+            throw new OMException(e1);
+        }
         omfactory = OMAbstractFactory.getOMFactory();
     }
 
@@ -163,7 +157,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             // todo then this should throw an exception here
 
             node.addAttribute(parser.getAttributeLocalName(i),
-                    parser.getAttributeValue(i), namespace);
+                              parser.getAttributeValue(i), namespace);
         }
     }
 
@@ -186,8 +180,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     }
 
     /**
-     * This method will check whether the text can be optimizable using IS_BINARY flag.
-     * If that is set then we try to get the data handler.
+     * This method will check whether the text can be optimizable using IS_BINARY flag. If that is
+     * set then we try to get the data handler.
      *
      * @param omContainer
      * @param textType
@@ -195,7 +189,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     private OMNode createOMText(OMContainer omContainer, int textType) {
         try {
-            if (isDataHandlerAware(parser) && Boolean.TRUE == parser.getProperty(OMConstants.IS_BINARY)) {
+            if (isDataHandlerAware(parser) &&
+                    Boolean.TRUE == parser.getProperty(OMConstants.IS_BINARY)) {
                 Object dataHandler = parser.getProperty(OMConstants.DATA_HANDLER);
                 OMText text = omfactory.createOMText(dataHandler, true);
                 omContainer.addChild(text);
@@ -433,20 +428,17 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected abstract OMNode createOMElement() throws OMException;
 
     /**
-     * Forwards the parser one step further, if parser is not completed yet.
-     * If this is called after parser is done, then throw an OMException.
-     * If the cache is set to false, then returns the event, *without* building the OM tree.
-     * If the cache is set to true, then handles all the events within this, and
-     * builds the object structure appropriately and returns the event.
+     * Forwards the parser one step further, if parser is not completed yet. If this is called after
+     * parser is done, then throw an OMException. If the cache is set to false, then returns the
+     * event, *without* building the OM tree. If the cache is set to true, then handles all the
+     * events within this, and builds the object structure appropriately and returns the event.
      *
      * @return Returns int.
      * @throws OMException
      */
     public abstract int next() throws OMException;
 
-    /**
-     * @return Returns short.
-     */
+    /** @return Returns short. */
     public short getBuilderType() {
         return OMConstants.PULL_TYPE_BUILDER;
     }
@@ -472,9 +464,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     public OMDocument getDocument() {
         return document;
     }
-    
-    public String getCharsetEncoding(){
-    	return document.getCharsetEncoding();
+
+    public String getCharsetEncoding() {
+        return document.getCharsetEncoding();
     }
 
     public OMNode getLastNode() {
@@ -491,25 +483,26 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
     /**
      * Get the value of a feature/property from the underlying XMLStreamReader implementation
-     * without accessing the XMLStreamReader.
-     * https://issues.apache.org/jira/browse/WSCOMMONS-155
+     * without accessing the XMLStreamReader. https://issues.apache.org/jira/browse/WSCOMMONS-155
+     *
      * @param name
-     * @return 
+     * @return
      */
     public Object getReaderProperty(String name) throws IllegalArgumentException {
-      return parser.getProperty(name);
+        return parser.getProperty(name);
     }
 
     /**
      * Check if the underlying parse is aware of data handlers. (example ADB generated code)
-     * 
+     *
      * @param parser
      * @return
      */
     private boolean isDataHandlerAware(XMLStreamReader parser) {
         // check whether data handlers are treated seperately
         try {
-            if (parser != null && (Boolean.TRUE == parser.getProperty(OMConstants.IS_DATA_HANDLERS_AWARE))) {
+            if (parser != null &&
+                    (Boolean.TRUE == parser.getProperty(OMConstants.IS_DATA_HANDLERS_AWARE))) {
                 return true;
             }
         } catch (IllegalArgumentException e) {

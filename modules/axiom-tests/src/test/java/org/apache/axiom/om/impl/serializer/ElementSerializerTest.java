@@ -49,9 +49,9 @@ public class ElementSerializerTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         reader =
                 XMLInputFactory.newInstance().
-                createXMLStreamReader(
-                        new FileReader(
-                                getTestResourceFile("soap/soapmessage.xml")));
+                        createXMLStreamReader(
+                                new FileReader(
+                                        getTestResourceFile("soap/soapmessage.xml")));
         tempFile = File.createTempFile("temp", "xml");
         writer = XMLOutputFactory.newInstance().
                 createXMLStreamWriter(new FileOutputStream(tempFile));

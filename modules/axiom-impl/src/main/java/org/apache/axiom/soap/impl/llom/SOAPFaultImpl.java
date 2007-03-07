@@ -23,9 +23,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -45,9 +45,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
 
-/**
- * Class SOAPFaultImpl
- */
+/** Class SOAPFaultImpl */
 public abstract class SOAPFaultImpl extends SOAPElement
         implements SOAPFault, OMConstants {
 
@@ -63,7 +61,8 @@ public abstract class SOAPFaultImpl extends SOAPElement
      * @param parent
      * @param e
      */
-    public SOAPFaultImpl(SOAPBody parent, Exception e, SOAPFactory factory) throws SOAPProcessingException {
+    public SOAPFaultImpl(SOAPBody parent, Exception e, SOAPFactory factory)
+            throws SOAPProcessingException {
         super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, true, factory);
         setException(e);
     }
@@ -84,12 +83,13 @@ public abstract class SOAPFaultImpl extends SOAPElement
      * @param builder
      */
     public SOAPFaultImpl(SOAPBody parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                         SOAPFactory factory) {
         super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, builder, factory);
     }
 
 
-    protected abstract SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault) throws SOAPProcessingException;
+    protected abstract SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault)
+            throws SOAPProcessingException;
 
     // --------------- Getters and Settors --------------------------- //
 
@@ -138,9 +138,7 @@ public abstract class SOAPFaultImpl extends SOAPElement
                 SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME);
     }
 
-    /**
-     * If exception detailElement is not there we will return null
-     */
+    /** If exception detailElement is not there we will return null */
     public Exception getException() throws OMException {
         SOAPFaultDetail detail = getDetail();
         if (detail == null) {
@@ -193,7 +191,8 @@ public abstract class SOAPFaultImpl extends SOAPElement
         return null;
     }
 
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
+            throws XMLStreamException {
         // select the builder
         short builderType = PULL_TYPE_BUILDER;    // default is pull type
         if (builder != null) {
@@ -201,7 +200,8 @@ public abstract class SOAPFaultImpl extends SOAPElement
         }
         if ((builderType == PUSH_TYPE_BUILDER)
                 && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(writer));
+            builder.registerExternalContentHandler(
+                    new StreamWriterToContentHandlerConverter(writer));
         }
 
         // this is a special case. This fault element may contain its children in any order. But spec mandates a specific order

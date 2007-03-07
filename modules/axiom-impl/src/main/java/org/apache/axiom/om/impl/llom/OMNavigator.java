@@ -22,53 +22,37 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 
 /**
- * Refer to the test, org.apache.axiom.om.OMNavigatorTest, to find out how to use
- * features like isNavigable, isComplete and step.
+ * Refer to the test, org.apache.axiom.om.OMNavigatorTest, to find out how to use features like
+ * isNavigable, isComplete and step.
  */
 public class OMNavigator {
-    /**
-     * Field node
-     */
+    /** Field node */
     protected OMNode node;
 
-    /**
-     * Field visited
-     */
+    /** Field visited */
     private boolean visited;
 
-    /**
-     * Field next
-     */
+    /** Field next */
     private OMNode next;
 
     // root is the starting element. Once the navigator comes back to the
     // root, the traversal is terminated
 
-    /**
-     * Field root
-     */
+    /** Field root */
     private OMNode root;
 
-    /**
-     * Field backtracked
-     */
+    /** Field backtracked */
     private boolean backtracked;
 
     // flags that tell the status of the navigator
 
-    /**
-     * Field end
-     */
+    /** Field end */
     private boolean end = false;
 
-    /**
-     * Field start
-     */
+    /** Field start */
     private boolean start = true;
 
-    /**
-     * Constructor OMNavigator.
-     */
+    /** Constructor OMNavigator. */
     public OMNavigator() {
     }
 
@@ -95,9 +79,9 @@ public class OMNavigator {
     /**
      * Gets the next node.
      *
-     * @return Returns OMnode in the sequence of preorder traversal. Note however 
-     *         that an element node is treated slightly differently. Once the 
-     *         element is passed it returns the same element in the next encounter as well.
+     * @return Returns OMnode in the sequence of preorder traversal. Note however that an element
+     *         node is treated slightly differently. Once the element is passed it returns the same
+     *         element in the next encounter as well.
      */
     public OMNode next() {
         if (next == null) {
@@ -119,67 +103,65 @@ public class OMNavigator {
         return node;
     }
 
-    /**
-     * Private method to encapsulate the searching logic.
-     */
+    /** Private method to encapsulate the searching logic. */
     private void updateNextNode() {
-    	
-    	if ((next instanceof OMElement) && !visited) {
-    		OMNode firstChild = _getFirstChild((OMElement) next);
-    		if (firstChild != null) {
-    			next = firstChild;
-    		} else if (next.isComplete()) {
-    			backtracked = true;
-    		} else {
-    			next = null;
-    		}
-    	} else {
-    		OMContainer parent = next.getParent();
-    		OMNode nextSibling = getNextSibling(next);
-    		if (nextSibling != null) {
-    			next = nextSibling;
-    		} else if ((parent != null) && parent.isComplete() && !(parent instanceof OMDocument)) {
-    			next = (OMNodeImpl) parent;
-    			backtracked = true;
-    		} else {
-    			next = null;
-    		}
-    	}
+
+        if ((next instanceof OMElement) && !visited) {
+            OMNode firstChild = _getFirstChild((OMElement) next);
+            if (firstChild != null) {
+                next = firstChild;
+            } else if (next.isComplete()) {
+                backtracked = true;
+            } else {
+                next = null;
+            }
+        } else {
+            OMContainer parent = next.getParent();
+            OMNode nextSibling = getNextSibling(next);
+            if (nextSibling != null) {
+                next = nextSibling;
+            } else if ((parent != null) && parent.isComplete() && !(parent instanceof OMDocument)) {
+                next = (OMNodeImpl) parent;
+                backtracked = true;
+            } else {
+                next = null;
+            }
+        }
     }
-    
+
     /**
      * @param node
      * @return first child or null
      */
     private OMNode _getFirstChild(OMElement node) {
-    	if (node instanceof OMSourcedElementImpl) {
-    		OMNode first = node.getFirstOMChild();
-    		OMNode sibling = first;
-    		while (sibling != null) {
-    			sibling = sibling.getNextOMSibling();
-    		}
-    		return first;
-    	} else {
-    		// Field access is used to prevent advancing the parser.
-    		// Some tests fail if the following is used
-    		// return node.getFirstOMChild()
-    		return ((OMElementImpl)node).firstChild;
-    	}
+        if (node instanceof OMSourcedElementImpl) {
+            OMNode first = node.getFirstOMChild();
+            OMNode sibling = first;
+            while (sibling != null) {
+                sibling = sibling.getNextOMSibling();
+            }
+            return first;
+        } else {
+            // Field access is used to prevent advancing the parser.
+            // Some tests fail if the following is used
+            // return node.getFirstOMChild()
+            return ((OMElementImpl) node).firstChild;
+        }
     }
-    
+
     /**
      * @param node
      * @return next sibling or null
      */
     private OMNode getNextSibling(OMNode node) {
-    	if (node instanceof OMSourcedElementImpl) {
-    		return node.getNextOMSibling();
-    	} else {
-    		// Field access is used to prevent advancing the parser.
-    		// Some tests fail if the following is used
-    		// return node.getNextOMSibling()
-    		return ((OMNodeImpl)node).nextSibling;
-    	}
+        if (node instanceof OMSourcedElementImpl) {
+            return node.getNextOMSibling();
+        } else {
+            // Field access is used to prevent advancing the parser.
+            // Some tests fail if the following is used
+            // return node.getNextOMSibling()
+            return ((OMNodeImpl) node).nextSibling;
+        }
     }
 
     /**
@@ -192,11 +174,10 @@ public class OMNavigator {
     }
 
     /**
-     * This is a very special method. This allows the navigator to step
-     * once it has reached the existing OM. At this point the isNavigable
-     * method will return false but the isComplete method may return false
-     * which means that the navigating the given element is not complete and
-     * the navigator cannot proceed.
+     * This is a very special method. This allows the navigator to step once it has reached the
+     * existing OM. At this point the isNavigable method will return false but the isComplete method
+     * may return false which means that the navigating the given element is not complete and the
+     * navigator cannot proceed.
      */
     public void step() {
         if (!end) {

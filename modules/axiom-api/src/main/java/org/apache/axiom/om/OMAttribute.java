@@ -18,47 +18,29 @@ package org.apache.axiom.om;
 
 import javax.xml.namespace.QName;
 
-/**
- * Interface OMAttribute
- */
+/** Interface OMAttribute */
 public interface OMAttribute {
-    /**
-     * @return Returns localName.
-     */
+    /** @return Returns localName. */
     public String getLocalName();
 
-    /**
-     * @param localName
-     */
+    /** @param localName  */
     public void setLocalName(String localName);
 
-    /**
-     * @return Returns String.
-     */
+    /** @return Returns String. */
     public String getAttributeValue();
 
-    /**
-     * @param value
-     */
+    /** @param value  */
     public void setAttributeValue(String value);
 
-    /**
-     * @param omNamespace
-     */
+    /** @param omNamespace  */
     public void setOMNamespace(OMNamespace omNamespace);
 
-    /**
-     * @return Returns OMNamespace.
-     */
+    /** @return Returns OMNamespace. */
     public OMNamespace getNamespace();
 
-    /**
-     * @return Returns javax.xml.namespace.QName
-     */
+    /** @return Returns javax.xml.namespace.QName */
     public QName getQName();
-    
-    /**
-     * Returns the OMFactory that created this object
-     */
+
+    /** Returns the OMFactory that created this object */
     public OMFactory getOMFactory();
 }

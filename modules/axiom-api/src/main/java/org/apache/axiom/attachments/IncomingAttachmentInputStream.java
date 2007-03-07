@@ -35,25 +35,21 @@ public class IncomingAttachmentInputStream extends InputStream {
     public static final String HEADER_CONTENT_LOCATION = "content-location";
     public static final String HEADER_CONTENT_ID = "content-id";
 
-    /**
-     * @param in
-     */
-    public IncomingAttachmentInputStream(InputStream in, IncomingAttachmentStreams parentContainer) {
+    /** @param in  */
+    public IncomingAttachmentInputStream(InputStream in,
+                                         IncomingAttachmentStreams parentContainer) {
         _stream = in;
         this.parentContainer = parentContainer;
     }
 
-    /**
-     * @return MIME headers for this attachment. May be null if no headers
-     *         were set.
-     */
+    /** @return MIME headers for this attachment. May be null if no headers were set. */
     public Map getHeaders() {
         return _headers;
     }
 
     /**
      * Add a header.
-     * 
+     *
      * @param name
      * @param value
      */
@@ -66,7 +62,7 @@ public class IncomingAttachmentInputStream extends InputStream {
 
     /**
      * Get a header value.
-     * 
+     *
      * @param name
      * @return The header found or null if not found.
      */
@@ -78,32 +74,24 @@ public class IncomingAttachmentInputStream extends InputStream {
         return header.toString();
     }
 
-    /**
-     * @return The header with HTTPConstants.HEADER_CONTENT_ID as the key.
-     */
+    /** @return The header with HTTPConstants.HEADER_CONTENT_ID as the key. */
     public String getContentId() {
         return getHeader(HEADER_CONTENT_ID);
     }
 
-    /**
-     * @return The header with HTTPConstants.HEADER_CONTENT_LOCATION as the
-     *         key.
-     */
+    /** @return The header with HTTPConstants.HEADER_CONTENT_LOCATION as the key. */
     public String getContentLocation() {
         return getHeader(HEADER_CONTENT_LOCATION);
     }
 
-    /**
-     * @return The header with HTTPConstants.HEADER_CONTENT_TYPE as the key.
-     */
+    /** @return The header with HTTPConstants.HEADER_CONTENT_TYPE as the key. */
     public String getContentType() {
         return getHeader(HEADER_CONTENT_TYPE);
     }
 
     /**
-     * Don't want to support mark and reset since this may get us into
-     * concurrency problem when different pieces of software may have a
-     * handle to the underlying InputStream.
+     * Don't want to support mark and reset since this may get us into concurrency problem when
+     * different pieces of software may have a handle to the underlying InputStream.
      */
     public boolean markSupported() {
         return false;

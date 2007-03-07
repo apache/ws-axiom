@@ -24,7 +24,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPFaultTextImpl;
 
 public class SOAP12FaultTextImpl extends SOAPFaultTextImpl {
-    
+
     public SOAP12FaultTextImpl(SOAPFaultReason parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, factory);

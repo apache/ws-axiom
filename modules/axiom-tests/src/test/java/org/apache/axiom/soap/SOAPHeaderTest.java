@@ -40,7 +40,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 "SOAP 1.1 Header Test : - After calling addHeaderBlock method twice, getChildren method returns empty iterator",
                 headerBlock1 == null);
         assertTrue("SOAP 1.1 Header Test : - HeaderBlock1 local name mismatch",
-                headerBlock1.getLocalName().equals("echoOk1"));
+                   headerBlock1.getLocalName().equals("echoOk1"));
         assertTrue(
                 "SOAP 1.1 Header Test : - HeaderBlock1 namespace uri mismatch",
                 headerBlock1.getNamespace().getNamespaceURI().equals(
@@ -51,7 +51,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 "SOAP 1.1 Header Test : - After calling addHeaderBlock method twice, getChildren method returns an iterator with only one object",
                 headerBlock2 == null);
         assertTrue("SOAP 1.1 Header Test : - HeaderBlock2 local name mismatch",
-                headerBlock2.getLocalName().equals("echoOk2"));
+                   headerBlock2.getLocalName().equals("echoOk2"));
         assertTrue(
                 "SOAP 1.1 Header Test : - HeaderBlock2 namespace uri mismatch",
                 headerBlock2.getNamespace().getNamespaceURI().equals(
@@ -100,7 +100,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 "SOAP 1.1 Header Test : - After calling addHeaderBlock method twice, examineAllHeaderBlocks method returns empty iterator",
                 headerBlock1 == null);
         assertTrue("SOAP 1.1 Header Test : - HeaderBlock1 local name mismatch",
-                headerBlock1.getLocalName().equals("echoOk1"));
+                   headerBlock1.getLocalName().equals("echoOk1"));
         assertTrue(
                 "SOAP 1.1 Header Test : - HeaderBlock1 namespace uri mismatch",
                 headerBlock1.getNamespace().getNamespaceURI().equals(
@@ -112,7 +112,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 "SOAP 1.1 Header Test : - After calling addHeaderBlock method twice, examineAllHeaderBlocks method returns an iterator with only one object",
                 headerBlock2 == null);
         assertTrue("SOAP 1.1 Header Test : - HeaderBlock2 local name mismatch",
-                headerBlock2.getLocalName().equals("echoOk2"));
+                   headerBlock2.getLocalName().equals("echoOk2"));
         assertTrue(
                 "SOAP 1.1 Header Test : - HeaderBlock2 namespace uri mismatch",
                 headerBlock2.getNamespace().getNamespaceURI().equals(
@@ -132,7 +132,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
     public void testSOAP11getHeaderBlocksWithNSURI() {
         soap11Header.addHeaderBlock("echoOk1", namespace);
         soap11Header.addHeaderBlock("echoOk2",
-                omFactory.createOMNamespace("http://www.test1.org", "test1"));
+                                    omFactory.createOMNamespace("http://www.test1.org", "test1"));
         ArrayList arrayList = soap11Header.getHeaderBlocksWithNSURI(
                 "http://www.test1.org");
         assertTrue(
@@ -154,7 +154,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 "SOAP 1.2 Header Test : - After calling addHeaderBlock method, getChildren method returns empty iterator",
                 headerBlock1 == null);
         assertTrue("SOAP 1.2 Header Test : - HeaderBlock1 local name mismatch",
-                headerBlock1.getLocalName().equals("echoOk1"));
+                   headerBlock1.getLocalName().equals("echoOk1"));
         assertTrue(
                 "SOAP 1.2 Header Test : - HeaderBlock1 namespace uri mismatch",
                 headerBlock1.getNamespace().getNamespaceURI().equals(
@@ -165,7 +165,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 "SOAP 1.2 Header Test : - After calling addHeaderBlock method, getChildren method returns an iterator with only one object",
                 headerBlock2 == null);
         assertTrue("SOAP 1.2 Header Test : - HeaderBlock2 local name mismatch",
-                headerBlock2.getLocalName().equals("echoOk2"));
+                   headerBlock2.getLocalName().equals("echoOk2"));
         assertTrue(
                 "SOAP 1.2 Header Test : - HeaderBlock2 namespace uri mismatch",
                 headerBlock2.getNamespace().getNamespaceURI().equals(
@@ -204,7 +204,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
 
         SOAPHeaderBlock headerBlock1 = soap12Header.addHeaderBlock("echoOk2",
-                namespace);
+                                                                   namespace);
         headerBlock1.setRole(
                 "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
         headerBlock1.setMustUnderstand(true);
@@ -220,10 +220,10 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 "SOAP 1.2 Header Test : - examineMustUnderstandHeaderBlocks method returns empty iterator",
                 headerBlock == null);
         assertTrue("SOAP 1.2 Header Test : - HeaderBlock local name mismatch",
-                headerBlock.getLocalName().equals("echoOk2"));
+                   headerBlock.getLocalName().equals("echoOk2"));
         assertTrue("SOAP 1.2 Header Test : - HeaderBlock role value mismatch",
-                headerBlock.getRole().equals(
-                        "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver"));
+                   headerBlock.getRole().equals(
+                           "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver"));
         assertFalse(
                 "SOAP 1.2 Header Test : - examineMustUnderstandHeaderBlocks method returns an iterator with more than one object",
                 iterator.hasNext());
@@ -239,7 +239,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 "SOAP 1.2 Header Test : - After calling addHeaderBlock method twice, examineAllHeaderBlocks method returns empty iterator",
                 headerBlock1 == null);
         assertTrue("SOAP 1.2 Header Test : - HeaderBlock1 local name mismatch",
-                headerBlock1.getLocalName().equals("echoOk1"));
+                   headerBlock1.getLocalName().equals("echoOk1"));
         assertTrue(
                 "SOAP 1.2 Header Test : - HeaderBlock1 namespace uri mismatch",
                 headerBlock1.getNamespace().getNamespaceURI().equals(
@@ -250,7 +250,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
                 "SOAP 1.2 Header Test : - After calling addHeaderBlock method twice, examineAllHeaderBlocks method returns an iterator with only one object",
                 headerBlock2 == null);
         assertTrue("SOAP 1.2 Header Test : - HeaderBlock2 local name mismatch",
-                headerBlock2.getLocalName().equals("echoOk2"));
+                   headerBlock2.getLocalName().equals("echoOk2"));
         assertTrue(
                 "SOAP 1.2 Header Test : - HeaderBlock2 namespace uri mismatch",
                 headerBlock2.getNamespace().getNamespaceURI().equals(
@@ -267,7 +267,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
     public void testSOAP12getHeaderBlocksWithNSURI() {
         soap12Header.addHeaderBlock("echoOk1", namespace);
         soap12Header.addHeaderBlock("echoOk2",
-                omFactory.createOMNamespace("http://www.test1.org", "test1"));
+                                    omFactory.createOMNamespace("http://www.test1.org", "test1"));
         ArrayList arrayList = soap12Header.getHeaderBlocksWithNSURI(
                 "http://www.test1.org");
         assertTrue(

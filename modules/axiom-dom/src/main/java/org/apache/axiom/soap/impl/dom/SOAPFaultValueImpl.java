@@ -28,12 +28,12 @@ public abstract class SOAPFaultValueImpl extends SOAPElement implements SOAPFaul
     protected SOAPFaultValueImpl(OMElement parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, true,
-                factory);
+              factory);
     }
 
     protected SOAPFaultValueImpl(OMElement parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                                 SOAPFactory factory) {
         super(parent, SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, builder,
-                factory);
+              factory);
     }
 }

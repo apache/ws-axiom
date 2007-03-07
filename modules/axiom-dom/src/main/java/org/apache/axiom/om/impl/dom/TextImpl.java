@@ -16,13 +16,20 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.attachments.utils.DataHandlerUtils;
-import org.apache.axiom.om.*;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
-import org.apache.axiom.om.util.Base64;
-import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.om.util.TextHelper;
+import org.apache.axiom.om.util.UUIDGenerator;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
@@ -42,42 +49,34 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     private boolean isBinary;
 
     private String contentID = null;
-    
+
     protected OMNamespace textNS = null;
-    
+
     protected char[] charArray;
 
     /**
-     * Field dataHandler contains the DataHandler. Declaring as Object to remove
-     * the dependency on Javax.activation.DataHandler
+     * Field dataHandler contains the DataHandler. Declaring as Object to remove the dependency on
+     * Javax.activation.DataHandler
      */
     private Object dataHandlerObject = null;
 
-    /**
-     * Field nameSpace is used when serializing Binary stuff as MTOM optimized.
-     */
+    /** Field nameSpace is used when serializing Binary stuff as MTOM optimized. */
     protected OMNamespace ns = null;
 
-    /**
-     * Field localName is used when serializing Binary stuff as MTOM optimized.
-     */
+    /** Field localName is used when serializing Binary stuff as MTOM optimized. */
     protected String localName = "Include";
 
-    /**
-     * Field attribute is used when serializing Binary stuff as MTOM optimized.
-     */
+    /** Field attribute is used when serializing Binary stuff as MTOM optimized. */
     protected OMAttribute attribute;
 
-    /**
-     * Field nameSpace used when serializing Binary stuff as MTOM optimized.
-     */
+    /** Field nameSpace used when serializing Binary stuff as MTOM optimized. */
     public static final OMNamespace XOP_NS = new OMNamespaceImpl(
             "http://www.w3.org/2004/08/xop/include", "xop");
-    
+
     /**
-     * Creates a text node with the given text required by the OMDOMFactory. The
-     * owner document should be set properly when appending this to a DOM tree.
-     * 
+     * Creates a text node with the given text required by the OMDOMFactory. The owner document
+     * should be set properly when appending this to a DOM tree.
+     *
      * @param text
      */
     public TextImpl(String text, OMFactory factory) {
@@ -91,13 +90,12 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     /**
      * @param contentID
      * @param parent
-     * @param builder
-     *            Used when the builder is encountered with a XOP:Include tag
-     *            Stores a reference to the builder and the content-id. Supports
-     *            deffered parsing of MIME messages
+     * @param builder   Used when the builder is encountered with a XOP:Include tag Stores a
+     *                  reference to the builder and the content-id. Supports deffered parsing of
+     *                  MIME messages
      */
     public TextImpl(String contentID, OMContainer parent,
-            OMXMLParserWrapper builder, OMFactory factory) {
+                    OMXMLParserWrapper builder, OMFactory factory) {
         super((DocumentImpl) ((ParentNode) parent).getOwnerDocument(), factory);
         this.contentID = contentID;
         this.optimize = true;
@@ -108,12 +106,12 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     }
 
     public TextImpl(String text, String mimeType, boolean optimize,
-            OMFactory factory) {
+                    OMFactory factory) {
         this(text, mimeType, optimize, true, factory);
     }
 
     public TextImpl(String text, String mimeType, boolean optimize,
-            boolean isBinary, OMFactory factory) {
+                    boolean isBinary, OMFactory factory) {
         this(text, factory);
         this.mimeType = mimeType;
         this.optimize = optimize;
@@ -122,10 +120,10 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
 
     /**
      * @param dataHandler
-     * @param optimize
-     *            To send binary content. Created progrmatically.
+     * @param optimize    To send binary content. Created progrmatically.
      */
-    public TextImpl(DocumentImpl ownerNode, Object dataHandler, boolean optimize, OMFactory factory) {
+    public TextImpl(DocumentImpl ownerNode, Object dataHandler, boolean optimize,
+                    OMFactory factory) {
         super(ownerNode, factory);
         this.dataHandlerObject = dataHandler;
         this.isBinary = true;
@@ -134,9 +132,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         this.ns = XOP_NS;
     }
 
-    /**
-     * @param ownerNode
-     */
+    /** @param ownerNode  */
     public TextImpl(DocumentImpl ownerNode, OMFactory factory) {
         super(ownerNode, factory);
         this.done = true;
@@ -160,13 +156,13 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         this.done = true;
         this.ns = XOP_NS;
     }
-    
+
     /**
      * @param ownerNode
      * @param value
      */
     public TextImpl(DocumentImpl ownerNode, String value, String mimeType,
-            boolean optimize, OMFactory factory) {
+                    boolean optimize, OMFactory factory) {
         this(ownerNode, value, factory);
         this.mimeType = mimeType;
         this.optimize = optimize;
@@ -174,43 +170,44 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         done = true;
     }
 
-    public TextImpl(OMContainer parent, QName text,OMFactory factory) {
+    public TextImpl(OMContainer parent, QName text, OMFactory factory) {
         this(parent, text, OMNode.TEXT_NODE, factory);
-        
+
     }
-    
+
     public TextImpl(OMContainer parent, QName text, int nodeType,
-            OMFactory factory) {
-        this(((ElementImpl)parent).ownerNode, factory);
-        if(text != null) {
-            this.textNS = ((ElementImpl) parent).findNamespace(text.getNamespaceURI(), text.getPrefix());
+                    OMFactory factory) {
+        this(((ElementImpl) parent).ownerNode, factory);
+        if (text != null) {
+            this.textNS =
+                    ((ElementImpl) parent).findNamespace(text.getNamespaceURI(), text.getPrefix());
         } else {
-            
+
         }
         this.textValue = new StringBuffer((text == null) ? "" : text.getLocalPart());
         this.done = true;
     }
+
     /**
-     * Breaks this node into two nodes at the specified offset, keeping both in
-     * the tree as siblings. After being split, this node will contain all the
-     * content up to the offset point. A new node of the same type, which
-     * contains all the content at and after the offset point, is returned. If
-     * the original node had a parent node, the new node is inserted as the next
-     * sibling of the original node. When the offset is equal to the length of
-     * this node, the new node has no data.
+     * Breaks this node into two nodes at the specified offset, keeping both in the tree as
+     * siblings. After being split, this node will contain all the content up to the offset point. A
+     * new node of the same type, which contains all the content at and after the offset point, is
+     * returned. If the original node had a parent node, the new node is inserted as the next
+     * sibling of the original node. When the offset is equal to the length of this node, the new
+     * node has no data.
      */
     public Text splitText(int offset) throws DOMException {
         if (this.isReadonly()) {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN,
-                            "NO_MODIFICATION_ALLOWED_ERR", null));
+                                   DOMMessageFormatter.formatMessage(
+                                           DOMMessageFormatter.DOM_DOMAIN,
+                                           "NO_MODIFICATION_ALLOWED_ERR", null));
         }
         if (offset < 0 || offset > this.textValue.length()) {
             throw new DOMException(DOMException.INDEX_SIZE_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN, "INDEX_SIZE_ERR",
-                            null));
+                                   DOMMessageFormatter.formatMessage(
+                                           DOMMessageFormatter.DOM_DOMAIN, "INDEX_SIZE_ERR",
+                                           null));
         }
         String newValue = this.textValue.substring(offset);
         this.deleteData(offset, this.textValue.length());
@@ -291,7 +288,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
 
     /**
      * Writes the relevant output.
-     * 
+     *
      * @param writer
      * @throws XMLStreamException
      */
@@ -328,7 +325,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     public boolean isCharacters() {
         return charArray != null;
     }
-    
+
     private String getTextFromProperPlace() {
         return charArray != null ? new String(charArray) : textValue.toString();
     }
@@ -382,7 +379,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
          * this should return a DataHandler containing the binary data
          * reperesented by the Base64 strings stored in OMText
          */
-        if ((textValue != null|| charArray != null || textNS != null) & isBinary) {
+        if ((textValue != null || charArray != null || textNS != null) & isBinary) {
             String text = textNS == null ? getTextFromProperPlace() : getTextString();
             return DataHandlerUtils
                     .getDataHandlerFromText(text, mimeType);
@@ -405,7 +402,8 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
                 getDataHandler();
             }
             InputStream inStream;
-            javax.activation.DataHandler dataHandler = (javax.activation.DataHandler) dataHandlerObject;
+            javax.activation.DataHandler dataHandler =
+                    (javax.activation.DataHandler) dataHandlerObject;
             try {
                 inStream = dataHandler.getDataSource().getInputStream();
             } catch (IOException e) {
@@ -430,9 +428,9 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
                 }
                 // send binary as MTOM optimised
                 this.attribute = new AttrImpl(this.ownerNode, "href",
-                        new NamespaceImpl("", ""), 
-                        "cid:" + getContentID(),
-                        this.factory);
+                                              new NamespaceImpl("", ""),
+                                              "cid:" + getContentID(),
+                                              this.factory);
                 this.serializeStartpart(writer);
                 writer.writeOptimized(this);
                 writer.writeEndElement();
@@ -455,7 +453,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
                     .getLocalName());
         } else {
             writer.writeStartElement(prefix, this.getLocalName(),
-                    nameSpaceName);
+                                     nameSpaceName);
             writer.setPrefix(prefix, nameSpaceName);
         }
         // add the elements attribute "href"
@@ -466,7 +464,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
 
     /**
      * Method serializeAttribute.
-     * 
+     *
      * @param attr
      * @param writer
      * @throws XMLStreamException
@@ -497,7 +495,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
 
     /**
      * Method serializeNamespace.
-     * 
+     *
      * @param namespace
      * @param writer
      * @throws XMLStreamException
@@ -521,13 +519,12 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     public String getLocalName() {
         return this.localName;
     }
-    
-    
+
     /*
-     * DOM-Level 3 methods
-     */
-    
-    
+    * DOM-Level 3 methods
+    */
+
+
     public String getWholeText() {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
@@ -546,32 +543,32 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     public String toString() {
         return (this.textValue != null) ? textValue.toString() : "";
     }
-    
-	/* (non-Javadoc)
-	 * @see org.apache.axiom.om.OMNode#buildAll()
-	 */
-	public void buildWithAttachments() {
-		this.build();
-		if (isOptimized())
-		{
-			this.getDataHandler();
-		}
-	}
-	public boolean isBinary() {
-		return isBinary;
-	}
+
+    /* (non-Javadoc)
+      * @see org.apache.axiom.om.OMNode#buildAll()
+      */
+    public void buildWithAttachments() {
+        this.build();
+        if (isOptimized()) {
+            this.getDataHandler();
+        }
+    }
+
+    public boolean isBinary() {
+        return isBinary;
+    }
 
     /**
-     * Receiving binary can happen as either MTOM attachments or as Base64 Text
-     * In the case of Base64 user has to explicitly specify that the content is 
-     * binary, before calling getDataHandler(), getInputStream()....
+     * Receiving binary can happen as either MTOM attachments or as Base64 Text In the case of Base64
+     * user has to explicitly specify that the content is binary, before calling getDataHandler(),
+     * getInputStream()....
      */
-	public void setBinary(boolean value) {
-		this.isBinary = value;
-		
-	}
+    public void setBinary(boolean value) {
+        this.isBinary = value;
 
-	public OMNamespace getNamespace() {
-		return textNS;
-	}
+    }
+
+    public OMNamespace getNamespace() {
+        return textNS;
+    }
 }

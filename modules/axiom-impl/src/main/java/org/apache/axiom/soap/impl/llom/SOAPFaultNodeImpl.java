@@ -19,8 +19,8 @@ package org.apache.axiom.soap.impl.llom;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -53,47 +53,49 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
         return this.getText();
     }
 
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-            // select the builder
-            short builderType = PULL_TYPE_BUILDER;    // default is pull type
-            if (builder != null) {
-                builderType = this.builder.getBuilderType();
-            }
-            if ((builderType == PUSH_TYPE_BUILDER)
-                    && (builder.getRegisteredContentHandler() == null)) {
-                builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(writer));
-            }
-
-
-            if (!cache) {
-                //No caching
-                if (this.firstChild != null) {
-                    OMSerializerUtil.serializeStartpart(this, writer);
-                    ((OMNodeEx)firstChild).internalSerializeAndConsume(writer);
-                    OMSerializerUtil.serializeEndpart(writer);
-                } else if (!this.done) {
-                    if (builderType == PULL_TYPE_BUILDER) {
-                        OMSerializerUtil.serializeByPullStream(this, writer);
-                    } else {
-                        OMSerializerUtil.serializeStartpart(this, writer);
-                        builder.setCache(cache);
-                        builder.next();
-                        OMSerializerUtil.serializeEndpart(writer);
-                    }
-                } else {
-                    OMSerializerUtil.serializeNormal(this, writer, cache);
-                }
-                // do not serialise the siblings
-
-
-            } else {
-                //Cached
-                OMSerializerUtil.serializeNormal(this, writer, cache);
-
-                // do not serialise the siblings
-            }
-
-
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
+            throws XMLStreamException {
+        // select the builder
+        short builderType = PULL_TYPE_BUILDER;    // default is pull type
+        if (builder != null) {
+            builderType = this.builder.getBuilderType();
         }
+        if ((builderType == PUSH_TYPE_BUILDER)
+                && (builder.getRegisteredContentHandler() == null)) {
+            builder.registerExternalContentHandler(
+                    new StreamWriterToContentHandlerConverter(writer));
+        }
+
+
+        if (!cache) {
+            //No caching
+            if (this.firstChild != null) {
+                OMSerializerUtil.serializeStartpart(this, writer);
+                ((OMNodeEx) firstChild).internalSerializeAndConsume(writer);
+                OMSerializerUtil.serializeEndpart(writer);
+            } else if (!this.done) {
+                if (builderType == PULL_TYPE_BUILDER) {
+                    OMSerializerUtil.serializeByPullStream(this, writer);
+                } else {
+                    OMSerializerUtil.serializeStartpart(this, writer);
+                    builder.setCache(cache);
+                    builder.next();
+                    OMSerializerUtil.serializeEndpart(writer);
+                }
+            } else {
+                OMSerializerUtil.serializeNormal(this, writer, cache);
+            }
+            // do not serialise the siblings
+
+
+        } else {
+            //Cached
+            OMSerializerUtil.serializeNormal(this, writer, cache);
+
+            // do not serialise the siblings
+        }
+
+
+    }
 
 }

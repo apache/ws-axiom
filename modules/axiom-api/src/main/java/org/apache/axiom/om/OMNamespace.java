@@ -16,9 +16,7 @@
 
 package org.apache.axiom.om;
 
-/**
- * Interface OMNamespace
- */
+/** Interface OMNamespace */
 public interface OMNamespace {
     /**
      * Method equals.
@@ -39,14 +37,14 @@ public interface OMNamespace {
     /**
      * Method getName.
      *
-     * @deprecated This method is deprecated. Please use getNamespaceURI() method instead.
-     *
      * @return Returns String.
+     * @deprecated This method is deprecated. Please use getNamespaceURI() method instead.
      */
     public String getName();
 
     /**
      * Provides the namespace URI of this namespace.
+     *
      * @return - the namespace URI of the namespace.
      */
     public String getNamespaceURI();

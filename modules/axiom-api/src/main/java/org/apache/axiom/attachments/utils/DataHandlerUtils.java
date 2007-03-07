@@ -24,16 +24,15 @@ import javax.activation.DataHandler;
 
 public class DataHandlerUtils {
 
-  public static Object getDataHandlerFromText(String value, String mimeType)
-  {
-      ByteArrayDataSource dataSource;
-      byte[] data = Base64.decode(value);
-      if (mimeType != null) {
-          dataSource = new ByteArrayDataSource(data, mimeType);
-      } else {
-          // Assumes type as application/octet-stream
-          dataSource = new ByteArrayDataSource(data);
-      }
-      return new DataHandler(dataSource);
-  }
+    public static Object getDataHandlerFromText(String value, String mimeType) {
+        ByteArrayDataSource dataSource;
+        byte[] data = Base64.decode(value);
+        if (mimeType != null) {
+            dataSource = new ByteArrayDataSource(data, mimeType);
+        } else {
+            // Assumes type as application/octet-stream
+            dataSource = new ByteArrayDataSource(data);
+        }
+        return new DataHandler(dataSource);
+    }
 }

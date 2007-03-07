@@ -26,18 +26,12 @@ import org.xml.sax.SAXException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-/**
- * Class StreamWriterToContentHandlerConverter
- */
+/** Class StreamWriterToContentHandlerConverter */
 public class StreamWriterToContentHandlerConverter implements ContentHandler {
-    /**
-     * Field log
-     */
+    /** Field log */
     private Log log = LogFactory.getLog(getClass());
 
-    /**
-     * Field writer
-     */
+    /** Field writer */
     private XMLStreamWriter writer;
 
     /**
@@ -224,7 +218,7 @@ public class StreamWriterToContentHandlerConverter implements ContentHandler {
                 int attCount = atts.getLength();
                 for (int i = 0; i < attCount; i++) {
                     writer.writeAttribute(atts.getURI(i), localName,
-                            atts.getValue(i));
+                                          atts.getValue(i));
                 }
             }
         } catch (XMLStreamException e) {

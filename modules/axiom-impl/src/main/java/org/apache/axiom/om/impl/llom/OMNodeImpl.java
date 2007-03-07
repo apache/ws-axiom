@@ -16,7 +16,17 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.*;
+import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocType;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -29,43 +39,30 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
 import java.io.Writer;
 
-/**
- * Class OMNodeImpl
- */
+/** Class OMNodeImpl */
 public abstract class OMNodeImpl implements OMNode, OMNodeEx {
-    /**
-     * Field parent
-     */
+    /** Field parent */
     protected OMContainerEx parent;
 
-    /**
-     * Field nextSibling
-     */
+    /** Field nextSibling */
     protected OMNodeImpl nextSibling;
 
-    /**
-     * Field previousSibling
-     */
+    /** Field previousSibling */
     protected OMNodeImpl previousSibling;
-    /**
-     * Field builder
-     */
+    /** Field builder */
     public OMXMLParserWrapper builder;
 
-    /**
-     * Field done
-     */
+    /** Field done */
     protected boolean done = false;
 
-    /**
-     * Field nodeType
-     */
+    /** Field nodeType */
     protected int nodeType;
 
     protected OMFactory factory;
 
     /**
      * Constructor OMNodeImpl
+     *
      * @param factory The <code>OMFactory</code> that created this
      */
     public OMNodeImpl(OMFactory factory) {
@@ -75,7 +72,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     /**
      * For a node to exist there must be a parent.
      *
-     * @param parent Parent <code>OMContainer</code> of this node
+     * @param parent  Parent <code>OMContainer</code> of this node
      * @param factory The <code>OMFactory</code> that created this
      */
     public OMNodeImpl(OMContainer parent, OMFactory factory, boolean done) {
@@ -85,7 +82,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
             this.parent = (OMContainerEx) parent;
             parent.addChild(this);
         }
-        
+
     }
 
     /**
@@ -109,22 +106,21 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
             return;
         }
 
-        //If we are asked to assign a new parent in place 
+        //If we are asked to assign a new parent in place
         //of an existing one. We should detach this node
         //from the previous parent.
-        if (element!=null){
+        if (element != null) {
             if (this.parent != null) {
                 this.detach();
             }
             this.parent = (OMContainerEx) element;
-        }else{
+        } else {
             this.parent = null;
         }
     }
 
     /**
-     * Returns the next sibling. This can be an OMAttribute or
-     * OMText or OMElement for others.
+     * Returns the next sibling. This can be an OMAttribute or OMText or OMElement for others.
      *
      * @return Returns OMNode.
      * @throws org.apache.axiom.om.OMException
@@ -143,19 +139,19 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * @param node
      */
     public void setNextOMSibling(OMNode node) {
-		if (node ==null || node.getOMFactory() instanceof OMLinkedListImplFactory) {
-			this.nextSibling = (OMNodeImpl) node;
-		} else {
-			this.nextSibling = (OMNodeImpl)importNode(node);
-		}
+        if (node == null || node.getOMFactory() instanceof OMLinkedListImplFactory) {
+            this.nextSibling = (OMNodeImpl) node;
+        } else {
+            this.nextSibling = (OMNodeImpl) importNode(node);
+        }
         this.nextSibling = (OMNodeImpl) node;
     }
 
 
     /**
-     * Indicates whether parser has parsed this information item completely or not.
-     * If some information is not available in the item, one has to check this
-     * attribute to make sure that, this item has been parsed completely or not.
+     * Indicates whether parser has parsed this information item completely or not. If some
+     * information is not available in the item, one has to check this attribute to make sure that,
+     * this item has been parsed completely or not.
      *
      * @return Returns boolean.
      */
@@ -170,10 +166,10 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      */
     public void setComplete(boolean state) {
         this.done = state;
-        if(parent != null){
-            if(!done) {
+        if (parent != null) {
+            if (!done) {
                 parent.setComplete(false);
-            }else if(parent instanceof OMElementImpl){
+            } else if (parent instanceof OMElementImpl) {
                 ((OMElementImpl) parent).notifyChildComplete();
             }
         }
@@ -218,7 +214,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     public void insertSiblingAfter(OMNode sibling) throws OMException {
         if (parent == null) {
             throw new OMException("Parent can not be null");
-        }else if(this == sibling){
+        } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
         ((OMNodeEx) sibling).setParent(parent);
@@ -245,7 +241,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     public void insertSiblingBefore(OMNode sibling) throws OMException {
         if (parent == null) {
             throw new OMException("Parent can not be null");
-        } else if(this == sibling){
+        } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
         if (sibling instanceof OMNodeImpl) {
@@ -299,17 +295,18 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * @param previousSibling
      */
     public void setPreviousOMSibling(OMNode previousSibling) {
-		if (previousSibling ==null || previousSibling.getOMFactory() instanceof OMLinkedListImplFactory) {
-			this.previousSibling = (OMNodeImpl) previousSibling;
-		} else {
-			this.previousSibling = (OMNodeImpl)importNode(previousSibling);
-		}   
+        if (previousSibling == null ||
+                previousSibling.getOMFactory() instanceof OMLinkedListImplFactory) {
+            this.previousSibling = (OMNodeImpl) previousSibling;
+        } else {
+            this.previousSibling = (OMNodeImpl) importNode(previousSibling);
+        }
     }
 
     /**
-     * Parses this node and builds the object structure in memory.
-     * However a node, created programmatically, will have done set to true by
-     * default and this will cause populateyourself not to work properly!
+     * Parses this node and builds the object structure in memory. However a node, created
+     * programmatically, will have done set to true by default and this will cause populateyourself
+     * not to work properly!
      *
      * @throws OMException
      */
@@ -320,13 +317,12 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     }
 
     /**
-     * Parses this node and builds the object structure in memory. AXIOM
-     * supports two levels of deffered building. First is deffered building of
-     * AXIOM using StAX. Second level is the deffered building of attachments.
-     * AXIOM reads in the attachements from the stream only when user asks by
-     * calling getDataHandler(). build() method builds the OM without the
-     * attachments. buildAll() builds the OM together with attachement data.
-     * This becomes handy when user wants to free the input stream.
+     * Parses this node and builds the object structure in memory. AXIOM supports two levels of
+     * deffered building. First is deffered building of AXIOM using StAX. Second level is the
+     * deffered building of attachments. AXIOM reads in the attachements from the stream only when
+     * user asks by calling getDataHandler(). build() method builds the OM without the attachments.
+     * buildAll() builds the OM together with attachement data. This becomes handy when user wants
+     * to free the input stream.
      */
     public void buildWithAttachments() {
         if (!this.done) {
@@ -339,6 +335,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      *
      * @param xmlWriter
      * @throws javax.xml.stream.XMLStreamException
+     *
      */
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(xmlWriter);
@@ -399,36 +396,40 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
         internalSerialize(writer);
         writer.flush();
-        if(format.isAutoCloseWriter()){
+        if (format.isAutoCloseWriter()) {
             writer.close();
         }
     }
 
     public void serialize(Writer writer2, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
+        MTOMXMLStreamWriter writer =
+                new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
         writer.setOutputFormat(format);
         internalSerialize(writer);
         writer.flush();
-        if(format.isAutoCloseWriter()){
+        if (format.isAutoCloseWriter()) {
             writer.close();
         }
     }
 
-    public void serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
+    public void serializeAndConsume(OutputStream output, OMOutputFormat format)
+            throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
         internalSerializeAndConsume(writer);
         writer.flush();
-        if(format.isAutoCloseWriter()){
+        if (format.isAutoCloseWriter()) {
             writer.close();
         }
     }
 
-    public void serializeAndConsume(Writer writer2, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
+    public void serializeAndConsume(Writer writer2, OMOutputFormat format)
+            throws XMLStreamException {
+        MTOMXMLStreamWriter writer =
+                new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
         writer.setOutputFormat(format);
         internalSerializeAndConsume(writer);
         writer.flush();
-        if(format.isAutoCloseWriter()){
+        if (format.isAutoCloseWriter()) {
             writer.close();
         }
     }
@@ -436,69 +437,66 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     public OMFactory getOMFactory() {
         return this.factory;
     }
-    
- 	/**	
-	 * This method is intended only to be used by Axiom intenals when merging Objects
-	 * from different Axiom implementations to the LLOM implementation.
-	 * 
-	 * @param child
-	 */
- 	protected OMNode importNode(OMNode child)
- 	{
- 		int type = child.getType();
-		switch (type) {
-		case (OMNode.ELEMENT_NODE): 
-		{
-			OMElement childElement = (OMElement) child;
-			OMElement newElement = (new StAXOMBuilder(this.factory, childElement
-					.getXMLStreamReader())).getDocumentElement();
-			newElement.buildWithAttachments();
-			return newElement;
-		}
-		case (OMNode.TEXT_NODE): 
-		{
-			OMText importedText = (OMText) child;
-			OMText newText;
-			if (importedText.isBinary()) {
-				boolean isOptimize = importedText.isOptimized();
-				newText = this.factory.createOMText(importedText
-						.getDataHandler(), isOptimize);
-			}
-			else if (importedText.getNamespace()!=null)
-			{
-				newText = this.factory.createOMText(null,importedText.getTextAsQName(),importedText.getType());
-			}
-			else if (importedText.isCharacters()) {
-				newText = this.factory.createOMText(null, importedText
-						.getTextCharacters(), importedText.getType());
-			} else {
-				newText = this.factory.createOMText(null, importedText
-						.getText()/*, importedText.getOMNodeType()*/);
-			}
-			return newText;
-		}
-		
-		case (OMNode.PI_NODE): {
-			OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
-			OMProcessingInstruction newPI = this.factory
-					.createOMProcessingInstruction(null, importedPI
-							.getTarget(), importedPI.getValue());
-			return newPI;
-		}
-		case (OMNode.COMMENT_NODE): {
-			OMComment importedComment = (OMComment) child;
-			OMComment newComment = this.factory.createOMComment(null,
-					importedComment.getValue());
-			return newComment;
-		}
-		case (OMNode.DTD_NODE) :{
-			OMDocType importedDocType = (OMDocType)child;
-			OMDocType newDocType = this.factory.createOMDocType(null,importedDocType.getValue());
-			return newDocType;
-		}
-		default: {
-			throw new UnsupportedOperationException("Not Implemented Yet for the given node type");
-		}
-		}
- 	}
+
+    /**
+     * This method is intended only to be used by Axiom intenals when merging Objects from different
+     * Axiom implementations to the LLOM implementation.
+     *
+     * @param child
+     */
+    protected OMNode importNode(OMNode child) {
+        int type = child.getType();
+        switch (type) {
+            case (OMNode.ELEMENT_NODE): {
+                OMElement childElement = (OMElement) child;
+                OMElement newElement = (new StAXOMBuilder(this.factory, childElement
+                        .getXMLStreamReader())).getDocumentElement();
+                newElement.buildWithAttachments();
+                return newElement;
+            }
+            case (OMNode.TEXT_NODE): {
+                OMText importedText = (OMText) child;
+                OMText newText;
+                if (importedText.isBinary()) {
+                    boolean isOptimize = importedText.isOptimized();
+                    newText = this.factory.createOMText(importedText
+                            .getDataHandler(), isOptimize);
+                } else if (importedText.getNamespace() != null) {
+                    newText = this.factory.createOMText(null, importedText.getTextAsQName(),
+                                                        importedText.getType());
+                } else if (importedText.isCharacters()) {
+                    newText = this.factory.createOMText(null, importedText
+                            .getTextCharacters(), importedText.getType());
+                } else {
+                    newText = this.factory.createOMText(null, importedText
+                            .getText()/*, importedText.getOMNodeType()*/);
+                }
+                return newText;
+            }
+
+            case (OMNode.PI_NODE): {
+                OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
+                OMProcessingInstruction newPI = this.factory
+                        .createOMProcessingInstruction(null, importedPI
+                                .getTarget(), importedPI.getValue());
+                return newPI;
+            }
+            case (OMNode.COMMENT_NODE): {
+                OMComment importedComment = (OMComment) child;
+                OMComment newComment = this.factory.createOMComment(null,
+                                                                    importedComment.getValue());
+                return newComment;
+            }
+            case (OMNode.DTD_NODE) : {
+                OMDocType importedDocType = (OMDocType) child;
+                OMDocType newDocType =
+                        this.factory.createOMDocType(null, importedDocType.getValue());
+                return newDocType;
+            }
+            default: {
+                throw new UnsupportedOperationException(
+                        "Not Implemented Yet for the given node type");
+            }
+        }
+    }
 }

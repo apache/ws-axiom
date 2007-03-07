@@ -39,32 +39,32 @@ public class OMFaultSerializerTest extends AbstractTestCase {
                                 new FileReader(
                                         getTestResourceFile("soap/soap11/soapfault1.xml")));
         reader2 =
-            XMLInputFactory.newInstance().
-                    createXMLStreamReader(
-                            new FileReader(
-                                    getTestResourceFile("soap/soap11/soapfault2.xml")));
+                XMLInputFactory.newInstance().
+                        createXMLStreamReader(
+                                new FileReader(
+                                        getTestResourceFile("soap/soap11/soapfault2.xml")));
 
     }
 
     /**
-     * Test SOAPFault that does not disable the default namespace
-     * (i.e. does not use xmlns="")
+     * Test SOAPFault that does not disable the default namespace (i.e. does not use xmlns="")
      *
      * @throws Exception
      */
     public void test1() throws Exception {
-    	StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(reader1, null);
+        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(reader1, null);
         OMElement ome = builder.getDocumentElement();
         ome.toString();
 //        System.out.println(ome);
     }
+
     /**
-     * Test SOAPFault that does disable the default namespace
-     * (i.e. does use xmlns="")
+     * Test SOAPFault that does disable the default namespace (i.e. does use xmlns="")
+     *
      * @throws Exception
      */
     public void test2() throws Exception {
-    	StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(reader2, null);
+        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(reader2, null);
         OMElement ome = builder.getDocumentElement();
         ome.toString();
 //        System.out.println(ome);

@@ -16,9 +16,7 @@
 
 package org.apache.axiom.om;
 
-/**
- * Interface OMXMLParserWrapper
- */
+/** Interface OMXMLParserWrapper */
 public interface OMXMLParserWrapper {
     /**
      * Proceed the parser one step and return the event value.
@@ -31,11 +29,10 @@ public interface OMXMLParserWrapper {
     int next() throws OMException;
 
     /**
-     * Discards the current element.
-     * This will remove the given element and its decendants.
+     * Discards the current element. This will remove the given element and its decendants.
      *
      * @param el
-     * @throws org.apache.axiom.om.OMException
+     * @throws OMException
      *
      * @throws OMException
      */
@@ -50,37 +47,30 @@ public interface OMXMLParserWrapper {
     void setCache(boolean b) throws OMException;
 
     /**
-     * Allows to access the underlying parser. Since the parser
-     * depends on the underlying implementation, an Object is returned.
-     * However the implementations may have restrictions in letting access to
-     * the parser.
+     * Allows to access the underlying parser. Since the parser depends on the underlying
+     * implementation, an Object is returned. However the implementations may have restrictions in
+     * letting access to the parser.
      *
      * @return Returns Object.
      */
     Object getParser();
 
-    /**
-     * @return Returns the complete status.
-     */
+    /** @return Returns the complete status. */
     boolean isCompleted();
 
-    /**
-     * @return Returns the document element.
-     */
+    /** @return Returns the document element. */
     OMElement getDocumentElement();
 
     /**
-     * Returns the type of the builder.
-     * Can be either PUSH_TYPE_BUILDER or PULL_TYPE_BUILDER.
+     * Returns the type of the builder. Can be either PUSH_TYPE_BUILDER or PULL_TYPE_BUILDER.
      *
      * @return Returns short.
      */
     short getBuilderType();
 
     /**
-     * Registers an external content handler. Especially useful for
-     * push type builders. Throws an unsupportedOperationException if
-     * such handler registration is not supported.
+     * Registers an external content handler. Especially useful for push type builders. Throws an
+     * unsupportedOperationException if such handler registration is not supported.
      *
      * @param obj
      */

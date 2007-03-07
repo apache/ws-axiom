@@ -17,8 +17,8 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -38,7 +38,7 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
     public SOAPFaultNodeImpl(SOAPFault parent, OMXMLParserWrapper builder,
                              SOAPFactory factory) {
         super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, builder,
-                factory);
+              factory);
     }
 
     public void setNodeValue(String uri) {
@@ -52,46 +52,46 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
     protected void internalSerialize(
             XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
-            // select the builder
-            short builderType = PULL_TYPE_BUILDER;    // default is pull type
-            if (builder != null) {
-                builderType = this.builder.getBuilderType();
-            }
-            if ((builderType == PUSH_TYPE_BUILDER)
-                    && (builder.getRegisteredContentHandler() == null)) {
-                builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(
-                            writer));
-            }
-
-            if (!cache) {
-                //No caching
-                if (this.firstChild != null) {
-                    OMSerializerUtil.serializeStartpart(this, writer);
-                    firstChild.internalSerializeAndConsume(writer);
-                    OMSerializerUtil.serializeEndpart(writer);
-                } else if (!this.done) {
-                    if (builderType == PULL_TYPE_BUILDER) {
-                        OMSerializerUtil.serializeByPullStream(this, writer);
-                    } else {
-                        OMSerializerUtil.serializeStartpart(this, writer);
-                        builder.setCache(cache);
-                        builder.next();
-                        OMSerializerUtil.serializeEndpart(writer);
-                    }
-                } else {
-                    OMSerializerUtil.serializeNormal(this, writer, cache);
-                }
-                // do not serialise the siblings
-
-
-            } else {
-                //Cached
-                OMSerializerUtil.serializeNormal(this, writer, cache);
-
-                // do not serialise the siblings
-            }
-
-
+        // select the builder
+        short builderType = PULL_TYPE_BUILDER;    // default is pull type
+        if (builder != null) {
+            builderType = this.builder.getBuilderType();
         }
+        if ((builderType == PUSH_TYPE_BUILDER)
+                && (builder.getRegisteredContentHandler() == null)) {
+            builder.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(
+                    writer));
+        }
+
+        if (!cache) {
+            //No caching
+            if (this.firstChild != null) {
+                OMSerializerUtil.serializeStartpart(this, writer);
+                firstChild.internalSerializeAndConsume(writer);
+                OMSerializerUtil.serializeEndpart(writer);
+            } else if (!this.done) {
+                if (builderType == PULL_TYPE_BUILDER) {
+                    OMSerializerUtil.serializeByPullStream(this, writer);
+                } else {
+                    OMSerializerUtil.serializeStartpart(this, writer);
+                    builder.setCache(cache);
+                    builder.next();
+                    OMSerializerUtil.serializeEndpart(writer);
+                }
+            } else {
+                OMSerializerUtil.serializeNormal(this, writer, cache);
+            }
+            // do not serialise the siblings
+
+
+        } else {
+            //Cached
+            OMSerializerUtil.serializeNormal(this, writer, cache);
+
+            // do not serialise the siblings
+        }
+
+
+    }
 
 }

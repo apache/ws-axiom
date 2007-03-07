@@ -24,18 +24,12 @@ import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 
 /**
- * Each of the following tests have a parent "person" and children "name", "age", "weight".
- * The parent is defined as either:
- *   a) a qualified name (QParent)
- *   b) an unqualified name (UParent)
- *   c) a qualified name using the default namespace (DParent)
- * 
- * Likewise the children are defined as either:
- *   a) qualified names (QChildren)
- *   b) unqualified children (UChildren) 
- *   c) qualified using the default namespace (DChildren)
- * 
- *
+ * Each of the following tests have a parent "person" and children "name", "age", "weight". The
+ * parent is defined as either: a) a qualified name (QParent) b) an unqualified name (UParent) c) a
+ * qualified name using the default namespace (DParent)
+ * <p/>
+ * Likewise the children are defined as either: a) qualified names (QChildren) b) unqualified
+ * children (UChildren) c) qualified using the default namespace (DChildren)
  */
 public class SerializationTest extends TestCase {
 
@@ -65,7 +59,8 @@ public class SerializationTest extends TestCase {
 
         String xml = personElem.toString();
 
-        assertEquals("Incorrect namespace serialization",2, xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
+        assertEquals("Incorrect namespace serialization", 2,
+                     xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
     }
 
     public void testDParentUChildren() {
@@ -91,8 +86,9 @@ public class SerializationTest extends TestCase {
 
         String xml = personElem.toString();
 
-        assertEquals("Incorrect namespace serialization",2, xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
-        assertEquals("Incorrect namespace serialization",4, xml.split("\"\"").length);
+        assertEquals("Incorrect namespace serialization", 2,
+                     xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
+        assertEquals("Incorrect namespace serialization", 4, xml.split("\"\"").length);
     }
 
     public void testDParentQChildren() {
@@ -118,7 +114,8 @@ public class SerializationTest extends TestCase {
 
         String xml = personElem.toString();
 
-        assertEquals("Incorrect namespace serialization",5, xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
+        assertEquals("Incorrect namespace serialization", 5,
+                     xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
     }
 
 
@@ -145,7 +142,8 @@ public class SerializationTest extends TestCase {
 
         String xml = personElem.toString();
 
-        assertEquals("Incorrect namespace serialization",2, xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
+        assertEquals("Incorrect namespace serialization", 2,
+                     xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
     }
 
     public void testQParentUChildren() {
@@ -171,8 +169,9 @@ public class SerializationTest extends TestCase {
 
         String xml = personElem.toString();
 
-        assertEquals("Incorrect default namespace serialization",2, xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
-        assertEquals("Incorrect namespace serialization",1, xml.split("\"\"").length);
+        assertEquals("Incorrect default namespace serialization", 2,
+                     xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
+        assertEquals("Incorrect namespace serialization", 1, xml.split("\"\"").length);
     }
 
     public void testQParentDChildren() {
@@ -198,7 +197,8 @@ public class SerializationTest extends TestCase {
 
         String xml = personElem.toString();
 
-        assertEquals("Incorrect default namespace serialization",5, xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
+        assertEquals("Incorrect default namespace serialization", 5,
+                     xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
     }
 
     public void testUParentUChildren() {
@@ -224,8 +224,9 @@ public class SerializationTest extends TestCase {
 
         String xml = personElem.toString();
 
-        assertEquals("Incorrect default namespace serialization",1, xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
-        assertEquals("Incorrect namespace serialization",1, xml.split("\"\"").length);
+        assertEquals("Incorrect default namespace serialization", 1,
+                     xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
+        assertEquals("Incorrect namespace serialization", 1, xml.split("\"\"").length);
     }
 
     public void testUParentQChildren() {
@@ -251,8 +252,9 @@ public class SerializationTest extends TestCase {
 
         String xml = personElem.toString();
 
-        assertEquals("Incorrect default namespace serialization",4, xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
-        assertEquals("Incorrect namespace serialization",1, xml.split("\"\"").length);
+        assertEquals("Incorrect default namespace serialization", 4,
+                     xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
+        assertEquals("Incorrect namespace serialization", 1, xml.split("\"\"").length);
     }
 
     public void testUParentDChildren() {
@@ -278,17 +280,15 @@ public class SerializationTest extends TestCase {
 
         String xml = personElem.toString();
 
-        assertEquals("Incorrect namespace serialization",4, xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
-        assertEquals("Incorrect namespace serialization",1, xml.split("\"\"").length);
+        assertEquals("Incorrect namespace serialization", 4,
+                     xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
+        assertEquals("Incorrect namespace serialization", 1, xml.split("\"\"").length);
     }
 
 
-
-
-
     /**
-     * Special case when OMElement is created with a null OMNamespace.
-     * In this case, that element must always belongs to the default, default namespace
+     * Special case when OMElement is created with a null OMNamespace. In this case, that element
+     * must always belongs to the default, default namespace
      */
     public void testNullOMNamespace() {
         OMFactory fac = OMAbstractFactory.getOMFactory();
@@ -302,24 +302,30 @@ public class SerializationTest extends TestCase {
 
         String xml = personElem.toString();
 
-        assertEquals("Incorrect namespace serialization",2, xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
+        assertEquals("Incorrect namespace serialization", 2,
+                     xml.split("http://ws.apache.org/axis2/apacheconasia/06").length);
         assertEquals("Incorrect serialization", 2, xml.split("xmlns=\"\"").length);
 
     }
 
-    public void testOMSerializationWithTwoNonBuiltOMElements(){
+    public void testOMSerializationWithTwoNonBuiltOMElements() {
         try {
             String sampleXMLOne = "<ChildOne><Name>ChildName</Name></ChildOne>";
             String sampleXMLTwo = "<ChildTwo><Name>ChildName</Name></ChildTwo>";
 
-            String expectedXML = "<Root><ChildOne><Name>ChildName</Name></ChildOne><ChildTwo><Name>ChildName</Name></ChildTwo></Root>";
+            String expectedXML =
+                    "<Root><ChildOne><Name>ChildName</Name></ChildOne><ChildTwo><Name>ChildName</Name></ChildTwo></Root>";
             OMFactory omFactory = OMAbstractFactory.getOMFactory();
 
             OMElement rootElement = omFactory.createOMElement("Root", null);
-            OMElement childOne = new StAXOMBuilder(new ByteArrayInputStream(sampleXMLOne.getBytes())).getDocumentElement();
+            OMElement childOne =
+                    new StAXOMBuilder(new ByteArrayInputStream(sampleXMLOne.getBytes()))
+                            .getDocumentElement();
             ((OMNodeEx) childOne).setParent(null);
             rootElement.addChild(childOne);
-            OMElement childTwo = new StAXOMBuilder(new ByteArrayInputStream(sampleXMLTwo.getBytes())).getDocumentElement();
+            OMElement childTwo =
+                    new StAXOMBuilder(new ByteArrayInputStream(sampleXMLTwo.getBytes()))
+                            .getDocumentElement();
             ((OMNodeEx) childTwo).setParent(null);
             rootElement.addChild(childTwo);
 

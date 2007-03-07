@@ -22,28 +22,18 @@ import org.apache.axiom.om.OMNamespace;
 
 import javax.xml.namespace.QName;
 
-/**
- * Class OMAttributeImpl
- */
+/** Class OMAttributeImpl */
 public class OMAttributeImpl implements OMAttribute {
-    /**
-     * Field localName
-     */
+    /** Field localName */
     private String localName;
 
-    /**
-     * Field value
-     */
+    /** Field value */
     private String value;
 
-    /**
-     * Field namespace
-     */
+    /** Field namespace */
     private OMNamespace namespace;
-    
-    /**
-     * <code>OMFactory</code> that created this <code>OMAttribute</code>
-     */
+
+    /** <code>OMFactory</code> that created this <code>OMAttribute</code> */
     private OMFactory factory;
 
     /**
@@ -53,22 +43,19 @@ public class OMAttributeImpl implements OMAttribute {
      * @param ns
      * @param value
      */
-    public OMAttributeImpl(String localName, OMNamespace ns, String value, 
-            OMFactory factory) {
+    public OMAttributeImpl(String localName, OMNamespace ns, String value,
+                           OMFactory factory) {
         this.localName = localName;
         this.value = value;
-        this.namespace = ns; 
+        this.namespace = ns;
         this.factory = factory;
     }
 
-    /**
-     *
-     * @return Returns QName.
-     */
+    /** @return Returns QName. */
     public QName getQName() {
-        if(namespace != null){
+        if (namespace != null) {
             return new QName(namespace.getNamespaceURI(), localName, namespace.getPrefix());
-        }else{
+        } else {
             return new QName(localName);
         }
     }
@@ -132,5 +119,5 @@ public class OMAttributeImpl implements OMAttribute {
     public OMFactory getOMFactory() {
         return this.factory;
     }
-    
+
 }

@@ -23,9 +23,7 @@ import javax.xml.namespace.QName;
 import java.util.Iterator;
 import java.util.Vector;
 
-/**
- * Implementation of org.w3c.dom.NodeList
- */
+/** Implementation of org.w3c.dom.NodeList */
 public class NodeListImpl implements NodeList {
 
     protected NodeImpl rootNode;
@@ -47,12 +45,12 @@ public class NodeListImpl implements NodeList {
     }
 
     /** Constructor for Namespace support. */
-    public NodeListImpl(NodeImpl rootNode, String namespaceURI, 
-                                                    String localName) {
+    public NodeListImpl(NodeImpl rootNode, String namespaceURI,
+                        String localName) {
         this(rootNode, localName);
-        this.nsName = (namespaceURI != null && !namespaceURI.equals("")) 
-                       ? namespaceURI
-                       : null;
+        this.nsName = (namespaceURI != null && !namespaceURI.equals(""))
+                ? namespaceURI
+                : null;
         if (this.nsName != null) {
             enableNS = true;
         }
@@ -60,7 +58,7 @@ public class NodeListImpl implements NodeList {
 
     /**
      * Returns the number of nodes.
-     * 
+     *
      * @see org.w3c.dom.NodeList#getLength()
      */
     public int getLength() {
@@ -91,9 +89,8 @@ public class NodeListImpl implements NodeList {
     }
 
     /**
-     * Returns the node at the given index. Returns null if the index is
-     * invalid.
-     * 
+     * Returns the node at the given index. Returns null if the index is invalid.
+     *
      * @see org.w3c.dom.NodeList#item(int)
      */
     public Node item(int index) {

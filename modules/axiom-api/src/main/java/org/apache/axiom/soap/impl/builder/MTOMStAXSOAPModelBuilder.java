@@ -21,99 +21,95 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.om.impl.MTOMConstants;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
+import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 
 public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
-		MTOMConstants, XOPBuilder {
+        MTOMConstants, XOPBuilder {
 
-	/**
-	 * <code>Attachments</code> handles deferred parsing of incoming MIME
-	 * Messages.
-	 */
-	Attachments attachments;
+    /** <code>Attachments</code> handles deferred parsing of incoming MIME Messages. */
+    Attachments attachments;
 
-	private Log log = LogFactory.getLog(getClass());
+    private Log log = LogFactory.getLog(getClass());
 
-	int partIndex = 0;
+    int partIndex = 0;
 
-	public MTOMStAXSOAPModelBuilder(XMLStreamReader parser,
-			SOAPFactory factory, Attachments attachments, String soapVersion) {
-		super(parser, factory, soapVersion);
-		this.attachments = attachments;
-	}
+    public MTOMStAXSOAPModelBuilder(XMLStreamReader parser,
+                                    SOAPFactory factory, Attachments attachments,
+                                    String soapVersion) {
+        super(parser, factory, soapVersion);
+        this.attachments = attachments;
+    }
 
-	/**
-	 * @param reader
-	 * @param attachments
-	 */
-	public MTOMStAXSOAPModelBuilder(XMLStreamReader reader,
-			Attachments attachments, String soapVersion) {
-		super(reader, soapVersion);
-		this.attachments = attachments;
-	}
-	
-	public MTOMStAXSOAPModelBuilder(XMLStreamReader reader,
-			Attachments attachments) {
-		super(reader);
-		this.attachments = attachments;
-	}
+    /**
+     * @param reader
+     * @param attachments
+     */
+    public MTOMStAXSOAPModelBuilder(XMLStreamReader reader,
+                                    Attachments attachments, String soapVersion) {
+        super(reader, soapVersion);
+        this.attachments = attachments;
+    }
 
-	protected OMNode createOMElement() throws OMException {
+    public MTOMStAXSOAPModelBuilder(XMLStreamReader reader,
+                                    Attachments attachments) {
+        super(reader);
+        this.attachments = attachments;
+    }
 
-		String elementName = parser.getLocalName();
-		String namespaceURI = parser.getNamespaceURI();
+    protected OMNode createOMElement() throws OMException {
 
-		// create an OMBlob if the element is an <xop:Include>
-		if (XOP_INCLUDE.equalsIgnoreCase(elementName)
-				&& XOP_NAMESPACE_URI.equalsIgnoreCase(namespaceURI)) {
-			elementLevel++;
-			OMText node;
-			String contentID = ElementHelper.getContentID(parser, getDocument()
-					.getCharsetEncoding());
+        String elementName = parser.getLocalName();
+        String namespaceURI = parser.getNamespaceURI();
 
-			if (lastNode == null) {
-				throw new OMException(
-						"XOP:Include element is not supported here");
-			} else if (lastNode.isComplete() & lastNode.getParent() != null) {
-				node = omfactory.createOMText(contentID, (OMElement) lastNode
-						.getParent(), this);
-				((OMNodeEx) lastNode).setNextOMSibling(node);
-				((OMNodeEx) node).setPreviousOMSibling(lastNode);
-			} else {
-				OMContainerEx e = (OMContainerEx) lastNode;
-				node = omfactory.createOMText(contentID, (OMElement) lastNode,
-						this);
-                 e.setFirstChild(node);
-			}
-			return node;
+        // create an OMBlob if the element is an <xop:Include>
+        if (XOP_INCLUDE.equalsIgnoreCase(elementName)
+                && XOP_NAMESPACE_URI.equalsIgnoreCase(namespaceURI)) {
+            elementLevel++;
+            OMText node;
+            String contentID = ElementHelper.getContentID(parser, getDocument()
+                    .getCharsetEncoding());
 
-		} else {
-			return super.createOMElement();
-		}
-	}
+            if (lastNode == null) {
+                throw new OMException(
+                        "XOP:Include element is not supported here");
+            } else if (lastNode.isComplete() & lastNode.getParent() != null) {
+                node = omfactory.createOMText(contentID, (OMElement) lastNode
+                        .getParent(), this);
+                ((OMNodeEx) lastNode).setNextOMSibling(node);
+                ((OMNodeEx) node).setPreviousOMSibling(lastNode);
+            } else {
+                OMContainerEx e = (OMContainerEx) lastNode;
+                node = omfactory.createOMText(contentID, (OMElement) lastNode,
+                                              this);
+                e.setFirstChild(node);
+            }
+            return node;
 
-	/* (non-Javadoc)
-	 * @see org.apache.axiom.soap.impl.builder.XOPBuilder#getDataHandler(java.lang.String)
-	 */
-	public DataHandler getDataHandler(String blobContentID) throws OMException {
-		DataHandler dataHandler = attachments.getDataHandler(blobContentID);
-		if (dataHandler == null) {
-			throw new OMException(
-					"Referenced Attachment not found in the MIME Message. ContentID:"
-							+ blobContentID);
-		}
-		return dataHandler;
-	}
+        } else {
+            return super.createOMElement();
+        }
+    }
+
+    /* (non-Javadoc)
+      * @see org.apache.axiom.soap.impl.builder.XOPBuilder#getDataHandler(java.lang.String)
+      */
+    public DataHandler getDataHandler(String blobContentID) throws OMException {
+        DataHandler dataHandler = attachments.getDataHandler(blobContentID);
+        if (dataHandler == null) {
+            throw new OMException(
+                    "Referenced Attachment not found in the MIME Message. ContentID:"
+                            + blobContentID);
+        }
+        return dataHandler;
+    }
 }

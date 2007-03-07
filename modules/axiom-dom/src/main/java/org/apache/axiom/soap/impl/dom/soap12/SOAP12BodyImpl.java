@@ -25,9 +25,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPBodyImpl;
 
 public class SOAP12BodyImpl extends SOAPBodyImpl {
-    /**
-     * @param envelope
-     */
+    /** @param envelope  */
     public SOAP12BodyImpl(SOAPEnvelope envelope, SOAPFactory factory)
             throws SOAPProcessingException {
         super(envelope, factory);
@@ -40,13 +38,13 @@ public class SOAP12BodyImpl extends SOAPBodyImpl {
      * @param builder
      */
     public SOAP12BodyImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                          SOAPFactory factory) {
         super(envelope, builder, factory);
     }
 
     public SOAPFault addFault(Exception e) throws OMException {
         SOAPFault soapFault = new SOAP12FaultImpl(this, e,
-                (SOAPFactory) this.factory);
+                                                  (SOAPFactory) this.factory);
         this.hasSOAPFault = true;
         return soapFault;
     }

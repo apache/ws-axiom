@@ -21,11 +21,9 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.impl.dom.ElementImpl;
-import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -46,198 +44,197 @@ import java.io.StringWriter;
 import java.util.Iterator;
 
 public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
-		OMConstants {
+        OMConstants {
 
-	protected Exception e;
-	/**
-	 * Constructor SOAPFaultImpl
-	 * 
-	 * @param parent
-	 * @param e
-	 */
-	public SOAPFaultImpl(SOAPBody parent, Exception e, SOAPFactory factory)
-			throws SOAPProcessingException {
-		super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, true, factory);
-		setException(e);
-	}
+    protected Exception e;
 
-	public void setException(Exception e) {
-		this.e = e;
-		putExceptionToSOAPFault(e);
-	}
-
-	public SOAPFaultImpl(SOAPBody parent, SOAPFactory factory)
+    /**
+     * Constructor SOAPFaultImpl
+     *
+     * @param parent
+     * @param e
+     */
+    public SOAPFaultImpl(SOAPBody parent, Exception e, SOAPFactory factory)
             throws SOAPProcessingException {
-		super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, true, factory);
-	}
+        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, true, factory);
+        setException(e);
+    }
 
-	/**
-	 * Constructor SOAPFaultImpl
-	 * 
-	 * @param parent
-	 * @param builder
-	 */
-	public SOAPFaultImpl(SOAPBody parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
-		super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, builder, factory);
-	}
+    public void setException(Exception e) {
+        this.e = e;
+        putExceptionToSOAPFault(e);
+    }
 
-	protected abstract SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault)
-			throws SOAPProcessingException;
+    public SOAPFaultImpl(SOAPBody parent, SOAPFactory factory)
+            throws SOAPProcessingException {
+        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, true, factory);
+    }
 
-	// --------------- Getters and Settors --------------------------- //
+    /**
+     * Constructor SOAPFaultImpl
+     *
+     * @param parent
+     * @param builder
+     */
+    public SOAPFaultImpl(SOAPBody parent, OMXMLParserWrapper builder,
+                         SOAPFactory factory) {
+        super(parent, SOAPConstants.SOAPFAULT_LOCAL_NAME, builder, factory);
+    }
 
-	public void setCode(SOAPFaultCode soapFaultCode)
-			throws SOAPProcessingException {
-		setNewElement(getCode(), soapFaultCode);
-	}
+    protected abstract SOAPFaultDetail getNewSOAPFaultDetail(SOAPFault fault)
+            throws SOAPProcessingException;
 
-	public SOAPFaultCode getCode() {
-		return (SOAPFaultCode) this
-				.getChildWithName(SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME);
-	}
+    // --------------- Getters and Settors --------------------------- //
 
-	public void setReason(SOAPFaultReason reason)
-			throws SOAPProcessingException {
-		setNewElement(getReason(), reason);
-	}
+    public void setCode(SOAPFaultCode soapFaultCode)
+            throws SOAPProcessingException {
+        setNewElement(getCode(), soapFaultCode);
+    }
 
-	public SOAPFaultReason getReason() {
-		return (SOAPFaultReason) this
-				.getChildWithName(SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME);
-	}
+    public SOAPFaultCode getCode() {
+        return (SOAPFaultCode) this
+                .getChildWithName(SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME);
+    }
 
-	public void setNode(SOAPFaultNode node) throws SOAPProcessingException {
-		setNewElement(getNode(), node);
-	}
+    public void setReason(SOAPFaultReason reason)
+            throws SOAPProcessingException {
+        setNewElement(getReason(), reason);
+    }
 
-	public SOAPFaultNode getNode() {
-		return (SOAPFaultNode) this
-				.getChildWithName(SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME);
-	}
+    public SOAPFaultReason getReason() {
+        return (SOAPFaultReason) this
+                .getChildWithName(SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME);
+    }
 
-	public void setRole(SOAPFaultRole role) throws SOAPProcessingException {
-		setNewElement(getRole(), role);
-	}
+    public void setNode(SOAPFaultNode node) throws SOAPProcessingException {
+        setNewElement(getNode(), node);
+    }
 
-	public SOAPFaultRole getRole() {
-		return (SOAPFaultRoleImpl) this
-				.getChildWithName(SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME);
-	}
+    public SOAPFaultNode getNode() {
+        return (SOAPFaultNode) this
+                .getChildWithName(SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME);
+    }
 
-	public void setDetail(SOAPFaultDetail detail)
-			throws SOAPProcessingException {
-		setNewElement(getDetail(), detail);
-	}
+    public void setRole(SOAPFaultRole role) throws SOAPProcessingException {
+        setNewElement(getRole(), role);
+    }
 
-	public SOAPFaultDetail getDetail() {
-		return (SOAPFaultDetail) this
-				.getChildWithName(SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME);
-	}
+    public SOAPFaultRole getRole() {
+        return (SOAPFaultRoleImpl) this
+                .getChildWithName(SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME);
+    }
 
-	/**
-	 * If exception detailElement is not there we will return null
-	 */
-	public Exception getException() throws OMException {
-		SOAPFaultDetail detail = getDetail();
-		if (detail == null) {
-			return null;
-		}
+    public void setDetail(SOAPFaultDetail detail)
+            throws SOAPProcessingException {
+        setNewElement(getDetail(), detail);
+    }
 
-		OMElement exceptionElement = getDetail().getFirstChildWithName(
-				new QName(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY));
-		if (exceptionElement != null && exceptionElement.getText() != null) {
-			return new Exception(exceptionElement.getText());
-		}
-		return null;
-	}
+    public SOAPFaultDetail getDetail() {
+        return (SOAPFaultDetail) this
+                .getChildWithName(SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME);
+    }
 
-	protected void putExceptionToSOAPFault(Exception e)
-			throws SOAPProcessingException {
-		StringWriter sw = new StringWriter();
-		e.printStackTrace(new PrintWriter(sw));
-		sw.flush();
-		getDetail();
-		if (getDetail() == null) {
-			setDetail(getNewSOAPFaultDetail(this));
+    /** If exception detailElement is not there we will return null */
+    public Exception getException() throws OMException {
+        SOAPFaultDetail detail = getDetail();
+        if (detail == null) {
+            return null;
+        }
 
-		}
-		OMElement faultDetailEnty = new ElementImpl(this,
-				SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,
-				null, this.factory);
-		faultDetailEnty.setText(sw.getBuffer().toString());
-	}
+        OMElement exceptionElement = getDetail().getFirstChildWithName(
+                new QName(SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY));
+        if (exceptionElement != null && exceptionElement.getText() != null) {
+            return new Exception(exceptionElement.getText());
+        }
+        return null;
+    }
 
-	protected void setNewElement(OMElement myElement, OMElement newElement) {
-		if (myElement != null) {
-			myElement.discard();
-		}
-		if (newElement != null && newElement.getParent() != null) {
-			newElement.discard();
-		}
-		this.addChild(newElement);
-		myElement = newElement;
-	}
+    protected void putExceptionToSOAPFault(Exception e)
+            throws SOAPProcessingException {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        sw.flush();
+        getDetail();
+        if (getDetail() == null) {
+            setDetail(getNewSOAPFaultDetail(this));
 
-	protected OMElement getChildWithName(String childName) {
-		Iterator childrenIter = getChildren();
-		while (childrenIter.hasNext()) {
-			OMNode node = (OMNode) childrenIter.next();
-			if (node.getType() == OMNode.ELEMENT_NODE
-					&& childName.equals(((OMElement) node).getLocalName())) {
-				return (OMElement) node;
-			}
-		}
-		return null;
-	}
+        }
+        OMElement faultDetailEnty = new ElementImpl(this,
+                                                    SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,
+                                                    null, this.factory);
+        faultDetailEnty.setText(sw.getBuffer().toString());
+    }
 
-	protected void internalSerialize(XMLStreamWriter writer,
+    protected void setNewElement(OMElement myElement, OMElement newElement) {
+        if (myElement != null) {
+            myElement.discard();
+        }
+        if (newElement != null && newElement.getParent() != null) {
+            newElement.discard();
+        }
+        this.addChild(newElement);
+        myElement = newElement;
+    }
+
+    protected OMElement getChildWithName(String childName) {
+        Iterator childrenIter = getChildren();
+        while (childrenIter.hasNext()) {
+            OMNode node = (OMNode) childrenIter.next();
+            if (node.getType() == OMNode.ELEMENT_NODE
+                    && childName.equals(((OMElement) node).getLocalName())) {
+                return (OMElement) node;
+            }
+        }
+        return null;
+    }
+
+    protected void internalSerialize(XMLStreamWriter writer,
                                      boolean cache) throws XMLStreamException {
-		// select the builder
-		short builderType = PULL_TYPE_BUILDER; // default is pull type
-		if (builder != null) {
-			builderType = this.builder.getBuilderType();
-		}
-		if ((builderType == PUSH_TYPE_BUILDER)
-				&& (builder.getRegisteredContentHandler() == null)) {
-			builder
-					.registerExternalContentHandler(new StreamWriterToContentHandlerConverter(
-							writer));
-		}
+        // select the builder
+        short builderType = PULL_TYPE_BUILDER; // default is pull type
+        if (builder != null) {
+            builderType = this.builder.getBuilderType();
+        }
+        if ((builderType == PUSH_TYPE_BUILDER)
+                && (builder.getRegisteredContentHandler() == null)) {
+            builder
+                    .registerExternalContentHandler(new StreamWriterToContentHandlerConverter(
+                            writer));
+        }
 
-		// this is a special case. This fault element may contain its children
-		// in any order. But spec mandates a specific order
-		// the overriding of the method will facilitate that. Not sure this is
-		// the best method to do this :(
-		build();
+        // this is a special case. This fault element may contain its children
+        // in any order. But spec mandates a specific order
+        // the overriding of the method will facilitate that. Not sure this is
+        // the best method to do this :(
+        build();
 
         OMSerializerUtil.serializeStartpart(this, writer);
-		SOAPFaultCode faultCode = getCode();
-		if (faultCode != null) {
-			(faultCode).serialize(writer);
-		}
-		SOAPFaultReason faultReason = getReason();
-		if (faultReason != null) {
-			(faultReason).serialize(writer);
-		}
+        SOAPFaultCode faultCode = getCode();
+        if (faultCode != null) {
+            (faultCode).serialize(writer);
+        }
+        SOAPFaultReason faultReason = getReason();
+        if (faultReason != null) {
+            (faultReason).serialize(writer);
+        }
 
-		serializeFaultNode(writer);
+        serializeFaultNode(writer);
 
-		SOAPFaultRole faultRole = getRole();
-		if (faultRole != null) {
-			(faultRole).serialize(writer);
-		}
+        SOAPFaultRole faultRole = getRole();
+        if (faultRole != null) {
+            (faultRole).serialize(writer);
+        }
 
-		SOAPFaultDetail faultDetail = getDetail();
-		if (faultDetail != null) {
-			(faultDetail).serialize(writer);
-		}
+        SOAPFaultDetail faultDetail = getDetail();
+        if (faultDetail != null) {
+            (faultDetail).serialize(writer);
+        }
 
-		OMSerializerUtil.serializeEndpart(writer);
-	}
+        OMSerializerUtil.serializeEndpart(writer);
+    }
 
-	protected abstract void serializeFaultNode(
-			XMLStreamWriter writer)
-			throws XMLStreamException;
+    protected abstract void serializeFaultNode(
+            XMLStreamWriter writer)
+            throws XMLStreamException;
 
 }

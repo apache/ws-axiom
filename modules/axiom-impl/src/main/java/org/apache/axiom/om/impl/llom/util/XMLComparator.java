@@ -28,31 +28,28 @@ import java.util.Iterator;
 import java.util.Vector;
 
 
-/**
- * @deprecated This class is outdated. Please use XmlUnit to compate two xml files.
- */
+/** @deprecated This class is outdated. Please use XmlUnit to compate two xml files. */
 public class XMLComparator {
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
+    /** Eran Chinthaka (chinthaka@apache.org) */
     private Log log = LogFactory.getLog(getClass());
 
     private Vector ignorableNamespaceList = new Vector();
 
-    public void addIgnorableNamespace(String nsURI){
+    public void addIgnorableNamespace(String nsURI) {
         ignorableNamespaceList.add(nsURI);
     }
 
-    public void clearIgnorableNamespaces(){
+    public void clearIgnorableNamespaces() {
         ignorableNamespaceList.clear();
     }
 
 
-    public boolean compare(OMElement elementOne, OMElement elementTwo) throws XMLComparisonException {
+    public boolean compare(OMElement elementOne, OMElement elementTwo)
+            throws XMLComparisonException {
 
         //ignore if the elements belong to any of the ignorable namespaces list
         if (isIgnorable(elementOne) ||
-                isIgnorable(elementTwo)){
+                isIgnorable(elementTwo)) {
             return true;
         }
 
@@ -71,8 +68,8 @@ public class XMLComparator {
 
         log.info(
                 "Now Checking " + elementOne.getLocalName() + " and " +
-                elementTwo.getLocalName() +
-                "=============================");
+                        elementTwo.getLocalName() +
+                        "=============================");
 
         log.info("Comparing Element Names .......");
         compare("Elements names are not equal. ",
@@ -120,25 +117,26 @@ public class XMLComparator {
     }
 
 
-    private boolean isIgnorable(OMElement elt){
-        if (elt!=null){
+    private boolean isIgnorable(OMElement elt) {
+        if (elt != null) {
             OMNamespace namespace = elt.getNamespace();
-            if (namespace!=null){
-            return ignorableNamespaceList.contains(namespace.getNamespaceURI());
-            }else{
-                return false; 
+            if (namespace != null) {
+                return ignorableNamespaceList.contains(namespace.getNamespaceURI());
+            } else {
+                return false;
             }
-        }else{
+        } else {
             return false;
         }
     }
 
 
-    private void compareChildren(OMElement elementOne, OMElement elementTwo) throws XMLComparisonException {
+    private void compareChildren(OMElement elementOne, OMElement elementTwo)
+            throws XMLComparisonException {
         //ignore if the elements belong to any of the ignorable namespaces list
         if (isIgnorable(elementOne) ||
-                isIgnorable(elementTwo)){
-            return ;
+                isIgnorable(elementTwo)) {
+            return;
         }
         Iterator elementOneChildren = elementOne.getChildren();
         while (elementOneChildren.hasNext()) {
@@ -147,16 +145,16 @@ public class XMLComparator {
                 OMElement elementOneChild = (OMElement) omNode;
                 OMElement elementTwoChild = null;
                 //Do the comparison only if the element is not ignorable
-                if (!isIgnorable(elementOneChild)){
+                if (!isIgnorable(elementOneChild)) {
                     elementTwoChild = elementTwo.getFirstChildWithName(
                             elementOneChild.getQName());
                     //Do the comparison only if the element is not ignorable
-                    if (!isIgnorable(elementTwoChild)){
+                    if (!isIgnorable(elementTwoChild)) {
                         if (elementTwoChild == null) {
                             throw new XMLComparisonException(
                                     " There is no " + elementOneChild.getLocalName() +
-                                    " element under " +
-                                    elementTwo.getLocalName());
+                                            " element under " +
+                                            elementTwo.getLocalName());
                         }
                     }
                 }
@@ -166,7 +164,8 @@ public class XMLComparator {
     }
 
 
-    private void compareAttibutes(OMElement elementOne, OMElement elementTwo) throws XMLComparisonException {
+    private void compareAttibutes(OMElement elementOne, OMElement elementTwo)
+            throws XMLComparisonException {
         int elementOneAtribCount = 0;
         int elementTwoAtribCount = 0;
         Iterator attributes = elementOne.getAllAttributes();
@@ -177,8 +176,8 @@ public class XMLComparator {
             if (attr == null) {
                 throw new XMLComparisonException(
                         "Attributes are not the same in two elements. Attribute " +
-                        omAttribute.getLocalName() +
-                        " != ");
+                                omAttribute.getLocalName() +
+                                " != ");
             }
             elementOneAtribCount++;
         }
@@ -196,7 +195,8 @@ public class XMLComparator {
         }
     }
 
-    private void compare(String failureNotice, String one, String two) throws XMLComparisonException {
+    private void compare(String failureNotice, String one, String two)
+            throws XMLComparisonException {
         if (!one.equals(two)) {
             throw new XMLComparisonException(
                     failureNotice + one + " != " + two);

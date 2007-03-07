@@ -18,9 +18,7 @@ package org.apache.axiom.soap;
 
 
 public interface SOAP12Constants extends SOAPConstants {
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
+    /** Eran Chinthaka (chinthaka@apache.org) */
 
     public String SOAP_ENVELOPE_NAMESPACE_URI =
             "http://www.w3.org/2003/05/soap-envelope";
@@ -44,7 +42,8 @@ public interface SOAP12Constants extends SOAPConstants {
     public static final String SOAP_FAULT_REASON_LOCAL_NAME = "Reason";
     public static final String SOAP_FAULT_TEXT_LOCAL_NAME = "Text";
     public static final String SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME = "lang";
-    public static final String SOAP_FAULT_TEXT_LANG_ATTR_NS_URI = "http://www.w3.org/XML/1998/namespace";
+    public static final String SOAP_FAULT_TEXT_LANG_ATTR_NS_URI =
+            "http://www.w3.org/XML/1998/namespace";
     public static final String SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX = "xml";
 
     // SOAP Fault Node
@@ -65,6 +64,7 @@ public interface SOAP12Constants extends SOAPConstants {
 
     public static final String SOAP_ROLE_NEXT = "http://www.w3.org/2003/05/soap-envelope/role/next";
     public static final String SOAP_ROLE_NONE = "http://www.w3.org/2003/05/soap-envelope/role/none";
-    public static final String SOAP_ROLE_ULTIMATE_RECEIVER = "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver";
-    
+    public static final String SOAP_ROLE_ULTIMATE_RECEIVER =
+            "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver";
+
 }

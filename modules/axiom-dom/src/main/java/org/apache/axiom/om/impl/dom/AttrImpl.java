@@ -32,42 +32,27 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-/**
- * Implementation of <code>org.w3c.dom.Attr</code> and
- * <code>org.apache.axiom.om.OMAttribute</code>
- */
+/** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
 public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
-    /**
-     * Name of the attribute
-     */
+    /** Name of the attribute */
     private String attrName;
 
-    /**
-     * Attribute value
-     */
+    /** Attribute value */
     private TextImpl attrValue;
 
-    /**
-     * Attribute namespace
-     */
+    /** Attribute namespace */
     private NamespaceImpl namespace;
 
-    /**
-     * Flag to indicate whether this attr is used or not
-     */
+    /** Flag to indicate whether this attr is used or not */
     private boolean used;
 
-    /**
-     * Owner of this attribute
-     */
+    /** Owner of this attribute */
     protected ParentNode parent;
 
-    /**
-     * Flag used to mark an attribute as per the DOM Level 3 specification
-     */
+    /** Flag used to mark an attribute as per the DOM Level 3 specification */
     protected boolean isId;
-    
+
     protected AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
     }
@@ -91,7 +76,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
         super(ownerDocument, factory);
         this.attrName = name;
         //If this is a default namespace attr
-        if(OMConstants.XMLNS_NS_PREFIX.equals(name)) {
+        if (OMConstants.XMLNS_NS_PREFIX.equals(name)) {
             this.namespace = new NamespaceImpl(
                     OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX);
         }
@@ -107,19 +92,19 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     // /
     // /org.w3c.dom.Node methods
     // /
-    /**
-     * Returns the name of this attribute.
-     */
+
+    /** Returns the name of this attribute. */
     public String getNodeName() {
         return (this.namespace != null
-                && !"".equals(this.namespace.getPrefix()) && !(OMConstants.XMLNS_NS_PREFIX.equals(this.attrName)))
-                ? this.namespace.getPrefix()+ ":" + this.attrName
+                && !"".equals(this.namespace.getPrefix()) &&
+                !(OMConstants.XMLNS_NS_PREFIX.equals(this.attrName)))
+                ? this.namespace.getPrefix() + ":" + this.attrName
                 : this.attrName;
     }
 
     /**
      * Returns the node type.
-     * 
+     *
      * @see org.w3c.dom.Node#getNodeType()
      */
     public short getNodeType() {
@@ -128,7 +113,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Returns the value of this attribute.
-     * 
+     *
      * @see org.w3c.dom.Node#getNodeValue()
      */
     public String getNodeValue() throws DOMException {
@@ -137,7 +122,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Returns the value of this attribute.
-     * 
+     *
      * @see org.w3c.dom.Attr#getValue()
      */
     public String getValue() {
@@ -148,25 +133,24 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     // /org.w3c.dom.Attr methods
     // /
     public String getName() {
-    	if(this.namespace != null)
-    	{
-    		if((OMConstants.XMLNS_NS_PREFIX.equals(this.attrName))){
-    			return this.attrName;
-    		}else if(OMConstants.XMLNS_NS_URI.equals(this.namespace.getNamespaceURI())){
-    			return OMConstants.XMLNS_NS_PREFIX + ":" + this.attrName;
-    		}else if(this.namespace.getPrefix().equals("")){
-    			return this.attrName;
-    		}else{
-    			return this.namespace.getPrefix()+":"+this.attrName;
-    		}
-    	}else{
-    		return this.attrName;
-    	}
+        if (this.namespace != null) {
+            if ((OMConstants.XMLNS_NS_PREFIX.equals(this.attrName))) {
+                return this.attrName;
+            } else if (OMConstants.XMLNS_NS_URI.equals(this.namespace.getNamespaceURI())) {
+                return OMConstants.XMLNS_NS_PREFIX + ":" + this.attrName;
+            } else if (this.namespace.getPrefix().equals("")) {
+                return this.attrName;
+            } else {
+                return this.namespace.getPrefix() + ":" + this.attrName;
+            }
+        } else {
+            return this.attrName;
+        }
     }
 
     /**
      * Returns the owner element.
-     * 
+     *
      * @see org.w3c.dom.Attr#getOwnerElement()
      */
     public Element getOwnerElement() {
@@ -181,9 +165,8 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     }
 
     /**
-     * Not supported: Cannot detach attributes. Use the operations available in
-     * the owner node.
-     * 
+     * Not supported: Cannot detach attributes. Use the operations available in the owner node.
+     *
      * @see org.apache.axiom.om.OMNode#detach()
      */
     public OMNode detach() throws OMException {
@@ -191,9 +174,8 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     }
 
     /**
-     * Not supported: Cannot discard attributes. Use the operations available in
-     * the owner node.
-     * 
+     * Not supported: Cannot discard attributes. Use the operations available in the owner node.
+     *
      * @see org.apache.axiom.om.OMNode#discard()
      */
     public void discard() throws OMException {
@@ -202,7 +184,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Returns the type of this attribute node.
-     * 
+     *
      * @see org.apache.axiom.om.OMNode#getType()
      */
     public int getType() {
@@ -210,19 +192,19 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     }
 
     /**
-     * This is not supported since attributes serialization is handled by the
-     * serialization of the owner nodes.
+     * This is not supported since attributes serialization is handled by the serialization of the
+     * owner nodes.
      */
     public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
         throw new UnsupportedOperationException("Not supported");
     }
 
     /**
-     * This is not supported since attributes serialization is handled by the
-     * serialization of the owner nodes.
-     * 
+     * This is not supported since attributes serialization is handled by the serialization of the
+     * owner nodes.
+     *
      * @see org.apache.axiom.om.impl.OMNodeEx#internalSerializeAndConsume
-     * (org.apache.axiom.om.impl.MTOMXMLStreamWriter)
+     *      (org.apache.axiom.om.impl.MTOMXMLStreamWriter)
      */
     public void internalSerializeAndConsume(XMLStreamWriter writer)
             throws XMLStreamException {
@@ -231,7 +213,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Returns the namespace of the attribute as an <code>OMNamespace</code>.
-     * 
+     *
      * @see org.apache.axiom.om.OMAttribute#getNamespace()
      */
     public OMNamespace getNamespace() {
@@ -240,19 +222,19 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Returns a qname representing the attribute.
-     * 
+     *
      * @see org.apache.axiom.om.OMAttribute#getQName()
      */
     public QName getQName() {
         return (this.namespace == null) ? new QName(this.attrName) : new QName(
                 this.namespace.getNamespaceURI(), this.attrName, this.namespace
-                        .getPrefix());
+                .getPrefix());
 
     }
 
     /**
      * Returns the attribute value.
-     * 
+     *
      * @see org.apache.axiom.om.OMAttribute#getAttributeValue()
      */
     public String getAttributeValue() {
@@ -261,8 +243,8 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Sets the name of attribute.
-     * 
-     * @see org.apache.axiom.om.OMAttribute#setLocalName(java.lang.String)
+     *
+     * @see org.apache.axiom.om.OMAttribute#setLocalName(String)
      */
     public void setLocalName(String localName) {
         this.attrName = localName;
@@ -270,9 +252,8 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Sets the namespace of this attribute node.
-     * 
-     * @see org.apache.axiom.om.OMAttribute#setOMNamespace
-     * (org.apache.axiom.om.OMNamespace)
+     *
+     * @see org.apache.axiom.om.OMAttribute#setOMNamespace (org.apache.axiom.om.OMNamespace)
      */
     public void setOMNamespace(OMNamespace omNamespace) {
         this.namespace = (NamespaceImpl) omNamespace;
@@ -280,8 +261,8 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Sets the attribute value.
-     * 
-     * @see org.apache.axiom.om.OMAttribute#setAttributeValue(java.lang.String)
+     *
+     * @see org.apache.axiom.om.OMAttribute#setAttributeValue(String)
      */
     public void setAttributeValue(String value) {
         if (isReadonly()) {
@@ -289,7 +270,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
         this.attrValue = (TextImpl) this.getOwnerDocument().createTextNode(
                 value);
@@ -297,9 +278,8 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Sets the parent element to the given OMContainer.
-     * 
-     * @see org.apache.axiom.om.impl.OMNodeEx#setParent
-     * (org.apache.axiom.om.OMContainer)
+     *
+     * @see org.apache.axiom.om.impl.OMNodeEx#setParent (org.apache.axiom.om.OMContainer)
      */
     public void setParent(OMContainer element) {
         this.parent = (ParentNode) element;
@@ -307,32 +287,27 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Sets the type. NOT IMPLEMENTED: Unnecessary.
-     * 
+     *
      * @see org.apache.axiom.om.impl.OMNodeEx#setType(int)
      */
     public void setType(int nodeType) throws OMException {
         // not necessary ???
     }
 
-    /**
-     * @return Returns boolean.
-     */
+    /** @return Returns boolean. */
     protected boolean isUsed() {
         return used;
     }
 
-    /**
-     * @param used
-     *            The used to set.
-     */
+    /** @param used The used to set. */
     protected void setUsed(boolean used) {
         this.used = used;
     }
 
     /**
      * Sets the value of the attribute.
-     * 
-     * @see org.w3c.dom.Attr#setValue(java.lang.String)
+     *
+     * @see org.w3c.dom.Attr#setValue(String)
      */
     public void setValue(String value) throws DOMException {
         this.attrValue = (TextImpl) this.getOwnerDocument().createTextNode(
@@ -341,7 +316,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Returns the parent node of this attribute.
-     * 
+     *
      * @see org.apache.axiom.om.OMNode#getParent()
      */
     public OMContainer getParent() {
@@ -350,7 +325,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Returns the attribute name.
-     * 
+     *
      * @see org.w3c.dom.Node#getLocalName()
      */
     public String getLocalName() {
@@ -360,7 +335,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Returns the namespace URI of this attr node.
-     * 
+     *
      * @see org.w3c.dom.Node#getNamespaceURI()
      */
     public String getNamespaceURI() {
@@ -372,7 +347,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /**
      * Returns the namespace prefix of this attr node.
-     * 
+     *
      * @see org.w3c.dom.Node#getPrefix()
      */
     public String getPrefix() {
@@ -390,7 +365,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
             if (this.attrValue.nextSibling != null) {
                 throw new UnsupportedOperationException(
                         "Attribute value can contain only a text " +
-                        "node with out any siblings");
+                                "node with out any siblings");
             }
         }
         clone.isSpecified(true);

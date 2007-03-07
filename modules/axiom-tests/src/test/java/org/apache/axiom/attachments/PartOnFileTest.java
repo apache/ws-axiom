@@ -16,60 +16,58 @@
 
 package org.apache.axiom.attachments;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Enumeration;
+import org.apache.axiom.om.AbstractTestCase;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
-import javax.mail.Header;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
-import org.apache.axiom.om.AbstractTestCase;
 
-
-/**
- * Test the PartOnFile class
- */
+/** Test the PartOnFile class */
 
 public class PartOnFileTest extends AbstractTestCase {
-	
-	public PartOnFileTest(String testName) {
+
+    public PartOnFileTest(String testName) {
         super(testName);
     }
 
     String inMimeFileName = "mtom/MTOMAttachmentStream.bin";
-    String contentTypeString = "multipart/related; boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
+    String contentTypeString =
+            "multipart/related; boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
 
     File temp;
 
     public void setUp() throws Exception {
-		createTemporaryDirectory();
-    }
-    
-    public void tearDown() throws Exception {
-		deleteTemporaryDirectory();
+        createTemporaryDirectory();
     }
 
-	public void testHeaderGetSet() throws Exception {
+    public void tearDown() throws Exception {
+        deleteTemporaryDirectory();
+    }
+
+    public void testHeaderGetSet() throws Exception {
 
         InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
-		Attachments attachments = new Attachments(inStream, contentTypeString, true, temp.getPath(), "1");
+        Attachments attachments =
+                new Attachments(inStream, contentTypeString, true, temp.getPath(), "1");
 
-		DataHandler p = attachments.getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
-		
-		if (!(p.getDataSource() instanceof FileDataSource)) {
-			fail("Expected PartOnFile");
-		}
+        DataHandler p = attachments
+                .getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
+
+        if (!(p.getDataSource() instanceof FileDataSource)) {
+            fail("Expected PartOnFile");
+        }
 
 //		assertEquals("<1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org>", p.getContentID());
-		assertEquals("image/jpeg", p.getContentType());
+        assertEquals("image/jpeg", p.getContentType());
 
 //		p.addHeader("Some-New-Header", "TestNH");
 //		assertEquals(p.getHeader("Some-New-Header"), "TestNH");
-	}
+    }
 
-	public void testGetAllheaders() throws Exception {
+    public void testGetAllheaders() throws Exception {
 
 //        InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
 //		Attachments attachments = new Attachments(inStream, contentTypeString, true, temp.getPath(), "1");
@@ -114,31 +112,31 @@ public class PartOnFileTest extends AbstractTestCase {
 //			fail("Header enumeration failed");
 //		}
 
-	}
+    }
 
-	private void createTemporaryDirectory() throws Exception {
-		temp = File.createTempFile("partOnFileTest", ".tmp");
+    private void createTemporaryDirectory() throws Exception {
+        temp = File.createTempFile("partOnFileTest", ".tmp");
 
-		if (!temp.delete()) {
-			fail("Cannot delete from temporary directory. File: " + temp.toURL());
-		}
-		
-		if (!temp.mkdir()) {
-			fail("Cannot create a temporary location for part files");
-		}
-	}
+        if (!temp.delete()) {
+            fail("Cannot delete from temporary directory. File: " + temp.toURL());
+        }
 
-	private void deleteTemporaryDirectory() throws Exception {
+        if (!temp.mkdir()) {
+            fail("Cannot create a temporary location for part files");
+        }
+    }
 
-		String[] fileList = temp.list();
-		for (int i=0; i < fileList.length; i++) {
+    private void deleteTemporaryDirectory() throws Exception {
+
+        String[] fileList = temp.list();
+        for (int i = 0; i < fileList.length; i++) {
             if (!(new File(temp, fileList[i])).delete()) {
-            	System.err.println("WARNING: temporary directory removal failed.");
+                System.err.println("WARNING: temporary directory removal failed.");
             }
         }
 
-		if (!temp.delete()) {
-			System.err.println("WARNING: temporary directory removal failed.");
-		}
-	}
+        if (!temp.delete()) {
+            System.err.println("WARNING: temporary directory removal failed.");
+        }
+    }
 }

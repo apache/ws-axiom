@@ -7,11 +7,12 @@ import java.util.List;
 
 public class XPathEvaluator {
 
-    public List evaluateXpath(String xpathExpression, Object element, String nsURI) throws Exception{
+    public List evaluateXpath(String xpathExpression, Object element, String nsURI)
+            throws Exception {
         AXIOMXPath xpath = new AXIOMXPath(xpathExpression);
-        if (nsURI!=null){
+        if (nsURI != null) {
             SimpleNamespaceContext nsContext = new SimpleNamespaceContext();
-            nsContext.addNamespace(null,nsURI);
+            nsContext.addNamespace(null, nsURI);
             xpath.setNamespaceContext(nsContext);
         }
         return xpath.selectNodes(element);

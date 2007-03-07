@@ -16,18 +16,18 @@
 
 package org.apache.axiom.om;
 
-/**
- * Interface OMComment
- */
+/** Interface OMComment */
 public interface OMComment extends OMNode {
     /**
      * Returns the value of this comment as defined by XPath 1.0.
+     *
      * @return Returns String.
      */
     public String getValue();
 
     /**
      * Sets the content of this comment to the specified string.
+     *
      * @param text
      */
     public void setValue(String text);

@@ -19,14 +19,15 @@ package org.apache.axiom.soap.impl.llom.soap11;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.impl.llom.SOAPFaultValueImpl;
 
 public class SOAP11FaultValueImpl extends SOAPFaultValueImpl {
-    
-    public SOAP11FaultValueImpl(OMElement parent, SOAPFactory factory) throws SOAPProcessingException {
+
+    public SOAP11FaultValueImpl(OMElement parent, SOAPFactory factory)
+            throws SOAPProcessingException {
         super(SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME, parent, factory);
     }
 

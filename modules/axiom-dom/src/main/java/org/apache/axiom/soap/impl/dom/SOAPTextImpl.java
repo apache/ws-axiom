@@ -22,7 +22,7 @@ import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 
-public class SOAPTextImpl extends SOAPElement{
+public class SOAPTextImpl extends SOAPElement {
 
     protected SOAPTextImpl(OMElement parent, SOAPFactory factory)
             throws SOAPProcessingException {
@@ -30,7 +30,7 @@ public class SOAPTextImpl extends SOAPElement{
     }
 
     protected SOAPTextImpl(OMElement parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                           SOAPFactory factory) {
         super(parent, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME, builder, factory);
     }
 

@@ -25,7 +25,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPFaultTextImpl;
 
 public class SOAP11FaultTextImpl extends SOAPFaultTextImpl {
-    
+
     public SOAP11FaultTextImpl(SOAPFaultReason parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, factory);
@@ -37,7 +37,7 @@ public class SOAP11FaultTextImpl extends SOAPFaultTextImpl {
     }
 
     public SOAP11FaultTextImpl(SOAPFaultReason parent,
-                               OMXMLParserWrapper builder, 
+                               OMXMLParserWrapper builder,
                                SOAPFactory factory) {
         super(parent, builder, factory);
     }
@@ -46,7 +46,7 @@ public class SOAP11FaultTextImpl extends SOAPFaultTextImpl {
         if (!(parent instanceof SOAP11FaultReasonImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP FaultReason as " +
-                    "the parent. But received some other implementation");
+                            "the parent. But received some other implementation");
         }
     }
 }

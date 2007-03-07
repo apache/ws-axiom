@@ -20,21 +20,20 @@ import org.apache.axiom.om.OMElement;
 
 
 /**
- * The Role element information item identifies the role the node was operating
- * in at the point the fault occurred.
+ * The Role element information item identifies the role the node was operating in at the point the
+ * fault occurred.
  * <p/>
- * The Role element information item has:
- * A [local name] of Role .
- * A [namespace name] of http://www.w3.org/2003/05/soap-envelope .
+ * The Role element information item has: A [local name] of Role . A [namespace name] of
+ * http://www.w3.org/2003/05/soap-envelope .
  */
 public interface SOAPFaultRole extends OMElement {
     /**
      * Eran Chinthaka (chinthaka@apache.org)
      */
-    
+
     /**
-     * The value of the Role element information item MUST be one of the roles
-     * assumed by the node during processing of the message
+     * The value of the Role element information item MUST be one of the roles assumed by the node
+     * during processing of the message
      *
      * @param uri
      */

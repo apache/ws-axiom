@@ -21,16 +21,12 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
+import org.apache.axiom.om.impl.OMNamespaceImpl;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.apache.axiom.om.impl.OMNamespaceImpl;
-
-/**
- * This class will test the methods and fields of
- * the OMNamespaceImpl class. 
- */
+/** This class will test the methods and fields of the OMNamespaceImpl class. */
 public class OMNamespaceImplTest extends TestCase {
 
     /**
@@ -43,8 +39,7 @@ public class OMNamespaceImplTest extends TestCase {
     }
 
     /**
-     * A one arg constructor to allow specifying
-     * a single test method to run.
+     * A one arg constructor to allow specifying a single test method to run.
      *
      * @param name The name of the test to run
      */
@@ -53,8 +48,7 @@ public class OMNamespaceImplTest extends TestCase {
     }
 
     /**
-     * This method returns a test suite of tests to
-     * run.
+     * This method returns a test suite of tests to run.
      *
      * @return A test suite to be run
      */
@@ -62,44 +56,38 @@ public class OMNamespaceImplTest extends TestCase {
         return new TestSuite(OMNamespaceImplTest.class);
     }
 
-    /**
-     * This method will test the getPrefix method.
-     */
+    /** This method will test the getPrefix method. */
     public void testGetPrefix() {
         OMNamespaceImpl omNsImpl =
-            new OMNamespaceImpl("http://www.w3.org/XML/1998/namespace",
-                                "xml");
+                new OMNamespaceImpl("http://www.w3.org/XML/1998/namespace",
+                                    "xml");
         assertEquals("http://www.w3.org/XML/1998/namespace",
                      omNsImpl.getNamespaceURI());
         omNsImpl = new OMNamespaceImpl(null, null);
         assertNull(omNsImpl.getNamespaceURI());
     }
 
-    /**
-     * This method will test the getName method.
-     */
+    /** This method will test the getName method. */
     public void testGetName() {
         OMNamespaceImpl omNsImpl =
-            new OMNamespaceImpl("http://www.w3.org/XML/1998/namespace",
-                                "xml");
+                new OMNamespaceImpl("http://www.w3.org/XML/1998/namespace",
+                                    "xml");
         assertEquals("xml", omNsImpl.getPrefix());
         omNsImpl = new OMNamespaceImpl(null, null);
         assertNull(omNsImpl.getPrefix());
     }
 
-    /**
-     * This method wil test the equals method.
-     */
+    /** This method wil test the equals method. */
     public void testEquals() {
         OMNamespaceImpl omNsImpl =
-            new OMNamespaceImpl("http://www.w3.org/XML/1998/namespace",
-                                null);
+                new OMNamespaceImpl("http://www.w3.org/XML/1998/namespace",
+                                    null);
         assertTrue(omNsImpl.equals("http://www.w3.org/XML/1998/namespace",
                                    null));
 
         omNsImpl =
-            new OMNamespaceImpl("http://www.w3.org/XML/1998/namespace",
-                                "xml");
+                new OMNamespaceImpl("http://www.w3.org/XML/1998/namespace",
+                                    "xml");
         assertTrue(omNsImpl.equals("http://www.w3.org/XML/1998/namespace",
                                    "xml"));
         assertTrue(!omNsImpl.equals("http://www.w3.org/XML/1998/namespace",
@@ -113,18 +101,17 @@ public class OMNamespaceImplTest extends TestCase {
 
         omNsImpl = new OMNamespaceImpl(null, null);
         assertTrue(!omNsImpl.equals("http://www.w3.org/XML/1998/namespace",
-                                   "xml"));
+                                    "xml"));
         assertTrue(!omNsImpl.equals("http://www.w3.org/XML/1998/namespace",
                                     null));
         assertTrue(!omNsImpl.equals(null,
                                     "xml"));
         assertTrue(omNsImpl.equals(null, null));
-        
+
     }
 
     /**
-     * This method will insure that the OMNamespaceImpl
-     * class remains immutable.
+     * This method will insure that the OMNamespaceImpl class remains immutable.
      *
      * @throws Exception Any kind of exception
      */
@@ -133,23 +120,23 @@ public class OMNamespaceImplTest extends TestCase {
         Field[] clsField = OMNamespaceImpl.class.getDeclaredFields();
         for (int i = 0; i < clsField.length; i++) {
             String fieldData = clsField[i].toString();
-            if ((fieldData.indexOf("prefix") != -1) 
-                || (fieldData.indexOf("uri") != -1)) {
+            if ((fieldData.indexOf("prefix") != -1)
+                    || (fieldData.indexOf("uri") != -1)) {
                 assertTrue("The field should have been private, "
-                           + " but instead contained: " + fieldData + ".",
+                        + " but instead contained: " + fieldData + ".",
                            fieldData.indexOf("private") != -1);
             }
         }
 
-        String[] method = new String[] {"setPrefix", "setUri", "setName"};
+        String[] method = new String[] { "setPrefix", "setUri", "setName" };
         for (int i = 0; i < method.length; i++) {
             try {
                 Method m =
-                    OMNamespaceImpl.class.getMethod(method[i],
-                                                  new Class[] {String.class});
+                        OMNamespaceImpl.class.getMethod(method[i],
+                                                        new Class[] { String.class });
                 fail("A NoSuchMethodException should have been thrown"
-                     + " when trying to get method \"" + method[i]
-                     + "\".");
+                        + " when trying to get method \"" + method[i]
+                        + "\".");
             } catch (NoSuchMethodException e) {
                 // These methods should not exist, so this is
                 // expected.

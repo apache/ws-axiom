@@ -18,9 +18,9 @@ package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.util.ElementHelper;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
+import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -42,7 +42,8 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
         super(parent, SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME, builder, factory);
     }
 
-    public SOAP11FaultCodeImpl(SOAPFault parent, SOAPFactory factory) throws SOAPProcessingException {
+    public SOAP11FaultCodeImpl(SOAPFault parent, SOAPFactory factory)
+            throws SOAPProcessingException {
         super(parent, SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME, false, factory);
     }
 
@@ -70,7 +71,8 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
         }
     }
 
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
+            throws XMLStreamException {
 
         // select the builder
         short builderType = PULL_TYPE_BUILDER;    // default is pull type
@@ -83,10 +85,10 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
                     new StreamWriterToContentHandlerConverter(writer));
         }
 
-        OMSerializerUtil.serializeStartpart(this, 
-        		SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME, 
-        		writer);
-        
+        OMSerializerUtil.serializeStartpart(this,
+                                            SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME,
+                                            writer);
+
         String text = this.getText();
         writer.writeCharacters(text);
         writer.writeEndElement();
@@ -98,7 +100,7 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
 
     public SOAPFaultValue getValue() {
         return (SOAPFaultValue) ElementHelper.getChildWithName(this,
-                SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME);
+                                                               SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME);
     }
 
 }

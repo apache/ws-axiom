@@ -16,8 +16,6 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMAbstractFactory;
-
 public class SOAPFaultReasonTest extends SOAPFaultReasonTestCase {
 
     public SOAPFaultReasonTest(String testName) {

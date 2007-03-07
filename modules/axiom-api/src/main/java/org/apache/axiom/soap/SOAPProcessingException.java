@@ -21,12 +21,10 @@ import org.apache.axiom.om.OMException;
 public class SOAPProcessingException extends OMException {
 
     private static final long serialVersionUID = -5432612295193716211L;
-    
+
     private String soapFaultCode;
 
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
+    /** Eran Chinthaka (chinthaka@apache.org) */
     public SOAPProcessingException(String message) {
         super(message);
     }
@@ -36,10 +34,11 @@ public class SOAPProcessingException extends OMException {
     }
 
     /**
-     *
-     * @param messageText - this will appear as the Text in the Reason information item of SOAP Fault
-     * @param faultCode - this will appear as the Value in the Code information item of SOAP Fault
-     * @param cause - this will appear under the Detail information item of SOAP Fault
+     * @param messageText - this will appear as the Text in the Reason information item of SOAP
+     *                    Fault
+     * @param faultCode   - this will appear as the Value in the Code information item of SOAP
+     *                    Fault
+     * @param cause       - this will appear under the Detail information item of SOAP Fault
      */
     public SOAPProcessingException(String messageText, String faultCode, Throwable cause) {
         super(messageText, cause);
@@ -47,9 +46,10 @@ public class SOAPProcessingException extends OMException {
     }
 
     /**
-     *
-     * @param messageText - this will appear as the Text in the Reason information item of SOAP Fault
-     * @param faultCode - this will appear as the Value in the Code information item of SOAP Fault
+     * @param messageText - this will appear as the Text in the Reason information item of SOAP
+     *                    Fault
+     * @param faultCode   - this will appear as the Value in the Code information item of SOAP
+     *                    Fault
      */
     public SOAPProcessingException(String messageText, String faultCode) {
         super(messageText);

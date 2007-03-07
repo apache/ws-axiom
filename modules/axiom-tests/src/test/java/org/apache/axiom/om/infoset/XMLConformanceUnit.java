@@ -60,12 +60,12 @@ public class XMLConformanceUnit extends XMLTestCase implements EntityResolver {
 //        factory.setProperty("report-cdata-event", Boolean.TRUE);
         StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
                 createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
-                        factory.createXMLStreamReader(
-                                new FileInputStream(filePath)));
+                                    factory.createXMLStreamReader(
+                                            new FileInputStream(filePath)));
         rootElement = staxOMBuilder.getDocumentElement();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ((OMDocument)rootElement.getParent()).serialize(baos);
+        ((OMDocument) rootElement.getParent()).serialize(baos);
 
         InputSource resultXML = new InputSource(new InputStreamReader(
                 new ByteArrayInputStream(baos.toByteArray())));
@@ -95,15 +95,16 @@ public class XMLConformanceUnit extends XMLTestCase implements EntityResolver {
         return db.parse(in);
     }
 
-    public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+    public InputSource resolveEntity(String publicId, String systemId)
+            throws SAXException, IOException {
         File f = new File(directory, systemId.substring(systemId.lastIndexOf('/')));
         return new InputSource(new FileInputStream(f));
     }
 
     public String getName() {
         String name = filePath;
-        if(name.lastIndexOf("xmlconf")!=-1)
+        if (name.lastIndexOf("xmlconf") != -1)
             name = name.substring(name.lastIndexOf("xmlconf"));
-        return name.replace('\\','/');
+        return name.replace('\\', '/');
     }
 }

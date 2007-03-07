@@ -17,7 +17,6 @@
 package org.apache.axiom.soap.impl.builder;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.exception.OMBuilderException;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -25,8 +24,6 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultReason;
-import org.apache.axiom.soap.SOAPFaultText;
-import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.w3c.dom.Element;
 
@@ -61,7 +58,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
                 processAttributes(code);
 
                 processText(parser, code);
-                ((OMNodeEx)code).setComplete(true);
+                ((OMNodeEx) code).setComplete(true);
                 element = code;
                 builder.elementLevel--;
 
@@ -74,7 +71,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
                 processAttributes(reason);
 
                 processText(parser, reason);
-                ((OMNodeEx)reason).setComplete(true);
+                ((OMNodeEx) reason).setComplete(true);
                 element = reason;
                 builder.elementLevel--;
 
@@ -83,13 +80,13 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
             } else if (SOAP_FAULT_ACTOR_LOCAL_NAME.equals(localName)) {
                 element =
                         factory.createSOAPFaultRole((SOAPFault) parent,
-                                builder);
+                                                    builder);
                 processNamespaceData(element, false);
                 processAttributes(element);
             } else if (SOAP_FAULT_DETAIL_LOCAL_NAME.equals(localName)) {
                 element =
                         factory.createSOAPFaultDetail((SOAPFault) parent,
-                                builder);
+                                                      builder);
                 processNamespaceData(element, false);
                 processAttributes(element);
             } else {
@@ -102,13 +99,13 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
 
         } else if (elementLevel == 5) {
 
-        	String parentTagName = "";
-        	if(parent instanceof Element) {
-        		parentTagName = ((Element)parent).getTagName();
-        	} else {
-        		parentTagName = parent.getLocalName();
-        	}
-        	
+            String parentTagName = "";
+            if (parent instanceof Element) {
+                parentTagName = ((Element) parent).getTagName();
+            } else {
+                parentTagName = parent.getLocalName();
+            }
+
             if (parentTagName.equals(SOAP_FAULT_CODE_LOCAL_NAME)) {
                 throw new OMBuilderException(
                         "faultcode element should not have children");
@@ -131,9 +128,9 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
         } else if (elementLevel > 5) {
             element =
                     this.factory.createOMElement(localName,
-                            null,
-                            parent,
-                            builder);
+                                                 null,
+                                                 parent,
+                                                 builder);
             processNamespaceData(element, false);
             processAttributes(element);
         }
@@ -146,7 +143,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
             int token = parser.next();
             while (token != XMLStreamReader.END_ELEMENT) {
                 if (token == XMLStreamReader.CHARACTERS) {
-                   factory.createOMText(value, parser.getText());
+                    factory.createOMText(value, parser.getText());
                 } else {
                     throw new SOAPProcessingException(
                             "Only Characters are allowed here");

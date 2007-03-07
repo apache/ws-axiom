@@ -16,7 +16,12 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.*;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMProcessingInstruction;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -32,8 +37,8 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
      * @param target
      * @param value
      */
-    public OMProcessingInstructionImpl(OMContainer parentNode, String target, 
-            String value, OMFactory factory) {
+    public OMProcessingInstructionImpl(OMContainer parentNode, String target,
+                                       String value, OMFactory factory) {
         super(parentNode, factory, true);
         this.target = (target == null) ? null : target.trim();
         this.value = (value == null) ? null : value.trim();
@@ -45,8 +50,8 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
      *
      * @param parentNode
      */
-    public OMProcessingInstructionImpl(OMContainer parentNode, 
-            OMFactory factory) {
+    public OMProcessingInstructionImpl(OMContainer parentNode,
+                                       OMFactory factory) {
         this(parentNode, null, null, factory);
     }
 
@@ -57,7 +62,7 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
      * @throws XMLStreamException
      */
     public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        writer.writeProcessingInstruction(this.target+" ", this.value);
+        writer.writeProcessingInstruction(this.target + " ", this.value);
     }
 
     /**

@@ -22,8 +22,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -59,13 +59,13 @@ public class SAXOMBuilder extends DefaultHandler {
             root = e = factory.createOMElement(localName, null, null, null);
         } else if (lastNode.isComplete()) {
             e = factory.createOMElement(localName, null, lastNode.getParent(),
-                    null);
-            ((OMNodeEx)lastNode).setNextOMSibling(e);
-            ((OMNodeEx)e).setPreviousOMSibling(lastNode);
+                                        null);
+            ((OMNodeEx) lastNode).setNextOMSibling(e);
+            ((OMNodeEx) e).setPreviousOMSibling(lastNode);
         } else {
             OMContainerEx parent = (OMContainerEx) lastNode;
             e = factory.createOMElement(localName, null, (OMElement) lastNode,
-                    null);
+                                        null);
             parent.setFirstChild(e);
         }
         return e;
@@ -106,7 +106,7 @@ public class SAXOMBuilder extends DefaultHandler {
         int j = atts.getLength();
         for (int i = 0; i < j; i++)
             nextElem.addAttribute(atts.getLocalName(i), atts.getValue(i),
-                    nextElem.findNamespace(atts.getURI(i), null));
+                                  nextElem.findNamespace(atts.getURI(i), null));
         lastNode = nextElem;
         nextElem = null;
     }
@@ -121,11 +121,11 @@ public class SAXOMBuilder extends DefaultHandler {
             throws SAXException {
         if (lastNode.isComplete()) {
             OMContainer parent = lastNode.getParent();
-            ((OMNodeEx)parent).setComplete(true);
+            ((OMNodeEx) parent).setComplete(true);
             lastNode = (OMNode) parent;
         } else {
             OMElement e = (OMElement) lastNode;
-            ((OMNodeEx)e).setComplete(true);
+            ((OMNodeEx) e).setComplete(true);
         }
     }
 
@@ -143,10 +143,10 @@ public class SAXOMBuilder extends DefaultHandler {
         if (lastNode.isComplete()) {
             node =
                     factory.createOMText(lastNode.getParent(),
-                            new String(ch,
-                                    start, length));
-            ((OMNodeEx)lastNode).setNextOMSibling(node);
-            ((OMNodeEx)node).setPreviousOMSibling(lastNode);
+                                         new String(ch,
+                                                    start, length));
+            ((OMNodeEx) lastNode).setNextOMSibling(node);
+            ((OMNodeEx) node).setPreviousOMSibling(lastNode);
         } else {
             OMContainerEx e = (OMContainerEx) lastNode;
             node = factory.createOMText(e, new String(ch, start, length));
@@ -166,9 +166,7 @@ public class SAXOMBuilder extends DefaultHandler {
     public void skippedEntity(String arg0) throws SAXException {
     }
 
-    /**
-     * @return Returns the root.
-     */
+    /** @return Returns the root. */
     public OMElement getRootElement() {
         return root;
     }

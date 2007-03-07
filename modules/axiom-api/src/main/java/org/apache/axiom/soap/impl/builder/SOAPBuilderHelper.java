@@ -41,7 +41,7 @@ public abstract class SOAPBuilderHelper {
         int namespaceCount = parser.getNamespaceCount();
         for (int i = 0; i < namespaceCount; i++) {
             node.declareNamespace(parser.getNamespaceURI(i),
-                    parser.getNamespacePrefix(i));
+                                  parser.getNamespacePrefix(i));
         }
 
         // set the own namespace
@@ -62,8 +62,6 @@ public abstract class SOAPBuilderHelper {
         } else {
 
         }
-
-
 
         // TODO we got to have this to make sure OM reject mesagess that are not name space qualified
         // But got to comment this to interop with Axis.1.x
@@ -89,13 +87,13 @@ public abstract class SOAPBuilderHelper {
             String uri = parser.getAttributeNamespace(i);
             if (uri != null && uri.hashCode() != 0) {
                 ns = node.findNamespace(uri,
-                        parser.getAttributePrefix(i));
+                                        parser.getAttributePrefix(i));
             }
 
             // todo if the attributes are supposed to namespace qualified all the time
             // todo then this should throw an exception here
             node.addAttribute(parser.getAttributeLocalName(i),
-                    parser.getAttributeValue(i), ns);
+                              parser.getAttributeValue(i), ns);
         }
     }
 }

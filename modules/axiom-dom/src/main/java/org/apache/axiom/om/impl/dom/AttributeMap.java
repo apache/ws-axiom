@@ -22,9 +22,7 @@ import java.util.Vector;
 
 public class AttributeMap extends NamedNodeMapImpl {
 
-    /**
-     * @param ownerNode
-     */
+    /** @param ownerNode  */
     protected AttributeMap(ParentNode ownerNode) {
         super(ownerNode);
     }
@@ -40,9 +38,7 @@ public class AttributeMap extends NamedNodeMapImpl {
         return super.removeNamedItemNS(namespaceURI, name);
     }
 
-    /**
-     * Almost a copy of the Xerces impl.
-     */
+    /** Almost a copy of the Xerces impl. */
     public Node setNamedItem(Node attribute) throws DOMException {
 
         if (isReadOnly()) {
@@ -50,7 +46,7 @@ public class AttributeMap extends NamedNodeMapImpl {
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
         if (attribute.getOwnerDocument() != ownerNode.getOwnerDocument()) {
             String msg = DOMMessageFormatter.formatMessage(
@@ -67,15 +63,15 @@ public class AttributeMap extends NamedNodeMapImpl {
         AttrImpl attr = (AttrImpl) attribute;
         if (attr.isOwned()) { // If the attribute is owned then:
             if (attr.getOwnerElement() != this.ownerNode) // the owner must be
-                                                            // the owner of this
-                                                            // list
+                // the owner of this
+                // list
                 throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR,
-                        DOMMessageFormatter.formatMessage(
-                                DOMMessageFormatter.DOM_DOMAIN,
-                                "INUSE_ATTRIBUTE_ERR", null));
+                                       DOMMessageFormatter.formatMessage(
+                                               DOMMessageFormatter.DOM_DOMAIN,
+                                               "INUSE_ATTRIBUTE_ERR", null));
             else
                 return attr; // No point adding the 'same' attr again to the
-                                // same element
+            // same element
         }
 
         attr.parent = this.ownerNode; // Set the owner node
@@ -114,16 +110,14 @@ public class AttributeMap extends NamedNodeMapImpl {
 
     }
 
-    /**
-     * Almost a copy of the Xerces impl.
-     */
+    /** Almost a copy of the Xerces impl. */
     public Node setNamedItemNS(Node attribute) throws DOMException {
         if (isReadOnly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
         if (attribute.getOwnerDocument() != ownerNode.getOwnerDocument()) {
             String msg = DOMMessageFormatter.formatMessage(
@@ -140,17 +134,17 @@ public class AttributeMap extends NamedNodeMapImpl {
         AttrImpl attr = (AttrImpl) attribute;
         if (attr.isOwned()) { // If the attribute is owned then:
             //the owner must be the owner of this list
-            if (attr.getOwnerElement() != this.ownerNode) 
+            if (attr.getOwnerElement() != this.ownerNode)
                 throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR,
-                        DOMMessageFormatter.formatMessage(
-                                DOMMessageFormatter.DOM_DOMAIN,
-                                "INUSE_ATTRIBUTE_ERR", null));
+                                       DOMMessageFormatter.formatMessage(
+                                               DOMMessageFormatter.DOM_DOMAIN,
+                                               "INUSE_ATTRIBUTE_ERR", null));
             else
                 return attr; // No point adding the 'same' attr again to the
-                                // same element
+            // same element
         }
         //Set the owner node
-        attr.ownerNode = (DocumentImpl) this.ownerNode.getOwnerDocument(); 
+        attr.ownerNode = (DocumentImpl) this.ownerNode.getOwnerDocument();
         attr.isOwned(true); // To indicate that this attr belong to an element
 
         int i = findNamePoint(attr.getNamespaceURI(), attr.getLocalName());
@@ -189,8 +183,8 @@ public class AttributeMap extends NamedNodeMapImpl {
     }
 
     /**
-     * BORROWED from Xerces impl. Cloning a NamedNodeMap is a DEEP OPERATION; it
-     * always clones all the nodes contained in the map.
+     * BORROWED from Xerces impl. Cloning a NamedNodeMap is a DEEP OPERATION; it always clones all
+     * the nodes contained in the map.
      */
 
     public NamedNodeMapImpl cloneMap(NodeImpl ownerNode) {
@@ -200,9 +194,7 @@ public class AttributeMap extends NamedNodeMapImpl {
         return newmap;
     } // cloneMap():AttributeMap
 
-    /**
-     * BORROWED from Xerces impl.
-     */
+    /** BORROWED from Xerces impl. */
     protected void cloneContent(NamedNodeMapImpl srcmap) {
         Vector srcnodes = srcmap.nodes;
         if (srcnodes != null) {

@@ -16,7 +16,14 @@
 
 package org.apache.axiom.om.impl.builder;
 
-import org.apache.axiom.om.*;
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.util.StAXUtils;
@@ -32,13 +39,11 @@ import java.io.InputStream;
 
 
 /**
- * Constructs an OM without using SOAP specific classes like SOAPEnvelope,
- * SOAPHeader, SOAPHeaderBlock and SOAPBody. This has the document concept also.
+ * Constructs an OM without using SOAP specific classes like SOAPEnvelope, SOAPHeader,
+ * SOAPHeaderBlock and SOAPBody. This has the document concept also.
  */
 public class StAXOMBuilder extends StAXBuilder {
-    /**
-     * Field document
-     */
+    /** Field document */
 
     private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
     private boolean doTrace = log.isDebugEnabled();
@@ -96,9 +101,10 @@ public class StAXOMBuilder extends StAXBuilder {
     public StAXOMBuilder(InputStream inStream) throws XMLStreamException {
         this(StAXUtils.createXMLStreamReader(inStream));
     }
-    
+
     /**
      * Init() *must* be called after creating the builder using this constructor.
+     *
      * @param inStream - instream which contains the XML
      * @throws XMLStreamException
      */
@@ -124,7 +130,8 @@ public class StAXOMBuilder extends StAXBuilder {
             switch (token) {
                 case XMLStreamConstants.START_ELEMENT:
                     if (doTrace) {
-                        log.trace("START_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
+                        log.trace(
+                                "START_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
                     }
                     lastNode = createOMElement();
                     break;
@@ -183,13 +190,15 @@ public class StAXOMBuilder extends StAXBuilder {
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
                     if (doTrace) {
-                        log.trace("PROCESSING_INSTRUCTION: [" + parser.getPITarget() + "][" + parser.getPIData() + "]");
+                        log.trace("PROCESSING_INSTRUCTION: [" + parser.getPITarget() + "][" +
+                                parser.getPIData() + "]");
                     }
                     createPI();
                     break;
                 case XMLStreamConstants.ENTITY_REFERENCE:
                     if (doTrace) {
-                        log.trace("ENTITY_REFERENCE: " + parser.getLocalName() + "[" + parser.getText() + "]");
+                        log.trace("ENTITY_REFERENCE: " + parser.getLocalName() + "[" +
+                                parser.getText() + "]");
                     }
                     lastNode = createOMText(XMLStreamConstants.ENTITY_REFERENCE);
                     break;
@@ -205,9 +214,9 @@ public class StAXOMBuilder extends StAXBuilder {
     }
 
     /**
-     * Populate element with data from parser START_ELEMENT event. This is used
-     * when the source of data for an element needs to be parsed on demand. The
-     * supplied element must already be set to the proper name and namespace.
+     * Populate element with data from parser START_ELEMENT event. This is used when the source of
+     * data for an element needs to be parsed on demand. The supplied element must already be set to
+     * the proper name and namespace.
      *
      * @param node element to be populated
      */
@@ -232,13 +241,13 @@ public class StAXOMBuilder extends StAXBuilder {
             node = omfactory.createOMElement(elementName, null, document, this);
         } else if (lastNode.isComplete()) {
             node = omfactory.createOMElement(elementName, null,
-                    lastNode.getParent(), this);
+                                             lastNode.getParent(), this);
             ((OMNodeEx) lastNode).setNextOMSibling(node);
             ((OMNodeEx) node).setPreviousOMSibling(lastNode);
         } else {
             OMContainerEx e = (OMContainerEx) lastNode;
             node = omfactory.createOMElement(elementName, null,
-                    (OMElement) lastNode, this);
+                                             (OMElement) lastNode, this);
             e.setFirstChild(node);
         }
         populateOMElement(node);
@@ -361,8 +370,8 @@ public class StAXOMBuilder extends StAXBuilder {
     }
 
     /**
-     * @deprecated
      * @param doDebug
+     * @deprecated
      */
     public void setDoDebug(boolean doDebug) {
         this.doTrace = doDebug;

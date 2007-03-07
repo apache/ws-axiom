@@ -23,14 +23,14 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultValueImpl;
 
 public class SOAP11FaultValueImpl extends SOAPFaultValueImpl {
-    
+
     public SOAP11FaultValueImpl(OMElement parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, factory);
     }
 
     public SOAP11FaultValueImpl(OMElement parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                                SOAPFactory factory) {
         super(parent, builder, factory);
     }
 
@@ -40,9 +40,9 @@ public class SOAP11FaultValueImpl extends SOAPFaultValueImpl {
                 (parent instanceof SOAP11FaultCodeImpl))) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP FaultSubCode " +
-                    "or SOAP FaultCode as the parent. But received some other" +
-                    " implementation." +
-                    parent.getClass());
+                            "or SOAP FaultCode as the parent. But received some other" +
+                            " implementation." +
+                            parent.getClass());
         }
     }
 }

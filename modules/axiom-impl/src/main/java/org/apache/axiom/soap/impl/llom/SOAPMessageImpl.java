@@ -53,18 +53,21 @@ public class SOAPMessageImpl extends OMDocumentImpl implements SOAPMessage {
     }
 
     public void setOMDocumentElement(OMElement rootElement) {
-        throw new UnsupportedOperationException("This is not allowed. Use set SOAPEnvelope instead");
+        throw new UnsupportedOperationException(
+                "This is not allowed. Use set SOAPEnvelope instead");
     }
 
     public void setFirstChild(OMNode firstChild) {
-        throw new UnsupportedOperationException("This is not allowed. Use set SOAPEnvelope instead");
+        throw new UnsupportedOperationException(
+                "This is not allowed. Use set SOAPEnvelope instead");
     }
 
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache, boolean includeXMLDeclaration) throws XMLStreamException {
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache,
+                                     boolean includeXMLDeclaration) throws XMLStreamException {
         if (cache) {
-            ((OMNodeEx)this.documentElement).internalSerialize(writer);
+            ((OMNodeEx) this.documentElement).internalSerialize(writer);
         } else {
-            ((OMNodeEx)this.documentElement).internalSerializeAndConsume(writer);
+            ((OMNodeEx) this.documentElement).internalSerializeAndConsume(writer);
         }
     }
 }

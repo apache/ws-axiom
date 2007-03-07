@@ -24,8 +24,9 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultTextImpl;
 
 public class SOAP12FaultTextImpl extends SOAPFaultTextImpl {
-    
-    public SOAP12FaultTextImpl(SOAPFaultReason parent, SOAPFactory factory) throws SOAPProcessingException {
+
+    public SOAP12FaultTextImpl(SOAPFaultReason parent, SOAPFactory factory)
+            throws SOAPProcessingException {
         super(parent, factory);
     }
 
@@ -39,7 +40,7 @@ public class SOAP12FaultTextImpl extends SOAPFaultTextImpl {
         if (!(parent instanceof SOAP12FaultReasonImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP FaultReason " +
-                    "as the parent. But received some other implementation");
+                            "as the parent. But received some other implementation");
         }
     }
 }

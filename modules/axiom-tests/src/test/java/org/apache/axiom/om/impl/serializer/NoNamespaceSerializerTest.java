@@ -34,12 +34,13 @@ import java.io.InputStreamReader;
 
 public class NoNamespaceSerializerTest extends TestCase {
 
-    private String xmlTextOne = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
-            "<soapenv:Body>\n" +
-            "   <ns1:getBalance xmlns:ns1=\"http://localhost:8081/axis/services/BankPort/\">\n" +
-            "      <accountNo href=\"#id0\"/>\n" +
-            "   </ns1:getBalance>\n" +
-            " </soapenv:Body></soapenv:Envelope>";
+    private String xmlTextOne =
+            "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+                    "<soapenv:Body>\n" +
+                    "   <ns1:getBalance xmlns:ns1=\"http://localhost:8081/axis/services/BankPort/\">\n" +
+                    "      <accountNo href=\"#id0\"/>\n" +
+                    "   </ns1:getBalance>\n" +
+                    " </soapenv:Body></soapenv:Envelope>";
 
     private String xmlText2 = "<purchase-order xmlns=\"http://openuri.org/easypo\">\n" +
             "  <customer>\n" +
@@ -49,12 +50,13 @@ public class NoNamespaceSerializerTest extends TestCase {
             "  <date>2005-03-06T14:06:12.697+06:00</date>\n" +
             "</purchase-order>";
 
-    private String xmlTextTwo = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
-            "<soapenv:Body>\n" +
-            "   <getBalance xmlns=\"http://localhost:8081/axis/services/BankPort/\">\n" +
-            "      <accountNo href=\"#id0\"/>\n" +
-            "   </getBalance>\n" +
-            " </soapenv:Body></soapenv:Envelope>";
+    private String xmlTextTwo =
+            "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+                    "<soapenv:Body>\n" +
+                    "   <getBalance xmlns=\"http://localhost:8081/axis/services/BankPort/\">\n" +
+                    "      <accountNo href=\"#id0\"/>\n" +
+                    "   </getBalance>\n" +
+                    " </soapenv:Body></soapenv:Envelope>";
 
     private XMLStreamReader readerOne;
     private XMLStreamReader readerTwo;
@@ -68,18 +70,17 @@ public class NoNamespaceSerializerTest extends TestCase {
     // private File tempFile;
 
 
-
     protected void setUp() throws Exception {
         readerOne =
                 XMLInputFactory.newInstance().
-                createXMLStreamReader(
-                        new InputStreamReader(
-                                new ByteArrayInputStream(xmlTextOne.getBytes())));
+                        createXMLStreamReader(
+                                new InputStreamReader(
+                                        new ByteArrayInputStream(xmlTextOne.getBytes())));
         readerTwo =
                 XMLInputFactory.newInstance().
-                createXMLStreamReader(
-                        new InputStreamReader(
-                                new ByteArrayInputStream(xmlTextTwo.getBytes())));
+                        createXMLStreamReader(
+                                new InputStreamReader(
+                                        new ByteArrayInputStream(xmlTextTwo.getBytes())));
         writer = XMLOutputFactory.newInstance().
                 createXMLStreamWriter(new ByteArrayOutputStream());
         builderOne =
@@ -95,8 +96,8 @@ public class NoNamespaceSerializerTest extends TestCase {
         env.serialize(writer);
         OMElement balanceElement = env.getBody().getFirstElement();
         assertEquals("Deafualt namespace has not been set properly",
-                balanceElement.getNamespace().getNamespaceURI(),
-                "http://localhost:8081/axis/services/BankPort/");
+                     balanceElement.getNamespace().getNamespaceURI(),
+                     "http://localhost:8081/axis/services/BankPort/");
 
         OMElement accountNo = balanceElement.getFirstElement();
         assertEquals(
@@ -113,7 +114,7 @@ public class NoNamespaceSerializerTest extends TestCase {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(
                 omFactory,
                 XMLInputFactory.newInstance().
-                createXMLStreamReader(
+                        createXMLStreamReader(
                         new InputStreamReader(
                                 new ByteArrayInputStream(xmlText2.getBytes()))));
         env.getBody().addChild(builder.getDocumentElement());
@@ -124,9 +125,7 @@ public class NoNamespaceSerializerTest extends TestCase {
         assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
     }
 
-    /**
-     * Will just do a probe test to check serialize with caching on works without any exception
-     */
+    /** Will just do a probe test to check serialize with caching on works without any exception */
     public void testSerilizationWithCacheOn() throws Exception {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         writer = XMLOutputFactory.newInstance().
@@ -138,9 +137,7 @@ public class NoNamespaceSerializerTest extends TestCase {
         assertTrue(new String(byteArrayOutputStream.toByteArray()).length() > 1);
     }
 
-    /**
-     * Will just do a probe test to check serialize with caching off works without any exception
-     */
+    /** Will just do a probe test to check serialize with caching off works without any exception */
     public void testSerilizationWithCacheOff() throws Exception {
         writer = XMLOutputFactory.newInstance().
                 createXMLStreamWriter(new ByteArrayOutputStream());

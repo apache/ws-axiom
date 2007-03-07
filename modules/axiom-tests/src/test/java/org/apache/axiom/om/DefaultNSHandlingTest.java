@@ -8,7 +8,11 @@ import org.jaxen.SimpleNamespaceContext;
 import org.jaxen.XPath;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.*;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayInputStream;
 import java.util.Iterator;
 /*
@@ -32,10 +36,11 @@ public class DefaultNSHandlingTest extends XMLTestCase {
     public void testDefaultNamespaceWithSameDefaultNSForAll() {
         String testXML = "<html xmlns='http://www.w3.org/TR/REC-html40'>" +
                 "<head><title>Frobnostication</title></head>" +
-                   "<body><p>Moved to <a href='http://frob.com'>here</a>.</p></body>" +
+                "<body><p>Moved to <a href='http://frob.com'>here</a>.</p></body>" +
                 "</html>";
         try {
-            StAXOMBuilder stAXOMBuilder = new StAXOMBuilder(new ByteArrayInputStream(testXML.getBytes()));
+            StAXOMBuilder stAXOMBuilder =
+                    new StAXOMBuilder(new ByteArrayInputStream(testXML.getBytes()));
             OMElement documentElement = stAXOMBuilder.getDocumentElement();
 
             checkNS(documentElement);
@@ -57,7 +62,8 @@ public class DefaultNSHandlingTest extends XMLTestCase {
     }
 
     private void checkNS(OMElement element) {
-        assertTrue("http://www.w3.org/TR/REC-html40".equals(element.getNamespace().getNamespaceURI()));
+        assertTrue(
+                "http://www.w3.org/TR/REC-html40".equals(element.getNamespace().getNamespaceURI()));
     }
 
     public void testMultipleDefaultNS() {
@@ -80,7 +86,7 @@ public class DefaultNSHandlingTest extends XMLTestCase {
         assertTrue("".equals(omElementOneChild.getNamespace().getNamespaceURI()));
         assertTrue("".equals(omElementTwoChild.getNamespace().getNamespaceURI()));
     }
-    
+
     public void testChildReDeclaringParentsDefaultNSWithPrefix() {
         try {
             OMFactory fac = OMAbstractFactory.getOMFactory();
@@ -89,27 +95,33 @@ public class DefaultNSHandlingTest extends XMLTestCase {
             fac.createOMElement(new QName("TokenType"), elem).setText("test");
             fac.createOMElement(new QName("RequestType"), elem).setText("test1");
 
-            fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust","Entropy", "wst"), elem);
+            fac.createOMElement(
+                    new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
+                    elem);
             String xml = elem.toString();
 
-            XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
+            XMLStreamReader reader = XMLInputFactory.newInstance()
+                    .createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
 
             StAXOMBuilder builder = new StAXOMBuilder(reader);
             builder.getDocumentElement().build();
 
             // The StAX implementation may or may not have a trailing blank in the tag
-            String assertText1 = "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\" />";
-            String assertText2 = "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"/>";
-            String assertText3 = "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"></wst:Entropy>";
-            
+            String assertText1 =
+                    "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\" />";
+            String assertText2 =
+                    "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"/>";
+            String assertText3 =
+                    "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"></wst:Entropy>";
+
             assertTrue((xml.indexOf(assertText1) != -1) ||
-            		   (xml.indexOf(assertText2) != -1) ||
-            		   (xml.indexOf(assertText3) != -1));
-        }catch (Exception e) {
+                    (xml.indexOf(assertText2) != -1) ||
+                    (xml.indexOf(assertText3) != -1));
+        } catch (Exception e) {
             fail(e.getMessage());
         }
     }
-   
+
     public void testChildReDeclaringGrandParentsDefaultNSWithPrefix() {
         try {
             OMFactory fac = OMAbstractFactory.getOMFactory();
@@ -118,12 +130,17 @@ public class DefaultNSHandlingTest extends XMLTestCase {
             fac.createOMElement(new QName("TokenType"), elem).setText("test");
             fac.createOMElement(new QName("RequestType"), elem).setText("test1");
 
-            OMElement entElem = fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust","Entropy", "wst"), elem);
-            OMElement binSecElem = fac.createOMElement(new QName("http://schemas.xmlsoap.org/ws/2005/02/trust","Binarysecret", "wst"), entElem);
+            OMElement entElem = fac.createOMElement(
+                    new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
+                    elem);
+            OMElement binSecElem = fac.createOMElement(
+                    new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Binarysecret", "wst"),
+                    entElem);
             binSecElem.setText("secret value");
             String xml = elem.toString();
-            assertTrue("Binarysecret element should have \'wst\' ns prefix", xml.indexOf("<wst:Binarysecret") != -1);
-        }catch (Exception e) {
+            assertTrue("Binarysecret element should have \'wst\' ns prefix",
+                       xml.indexOf("<wst:Binarysecret") != -1);
+        } catch (Exception e) {
             fail(e.getMessage());
         }
     }
@@ -172,10 +189,11 @@ public class DefaultNSHandlingTest extends XMLTestCase {
         xpath.setNamespaceContext(nsCtx);
         return xpath;
     }
-    
+
     public static void main(String[] args) {
         try {
-            XMLStreamWriter xmlStreamWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(System.out);
+            XMLStreamWriter xmlStreamWriter =
+                    XMLOutputFactory.newInstance().createXMLStreamWriter(System.out);
 
             xmlStreamWriter.writeStartElement("Foo");
             xmlStreamWriter.writeDefaultNamespace("test.org");

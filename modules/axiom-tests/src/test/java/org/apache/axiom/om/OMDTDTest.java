@@ -41,9 +41,10 @@ public class OMDTDTest extends TestCase {
             document.serialize(baos);
             String serializedString = new String(baos.toByteArray());
 
-            assertTrue(serializedString.indexOf("<!ENTITY foo \"bar\">" ) > -1);
-            assertTrue(serializedString.indexOf("<!ENTITY bar \"foo\">" ) > -1);
-            assertTrue(serializedString.indexOf("<feed xmlns=\"http://www.w3.org/2005/Atom\">" ) > -1);
+            assertTrue(serializedString.indexOf("<!ENTITY foo \"bar\">") > -1);
+            assertTrue(serializedString.indexOf("<!ENTITY bar \"foo\">") > -1);
+            assertTrue(
+                    serializedString.indexOf("<feed xmlns=\"http://www.w3.org/2005/Atom\">") > -1);
         } catch (XMLStreamException e) {
             fail("Bug in serializing OMDocuments which have DTDs, text and a document element");
         }

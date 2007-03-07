@@ -31,9 +31,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.namespace.QName;
 
-/**
- * Class SOAPHeaderBlockImpl
- */
+/** Class SOAPHeaderBlockImpl */
 public abstract class SOAPHeaderBlockImpl extends OMElementImpl
         implements SOAPHeaderBlock {
 
@@ -47,7 +45,7 @@ public abstract class SOAPHeaderBlockImpl extends OMElementImpl
     /**
      * @param localName
      * @param ns
-     * @param parent     
+     * @param parent
      */
     public SOAPHeaderBlockImpl(String localName,
                                OMNamespace ns,
@@ -75,7 +73,7 @@ public abstract class SOAPHeaderBlockImpl extends OMElementImpl
     /**
      * @param attributeName
      * @param attrValue
-     * @param soapEnvelopeNamespaceURI     
+     * @param soapEnvelopeNamespaceURI
      */
     protected void setAttribute(String attributeName,
                                 String attrValue,
@@ -86,9 +84,10 @@ public abstract class SOAPHeaderBlockImpl extends OMElementImpl
             omAttribute.setAttributeValue(attrValue);
         } else {
             OMAttribute attribute = new OMAttributeImpl(attributeName,
-                    new OMNamespaceImpl(soapEnvelopeNamespaceURI,
-                            SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
-                    attrValue, this.factory);
+                                                        new OMNamespaceImpl(
+                                                                soapEnvelopeNamespaceURI,
+                                                                SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
+                                                        attrValue, this.factory);
             this.addAttribute(attribute);
         }
     }
@@ -97,7 +96,7 @@ public abstract class SOAPHeaderBlockImpl extends OMElementImpl
      * Method getAttribute.
      *
      * @param attrName
-     * @param soapEnvelopeNamespaceURI     
+     * @param soapEnvelopeNamespaceURI
      * @return Returns String.
      */
     protected String getAttribute(String attrName,

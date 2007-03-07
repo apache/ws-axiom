@@ -37,7 +37,7 @@ public class WrongEnvelopeNamespaceTester extends TestCase {
             assertTrue(true);
         } catch (FileNotFoundException e) {
             fail("Only SOAPProcessingException can be thrown here");
-        }catch (Exception e) {
+        } catch (Exception e) {
             fail("Only SOAPProcessingException can be thrown here");
         }
     }

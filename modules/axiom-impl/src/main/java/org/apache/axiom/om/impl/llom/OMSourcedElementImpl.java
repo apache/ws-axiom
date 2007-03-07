@@ -16,10 +16,17 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.*;
-import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -34,50 +41,47 @@ import java.io.Writer;
 import java.util.Iterator;
 
 /**
- * <p>Element backed by an arbitrary data source. When necessary, this element
- * will be expanded by creating a parser from the data source.</p>
- * 
- * <p>Whenever methods are added to the base {@link
- * org.apache.axiom.om.impl.llom.OMElementImpl} class the corresponding methods
- * must be added to this class (there's a unit test to verify that this has been
- * done, just to make sure nothing gets accidentally broken). If the method
- * only requires the element name and/or namespace information, the base class
- * method can be called directly. Otherwise, the element must be expanded into a
- * full OM tree (by calling the {@link #forceExpand()} method) before the base
- * class method is called. This will typically involve a heavy overhead penalty,
- * so should be avoided if possible.</p>
+ * <p>Element backed by an arbitrary data source. When necessary, this element will be expanded by
+ * creating a parser from the data source.</p>
+ * <p/>
+ * <p>Whenever methods are added to the base {@link OMElementImpl}
+ * class the corresponding methods must be added to this class (there's a unit test to verify that
+ * this has been done, just to make sure nothing gets accidentally broken). If the method only
+ * requires the element name and/or namespace information, the base class method can be called
+ * directly. Otherwise, the element must be expanded into a full OM tree (by calling the {@link
+ * #forceExpand()} method) before the base class method is called. This will typically involve a
+ * heavy overhead penalty, so should be avoided if possible.</p>
  */
-public class OMSourcedElementImpl extends OMElementImpl
-{
+public class OMSourcedElementImpl extends OMElementImpl {
     /** Data source for element data. */
     private final OMDataSource dataSource;
-    
+
     /** Namespace for element, needed in order to bypass base class handling. */
     private OMNamespace definedNamespace = null;
 
     /** Flag for parser provided to base element class. */
     private boolean isParserSet;
-    
+
     private static Log log = LogFactory.getLog(OMSourcedElementImpl.class);
     private static final boolean isDebugEnabled = log.isDebugEnabled();
 
     /**
      * Constructor.
-     * 
+     *
      * @param localName
      * @param ns
      * @param factory
      * @param source
      */
-    public OMSourcedElementImpl(String localName, OMNamespace ns, OMFactory factory, OMDataSource source) {
+    public OMSourcedElementImpl(String localName, OMNamespace ns, OMFactory factory,
+                                OMDataSource source) {
         super(localName, null, factory);
         dataSource = source;
         definedNamespace = ns;
     }
 
     /**
-     * Constructor that takes a QName instead of the
-     * local name and the namespace seperately
+     * Constructor that takes a QName instead of the local name and the namespace seperately
      *
      * @param QName
      * @param factory
@@ -89,9 +93,10 @@ public class OMSourcedElementImpl extends OMElementImpl
         dataSource = source;
         definedNamespace = new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
     }
-    
+
     /**
      * Generate element name for output.
+     *
      * @return name
      */
     private String getPrintableName() {
@@ -104,110 +109,109 @@ public class OMSourcedElementImpl extends OMElementImpl
     }
 
     /**
-     * Get parser from data source.
-     * Note that getDataReader may consume the underlying data source.
+     * Get parser from data source. Note that getDataReader may consume the underlying data source.
+     *
      * @return parser
      */
     private XMLStreamReader getDirectReader() {
         try {
-        	// If expansion has occurred, then the reader from the datasource is consumed or stale.
-        	// In such cases use the stream reader from the OMElementImpl
-        	if (isDataSourceConsumed()) {
-        		return super.getXMLStreamReader();
-        	} else {
-        		return dataSource.getReader();  // This call may consume the underlying data source
-        	}
+            // If expansion has occurred, then the reader from the datasource is consumed or stale.
+            // In such cases use the stream reader from the OMElementImpl
+            if (isDataSourceConsumed()) {
+                return super.getXMLStreamReader();
+            } else {
+                return dataSource.getReader();  // This call may consume the underlying data source
+            }
         } catch (XMLStreamException e) {
             log.error("Could not get parser from data source for element " +
-                getPrintableName(), e);
+                    getPrintableName(), e);
             throw new RuntimeException("Error obtaining parser from data source:" +
-                e.getMessage());
+                    e.getMessage());
         }
     }
 
     /**
-     * Set parser for OM, if not previously set. Since the builder is what
-     * actually constructs the tree on demand, this first creates a builder
+     * Set parser for OM, if not previously set. Since the builder is what actually constructs the
+     * tree on demand, this first creates a builder
      */
     private void forceExpand() {
         if (!isParserSet) {
-            
+
             if (isDebugEnabled) {
                 log.debug("forceExpand: expanding element " +
-                    getPrintableName());
+                        getPrintableName());
             }
-            
+
             // position reader to start tag
             XMLStreamReader reader = getDirectReader();
             try {
-            	if (reader.getEventType()!= XMLStreamConstants.START_ELEMENT) {
-                   while (reader.next() != XMLStreamConstants.START_ELEMENT);
-            	}
+                if (reader.getEventType() != XMLStreamConstants.START_ELEMENT) {
+                    while (reader.next() != XMLStreamConstants.START_ELEMENT) ;
+                }
             } catch (XMLStreamException e) {
                 log.error("forceExpand: error parsing data soruce document for element " +
-                    getLocalName(), e);
+                        getLocalName(), e);
                 throw new RuntimeException("Error parsing data source document:" +
-                    e.getMessage());
+                        e.getMessage());
             }
-            
+
             // make sure element local name and namespace matches what was expected
             if (!reader.getLocalName().equals(getLocalName())) {
                 log.error("forceExpand: expected element name " +
-                    getLocalName() + ", found " + reader.getLocalName());
+                        getLocalName() + ", found " + reader.getLocalName());
                 throw new RuntimeException("Element name from data source is " +
-                    reader.getLocalName() + ", not the expected " + getLocalName());
+                        reader.getLocalName() + ", not the expected " + getLocalName());
             }
             String readerURI = reader.getNamespaceURI();
             readerURI = (readerURI == null) ? "" : readerURI;
             String uri = getNamespace().getNamespaceURI();
             if (!readerURI.equals(uri)) {
                 log.error("forceExpand: expected element namespace " +
-                    getLocalName() + ", found " + uri);
+                        getLocalName() + ", found " + uri);
                 throw new RuntimeException("Element namespace from data source is " +
-                    readerURI + ", not the expected " + uri);
+                        readerURI + ", not the expected " + uri);
             }
-            
+
             // Get the current prefix and the reader's prefix
             String readerPrefix = reader.getPrefix();
             readerPrefix = (readerPrefix == null) ? "" : readerPrefix;
             String prefix = getNamespace().getPrefix();
-            
+
             // set the builder for this element
             isParserSet = true;
             super.setBuilder(new StAXOMBuilder(getOMFactory(), reader, this));
             setComplete(false);
-            
+
             // Update the prefix if necessary.  This must be done after
             // isParserSet to avoid a recursive call
-            
-            if (!readerPrefix.equals(prefix) || 
+
+            if (!readerPrefix.equals(prefix) ||
                     getNamespace() == null) {
                 if (log.isDebugEnabled()) {
-                    log.debug("forceExpand: changing prefix from " + prefix + " to " + readerPrefix);
+                    log.debug(
+                            "forceExpand: changing prefix from " + prefix + " to " + readerPrefix);
                 }
                 setNamespace(new OMNamespaceImpl(readerURI, readerPrefix));
             }
-            
+
         }
     }
-    
+
     /**
      * Check if element has been expanded into tree.
-     * 
+     *
      * @return <code>true</code> if expanded, <code>false</code> if not
      */
     public boolean isExpanded() {
         return isParserSet;
     }
-    
-    /**
-     * Returns whether the datasource is consumed
-     */
+
+    /** Returns whether the datasource is consumed */
     private boolean isDataSourceConsumed() {
-    	// The datasource might be consumed when it is touched/read.  
-    	// For now I am going to assume that it is since the OMDataSource currently has
-    	// no way to convey this information.
-    	return isExpanded();
+        // The datasource might be consumed when it is touched/read.
+        // For now I am going to assume that it is since the OMDataSource currently has
+        // no way to convey this information.
+        return isExpanded();
     }
 
     /* (non-Javadoc)
@@ -326,7 +330,8 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMElement#setBuilder(org.apache.axiom.om.OMXMLParserWrapper)
      */
     public void setBuilder(OMXMLParserWrapper wrapper) {
-        throw new UnsupportedOperationException("Builder cannot be set for element backed by data source");
+        throw new UnsupportedOperationException(
+                "Builder cannot be set for element backed by data source");
     }
 
     /* (non-Javadoc)
@@ -373,7 +378,7 @@ public class OMSourcedElementImpl extends OMElementImpl
     public XMLStreamReader getXMLStreamReaderWithoutCaching() {
         if (isDebugEnabled) {
             log.debug("getting XMLStreamReader without caching for " +
-                getPrintableName());
+                    getPrintableName());
         }
         if (isParserSet) {
             return super.getXMLStreamReaderWithoutCaching();
@@ -474,12 +479,12 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMElement#toStringWithConsume()
      */
     public String toStringWithConsume() throws XMLStreamException {
-    	if (isDataSourceConsumed()) {
-        	return super.toStringWithConsume();
+        if (isDataSourceConsumed()) {
+            return super.toStringWithConsume();
         } else {
-        	StringWriter writer = new StringWriter();
+            StringWriter writer = new StringWriter();
             XMLStreamWriter writer2 = StAXUtils.createXMLStreamWriter(writer);
-        	dataSource.serialize(writer2);  // dataSource.serialize consumes the data
+            dataSource.serialize(writer2);  // dataSource.serialize consumes the data
             writer2.flush();
             return writer.toString();
         }
@@ -537,28 +542,30 @@ public class OMSourcedElementImpl extends OMElementImpl
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#internalSerialize(javax.xml.stream.XMLStreamWriter)
      */
-    public void internalSerialize(javax.xml.stream.XMLStreamWriter writer) throws XMLStreamException {
+    public void internalSerialize(javax.xml.stream.XMLStreamWriter writer)
+            throws XMLStreamException {
         // The contract of internalSerialize is to "cache" the om
-    	if (isDataSourceConsumed()) {
-    		super.internalSerialize(writer);
-    	} else {
+        if (isDataSourceConsumed()) {
+            super.internalSerialize(writer);
+        } else {
             forceExpand();
             super.internalSerialize(writer);
-    	}
+        }
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.impl.llom.OMElementImpl#internalSerialize(javax.xml.stream.XMLStreamWriter, boolean)
      */
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-    	if (isDataSourceConsumed()) {
-    		super.internalSerialize(writer, cache);
-    	} else if (cache) {
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
+            throws XMLStreamException {
+        if (isDataSourceConsumed()) {
+            super.internalSerialize(writer, cache);
+        } else if (cache) {
             forceExpand();
             super.internalSerialize(writer, true);
         } else {
-    		internalSerializeAndConsume(writer);
-    	}
+            internalSerializeAndConsume(writer);
+        }
     }
 
     /* (non-Javadoc)
@@ -569,9 +576,9 @@ public class OMSourcedElementImpl extends OMElementImpl
             log.debug("serialize " + getPrintableName() + " to XMLStreamWriter");
         }
         if (isDataSourceConsumed()) {
-        	super.internalSerializeAndConsume(writer);
+            super.internalSerializeAndConsume(writer);
         } else {
-        	dataSource.serialize(writer);  // dataSource.serialize() consumes the data
+            dataSource.serialize(writer);  // dataSource.serialize() consumes the data
         }
     }
 
@@ -587,10 +594,10 @@ public class OMSourcedElementImpl extends OMElementImpl
      * @see org.apache.axiom.om.OMNode#serialize(java.io.OutputStream)
      */
     public void serialize(OutputStream output) throws XMLStreamException {
-       forceExpand();
-       XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-       serialize(xmlStreamWriter);
-       xmlStreamWriter.flush();
+        forceExpand();
+        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
+        serialize(xmlStreamWriter);
+        xmlStreamWriter.flush();
     }
 
     /* (non-Javadoc)
@@ -622,7 +629,8 @@ public class OMSourcedElementImpl extends OMElementImpl
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serializeAndConsume(javax.xml.stream.XMLStreamWriter)
      */
-    public void serializeAndConsume(javax.xml.stream.XMLStreamWriter xmlWriter) throws XMLStreamException {
+    public void serializeAndConsume(javax.xml.stream.XMLStreamWriter xmlWriter)
+            throws XMLStreamException {
         internalSerializeAndConsume(xmlWriter);
     }
 
@@ -634,9 +642,9 @@ public class OMSourcedElementImpl extends OMElementImpl
             log.debug("serialize " + getPrintableName() + " to output stream");
         }
         if (isDataSourceConsumed()) {
-        	super.serializeAndConsume(output, new OMOutputFormat());
+            super.serializeAndConsume(output, new OMOutputFormat());
         } else {
-        	dataSource.serialize(output, new OMOutputFormat());  // consumes the datasource
+            dataSource.serialize(output, new OMOutputFormat());  // consumes the datasource
         }
     }
 
@@ -648,40 +656,42 @@ public class OMSourcedElementImpl extends OMElementImpl
             log.debug("serialize " + getPrintableName() + " to writer");
         }
         if (isDataSourceConsumed()) {
-        	super.serializeAndConsume(writer);
+            super.serializeAndConsume(writer);
         } else {
-        	dataSource.serialize(writer, new OMOutputFormat()); // consumes the datasource
+            dataSource.serialize(writer, new OMOutputFormat()); // consumes the datasource
         }
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
      */
-    public void serializeAndConsume(OutputStream output, OMOutputFormat format) throws XMLStreamException {
+    public void serializeAndConsume(OutputStream output, OMOutputFormat format)
+            throws XMLStreamException {
         if (isDebugEnabled) {
             log.debug("serialize formatted " + getPrintableName() +
-                " to output stream");
+                    " to output stream");
         }
         if (isDataSourceConsumed()) {
-        	super.serializeAndConsume(output, format);
+            super.serializeAndConsume(output, format);
         } else {
-        	dataSource.serialize(output, format); // consumes the datasource
+            dataSource.serialize(output, format); // consumes the datasource
         }
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
      */
-    public void serializeAndConsume(Writer writer, OMOutputFormat format) throws XMLStreamException {
+    public void serializeAndConsume(Writer writer, OMOutputFormat format)
+            throws XMLStreamException {
         if (isDebugEnabled) {
             log.debug("serialize formatted " + getPrintableName() +
-                " to writer");
+                    " to writer");
         }
         if (isDataSourceConsumed()) {
-        	super.serializeAndConsume(writer, format);
-    	} else {
-    		dataSource.serialize(writer, format);  // consumes the datasource
-    	}
+            super.serializeAndConsume(writer, format);
+        } else {
+            dataSource.serialize(writer, format);  // consumes the datasource
+        }
     }
 
     /* (non-Javadoc)
@@ -786,49 +796,48 @@ public class OMSourcedElementImpl extends OMElementImpl
         forceExpand();
         return super.toString();
     }
-    
-	/* (non-Javadoc)
-	 * @see org.apache.axiom.om.OMNode#buildAll()
-	 */
-	public void buildWithAttachments() {
-		if (!done)
-		{
-			this.build();
-		}
-		Iterator iterator = getChildren();
-		while(iterator.hasNext())
-		{
-			OMNode node = (OMNode)iterator.next();
-			node.buildWithAttachments();
-		}
-	}
+
+    /* (non-Javadoc)
+      * @see org.apache.axiom.om.OMNode#buildAll()
+      */
+    public void buildWithAttachments() {
+        if (!done) {
+            this.build();
+        }
+        Iterator iterator = getChildren();
+        while (iterator.hasNext()) {
+            OMNode node = (OMNode) iterator.next();
+            node.buildWithAttachments();
+        }
+    }
 
     public void build() throws OMException {
         super.build();
     }
 
     protected void notifyChildComplete() {
-        super.notifyChildComplete();    
+        super.notifyChildComplete();
     }
 
 
     OMNamespace handleNamespace(String namespaceURI, String prefix) {
-        return super.handleNamespace(namespaceURI, prefix);    //To change body of overridden methods use File | Settings | File Templates.
+        return super.handleNamespace(namespaceURI,
+                                     prefix);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-	/**
-	 * Provide access to the data source encapsulated in OMSourcedEle. This is usesfull
-	 * when we want to access the raw data in the data source.
-	 * @return the internal datasource
-	 */
-	public OMDataSource getDataSource() {
-		return dataSource;
-	}
-    
     /**
-     * setComplete override
-     * The OMSourcedElement has its own isolated builder/reader during the expansion process.
-     * Thus calls to setCompete should stop here and not propogate up to the 
+     * Provide access to the data source encapsulated in OMSourcedEle. This is usesfull when we want to
+     * access the raw data in the data source.
+     *
+     * @return the internal datasource
+     */
+    public OMDataSource getDataSource() {
+        return dataSource;
+    }
+
+    /**
+     * setComplete override The OMSourcedElement has its own isolated builder/reader during the
+     * expansion process. Thus calls to setCompete should stop here and not propogate up to the
      * parent (which may have a different builder or no builder).
      */
     public void setComplete(boolean value) {

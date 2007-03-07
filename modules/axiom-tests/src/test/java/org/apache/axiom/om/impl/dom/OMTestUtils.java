@@ -51,7 +51,7 @@ public class OMTestUtils {
             while (attibIt.hasNext()) {
                 TestCase.assertNotNull("once the has next is not null, the " +
                         "element should not be null",
-                        attibIt.next());
+                                       attibIt.next());
             }
         }
         Iterator it = omEle.getChildren();
@@ -72,12 +72,12 @@ public class OMTestUtils {
             return;
         } else if (ele != null && omele != null) {
             TestCase.assertEquals("Element name not correct",
-                    ele.getLocalName(),
-                    omele.getLocalName());
+                                  ele.getLocalName(),
+                                  omele.getLocalName());
             if (omele.getNamespace() != null) {
                 TestCase.assertEquals("Namespace URI not correct",
-                        ele.getNamespaceURI(),
-                        omele.getNamespace().getNamespaceURI());
+                                      ele.getNamespaceURI(),
+                                      omele.getNamespace().getNamespaceURI());
 
             }
 
@@ -93,7 +93,7 @@ public class OMTestUtils {
                 if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
                     Attr attr = (Attr) node;
                     TestCase.assertEquals(attr.getValue(),
-                            omattribute.getAttributeValue());
+                                          omattribute.getAttributeValue());
                 } else {
                     throw new OMException("return type is not a Attribute");
                 }

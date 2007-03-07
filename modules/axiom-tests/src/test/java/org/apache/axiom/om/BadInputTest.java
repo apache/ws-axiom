@@ -31,7 +31,7 @@ public class BadInputTest extends OMTestCase {
             SOAPEnvelope soapEnvelope =
                     (SOAPEnvelope) OMTestUtils.getOMBuilder(
                             getTestResourceFile(TestConstants.BAD_ENVELOPE_MISSING))
-                    .getDocumentElement();
+                            .getDocumentElement();
             OMTestUtils.walkThrough(soapEnvelope);
             fail("this must failed gracefully with OMException or AxisFault");
         } catch (OMException e) {
@@ -46,7 +46,7 @@ public class BadInputTest extends OMTestCase {
             SOAPEnvelope soapEnvelope =
                     (SOAPEnvelope) OMTestUtils.getOMBuilder(
                             getTestResourceFile(TestConstants.BAD_HEADER_BODY_WRONG_ORDER))
-                    .getDocumentElement();
+                            .getDocumentElement();
             soapEnvelope.build();
             fail("this must failed gracefully with OMException or AxisFault");
         } catch (OMException e) {
@@ -91,7 +91,7 @@ public class BadInputTest extends OMTestCase {
             SOAPEnvelope soapEnvelope =
                     (SOAPEnvelope) OMTestUtils.getOMBuilder(
                             getTestResourceFile(TestConstants.BAD_TWO_BODY))
-                    .getDocumentElement();
+                            .getDocumentElement();
             soapEnvelope.build();
             fail("this must failed gracefully with OMException or AxisFault");
         } catch (OMException e) {
@@ -106,7 +106,7 @@ public class BadInputTest extends OMTestCase {
             SOAPEnvelope soapEnvelope =
                     (SOAPEnvelope) OMTestUtils.getOMBuilder(
                             getTestResourceFile(TestConstants.BAD_TWO_HEADERS))
-                    .getDocumentElement();
+                            .getDocumentElement();
             soapEnvelope.build();
             fail("this must failed gracefully with OMException or AxisFault");
         } catch (OMException e) {
@@ -121,7 +121,7 @@ public class BadInputTest extends OMTestCase {
             SOAPEnvelope soapEnvelope =
                     (SOAPEnvelope) OMTestUtils.getOMBuilder(
                             getTestResourceFile(TestConstants.BAD_WRONG_SOAP_NS))
-                    .getDocumentElement();
+                            .getDocumentElement();
             OMTestUtils.walkThrough(soapEnvelope);
             fail("this must failed gracefully with OMException or AxisFault");
         } catch (OMException e) {
@@ -129,8 +129,6 @@ public class BadInputTest extends OMTestCase {
         }
 
     }
-
-
 
 
 }

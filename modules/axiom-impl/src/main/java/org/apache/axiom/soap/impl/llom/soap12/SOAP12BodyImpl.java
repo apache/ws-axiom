@@ -18,19 +18,21 @@ package org.apache.axiom.soap.impl.llom.soap12;
 
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.soap.*;
+import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPBodyImpl;
 
 public class SOAP12BodyImpl extends SOAPBodyImpl {
 
     public SOAP12BodyImpl(SOAPFactory factory) {
-         super(SOAPConstants.BODY_LOCAL_NAME, factory.getNamespace(),
-                factory);
+        super(SOAPConstants.BODY_LOCAL_NAME, factory.getNamespace(),
+              factory);
     }
 
-    /**
-     * @param envelope
-     */
+    /** @param envelope  */
     public SOAP12BodyImpl(SOAPEnvelope envelope, SOAPFactory factory)
             throws SOAPProcessingException {
         super(envelope, factory);
@@ -43,12 +45,12 @@ public class SOAP12BodyImpl extends SOAPBodyImpl {
      * @param builder
      */
     public SOAP12BodyImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                          SOAPFactory factory) {
         super(envelope, builder, factory);
     }
 
     public SOAPFault addFault(Exception e) throws OMException {
         return new SOAP12FaultImpl(this, e,
-                (SOAPFactory) this.factory);
+                                   (SOAPFactory) this.factory);
     }
 }

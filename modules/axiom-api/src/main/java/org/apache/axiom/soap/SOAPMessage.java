@@ -21,6 +21,7 @@ import org.apache.axiom.om.OMDocument;
 public interface SOAPMessage extends OMDocument {
 
     public SOAPEnvelope getSOAPEnvelope() throws SOAPProcessingException;
+
     public void setSOAPEnvelope(SOAPEnvelope envelope) throws SOAPProcessingException;
 
 }

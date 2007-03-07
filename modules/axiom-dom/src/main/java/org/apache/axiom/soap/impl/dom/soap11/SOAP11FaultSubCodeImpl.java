@@ -27,7 +27,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultSubCodeImpl;
 
 public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
-	
+
     //changed
     public SOAP11FaultSubCodeImpl(SOAPFaultCode parent, SOAPFactory factory)
             throws SOAPProcessingException {
@@ -39,7 +39,7 @@ public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
                                   OMXMLParserWrapper builder,
                                   SOAPFactory factory) {
         super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, builder,
-                factory);
+              factory);
     }
 
     public SOAP11FaultSubCodeImpl(SOAPFaultSubCode parent, SOAPFactory factory)
@@ -51,7 +51,7 @@ public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
                                   OMXMLParserWrapper builder,
                                   SOAPFactory factory) {
         super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, builder,
-                factory);
+              factory);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -65,11 +65,11 @@ public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
 
     public void setSubCode(SOAPFaultSubCode subCode)
             throws SOAPProcessingException {
-        if (!((parentNode instanceof SOAP11FaultSubCodeImpl) || 
+        if (!((parentNode instanceof SOAP11FaultSubCodeImpl) ||
                 (parentNode instanceof SOAP11FaultCodeImpl))) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault Sub " +
-                    "Code. But received some other implementation");
+                            "Code. But received some other implementation");
         }
         super.setSubCode(subCode);
     }
@@ -79,7 +79,7 @@ public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
         if (!(soapFaultSubCodeValue instanceof SOAP11FaultValueImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault Value. " +
-                    "But received some other implementation");
+                            "But received some other implementation");
         }
         super.setValue(soapFaultSubCodeValue);
     }

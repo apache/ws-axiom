@@ -35,10 +35,8 @@ import java.util.Iterator;
 
 public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
 
-    
-    /**
-     * @param envelope
-     */
+
+    /** @param envelope  */
     public SOAPHeaderImpl(SOAPEnvelope envelope, SOAPFactory factory)
             throws SOAPProcessingException {
         super(envelope, SOAPConstants.HEADER_LOCAL_NAME, true, factory);
@@ -52,18 +50,18 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
      * @param builder
      */
     public SOAPHeaderImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                          SOAPFactory factory) {
         super(envelope, SOAPConstants.HEADER_LOCAL_NAME, builder, factory);
     }
 
     /**
-     * Creates a new <CODE>SOAPHeaderBlock</CODE> object initialized with the
-     * specified name and adds it to this <CODE>SOAPHeader</CODE> object.
+     * Creates a new <CODE>SOAPHeaderBlock</CODE> object initialized with the specified name and
+     * adds it to this <CODE>SOAPHeader</CODE> object.
      *
      * @param localName
      * @param ns
-     * @return the new <CODE>SOAPHeaderBlock</CODE> object that was inserted
-     *         into this <CODE>SOAPHeader</CODE> object
+     * @return the new <CODE>SOAPHeaderBlock</CODE> object that was inserted into this
+     *         <CODE>SOAPHeader</CODE> object
      * @throws org.apache.axiom.om.OMException
      *                     if a SOAP error occurs
      * @throws OMException
@@ -74,18 +72,15 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
 
     /**
      * Returns a list of all the <CODE>SOAPHeaderBlock</CODE> objects in this
-     * <CODE>SOAPHeader</CODE> object that have the the specified actor. An
-     * actor is a global attribute that indicates the intermediate parties to
-     * whom the message should be sent. An actor receives the message and then
-     * sends it to the next actor. The default actor is the ultimate intended
-     * recipient for the message, so if no actor attribute is included in a
-     * <CODE>SOAPHeader</CODE> object, the message is sent to its ultimate
-     * destination.
+     * <CODE>SOAPHeader</CODE> object that have the the specified actor. An actor is a global
+     * attribute that indicates the intermediate parties to whom the message should be sent. An
+     * actor receives the message and then sends it to the next actor. The default actor is the
+     * ultimate intended recipient for the message, so if no actor attribute is included in a
+     * <CODE>SOAPHeader</CODE> object, the message is sent to its ultimate destination.
      *
-     * @param paramRole a <CODE>String</CODE> giving the URI of the actor for
-     *                  which to search
-     * @return an <CODE>Iterator</CODE> object over all the <CODE>
-     *         SOAPHeaderBlock</CODE> objects that contain the specified actor
+     * @param paramRole a <CODE>String</CODE> giving the URI of the actor for which to search
+     * @return an <CODE>Iterator</CODE> object over all the <CODE> SOAPHeaderBlock</CODE> objects
+     *         that contain the specified actor
      * @see #extractHeaderBlocks(String) extractHeaderBlocks(java.lang.String)
      */
     public Iterator examineHeaderBlocks(String paramRole) {
@@ -124,9 +119,9 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
             if (headerBlock.getRole() != null &&
                     headerBlock.getRole().trim().length() > 0 &&
                     headerBlock.getRole().equals(paramRole)) {
-                    elements.add(headerBlock);
+                elements.add(headerBlock);
             }
-            
+
         }
         return elements.iterator();
     }
@@ -146,31 +141,26 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
 
     /**
      * Returns a list of all the <CODE>SOAPHeaderBlock</CODE> objects in this
-     * <CODE>SOAPHeader</CODE> object that have the the specified role and
-     * detaches them from this <CODE> SOAPHeader</CODE> object. <P>This method
-     * allows an role to process only the parts of the <CODE>SOAPHeader</CODE>
-     * object that apply to it and to remove them before passing the message on
-     * to the next role.
+     * <CODE>SOAPHeader</CODE> object that have the the specified role and detaches them from this
+     * <CODE> SOAPHeader</CODE> object. <P>This method allows an role to process only the parts of
+     * the <CODE>SOAPHeader</CODE> object that apply to it and to remove them before passing the
+     * message on to the next role.
      *
-     * @param role a <CODE>String</CODE> giving the URI of the role for which to
-     *             search
-     * @return an <CODE>Iterator</CODE> object over all the <CODE>
-     *         SOAPHeaderBlock</CODE> objects that contain the specified role
+     * @param role a <CODE>String</CODE> giving the URI of the role for which to search
+     * @return an <CODE>Iterator</CODE> object over all the <CODE> SOAPHeaderBlock</CODE> objects
+     *         that contain the specified role
      * @see #examineHeaderBlocks(String) examineHeaderBlocks(java.lang.String)
      */
     public abstract Iterator extractHeaderBlocks(String role);
 
     /**
-     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code>
-     * objects in this <code>SOAPHeader</code> object that have the specified
-     * actor and that have a MustUnderstand attribute whose value is equivalent
-     * to <code>true</code>.
+     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code> objects in this
+     * <code>SOAPHeader</code> object that have the specified actor and that have a MustUnderstand
+     * attribute whose value is equivalent to <code>true</code>.
      *
-     * @param actor a <code>String</code> giving the URI of the actor for which
-     *              to search
-     * @return an <code>Iterator</code> object over all the
-     *         <code>SOAPHeaderBlock</code> objects that contain the specified
-     *         actor and are marked as MustUnderstand
+     * @param actor a <code>String</code> giving the URI of the actor for which to search
+     * @return an <code>Iterator</code> object over all the <code>SOAPHeaderBlock</code> objects
+     *         that contain the specified actor and are marked as MustUnderstand
      */
     public Iterator examineMustUnderstandHeaderBlocks(String actor) {
         Iterator headerBlocksIter = this.getChildren();
@@ -182,7 +172,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
                 String role = soapHeaderBlock.getRole();
                 boolean mustUnderstand = soapHeaderBlock.getMustUnderstand();
                 if ((role != null) && role.equalsIgnoreCase(actor) &&
-                    mustUnderstand) {
+                        mustUnderstand) {
                     mustUnderstandHeadersWithGivenActor.add(soapHeaderBlock);
                 }
             }
@@ -191,27 +181,23 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     }
 
     /**
-     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code>
-     * objects in this <code>SOAPHeader</code> object. Not that this will return
-     * elements containing the QName (http://schemas.xmlsoap.org/soap/envelope/,
-     * Header)
+     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code> objects in this
+     * <code>SOAPHeader</code> object. Not that this will return elements containing the QName
+     * (http://schemas.xmlsoap.org/soap/envelope/, Header)
      *
-     * @return an <code>Iterator</code> object over all the
-     *         <code>SOAPHeaderBlock</code> objects contained by this
-     *         <code>SOAPHeader</code>
+     * @return an <code>Iterator</code> object over all the <code>SOAPHeaderBlock</code> objects
+     *         contained by this <code>SOAPHeader</code>
      */
     public Iterator examineAllHeaderBlocks() {
         return this.getChildrenWithName(null);
     }
 
     /**
-     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code>
-     * objects in this <code>SOAPHeader </code> object and detaches them from
-     * this <code>SOAPHeader</code> object.
+     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code> objects in this
+     * <code>SOAPHeader </code> object and detaches them from this <code>SOAPHeader</code> object.
      *
-     * @return an <code>Iterator</code> object over all the
-     *         <code>SOAPHeaderBlock</code> objects contained by this
-     *         <code>SOAPHeader</code>
+     * @return an <code>Iterator</code> object over all the <code>SOAPHeaderBlock</code> objects
+     *         contained by this <code>SOAPHeader</code>
      */
     public Iterator extractAllHeaderBlocks() {
         Collection result = new ArrayList();
@@ -250,7 +236,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         if (!(parent instanceof SOAPEnvelopeImpl)) {
             throw new SOAPProcessingException(
                     "Expecting an implementation of SOAP Envelope as the " +
-                    "parent. But received some other implementation");
+                            "parent. But received some other implementation");
         }
     }
 

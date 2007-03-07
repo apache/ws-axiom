@@ -22,12 +22,12 @@ import java.io.Writer;
  */
 
 public class Base64 {
-    private static final char[] S_BASE64CHAR = {'A', 'B', 'C', 'D', 'E', 'F',
+    private static final char[] S_BASE64CHAR = { 'A', 'B', 'C', 'D', 'E', 'F',
             'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
             'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
             'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
             't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5',
-            '6', '7', '8', '9', '+', '/'};
+            '6', '7', '8', '9', '+', '/' };
 
     private static final char S_BASE64PAD = '=';
 
@@ -122,29 +122,28 @@ public class Base64 {
     }
 
     /**
-     * checks input string for invalid Base64 characters 
+     * checks input string for invalid Base64 characters
+     *
      * @param data
-     * @return true, if String contains only valid Base64 characters.
-     *         false, otherwise 
+     * @return true, if String contains only valid Base64 characters. false, otherwise
      */
     public static boolean isValidBase64Encoding(String data) {
         for (int i = 0; i < data.length(); i++) {
             char ch = data.charAt(i);
-            
+
             if (ch == S_BASE64PAD || ch < S_DECODETABLE.length
                     && S_DECODETABLE[ch] != Byte.MAX_VALUE) {
-            	//valid character.Do nothing
-            }else if(ch == '\r' || ch == '\n'){
-            	//do nothing
-            }
-            else{
-            	return false;
+                //valid character.Do nothing
+            } else if (ch == '\r' || ch == '\n') {
+                //do nothing
+            } else {
+                return false;
             }
         }//iterate over all characters in the string
         return true;
-    }  
-    
-    
+    }
+
+
     /**
      *
      */
@@ -189,16 +188,12 @@ public class Base64 {
         }
     }
 
-    /**
-     * Returns base64 representation of specified byte array.
-     */
+    /** Returns base64 representation of specified byte array. */
     public static String encode(byte[] data) {
         return encode(data, 0, data.length);
     }
 
-    /**
-     * Returns base64 representation of specified byte array.
-     */
+    /** Returns base64 representation of specified byte array. */
     public static String encode(byte[] data, int off, int len) {
         if (len <= 0)
             return "";
@@ -233,9 +228,7 @@ public class Base64 {
         return new String(out, 0, windex);
     }
 
-    /**
-     * Outputs base64 representation of the specified byte array to the specified String Buffer
-     */
+    /** Outputs base64 representation of the specified byte array to the specified String Buffer */
     public static void encode(byte[] data, int off, int len, StringBuffer buffer) {
         if (len <= 0) {
             return;
@@ -273,10 +266,7 @@ public class Base64 {
         }
     }
 
-    /**
-     * Outputs base64 representation of the specified byte array to a byte
-     * stream.
-     */
+    /** Outputs base64 representation of the specified byte array to a byte stream. */
     public static void encode(byte[] data, int off, int len,
                               OutputStream ostream) throws IOException {
         if (len <= 0)
@@ -313,10 +303,7 @@ public class Base64 {
         }
     }
 
-    /**
-     * Outputs base64 representation of the specified byte array to a character
-     * stream.
-     */
+    /** Outputs base64 representation of the specified byte array to a character stream. */
     public static void encode(byte[] data, int off, int len, Writer writer)
             throws IOException {
         if (len <= 0)

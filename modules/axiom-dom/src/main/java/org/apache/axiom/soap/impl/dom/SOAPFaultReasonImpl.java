@@ -16,10 +16,6 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -30,6 +26,10 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public abstract class SOAPFaultReasonImpl extends SOAPElement implements
         SOAPFaultReason {
@@ -44,34 +44,30 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
     public SOAPFaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,
                                SOAPFactory factory) {
         super(parent, SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME, builder,
-                factory);
+              factory);
     }
 
-    /**
-     * @param parent
-     */
+    /** @param parent  */
     public SOAPFaultReasonImpl(OMElement parent,
                                boolean extractNamespaceFromParent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super(parent,SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME,
-                extractNamespaceFromParent,factory);
+        super(parent, SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME,
+              extractNamespaceFromParent, factory);
     }
 
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
+    /** Eran Chinthaka (chinthaka@apache.org) */
     public void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException {
         ElementHelper.setNewElement(this, text, soapFaultText);
     }
 
     public SOAPFaultText getFirstSOAPText() {
         return (SOAPFaultText) ElementHelper.getChildWithName(this,
-                SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME);
+                                                              SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME);
     }
 
     public List getAllSoapTexts() {
         //TODO Ruchith check
-    	List faultTexts = new ArrayList();
+        List faultTexts = new ArrayList();
         Iterator childrenIter = this.getChildren();
         while (childrenIter.hasNext()) {
             OMNode node = (OMNode) childrenIter.next();

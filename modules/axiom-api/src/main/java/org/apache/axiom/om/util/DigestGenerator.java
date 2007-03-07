@@ -15,7 +15,13 @@
  */
 package org.apache.axiom.om.util;
 
-import org.apache.axiom.om.*;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMText;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -23,11 +29,16 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
- * Helper class to provide the functionality of the digest value generation.
- * This is an implementation of the DOMHASH algorithm on OM.
+ * Helper class to provide the functionality of the digest value generation. This is an
+ * implementation of the DOMHASH algorithm on OM.
  */
 public class DigestGenerator {
 
@@ -48,10 +59,11 @@ public class DigestGenerator {
             Collection childNodes = getValidElements(document);
             dos.writeInt(childNodes.size());
             Iterator itr = childNodes.iterator();
-            while(itr.hasNext()) {
+            while (itr.hasNext()) {
                 OMNode node = (OMNode) itr.next();
                 if (node.getType() == OMNode.PI_NODE)
-                    dos.write(getDigest((OMProcessingInstruction) node, digestAlgorithm)); else if (
+                    dos.write(getDigest((OMProcessingInstruction) node, digestAlgorithm));
+                else if (
                         node.getType() == OMNode.ELEMENT_NODE)
                     dos.write(getDigest((OMElement) node, digestAlgorithm));
             }
@@ -74,10 +86,14 @@ public class DigestGenerator {
      * @return Returns a byte array representing the calculated digest value
      */
     public byte[] getDigest(OMNode node, String digestAlgorithm) {
-        if (node.getType() == OMNode.ELEMENT_NODE) return getDigest((OMElement) node, digestAlgorithm); else if (
+        if (node.getType() == OMNode.ELEMENT_NODE)
+            return getDigest((OMElement) node, digestAlgorithm);
+        else if (
                 node.getType() == OMNode.TEXT_NODE)
-            return getDigest((OMText) node, digestAlgorithm); else if (node.getType() == OMNode.PI_NODE)
-            return getDigest((OMProcessingInstruction) node, digestAlgorithm); else return new byte[0];
+            return getDigest((OMText) node, digestAlgorithm);
+        else if (node.getType() == OMNode.PI_NODE)
+            return getDigest((OMProcessingInstruction) node, digestAlgorithm);
+        else return new byte[0];
     }
 
     /**
@@ -100,7 +116,7 @@ public class DigestGenerator {
             Collection attrs = getAttributesWithoutNS(element);
             dos.writeInt(attrs.size());
             Iterator itr = attrs.iterator();
-            while(itr.hasNext())
+            while (itr.hasNext())
                 dos.write(getDigest((OMAttribute) itr.next(), digestAlgorithm));
             OMNode node = element.getFirstOMChild();
             // adjoining Texts are merged,
@@ -165,7 +181,8 @@ public class DigestGenerator {
      */
     public byte[] getDigest(OMAttribute attribute, String digestAlgorithm) throws OMException {
         byte[] digest = new byte[0];
-        if (!(attribute.getLocalName().equals("xmlns") || attribute.getLocalName().startsWith("xmlns:"))) try {
+        if (!(attribute.getLocalName().equals("xmlns") ||
+                attribute.getLocalName().startsWith("xmlns:"))) try {
             MessageDigest md = MessageDigest.getInstance(digestAlgorithm);
             md.update((byte) 0);
             md.update((byte) 0);
@@ -191,7 +208,7 @@ public class DigestGenerator {
      * @param digestAlgorithm
      * @return Returns a byte array representing the calculated digest value
      */
-    public byte[] getDigest(OMText text, String digestAlgorithm)  throws OMException  {
+    public byte[] getDigest(OMText text, String digestAlgorithm) throws OMException {
         byte[] digest = new byte[0];
         try {
             MessageDigest md = MessageDigest.getInstance(digestAlgorithm);
@@ -210,8 +227,8 @@ public class DigestGenerator {
     }
 
     /**
-     * This method is an overloaded method for getting the expanded name namespaceURI followed by the local name
-     * for OMElement
+     * This method is an overloaded method for getting the expanded name namespaceURI followed by
+     * the local name for OMElement
      *
      * @param element
      * @return Returns the expanded name of OMElement
@@ -221,8 +238,8 @@ public class DigestGenerator {
     }
 
     /**
-     * This method is an overloaded method for getting the expanded name namespaceURI followed by the local name
-     * for OMAttribute
+     * This method is an overloaded method for getting the expanded name namespaceURI followed by
+     * the local name for OMAttribute
      *
      * @param attribute
      * @return Returns the expanded name of the OMAttribute
@@ -242,15 +259,16 @@ public class DigestGenerator {
         Iterator itr = element.getAllAttributes();
         while (itr.hasNext()) {
             OMAttribute attribute = (OMAttribute) itr.next();
-            if (!(attribute.getLocalName().equals("xmlns") || attribute.getLocalName().startsWith("xmlns:")))
+            if (!(attribute.getLocalName().equals("xmlns") ||
+                    attribute.getLocalName().startsWith("xmlns:")))
                 map.put(getExpandedName(attribute), attribute);
         }
         return map.values();
     }
 
     /**
-     * Gets the valid element collection of an OMDocument.
-     * OMElement and OMProcessingInstruction only
+     * Gets the valid element collection of an OMDocument. OMElement and OMProcessingInstruction
+     * only
      *
      * @param document
      * @return Returns a collection of OMProcessingInstructions and OMElements
@@ -258,9 +276,10 @@ public class DigestGenerator {
     public Collection getValidElements(OMDocument document) {
         ArrayList list = new ArrayList();
         Iterator itr = document.getChildren();
-        while(itr.hasNext()) {
-            OMNode node = (OMNode)itr.next();
-            if(node.getType() == OMNode.ELEMENT_NODE || node.getType() == OMNode.PI_NODE) list.add(node);
+        while (itr.hasNext()) {
+            OMNode node = (OMNode) itr.next();
+            if (node.getType() == OMNode.ELEMENT_NODE || node.getType() == OMNode.PI_NODE)
+                list.add(node);
         }
         return list;
     }
@@ -286,7 +305,8 @@ public class DigestGenerator {
      * @return Returns true if the OMNode XML contents are equal
      */
     public boolean compareOMNode(OMNode node, OMNode comparingNode, String digestAlgorithm) {
-        return Arrays.equals(getDigest(node, digestAlgorithm), getDigest(comparingNode, digestAlgorithm));
+        return Arrays.equals(getDigest(node, digestAlgorithm),
+                             getDigest(comparingNode, digestAlgorithm));
     }
 
     /**
@@ -297,8 +317,10 @@ public class DigestGenerator {
      * @param digestAlgorithm
      * @return Returns true if the OMDocument XML content are equal
      */
-    public boolean compareOMDocument(OMDocument document, OMDocument comparingDocument, String digestAlgorithm) {
-        return Arrays.equals(getDigest(document, digestAlgorithm), getDigest(comparingDocument,  digestAlgorithm));
+    public boolean compareOMDocument(OMDocument document, OMDocument comparingDocument,
+                                     String digestAlgorithm) {
+        return Arrays.equals(getDigest(document, digestAlgorithm),
+                             getDigest(comparingDocument, digestAlgorithm));
     }
 
     /**
@@ -309,22 +331,18 @@ public class DigestGenerator {
      * @param digestAlgorithm
      * @return Returns true if the OMDocument XML content are equal
      */
-    public boolean compareOMAttribute(OMAttribute attribute, OMAttribute comparingAttribute, String digestAlgorithm) {
-        return Arrays.equals(getDigest(attribute, digestAlgorithm), getDigest(comparingAttribute, digestAlgorithm));
+    public boolean compareOMAttribute(OMAttribute attribute, OMAttribute comparingAttribute,
+                                      String digestAlgorithm) {
+        return Arrays.equals(getDigest(attribute, digestAlgorithm),
+                             getDigest(comparingAttribute, digestAlgorithm));
     }
 
-    /**
-     * String representing the MD5 digest algorithm
-     */
+    /** String representing the MD5 digest algorithm */
     public static final String md5DigestAlgorithm = "MD5";
 
-    /**
-     * String representing the SHA digest algorithm
-     */
+    /** String representing the SHA digest algorithm */
     public static final String shaDigestAlgorithm = "SHA";
 
-    /**
-     * String representing the SHA1 digest algorithm
-     */
+    /** String representing the SHA1 digest algorithm */
     public static final String sha1DigestAlgorithm = "SHA1";
 }

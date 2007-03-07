@@ -20,56 +20,38 @@ public interface SOAPConstants {
     /**
      * Eran Chinthaka (chinthaka@apache.org)
      */
-    /**
-     * Field SOAP_DEFAULT_NAMESPACE_PREFIX
-     */
+    /** Field SOAP_DEFAULT_NAMESPACE_PREFIX */
     public static final String SOAP_DEFAULT_NAMESPACE_PREFIX = "soapenv";
-    /**
-     * Field SOAPENVELOPE_LOCAL_NAME
-     */
+    /** Field SOAPENVELOPE_LOCAL_NAME */
     public static final String SOAPENVELOPE_LOCAL_NAME = "Envelope";
 
-    /**
-     * Field HEADER_LOCAL_NAME
-     */
+    /** Field HEADER_LOCAL_NAME */
     public static final String HEADER_LOCAL_NAME = "Header";
 
-    /**
-     * Field BODY_LOCAL_NAME
-     */
+    /** Field BODY_LOCAL_NAME */
     public static final String BODY_LOCAL_NAME = "Body";
-    /**
-     * Field BODY_NAMESPACE_PREFIX
-     */
+    /** Field BODY_NAMESPACE_PREFIX */
     public static final String BODY_NAMESPACE_PREFIX =
             SOAP_DEFAULT_NAMESPACE_PREFIX;
-    /**
-     * Field BODY_FAULT_LOCAL_NAME
-     */
+    /** Field BODY_FAULT_LOCAL_NAME */
     public static final String BODY_FAULT_LOCAL_NAME = "Fault";
 
-    /**
-     * Field ATTR_MUSTUNDERSTAND
-     */
+    /** Field ATTR_MUSTUNDERSTAND */
     public static final String ATTR_MUSTUNDERSTAND = "mustUnderstand";
     public static final String ATTR_MUSTUNDERSTAND_TRUE = "true";
     public static final String ATTR_MUSTUNDERSTAND_FALSE = "false";
     public static final String ATTR_MUSTUNDERSTAND_0 = "0";
     public static final String ATTR_MUSTUNDERSTAND_1 = "1";
-    /**
-     * Field SOAPFAULT_LOCAL_NAME
-     */
+    /** Field SOAPFAULT_LOCAL_NAME */
     public static final String SOAPFAULT_LOCAL_NAME = "Fault";
-    /**
-     * Field SOAPFAULT_DETAIL_LOCAL_NAME
-     */
+    /** Field SOAPFAULT_DETAIL_LOCAL_NAME */
     public static final String SOAPFAULT_DETAIL_LOCAL_NAME = "detail";
 
     public static final String SOAP_FAULT_DETAIL_EXCEPTION_ENTRY = "Exception";
 
     // -------- SOAP Fault Codes ------------------------------
     public static final String FAULT_CODE_VERSION_MISMATCH = "VersionMismatch";
-    public static final String FAULT_CODE_MUST_UNDERSTAND  = "MustUnderstand";
+    public static final String FAULT_CODE_MUST_UNDERSTAND = "MustUnderstand";
     public static final String FAULT_CODE_DATA_ENCODING_UNKNOWN = "DataEncodingUnknown";
 
     // Followings are different in SOAP 1.1 and 1.2 specifications

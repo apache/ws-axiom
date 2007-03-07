@@ -168,10 +168,10 @@ public class SOAPFaultTextTest extends SOAPFaultReasonTestCase {
     }
 
     public void testSOAP12GetTextWithParser() {
-    	
+
         assertTrue(
                 "SOAP 1.2 Fault Text Test With Parser : - getText method returns incorrect string",
                 soap12FaultTextWithParser.getText().equals("Sender Timeout"));
-        													
+
     }
 }

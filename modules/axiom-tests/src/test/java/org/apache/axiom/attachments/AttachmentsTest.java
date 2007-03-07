@@ -16,18 +16,16 @@
 
 package org.apache.axiom.attachments;
 
+import org.apache.axiom.om.AbstractTestCase;
+
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Set;
-
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-
-import org.apache.axiom.om.AbstractTestCase;
 
 public class AttachmentsTest extends AbstractTestCase {
 
@@ -39,7 +37,8 @@ public class AttachmentsTest extends AbstractTestCase {
     String img1FileName = "mtom/img/test.jpg";
     String img2FileName = "mtom/img/test2.jpg";
 
-    String contentTypeString = "multipart/related; boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
+    String contentTypeString =
+            "multipart/related; boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
 
     public void testMIMEHelper() {
     }
@@ -58,10 +57,10 @@ public class AttachmentsTest extends AbstractTestCase {
 
         // This should throw an error
         try {
-        	attachments.getIncomingAttachmentStreams();
-        	fail("No exception caught when attempting to access datahandler and stream at the same time");
+            attachments.getIncomingAttachmentStreams();
+            fail("No exception caught when attempting to access datahandler and stream at the same time");
         } catch (IllegalStateException ise) {
-        	// Nothing
+            // Nothing
         }
 
         inStream.close();
@@ -74,24 +73,25 @@ public class AttachmentsTest extends AbstractTestCase {
 
         // These should NOT throw error even though they are using part based access
         try {
-            assertEquals("application/xop+xml; charset=UTF-8; type=\"application/soap+xml\";", attachments.getSOAPPartContentType());
+            assertEquals("application/xop+xml; charset=UTF-8; type=\"application/soap+xml\";",
+                         attachments.getSOAPPartContentType());
         } catch (IllegalStateException ise) {
-        	fail("No exception expected when requesting SOAP part data");
-        	ise.printStackTrace();
+            fail("No exception expected when requesting SOAP part data");
+            ise.printStackTrace();
         }
 
         try {
             attachments.getSOAPPartInputStream();
         } catch (IllegalStateException ise) {
-        	fail("No exception expected when requesting SOAP part data");
+            fail("No exception expected when requesting SOAP part data");
         }
 
         // These should throw an error
         try {
             attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
-        	fail("No exception caught when attempting to access stream and datahandler at the same time");
+            fail("No exception caught when attempting to access stream and datahandler at the same time");
         } catch (IllegalStateException ise) {
-        	// Nothing
+            // Nothing
         }
 
         // Additionally, we also need to ensure mutual exclusion if someone
@@ -99,16 +99,16 @@ public class AttachmentsTest extends AbstractTestCase {
 
         try {
             attachments.getAllContentIDs();
-        	fail("No exception caught when attempting to access stream and contentids list at the same time");
+            fail("No exception caught when attempting to access stream and contentids list at the same time");
         } catch (IllegalStateException ise) {
-        	// Nothing
+            // Nothing
         }
 
         try {
             attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
-        	fail("No exception caught when attempting to access stream and part at the same time");
+            fail("No exception caught when attempting to access stream and part at the same time");
         } catch (IllegalStateException ise) {
-        	// Nothing
+            // Nothing
         }
     }
 
@@ -125,7 +125,7 @@ public class AttachmentsTest extends AbstractTestCase {
         // directly, and then get to the streams. If this sequence throws an
         // error, something is wrong with the stream handling code.
         InputStream is = attachments.getSOAPPartInputStream();
-        while (is.read() != -1);
+        while (is.read() != -1) ;
 
         // Get the inputstream container
         IncomingAttachmentStreams ias = attachments.getIncomingAttachmentStreams();
@@ -146,16 +146,17 @@ public class AttachmentsTest extends AbstractTestCase {
         // After all is done, we should *still* be able to access and
         // re-consume the SOAP part stream, as it should be cached.. can we?
         is = attachments.getSOAPPartInputStream();
-        while (is.read() != -1);
+        while (is.read() != -1) ;
     }
 
     private void compareStreams(InputStream data, InputStream expected) throws Exception {
-        byte[] dataArray = this.getStreamAsByteArray(data,-1);
-        byte[] expectedArray = this.getStreamAsByteArray(expected,-1);
-        if(dataArray.length == expectedArray.length) {
+        byte[] dataArray = this.getStreamAsByteArray(data, -1);
+        byte[] expectedArray = this.getStreamAsByteArray(expected, -1);
+        if (dataArray.length == expectedArray.length) {
             assertTrue(Arrays.equals(dataArray, expectedArray));
         } else {
-            System.out.println("Skipping compare because of lossy image i/o ["+dataArray.length+"]["+expectedArray.length+"]");
+            System.out.println("Skipping compare because of lossy image i/o [" + dataArray.length +
+                    "][" + expectedArray.length + "]");
         }
     }
 
@@ -164,7 +165,8 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
         Attachments attachments = new Attachments(inStream, contentTypeString);
 
-        DataHandler dh = attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+        DataHandler dh = attachments
+                .getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
         InputStream dataIs = dh.getDataSource().getInputStream();
 
         FileDataSource dataSource = new FileDataSource(getTestResourceFile(img2FileName));
@@ -173,7 +175,7 @@ public class AttachmentsTest extends AbstractTestCase {
         // Compare data across streams
         compareStreams(dataIs, expectedDataIs);
     }
-    
+
     public void testNonExistingMIMEPart() throws Exception {
 
         InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
@@ -182,30 +184,29 @@ public class AttachmentsTest extends AbstractTestCase {
         DataHandler dh = attachments.getDataHandler("ThisShouldReturnNull");
         assertNull(dh);
     }
-    
+
     public void testGetAllContentIDs() throws Exception {
 
         InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
         Attachments attachments = new Attachments(inStream, contentTypeString);
 
         String[] contentIDs = attachments.getAllContentIDs();
-        assertEquals(contentIDs.length,3);
-        assertEquals(contentIDs[0],"0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org");
-        assertEquals(contentIDs[1],"1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
-        assertEquals(contentIDs[2],"2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
-        
+        assertEquals(contentIDs.length, 3);
+        assertEquals(contentIDs[0], "0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org");
+        assertEquals(contentIDs[1], "1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
+        assertEquals(contentIDs[2], "2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+
         Set idSet = attachments.getContentIDSet();
         assertTrue(idSet.contains("0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org"));
         assertTrue(idSet.contains("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"));
         assertTrue(idSet.contains("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));
     }
-    
+
     /**
      * Returns the contents of the input stream as byte array.
      *
      * @param stream the <code>InputStream</code>
-     * @param length the number of bytes to copy, if length < 0,
-     *               the number is unlimited
+     * @param length the number of bytes to copy, if length < 0, the number is unlimited
      * @return the stream content as byte array
      */
     private byte[] getStreamAsByteArray(InputStream stream, int length) throws IOException {

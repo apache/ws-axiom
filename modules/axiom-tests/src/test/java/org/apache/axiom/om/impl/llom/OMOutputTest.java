@@ -31,9 +31,7 @@ import java.io.FileOutputStream;
 
 public class OMOutputTest extends AbstractTestCase {
 
-    /**
-     * @param testName
-     */
+    /** @param testName  */
     public OMOutputTest(String testName) {
         super(testName);
     }
@@ -61,7 +59,7 @@ public class OMOutputTest extends AbstractTestCase {
         outBase64File = getTempOutputFile(outBase64FileName);
 
         OMFactory fac = OMAbstractFactory.getOMFactory();
-        
+
         OMNamespaceImpl soap = new OMNamespaceImpl(
                 "http://schemas.xmlsoap.org/soap/envelope/", "soap");
         envelope = new OMElementImpl("Envelope", soap, fac);
@@ -76,10 +74,10 @@ public class OMOutputTest extends AbstractTestCase {
 
         OMElement text = new OMElementImpl("name", dataName, fac);
         OMAttribute cType1 = new OMAttributeImpl("contentType", mime,
-                "text/plain", fac);
+                                                 "text/plain", fac);
         text.addAttribute(cType1);
-        byte[] byteArray = new byte[]{13, 56, 65, 32, 12, 12, 7, -3, -2, -1,
-                                      98};
+        byte[] byteArray = new byte[] { 13, 56, 65, 32, 12, 12, 7, -3, -2, -1,
+                98 };
         dataHandler = new DataHandler(new ByteArrayDataSource(byteArray));
         OMTextImpl textData = new OMTextImpl(dataHandler, false, fac);
 
@@ -107,7 +105,7 @@ public class OMOutputTest extends AbstractTestCase {
         mtomOutputFormat.setDoOptimize(true);
         OMOutputFormat baseOutputFormat = new OMOutputFormat();
         baseOutputFormat.setDoOptimize(false);
-        
+
         envelope.serializeAndConsume(new FileOutputStream(outBase64File), baseOutputFormat);
         envelope.serializeAndConsume(new FileOutputStream(outMTOMFile), mtomOutputFormat);
     }

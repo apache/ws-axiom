@@ -16,48 +16,49 @@
 
 package org.apache.axiom.attachments;
 
+import org.apache.axiom.om.AbstractTestCase;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import org.apache.axiom.om.AbstractTestCase;
 
-
-/**
- * Test the PartOnFile class
- */
+/** Test the PartOnFile class */
 
 public class IncomingAttachmentInputTest extends AbstractTestCase {
-	
-	public IncomingAttachmentInputTest(String testName) {
+
+    public IncomingAttachmentInputTest(String testName) {
         super(testName);
     }
 
     String inMimeFileName = "mtom/MTOMAttachmentStream.bin";
-    String contentTypeString = "multipart/related; boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
+    String contentTypeString =
+            "multipart/related; boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
     File temp;
 
-	public void testIncomingAttachmentInputStreamFunctions() throws Exception {
+    public void testIncomingAttachmentInputStreamFunctions() throws Exception {
         InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
         Attachments attachments = new Attachments(inStream, contentTypeString);
 
         // Get the inputstream container
         IncomingAttachmentStreams ias = attachments.getIncomingAttachmentStreams();
-        
+
         IncomingAttachmentInputStream dataIs;
 
         // Img1 stream
         dataIs = ias.getNextStream();
-        
+
         // Make sure it was the first attachment
-        assertEquals("<1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org>", dataIs.getContentId());
-        
+        assertEquals("<1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org>",
+                     dataIs.getContentId());
+
         // Consume the stream
-        while (dataIs.read() != -1);
-        
+        while (dataIs.read() != -1) ;
+
         // Img2 stream
         dataIs = ias.getNextStream();
-        assertEquals("<2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org>", dataIs.getContentId());
+        assertEquals("<2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org>",
+                     dataIs.getContentId());
 
         // Test if getContentType() works..
         assertEquals("image/jpeg", dataIs.getContentType());
@@ -65,5 +66,5 @@ public class IncomingAttachmentInputTest extends AbstractTestCase {
         // Test if a adding/getting a header works
         dataIs.addHeader("new-header", "test-value");
         assertEquals("test-value", dataIs.getHeader("new-header"));
-	}
+    }
 }

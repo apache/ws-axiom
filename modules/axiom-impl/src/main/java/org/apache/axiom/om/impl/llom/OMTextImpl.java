@@ -17,14 +17,21 @@
 package org.apache.axiom.om.impl.llom;
 
 
-import org.apache.axiom.om.*;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.om.util.Base64;
-import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.om.util.TextHelper;
+import org.apache.axiom.om.util.UUIDGenerator;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -33,9 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
-    /**
-     * Field nameSpace used when serializing Binary stuff as MTOM optimized.
-     */
+    /** Field nameSpace used when serializing Binary stuff as MTOM optimized. */
     public static final OMNamespace XOP_NS = new OMNamespaceImpl(
             "http://www.w3.org/2004/08/xop/include", "xop");
 
@@ -51,27 +56,19 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
 
     protected boolean isBinary = false;
 
-    /**
-     * Field contentID for the mime part used when serializing Binary stuff as
-     * MTOM optimized.
-     */
+    /** Field contentID for the mime part used when serializing Binary stuff as MTOM optimized. */
     private String contentID = null;
 
     /**
-     * Field dataHandler contains the DataHandler
-     * Declaring as Object to remove the dependency on
+     * Field dataHandler contains the DataHandler Declaring as Object to remove the dependency on
      * Javax.activation.DataHandler
      */
     private Object dataHandlerObject = null;
 
-    /**
-     * Field localName used when serializing Binary stuff as MTOM optimized.
-     */
+    /** Field localName used when serializing Binary stuff as MTOM optimized. */
     protected String localName = "Include";
 
-    /**
-     * Field attributes used when serializing Binary stuff as MTOM optimized.
-     */
+    /** Field attributes used when serializing Binary stuff as MTOM optimized. */
     protected OMAttribute attribute;
     private static final String EMTPY_STRING = "";
 
@@ -92,7 +89,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     public OMTextImpl(String s, int nodeType, OMFactory factory) {
         this(null, s, nodeType, factory);
     }
- 
+
     /**
      * Constructor OMTextImpl.
      *
@@ -126,7 +123,8 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                       OMFactory factory) {
         super(parent, factory, true);
         this.calcNS = true;
-        this.textNS = ((OMElementImpl) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
+        this.textNS =
+                ((OMElementImpl) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
         this.value = text == null ? EMTPY_STRING : text.getLocalPart();
         this.nodeType = nodeType;
     }
@@ -142,8 +140,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
 
     /**
      * @param parent
-     * @param s        -
-     *                 base64 encoded String representation of Binary
+     * @param s        - base64 encoded String representation of Binary
      * @param mimeType of the Binary
      */
     public OMTextImpl(OMContainer parent, String s, String mimeType,
@@ -156,9 +153,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.nodeType = TEXT_NODE;
     }
 
-    /**
-     * @param dataHandler To send binary optimised content Created programatically.
-     */
+    /** @param dataHandler To send binary optimised content Created programatically. */
     public OMTextImpl(Object dataHandler, OMFactory factory) {
         this(dataHandler, true, factory);
     }
@@ -179,9 +174,9 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     /**
      * @param contentID
      * @param parent
-     * @param builder   Used when the builder is encountered with a XOP:Include tag
-     *                  Stores a reference to the builder and the content-id. Supports
-     *                  deferred parsing of MIME messages.
+     * @param builder   Used when the builder is encountered with a XOP:Include tag Stores a
+     *                  reference to the builder and the content-id. Supports deferred parsing of
+     *                  MIME messages.
      */
     public OMTextImpl(String contentID, OMContainer parent,
                       OMXMLParserWrapper builder, OMFactory factory) {
@@ -218,9 +213,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         }
     }
 
-    /**
-     * Returns the value.
-     */
+    /** Returns the value. */
     public String getText() throws OMException {
         if (getNamespace() != null) {
             return getTextString();
@@ -252,12 +245,10 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     }
 
 
-    /**
-     * Returns the value.
-     */
+    /** Returns the value. */
     public QName getTextAsQName() throws OMException {
         OMNamespace ns = getNamespace();
-        if (ns != null) { 
+        if (ns != null) {
             String prefix = ns.getPrefix();
             String name = ns.getNamespaceURI();
             if (prefix == null || "".equals(prefix)) {
@@ -275,11 +266,11 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             }
         }
     }
-    
-	/* (non-Javadoc)
-	 * @see org.apache.axiom.om.OMText#getNamespace()
-	 */
-	public OMNamespace getNamespace() {
+
+    /* (non-Javadoc)
+      * @see org.apache.axiom.om.OMText#getNamespace()
+      */
+    public OMNamespace getNamespace() {
         // If the namespace has already been determined, return it
         // Otherwise calculate the namespace if the text contains a colon and is not detached.
         if (calcNS) {
@@ -292,17 +283,17 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                     int colon = text.indexOf(':');
                     if (colon > 0) {
                         textNS = ((OMElementImpl) getParent()).
-                            findNamespaceURI(text.substring(0,colon));
+                                findNamespaceURI(text.substring(0, colon));
                         if (textNS != null) {
                             charArray = null;
-                            value = text.substring(colon+1);
+                            value = text.substring(colon + 1);
                         }
                     }
                 }
             }
         }
-		return textNS;
-	}
+        return textNS;
+    }
 
     public boolean isOptimized() {
         return optimize;
@@ -316,17 +307,16 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     }
 
     /**
-     * Receiving binary can happen as either MTOM attachments or as Base64 Text
-     * In the case of Base64 user has to explicitly specify that the content is 
-     * binary, before calling getDataHandler(), getInputStream()....
+     * Receiving binary can happen as either MTOM attachments or as Base64 Text In the case of
+     * Base64 user has to explicitly specify that the content is binary, before calling
+     * getDataHandler(), getInputStream()....
      */
-    public void setBinary(boolean value) {     
-            isBinary = value;
+    public void setBinary(boolean value) {
+        isBinary = value;
     }
-    
-    public boolean isBinary()
-    {
-    	return isBinary;
+
+    public boolean isBinary() {
+        return isBinary;
     }
 
 
@@ -339,7 +329,8 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         OMNamespace ns = getNamespace();
         if ((value != null || charArray != null || ns != null) & isBinary) {
             String text = ns == null ? getTextFromProperPlace() : getTextString();
-            return org.apache.axiom.attachments.utils.DataHandlerUtils.getDataHandlerFromText(text, mimeType);
+            return org.apache.axiom.attachments.utils.DataHandlerUtils
+                    .getDataHandlerFromText(text, mimeType);
         } else {
 
             if (dataHandlerObject == null) {
@@ -377,7 +368,8 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                 getDataHandler();
             }
             InputStream inStream;
-            javax.activation.DataHandler dataHandler = (javax.activation.DataHandler) dataHandlerObject;
+            javax.activation.DataHandler dataHandler =
+                    (javax.activation.DataHandler) dataHandlerObject;
             try {
                 inStream = dataHandler.getDataSource().getInputStream();
             } catch (IOException e) {
@@ -404,13 +396,13 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     }
 
     private void internalSerializeLocal(XMLStreamWriter writer2) throws XMLStreamException {
-        
-        if ((!this.isBinary) ||(!this.isOptimized()) ) {
+
+        if ((!this.isBinary) || (!this.isOptimized())) {
             writeOutput(writer2);
         } else {
             //check whether we have a MTOMXMLStreamWriter. if so
             //we can optimize the writing!
-            if (writer2 instanceof MTOMXMLStreamWriter){
+            if (writer2 instanceof MTOMXMLStreamWriter) {
                 MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
                 if (writer.isOptimized()) {
                     if (contentID == null) {
@@ -418,7 +410,8 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                     }
                     // send binary as MTOM optimised
                     this.attribute = new OMAttributeImpl("href",
-                            new OMNamespaceImpl("", ""), "cid:" + getContentID(), this.factory);
+                                                         new OMNamespaceImpl("", ""),
+                                                         "cid:" + getContentID(), this.factory);
                     this.serializeStartpart(writer);
                     writer.writeOptimized(this);
                     writer.writeEndElement();
@@ -426,9 +419,9 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                     //do normal base64
                     writeOutput(writer);
                 }
-            }else{
-               //we do not have a optimized writer. Just do the normal
-               //base64 writing
+            } else {
+                //we do not have a optimized writer. Just do the normal
+                //base64 writing
                 writeOutput(writer2);
             }
 
@@ -447,17 +440,17 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             writer.writeStartElement(nameSpaceName, this
                     .getLocalName());
         } else {
-        	// According to StAX, setPrefix must occur before
-        	// writeStartElement
-        	if (OMSerializerUtil.isSetPrefixBeforeStartElement(writer)) {
-        		writer.setPrefix(prefix, nameSpaceName);
-        		writer.writeStartElement(prefix, this.getLocalName(),
-        				nameSpaceName);
-        	} else {
-        		writer.writeStartElement(prefix, this.getLocalName(),
-        				nameSpaceName);
-        		writer.setPrefix(prefix, nameSpaceName);
-        	}
+            // According to StAX, setPrefix must occur before
+            // writeStartElement
+            if (OMSerializerUtil.isSetPrefixBeforeStartElement(writer)) {
+                writer.setPrefix(prefix, nameSpaceName);
+                writer.writeStartElement(prefix, this.getLocalName(),
+                                         nameSpaceName);
+            } else {
+                writer.writeStartElement(prefix, this.getLocalName(),
+                                         nameSpaceName);
+                writer.setPrefix(prefix, nameSpaceName);
+            }
         }
         // add the elements attribute "href"
         serializeAttribute(this.attribute, writer);
@@ -523,16 +516,16 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         }
     }
 
-	/* (non-Javadoc)
-	 * @see org.apache.axiom.om.OMNode#buildAll()
-	 */
-	public void buildWithAttachments() {
-		if (!this.done) {
-			this.build();
-		}
-		if (isOptimized()) {
-			this.getDataHandler();
-		}
-	}
+    /* (non-Javadoc)
+      * @see org.apache.axiom.om.OMNode#buildAll()
+      */
+    public void buildWithAttachments() {
+        if (!this.done) {
+            this.build();
+        }
+        if (isOptimized()) {
+            this.getDataHandler();
+        }
+    }
 
 }

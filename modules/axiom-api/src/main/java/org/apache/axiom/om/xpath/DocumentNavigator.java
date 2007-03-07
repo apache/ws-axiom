@@ -1,10 +1,24 @@
 package org.apache.axiom.om.xpath;
 
-import org.apache.axiom.om.*;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
-import org.jaxen.*;
+import org.jaxen.BaseXPath;
+import org.jaxen.DefaultNavigator;
+import org.jaxen.FunctionCallException;
+import org.jaxen.JaxenConstants;
+import org.jaxen.UnsupportedAxisException;
+import org.jaxen.XPath;
 import org.jaxen.saxpath.SAXPathException;
 import org.jaxen.util.SingleObjectIterator;
 
@@ -23,13 +37,12 @@ public class DocumentNavigator extends DefaultNavigator {
     private static final long serialVersionUID = 7325116153349780805L;
 
     /**
-     * Returns a parsed form of the given xpath string, which will be suitable
-     * for queries on documents that use the same navigator as this one.
+     * Returns a parsed form of the given xpath string, which will be suitable for queries on
+     * documents that use the same navigator as this one.
      *
      * @param xpath the XPath expression
      * @return Returns a new XPath expression object.
-     * @throws SAXPathException if the string is not a syntactically
-     *                          correct XPath expression
+     * @throws SAXPathException if the string is not a syntactically correct XPath expression
      * @see XPath
      */
     public XPath parseXPath(String xpath) throws SAXPathException {
@@ -115,12 +128,12 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Returns whether the given object is a document node. A document node
-     * is the node that is selected by the xpath expression <code>/</code>.
+     * Returns whether the given object is a document node. A document node is the node that is
+     * selected by the xpath expression <code>/</code>.
      *
      * @param object the object to test
-     * @return Returns <code>true</code> if the object is a document node,
-     *         else <code>false</code> .
+     * @return Returns <code>true</code> if the object is a document node, else <code>false</code>
+     *         .
      */
     public boolean isDocument(Object object) {
         return object instanceof OMDocument;
@@ -130,8 +143,8 @@ public class DocumentNavigator extends DefaultNavigator {
      * Returns whether the given object is an element node.
      *
      * @param object the object to test
-     * @return Returns <code>true</code> if the object is an element node,
-     *         else <code>false</code> .
+     * @return Returns <code>true</code> if the object is an element node, else <code>false</code>
+     *         .
      */
     public boolean isElement(Object object) {
         return object instanceof OMElement;
@@ -141,8 +154,8 @@ public class DocumentNavigator extends DefaultNavigator {
      * Returns whether the given object is an attribute node.
      *
      * @param object the object to test
-     * @return Returns <code>true</code> if the object is an attribute node,
-     *         else <code>false</code> .
+     * @return Returns <code>true</code> if the object is an attribute node, else <code>false</code>
+     *         .
      */
     public boolean isAttribute(Object object) {
         return object instanceof OMAttribute;
@@ -152,8 +165,8 @@ public class DocumentNavigator extends DefaultNavigator {
      * Returns whether the given object is a namespace node.
      *
      * @param object the object to test
-     * @return Returns <code>true</code> if the object is a namespace node,
-     *         else <code>false</code> .
+     * @return Returns <code>true</code> if the object is a namespace node, else <code>false</code>
+     *         .
      */
     public boolean isNamespace(Object object) {
         return object instanceof OMNamespace;
@@ -163,8 +176,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * Returns whether the given object is a comment node.
      *
      * @param object the object to test
-     * @return Returns <code>true</code> if the object is a comment node,
-     *         else <code>false</code> .
+     * @return Returns <code>true</code> if the object is a comment node, else <code>false</code> .
      */
     public boolean isComment(Object object) {
         return (object instanceof OMComment);
@@ -174,8 +186,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * Returns whether the given object is a text node.
      *
      * @param object the object to test
-     * @return Returns <code>true</code> if the object is a text node,
-     *         else <code>false</code> .
+     * @return Returns <code>true</code> if the object is a text node, else <code>false</code> .
      */
     public boolean isText(Object object) {
         return (object instanceof OMText);
@@ -185,17 +196,16 @@ public class DocumentNavigator extends DefaultNavigator {
      * Returns whether the given object is a processing-instruction node.
      *
      * @param object the object to test
-     * @return Returns <code>true</code> if the object is a processing-instruction node,
-     *         else <code>false</code> .
+     * @return Returns <code>true</code> if the object is a processing-instruction node, else
+     *         <code>false</code> .
      */
     public boolean isProcessingInstruction(Object object) {
         return (object instanceof OMProcessingInstruction);
     }
 
     /**
-     * Retrieves the string-value of a comment node.
-     * This may be the empty string if the comment is empty,
-     * but must not be null.
+     * Retrieves the string-value of a comment node. This may be the empty string if the comment is
+     * empty, but must not be null.
      *
      * @param object the comment node
      * @return Returns the string-value of the node.
@@ -205,9 +215,8 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Retrieves the string-value of an element node.
-     * This may be the empty string if the element is empty,
-     * but must not be null.
+     * Retrieves the string-value of an element node. This may be the empty string if the element is
+     * empty, but must not be null.
      *
      * @param object the comment node.
      * @return Returns the string-value of the node.
@@ -233,9 +242,8 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Retrieves the string-value of an attribute node.
-     * This should be the XML 1.0 normalized attribute value.
-     * This may be the empty string but must not be null.
+     * Retrieves the string-value of an attribute node. This should be the XML 1.0 normalized
+     * attribute value. This may be the empty string but must not be null.
      *
      * @param object the attribute node
      * @return Returns the string-value of the node.
@@ -245,9 +253,8 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Retrieves the string-value of a namespace node.
-     * This is generally the namespace URI.
-     * This may be the empty string but must not be null.
+     * Retrieves the string-value of a namespace node. This is generally the namespace URI. This may
+     * be the empty string but must not be null.
      *
      * @param object the namespace node
      * @return Returns the string-value of the node.
@@ -257,9 +264,8 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Retrieve the string-value of a text node.
-     * This must not be null and should not be the empty string.
-     * The XPath data model does not allow empty text nodes.
+     * Retrieve the string-value of a text node. This must not be null and should not be the empty
+     * string. The XPath data model does not allow empty text nodes.
      *
      * @param object the text node
      * @return Returns the string-value of the node.
@@ -279,13 +285,12 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Retrieves an <code>Iterator</code> matching the <code>child</code>
-     * XPath axis.
+     * Retrieves an <code>Iterator</code> matching the <code>child</code> XPath axis.
      *
      * @param contextNode the original context node
      * @return Returns an Iterator capable of traversing the axis, not null.
-     * @throws UnsupportedAxisException if the semantics of the child axis are
-     *                                  not supported by this object model
+     * @throws UnsupportedAxisException if the semantics of the child axis are not supported by this
+     *                                  object model
      */
     public Iterator getChildAxisIterator(Object contextNode) throws UnsupportedAxisException {
         if (contextNode instanceof OMContainer) {
@@ -300,13 +305,12 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Retrieves an <code>Iterator</code> matching the <code>attribute</code>
-     * XPath axis.
+     * Retrieves an <code>Iterator</code> matching the <code>attribute</code> XPath axis.
      *
      * @param contextNode the original context node
      * @return Returns an Iterator capable of traversing the axis, not null.
-     * @throws UnsupportedAxisException if the semantics of the attribute axis are
-     *                                  not supported by this object model
+     * @throws UnsupportedAxisException if the semantics of the attribute axis are not supported by
+     *                                  this object model
      */
     public Iterator getAttributeAxisIterator(Object contextNode) throws UnsupportedAxisException {
         if (isElement(contextNode)) {
@@ -314,8 +318,9 @@ public class DocumentNavigator extends DefaultNavigator {
             Iterator i = ((OMElement) contextNode).getAllAttributes();
             while (i != null && i.hasNext()) {
                 attributes.add(new OMAttributeEx((OMAttribute) i.next(),
-                        (OMContainer) contextNode, ((OMElement) contextNode)
-                        .getOMFactory()));
+                                                 (OMContainer) contextNode,
+                                                 ((OMElement) contextNode)
+                                                         .getOMFactory()));
             }
             return attributes.iterator();
         }
@@ -323,13 +328,12 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Retrieves an <code>Iterator</code> matching the <code>namespace</code>
-     * XPath axis.
+     * Retrieves an <code>Iterator</code> matching the <code>namespace</code> XPath axis.
      *
      * @param contextNode the original context node
      * @return Returns an Iterator capable of traversing the axis, not null.
-     * @throws UnsupportedAxisException if the semantics of the namespace axis are
-     *                                  not supported by this object model
+     * @throws UnsupportedAxisException if the semantics of the namespace axis are not supported by
+     *                                  this object model
      */
     public Iterator getNamespaceAxisIterator(Object contextNode) throws UnsupportedAxisException {
         if (!(contextNode instanceof OMContainer &&
@@ -378,13 +382,12 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Retrieves an <code>Iterator</code> matching the <code>self</code> xpath
-     * axis.
+     * Retrieves an <code>Iterator</code> matching the <code>self</code> xpath axis.
      *
      * @param contextNode the original context node
      * @return Returns an Iterator capable of traversing the axis, not null.
-     * @throws UnsupportedAxisException if the semantics of the self axis are
-     *                                  not supported by this object model
+     * @throws UnsupportedAxisException if the semantics of the self axis are not supported by this
+     *                                  object model
      */
     public Iterator getSelfAxisIterator(Object contextNode) throws UnsupportedAxisException {
         //TODO: Fix this better?
@@ -392,29 +395,29 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Retrieves an <code>Iterator</code> matching the
-     * <code>descendant-or-self</code> XPath axis.
+     * Retrieves an <code>Iterator</code> matching the <code>descendant-or-self</code> XPath axis.
      *
      * @param contextNode the original context node
      * @return Returns an Iterator capable of traversing the axis, not null.
-     * @throws UnsupportedAxisException if the semantics of the descendant-or-self axis are
-     *                                  not supported by this object model
+     * @throws UnsupportedAxisException if the semantics of the descendant-or-self axis are not
+     *                                  supported by this object model
      */
-    public Iterator getDescendantOrSelfAxisIterator(Object contextNode) throws UnsupportedAxisException {
+    public Iterator getDescendantOrSelfAxisIterator(Object contextNode)
+            throws UnsupportedAxisException {
         //TODO: Fix this better?
         return super.getDescendantOrSelfAxisIterator(contextNode);
     }
 
     /**
-     * Retrieves an <code>Iterator</code> matching the
-     * <code>ancestor-or-self</code> XPath axis.
+     * Retrieves an <code>Iterator</code> matching the <code>ancestor-or-self</code> XPath axis.
      *
      * @param contextNode the original context node
      * @return Returns an Iterator capable of traversing the axis, not null.
-     * @throws UnsupportedAxisException if the semantics of the ancestor-or-self axis are
-     *                                  not supported by this object model
+     * @throws UnsupportedAxisException if the semantics of the ancestor-or-self axis are not
+     *                                  supported by this object model
      */
-    public Iterator getAncestorOrSelfAxisIterator(Object contextNode) throws UnsupportedAxisException {
+    public Iterator getAncestorOrSelfAxisIterator(Object contextNode)
+            throws UnsupportedAxisException {
         //TODO: Fix this better?
         return super.getAncestorOrSelfAxisIterator(contextNode);
     }
@@ -424,8 +427,8 @@ public class DocumentNavigator extends DefaultNavigator {
      *
      * @param contextNode the original context node
      * @return Returns an Iterator capable of traversing the axis, not null.
-     * @throws UnsupportedAxisException if the semantics of the parent axis are
-     *                                  not supported by this object model
+     * @throws UnsupportedAxisException if the semantics of the parent axis are not supported by
+     *                                  this object model
      */
     public Iterator getParentAxisIterator(Object contextNode) throws UnsupportedAxisException {
         if (contextNode instanceof OMNode) {
@@ -441,13 +444,12 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Retrieves an <code>Iterator</code> matching the <code>ancestor</code>
-     * XPath axis.
+     * Retrieves an <code>Iterator</code> matching the <code>ancestor</code> XPath axis.
      *
      * @param contextNode the original context node
      * @return Returns an Iterator capable of traversing the axis, not null.
-     * @throws UnsupportedAxisException if the semantics of the ancestor axis are
-     *                                  not supported by this object model
+     * @throws UnsupportedAxisException if the semantics of the ancestor axis are not supported by
+     *                                  this object model
      */
     public Iterator getAncestorAxisIterator(Object contextNode) throws UnsupportedAxisException {
         //TODO: Fix this better?
@@ -455,15 +457,15 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Retrieves an <code>Iterator</code> matching the
-     * <code>following-sibling</code> XPath axis.
+     * Retrieves an <code>Iterator</code> matching the <code>following-sibling</code> XPath axis.
      *
      * @param contextNode the original context node
      * @return Returns an Iterator capable of traversing the axis, not null.
-     * @throws UnsupportedAxisException if the semantics of the following-sibling axis are
-     *                                  not supported by this object model
+     * @throws UnsupportedAxisException if the semantics of the following-sibling axis are not
+     *                                  supported by this object model
      */
-    public Iterator getFollowingSiblingAxisIterator(Object contextNode) throws UnsupportedAxisException {
+    public Iterator getFollowingSiblingAxisIterator(Object contextNode)
+            throws UnsupportedAxisException {
         ArrayList list = new ArrayList();
         if (contextNode != null && contextNode instanceof OMNode) {
             while (contextNode != null && contextNode instanceof OMNode) {
@@ -476,15 +478,15 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Retrieves an <code>Iterator</code> matching the
-     * <code>preceding-sibling</code> XPath axis.
+     * Retrieves an <code>Iterator</code> matching the <code>preceding-sibling</code> XPath axis.
      *
      * @param contextNode the original context node
      * @return Returns an Iterator capable of traversing the axis, not null.
-     * @throws UnsupportedAxisException if the semantics of the preceding-sibling axis are
-     *                                  not supported by this object model
+     * @throws UnsupportedAxisException if the semantics of the preceding-sibling axis are not
+     *                                  supported by this object model
      */
-    public Iterator getPrecedingSiblingAxisIterator(Object contextNode) throws UnsupportedAxisException {
+    public Iterator getPrecedingSiblingAxisIterator(Object contextNode)
+            throws UnsupportedAxisException {
         ArrayList list = new ArrayList();
         if (contextNode != null && contextNode instanceof OMNode) {
             while (contextNode != null && contextNode instanceof OMNode) {
@@ -497,13 +499,12 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Retrieves an <code>Iterator</code> matching the <code>following</code>
-     * XPath axis.
+     * Retrieves an <code>Iterator</code> matching the <code>following</code> XPath axis.
      *
      * @param contextNode the original context node
      * @return Returns an Iterator capable of traversing the axis, not null.
-     * @throws UnsupportedAxisException if the semantics of the following axis are
-     *                                  not supported by this object model
+     * @throws UnsupportedAxisException if the semantics of the following axis are not supported by
+     *                                  this object model
      */
     public Iterator getFollowingAxisIterator(Object contextNode) throws UnsupportedAxisException {
         //TODO: Fix this better?
@@ -515,8 +516,8 @@ public class DocumentNavigator extends DefaultNavigator {
      *
      * @param contextNode the original context node
      * @return Returns an Iterator capable of traversing the axis, not null.
-     * @throws UnsupportedAxisException if the semantics of the preceding axis are
-     *                                  not supported by this object model
+     * @throws UnsupportedAxisException if the semantics of the preceding axis are not supported by
+     *                                  this object model
      */
     public Iterator getPrecedingAxisIterator(Object contextNode) throws UnsupportedAxisException {
         //TODO: Fix this better?
@@ -561,18 +562,14 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Returns the element whose ID is given by elementId.
-     * If no such element exists, returns null.
-     * Attributes with the name "ID" are not of type ID unless so defined.
-     * Implementations that do not know whether attributes are of type ID or
-     * not are expected to return null.
+     * Returns the element whose ID is given by elementId. If no such element exists, returns null.
+     * Attributes with the name "ID" are not of type ID unless so defined. Implementations that do
+     * not know whether attributes are of type ID or not are expected to return null.
      *
-     * @param contextNode a node from the document in which to look for the
-     *                    id
+     * @param contextNode a node from the document in which to look for the id
      * @param elementId   id to look for
-     * @return Returns element whose ID is given by elementId, or null if no such
-     *         element exists in the document or if the implementation
-     *         does not know about attribute types.
+     * @return Returns element whose ID is given by elementId, or null if no such element exists in
+     *         the document or if the implementation does not know about attribute types.
      */
     public Object getElementById(Object contextNode, String elementId) {
         //TODO: Fix this better?
@@ -600,13 +597,11 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Translates a namespace prefix to a namespace URI, <b>possibly</b>
-     * considering a particular element node.
+     * Translates a namespace prefix to a namespace URI, <b>possibly</b> considering a particular
+     * element node.
      * <p/>
-     * Strictly speaking, prefix-to-URI translation should occur
-     * irrespective of any element in the document.  This method
-     * is provided to allow a non-conforming ease-of-use enhancement.
-     * </p>
+     * Strictly speaking, prefix-to-URI translation should occur irrespective of any element in the
+     * document.  This method is provided to allow a non-conforming ease-of-use enhancement. </p>
      *
      * @param prefix  the prefix to translate
      * @param element the element to consider during translation
@@ -638,8 +633,8 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     /**
-     * Returns a number that identifies the type of node that the given
-     * object represents in this navigator. See org.jaxen.pattern.Pattern
+     * Returns a number that identifies the type of node that the given object represents in this
+     * navigator. See org.jaxen.pattern.Pattern
      *
      * @param node ????
      * @return Returns short.
@@ -652,13 +647,11 @@ public class DocumentNavigator extends DefaultNavigator {
     /**
      * Returns the parent of the given context node.
      * <p/>
-     * The parent of any node must either be a document
-     * node or an element node.
+     * The parent of any node must either be a document node or an element node.
      *
      * @param contextNode the context node
      * @return Returns the parent of the context node, or null if this is a document node.
-     * @throws UnsupportedAxisException if the parent axis is not
-     *                                  supported by the model
+     * @throws UnsupportedAxisException if the parent axis is not supported by the model
      * @see #isDocument
      * @see #isElement
      */

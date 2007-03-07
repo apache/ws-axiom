@@ -31,9 +31,7 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
         super(parent, builder, factory);
     }
 
-    /**
-     * @param parent
-     */
+    /** @param parent  */
     public SOAP12FaultReasonImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, true, factory);
@@ -44,7 +42,7 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
         if (!(soapFaultText instanceof SOAP12FaultTextImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault Text. " +
-                    "But received some other implementation");
+                            "But received some other implementation");
         }
         super.addSOAPText(soapFaultText);
     }
@@ -53,7 +51,7 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault as the " +
-                    "parent. But received some other implementation");
+                            "parent. But received some other implementation");
         }
     }
 }

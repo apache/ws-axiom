@@ -36,11 +36,13 @@ public class SOAP11SerializerTest extends OMTestCase {
         super.setUp();
         soapEnvelope =
                 (SOAPEnvelope) getOMBuilder("soap/soap11/soap11fault.xml")
-                .getDocumentElement();
+                        .getDocumentElement();
     }
 
     /**
-     * This will check whether we can call the serialize method two times, if the first calls makes the object model.
+     * This will check whether we can call the serialize method two times, if the first calls makes
+     * the object model.
+     *
      * @throws Exception
      */
     public void testSerialize() throws Exception {

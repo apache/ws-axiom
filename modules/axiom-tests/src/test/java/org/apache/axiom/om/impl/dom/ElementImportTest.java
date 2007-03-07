@@ -16,6 +16,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMTestUtils;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
@@ -23,16 +24,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import java.io.FileInputStream;
 
-import junit.framework.TestCase;
-
-/**
- *
- * @author Ruchith Fernando (ruchith.fernando@gmail.com)
- */
-public class ElementImportTest extends TestCase  {
+/** @author Ruchith Fernando (ruchith.fernando@gmail.com) */
+public class ElementImportTest extends TestCase {
 
     public void testImport() {
         try {
@@ -41,7 +36,7 @@ public class ElementImportTest extends TestCase  {
             Document doc = dbf.newDocumentBuilder().parse(
                     new FileInputStream("test-resources/xml/sigEncr.xml"));
             Node n = new OMDOMFactory().getDocument().importNode(doc.getDocumentElement(), true);
-            OMTestUtils.compare(doc.getDocumentElement(), (OMElement)n);
+            OMTestUtils.compare(doc.getDocumentElement(), (OMElement) n);
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());

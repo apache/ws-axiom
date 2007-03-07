@@ -19,24 +19,22 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 
-/**
- * Helper class for attributes.
- */
+/** Helper class for attributes. */
 public class AttributeHelper {
     /**
-    * In Axiom, a single tree should always contain objects created from the same type
-    * of factory (eg: LinkedListImplFactory, DOMFactory, etc.,). This method will convert
-    * omAttribute to the given omFactory.
-    * 
-    * @see ElementHelper#importOMElement(OMElement, OMFactory) to convert instances of OMElement
-    */
+     * In Axiom, a single tree should always contain objects created from the same type of factory
+     * (eg: LinkedListImplFactory, DOMFactory, etc.,). This method will convert omAttribute to the
+     * given omFactory.
+     *
+     * @see ElementHelper#importOMElement(OMElement, OMFactory) to convert instances of OMElement
+     */
     public static void importOMAttribute(OMAttribute omAttribute, OMElement omElement) {
         // first check whether the given OMAttribute has the same OMFactory
         if (omAttribute.getOMFactory().getClass().isInstance(omElement.getOMFactory())) {
             omElement.addAttribute(omAttribute);
-        }
-        else {
-            omElement.addAttribute(omAttribute.getLocalName(), omAttribute.getAttributeValue(), omAttribute.getNamespace());
+        } else {
+            omElement.addAttribute(omAttribute.getLocalName(), omAttribute.getAttributeValue(),
+                                   omAttribute.getNamespace());
         }
     }
 }

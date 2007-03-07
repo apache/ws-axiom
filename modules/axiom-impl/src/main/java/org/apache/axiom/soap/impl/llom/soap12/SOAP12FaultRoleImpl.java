@@ -24,7 +24,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPFaultRoleImpl;
 
 public class SOAP12FaultRoleImpl extends SOAPFaultRoleImpl {
-    
+
     public SOAP12FaultRoleImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, true, factory);
@@ -35,7 +35,7 @@ public class SOAP12FaultRoleImpl extends SOAPFaultRoleImpl {
     }
 
     public SOAP12FaultRoleImpl(SOAPFault parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                               SOAPFactory factory) {
         super(parent, builder, factory);
     }
 
@@ -43,7 +43,7 @@ public class SOAP12FaultRoleImpl extends SOAPFaultRoleImpl {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault as the " +
-                    "parent. But received some other implementation");
+                            "parent. But received some other implementation");
         }
     }
 }

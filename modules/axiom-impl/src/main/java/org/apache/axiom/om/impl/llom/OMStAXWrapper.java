@@ -16,7 +16,15 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.*;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.EmptyOMLocation;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.om.impl.llom.util.NamespaceContextImpl;
@@ -27,36 +35,30 @@ import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Stack;
 
 /**
- * Note  - This class also implements the streaming constants interface
- * to get access to the StAX constants
+ * Note  - This class also implements the streaming constants interface to get access to the StAX
+ * constants
  */
 public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
-    /**
-     * Field navigator
-     */
+    /** Field navigator */
     private OMNavigator navigator;
 
-    /**
-     * Field builder
-     */
+    /** Field builder */
     private OMXMLParserWrapper builder;
 
-    /**
-     * Field parser
-     */
+    /** Field parser */
     private XMLStreamReader parser;
 
-    /**
-     * Field rootNode
-     */
+    /** Field rootNode */
     private OMNode rootNode;
 
-    /**
-     * Field isFirst
-     */
+    /** Field isFirst */
     private boolean isFirst = true;
 
     // Navigable means the output should be taken from the navigator.
@@ -64,9 +66,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
     // to false and the subsequent events will be taken from the builder
     // or the parser directly.
 
-    /**
-     * Field NAVIGABLE
-     */
+    /** Field NAVIGABLE */
     private static final short NAVIGABLE = 0;
     private static final short SWITCH_AT_NEXT = 1;
     private static final short COMPLETED = 2;
@@ -74,15 +74,10 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
     private static final short DOCUMENT_COMPLETE = 4;
 
 
-    /**
-     * Field state
-     */
+    /** Field state */
     private short state;
 
-    /**
-     * Field currentEvent
-     * Default set to START_DOCUMENT
-     */
+    /** Field currentEvent Default set to START_DOCUMENT */
     private int currentEvent = START_DOCUMENT;
 
     // SwitchingAllowed is set to false by default.
@@ -90,42 +85,30 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
     // that he wants things not to be cached, everything will
     // be cached.
 
-    /**
-     * Field switchingAllowed
-     */
+    /** Field switchingAllowed */
     boolean switchingAllowed = false;
 
-    /**
-     * Field elementStack
-     */
+    /** Field elementStack */
     private Stack elementStack = null;
 
     // keeps the next event. The parser actually keeps one step ahead to
     // detect the end of navigation. (at the end of the stream the navigator
     // returns a null
 
-    /**
-     * Field nextNode
-     */
+    /** Field nextNode */
     private OMNode nextNode = null;
 
     // holder for the current node. Needs this to generate events from the current node
 
-    /**
-     * Field currentNode
-     */
+    /** Field currentNode */
     private OMNode currentNode = null;
 
     // needs this to refer to the last known node
 
-    /**
-     * Field lastNode
-     */
+    /** Field lastNode */
     private OMNode lastNode = null;
 
-    /**
-     * Track depth to ensure we stop generating events when we are done with the root node.  
-     */
+    /** Track depth to ensure we stop generating events when we are done with the root node. */
     int depth = 0;
 
     private boolean needToThrowEndDocument = false;
@@ -149,10 +132,9 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
     }
 
     /**
-     * When constructing the OMStaxWrapper, the creator must produce the
-     * builder (an instance of the OMXMLparserWrapper of the input) and the
-     * Element Node to start parsing. The wrapper will parse(proceed) until
-     * the end of the given element. Hence care should be taken to pass the
+     * When constructing the OMStaxWrapper, the creator must produce the builder (an instance of the
+     * OMXMLparserWrapper of the input) and the Element Node to start parsing. The wrapper will
+     * parse(proceed) until the end of the given element. Hence care should be taken to pass the
      * root element if the entire document is needed.
      *
      * @param builder
@@ -176,7 +158,8 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         this.navigator = new OMNavigator(startNode);
         this.builder = builder;
         this.rootNode = startNode;
-        if (rootNode != null && rootNode.getParent() != null && rootNode.getParent() instanceof OMDocument) {
+        if (rootNode != null && rootNode.getParent() != null &&
+                rootNode.getParent() instanceof OMDocument) {
             needToThrowEndDocument = true;
         }
 
@@ -413,16 +396,16 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
             }
         }
 
-         /*
-           The following line is necessary to overcome an issue where the empty
-           namespace URI returning null rather than the empty string. Our resolution
-           is to return "" if the return is actually null
+        /*
+          The following line is necessary to overcome an issue where the empty
+          namespace URI returning null rather than the empty string. Our resolution
+          is to return "" if the return is actually null
 
-           Note that this is not the case for  getNamespaceURI(prefix) method
-           where the contract clearly specifies that the return may be null
+          Note that this is not the case for  getNamespaceURI(prefix) method
+          where the contract clearly specifies that the return may be null
 
-         */
-        if (returnString==null) returnString = "";
+        */
+        if (returnString == null) returnString = "";
 
         return returnString;
     }
@@ -763,11 +746,11 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
             if (isStartElement() || isEndElement()
                     || (currentEvent == NAMESPACE)) {
 
-               if (rootNode instanceof OMElement){
-                   OMNamespace namespaceURI =
-                           ((OMElement) rootNode).findNamespaceURI(prefix);
-                   return namespaceURI!=null?namespaceURI.getNamespaceURI():null;
-               }
+                if (rootNode instanceof OMElement) {
+                    OMNamespace namespaceURI =
+                            ((OMElement) rootNode).findNamespaceURI(prefix);
+                    return namespaceURI != null ? namespaceURI.getNamespaceURI() : null;
+                }
             }
         }
 
@@ -795,7 +778,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * @throws XMLStreamException
      */
     public boolean hasNext() throws XMLStreamException {
-        if(needToThrowEndDocument){
+        if (needToThrowEndDocument) {
             return !(state == DOCUMENT_COMPLETE);
         } else {
             return (state != COMPLETED && currentEvent != END_DOCUMENT);
@@ -812,17 +795,18 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      */
     public int nextTag() throws XMLStreamException {
         int eventType = next();
-        while((eventType == XMLStreamConstants.CHARACTERS && isWhiteSpace()) // skip whitespace
-            || (eventType == XMLStreamConstants.CDATA && isWhiteSpace()) // skip whitespace
-            || eventType == XMLStreamConstants.SPACE
-            || eventType == XMLStreamConstants.PROCESSING_INSTRUCTION
-            || eventType == XMLStreamConstants.COMMENT) {
+        while ((eventType == XMLStreamConstants.CHARACTERS && isWhiteSpace()) // skip whitespace
+                || (eventType == XMLStreamConstants.CDATA && isWhiteSpace()) // skip whitespace
+                || eventType == XMLStreamConstants.SPACE
+                || eventType == XMLStreamConstants.PROCESSING_INSTRUCTION
+                || eventType == XMLStreamConstants.COMMENT) {
             eventType = next();
-         }
-         if (eventType != XMLStreamConstants.START_ELEMENT && eventType != XMLStreamConstants.END_ELEMENT) {
-             throw new XMLStreamException("expected start or end tag", getLocation());
-         }
-         return eventType;
+        }
+        if (eventType != XMLStreamConstants.START_ELEMENT &&
+                eventType != XMLStreamConstants.END_ELEMENT) {
+            throw new XMLStreamException("expected start or end tag", getLocation());
+        }
+        return eventType;
     }
 
     /**
@@ -840,30 +824,30 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         } else {
             ///////////////////////////////////////////////////////
             //// Code block directly from the API documentation ///
-            if(getEventType() != XMLStreamConstants.START_ELEMENT) {
+            if (getEventType() != XMLStreamConstants.START_ELEMENT) {
                 throw new XMLStreamException(
                         "parser must be on START_ELEMENT to read next text", getLocation());
             }
             int eventType = next();
             StringBuffer content = new StringBuffer();
-            while(eventType != XMLStreamConstants.END_ELEMENT ) {
-                if(eventType == XMLStreamConstants.CHARACTERS
+            while (eventType != XMLStreamConstants.END_ELEMENT) {
+                if (eventType == XMLStreamConstants.CHARACTERS
                         || eventType == XMLStreamConstants.CDATA
                         || eventType == XMLStreamConstants.SPACE
                         || eventType == XMLStreamConstants.ENTITY_REFERENCE) {
                     content.append(getText());
-                } else if(eventType == XMLStreamConstants.PROCESSING_INSTRUCTION
+                } else if (eventType == XMLStreamConstants.PROCESSING_INSTRUCTION
                         || eventType == XMLStreamConstants.COMMENT) {
                     // skipping
-                } else if(eventType == XMLStreamConstants.END_DOCUMENT) {
+                } else if (eventType == XMLStreamConstants.END_DOCUMENT) {
                     throw new XMLStreamException(
                             "unexpected end of document when reading element text content");
-                } else if(eventType == XMLStreamConstants.START_ELEMENT) {
+                } else if (eventType == XMLStreamConstants.START_ELEMENT) {
                     throw new XMLStreamException(
                             "element text content may not contain START_ELEMENT");
                 } else {
                     throw new XMLStreamException(
-                            "Unexpected event type "+eventType, getLocation());
+                            "Unexpected event type " + eventType, getLocation());
                 }
                 eventType = next();
             }
@@ -894,7 +878,8 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                 try {
                     parser = (XMLStreamReader) builder.getParser();
                 } catch (Exception e) {
-                    throw new XMLStreamException("problem accessing the parser. " + e.getMessage(), e);
+                    throw new XMLStreamException("problem accessing the parser. " + e.getMessage(),
+                                                 e);
                 }
 
                 // We should throw an END_DOCUMENT
@@ -913,7 +898,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                 updateLastNode();
                 break;
             case SWITCHED:
-                if(parser.hasNext()) {
+                if (parser.hasNext()) {
                     currentEvent = parser.next();
                 }
                 updateCompleteStatus();
@@ -936,10 +921,9 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
     }
 
     /**
-     * This is a very important method. It keeps the navigator one step ahead 
-     * and pushes it one event ahead. If the nextNode is null then navigable is 
-     * set to false. At the same time the parser and builder are set up for 
-     * the upcoming event generation.
+     * This is a very important method. It keeps the navigator one step ahead and pushes it one
+     * event ahead. If the nextNode is null then navigable is set to false. At the same time the
+     * parser and builder are set up for the upcoming event generation.
      *
      * @throws XMLStreamException
      */
@@ -953,9 +937,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         }
     }
 
-    /**
-     * Method updateNextNode.
-     */
+    /** Method updateNextNode. */
     private void updateNextNode() {
         if (navigator.isNavigable()) {
             nextNode = navigator.next();
@@ -973,21 +955,19 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                 //at this point check whether the navigator is done
                 //if the navigator is done then we are fine and can directly
                 // jump to the complete state ?
-               if (navigator.isCompleted()) {
+                if (navigator.isCompleted()) {
                     nextNode = null;
-               }else{
-                // reset caching (the default is ON so it was not needed in the
-                // earlier case!
-                builder.setCache(false);
-                state = SWITCH_AT_NEXT;
-               }
+                } else {
+                    // reset caching (the default is ON so it was not needed in the
+                    // earlier case!
+                    builder.setCache(false);
+                    state = SWITCH_AT_NEXT;
+                }
             }
         }
     }
 
-    /**
-     * Method updateCompleteStatus.
-     */
+    /** Method updateCompleteStatus. */
     private void updateCompleteStatus() {
         if (state == NAVIGABLE) {
             if (rootNode == currentNode) {
@@ -1003,7 +983,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                     ++depth;
                 } else if (currentEvent == END_ELEMENT) {
                     --depth;
-                    if(depth < 0) {
+                    if (depth < 0) {
                         state = COMPLETED;
                     }
                 }
@@ -1038,7 +1018,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * @return Returns Location.
      */
     public Location getLocation() {
-         return new EmptyOMLocation();
+        return new EmptyOMLocation();
     }
 
     /**
@@ -1264,7 +1244,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         if (elt != null) {
             returnAttrib =
                     (OMAttribute) getItemFromIterator(elt.getAllAttributes(),
-                            index);
+                                                      index);
         }
         return returnAttrib;
     }
@@ -1285,27 +1265,28 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
             OMElement element = (OMElement) context;
             Iterator i = element.getAllDeclaredNamespaces();
             while (i != null && i.hasNext()) {
-                addNamespaceToMap((OMNamespace) i.next(),  nsMap);
+                addNamespaceToMap((OMNamespace) i.next(), nsMap);
             }
             if (element.getNamespace() != null) {
-                addNamespaceToMap(element.getNamespace(),  nsMap);
+                addNamespaceToMap(element.getNamespace(), nsMap);
             }
             for (Iterator iter = element.getAllAttributes();
                  iter != null && iter.hasNext();) {
                 OMAttribute attr = (OMAttribute) iter.next();
                 if (attr.getNamespace() != null) {
-                    addNamespaceToMap(attr.getNamespace(),  nsMap);
+                    addNamespaceToMap(attr.getNamespace(), nsMap);
                 }
             }
         }
         return nsMap;
     }
-    
+
     private void addNamespaceToMap(OMNamespace ns, Map map) {
-        if(map.get(ns.getPrefix())==null) {
+        if (map.get(ns.getPrefix()) == null) {
             map.put(ns.getPrefix(), ns.getNamespaceURI());
         }
     }
+
     public OMXMLParserWrapper getBuilder() {
         return builder;
     }

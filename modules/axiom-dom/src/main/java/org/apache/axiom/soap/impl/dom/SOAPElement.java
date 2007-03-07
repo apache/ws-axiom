@@ -32,18 +32,16 @@ public abstract class SOAPElement extends ElementImpl {
         super(factory);
     }
 
-    /**
-     * @param parent
-     */
+    /** @param parent  */
     protected SOAPElement(OMElement parent,
                           String localName,
                           boolean extractNamespaceFromParent,
                           SOAPFactory factory) throws SOAPProcessingException {
-        super((ParentNode)parent, localName, null, factory);
+        super((ParentNode) parent, localName, null, factory);
         if (parent == null) {
             throw new SOAPProcessingException(
                     " Can not create " + localName +
-                    " element without a parent !!");
+                            " element without a parent !!");
         }
         checkParent(parent);
 
@@ -58,23 +56,20 @@ public abstract class SOAPElement extends ElementImpl {
                           String localName,
                           OMXMLParserWrapper builder,
                           SOAPFactory factory) {
-        super((ParentNode)parent, localName, null, builder, factory);
+        super((ParentNode) parent, localName, null, builder, factory);
     }
 
     protected SOAPElement(DocumentImpl doc, String localName, OMNamespace ns,
-            SOAPFactory factory) {
-		super(doc, localName, (NamespaceImpl)ns, factory);
-	}
-    
-    protected SOAPElement(DocumentImpl ownerDocument, String tagName,
-            NamespaceImpl ns, OMXMLParserWrapper builder, SOAPFactory factory) {
-    	super(ownerDocument, tagName, ns, builder, factory);
+                          SOAPFactory factory) {
+        super(doc, localName, (NamespaceImpl) ns, factory);
     }
-    
-    /**
-     * This has to be implemented by all the derived classes to check 
-     * for the correct parent.
-     */
+
+    protected SOAPElement(DocumentImpl ownerDocument, String tagName,
+                          NamespaceImpl ns, OMXMLParserWrapper builder, SOAPFactory factory) {
+        super(ownerDocument, tagName, ns, builder, factory);
+    }
+
+    /** This has to be implemented by all the derived classes to check for the correct parent. */
     protected abstract void checkParent(OMElement parent)
             throws SOAPProcessingException;
 

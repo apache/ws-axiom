@@ -19,7 +19,11 @@ package org.apache.axiom.om;
 import junit.framework.TestCase;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -40,7 +44,7 @@ public class OMTestUtils {
             while (attibIt.hasNext()) {
                 TestCase.assertNotNull("once the has next is not null, the " +
                         "element should not be null",
-                        attibIt.next());
+                                       attibIt.next());
             }
         }
         Iterator it = omEle.getChildren();
@@ -61,12 +65,12 @@ public class OMTestUtils {
             return;
         } else if (ele != null && omele != null) {
             TestCase.assertEquals("Element name not correct",
-                    ele.getLocalName(),
-                    omele.getLocalName());
+                                  ele.getLocalName(),
+                                  omele.getLocalName());
             if (omele.getNamespace() != null) {
                 TestCase.assertEquals("Namespace URI not correct",
-                        ele.getNamespaceURI(),
-                        omele.getNamespace().getNamespaceURI());
+                                      ele.getNamespaceURI(),
+                                      omele.getNamespace().getNamespaceURI());
 
             }
 
@@ -82,7 +86,7 @@ public class OMTestUtils {
                 if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
                     Attr attr = (Attr) node;
                     TestCase.assertEquals(attr.getValue(),
-                            omattribute.getAttributeValue());
+                                          omattribute.getAttributeValue());
                 } else {
                     throw new OMException("return type is not a Attribute");
                 }

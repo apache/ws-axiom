@@ -24,23 +24,20 @@ import org.apache.axiom.soap.SOAP12Constants;
 
 /**
  * Formats options for OM Output.
- * 
- * Setting of all the properties in a OMOutputFormat should be done before
- * calling the getContentType() method. It is advised to set all the properties
- * at the creation time of the OMOutputFormat and not to change them later.
+ * <p/>
+ * Setting of all the properties in a OMOutputFormat should be done before calling the
+ * getContentType() method. It is advised to set all the properties at the creation time of the
+ * OMOutputFormat and not to change them later.
  */
 public class OMOutputFormat {
     private String mimeBoundary = null;
     private String rootContentId = null;
     private int nextid = 0;
-    private boolean doOptimize=false;
-    private boolean doingSWA=false;
+    private boolean doOptimize = false;
+    private boolean doingSWA = false;
     private boolean isSoap11 = true;
 
-    /**
-     * Field DEFAULT_CHAR_SET_ENCODING. Specifies the default
-     * character encoding scheme to be used.
-     */
+    /** Field DEFAULT_CHAR_SET_ENCODING. Specifies the default character encoding scheme to be used. */
     public static final String DEFAULT_CHAR_SET_ENCODING = "utf-8";
 
     private String charSetEncoding;
@@ -66,20 +63,18 @@ public class OMOutputFormat {
         // MTOM is given priority
         if (isOptimized()) {
             return this.getContentTypeForMTOM(soapContentType);
-        } else if (isDoingSWA())
-        {
-        	return this.getContentTypeForSwA(soapContentType);
-        }
-        else {
+        } else if (isDoingSWA()) {
+            return this.getContentTypeForSwA(soapContentType);
+        } else {
             return soapContentType;
         }
     }
 
     public String getMimeBoundary() {
         if (mimeBoundary == null) {
-        	mimeBoundary =
-                "MIMEBoundary"
-                        + UUIDGenerator.getUUID().replace(':','_');
+            mimeBoundary =
+                    "MIMEBoundary"
+                            + UUIDGenerator.getUUID().replace(':', '_');
 
         }
         return mimeBoundary;
@@ -104,8 +99,8 @@ public class OMOutputFormat {
     }
 
     /**
-     * Returns the character set encoding scheme. If the value of the
-     * charSetEncoding is not set then the default will be returned.
+     * Returns the character set encoding scheme. If the value of the charSetEncoding is not set
+     * then the default will be returned.
      *
      * @return Returns encoding string.
      */
@@ -128,7 +123,7 @@ public class OMOutputFormat {
     public void setSOAP11(boolean b) {
         isSoap11 = b;
     }
-    
+
     public boolean isSOAP11() {
         return isSoap11;
     }
@@ -145,41 +140,41 @@ public class OMOutputFormat {
         doOptimize = b;
     }
 
-	public boolean isDoingSWA() {
-		return doingSWA;
-	}
+    public boolean isDoingSWA() {
+        return doingSWA;
+    }
 
-	public void setDoingSWA(boolean doingSWA) {
-		this.doingSWA = doingSWA;
-	}
+    public void setDoingSWA(boolean doingSWA) {
+        this.doingSWA = doingSWA;
+    }
 
-	public String getContentTypeForMTOM(String SOAPContentType) {
-	    StringBuffer sb = new StringBuffer();
-	    sb.append("multipart/related");
-	    sb.append("; ");
-	    sb.append("boundary=");
-	    sb.append(getMimeBoundary());
-	    sb.append("; ");  
-	  	sb.append("type=\""+MTOMConstants.MTOM_TYPE+"\"");
-	    sb.append("; ");
+    public String getContentTypeForMTOM(String SOAPContentType) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("multipart/related");
+        sb.append("; ");
+        sb.append("boundary=");
+        sb.append(getMimeBoundary());
+        sb.append("; ");
+        sb.append("type=\"" + MTOMConstants.MTOM_TYPE + "\"");
+        sb.append("; ");
         sb.append("start=\"<").append(getRootContentId()).append(">\"");
-	    sb.append("; ");
+        sb.append("; ");
         sb.append("start-info=\"").append(SOAPContentType).append("\"");
-	    return sb.toString();
-	}
-	
-	public String getContentTypeForSwA(String SOAPContentType) {
-	    StringBuffer sb = new StringBuffer();
-	    sb.append("multipart/related");
-	    sb.append("; ");
-	    sb.append("boundary=");
-	    sb.append(getMimeBoundary());
-	    sb.append("; ");
+        return sb.toString();
+    }
+
+    public String getContentTypeForSwA(String SOAPContentType) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("multipart/related");
+        sb.append("; ");
+        sb.append("boundary=");
+        sb.append(getMimeBoundary());
+        sb.append("; ");
         sb.append("type=\"").append(SOAPContentType).append("\"");
-	    sb.append("; ");
+        sb.append("; ");
         sb.append("start=\"<").append(getRootContentId()).append(">\"");
-	    return sb.toString();
-	}
+        return sb.toString();
+    }
 
     public boolean isAutoCloseWriter() {
         return autoCloseWriter;
@@ -189,7 +184,7 @@ public class OMOutputFormat {
         this.autoCloseWriter = autoCloseWriter;
     }
 
-	public void setMimeBoundary(String mimeBoundary) {
-		this.mimeBoundary = mimeBoundary;
-	}
+    public void setMimeBoundary(String mimeBoundary) {
+        this.mimeBoundary = mimeBoundary;
+    }
 }

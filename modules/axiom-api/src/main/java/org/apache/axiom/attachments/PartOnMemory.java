@@ -23,12 +23,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 
-public class PartOnMemory implements Part{
+public class PartOnMemory implements Part {
 
     MimeBodyPart part;
-    public PartOnMemory(InputStream partInStream) throws MessagingException
-    {
-        part =  new MimeBodyPart(partInStream);
+
+    public PartOnMemory(InputStream partInStream) throws MessagingException {
+        part = new MimeBodyPart(partInStream);
     }
 
     public int getSize() throws MessagingException {
@@ -56,11 +56,11 @@ public class PartOnMemory implements Part{
     }
 
     public String getHeader(String arg0) throws MessagingException {
-       return part.getHeader(arg0)[0];
+        return part.getHeader(arg0)[0];
     }
 
     public Enumeration getAllHeaders() throws MessagingException {
-       return part.getAllHeaders();
+        return part.getAllHeaders();
     }
 
 

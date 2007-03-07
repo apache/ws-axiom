@@ -30,7 +30,7 @@ public class MessagesTest extends OMTestCase {
         soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
                         getTestResourceFile(TestConstants.WHITESPACE_MESSAGE))
-                .getDocumentElement();
+                        .getDocumentElement();
         OMTestUtils.walkThrough(soapEnvelope);
     }
 
@@ -38,7 +38,7 @@ public class MessagesTest extends OMTestCase {
         soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
                         getTestResourceFile(TestConstants.MINIMAL_MESSAGE))
-                .getDocumentElement();
+                        .getDocumentElement();
         OMTestUtils.walkThrough(soapEnvelope);
     }
 
@@ -46,7 +46,7 @@ public class MessagesTest extends OMTestCase {
         soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
                         getTestResourceFile(TestConstants.REALLY_BIG_MESSAGE))
-                .getDocumentElement();
+                        .getDocumentElement();
         OMTestUtils.walkThrough(soapEnvelope);
     }
 
@@ -54,7 +54,7 @@ public class MessagesTest extends OMTestCase {
         soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
                         getTestResourceFile(TestConstants.EMPTY_BODY_MESSAGE))
-                .getDocumentElement();
+                        .getDocumentElement();
         OMTestUtils.walkThrough(soapEnvelope);
     }
 

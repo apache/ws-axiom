@@ -25,11 +25,9 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPFaultReasonImpl;
 
 public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
+    /** Eran Chinthaka (chinthaka@apache.org) */
     public SOAP12FaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                                 SOAPFactory factory) {
         super(parent, builder, factory);
     }
 
@@ -37,9 +35,7 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
         super(factory.getNamespace(), factory);
     }
 
-    /**
-     * @param parent
-     */
+    /** @param parent  */
     public SOAP12FaultReasonImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, true, factory);
@@ -50,7 +46,7 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
         if (!(soapFaultText instanceof SOAP12FaultTextImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault Text. " +
-                    "But received some other implementation");
+                            "But received some other implementation");
         }
         super.addSOAPText(soapFaultText);
     }
@@ -59,7 +55,7 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault as the " +
-                    "parent. But received some other implementation");
+                            "parent. But received some other implementation");
         }
     }
 }

@@ -1,13 +1,12 @@
 package org.apache.axiom.om;
 
 import junit.framework.TestCase;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
-
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 /*
  * Copyright 2004,2005 The Apache Software Foundation.
  *
@@ -26,7 +25,7 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 
 public class OMWrapperTest extends TestCase {
 
-    public void testSingleElementWrapper(){
+    public void testSingleElementWrapper() {
         try {
             String xml = "<root>" +
                     "<wrap1>" +
@@ -38,7 +37,8 @@ public class OMWrapperTest extends TestCase {
                     "</wrap1>" +
                     "</root>";
 
-            XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
+            XMLStreamReader xmlStreamReader =
+                    XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
             StAXOMBuilder b = new StAXOMBuilder(xmlStreamReader);
 
             OMElement documentElement = b.getDocumentElement();
@@ -48,7 +48,7 @@ public class OMWrapperTest extends TestCase {
                             getFirstElement();
 
             OMElement elt = OMAbstractFactory.getOMFactory().createOMElement(
-                    "testName","urn:testNs","ns1"
+                    "testName", "urn:testNs", "ns1"
             );
 
             elt.addChild(wrap2Element);
@@ -56,14 +56,14 @@ public class OMWrapperTest extends TestCase {
 
             XMLStreamReader reader = wrap2Element.getXMLStreamReaderWithoutCaching();
             int count = 0;
-            while(reader.hasNext()){
-               reader.next();
-               count ++;
+            while (reader.hasNext()) {
+                reader.next();
+                count ++;
             }
 
-            assertEquals(3,count);
+            assertEquals(3, count);
         } catch (XMLStreamException e) {
-           fail(e.getMessage());
+            fail(e.getMessage());
         }
 
 

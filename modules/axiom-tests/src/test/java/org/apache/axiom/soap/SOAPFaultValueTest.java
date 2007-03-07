@@ -32,7 +32,7 @@ public class SOAPFaultValueTest extends SOAPFaultSubCodeTestCase {
     public void testSOAP11setText() {
         soap11FaultValue.setText("This is only Test");
         assertTrue("SOAP 1.1 Fault Value Test : - value text mismatch",
-                soap11FaultValue.getText().equals("This is only Test"));
+                   soap11FaultValue.getText().equals("This is only Test"));
     }
 
     public void testSOAP11GetText() {
@@ -44,7 +44,7 @@ public class SOAPFaultValueTest extends SOAPFaultSubCodeTestCase {
                 "SOAP 1.1 Fault Value Test : - After calling setText method, getText method returns null",
                 soap11FaultValue.getText().equals(""));
         assertTrue("SOAP 1.1 Fault Value Test : - value text mismatch",
-                soap11FaultValue.getText().equals("This is only Test"));
+                   soap11FaultValue.getText().equals("This is only Test"));
     }
 
     //SOAP 1.2 Fault Value(In Fault Code) Test (Programaticaly Created)

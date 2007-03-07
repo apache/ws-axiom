@@ -33,13 +33,11 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
      * @param builder
      */
     public SOAP12FaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                               SOAPFactory factory) {
         super(parent, builder, factory);
     }
 
-    /**
-     * @param parent
-     */
+    /** @param parent  */
     public SOAP12FaultCodeImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, true, factory);
@@ -51,7 +49,7 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
         if (!(subCode instanceof SOAP12FaultSubCodeImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault " +
-                    "Sub Code. But received some other implementation");
+                            "Sub Code. But received some other implementation");
         }
         super.setSubCode(subCode);
     }
@@ -60,7 +58,7 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
         if (!(value instanceof SOAP12FaultValueImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault Value. " +
-                    "But received some other implementation");
+                            "But received some other implementation");
         }
         super.setValue(value);
     }
@@ -69,7 +67,7 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault as " +
-                    "the parent. But received some other implementation");
+                            "the parent. But received some other implementation");
         }
     }
 }

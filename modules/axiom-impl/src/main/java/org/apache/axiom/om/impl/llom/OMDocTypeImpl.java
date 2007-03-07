@@ -16,7 +16,12 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.*;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocType;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNode;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -30,8 +35,8 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
      * @param parentNode
      * @param contentText
      */
-    public OMDocTypeImpl(OMContainer parentNode, String contentText, 
-            OMFactory factory) {
+    public OMDocTypeImpl(OMContainer parentNode, String contentText,
+                         OMFactory factory) {
         super(parentNode, factory, true);
         this.value = contentText;
         nodeType = OMNode.DTD_NODE;

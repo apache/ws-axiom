@@ -1,9 +1,9 @@
 package org.apache.axiom.soap;
 
 import junit.framework.TestCase;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -36,17 +36,20 @@ public class SOAPFactoryTest extends TestCase {
     public void testSOAPFactory() {
 
         try {
-            SOAPEnvelope soapEnvelope = (SOAPEnvelope) new StAXSOAPModelBuilder(XMLInputFactory.newInstance().
-                    createXMLStreamReader(new FileInputStream(SOAP11_FILE_NAME)), null).getDocumentElement();
+            SOAPEnvelope soapEnvelope =
+                    (SOAPEnvelope) new StAXSOAPModelBuilder(XMLInputFactory.newInstance().
+                            createXMLStreamReader(new FileInputStream(SOAP11_FILE_NAME)), null)
+                            .getDocumentElement();
             assertTrue(soapEnvelope != null);
 
             soapEnvelope = (SOAPEnvelope) new StAXSOAPModelBuilder(XMLInputFactory.newInstance().
-                    createXMLStreamReader(new FileInputStream(SOAP12_FILE_NAME)), null).getDocumentElement();
+                    createXMLStreamReader(new FileInputStream(SOAP12_FILE_NAME)), null)
+                    .getDocumentElement();
             assertTrue(soapEnvelope != null);
         } catch (XMLStreamException e) {
-            fail("Can not load soap envelope. Exception = "+ e);
+            fail("Can not load soap envelope. Exception = " + e);
         } catch (FileNotFoundException e) {
-            fail("Given XML can not be found. Exception =  "+ e);
+            fail("Given XML can not be found. Exception =  " + e);
         }
 
     }

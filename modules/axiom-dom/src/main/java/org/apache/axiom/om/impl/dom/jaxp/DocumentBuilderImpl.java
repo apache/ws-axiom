@@ -32,7 +32,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.validation.Schema;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -40,21 +39,18 @@ import java.io.InputStream;
 
 public class DocumentBuilderImpl extends DocumentBuilder {
 
-    /**
-     * The DocumentBuilderFactory used to create this document builder
-     */
+    /** The DocumentBuilderFactory used to create this document builder */
     private DocumentBuilderFactoryImpl factory;
-    
+
     protected DocumentBuilderImpl(DocumentBuilderFactoryImpl fac) {
         super();
         this.factory = fac;
     }
 
     /**
-     * Returns whether the parser is configured to understand namespaces or not.
-     * The StAX parser used by this DOM impl is namespace aware therefore this
-     * will always return true.
-     * 
+     * Returns whether the parser is configured to understand namespaces or not. The StAX parser
+     * used by this DOM impl is namespace aware therefore this will always return true.
+     *
      * @see javax.xml.parsers.DocumentBuilder#isNamespaceAware()
      */
     public boolean isNamespaceAware() {
@@ -62,9 +58,9 @@ public class DocumentBuilderImpl extends DocumentBuilder {
     }
 
     /**
-     * The StAX builder used is the org.apache.axiom.om.impl.llom.StAXOMBuilder
-     * is a validating builder.
-     * 
+     * The StAX builder used is the org.apache.axiom.om.impl.llom.StAXOMBuilder is a validating
+     * builder.
+     *
      * @see javax.xml.parsers.DocumentBuilder#isValidating()
      */
     public boolean isValidating() {
@@ -77,7 +73,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
 
     /**
      * Returns a new document impl.
-     * 
+     *
      * @see javax.xml.parsers.DocumentBuilder#newDocument()
      */
     public Document newDocument() {
@@ -111,9 +107,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         }
     }
 
-    /**
-     * @see javax.xml.parsers.DocumentBuilder#parse(java.io.InputStream)
-     */
+    /** @see javax.xml.parsers.DocumentBuilder#parse(java.io.InputStream) */
     public Document parse(InputStream is) throws SAXException, IOException {
         try {
             OMDOMFactory factory = new OMDOMFactory();
@@ -126,9 +120,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         }
     }
 
-    /**
-     * @see javax.xml.parsers.DocumentBuilder#parse(java.io.File)
-     */
+    /** @see javax.xml.parsers.DocumentBuilder#parse(java.io.File) */
     public Document parse(File file) throws SAXException, IOException {
         try {
             OMDOMFactory factory = new OMDOMFactory();
@@ -141,19 +133,14 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         }
     }
 
-    /**
-     * @see javax.xml.parsers.DocumentBuilder#parse(java.io.InputStream,
-     *      java.lang.String)
-     */
+    /** @see javax.xml.parsers.DocumentBuilder#parse(java.io.InputStream, String) */
     public Document parse(InputStream is, String systemId) throws SAXException,
             IOException {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    /**
-     * @see javax.xml.parsers.DocumentBuilder#parse(java.lang.String)
-     */
+    /** @see javax.xml.parsers.DocumentBuilder#parse(String) */
     public Document parse(String uri) throws SAXException, IOException {
         // TODO
         throw new UnsupportedOperationException("TODO");
@@ -167,6 +154,5 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         return this.factory.schema;
     }
 
-    
-    
+
 }

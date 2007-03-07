@@ -24,7 +24,7 @@ import org.apache.axiom.soap.impl.llom.SOAPFaultValueImpl;
 
 
 public class SOAP12FaultValueImpl extends SOAPFaultValueImpl {
-    
+
     public SOAP12FaultValueImpl(OMElement parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, factory);
@@ -36,7 +36,7 @@ public class SOAP12FaultValueImpl extends SOAPFaultValueImpl {
     }
 
     public SOAP12FaultValueImpl(OMElement parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                                SOAPFactory factory) {
         super(parent, builder, factory);
     }
 

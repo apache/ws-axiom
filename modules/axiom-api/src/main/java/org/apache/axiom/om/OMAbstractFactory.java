@@ -23,16 +23,19 @@ public class OMAbstractFactory {
     public static final String SOAP11_FACTORY_NAME_PROPERTY = "soap11.factory";
     public static final String SOAP12_FACTORY_NAME_PROPERTY = "soap12.factory";
 
-    private static final String DEFAULT_OM_FACTORY_CLASS_NAME = "org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory";
-    private static final String DEFAULT_SOAP11_FACTORY_CLASS_NAME = "org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory";
-    private static final String DEFAULT_SOAP12_FACTORY_CLASS_NAME = "org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory";
+    private static final String DEFAULT_OM_FACTORY_CLASS_NAME =
+            "org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory";
+    private static final String DEFAULT_SOAP11_FACTORY_CLASS_NAME =
+            "org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory";
+    private static final String DEFAULT_SOAP12_FACTORY_CLASS_NAME =
+            "org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory";
 
     private static OMFactory defaultOMFactory = null;
     private static SOAPFactory defaultSOAP11OMFactory = null;
     private static SOAPFactory defaultSOAP12OMFactory = null;
 
     public static OMFactory getOMFactory() {
-        if(defaultOMFactory != null) {
+        if (defaultOMFactory != null) {
             return defaultOMFactory;
         }
         String omFactory;
@@ -46,7 +49,7 @@ public class OMAbstractFactory {
         }
 
         try {
-           defaultOMFactory = (OMFactory) Class.forName(omFactory).newInstance();
+            defaultOMFactory = (OMFactory) Class.forName(omFactory).newInstance();
         } catch (InstantiationException e) {
             throw new OMException(e);
         } catch (IllegalAccessException e) {
@@ -64,7 +67,7 @@ public class OMAbstractFactory {
      * @return Returns SOAPFactory.
      */
     public static SOAPFactory getSOAP11Factory() {
-        if(defaultSOAP11OMFactory != null) {
+        if (defaultSOAP11OMFactory != null) {
             return defaultSOAP11OMFactory;
         }
         try {
@@ -90,7 +93,7 @@ public class OMAbstractFactory {
      * @return Returns SOAPFactory.
      */
     public static SOAPFactory getSOAP12Factory() {
-        if(defaultSOAP12OMFactory != null) {
+        if (defaultSOAP12OMFactory != null) {
             return defaultSOAP12OMFactory;
         }
         try {

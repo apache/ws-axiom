@@ -142,7 +142,7 @@ public class SOAPFaultSubCodeTest extends SOAPFaultSubCodeTestCase {
         assertTrue(
                 "SOAP 1.2 SOAPFaultSubCode Test In FaultCode With Parser : - Value text mismatch",
                 soap12FaultSubCodeInFaultCodeWithParser.getValue().getText()
-                .equals("m:MessageTimeout In First Subcode"));
+                        .equals("m:MessageTimeout In First Subcode"));
     }
 
     public void testGetSubCodeInFaultCodeWithParser() {
@@ -152,8 +152,8 @@ public class SOAPFaultSubCodeTest extends SOAPFaultSubCodeTestCase {
         assertTrue(
                 "SOAP 1.2 SOAPFaultSubCode Test In FaultCode With Parser : - SubCode local name mismatch",
                 soap12FaultSubCodeInFaultCodeWithParser.getSubCode()
-                .getLocalName()
-                .equals(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME));
+                        .getLocalName()
+                        .equals(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME));
     }
 
     //SOAP Fault SubCode(In Fault SubCode) Test (With Parser)
@@ -164,7 +164,7 @@ public class SOAPFaultSubCodeTest extends SOAPFaultSubCodeTestCase {
         assertTrue(
                 "SOAP 1.2 SOAPFaultSubCode Test In FaultSubCode With Parser : - Value text mismatch",
                 soap12FaultSubCodeInSubCodeWithParser.getValue().getText()
-                .equals("m:MessageTimeout In Second Subcode"));
+                        .equals("m:MessageTimeout In Second Subcode"));
     }
 
     public void testGetSubCodeInFaultSubCodeWithParser() {
@@ -174,7 +174,7 @@ public class SOAPFaultSubCodeTest extends SOAPFaultSubCodeTestCase {
         assertTrue(
                 "SOAP 1.2 SOAPFaultSubCode Test In FaultSubCode With Parser : - SubCode local name mismatch",
                 soap12FaultSubCodeInSubCodeWithParser.getSubCode()
-                .getLocalName()
-                .equals(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME));
+                        .getLocalName()
+                        .equals(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME));
     }
 }

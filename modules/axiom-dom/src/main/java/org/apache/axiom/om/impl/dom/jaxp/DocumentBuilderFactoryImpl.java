@@ -23,43 +23,48 @@ import javax.xml.validation.Schema;
 public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
 
     /**
-     * Temporary solution until DOOM's DocumentBuilder module is done.
-     * Use ThreadLocal to determine whether or not DOOM implementation is required.
-     * By default (isDOOMRequired() == false), we will use the one from JDK (Crimson)
+     * Temporary solution until DOOM's DocumentBuilder module is done. Use ThreadLocal to determine
+     * whether or not DOOM implementation is required. By default (isDOOMRequired() == false), we
+     * will use the one from JDK (Crimson)
      */
-    private static DocumentBuilderFactory originalDocumentBuilderFactory = DocumentBuilderFactory.newInstance();
+    private static DocumentBuilderFactory originalDocumentBuilderFactory =
+            DocumentBuilderFactory.newInstance();
     private static String originalDocumentBuilderFactoryClassName = null;
     private static ThreadLocal documentBuilderFactoryTracker = new ThreadLocal();
-    
+
     protected Schema schema;
-    
+
     public static boolean isDOOMRequired() {
         Object value = documentBuilderFactoryTracker.get();
         return (value != null);
     }
-    
+
     public static void setDOOMRequired(boolean isDOOMRequired) {
         String systemKey = DocumentBuilderFactory.class.getName();
         if (isDOOMRequired) {
             if (!isDOOMRequired()) {
                 originalDocumentBuilderFactory = DocumentBuilderFactory.newInstance();
-                originalDocumentBuilderFactoryClassName = originalDocumentBuilderFactory.getClass().getName();
+                originalDocumentBuilderFactoryClassName =
+                        originalDocumentBuilderFactory.getClass().getName();
                 documentBuilderFactoryTracker.set(Boolean.TRUE);
                 System.setProperty(systemKey, DocumentBuilderFactoryImpl.class.getName());
             }
         } else {
-            String currentFactoryClassName = DocumentBuilderFactory.newInstance().getClass().getName();
-            if (currentFactoryClassName != null && currentFactoryClassName.equals(DocumentBuilderFactoryImpl.class.getName())) {
+            String currentFactoryClassName =
+                    DocumentBuilderFactory.newInstance().getClass().getName();
+            if (currentFactoryClassName != null &&
+                    currentFactoryClassName.equals(DocumentBuilderFactoryImpl.class.getName())) {
                 System.getProperties().remove(systemKey);
                 if (originalDocumentBuilderFactoryClassName != null) {
-                    System.setProperty(DocumentBuilderFactory.class.getName(), originalDocumentBuilderFactoryClassName);
+                    System.setProperty(DocumentBuilderFactory.class.getName(),
+                                       originalDocumentBuilderFactoryClassName);
                 }
             }
             documentBuilderFactoryTracker.set(null);
             originalDocumentBuilderFactory = null;
         }
     }
-    
+
 
     public DocumentBuilderFactoryImpl() {
         super();
@@ -115,8 +120,6 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
         //HACK: Overriding to get opensaml working !!
         return this.schema;
     }
-    
-    
-    
-    
+
+
 }

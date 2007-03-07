@@ -21,23 +21,15 @@ import org.apache.axiom.om.OMNode;
 
 import javax.xml.namespace.QName;
 
-/**
- * Class OMChildrenQNameIterator
- */
+/** Class OMChildrenQNameIterator */
 public class OMChildrenQNameIterator extends OMChildrenIterator {
-    /**
-     * Field givenQName
-     */
+    /** Field givenQName */
     private QName givenQName;
 
-    /**
-     * Field needToMoveForward
-     */
+    /** Field needToMoveForward */
     private boolean needToMoveForward = true;
 
-    /**
-     * Field isMatchingNodeFound
-     */
+    /** Field isMatchingNodeFound */
     private boolean isMatchingNodeFound = false;
 
     /**
@@ -52,9 +44,8 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
     }
 
     /**
-     * Returns <tt>true</tt> if the iteration has more elements. (In other
-     * words, returns <tt>true</tt> if <tt>next</tt> would return an element
-     * rather than throwing an exception.)
+     * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns
+     * <tt>true</tt> if <tt>next</tt> would return an element rather than throwing an exception.)
      *
      * @return Returns <tt>true</tt> if the iterator has more elements.
      */
@@ -65,8 +56,8 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
                 // check the current node for the criteria
                 if ((currentChild instanceof OMElement)
                         && (isQNamesMatch(
-                                ((OMElement) currentChild).getQName(),
-                                this.givenQName))) {
+                        ((OMElement) currentChild).getQName(),
+                        this.givenQName))) {
                     isMatchingNodeFound = true;
                     needToMoveForward = false;
                 } else {
@@ -103,10 +94,9 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
     }
 
     /**
-     * Cannot use the overridden equals method of QName, as one might want to get
-     * some element just by giving the localname, even though a matching element 
-     * has a namespace uri as well.
-     * This is not supported in the equals method of the QName.
+     * Cannot use the overridden equals method of QName, as one might want to get some element just
+     * by giving the localname, even though a matching element has a namespace uri as well. This is
+     * not supported in the equals method of the QName.
      *
      * @param elementQName
      * @param qNameToBeMatched
@@ -123,21 +113,21 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
         String localPart = qNameToBeMatched.getLocalPart();
         boolean localNameMatch =
                 (localPart == null)
-                || (localPart.equals(""))
-                ||
-                ((elementQName != null)
-                &&
-                elementQName.getLocalPart().equalsIgnoreCase(
-                        localPart));
+                        || (localPart.equals(""))
+                        ||
+                        ((elementQName != null)
+                                &&
+                                elementQName.getLocalPart().equalsIgnoreCase(
+                                        localPart));
         String namespaceURI = qNameToBeMatched.getNamespaceURI();
         boolean namespaceURIMatch =
                 (namespaceURI == null)
-                || (namespaceURI.equals(""))
-                ||
-                ((elementQName != null)
-                &&
-                elementQName.getNamespaceURI().equalsIgnoreCase(
-                        namespaceURI));
+                        || (namespaceURI.equals(""))
+                        ||
+                        ((elementQName != null)
+                                &&
+                                elementQName.getNamespaceURI().equalsIgnoreCase(
+                                        namespaceURI));
         return localNameMatch && namespaceURIMatch;
     }
 }

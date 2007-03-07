@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 /**
  * Interface OMText.
- *
+ * <p/>
  * OMText can contain data as a String, char[] or a DataHandler.
  */
 public interface OMText extends OMNode {
@@ -33,50 +33,49 @@ public interface OMText extends OMNode {
     String getText();
 
     char[] getTextCharacters();
+
     boolean isCharacters();
 
     QName getTextAsQName();
-    
+
     /**
-     * Returns the Namespace if this contains a QName
-     * Return null otherwise
-     * @return OMNamespace 
+     * Returns the Namespace if this contains a QName Return null otherwise
+     *
+     * @return OMNamespace
      */
     OMNamespace getNamespace();
 
     /**
      * Gets the datahandler.
+     *
      * @return Returns datahandler.
      */
     Object getDataHandler();
 
-    /**
-     * @return Returns boolean flag saying whether the node contains
-     *         an optimized text or not.
-     */
+    /** @return Returns boolean flag saying whether the node contains an optimized text or not. */
     boolean isOptimized();
 
     /**
      * Sets the optimize flag.
+     *
      * @param value
      */
     void setOptimize(boolean value);
-    
-    /**
-     * @return Returns boolean flag saying whether the node contains
-     *         binary or not.
-     */
+
+    /** @return Returns boolean flag saying whether the node contains binary or not. */
     boolean isBinary();
 
     /**
      * Sets the isBinary flag.
+     *
      * @param value
      */
     void setBinary(boolean value);
-    
+
 
     /**
      * Gets the content id.
+     *
      * @return Returns String.
      */
     String getContentID();

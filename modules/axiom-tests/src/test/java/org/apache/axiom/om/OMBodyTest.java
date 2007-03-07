@@ -45,7 +45,7 @@ public class OMBodyTest extends OMTestCase implements OMConstants {
         try {
             soapBody.addChild(
                     soapFactory.createSOAPFault(soapBody,
-                            new Exception("Testing soap fault")));
+                                                new Exception("Testing soap fault")));
         } catch (SOAPProcessingException e) {
             log.info(e.getMessage());
             fail(e.getMessage());

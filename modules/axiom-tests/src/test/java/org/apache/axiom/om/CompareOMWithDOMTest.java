@@ -23,13 +23,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 
-/**
- * @version $Rev: $ $Date: $
- */
+/** @version $Rev: $ $Date: $ */
 public class CompareOMWithDOMTest extends AbstractTestCase {
-    /**
-     * @param testName
-     */
+    /** @param testName  */
     public CompareOMWithDOMTest(String testName) {
         super(testName);
     }
@@ -39,7 +35,8 @@ public class CompareOMWithDOMTest extends AbstractTestCase {
         File[] files = dir.listFiles();
         if (files != null) {
             for (int i = 0; i < files.length; i++) {
-                if (files[i].isFile() && files[i].getName().endsWith(".xml") && !files[i].getName().startsWith("wrong")) {
+                if (files[i].isFile() && files[i].getName().endsWith(".xml") &&
+                        !files[i].getName().startsWith("wrong")) {
                     SOAPEnvelope soapEnvelope = (SOAPEnvelope) OMTestUtils.getOMBuilder(
                             files[i])
                             .getDocumentElement();
@@ -48,7 +45,7 @@ public class CompareOMWithDOMTest extends AbstractTestCase {
                     DocumentBuilder builder = dbf.newDocumentBuilder();
                     Document doc = builder.parse(files[i].getAbsolutePath());
                     OMTestUtils.compare(doc.getDocumentElement(),
-                            soapEnvelope);
+                                        soapEnvelope);
                 }
             }
 

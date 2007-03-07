@@ -32,9 +32,7 @@ public class StAXOMBuilderTest extends AbstractTestCase {
     FileReader testFile;
     private OMElement rootElement;
 
-    /**
-     * Constructor.
-     */
+    /** Constructor. */
     public StAXOMBuilderTest(String testName) {
         super(testName);
     }
@@ -52,7 +50,7 @@ public class StAXOMBuilderTest extends AbstractTestCase {
         rootElement = stAXOMBuilder.getDocumentElement();
         assertTrue("Root element can not be null", rootElement != null);
         assertTrue(" Name of the root element is wrong",
-                rootElement.getLocalName().equalsIgnoreCase("Root"));
+                   rootElement.getLocalName().equalsIgnoreCase("Root"));
         // get the first OMElement child
         OMNode omnode = rootElement.getFirstOMChild();
         while (omnode instanceof OMText) {

@@ -21,8 +21,8 @@ public class OMBlankElementTest extends TestCase {
             //We should not get anything as the return value here: the output of the serialization
             String value = buildBlankOMElem();
             assertNull(
-                "There's a serialized output for a blank XML element that cannot exist",
-                value);
+                    "There's a serialized output for a blank XML element that cannot exist",
+                    value);
         } catch (OMException e) {
         }
     }
@@ -44,8 +44,8 @@ public class OMBlankElementTest extends TestCase {
             //We should not get anything as the return value here: the output of the serialization
             String value = buildWithWhiteSpaceOMElem();
             assertNull(
-                "There's a serialized output for a blank XML element that cannot exist",
-                value);
+                    "There's a serialized output for a blank XML element that cannot exist",
+                    value);
         } catch (OMException e) {
         }
     }

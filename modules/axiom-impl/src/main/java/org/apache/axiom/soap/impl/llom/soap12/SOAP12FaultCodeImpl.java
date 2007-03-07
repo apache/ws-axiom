@@ -26,9 +26,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPFaultCodeImpl;
 
 public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
+    /** Eran Chinthaka (chinthaka@apache.org) */
 
     public SOAP12FaultCodeImpl(SOAPFactory factory) {
         super(factory.getNamespace(), factory);
@@ -44,10 +42,9 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
         super(parent, builder, factory);
     }
 
-    /**
-     * @param parent
-     */
-    public SOAP12FaultCodeImpl(SOAPFault parent, SOAPFactory factory) throws SOAPProcessingException {
+    /** @param parent  */
+    public SOAP12FaultCodeImpl(SOAPFault parent, SOAPFactory factory)
+            throws SOAPProcessingException {
         super(parent, true, factory);
     }
 

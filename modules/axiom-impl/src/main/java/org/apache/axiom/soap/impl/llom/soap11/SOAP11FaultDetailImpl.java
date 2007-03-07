@@ -43,7 +43,7 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
     }
 
     public SOAP11FaultDetailImpl(SOAPFault parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                                 SOAPFactory factory) {
         super(parent, builder, factory);
     }
 
@@ -51,7 +51,7 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
         if (!(parent instanceof SOAP11FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.1 implementation of SOAP Fault as the " +
-                    "parent. But received some other implementation");
+                            "parent. But received some other implementation");
         }
     }
 
@@ -68,13 +68,13 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
                     new StreamWriterToContentHandlerConverter(writer));
         }
 
-        OMSerializerUtil.serializeStartpart(this, 
-        		SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME, 
-        		writer);
-        
+        OMSerializerUtil.serializeStartpart(this,
+                                            SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME,
+                                            writer);
+
         OMNode child = firstChild;
         while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
-           ((OMNodeImpl) child).internalSerializeAndConsume(writer);
+            ((OMNodeImpl) child).internalSerializeAndConsume(writer);
             child = child.getNextOMSibling();
         }
 

@@ -25,7 +25,6 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
@@ -66,16 +65,18 @@ public class AttrNsTest extends AbstractOMSerializationTest {
         StAXOMBuilder builder = new StAXOMBuilder(bais);
         OMElement elem = builder.getDocumentElement();
         elem.build();
-        assertEquals("Attribute value mismatch", "uri:thisBase", elem.getAttributeValue(new QName(OMConstants.XMLNS_URI, "base")));
+        assertEquals("Attribute value mismatch", "uri:thisBase",
+                     elem.getAttributeValue(new QName(OMConstants.XMLNS_URI, "base")));
 
         OMAttribute attr = elem.getAttribute(new QName(OMConstants.XMLNS_URI, "base"));
 
-        assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI, attr.getNamespace().getNamespaceURI());
+        assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI,
+                     attr.getNamespace().getNamespaceURI());
     }
 
     /**
-     * Test method to test the XML namespace of an attr without
-     * any other ns declarations in the element
+     * Test method to test the XML namespace of an attr without any other ns declarations in the
+     * element
      *
      * @throws Exception
      */
@@ -86,23 +87,28 @@ public class AttrNsTest extends AbstractOMSerializationTest {
         StAXOMBuilder builder = new StAXOMBuilder(bais);
         OMElement elem = builder.getDocumentElement();
         elem.build();
-        assertEquals("Attribute value mismatch", "uri:thisBase", elem.getAttributeValue(new QName(OMConstants.XMLNS_URI, "base")));
+        assertEquals("Attribute value mismatch", "uri:thisBase",
+                     elem.getAttributeValue(new QName(OMConstants.XMLNS_URI, "base")));
 
         OMAttribute attr = elem.getAttribute(new QName(OMConstants.XMLNS_URI, "base"));
 
-        assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI, attr.getNamespace().getNamespaceURI());
+        assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI,
+                     attr.getNamespace().getNamespaceURI());
     }
 
     public void testAttributesWithProgrammaticalCreation() {
 
         try {
-            String expectedXML = "<AttributeTester xmlns=\"\" xmlns:myAttr2NS=\"http://test-attributes-2.org\" " +
-                    "xmlns:myAttr1NS=\"http://test-attributes-1.org\" myAttr2NS:attrNumber=\"2\" myAttr1NS:attrNumber=\"1\" />";
+            String expectedXML =
+                    "<AttributeTester xmlns=\"\" xmlns:myAttr2NS=\"http://test-attributes-2.org\" " +
+                            "xmlns:myAttr1NS=\"http://test-attributes-1.org\" myAttr2NS:attrNumber=\"2\" myAttr1NS:attrNumber=\"1\" />";
 
             OMFactory omFactory = OMAbstractFactory.getOMFactory();
 
-            OMNamespace attrNS1 = omFactory.createOMNamespace("http://test-attributes-1.org", "myAttr1NS");
-            OMNamespace attrNS2 = omFactory.createOMNamespace("http://test-attributes-2.org", "myAttr2NS");
+            OMNamespace attrNS1 =
+                    omFactory.createOMNamespace("http://test-attributes-1.org", "myAttr1NS");
+            OMNamespace attrNS2 =
+                    omFactory.createOMNamespace("http://test-attributes-2.org", "myAttr2NS");
             OMElement omElement = omFactory.createOMElement("AttributeTester", null);
             omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS1, "1"));
             omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS2, "2"));
@@ -131,19 +137,22 @@ public class AttrNsTest extends AbstractOMSerializationTest {
 
     public void testAttributesWithNamespaceSerialization() {
         try {
-            String xmlString = "<root xmlns='http://custom.com'><node cust:id='123' xmlns:cust='http://custom.com' /></root>";
-            XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xmlString));
-            
+            String xmlString =
+                    "<root xmlns='http://custom.com'><node cust:id='123' xmlns:cust='http://custom.com' /></root>";
+            XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance()
+                    .createXMLStreamReader(new StringReader(xmlString));
+
             // copied code from the generated stub class toOM method
-            org.apache.axiom.om.impl.builder.StAXOMBuilder builder = new org.apache.axiom.om.impl.builder.StAXOMBuilder(xmlStreamReader);
+            org.apache.axiom.om.impl.builder.StAXOMBuilder builder =
+                    new org.apache.axiom.om.impl.builder.StAXOMBuilder(xmlStreamReader);
             org.apache.axiom.om.OMElement documentElement = builder
-                    .getDocumentElement( );
-    
-            ((org.apache.axiom.om.impl.OMNodeEx) documentElement).setParent( null );
+                    .getDocumentElement();
+
+            ((org.apache.axiom.om.impl.OMNodeEx) documentElement).setParent(null);
             // end copied code
-    
+
             // now print the object after it has been processed
-            System.out.println( "after - '" + documentElement.toString( ) + "'" );
+            System.out.println("after - '" + documentElement.toString() + "'");
             Document document1 = newDocument(xmlString);
             Document document2 = newDocument(documentElement.toString());
             Diff diff = compareXML(document1, document2);

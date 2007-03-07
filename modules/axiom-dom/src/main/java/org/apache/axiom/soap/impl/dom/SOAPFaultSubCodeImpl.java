@@ -31,13 +31,14 @@ public abstract class SOAPFaultSubCodeImpl extends SOAPElement implements SOAPFa
     protected SOAPFaultSubCode subCode;
 
 
-    protected SOAPFaultSubCodeImpl(OMElement parent, String localName, SOAPFactory factory) throws SOAPProcessingException {
+    protected SOAPFaultSubCodeImpl(OMElement parent, String localName, SOAPFactory factory)
+            throws SOAPProcessingException {
         super(parent, localName, true, factory);
     }
 
     protected SOAPFaultSubCodeImpl(OMElement parent,
                                    String localName,
-                                   OMXMLParserWrapper builder, 
+                                   OMXMLParserWrapper builder,
                                    SOAPFactory factory) {
         super(parent, localName, builder, factory);
     }
@@ -50,7 +51,7 @@ public abstract class SOAPFaultSubCodeImpl extends SOAPElement implements SOAPFa
         if (value == null) {
             value =
                     (SOAPFaultValue) ElementHelper.getChildWithName(this,
-                            SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME);
+                                                                    SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME);
         }
         return value;
     }
@@ -64,7 +65,7 @@ public abstract class SOAPFaultSubCodeImpl extends SOAPElement implements SOAPFa
         if (subCode == null) {
             subCode =
                     (SOAPFaultSubCode) ElementHelper.getChildWithName(this,
-                            SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
+                                                                      SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
         }
         return subCode;
     }

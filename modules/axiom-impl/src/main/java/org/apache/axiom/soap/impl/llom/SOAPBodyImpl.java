@@ -31,26 +31,20 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
 
-/**
- * Class SOAPBodyImpl
- */
+/** Class SOAPBodyImpl */
 public abstract class SOAPBodyImpl extends SOAPElement
         implements SOAPBody, OMConstants {
-    /**
-     * Field hasSOAPFault
-     */
+    /** Field hasSOAPFault */
     private boolean hasSOAPFault = false;
 
-    protected SOAPBodyImpl(String localName, OMNamespace ns, 
-            SOAPFactory factory) {
+    protected SOAPBodyImpl(String localName, OMNamespace ns,
+                           SOAPFactory factory) {
         super(localName, ns, factory);
     }
 
-    /**
-     * @param envelope
-     */
-    public SOAPBodyImpl(SOAPEnvelope envelope, SOAPFactory factory) 
-                            throws SOAPProcessingException {
+    /** @param envelope  */
+    public SOAPBodyImpl(SOAPEnvelope envelope, SOAPFactory factory)
+            throws SOAPProcessingException {
         super(envelope, SOAPConstants.BODY_LOCAL_NAME, true, factory);
 
     }
@@ -61,14 +55,14 @@ public abstract class SOAPBodyImpl extends SOAPElement
      * @param envelope
      * @param builder
      */
-    public SOAPBodyImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder, 
-            SOAPFactory factory) {
+    public SOAPBodyImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
+                        SOAPFactory factory) {
         super(envelope, SOAPConstants.BODY_LOCAL_NAME, builder, factory);
     }
 
     /**
-     * Creates a new <code>SOAPFault</code> object and adds it to
-     * this <code>SOAPBody</code> object.
+     * Creates a new <code>SOAPFault</code> object and adds it to this <code>SOAPBody</code>
+     * object.
      *
      * @param e
      * @return the new <code>SOAPFault</code> object
@@ -79,12 +73,11 @@ public abstract class SOAPBodyImpl extends SOAPElement
     public abstract SOAPFault addFault(Exception e) throws OMException;
 
     /**
-     * Indicates whether a <code>SOAPFault</code> object exists in
-     * this <code>SOAPBody</code> object.
+     * Indicates whether a <code>SOAPFault</code> object exists in this <code>SOAPBody</code>
+     * object.
      *
-     * @return <code>true</code> if a <code>SOAPFault</code> object exists in
-     *         this <code>SOAPBody</code> object; <code>false</code>
-     *         otherwise
+     * @return <code>true</code> if a <code>SOAPFault</code> object exists in this
+     *         <code>SOAPBody</code> object; <code>false</code> otherwise
      */
     public boolean hasFault() {
         if (hasSOAPFault) {
@@ -98,9 +91,9 @@ public abstract class SOAPBodyImpl extends SOAPElement
                     &&
                     (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
                             element.getNamespace().getNamespaceURI())
-                    ||
-                    SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                            element.getNamespace().getNamespaceURI()))) {  //added this line
+                            ||
+                            SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
+                                    element.getNamespace().getNamespaceURI()))) {  //added this line
                 hasSOAPFault = true;
                 return true;
             } else {
@@ -110,11 +103,9 @@ public abstract class SOAPBodyImpl extends SOAPElement
     }
 
     /**
-     * Returns the <code>SOAPFault</code> object in this <code>SOAPBody</code>
-     * object.
+     * Returns the <code>SOAPFault</code> object in this <code>SOAPBody</code> object.
      *
-     * @return the <code>SOAPFault</code> object in this <code>SOAPBody</code>
-     *         object
+     * @return the <code>SOAPFault</code> object in this <code>SOAPBody</code> object
      */
     public SOAPFault getFault() {
         OMElement element = getFirstElement();
@@ -127,9 +118,9 @@ public abstract class SOAPBodyImpl extends SOAPElement
                 &&
                 (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
                         element.getNamespace().getNamespaceURI())
-                ||
-                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                        element.getNamespace().getNamespaceURI()))) {     //added this line
+                        ||
+                        SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
+                                element.getNamespace().getNamespaceURI()))) {     //added this line
             hasSOAPFault = true;
             return (SOAPFault) element;
         } else {
@@ -161,6 +152,7 @@ public abstract class SOAPBodyImpl extends SOAPElement
     }
 
     public OMNode detach() throws OMException {
-        throw new SOAPProcessingException("Can not detach SOAP Body, SOAP Envelope must have a Body !!");
+        throw new SOAPProcessingException(
+                "Can not detach SOAP Body, SOAP Envelope must have a Body !!");
     }
 }

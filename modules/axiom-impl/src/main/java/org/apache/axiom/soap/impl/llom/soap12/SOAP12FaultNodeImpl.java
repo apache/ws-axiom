@@ -30,7 +30,8 @@ public class SOAP12FaultNodeImpl extends SOAPFaultNodeImpl {
         super(factory.getNamespace(), factory);
     }
 
-    public SOAP12FaultNodeImpl(SOAPFault parent, SOAPFactory factory) throws SOAPProcessingException {
+    public SOAP12FaultNodeImpl(SOAPFault parent, SOAPFactory factory)
+            throws SOAPProcessingException {
         super(parent, factory);
     }
 

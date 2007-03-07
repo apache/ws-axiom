@@ -16,17 +16,16 @@
 
 package org.apache.axiom.om;
 
-import java.io.File;
-import java.io.FileReader;
-import java.util.Iterator;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
-
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
+import java.io.File;
+import java.io.FileReader;
+import java.util.Iterator;
 
 public class IteratorTest extends AbstractTestCase {
     private OMElement envelope = null;
@@ -39,20 +38,18 @@ public class IteratorTest extends AbstractTestCase {
         //lets use a plain OM factory
         envelope =
                 new StAXOMBuilder(new OMLinkedListImplFactory(),
-                        XMLInputFactory.newInstance().createXMLStreamReader(
-                                new FileReader(
-                                        getTestResourceFile(
-                                                "soap/soapmessage1.xml")))).getDocumentElement();
+                                  XMLInputFactory.newInstance().createXMLStreamReader(
+                                          new FileReader(
+                                                  getTestResourceFile(
+                                                          "soap/soapmessage1.xml"))))
+                        .getDocumentElement();
     }
 
     protected void tearDown() throws Exception {
         envelope = null;
     }
 
-    /**
-     * Test the plain iterator which includes all the
-     * children (including the texts)
-     */
+    /** Test the plain iterator which includes all the children (including the texts) */
     public void testIterator() {
         OMElement elt = envelope;
         Iterator iter = elt.getChildren();
@@ -61,12 +58,11 @@ public class IteratorTest extends AbstractTestCase {
             counter ++;
             assertNotNull("Must return not null objects!", iter.next());
         }
-        assertEquals("This element should contain only five children including the text ", 5, counter);
+        assertEquals("This element should contain only five children including the text ", 5,
+                     counter);
     }
 
-    /**
-     * Test the element iterator
-     */
+    /** Test the element iterator */
     public void testElementIterator() {
         OMElement elt = envelope;
         Iterator iter = elt.getChildElements();
@@ -75,14 +71,13 @@ public class IteratorTest extends AbstractTestCase {
             counter ++;
             Object o = iter.next();
             assertNotNull("Must return not null objects!", o);
-            assertTrue("All these should be elements!", ((OMNode) o).getType() == OMNode.ELEMENT_NODE);
+            assertTrue("All these should be elements!",
+                       ((OMNode) o).getType() == OMNode.ELEMENT_NODE);
         }
         assertEquals("This element should contain only two elements ", 2, counter);
     }
 
-    /**
-     * Test the element iterator
-     */
+    /** Test the element iterator */
     public void testElementQNameIterator() {
         OMElement elt = envelope;
         QName qname = new QName("http://schemas.xmlsoap.org/soap/envelope/", "body");
@@ -92,14 +87,14 @@ public class IteratorTest extends AbstractTestCase {
             counter ++;
             Object o = iter.next();
             assertNotNull("Must return not null objects!", o);
-            assertTrue("All these should be elements!", ((OMNode) o).getType() == OMNode.ELEMENT_NODE);
+            assertTrue("All these should be elements!",
+                       ((OMNode) o).getType() == OMNode.ELEMENT_NODE);
         }
-        assertEquals("This element should contain only one element with the given QName ", 1, counter);
+        assertEquals("This element should contain only one element with the given QName ", 1,
+                     counter);
     }
 
-    /**
-     * test the remove exception behavior
-     */
+    /** test the remove exception behavior */
     public void testIteratorRemove1() {
         OMElement elt = envelope;
         Iterator iter = elt.getChildren();
@@ -114,9 +109,7 @@ public class IteratorTest extends AbstractTestCase {
 
     }
 
-    /**
-     * test the remove exception behavior, consecutive remove calls
-     */
+    /** test the remove exception behavior, consecutive remove calls */
     public void testIteratorRemove2() {
         OMElement elt = envelope;
         Iterator iter = elt.getChildren();
@@ -135,9 +128,7 @@ public class IteratorTest extends AbstractTestCase {
 
     }
 
-    /**
-     * Remove all!
-     */
+    /** Remove all! */
     public void testIteratorRemove3() {
         OMElement elt = envelope;
         Iterator iter = elt.getChildren();
@@ -154,9 +145,7 @@ public class IteratorTest extends AbstractTestCase {
 
     }
 
-    /**
-     * test whether the children count reduces.
-     */
+    /** test whether the children count reduces. */
     public void testIteratorRemove4() {
         OMElement elt = envelope;
         Iterator iter = elt.getChildren();
@@ -179,14 +168,12 @@ public class IteratorTest extends AbstractTestCase {
             secondChildrenCount++;
         }
         assertEquals("children count must reduce from 1",
-                firstChildrenCount - 1,
-                secondChildrenCount);
+                     firstChildrenCount - 1,
+                     secondChildrenCount);
 
     }
 
-    /**
-     * This will test the errrors mentioned in @link http://issues.apache.org/jira/browse/WSCOMMONS-12
-     */
+    /** This will test the errrors mentioned in @link http://issues.apache.org/jira/browse/WSCOMMONS-12 */
     public void testScenariosInJIRA() {
         try {
             OMElement mtomSampleElement = createSampleXMLForTesting();
@@ -208,7 +195,7 @@ public class IteratorTest extends AbstractTestCase {
 
             OMElement data = fac.createOMElement("mtomSample", omNs);
             OMElement image = fac.createOMElement("image", omNs);
- 
+
             FileDataSource dataSource = new FileDataSource(imageSource);
             DataHandler expectedDH = new DataHandler(dataSource);
             OMText textData = fac.createOMText(expectedDH, true);
@@ -223,7 +210,7 @@ public class IteratorTest extends AbstractTestCase {
 
             return data;
         } catch (Exception e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
 
         return null;

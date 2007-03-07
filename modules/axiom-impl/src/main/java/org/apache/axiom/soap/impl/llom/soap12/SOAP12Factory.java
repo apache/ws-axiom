@@ -41,9 +41,7 @@ import org.apache.axiom.soap.impl.llom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.llom.SOAPMessageImpl;
 
 public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactory {
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
+    /** Eran Chinthaka (chinthaka@apache.org) */
 
     public String getSoapVersionURI() {
         return SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI;
@@ -51,7 +49,7 @@ public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactor
 
     public OMNamespace getNamespace() {
         return new OMNamespaceImpl(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+                                   SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
     }
 
     public SOAPEnvelope createSOAPEnvelope() {
@@ -76,12 +74,14 @@ public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactor
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-            OMNamespace ns, SOAPHeader parent) throws SOAPProcessingException {
+                                                 OMNamespace ns, SOAPHeader parent)
+            throws SOAPProcessingException {
         return new SOAP12HeaderBlockImpl(localName, ns, parent, this);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-            OMNamespace ns, SOAPHeader parent, OMXMLParserWrapper builder)
+                                                 OMNamespace ns, SOAPHeader parent,
+                                                 OMXMLParserWrapper builder)
             throws SOAPProcessingException {
         return new SOAP12HeaderBlockImpl(localName, ns, parent, builder, this);
     }
@@ -148,7 +148,7 @@ public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactor
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-            OMNamespace ns) throws SOAPProcessingException {
+                                                 OMNamespace ns) throws SOAPProcessingException {
         return new SOAP12HeaderBlockImpl(localName, ns, this);
     }
 
@@ -303,11 +303,9 @@ public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactor
     }
 
 
-
     public SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder) {
         return new SOAPEnvelopeImpl(builder, this);
     }
-
 
 
 }

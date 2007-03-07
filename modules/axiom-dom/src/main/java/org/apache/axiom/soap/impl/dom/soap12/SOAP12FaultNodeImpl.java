@@ -30,7 +30,7 @@ public class SOAP12FaultNodeImpl extends SOAPFaultNodeImpl {
     }
 
     public SOAP12FaultNodeImpl(SOAPFault parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                               SOAPFactory factory) {
         super(parent, builder, factory);
     }
 
@@ -38,7 +38,7 @@ public class SOAP12FaultNodeImpl extends SOAPFaultNodeImpl {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault as the " +
-                    "parent. But received some other implementation");
+                            "parent. But received some other implementation");
         }
     }
 }

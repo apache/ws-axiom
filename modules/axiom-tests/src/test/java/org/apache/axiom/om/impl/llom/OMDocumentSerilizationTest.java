@@ -28,9 +28,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
-/**
- * This tests the serializeAndConsume method
- */
+/** This tests the serializeAndConsume method */
 public class OMDocumentSerilizationTest extends TestCase {
 
     private OMDocument document;
@@ -47,10 +45,10 @@ public class OMDocumentSerilizationTest extends TestCase {
     public void setUp() {
         OMFactory factory = OMAbstractFactory.getOMFactory();
 
-        OMNamespace namespace = factory.createOMNamespace("http://testuri.org","test");
-        OMElement documentElement = factory.createOMElement("DocumentElement",namespace);
+        OMNamespace namespace = factory.createOMNamespace("http://testuri.org", "test");
+        OMElement documentElement = factory.createOMElement("DocumentElement", namespace);
 
-        OMElement child1 = factory.createOMElement("Child1",namespace);
+        OMElement child1 = factory.createOMElement("Child1", namespace);
         child1.setText("TestText");
         documentElement.addChild(child1);
 
@@ -70,7 +68,7 @@ public class OMDocumentSerilizationTest extends TestCase {
 
         String xmlDocument = new String(baos.toByteArray());
 
-        assertTrue("XML Declaration missing",-1<xmlDocument.indexOf(xmlDeclStart));
+        assertTrue("XML Declaration missing", -1 < xmlDocument.indexOf(xmlDeclStart));
     }
 
     public void testExcludeXMLDeclaration() throws XMLStreamException {
@@ -92,21 +90,22 @@ public class OMDocumentSerilizationTest extends TestCase {
 
         String xmlDocument = new String(baos.toByteArray());
 
-        assertTrue("Charset declaration missing",-1 < xmlDocument.indexOf(encoding) ||
-                                                 -1 < xmlDocument.indexOf(encoding.toLowerCase()) ||
-                                                 -1 < xmlDocument.indexOf(encoding2.toLowerCase()) ||
-                                                 -1 < xmlDocument.indexOf(encoding2));
+        assertTrue("Charset declaration missing", -1 < xmlDocument.indexOf(encoding) ||
+                -1 < xmlDocument.indexOf(encoding.toLowerCase()) ||
+                -1 < xmlDocument.indexOf(encoding2.toLowerCase()) ||
+                -1 < xmlDocument.indexOf(encoding2));
     }
 
-    public void testCharsetEncodingUTF_16() throws XMLStreamException, UnsupportedEncodingException {
+    public void testCharsetEncodingUTF_16()
+            throws XMLStreamException, UnsupportedEncodingException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         OMOutputFormat format = new OMOutputFormat();
         format.setCharSetEncoding("UTF-16");
         document.serializeAndConsume(baos, format);
 
-        String xmlDocument = new String(baos.toByteArray(),"UTF-16");
-        assertTrue("Charset declaration missing",-1<xmlDocument.indexOf(encoding_UTF16) ||
-                                                 -1<xmlDocument.indexOf(encoding2_UTF16));
+        String xmlDocument = new String(baos.toByteArray(), "UTF-16");
+        assertTrue("Charset declaration missing", -1 < xmlDocument.indexOf(encoding_UTF16) ||
+                -1 < xmlDocument.indexOf(encoding2_UTF16));
     }
 
 
@@ -115,8 +114,8 @@ public class OMDocumentSerilizationTest extends TestCase {
         document.serializeAndConsume(baos);
 
         String xmlDocument = new String(baos.toByteArray());
-        assertTrue("Charset declaration missing",-1<xmlDocument.indexOf(version) ||
-                                                 -1<xmlDocument.indexOf(version2));
+        assertTrue("Charset declaration missing", -1 < xmlDocument.indexOf(version) ||
+                -1 < xmlDocument.indexOf(version2));
     }
 
     public void testXMLVersion_11() throws XMLStreamException {
@@ -125,7 +124,7 @@ public class OMDocumentSerilizationTest extends TestCase {
         document.serializeAndConsume(baos);
 
         String xmlDocument = new String(baos.toByteArray());
-        assertTrue("Charset declaration missing",-1<xmlDocument.indexOf(version_11) ||
-                                                 -1<xmlDocument.indexOf(version2_11));
+        assertTrue("Charset declaration missing", -1 < xmlDocument.indexOf(version_11) ||
+                -1 < xmlDocument.indexOf(version2_11));
     }
 }

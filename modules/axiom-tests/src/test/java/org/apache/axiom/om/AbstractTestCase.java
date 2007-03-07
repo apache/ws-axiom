@@ -20,9 +20,7 @@ import junit.framework.TestCase;
 
 import java.io.File;
 
-/**
- * Abstract base class for test cases.
- */
+/** Abstract base class for test cases. */
 public abstract class AbstractTestCase
         extends TestCase {
     protected String testDir = "test" + File.separator;
@@ -36,15 +34,10 @@ public abstract class AbstractTestCase
             "temp";
     protected String testResourceDir = "test-resources";
 
-    /**
-     * Basedir for all file I/O. Important when running tests from
-     * the reactor.
-     */
+    /** Basedir for all file I/O. Important when running tests from the reactor. */
     public String basedir = System.getProperty("basedir");
 
-    /**
-     * @param testName
-     */
+    /** @param testName  */
     public AbstractTestCase(String testName) {
         super(testName);
         if (basedir == null) {
@@ -62,7 +55,7 @@ public abstract class AbstractTestCase
 
     public File getTempOutputFile(String filename) {
         File f = new File(tempDir);
-        if(!f.exists()) {
+        if (!f.exists()) {
             f.mkdirs();
         }
         return new File(f, filename);

@@ -25,14 +25,14 @@ public class SOAPMessageTest extends OMTestCase {
         super(testName);
     }
 
-    public void testSOAPMessageCreation(){
+    public void testSOAPMessageCreation() {
         try {
             StAXSOAPModelBuilder soapBuilder = getOMBuilder("");
             SOAPMessage soapMessage = soapBuilder.getSoapMessage();
             assertNotNull(soapMessage);
             assertNotNull(soapMessage.getSOAPEnvelope());
         } catch (Exception e) {
-            fail("Exception thrown "+ e);
+            fail("Exception thrown " + e);
         }
     }
 }

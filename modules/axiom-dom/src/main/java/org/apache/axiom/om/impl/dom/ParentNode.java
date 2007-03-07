@@ -36,7 +36,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.namespace.QName;
-
 import java.util.Iterator;
 
 public abstract class ParentNode extends ChildNode implements OMContainerEx {
@@ -45,9 +44,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
     protected ChildNode lastChild;
 
-    /**
-     * @param ownerDocument
-     */
+    /** @param ownerDocument  */
     protected ParentNode(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
     }
@@ -61,17 +58,17 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
     // /
 
     public void addChild(OMNode omNode) {
-		if (omNode.getOMFactory() instanceof OMDOMFactory) {
-            Node domNode= (Node)omNode;
-            if(this.ownerNode != null && !domNode.getOwnerDocument().equals(this.ownerNode)) {
+        if (omNode.getOMFactory() instanceof OMDOMFactory) {
+            Node domNode = (Node) omNode;
+            if (this.ownerNode != null && !domNode.getOwnerDocument().equals(this.ownerNode)) {
                 this.appendChild(this.ownerNode.importNode(domNode, true));
             } else {
                 this.appendChild(domNode);
             }
-		} else {
-			addChild(importNode(omNode));
-		}
-        
+        } else {
+            addChild(importNode(omNode));
+        }
+
     }
 
     public void buildNext() {
@@ -85,9 +82,8 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
     /**
      * Returns an iterator of child nodes having a given qname.
-     * 
-     * @see org.apache.axiom.om.OMContainer#getChildrenWithName
-     * (javax.xml.namespace.QName)
+     *
+     * @see org.apache.axiom.om.OMContainer#getChildrenWithName (javax.xml.namespace.QName)
      */
     public Iterator getChildrenWithName(QName elementQName) throws OMException {
         return new OMChildrenQNameIterator(getFirstOMChild(), elementQName);
@@ -95,14 +91,13 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
     /**
      * Returns the first OMElement child node.
-     * 
-     * @see org.apache.axiom.om.OMContainer#getFirstChildWithName
-     * (javax.xml.namespace.QName)
+     *
+     * @see org.apache.axiom.om.OMContainer#getFirstChildWithName (javax.xml.namespace.QName)
      */
     public OMElement getFirstChildWithName(QName elementQName)
             throws OMException {
         Iterator children = new OMChildrenQNameIterator(getFirstOMChild(),
-                elementQName);
+                                                        elementQName);
         while (children.hasNext()) {
             OMNode node = (OMNode) children.next();
 
@@ -158,8 +153,8 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
     }
 
     /**
-     * Inserts newChild before the refChild. If the refChild is null then the
-     * newChild is made the last child.
+     * Inserts newChild before the refChild. If the refChild is null then the newChild is made the
+     * last child.
      */
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
 
@@ -168,12 +163,12 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
         if (this == newChild || !isAncestor(newChild)) {
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN,
-                            "HIERARCHY_REQUEST_ERR", null));
+                                   DOMMessageFormatter.formatMessage(
+                                           DOMMessageFormatter.DOM_DOMAIN,
+                                           "HIERARCHY_REQUEST_ERR", null));
         }
-        
-        if(newDomChild.parentNode != null && newDomChild.ownerNode == this.ownerNode) {
+
+        if (newDomChild.parentNode != null && newDomChild.ownerNode == this.ownerNode) {
             //If the newChild is already in the tree remove it
             newDomChild.parentNode.removeChild(newDomChild);
         }
@@ -181,16 +176,16 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         if (!(this instanceof Document)
                 && !(this.ownerNode == newDomChild.getOwnerDocument())) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN,
-                            "WRONG_DOCUMENT_ERR", null));
+                                   DOMMessageFormatter.formatMessage(
+                                           DOMMessageFormatter.DOM_DOMAIN,
+                                           "WRONG_DOCUMENT_ERR", null));
         }
 
         if (this.isReadonly()) {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN,
-                            "NO_MODIFICATION_ALLOWED_ERR", null));
+                                   DOMMessageFormatter.formatMessage(
+                                           DOMMessageFormatter.DOM_DOMAIN,
+                                           "NO_MODIFICATION_ALLOWED_ERR", null));
         }
 
         if (this instanceof Document) {
@@ -198,9 +193,9 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                     && !(newDomChild instanceof CommentImpl)) {
                 // Throw exception since there cannot be two document elements
                 throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                        DOMMessageFormatter.formatMessage(
-                                DOMMessageFormatter.DOM_DOMAIN,
-                                "HIERARCHY_REQUEST_ERR", null));
+                                       DOMMessageFormatter.formatMessage(
+                                               DOMMessageFormatter.DOM_DOMAIN,
+                                               "HIERARCHY_REQUEST_ERR", null));
             } else if (newDomChild instanceof ElementImpl) {
                 if (newDomChild.parentNode == null) {
                     newDomChild.parentNode = this;
@@ -237,16 +232,16 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 if (tempNode.equals(refChild)) {
                     // RefChild found
                     if (this.firstChild == tempNode) { // If the refChild is the
-                                                    // first child
+                        // first child
 
                         if (newChild instanceof DocumentFragmentImpl) {
                             // The new child is a DocumentFragment
                             DocumentFragmentImpl docFrag =
-                                                (DocumentFragmentImpl) newChild;
+                                    (DocumentFragmentImpl) newChild;
                             this.firstChild = docFrag.firstChild;
                             docFrag.lastChild.nextSibling = refDomChild;
-                            refDomChild.previousSibling = 
-                                                docFrag.lastChild.nextSibling;
+                            refDomChild.previousSibling =
+                                    docFrag.lastChild.nextSibling;
 
                         } else {
 
@@ -259,7 +254,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                             this.firstChild.isFirstChild(true);
                             refDomChild.isFirstChild(false);
                             newDomChild.previousSibling = null; // Just to be
-                                                                // sure :-)
+                            // sure :-)
 
                         }
                     } else { // If the refChild is not the fist child
@@ -268,7 +263,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                         if (newChild instanceof DocumentFragmentImpl) {
                             // the newChild is a document fragment
                             DocumentFragmentImpl docFrag =
-                                                (DocumentFragmentImpl) newChild;
+                                    (DocumentFragmentImpl) newChild;
 
                             previousNode.nextSibling = docFrag.firstChild;
                             docFrag.firstChild.previousSibling = previousNode;
@@ -292,9 +287,9 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
             if (!found) {
                 throw new DOMException(DOMException.NOT_FOUND_ERR,
-                        DOMMessageFormatter.formatMessage(
-                                DOMMessageFormatter.DOM_DOMAIN,
-                                "NOT_FOUND_ERR", null));
+                                       DOMMessageFormatter.formatMessage(
+                                               DOMMessageFormatter.DOM_DOMAIN,
+                                               "NOT_FOUND_ERR", null));
             }
 
             if (newDomChild.parentNode == null) {
@@ -305,36 +300,34 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         }
     }
 
-    /**
-     * Replaces the oldChild with the newChild.
-     */
+    /** Replaces the oldChild with the newChild. */
     public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
         ChildNode newDomChild = (ChildNode) newChild;
         ChildNode oldDomChild = (ChildNode) oldChild;
 
-        if(newChild == null) {
+        if (newChild == null) {
             return this.removeChild(oldChild);
         }
-        
+
         if (this == newChild || !isAncestor(newChild)) {
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN,
-                            "HIERARCHY_REQUEST_ERR", null));
+                                   DOMMessageFormatter.formatMessage(
+                                           DOMMessageFormatter.DOM_DOMAIN,
+                                           "HIERARCHY_REQUEST_ERR", null));
         }
 
         if (newDomChild != null && !this.ownerNode.equals(newDomChild.ownerNode)) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN,
-                            "WRONG_DOCUMENT_ERR", null));
+                                   DOMMessageFormatter.formatMessage(
+                                           DOMMessageFormatter.DOM_DOMAIN,
+                                           "WRONG_DOCUMENT_ERR", null));
         }
 
         if (this.isReadonly()) {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN,
-                            "NO_MODIFICATION_ALLOWED_ERR", null));
+                                   DOMMessageFormatter.formatMessage(
+                                           DOMMessageFormatter.DOM_DOMAIN,
+                                           "NO_MODIFICATION_ALLOWED_ERR", null));
         }
 
         Iterator children = this.getChildren();
@@ -344,27 +337,27 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             if (tempNode.equals(oldChild)) {
                 if (newChild instanceof DocumentFragmentImpl) {
                     DocumentFragmentImpl docFrag =
-                                            (DocumentFragmentImpl) newDomChild;
+                            (DocumentFragmentImpl) newDomChild;
                     ChildNode child = (ChildNode) docFrag.getFirstChild();
                     this.replaceChild(child, oldChild);
-                    if(child != null) {
+                    if (child != null) {
                         child.parentNode = this;
                     }
                 } else {
                     if (this.firstChild == oldDomChild) {
-                        
-                        if(this.firstChild.nextSibling != null) {
+
+                        if (this.firstChild.nextSibling != null) {
                             this.firstChild.nextSibling.previousSibling = newDomChild;
                             newDomChild.nextSibling = this.firstChild.nextSibling;
                         }
-                        
+
                         //Cleanup the current first child
                         this.firstChild.parentNode = null;
                         this.firstChild.nextSibling = null;
-                        
+
                         //Set the new first child
                         this.firstChild = newDomChild;
-                        
+
                     } else {
                         newDomChild.nextSibling = oldDomChild.nextSibling;
                         newDomChild.previousSibling = oldDomChild.previousSibling;
@@ -379,7 +372,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                         }
 
                     }
-                
+
                     newDomChild.parentNode = this;
                 }
                 found = true;
@@ -393,23 +386,21 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
         if (!found)
             throw new DOMException(DOMException.NOT_FOUND_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN, "NOT_FOUND_ERR",
-                            null));
+                                   DOMMessageFormatter.formatMessage(
+                                           DOMMessageFormatter.DOM_DOMAIN, "NOT_FOUND_ERR",
+                                           null));
 
         return oldChild;
     }
 
-    /**
-     * Removes the given child from the DOM Tree.
-     */
+    /** Removes the given child from the DOM Tree. */
     public Node removeChild(Node oldChild) throws DOMException {
         // Check if this node is readonly
         if (this.isReadonly()) {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN,
-                            "NO_MODIFICATION_ALLOWED_ERR", null));
+                                   DOMMessageFormatter.formatMessage(
+                                           DOMMessageFormatter.DOM_DOMAIN,
+                                           "NO_MODIFICATION_ALLOWED_ERR", null));
         }
 
         // Check if the Child is there
@@ -449,9 +440,9 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
         if (!childFound)
             throw new DOMException(DOMException.NOT_FOUND_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN, "NOT_FOUND_ERR",
-                            null));
+                                   DOMMessageFormatter.formatMessage(
+                                           DOMMessageFormatter.DOM_DOMAIN, "NOT_FOUND_ERR",
+                                           null));
 
         return oldChild;
     }
@@ -475,82 +466,84 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
         // Then, if deep, clone the kids too.
         if (deep) {
-            for (ChildNode child = firstChild; child != null; 
-                    child = child.nextSibling) {
+            for (ChildNode child = firstChild; child != null;
+                 child = child.nextSibling) {
                 newnode.appendChild(child.cloneNode(true));
             }
         }
         return newnode;
     }
-    
-	/**	
-	 * This method is intended only to be used by Axiom intenals when merging Objects
-	 * from different Axiom implementations to the DOOM implementation.
-	 * 
-	 * @param child
-	 */
-	protected OMNode importNode(OMNode child) {
-		int type = child.getType();
-		switch (type) {
-		case (OMNode.ELEMENT_NODE): {
-			OMElement childElement = (OMElement) child;
-			OMElement newElement = (new StAXOMBuilder(this.factory,
-					childElement.getXMLStreamReader())).getDocumentElement();
-			newElement.build();
-			return (OMNode) this.ownerNode.importNode((Element) newElement,
-					true);
-		}
-		case (OMNode.TEXT_NODE): {
-			OMText importedText = (OMText) child;
-			OMText newText;
-			if (importedText.isBinary()) {
-				boolean isOptimize = importedText.isOptimized();
-				newText = this.factory.createOMText(importedText
-						.getDataHandler(), isOptimize);
-			} else if (importedText.getNamespace() != null) {
-				newText = this.factory.createOMText(this, importedText
-						.getTextAsQName(), importedText.getType());
-			} else if (importedText.isCharacters()) {
-				newText = new TextImpl((DocumentImpl) this.getOwnerDocument(),
-						importedText.getTextCharacters(), this.factory);
-			} else {
-				newText = new TextImpl((DocumentImpl) this.getOwnerDocument(),
-						importedText.getText(), this.factory);
-			}
-			return newText;
-		}
 
-		case (OMNode.PI_NODE): {
-			OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
-			OMProcessingInstruction newPI = this.factory
-					.createOMProcessingInstruction(this,
-							importedPI.getTarget(), importedPI.getValue());
-			return newPI;
-		}
-		case (OMNode.COMMENT_NODE): {
-			OMComment importedComment = (OMComment) child;
-			OMComment newComment = this.factory.createOMComment(this,
-					importedComment.getValue());
-			DocumentImpl doc;
-			if (this instanceof DocumentImpl) {
-				doc = (DocumentImpl) this;
-			} else {
-				doc = (DocumentImpl) ((ParentNode) this).getOwnerDocument();
-			}
-			newComment = new CommentImpl(doc, importedComment.getValue(),
-					this.factory);
-			return newComment;
-		}
-		case (OMNode.DTD_NODE): {
-			OMDocType importedDocType = (OMDocType) child;
-			OMDocType newDocType = this.factory.createOMDocType(this,
-					importedDocType.getValue());
-			return newDocType;
-		}
-		default: {
-			throw new UnsupportedOperationException(
-					"Not Implemented Yet for the given node type");
-		}
-		}
-	}
+    /**
+     * This method is intended only to be used by Axiom intenals when merging Objects from different
+     * Axiom implementations to the DOOM implementation.
+     *
+     * @param child
+     */
+    protected OMNode importNode(OMNode child) {
+        int type = child.getType();
+        switch (type) {
+            case (OMNode.ELEMENT_NODE): {
+                OMElement childElement = (OMElement) child;
+                OMElement newElement = (new StAXOMBuilder(this.factory,
+                                                          childElement.getXMLStreamReader()))
+                        .getDocumentElement();
+                newElement.build();
+                return (OMNode) this.ownerNode.importNode((Element) newElement,
+                                                          true);
+            }
+            case (OMNode.TEXT_NODE): {
+                OMText importedText = (OMText) child;
+                OMText newText;
+                if (importedText.isBinary()) {
+                    boolean isOptimize = importedText.isOptimized();
+                    newText = this.factory.createOMText(importedText
+                            .getDataHandler(), isOptimize);
+                } else if (importedText.getNamespace() != null) {
+                    newText = this.factory.createOMText(this, importedText
+                            .getTextAsQName(), importedText.getType());
+                } else if (importedText.isCharacters()) {
+                    newText = new TextImpl((DocumentImpl) this.getOwnerDocument(),
+                                           importedText.getTextCharacters(), this.factory);
+                } else {
+                    newText = new TextImpl((DocumentImpl) this.getOwnerDocument(),
+                                           importedText.getText(), this.factory);
+                }
+                return newText;
+            }
+
+            case (OMNode.PI_NODE): {
+                OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
+                OMProcessingInstruction newPI = this.factory
+                        .createOMProcessingInstruction(this,
+                                                       importedPI.getTarget(),
+                                                       importedPI.getValue());
+                return newPI;
+            }
+            case (OMNode.COMMENT_NODE): {
+                OMComment importedComment = (OMComment) child;
+                OMComment newComment = this.factory.createOMComment(this,
+                                                                    importedComment.getValue());
+                DocumentImpl doc;
+                if (this instanceof DocumentImpl) {
+                    doc = (DocumentImpl) this;
+                } else {
+                    doc = (DocumentImpl) ((ParentNode) this).getOwnerDocument();
+                }
+                newComment = new CommentImpl(doc, importedComment.getValue(),
+                                             this.factory);
+                return newComment;
+            }
+            case (OMNode.DTD_NODE): {
+                OMDocType importedDocType = (OMDocType) child;
+                OMDocType newDocType = this.factory.createOMDocType(this,
+                                                                    importedDocType.getValue());
+                return newDocType;
+            }
+            default: {
+                throw new UnsupportedOperationException(
+                        "Not Implemented Yet for the given node type");
+            }
+        }
+    }
 }

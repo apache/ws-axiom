@@ -16,36 +16,35 @@
 
 package org.apache.axiom.soap;
 
+import junit.framework.TestCase;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-
 import java.io.FileInputStream;
 import java.io.InputStream;
-
-import junit.framework.TestCase;
 
 
 public class SOAP11FaultImplConversionTest extends TestCase {
 
-    private String soap11FaulXmlPath = "test-resources/soap/soap11/soapfault2.xml"; 
-    
+    private String soap11FaulXmlPath = "test-resources/soap/soap11/soapfault2.xml";
+
     public void testConversion() {
         try {
             InputStream is = new FileInputStream(soap11FaulXmlPath);
             XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(is);
-            
+
             SOAPEnvelope env = new StAXSOAPModelBuilder(reader, null).getSOAPEnvelope();
-            
+
             env.build();
 
-            SOAPEnvelope env2 = new StAXSOAPModelBuilder(env.getXMLStreamReader(), null).getSOAPEnvelope();
-            
+            SOAPEnvelope env2 =
+                    new StAXSOAPModelBuilder(env.getXMLStreamReader(), null).getSOAPEnvelope();
+
             env2.build();
-            
+
             env2.toString();
-            
+
             System.out.println(env2);
         } catch (Exception e) {
             e.printStackTrace();

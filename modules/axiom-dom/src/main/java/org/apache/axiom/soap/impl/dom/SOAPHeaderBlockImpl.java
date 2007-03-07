@@ -33,28 +33,28 @@ import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.namespace.QName;
 
-public abstract class SOAPHeaderBlockImpl  extends ElementImpl implements SOAPHeaderBlock {
+public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHeaderBlock {
 
     private boolean processed = false;
 
     /**
      * @param localName
      * @param ns
-     * @param parent     
+     * @param parent
      */
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
-            SOAPHeader parent, SOAPFactory factory)
+                               SOAPHeader parent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super((ParentNode)parent, localName,(NamespaceImpl) ns, factory);
+        super((ParentNode) parent, localName, (NamespaceImpl) ns, factory);
         this.setNamespace(ns);
     }
 
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
-            SOAPFactory factory) throws SOAPProcessingException {
-        super(((OMDOMFactory)factory).getDocument(), localName,(NamespaceImpl) ns, factory);
+                               SOAPFactory factory) throws SOAPProcessingException {
+        super(((OMDOMFactory) factory).getDocument(), localName, (NamespaceImpl) ns, factory);
         this.setNamespace(ns);
     }
-    
+
     /**
      * Constructor SOAPHeaderBlockImpl.
      *
@@ -64,8 +64,8 @@ public abstract class SOAPHeaderBlockImpl  extends ElementImpl implements SOAPHe
      * @param builder
      */
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
-            OMElement parent, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super((ParentNode)parent, localName, (NamespaceImpl)ns, builder, factory);
+                               OMElement parent, OMXMLParserWrapper builder, SOAPFactory factory) {
+        super((ParentNode) parent, localName, (NamespaceImpl) ns, builder, factory);
         this.setNamespace(ns);
     }
 
@@ -83,9 +83,9 @@ public abstract class SOAPHeaderBlockImpl  extends ElementImpl implements SOAPHe
             omAttribute.setAttributeValue(attrValue);
         } else {
             OMAttribute attribute = new AttrImpl(this.ownerNode, attributeName,
-                    new NamespaceImpl(soapEnvelopeNamespaceURI,
-                            SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
-                            attrValue, this.factory);
+                                                 new NamespaceImpl(soapEnvelopeNamespaceURI,
+                                                                   SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
+                                                 attrValue, this.factory);
             this.addAttribute(attribute);
         }
     }

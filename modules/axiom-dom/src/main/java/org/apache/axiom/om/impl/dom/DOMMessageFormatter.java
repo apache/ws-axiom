@@ -21,17 +21,15 @@ import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
-/**
- * Used to format DOM error messages, using the system locale.
- */
+/** Used to format DOM error messages, using the system locale. */
 public class DOMMessageFormatter {
     public static final String DOM_DOMAIN = "http://www.w3.org/dom/DOMTR";
 
-    public static final String XML_DOMAIN = 
-                                "http://www.w3.org/TR/1998/REC-xml-19980210";
+    public static final String XML_DOMAIN =
+            "http://www.w3.org/TR/1998/REC-xml-19980210";
 
-    public static final String SERIALIZER_DOMAIN = 
-                                "http://apache.org/xml/serializer";
+    public static final String SERIALIZER_DOMAIN =
+            "http://apache.org/xml/serializer";
 
     private static ResourceBundle domResourceBundle = null;
 
@@ -41,10 +39,10 @@ public class DOMMessageFormatter {
 
     private static Locale locale = null;
 
-    public static final String LEVEL3_NOT_SUPPORTED = 
-                                "DOM Level 3 operations are not supported";
+    public static final String LEVEL3_NOT_SUPPORTED =
+            "DOM Level 3 operations are not supported";
 
-    public static final String NOT_REQUIRED_FOR_XMLSEC_OR_WSS4J = 
+    public static final String NOT_REQUIRED_FOR_XMLSEC_OR_WSS4J =
             "This method is not required by Apache XML-Security Impl or WSS4J";
 
     DOMMessageFormatter() {
@@ -52,32 +50,25 @@ public class DOMMessageFormatter {
     }
 
     /**
-     * Formats a message with the specified arguments using the given locale
-     * information.
-     * 
-     * @param domain
-     *            domain from which error string is to come.
-     * @param key
-     *            The message key.
-     * @param arguments
-     *            The message replacement text arguments. The order of the
-     *            arguments must match that of the placeholders in the actual
-     *            message.
-     * 
+     * Formats a message with the specified arguments using the given locale information.
+     *
+     * @param domain    domain from which error string is to come.
+     * @param key       The message key.
+     * @param arguments The message replacement text arguments. The order of the arguments must
+     *                  match that of the placeholders in the actual message.
      * @return Returns the formatted message.
-     * 
-     * @throws MissingResourceException
-     *             Thrown if the message with the specified key cannot be found.
+     * @throws MissingResourceException Thrown if the message with the specified key cannot be
+     *                                  found.
      */
     public static String formatMessage(String domain, String key,
-            Object[] arguments) throws MissingResourceException {
+                                       Object[] arguments) throws MissingResourceException {
         ResourceBundle resourceBundle = getResourceBundle(domain);
         if (resourceBundle == null) {
             init();
             resourceBundle = getResourceBundle(domain);
             if (resourceBundle == null)
                 throw new MissingResourceException("Unknown domain" + domain,
-                        null, key);
+                                                   null, key);
         }
         // format message
         String msg;
@@ -126,9 +117,7 @@ public class DOMMessageFormatter {
         return null;
     }
 
-    /**
-     * Initializes Message Formatter.
-     */
+    /** Initializes Message Formatter. */
     public static void init() {
         if (locale != null) {
             domResourceBundle = PropertyResourceBundle.getBundle(
@@ -150,7 +139,7 @@ public class DOMMessageFormatter {
 
     /**
      * Sets Locale to be used by the formatter.
-     * 
+     *
      * @param dlocale
      */
     public static void setLocale(Locale dlocale) {

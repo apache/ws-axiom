@@ -19,37 +19,35 @@ package org.apache.axiom.attachments;
 import org.apache.axiom.om.OMException;
 
 /**
- * Container for AttachmentStream s. This class provides an SwA like 
- * access mechanism, allowing applications to access the streams directly. 
- * Access it intentionally restrictred to either SwA like (stream access), 
- * or MTOM like (part/data handler access via blob id), not both.   
+ * Container for AttachmentStream s. This class provides an SwA like access mechanism, allowing
+ * applications to access the streams directly. Access it intentionally restrictred to either SwA
+ * like (stream access), or MTOM like (part/data handler access via blob id), not both.
  */
 public abstract class IncomingAttachmentStreams {
-	
-	/** Boolean indicating weather or not the next stream can be read (next 
-	 * stream cannot be read until previous is consumed */
-	protected boolean _readyToGetNextStream = true;
 
     /**
-     * @return True if the next stream can be read, false otherwise.
+     * Boolean indicating weather or not the next stream can be read (next stream cannot be read until
+     * previous is consumed
      */
+    protected boolean _readyToGetNextStream = true;
+
+    /** @return True if the next stream can be read, false otherwise. */
     public final boolean isReadyToGetNextStream() {
         return _readyToGetNextStream;
     }
 
     /**
      * Set the ready flag. Intended for the inner class to use.
-     * 
+     *
      * @param ready
      */
     protected final void setReadyToGetNextStream(boolean ready) {
         _readyToGetNextStream = ready;
     }
-    
+
     /**
-     * 
      * Returns the next attachment stream in sequence.
-     * 
+     *
      * @return The next stream or null if no additional streams are left.
      */
     public abstract IncomingAttachmentInputStream getNextStream() throws OMException;

@@ -52,7 +52,7 @@ public abstract class SOAPFaultTextImpl extends SOAPElement implements SOAPFault
                                 OMXMLParserWrapper builder,
                                 SOAPFactory factory) {
         super(parent, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME, builder,
-                factory);
+              factory);
         this.langNamespace = factory.createOMNamespace(
                 SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
                 SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
@@ -76,8 +76,8 @@ public abstract class SOAPFaultTextImpl extends SOAPElement implements SOAPFault
             langAttr =
                     this.getAttribute(
                             new QName(langNamespace.getNamespaceURI(),
-                                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
-                                    SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
+                                      SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
+                                      SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
         }
 
         return langAttr == null ? null : langAttr.getAttributeValue();

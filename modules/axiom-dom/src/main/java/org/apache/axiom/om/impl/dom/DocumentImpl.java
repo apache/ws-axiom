@@ -44,7 +44,6 @@ import org.w3c.dom.Text;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -57,29 +56,27 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     private String charEncoding;
 
     private Vector idAttrs;
-    
+
     protected ElementImpl documentElement;
-    
+
     protected Hashtable identifiers;
 
-    /**
-     * @param ownerDocument
-     */
+    /** @param ownerDocument  */
     public DocumentImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
-        ((OMDOMFactory)factory).setDocument(this);
+        ((OMDOMFactory) factory).setDocument(this);
         this.done = true;
     }
 
     public DocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
         super(factory);
         this.builder = parserWrapper;
-        ((OMDOMFactory)factory).setDocument(this);
+        ((OMDOMFactory) factory).setDocument(this);
     }
 
     public DocumentImpl(OMFactory factory) {
         super(factory);
-        ((OMDOMFactory)factory).setDocument(this);
+        ((OMDOMFactory) factory).setDocument(this);
         this.done = true;
     }
 
@@ -164,7 +161,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         String localName = DOMUtil.getLocalName(qualifiedName);
         String prefix = DOMUtil.getPrefix(qualifiedName);
 
-        if(!OMConstants.XMLNS_NS_PREFIX.equals(localName)) {
+        if (!OMConstants.XMLNS_NS_PREFIX.equals(localName)) {
             this.checkQName(prefix, localName);
         } else {
             return this.createAttribute(localName);
@@ -212,7 +209,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public ProcessingInstruction createProcessingInstruction(String arg0,
-            String arg1) throws DOMException {
+                                                             String arg1) throws DOMException {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
@@ -227,20 +224,20 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public Element getElementById(String elementId) {
-        
+
         //If there are no id attrs
-        if(this.idAttrs == null) {
+        if (this.idAttrs == null) {
             return null;
         }
-        
+
         Enumeration attrEnum = this.idAttrs.elements();
-        while(attrEnum.hasMoreElements()) {
-            Attr tempAttr = (Attr)attrEnum.nextElement();
-            if(tempAttr.getValue().equals(elementId)) {
+        while (attrEnum.hasMoreElements()) {
+            Attr tempAttr = (Attr) attrEnum.nextElement();
+            if (tempAttr.getValue().equals(elementId)) {
                 return tempAttr.getOwnerElement();
             }
         }
-        
+
         //If we reach this point then, there's no such attr 
         return null;
     }
@@ -265,87 +262,87 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         short type = importedNode.getNodeType();
         Node newNode = null;
         switch (type) {
-        case Node.ELEMENT_NODE: {
-            Element newElement;
-            if (importedNode.getLocalName() == null) {
-                newElement = this.createElement(importedNode.getNodeName());
-            } else {
-                newElement = createElementNS(importedNode.getNamespaceURI(),
-                        importedNode.getNodeName());
-            }
-
-            // Copy element's attributes, if any.
-            NamedNodeMap sourceAttrs = importedNode.getAttributes();
-            if (sourceAttrs != null) {
-                int length = sourceAttrs.getLength();
-                for (int index = 0; index < length; index++) {
-                    Attr attr = (Attr) sourceAttrs.item(index);
-                    if (attr.getNamespaceURI() != null
-                            && !attr.getNamespaceURI().equals(
-                                    OMConstants.XMLNS_NS_URI)) {
-                        Attr newAttr = (Attr) importNode(attr, true);
-                        newElement.setAttributeNodeNS(newAttr);
-                    } else { // if (attr.getLocalName() == null) {
-                        Attr newAttr = (Attr) importNode(attr, true);
-                        newElement.setAttributeNode(newAttr);
-                    }
-
+            case Node.ELEMENT_NODE: {
+                Element newElement;
+                if (importedNode.getLocalName() == null) {
+                    newElement = this.createElement(importedNode.getNodeName());
+                } else {
+                    newElement = createElementNS(importedNode.getNamespaceURI(),
+                                                 importedNode.getNodeName());
                 }
-            }
-            newNode = newElement;
-            break;
-        }
 
-        case Node.ATTRIBUTE_NODE: {
-            if ("".equals(importedNode.getNamespaceURI())
-                    || importedNode.getNamespaceURI() == null) {
-                newNode = createAttribute(importedNode.getNodeName());
-            } else {
-                //Check whether it is a default ns decl
-                if(OMConstants.XMLNS_NS_PREFIX.equals(importedNode.getNodeName())) {
+                // Copy element's attributes, if any.
+                NamedNodeMap sourceAttrs = importedNode.getAttributes();
+                if (sourceAttrs != null) {
+                    int length = sourceAttrs.getLength();
+                    for (int index = 0; index < length; index++) {
+                        Attr attr = (Attr) sourceAttrs.item(index);
+                        if (attr.getNamespaceURI() != null
+                                && !attr.getNamespaceURI().equals(
+                                OMConstants.XMLNS_NS_URI)) {
+                            Attr newAttr = (Attr) importNode(attr, true);
+                            newElement.setAttributeNodeNS(newAttr);
+                        } else { // if (attr.getLocalName() == null) {
+                            Attr newAttr = (Attr) importNode(attr, true);
+                            newElement.setAttributeNode(newAttr);
+                        }
+
+                    }
+                }
+                newNode = newElement;
+                break;
+            }
+
+            case Node.ATTRIBUTE_NODE: {
+                if ("".equals(importedNode.getNamespaceURI())
+                        || importedNode.getNamespaceURI() == null) {
                     newNode = createAttribute(importedNode.getNodeName());
                 } else {
-                    newNode = createAttributeNS(importedNode.getNamespaceURI(),
-                            importedNode.getNodeName());
+                    //Check whether it is a default ns decl
+                    if (OMConstants.XMLNS_NS_PREFIX.equals(importedNode.getNodeName())) {
+                        newNode = createAttribute(importedNode.getNodeName());
+                    } else {
+                        newNode = createAttributeNS(importedNode.getNamespaceURI(),
+                                                    importedNode.getNodeName());
+                    }
                 }
+                ((Attr) newNode).setValue(importedNode.getNodeValue());
+                break;
             }
-            ((Attr) newNode).setValue(importedNode.getNodeValue());
-            break;
-        }
 
-        case Node.TEXT_NODE: {
-            newNode = createTextNode(importedNode.getNodeValue());
-            break;
-        }
+            case Node.TEXT_NODE: {
+                newNode = createTextNode(importedNode.getNodeValue());
+                break;
+            }
 
-        case Node.DOCUMENT_FRAGMENT_NODE: {
-            newNode = createDocumentFragment();
-            // No name, kids carry value
-            break;
-        }
+            case Node.DOCUMENT_FRAGMENT_NODE: {
+                newNode = createDocumentFragment();
+                // No name, kids carry value
+                break;
+            }
 
-        case Node.CDATA_SECTION_NODE:
-        case Node.ENTITY_REFERENCE_NODE:
-        case Node.ENTITY_NODE:
-        case Node.PROCESSING_INSTRUCTION_NODE:
-        case Node.COMMENT_NODE:
-        case Node.DOCUMENT_TYPE_NODE:
-        case Node.NOTATION_NODE:
-            throw new UnsupportedOperationException("TODO");
+            case Node.CDATA_SECTION_NODE:
+            case Node.ENTITY_REFERENCE_NODE:
+            case Node.ENTITY_NODE:
+            case Node.PROCESSING_INSTRUCTION_NODE:
+            case Node.COMMENT_NODE:
+            case Node.DOCUMENT_TYPE_NODE:
+            case Node.NOTATION_NODE:
+                throw new UnsupportedOperationException("TODO");
 
-        case Node.DOCUMENT_NODE: // Can't import document nodes
-        default: { // Unknown node type
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, "NOT_SUPPORTED_ERR", null);
-            throw new DOMException(DOMException.NOT_SUPPORTED_ERR, msg);
-        }
+            case Node.DOCUMENT_NODE: // Can't import document nodes
+            default: { // Unknown node type
+                String msg = DOMMessageFormatter.formatMessage(
+                        DOMMessageFormatter.DOM_DOMAIN, "NOT_SUPPORTED_ERR", null);
+                throw new DOMException(DOMException.NOT_SUPPORTED_ERR, msg);
+            }
 
         }
 
         // If deep, replicate and attach the kids.
         if (deep && !(importedNode instanceof Attr)) {
-            for (Node srckid = importedNode.getFirstChild(); srckid != null; 
-                    srckid = srckid.getNextSibling()) {
+            for (Node srckid = importedNode.getFirstChild(); srckid != null;
+                 srckid = srckid.getNextSibling()) {
                 newNode.appendChild(importNode(srckid, true));
             }
         }
@@ -418,11 +415,11 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
     /**
      * Returns the document element.
-     * 
+     *
      * @see org.apache.axiom.om.OMDocument#getOMDocumentElement()
      */
     public OMElement getOMDocumentElement() {
-        
+
         //We'r sure that only an element can be the first child of a Document
         if (this.documentElement == null && !this.done) {
             this.builder.next();
@@ -432,7 +429,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
     /**
      * Returns the document element.
-     * 
+     *
      * @see org.w3c.dom.Document#getDocumentElement()
      */
     public Element getDocumentElement() {
@@ -441,14 +438,11 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     /**
-     * Borrowed from the Xerces impl. Checks if the given qualified name is
-     * legal with respect to the version of XML to which this document must
-     * conform.
-     * 
-     * @param prefix
-     *            prefix of qualified name
-     * @param local
-     *            local part of qualified name
+     * Borrowed from the Xerces impl. Checks if the given qualified name is legal with respect to
+     * the version of XML to which this document must conform.
+     *
+     * @param prefix prefix of qualified name
+     * @param local  local part of qualified name
      */
     protected final void checkQName(String prefix, String local) {
 
@@ -472,29 +466,29 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public void build() {
-        if(this.firstChild != null && !this.firstChild.done) {
+        if (this.firstChild != null && !this.firstChild.done) {
             this.firstChild.build();
         }
         this.done = true;
     }
-    
+
     protected void addIdAttr(Attr attr) {
-        if(this.idAttrs == null) {
+        if (this.idAttrs == null) {
             this.idAttrs = new Vector();
         }
         this.idAttrs.add(attr);
     }
-    
+
     protected void removeIdAttr(Attr attr) {
-        if(this.idAttrs != null) {
+        if (this.idAttrs != null) {
             this.idAttrs.remove(attr);
         }
-        
+
     }
-    
+
     /*
-     * DOM-Level 3 methods
-     */
+    * DOM-Level 3 methods
+    */
 
     public Node adoptNode(Node node) throws DOMException {
         //OK... I'm cheating here,  a BIG TODO

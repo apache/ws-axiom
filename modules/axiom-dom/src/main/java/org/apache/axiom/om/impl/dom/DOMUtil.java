@@ -15,9 +15,7 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-/**
- * Utility class for the OM-DOM implementation
- */
+/** Utility class for the OM-DOM implementation */
 class DOMUtil {
 
     public static boolean isValidChras(String value) {
@@ -27,7 +25,7 @@ class DOMUtil {
     }
 
     public static boolean isValidNamespace(String namespaceURI,
-            String qualifiedname) {
+                                           String qualifiedname) {
         // TODO check for valid namespace
         /**
          * if the qualifiedName has a prefix and the namespaceURI is null, if
@@ -43,7 +41,7 @@ class DOMUtil {
 
     /**
      * Get the local name from a qualified name
-     * 
+     *
      * @param qualifiedName
      */
     public static String getLocalName(String qualifiedName) {
@@ -57,7 +55,7 @@ class DOMUtil {
 
     /**
      * Get the prefix from a qualified name
-     * 
+     *
      * @param qualifiedName
      */
     public static String getPrefix(String qualifiedName) {

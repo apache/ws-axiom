@@ -46,7 +46,7 @@ public class OmStAXBuilderTest extends AbstractTestCase {
                                 getTestResourceFile("soap/soapmessage.xml")));
         builder =
                 OMXMLBuilderFactory.createStAXSOAPModelBuilder(factory,
-                        reader);
+                                                               reader);
         tempFile = File.createTempFile("temp", "xml");
     }
 

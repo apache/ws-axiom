@@ -41,11 +41,12 @@ import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
 
 public class SOAP11Factory extends DOMSOAPFactory {
 
-	public SOAP11Factory() {}
-	
-	public SOAP11Factory(DocumentImpl doc) {
-		super(doc);
-	}
+    public SOAP11Factory() {
+    }
+
+    public SOAP11Factory(DocumentImpl doc) {
+        super(doc);
+    }
 
     public String getSoapVersionURI() {
         return SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI;
@@ -69,18 +70,21 @@ public class SOAP11Factory extends DOMSOAPFactory {
         return new SOAP11HeaderImpl(envelope, builder, this);
     }
 
-    
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns) throws SOAPProcessingException {
+
+    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns)
+            throws SOAPProcessingException {
         return new SOAP11HeaderBlockImpl(localName, ns, this);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-            OMNamespace ns, SOAPHeader parent) throws SOAPProcessingException {
+                                                 OMNamespace ns, SOAPHeader parent)
+            throws SOAPProcessingException {
         return new SOAP11HeaderBlockImpl(localName, ns, parent, this);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-            OMNamespace ns, SOAPHeader parent, OMXMLParserWrapper builder)
+                                                 OMNamespace ns, SOAPHeader parent,
+                                                 OMXMLParserWrapper builder)
             throws SOAPProcessingException {
         return new SOAP11HeaderBlockImpl(localName, ns, parent, builder, this);
     }
@@ -226,15 +230,15 @@ public class SOAP11Factory extends DOMSOAPFactory {
         createSOAPBody(env);
         return env;
     }
-    
+
     public OMNamespace getNamespace() {
         return new NamespaceImpl(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
+                                 SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
     }
 
-	public SOAPFault createSOAPFault() throws SOAPProcessingException {
-		return new SOAP11FaultImpl(this.getDefaultEnvelope().getBody(),this);
-	}
-    
-    
+    public SOAPFault createSOAPFault() throws SOAPProcessingException {
+        return new SOAP11FaultImpl(this.getDefaultEnvelope().getBody(), this);
+    }
+
+
 }

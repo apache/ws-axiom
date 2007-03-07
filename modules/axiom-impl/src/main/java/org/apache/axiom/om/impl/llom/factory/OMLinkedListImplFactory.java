@@ -16,23 +16,40 @@
 
 package org.apache.axiom.om.impl.llom.factory;
 
-import org.apache.axiom.om.*;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMDocType;
+import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
-import org.apache.axiom.om.impl.llom.*;
+import org.apache.axiom.om.impl.llom.OMAttributeImpl;
+import org.apache.axiom.om.impl.llom.OMCommentImpl;
+import org.apache.axiom.om.impl.llom.OMDocTypeImpl;
+import org.apache.axiom.om.impl.llom.OMDocumentImpl;
+import org.apache.axiom.om.impl.llom.OMElementImpl;
+import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
+import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
+import org.apache.axiom.om.impl.llom.OMTextImpl;
 
 import javax.xml.namespace.QName;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Class OMLinkedListImplFactory
- */
+/** Class OMLinkedListImplFactory */
 public class OMLinkedListImplFactory implements OMFactory {
 
     private static final String uriAndPrefixSeparator = ";";
     /**
-     * This is a map of namespaces with the namespace URI as the key and
-     * Namespace object itself as the value.
+     * This is a map of namespaces with the namespace URI as the key and Namespace object itself as
+     * the value.
      */
     protected Map namespaceTable = new HashMap(5);
 
@@ -64,7 +81,7 @@ public class OMLinkedListImplFactory implements OMFactory {
                                      OMContainer parent,
                                      OMXMLParserWrapper builder) {
         return new OMElementImpl(localName, ns, parent,
-                builder, this);
+                                 builder, this);
     }
 
     /**
@@ -78,8 +95,8 @@ public class OMLinkedListImplFactory implements OMFactory {
     public OMElement createOMElement(String localName, String namespaceURI,
                                      String namespacePrefix) {
         return this.createOMElement(localName,
-                this.createOMNamespace(namespaceURI,
-                        namespacePrefix));
+                                    this.createOMNamespace(namespaceURI,
+                                                           namespacePrefix));
     }
 
     /**
@@ -115,7 +132,7 @@ public class OMLinkedListImplFactory implements OMFactory {
      */
     public OMNamespace createOMNamespace(String uri, String prefix) {
         String key = uri;
-        if(prefix != null && prefix.length() > 0) {
+        if (prefix != null && prefix.length() > 0) {
             key = key + uriAndPrefixSeparator + prefix;
         }
         OMNamespace existingNamespaceObject = (OMNamespace) namespaceTable.get(key);
@@ -244,7 +261,8 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @param piData
      * @return Returns OMProcessingInstruction.
      */
-    public OMProcessingInstruction createOMProcessingInstruction(OMContainer parent, String piTarget, String piData) {
+    public OMProcessingInstruction createOMProcessingInstruction(OMContainer parent,
+                                                                 String piTarget, String piData) {
         return new OMProcessingInstructionImpl(parent, piTarget, piData, this);
     }
 

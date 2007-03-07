@@ -35,8 +35,8 @@ public class OMTextTest extends TestCase {
         boolean foundNamespace = false;
         while (allDeclaredNamespaces.hasNext()) {
             OMNamespace omNamespace = (OMNamespace) allDeclaredNamespaces.next();
-            if (AXIS2_NS_URI.equals(omNamespace.getNamespaceURI()) && AXIS2_NS_PREFIX.equals(omNamespace.getPrefix()))
-            {
+            if (AXIS2_NS_URI.equals(omNamespace.getNamespaceURI()) &&
+                    AXIS2_NS_PREFIX.equals(omNamespace.getPrefix())) {
                 foundNamespace = true;
             }
         }

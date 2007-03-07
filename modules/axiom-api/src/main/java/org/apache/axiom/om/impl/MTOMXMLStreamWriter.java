@@ -27,16 +27,14 @@ import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 
 
 /**
- * For the moment this assumes that transport takes the decision of whether
- * to optimize or not by looking at whether the MTOM optimize is enabled &
- * also looking at the OM tree whether it has any optimizable content.
+ * For the moment this assumes that transport takes the decision of whether to optimize or not by
+ * looking at whether the MTOM optimize is enabled & also looking at the OM tree whether it has any
+ * optimizable content.
  */
 public class MTOMXMLStreamWriter implements XMLStreamWriter {
     private XMLStreamWriter xmlWriter;
@@ -71,7 +69,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             xmlWriter = StAXUtils.createXMLStreamWriter(bufferedSOAPBody);
         } else {
             xmlWriter = StAXUtils.createXMLStreamWriter(outStream,
-                    format.getCharSetEncoding());
+                                                        format.getCharSetEncoding());
         }
     }
 
@@ -83,7 +81,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         xmlWriter.writeStartElement(string, string1);
     }
 
-    public void writeStartElement(String string, String string1, String string2) throws XMLStreamException {
+    public void writeStartElement(String string, String string1, String string2)
+            throws XMLStreamException {
         xmlWriter.writeStartElement(string, string1, string2);
     }
 
@@ -91,7 +90,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         xmlWriter.writeStartElement(string, string1);
     }
 
-    public void writeEmptyElement(String string, String string1, String string2) throws XMLStreamException {
+    public void writeEmptyElement(String string, String string1, String string2)
+            throws XMLStreamException {
         xmlWriter.writeStartElement(string, string1, string2);
     }
 
@@ -134,11 +134,13 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         xmlWriter.writeAttribute(string, string1);
     }
 
-    public void writeAttribute(String string, String string1, String string2, String string3) throws XMLStreamException {
+    public void writeAttribute(String string, String string1, String string2, String string3)
+            throws XMLStreamException {
         xmlWriter.writeAttribute(string, string1, string2, string3);
     }
 
-    public void writeAttribute(String string, String string1, String string2) throws XMLStreamException {
+    public void writeAttribute(String string, String string1, String string2)
+            throws XMLStreamException {
         xmlWriter.writeAttribute(string, string1, string2);
     }
 
@@ -158,7 +160,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         xmlWriter.writeProcessingInstruction(string);
     }
 
-    public void writeProcessingInstruction(String string, String string1) throws XMLStreamException {
+    public void writeProcessingInstruction(String string, String string1)
+            throws XMLStreamException {
         xmlWriter.writeProcessingInstruction(string, string1);
     }
 
@@ -251,8 +254,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     }
 
     /**
-     * Returns the character set encoding scheme. If the value of the
-     * charSetEncoding is not set then the default will be returned.
+     * Returns the character set encoding scheme. If the value of the charSetEncoding is not set
+     * then the default will be returned.
      *
      * @return Returns encoding.
      */

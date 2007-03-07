@@ -136,7 +136,7 @@ public class SOAPBodyTest extends SOAPBodyTestCase {
                         SOAPConstants.SOAPFAULT_LOCAL_NAME));
     }
 
-    public void testSOAPBodyDetachment(){
+    public void testSOAPBodyDetachment() {
         try {
             soap11Body.detach();
             fail("Detachment of SOAP Body is not allowed !!");

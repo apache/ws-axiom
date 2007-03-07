@@ -21,11 +21,7 @@ import org.w3c.dom.Node;
 
 import java.util.Vector;
 
-/**
- * 
- * Most of the implementation is taken from
- * org.apache.xerces.dom.NamedNodeMapImpl
- */
+/** Most of the implementation is taken from org.apache.xerces.dom.NamedNodeMapImpl */
 public class NamedNodeMapImpl implements NamedNodeMap {
 
     Vector nodes;
@@ -57,17 +53,13 @@ public class NamedNodeMapImpl implements NamedNodeMap {
 
     }
 
-    /**
-     * From org.apache.xerces.dom.NamedNodeMapImpl
-     */
+    /** From org.apache.xerces.dom.NamedNodeMapImpl */
     public Node item(int index) {
         return (nodes != null && index < nodes.size()) ? (Node) (nodes
                 .elementAt(index)) : null;
     }
 
-    /**
-     * From org.apache.xerces.dom.NamedNodeMapImpl
-     */
+    /** From org.apache.xerces.dom.NamedNodeMapImpl */
     public int getLength() {
         return (nodes != null) ? nodes.size() : 0;
     }
@@ -88,7 +80,7 @@ public class NamedNodeMapImpl implements NamedNodeMap {
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
         int i = findNamePoint(name, 0);
         if (i < 0) {
@@ -105,16 +97,13 @@ public class NamedNodeMapImpl implements NamedNodeMap {
     } // removeNamedItem(String):Node
 
     /**
-     * Introduced in DOM Level 2. Retrieves a node specified by local name and
-     * namespace URI.
-     * 
-     * @param namespaceURI
-     *            The namespace URI of the node to retrieve. When it is null or
-     *            an empty string, this method behaves like getNamedItem.
-     * @param localName
-     *            The local name of the node to retrieve.
-     * @return Returns s Node (of any type) with the specified name, or null if
-     *         the specified name did not identify any node in the map.
+     * Introduced in DOM Level 2. Retrieves a node specified by local name and namespace URI.
+     *
+     * @param namespaceURI The namespace URI of the node to retrieve. When it is null or an empty
+     *                     string, this method behaves like getNamedItem.
+     * @param localName    The local name of the node to retrieve.
+     * @return Returns s Node (of any type) with the specified name, or null if the specified name
+     *         did not identify any node in the map.
      */
     public Node getNamedItemNS(String namespaceURI, String localName) {
 
@@ -125,16 +114,14 @@ public class NamedNodeMapImpl implements NamedNodeMap {
 
     /**
      * Adds a node using its namespaceURI and localName.
-     * 
+     *
+     * @param arg A node to store in a named node map. The node will later be accessible using the
+     *            value of the namespaceURI and localName attribute of the node. If a node with
+     *            those namespace URI and local name is already present in the map, it is replaced
+     *            by the new one.
+     * @return Returns the replaced Node if the new Node replaces an existing node else returns
+     *         null.
      * @see org.w3c.dom.NamedNodeMap#setNamedItem
-     * @return Returns the replaced Node if the new Node replaces an existing
-     *         node else returns null.
-     * @param arg
-     *            A node to store in a named node map. The node will later be
-     *            accessible using the value of the namespaceURI and localName
-     *            attribute of the node. If a node with those namespace URI and
-     *            local name is already present in the map, it is replaced by
-     *            the new one.
      */
     public Node setNamedItemNS(Node arg) throws DOMException {
 
@@ -145,7 +132,7 @@ public class NamedNodeMapImpl implements NamedNodeMap {
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
 
         if (arg.getOwnerDocument() != ownerDocument) {
@@ -179,19 +166,14 @@ public class NamedNodeMapImpl implements NamedNodeMap {
     } // setNamedItemNS(Node):Node
 
     /**
-     * Introduced in DOM Level 2. Removes a node specified by local name and
-     * namespace URI.
-     * 
-     * @param namespaceURI
-     *            The namespace URI of the node to remove. When it is null or an
-     *            empty string, this method behaves like removeNamedItem.
-     * @param name
-     *            The local name of the node to remove.
-     * @return Returns the node removed from the map if a node with such a local
-     *         name and namespace URI exists.
-     * @throws NOT_FOUND_ERR:
-     *             Raised if there is no node named name in the map.
-     * 
+     * Introduced in DOM Level 2. Removes a node specified by local name and namespace URI.
+     *
+     * @param namespaceURI The namespace URI of the node to remove. When it is null or an empty
+     *                     string, this method behaves like removeNamedItem.
+     * @param name         The local name of the node to remove.
+     * @return Returns the node removed from the map if a node with such a local name and namespace
+     *         URI exists.
+     * @throws NOT_FOUND_ERR: Raised if there is no node named name in the map.
      */
     public Node removeNamedItemNS(String namespaceURI, String name)
             throws DOMException {
@@ -201,7 +183,7 @@ public class NamedNodeMapImpl implements NamedNodeMap {
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
         int i = findNamePoint(namespaceURI, name);
         if (i < 0) {
@@ -218,23 +200,19 @@ public class NamedNodeMapImpl implements NamedNodeMap {
     } // removeNamedItem(String):Node
 
     /**
-     * Adds a node using its nodeName attribute. As the nodeName attribute is
-     * used to derive the name which the node must be stored under, multiple
-     * nodes of certain types (those that have a "special" string value) cannot
-     * be stored as the names would clash. This is seen as preferable to
-     * allowing nodes to be aliased.
-     * 
+     * Adds a node using its nodeName attribute. As the nodeName attribute is used to derive the
+     * name which the node must be stored under, multiple nodes of certain types (those that have a
+     * "special" string value) cannot be stored as the names would clash. This is seen as preferable
+     * to allowing nodes to be aliased.
+     *
+     * @param arg A node to store in a named node map. The node will later be accessible using the
+     *            value of the namespaceURI and localName attribute of the node. If a node with
+     *            those namespace URI and local name is already present in the map, it is replaced
+     *            by the new one.
+     * @return Returns the replaced Node if the new Node replaces an existing node, otherwise
+     *         returns null.
+     * @throws org.w3c.dom.DOMException The exception description.
      * @see org.w3c.dom.NamedNodeMap#setNamedItem
-     * @return Returns the replaced Node if the new Node replaces an existing
-     *         node, otherwise returns null.
-     * @param arg
-     *            A node to store in a named node map. The node will later be
-     *            accessible using the value of the namespaceURI and localName
-     *            attribute of the node. If a node with those namespace URI and
-     *            local name is already present in the map, it is replaced by
-     *            the new one.
-     * @exception org.w3c.dom.DOMException
-     *                The exception description.
      */
     public Node setNamedItem(Node arg) throws DOMException {
 
@@ -246,7 +224,7 @@ public class NamedNodeMapImpl implements NamedNodeMap {
                     DOMMessageFormatter.DOM_DOMAIN,
                     "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    msg);
+                                   msg);
         }
         if (arg.getOwnerDocument() != ownerDocument) {
             String msg = DOMMessageFormatter.formatMessage(
@@ -295,21 +273,15 @@ public class NamedNodeMapImpl implements NamedNodeMap {
     }
 
     /**
-     * 
      * From org.apache.xerces.dom.NamedNodeMapImpl
-     * 
-     * Subroutine: Locates the named item, or the point at which said item
-     * should be added.
-     * 
-     * @param name
-     *            Name of a node to look up.
-     * 
-     * @return If positive or zero, the index of the found item. If negative,
-     *         index of the appropriate point at which to insert the item,
-     *         encoded as -1-index and hence reconvertable by subtracting it
-     *         from -1. (Encoding because I don't want to recompare the strings
-     *         but don't want to burn bytes on a datatype to hold a flagged
-     *         value.)
+     * <p/>
+     * Subroutine: Locates the named item, or the point at which said item should be added.
+     *
+     * @param name Name of a node to look up.
+     * @return If positive or zero, the index of the found item. If negative, index of the
+     *         appropriate point at which to insert the item, encoded as -1-index and hence
+     *         reconvertable by subtracting it from -1. (Encoding because I don't want to recompare
+     *         the strings but don't want to burn bytes on a datatype to hold a flagged value.)
      */
     protected int findNamePoint(String name, int start) {
 
@@ -341,9 +313,7 @@ public class NamedNodeMapImpl implements NamedNodeMap {
 
     } // findNamePoint(String):int
 
-    /**
-     * This findNamePoint is for DOM Level 2 Namespaces.
-     */
+    /** This findNamePoint is for DOM Level 2 Namespaces. */
     protected int findNamePoint(String namespaceURI, String name) {
 
         if (nodes == null)
@@ -363,7 +333,7 @@ public class NamedNodeMapImpl implements NamedNodeMap {
             String aNamespaceURI = a.getNamespaceURI();
             String aLocalName = a.getLocalName();
             if (namespaceURI == null) {
-                if (aNamespaceURI == null && (name.equals(aLocalName) || 
+                if (aNamespaceURI == null && (name.equals(aLocalName) ||
                         (aLocalName == null && name.equals(a.getNodeName()))))
                     return i;
             } else {
@@ -392,9 +362,7 @@ public class NamedNodeMapImpl implements NamedNodeMap {
         return false;
     }
 
-    /**
-     * NON-DOM: Remove attribute at specified index.
-     */
+    /** NON-DOM: Remove attribute at specified index. */
     protected void removeItem(int index) {
         if (nodes != null && index < nodes.size()) {
             nodes.removeElementAt(index);
@@ -431,9 +399,8 @@ public class NamedNodeMapImpl implements NamedNodeMap {
 
     /**
      * NON-DOM: copy content of this map into the specified vector
-     * 
-     * @param list
-     *            Vector to copy information into.
+     *
+     * @param list Vector to copy information into.
      * @return Returns a copy of this node named map.
      */
     protected Vector cloneMap(Vector list) {
@@ -454,9 +421,7 @@ public class NamedNodeMapImpl implements NamedNodeMap {
         return findNamePoint(namespaceURI, localName);
     }
 
-    /**
-     * NON-DOM remove all elements from this map.
-     */
+    /** NON-DOM remove all elements from this map. */
     public void removeAll() {
         if (nodes != null) {
             nodes.removeAllElements();

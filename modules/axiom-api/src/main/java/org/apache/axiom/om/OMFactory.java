@@ -18,14 +18,10 @@ package org.apache.axiom.om;
 
 import javax.xml.namespace.QName;
 
-/**
- * Class OMFactory
- */
+/** Class OMFactory */
 public interface OMFactory {
 
-    /**
-     * Creates a new OMDocument.
-     */
+    /** Creates a new OMDocument. */
     public OMDocument createOMDocument();
 
     public OMDocument createOMDocument(OMXMLParserWrapper builder);
@@ -33,15 +29,16 @@ public interface OMFactory {
 
     /**
      * @param localName
-     * @param ns - This can be null
+     * @param ns        - This can be null
      */
     public OMElement createOMElement(String localName, OMNamespace ns);
 
-    public OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent) throws OMException;
+    public OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent)
+            throws OMException;
 
     /**
      * @param localName
-     * @param ns - this can be null
+     * @param ns        - this can be null
      * @param parent
      * @param builder
      */
@@ -50,8 +47,8 @@ public interface OMFactory {
                                      OMXMLParserWrapper builder);
 
     /**
-     * Construct element with arbitrary data source. This is an optional
-     * operation which may not be supported by all factories.
+     * Construct element with arbitrary data source. This is an optional operation which may not be
+     * supported by all factories.
      *
      * @param source
      * @param localName
@@ -61,10 +58,10 @@ public interface OMFactory {
                                      OMNamespace ns);
 
     /**
-     * This is almost the same as as createOMElement(localName,OMNamespace) method above.
-     * But some people may, for some reason, need to use the conventional method of putting a namespace.
-     * Or in other words people might not want to use the new OMNamespace.
-     * Well, this is for those people.
+     * This is almost the same as as createOMElement(localName,OMNamespace) method above. But some
+     * people may, for some reason, need to use the conventional method of putting a namespace. Or
+     * in other words people might not want to use the new OMNamespace. Well, this is for those
+     * people.
      *
      * @param localName
      * @param namespaceURI
@@ -76,8 +73,7 @@ public interface OMFactory {
                                      String namespacePrefix);
 
     /**
-     * QName(localPart),
-     * QName(namespaceURI, localPart) - a prefix will be assigned to this
+     * QName(localPart), QName(namespaceURI, localPart) - a prefix will be assigned to this
      * QName(namespaceURI, localPart, prefix)
      *
      * @param qname
@@ -111,11 +107,12 @@ public interface OMFactory {
     /**
      * @param parent
      * @param text
-     * @param type   - this should be either of XMLStreamConstants.CHARACTERS, XMLStreamConstants.CDATA,
-     *               XMLStreamConstants.SPACE, XMLStreamConstants.ENTITY_REFERENCE
+     * @param type   - this should be either of XMLStreamConstants.CHARACTERS,
+     *               XMLStreamConstants.CDATA, XMLStreamConstants.SPACE, XMLStreamConstants.ENTITY_REFERENCE
      * @return Returns OMText.
      */
     public OMText createOMText(OMContainer parent, String text, int type);
+
     public OMText createOMText(OMContainer parent, char[] charArary, int type);
 
     /**
@@ -133,8 +130,8 @@ public interface OMFactory {
 
     /**
      * @param s
-     * @param type - OMText node can handle SPACE, CHARACTERS, CDATA and ENTITY REFERENCES. For Constants, use either
-     *             XMLStreamConstants or constants found in OMNode.
+     * @param type - OMText node can handle SPACE, CHARACTERS, CDATA and ENTITY REFERENCES. For
+     *             Constants, use either XMLStreamConstants or constants found in OMNode.
      * @return Returns OMText.
      */
     public OMText createOMText(String s, int type);
@@ -170,7 +167,8 @@ public interface OMFactory {
      * @param piData
      * @return Returns OMProcessingInstruction.
      */
-    public OMProcessingInstruction createOMProcessingInstruction(OMContainer parent, String piTarget, String piData);
+    public OMProcessingInstruction createOMProcessingInstruction(OMContainer parent,
+                                                                 String piTarget, String piData);
 
     /**
      * Creates a comment.

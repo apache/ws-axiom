@@ -26,9 +26,7 @@ import javax.xml.stream.XMLStreamWriter;
 public class DocumentFragmentImpl extends ParentNode implements
         DocumentFragment {
 
-    /**
-     * @param ownerDocument
-     */
+    /** @param ownerDocument  */
     public DocumentFragmentImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
         this.done = true;

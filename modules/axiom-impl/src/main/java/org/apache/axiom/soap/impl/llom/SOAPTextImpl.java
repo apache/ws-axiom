@@ -30,9 +30,9 @@ public class SOAPTextImpl extends SOAPElement {
     }
 
     protected SOAPTextImpl(OMElement parent, OMXMLParserWrapper builder,
-            SOAPFactory factory) {
+                           SOAPFactory factory) {
         super(parent, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME, builder,
-                factory);
+              factory);
     }
 
     public void setLang(String lang) {

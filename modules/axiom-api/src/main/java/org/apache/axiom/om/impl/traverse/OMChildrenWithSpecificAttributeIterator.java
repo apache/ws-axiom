@@ -22,24 +22,16 @@ import org.apache.axiom.om.OMNode;
 
 import javax.xml.namespace.QName;
 
-/**
- * Class OMChildrenWithSpecificAttributeIterator
- */
+/** Class OMChildrenWithSpecificAttributeIterator */
 public class OMChildrenWithSpecificAttributeIterator
         extends OMChildrenIterator {
-    /**
-     * Field attributeName
-     */
+    /** Field attributeName */
     private QName attributeName;
 
-    /**
-     * Field attributeValue
-     */
+    /** Field attributeValue */
     private String attributeValue;
 
-    /**
-     * Field detach
-     */
+    /** Field detach */
     private boolean detach;
 
     /**

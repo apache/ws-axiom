@@ -16,10 +16,6 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
@@ -39,41 +35,36 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
 
-/**
- * Class SOAPEnvelopeImpl
- */
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
+/** Class SOAPEnvelopeImpl */
 public class SOAPEnvelopeImpl extends SOAPElement
         implements SOAPEnvelope, OMConstants {
 
     private static final QName HEADER_QNAME = new QName(SOAPConstants.HEADER_LOCAL_NAME);
 
-    /**
-     * @param builder
-     */
+    /** @param builder  */
     public SOAPEnvelopeImpl(OMXMLParserWrapper builder, SOAPFactory factory) {
         super(null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, builder, factory);
         this.factory = factory;
     }
 
-    /**
-     * @param ns
-     */
+    /** @param ns  */
     public SOAPEnvelopeImpl(OMNamespace ns, SOAPFactory factory) {
         super(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
         this.factory = factory;
     }
 
     /**
-     * Returns the <CODE>SOAPHeader</CODE> object for this <CODE>
-     * SOAPEnvelope</CODE> object. <P> This SOAPHeader will just be a container
-     * for all the headers in the <CODE>OMMessage</CODE> </P>
+     * Returns the <CODE>SOAPHeader</CODE> object for this <CODE> SOAPEnvelope</CODE> object. <P>
+     * This SOAPHeader will just be a container for all the headers in the <CODE>OMMessage</CODE>
+     * </P>
      *
-     * @return the <CODE>SOAPHeader</CODE> object or <CODE> null</CODE> if there
-     *         is none
+     * @return the <CODE>SOAPHeader</CODE> object or <CODE> null</CODE> if there is none
      * @throws org.apache.axiom.om.OMException
-     *                     if there is a problem obtaining
-     *                     the <CODE>SOAPHeader</CODE>
-     *                     object
+     *                     if there is a problem obtaining the <CODE>SOAPHeader</CODE> object
      * @throws OMException
      */
     public SOAPHeader getHeader() throws OMException {
@@ -91,7 +82,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
             return null;
         }
 
-        return (SOAPHeader)header;
+        return (SOAPHeader) header;
     }
 
     private void inferFactory() {
@@ -106,9 +97,11 @@ public class SOAPEnvelopeImpl extends SOAPElement
     }
 
     public void addChild(OMNode child) {
-        if ((child instanceof OMElement) && !(child instanceof SOAPHeader || child instanceof SOAPBody))
-        {
-            throw new SOAPProcessingException("SOAP Envelope can not have children other than SOAP Header and Body", SOAP12Constants.FAULT_CODE_SENDER);
+        if ((child instanceof OMElement) &&
+                !(child instanceof SOAPHeader || child instanceof SOAPBody)) {
+            throw new SOAPProcessingException(
+                    "SOAP Envelope can not have children other than SOAP Header and Body",
+                    SOAP12Constants.FAULT_CODE_SENDER);
         } else {
             if (this.done && (child instanceof SOAPHeader)) {
                 SOAPBody body = getBody();
@@ -122,15 +115,14 @@ public class SOAPEnvelopeImpl extends SOAPElement
     }
 
     /**
-     * Returns the <CODE>SOAPBody</CODE> object associated with this
-     * <CODE>SOAPEnvelope</CODE> object. <P> This SOAPBody will just be a
-     * container for all the BodyElements in the <CODE>OMMessage</CODE> </P>
+     * Returns the <CODE>SOAPBody</CODE> object associated with this <CODE>SOAPEnvelope</CODE>
+     * object. <P> This SOAPBody will just be a container for all the BodyElements in the
+     * <CODE>OMMessage</CODE> </P>
      *
-     * @return the <CODE>SOAPBody</CODE> object for this <CODE>
-     *         SOAPEnvelope</CODE> object or <CODE>null</CODE> if there is none
+     * @return the <CODE>SOAPBody</CODE> object for this <CODE> SOAPEnvelope</CODE> object or
+     *         <CODE>null</CODE> if there is none
      * @throws org.apache.axiom.om.OMException
-     *                     if there is a problem obtaining
-     *                     the <CODE>SOAPBody</CODE> object
+     *                     if there is a problem obtaining the <CODE>SOAPBody</CODE> object
      * @throws OMException
      */
     public SOAPBody getBody() throws OMException {
@@ -150,7 +142,8 @@ public class SOAPEnvelopeImpl extends SOAPElement
                         SOAPConstants.BODY_LOCAL_NAME.equals(element.getLocalName())) {
                     return (SOAPBody) element;
                 } else {
-                    throw new OMException("SOAPEnvelope must contain a body element which is either first or second child element of the SOAPEnvelope.");
+                    throw new OMException(
+                            "SOAPEnvelope must contain a body element which is either first or second child element of the SOAPEnvelope.");
                 }
             }
         }
@@ -177,61 +170,61 @@ public class SOAPEnvelopeImpl extends SOAPElement
     }
 
     protected void internalSerialize(XMLStreamWriter writer2, boolean cache)
-			throws XMLStreamException {
-		MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
-		if (!writer.isIgnoreXMLDeclaration()) {
-			String charSetEncoding = writer.getCharSetEncoding();
-			String xmlVersion = writer.getXmlVersion();
-			writer.getXmlStreamWriter().writeStartDocument(
-					charSetEncoding == null ? OMConstants.DEFAULT_CHAR_SET_ENCODING
-							: charSetEncoding,
-					xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION : xmlVersion);
-		}
-		if (cache) {
-			//in this case we don't care whether the elements are built or not
-			//we just call the serializeAndConsume methods
-			OMSerializerUtil.serializeStartpart(this, writer);
-			//serialize children
-			OMElement header = getFirstChildWithName(HEADER_QNAME);
-			if ((header != null) && (header.getFirstOMChild() != null)) {
-				((SOAPHeaderImpl) header).internalSerialize(writer);
-			}
-			SOAPBody body = getBody();
-			//REVIEW: getBody has statements to return null..Can it be null in any case?
-			if (body != null) {
-				((SOAPBodyImpl) body).internalSerialize(writer);
-			}
-			OMSerializerUtil.serializeEndpart(writer);
+            throws XMLStreamException {
+        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
+        if (!writer.isIgnoreXMLDeclaration()) {
+            String charSetEncoding = writer.getCharSetEncoding();
+            String xmlVersion = writer.getXmlVersion();
+            writer.getXmlStreamWriter().writeStartDocument(
+                    charSetEncoding == null ? OMConstants.DEFAULT_CHAR_SET_ENCODING
+                            : charSetEncoding,
+                    xmlVersion == null ? OMConstants.DEFAULT_XML_VERSION : xmlVersion);
+        }
+        if (cache) {
+            //in this case we don't care whether the elements are built or not
+            //we just call the serializeAndConsume methods
+            OMSerializerUtil.serializeStartpart(this, writer);
+            //serialize children
+            OMElement header = getFirstChildWithName(HEADER_QNAME);
+            if ((header != null) && (header.getFirstOMChild() != null)) {
+                ((SOAPHeaderImpl) header).internalSerialize(writer);
+            }
+            SOAPBody body = getBody();
+            //REVIEW: getBody has statements to return null..Can it be null in any case?
+            if (body != null) {
+                ((SOAPBodyImpl) body).internalSerialize(writer);
+            }
+            OMSerializerUtil.serializeEndpart(writer);
 
-		} else {
-			//Now the caching is supposed to be off. However caching been switched off
-			//has nothing to do if the element is already built!
-			if (this.done || (this.builder == null)) {
-				OMSerializerUtil.serializeStartpart(this, writer);
-				OMElement header = getFirstChildWithName(HEADER_QNAME);
-				if ((header != null) && (header.getFirstOMChild() != null)) {
-					serializeInternally((OMNodeImpl) header, writer);
-				}
-				SOAPBody body = getBody();
-				if (body != null) {
-					serializeInternally((OMNodeImpl) body, writer);
-				}
-				OMSerializerUtil.serializeEndpart(writer);
-			} else {
-				OMSerializerUtil.serializeByPullStream(this, writer, cache);
-			}
-		}
-	}
+        } else {
+            //Now the caching is supposed to be off. However caching been switched off
+            //has nothing to do if the element is already built!
+            if (this.done || (this.builder == null)) {
+                OMSerializerUtil.serializeStartpart(this, writer);
+                OMElement header = getFirstChildWithName(HEADER_QNAME);
+                if ((header != null) && (header.getFirstOMChild() != null)) {
+                    serializeInternally((OMNodeImpl) header, writer);
+                }
+                SOAPBody body = getBody();
+                if (body != null) {
+                    serializeInternally((OMNodeImpl) body, writer);
+                }
+                OMSerializerUtil.serializeEndpart(writer);
+            } else {
+                OMSerializerUtil.serializeByPullStream(this, writer, cache);
+            }
+        }
+    }
 
-	private void serializeInternally(OMNodeImpl child, MTOMXMLStreamWriter writer)
-			throws XMLStreamException {
-		if ((!(child instanceof OMElement)) || child.isComplete() || child.builder == null) {
-			child.internalSerializeAndConsume(writer);
-		} else {
-			OMElement element = (OMElement) child;
-			element.getBuilder().setCache(false);
-			OMSerializerUtil.serializeByPullStream(element, writer, false);
-		}
-		child = (OMNodeImpl) child.getNextOMSibling();
-	}
+    private void serializeInternally(OMNodeImpl child, MTOMXMLStreamWriter writer)
+            throws XMLStreamException {
+        if ((!(child instanceof OMElement)) || child.isComplete() || child.builder == null) {
+            child.internalSerializeAndConsume(writer);
+        } else {
+            OMElement element = (OMElement) child;
+            element.getBuilder().setCache(false);
+            OMSerializerUtil.serializeByPullStream(element, writer, false);
+        }
+        child = (OMNodeImpl) child.getNextOMSibling();
+    }
 }

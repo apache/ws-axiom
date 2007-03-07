@@ -19,9 +19,9 @@ package org.apache.axiom.soap;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -43,9 +43,8 @@ public abstract class SOAPTestCase extends AbstractTestCase {
     protected static final String SOAP11_FILE_NAME = "soap/soap11/soap11message.xml";
     protected static final String SOAP12_FILE_NAME = "soap/soap12message.xml";
     private Log log = LogFactory.getLog(getClass());
-    /**
-     * @param testName
-     */
+
+    /** @param testName  */
     public SOAPTestCase(String testName) {
         super(testName);
         soap11Factory = OMAbstractFactory.getSOAP11Factory();
@@ -61,10 +60,10 @@ public abstract class SOAPTestCase extends AbstractTestCase {
 
         soap11EnvelopeWithParser =
                 (SOAPEnvelope) this.getSOAPBuilder(SOAP11_FILE_NAME)
-                .getDocumentElement();
+                        .getDocumentElement();
         soap12EnvelopeWithParser =
                 (SOAPEnvelope) this.getSOAPBuilder(SOAP12_FILE_NAME)
-                .getDocumentElement();
+                        .getDocumentElement();
     }
 
     protected StAXSOAPModelBuilder getSOAPBuilder(String fileName) {

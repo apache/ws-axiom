@@ -37,16 +37,16 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
-import org.apache.axiom.soap.impl.dom.soap11.SOAP11FaultImpl;
 
 public class SOAP12Factory extends DOMSOAPFactory {
-	
-	public SOAP12Factory() {}
-	
-	public SOAP12Factory(DocumentImpl doc) {
-		super(doc);
-	}
-	
+
+    public SOAP12Factory() {
+    }
+
+    public SOAP12Factory(DocumentImpl doc) {
+        super(doc);
+    }
+
     public String getSoapVersionURI() {
         return SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI;
     }
@@ -67,8 +67,9 @@ public class SOAP12Factory extends DOMSOAPFactory {
                                        OMXMLParserWrapper builder) {
         return new SOAP12HeaderImpl(envelope, builder, this);
     }
-    
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns) throws SOAPProcessingException {
+
+    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns)
+            throws SOAPProcessingException {
         return new SOAP12HeaderBlockImpl(localName, ns, this);
     }
 
@@ -81,7 +82,8 @@ public class SOAP12Factory extends DOMSOAPFactory {
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  OMNamespace ns,
                                                  SOAPHeader parent,
-                                                 OMXMLParserWrapper builder) throws SOAPProcessingException {
+                                                 OMXMLParserWrapper builder)
+            throws SOAPProcessingException {
         return new SOAP12HeaderBlockImpl(localName, ns, parent, builder, this);
     }
 
@@ -116,7 +118,8 @@ public class SOAP12Factory extends DOMSOAPFactory {
         return new SOAP12FaultCodeImpl(parent, builder, this);
     }
 
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent) throws SOAPProcessingException {
+    public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent)
+            throws SOAPProcessingException {
         return new SOAP12FaultValueImpl(parent, this);
     }
 
@@ -126,7 +129,8 @@ public class SOAP12Factory extends DOMSOAPFactory {
     }
 
     //added
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent) throws SOAPProcessingException {
+    public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent)
+            throws SOAPProcessingException {
         return new SOAP12FaultValueImpl(parent, this);
     }
 
@@ -137,7 +141,8 @@ public class SOAP12Factory extends DOMSOAPFactory {
     }
 
     //changed
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent) throws SOAPProcessingException {
+    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent)
+            throws SOAPProcessingException {
         return new SOAP12FaultSubCodeImpl(parent, this);
     }
 
@@ -147,7 +152,8 @@ public class SOAP12Factory extends DOMSOAPFactory {
         return new SOAP12FaultSubCodeImpl(parent, builder, this);
     }
 
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent) throws SOAPProcessingException {
+    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent)
+            throws SOAPProcessingException {
         return new SOAP12FaultSubCodeImpl(parent, this);
     }
 
@@ -165,7 +171,8 @@ public class SOAP12Factory extends DOMSOAPFactory {
         return new SOAP12FaultReasonImpl(parent, builder, this);
     }
 
-    public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent) throws SOAPProcessingException {
+    public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent)
+            throws SOAPProcessingException {
         return new SOAP12FaultTextImpl(parent, this);
     }
 
@@ -213,9 +220,9 @@ public class SOAP12Factory extends DOMSOAPFactory {
         return env;
     }
 
-	public SOAPFault createSOAPFault() throws SOAPProcessingException {
-		return new SOAP12FaultImpl(this.getDefaultEnvelope().getBody(),this);
-	}
-    
+    public SOAPFault createSOAPFault() throws SOAPProcessingException {
+        return new SOAP12FaultImpl(this.getDefaultEnvelope().getBody(), this);
+    }
+
 
 }

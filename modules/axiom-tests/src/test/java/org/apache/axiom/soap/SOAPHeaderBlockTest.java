@@ -36,12 +36,12 @@ public class SOAPHeaderBlockTest extends SOAPHeaderTestCase {
         super.setUp();
         soap11HeaderBlock =
                 soap11Factory.createSOAPHeaderBlock("testHeaderBlock",
-                        namespace,
-                        soap11Header);
+                                                    namespace,
+                                                    soap11Header);
         soap12HeaderBlock =
                 soap12Factory.createSOAPHeaderBlock("testHeaderBlock",
-                        namespace,
-                        soap12Header);
+                                                    namespace,
+                                                    soap12Header);
         Iterator iterator = soap11HeaderWithParser.examineAllHeaderBlocks();
         iterator.next();
         soap11HeaderBlock1WithParser = (SOAPHeaderBlock) iterator.next();
