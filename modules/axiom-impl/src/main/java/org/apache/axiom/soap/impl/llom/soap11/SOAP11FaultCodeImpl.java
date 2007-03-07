@@ -18,6 +18,7 @@ package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -34,24 +35,15 @@ import javax.xml.stream.XMLStreamWriter;
 public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
 
     public SOAP11FaultCodeImpl(SOAPFactory factory) {
-        super(null, factory);
+        super(SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME, null, factory);
     }
 
-    /**
-     * Constructor OMElementImpl
-     *
-     * @param parent
-     * @param builder
-     */
     public SOAP11FaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(parent, builder, factory);
+        super(parent, SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME, builder, factory);
     }
 
-    /**
-     * @param parent
-     */
     public SOAP11FaultCodeImpl(SOAPFault parent, SOAPFactory factory) throws SOAPProcessingException {
-        super(parent, false, factory);
+        super(parent, SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME, false, factory);
     }
 
 
@@ -104,5 +96,9 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
         return SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME;
     }
 
+    public SOAPFaultValue getValue() {
+        return (SOAPFaultValue) ElementHelper.getChildWithName(this,
+                SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME);
+    }
 
 }

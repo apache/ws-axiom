@@ -21,20 +21,21 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.impl.llom.SOAPFaultValueImpl;
 
 public class SOAP11FaultValueImpl extends SOAPFaultValueImpl {
     
     public SOAP11FaultValueImpl(OMElement parent, SOAPFactory factory) throws SOAPProcessingException {
-        super(parent, factory);
+        super(SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME, parent, factory);
     }
 
     public SOAP11FaultValueImpl(SOAPFactory factory) throws SOAPProcessingException {
-        super((OMNamespace) null, factory);
+        super((OMNamespace) null, SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME, factory);
     }
 
     public SOAP11FaultValueImpl(OMElement parent, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(parent, builder, factory);
+        super(parent, SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME, builder, factory);
     }
 
 

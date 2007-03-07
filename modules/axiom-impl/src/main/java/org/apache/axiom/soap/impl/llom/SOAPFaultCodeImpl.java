@@ -30,36 +30,42 @@ import org.apache.axiom.soap.SOAPProcessingException;
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFaultCode {
 
 
-    protected SOAPFaultCodeImpl(OMNamespace ns, SOAPFactory factory) {
-        super(SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME, ns, factory);
+    protected SOAPFaultCodeImpl(String localName, OMNamespace ns, SOAPFactory factory) {
+        super(localName, ns, factory);
     }
 
-    /**
-     * Constructor OMElementImpl
-     *
-     * @param parent
-     * @param builder
-     */
-    public SOAPFaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder, 
+    protected SOAPFaultCodeImpl(OMNamespace ns, SOAPFactory factory) {
+        this(SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME, ns, factory);
+    }
+
+    public SOAPFaultCodeImpl(SOAPFault parent, String localName, OMXMLParserWrapper builder,
             SOAPFactory factory) {
-        super(parent, SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME, builder,
+        super(parent, localName, builder, factory);
+    }
+
+    public SOAPFaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder,
+            SOAPFactory factory) {
+        this(parent, SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME, builder,
                 factory);
     }
 
-    /**
-     * @param parent
-     */
     public SOAPFaultCodeImpl(SOAPFault parent,
+                             String localName,
                              boolean extractNamespaceFromParent,
                              SOAPFactory factory) throws SOAPProcessingException {
         super(parent,
+                localName,
+                extractNamespaceFromParent, factory);
+    }
+
+    public SOAPFaultCodeImpl(SOAPFault parent,
+                             boolean extractNamespaceFromParent,
+                             SOAPFactory factory) throws SOAPProcessingException {
+        this(parent,
                 SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME,
                 extractNamespaceFromParent, factory);
     }
 
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
     public void setValue(SOAPFaultValue value) throws SOAPProcessingException {
         ElementHelper.setNewElement(this, value, value);
     }
