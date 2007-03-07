@@ -50,6 +50,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      */
     private SOAPEnvelope envelope;
     private OMNamespace envelopeNamespace;
+    private String namespaceURI;
 
 
     private SOAPFactory soapFactory;
@@ -230,14 +231,14 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
             // Now I've found a SOAP Envelope, now create SOAPDocument and SOAPEnvelope here.
 
-            if (!elementName.equalsIgnoreCase(SOAPConstants.SOAPENVELOPE_LOCAL_NAME)) {
+            if (!elementName.equals(SOAPConstants.SOAPENVELOPE_LOCAL_NAME)) {
                 throw new SOAPProcessingException("First Element must contain the local name, "
-                        + SOAPConstants.SOAPENVELOPE_LOCAL_NAME, SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
+                        + SOAPConstants.SOAPENVELOPE_LOCAL_NAME, SOAPConstants.FAULT_CODE_SENDER);
             }
 
             // determine SOAP version and from that determine a proper factory here.
             if (soapFactory == null) {
-                String namespaceURI = this.parser.getNamespaceURI();
+                namespaceURI = this.parser.getNamespaceURI();
                 if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
                     soapFactory = OMAbstractFactory.getSOAP12Factory();
                     if(isDebugEnabled) {
@@ -252,6 +253,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
                     throw new SOAPProcessingException("Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
                             " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
                 }
+            } else {
+                namespaceURI = soapFactory.getSoapVersionURI();
             }
 
             // create a SOAPMessage to hold the SOAP envelope and assign the SOAP envelope in that.
@@ -268,6 +271,15 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             processAttributes(element);
 
         } else if (elementLevel == 2) {
+            // Must be in the right namespace regardless
+            String elementNS = parser.getNamespaceURI();
+
+            if (!(namespaceURI.equals(elementNS))) {
+                if (!bodyPresent || !SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
+                    throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
+                                                        + elementNS + "}" + elementName);
+                }
+            }
 
             // this is either a header or a body
             if (elementName.equals(SOAPConstants.HEADER_LOCAL_NAME)) {
@@ -304,7 +316,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             }
         } else if ((elementLevel == 3)
                 &&
-                parent.getLocalName().equalsIgnoreCase(SOAPConstants.HEADER_LOCAL_NAME)) {
+                parent.getLocalName().equals(SOAPConstants.HEADER_LOCAL_NAME)) {
 
             // this is a headerblock
             try {
@@ -318,8 +330,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             processAttributes(element);
 
         } else if ((elementLevel == 3) &&
-                parent.getLocalName().equalsIgnoreCase(SOAPConstants.BODY_LOCAL_NAME) &&
-                elementName.equalsIgnoreCase(SOAPConstants.BODY_FAULT_LOCAL_NAME)) {
+                parent.getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME) &&
+                elementName.equals(SOAPConstants.BODY_FAULT_LOCAL_NAME)) {
 
             // this is a headerblock
             element = soapFactory.createSOAPFault((SOAPBody) parent, this);

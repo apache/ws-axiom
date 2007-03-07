@@ -77,15 +77,21 @@ public class SOAPEnvelopeImpl extends SOAPElement
      * @throws OMException
      */
     public SOAPHeader getHeader() throws OMException {
-        SOAPHeader header =
-                (SOAPHeader) getFirstChildWithName(
-                        HEADER_QNAME);
-        if (builder == null && header == null) {
-            inferFactory();
-            header = ((SOAPFactory) factory).createSOAPHeader(this);
-            addChild(header);
+        // Header must be the first child
+        OMElement header = getFirstElement();
+        if (header == null) {
+            if (builder == null) {
+                inferFactory();
+                header = ((SOAPFactory) factory).createSOAPHeader(this);
+                addChild(header);
+            } else {
+                return null;
+            }
+        } else if (!(header instanceof SOAPHeader)) {
+            return null;
         }
-        return header;
+
+        return (SOAPHeader)header;
     }
 
     private void inferFactory() {
