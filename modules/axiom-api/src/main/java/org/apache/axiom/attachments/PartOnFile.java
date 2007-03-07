@@ -32,6 +32,7 @@ import javax.mail.Header;
 import javax.mail.MessagingException;
 
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.util.Base64;
 
 public class PartOnFile implements Part {
 
@@ -47,39 +48,37 @@ public class PartOnFile implements Part {
 
     public PartOnFile(PushbackFilePartInputStream inStream, String repoDir) {
         super();
-
+        
         headers = new Hashtable();
-
+        
         if (repoDir == null) {
             repoDir = ".";
         }
         try {
-        	File repoDirFile = null; 
-        	if (repoDir!=null)
-        	{
-        		repoDirFile= new File(repoDir);
-        		if (!repoDirFile.exists())
-        		{
-					repoDirFile.mkdirs();
-				}
-        	}
-        	if (!repoDirFile.isDirectory()){
-        		throw new IllegalArgumentException("Given Axis2 Attachment File Cache Location "+repoDir+"  should be a directory.");
-        	}
-            cacheFile = File.createTempFile("Axis2", ".att",
-                    repoDirFile);
-
+            File repoDirFile = null;
+            if (repoDir != null) {
+                repoDirFile = new File(repoDir);
+                if (!repoDirFile.exists()) {
+                    repoDirFile.mkdirs();
+                }
+            }
+            if (!repoDirFile.isDirectory()) {
+                throw new IllegalArgumentException("Given Axis2 Attachment File Cache Location "
+                        + repoDir + "  should be a directory.");
+            }
+            cacheFile = File.createTempFile("Axis2", ".att", repoDirFile);
+            
             FileOutputStream fileOutStream = new FileOutputStream(cacheFile);
             int value;
             value = parseTheHeaders(inStream);
             fileOutStream.write(value);
-            while (!inStream.getBoundaryStatus()) {
-                value = inStream.read();
-                if (!inStream.getBoundaryStatus()) {
-                    fileOutStream.write(value);
+            do {
+                byte[] buffer = new byte[4000];
+                int len;
+                while ((len = inStream.read(buffer)) > 0) {
+                    fileOutStream.write(buffer, 0, len);
                 }
-            }
-
+            } while (inStream.available() > 0);
             fileOutStream.flush();
             fileOutStream.close();
         } catch (IOException e) {

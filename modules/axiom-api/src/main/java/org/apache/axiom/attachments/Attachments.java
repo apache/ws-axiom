@@ -499,22 +499,24 @@ public class Attachments {
                     partStream = new MIMEBodyPartInputStream(pushbackInStream,
                                                              boundary, this);
                     int count = 0;
-                    int value;
-                    // Make sure *not* to modify this to a Short Circuit "&". If
-                    // removed a byte will be lost
-                    while (count != fileStorageThreshold
-                           && (!partStream.getBoundaryStatus())) {
-                        value = partStream.read();
-                        buffer[count] = (byte) value;
-                        count++;
-                    }
+                    do {
+                        int len = 0;
+                        int off = 0;
+                        int rem = fileStorageThreshold;
+                        while ((len = partStream.read(buffer, off, rem)) > 0) {
+                            off = off + len;
+                            rem = rem - len;
+                        }
+                        count += off;
+                    } while (partStream.available() > 0);
+                    
                     if (count == fileStorageThreshold) {
                         PushbackFilePartInputStream filePartStream = new PushbackFilePartInputStream(
                                 partStream, buffer);
                         part = new PartOnFile(filePartStream, attachmentRepoDir);
                     } else {
-                        ByteArrayInputStream byteArrayInStream = new ByteArrayInputStream(
-                                buffer, 0, count - 1);
+                        ByteArrayInputStream byteArrayInStream = new ByteArrayInputStream(buffer,
+                                0, count);
                         part = new PartOnMemory(byteArrayInStream);
                     }
                 } catch (Exception e) {

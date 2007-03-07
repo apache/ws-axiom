@@ -47,7 +47,6 @@ public class MIMEBodyPartInputStream extends InputStream {
         }
         // read the next value from stream
         int value = inStream.read();
-        
         // A problem occured because all the mime parts tends to have a /r/n at
         // the end. Making it hard to transform them to correct DataSources.
         // This logic introduced to handle it
@@ -104,10 +103,5 @@ public class MIMEBodyPartInputStream extends InputStream {
         inStream.unread(boundary, 0, boundaryIndex);
         inStream.unread(10);
         return 13;
-    }
-    
-    public boolean getBoundaryStatus()
-    {
-        return boundaryFound;
     }
 }

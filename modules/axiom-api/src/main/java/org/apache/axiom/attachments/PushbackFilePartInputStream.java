@@ -42,7 +42,9 @@ public class PushbackFilePartInputStream extends InputStream {
     public int read() throws IOException {
         int data;
         if (count > 0) {
-            data = buffer[buffer.length - count];
+            byte byteValue = buffer[buffer.length - count];
+            // converting the byte to unsigned int value
+            data = byteValue & 0xff;
             count--;
         } else {
             data = inStream.read();
@@ -50,9 +52,31 @@ public class PushbackFilePartInputStream extends InputStream {
         return data;
     }
     
-    public boolean getBoundaryStatus()
-    {
-        return inStream.getBoundaryStatus();
+    public int read(byte b[], int off, int len) throws IOException {
+        if (count > 0) {
+            if (b == null) {
+                throw new NullPointerException();
+            } else if ((off < 0) || (off > b.length) || (len < 0) || ((off + len) > b.length)
+                    || ((off + len) < 0)) {
+                throw new IndexOutOfBoundsException();
+            } else if (len == 0) {
+                return 0;
+            }
+            int bytesCopied;
+            if (count < len) {
+                System.arraycopy(buffer, (buffer.length - count), b, off, count);
+                bytesCopied = count;
+                count=0;
+                return bytesCopied;
+            }
+            System.arraycopy(buffer, (buffer.length - count), b, off, len);
+            count -= len;
+            return len;
+        }
+        return inStream.read(b, off, len);
     }
-
+    
+    public int available() throws IOException {
+        return count+inStream.available();
+    }
 }
