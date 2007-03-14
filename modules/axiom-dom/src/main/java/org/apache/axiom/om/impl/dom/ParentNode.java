@@ -204,11 +204,26 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 ((DocumentImpl) this).documentElement = (ElementImpl) newDomChild;
             }
         }
-
+        boolean compositeChild = newDomChild.nextSibling != null;
+        ChildNode endChild = null;
+        
+        if(compositeChild) {
+            ChildNode tempNextChild = newDomChild.nextSibling;
+            while(tempNextChild != null) {
+                tempNextChild.parentNode = this;
+                endChild = tempNextChild;
+                tempNextChild = tempNextChild.nextSibling;
+            }            
+        }
+        
         if (refChild == null) { // Append the child to the end of the list
             // if there are no children
             if (this.lastChild == null && firstChild == null) {
-                this.lastChild = newDomChild;
+                if(compositeChild) {
+                    this.lastChild = endChild;
+                } else {
+                    this.lastChild = newDomChild;
+                }
                 this.firstChild = newDomChild;
                 this.firstChild.isFirstChild(true);
                 newDomChild.setParent(this);
@@ -216,7 +231,11 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 this.lastChild.nextSibling = newDomChild;
                 newDomChild.previousSibling = this.lastChild;
 
-                this.lastChild = newDomChild;
+                if(compositeChild) {
+                    this.lastChild = endChild;
+                } else {
+                    this.lastChild = newDomChild;
+                }
                 this.lastChild.nextSibling = null;
             }
             if (newDomChild.parentNode == null) {
@@ -340,9 +359,15 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                             (DocumentFragmentImpl) newDomChild;
                     ChildNode child = (ChildNode) docFrag.getFirstChild();
                     this.replaceChild(child, oldChild);
-                    if (child != null) {
+                    
+                    //set the parent of all kids to me
+                    while(child != null) {
                         child.parentNode = this;
+                        child = child.nextSibling;
                     }
+
+                    this.lastChild = (ChildNode)docFrag.getLastChild();
+                    
                 } else {
                     if (this.firstChild == oldDomChild) {
 
@@ -357,6 +382,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
                         //Set the new first child
                         this.firstChild = newDomChild;
+                        
 
                     } else {
                         newDomChild.nextSibling = oldDomChild.nextSibling;
