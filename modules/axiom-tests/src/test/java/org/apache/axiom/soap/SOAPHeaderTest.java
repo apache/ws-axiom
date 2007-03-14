@@ -21,6 +21,7 @@ import java.util.Iterator;
 
 public class SOAPHeaderTest extends SOAPHeaderTestCase {
     protected boolean isThereException;
+    private static final String ROLE_URI = "http://schemas.xmlsoap.org/soap/envelope/actor/next";
 
     public SOAPHeaderTest(String testName) {
         super(testName);
@@ -31,7 +32,7 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
     }
 
     //SOAP 1.1 Header Test (Programaticaly Created)--------------------------------------------------------------------------------
-    public void testSOAP11AddHeadearBlock() {
+    public void testSOAP11AddHeaderBlock() {
         soap11Header.addHeaderBlock("echoOk1", namespace);
         soap11Header.addHeaderBlock("echoOk2", namespace);
         Iterator iterator = soap11Header.getChildren();
@@ -63,21 +64,19 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
     }
 
     public void testSOAP11ExamineHeaderBlocks() {
+        System.out.println("Failing test...");
         soap11Header.addHeaderBlock("echoOk1", namespace).setRole(
                 "http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver");
-        soap11Header.addHeaderBlock("echoOk2", namespace).setRole(
-                "http://schemas.xmlsoap.org/soap/envelope/actor/next");
-        Iterator iterator = soap11Header.examineHeaderBlocks(
-                "http://schemas.xmlsoap.org/soap/envelope/actor/next");
+        soap11Header.addHeaderBlock("echoOk2", namespace).setRole(ROLE_URI);
+        Iterator iterator = soap11Header.examineHeaderBlocks(ROLE_URI);
         iterator.hasNext();
         SOAPHeaderBlock headerBlockWithRole1 = (SOAPHeaderBlock) iterator.next();
-        assertTrue(
+        assertEquals(
                 "SOAP 1.1 Header Test : - headerBlockWithRole local name mismatch",
-                headerBlockWithRole1.getLocalName().equals("echoOk2"));
-        assertTrue(
+                "echoOk2", headerBlockWithRole1.getLocalName());
+        assertEquals(
                 "SOAP 1.1 Header Test : - headerBlockWithRole role value mismatch",
-                headerBlockWithRole1.getRole().equals(
-                        "http://schemas.xmlsoap.org/soap/envelope/actor/next"));
+                ROLE_URI, headerBlockWithRole1.getRole());
 
 
         assertFalse(
@@ -425,17 +424,14 @@ public class SOAPHeaderTest extends SOAPHeaderTestCase {
 
     public void testSOAP12ExamineAllHeaderBlocksWithParser() {
         Iterator iterator = soap12HeaderWithParser.examineAllHeaderBlocks();
-        iterator.next();
         SOAPHeaderBlock headerBlock1 = (SOAPHeaderBlock) iterator.next();
         assertTrue(
                 "SOAP 1.2 Header Test With Parser : - headerBlock1 localname mmismatch",
                 headerBlock1.getLocalName().equals("echoOk"));
-        iterator.next();
         SOAPHeaderBlock headerBlock2 = (SOAPHeaderBlock) iterator.next();
         assertTrue(
                 "SOAP 1.2 Header Test With Parser : - headerBlock1 localname mmismatch",
                 headerBlock2.getLocalName().equals("echoOk1"));
-        iterator.next();
         SOAPHeaderBlock headerBlock3 = (SOAPHeaderBlock) iterator.next();
         assertTrue(
                 "SOAP 1.2 Header Test With Parser : - headerBlock1 localname mmismatch",

@@ -31,15 +31,139 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-/** Class SOAPHeaderImpl */
+/**
+ * A local interface we can use to make "header checker" objects which can be used
+ * by HeaderIterators to filter results.  This really SHOULD be done with anonymous
+ * classes:
+ *
+ * public void getHeadersByRole(final String role) {
+ *     return new HeaderIterator() {
+ *         public boolean checkHeader(SOAPHeaderBlock header) {
+ *             ...
+ *             if (role.equals(headerRole)) return true;
+ *             return false;
+ *         }
+ *     }
+ * }
+ *
+ * ...but there appears to be some kind of weird problem with the JVM not correctly
+ * scoping the passed "role" value in a situation like the above.  As such, we have
+ * to make Checker objects instead (sigh).
+ */
+interface Checker {
+    boolean checkHeader(SOAPHeaderBlock header);
+}
+
+/**
+ * A Checker to make sure headers match a given role.  If the role we're looking for is
+ * null, then everything matches.
+ */
+class RoleChecker implements Checker {
+    String role;
+
+    public RoleChecker(String role) {
+        this.role = role;
+    }
+
+    public boolean checkHeader(SOAPHeaderBlock header) {
+        if (role == null) {
+            return true;
+        }
+        String thisRole = header.getRole();
+        return (role.equals(thisRole));
+    }
+}
+
+/**
+ * A Checker to see that we both match a given role AND are mustUnderstand=true
+ */
+class MURoleChecker extends RoleChecker {
+    public MURoleChecker(String role) {
+        super(role);
+    }
+
+    public boolean checkHeader(SOAPHeaderBlock header) {
+        if (header.getMustUnderstand())
+            return super.checkHeader(header);
+        return false;
+    }
+}
+
+/**
+ * A class representing the SOAP Header, primarily allowing access to the contained
+ * HeaderBlocks.
+ */
 public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
+    /**
+     * An Iterator which walks the header list as needed, potentially filtering
+     * as we traverse.
+     */
+    class HeaderIterator implements Iterator {
+        SOAPHeaderBlock current;
+        boolean advance = false;
+        Checker checker;
+
+        public HeaderIterator() {
+            this(null);
+        }
+
+        public HeaderIterator(Checker checker) {
+            this.checker = checker;
+            current = (SOAPHeaderBlock)getFirstElement();
+            if (current != null) {
+                if (!checkHeader(current)) {
+                    advance = true;
+                    hasNext();
+                }
+            }
+        }
+
+        public void remove() {
+        }
+
+        public boolean checkHeader(SOAPHeaderBlock header) {
+            if (checker == null) return true;
+            return checker.checkHeader(header);
+        }
+
+        public boolean hasNext() {
+            if (!advance) {
+                return current != null;
+            }
+
+            advance = false;
+            OMNode sibling = current.getNextOMSibling();
+
+            while (sibling != null) {
+                if (sibling instanceof SOAPHeaderBlock) {
+                    SOAPHeaderBlock possible = (SOAPHeaderBlock)sibling;
+                    if (checkHeader(possible)) {
+                        current = (SOAPHeaderBlock)sibling;
+                        return true;
+                    }
+                }
+                sibling = sibling.getNextOMSibling();
+            }
+
+            current = null;
+            return false;
+        }
+
+        public Object next() {
+            SOAPHeaderBlock ret = current;
+            if (ret != null) {
+                advance = true;
+                hasNext();
+            }
+            return ret;
+        }
+    }
 
 
     protected SOAPHeaderImpl(OMNamespace ns, SOAPFactory factory) {
         super(SOAPConstants.HEADER_LOCAL_NAME, ns, factory);
     }
 
-    /** @param envelope  */
     public SOAPHeaderImpl(SOAPEnvelope envelope, SOAPFactory factory)
             throws SOAPProcessingException {
         super(envelope, SOAPConstants.HEADER_LOCAL_NAME, true, factory);
@@ -86,38 +210,8 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
      *         that contain the specified actor
      * @see #extractHeaderBlocks(String) extractHeaderBlocks(java.lang.String)
      */
-    public Iterator examineHeaderBlocks(String paramRole) {
-        Iterator headerBlocksIter = this.getChildren();
-        ArrayList headersWithGivenActor = new ArrayList();
-
-        if (paramRole == null || "".equals(paramRole)) {
-            return returnAllSOAPHeaders(this.getChildren());
-        }
-
-        while (headerBlocksIter.hasNext()) {
-            Object o = headerBlocksIter.next();
-            if (o instanceof SOAPHeaderBlock) {
-                SOAPHeaderBlock soapHeaderBlock = (SOAPHeaderBlock) o;
-                String role = soapHeaderBlock.getRole();
-                if ((role != null) && role.equalsIgnoreCase(paramRole)) {
-                    headersWithGivenActor.add(soapHeaderBlock);
-                }
-            }
-        }
-        return headersWithGivenActor.iterator();
-    }
-
-    private Iterator returnAllSOAPHeaders(Iterator children) {
-        ArrayList headers = new ArrayList();
-        while (children.hasNext()) {
-            Object o = children.next();
-            if (o instanceof SOAPHeaderBlock) {
-                headers.add(o);
-            }
-        }
-
-        return headers.iterator();
-
+    public Iterator examineHeaderBlocks(final String role) {
+        return new HeaderIterator(new RoleChecker(role));
     }
 
     /**
@@ -143,22 +237,8 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
      * @return an <code>Iterator</code> object over all the <code>SOAPHeaderBlock</code> objects
      *         that contain the specified actor and are marked as MustUnderstand
      */
-    public Iterator examineMustUnderstandHeaderBlocks(String actor) {
-        Iterator headerBlocksIter = this.getChildren();
-        ArrayList mustUnderstandHeadersWithGivenActor = new ArrayList();
-        while (headerBlocksIter.hasNext()) {
-            Object o = headerBlocksIter.next();
-            if (o instanceof SOAPHeaderBlock) {
-                SOAPHeaderBlock soapHeaderBlock = (SOAPHeaderBlock) o;
-                String role = soapHeaderBlock.getRole();
-                boolean mustUnderstand = soapHeaderBlock.getMustUnderstand();
-                if ((role != null) && role.equalsIgnoreCase(actor) &&
-                        mustUnderstand) {
-                    mustUnderstandHeadersWithGivenActor.add(soapHeaderBlock);
-                }
-            }
-        }
-        return mustUnderstandHeadersWithGivenActor.iterator();
+    public Iterator examineMustUnderstandHeaderBlocks(final String actor) {
+        return new HeaderIterator(new MURoleChecker(actor));
     }
 
     /**
@@ -170,7 +250,13 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
      *         contained by this <code>SOAPHeader</code>
      */
     public Iterator examineAllHeaderBlocks() {
-        return this.getChildrenWithName(null);
+        class DefaultChecker implements Checker {
+            public boolean checkHeader(SOAPHeaderBlock header) {
+                return true;
+            }
+        }
+
+        return new HeaderIterator(new DefaultChecker());
     }
 
     /**
@@ -186,7 +272,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
 
     public ArrayList getHeaderBlocksWithNSURI(String nsURI) {
         ArrayList headers = null;
-        OMNode node = null;
+        OMNode node;
         OMElement header = this.getFirstElement();
 
         if (header != null) {
@@ -224,5 +310,4 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
                     "Expecting an implementation of SOAP Envelope as the parent. But received some other implementation");
         }
     }
-
 }
