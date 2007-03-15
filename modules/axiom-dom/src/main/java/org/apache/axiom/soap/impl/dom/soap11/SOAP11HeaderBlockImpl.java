@@ -24,6 +24,8 @@ import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.impl.dom.SOAPHeaderBlockImpl;
 
 public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
@@ -118,7 +120,7 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
      *         <CODE>SOAPHeaderBlock</CODE> object is turned on; <CODE>false</CODE> otherwise
      */
     public boolean getMustUnderstand() throws SOAPProcessingException {
-        String mustUnderstand = "";
+        String mustUnderstand;
         if ((mustUnderstand =
                 getAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
                              SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI))
@@ -143,4 +145,14 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
         return false;
 
     }
+
+    /**
+     * What SOAP version is this HeaderBlock?
+     *
+     * @return a SOAPVersion, one of the two singletons.
+     */
+    public SOAPVersion getVersion() {
+        return SOAP11Version.getSingleton();
+    }
+
 }

@@ -21,42 +21,40 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.soap.RolePlayer;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAPVersion;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
- * A local interface we can use to make "header checker" objects which can be used
- * by HeaderIterators to filter results.  This really SHOULD be done with anonymous
- * classes:
- *
- * public void getHeadersByRole(final String role) {
- *     return new HeaderIterator() {
- *         public boolean checkHeader(SOAPHeaderBlock header) {
- *             ...
- *             if (role.equals(headerRole)) return true;
- *             return false;
- *         }
- *     }
- * }
- *
- * ...but there appears to be some kind of weird problem with the JVM not correctly
- * scoping the passed "role" value in a situation like the above.  As such, we have
- * to make Checker objects instead (sigh).
+ * A local interface we can use to make "header checker" objects which can be used by
+ * HeaderIterators to filter results.  This really SHOULD be done with anonymous classes:
+ * <p/>
+ * public void getHeadersByRole(final String role) { return new HeaderIterator() { public boolean
+ * checkHeader(SOAPHeaderBlock header) { ... if (role.equals(headerRole)) return true; return false;
+ * } } }
+ * <p/>
+ * ...but there appears to be some kind of weird problem with the JVM not correctly scoping the
+ * passed "role" value in a situation like the above.  As such, we have to make Checker objects
+ * instead (sigh).
  */
 interface Checker {
     boolean checkHeader(SOAPHeaderBlock header);
 }
 
 /**
- * A Checker to make sure headers match a given role.  If the role we're looking for is
- * null, then everything matches.
+ * A Checker to make sure headers match a given role.  If the role we're looking for is null, then
+ * everything matches.
  */
 class RoleChecker implements Checker {
     String role;
@@ -75,8 +73,50 @@ class RoleChecker implements Checker {
 }
 
 /**
- * A Checker to see that we both match a given role AND are mustUnderstand=true
+ * This Checker uses a RolePlayer to return the appropriate headers for that RolePlayer to process.
+ * Ignore "none", always "next", etc.
  */
+class RolePlayerChecker implements Checker {
+    RolePlayer rolePlayer;
+
+    public RolePlayerChecker(RolePlayer rolePlayer) {
+        this.rolePlayer = rolePlayer;
+    }
+
+    public boolean checkHeader(SOAPHeaderBlock header) {
+        String role = header.getRole();
+        SOAPVersion version = header.getVersion();
+
+        // 1. If role is ultimatedest, go by what the rolePlayer says
+        if (role == null || role.equals("") ||
+                (version instanceof SOAP12Version &&
+                        role.equals(SOAP12Constants.SOAP_ROLE_ULTIMATE_RECEIVER))) {
+            return rolePlayer.isUltimateDestination();
+        }
+
+        // 2. If role is next, always return true
+        if (role.equals(version.getNextRoleURI())) return true;
+
+        // 3. If role is none, always return false
+        if (version instanceof SOAP12Version &&
+                role.equals(SOAP12Constants.SOAP_ROLE_NONE)) {
+            return false;
+        }
+
+        // 4. Return t/f depending on match
+        List roles = rolePlayer.getRoles();
+        if (roles != null) {
+            for (Iterator i = roles.iterator(); i.hasNext();) {
+                String thisRole = (String) i.next();
+                if (thisRole.equals(role)) return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+/** A Checker to see that we both match a given role AND are mustUnderstand=true */
 class MURoleChecker extends RoleChecker {
     public MURoleChecker(String role) {
         super(role);
@@ -89,15 +129,9 @@ class MURoleChecker extends RoleChecker {
     }
 }
 
-/**
- * A class representing the SOAP Header, primarily allowing access to the contained
- * HeaderBlocks.
- */
+/** A class representing the SOAP Header, primarily allowing access to the contained HeaderBlocks. */
 public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
-    /**
-     * An Iterator which walks the header list as needed, potentially filtering
-     * as we traverse.
-     */
+    /** An Iterator which walks the header list as needed, potentially filtering as we traverse. */
     class HeaderIterator implements Iterator {
         SOAPHeaderBlock current;
         boolean advance = false;
@@ -109,7 +143,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
 
         public HeaderIterator(Checker checker) {
             this.checker = checker;
-            current = (SOAPHeaderBlock)getFirstElement();
+            current = (SOAPHeaderBlock) getFirstElement();
             if (current != null) {
                 if (!checkHeader(current)) {
                     advance = true;
@@ -136,9 +170,9 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
 
             while (sibling != null) {
                 if (sibling instanceof SOAPHeaderBlock) {
-                    SOAPHeaderBlock possible = (SOAPHeaderBlock)sibling;
+                    SOAPHeaderBlock possible = (SOAPHeaderBlock) sibling;
                     if (checkHeader(possible)) {
-                        current = (SOAPHeaderBlock)sibling;
+                        current = (SOAPHeaderBlock) sibling;
                         return true;
                     }
                 }
@@ -196,6 +230,20 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     public abstract SOAPHeaderBlock addHeaderBlock(String localName,
                                                    OMNamespace ns)
             throws OMException;
+
+    /**
+     * Get the appropriate set of headers for a RolePlayer.
+     * <p/>
+     * The RolePlayer indicates whether it is the ultimate destination (in which case headers with
+     * no role or the explicit UltimateDestination role will be included), and any non-standard
+     * roles it supports.  Headers targeted to "next" will always be included, and those targeted to
+     * "none" (for SOAP 1.2) will never be included.
+     *
+     * @return an Iterator over all the HeaderBlocks this RolePlayer should process.
+     */
+    public Iterator getHeadersToProcess(RolePlayer rolePlayer) {
+        return new HeaderIterator(new RolePlayerChecker(rolePlayer));
+    }
 
     /**
      * Returns a list of all the <CODE>SOAPHeaderBlock</CODE> objects in this

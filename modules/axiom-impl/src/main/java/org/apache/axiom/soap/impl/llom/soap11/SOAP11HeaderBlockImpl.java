@@ -24,6 +24,8 @@ import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderBlockImpl;
 
 public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
@@ -144,5 +146,9 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
     //TODO : implement
     public boolean getRelay() {
         throw new UnsupportedOperationException("Not supported for SOAP 1.1");
+    }
+
+    public SOAPVersion getVersion() {
+        return SOAP11Version.getSingleton();
     }
 }

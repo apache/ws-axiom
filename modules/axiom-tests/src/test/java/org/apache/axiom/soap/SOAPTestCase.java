@@ -20,13 +20,9 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 public abstract class SOAPTestCase extends AbstractTestCase {
@@ -42,7 +38,6 @@ public abstract class SOAPTestCase extends AbstractTestCase {
 
     protected static final String SOAP11_FILE_NAME = "soap/soap11/soap11message.xml";
     protected static final String SOAP12_FILE_NAME = "soap/soap12message.xml";
-    private Log log = LogFactory.getLog(getClass());
 
     /** @param testName  */
     public SOAPTestCase(String testName) {
@@ -66,17 +61,9 @@ public abstract class SOAPTestCase extends AbstractTestCase {
                         .getDocumentElement();
     }
 
-    protected StAXSOAPModelBuilder getSOAPBuilder(String fileName) {
-        XMLStreamReader parser = null;
-        try {
-            parser =
-                    XMLInputFactory.newInstance().createXMLStreamReader(
-                            new FileReader(getTestResourceFile(fileName)));
-        } catch (XMLStreamException e) {
-            log.info(e.getMessage());
-        } catch (FileNotFoundException e) {
-            log.info(e.getMessage());
-        }
+    protected StAXSOAPModelBuilder getSOAPBuilder(String fileName) throws Exception {
+        XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(
+                new FileReader(getTestResourceFile(fileName)));
         return new StAXSOAPModelBuilder(parser, null);
     }
 

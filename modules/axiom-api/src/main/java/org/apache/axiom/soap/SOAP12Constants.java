@@ -22,6 +22,8 @@ public interface SOAP12Constants extends SOAPConstants {
 
     public String SOAP_ENVELOPE_NAMESPACE_URI =
             "http://www.w3.org/2003/05/soap-envelope";
+    public String SOAP_ENCODING_NAMESPACE_URI =
+            "http://www.w3.org/2003/05/soap-encoding";
 
     public static final String SOAP_ROLE = "role";
     public static final String SOAP_RELAY = "relay";

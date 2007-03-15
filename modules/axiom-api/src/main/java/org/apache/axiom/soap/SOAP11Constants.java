@@ -21,6 +21,8 @@ public interface SOAP11Constants extends SOAPConstants {
     /** Eran Chinthaka (chinthaka@apache.org) */
     public static final String SOAP_ENVELOPE_NAMESPACE_URI =
             "http://schemas.xmlsoap.org/soap/envelope/";
+    public static final String SOAP_ENCODING_NAMESPACE_URI =
+            "http://schemas.xmlsoap.org/soap/encoding/";
 
     /** Field ATTR_ACTOR */
     public static final String ATTR_ACTOR = "actor";

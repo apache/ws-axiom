@@ -24,6 +24,8 @@ import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.impl.dom.SOAPHeaderBlockImpl;
 
 public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
@@ -141,4 +143,12 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
 
     }
 
+    /**
+     * What SOAP version is this HeaderBlock?
+     *
+     * @return a SOAPVersion, one of the two singletons.
+     */
+    public SOAPVersion getVersion() {
+        return SOAP12Version.getSingleton();
+    }
 }

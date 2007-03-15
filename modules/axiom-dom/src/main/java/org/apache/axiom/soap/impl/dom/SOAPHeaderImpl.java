@@ -28,6 +28,7 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.RolePlayer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,6 +70,20 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     public abstract SOAPHeaderBlock addHeaderBlock(String localName,
                                                    OMNamespace ns)
             throws OMException;
+
+    /**
+     * Get the appropriate set of headers for a RolePlayer.
+     * <p/>
+     * The RolePlayer indicates whether it is the ultimate destination (in which case headers with
+     * no role or the explicit UltimateDestination role will be included), and any non-standard
+     * roles it supports.  Headers targeted to "next" will always be included, and those targeted to
+     * "none" (for SOAP 1.2) will never be included.
+     *
+     * @return an Iterator over all the HeaderBlocks this RolePlayer should process.
+     */
+    public Iterator getHeadersToProcess(RolePlayer rolePlayer) {
+        return null; // TODO: Implement this!
+    }
 
     /**
      * Returns a list of all the <CODE>SOAPHeaderBlock</CODE> objects in this
@@ -209,7 +224,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
 
     public ArrayList getHeaderBlocksWithNSURI(String nsURI) {
         ArrayList headers = null;
-        OMNode node = null;
+        OMNode node;
         OMElement header = this.getFirstElement();
 
         if (header != null) {

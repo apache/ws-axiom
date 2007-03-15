@@ -36,8 +36,19 @@ public interface SOAPHeader extends OMElement {
      * @throws org.apache.axiom.om.OMException
      *          if a SOAP error occurs
      */
-    public abstract SOAPHeaderBlock addHeaderBlock(String localName,
-                                                   OMNamespace ns) throws OMException;
+    SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns) throws OMException;
+
+    /**
+     * Get the appropriate set of headers for a RolePlayer.
+     * 
+     * The RolePlayer indicates whether it is the ultimate destination (in which case
+     * headers with no role or the explicit UltimateDestination role will be included),
+     * and any non-standard roles it supports.  Headers targeted to "next" will always
+     * be included, and those targeted to "none" (for SOAP 1.2) will never be included.
+     *
+     * @return an Iterator over all the HeaderBlocks this RolePlayer should process.
+     */
+    Iterator getHeadersToProcess(RolePlayer rolePlayer);
 
     /**
      * Returns a list of all the <CODE>SOAPHeaderBlock</CODE> objects in this
@@ -52,7 +63,7 @@ public interface SOAPHeader extends OMElement {
      *         objects that contain the specified role
      * @see #extractHeaderBlocks(String) extractHeaderBlocks(java.lang.String)
      */
-    public abstract Iterator examineHeaderBlocks(String role);
+    Iterator examineHeaderBlocks(String role);
 
     /**
      * Returns a list of all the <CODE>SOAPHeaderBlock</CODE> objects in this
@@ -67,7 +78,7 @@ public interface SOAPHeader extends OMElement {
      *         objects that contain the specified role
      * @see #examineHeaderBlocks(String) examineHeaderBlocks(java.lang.String)
      */
-    public abstract Iterator extractHeaderBlocks(String role);
+    Iterator extractHeaderBlocks(String role);
 
     /**
      * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code> objects in this
@@ -78,7 +89,7 @@ public interface SOAPHeader extends OMElement {
      * @return Returns an <code>Iterator</code> object over all the <code>SOAPHeaderBlock</code>
      *         objects that contain the specified role and are marked as MustUnderstand.
      */
-    public abstract Iterator examineMustUnderstandHeaderBlocks(String role);
+    Iterator examineMustUnderstandHeaderBlocks(String role);
 
     /**
      * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code> objects in this
@@ -88,7 +99,7 @@ public interface SOAPHeader extends OMElement {
      *         contained by this <code>SOAPHeader</code>. If there are no header blocks then an
      *         empty iterator is returned.
      */
-    public abstract Iterator examineAllHeaderBlocks();
+    Iterator examineAllHeaderBlocks();
 
     /**
      * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code> objects in this
@@ -97,7 +108,7 @@ public interface SOAPHeader extends OMElement {
      * @return Returns an <code>Iterator</code> object over all the <code>SOAPHeaderBlock</code>
      *         objects contained by this <code>SOAPHeader</code>
      */
-    public abstract Iterator extractAllHeaderBlocks();
+    Iterator extractAllHeaderBlocks();
 
     /**
      * Return all the Headers that has the Namespace URI to given NS URI.

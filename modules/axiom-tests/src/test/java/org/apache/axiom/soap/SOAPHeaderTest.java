@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class SOAPHeaderTest extends SOAPHeaderTestCase {
-    protected boolean isThereException;
     private static final String ROLE_URI = "http://schemas.xmlsoap.org/soap/envelope/actor/next";
 
     public SOAPHeaderTest(String testName) {

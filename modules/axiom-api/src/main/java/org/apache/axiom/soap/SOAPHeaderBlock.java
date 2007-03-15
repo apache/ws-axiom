@@ -34,7 +34,7 @@ public interface SOAPHeaderBlock extends OMElement {
      *          if there is a problem in setting the actor.
      * @see #getRole() getRole()
      */
-    public abstract void setRole(String roleURI);
+    void setRole(String roleURI);
 
     /**
      * Returns the uri of the actor associated with this <CODE> SOAPHeaderBlock</CODE> object.
@@ -42,7 +42,7 @@ public interface SOAPHeaderBlock extends OMElement {
      * @return a <CODE>String</CODE> giving the URI of the actor
      * @see #setRole(String) setRole(java.lang.String)
      */
-    public abstract String getRole();
+    String getRole();
 
     /**
      * Sets the mustUnderstand attribute for this <CODE> SOAPHeaderBlock</CODE> object to be on or
@@ -57,9 +57,9 @@ public interface SOAPHeaderBlock extends OMElement {
      *          if there is a problem in setting the actor.
      * @see #getMustUnderstand() getMustUnderstand()
      */
-    public abstract void setMustUnderstand(boolean mustUnderstand);
+    void setMustUnderstand(boolean mustUnderstand);
 
-    public abstract void setMustUnderstand(String mustUnderstand) throws SOAPProcessingException;
+    void setMustUnderstand(String mustUnderstand) throws SOAPProcessingException;
 
     /**
      * Returns whether the mustUnderstand attribute for this <CODE>SOAPHeaderBlock</CODE> object is
@@ -68,10 +68,10 @@ public interface SOAPHeaderBlock extends OMElement {
      * @return <CODE>true</CODE> if the mustUnderstand attribute of this
      *         <CODE>SOAPHeaderBlock</CODE> object is turned on; <CODE>false</CODE> otherwise
      */
-    public abstract boolean getMustUnderstand() throws SOAPProcessingException;
+    boolean getMustUnderstand() throws SOAPProcessingException;
 
 
-    public abstract boolean isProcessed();
+    boolean isProcessed();
 
     /**
      * We need to know whether all the mustUnderstand headers have been processed by the node. This
@@ -79,7 +79,7 @@ public interface SOAPHeaderBlock extends OMElement {
      * the handlers who process a particular header block must explicitly say that he processesd the
      * header by calling setProcessed()
      */
-    public abstract void setProcessed();
+    void setProcessed();
 
 
     /**
@@ -89,12 +89,19 @@ public interface SOAPHeaderBlock extends OMElement {
      *
      * @param relay a <CODE>boolean</CODE> giving the value to be set
      */
-    public abstract void setRelay(boolean relay);
+    void setRelay(boolean relay);
 
     /**
      * Returns the relay  status associated with this <CODE> SOAPHeaderBlock</CODE> object.
      *
      * @return a <CODE>boolean</CODE> giving the relay status
      */
-    public abstract boolean getRelay();
+    boolean getRelay();
+
+    /**
+     * What SOAP version is this HeaderBlock?
+     *
+     * @return a SOAPVersion, one of the two singletons.
+     */
+    SOAPVersion getVersion();
 }
