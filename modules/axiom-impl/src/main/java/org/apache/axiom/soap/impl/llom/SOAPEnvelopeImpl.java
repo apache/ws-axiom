@@ -225,6 +225,6 @@ public class SOAPEnvelopeImpl extends SOAPElement
             element.getBuilder().setCache(false);
             OMSerializerUtil.serializeByPullStream(element, writer, false);
         }
-        child = (OMNodeImpl) child.getNextOMSibling();
+        child.getNextOMSibling();
     }
 }

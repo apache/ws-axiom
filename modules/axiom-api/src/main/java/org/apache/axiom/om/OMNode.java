@@ -42,56 +42,56 @@ public interface OMNode {
      *
      * @see #getType()
      */
-    public static final short ELEMENT_NODE = 1;
+    static final short ELEMENT_NODE = 1;
 
     /**
      * The node is a <code>Text</code> node.
      *
      * @see #getType()
      */
-    public static final short TEXT_NODE = XMLStreamConstants.CHARACTERS;
+    static final short TEXT_NODE = XMLStreamConstants.CHARACTERS;
 
     /**
      * The node is a <code>CDATASection</code>.
      *
      * @see #getType()
      */
-    public static final short CDATA_SECTION_NODE = XMLStreamConstants.CDATA;
+    static final short CDATA_SECTION_NODE = XMLStreamConstants.CDATA;
 
     /**
      * The node is a <code>Comment</code>.
      *
      * @see #getType()
      */
-    public static final short COMMENT_NODE = XMLStreamConstants.COMMENT;
+    static final short COMMENT_NODE = XMLStreamConstants.COMMENT;
 
     /**
      * This node is a <code>DTD</code>.
      *
      * @see #getType()
      */
-    public static final short DTD_NODE = XMLStreamConstants.DTD;
+    static final short DTD_NODE = XMLStreamConstants.DTD;
 
     /**
      * This node is a <code>ProcessingInstruction</code>.
      *
      * @see #getType()
      */
-    public static final short PI_NODE = XMLStreamConstants.PROCESSING_INSTRUCTION;
+    static final short PI_NODE = XMLStreamConstants.PROCESSING_INSTRUCTION;
 
     /**
      * This node is an <code>Entity Reference</code>.
      *
      * @see #getType()
      */
-    public static final short ENTITY_REFERENCE_NODE = XMLStreamConstants.ENTITY_REFERENCE;
+    static final short ENTITY_REFERENCE_NODE = XMLStreamConstants.ENTITY_REFERENCE;
 
     /**
      * This node is an <code>Entity Reference</code>.
      *
      * @see #getType()
      */
-    public static final short SPACE_NODE = XMLStreamConstants.SPACE;
+    static final short SPACE_NODE = XMLStreamConstants.SPACE;
 
     /**
      * Returns the parent containing node.
@@ -101,14 +101,14 @@ public interface OMNode {
      *
      * @return The {@link OMContainer} of the node.
      */
-    public OMContainer getParent();
+    OMContainer getParent();
 
     /**
      * Returns the next sibling in document order.
      *
      * @return Returns the next sibling in document order.
      */
-    public OMNode getNextOMSibling() throws OMException;
+    OMNode getNextOMSibling() throws OMException;
 
     /**
      * Indicates whether parser has parsed this information item completely or not. If some info are
@@ -117,7 +117,7 @@ public interface OMNode {
      *
      * @return Returns boolean.
      */
-    public boolean isComplete();
+    boolean isComplete();
 
     /**
      * Removes a node (and all of its children) from its containing parent.
@@ -132,7 +132,7 @@ public interface OMNode {
      * @throws OMException If a node is not complete, the detach can trigger further parsing, which may
      *                     cause an exception.
      */
-    public OMNode detach() throws OMException;
+    OMNode detach() throws OMException;
 
     /**
      * Discards a node.
@@ -143,7 +143,7 @@ public interface OMNode {
      *
      * @throws OMException
      */
-    public void discard() throws OMException;
+    void discard() throws OMException;
 
     /**
      * Inserts a new sibling after the current node.
@@ -151,7 +151,7 @@ public interface OMNode {
      * @param sibling The node that will be added after the current node.
      * @throws OMException
      */
-    public void insertSiblingAfter(OMNode sibling) throws OMException;
+    void insertSiblingAfter(OMNode sibling) throws OMException;
 
     /**
      * Inserts a sibling just before the current node.
@@ -159,7 +159,7 @@ public interface OMNode {
      * @param sibling The node that will be added before the current node.
      * @throws OMException
      */
-    public void insertSiblingBefore(OMNode sibling) throws OMException;
+    void insertSiblingBefore(OMNode sibling) throws OMException;
 
     /**
      * Returns the type of node.
@@ -168,14 +168,14 @@ public interface OMNode {
      *         {@link #COMMENT_NODE}, {@link #DTD_NODE}, {@link #PI_NODE}, {@link
      *         #ENTITY_REFERENCE_NODE}, {@link #SPACE_NODE}, or {@link #TEXT_NODE}.
      */
-    public int getType();
+    int getType();
 
     /**
      * Gets the previous sibling.
      *
      * @return Returns node.
      */
-    public OMNode getPreviousOMSibling();
+    OMNode getPreviousOMSibling();
 
     /**
      * Serializes the node with caching.
@@ -183,7 +183,7 @@ public interface OMNode {
      * @param xmlWriter
      * @throws XMLStreamException
      */
-    public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException;
+    void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException;
 
     /**
      * Serializes the node with caching.
@@ -191,7 +191,7 @@ public interface OMNode {
      * @param output
      * @throws XMLStreamException
      */
-    public void serialize(OutputStream output) throws XMLStreamException;
+    void serialize(OutputStream output) throws XMLStreamException;
 
     /**
      * Serializes the node with caching.
@@ -199,7 +199,7 @@ public interface OMNode {
      * @param writer
      * @throws XMLStreamException
      */
-    public void serialize(Writer writer) throws XMLStreamException;
+    void serialize(Writer writer) throws XMLStreamException;
 
     /**
      * Serializes the node with caching.
@@ -208,7 +208,7 @@ public interface OMNode {
      * @param format
      * @throws XMLStreamException
      */
-    public void serialize(OutputStream output, OMOutputFormat format)
+    void serialize(OutputStream output, OMOutputFormat format)
             throws XMLStreamException;
 
     /**
@@ -218,7 +218,7 @@ public interface OMNode {
      * @param format
      * @throws XMLStreamException
      */
-    public void serialize(Writer writer, OMOutputFormat format)
+    void serialize(Writer writer, OMOutputFormat format)
             throws XMLStreamException;
 
     /**
@@ -227,7 +227,7 @@ public interface OMNode {
      * @param xmlWriter
      * @throws XMLStreamException
      */
-    public void serializeAndConsume(XMLStreamWriter xmlWriter)
+    void serializeAndConsume(XMLStreamWriter xmlWriter)
             throws XMLStreamException;
 
     /**
@@ -236,7 +236,7 @@ public interface OMNode {
      * @param output
      * @throws XMLStreamException
      */
-    public void serializeAndConsume(OutputStream output)
+    void serializeAndConsume(OutputStream output)
             throws XMLStreamException;
 
     /**
@@ -245,7 +245,7 @@ public interface OMNode {
      * @param writer
      * @throws XMLStreamException
      */
-    public void serializeAndConsume(Writer writer) throws XMLStreamException;
+    void serializeAndConsume(Writer writer) throws XMLStreamException;
 
     /**
      * Serializes the node without caching.
@@ -254,7 +254,7 @@ public interface OMNode {
      * @param format
      * @throws XMLStreamException
      */
-    public void serializeAndConsume(OutputStream output, OMOutputFormat format)
+    void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException;
 
     /**
@@ -264,11 +264,11 @@ public interface OMNode {
      * @param format
      * @throws XMLStreamException
      */
-    public void serializeAndConsume(Writer writer, OMOutputFormat format)
+    void serializeAndConsume(Writer writer, OMOutputFormat format)
             throws XMLStreamException;
 
     /** Builds itself. */
-    public void build();
+    void build();
 
     /**
      * Builds itself with the OMText binary content. AXIOM supports two levels of deffered building.
@@ -277,11 +277,11 @@ public interface OMNode {
      * getDataHandler(). build() method builds the OM without the attachments. buildAll() builds the OM
      * together with attachement data. This becomes handy when user wants to free the input stream.
      */
-    public void buildWithAttachments();
+    void buildWithAttachments();
 
     /**
      * Returns the OMFactory that created this object
 	 */
-	public OMFactory getOMFactory();
+	OMFactory getOMFactory();
 
 }

@@ -40,9 +40,15 @@ import java.util.List;
  * A local interface we can use to make "header checker" objects which can be used by
  * HeaderIterators to filter results.  This really SHOULD be done with anonymous classes:
  * <p/>
- * public void getHeadersByRole(final String role) { return new HeaderIterator() { public boolean
- * checkHeader(SOAPHeaderBlock header) { ... if (role.equals(headerRole)) return true; return false;
- * } } }
+ * public void getHeadersByRole(final String role) {
+ *     return new HeaderIterator() {
+ *         public boolean checkHeader(SOAPHeaderBlock header) {
+ *             ...
+ *             if (role.equals(headerRole)) return true;
+ *             return false;
+ *         }
+ *     }
+ * }
  * <p/>
  * ...but there appears to be some kind of weird problem with the JVM not correctly scoping the
  * passed "role" value in a situation like the above.  As such, we have to make Checker objects

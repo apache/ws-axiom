@@ -21,26 +21,26 @@ import javax.xml.namespace.QName;
 /** Interface OMAttribute */
 public interface OMAttribute {
     /** @return Returns localName. */
-    public String getLocalName();
+    String getLocalName();
 
     /** @param localName  */
-    public void setLocalName(String localName);
+    void setLocalName(String localName);
 
     /** @return Returns String. */
-    public String getAttributeValue();
+    String getAttributeValue();
 
     /** @param value  */
-    public void setAttributeValue(String value);
+    void setAttributeValue(String value);
 
     /** @param omNamespace  */
-    public void setOMNamespace(OMNamespace omNamespace);
+    void setOMNamespace(OMNamespace omNamespace);
 
     /** @return Returns OMNamespace. */
-    public OMNamespace getNamespace();
+    OMNamespace getNamespace();
 
     /** @return Returns javax.xml.namespace.QName */
-    public QName getQName();
+    QName getQName();
 
     /** Returns the OMFactory that created this object */
-    public OMFactory getOMFactory();
+    OMFactory getOMFactory();
 }

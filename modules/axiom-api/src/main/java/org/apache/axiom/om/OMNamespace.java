@@ -25,14 +25,14 @@ public interface OMNamespace {
      * @param prefix
      * @return Returns boolean.
      */
-    public boolean equals(String uri, String prefix);
+    boolean equals(String uri, String prefix);
 
     /**
      * Method getPrefix.
      *
      * @return Returns String.
      */
-    public String getPrefix();
+    String getPrefix();
 
     /**
      * Method getName.
@@ -40,12 +40,12 @@ public interface OMNamespace {
      * @return Returns String.
      * @deprecated This method is deprecated. Please use getNamespaceURI() method instead.
      */
-    public String getName();
+    String getName();
 
     /**
      * Provides the namespace URI of this namespace.
      *
      * @return - the namespace URI of the namespace.
      */
-    public String getNamespaceURI();
+    String getNamespaceURI();
 }

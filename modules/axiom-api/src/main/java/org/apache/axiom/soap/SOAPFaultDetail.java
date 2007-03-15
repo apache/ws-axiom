@@ -31,8 +31,8 @@ import java.util.Iterator;
  */
 public interface SOAPFaultDetail extends OMElement {
     /** Eran Chinthaka (chinthaka@apache.org) */
-    public void addDetailEntry(OMElement detailElement);
+    void addDetailEntry(OMElement detailElement);
 
-    public Iterator getAllDetailEntries();
+    Iterator getAllDetailEntries();
 
 }

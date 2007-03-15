@@ -32,7 +32,7 @@ public interface OMContainer {
      *
      * @param omNode
      */
-    public void addChild(OMNode omNode);
+    void addChild(OMNode omNode);
 
     /**
      * Returns an iterator for child nodes matching the criteria indicated by the given QName.
@@ -52,7 +52,7 @@ public interface OMContainer {
      * @return Returns an iterator of {@link OMElement} items that match the given QName
      *         appropriately.
      */
-    public Iterator getChildrenWithName(QName elementQName);
+    Iterator getChildrenWithName(QName elementQName);
 
     /**
      * Returns the first child in document order that matches the given QName criteria.
@@ -65,7 +65,7 @@ public interface OMContainer {
      * @throws OMException Could indirectly trigger building of child nodes.
      * @see #getChildrenWithName
      */
-    public OMElement getFirstChildWithName(QName elementQName) throws OMException;
+    OMElement getFirstChildWithName(QName elementQName) throws OMException;
 
     /**
      * Returns an iterator for the children of the container.
@@ -74,16 +74,16 @@ public interface OMContainer {
      * @see #getFirstChildWithName
      * @see #getChildrenWithName
      */
-    public Iterator getChildren();
+    Iterator getChildren();
 
     /**
      * Gets the first child.
      *
      * @return Returns the first child.  May return null if the container has no children.
      */
-    public OMNode getFirstOMChild();
+    OMNode getFirstOMChild();
 
-    public boolean isComplete();
+    boolean isComplete();
 
-    public void buildNext();
+    void buildNext();
 }

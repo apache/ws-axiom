@@ -23,26 +23,26 @@ public interface OMProcessingInstruction extends OMNode {
      *
      * @param target
      */
-    public void setTarget(String target);
+    void setTarget(String target);
 
     /**
      * Gets the target of this Processing Instruction.
      *
      * @return Returns string.
      */
-    public String getTarget();
+    String getTarget();
 
     /**
      * Sets the value of this Processing Instruction.
      *
      * @param value
      */
-    public void setValue(String value);
+    void setValue(String value);
 
     /**
      * Gets the value of this Processing Instruction.
      *
      * @return Returns String.
      */
-    public String getValue();
+    String getValue();
 }

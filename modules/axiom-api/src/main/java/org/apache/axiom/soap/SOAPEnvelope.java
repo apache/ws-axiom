@@ -30,7 +30,7 @@ public interface SOAPEnvelope extends OMElement {
      * @throws org.apache.axiom.om.OMException
      *          if there is a problem obtaining the <CODE>SOAPHeader</CODE> object
      */
-    public abstract SOAPHeader getHeader() throws OMException;
+    SOAPHeader getHeader() throws OMException;
 
     /**
      * Returns the <CODE>SOAPBody</CODE> object associated with this <CODE>SOAPEnvelope</CODE>
@@ -41,5 +41,5 @@ public interface SOAPEnvelope extends OMElement {
      *         <CODE>null</CODE> if there is none
      * @throws OMException if there is a problem obtaining the <CODE>SOAPBody</CODE> object
      */
-    public abstract SOAPBody getBody() throws OMException;
+    SOAPBody getBody() throws OMException;
 }

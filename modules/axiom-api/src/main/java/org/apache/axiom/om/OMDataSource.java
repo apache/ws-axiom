@@ -22,7 +22,7 @@ public interface OMDataSource {
      *               supported by data binding even if supplied)
      * @throws XMLStreamException
      */
-    public void serialize(OutputStream output, OMOutputFormat format)
+    void serialize(OutputStream output, OMOutputFormat format)
             throws XMLStreamException;
 
     /**
@@ -33,7 +33,7 @@ public interface OMDataSource {
      *               supported by data binding even if supplied)
      * @throws XMLStreamException
      */
-    public void serialize(Writer writer, OMOutputFormat format)
+    void serialize(Writer writer, OMOutputFormat format)
             throws XMLStreamException;
 
     /**
@@ -42,7 +42,7 @@ public interface OMDataSource {
      * @param xmlWriter destination writer
      * @throws XMLStreamException
      */
-    public void serialize(XMLStreamWriter xmlWriter)
+    void serialize(XMLStreamWriter xmlWriter)
             throws XMLStreamException;
 
     /**
@@ -52,5 +52,5 @@ public interface OMDataSource {
      * @return element parser
      * @throws XMLStreamException
      */
-    public XMLStreamReader getReader() throws XMLStreamException;
+    XMLStreamReader getReader() throws XMLStreamException;
 }

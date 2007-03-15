@@ -32,7 +32,7 @@ public interface SOAPFaultNode extends OMElement {
      *
      * @param uri
      */
-    public void setNodeValue(String uri);
+    void setNodeValue(String uri);
 
-    public String getNodeValue();
+    String getNodeValue();
 }

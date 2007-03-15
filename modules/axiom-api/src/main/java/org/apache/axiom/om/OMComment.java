@@ -23,12 +23,12 @@ public interface OMComment extends OMNode {
      *
      * @return Returns String.
      */
-    public String getValue();
+    String getValue();
 
     /**
      * Sets the content of this comment to the specified string.
      *
      * @param text
      */
-    public void setValue(String text);
+    void setValue(String text);
 }

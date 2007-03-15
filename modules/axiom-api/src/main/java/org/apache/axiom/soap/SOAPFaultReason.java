@@ -23,11 +23,11 @@ import java.util.List;
 public interface SOAPFaultReason extends OMElement {
     /** Eran Chinthaka (chinthaka@apache.org) */
 
-    public void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException;
+    void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException;
 
-    public SOAPFaultText getFirstSOAPText();
+    SOAPFaultText getFirstSOAPText();
 
-    public List getAllSoapTexts();
+    List getAllSoapTexts();
 
-    public SOAPFaultText getSOAPFaultText(String language);
+    SOAPFaultText getSOAPFaultText(String language);
 }

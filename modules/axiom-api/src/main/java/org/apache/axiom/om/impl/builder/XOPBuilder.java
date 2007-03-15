@@ -6,7 +6,7 @@ import javax.activation.DataHandler;
 
 public interface XOPBuilder {
 
-    public abstract DataHandler getDataHandler(String blobContentID)
+    DataHandler getDataHandler(String blobContentID)
             throws OMException;
 
 }

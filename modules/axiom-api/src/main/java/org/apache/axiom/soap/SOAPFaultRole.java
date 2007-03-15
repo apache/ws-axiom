@@ -37,7 +37,7 @@ public interface SOAPFaultRole extends OMElement {
      *
      * @param uri
      */
-    public void setRoleValue(String uri);
+    void setRoleValue(String uri);
 
-    public String getRoleValue();
+    String getRoleValue();
 }

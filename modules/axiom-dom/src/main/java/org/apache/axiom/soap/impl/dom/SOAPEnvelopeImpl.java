@@ -76,7 +76,13 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
      * @throws OMException
      */
     public SOAPHeader getHeader() throws OMException {
-        return (SOAPHeader) getFirstChildWithName(new QName(SOAPConstants.HEADER_LOCAL_NAME));
+        // Header must be the first child
+        OMElement header = getFirstElement();
+        if (header == null || !(header instanceof SOAPHeader)) {
+            return null;
+        }
+
+        return (SOAPHeader) header;
     }
 
     public void addChild(OMNode child) {
@@ -201,7 +207,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
             element.getBuilder().setCache(false);
             OMSerializerUtil.serializeByPullStream(element, writer, false);
         }
-        child = (NodeImpl) child.getNextOMSibling();
+//        child = (NodeImpl) child.getNextOMSibling();
     }
 
     public OMNode getNextOMSibling() throws OMException {

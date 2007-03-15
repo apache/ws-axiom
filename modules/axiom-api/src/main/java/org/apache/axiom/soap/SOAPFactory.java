@@ -23,35 +23,35 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 
 public interface SOAPFactory extends OMFactory {
 
-    public String getSoapVersionURI();
+    String getSoapVersionURI();
 
     /** Eran Chinthaka (chinthaka@apache.org) */
 
-    public SOAPMessage createSOAPMessage();
+    SOAPMessage createSOAPMessage();
 
-    public SOAPMessage createSOAPMessage(OMXMLParserWrapper builder);
+    SOAPMessage createSOAPMessage(OMXMLParserWrapper builder);
 
-    public SOAPMessage createSOAPMessage(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper);
+    SOAPMessage createSOAPMessage(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper);
 
     /** @return Returns SOAPEnvelope. */
-    public SOAPEnvelope createSOAPEnvelope() throws SOAPProcessingException;
+    SOAPEnvelope createSOAPEnvelope() throws SOAPProcessingException;
 
-    public SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder);
+    SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder);
 
     /**
      * @param envelope
      * @return Returns SOAPHeader.
      */
-    public SOAPHeader createSOAPHeader(SOAPEnvelope envelope) throws SOAPProcessingException;
+    SOAPHeader createSOAPHeader(SOAPEnvelope envelope) throws SOAPProcessingException;
 
-    public SOAPHeader createSOAPHeader() throws SOAPProcessingException;
+    SOAPHeader createSOAPHeader() throws SOAPProcessingException;
 
     /**
      * @param envelope
      * @param builder
      * @return Returns SOAPHeader.
      */
-    public SOAPHeader createSOAPHeader(SOAPEnvelope envelope,
+    SOAPHeader createSOAPHeader(SOAPEnvelope envelope,
                                        OMXMLParserWrapper builder);
 
     /**
@@ -59,11 +59,11 @@ public interface SOAPFactory extends OMFactory {
      * @param ns
      * @return Returns SOAPHeaderBlock.
      */
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
+    SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  OMNamespace ns,
                                                  SOAPHeader parent) throws SOAPProcessingException;
 
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
+    SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  OMNamespace ns) throws SOAPProcessingException;
 
     /**
@@ -73,7 +73,7 @@ public interface SOAPFactory extends OMFactory {
      * @param builder
      * @return Returns SOAPHeaderBlock.
      */
-    public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
+    SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  OMNamespace ns,
                                                  SOAPHeader parent,
                                                  OMXMLParserWrapper builder)
@@ -84,34 +84,34 @@ public interface SOAPFactory extends OMFactory {
      * @param e
      * @return Returns SOAPFault.
      */
-    public SOAPFault createSOAPFault(SOAPBody parent, Exception e) throws SOAPProcessingException;
+    SOAPFault createSOAPFault(SOAPBody parent, Exception e) throws SOAPProcessingException;
 
-    public SOAPFault createSOAPFault(SOAPBody parent) throws SOAPProcessingException;
+    SOAPFault createSOAPFault(SOAPBody parent) throws SOAPProcessingException;
 
-    public SOAPFault createSOAPFault() throws SOAPProcessingException;
+    SOAPFault createSOAPFault() throws SOAPProcessingException;
 
     /**
      * @param parent
      * @param builder
      * @return Returns SOAPFault.
      */
-    public SOAPFault createSOAPFault(SOAPBody parent,
+    SOAPFault createSOAPFault(SOAPBody parent,
                                      OMXMLParserWrapper builder);
 
     /**
      * @param envelope
      * @return Returns SOAPBody.
      */
-    public SOAPBody createSOAPBody(SOAPEnvelope envelope) throws SOAPProcessingException;
+    SOAPBody createSOAPBody(SOAPEnvelope envelope) throws SOAPProcessingException;
 
-    public SOAPBody createSOAPBody() throws SOAPProcessingException;
+    SOAPBody createSOAPBody() throws SOAPProcessingException;
 
     /**
      * @param envelope
      * @param builder
      * @return Returns SOAPBody.
      */
-    public SOAPBody createSOAPBody(SOAPEnvelope envelope,
+    SOAPBody createSOAPBody(SOAPEnvelope envelope,
                                    OMXMLParserWrapper builder);
 
     /* ========================
@@ -124,9 +124,9 @@ public interface SOAPFactory extends OMFactory {
      * @param parent
      * @return Returns SOAPFaultCode.
      */
-    public SOAPFaultCode createSOAPFaultCode(SOAPFault parent) throws SOAPProcessingException;
+    SOAPFaultCode createSOAPFaultCode(SOAPFault parent) throws SOAPProcessingException;
 
-    public SOAPFaultCode createSOAPFaultCode() throws SOAPProcessingException;
+    SOAPFaultCode createSOAPFaultCode() throws SOAPProcessingException;
 
     /**
      * Code eii under SOAPFault (parent)
@@ -135,7 +135,7 @@ public interface SOAPFactory extends OMFactory {
      * @param builder
      * @return Returns SOAPFaultCode.
      */
-    public SOAPFaultCode createSOAPFaultCode(SOAPFault parent,
+    SOAPFaultCode createSOAPFaultCode(SOAPFault parent,
                                              OMXMLParserWrapper builder);
 
     /*========================
@@ -148,9 +148,9 @@ public interface SOAPFactory extends OMFactory {
      * @param parent
      * @return Returns SOAPFaultValue.
      */
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent) throws SOAPProcessingException;
+    SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent) throws SOAPProcessingException;
 
-    public SOAPFaultValue createSOAPFaultValue() throws SOAPProcessingException;
+    SOAPFaultValue createSOAPFaultValue() throws SOAPProcessingException;
 
     /**
      * Value eii under Code (parent)
@@ -159,7 +159,7 @@ public interface SOAPFactory extends OMFactory {
      * @param builder
      * @return Returns SOAPFaultValue.
      */
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent,
+    SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent,
                                                OMXMLParserWrapper builder);
 
     /*========================
@@ -174,18 +174,18 @@ public interface SOAPFactory extends OMFactory {
      */
 
     //added
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent)
+    SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent)
             throws SOAPProcessingException;
 
     //added
-    public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent,
+    SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent,
                                                OMXMLParserWrapper builder);
 
     //changed
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent)
+    SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent)
             throws SOAPProcessingException;
 
-    public SOAPFaultSubCode createSOAPFaultSubCode() throws SOAPProcessingException;
+    SOAPFaultSubCode createSOAPFaultSubCode() throws SOAPProcessingException;
 
     /**
      * SubCode eii under Value (parent)
@@ -195,7 +195,7 @@ public interface SOAPFactory extends OMFactory {
      * @return Returns SOAPFaultSubCode.
      */
     //changed
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent,
+    SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent,
                                                    OMXMLParserWrapper builder);
 
     /**
@@ -204,7 +204,7 @@ public interface SOAPFactory extends OMFactory {
      * @param parent
      * @return Returns SOAPFaultSubCode.
      */
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent)
+    SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent)
             throws SOAPProcessingException;
 
     /**
@@ -214,7 +214,7 @@ public interface SOAPFactory extends OMFactory {
      * @param builder
      * @return Returns SOAPFaultSubCode.
      */
-    public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent,
+    SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent,
                                                    OMXMLParserWrapper builder);
 
     /*========================
@@ -227,9 +227,9 @@ public interface SOAPFactory extends OMFactory {
      * @param parent
      * @return Returns SOAPFaultReason.
      */
-    public SOAPFaultReason createSOAPFaultReason(SOAPFault parent) throws SOAPProcessingException;
+    SOAPFaultReason createSOAPFaultReason(SOAPFault parent) throws SOAPProcessingException;
 
-    public SOAPFaultReason createSOAPFaultReason() throws SOAPProcessingException;
+    SOAPFaultReason createSOAPFaultReason() throws SOAPProcessingException;
 
     /**
      * Reason eii under SOAPFault (parent)
@@ -238,7 +238,7 @@ public interface SOAPFactory extends OMFactory {
      * @param builder
      * @return Returns SOAPFaultReason.
      */
-    public SOAPFaultReason createSOAPFaultReason(SOAPFault parent,
+    SOAPFaultReason createSOAPFaultReason(SOAPFault parent,
                                                  OMXMLParserWrapper builder);
 
     /*========================
@@ -251,9 +251,9 @@ public interface SOAPFactory extends OMFactory {
      * @param parent
      * @return Returns SOAPFaultText.
      */
-    public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent) throws SOAPProcessingException;
+    SOAPFaultText createSOAPFaultText(SOAPFaultReason parent) throws SOAPProcessingException;
 
-    public SOAPFaultText createSOAPFaultText() throws SOAPProcessingException;
+    SOAPFaultText createSOAPFaultText() throws SOAPProcessingException;
 
     /**
      * SubCode eii under SubCode (parent)
@@ -262,7 +262,7 @@ public interface SOAPFactory extends OMFactory {
      * @param builder
      * @return Returns SOAPFaultText.
      */
-    public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent,
+    SOAPFaultText createSOAPFaultText(SOAPFaultReason parent,
                                              OMXMLParserWrapper builder);
 
     /*========================
@@ -275,9 +275,9 @@ public interface SOAPFactory extends OMFactory {
      * @param parent
      * @return Returns SOAPFaultNode.
      */
-    public SOAPFaultNode createSOAPFaultNode(SOAPFault parent) throws SOAPProcessingException;
+    SOAPFaultNode createSOAPFaultNode(SOAPFault parent) throws SOAPProcessingException;
 
-    public SOAPFaultNode createSOAPFaultNode() throws SOAPProcessingException;
+    SOAPFaultNode createSOAPFaultNode() throws SOAPProcessingException;
 
     /**
      * Node eii under SOAPFault (parent)
@@ -286,7 +286,7 @@ public interface SOAPFactory extends OMFactory {
      * @param builder
      * @return Returns SOAPFaultNode.
      */
-    public SOAPFaultNode createSOAPFaultNode(SOAPFault parent,
+    SOAPFaultNode createSOAPFaultNode(SOAPFault parent,
                                              OMXMLParserWrapper builder);
 
     /*========================
@@ -299,9 +299,9 @@ public interface SOAPFactory extends OMFactory {
      * @param parent
      * @return Returns SOAPFaultRole.
      */
-    public SOAPFaultRole createSOAPFaultRole(SOAPFault parent) throws SOAPProcessingException;
+    SOAPFaultRole createSOAPFaultRole(SOAPFault parent) throws SOAPProcessingException;
 
-    public SOAPFaultRole createSOAPFaultRole() throws SOAPProcessingException;
+    SOAPFaultRole createSOAPFaultRole() throws SOAPProcessingException;
 
     /**
      * Role eii under SOAPFault (parent)
@@ -310,7 +310,7 @@ public interface SOAPFactory extends OMFactory {
      * @param builder
      * @return Returns SOAPFaultRole.
      */
-    public SOAPFaultRole createSOAPFaultRole(SOAPFault parent,
+    SOAPFaultRole createSOAPFaultRole(SOAPFault parent,
                                              OMXMLParserWrapper builder);
 
     /*========================
@@ -323,9 +323,9 @@ public interface SOAPFactory extends OMFactory {
      * @param parent
      * @return Returns SOAPFaultDetail.
      */
-    public SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent) throws SOAPProcessingException;
+    SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent) throws SOAPProcessingException;
 
-    public SOAPFaultDetail createSOAPFaultDetail() throws SOAPProcessingException;
+    SOAPFaultDetail createSOAPFaultDetail() throws SOAPProcessingException;
 
     /**
      * Role eii under SOAPFault (parent)
@@ -334,7 +334,7 @@ public interface SOAPFactory extends OMFactory {
      * @param builder
      * @return Returns SOAPFaultDetail.
      */
-    public SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent,
+    SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent,
                                                  OMXMLParserWrapper builder);
 
 
@@ -344,10 +344,10 @@ public interface SOAPFactory extends OMFactory {
      *
      * @return Returns SOAPEnvelope.
      */
-    public SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException;
+    SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException;
 
-    public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException;
+    SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException;
 
-    public OMNamespace getNamespace();
+    OMNamespace getNamespace();
 
 }

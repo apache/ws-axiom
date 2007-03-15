@@ -31,9 +31,9 @@ public interface SOAPFaultText extends OMElement {
      *
      * @param lang
      */
-    public void setLang(String lang);
+    void setLang(String lang);
 
-    public String getLang();
+    String getLang();
 
 
 }

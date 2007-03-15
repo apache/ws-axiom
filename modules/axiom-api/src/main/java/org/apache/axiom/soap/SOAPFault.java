@@ -41,45 +41,45 @@ public interface SOAPFault extends OMElement {
      *
      * @param soapFaultCode
      */
-    public void setCode(SOAPFaultCode soapFaultCode) throws SOAPProcessingException;
+    void setCode(SOAPFaultCode soapFaultCode) throws SOAPProcessingException;
 
-    public SOAPFaultCode getCode();
+    SOAPFaultCode getCode();
 
     /**
      * SOAPFaultReason is a mandatory item in a Fault, in SOAP 1.2 specification
      *
      * @param reason
      */
-    public void setReason(SOAPFaultReason reason) throws SOAPProcessingException;
+    void setReason(SOAPFaultReason reason) throws SOAPProcessingException;
 
-    public SOAPFaultReason getReason();
+    SOAPFaultReason getReason();
 
     /**
      * SOAPFaultNode is an optional item in a Fault, in SOAP 1.2 specification
      *
      * @param node
      */
-    public void setNode(SOAPFaultNode node) throws SOAPProcessingException;
+    void setNode(SOAPFaultNode node) throws SOAPProcessingException;
 
-    public SOAPFaultNode getNode();
+    SOAPFaultNode getNode();
 
     /**
      * SOAPFaultRoleImpl is an optional item in a Fault, in SOAP 1.2 specification
      *
      * @param role
      */
-    public void setRole(SOAPFaultRole role) throws SOAPProcessingException;
+    void setRole(SOAPFaultRole role) throws SOAPProcessingException;
 
-    public SOAPFaultRole getRole();
+    SOAPFaultRole getRole();
 
     /**
      * SOAPFaultRoleImpl is an optional item in a Fault, in SOAP 1.2 specification
      *
      * @param detail
      */
-    public void setDetail(SOAPFaultDetail detail) throws SOAPProcessingException;
+    void setDetail(SOAPFaultDetail detail) throws SOAPProcessingException;
 
-    public SOAPFaultDetail getDetail();
+    SOAPFaultDetail getDetail();
 
     /**
      * Returns Exception if there is one in the SOAP fault.
@@ -91,7 +91,7 @@ public interface SOAPFault extends OMElement {
      * @throws org.apache.axiom.om.OMException
      *
      */
-    public Exception getException() throws OMException;
+    Exception getException() throws OMException;
 
-    public void setException(Exception e) throws OMException;
+    void setException(Exception e) throws OMException;
 }

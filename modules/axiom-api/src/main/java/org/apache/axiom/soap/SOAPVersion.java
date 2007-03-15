@@ -25,20 +25,20 @@ public interface SOAPVersion {
     /**
      * Obtain the envelope namespace for this version of SOAP
      */
-    public String getEnvelopeURI();
+    String getEnvelopeURI();
 
     /**
      * Obtain the encoding namespace for this version of SOAP
      */
-    public String getEncodingURI();
+    String getEncodingURI();
 
     /**
      * Obtain the QName for the role attribute (actor/role)
      */
-    public QName getRoleAttributeQName();
+    QName getRoleAttributeQName();
 
     /**
      * Obtain the "next" role/actor URI
      */
-    public String getNextRoleURI();
+    String getNextRoleURI();
 }

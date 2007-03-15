@@ -22,18 +22,18 @@ import javax.xml.namespace.QName;
 public interface OMFactory {
 
     /** Creates a new OMDocument. */
-    public OMDocument createOMDocument();
+    OMDocument createOMDocument();
 
-    public OMDocument createOMDocument(OMXMLParserWrapper builder);
+    OMDocument createOMDocument(OMXMLParserWrapper builder);
 
 
     /**
      * @param localName
      * @param ns        - This can be null
      */
-    public OMElement createOMElement(String localName, OMNamespace ns);
+    OMElement createOMElement(String localName, OMNamespace ns);
 
-    public OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent)
+    OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent)
             throws OMException;
 
     /**
@@ -42,7 +42,7 @@ public interface OMFactory {
      * @param parent
      * @param builder
      */
-    public OMElement createOMElement(String localName, OMNamespace ns,
+    OMElement createOMElement(String localName, OMNamespace ns,
                                      OMContainer parent,
                                      OMXMLParserWrapper builder);
 
@@ -54,7 +54,7 @@ public interface OMFactory {
      * @param localName
      * @param ns
      */
-    public OMElement createOMElement(OMDataSource source, String localName,
+    OMElement createOMElement(OMDataSource source, String localName,
                                      OMNamespace ns);
 
     /**
@@ -68,7 +68,7 @@ public interface OMFactory {
      * @param namespacePrefix
      * @return Returns the newly created OMElement.
      */
-    public OMElement createOMElement(String localName,
+    OMElement createOMElement(String localName,
                                      String namespaceURI,
                                      String namespacePrefix);
 
@@ -81,7 +81,7 @@ public interface OMFactory {
      * @return Returns the new OMElement.
      * @throws OMException
      */
-    public OMElement createOMElement(QName qname, OMContainer parent)
+    OMElement createOMElement(QName qname, OMContainer parent)
             throws OMException;
 
     /**
@@ -89,20 +89,20 @@ public interface OMFactory {
      * @param prefix
      * @return Returns OMNameSpace.
      */
-    public OMNamespace createOMNamespace(String uri, String prefix);
+    OMNamespace createOMNamespace(String uri, String prefix);
 
     /**
      * @param parent
      * @param text
      * @return Returns OMText.
      */
-    public OMText createOMText(OMContainer parent, String text);
+    OMText createOMText(OMContainer parent, String text);
 
     /**
      * @param parent
      * @param text   - This text itself can contain a namespace inside it.
      */
-    public OMText createOMText(OMContainer parent, QName text);
+    OMText createOMText(OMContainer parent, QName text);
 
     /**
      * @param parent
@@ -111,22 +111,22 @@ public interface OMFactory {
      *               XMLStreamConstants.CDATA, XMLStreamConstants.SPACE, XMLStreamConstants.ENTITY_REFERENCE
      * @return Returns OMText.
      */
-    public OMText createOMText(OMContainer parent, String text, int type);
+    OMText createOMText(OMContainer parent, String text, int type);
 
-    public OMText createOMText(OMContainer parent, char[] charArary, int type);
+    OMText createOMText(OMContainer parent, char[] charArary, int type);
 
     /**
      * @param parent
      * @param text   - This text itself can contain a namespace inside it.
      * @param type
      */
-    public OMText createOMText(OMContainer parent, QName text, int type);
+    OMText createOMText(OMContainer parent, QName text, int type);
 
     /**
      * @param s
      * @return Returns OMText.
      */
-    public OMText createOMText(String s);
+    OMText createOMText(String s);
 
     /**
      * @param s
@@ -134,19 +134,19 @@ public interface OMFactory {
      *             Constants, use either XMLStreamConstants or constants found in OMNode.
      * @return Returns OMText.
      */
-    public OMText createOMText(String s, int type);
+    OMText createOMText(String s, int type);
 
-    public OMText createOMText(String s, String mimeType, boolean optimize);
+    OMText createOMText(String s, String mimeType, boolean optimize);
 
-    public OMText createOMText(Object dataHandler, boolean optimize);
+    OMText createOMText(Object dataHandler, boolean optimize);
 
-    public OMText createOMText(OMContainer parent, String s, String mimeType,
+    OMText createOMText(OMContainer parent, String s, String mimeType,
                                boolean optimize);
 
-    public OMText createOMText(String contentID, OMContainer parent,
+    OMText createOMText(String contentID, OMContainer parent,
                                OMXMLParserWrapper builder);
 
-    public OMAttribute createOMAttribute(String localName,
+    OMAttribute createOMAttribute(String localName,
                                          OMNamespace ns,
                                          String value);
 
@@ -157,7 +157,7 @@ public interface OMFactory {
      * @param content
      * @return Returns doctype.
      */
-    public OMDocType createOMDocType(OMContainer parent, String content);
+    OMDocType createOMDocType(OMContainer parent, String content);
 
     /**
      * Creates a PI.
@@ -167,7 +167,7 @@ public interface OMFactory {
      * @param piData
      * @return Returns OMProcessingInstruction.
      */
-    public OMProcessingInstruction createOMProcessingInstruction(OMContainer parent,
+    OMProcessingInstruction createOMProcessingInstruction(OMContainer parent,
                                                                  String piTarget, String piData);
 
     /**
@@ -177,5 +177,5 @@ public interface OMFactory {
      * @param content
      * @return Returns OMComment.
      */
-    public OMComment createOMComment(OMContainer parent, String content);
+    OMComment createOMComment(OMContainer parent, String content);
 }

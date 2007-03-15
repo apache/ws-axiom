@@ -117,8 +117,7 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
                         ||
                         ((elementQName != null)
                                 &&
-                                elementQName.getLocalPart().equalsIgnoreCase(
-                                        localPart));
+                                elementQName.getLocalPart().equals(localPart));
         String namespaceURI = qNameToBeMatched.getNamespaceURI();
         boolean namespaceURIMatch =
                 (namespaceURI == null)
@@ -126,8 +125,7 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
                         ||
                         ((elementQName != null)
                                 &&
-                                elementQName.getNamespaceURI().equalsIgnoreCase(
-                                        namespaceURI));
+                                elementQName.getNamespaceURI().equals(namespaceURI));
         return localNameMatch && namespaceURIMatch;
     }
 }

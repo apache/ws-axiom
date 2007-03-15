@@ -39,7 +39,7 @@ public interface SOAPBody extends OMElement {
      * @throws org.apache.axiom.om.OMException
      *
      */
-    public abstract SOAPFault addFault(Exception e) throws OMException;
+    SOAPFault addFault(Exception e) throws OMException;
 
     /**
      * Indicates whether a <code>SOAPFault</code> object exists in this <code>SOAPBody</code>
@@ -48,20 +48,20 @@ public interface SOAPBody extends OMElement {
      * @return <code>true</code> if a <code>SOAPFault</code> object exists in this
      *         <code>SOAPBody</code> object; <code>false</code> otherwise
      */
-    public abstract boolean hasFault();
+    boolean hasFault();
 
     /**
      * Returns the <code>SOAPFault</code> object in this <code>SOAPBody</code> object.
      *
      * @return the <code>SOAPFault</code> object in this <code>SOAPBody</code> object
      */
-    public abstract SOAPFault getFault();
+    SOAPFault getFault();
 
     /**
      * @param soapFault
      * @throws OMException
      */
-    public abstract void addFault(SOAPFault soapFault) throws OMException;
+    void addFault(SOAPFault soapFault) throws OMException;
 
 
 }

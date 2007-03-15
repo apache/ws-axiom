@@ -21,44 +21,44 @@ public interface OMConstants {
 
     // OMBuilder constants
     /** Field PUSH_TYPE_BUILDER */
-    public static final short PUSH_TYPE_BUILDER = 0;
+    static final short PUSH_TYPE_BUILDER = 0;
 
     /** Field PULL_TYPE_BUILDER */
-    public static final short PULL_TYPE_BUILDER = 1;
+    static final short PULL_TYPE_BUILDER = 1;
 
     /** Field ARRAY_ITEM_NSURI */
-    public static final String ARRAY_ITEM_NSURI =
+    static final String ARRAY_ITEM_NSURI =
             "http://axis.apache.org/encoding/Arrays";
 
     /** Field ARRAY_ITEM_LOCALNAME */
-    public static final String ARRAY_ITEM_LOCALNAME = "item";
+    static final String ARRAY_ITEM_LOCALNAME = "item";
 
     /** Field ARRAY_ITEM_NS_PREFIX */
-    public static final String ARRAY_ITEM_NS_PREFIX = "arrays";
+    static final String ARRAY_ITEM_NS_PREFIX = "arrays";
 
     /** Field ARRAY_ITEM_QNAME */
-    public static final String ARRAY_ITEM_QNAME =
+    static final String ARRAY_ITEM_QNAME =
             OMConstants.ARRAY_ITEM_NS_PREFIX + ':'
                     + OMConstants.ARRAY_ITEM_LOCALNAME;
 
     /** Field DEFAULT_CHAR_SET_ENCODING specifies the default character encoding scheme to be used */
-    public static final String DEFAULT_CHAR_SET_ENCODING = "utf-8";
-    public static final String DEFAULT_XML_VERSION = "1.0";
+    static final String DEFAULT_CHAR_SET_ENCODING = "utf-8";
+    static final String DEFAULT_XML_VERSION = "1.0";
 
 
-    public static final String XMLNS_URI =
+    static final String XMLNS_URI =
             "http://www.w3.org/XML/1998/namespace";
 
-    public static final String XMLNS_NS_URI = "http://www.w3.org/2000/xmlns/";
-    public final static String XMLNS_NS_PREFIX = "xmlns";
+    static final String XMLNS_NS_URI = "http://www.w3.org/2000/xmlns/";
+    final static String XMLNS_NS_PREFIX = "xmlns";
 
-    public static final String XMLNS_PREFIX =
+    static final String XMLNS_PREFIX =
             "xml";
     String IS_BINARY = "Axiom.IsBinary";
     String DATA_HANDLER = "Axiom.DataHandler";
     String IS_DATA_HANDLERS_AWARE = "IsDatahandlersAwareParsing";
 
     /** No its not a mistake. This is the default nsURI of the default namespace of a node */
-    public static final String DEFAULT_DEFAULT_NAMESPACE = "\"\"";
+    static final String DEFAULT_DEFAULT_NAMESPACE = "\"\"";
 
 }

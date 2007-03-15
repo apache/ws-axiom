@@ -28,9 +28,9 @@ public interface SOAPFaultSubCode extends OMElement {
      *
      * @param soapFaultSubCodeValue
      */
-    public void setValue(SOAPFaultValue soapFaultSubCodeValue) throws SOAPProcessingException;
+    void setValue(SOAPFaultValue soapFaultSubCodeValue) throws SOAPProcessingException;
 
-    public SOAPFaultValue getValue();
+    SOAPFaultValue getValue();
 
 
     /**
@@ -38,7 +38,7 @@ public interface SOAPFaultSubCode extends OMElement {
      *
      * @param subCode
      */
-    public void setSubCode(SOAPFaultSubCode subCode) throws SOAPProcessingException;
+    void setSubCode(SOAPFaultSubCode subCode) throws SOAPProcessingException;
 
-    public SOAPFaultSubCode getSubCode();
+    SOAPFaultSubCode getSubCode();
 }

@@ -18,6 +18,7 @@ package org.apache.axiom.om;
 
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
+import org.apache.axiom.soap.SOAP11Constants;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -80,7 +81,8 @@ public class IteratorTest extends AbstractTestCase {
     /** Test the element iterator */
     public void testElementQNameIterator() {
         OMElement elt = envelope;
-        QName qname = new QName("http://schemas.xmlsoap.org/soap/envelope/", "body");
+        QName qname = new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
+                                SOAP11Constants.BODY_LOCAL_NAME);
         Iterator iter = elt.getChildrenWithName(qname);
         int counter = 0;
         while (iter.hasNext()) {
@@ -202,9 +204,7 @@ public class IteratorTest extends AbstractTestCase {
             image.addChild(textData);
 
             OMElement imageName = fac.createOMElement("fileName", omNs);
-            if (imageSource != null) {
-                imageName.setText(imageSource.getAbsolutePath());
-            }
+            imageName.setText(imageSource.getAbsolutePath());
             data.addChild(image);
             data.addChild(imageName);
 
@@ -220,7 +220,7 @@ public class IteratorTest extends AbstractTestCase {
         Iterator imageElementIter = mtomSampleElement.getChildrenWithName(new QName("image"));
         // do something with the iterator
         while (imageElementIter.hasNext()) {
-            OMNode omNode = (OMNode) imageElementIter.next();
+            imageElementIter.next();
             // do nothing
         }
 
