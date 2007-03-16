@@ -114,4 +114,14 @@ public class SOAPEnvelopeTest extends SOAPTestCase {
         soapFac.createSOAPHeader(defaultEnvelope);
 
     }
+
+    // Make sure order of header/body creation doesn't matter
+    public void testBodyHeaderOrder() throws Exception {
+//        SOAPFactory soapFac = new org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory();
+        SOAPFactory soapFac = new org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory();
+        SOAPEnvelope env = soapFac.createSOAPEnvelope();
+        SOAPBody body = soapFac.createSOAPBody(env);
+        SOAPHeader header = soapFac.createSOAPHeader(env);
+        assertTrue("Header isn't the first child!", env.getFirstElement() instanceof SOAPHeader);
+    }
 }

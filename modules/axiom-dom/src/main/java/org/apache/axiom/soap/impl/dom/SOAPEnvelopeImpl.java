@@ -92,6 +92,13 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
                     "SOAP Envelope can not have children other than SOAP Header and Body",
                     SOAP12Constants.FAULT_CODE_SENDER);
         } else {
+            if (this.done && (child instanceof SOAPHeader)) {
+                SOAPBody body = getBody();
+                if (body != null) {
+                    body.insertSiblingBefore(child);
+                    return;
+                }
+            }
             super.addChild(child);
         }
     }

@@ -85,6 +85,12 @@ class RoleChecker implements Checker {
 class RolePlayerChecker implements Checker {
     RolePlayer rolePlayer;
 
+    /**
+     * Constructor.
+     *
+     * @param rolePlayer the RolePlayer to check against.  This can be null, in which
+     *                   case we assume we're the ultimate destination.
+     */
     public RolePlayerChecker(RolePlayer rolePlayer) {
         this.rolePlayer = rolePlayer;
     }
@@ -97,7 +103,7 @@ class RolePlayerChecker implements Checker {
         if (role == null || role.equals("") ||
                 (version instanceof SOAP12Version &&
                         role.equals(SOAP12Constants.SOAP_ROLE_ULTIMATE_RECEIVER))) {
-            return rolePlayer.isUltimateDestination();
+            return (rolePlayer == null || rolePlayer.isUltimateDestination());
         }
 
         // 2. If role is next, always return true
@@ -110,7 +116,7 @@ class RolePlayerChecker implements Checker {
         }
 
         // 4. Return t/f depending on match
-        List roles = rolePlayer.getRoles();
+        List roles = (rolePlayer == null) ? null : rolePlayer.getRoles();
         if (roles != null) {
             for (Iterator i = roles.iterator(); i.hasNext();) {
                 String thisRole = (String) i.next();

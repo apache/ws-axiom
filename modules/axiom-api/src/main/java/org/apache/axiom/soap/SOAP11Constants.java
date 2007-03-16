@@ -16,32 +16,38 @@
 
 package org.apache.axiom.soap;
 
+import javax.xml.namespace.QName;
+
 
 public interface SOAP11Constants extends SOAPConstants {
     /** Eran Chinthaka (chinthaka@apache.org) */
-    public static final String SOAP_ENVELOPE_NAMESPACE_URI =
+    static final String SOAP_ENVELOPE_NAMESPACE_URI =
             "http://schemas.xmlsoap.org/soap/envelope/";
-    public static final String SOAP_ENCODING_NAMESPACE_URI =
+    static final String SOAP_ENCODING_NAMESPACE_URI =
             "http://schemas.xmlsoap.org/soap/encoding/";
 
     /** Field ATTR_ACTOR */
-    public static final String ATTR_ACTOR = "actor";
+    static final String ATTR_ACTOR = "actor";
 
     /** Field SOAP_FAULT_CODE_LOCAL_NAME */
-    public static final String SOAP_FAULT_CODE_LOCAL_NAME = "faultcode";
+    static final String SOAP_FAULT_CODE_LOCAL_NAME = "faultcode";
     /** Field SOAP_FAULT_STRING_LOCAL_NAME */
-    public static final String SOAP_FAULT_STRING_LOCAL_NAME = "faultstring";
+    static final String SOAP_FAULT_STRING_LOCAL_NAME = "faultstring";
     /** Field SOAP_FAULT_ACTOR_LOCAL_NAME */
-    public static final String SOAP_FAULT_ACTOR_LOCAL_NAME = "faultactor";
+    static final String SOAP_FAULT_ACTOR_LOCAL_NAME = "faultactor";
 
-    public static final String SOAP_FAULT_DETAIL_LOCAL_NAME = "detail";
+    static final String SOAP_FAULT_DETAIL_LOCAL_NAME = "detail";
 
     //SOAP 1.2 Content Type
-    public static final String SOAP_11_CONTENT_TYPE = "text/xml";
+    static final String SOAP_11_CONTENT_TYPE = "text/xml";
+
+    static final QName QNAME_ACTOR = new QName(SOAP_ENVELOPE_NAMESPACE_URI, ATTR_ACTOR);
+    static final QName QNAME_MU_FAULTCODE = new QName(SOAP_ENVELOPE_NAMESPACE_URI,
+                                                      FAULT_CODE_MUST_UNDERSTAND);
 
     // -------- SOAP Fault Codes ------------------------------
-    public static final String FAULT_CODE_SENDER = "Client";
-    public static final String FAULT_CODE_RECEIVER = "Server";
+    static final String FAULT_CODE_SENDER = "Client";
+    static final String FAULT_CODE_RECEIVER = "Server";
 
-    public static final String SOAP_ACTOR_NEXT = "http://schemas.xmlsoap.org/soap/actor/next";
+    static final String SOAP_ACTOR_NEXT = "http://schemas.xmlsoap.org/soap/actor/next";
 }

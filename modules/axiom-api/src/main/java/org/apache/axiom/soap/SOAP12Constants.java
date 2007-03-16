@@ -16,6 +16,8 @@
 
 package org.apache.axiom.soap;
 
+import javax.xml.namespace.QName;
+
 
 public interface SOAP12Constants extends SOAPConstants {
     /** Eran Chinthaka (chinthaka@apache.org) */
@@ -59,6 +61,11 @@ public interface SOAP12Constants extends SOAPConstants {
 
     //SOAP 1.2 Content Type
     public static final String SOAP_12_CONTENT_TYPE = "application/soap+xml";
+
+    // QNames
+    static final QName QNAME_ROLE = new QName(SOAP_ENVELOPE_NAMESPACE_URI, SOAP_ROLE);
+    static final QName QNAME_MU_FAULTCODE = new QName(SOAP_ENVELOPE_NAMESPACE_URI,
+                                                      FAULT_CODE_MUST_UNDERSTAND);
 
     // -------- SOAP Fault Codes ------------------------------
     public static final String FAULT_CODE_SENDER = "Sender";

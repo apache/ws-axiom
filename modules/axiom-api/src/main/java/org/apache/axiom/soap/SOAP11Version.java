@@ -24,8 +24,6 @@ public class SOAP11Version implements SOAPVersion, SOAP11Constants {
     private static final SOAP11Version singleton = new SOAP11Version();
     public static SOAP11Version getSingleton() { return singleton; }
 
-    QName actorQName = new QName(SOAP_ENVELOPE_NAMESPACE_URI, ATTR_ACTOR);
-
     private SOAP11Version() {
     }
 
@@ -41,11 +39,16 @@ public class SOAP11Version implements SOAPVersion, SOAP11Constants {
 
     /** Obtain the QName for the role attribute (actor/role) */
     public QName getRoleAttributeQName() {
-        return actorQName;
+        return QNAME_ACTOR;
     }
 
     /** Obtain the "next" role/actor URI */
     public String getNextRoleURI() {
         return SOAP_ACTOR_NEXT;
+    }
+
+    /** Obtain the QName for the MustUnderstand fault code */
+    public QName getMustUnderstandFaultCode() {
+        return QNAME_MU_FAULTCODE;
     }
 }

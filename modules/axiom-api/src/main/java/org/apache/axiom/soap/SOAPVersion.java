@@ -41,4 +41,9 @@ public interface SOAPVersion {
      * Obtain the "next" role/actor URI
      */
     String getNextRoleURI();
+
+    /**
+     * Obtain the QName for the MustUnderstand fault code
+     */
+    QName getMustUnderstandFaultCode();
 }
