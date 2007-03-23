@@ -29,67 +29,66 @@ import java.io.ByteArrayInputStream;
 
 public class OMAttributeTest extends TestCase {
 
-    public void testAddAttribute() {
+    public void testNullLocalName() throws Exception {
+        OMFactory factory = OMAbstractFactory.getOMFactory();
+        try {
+            factory.createOMAttribute(null, null, null);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+        fail("Null localname was accepted!");
+    }
+
+    public void testEmptyLocalName() throws Exception {
+        OMFactory factory = OMAbstractFactory.getOMFactory();
+        try {
+            factory.createOMAttribute("", null, null);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+        fail("Empty localname was accepted!");
+    }
+
+    public void testAddAttribute() throws Exception {
         String xmlString =
                 "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"><soapenv:Header name = \"jhon\"/><soapenv:Body><my:uploadFileUsingMTOM xmlns:my=\"http://localhost/my\"><my:folderName>/home/saliya/Desktop</my:folderName></my:uploadFileUsingMTOM></soapenv:Body><Body>TTTT</Body> </soapenv:Envelope>";
 
-
-        String test1 = "";
-        String test2 = "";
-
-        test1 = addAttributeMethod1(xmlString);
-        test2 = addAttributeMethod2(xmlString);
-
-        assertEquals(test1, test2);
+        assertEquals(addAttributeMethod1(xmlString), addAttributeMethod2(xmlString));
     }
 
-    private String addAttributeMethod1(String xmlString) {
+    private String addAttributeMethod1(String xmlString) throws Exception {
         XMLStreamReader parser2;
 
-        try {
-            parser2 = XMLInputFactory.newInstance()
-                    .createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
-            StAXOMBuilder builder2 = new StAXOMBuilder(parser2);
-            OMElement doc = builder2.getDocumentElement();
+        parser2 = XMLInputFactory.newInstance()
+                .createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
+        StAXOMBuilder builder2 = new StAXOMBuilder(parser2);
+        OMElement doc = builder2.getDocumentElement();
 
-            OMFactory factory = OMAbstractFactory.getOMFactory();
-            OMNamespace ns = factory.createOMNamespace("http://www.me.com", "axiom");
+        OMFactory factory = OMAbstractFactory.getOMFactory();
+        OMNamespace ns = factory.createOMNamespace("http://www.me.com", "axiom");
 
-            //code line to be tested
-            OMAttribute at = factory.createOMAttribute("id", ns, "value");
-            doc.addAttribute(at);
+        //code line to be tested
+        OMAttribute at = factory.createOMAttribute("id", ns, "value");
+        doc.addAttribute(at);
 
-            return doc.toString();
-
-        } catch (Exception e) {
-            return "ERROR";
-            //e.printStackTrace();
-        }
-
+        return doc.toString();
     }
 
-    private String addAttributeMethod2(String xmlString) {
+    private String addAttributeMethod2(String xmlString) throws Exception {
         XMLStreamReader parser2;
 
-        try {
-            parser2 = XMLInputFactory.newInstance()
-                    .createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
-            StAXOMBuilder builder2 = new StAXOMBuilder(parser2);
-            OMElement doc = builder2.getDocumentElement();
+        parser2 = XMLInputFactory.newInstance()
+                .createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
+        StAXOMBuilder builder2 = new StAXOMBuilder(parser2);
+        OMElement doc = builder2.getDocumentElement();
 
-            OMFactory factory = OMAbstractFactory.getOMFactory();
-            OMNamespace ns = factory.createOMNamespace("http://www.me.com", "axiom");
+        OMFactory factory = OMAbstractFactory.getOMFactory();
+        OMNamespace ns = factory.createOMNamespace("http://www.me.com", "axiom");
 
-            //code line to be tested
-            doc.addAttribute("id", "value", ns);
+        //code line to be tested
+        doc.addAttribute("id", "value", ns);
 
-            return doc.toString();
-
-        } catch (Exception e) {
-            return "ERROR";
-            //e.printStackTrace();
-        }
-
+        return doc.toString();
     }
 
 }

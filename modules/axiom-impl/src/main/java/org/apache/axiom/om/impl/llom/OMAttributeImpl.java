@@ -43,8 +43,11 @@ public class OMAttributeImpl implements OMAttribute {
      * @param ns
      * @param value
      */
-    public OMAttributeImpl(String localName, OMNamespace ns, String value,
-                           OMFactory factory) {
+    public OMAttributeImpl(String localName, OMNamespace ns, String value, OMFactory factory) 
+    {
+        if (localName == null || localName.length() == 0)
+            throw new IllegalArgumentException("Local name may not be null or empty");
+
         this.localName = localName;
         this.value = value;
         this.namespace = ns;
@@ -77,6 +80,8 @@ public class OMAttributeImpl implements OMAttribute {
      * @param localName
      */
     public void setLocalName(String localName) {
+        if (localName == null || localName.length() == 0)
+            throw new IllegalArgumentException("Local name may not be null or empty");
         this.localName = localName;
     }
 
