@@ -100,16 +100,34 @@ public class OMLinkedListImplFactory implements OMFactory {
     }
 
     /**
-     * Method createOMElement.
+     * Create an OMElement with the given QName under the given parent.
      *
-     * @param qname
-     * @param parent
-     * @return Returns OMElement.
-     * @throws OMException
+     * If the QName contains a prefix, we will ensure that an OMNamespace is created
+     * mapping the given namespace to the given prefix.  If no prefix is passed, we'll
+     * use whatever's already mapped in the parent, or create a generated one.
+     *
+     * @param qname the QName of the element to create
+     * @param parent the OMContainer in which to place the new element
+     * @return Returns the new OMElement
+     * @throws OMException if there's a namespace mapping problem
      */
     public OMElement createOMElement(QName qname, OMContainer parent)
             throws OMException {
         return new OMElementImpl(qname, parent, this);
+    }
+
+    /**
+     * Create an OMElement with the given QName
+     * <p/>
+     * If the QName contains a prefix, we will ensure that an OMNamespace is created mapping the
+     * given namespace to the given prefix.  If no prefix is passed, we'll use whatever's already
+     * mapped in the parent, or create a generated one.
+     *
+     * @param qname
+     * @return the new OMElement.
+     */
+    public OMElement createOMElement(QName qname) throws OMException {
+        return new OMElementImpl(qname, null, this);
     }
 
     /**

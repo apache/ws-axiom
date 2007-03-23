@@ -348,7 +348,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      */
     public Attr getAttributeNodeNS(String namespaceURI, String localName) {
 
-        if (namespaceURI == OMConstants.XMLNS_NS_URI) {
+        if (OMConstants.XMLNS_NS_URI.equals(namespaceURI)) {
             OMNamespace ns = this.findNamespaceURI(localName);
             String nsuri = ns != null ? ns.getNamespaceURI() : "";
 
@@ -596,10 +596,12 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     /** Returns whether this element contains any attribute or not. */
     public boolean hasAttributes() {
 
-        boolean flag = false;
-        if (this.attributes != null) {
-            flag = (this.attributes.getLength() > 0);
-        }
+        boolean flag;
+
+        // TODO : Review.  This code doesn't make any sense since it always gets overwritten.  WTF?
+//        if (this.attributes != null) {
+//            flag = (this.attributes.getLength() > 0);
+//        }
 
         //The namespaces
         flag = this.namespace != null;
@@ -607,8 +609,6 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (!flag) {
             if (this.namespaces != null) {
                 flag = !this.namespaces.isEmpty();
-            } else if (this.namespace != null) {
-                flag = true;
             }
         }
 
@@ -1277,7 +1277,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                 // check if the parent of this element has the same namespace
                 // as the default and if NOT add the attr
                 boolean parentHasSameDefaultNS = this.parentNode != null &&
-                        this.parentNode.getNamespaceURI() == this.getNamespaceURI() &&
+                        this.parentNode.getNamespaceURI().equals(this.getNamespaceURI()) &&
                         (this.parentNode.getPrefix() == null ||
                                 this.parentNode.getPrefix().equals(""));
 

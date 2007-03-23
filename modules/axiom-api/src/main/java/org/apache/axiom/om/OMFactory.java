@@ -73,16 +73,30 @@ public interface OMFactory {
                                      String namespacePrefix);
 
     /**
-     * QName(localPart), QName(namespaceURI, localPart) - a prefix will be assigned to this
-     * QName(namespaceURI, localPart, prefix)
+     * Create an OMElement with the given QName under the given parent.
+     *
+     * If the QName contains a prefix, we will ensure that an OMNamespace is created
+     * mapping the given namespace to the given prefix.  If no prefix is passed, we'll
+     * use whatever's already mapped in the parent, or create a generated one.
+     *
+     * @param qname the QName of the element to create
+     * @param parent the OMContainer in which to place the new element
+     * @return Returns the new OMElement
+     * @throws OMException if there's a namespace mapping problem
+     */
+    OMElement createOMElement(QName qname, OMContainer parent) throws OMException;
+
+    /**
+     * Create an OMElement with the given QName
+     *
+     * If the QName contains a prefix, we will ensure that an OMNamespace is created
+     * mapping the given namespace to the given prefix.  If no prefix is passed, we'll
+     * use whatever's already mapped in the parent, or create a generated one.
      *
      * @param qname
-     * @param parent
-     * @return Returns the new OMElement.
-     * @throws OMException
+     * @return the new OMElement.
      */
-    OMElement createOMElement(QName qname, OMContainer parent)
-            throws OMException;
+    OMElement createOMElement(QName qname) throws OMException;
 
     /**
      * @param uri

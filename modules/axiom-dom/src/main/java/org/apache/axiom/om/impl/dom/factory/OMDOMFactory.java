@@ -78,6 +78,11 @@ public class OMDOMFactory implements OMFactory {
 
     public OMElement createOMElement(String localName, OMNamespace ns,
                                      OMContainer parent) throws OMDOMException {
+        if (parent == null) {
+            return new ElementImpl((DocumentImpl) this.createOMDocument(),
+                               localName, (NamespaceImpl) ns, this);
+        }
+
         switch (((ParentNode) parent).getNodeType()) {
             case Node.ELEMENT_NODE: // We are adding a new child to an elem
                 ElementImpl parentElem = (ElementImpl) parent;
@@ -175,6 +180,19 @@ public class OMDOMFactory implements OMFactory {
             ns = new NamespaceImpl(qname.getNamespaceURI());
         }
         return createOMElement(qname.getLocalPart(), ns, parent);
+    }
+
+    /**
+     * Create an OMElement with the given QName
+     * <p/>
+     * If the QName contains a prefix, we will ensure that an OMNamespace is created mapping the
+     * given namespace to the given prefix.  If no prefix is passed, we'll create a generated one.
+     *
+     * @param qname
+     * @return the new OMElement.
+     */
+    public OMElement createOMElement(QName qname) throws OMException {
+        return createOMElement(qname, null);
     }
 
     /**
@@ -303,7 +321,7 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMComment createOMComment(OMContainer parent, String content) {
-        DocumentImpl doc = null;
+        DocumentImpl doc;
         if (parent instanceof DocumentImpl) {
             doc = (DocumentImpl) parent;
         } else {
