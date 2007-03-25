@@ -33,6 +33,7 @@ import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.ElementHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -1277,6 +1278,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                 // check if the parent of this element has the same namespace
                 // as the default and if NOT add the attr
                 boolean parentHasSameDefaultNS = this.parentNode != null &&
+                        this.parentNode.getNamespaceURI() != null &&
                         this.parentNode.getNamespaceURI().equals(this.getNamespaceURI()) &&
                         (this.parentNode.getPrefix() == null ||
                                 this.parentNode.getPrefix().equals(""));
