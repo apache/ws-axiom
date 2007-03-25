@@ -52,21 +52,19 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
     public boolean hasNext() {
         while (needToMoveForward) {
             if (currentChild != null) {
-
                 // check the current node for the criteria
-                if ((currentChild instanceof OMElement)
-                        && (isQNamesMatch(
-                        ((OMElement) currentChild).getQName(),
-                        this.givenQName))) {
-                    isMatchingNodeFound = true;
-                    needToMoveForward = false;
-                } else {
-
-                    // get the next named node
-                    currentChild = currentChild.getNextOMSibling();
-                    isMatchingNodeFound = needToMoveForward = !(currentChild
-                            == null);
+                if (currentChild instanceof OMElement) {
+                    QName thisQName = ((OMElement)currentChild).getQName();
+                    if (thisQName.equals(givenQName)) {
+                        isMatchingNodeFound = true;
+                        needToMoveForward = false;
+                        break;
+                    }
                 }
+
+                // get the next named node
+                currentChild = currentChild.getNextOMSibling();
+                isMatchingNodeFound = needToMoveForward = !(currentChild == null);
             } else {
                 needToMoveForward = false;
             }
@@ -91,41 +89,5 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
         lastChild = currentChild;
         currentChild = currentChild.getNextOMSibling();
         return lastChild;
-    }
-
-    /**
-     * Cannot use the overridden equals method of QName, as one might want to get some element just
-     * by giving the localname, even though a matching element has a namespace uri as well. This is
-     * not supported in the equals method of the QName.
-     *
-     * @param elementQName
-     * @param qNameToBeMatched
-     * @return Returns boolean.
-     */
-    private boolean isQNamesMatch(QName elementQName, QName qNameToBeMatched) {
-
-        // if no QName was given, that means user is asking for all
-        if (qNameToBeMatched == null) {
-            return true;
-        }
-
-        // if the given localname is null, whatever value this.qname has, its a match. But can one give a QName without a localName ??
-        String localPart = qNameToBeMatched.getLocalPart();
-        boolean localNameMatch =
-                (localPart == null)
-                        || (localPart.equals(""))
-                        ||
-                        ((elementQName != null)
-                                &&
-                                elementQName.getLocalPart().equals(localPart));
-        String namespaceURI = qNameToBeMatched.getNamespaceURI();
-        boolean namespaceURIMatch =
-                (namespaceURI == null)
-                        || (namespaceURI.equals(""))
-                        ||
-                        ((elementQName != null)
-                                &&
-                                elementQName.getNamespaceURI().equals(namespaceURI));
-        return localNameMatch && namespaceURIMatch;
     }
 }

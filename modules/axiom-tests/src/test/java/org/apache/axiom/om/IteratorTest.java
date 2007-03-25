@@ -176,44 +176,31 @@ public class IteratorTest extends AbstractTestCase {
     }
 
     /** This will test the errrors mentioned in @link http://issues.apache.org/jira/browse/WSCOMMONS-12 */
-    public void testScenariosInJIRA() {
-        try {
-            OMElement mtomSampleElement = createSampleXMLForTesting();
-            testScenarioOne(mtomSampleElement);
-            testScenarioTwo(mtomSampleElement);
-
-
-        } catch (Exception e) {
-            fail("Exception occurred whilst running the test " + e);
-        }
-
+    public void testScenariosInJIRA() throws Exception {
+        OMElement mtomSampleElement = createSampleXMLForTesting();
+        testScenarioOne(mtomSampleElement);
+        testScenarioTwo(mtomSampleElement);
     }
 
     private OMElement createSampleXMLForTesting() throws Exception {
-        try {
-            File imageSource = new File("test-resources/mtom/img/test.jpg");
-            OMFactory fac = OMAbstractFactory.getOMFactory();
-            OMNamespace omNs = fac.createOMNamespace("http://localhost/my", "my");
+        File imageSource = new File("test-resources/mtom/img/test.jpg");
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+        OMNamespace omNs = fac.createOMNamespace("http://localhost/my", "my");
 
-            OMElement data = fac.createOMElement("mtomSample", omNs);
-            OMElement image = fac.createOMElement("image", omNs);
+        OMElement data = fac.createOMElement("mtomSample", omNs);
+        OMElement image = fac.createOMElement("image", omNs);
 
-            FileDataSource dataSource = new FileDataSource(imageSource);
-            DataHandler expectedDH = new DataHandler(dataSource);
-            OMText textData = fac.createOMText(expectedDH, true);
-            image.addChild(textData);
+        FileDataSource dataSource = new FileDataSource(imageSource);
+        DataHandler expectedDH = new DataHandler(dataSource);
+        OMText textData = fac.createOMText(expectedDH, true);
+        image.addChild(textData);
 
-            OMElement imageName = fac.createOMElement("fileName", omNs);
-            imageName.setText(imageSource.getAbsolutePath());
-            data.addChild(image);
-            data.addChild(imageName);
+        OMElement imageName = fac.createOMElement("fileName", omNs);
+        imageName.setText(imageSource.getAbsolutePath());
+        data.addChild(image);
+        data.addChild(imageName);
 
-            return data;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        return data;
     }
 
     private void testScenarioOne(OMElement mtomSampleElement) {

@@ -35,27 +35,16 @@ public interface OMContainer {
     void addChild(OMNode omNode);
 
     /**
-     * Returns an iterator for child nodes matching the criteria indicated by the given QName.
+     * Returns an iterator for child nodes matching the given QName.
      * <p/>
-     * <p>This function searches in three ways: <ul> <li>Exact match - Both parts of the passed
-     * QName are non-null.  Only children with the same namespace and local name will be returned.
-     * </li> <li>Namespace match - The local name of the passed QName is null.  All children
-     * matching the namespace will be returned by the iterator. </li> <li>Local name match - The
-     * namespace of the passed QName is null.  All children with the matching local name will be
-     * returned by the iterator. </li> </ul>
-     * <p/>
-     * <p/>
-     * <b>Example:</b> <code>header.getChildrenWithName( new QName(ADDRESSING_NAMESPACE,
-     * null));</code> will return all of the "addressing" headers. </p>
      *
      * @param elementQName The QName specifying namespace and local name to match.
      * @return Returns an iterator of {@link OMElement} items that match the given QName
-     *         appropriately.
      */
     Iterator getChildrenWithName(QName elementQName);
 
     /**
-     * Returns the first child in document order that matches the given QName criteria.
+     * Returns the first child in document order that matches the given QName
      * <p/>
      * <p>The QName filter is applied as in the function {@link #getChildrenWithName}.</p>
      *
