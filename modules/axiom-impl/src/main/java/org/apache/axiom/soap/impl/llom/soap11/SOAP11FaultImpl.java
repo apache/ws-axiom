@@ -94,12 +94,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
     }
 
     public void setNode(SOAPFaultNode node) throws SOAPProcessingException {
-        if (!(node instanceof SOAP11FaultNodeImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault Node. " +
-                            "But received some other implementation");
-        }
-        super.setNode(node);
+        throw new UnsupportedOperationException("SOAP 1.1 has no SOAP Fault Node");
     }
 
     public void setRole(SOAPFaultRole role) throws SOAPProcessingException {
@@ -134,12 +129,22 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
     }
 
     public SOAPFaultCode getCode() {
-        return (SOAPFaultCode) this.getChildWithName(
-                SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME);
+        return (SOAPFaultCode) getFirstChildWithName(SOAP11Constants.QNAME_FAULT_CODE);
     }
 
     public SOAPFaultReason getReason() {
-        return (SOAPFaultReason) this.getChildWithName(
-                SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME);
+        return (SOAPFaultReason) getFirstChildWithName(SOAP11Constants.QNAME_FAULT_REASON);
+    }
+
+    public SOAPFaultNode getNode() {
+        return null;
+    }
+
+    public SOAPFaultRole getRole() {
+        return (SOAPFaultRole) getFirstChildWithName(SOAP11Constants.QNAME_FAULT_ROLE);
+    }
+
+    public SOAPFaultDetail getDetail() {
+        return (SOAPFaultDetail) getFirstChildWithName(SOAP11Constants.QNAME_FAULT_DETAIL);
     }
 }

@@ -41,6 +41,7 @@ public interface OMText extends OMNode {
     /**
      * Returns the Namespace if this contains a QName Return null otherwise
      *
+     * @deprecate This API is going away.  Please use getTextAsQName() instead.
      * @return OMNamespace
      */
     OMNamespace getNamespace();

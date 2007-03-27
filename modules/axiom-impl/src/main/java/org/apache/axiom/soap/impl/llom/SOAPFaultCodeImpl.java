@@ -19,7 +19,6 @@ package org.apache.axiom.soap.impl.llom;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.ElementHelper;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -28,14 +27,12 @@ import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFaultCode {
-
-
     protected SOAPFaultCodeImpl(String localName, OMNamespace ns, SOAPFactory factory) {
         super(localName, ns, factory);
     }
 
     protected SOAPFaultCodeImpl(OMNamespace ns, SOAPFactory factory) {
-        this(SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME, ns, factory);
+        this(factory.getSOAPVersion().getFaultCodeQName().getLocalPart(), ns, factory);
     }
 
     public SOAPFaultCodeImpl(SOAPFault parent, String localName, OMXMLParserWrapper builder,
@@ -45,7 +42,7 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
 
     public SOAPFaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder,
                              SOAPFactory factory) {
-        this(parent, SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME, builder,
+        this(parent, factory.getSOAPVersion().getFaultCodeQName().getLocalPart(), builder,
              factory);
     }
 
@@ -62,7 +59,7 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
                              boolean extractNamespaceFromParent,
                              SOAPFactory factory) throws SOAPProcessingException {
         this(parent,
-             SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME,
+             factory.getSOAPVersion().getFaultCodeQName().getLocalPart(),
              extractNamespaceFromParent, factory);
     }
 
@@ -70,18 +67,8 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
         ElementHelper.setNewElement(this, value, value);
     }
 
-    public SOAPFaultValue getValue() {
-        return (SOAPFaultValue) ElementHelper.getChildWithName(this,
-                                                               SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME);
-    }
-
     public void setSubCode(SOAPFaultSubCode value) throws SOAPProcessingException {
         ElementHelper.setNewElement(this, getSubCode(), value);
-    }
-
-    public SOAPFaultSubCode getSubCode() {
-        return (SOAPFaultSubCode) ElementHelper.getChildWithName(this,
-                                                                 SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
     }
 
 }

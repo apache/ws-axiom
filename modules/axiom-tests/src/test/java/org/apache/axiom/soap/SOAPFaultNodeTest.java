@@ -17,7 +17,6 @@
 package org.apache.axiom.soap;
 
 public class SOAPFaultNodeTest extends SOAPFaultTestCase {
-    protected SOAPFaultNode soap11FaultNode;
     protected SOAPFaultNode soap12FaultNode;
     protected SOAPFaultNode soap12FaultNodeWithParser;
 
@@ -27,27 +26,19 @@ public class SOAPFaultNodeTest extends SOAPFaultTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        soap11FaultNode = soap11Factory.createSOAPFaultNode(soap11Fault);
         soap12FaultNode = soap12Factory.createSOAPFaultNode(soap12Fault);
         soap12FaultNodeWithParser = soap12FaultWithParser.getNode();
     }
 
     //SOAP 1.1 Fault Node Test (Programaticaly Created)
     public void testSOAP11SetNodeValue() {
-        soap11FaultNode.setNodeValue("This is only a test");
-        assertTrue(
-                "SOAP 1.1 Fault Node Test : - After calling setNodeValue method, getNodeValue method returns incorrect value",
-                soap11FaultNode.getNodeValue().equals("This is only a test"));
-    }
-
-    public void testSOAP11GetNodeValue() {
-        assertTrue(
-                "SOAP 1.1 Fault Node Test : - After creating SOAPFaultNode, it has a value",
-                soap11FaultNode.getNodeValue().equals(""));
-        soap11FaultNode.setNodeValue("This is only a test");
-        assertTrue(
-                "SOAP 1.1 Fault Node Test : - After calling setNodeValue method, getNodeValue method returns incorrect value",
-                soap11FaultNode.getNodeValue().equals("This is only a test"));
+        try {
+            soap11Factory.createSOAPFaultNode(soap11Fault);
+        } catch (UnsupportedOperationException e) {
+            // Good!
+            return;
+        }
+        fail("Unsupported SOAP 1.1 node was created");
     }
 
     //SOAP 1.2 Fault Node Test (Programaticaly Created)

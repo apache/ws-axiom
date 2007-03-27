@@ -41,13 +41,24 @@ public interface SOAP11Constants extends SOAPConstants {
     //SOAP 1.2 Content Type
     static final String SOAP_11_CONTENT_TYPE = "text/xml";
 
-    static final QName QNAME_ACTOR = new QName(SOAP_ENVELOPE_NAMESPACE_URI, ATTR_ACTOR);
-    static final QName QNAME_MU_FAULTCODE = new QName(SOAP_ENVELOPE_NAMESPACE_URI,
-                                                      FAULT_CODE_MUST_UNDERSTAND);
-
     // -------- SOAP Fault Codes ------------------------------
     static final String FAULT_CODE_SENDER = "Client";
     static final String FAULT_CODE_RECEIVER = "Server";
 
     static final String SOAP_ACTOR_NEXT = "http://schemas.xmlsoap.org/soap/actor/next";
+
+    // QNames
+    static final QName QNAME_ACTOR = new QName(SOAP_ENVELOPE_NAMESPACE_URI, ATTR_ACTOR);
+    
+    static final QName QNAME_MU_FAULTCODE = new QName(SOAP_ENVELOPE_NAMESPACE_URI,
+                                                      FAULT_CODE_MUST_UNDERSTAND);
+    static final QName QNAME_SENDER_FAULTCODE = new QName(SOAP_ENVELOPE_NAMESPACE_URI,
+                                                          FAULT_CODE_SENDER);
+    static final QName QNAME_RECEIVER_FAULTCODE = new QName(SOAP_ENVELOPE_NAMESPACE_URI,
+                                                            FAULT_CODE_RECEIVER);
+
+    static final QName QNAME_FAULT_REASON = new QName(SOAP_FAULT_STRING_LOCAL_NAME);
+    static final QName QNAME_FAULT_CODE = new QName(SOAP_FAULT_CODE_LOCAL_NAME);
+    static final QName QNAME_FAULT_DETAIL = new QName(SOAP_FAULT_DETAIL_LOCAL_NAME);
+    static final QName QNAME_FAULT_ROLE = new QName(SOAP_FAULT_ACTOR_LOCAL_NAME);
 }

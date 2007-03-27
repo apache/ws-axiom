@@ -77,27 +77,18 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
     }
 
     public void testSOAP11SetNode() {
-        soap11Fault.setNode(soap11Factory.createSOAPFaultNode(soap11Fault));
-        assertFalse(
-                "SOAP 1.1 Fault Test:- After calling setNode method, Fault has no node",
-                soap11Fault.getNode() == null);
         try {
-            soap11Fault.setNode(soap12Factory.createSOAPFaultNode(soap12Fault));
-            fail("SOAP12FaultNode should not be set in to a SOAP11Fault");
-
-        } catch (Exception e) {
-            assertTrue(true);
-
+            soap11Fault.setNode(soap11Factory.createSOAPFaultNode(soap11Fault));
+        } catch (UnsupportedOperationException e) {
+            // Exactly!
+            return;
         }
+        fail("Didn't get UnsupportedOperationException");
     }
 
     public void testSOAP11GetNode() {
         assertTrue(
                 "SOAP 1.1 Fault Test:- After creating a SOAP11Fault, it has a node",
-                soap11Fault.getNode() == null);
-        soap11Fault.setNode(soap11Factory.createSOAPFaultNode(soap11Fault));
-        assertFalse(
-                "SOAP 1.1 Fault Test:- After calling setNode method, Fault has no node",
                 soap11Fault.getNode() == null);
     }
 
@@ -313,16 +304,16 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
     }
 
     public void testSOAP11GetDetailWithParser() {
-        assertFalse(
+        assertNotNull(
                 "SOAP 1.1 Fault Test with parser: - getDetail method returns null",
-                soap11FaultWithParser.getDetail() == null);
+                soap11FaultWithParser.getDetail());
     }
 
     //SOAP 1.2 Fault Test (With parser)
     public void testSOAP12GetCodeWithParser() {
-        assertFalse(
+        assertNotNull(
                 "SOAP 1.2 Fault Test with parser: - getCode method returns null",
-                soap12FaultWithParser.getCode() == null);
+                soap12FaultWithParser.getCode());
         assertTrue(
                 "SOAP 1.2 Fault Test with parser: - Fault code local name mismatch",
                 soap12FaultWithParser.getCode().getLocalName().equals(

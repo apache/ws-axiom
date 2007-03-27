@@ -34,6 +34,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAPVersion;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -55,6 +56,10 @@ public class SOAPEnvelopeImpl extends SOAPElement
     public SOAPEnvelopeImpl(OMNamespace ns, SOAPFactory factory) {
         super(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
         this.factory = factory;
+    }
+
+    public SOAPVersion getVersion() {
+        return ((SOAPFactory)factory).getSOAPVersion();
     }
 
     /**
@@ -185,7 +190,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
             //we just call the serializeAndConsume methods
             OMSerializerUtil.serializeStartpart(this, writer);
             //serialize children
-            OMElement header = getFirstChildWithName(HEADER_QNAME);
+            OMElement header = getHeader();
             if ((header != null) && (header.getFirstOMChild() != null)) {
                 ((SOAPHeaderImpl) header).internalSerialize(writer);
             }
@@ -201,7 +206,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
             //has nothing to do if the element is already built!
             if (this.done || (this.builder == null)) {
                 OMSerializerUtil.serializeStartpart(this, writer);
-                OMElement header = getFirstChildWithName(HEADER_QNAME);
+                OMElement header = getHeader();
                 if ((header != null) && (header.getFirstOMChild() != null)) {
                     serializeInternally((OMNodeImpl) header, writer);
                 }

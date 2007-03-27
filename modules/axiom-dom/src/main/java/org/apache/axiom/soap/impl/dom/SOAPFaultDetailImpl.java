@@ -20,7 +20,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
@@ -37,7 +36,7 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
                                   boolean extractNamespaceFromParent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent,
-              SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME,
+              factory.getSOAPVersion().getFaultDetailQName().getLocalPart(),
               extractNamespaceFromParent, factory);
     }
 
@@ -48,7 +47,7 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
     protected SOAPFaultDetailImpl(SOAPFault parent,
                                   OMXMLParserWrapper builder,
                                   SOAPFactory factory) {
-        super(parent, SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME, builder,
+        super(parent, factory.getSOAPVersion().getFaultDetailQName().getLocalPart(), builder,
               factory);
     }
 

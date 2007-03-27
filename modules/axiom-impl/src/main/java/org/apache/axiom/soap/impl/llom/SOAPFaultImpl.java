@@ -20,13 +20,11 @@ import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -43,7 +41,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Iterator;
 
 /** Class SOAPFaultImpl */
 public abstract class SOAPFaultImpl extends SOAPElement
@@ -97,45 +94,20 @@ public abstract class SOAPFaultImpl extends SOAPElement
         setNewElement(getCode(), soapFaultCode);
     }
 
-    public SOAPFaultCode getCode() {
-        return (SOAPFaultCode) this.getChildWithName(
-                SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME);
-    }
-
     public void setReason(SOAPFaultReason reason) throws SOAPProcessingException {
         setNewElement(getReason(), reason);
-    }
-
-    public SOAPFaultReason getReason() {
-        return (SOAPFaultReason) this.getChildWithName(
-                SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME);
     }
 
     public void setNode(SOAPFaultNode node) throws SOAPProcessingException {
         setNewElement(getNode(), node);
     }
 
-    public SOAPFaultNode getNode() {
-        return (SOAPFaultNode) this.getChildWithName(
-                SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME);
-    }
-
     public void setRole(SOAPFaultRole role) throws SOAPProcessingException {
         setNewElement(getRole(), role);
     }
 
-    public SOAPFaultRole getRole() {
-        return (SOAPFaultRoleImpl) this.getChildWithName(
-                SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME);
-    }
-
     public void setDetail(SOAPFaultDetail detail) throws SOAPProcessingException {
         setNewElement(getDetail(), detail);
-    }
-
-    public SOAPFaultDetail getDetail() {
-        return (SOAPFaultDetail) this.getChildWithName(
-                SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME);
     }
 
     /** If exception detailElement is not there we will return null */
@@ -176,19 +148,6 @@ public abstract class SOAPFaultImpl extends SOAPElement
             newElement.discard();
         }
         this.addChild(newElement);
-        myElement = newElement;
-    }
-
-    protected OMElement getChildWithName(String childName) {
-        Iterator childrenIter = getChildren();
-        while (childrenIter.hasNext()) {
-            OMNode node = (OMNode) childrenIter.next();
-            if (node.getType() == OMNode.ELEMENT_NODE &&
-                    childName.equals(((OMElement) node).getLocalName())) {
-                return (OMElement) node;
-            }
-        }
-        return null;
     }
 
     protected void internalSerialize(XMLStreamWriter writer, boolean cache)

@@ -55,7 +55,7 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
                 // check the current node for the criteria
                 if (currentChild instanceof OMElement) {
                     QName thisQName = ((OMElement)currentChild).getQName();
-                    if (thisQName.equals(givenQName)) {
+                    if (givenQName == null || thisQName.equals(givenQName)) {
                         isMatchingNodeFound = true;
                         needToMoveForward = false;
                         break;

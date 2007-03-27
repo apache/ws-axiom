@@ -51,4 +51,58 @@ public class SOAP11Version implements SOAPVersion, SOAP11Constants {
     public QName getMustUnderstandFaultCode() {
         return QNAME_MU_FAULTCODE;
     }
+
+    /**
+     * Obtain the QName for the Sender fault code
+     *
+     * @return Sender fault code as a QName
+     */
+    public QName getSenderFaultCode() {
+        return QNAME_SENDER_FAULTCODE;
+    }
+
+    /**
+     * Obtain the QName for the Receiver fault code
+     *
+     * @return Receiver fault code as a QName
+     */
+    public QName getReceiverFaultCode() {
+        return QNAME_RECEIVER_FAULTCODE;
+    }
+
+    /**
+     * Obtain the QName for the fault reason element
+     *
+     * @return
+     */
+    public QName getFaultReasonQName() {
+        return QNAME_FAULT_REASON;
+    }
+
+    /**
+     * Obtain the QName for the fault code element
+     *
+     * @return
+     */
+    public QName getFaultCodeQName() {
+        return QNAME_FAULT_CODE;
+    }
+
+    /**
+     * Obtain the QName for the fault detail element
+     *
+     * @return
+     */
+    public QName getFaultDetailQName() {
+        return QNAME_FAULT_DETAIL;
+    }
+
+    /**
+     * Obtain the QName for the fault role/actor element
+     *
+     * @return
+     */
+    public QName getFaultRoleQName() {
+        return QNAME_FAULT_ROLE;
+    }
 }

@@ -75,8 +75,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     private boolean processingDetailElements = false;
 
     private SOAPBuilderHelper builderHelper;
-    private String senderfaultCode;
-    private String receiverfaultCode;
 
     private String charEncoding = null;
     private String parserVersion = null;
@@ -358,21 +356,11 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     }
 
     private String getSenderFaultCode() {
-        if (senderfaultCode == null) {
-            senderfaultCode = SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI
-                    .equals(envelopeNamespace.getNamespaceURI()) ?
-                    SOAP12Constants.FAULT_CODE_SENDER : SOAP11Constants.FAULT_CODE_SENDER;
-        }
-        return senderfaultCode;
+        return envelope.getVersion().getSenderFaultCode().getLocalPart();
     }
 
     private String getReceiverFaultCode() {
-        if (receiverfaultCode == null) {
-            receiverfaultCode = SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI
-                    .equals(envelopeNamespace.getNamespaceURI()) ?
-                    SOAP12Constants.FAULT_CODE_RECEIVER : SOAP11Constants.FAULT_CODE_RECEIVER;
-        }
-        return receiverfaultCode;
+        return envelope.getVersion().getReceiverFaultCode().getLocalPart();
     }
 
     public void endElement() {

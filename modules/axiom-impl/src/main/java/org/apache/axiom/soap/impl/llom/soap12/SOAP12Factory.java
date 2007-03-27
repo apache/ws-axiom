@@ -37,6 +37,8 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.impl.llom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.llom.SOAPMessageImpl;
 
@@ -46,6 +48,10 @@ public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactor
     public String getSoapVersionURI() {
         return SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI;
     }
+
+    public SOAPVersion getSOAPVersion() {
+        return SOAP12Version.getSingleton();
+    }    
 
     public OMNamespace getNamespace() {
         return new OMNamespaceImpl(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI,

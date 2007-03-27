@@ -25,6 +25,8 @@ public interface SOAPFactory extends OMFactory {
 
     String getSoapVersionURI();
 
+    SOAPVersion getSOAPVersion();
+
     /** Eran Chinthaka (chinthaka@apache.org) */
 
     SOAPMessage createSOAPMessage();

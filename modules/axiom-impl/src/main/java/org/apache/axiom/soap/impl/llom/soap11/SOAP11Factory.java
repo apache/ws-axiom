@@ -37,6 +37,8 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.impl.llom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.llom.SOAPMessageImpl;
 
@@ -51,6 +53,10 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
 
     public String getSoapVersionURI() {
         return SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI;
+    }
+
+    public SOAPVersion getSOAPVersion() {
+        return SOAP11Version.getSingleton();
     }
 
     public SOAPEnvelope createSOAPEnvelope() {
@@ -223,16 +229,16 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
 
     public SOAPFaultNode createSOAPFaultNode(SOAPFault parent)
             throws SOAPProcessingException {
-        return new SOAP11FaultNodeImpl(parent, this);
+        throw new UnsupportedOperationException("SOAP 1.1 has no SOAP Fault Node");
     }
 
     public SOAPFaultNode createSOAPFaultNode() throws SOAPProcessingException {
-        return new SOAP11FaultNodeImpl(this);
+        throw new UnsupportedOperationException("SOAP 1.1 has no SOAP Fault Node");
     }
 
     public SOAPFaultNode createSOAPFaultNode(SOAPFault parent,
                                              OMXMLParserWrapper builder) {
-        return new SOAP11FaultNodeImpl(parent, builder, this);
+        throw new UnsupportedOperationException("SOAP 1.1 has no SOAP Fault Node");
     }
 
     public SOAPFaultRole createSOAPFaultRole(SOAPFault parent)

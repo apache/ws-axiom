@@ -30,12 +30,8 @@ public abstract class SOAPFaultTestCase extends SOAPBodyTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        soap11Fault =
-                OMAbstractFactory.getSOAP11Factory().createSOAPFault(
-                        soap11Body);
-        soap12Fault =
-                OMAbstractFactory.getSOAP12Factory().createSOAPFault(
-                        soap12Body);
+        soap11Fault = OMAbstractFactory.getSOAP11Factory().createSOAPFault(soap11Body);
+        soap12Fault = OMAbstractFactory.getSOAP12Factory().createSOAPFault(soap12Body);
         soap11FaultWithParser = soap11BodyWithParser.getFault();
         soap12FaultWithParser = soap12BodyWithParser.getFault();
     }

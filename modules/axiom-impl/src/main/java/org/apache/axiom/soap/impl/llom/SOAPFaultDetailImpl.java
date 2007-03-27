@@ -35,23 +35,22 @@ import java.util.Iterator;
 
 public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFaultDetail {
 
-
     protected SOAPFaultDetailImpl(OMNamespace ns, SOAPFactory factory) {
-        super(SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME, ns, factory);
+        super(factory.getSOAPVersion().getFaultDetailQName().getLocalPart(), ns, factory);
     }
 
     protected SOAPFaultDetailImpl(SOAPFault parent,
                                   boolean extractNamespaceFromParent,
                                   SOAPFactory factory) throws SOAPProcessingException {
         super(parent,
-              SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME,
+              factory.getSOAPVersion().getFaultDetailQName().getLocalPart(),
               extractNamespaceFromParent, factory);
     }
 
     protected SOAPFaultDetailImpl(SOAPFault parent,
                                   OMXMLParserWrapper builder,
                                   SOAPFactory factory) {
-        super(parent, SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME, builder,
+        super(parent, factory.getSOAPVersion().getFaultDetailQName().getLocalPart(), builder,
               factory);
     }
 
@@ -77,7 +76,7 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
         }
 
         OMSerializerUtil.serializeStartpart(this,
-                                            SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME,
+                                            getLocalName(),
                                             writer);
 
         String text = this.getText();

@@ -27,6 +27,7 @@ import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.llom.SOAPFaultImpl;
 
 import javax.xml.stream.XMLStreamException;
@@ -133,4 +134,23 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
         }
     }
 
+    public SOAPFaultNode getNode() {
+        return (SOAPFaultNode) getFirstChildWithName(SOAP12Constants.QNAME_FAULT_NODE);
+    }
+
+    public SOAPFaultCode getCode() {
+        return (SOAPFaultCode) getFirstChildWithName(SOAP12Constants.QNAME_FAULT_CODE);
+    }
+
+    public SOAPFaultReason getReason() {
+        return (SOAPFaultReason) getFirstChildWithName(SOAP12Constants.QNAME_FAULT_REASON);
+    }
+
+    public SOAPFaultRole getRole() {
+        return (SOAPFaultRole) getFirstChildWithName(SOAP12Constants.QNAME_FAULT_ROLE);
+    }
+
+    public SOAPFaultDetail getDetail() {
+        return (SOAPFaultDetail)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_DETAIL);
+    }
 }

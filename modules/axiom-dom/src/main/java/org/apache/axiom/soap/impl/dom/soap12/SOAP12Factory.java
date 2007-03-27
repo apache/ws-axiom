@@ -35,6 +35,8 @@ import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
 
@@ -49,6 +51,10 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
     public String getSoapVersionURI() {
         return SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI;
+    }
+
+    public SOAPVersion getSOAPVersion() {
+        return SOAP12Version.getSingleton();
     }
 
     public SOAPEnvelope createSOAPEnvelope() {

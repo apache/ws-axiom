@@ -461,9 +461,6 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
                     boolean isOptimize = importedText.isOptimized();
                     newText = this.factory.createOMText(importedText
                             .getDataHandler(), isOptimize);
-                } else if (importedText.getNamespace() != null) {
-                    newText = this.factory.createOMText(null, importedText.getTextAsQName(),
-                                                        importedText.getType());
                 } else if (importedText.isCharacters()) {
                     newText = this.factory.createOMText(null, importedText
                             .getTextCharacters(), importedText.getType());
@@ -476,22 +473,17 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
 
             case (OMNode.PI_NODE): {
                 OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
-                OMProcessingInstruction newPI = this.factory
-                        .createOMProcessingInstruction(null, importedPI
-                                .getTarget(), importedPI.getValue());
-                return newPI;
+                return factory.createOMProcessingInstruction(null,
+                                                                  importedPI.getTarget(),
+                                                                  importedPI.getValue());
             }
             case (OMNode.COMMENT_NODE): {
                 OMComment importedComment = (OMComment) child;
-                OMComment newComment = this.factory.createOMComment(null,
-                                                                    importedComment.getValue());
-                return newComment;
+                return factory.createOMComment(null, importedComment.getValue());
             }
             case (OMNode.DTD_NODE) : {
                 OMDocType importedDocType = (OMDocType) child;
-                OMDocType newDocType =
-                        this.factory.createOMDocType(null, importedDocType.getValue());
-                return newDocType;
+                return factory.createOMDocType(null, importedDocType.getValue());
             }
             default: {
                 throw new UnsupportedOperationException(

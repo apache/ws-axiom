@@ -22,6 +22,7 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.llom.SOAPFaultReasonImpl;
 
 public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
@@ -48,7 +49,11 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
                     "Expecting SOAP 1.2 implementation of SOAP Fault Text. " +
                             "But received some other implementation");
         }
-        super.addSOAPText(soapFaultText);
+        addChild(soapFaultText);
+    }
+
+    public SOAPFaultText getFirstSOAPText() {
+        return (SOAPFaultText)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_TEXT);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {

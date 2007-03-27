@@ -28,31 +28,37 @@ public class SOAPFaultCodeTest extends SOAPFaultCodeTestCase {
     }
 
     //SOAP 1.1 Fault Code Test (Programaticaly Created)
-    public void testSOAP11SetValue() {
-        soap11FaultCode.setValue(
-                soap11Factory.createSOAPFaultValue(soap11FaultCode));
-        assertFalse(
-                "SOAP 1.1 Fault Code Test :- After calling setValue method, getValue method returns null",
-                soap11FaultCode.getValue() == null);
-        try {
-            soap11FaultCode.setValue(
-                    soap12Factory.createSOAPFaultValue(soap12FaultCode));
-            fail("SOAP12FaultValue should not be inserted to SOAP11FaultCode");
-        } catch (SOAPProcessingException e) {
-            assertTrue(true);
-        }
-
-    }
+//    public void testSOAP11SetValue() {
+//        soap11FaultCode.setValue(
+//                soap11Factory.createSOAPFaultValue(soap11FaultCode));
+//        assertFalse(
+//                "SOAP 1.1 Fault Code Test :- After calling setValue method, getValue method returns null",
+//                soap11FaultCode.getValue() == null);
+//        try {
+//            soap11FaultCode.setValue(
+//                    soap12Factory.createSOAPFaultValue(soap12FaultCode));
+//            fail("SOAP12FaultValue should not be inserted to SOAP11FaultCode");
+//        } catch (SOAPProcessingException e) {
+//            assertTrue(true);
+//        }
+//
+//    }
 
     public void testSOAP11GetValue() {
-        assertTrue(
-                "SOAP 1.1 Fault Code Test :- After creating soapfaultcode, it has a value",
-                soap11FaultCode.getValue() == null);
-        soap11FaultCode.setValue(
-                soap11Factory.createSOAPFaultValue(soap11FaultCode));
-        assertFalse(
-                "SOAP 1.1 Fault Code Test :- After calling setValue method, getValue method returns null",
-                soap11FaultCode.getValue() == null);
+        try {
+            soap11FaultCode.getValue();
+        } catch (UnsupportedOperationException e) {
+            return;
+        }
+        fail("Unsupported getValue operation was allowed on SOAP 1.1 FaultCode");
+//        assertTrue(
+//                "SOAP 1.1 Fault Code Test :- After creating soapfaultcode, it has a value",
+//                soap11FaultCode.getValue() == null);
+//        soap11FaultCode.setValue(
+//                soap11Factory.createSOAPFaultValue(soap11FaultCode));
+//        assertFalse(
+//                "SOAP 1.1 Fault Code Test :- After calling setValue method, getValue method returns null",
+//                soap11FaultCode.getValue() == null);
     }
 
     //SOAP 1.2 Fault Code Test (Programaticaly Created)
@@ -131,10 +137,12 @@ public class SOAPFaultCodeTest extends SOAPFaultCodeTestCase {
 
     //SOAP 1.1 Fault Code Test (With Parser)
     public void testSOAP11GetValueWithParser() {
-        assertTrue(
-                "SOAP 1.1 Fault Code Test with parser : - getValue method should return null",
-                soap11FaultCodeWithParser.getValue() == null);
-
+        try {
+            soap11FaultCodeWithParser.getValue();
+        } catch (UnsupportedOperationException e) {
+            return;
+        }
+        fail("Unsupported getValue operation was allowed on SOAP 1.1 FaultCode");
     }
 
     //SOAP 1.2 Fault Code Test (With Parser)

@@ -35,6 +35,7 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.SOAPMessageImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11FaultDetailImpl;
@@ -50,6 +51,10 @@ public class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
     }
 
     public String getSoapVersionURI() {
+        throw new UnsupportedOperationException();
+    }
+
+    public SOAPVersion getSOAPVersion() {
         throw new UnsupportedOperationException();
     }
 

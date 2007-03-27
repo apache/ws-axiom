@@ -122,10 +122,11 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     public OMTextImpl(OMContainer parent, QName text, int nodeType,
                       OMFactory factory) {
         super(parent, factory, true);
+        if (text == null) throw new IllegalArgumentException("QName text arg cannot be null!");
         this.calcNS = true;
         this.textNS =
                 ((OMElementImpl) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
-        this.value = text == null ? EMTPY_STRING : text.getLocalPart();
+        this.value = textNS.getPrefix() + ":" + text.getLocalPart();
         this.nodeType = nodeType;
     }
 
@@ -215,9 +216,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
 
     /** Returns the value. */
     public String getText() throws OMException {
-        if (getNamespace() != null) {
-            return getTextString();
-        } else if (charArray != null || this.value != null) {
+        if (charArray != null || this.value != null) {
             return getTextFromProperPlace();
         } else {
             try {
@@ -247,24 +246,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
 
     /** Returns the value. */
     public QName getTextAsQName() throws OMException {
-        OMNamespace ns = getNamespace();
-        if (ns != null) {
-            String prefix = ns.getPrefix();
-            String name = ns.getNamespaceURI();
-            if (prefix == null || "".equals(prefix)) {
-                return new QName(name, getTextFromProperPlace());
-            } else {
-                return new QName(ns.getNamespaceURI(), getTextFromProperPlace(), prefix);
-            }
-        } else if (this.value != null || charArray != null) {
-            return new QName(getTextFromProperPlace());
-        } else {
-            try {
-                return new QName(TextHelper.toString(getInputStream()));
-            } catch (Exception e) {
-                throw new OMException(e);
-            }
-        }
+        return ((OMElement)parent).resolveQName(getTextFromProperPlace());
     }
 
     /* (non-Javadoc)
@@ -326,9 +308,8 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * @return Returns javax.activation.DataHandler
      */
     public Object getDataHandler() {
-        OMNamespace ns = getNamespace();
-        if ((value != null || charArray != null || ns != null) & isBinary) {
-            String text = ns == null ? getTextFromProperPlace() : getTextString();
+        if ((value != null || charArray != null) && isBinary) {
+            String text = getTextFromProperPlace();
             return org.apache.axiom.attachments.utils.DataHandlerUtils
                     .getDataHandlerFromText(text, mimeType);
         } else {
@@ -342,20 +323,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             }
             return dataHandlerObject;
         }
-    }
-
-    private String getTextString() {
-        OMNamespace ns = getNamespace();
-        if (ns != null) {
-            String prefix = ns.getPrefix();
-            if (prefix == null || "".equals(prefix)) {
-                return getTextFromProperPlace();
-            } else {
-                return prefix + ":" + getTextFromProperPlace();
-            }
-        }
-
-        return null;
     }
 
     public String getLocalName() {

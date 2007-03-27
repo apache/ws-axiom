@@ -18,15 +18,16 @@ package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.llom.SOAPFaultCodeImpl;
 
 import javax.xml.stream.XMLStreamException;
@@ -99,8 +100,10 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
     }
 
     public SOAPFaultValue getValue() {
-        return (SOAPFaultValue) ElementHelper.getChildWithName(this,
-                                                               SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME);
+        throw new UnsupportedOperationException("getValue() not supported for SOAP 1.1 faults");
     }
 
+    public SOAPFaultSubCode getSubCode() {
+        throw new UnsupportedOperationException("getSubCode() not supported for SOAP 1.1 faults");
+    }
 }

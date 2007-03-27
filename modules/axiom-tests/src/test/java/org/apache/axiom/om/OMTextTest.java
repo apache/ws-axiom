@@ -57,7 +57,6 @@ public class OMTextTest extends TestCase {
 
         String elementString = omElement.toString();
         assertTrue(elementString.indexOf(":" + SOME_TEXT) == -1);
-        assertTrue(!(":" + SOME_TEXT).equals(omElement.getText()));
 
         QName textAsQName = omElement.getTextAsQName();
         assertTrue(textAsQName.equals(new QName(SOME_TEXT)));

@@ -45,12 +45,7 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
 
     public void addSOAPText(SOAPFaultText soapFaultText)
             throws SOAPProcessingException {
-        if (!(soapFaultText instanceof SOAP11FaultTextImpl)) {
-            throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault Text. " +
-                            "But received some other implementation");
-        }
-        super.addSOAPText(soapFaultText);
+        throw new UnsupportedOperationException("addSOAPText() not allowed for SOAP 1.1!");
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -88,4 +83,7 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
         return SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME;
     }
 
+    public SOAPFaultText getFirstSOAPText() {
+        throw new UnsupportedOperationException("getFirstSOAPText() not supported for SOAP 1.1!");
+    }
 }

@@ -46,4 +46,40 @@ public interface SOAPVersion {
      * Obtain the QName for the MustUnderstand fault code
      */
     QName getMustUnderstandFaultCode();
+
+    /**
+     * Obtain the QName for the Sender fault code
+     * @return Sender fault code as a QName
+     */
+    QName getSenderFaultCode();
+
+    /**
+     * Obtain the QName for the Receiver fault code
+     * @return Receiver fault code as a QName
+     */
+    QName getReceiverFaultCode();
+
+    /**
+     * Obtain the QName for the fault reason element
+     * @return
+     */
+    QName getFaultReasonQName();
+
+    /**
+     * Obtain the QName for the fault code element
+     * @return
+     */
+    QName getFaultCodeQName();
+
+    /**
+     * Obtain the QName for the fault detail element
+     * @return
+     */
+    QName getFaultDetailQName();
+
+    /**
+     * Obtain the QName for the fault role/actor element
+     * @return
+     */
+    QName getFaultRoleQName();
 }

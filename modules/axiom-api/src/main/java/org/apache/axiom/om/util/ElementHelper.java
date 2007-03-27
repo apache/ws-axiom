@@ -61,11 +61,11 @@ public class ElementHelper {
             if (defaultToParentNameSpace) {
                 //get the parent ns and use it for the child
                 OMNamespace namespace = element.getNamespace();
-                return new QName(namespace.getNamespaceURI(), qname, namespace.getPrefix());
-            } else {
-                //else things without no prefix are local.
-                return new QName(qname);
+                if (namespace != null)
+                    return new QName(namespace.getNamespaceURI(), qname, namespace.getPrefix());
             }
+            //else things without no prefix are local.
+            return new QName(qname);
         }
         String prefix = qname.substring(0, colon);
         String local = qname.substring(colon + 1);
@@ -99,9 +99,14 @@ public class ElementHelper {
             myElement.discard();
         }
         parent.addChild(newElement);
-        myElement = newElement;
     }
 
+    /**
+     * @deprecate please use OMElement.getFirstChildWithName(qname) instead!
+     * @param parent
+     * @param childName
+     * @return
+     */
     public static OMElement getChildWithName(OMElement parent,
                                              String childName) {
         Iterator childrenIter = parent.getChildren();

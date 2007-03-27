@@ -49,9 +49,7 @@ public abstract class SOAPFaultSubCodeImpl extends SOAPElement implements SOAPFa
 
     public SOAPFaultValue getValue() {
         if (value == null) {
-            value =
-                    (SOAPFaultValue) ElementHelper.getChildWithName(this,
-                                                                    SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME);
+            value = (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
         }
         return value;
     }
@@ -63,9 +61,7 @@ public abstract class SOAPFaultSubCodeImpl extends SOAPElement implements SOAPFa
 
     public SOAPFaultSubCode getSubCode() {
         if (subCode == null) {
-            subCode =
-                    (SOAPFaultSubCode) ElementHelper.getChildWithName(this,
-                                                                      SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
+            subCode = (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
         }
         return subCode;
     }

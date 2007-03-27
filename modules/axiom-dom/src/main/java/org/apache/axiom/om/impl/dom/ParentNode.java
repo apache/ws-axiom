@@ -525,9 +525,6 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                     boolean isOptimize = importedText.isOptimized();
                     newText = this.factory.createOMText(importedText
                             .getDataHandler(), isOptimize);
-                } else if (importedText.getNamespace() != null) {
-                    newText = this.factory.createOMText(this, importedText
-                            .getTextAsQName(), importedText.getType());
                 } else if (importedText.isCharacters()) {
                     newText = new TextImpl((DocumentImpl) this.getOwnerDocument(),
                                            importedText.getTextCharacters(), this.factory);

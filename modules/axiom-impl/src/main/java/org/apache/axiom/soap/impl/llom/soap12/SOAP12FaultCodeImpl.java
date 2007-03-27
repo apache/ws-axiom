@@ -23,7 +23,10 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultSubCode;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.llom.SOAPFaultCodeImpl;
+
+import javax.xml.namespace.QName;
 
 public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
     /** Eran Chinthaka (chinthaka@apache.org) */
@@ -70,5 +73,18 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP 1.2 implementation of SOAP Fault as the parent. But received some other implementation");
         }
+    }
+
+    // Overridden so that we can have a single interface to reliably get the faultcode's value
+    public QName getTextAsQName() {
+        return getValue().getTextAsQName();
+    }
+
+    public SOAPFaultValue getValue() {
+        return (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
+    }
+
+    public SOAPFaultSubCode getSubCode() {
+        return (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
     }
 }

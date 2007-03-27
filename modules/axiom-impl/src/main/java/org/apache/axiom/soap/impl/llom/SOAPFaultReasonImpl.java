@@ -20,8 +20,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.util.ElementHelper;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
@@ -35,7 +33,7 @@ import java.util.List;
 public abstract class SOAPFaultReasonImpl extends SOAPElement implements SOAPFaultReason {
 
     protected SOAPFaultReasonImpl(OMNamespace ns, SOAPFactory factory) {
-        super(SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME, ns, factory);
+        super(factory.getSOAPVersion().getFaultReasonQName().getLocalPart(), ns, factory);
     }
 
     /**
@@ -46,7 +44,7 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements SOAPFau
      */
     public SOAPFaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,
                                SOAPFactory factory) {
-        super(parent, SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME, builder,
+        super(parent, factory.getSOAPVersion().getFaultReasonQName().getLocalPart(), builder,
               factory);
     }
 
@@ -55,18 +53,9 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements SOAPFau
                                boolean extractNamespaceFromParent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent,
-              SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME,
+              factory.getSOAPVersion().getFaultReasonQName().getLocalPart(),
               extractNamespaceFromParent,
               factory);
-    }
-
-    public void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException {
-        this.addChild(soapFaultText);
-    }
-
-    public SOAPFaultText getFirstSOAPText() {
-        return (SOAPFaultText) ElementHelper.getChildWithName(this,
-                                                              SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME);
     }
 
     public List getAllSoapTexts() {

@@ -486,7 +486,7 @@ public class StAXSOAPModelBuilderTest extends TestCase {
         role = (SOAPFaultRole) iteratorInFault.next();
         assertTrue("SOAP 1.1 :- Fault actor local name mismatch",
                    role.getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME));
+                           SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME));
         assertTrue("SOAP 1.1 :- Actor value mismatch",
                    role.getText().trim().equals(
                            "http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver"));
@@ -495,7 +495,7 @@ public class StAXSOAPModelBuilderTest extends TestCase {
         detail = (SOAPFaultDetail) iteratorInFault.next();
         assertTrue("SOAP 1.1 :- Fault detail local name mismatch",
                    detail.getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME));
+                           SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME));
         assertTrue("SOAP 1.2 :- Text in detail mismatch",
                    detail.getText().trim().equals("Details of error"));
 

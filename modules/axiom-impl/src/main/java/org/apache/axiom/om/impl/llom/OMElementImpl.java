@@ -709,27 +709,11 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public QName getTextAsQName() {
-        String childText = "";
-        OMNode child = this.getFirstOMChild();
-        OMText textNode;
-
-        while (child != null) {
-            if (child.getType() == OMNode.TEXT_NODE) {
-                textNode = (OMText) child;
-                String textValue = textNode.getText();
-                if (textValue != null &&
-                        !"".equals(textValue)) {
-                    String namespaceURI = textNode.getTextAsQName().getNamespaceURI();
-                    if (namespaceURI != null && !"".equals(namespaceURI)) {
-                        return textNode.getTextAsQName();
-                    }
-                    childText += textValue;
-                }
-            }
-            child = child.getNextOMSibling();
+        String childText = getTrimmedText();
+        if (childText != null) {
+            return resolveQName(childText);
         }
-
-        return new QName(childText);
+        return null;
     }
 
     /**
@@ -737,7 +721,7 @@ public class OMElementImpl extends OMNodeImpl
      * element. This is included purely to improve usability.
      */
     public String getTrimmedText() {
-        String childText = "";
+        String childText = null;
         OMNode child = this.getFirstOMChild();
         OMText textNode;
 
@@ -747,6 +731,7 @@ public class OMElementImpl extends OMNodeImpl
                 String textValue = textNode.getText();
                 if (textValue != null &&
                         !"".equals(textValue.trim())) {
+                    if (childText == null) childText = "";
                     childText += textValue.trim();
                 }
             }

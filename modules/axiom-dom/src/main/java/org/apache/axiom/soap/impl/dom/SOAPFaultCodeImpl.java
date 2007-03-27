@@ -36,7 +36,7 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
      */
     public SOAPFaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder,
                              SOAPFactory factory) {
-        super(parent, SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME, builder,
+        super(parent, factory.getSOAPVersion().getFaultCodeQName().getLocalPart(), builder,
               factory);
     }
 
@@ -44,7 +44,7 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
     public SOAPFaultCodeImpl(SOAPFault parent,
                              boolean extractNamespaceFromParent,
                              SOAPFactory factory) throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME,
+        super(parent, factory.getSOAPVersion().getFaultCodeQName().getLocalPart(),
               extractNamespaceFromParent, factory);
     }
 
@@ -54,8 +54,7 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
     }
 
     public SOAPFaultValue getValue() {
-        return (SOAPFaultValue) ElementHelper.getChildWithName(this,
-                                                               SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME);
+        return (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
     }
 
     public void setSubCode(SOAPFaultSubCode value) throws SOAPProcessingException {
@@ -63,8 +62,7 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
     }
 
     public SOAPFaultSubCode getSubCode() {
-        return (SOAPFaultSubCode) ElementHelper.getChildWithName(this,
-                                                                 SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME);
+        return (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
     }
 
 }

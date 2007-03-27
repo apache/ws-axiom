@@ -20,7 +20,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.ElementHelper;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
@@ -43,7 +42,7 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
      */
     public SOAPFaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,
                                SOAPFactory factory) {
-        super(parent, SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME, builder,
+        super(parent, factory.getSOAPVersion().getFaultReasonQName().getLocalPart(), builder,
               factory);
     }
 
@@ -51,18 +50,13 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
     public SOAPFaultReasonImpl(OMElement parent,
                                boolean extractNamespaceFromParent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super(parent, SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME,
+        super(parent, factory.getSOAPVersion().getFaultReasonQName().getLocalPart(),
               extractNamespaceFromParent, factory);
     }
 
     /** Eran Chinthaka (chinthaka@apache.org) */
     public void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException {
         ElementHelper.setNewElement(this, text, soapFaultText);
-    }
-
-    public SOAPFaultText getFirstSOAPText() {
-        return (SOAPFaultText) ElementHelper.getChildWithName(this,
-                                                              SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME);
     }
 
     public List getAllSoapTexts() {

@@ -42,4 +42,6 @@ public interface SOAPEnvelope extends OMElement {
      * @throws OMException if there is a problem obtaining the <CODE>SOAPBody</CODE> object
      */
     SOAPBody getBody() throws OMException;
+
+    SOAPVersion getVersion();
 }
