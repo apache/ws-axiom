@@ -21,7 +21,7 @@ public class NamespaceImpl implements OMNamespace {
 
     private String nsUri;
 
-    private String nsPrefix = "";
+    private String nsPrefix;
 
     public NamespaceImpl(String uri) {
         if (uri == null) {
@@ -32,9 +32,7 @@ public class NamespaceImpl implements OMNamespace {
 
     public NamespaceImpl(String uri, String prefix) {
         this(uri);
-        if (prefix != null) {
-            this.nsPrefix = prefix;
-        }
+        this.nsPrefix = prefix;
     }
 
     /*
@@ -44,14 +42,18 @@ public class NamespaceImpl implements OMNamespace {
      *      java.lang.String)
      */
     public boolean equals(String uri, String prefix) {
-        return (nsUri.equals(uri) && nsPrefix.equals(prefix));
+        return (nsUri.equals(uri) &&
+                (nsPrefix == null ? prefix == null :
+                        nsPrefix.equals(prefix)));
     }
 
     public boolean equals(Object obj) {
         if (!(obj instanceof OMNamespace)) return false;
         OMNamespace other = (OMNamespace)obj;
+        String otherPrefix = other.getPrefix();
         return (nsUri.equals(other.getNamespaceURI()) &&
-                nsPrefix.equals(other.getPrefix()));
+                (nsPrefix == null ? otherPrefix == null :
+                        nsPrefix.equals(otherPrefix)));
     }
 
     /*

@@ -31,7 +31,7 @@ public class StAXUtils {
             ObjectCreator oc = null;
             for (int i = 0; i < creators.length; i++) {
                 try {
-                    Object o = creators[i].newObject();
+                    creators[i].newObject();
                     oc = creators[i];
                     break;
                 } catch (Throwable t) {

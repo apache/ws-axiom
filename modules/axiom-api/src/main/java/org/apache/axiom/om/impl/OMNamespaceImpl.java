@@ -31,6 +31,10 @@ public class OMNamespaceImpl implements OMNamespace {
      * @param prefix
      */
     public OMNamespaceImpl(String uri, String prefix) {
+        if (uri == null) {
+            throw new IllegalArgumentException("Namespace URI may not be null");
+        }
+
         this.uri = uri;
         this.prefix = prefix;
     }
@@ -43,11 +47,19 @@ public class OMNamespaceImpl implements OMNamespace {
      * @return Returns boolean.
      */
     public boolean equals(String uri, String prefix) {
-        return (((prefix == null) && (this.prefix == null)) ||
-                ((prefix != null) && prefix.equals(this.prefix))) &&
-                ((uri == null) && (this.uri == null) ||
-                        (uri != null) && uri.equals(this.uri));
+        return (this.uri.equals(uri) &&
+                (this.prefix == null ? prefix == null :
+                        this.prefix.equals(prefix)));
 
+    }
+
+    public boolean equals(Object obj) {
+        if (!(obj instanceof OMNamespace)) return false;
+        OMNamespace other = (OMNamespace)obj;
+        String otherPrefix = other.getPrefix();
+        return (uri.equals(other.getNamespaceURI()) &&
+                (prefix == null ? otherPrefix == null :
+                        prefix.equals(otherPrefix)));
     }
 
     /**
