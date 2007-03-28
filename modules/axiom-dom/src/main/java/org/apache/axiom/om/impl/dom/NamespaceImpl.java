@@ -21,15 +21,20 @@ public class NamespaceImpl implements OMNamespace {
 
     private String nsUri;
 
-    private String nsPrefix;
+    private String nsPrefix = "";
 
     public NamespaceImpl(String uri) {
+        if (uri == null) {
+            throw new IllegalArgumentException("Namespace URI may not be null");
+        }
         this.nsUri = uri;
     }
 
     public NamespaceImpl(String uri, String prefix) {
         this(uri);
-        this.nsPrefix = prefix;
+        if (prefix != null) {
+            this.nsPrefix = prefix;
+        }
     }
 
     /*
@@ -39,14 +44,21 @@ public class NamespaceImpl implements OMNamespace {
      *      java.lang.String)
      */
     public boolean equals(String uri, String prefix) {
-        return (this.nsUri == uri && this.nsPrefix == prefix);
+        return (nsUri.equals(uri) && nsPrefix.equals(prefix));
+    }
+
+    public boolean equals(Object obj) {
+        if (!(obj instanceof OMNamespace)) return false;
+        OMNamespace other = (OMNamespace)obj;
+        return (nsUri.equals(other.getNamespaceURI()) &&
+                nsPrefix.equals(other.getPrefix()));
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMNamespace#getPrefix()
-     */
+    * (non-Javadoc)
+    *
+    * @see org.apache.axiom.om.OMNamespace#getPrefix()
+    */
     public String getPrefix() {
         return this.nsPrefix;
     }

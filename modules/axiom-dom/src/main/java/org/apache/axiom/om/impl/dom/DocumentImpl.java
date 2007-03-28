@@ -191,14 +191,16 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     public Element createElementNS(String ns, String qualifiedName)
             throws DOMException {
 
+        if (ns == null) ns = "";
+
         String localName = DOMUtil.getLocalName(qualifiedName);
         String prefix = DOMUtil.getPrefix(qualifiedName);
 
-        if (ns != null && (prefix != null || "".equals(prefix))) {
+        if (prefix != null || "".equals(prefix)) {
             this.checkQName(prefix, localName);
         }
 
-        NamespaceImpl namespace = new NamespaceImpl(ns, prefix == null ? "" : prefix);
+        NamespaceImpl namespace = new NamespaceImpl(ns, prefix);
         return new ElementImpl(this, localName, namespace, this.factory);
     }
 
