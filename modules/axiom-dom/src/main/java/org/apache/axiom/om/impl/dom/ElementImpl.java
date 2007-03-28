@@ -33,7 +33,6 @@ import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.ElementHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -937,26 +936,32 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     }
 
     public QName getTextAsQName() {
-        String childText = "";
+        String childText = getTrimmedText();
+        if (childText != null) {
+            return resolveQName(childText);
+        }
+        return null;
+    }
+
+    public String getTrimmedText() {
+        String childText = null;
         OMNode child = this.getFirstOMChild();
         OMText textNode;
 
         while (child != null) {
             if (child.getType() == OMNode.TEXT_NODE) {
                 textNode = (OMText) child;
-                if (textNode.getText() != null
-                        && !"".equals(textNode.getText())) {
-                    String namespaceURI = textNode.getTextAsQName().getNamespaceURI();
-                    if (namespaceURI != null && !"".equals(namespaceURI)) {
-                        return textNode.getTextAsQName();
-                    }
-                    childText += textNode.getText();
+                String textValue = textNode.getText();
+                if (textValue != null &&
+                        !"".equals(textValue.trim())) {
+                    if (childText == null) childText = "";
+                    childText += textValue.trim();
                 }
             }
             child = child.getNextOMSibling();
         }
 
-        return new QName(childText);
+        return childText;
     }
 
     /**

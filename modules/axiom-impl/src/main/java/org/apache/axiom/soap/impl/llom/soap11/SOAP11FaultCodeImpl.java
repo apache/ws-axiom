@@ -100,10 +100,12 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
     }
 
     public SOAPFaultValue getValue() {
-        throw new UnsupportedOperationException("getValue() not supported for SOAP 1.1 faults");
+        return null;
+//        throw new UnsupportedOperationException("getValue() not supported for SOAP 1.1 faults");
     }
 
     public SOAPFaultSubCode getSubCode() {
-        throw new UnsupportedOperationException("getSubCode() not supported for SOAP 1.1 faults");
+        return null;
+//        throw new UnsupportedOperationException("getSubCode() not supported for SOAP 1.1 faults");
     }
 }

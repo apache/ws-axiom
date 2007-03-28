@@ -45,12 +45,7 @@ public class SOAPFaultCodeTest extends SOAPFaultCodeTestCase {
 //    }
 
     public void testSOAP11GetValue() {
-        try {
-            soap11FaultCode.getValue();
-        } catch (UnsupportedOperationException e) {
-            return;
-        }
-        fail("Unsupported getValue operation was allowed on SOAP 1.1 FaultCode");
+        assertNull(soap11FaultCode.getValue());
 //        assertTrue(
 //                "SOAP 1.1 Fault Code Test :- After creating soapfaultcode, it has a value",
 //                soap11FaultCode.getValue() == null);
@@ -137,12 +132,7 @@ public class SOAPFaultCodeTest extends SOAPFaultCodeTestCase {
 
     //SOAP 1.1 Fault Code Test (With Parser)
     public void testSOAP11GetValueWithParser() {
-        try {
-            soap11FaultCodeWithParser.getValue();
-        } catch (UnsupportedOperationException e) {
-            return;
-        }
-        fail("Unsupported getValue operation was allowed on SOAP 1.1 FaultCode");
+        assertNull(soap11FaultCodeWithParser.getValue());
     }
 
     //SOAP 1.2 Fault Code Test (With Parser)
