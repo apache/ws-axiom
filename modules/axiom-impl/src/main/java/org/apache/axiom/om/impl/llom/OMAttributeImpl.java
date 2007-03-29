@@ -57,7 +57,12 @@ public class OMAttributeImpl implements OMAttribute {
     /** @return Returns QName. */
     public QName getQName() {
         if (namespace != null) {
-            return new QName(namespace.getNamespaceURI(), localName, namespace.getPrefix());
+            // Guard against QName implementation sillyness.
+            if (namespace.getPrefix() == null) {
+                return new QName(namespace.getNamespaceURI(), localName);
+            } else {
+                return new QName(namespace.getNamespaceURI(), localName, namespace.getPrefix());
+            }
         } else {
             return new QName(localName);
         }

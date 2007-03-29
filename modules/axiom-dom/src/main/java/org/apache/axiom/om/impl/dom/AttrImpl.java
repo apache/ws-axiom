@@ -226,9 +226,16 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      * @see org.apache.axiom.om.OMAttribute#getQName()
      */
     public QName getQName() {
-        return (this.namespace == null) ? new QName(this.attrName) : new QName(
-                this.namespace.getNamespaceURI(), this.attrName, this.namespace
-                .getPrefix());
+        return (namespace == null) ?
+                new QName(this.attrName) :
+                // This next bit is because QName is kind of stupid, and throws an
+                // IllegalArgumentException on null prefix instead of treating it exactly
+                // as if no prefix had been passed.  Grr.
+                (namespace.getPrefix() == null ?
+                        new QName(namespace.getNamespaceURI(), attrName) :
+                        new QName(namespace.getNamespaceURI(),
+                                  attrName,
+                                  namespace.getPrefix()));
 
     }
 
