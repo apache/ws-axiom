@@ -125,15 +125,11 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
                 getAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
                              SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI))
                 != null) {
-            if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equalsIgnoreCase(
-                    mustUnderstand) ||
-                    SOAPConstants.ATTR_MUSTUNDERSTAND_1.equalsIgnoreCase(
-                            mustUnderstand)) {
+            if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equals(mustUnderstand) ||
+                    SOAPConstants.ATTR_MUSTUNDERSTAND_1.equals(mustUnderstand)) {
                 return true;
-            } else if (SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE.equalsIgnoreCase(
-                    mustUnderstand) ||
-                    SOAPConstants.ATTR_MUSTUNDERSTAND_0.equalsIgnoreCase(
-                            mustUnderstand)) {
+            } else if (SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE.equals(mustUnderstand) ||
+                    SOAPConstants.ATTR_MUSTUNDERSTAND_0.equals(mustUnderstand)) {
                 return false;
             } else {
                 throw new SOAPProcessingException(
