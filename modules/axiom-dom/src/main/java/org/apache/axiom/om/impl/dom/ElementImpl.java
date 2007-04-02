@@ -808,8 +808,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (prefix == null || "".equals(prefix)) {
             Iterator namespaceListIterator = namespaces.values().iterator();
             while (namespaceListIterator.hasNext()) {
-                OMNamespace omNamespace = (OMNamespace) namespaceListIterator
-                        .next();
+                OMNamespace omNamespace = (OMNamespace) namespaceListIterator.next();
                 String nsURI = omNamespace.getNamespaceURI();
                 if (nsURI != null && nsURI.equals(uri)) {
                     return omNamespace;
@@ -818,7 +817,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
         } else {
             OMNamespace namespace = (OMNamespace) namespaces.get(prefix);
-            if (namespace != null && uri.equalsIgnoreCase(namespace.getNamespaceURI())) {
+            if (namespace != null && uri.equals(namespace.getNamespaceURI())) {
                 return namespace;
             }
         }

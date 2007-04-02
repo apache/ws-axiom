@@ -1,6 +1,10 @@
 package org.apache.axiom.om.impl.dom;
 
 import junit.framework.TestCase;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 /*
  * Copyright 2007 The Apache Software Foundation.
  *
@@ -39,5 +43,16 @@ public class NamespaceTest extends TestCase {
         URI2 = URI2 + "testuri1";  // Make sure the strings don't intern to the same place
         assertTrue(ns1.equals(URI2, ""));
         assertTrue(ns1.equals(ns2));
+    }
+
+    public void testSearch() throws Exception {
+        String NSURI = "http://testns";
+        String NSURI_UPPER = "HTTP://TESTNS";
+
+        OMFactory fac = new OMDOMFactory();
+        OMNamespace ns = new NamespaceImpl(NSURI);
+        OMElement el = fac.createOMElement("foo", null);
+        el.declareNamespace(NSURI, "p");
+        assertNull(el.findNamespace(NSURI_UPPER, "p"));
     }
 }

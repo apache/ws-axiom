@@ -424,7 +424,7 @@ public class OMElementImpl extends OMNodeImpl
             }
         } else {
             OMNamespace namespace = (OMNamespace) namespaces.get(prefix);
-            if (namespace != null && uri.equalsIgnoreCase(namespace.getNamespaceURI())) {
+            if (namespace != null && uri.equals(namespace.getNamespaceURI())) {
                 return namespace;
             }
         }

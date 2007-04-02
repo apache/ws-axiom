@@ -16,6 +16,8 @@
 
 package org.apache.axiom.soap;
 
+import org.apache.axiom.om.OMNamespace;
+
 import java.util.Iterator;
 
 public class SOAPHeaderBlockTest extends SOAPHeaderTestCase {
@@ -222,11 +224,24 @@ public class SOAPHeaderBlockTest extends SOAPHeaderTestCase {
         assertFalse(
                 "SOAP 1.2 HeaderBlock Test With Parser : - getMustUnderstand method returns incorrect value",
                 soap12HeaderBlock2WithParser.getMustUnderstand());
-        try {
-            soap12HeaderBlock3WithParser.getMustUnderstand();
-        } catch (Exception e) {
-            fail(
-                    "SOAP 1.2 HeaderBlock Test With Parser : - getMustUnderstand method should returns exception when mustunderstand value is incorrect");
-        }
+        soap12HeaderBlock3WithParser.getMustUnderstand();
+    }
+
+    public void testRelayAttribute() throws Exception {
+        assertFalse(soap12HeaderBlock1WithParser.getRelay());
+        assertTrue(soap12HeaderBlock2WithParser.getRelay());
+        assertFalse(soap12HeaderBlock3WithParser.getRelay());
+
+        SOAPEnvelope env = soap12Factory.createSOAPEnvelope();
+        SOAPHeader header = soap12Factory.createSOAPHeader(env);
+        soap12Factory.createSOAPBody(env);
+        OMNamespace ns = soap12Factory.createOMNamespace("http://ns1", "ns1");
+        SOAPHeaderBlock relayHeader = header.addHeaderBlock("foo", ns);
+        relayHeader.setText("hey there");
+        relayHeader.setRelay(true);
+
+        String envString = env.toString();
+        assertTrue("No relay header after setRelay(true)",
+                   envString.indexOf("relay=\"true\"") >= 0);
     }
 }

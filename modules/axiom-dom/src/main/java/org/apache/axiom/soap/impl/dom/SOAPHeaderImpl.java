@@ -186,8 +186,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
                 SOAPHeaderBlock soapHeaderBlock = (SOAPHeaderBlock) o;
                 String role = soapHeaderBlock.getRole();
                 boolean mustUnderstand = soapHeaderBlock.getMustUnderstand();
-                if ((role != null) && role.equalsIgnoreCase(actor) &&
-                        mustUnderstand) {
+                if ((role != null) && role.equals(actor) && mustUnderstand) {
                     mustUnderstandHeadersWithGivenActor.add(soapHeaderBlock);
                 }
             }

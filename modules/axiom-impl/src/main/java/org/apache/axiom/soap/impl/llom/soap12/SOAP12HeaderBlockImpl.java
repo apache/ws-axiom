@@ -19,16 +19,16 @@ package org.apache.axiom.soap.impl.llom.soap12;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP12Version;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderBlockImpl;
 
-public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
+public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12Constants {
 
     public SOAP12HeaderBlockImpl(String localName, OMNamespace ns,
                                  SOAPFactory factory) {
@@ -76,22 +76,18 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
     }
 
     public void setRole(String roleURI) {
-        setAttribute(SOAP12Constants.SOAP_ROLE,
-                     roleURI,
-                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        setAttribute(SOAP_ROLE, roleURI, SOAP_ENVELOPE_NAMESPACE_URI);
     }
 
     public String getRole() {
-        return getAttribute(SOAP12Constants.SOAP_ROLE,
-                            SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-
+        return getAttributeValue(QNAME_ROLE);
     }
 
     public void setMustUnderstand(boolean mustUnderstand) {
         setAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
                      mustUnderstand ? SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE :
                              SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE,
-                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+                     SOAP_ENVELOPE_NAMESPACE_URI);
 
     }
 
@@ -103,7 +99,7 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
                 SOAPConstants.ATTR_MUSTUNDERSTAND_1.equals(mustUnderstand)) {
             setAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
                          mustUnderstand,
-                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+                         SOAP_ENVELOPE_NAMESPACE_URI);
         } else {
             throw new SOAPProcessingException(
                     "mustUndertand should be one of \"true\", " +
@@ -112,20 +108,14 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
     }
 
     public boolean getMustUnderstand() throws SOAPProcessingException {
-        String mustUnderstand = "";
-        if ((mustUnderstand =
-                getAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
-                             SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI))
+        String mustUnderstand;
+        if ((mustUnderstand = getAttribute(ATTR_MUSTUNDERSTAND, SOAP_ENVELOPE_NAMESPACE_URI))
                 != null) {
-            if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equalsIgnoreCase(
-                    mustUnderstand) ||
-                    SOAPConstants.ATTR_MUSTUNDERSTAND_1.equalsIgnoreCase(
-                            mustUnderstand)) {
+            if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equalsIgnoreCase(mustUnderstand) ||
+                    SOAPConstants.ATTR_MUSTUNDERSTAND_1.equalsIgnoreCase(mustUnderstand)) {
                 return true;
-            } else if (SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE.equalsIgnoreCase(
-                    mustUnderstand) ||
-                    SOAPConstants.ATTR_MUSTUNDERSTAND_0.equalsIgnoreCase(
-                            mustUnderstand)) {
+            } else if (SOAPConstants.ATTR_MUSTUNDERSTAND_FALSE.equalsIgnoreCase(mustUnderstand) ||
+                    SOAPConstants.ATTR_MUSTUNDERSTAND_0.equalsIgnoreCase(mustUnderstand)) {
                 return false;
             } else {
                 throw new SOAPProcessingException(
@@ -138,14 +128,17 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
 
     }
 
-    //TODO : implement
     public void setRelay(boolean relay) {
-        throw new UnsupportedOperationException("Not supported for SOAP 1.1");
+        setAttribute(SOAP_RELAY, relay ? "true" : "false", SOAP_ENVELOPE_NAMESPACE_URI);
     }
 
-    //TODO : implement
     public boolean getRelay() {
-        throw new UnsupportedOperationException("Not supported for SOAP 1.1");
+        boolean ret = false;
+        String val = getAttributeValue(QNAME_RELAY);
+        if (val != null) {
+            ret = "true".equalsIgnoreCase(val);
+        }
+        return ret;
     }
 
     /**

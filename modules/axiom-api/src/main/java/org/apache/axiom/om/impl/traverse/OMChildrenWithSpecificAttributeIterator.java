@@ -34,6 +34,8 @@ public class OMChildrenWithSpecificAttributeIterator
     /** Field detach */
     private boolean detach;
 
+    private boolean doCaseSensitiveValueChecks = true;
+
     /**
      * Constructor OMChildrenWithSpecificAttributeIterator.
      *
@@ -50,6 +52,10 @@ public class OMChildrenWithSpecificAttributeIterator
         this.attributeName = attributeName;
         this.attributeValue = attributeValue;
         this.detach = detach;
+    }
+
+    public void setCaseInsensitiveValueChecks(boolean val) {
+        doCaseSensitiveValueChecks = val;
     }
 
     /**
@@ -74,8 +80,9 @@ public class OMChildrenWithSpecificAttributeIterator
                 OMAttribute attr =
                         ((OMElement) currentChild).getAttribute(
                                 attributeName);
-                if ((attr != null)
-                        && attr.getAttributeValue().equalsIgnoreCase(attributeValue)) {
+                if ((attr != null) && (doCaseSensitiveValueChecks ?
+                        attr.getAttributeValue().equals(attributeValue) :
+                        attr.getAttributeValue().equalsIgnoreCase(attributeValue))) {
                     isMatchingNodeFound = true;
                     needToMoveForward = false;
                 } else {

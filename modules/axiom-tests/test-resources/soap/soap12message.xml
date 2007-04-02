@@ -2,13 +2,13 @@
     <env:Header>
         <test:echoOk xmlns:test="http://example.org/ts-tests"
             env:role="http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver"
-            env:mustUnderstand="true"
+            env:mustUnderstand="true" env:relay="false"
             env:anyAttribute="any value">
             foo
         </test:echoOk>
         <test1:echoOk1 xmlns:test1="http://example1.org/ts-tests"
             env:role="http://www.w3.org/2003/05/soap-envelope/role/next"
-            env:mustUnderstand="false"
+            env:mustUnderstand="false" env:relay="true"
             env:anyAttribute="any value">
             foo
         </test1:echoOk1>

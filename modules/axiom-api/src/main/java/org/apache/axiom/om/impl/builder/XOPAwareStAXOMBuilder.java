@@ -106,9 +106,8 @@ public class XOPAwareStAXOMBuilder extends StAXOMBuilder implements XOPBuilder {
 
         String elementName = parser.getLocalName();
         String namespaceURI = parser.getNamespaceURI();
-        if (MTOMConstants.XOP_INCLUDE.equalsIgnoreCase(elementName)
-                && MTOMConstants.XOP_NAMESPACE_URI
-                .equalsIgnoreCase(namespaceURI)) {
+        if (MTOMConstants.XOP_INCLUDE.equals(elementName)
+                && MTOMConstants.XOP_NAMESPACE_URI.equals(namespaceURI)) {
             OMText node;
             String contentID = ElementHelper.getContentID(parser, getDocument()
                     .getCharsetEncoding());

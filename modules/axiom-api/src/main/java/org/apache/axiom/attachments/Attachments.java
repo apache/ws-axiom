@@ -381,7 +381,7 @@ public class Attachments {
 
     public Set getContentIDSet() {
         DataHandler dataHandler;
-        while (!noStreams & true) {
+        while (!noStreams) {
             dataHandler = this.getNextPartDataHandler();
             if (dataHandler == null) {
                 break;
@@ -482,7 +482,7 @@ public class Attachments {
                                                              boundary, this);
                     int count = 0;
                     do {
-                        int len = 0;
+                        int len;
                         int off = 0;
                         int rem = fileStorageThreshold;
                         while ((len = partStream.read(buffer, off, rem)) > 0) {

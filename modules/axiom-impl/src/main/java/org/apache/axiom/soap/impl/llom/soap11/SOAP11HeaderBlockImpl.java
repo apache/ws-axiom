@@ -112,7 +112,7 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
      *         <CODE>SOAPHeaderBlock</CODE> object is turned on; <CODE>false</CODE> otherwise
      */
     public boolean getMustUnderstand() throws SOAPProcessingException {
-        String mustUnderstand = "";
+        String mustUnderstand;
         if ((mustUnderstand =
                 getAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
                              SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI))
@@ -138,12 +138,10 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
 
     }
 
-    //TODO : implement
     public void setRelay(boolean relay) {
         throw new UnsupportedOperationException("Not supported for SOAP 1.1");
     }
 
-    //TODO : implement
     public boolean getRelay() {
         throw new UnsupportedOperationException("Not supported for SOAP 1.1");
     }

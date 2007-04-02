@@ -27,8 +27,6 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
@@ -38,8 +36,6 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
 
     /** <code>Attachments</code> handles deferred parsing of incoming MIME Messages. */
     Attachments attachments;
-
-    private Log log = LogFactory.getLog(getClass());
 
     int partIndex = 0;
 
@@ -72,8 +68,7 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
         String namespaceURI = parser.getNamespaceURI();
 
         // create an OMBlob if the element is an <xop:Include>
-        if (XOP_INCLUDE.equalsIgnoreCase(elementName)
-                && XOP_NAMESPACE_URI.equalsIgnoreCase(namespaceURI)) {
+        if (XOP_INCLUDE.equals(elementName) && XOP_NAMESPACE_URI.equals(namespaceURI)) {
             elementLevel++;
             OMText node;
             String contentID = ElementHelper.getContentID(parser, getDocument()
@@ -83,8 +78,7 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
                 throw new OMException(
                         "XOP:Include element is not supported here");
             } else if (lastNode.isComplete() & lastNode.getParent() != null) {
-                node = omfactory.createOMText(contentID, (OMElement) lastNode
-                        .getParent(), this);
+                node = omfactory.createOMText(contentID, lastNode.getParent(), this);
                 ((OMNodeEx) lastNode).setNextOMSibling(node);
                 ((OMNodeEx) node).setPreviousOMSibling(lastNode);
             } else {

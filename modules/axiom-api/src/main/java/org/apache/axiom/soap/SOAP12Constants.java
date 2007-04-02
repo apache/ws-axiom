@@ -73,6 +73,7 @@ public interface SOAP12Constants extends SOAPConstants {
 
     // QNames
     static final QName QNAME_ROLE = new QName(SOAP_ENVELOPE_NAMESPACE_URI, SOAP_ROLE);
+    static final QName QNAME_RELAY = new QName(SOAP_ENVELOPE_NAMESPACE_URI, SOAP_RELAY);
     static final QName QNAME_MU_FAULTCODE = new QName(SOAP_ENVELOPE_NAMESPACE_URI,
                                                       FAULT_CODE_MUST_UNDERSTAND);
     static final QName QNAME_SENDER_FAULTCODE = new QName(SOAP_ENVELOPE_NAMESPACE_URI,

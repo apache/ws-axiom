@@ -106,9 +106,8 @@ public class StAXOMBuilder extends StAXBuilder {
      * Init() *must* be called after creating the builder using this constructor.
      *
      * @param inStream - instream which contains the XML
-     * @throws XMLStreamException
      */
-    public StAXOMBuilder() throws XMLStreamException {
+    public StAXOMBuilder() {
         super();
     }
 
@@ -358,7 +357,7 @@ public class StAXOMBuilder extends StAXBuilder {
 
         if (namespaceURI != null && namespaceURI.length() > 0) {
             OMNamespace namespace = node.findNamespace(namespaceURI, prefix);
-            if (namespace == null || namespace.getPrefix() != prefix) {
+            if (namespace == null || (!namespace.getPrefix().equals(prefix))) {
                 if (prefix == null || "".equals(prefix)) {
                     namespace = node.declareDefaultNamespace(namespaceURI);
                 } else {
