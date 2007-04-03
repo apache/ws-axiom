@@ -35,6 +35,40 @@
                         </tr>
                 <tr class="b">
                             <td align="center" valign="middle">
+                                <a name="1_2_3"></a>
+                                1.2.3
+                            </td>
+                            <td align="center">Release</td>
+                            <td>Source Distribution
+                                <a href="[preferred]/ws/commons/axiom/1_2_3/axiom-1.2.3-src.zip"
+                                   title="[preferred]/ws/commons/axiom/1_2_3/axiom-1.2.3-src.zip">zip</a>
+
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_3/axiom-1.2.3-src.zip.md5"
+                                   class="externalLink"
+                                   title="http://www.apache.org/dist/ws/commons/axiom/1_2_3/axiom-1.2.3-src.zip.md5">MD5</a>
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_3/axiom-1.2.3-src.zip.asc"
+                                   class="externalLink"
+                                   title="http://www.apache.org/dist/ws/commons/axiom/1_2_3/axiom-1.2.3-src.zip.asc">PGP</a>
+                                <br/>
+                                Binary Distribution
+                                <a href="[preferred]/ws/commons/axiom/1_2_3/axiom-1.2.3-bin.zip"
+                                   title="[preferred]/ws/commons/axiom/1_2_3/axiom-1.2.3-bin.zip">zip</a>
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_3/axiom-1.2.3-bin.zip.md5"
+                                   class="externalLink"
+                                   title="http://www.apache.org/dist/ws/commons/axiom/1_2_3/axiom-1.2.3-bin.zip.md5">MD5</a>
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_3/axiom-1.2.3-bin.zip.asc"
+                                   class="externalLink"
+                                   title="http://www.apache.org/dist/ws/ws/commons/axiom/1_2_3/axiom-1.2.3-bin.zip.asc">
+                                    PGP</a>
+
+                                <br/>
+                            </td>
+                            <td>03 - 04 - 2007</td>
+                            <td>1.2.3 Release (Mirrored)</td>
+                        </tr>
+
+                <tr class="b">
+                            <td align="center" valign="middle">
                                 <a name="1_2_2"></a>
                                 1.2.1
                             </td>
@@ -64,7 +98,7 @@
                                 <br/>
                             </td>
                             <td>09 - 01 - 2001</td>
-                            <td>1.2.2 Release (Mirrored)</td>
+                            <td>1.2.2 Release (Archived)</td>
                         </tr>
 
 			
@@ -99,7 +133,7 @@
                                 <br/>
                             </td>
                             <td>30 - 11 - 2006</td>
-                            <td>1.2.1 Release (Mirrored)</td>
+                            <td>1.2.1 Release (Archived)</td>
                         </tr>
 
 

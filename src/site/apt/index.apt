@@ -14,9 +14,9 @@ Welcome to Apache Axiom
 
 Latest Release
 
-  <<13th November 2006 - Apache Axiom Version 1.2 Released!>>
+  <<3rd April 2007 - Apache Axiom Version 1.3 Released!>>
 
-  \[{{{http://ws.apache.org/commons/axiom/download.cgi}Download AXIOM 1.2}}\]
+  \[{{{http://ws.apache.org/commons/axiom/download.cgi}Download AXIOM 1.3}}\]
 
   Apache AXIOM is a StAX-based, XML Infoset compliant object model which supports on-demand building
   of the object tree. It supports a novel "pull-through" model which allows one to turn off the tree
@@ -46,13 +46,13 @@ Key Features
 
     * High performant
 
-What's New in This Release
-
     * Improved XML serialization
 
     * Improved Builder hierarchy
 
     * Improved MTOM handling
+
+What's New in This Release
 
     * Numerous bug fixes
 

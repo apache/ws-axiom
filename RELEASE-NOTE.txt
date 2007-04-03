@@ -1,7 +1,7 @@
 
 ===========================================
 
-     Apache AXIOM 1.2.2 Release Note
+     Apache AXIOM 1.2.3 Release Note
 
 ===========================================
 
@@ -37,9 +37,6 @@ Key Features
 What's New in This Release
 ==========================
 
-This is release includes few bug fixes, specially following issues.
-
-WSCOMMONS-144 : Axiom having problem when serializing name spaces with null nameSpaceUri.
-
+This is release includes few bug fixes which are necessary for Axis2 release.
 
 - The Apache Axiom Team.
