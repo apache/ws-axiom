@@ -16,6 +16,16 @@
 
 package org.apache.axiom.om.impl;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import javax.activation.DataHandler;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeBodyPart;
+
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.attachments.ConfigurableDataHandler;
 import org.apache.axiom.om.OMException;
@@ -23,15 +33,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
-
-import javax.activation.DataHandler;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeBodyPart;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 public class MIMEOutputUtils {
 
@@ -50,11 +51,11 @@ public class MIMEOutputUtils {
             MimeBodyPart rootMimeBodyPart = new MimeBodyPart();
             rootMimeBodyPart.setDataHandler(dh);
 
-            rootMimeBodyPart.addHeader("content-type",
+            rootMimeBodyPart.addHeader("Content-Type",
                                        "application/xop+xml; charset=" + charSetEncoding +
                                                "; type=\"" + SOAPContentType + "\"");
-            rootMimeBodyPart.addHeader("content-transfer-encoding", "binary");
-            rootMimeBodyPart.addHeader("content-id", "<" + contentId + ">");
+            rootMimeBodyPart.addHeader("Content-Transfer-Encoding", "binary");
+            rootMimeBodyPart.addHeader("Content-ID", "<" + contentId + ">");
 
             writeBodyPart(outStream, rootMimeBodyPart, boundary);
 
@@ -80,8 +81,8 @@ public class MIMEOutputUtils {
         String encoding = null;
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
         mimeBodyPart.setDataHandler(dataHandler);
-        mimeBodyPart.addHeader("content-id", "<" + contentID + ">");
-        mimeBodyPart.addHeader("content-type", dataHandler.getContentType());
+        mimeBodyPart.addHeader("Content-ID", "<" + contentID + ">");
+        mimeBodyPart.addHeader("Content-Type", dataHandler.getContentType());
         if (dataHandler instanceof ConfigurableDataHandler) {
             ConfigurableDataHandler configurableDataHandler = (ConfigurableDataHandler) dataHandler;
             encoding = configurableDataHandler.getTransferEncoding();
@@ -89,7 +90,7 @@ public class MIMEOutputUtils {
         if (encoding == null) {
             encoding = "binary";
         }
-        mimeBodyPart.addHeader("content-transfer-encoding", encoding);
+        mimeBodyPart.addHeader("Content-Transfer-Encoding", encoding);
         return mimeBodyPart;
     }
 
@@ -155,11 +156,11 @@ public class MIMEOutputUtils {
             MimeBodyPart rootMimeBodyPart = new MimeBodyPart();
             rootMimeBodyPart.setDataHandler(dh);
 
-            rootMimeBodyPart.addHeader("content-type",
+            rootMimeBodyPart.addHeader("Content-Type",
                                        SOAPContentType + "; charset="
                                                + format.getCharSetEncoding());
-            rootMimeBodyPart.addHeader("content-transfer-encoding", "8bit");
-            rootMimeBodyPart.addHeader("content-id", "<"
+            rootMimeBodyPart.addHeader("Content-Transfer-Encoding", "8bit");
+            rootMimeBodyPart.addHeader("Content-ID", "<"
                     + format.getRootContentId() + ">");
 
             writeBodyPart(outputStream, rootMimeBodyPart, format
@@ -214,8 +215,7 @@ public class MIMEOutputUtils {
             rootMimeBodyPart.addHeader("Content-Type",
                                        SOAPContentType + "; charset=" +
                                                format.getCharSetEncoding());
-//			rootMimeBodyPart.addHeader("content-transfer-encoding", "quoted-printable");
-            rootMimeBodyPart.addHeader("content-id", "<"
+            rootMimeBodyPart.addHeader("Content-ID", "<"
                     + format.getRootContentId() + ">");
 
             writeBodyPart(outputStream, rootMimeBodyPart, format
@@ -232,7 +232,7 @@ public class MIMEOutputUtils {
                 outputStream.write(sb.toString().getBytes());
                 outputStream.write(CRLF);
                 StringBuffer sb1 = new StringBuffer();
-                sb1.append("content-id: ");
+                sb1.append("Content-ID: ");
                 sb1.append("<");
                 sb1.append(innerPartCID);
                 sb1.append(">");
