@@ -16,6 +16,12 @@
 
 package org.apache.axiom.om.impl.builder;
 
+import java.io.InputStream;
+
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
@@ -31,11 +37,6 @@ import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
-
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.InputStream;
 
 /**
  * OM should be able to be built from any data source. And the model it builds may be a SOAP
@@ -190,7 +191,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     private OMNode createOMText(OMContainer omContainer, int textType) {
         try {
             if (isDataHandlerAware(parser) &&
-                    Boolean.TRUE == parser.getProperty(OMConstants.IS_BINARY)) {
+                    Boolean.TRUE.equals(parser.getProperty(OMConstants.IS_BINARY))) {
                 Object dataHandler = parser.getProperty(OMConstants.DATA_HANDLER);
                 OMText text = omfactory.createOMText(dataHandler, true);
                 omContainer.addChild(text);
