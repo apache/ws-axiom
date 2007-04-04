@@ -16,8 +16,22 @@
 
 package org.apache.axiom.om.impl.llom;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Stack;
+
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
+import javax.xml.stream.Location;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -28,18 +42,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.EmptyOMLocation;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.om.impl.llom.util.NamespaceContextImpl;
-
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Stack;
 
 /**
  * Note  - This class also implements the streaming constants interface to get access to the StAX
@@ -917,14 +919,31 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * @throws IllegalArgumentException
      */
     public Object getProperty(String s) throws IllegalArgumentException {
-        throw new IllegalArgumentException();
+        if (OMConstants.IS_DATA_HANDLERS_AWARE.equals(s)) {
+            return Boolean.TRUE;
+        }
+        if (OMConstants.IS_BINARY.equals(s)) {
+            if (lastNode instanceof OMText) {
+                OMText text = (OMText) lastNode;
+                return new Boolean(text.isBinary());
+            }
+            return Boolean.FALSE;
+        } else if (OMConstants.DATA_HANDLER.equals(s)) {
+            if (lastNode instanceof OMText) {
+                OMText text = (OMText) lastNode;    
+                if (text.isBinary())
+                    return text.getDataHandler();
+            }
+        }
+        return null;
     }
 
     /**
-     * This is a very important method. It keeps the navigator one step ahead and pushes it one
-     * event ahead. If the nextNode is null then navigable is set to false. At the same time the
-     * parser and builder are set up for the upcoming event generation.
-     *
+     * This is a very important method. It keeps the navigator one step ahead
+     * and pushes it one event ahead. If the nextNode is null then navigable is
+     * set to false. At the same time the parser and builder are set up for the
+     * upcoming event generation.
+     * 
      * @throws XMLStreamException
      */
     private void updateLastNode() throws XMLStreamException {
