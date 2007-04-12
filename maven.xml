@@ -72,6 +72,9 @@
                 <ant:include name="LICENSE.txt"/>
                 <ant:include name="NOTICE.txt"/>
             </ant:fileset>
+            <ant:fileset dir="${basedir}/modules/axiom-dom/src/main/resources">
+                <ant:include name="**/*.properties"/>
+            </ant:fileset>
         </jar>
         <ant:copy toDir="${maven.repo.local}/org.apache.ws.commons.axiom/jars">
             <ant:fileset file="target/axiom-api-${axiom.version}.jar"/>
