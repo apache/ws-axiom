@@ -20,88 +20,138 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
 
+/**
+ * @author scheu
+ *
+ */
 public class MIMEBodyPartInputStream extends InputStream {
+    BoundaryPushbackInputStream bpis;
     PushbackInputStream inStream;
+    Attachments parent = null;
+    boolean done = false;
 
-    boolean boundaryFound;
-
-    Attachments parent;
-
-    byte[] boundary;
-
+    /**
+     * @param inStream
+     * @param boundary
+     */
     public MIMEBodyPartInputStream(PushbackInputStream inStream, byte[] boundary) {
-        super();
-        this.inStream = inStream;
-        this.boundary = boundary;
+        this (inStream, boundary, null, boundary.length + 2);
     }
 
+    /**
+     * @param inStream
+     * @param boundary
+     * @param parent
+     */
+    public MIMEBodyPartInputStream(PushbackInputStream inStream, byte[] boundary, Attachments parent) {
+        this (inStream, boundary, parent, boundary.length + 2);
+    }
+    
+    /**
+     * @param inStream
+     * @param boundary
+     * @param parent
+     * @param pushbacksize <= size of pushback buffer on inStream
+     */
     public MIMEBodyPartInputStream(PushbackInputStream inStream,
-                                   byte[] boundary, Attachments parent) {
-        this(inStream, boundary);
+            byte[] boundary, Attachments parent, int pushbacksize) {
+        bpis = new BoundaryPushbackInputStream(inStream, boundary, pushbacksize);
+        this.inStream = inStream;
         this.parent = parent;
     }
 
+    /* (non-Javadoc)
+     * @see java.io.InputStream#read()
+     */
     public int read() throws IOException {
-        if (boundaryFound) {
+        if (done) {
             return -1;
         }
-        // read the next value from stream
-        int value = inStream.read();
-        // A problem occured because all the mime parts tends to have a /r/n at
-        // the end. Making it hard to transform them to correct DataSources.
-        // This logic introduced to handle it
-        //TODO look more in to this && for a better way to do this
-        if (value == 13) {
-            value = inStream.read();
-            if (value != 10) {
-                inStream.unread(value);
-                return 13;
-            } else {
-                value = inStream.read();
-                if ((byte) value != boundary[0]) {
-                    inStream.unread(value);
-                    inStream.unread(10);
-                    return 13;
+        int rc = bpis.read();
+        if (getBoundaryStatus()) {
+            finish();
+        }
+        return rc;
+    }
+
+    /* (non-Javadoc)
+     * @see java.io.InputStream#read(byte[], int, int)
+     */
+    public int read(byte[] b, int off, int len) throws IOException {
+        if (done) {
+            return 0;
+        } 
+        int rc = bpis.read(b, off, len);
+        if (getBoundaryStatus()) {
+            finish();
+        }
+        return rc;
+    }
+
+    /* (non-Javadoc)
+     * @see java.io.InputStream#read(byte[])
+     */
+    public int read(byte[] b) throws IOException {
+        if (done) {
+            return 0;
+        } 
+        int rc = bpis.read(b);
+        if (getBoundaryStatus()) {
+            finish();
+        }
+        return rc;
+    }
+
+    /**
+     * Called when done reading
+     * This method detects trailing -- and alerts the parent
+     * @throws IOException
+     */
+    private void finish() throws IOException {
+        if (!done) {
+            int one = inStream.read();
+            
+            // Accept --
+            if (one != -1) {
+                int two = inStream.read();
+                if (two != -1) {
+                    if (one == 45 && two == 45) {
+                        // Accept --
+                        if (parent != null) {
+                            parent.setEndOfStream(true);
+                        }
+                    } else {
+                        inStream.unread(two);
+                        inStream.unread(one);
+                    }
+                } else {
+                    inStream.unread(one);
                 }
             }
-        } else {
-            return value;
-        }
-
-        // read value is the first byte of the boundary. Start matching the
-        // next characters to find a boundary
-        int boundaryIndex = 0;
-        while ((boundaryIndex < (boundary.length - 1))
-                && ((byte) value == boundary[boundaryIndex])) {
-            value = inStream.read();
-            boundaryIndex++;
-        }
-
-        if (boundaryIndex == (boundary.length - 1)) { // boundary found
-            boundaryFound = true;
-            // read the end of line character
-            if ((value = inStream.read()) == 45) {
-                //check whether end of stream
-                //Last mime boundary should have a succeeding "--"
-                if ((value = inStream.read()) == 45 && parent != null) {
-                    parent.setEndOfStream(true);
+            
+            one = inStream.read();
+            
+            // Accept /r/n
+            if (one != -1) {
+                int two = inStream.read();
+                if (two != -1) {
+                    if (one == 13 && two == 10) {
+                        // Accept /r/n and continue
+                    } else {
+                        inStream.unread(two);
+                        inStream.unread(one);
+                    }
+                } else {
+                    inStream.unread(one);
                 }
-            } else {
-                inStream.read();
             }
-
-            return -1;
         }
-
-        // Boundary not found. Restoring bytes skipped.
-        // write first skipped byte, push back the rest
-
-        if (value != -1) { // Stream might have ended
-            inStream.unread(value);
-        }
-
-        inStream.unread(boundary, 0, boundaryIndex);
-        inStream.unread(10);
-        return 13;
+        done = true;
+    }
+    
+    
+    public boolean getBoundaryStatus()
+    {
+        return bpis.getBoundaryStatus();
     }
 }

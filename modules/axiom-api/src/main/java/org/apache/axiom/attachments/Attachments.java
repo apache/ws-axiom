@@ -53,6 +53,7 @@ public class Attachments {
      * has the ability to "push back" or "unread" one byte.
      */
     PushbackInputStream pushbackInStream;
+    int PUSHBACK_SIZE = 1000;
 
     /**
      * <code>attachmentsMap</code> stores the Data Handlers of the already parsed Mime Body Parts.
@@ -141,7 +142,7 @@ public class Attachments {
         // do we need to wrap InputStream from a BufferedInputStream before
         // wrapping from PushbackStream
         pushbackInStream = new PushbackInputStream(inStream,
-                                                   (this.boundary.length + 2));
+                                                   PUSHBACK_SIZE);
 
         // Move the read pointer to the beginning of the first part
         // read till the end of first boundary
@@ -479,7 +480,7 @@ public class Attachments {
                     MIMEBodyPartInputStream partStream;
                     byte[] buffer = new byte[fileStorageThreshold];
                     partStream = new MIMEBodyPartInputStream(pushbackInStream,
-                                                             boundary, this);
+                                                             boundary, this, PUSHBACK_SIZE);
                     int count = 0;
                     do {
                         int len;
@@ -508,7 +509,7 @@ public class Attachments {
             } else {
                 MIMEBodyPartInputStream partStream;
                 partStream = new MIMEBodyPartInputStream(pushbackInStream,
-                                                         boundary, this);
+                                                         boundary, this, PUSHBACK_SIZE);
                 part = new PartOnMemory(partStream);
             }
 

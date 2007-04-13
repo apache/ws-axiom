@@ -52,30 +52,31 @@ public class PushbackFilePartInputStream extends InputStream {
         return data;
     }
 
-    public int read(byte b[], int off, int len) throws IOException {
+    public int read(byte[] b, int off, int len) throws IOException {
         if (count > 0) {
-            if (b == null) {
-                throw new NullPointerException();
-            } else if ((off < 0) || (off > b.length) || (len < 0) || ((off + len) > b.length)
-                    || ((off + len) < 0)) {
-                throw new IndexOutOfBoundsException();
-            } else if (len == 0) {
-                return 0;
+            // Get the start of the internal buffer and the length to copy
+            int start = buffer.length - count;
+            int copyLen = Math.min(len, count); 
+            
+            // Copy the bytes to b
+            System.arraycopy(buffer, start, b, off, copyLen);
+            count = count - copyLen;
+            
+            // If more bytes are needed, read them from the inStream
+            if (len > copyLen) {
+                return inStream.read(b, off + copyLen, len - copyLen) + copyLen; 
+            } else {
+                return len;
             }
-            int bytesCopied;
-            if (count < len) {
-                System.arraycopy(buffer, (buffer.length - count), b, off, count);
-                bytesCopied = count;
-                count = 0;
-                return bytesCopied;
-            }
-            System.arraycopy(buffer, (buffer.length - count), b, off, len);
-            count -= len;
-            return len;
+        } else {
+            return inStream.read(b, off, len);
         }
-        return inStream.read(b, off, len);
     }
 
+    public int read(byte[] b) throws IOException {
+        return read(b, 0, b.length);
+    }
+    
     public int available() throws IOException {
         return count + inStream.available();
     }
