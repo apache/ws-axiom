@@ -64,6 +64,8 @@ public class OMSourcedElementImpl extends OMElementImpl {
 
     private static Log log = LogFactory.getLog(OMSourcedElementImpl.class);
     private static final boolean isDebugEnabled = log.isDebugEnabled();
+    
+    private XMLStreamReader readerFromDS = null;  // Reader from DataSource
 
     /**
      * Constructor.
@@ -143,10 +145,10 @@ public class OMSourcedElementImpl extends OMElementImpl {
             }
 
             // position reader to start tag
-            XMLStreamReader reader = getDirectReader();
+            readerFromDS = getDirectReader();
             try {
-                if (reader.getEventType() != XMLStreamConstants.START_ELEMENT) {
-                    while (reader.next() != XMLStreamConstants.START_ELEMENT) ;
+                if (readerFromDS.getEventType() != XMLStreamConstants.START_ELEMENT) {
+                    while (readerFromDS.next() != XMLStreamConstants.START_ELEMENT) ;
                 }
             } catch (XMLStreamException e) {
                 log.error("forceExpand: error parsing data soruce document for element " +
@@ -156,13 +158,13 @@ public class OMSourcedElementImpl extends OMElementImpl {
             }
 
             // make sure element local name and namespace matches what was expected
-            if (!reader.getLocalName().equals(getLocalName())) {
+            if (!readerFromDS.getLocalName().equals(getLocalName())) {
                 log.error("forceExpand: expected element name " +
-                        getLocalName() + ", found " + reader.getLocalName());
+                        getLocalName() + ", found " + readerFromDS.getLocalName());
                 throw new RuntimeException("Element name from data source is " +
-                        reader.getLocalName() + ", not the expected " + getLocalName());
+                        readerFromDS.getLocalName() + ", not the expected " + getLocalName());
             }
-            String readerURI = reader.getNamespaceURI();
+            String readerURI = readerFromDS.getNamespaceURI();
             readerURI = (readerURI == null) ? "" : readerURI;
             String uri = getNamespace().getNamespaceURI();
             if (!readerURI.equals(uri)) {
@@ -173,13 +175,13 @@ public class OMSourcedElementImpl extends OMElementImpl {
             }
 
             // Get the current prefix and the reader's prefix
-            String readerPrefix = reader.getPrefix();
+            String readerPrefix = readerFromDS.getPrefix();
             readerPrefix = (readerPrefix == null) ? "" : readerPrefix;
             String prefix = getNamespace().getPrefix();
 
             // set the builder for this element
             isParserSet = true;
-            super.setBuilder(new StAXOMBuilder(getOMFactory(), reader, this));
+            super.setBuilder(new StAXOMBuilder(getOMFactory(), readerFromDS, this));
             setComplete(false);
 
             // Update the prefix if necessary.  This must be done after
@@ -842,5 +844,12 @@ public class OMSourcedElementImpl extends OMElementImpl {
      */
     public void setComplete(boolean value) {
         done = value;
+        if (done == true && readerFromDS != null) {
+            try {
+                readerFromDS.close();
+            } catch (XMLStreamException e) {
+            }
+            readerFromDS = null;
+        }
     }
 }
