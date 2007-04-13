@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,8 +68,22 @@ public class StAXUtils {
     private static final Pool xmlInputFactoryPool = new Pool(new ObjectCreator[] {
             new ObjectCreator() {
                 public Object newObject() {
-                    return XMLInputFactory.newInstance("javax.xml.stream.XMLInputFactory",
-                                                       StAXUtils.class.getClassLoader());
+                    return AccessController.doPrivileged(
+                            new PrivilegedAction() {
+                                public Object run() {
+                                    Thread currentThread = Thread.currentThread();
+                                    ClassLoader savedClassLoader = currentThread.getContextClassLoader();
+                                    XMLInputFactory factory = null;
+                                    try {
+                                        currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
+                                        factory = XMLInputFactory.newInstance();
+                                    }
+                                    finally {
+                                        currentThread.setContextClassLoader(savedClassLoader);
+                                    }
+                                    return factory; 
+                                }
+                            });
                 }
             },
             new ObjectCreator() {
@@ -80,8 +96,23 @@ public class StAXUtils {
     private static final Pool xmlOutputFactoryPool = new Pool(new ObjectCreator[] {
             new ObjectCreator() {
                 public Object newObject() {
-                    return XMLOutputFactory.newInstance("javax.xml.stream.XMLOutputFactory",
-                                                        StAXUtils.class.getClassLoader());
+                    return AccessController.doPrivileged(
+                            new PrivilegedAction() {
+                                public Object run() {
+                                                                       
+                                    Thread currentThread = Thread.currentThread();
+                                    ClassLoader savedClassLoader = currentThread.getContextClassLoader();
+                                    XMLOutputFactory factory = null;
+                                    try {
+                                        currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
+                                        factory = XMLOutputFactory.newInstance();
+                                    }
+                                    finally {
+                                        currentThread.setContextClassLoader(savedClassLoader);
+                                    }
+                                    return factory;
+                                }
+                            });
                 }
             },
             new ObjectCreator() {
