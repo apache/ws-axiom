@@ -73,22 +73,42 @@ public class SOAPEnvelopeImpl extends SOAPElement
      * @throws OMException
      */
     public SOAPHeader getHeader() throws OMException {
-        // Header must be the first child
-        OMElement header = getFirstElement();
-        if (header == null) {
-            if (builder == null) {
+        SOAPHeader header = null;
+        
+        // We need to be careful when detecting the presence of a header.
+        // The following (old) code expands the tree if the header is 
+        // not present.
+        //SOAPHeader header =
+        //    (SOAPHeader) getFirstChildWithName(
+        //            HEADER_QNAME);
+        
+        
+        // The soap header is the first element in the envelope.
+        OMElement e = getFirstElement();
+        if (e instanceof SOAPHeader) {
+            header = (SOAPHeader) e;
+        } 
+        
+        // The semantics of this method should not depend on 
+        // the state of the builder. The prior code added the header 
+        // if the builder was not present.  This is incorrect.
+        //
+        // Prior Code: funny semantics dependent on presence of builder.
+        // if (builder == null && header == null) {
+        //
+        // CREATE_MISSING_HEADER toggles the semantics
+        
+        boolean CREATE_MISSING_HEADER = false;  // Changing this toggle violates the javadoc
+        if (CREATE_MISSING_HEADER) {
+            if (header == null) {
                 inferFactory();
+                // Creates a SOAPHeader before the SOAPBody
                 header = ((SOAPFactory) factory).createSOAPHeader(this);
-                addChild(header);
-            } else {
-                return null;
             }
-        } else if (!(header instanceof SOAPHeader)) {
-            return null;
         }
-
-        return (SOAPHeader) header;
+        return header;
     }
+
 
     private void inferFactory() {
         if (ns != null) {
@@ -100,25 +120,49 @@ public class SOAPEnvelopeImpl extends SOAPElement
             }
         }
     }
-
+    
+    /**
+     * Add a SOAPHeader or SOAPBody object
+     */
     public void addChild(OMNode child) {
-        if ((child instanceof OMElement) &&
-                !(child instanceof SOAPHeader || child instanceof SOAPBody)) {
-            throw new SOAPProcessingException(
-                    "SOAP Envelope can not have children other than SOAP Header and Body",
-                    SOAP12Constants.FAULT_CODE_SENDER);
+        if ((child instanceof OMElement) && !(child instanceof SOAPHeader || child instanceof SOAPBody))
+        {
+            throw new SOAPProcessingException("SOAP Envelope can not have children other than SOAP Header and Body", SOAP12Constants.FAULT_CODE_SENDER);
         } else {
-            if (this.done && (child instanceof SOAPHeader)) {
-                SOAPBody body = getBody();
-                if (body != null) {
-                    body.insertSiblingBefore(child);
-                    return;
+            if (child instanceof SOAPHeader) {
+                // The SOAPHeader is added before the SOAPBody
+                // We must be sensitive to the state of the parser.  It is possible that the 
+                // has not been processed yet.
+                if (this.done) {
+                    // Parsing is complete, therefore it is safe to 
+                    // call getBody.
+                    SOAPBody body = getBody();
+                    if (body != null) {
+                        body.insertSiblingBefore(child);
+                        return;
+                    }
+                } else {
+                    // Flow to here indicates that we are still expanding the
+                    // envelope.  The body or body contents may not be 
+                    // parsed yet.  We can't use getBody() yet...it will
+                    // cause a failure.  So instead, carefully find the 
+                    // body and insert the header.  If the body is not found, 
+                    // this indicates that it has not been parsed yet...and
+                    // the code will fall through to the super.addChild.
+                    OMNode node = this.lastChild;
+                    while (node != null) {
+                        if (node instanceof SOAPBody) {
+                            node.insertSiblingBefore(child);
+                            return;
+                        }
+                        node = node.getPreviousOMSibling();
+                    }
                 }
             }
             super.addChild(child);
         }
     }
-
+    
     /**
      * Returns the <CODE>SOAPBody</CODE> object associated with this <CODE>SOAPEnvelope</CODE>
      * object. <P> This SOAPBody will just be a container for all the BodyElements in the
