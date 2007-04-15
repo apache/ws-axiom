@@ -16,7 +16,6 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -26,7 +25,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -36,7 +34,6 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -44,15 +41,21 @@ import javax.xml.stream.XMLStreamWriter;
 public class SOAPEnvelopeImpl extends SOAPElement
         implements SOAPEnvelope, OMConstants {
 
-    private static final QName HEADER_QNAME = new QName(SOAPConstants.HEADER_LOCAL_NAME);
-
-    /** @param builder  */
+    /**
+     * Constructor
+     * @param builder the OMXMLParserWrapper building this envelope
+     * @param factory the SOAPFactory building this envelope
+     */
     public SOAPEnvelopeImpl(OMXMLParserWrapper builder, SOAPFactory factory) {
         super(null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, builder, factory);
         this.factory = factory;
     }
 
-    /** @param ns  */
+    /**
+     * Constructor
+     * @param ns OMNamespace for this envelope
+     * @param factory SOAPFactory associated with this envelope
+     */
     public SOAPEnvelopeImpl(OMNamespace ns, SOAPFactory factory) {
         super(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
         this.factory = factory;
@@ -68,73 +71,35 @@ public class SOAPEnvelopeImpl extends SOAPElement
      * </P>
      *
      * @return the <CODE>SOAPHeader</CODE> object or <CODE> null</CODE> if there is none
-     * @throws org.apache.axiom.om.OMException
-     *                     if there is a problem obtaining the <CODE>SOAPHeader</CODE> object
-     * @throws OMException
+     * @throws OMException if there is a problem obtaining the <CODE>SOAPHeader</CODE> object
      */
     public SOAPHeader getHeader() throws OMException {
-        SOAPHeader header = null;
-        
-        // We need to be careful when detecting the presence of a header.
-        // The following (old) code expands the tree if the header is 
-        // not present.
-        //SOAPHeader header =
-        //    (SOAPHeader) getFirstChildWithName(
-        //            HEADER_QNAME);
-        
-        
         // The soap header is the first element in the envelope.
         OMElement e = getFirstElement();
         if (e instanceof SOAPHeader) {
-            header = (SOAPHeader) e;
+            return (SOAPHeader)e;
         } 
         
-        // The semantics of this method should not depend on 
-        // the state of the builder. The prior code added the header 
-        // if the builder was not present.  This is incorrect.
-        //
-        // Prior Code: funny semantics dependent on presence of builder.
-        // if (builder == null && header == null) {
-        //
-        // CREATE_MISSING_HEADER toggles the semantics
-        
-        boolean CREATE_MISSING_HEADER = false;  // Changing this toggle violates the javadoc
-        if (CREATE_MISSING_HEADER) {
-            if (header == null) {
-                inferFactory();
-                // Creates a SOAPHeader before the SOAPBody
-                header = ((SOAPFactory) factory).createSOAPHeader(this);
-            }
-        }
-        return header;
+        return null;
     }
 
-
-    private void inferFactory() {
-        if (ns != null) {
-            String namespaceURI = ns.getNamespaceURI();
-            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                factory = OMAbstractFactory.getSOAP12Factory();
-            } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                factory = OMAbstractFactory.getSOAP11Factory();
-            }
-        }
-    }
-    
     /**
      * Add a SOAPHeader or SOAPBody object
+     * @param child an OMNode to add - must be either a SOAPHeader or a SOAPBody
      */
     public void addChild(OMNode child) {
-        if ((child instanceof OMElement) && !(child instanceof SOAPHeader || child instanceof SOAPBody))
-        {
-            throw new SOAPProcessingException("SOAP Envelope can not have children other than SOAP Header and Body", SOAP12Constants.FAULT_CODE_SENDER);
+        if ((child instanceof OMElement) &&
+            !(child instanceof SOAPHeader || child instanceof SOAPBody)) {
+            throw new SOAPProcessingException(
+                    "SOAP Envelope can not have children other than SOAP Header and Body",
+                    SOAP12Constants.FAULT_CODE_SENDER);
         } else {
             if (child instanceof SOAPHeader) {
                 // The SOAPHeader is added before the SOAPBody
-                // We must be sensitive to the state of the parser.  It is possible that the 
+                // We must be sensitive to the state of the parser.  It is possible that the
                 // has not been processed yet.
                 if (this.done) {
-                    // Parsing is complete, therefore it is safe to 
+                    // Parsing is complete, therefore it is safe to
                     // call getBody.
                     SOAPBody body = getBody();
                     if (body != null) {
@@ -143,10 +108,10 @@ public class SOAPEnvelopeImpl extends SOAPElement
                     }
                 } else {
                     // Flow to here indicates that we are still expanding the
-                    // envelope.  The body or body contents may not be 
+                    // envelope.  The body or body contents may not be
                     // parsed yet.  We can't use getBody() yet...it will
-                    // cause a failure.  So instead, carefully find the 
-                    // body and insert the header.  If the body is not found, 
+                    // cause a failure.  So instead, carefully find the
+                    // body and insert the header.  If the body is not found,
                     // this indicates that it has not been parsed yet...and
                     // the code will fall through to the super.addChild.
                     OMNode node = this.lastChild;
@@ -170,9 +135,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
      *
      * @return the <CODE>SOAPBody</CODE> object for this <CODE> SOAPEnvelope</CODE> object or
      *         <CODE>null</CODE> if there is none
-     * @throws org.apache.axiom.om.OMException
-     *                     if there is a problem obtaining the <CODE>SOAPBody</CODE> object
-     * @throws OMException
+     * @throws OMException if there is a problem obtaining the <CODE>SOAPBody</CODE> object
      */
     public SOAPBody getBody() throws OMException {
         //check for the first element
@@ -191,8 +154,8 @@ public class SOAPEnvelopeImpl extends SOAPElement
                         SOAPConstants.BODY_LOCAL_NAME.equals(element.getLocalName())) {
                     return (SOAPBody) element;
                 } else {
-                    throw new OMException(
-                            "SOAPEnvelope must contain a body element which is either first or second child element of the SOAPEnvelope.");
+                    throw new OMException("SOAPEnvelope must contain a body element " +
+                            "which is either first or second child element of the SOAPEnvelope.");
                 }
             }
         }
