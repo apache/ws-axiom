@@ -16,7 +16,7 @@
             <h2>Releases</h2>
             <div align="left">
                 <p>AXIOM is becoming more and more stable and the latest official version available for download is
-                    AXIOM 1.2. All the releases are available for download as source or binary. For more information,
+                    AXIOM 1.2.4 .  All the releases are available for download as source or binary. For more information,
                     please see
                     <a href="http://www.apache.org/dev/release.html">Apache Release FAQ</a>
                 </p>
@@ -33,6 +33,41 @@
                             <td align="center" width="100">Date</td>
                             <td align="center" width="200">Description</td>
                         </tr>
+                 <tr class="b">
+                            <td align="center" valign="middle">
+                                <a name="1_2_4"></a>
+                                1.2.4
+                            </td>
+                            <td align="center">Release</td>
+                            <td>Source Distribution
+                                <a href="[preferred]/ws/commons/axiom/1_2_4/axiom-1.2.4-src.zip"
+                                   title="[preferred]/ws/commons/axiom/1_2_4/axiom-1.2.4-src.zip">zip</a>
+
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_4/axiom-1.2.4-src.zip.md5"
+                                   class="externalLink"
+                                   title="http://www.apache.org/dist/ws/commons/axiom/1_2_4/axiom-1.2.4-src.zip.md5">MD5</a>
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_4/axiom-1.2.4-src.zip.asc"
+                                   class="externalLink"
+                                   title="http://www.apache.org/dist/ws/commons/axiom/1_2_4/axiom-1.2.4-src.zip.asc">PGP</a>
+                                <br/>
+                                Binary Distribution
+                                <a href="[preferred]/ws/commons/axiom/1_2_4/axiom-1.2.4-bin.zip"
+                                   title="[preferred]/ws/commons/axiom/1_2_4/axiom-1.2.4-bin.zip">zip</a>
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_4/axiom-1.2.4-bin.zip.md5"
+                                   class="externalLink"
+                                   title="http://www.apache.org/dist/ws/commons/axiom/1_2_4/axiom-1.2.4-bin.zip.md5">MD5</a>
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_4/axiom-1.2.4-bin.zip.asc"
+                                   class="externalLink"
+                                   title="http://www.apache.org/dist/ws/ws/commons/axiom/1_2_4/axiom-1.2.4-bin.zip.asc">
+                                    PGP</a>
+
+                                <br/>
+                            </td>
+                            <td>20 - 04 - 2007</td>
+                            <td>1.2.4 Release (Mirrored)</td>
+                        </tr>
+
+
                 <tr class="b">
                             <td align="center" valign="middle">
                                 <a name="1_2_3"></a>
@@ -64,7 +99,7 @@
                                 <br/>
                             </td>
                             <td>03 - 04 - 2007</td>
-                            <td>1.2.3 Release (Mirrored)</td>
+                            <td>1.2.3 Release (Archived)</td>
                         </tr>
 
                 <tr class="b">

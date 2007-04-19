@@ -7,12 +7,12 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom-parent</artifactId>
-        <version>SNAPSHOT</version>
+        <version>1.2.4</version>
         <!-- Should better be ${axiom.version} -->
     </parent>
     <artifactId>axiom-api</artifactId>
     <name>Axiom API</name>
-    <version>SNAPSHOT</version>
+    <version>1.2.4</version>
     <description>The Axiom API</description>
     <dependencies>
         <dependency>

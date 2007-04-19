@@ -1,7 +1,7 @@
 
 ===========================================
 
-     Apache AXIOM 1.2.3 Release Note
+     Apache AXIOM 1.2.4 Release Note
 
 ===========================================
 
@@ -37,6 +37,6 @@ Key Features
 What's New in This Release
 ==========================
 
-This is release includes few bug fixes which are necessary for Axis2 release.
+This is release includes major bug fixes which are necessary for Axis2 release.
 
 - The Apache Axiom Team.
