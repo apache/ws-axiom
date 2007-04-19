@@ -7,7 +7,7 @@
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom-parent</artifactId>
     <name>Axiom</name>
-    <version>1.2.4</version>
+    <version>SNAPSHOT</version>
     <!-- Should better be ${axiom.version} -->
     <packaging>pom</packaging>
     <description>AXIOM API</description>
