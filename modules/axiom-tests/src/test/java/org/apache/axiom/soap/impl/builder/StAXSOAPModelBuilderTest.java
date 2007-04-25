@@ -36,6 +36,8 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.custommonkey.xmlunit.XMLTestCase;
+import org.custommonkey.xmlunit.XMLUnit;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
@@ -43,7 +45,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
 import java.util.Iterator;
 
-public class StAXSOAPModelBuilderTest extends TestCase {
+public class StAXSOAPModelBuilderTest extends XMLTestCase {
 
     public void setUp() {
 
@@ -597,5 +599,27 @@ public class StAXSOAPModelBuilderTest extends TestCase {
             }
             fail("Successfully parsed bad envelope ('" + badHeaders[i] + "')");
         }
+    }
+
+    public void testFault() throws Exception {
+        String soap11Fault = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+                    "<SOAP-ENV:Body>" +
+                    "<SOAP-ENV:Fault>" +
+                        "<faultcode>SOAP-ENV:Server</faultcode>" +
+                        "<faultstring xml:lang=\"en\">handleMessage throws SOAPFaultException for ThrowsSOAPFaultToClientHandlersTest</faultstring>" +
+                        "<detail>" +
+                            "<somefaultentry/>" +
+                        "</detail>" +
+                        "<faultactor>faultActor</faultactor>" +
+                        "</SOAP-ENV:Fault>" +
+                    "</SOAP-ENV:Body>" +
+                "</SOAP-ENV:Envelope>";
+        XMLStreamReader soap11Parser = XMLInputFactory.newInstance()
+                .createXMLStreamReader(new StringReader(soap11Fault));
+        StAXSOAPModelBuilder soap11Builder = new StAXSOAPModelBuilder(soap11Parser, null);
+        OMElement element = soap11Builder.getDocumentElement();
+        element.build();
+        this.assertXMLEqual(soap11Fault, element.toString());
     }
 }
