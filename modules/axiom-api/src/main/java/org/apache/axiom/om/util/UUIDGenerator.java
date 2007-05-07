@@ -39,7 +39,7 @@ public class UUIDGenerator {
      *
      * @return string
      */
-    public static String getUUID() {
+    public static synchronized String getUUID() {
         if (baseUUID == null) {
             baseUUID = getInitialUUID();
             baseUUID = "urn:uuid:" + baseUUID;
