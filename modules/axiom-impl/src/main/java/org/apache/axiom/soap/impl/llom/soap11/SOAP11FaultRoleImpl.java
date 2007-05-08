@@ -72,8 +72,7 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
                                             SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME,
                                             writer);
 
-        String text = this.getText();
-        writer.writeCharacters(text);
+        writer.writeCharacters(this.getText());
         writer.writeEndElement();
     }
 

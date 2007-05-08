@@ -90,8 +90,7 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
                                             SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME,
                                             writer);
 
-        String text = this.getText();
-        writer.writeCharacters(text);
+        writer.writeCharacters(this.getText());
         writer.writeEndElement();
     }
 

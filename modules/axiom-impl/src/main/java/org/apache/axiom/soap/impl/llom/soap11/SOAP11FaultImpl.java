@@ -68,12 +68,6 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
         return new SOAP11FaultDetailImpl(fault, (SOAPFactory) this.factory);
     }
 
-
-    public void internalSerializeAndConsume(XMLStreamWriter writer)
-            throws XMLStreamException {
-        super.internalSerializeAndConsume(writer);
-    }
-
     public void setCode(SOAPFaultCode soapFaultCode)
             throws SOAPProcessingException {
         if (!(soapFaultCode instanceof SOAP11FaultCodeImpl)) {

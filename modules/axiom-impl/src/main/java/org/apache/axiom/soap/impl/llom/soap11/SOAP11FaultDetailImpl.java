@@ -33,18 +33,23 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
 
+
+
     public SOAP11FaultDetailImpl(SOAPFactory factory) {
         super(null, factory);
+        this.localName = SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME;
     }
 
     public SOAP11FaultDetailImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, false, factory);
+        this.localName = SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME;
     }
 
     public SOAP11FaultDetailImpl(SOAPFault parent, OMXMLParserWrapper builder,
                                  SOAPFactory factory) {
         super(parent, builder, factory);
+        this.localName = SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME;
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -54,32 +59,4 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
                             "parent. But received some other implementation");
         }
     }
-
-    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-
-        // select the builder
-        short builderType = PULL_TYPE_BUILDER;    // default is pull type
-        if (builder != null) {
-            builderType = this.builder.getBuilderType();
-        }
-        if ((builderType == PUSH_TYPE_BUILDER)
-                && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(
-                    new StreamWriterToContentHandlerConverter(writer));
-        }
-
-        OMSerializerUtil.serializeStartpart(this,
-                                            SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME,
-                                            writer);
-
-        OMNode child = firstChild;
-        while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
-            ((OMNodeImpl) child).internalSerializeAndConsume(writer);
-            child = child.getNextOMSibling();
-        }
-
-        writer.writeEndElement();
-    }
-
-
 }

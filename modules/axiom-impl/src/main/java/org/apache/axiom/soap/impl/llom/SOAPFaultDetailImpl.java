@@ -23,7 +23,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
@@ -43,15 +42,15 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
                                   boolean extractNamespaceFromParent,
                                   SOAPFactory factory) throws SOAPProcessingException {
         super(parent,
-              factory.getSOAPVersion().getFaultDetailQName().getLocalPart(),
-              extractNamespaceFromParent, factory);
+                factory.getSOAPVersion().getFaultDetailQName().getLocalPart(),
+                extractNamespaceFromParent, factory);
     }
 
     protected SOAPFaultDetailImpl(SOAPFault parent,
                                   OMXMLParserWrapper builder,
                                   SOAPFactory factory) {
         super(parent, factory.getSOAPVersion().getFaultDetailQName().getLocalPart(), builder,
-              factory);
+                factory);
     }
 
     public void addDetailEntry(OMElement detailElement) {
@@ -76,8 +75,8 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
         }
 
         OMSerializerUtil.serializeStartpart(this,
-                                            getLocalName(),
-                                            writer);
+                this.localName,
+                writer);
 
         OMNode child = firstChild;
         while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {

@@ -71,8 +71,7 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
                                             SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME,
                                             writer);
 
-        String text = this.getText();
-        writer.writeCharacters(text);
+        writer.writeCharacters(this.getText());
 
 
         if (firstChild != null) {
