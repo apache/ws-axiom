@@ -16,6 +16,7 @@
 
 package org.apache.axiom.soap;
 
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
@@ -219,5 +220,20 @@ public class SOAPFaultDetailTest extends SOAPFaultTestCase {
         assertTrue(
                 "SOAP 1.2 Fault Detail Test With Parser : - getAllDetailEntries method returns an itrator with more than two detail entries",
                 !iterator.hasNext());
+    }
+
+    public void testWSCommons202() {
+        SOAPFactory factory = OMAbstractFactory.getSOAP12Factory();
+        SOAPFaultDetail soapFaultDetail = factory.createSOAPFaultDetail();
+        soapFaultDetail.setText("a");
+
+        assertTrue(soapFaultDetail.getText().trim().equals("a"));
+        assertTrue("Text serialization has problems. It had serialized same text twice", soapFaultDetail.toString().indexOf("aa") == -1);
+
+        OMElement omElement = factory.createOMElement("DummyElement", null);
+        soapFaultDetail.addChild(omElement);
+        omElement.setText("Some text is here");
+
+        assertTrue("Children of SOAP Fault Detail element are not serialized properly", soapFaultDetail.toString().indexOf("Some text is here") != -1);
     }
 }

@@ -79,9 +79,6 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
                                             getLocalName(),
                                             writer);
 
-        String text = this.getText();
-        writer.writeCharacters(text);
-
         OMNode child = firstChild;
         while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
             ((OMNodeImpl) child).internalSerializeAndConsume(writer);
