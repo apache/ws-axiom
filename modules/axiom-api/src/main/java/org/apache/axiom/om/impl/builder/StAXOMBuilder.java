@@ -104,8 +104,6 @@ public class StAXOMBuilder extends StAXBuilder {
 
     /**
      * Init() *must* be called after creating the builder using this constructor.
-     *
-     * @param inStream - instream which contains the XML
      */
     public StAXOMBuilder() {
         super();

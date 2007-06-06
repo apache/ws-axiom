@@ -265,7 +265,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
      * ultimate intended recipient for the message, so if no actor attribute is included in a
      * <CODE>SOAPHeader</CODE> object, the message is sent to its ultimate destination.
      *
-     * @param paramRole a <CODE>String</CODE> giving the URI of the actor for which to search
+     * @param role a <CODE>String</CODE> giving the URI of the actor for which to search
      * @return an <CODE>Iterator</CODE> object over all the <CODE> SOAPHeaderBlock</CODE> objects
      *         that contain the specified actor
      * @see #extractHeaderBlocks(String) extractHeaderBlocks(java.lang.String)

@@ -85,7 +85,7 @@ public class OMSourcedElementImpl extends OMElementImpl {
     /**
      * Constructor that takes a QName instead of the local name and the namespace seperately
      *
-     * @param QName
+     * @param qName
      * @param factory
      * @param source
      */
