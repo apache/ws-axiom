@@ -25,6 +25,8 @@ import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultCodeImpl;
 
+import javax.xml.namespace.QName;
+
 public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
     /**
      * Constructor OMElementImpl
@@ -61,6 +63,12 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
                             "But received some other implementation");
         }
         super.setValue(value);
+    }
+
+
+    public QName getTextAsQName() {
+        SOAPFaultValue value = getValue();
+        return value == null ? null : value.getTextAsQName();
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {

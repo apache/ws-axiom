@@ -75,7 +75,7 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements SOAPFau
         while (childrenIter.hasNext()) {
             OMNode node = (OMNode) childrenIter.next();
             if (node.getType() == OMNode.ELEMENT_NODE && (node instanceof SOAPFaultTextImpl) &&
-                    language.equals(((SOAPFaultTextImpl) node).getLang())) {
+                    (language == null || language.equals(((SOAPFaultTextImpl) node).getLang()))) {
                 return (SOAPFaultText) node;
             }
         }
