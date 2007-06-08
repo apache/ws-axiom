@@ -26,7 +26,6 @@ import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.llom.SOAPFaultReasonImpl;
 
 public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
-    /** Eran Chinthaka (chinthaka@apache.org) */
     public SOAP12FaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,
                                  SOAPFactory factory) {
         super(parent, builder, factory);
@@ -36,7 +35,6 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
         super(factory.getNamespace(), factory);
     }
 
-    /** @param parent  */
     public SOAP12FaultReasonImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, true, factory);
@@ -54,6 +52,18 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
 
     public SOAPFaultText getFirstSOAPText() {
         return (SOAPFaultText)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_TEXT);
+    }
+
+
+    /**
+     * getText() is overridden here in order to provide a uniform way for SOAP 1.1
+     * and SOAP 1.2 to get the "default" reason string.
+     *
+     * @return the default (local language, or first) reason string
+     */
+    public String getText() {
+        // TODO: Make this look for the correct lang for our locale first
+        return getFirstSOAPText().getText();
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
