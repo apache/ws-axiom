@@ -317,6 +317,11 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
                 break;
             }
 
+            case Node.COMMENT_NODE: {
+                newNode = createComment(importedNode.getNodeValue());
+                break;
+            }
+                
             case Node.DOCUMENT_FRAGMENT_NODE: {
                 newNode = createDocumentFragment();
                 // No name, kids carry value
@@ -327,10 +332,9 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
             case Node.ENTITY_REFERENCE_NODE:
             case Node.ENTITY_NODE:
             case Node.PROCESSING_INSTRUCTION_NODE:
-            case Node.COMMENT_NODE:
             case Node.DOCUMENT_TYPE_NODE:
             case Node.NOTATION_NODE:
-                throw new UnsupportedOperationException("TODO");
+                throw new UnsupportedOperationException("TODO : Implement handling of org.w3c.dom.Node type == " + type );
 
             case Node.DOCUMENT_NODE: // Can't import document nodes
             default: { // Unknown node type
