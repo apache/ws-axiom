@@ -77,4 +77,8 @@ public class NamespaceImpl implements OMNamespace {
     public String getNamespaceURI() {
         return this.nsUri;
     }
+
+    public int hashCode() {
+        return nsUri.hashCode() ^ (nsPrefix != null ? nsPrefix.hashCode() : 0);
+    }
 }

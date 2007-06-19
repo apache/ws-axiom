@@ -41,7 +41,7 @@ public class NamespaceTest extends TestCase {
         ns1 = new NamespaceImpl(URI1);
         ns2 = new NamespaceImpl("http://testuri1");
         URI2 = URI2 + "testuri1";  // Make sure the strings don't intern to the same place
-        assertTrue(ns1.equals(URI2, ""));
+        assertTrue(ns1.equals(URI2, null));
         assertTrue(ns1.equals(ns2));
     }
 

@@ -83,4 +83,8 @@ public class OMNamespaceImpl implements OMNamespace {
     public String getNamespaceURI() {
         return uri;
     }
+
+    public int hashCode() {
+        return uri.hashCode() ^ (prefix != null ? prefix.hashCode() : 0);
+    }
 }
