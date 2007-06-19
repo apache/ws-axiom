@@ -33,6 +33,7 @@ import org.apache.commons.logging.LogFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.Location;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -222,7 +223,10 @@ public class StAXOMBuilder extends StAXBuilder {
         processNamespaceData(node);
         // fill in the attributes
         processAttributes(node);
-        node.setLineNumber(parser.getLocation().getLineNumber());
+        Location location = parser.getLocation();
+        if(location != null) {
+            node.setLineNumber(location.getLineNumber());
+        }
     }
 
     /**
