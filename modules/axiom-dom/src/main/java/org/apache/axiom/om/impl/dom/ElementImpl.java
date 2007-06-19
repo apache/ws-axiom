@@ -425,7 +425,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      */
     public void setAttribute(String name, String value) throws DOMException {
         // Check for invalid charaters
-        if (!DOMUtil.isValidChras(name)) {
+        if (!DOMUtil.isQualifiedName(name)) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN, "INVALID_CHARACTER_ERR",
                     null);
@@ -533,7 +533,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     private OMAttribute addAttribute(String namespaceURI, String qualifiedName,
                                      String value) throws DOMException {
-        if (!DOMUtil.isValidChras(qualifiedName)) {
+        if (!DOMUtil.isQualifiedName(qualifiedName)) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN, "INVALID_CHARACTER_ERR",
                     null);

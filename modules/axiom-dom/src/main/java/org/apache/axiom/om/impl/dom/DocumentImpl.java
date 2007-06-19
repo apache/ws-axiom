@@ -147,7 +147,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     // /
 
     public Attr createAttribute(String name) throws DOMException {
-        if (!DOMUtil.isValidChras(name)) {
+        if (!DOMUtil.isQualifiedName(name)) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN, "INVALID_CHARACTER_ERR",
                     null);

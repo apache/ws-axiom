@@ -18,6 +18,17 @@ package org.apache.axiom.om.impl.dom;
 /** Utility class for the OM-DOM implementation */
 class DOMUtil {
 
+    public static boolean isQualifiedName(String value) {
+        // TODO check for valid characters
+        // throw new UnsupportedOperationException("TODO");
+        return true;
+    }
+
+    /**
+     * @deprecated please use isQualifiedName
+     * @param value
+     * @return
+     */
     public static boolean isValidChras(String value) {
         // TODO check for valid characters
         // throw new UnsupportedOperationException("TODO");
