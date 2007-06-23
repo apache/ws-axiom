@@ -71,6 +71,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected boolean parserAccessed = false;
     protected OMDocument document;
 
+    protected String charEncoding = null;
     /**
      * Constructor StAXBuilder.
      *
@@ -80,6 +81,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected StAXBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
         this.parser = parser;
         omfactory = ombuilderFactory;
+        charEncoding = parser.getCharacterEncodingScheme();
 
         if (parser instanceof BuilderAwareReader) {
             ((BuilderAwareReader) parser).setBuilder(this);
@@ -99,6 +101,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected StAXBuilder() {
     }
 
+    /**
+     * @deprecated Not used anywhere
+     */
     public void init(InputStream inputStream, String charSetEncoding, String url,
                      String contentType) throws OMException {
         try {
@@ -511,5 +516,16 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             // property is not found.
         }
         return false;
+    }
+
+    /**
+     * Returns the encoding style of the XML data
+     * @return the character encoding, defaults to "UTF-8"
+     */
+    public String getCharacterEncoding() {
+        if(this.charEncoding == null){
+            return "UTF-8";
+        }
+        return this.charEncoding;
     }
 }

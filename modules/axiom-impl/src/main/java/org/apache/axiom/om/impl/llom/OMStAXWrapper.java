@@ -40,6 +40,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.EmptyOMLocation;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.om.impl.llom.util.NamespaceContextImpl;
 
@@ -1077,6 +1078,9 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * @return Returns String.
      */
     public String getCharacterEncodingScheme() {
+        if(builder != null) {
+            return builder.getCharacterEncoding();
+        }
         return "utf-8";
     }
 

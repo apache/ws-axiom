@@ -82,4 +82,10 @@ public interface OMXMLParserWrapper {
      * @return Returns Object.
      */
     Object getRegisteredContentHandler();
+
+    /**
+     * Returns the encoding style of the XML data
+     * @return the character encoding, defaults to "UTF-8"
+     */
+    public String getCharacterEncoding();
 }

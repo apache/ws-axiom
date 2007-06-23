@@ -76,7 +76,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
     private SOAPBuilderHelper builderHelper;
 
-    private String charEncoding = null;
     private String parserVersion = null;
     private static final boolean isDebugEnabled = log.isDebugEnabled();
 
@@ -92,7 +91,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, String soapVersion) {
         super(parser);
-        charEncoding = parser.getCharacterEncodingScheme();
         parserVersion = parser.getVersion();
         identifySOAPVersion(soapVersion);
     }
@@ -102,11 +100,9 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      * validating the transport level soap version with the Envelope version.
      *
      * @param parser
-     * @param soapVersion parameter is to give the soap version for the transport.
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser) {
         super(parser);
-        charEncoding = parser.getCharacterEncodingScheme();
         parserVersion = parser.getVersion();
         SOAPEnvelope soapEnvelope = getSOAPEnvelope();
         envelopeNamespace = soapEnvelope.getNamespace();
@@ -124,7 +120,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
         super(factory, parser);
         soapFactory = factory;
-        charEncoding = parser.getCharacterEncodingScheme();
         parserVersion = parser.getVersion();
         identifySOAPVersion(soapVersion);
     }
