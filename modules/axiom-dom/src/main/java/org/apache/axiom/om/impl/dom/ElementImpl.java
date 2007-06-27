@@ -1157,7 +1157,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     /** @see org.apache.axiom.om.OMElement#getAllDeclaredNamespaces() */
     public Iterator getAllDeclaredNamespaces() throws OMException {
         if (namespaces == null) {
-            return null;
+            return EMPTY_ITERATOR;
         }
         return namespaces.values().iterator();
     }
