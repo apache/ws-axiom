@@ -45,6 +45,7 @@ public class CharacterEncoding2Test extends XMLTestCase {
         outputFormat.setCharSetEncoding("iso-8859-1");
         envelope.serialize(byteOutStr, outputFormat);
 
-        assertXMLEqual(new StringReader(xml), new InputStreamReader(new ByteArrayInputStream(byteOutStr.toByteArray())));
+        assertXMLEqual(new InputStreamReader(new ByteArrayInputStream(xml.getBytes("iso-8859-1")),"iso-8859-1"),
+                new InputStreamReader(new ByteArrayInputStream(byteOutStr.toByteArray()),"iso-8859-1"));
     }
 }
