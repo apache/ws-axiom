@@ -133,8 +133,12 @@ public class Attachments {
 
         // Boundary always have the prefix "--".
         try {
+            String encoding = contentType.getParameter("charset");
+            if(encoding == null || encoding.length()==0){
+                encoding = "UTF-8";
+            }
             this.boundary = ("--" + contentType.getParameter("boundary"))
-                    .getBytes("UTF-8");
+                    .getBytes(encoding);
         } catch (UnsupportedEncodingException e) {
             throw new OMException(e);
         }

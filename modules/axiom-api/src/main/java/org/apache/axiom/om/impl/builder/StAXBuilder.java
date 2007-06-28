@@ -82,6 +82,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         this.parser = parser;
         omfactory = ombuilderFactory;
         charEncoding = parser.getCharacterEncodingScheme();
+        if(charEncoding == null){
+            charEncoding = parser.getEncoding();
+        }
 
         if (parser instanceof BuilderAwareReader) {
             ((BuilderAwareReader) parser).setBuilder(this);

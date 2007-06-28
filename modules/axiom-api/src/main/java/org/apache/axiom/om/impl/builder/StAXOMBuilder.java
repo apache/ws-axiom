@@ -59,6 +59,9 @@ public class StAXOMBuilder extends StAXBuilder {
     public StAXOMBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
         super(ombuilderFactory, parser);
         document = ombuilderFactory.createOMDocument(this);
+        if (charEncoding != null) {
+            document.setCharsetEncoding(charEncoding);
+        }
     }
 
     /**
@@ -93,6 +96,9 @@ public class StAXOMBuilder extends StAXBuilder {
         super(parser);
         omfactory = OMAbstractFactory.getOMFactory();
         document = omfactory.createOMDocument(this);
+        if (charEncoding != null) {
+            document.setCharsetEncoding(charEncoding);
+        }
     }
 
     /**
