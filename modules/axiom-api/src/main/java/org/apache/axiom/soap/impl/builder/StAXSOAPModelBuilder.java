@@ -217,7 +217,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
             if (!elementName.equals(SOAPConstants.SOAPENVELOPE_LOCAL_NAME)) {
                 throw new SOAPProcessingException("First Element must contain the local name, "
-                        + SOAPConstants.SOAPENVELOPE_LOCAL_NAME, SOAPConstants.FAULT_CODE_SENDER);
+                        + SOAPConstants.SOAPENVELOPE_LOCAL_NAME + " , but found " + elementName,
+                        SOAPConstants.FAULT_CODE_SENDER);
             }
 
             // determine SOAP version and from that determine a proper factory here.
