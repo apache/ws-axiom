@@ -1002,9 +1002,14 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
             }
         } else {
             if (state == SWITCHED) {
-                if (currentEvent == START_ELEMENT) {
+                //this is a potential place for bugs
+                //we have to test if the root node of this parser
+                //has the same name for this test
+                if (currentEvent == START_ELEMENT &&
+                        (parser.getLocalName().equals(((OMElement)rootNode).getLocalName()))) {
                     ++depth;
-                } else if (currentEvent == END_ELEMENT) {
+                } else if (currentEvent == END_ELEMENT   &&
+                       (parser.getLocalName().equals(((OMElement)rootNode).getLocalName())) ) {                                      
                     --depth;
                     if (depth < 0) {
                         state = COMPLETED;
