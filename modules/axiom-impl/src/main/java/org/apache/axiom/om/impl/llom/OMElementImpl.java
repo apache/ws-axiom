@@ -645,7 +645,7 @@ public class OMElementImpl extends OMNodeImpl
             throw new UnsupportedOperationException(
                     "This element was not created in a manner to be switched");
         }
-        if (builder != null && builder.isCompleted() && !cache) {
+        if (builder != null && builder.isCompleted() && !cache && !done) {
             throw new UnsupportedOperationException(
                     "The parser is already consumed!");
         }

@@ -55,7 +55,7 @@ public class CashWihBuildElementTest extends AbstractTestCase {
         SOAPFactory soapFactory = new SOAP11Factory();
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         envelope.getBody().addChild(rootElement);
-//        envelope.getBody().getFirstElement().getXMLStreamReaderWithoutCaching();
+        envelope.getBody().getFirstElement().getXMLStreamReaderWithoutCaching();
     }
 
 
