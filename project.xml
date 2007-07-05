@@ -342,6 +342,12 @@
                 <module>true</module>
             </properties>
         </dependency>
+	<dependency>
+	    <groupId>junit</groupId>
+	    <artifactId>junit</artifactId>
+	    <version>3.8.2</version>
+	</dependency>
+	
     </dependencies>
 
 </project>
