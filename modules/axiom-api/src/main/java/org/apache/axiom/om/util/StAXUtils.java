@@ -125,6 +125,7 @@ public class StAXUtils {
                                     try {
                                         currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
                                         factory = XMLOutputFactory.newInstance();
+                                        factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.FALSE);
                                     }
                                     finally {
                                         currentThread.setContextClassLoader(savedClassLoader);
@@ -136,7 +137,9 @@ public class StAXUtils {
             },
             new ObjectCreator() {
                 public Object newObject() {
-                    return XMLOutputFactory.newInstance();
+                    XMLOutputFactory factory = XMLOutputFactory.newInstance();
+                    factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.FALSE);
+                    return factory;
                 }
             }
     });

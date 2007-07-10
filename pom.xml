@@ -385,9 +385,9 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>woodstox</groupId>
-                <artifactId>wstx-asl</artifactId>
-                <version>3.2.0</version>
+                <groupId>${stax.impl.groupid}</groupId>
+                <artifactId>${stax.impl.artifact}</artifactId>
+                <version>${stax.impl.version}</version>
             </dependency>
             <dependency>
                 <groupId>jaxen</groupId>
@@ -502,5 +502,8 @@
     </modules>
     <properties>
         <axiom.version>${pom.version}</axiom.version>
+        <stax.impl.groupid>org.codehaus.woodstox</stax.impl.groupid>
+        <stax.impl.artifact>wstx-asl</stax.impl.artifact>
+        <stax.impl.version>3.2.1</stax.impl.version>
     </properties>
 </project>

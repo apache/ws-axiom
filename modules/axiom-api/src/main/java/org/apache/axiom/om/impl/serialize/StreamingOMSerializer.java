@@ -156,7 +156,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             String namespace = reader.getNamespaceURI(i);
             namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
 
-            String newPrefix = OMSerializerUtil.generateSetPrefix(prefix, namespace, writer, false);
+            String newPrefix = OMSerializerUtil.generateSetPrefix(prefix, namespace, writer, false, setPrefixFirst);
             // If this is a new association, remember it so that it can written out later
             if (newPrefix != null) {
                 if (writePrefixList == null) {
@@ -173,7 +173,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         // Generate setPrefix for the element
         // If the prefix is not associated with a namespace yet, remember it so that we can
         // write out a namespace declaration
-        String newPrefix = OMSerializerUtil.generateSetPrefix(ePrefix, eNamespace, writer, false);
+        String newPrefix = OMSerializerUtil.generateSetPrefix(ePrefix, eNamespace, writer, false, setPrefixFirst);
         // If this is a new association, remember it so that it can written out later
         if (newPrefix != null) {
             if (writePrefixList == null) {
@@ -203,7 +203,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                         writerPrefix :
                         generateUniquePrefix(writer.getNamespaceContext());
             }
-            newPrefix = OMSerializerUtil.generateSetPrefix(prefix, namespace, writer, true);
+            newPrefix = OMSerializerUtil.generateSetPrefix(prefix, namespace, writer, true, setPrefixFirst);
             // If the prefix is not associated with a namespace yet, remember it so that we can
             // write out a namespace declaration
             if (newPrefix != null) {

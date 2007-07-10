@@ -241,7 +241,7 @@ public class OMSerializerUtil {
             namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
 
 
-            String newPrefix = generateSetPrefix(prefix, namespace, writer, false);
+            String newPrefix = generateSetPrefix(prefix, namespace, writer, false, setPrefixFirst);
             // If this is a new association, remember it so that it can written out later
             if (newPrefix != null) {
                 if (writePrefixList == null) {
@@ -257,7 +257,7 @@ public class OMSerializerUtil {
 
         // Generate setPrefix for the element
         // Get the prefix and namespace of the element.  "" and null are identical.
-        String newPrefix = generateSetPrefix(ePrefix, eNamespace, writer, false);
+        String newPrefix = generateSetPrefix(ePrefix, eNamespace, writer, false, setPrefixFirst);
         // If this is a new association, remember it so that it can written out later
         if (newPrefix != null) {
             if (writePrefixList == null) {
@@ -292,7 +292,7 @@ public class OMSerializerUtil {
                 prefix = (writerPrefix != null) ?
                         writerPrefix : getNextNSPrefix();
             }
-            newPrefix = generateSetPrefix(prefix, namespace, writer, true);
+            newPrefix = generateSetPrefix(prefix, namespace, writer, true, setPrefixFirst);
             // If the prefix is not associated with a namespace yet, remember it so that we can
             // write out a namespace declaration
             if (newPrefix != null) {
@@ -518,7 +518,7 @@ public class OMSerializerUtil {
      * @return prefix name if a setPrefix/setDefaultNamespace is performed
      */
     public static String generateSetPrefix(String prefix, String namespace, XMLStreamWriter writer,
-                                           boolean attr) throws XMLStreamException {
+                                           boolean attr, boolean isSetPrefixFirst) throws XMLStreamException {
         // Generate setPrefix/setDefaultNamespace if the prefix is not associated.
         String newPrefix = null;
         if (namespace != null) {
@@ -540,6 +540,9 @@ public class OMSerializerUtil {
                 }
             } else {
                 // No Action needed..The writer already has associated this prefix to this namespace
+                if(isSetPrefixFirst){
+                    newPrefix = writer.getNamespaceContext().getPrefix(namespace);
+                }
             }
         } else {
             // Unqualified Namespace
