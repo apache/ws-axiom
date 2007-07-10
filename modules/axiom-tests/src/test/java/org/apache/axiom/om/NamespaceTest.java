@@ -29,8 +29,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Iterator;
 
 public class NamespaceTest extends XMLTestCase {
@@ -297,6 +302,56 @@ public class NamespaceTest extends XMLTestCase {
             fail(e.getMessage());
         }
 
+    }
+
+    public void testOMElementSerialize() throws Exception {
+        String content =
+        "<?xml version='1.0' encoding='UTF-8'?> \n" +
+        "<foo:foo xmlns:foo=\"urn:foo\"> \n" +
+        "    <bar:bar xmlns:bar=\"urn:bar\"> baz </bar:bar> \n" +
+        "    <bar:bar xmlns:bar=\"urn:bar\"> baz </bar:bar> \n" +
+        "    <bar:bar xmlns:bar=\"urn:bar\"> baz </bar:bar> \n" +
+        "</foo:foo>";
+
+        // read and build XML content
+        Reader reader = new StringReader(content);
+        XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(reader);
+        StAXOMBuilder builder = new StAXOMBuilder(parser);
+        OMElement element =  builder.getDocumentElement();
+
+        int count = 0;
+        Iterator iter = element.getChildElements();
+        while (iter.hasNext()) {
+            OMElement child = (OMElement) iter.next();
+            assertTrue( child.getNamespace().getNamespaceURI().equals("urn:bar"));
+            count++;
+        }
+        assertEquals( 3, count);
+
+        // serialize it back to a String
+        StringWriter stringWriter = new StringWriter();
+        XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
+        xmlOutputFactory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.TRUE);
+        XMLStreamWriter xmlWriter = xmlOutputFactory.createXMLStreamWriter(stringWriter);
+        element.serialize(xmlWriter);
+        String output = stringWriter.toString();
+
+        content = output;
+
+        // reread and rebuild XML content
+        reader = new StringReader(output);
+        parser = XMLInputFactory.newInstance().createXMLStreamReader(reader);
+        builder = new StAXOMBuilder(parser);
+        element =  builder.getDocumentElement();
+
+        count = 0;
+        iter = element.getChildElements();
+        while (iter.hasNext()) {
+            OMElement child = (OMElement) iter.next();
+            assertTrue( child.getNamespace().getNamespaceURI().equals("urn:bar"));
+            count++;
+        }
+        assertEquals( 3, count);
     }
 
 

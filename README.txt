@@ -1,5 +1,5 @@
 ======================================================
-Apache AXIOM 1.2.3 (April 03, 2007)
+Apache AXIOM 1.2.5 (June xx, 2007)
 
 http://ws.apache.org/commons/axiom/
 ------------------------------------------------------
@@ -8,7 +8,7 @@ ___________________
 Documentation
 ===================
  
-Documentation can be found in the 'docs' distribution of this release and in the main site.
+Documentation can be found within this release and in the main site.
 
 ___________________
 Support
