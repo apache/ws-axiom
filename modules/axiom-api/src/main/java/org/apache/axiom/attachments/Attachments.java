@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -41,6 +43,8 @@ public class Attachments {
 
     /** <code>ContentType</code> of the MIME message */
     ContentType contentType;
+    
+    int contentLength; // Content Length
 
     /** Mime <code>boundary</code> which separates mime parts */
     byte[] boundary;
@@ -63,6 +67,12 @@ public class Attachments {
      * This ordered Map is keyed using the content-ID's.
      */
     TreeMap attachmentsMap;
+    
+    /**
+     * <code>cids</code> stores the content ids in the order that the attachments
+     * occur in the message
+     */
+    ArrayList cids = new ArrayList(); 
 
     /** <code>partIndex</code>- Number of Mime parts parsed */
     int partIndex = 0;
@@ -114,6 +124,24 @@ public class Attachments {
     public Attachments(InputStream inStream, String contentTypeString,
                        boolean fileCacheEnable, String attachmentRepoDir,
                        String fileThreshold) throws OMException {
+        this(inStream, contentTypeString, fileCacheEnable, attachmentRepoDir, fileThreshold, 0);
+    }
+        
+        /**
+     * Moves the pointer to the beginning of the first MIME part. Reads
+     * till first MIME boundary is found or end of stream is reached.
+     *
+     * @param inStream
+     * @param contentTypeString
+     * @param fileCacheEnable
+     * @param attachmentRepoDir
+     * @param fileThreshold
+     * @param contentLength
+     * @throws OMException
+     */
+    public Attachments(InputStream inStream, String contentTypeString, boolean fileCacheEnable,
+            String attachmentRepoDir, String fileThreshold, int contentLength) throws OMException {
+        this.contentLength = contentLength;
         this.attachmentRepoDir = attachmentRepoDir;
         this.fileCacheEnable = fileCacheEnable;
         if (fileThreshold != null && (!"".equals(fileThreshold))) {
@@ -266,6 +294,9 @@ public class Attachments {
      */
     public void addDataHandler(String contentID, DataHandler dataHandler) {
         attachmentsMap.put(contentID, dataHandler);
+        if (!cids.contains(contentID)) {
+            cids.add(contentID);
+        }
     }
 
     /**
@@ -286,6 +317,9 @@ public class Attachments {
                     attachmentsMap.remove(blobContentID);
                 }
             }
+        }
+        if (!cids.contains(blobContentID)) {
+            cids.remove(blobContentID);
         }
     }
 
@@ -397,6 +431,13 @@ public class Attachments {
         }
         return attachmentsMap.keySet();
     }
+    
+    /**
+     * @return List of content ids in order of appearance in message
+     */
+    public List getContentIDList() {
+        return cids;
+    }
 
     /**
      * endOfStreamReached will be set to true if the message ended in MIME Style having "--" suffix
@@ -430,8 +471,8 @@ public class Attachments {
 
                         if (partContentID == null & partIndex == 1) {
                             String id = "firstPart_" + UUIDGenerator.getUUID();
-                            attachmentsMap.put(id, nextPart.getDataHandler());
                             firstPartId = id;
+                            addDataHandler(id, nextPart.getDataHandler());
                             return nextPart.getDataHandler();
                         }
                         if (partContentID == null) {
@@ -450,7 +491,7 @@ public class Attachments {
                             throw new OMException(
                                     "Two MIME parts with the same Content-ID not allowed.");
                         }
-                        attachmentsMap.put(partContentID, nextPart.getDataHandler());
+                        addDataHandler(partContentID, nextPart.getDataHandler());
                         return nextPart.getDataHandler();
                     } catch (MessagingException e) {
                         throw new OMException("Error reading Content-ID from the Part."
@@ -473,8 +514,7 @@ public class Attachments {
     private Part getPart() throws OMException {
 
         if (streamsRequested) {
-            throw new IllegalStateException(
-                    "The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
+            throw new IllegalStateException("The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
         }
 
         partsRequested = true;
@@ -484,39 +524,79 @@ public class Attachments {
         try {
             if (fileCacheEnable) {
                 try {
-                    MIMEBodyPartInputStream partStream;
-                    byte[] buffer = new byte[fileStorageThreshold];
-                    partStream = new MIMEBodyPartInputStream(pushbackInStream,
-                                                             boundary, this, PUSHBACK_SIZE);
-                    int count = 0;
-                    do {
-                        int len;
-                        int off = 0;
-                        int rem = fileStorageThreshold;
-                        while ((len = partStream.read(buffer, off, rem)) > 0) {
-                            off = off + len;
-                            rem = rem - len;
+                    if (contentLength != 0 &&
+                            contentLength <= fileStorageThreshold) {
+                        // Since the content-length is less than the threshold, we can safely 
+                        // store it in memory.
+                        if (log.isDebugEnabled()) {
+                            log.debug("Creating an Attachment Part (in memory)");
                         }
-                        count += off;
-                    } while (partStream.available() > 0);
-
-                    if (count == fileStorageThreshold) {
+                        MIMEBodyPartInputStream partStream =
+                            new MIMEBodyPartInputStream(pushbackInStream,
+                                                        boundary,
+                                                        this,
+                                                        PUSHBACK_SIZE);
+                        part = new PartOnMemory(partStream);
+                    } else if (contentLength != 0 && 
+                            contentLength > fileStorageThreshold * 2) {  
+                        if (log.isDebugEnabled()) {
+                            log.debug("Creating an Attachment Part (in a temporary file in " + attachmentRepoDir + ")");
+                        }
+                        // The content-length is much bigger than the threshold, then always
+                        // store the attachments in a file.  This prevents unnecessary buffering.
+                        // REVIEW Arbitrary heuristic.  Does this need to be fine-tuned.
+                        MIMEBodyPartInputStream partStream =
+                            new MIMEBodyPartInputStream(pushbackInStream,
+                                                        boundary,
+                                                        this,
+                                                        PUSHBACK_SIZE);
                         PushbackFilePartInputStream filePartStream =
-                                new PushbackFilePartInputStream(
-                                        partStream, buffer);
+                            new PushbackFilePartInputStream(partStream, new byte[0]);
                         part = new PartOnFile(filePartStream, attachmentRepoDir);
+                        
                     } else {
-                        ByteArrayInputStream byteArrayInStream = new ByteArrayInputStream(buffer,
-                                                                                          0, count);
-                        part = new PartOnMemory(byteArrayInStream);
-                    }
+                        if (log.isDebugEnabled()) {
+                            log.debug("Buffering attachment part to determine if it should be stored in memory");
+                        }
+                        // Read chunks of data to determine the size
+                        // of the attachment.  This can wasteful because we need to gc the buffers.
+                        // TODO We could look at the content-length of the individual attachment; however
+                        // this is seldom provided.
+                        
+                        MIMEBodyPartInputStream partStream;
+                        byte[] buffer = new byte[fileStorageThreshold];
+                        partStream =
+                            new MIMEBodyPartInputStream(pushbackInStream,
+                                                        boundary,
+                                                        this,
+                                                        PUSHBACK_SIZE);
+                        int count = 0;
+                        int value;
+                        count = partStream.read(buffer);
+                        
+                        if (count == fileStorageThreshold) {
+                            if (log.isDebugEnabled()) {
+                                log.debug("The calculated attachment size is " + count + ". Storing Part in file.");
+                            }
+                            PushbackFilePartInputStream filePartStream =
+                                new PushbackFilePartInputStream(partStream, buffer);
+                            part = new PartOnFile(filePartStream, attachmentRepoDir);
+                        } else {
+                            if (log.isDebugEnabled()) {
+                                log.debug("The calculated attachment size is " + count + ". Storing Part in memory.");
+                            }
+                            ByteArrayInputStream byteArrayInStream =
+                                new ByteArrayInputStream(buffer, 0, count);
+                            part = new PartOnMemory(byteArrayInStream);
+                        }
+                    } 
                 } catch (Exception e) {
                     throw new OMException("Error creating temporary File.", e);
                 }
             } else {
                 MIMEBodyPartInputStream partStream;
-                partStream = new MIMEBodyPartInputStream(pushbackInStream,
-                                                         boundary, this, PUSHBACK_SIZE);
+                partStream =
+                        new MIMEBodyPartInputStream(pushbackInStream, boundary, this, PUSHBACK_SIZE);
                 part = new PartOnMemory(partStream);
             }
 
