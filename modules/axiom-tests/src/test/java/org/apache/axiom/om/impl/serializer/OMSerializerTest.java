@@ -114,7 +114,7 @@ public class OMSerializerTest extends AbstractTestCase {
 
         writer =
                 XMLOutputFactory.newInstance().
-                        createXMLStreamWriter(byteArrayOutputStream);
+                        createXMLStreamWriter(byteArrayOutputStream, OMConstants.DEFAULT_CHAR_SET_ENCODING);
 
         StringWriter stringWriter = new StringWriter();
 

@@ -112,7 +112,7 @@ public class OMSerializerTest2 extends XMLTestCase {
 
         writer =
                 XMLOutputFactory.newInstance().
-                        createXMLStreamWriter(byteArrayOutputStream);
+                        createXMLStreamWriter(byteArrayOutputStream, OMConstants.DEFAULT_CHAR_SET_ENCODING);
 
         StringWriter stringWriter = new StringWriter();
 

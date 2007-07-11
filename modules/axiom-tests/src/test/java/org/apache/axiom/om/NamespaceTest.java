@@ -331,7 +331,7 @@ public class NamespaceTest extends XMLTestCase {
         // serialize it back to a String
         StringWriter stringWriter = new StringWriter();
         XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
-        xmlOutputFactory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.TRUE);
+        xmlOutputFactory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.FALSE);
         XMLStreamWriter xmlWriter = xmlOutputFactory.createXMLStreamWriter(stringWriter);
         element.serialize(xmlWriter);
         String output = stringWriter.toString();
