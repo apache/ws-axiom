@@ -51,7 +51,7 @@ public class OMNavigatorTest extends AbstractTestCase {
         tempFile = File.createTempFile("temp", "xml");
         output =
                 XMLOutputFactory.newInstance().createXMLStreamWriter(
-                        new FileOutputStream(tempFile));
+                        new FileOutputStream(tempFile), OMConstants.DEFAULT_CHAR_SET_ENCODING);
     }
 
     public void testnavigatorFullyBuilt() throws Exception {

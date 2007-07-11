@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl.serializer;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -100,7 +101,7 @@ public class OMSerializerTest2 extends XMLTestCase {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         writer =
                 XMLOutputFactory.newInstance().
-                        createXMLStreamWriter(byteArrayOutputStream);
+                        createXMLStreamWriter(byteArrayOutputStream, OMConstants.DEFAULT_CHAR_SET_ENCODING);
 
         SOAPEnvelope env = (SOAPEnvelope) soapBuilder.getDocumentElement();
         env.serializeAndConsume(writer);

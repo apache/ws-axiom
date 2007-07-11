@@ -23,6 +23,7 @@ import junit.framework.TestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -85,7 +86,7 @@ public class NoNamespaceSerializerTest extends TestCase {
                                 new InputStreamReader(
                                         new ByteArrayInputStream(xmlTextTwo.getBytes())));
         writer = XMLOutputFactory.newInstance().
-                createXMLStreamWriter(new ByteArrayOutputStream());
+                createXMLStreamWriter(new ByteArrayOutputStream(), OMConstants.DEFAULT_CHAR_SET_ENCODING);
         builderOne =
                 OMXMLBuilderFactory.createStAXSOAPModelBuilder(
                         OMAbstractFactory.getSOAP11Factory(), readerOne);
@@ -132,7 +133,7 @@ public class NoNamespaceSerializerTest extends TestCase {
     public void testSerilizationWithCacheOn() throws Exception {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         writer = XMLOutputFactory.newInstance().
-                createXMLStreamWriter(byteArrayOutputStream);
+                createXMLStreamWriter(byteArrayOutputStream, OMConstants.DEFAULT_CHAR_SET_ENCODING);
 
         SOAPEnvelope env = (SOAPEnvelope) builderOne.getDocumentElement();
         env.serialize(writer);
@@ -143,7 +144,7 @@ public class NoNamespaceSerializerTest extends TestCase {
     /** Will just do a probe test to check serialize with caching off works without any exception */
     public void testSerilizationWithCacheOff() throws Exception {
         writer = XMLOutputFactory.newInstance().
-                createXMLStreamWriter(new ByteArrayOutputStream());
+                createXMLStreamWriter(new ByteArrayOutputStream(), OMConstants.DEFAULT_CHAR_SET_ENCODING);
 
         SOAPEnvelope env = (SOAPEnvelope) builderOne.getDocumentElement();
         env.serializeAndConsume(writer);

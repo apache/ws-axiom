@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -57,7 +58,7 @@ public class ElementSerializerTest extends AbstractTestCase {
                                         getTestResourceFile("soap/soapmessage.xml")));
         tempFile = File.createTempFile("temp", "xml");
         writer = XMLOutputFactory.newInstance().
-                createXMLStreamWriter(new FileOutputStream(tempFile));
+                createXMLStreamWriter(new FileOutputStream(tempFile), OMConstants.DEFAULT_CHAR_SET_ENCODING);
         builder =
                 OMXMLBuilderFactory.createStAXSOAPModelBuilder(
                         OMAbstractFactory.getSOAP11Factory(), reader);
