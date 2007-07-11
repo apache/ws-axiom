@@ -160,7 +160,7 @@ public class OMOutputFormat {
         sb.append("; ");
         sb.append("type=\"" + MTOMConstants.MTOM_TYPE + "\"");
         sb.append("; ");
-        sb.append("start=\"<").append(getRootContentId()).append(">\"");
+        sb.append("start=\"").append(getRootContentId()).append("\"");
         sb.append("; ");
         sb.append("start-info=\"").append(SOAPContentType).append("\"");
         return sb.toString();
@@ -175,7 +175,7 @@ public class OMOutputFormat {
         sb.append("; ");
         sb.append("type=\"").append(SOAPContentType).append("\"");
         sb.append("; ");
-        sb.append("start=\"<").append(getRootContentId()).append(">\"");
+        sb.append("start=\"").append(getRootContentId()).append("\"");
         return sb.toString();
     }
 
