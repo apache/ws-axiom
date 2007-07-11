@@ -35,7 +35,9 @@ public class SOAP11FaultImplConversionTest extends TestCase {
     public void testConversion() {
         try {
             InputStream is = new FileInputStream(soap11FaulXmlPath);
-            XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(is);
+            XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+            xmlInputFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE) ;
+            XMLStreamReader reader = xmlInputFactory.createXMLStreamReader(is);
 
             SOAPEnvelope env = new StAXSOAPModelBuilder(reader, null).getSOAPEnvelope();
 

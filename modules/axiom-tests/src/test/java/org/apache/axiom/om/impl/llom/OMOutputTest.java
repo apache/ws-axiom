@@ -73,7 +73,7 @@ public class OMOutputTest extends AbstractTestCase {
         OMElement data = new OMElementImpl("data", dataName, fac);
 
         OMNamespaceImpl mime = new OMNamespaceImpl(
-                "http://www.w3.org/2003/06/xmlmime", "m");
+                "http://www.w3.org/2003/06/xmlmime", "mime");
 
         OMElement text = new OMElementImpl("name", dataName, fac);
         OMAttribute cType1 = new OMAttributeImpl("contentType", mime,

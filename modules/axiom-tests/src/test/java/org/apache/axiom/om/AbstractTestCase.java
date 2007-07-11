@@ -23,9 +23,11 @@ import junit.framework.TestCase;
 
 import java.io.File;
 
+import org.custommonkey.xmlunit.XMLTestCase;
+
 /** Abstract base class for test cases. */
 public abstract class AbstractTestCase
-        extends TestCase {
+        extends XMLTestCase {
     protected String testDir = "test" + File.separator;
     protected String sampleDir = "samples" + File.separator;
     protected String outDir = "target" + File.separator + "generated" +

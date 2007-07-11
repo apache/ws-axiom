@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 
 import javax.xml.namespace.NamespaceContext;
@@ -379,6 +380,9 @@ public class OMSerializerUtil {
                 }
             }
             if (namespace != null) {
+                if(prefix == null && OMConstants.XMLNS_URI.equals(namespace)){
+                    prefix = OMConstants.XMLNS_PREFIX;
+                }
                 // Qualified attribute
                 writer.writeAttribute(prefix, namespace,
                                       attr.getLocalName(),

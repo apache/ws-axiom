@@ -139,12 +139,12 @@ public class OMSourcedElementTest extends AbstractTestCase {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         element.serialize(bos);
         String newText = new String(bos.toByteArray());
-        assertEquals("Serialized text error", testDocument, newText);
+        assertXMLEqual("Serialized text error", testDocument, newText);
         assertTrue("Element not expanded when serializing", element.isExpanded());
 
         bos = new ByteArrayOutputStream();
         element.serialize(bos);
-        assertEquals("Serialized text error", testDocument,
+        assertXMLEqual("Serialized text error", testDocument,
                      new String(bos.toByteArray()));
         assertTrue("Element not expanded when serializing", element.isExpanded());
     }
@@ -171,13 +171,13 @@ public class OMSourcedElementTest extends AbstractTestCase {
         StringWriter writer = new StringWriter();
         element.serialize(writer);
         String result = writer.toString();
-        assertEquals("Serialized text error", testDocument, result);
+        assertXMLEqual("Serialized text error", testDocument, result);
         assertTrue("Element not expanded when serializing", element.isExpanded());
 
         writer = new StringWriter();
         element.serialize(writer);
         result = writer.toString();
-        assertEquals("Serialized text error", testDocument, result);
+        assertXMLEqual("Serialized text error", testDocument, result);
         assertTrue("Element not expanded when serializing", element.isExpanded());
     }
 
@@ -190,7 +190,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         StringWriter writer = new StringWriter();
         element.serializeAndConsume(writer);
         String result = writer.toString();
-        assertEquals("Serialized text error", testDocument, result);
+        assertXMLEqual("Serialized text error", testDocument, result);
         assertFalse("Element expansion when serializing", element.isExpanded());
     }
 
@@ -204,14 +204,14 @@ public class OMSourcedElementTest extends AbstractTestCase {
         XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
         element.serialize(writer);
         xmlwriter.flush();
-        assertEquals("Serialized text error", testDocument, writer.toString());
+        assertXMLEqual("Serialized text error", testDocument, writer.toString());
         assertTrue("Element not expanded when serializing", element.isExpanded());
 
         writer = new StringWriter();
         xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
         element.serialize(writer);
         xmlwriter.flush();
-        assertEquals("Serialized text error", testDocument, writer.toString());
+        assertXMLEqual("Serialized text error", testDocument, writer.toString());
         assertTrue("Element not expanded when serializing", element.isExpanded());
     }
 
@@ -225,7 +225,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
         element.serializeAndConsume(writer);
         xmlwriter.flush();
-        assertEquals("Serialized text error", testDocument, writer.toString());
+        assertXMLEqual("Serialized text error", testDocument, writer.toString());
         assertFalse("Element expansion when serializing", element.isExpanded());
     }
 
