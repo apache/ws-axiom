@@ -43,11 +43,10 @@ public abstract class SOAPBuilderHelper {
     protected void processNamespaceData(OMElement node, boolean checkSOAPNamespace) {
         int namespaceCount = parser.getNamespaceCount();
         for (int i = 0; i < namespaceCount; i++) {
-            String nsp = parser.getNamespaceURI(i);
-            String prefix = parser.getNamespacePrefix(i);
-            if(nsp != null && prefix != null) {
-                node.declareNamespace(nsp,
-                        prefix);
+            String namespaceURI = parser.getNamespaceURI(i);
+            if (namespaceURI != null) {
+                node.declareNamespace(parser.getNamespaceURI(i),
+                            parser.getNamespacePrefix(i));
             }
         }
 

@@ -157,7 +157,7 @@ public class OMSerializerUtil {
      */
     public static boolean isSetPrefixBeforeStartElement(XMLStreamWriter writer) {
         NamespaceContext nc = writer.getNamespaceContext();
-        return (nc == null || nc.getClass().getName().indexOf("wstx") == -1);
+        return (nc == null || (nc.getClass().getName().indexOf("wstx") == -1 && nc.getClass().getName().indexOf("sun") == -1));
     }
 
     /**
@@ -216,11 +216,39 @@ public class OMSerializerUtil {
 
         // Write the startElement if required
         boolean setPrefixFirst = isSetPrefixBeforeStartElement(writer);
+        
         if (!setPrefixFirst) {
             if (eNamespace != null) {
                 if (ePrefix == null) {
+                    if (writer.getNamespaceContext().getNamespaceURI("") == null 
+                        ||  !writer.getNamespaceContext().getNamespaceURI("").equals(eNamespace)) {
+                        
+                        if (writePrefixList == null) {
+                            writePrefixList = new ArrayList();
+                            writeNSList = new ArrayList();
+                        }
+                        if (! writePrefixList.contains("")) {
+                            writePrefixList.add("");
+                            writeNSList.add(eNamespace);
+                        }
+                    }
                     writer.writeStartElement("", localName, eNamespace);
                 } else {
+                    /*
+                     * If XMLStreamWriter.writeStartElement(prefix,localName,namespaceURI) associates
+                     * the prefix with the namespace .. 
+                     */
+                    if (writer.getNamespaceContext().getNamespaceURI(ePrefix) == null) {
+                        if (writePrefixList == null) {
+                            writePrefixList = new ArrayList();
+                            writeNSList = new ArrayList();
+                        }
+                        if (! writePrefixList.contains(ePrefix)) {
+                            writePrefixList.add(ePrefix);
+                            writeNSList.add(eNamespace);
+                        }
+                    }
+                    
                     writer.writeStartElement(ePrefix, localName, eNamespace);
                 }
             } else {
@@ -375,7 +403,7 @@ public class OMSerializerUtil {
                 // prefix is empty then do not replace because attributes do not
                 // default to the default namespace like elements do.
                 String writerPrefix = writer.getPrefix(namespace);
-                if (!prefix.equals(writerPrefix) && !"".equals(writerPrefix)) {
+                if (!prefix.equals(writerPrefix) && writerPrefix  != null && !"".equals(writerPrefix)) {
                     prefix = writerPrefix;
                 }
             }
@@ -546,6 +574,7 @@ public class OMSerializerUtil {
                 // No Action needed..The writer already has associated this prefix to this namespace
                 if(isSetPrefixFirst){
                     newPrefix = writer.getNamespaceContext().getPrefix(namespace);
+                    newPrefix = (newPrefix == null || newPrefix.length() == 0)  ? null : newPrefix ;
                 }
             }
         } else {

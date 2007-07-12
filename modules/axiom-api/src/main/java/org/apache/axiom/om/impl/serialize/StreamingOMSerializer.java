@@ -139,8 +139,28 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         if (!setPrefixFirst) {
             if (eNamespace != null) {
                 if (ePrefix == null) {
-                    writer.writeStartElement("", reader.getLocalName(), eNamespace);
+                    if (writer.getNamespaceContext().getNamespaceURI(eNamespace) == null) {
+                        
+                        if (writePrefixList == null) {
+                            writePrefixList = new ArrayList();
+                            writeNSList = new ArrayList();
+                        }
+                        writePrefixList.add("");
+                        writeNSList.add(eNamespace);
+                    }   
+                    
+                    writer.writeStartElement("", reader.getLocalName(), eNamespace);    
                 } else {
+                    
+                    if (writer.getNamespaceContext().getNamespaceURI(eNamespace) == null) {
+                        if (writePrefixList == null) {
+                            writePrefixList = new ArrayList();
+                            writeNSList = new ArrayList();
+                        }   
+                        writePrefixList.add(ePrefix);
+                        writeNSList.add(eNamespace);
+                    }
+                    
                     writer.writeStartElement(ePrefix, reader.getLocalName(), eNamespace);
                 }
             } else {

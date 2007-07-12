@@ -315,6 +315,9 @@ public class OMElementImpl extends OMNodeImpl
             this.namespaces = new HashMap(5);
         }
         namespaces.put("", namespace);
+        if (ns == null || "".equals(ns.getPrefix())) {
+            ns = namespace;
+        }
         return namespace;
     }
 
