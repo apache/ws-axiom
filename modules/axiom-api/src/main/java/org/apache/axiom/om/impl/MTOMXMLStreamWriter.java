@@ -297,4 +297,33 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     public void setOutputFormat(OMOutputFormat format) {
         this.format = format;
     }
+    
+    /**
+     * If this XMLStreamWriter is connected to an OutputStream
+     * then the OutputStream is returned.  This allows a node
+     * (perhaps an OMSourcedElement) to write its content
+     * directly to the OutputStream.
+     * @return OutputStream or null
+     */
+    public OutputStream getOutputStream() throws XMLStreamException {
+        
+        // TODO: The presence of a bufferedSOAPBody means that we are not writing directly to the 
+        // OutputStream.  Need some redesign work here because (a) bufferedSOAPBody is not a soap body it 
+        // is the SOAP envelope xml. And (b) probably should make bufferedSOAPBody an OutputStream instead
+        // of a StringWriter (and avoid conversions to and from a String).  And (c) we can change this
+        // code to return the buffered OutputStream.
+        if (bufferedSOAPBody == null) {
+            return null;
+        }
+        
+        OutputStream os = outStream;
+        if (os != null) {
+            // Flush the state of the writer..Many times the 
+            // write defers the writing of tag characters (>)
+            // until the next write.  Flush out this character
+            this.writeCharacters(""); 
+            this.flush();
+        }
+        return os;
+    }
 }
