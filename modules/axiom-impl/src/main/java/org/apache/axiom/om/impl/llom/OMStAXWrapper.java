@@ -215,7 +215,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                         : ns.getNamespaceURI();
             }
         }
-        return returnStr;
+        return (returnStr != null) ? returnStr.intern() : null;
     }
 
     /**

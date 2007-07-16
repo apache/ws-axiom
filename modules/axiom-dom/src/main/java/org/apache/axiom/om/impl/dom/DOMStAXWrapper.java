@@ -208,7 +208,7 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                 returnStr = (ns == null) ? null : ns.getNamespaceURI();
             }
         }
-        return returnStr;
+        return (returnStr != null) ? returnStr.intern() : null;
     }
 
     /**
