@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
@@ -147,8 +148,15 @@ public class OMSourcedElementImpl extends OMElementImpl {
                         getPrintableName());
             }
 
-            // position reader to start tag
+            // Get the XMLStreamReader
             readerFromDS = getDirectReader();
+            
+            // Advance past the START_DOCUMENT to the start tag.
+            // Remember the character encoding.
+            String characterEncoding = readerFromDS.getCharacterEncodingScheme();
+            if (characterEncoding != null) {
+                characterEncoding = readerFromDS.getEncoding();
+            }
             try {
                 if (readerFromDS.getEventType() != XMLStreamConstants.START_ELEMENT) {
                     while (readerFromDS.next() != XMLStreamConstants.START_ELEMENT) ;
@@ -160,7 +168,7 @@ public class OMSourcedElementImpl extends OMElementImpl {
                         e.getMessage());
             }
 
-            // make sure element local name and namespace matches what was expected
+            // Make sure element local name and namespace matches what was expected
             if (!readerFromDS.getLocalName().equals(getLocalName())) {
                 log.error("forceExpand: expected element name " +
                         getLocalName() + ", found " + readerFromDS.getLocalName());
@@ -181,15 +189,17 @@ public class OMSourcedElementImpl extends OMElementImpl {
             String readerPrefix = readerFromDS.getPrefix();
             readerPrefix = (readerPrefix == null) ? "" : readerPrefix;
             String prefix = getNamespace().getPrefix();
-
-            // set the builder for this element
+            
+            // Set the builder for this element
             isParserSet = true;
-            super.setBuilder(new StAXOMBuilder(getOMFactory(), readerFromDS, this));
+            super.setBuilder(new StAXOMBuilder(getOMFactory(), 
+                                               readerFromDS, 
+                                               this, 
+                                               characterEncoding));
             setComplete(false);
 
             // Update the prefix if necessary.  This must be done after
             // isParserSet to avoid a recursive call
-
             if (!readerPrefix.equals(prefix) ||
                     getNamespace() == null) {
                 if (log.isDebugEnabled()) {
@@ -316,7 +326,8 @@ public class OMSourcedElementImpl extends OMElementImpl {
     }
 
     /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#addAttribute(java.lang.String, java.lang.String, org.apache.axiom.om.OMNamespace)
+     * @see org.apache.axiom.om.OMElement#addAttribute(java.lang.String, 
+     * java.lang.String, org.apache.axiom.om.OMNamespace)
      */
     public OMAttribute addAttribute(String attributeName, String value, OMNamespace namespace) {
         forceExpand();
@@ -459,7 +470,8 @@ public class OMSourcedElementImpl extends OMElementImpl {
     }
 
     /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#setNamespaceWithNoFindInCurrentScope(org.apache.axiom.om.OMNamespace)
+     * @see org.apache.axiom.om.OMElement#
+     * setNamespaceWithNoFindInCurrentScope(org.apache.axiom.om.OMNamespace)
      */
     public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
         forceExpand();
@@ -559,7 +571,8 @@ public class OMSourcedElementImpl extends OMElementImpl {
     }
 
     /* (non-Javadoc)
-     * @see org.apache.axiom.om.impl.llom.OMElementImpl#internalSerialize(javax.xml.stream.XMLStreamWriter, boolean)
+     * @see org.apache.axiom.om.impl.llom.OMElementImpl#
+     * internalSerialize(javax.xml.stream.XMLStreamWriter, boolean)
      */
     protected void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
@@ -616,7 +629,8 @@ public class OMSourcedElementImpl extends OMElementImpl {
     }
 
     /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#serialize(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
+     * @see org.apache.axiom.om.OMNode#
+     * serialize(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
      */
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         forceExpand();
@@ -624,7 +638,8 @@ public class OMSourcedElementImpl extends OMElementImpl {
     }
 
     /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#serialize(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
+     * @see org.apache.axiom.om.OMNode#
+     * serialize(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
      */
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
         forceExpand();
@@ -668,7 +683,8 @@ public class OMSourcedElementImpl extends OMElementImpl {
     }
 
     /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
+     * @see org.apache.axiom.om.OMNode#
+     * serializeAndConsume(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
      */
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
@@ -684,7 +700,8 @@ public class OMSourcedElementImpl extends OMElementImpl {
     }
 
     /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
+     * @see org.apache.axiom.om.OMNode#
+     * serializeAndConsume(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
      */
     public void serializeAndConsume(Writer writer, OMOutputFormat format)
             throws XMLStreamException {
@@ -827,12 +844,12 @@ public class OMSourcedElementImpl extends OMElementImpl {
 
     OMNamespace handleNamespace(String namespaceURI, String prefix) {
         return super.handleNamespace(namespaceURI,
-                                     prefix);    //To change body of overridden methods use File | Settings | File Templates.
+                                     prefix);  
     }
 
     /**
-     * Provide access to the data source encapsulated in OMSourcedEle. This is usesfull when we want to
-     * access the raw data in the data source.
+     * Provide access to the data source encapsulated in OMSourcedEle. 
+     * This is usesful when we want to access the raw data in the data source.
      *
      * @return the internal datasource
      */

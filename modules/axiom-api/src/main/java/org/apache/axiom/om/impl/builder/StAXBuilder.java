@@ -75,8 +75,11 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected OMDocument document;
 
     protected String charEncoding = null;
+    
+    
     /**
      * Constructor StAXBuilder.
+     * This constructor is used if the parser is at the beginning (START_DOCUMENT).
      *
      * @param ombuilderFactory
      * @param parser
@@ -84,10 +87,33 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected StAXBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
         this.parser = parser;
         omfactory = ombuilderFactory;
+        
+        // The getCharacterEncodingScheme and getEncoding information are 
+        // only available at the START_DOCUMENT event.
         charEncoding = parser.getCharacterEncodingScheme();
         if(charEncoding == null){
             charEncoding = parser.getEncoding();
         }
+
+        if (parser instanceof BuilderAwareReader) {
+            ((BuilderAwareReader) parser).setBuilder(this);
+        }
+    }
+    
+    /**
+     * Constructor StAXBuilder.
+     * This constructor is used if the parser is not at the START_DOCUMENT.
+     *
+     * @param ombuilderFactory
+     * @param parser
+     * @param characterEncoding
+     */
+    protected StAXBuilder(OMFactory ombuilderFactory, 
+                          XMLStreamReader parser, 
+                          String characterEncoding) {
+        this.parser = parser;
+        omfactory = ombuilderFactory;
+        charEncoding = characterEncoding;
 
         if (parser instanceof BuilderAwareReader) {
             ((BuilderAwareReader) parser).setBuilder(this);

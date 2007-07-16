@@ -73,12 +73,32 @@ public class StAXOMBuilder extends StAXBuilder {
      * @param factory
      * @param parser
      * @param element
+     * @param characterEncoding of existing element
      */
-    public StAXOMBuilder(OMFactory factory, XMLStreamReader parser, OMElement element) {
-        this(factory, parser);
+    public StAXOMBuilder(OMFactory factory, 
+                         XMLStreamReader parser, 
+                         OMElement element, 
+                         String characterEncoding) {
+        // Use this constructor because the parser is passed the START_DOCUMENT state.
+        super(factory, parser, characterEncoding);  
+        document = factory.createOMDocument(this);
+        if (charEncoding != null) {
+            document.setCharsetEncoding(charEncoding);
+        }
         lastNode = element;
         document.setOMDocumentElement(element);
         populateOMElement(element);
+    }
+    
+    /**
+     * Constructor linked to existing element.
+     *
+     * @param factory
+     * @param parser
+     * @param element
+     */
+    public StAXOMBuilder(OMFactory factory, XMLStreamReader parser, OMElement element) {
+        this(factory, parser, element, null);
     }
 
     /**
