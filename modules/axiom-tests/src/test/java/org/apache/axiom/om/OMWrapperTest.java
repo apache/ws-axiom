@@ -21,6 +21,7 @@ package org.apache.axiom.om;
 
 import junit.framework.TestCase;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.llom.OMStAXWrapper;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -59,6 +60,14 @@ public class OMWrapperTest extends TestCase {
 
 
             XMLStreamReader reader = wrap2Element.getXMLStreamReaderWithoutCaching();
+            
+            // Make sure the reader is an OMStAXWrapper
+            if (reader instanceof OMStAXWrapper) {
+                OMStAXWrapper wrapper = (OMStAXWrapper) reader;
+                assertTrue(!wrapper.isClosed());
+                wrapper.releaseParserOnClose(true);
+            }
+            
             int count = 0;
             while (reader.hasNext()) {
                 reader.next();
@@ -66,6 +75,18 @@ public class OMWrapperTest extends TestCase {
             }
 
             assertEquals(3, count);
+            
+            
+            // Make sure that the wrapper can be closed without failing
+            reader.close();
+            reader.close();  // This should be a noop since the parser is closed.
+            
+            // Closing the parser should also close the parser on the builder (since they are the same)
+            assertTrue(b.isClosed());
+            b.close(); // This should be a noop since the parser is closed
+            
+            // Calling getProperty after a close should return null, not an exception
+            assertTrue(reader.getProperty("dummyProperty") == null);
         } catch (XMLStreamException e) {
             fail(e.getMessage());
         }

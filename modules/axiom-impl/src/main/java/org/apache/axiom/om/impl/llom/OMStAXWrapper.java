@@ -60,6 +60,9 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /** Field parser */
     private XMLStreamReader parser;
+    private boolean _isClosed = false;              // Indicate if parser is closed
+    private boolean _releaseParserOnClose = false;  // Defaults to legacy behavior, which is keep the reference
+
 
     /** Field rootNode */
     private OMNode rootNode;
@@ -771,9 +774,25 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      */
     public void close() throws XMLStreamException {
 
-        // this doesnot mean anything with respect to the OM
-        if (parser != null) {
-            parser.close();
+        // If there is a builder, it controls its parser
+        if (builder != null && builder instanceof StAXBuilder) {
+            StAXBuilder staxBuilder = (StAXBuilder) builder;
+            staxBuilder.close();
+            parser = null;
+        } else {
+            if (parser != null) {
+                try {
+                    if (_isClosed) {
+                        parser.close();
+                    }
+                } finally {
+                    _isClosed = true;
+                    // Release the parser so that it can be GC'd or reused.
+                    if (_releaseParserOnClose) {
+                        parser = null;
+                    }
+                }
+            }
         }
     }
 
@@ -939,14 +958,36 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                     return text.getDataHandler();
             }
         }
+        // Per spec, throw IllegalArgumentException
+        if (s == null) {
+            throw new IllegalArgumentException();
+        }
+        if (parser != null) {
+            return parser.getProperty(s);       	
+        }
+        // Delegate to the builder's parser.
+        if (builder != null && builder instanceof StAXBuilder) {
+            StAXBuilder staxBuilder = (StAXBuilder) builder;
+            if (!staxBuilder.isClosed()) {
+                // If the parser was closed by something other
+                // than the builder, an IllegalStateException is
+                // thrown.  For now, return null as this is unexpected
+                // by the caller.
+                try {
+                    return ((StAXBuilder) builder).getReaderProperty(s);
+                } catch (IllegalStateException ise) {
+                    return null;
+                }
+            }
+        }
         return null;
     }
+        
 
     /**
-     * This is a very important method. It keeps the navigator one step ahead
-     * and pushes it one event ahead. If the nextNode is null then navigable is
-     * set to false. At the same time the parser and builder are set up for the
-     * upcoming event generation.
+     * This is a very important method. It keeps the navigator one step ahead and pushes it one
+     * event ahead. If the nextNode is null then navigable is set to false. At the same time the
+     * parser and builder are set up for the upcoming event generation.
      * 
      * @throws XMLStreamException
      */
@@ -1323,5 +1364,42 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     public OMXMLParserWrapper getBuilder() {
         return builder;
+    }
+    
+    /**
+     * @return if parser is closed
+     */
+    public boolean isClosed() {
+        
+        // If there is a builder, the builder owns the parser
+        // and knows the isClosed status
+        if (builder != null && builder instanceof StAXBuilder) {
+           return ((StAXBuilder) builder).isClosed();
+        } else {
+            return _isClosed;
+        }
+    }
+    
+    /**
+     * Indicate if the parser resource should be release when closed.
+     * @param value boolean
+     */
+    public void releaseParserOnClose(boolean value) {
+        // if there is a StAXBuilder, it owns the parser 
+        // and controls the releaseOnClose status
+        if (builder != null && builder instanceof StAXBuilder) {
+            ((StAXBuilder) builder).releaseParserOnClose(value);
+            if (isClosed() && value) {
+                parser = null;
+            }
+            return;
+        } else {
+            // Release parser if already closed
+            if (isClosed() && value) {
+                parser = null;
+            }
+            _releaseParserOnClose = value;
+        }
+        
     }
 }

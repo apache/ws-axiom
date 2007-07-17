@@ -76,6 +76,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
     protected String charEncoding = null;
     
+    protected boolean _isClosed = false;              // Indicate if parser is closed
+    protected boolean _releaseParserOnClose = false;  // Defaults to legacy behavior, which is keep the reference
+
     
     /**
      * Constructor StAXBuilder.
@@ -233,12 +236,13 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                 OMText text = omfactory.createOMText(dataHandler, true);
                 omContainer.addChild(text);
                 return text;
-            } else {
-                return omfactory.createOMText(omContainer, parser.getText(), textType);
-            }
-        } catch (IllegalArgumentException e) {
-            return omfactory.createOMText(omContainer, parser.getText(), textType);
+            } 
+        } catch (IllegalArgumentException e) { 
+        	//parser.getProperty may throw illegalArgument exception, ignore
+        } catch (IllegalStateException e) {	
+        	//parser.getProperty may throw illegalState exceptions, ignore
         }
+        return omfactory.createOMText(omContainer, parser.getText(), textType);
     }
 
     /**
@@ -513,9 +517,17 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
     public void close() {
         try {
-            parser.close();
+            if (!isClosed()) {
+                parser.close();
+            }
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
+        } finally {
+            _isClosed = true;
+            // Release the parser so that it can be GC'd or reused.
+            if (_releaseParserOnClose) {
+                parser = null;
+            }
         }
     }
 
@@ -546,6 +558,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         } catch (IllegalArgumentException e) {
             // according to the parser api, get property will return IllegalArgumentException, when that
             // property is not found.
+        } catch (IllegalStateException e) {
+            // it will also throw illegalStateExceptions if in wrong state, ignore
         }
         return false;
     }
@@ -559,5 +573,27 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             return "UTF-8";
         }
         return this.charEncoding;
+    }
+    
+    
+    /**
+     * @return if parser is closed
+     */
+    public boolean isClosed() {
+        return _isClosed;
+    }
+    
+    /**
+     * Indicate if the parser resource should be release when closed.
+     * @param value boolean
+     */
+    public void releaseParserOnClose(boolean value) {
+        
+        // Release parser if already closed
+        if (isClosed() && value) {
+            parser = null;
+        }
+        _releaseParserOnClose = value;
+        
     }
 }
