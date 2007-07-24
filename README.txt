@@ -1,5 +1,5 @@
 ======================================================
-Apache AXIOM 1.2.5 (June xx, 2007)
+Apache AXIOM 1.2.5 (July 14, 2007)
 
 http://ws.apache.org/commons/axiom/
 ------------------------------------------------------
@@ -18,7 +18,7 @@ Any problem with this release can be reported to ws-commons mailing list.
 If you are sending an email to the mailing list make sure to add the [AXIOM] prefix to the subject.
 
 Mailing list subscription:
-    commons-dev-subscribe@ws.apache.org
+commons-dev-subscribe@ws.apache.org
 
 Thank you for using AXIOM!
 
