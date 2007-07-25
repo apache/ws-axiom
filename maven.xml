@@ -120,6 +120,7 @@
                               projectDescriptor="${x.getFile()}"/>
         </j:forEach>
         <ant:delete file="${dist}/lib/xmlunit-${xmlunit.version}.jar"/>
+	<ant:delete file="${dist}/lib/junit-${junit.version}.jar"/>
 
         <!--Add the licenses of jars-->
         <ant:copy toDir="${dist}/lib">
@@ -147,7 +148,7 @@
             <ant:classpath>
                 <ant:fileset dir="${dist}/lib">
                     <ant:include name="*.jar"/>
-                </ant:fileset>
+		</ant:fileset>
             </ant:classpath>
         </ant:javadoc>
 
@@ -191,7 +192,7 @@
         <ant:echo>| Creating: Axiom Source Distribution</ant:echo>
         <ant:echo>+----------------------------------------------</ant:echo>
 
-        <ant:property name="${dist}" value="target/dist/temp"/>
+        <ant:property name="dist" value="target/dist/temp"/>
 
         <ant:copy toDir="${dist}">
             <ant:fileset dir=".">
