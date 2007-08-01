@@ -47,7 +47,7 @@ public class SOAP11FaultValueImpl extends SOAPFaultValueImpl {
         if (!((parent instanceof SOAP11FaultSubCodeImpl) ||
                 (parent instanceof SOAP11FaultCodeImpl))) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP FaultSubCode or SOAP FaultCode as the parent. But received some other implementation." +
+                    "Expecting SOAP11FaultSubCodeImpl or SOAP11FaultCodeImpl, got " +
                             parent.getClass());
         }
     }

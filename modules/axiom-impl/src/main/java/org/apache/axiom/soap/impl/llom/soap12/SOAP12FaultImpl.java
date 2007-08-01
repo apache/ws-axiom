@@ -76,8 +76,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
             throws SOAPProcessingException {
         if (!(soapFaultCode instanceof SOAP12FaultCodeImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Code. " +
-                            "But received some other implementation");
+                    "Expecting SOAP12FaultCodeImpl, got " + soapFaultCode.getClass());
         }
         super.setCode(soapFaultCode);
     }
@@ -86,8 +85,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     public void setReason(SOAPFaultReason reason) throws SOAPProcessingException {
         if (!(reason instanceof SOAP12FaultReasonImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Reason. " +
-                            "But received some other implementation");
+                    "Expecting SOAP12FaultReasonImpl, got " + reason.getClass());
         }
         super.setReason(reason);
     }
@@ -95,8 +93,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     public void setNode(SOAPFaultNode node) throws SOAPProcessingException {
         if (!(node instanceof SOAP12FaultNodeImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Node. " +
-                            "But received some other implementation");
+                    "Expecting SOAP12FaultNodeImpl, got " + node.getClass());
         }
         super.setNode(node);
     }
@@ -104,8 +101,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     public void setRole(SOAPFaultRole role) throws SOAPProcessingException {
         if (!(role instanceof SOAP12FaultRoleImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Role. " +
-                            "But received some other implementation");
+                    "Expecting SOAP12FaultRoleImpl, got " + role.getClass());
         }
         super.setRole(role);
     }
@@ -113,8 +109,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     public void setDetail(SOAPFaultDetail detail) throws SOAPProcessingException {
         if (!(detail instanceof SOAP12FaultDetailImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Detail. " +
-                            "But received some other implementation");
+                    "Expecting SOAP12FaultDetailImpl, got " + detail.getClass());
         }
         super.setDetail(detail);
     }
@@ -122,8 +117,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12BodyImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Body as the " +
-                            "parent. But received some other implementation");
+                    "Expecting SOAP12BodyImpl, got " + parent.getClass());
         }
     }
 

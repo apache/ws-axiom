@@ -55,7 +55,7 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
     public void setSubCode(SOAPFaultSubCode subCode) throws SOAPProcessingException {
         if (!(subCode instanceof SOAP11FaultSubCodeImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault Sub Code. But received some other implementation");
+                    "Expecting SOAP11FaultSubCodeImpl, got " + subCode.getClass());
         }
         super.setSubCode(subCode);
     }
@@ -63,7 +63,7 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
     public void setValue(SOAPFaultValue value) throws SOAPProcessingException {
         if (!(value instanceof SOAP11FaultValueImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault Value. But received some other implementation");
+                    "Expecting SOAP11FaultValueImpl, got " + value.getClass());
         }
         super.setValue(value);
     }
@@ -71,7 +71,7 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11FaultImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault as the parent. But received some other implementation");
+                    "Expecting SOAP11FaultImpl, got " + parent.getClass());
         }
     }
 

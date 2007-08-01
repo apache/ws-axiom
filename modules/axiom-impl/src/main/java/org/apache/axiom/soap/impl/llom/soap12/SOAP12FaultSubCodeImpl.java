@@ -73,8 +73,7 @@ public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
             throws SOAPProcessingException {
         if (!(subCode instanceof SOAP12FaultSubCodeImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Sub " +
-                            "Code. But received some other implementation");
+                    "Expecting SOAP12FaultSubCodeImpl, got " + subCode.getClass());
         }
         super.setSubCode(subCode);
     }
@@ -83,8 +82,7 @@ public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
             throws SOAPProcessingException {
         if (!(soapFaultSubCodeValue instanceof SOAP12FaultValueImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault Value. " +
-                            "But received some other implementation");
+                    "Expecting SOAP12FaultValueImpl, got " + soapFaultSubCodeValue.getClass());
         }
         super.setValue(soapFaultSubCodeValue);
     }

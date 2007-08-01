@@ -71,7 +71,7 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11HeaderImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Body as the parent. But received some other implementation");
+                    "Expecting SOAP11HeaderImpl, got " + parent.getClass());
         }
     }
 

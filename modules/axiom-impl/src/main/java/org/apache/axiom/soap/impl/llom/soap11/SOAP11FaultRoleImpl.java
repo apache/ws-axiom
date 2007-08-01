@@ -51,13 +51,11 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11FaultImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault as the " +
-                            "parent. But received some other implementation");
+                    "Expecting SOAP11FaultImpl, got " + parent.getClass());
         }
     }
 
-    protected void internalSerialize(
-            XMLStreamWriter writer, boolean cache)
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
 
         // select the builder

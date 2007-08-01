@@ -65,8 +65,7 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11FaultImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault as the " +
-                            "parent. But received some other implementation");
+                    "Expecting SOAP11FaultImpl, got " + parent.getClass());
         }
     }
 

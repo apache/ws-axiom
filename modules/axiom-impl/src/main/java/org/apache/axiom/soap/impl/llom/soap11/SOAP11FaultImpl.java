@@ -75,8 +75,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
             throws SOAPProcessingException {
         if (!(soapFaultCode instanceof SOAP11FaultCodeImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault Code. " +
-                            "But received some other implementation");
+                    "Expecting SOAP11FaultCodeImpl, got " + soapFaultCode.getClass());
         }
         super.setCode(soapFaultCode);
     }
@@ -84,8 +83,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
     public void setReason(SOAPFaultReason reason) throws SOAPProcessingException {
         if (!(reason instanceof SOAP11FaultReasonImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault Reason. " +
-                            "But received some other implementation");
+                    "Expecting SOAP11FaultReasonImpl, got " + reason.getClass());
         }
         super.setReason(reason);
     }
@@ -97,8 +95,7 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
     public void setRole(SOAPFaultRole role) throws SOAPProcessingException {
         if (!(role instanceof SOAP11FaultRoleImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault Role. " +
-                            "But received some other implementation");
+                    "Expecting SOAP11FaultRoleImpl, got " + role.getClass());
         }
         super.setRole(role);
     }
@@ -106,16 +103,14 @@ public class SOAP11FaultImpl extends SOAPFaultImpl {
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11BodyImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Body as the " +
-                            "parent. But received some other implementation");
+                    "Expecting SOAP11BodyImpl, got " + parent.getClass());
         }
     }
 
     public void setDetail(SOAPFaultDetail detail) throws SOAPProcessingException {
         if (!(detail instanceof SOAP11FaultDetailImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.1 implementation of SOAP Fault Detail. " +
-                            "But received some other implementation");
+                    "Expecting SOAP11FaultDetailImpl, got " + detail.getClass());
         }
         super.setDetail(detail);
     }

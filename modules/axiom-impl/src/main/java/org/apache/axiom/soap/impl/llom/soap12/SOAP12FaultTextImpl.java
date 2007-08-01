@@ -46,7 +46,7 @@ public class SOAP12FaultTextImpl extends SOAPFaultTextImpl {
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12FaultReasonImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP FaultReason as the parent. But received some other implementation");
+                    "Expecting SOAP12FaultReasonImpl as parent, got " + parent.getClass());
         }
     }
 }

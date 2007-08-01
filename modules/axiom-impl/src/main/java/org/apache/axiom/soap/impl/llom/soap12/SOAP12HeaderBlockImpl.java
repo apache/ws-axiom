@@ -73,8 +73,7 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12HeaderImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Body as " +
-                            "the parent. But received some other implementation");
+                    "Expecting SOAP12HeaderImpl as parent, got " + parent.getClass());
         }
     }
 

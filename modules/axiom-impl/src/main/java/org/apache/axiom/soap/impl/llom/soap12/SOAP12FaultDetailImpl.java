@@ -24,7 +24,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.llom.SOAPFaultDetailImpl;
 
@@ -52,8 +51,7 @@ public class SOAP12FaultDetailImpl extends SOAPFaultDetailImpl {
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(
-                    "Expecting SOAP 1.2 implementation of SOAP Fault as the " +
-                            "parent. But received some other implementation");
+                    "Expecting SOAP12FaultImpl as parent, got " + parent.getClass());
         }
     }
 }
