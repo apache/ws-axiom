@@ -198,8 +198,12 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
         String localName = DOMUtil.getLocalName(qualifiedName);
         String prefix = DOMUtil.getPrefix(qualifiedName);
+        if(prefix == null) {
+            prefix = "";
+        }
 
-        if (prefix != null || "".equals(prefix)) {
+        //When the namespace is a default namespace
+        if (prefix != null && !"".equals(prefix)) {
             this.checkQName(prefix, localName);
         }
 
