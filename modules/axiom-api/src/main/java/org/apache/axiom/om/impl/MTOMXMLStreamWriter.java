@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl;
 
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.StAXUtils;
@@ -29,12 +30,18 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 
 
 /**
+ * MTOMXMLStreamWriter is an XML + Attachments stream writer.
+ * 
  * For the moment this assumes that transport takes the decision of whether to optimize or not by
  * looking at whether the MTOM optimize is enabled & also looking at the OM tree whether it has any
  * optimizable content.
@@ -43,8 +50,13 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     private XMLStreamWriter xmlWriter;
     private OutputStream outStream;
     private LinkedList binaryNodeList = new LinkedList();
-    private StringWriter bufferedSOAPBody;
+    private ByteArrayOutputStream bufferedXML;  // XML for the SOAPPart
     private OMOutputFormat format = new OMOutputFormat();
+    
+    // State variables
+    private boolean isEndDocument = false; // has endElement been called
+    private boolean isComplete = false;    // have the attachments been written
+    private int depth = 0;                 // current eleement depth
 
     public MTOMXMLStreamWriter(XMLStreamWriter xmlWriter) {
         this.xmlWriter = xmlWriter;
@@ -68,8 +80,9 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             format.setCharSetEncoding(OMOutputFormat.DEFAULT_CHAR_SET_ENCODING);
 
         if (format.isOptimized()) {
-            bufferedSOAPBody = new StringWriter();
-            xmlWriter = StAXUtils.createXMLStreamWriter(bufferedSOAPBody);
+            // REVIEW If the buffered XML gets too big, should it be written out to a file 
+            bufferedXML = new ByteArrayOutputStream();
+            xmlWriter = StAXUtils.createXMLStreamWriter(bufferedXML,format.getCharSetEncoding());
         } else {
             xmlWriter = StAXUtils.createXMLStreamWriter(outStream,
                                                         format.getCharSetEncoding());
@@ -78,15 +91,18 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
 
     public void writeStartElement(String string) throws XMLStreamException {
         xmlWriter.writeStartElement(string);
+        depth++;
     }
 
     public void writeStartElement(String string, String string1) throws XMLStreamException {
         xmlWriter.writeStartElement(string, string1);
+        depth++;
     }
 
     public void writeStartElement(String string, String string1, String string2)
             throws XMLStreamException {
         xmlWriter.writeStartElement(string, string1, string2);
+        depth++;
     }
 
     public void writeEmptyElement(String string, String string1) throws XMLStreamException {
@@ -104,34 +120,54 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
 
     public void writeEndElement() throws XMLStreamException {
         xmlWriter.writeEndElement();
+        depth--;
     }
 
     public void writeEndDocument() throws XMLStreamException {
         xmlWriter.writeEndDocument();
+        isEndDocument = true; 
     }
 
     public void close() throws XMLStreamException {
         xmlWriter.close();
     }
 
+    /**
+     * Flush is overridden to trigger the attachment serialization
+     */
     public void flush() throws XMLStreamException {
         xmlWriter.flush();
         String SOAPContentType;
-        if (format.isOptimized()) {
+        // flush() triggers the optimized attachment writing.
+        // If the optimized attachments are specified, and the xml
+        // document is completed, then write out the attachments.
+        if (format.isOptimized() && !isComplete & (isEndDocument || depth == 0)) {
+            isComplete = true;
             if (format.isSOAP11()) {
                 SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
             } else {
                 SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
             }
-            MIMEOutputUtils.complete(
-                    outStream,
-                    bufferedSOAPBody,
-                    binaryNodeList,
-                    format.getMimeBoundary(),
-                    format.getRootContentId(),
-                    format.getCharSetEncoding(), SOAPContentType);
+            try {
+                String bufferedXMLText =
+                        new String(bufferedXML.toByteArray(), format.getCharSetEncoding());
+                MIMEOutputUtils.complete(outStream,
+                                         bufferedXMLText,
+                                         binaryNodeList,
+                                         format.getMimeBoundary(),
+                                         format.getRootContentId(),
+                                         format.getCharSetEncoding(),
+                                         SOAPContentType);
+                bufferedXML.close();
+                bufferedXML = null;
+            } catch (UnsupportedEncodingException e) {
+                throw new OMException(e);
+            } catch (IOException e) {
+                throw new OMException(e);
+            }
         }
     }
+    
 
     public void writeAttribute(String string, String string1) throws XMLStreamException {
         xmlWriter.writeAttribute(string, string1);
@@ -305,18 +341,14 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      * directly to the OutputStream.
      * @return OutputStream or null
      */
-    public OutputStream getOutputStream() throws XMLStreamException {
-        
-        // TODO: The presence of a bufferedSOAPBody means that we are not writing directly to the 
-        // OutputStream.  Need some redesign work here because (a) bufferedSOAPBody is not a soap body it 
-        // is the SOAP envelope xml. And (b) probably should make bufferedSOAPBody an OutputStream instead
-        // of a StringWriter (and avoid conversions to and from a String).  And (c) we can change this
-        // code to return the buffered OutputStream.
-        if (bufferedSOAPBody == null) {
-            return null;
+    public OutputStream getOutputStream() throws XMLStreamException {  
+        OutputStream os = null;
+        if (bufferedXML != null) {
+            os = bufferedXML;
+        } else {
+            os = outStream;
         }
-        
-        OutputStream os = outStream;
+       
         if (os != null) {
             // Flush the state of the writer..Many times the 
             // write defers the writing of tag characters (>)

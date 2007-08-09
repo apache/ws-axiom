@@ -37,20 +37,44 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 
+/**
+ * Utility class used to write out XML with Attachments
+ * @See MTOMXMLStreamWriter
+ *
+ */
 public class MIMEOutputUtils {
 
     private static byte[] CRLF = { 13, 10 };
 
-    public static void complete(OutputStream outStream,
-                                StringWriter writer, LinkedList binaryNodeList,
-                                String boundary, String contentId, String charSetEncoding,
+    /**
+     * Invoked by MTOMXMLStreamWriter to write the SOAP Part and the attachemts
+     * @param outStream OutputStream target
+     * @param bufferedXML String containing XML of SOAPPart
+     * @param binaryNodeList Text nodes with the attachment Data Handlers
+     * @param boundary Boundary String
+     * @param contentId Content-ID of SOAPPart
+     * @param charSetEncoding Character Encoding of SOAPPart
+     * @param SOAPContentType Content-Type of SOAPPart
+     */
+    public static void complete(OutputStream outStream, 
+                                String bufferedXML,
+                                LinkedList binaryNodeList, 
+                                String boundary, 
+                                String contentId,
+                                String charSetEncoding, 
                                 String SOAPContentType) {
         try {
+            // TODO: Instead of buffering the SOAPPart contents, it makes more
+            // sense to split this method in two.  Write out the SOAPPart headers
+            // and later write out the attachments.  This will avoid the cost and
+            // space of buffering.
+            
+            // Write out the mime boundary
             startWritingMime(outStream, boundary);
 
-            javax.activation.DataHandler dh = new javax.activation.DataHandler(writer.toString(),
-                                                                               "text/xml; charset=" +
-                                                                                       charSetEncoding);
+            javax.activation.DataHandler dh = 
+                new javax.activation.DataHandler(bufferedXML,
+                                                 "text/xml; charset=" + charSetEncoding);
             MimeBodyPart rootMimeBodyPart = new MimeBodyPart();
             rootMimeBodyPart.setDataHandler(dh);
 
@@ -60,8 +84,11 @@ public class MIMEOutputUtils {
             rootMimeBodyPart.addHeader("Content-Transfer-Encoding", "binary");
             rootMimeBodyPart.addHeader("Content-ID", "<" + contentId + ">");
 
+            // Write out the SOAPPart
             writeBodyPart(outStream, rootMimeBodyPart, boundary);
 
+            // Now write out the Attachment parts (which are represented by the
+            // text nodes int the binary node list)
             Iterator binaryNodeIterator = binaryNodeList.iterator();
             while (binaryNodeIterator.hasNext()) {
                 OMText binaryNode = (OMText) binaryNodeIterator.next();
@@ -76,6 +103,28 @@ public class MIMEOutputUtils {
         } catch (MessagingException e) {
             throw new OMException("Problem writing Mime Parts.", e);
         }
+    }
+    
+    /**
+     * Write the SOAPPart and attachments
+     * @param outStream
+     * @param writer
+     * @param binaryNodeList
+     * @param boundary
+     * @param contentId
+     * @param charSetEncoding
+     * @param SOAPContentType
+     */
+    public static void complete(OutputStream outStream, StringWriter writer,
+                                LinkedList binaryNodeList, String boundary, String contentId,
+                                String charSetEncoding, String SOAPContentType) {
+        complete(outStream, 
+                 writer.toString(), 
+                 binaryNodeList, 
+                 boundary, 
+                 contentId, 
+                 charSetEncoding, 
+                 SOAPContentType);
     }
 
     public static MimeBodyPart createMimeBodyPart(String contentID,
