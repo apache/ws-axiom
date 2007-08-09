@@ -104,7 +104,7 @@ public class BoundaryPushbackInputStream extends InputStream {
             if (br > 0) {
                 brTotal += br;
             }
-        } while ((br > -1) && (brTotal < minRead));
+        } while ((br > 0) && (brTotal < minRead));
 
         return (brTotal != 0)
                 ? brTotal
