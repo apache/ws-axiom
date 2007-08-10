@@ -57,7 +57,7 @@ public interface OMFactory {
      * @param localName
      * @param ns
      */
-    OMElement createOMElement(OMDataSource source, String localName,
+    OMSourcedElement createOMElement(OMDataSource source, String localName,
                                      OMNamespace ns);
 
     /**

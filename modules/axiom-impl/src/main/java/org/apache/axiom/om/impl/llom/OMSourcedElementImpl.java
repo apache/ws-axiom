@@ -21,12 +21,14 @@ package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -39,6 +41,8 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -56,9 +60,9 @@ import java.util.Iterator;
  * #forceExpand()} method) before the base class method is called. This will typically involve a
  * heavy overhead penalty, so should be avoided if possible.</p>
  */
-public class OMSourcedElementImpl extends OMElementImpl {
+public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElement {
     /** Data source for element data. */
-    private final OMDataSource dataSource;
+    private OMDataSource dataSource;
 
     /** Namespace for element, needed in order to bypass base class handling. */
     private OMNamespace definedNamespace = null;
@@ -123,10 +127,10 @@ public class OMSourcedElementImpl extends OMElementImpl {
         try {
             // If expansion has occurred, then the reader from the datasource is consumed or stale.
             // In such cases use the stream reader from the OMElementImpl
-            if (isDataSourceConsumed()) {
+            if (isExpanded()) {
                 return super.getXMLStreamReader();
             } else {
-                return dataSource.getReader();  // This call may consume the underlying data source
+                return dataSource.getReader();  
             }
         } catch (XMLStreamException e) {
             log.error("Could not get parser from data source for element " +
@@ -219,14 +223,6 @@ public class OMSourcedElementImpl extends OMElementImpl {
      */
     public boolean isExpanded() {
         return isParserSet;
-    }
-
-    /** Returns whether the datasource is consumed */
-    private boolean isDataSourceConsumed() {
-        // The datasource might be consumed when it is touched/read.
-        // For now I am going to assume that it is since the OMDataSource currently has
-        // no way to convey this information.
-        return isExpanded();
     }
 
     /* (non-Javadoc)
@@ -384,7 +380,11 @@ public class OMSourcedElementImpl extends OMElementImpl {
         if (isParserSet) {
             return super.getXMLStreamReader();
         } else {
-            return getDirectReader();  // Note that this may consume the underlying data source
+            if (isDestructiveRead()) {
+                forceExpand();
+                return super.getXMLStreamReader();
+            }
+            return getDirectReader();
         }
     }
 
@@ -496,7 +496,7 @@ public class OMSourcedElementImpl extends OMElementImpl {
      * @see org.apache.axiom.om.OMElement#toStringWithConsume()
      */
     public String toStringWithConsume() throws XMLStreamException {
-        if (isDataSourceConsumed()) {
+        if (isExpanded()) {
             return super.toStringWithConsume();
         } else {
             StringWriter writer = new StringWriter();
@@ -504,6 +504,22 @@ public class OMSourcedElementImpl extends OMElementImpl {
             dataSource.serialize(writer2);  // dataSource.serialize consumes the data
             writer2.flush();
             return writer.toString();
+        }
+    }
+    
+    private boolean isDestructiveWrite() {
+        if (dataSource instanceof OMDataSourceExt) {
+            return ((OMDataSourceExt) dataSource).isDestructiveWrite();
+        } else {
+            return true;
+        }
+    }
+    
+    private boolean isDestructiveRead() {
+        if (dataSource instanceof OMDataSourceExt) {
+            return ((OMDataSourceExt) dataSource).isDestructiveRead();
+        } else {
+            return false;
         }
     }
 
@@ -562,11 +578,15 @@ public class OMSourcedElementImpl extends OMElementImpl {
     public void internalSerialize(javax.xml.stream.XMLStreamWriter writer)
             throws XMLStreamException {
         // The contract of internalSerialize is to "cache" the om
-        if (isDataSourceConsumed()) {
+        if (isExpanded()) {
             super.internalSerialize(writer);
         } else {
-            forceExpand();
-            super.internalSerialize(writer);
+            if (isDestructiveWrite()) {
+                forceExpand();
+                super.internalSerialize(writer);
+            } else {
+                dataSource.serialize(writer);
+            }
         }
     }
 
@@ -576,11 +596,15 @@ public class OMSourcedElementImpl extends OMElementImpl {
      */
     protected void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
-        if (isDataSourceConsumed()) {
+        if (isExpanded()) {
             super.internalSerialize(writer, cache);
         } else if (cache) {
-            forceExpand();
-            super.internalSerialize(writer, true);
+            if (isDestructiveWrite()) {
+                forceExpand();
+                super.internalSerialize(writer, true);
+            } else {
+                dataSource.serialize(writer);
+            }
         } else {
             internalSerializeAndConsume(writer);
         }
@@ -593,10 +617,10 @@ public class OMSourcedElementImpl extends OMElementImpl {
         if (isDebugEnabled) {
             log.debug("serialize " + getPrintableName() + " to XMLStreamWriter");
         }
-        if (isDataSourceConsumed()) {
+        if (isExpanded()) {
             super.internalSerializeAndConsume(writer);
         } else {
-            dataSource.serialize(writer);  // dataSource.serialize() consumes the data
+            dataSource.serialize(writer); 
         }
     }
 
@@ -612,20 +636,16 @@ public class OMSourcedElementImpl extends OMElementImpl {
      * @see org.apache.axiom.om.OMNode#serialize(java.io.OutputStream)
      */
     public void serialize(OutputStream output) throws XMLStreamException {
-        forceExpand();
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        serialize(xmlStreamWriter);
-        xmlStreamWriter.flush();
+        OMOutputFormat format = new OMOutputFormat();
+        serialize(output, format);
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMNode#serialize(java.io.Writer)
      */
     public void serialize(Writer writer) throws XMLStreamException {
-        forceExpand();
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        serialize(xmlStreamWriter);
-        xmlStreamWriter.flush();
+        OMOutputFormat format = new OMOutputFormat();
+        serialize(writer, format);
     }
 
     /* (non-Javadoc)
@@ -633,8 +653,12 @@ public class OMSourcedElementImpl extends OMElementImpl {
      * serialize(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
      */
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        forceExpand();
-        super.serialize(output, format);
+        if (isDestructiveWrite()) {
+            forceExpand();
+            super.serialize(output, format);
+        } else {
+            dataSource.serialize(output, format);
+        }
     }
 
     /* (non-Javadoc)
@@ -642,8 +666,12 @@ public class OMSourcedElementImpl extends OMElementImpl {
      * serialize(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
      */
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        forceExpand();
-        super.serialize(writer, format);
+        if (isDestructiveWrite()) {
+            forceExpand();
+            super.serialize(writer, format);
+        } else {
+            dataSource.serialize(writer, format);
+        }
     }
 
     /* (non-Javadoc)
@@ -661,10 +689,10 @@ public class OMSourcedElementImpl extends OMElementImpl {
         if (isDebugEnabled) {
             log.debug("serialize " + getPrintableName() + " to output stream");
         }
-        if (isDataSourceConsumed()) {
+        if (isExpanded()) {
             super.serializeAndConsume(output, new OMOutputFormat());
         } else {
-            dataSource.serialize(output, new OMOutputFormat());  // consumes the datasource
+            dataSource.serialize(output, new OMOutputFormat());
         }
     }
 
@@ -675,10 +703,10 @@ public class OMSourcedElementImpl extends OMElementImpl {
         if (isDebugEnabled) {
             log.debug("serialize " + getPrintableName() + " to writer");
         }
-        if (isDataSourceConsumed()) {
+        if (isExpanded()) {
             super.serializeAndConsume(writer);
         } else {
-            dataSource.serialize(writer, new OMOutputFormat()); // consumes the datasource
+            dataSource.serialize(writer, new OMOutputFormat()); 
         }
     }
 
@@ -692,10 +720,10 @@ public class OMSourcedElementImpl extends OMElementImpl {
             log.debug("serialize formatted " + getPrintableName() +
                     " to output stream");
         }
-        if (isDataSourceConsumed()) {
+        if (isExpanded()) {
             super.serializeAndConsume(output, format);
         } else {
-            dataSource.serialize(output, format); // consumes the datasource
+            dataSource.serialize(output, format); 
         }
     }
 
@@ -709,10 +737,10 @@ public class OMSourcedElementImpl extends OMElementImpl {
             log.debug("serialize formatted " + getPrintableName() +
                     " to writer");
         }
-        if (isDataSourceConsumed()) {
+        if (isExpanded()) {
             super.serializeAndConsume(writer, format);
         } else {
-            dataSource.serialize(writer, format);  // consumes the datasource
+            dataSource.serialize(writer, format); 
         }
     }
 
@@ -815,8 +843,23 @@ public class OMSourcedElementImpl extends OMElementImpl {
      * @see org.apache.axiom.om.impl.llom.OMElementImpl#toString()
      */
     public String toString() {
-        forceExpand();
-        return super.toString();
+        if (isDestructiveWrite()) {
+            forceExpand();
+            return super.toString();
+        } else {
+            try {
+                StringWriter writer = new StringWriter();
+                OMOutputFormat format = new OMOutputFormat();
+                dataSource.serialize(writer, format);
+                String text = writer.toString();
+                writer.close();
+                return text;
+            } catch (XMLStreamException e) {
+                throw new RuntimeException("Cannot serialize OM Element " + this.getLocalName(), e);
+            } catch (IOException e) {
+                throw new RuntimeException("Cannot serialize OM Element " + this.getLocalName(), e);
+            }
+        }
     }
 
     /* (non-Javadoc)
@@ -848,13 +891,38 @@ public class OMSourcedElementImpl extends OMElementImpl {
     }
 
     /**
-     * Provide access to the data source encapsulated in OMSourcedEle. 
+     * Provide access to the data source encapsulated in OMSourcedElement. 
      * This is usesful when we want to access the raw data in the data source.
      *
      * @return the internal datasource
      */
     public OMDataSource getDataSource() {
         return dataSource;
+    }
+    
+    /**
+     * setOMDataSource
+     */
+    public OMDataSource setDataSource(OMDataSource dataSource) {
+        if (!isExpanded()) {
+            OMDataSource oldDS = this.dataSource;
+            this.dataSource = dataSource;
+            return oldDS;  // Caller is responsible for closing the data source
+        } else {
+            // TODO
+            // Remove the entire subtree and replace with 
+            // new datasource.  There maybe a more performant way to do this.
+            OMDataSource oldDS = this.dataSource;
+            Iterator it = getChildren();
+            while(it.hasNext()) {
+                OMNode node = (OMNode) it.next();
+                node.detach();
+            }
+            this.dataSource = dataSource;
+            setComplete(false);
+            isParserSet = false;
+            return oldDS;
+        }
     }
 
     /**
@@ -864,6 +932,21 @@ public class OMSourcedElementImpl extends OMElementImpl {
      */
     public void setComplete(boolean value) {
         done = value;
+        if (done == true) {
+            if (readerFromDS != null) {
+                try {
+                    readerFromDS.close();
+                } catch (XMLStreamException e) {
+                }
+                readerFromDS = null;
+            }
+            if (dataSource != null) {
+                if (dataSource instanceof OMDataSourceExt) {
+                    ((OMDataSourceExt)dataSource).close();
+                }
+                dataSource = null;
+            }
+        }
         if (done == true && readerFromDS != null) {
             try {
                 readerFromDS.close();

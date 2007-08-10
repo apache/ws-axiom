@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
@@ -140,7 +141,7 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @param localName
      * @param ns
      */
-    public OMElement createOMElement(OMDataSource source, String localName, OMNamespace ns) {
+    public OMSourcedElement createOMElement(OMDataSource source, String localName, OMNamespace ns) {
         return new OMSourcedElementImpl(localName, ns, this, source);
     }
 

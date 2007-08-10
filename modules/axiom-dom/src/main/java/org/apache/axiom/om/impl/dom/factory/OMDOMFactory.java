@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -151,7 +152,7 @@ public class OMDOMFactory implements OMFactory {
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMFactory#createOMElement(org.apache.axiom.om.OMDataSource, java.lang.String, org.apache.axiom.om.OMNamespace)
      */
-    public OMElement createOMElement(OMDataSource source, String localName, OMNamespace ns) {
+    public OMSourcedElement createOMElement(OMDataSource source, String localName, OMNamespace ns) {
         throw new UnsupportedOperationException("Not supported for DOM");
     }
 
