@@ -729,53 +729,29 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
     }
 
     public void serialize(OutputStream output) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serialize(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
+        serialize(StAXUtils.createXMLStreamWriter(output));
     }
 
     public void serialize(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serialize(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
+        serialize(StAXUtils.createXMLStreamWriter(writer));
     }
 
     public void serializeAndConsume(OutputStream output)
             throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
+        serializeAndConsume(StAXUtils
+                .createXMLStreamWriter(output));
     }
 
     public void serializeAndConsume(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
+        serializeAndConsume(StAXUtils
+                .createXMLStreamWriter(writer));
     }
 
     public void serialize(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        try {
-            internalSerialize(writer);
-            writer.flush();
-        } finally {
-            if (format.isAutoCloseWriter()) {
-                writer.close();
-            }
-        }
+        internalSerialize(writer);
+        writer.flush();
     }
 
     public void serialize(Writer writer2, OMOutputFormat format)
@@ -783,42 +759,24 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(StAXUtils
                 .createXMLStreamWriter(writer2));
         writer.setOutputFormat(format);
-        try {
-            internalSerialize(writer);
-            writer.flush();
-        } finally {
-            if (format.isAutoCloseWriter()) {
-                writer.close();
-            }
-        }
+        internalSerialize(writer);
+        writer.flush();
     }
 
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        try {
-            internalSerializeAndConsume(writer);
-            writer.flush();
-        } finally {
-            if (format.isAutoCloseWriter()) {
-                writer.close();
-            }
-        }
+        internalSerializeAndConsume(writer);
+        writer.flush();
     }
 
     public void serializeAndConsume(Writer writer2, OMOutputFormat format)
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(StAXUtils
                 .createXMLStreamWriter(writer2));
-        try {
-            writer.setOutputFormat(format);
-            internalSerializeAndConsume(writer);
-            writer.flush();
-        } finally {
-            if (format.isAutoCloseWriter()) {
-                writer.close();
-            }
-        }
+        writer.setOutputFormat(format);
+        internalSerializeAndConsume(writer);
+        writer.flush();
     }
 
     /** Returns the <code>OMFactory</code> that created this node */

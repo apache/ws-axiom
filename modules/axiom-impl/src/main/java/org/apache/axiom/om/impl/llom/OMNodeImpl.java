@@ -380,39 +380,19 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     }
 
     public void serialize(OutputStream output) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serialize(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
+        serialize(StAXUtils.createXMLStreamWriter(output));
     }
 
     public void serialize(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serialize(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
+        serialize(StAXUtils.createXMLStreamWriter(writer));
     }
 
     public void serializeAndConsume(OutputStream output) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
+        serializeAndConsume(StAXUtils.createXMLStreamWriter(output));
     }
 
     public void serializeAndConsume(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
+        serializeAndConsume(StAXUtils.createXMLStreamWriter(writer));
     }
 
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
