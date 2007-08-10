@@ -901,8 +901,12 @@ public class OMElementImpl extends OMNodeImpl
     public String toStringWithConsume() throws XMLStreamException {
         StringWriter writer = new StringWriter();
         XMLStreamWriter writer2 = StAXUtils.createXMLStreamWriter(writer);
-        this.serializeAndConsume(writer2);
-        writer2.flush();
+        try {
+            this.serializeAndConsume(writer2);
+            writer2.flush();
+        } finally {
+            writer2.close();
+        }
         return writer.toString();
     }
 
@@ -910,8 +914,12 @@ public class OMElementImpl extends OMNodeImpl
         StringWriter writer = new StringWriter();
         try {
             XMLStreamWriter writer2 = StAXUtils.createXMLStreamWriter(writer);
-            this.serialize(writer2);
-            writer2.flush();
+            try {
+                this.serialize(writer2);
+                writer2.flush();
+            } finally {
+                writer2.close();
+            }
         } catch (XMLStreamException e) {
             throw new RuntimeException("Can not serialize OM Element " + this.getLocalName(), e);
         }
