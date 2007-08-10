@@ -689,10 +689,12 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         if (isDebugEnabled) {
             log.debug("serialize " + getPrintableName() + " to output stream");
         }
+        OMOutputFormat format = new OMOutputFormat();
+        format.setAutoCloseWriter(true);
         if (isExpanded()) {
-            super.serializeAndConsume(output, new OMOutputFormat());
+            super.serializeAndConsume(output, format);
         } else {
-            dataSource.serialize(output, new OMOutputFormat());
+            dataSource.serialize(output, format);
         }
     }
 
@@ -706,7 +708,9 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         if (isExpanded()) {
             super.serializeAndConsume(writer);
         } else {
-            dataSource.serialize(writer, new OMOutputFormat()); 
+            OMOutputFormat format = new OMOutputFormat();
+            format.setAutoCloseWriter(true);
+            dataSource.serialize(writer, format); 
         }
     }
 
