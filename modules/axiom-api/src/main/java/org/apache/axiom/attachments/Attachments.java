@@ -144,6 +144,9 @@ public class Attachments {
         this.contentLength = contentLength;
         this.attachmentRepoDir = attachmentRepoDir;
         this.fileCacheEnable = fileCacheEnable;
+        if (log.isDebugEnabled()) {
+            log.debug("Attachments contentLength=" + contentLength + ", contentTypeString=" + contentTypeString);
+        }
         if (fileThreshold != null && (!"".equals(fileThreshold))) {
             this.fileStorageThreshold = Integer.parseInt(fileThreshold);
         } else {
@@ -170,6 +173,9 @@ public class Attachments {
             }
             this.boundary = ("--" + contentType.getParameter("boundary"))
                     .getBytes(encoding);
+            if (log.isDebugEnabled()) {
+                log.debug("boundary=" + new String(this.boundary));
+            }
         } catch (UnsupportedEncodingException e) {
             throw new OMException(e);
         }
@@ -352,6 +358,9 @@ public class Attachments {
      */
     public String getSOAPPartContentID() {
         String rootContentID = contentType.getParameter("start");
+        if (log.isDebugEnabled()) {
+            log.debug("getSOAPPartContentID rootContentID=" + rootContentID);
+        }
 
         // to handle the Start parameter not mentioned situation
         if (rootContentID == null) {
@@ -484,7 +493,8 @@ public class Attachments {
                             partContentID = partContentID.substring(1, (partContentID
                                     .length() - 1));
 
-                        } else if (partIndex == 1) {
+                        } 
+                        if (partIndex == 1) {
                             firstPartId = partContentID;
                         }
                         if (attachmentsMap.containsKey(partContentID)) {
