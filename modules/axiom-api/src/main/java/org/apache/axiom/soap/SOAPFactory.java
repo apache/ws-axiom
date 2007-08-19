@@ -40,6 +40,8 @@ public interface SOAPFactory extends OMFactory {
 
     /** @return Returns SOAPEnvelope. */
     SOAPEnvelope createSOAPEnvelope() throws SOAPProcessingException;
+    
+    SOAPEnvelope createSOAPEnvelope(OMNamespace ns); 
 
     SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder);
 

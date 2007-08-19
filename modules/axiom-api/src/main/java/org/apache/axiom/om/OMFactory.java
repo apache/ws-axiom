@@ -116,6 +116,14 @@ public interface OMFactory {
     OMText createOMText(OMContainer parent, String text);
 
     /**
+     * Create OMText node that is a copy of the source text node
+     * @param parent
+     * @param source
+     * @return
+     */
+    public OMText createOMText(OMContainer parent, OMText source);
+    
+    /**
      * @param parent
      * @param text   - This text itself can contain a namespace inside it.
      */

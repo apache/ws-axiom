@@ -102,6 +102,49 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     public OMTextImpl(OMContainer parent, String text, OMFactory factory) {
         this(parent, text, TEXT_NODE, factory);
     }
+    
+    /**
+     * Construct OMTextImpl that is a copy of the source OMTextImpl
+     * @param parent
+     * @param source OMTextImpl
+     * @param factory
+     */
+    public OMTextImpl(OMContainer parent, OMTextImpl source, OMFactory factory) {
+        super(parent, factory, true);
+        // Copy the value of the text
+        this.value = source.value;
+        this.nodeType = source.nodeType;
+        
+        // Clone the charArray (if it exists)
+        if (source.charArray != null) {
+            this.charArray = new char[source.charArray.length];
+            for (int i=0; i<source.charArray.length; i++) {
+                this.charArray[i] = source.charArray[i];
+            }
+        }
+        
+        // Turn off calcNS...the namespace will need to be recalculated
+        // in the new tree's context.
+        this.calcNS = false;
+        this.textNS = null;
+        
+        // Copy the optimized related settings.
+        this.optimize = source.optimize;
+        this.mimeType = source.mimeType;
+        this.isBinary = source.isBinary;
+        
+        // TODO
+        // Do we need a deep copy of the data-handler 
+        this.contentID = source.contentID;
+        this.dataHandlerObject = source.dataHandlerObject;
+        
+        this.localName = source.localName;
+        if (source.attribute != null) {
+            this.attribute = factory.createOMAttribute(source.attribute.getLocalName(),
+                                                       source.attribute.getNamespace(),
+                                                       source.attribute.getAttributeValue());
+        }
+    }
 
     public OMTextImpl(OMContainer parent, String text, int nodeType,
                       OMFactory factory) {

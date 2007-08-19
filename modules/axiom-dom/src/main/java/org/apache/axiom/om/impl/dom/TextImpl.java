@@ -107,6 +107,57 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         this.builder = builder;
         this.ns = XOP_NS;
     }
+    
+    /**
+     * Construct TextImpl that is a copy of the source OMTextImpl
+     * @param parent
+     * @param source TextImpl
+     * @param factory
+     */
+    public TextImpl(OMContainer parent, TextImpl source, OMFactory factory) {
+        super((DocumentImpl) ((ParentNode) parent).getOwnerDocument(), factory);
+        this.done = true;
+        
+        // Copy the value of the text
+        if (source.textValue != null) {
+            this.textValue = new StringBuffer();
+            this.textValue.append(source.textValue.toString());
+        }
+        
+        // Clone the charArray (if it exists)
+        if (source.charArray != null) {
+            this.charArray = new char[source.charArray.length];
+            for (int i=0; i<source.charArray.length; i++) {
+                this.charArray[i] = source.charArray[i];
+            }
+        }
+        
+        
+        // Turn off textNS...the namespace will need to be recalculated
+        // in the new tree's context.
+        this.textNS = null;
+        
+        // Copy the optimized related settings.
+        this.optimize = source.optimize;
+        this.mimeType = source.mimeType;
+        this.isBinary = source.isBinary;
+        
+        // TODO
+        // Do we need a deep copy of the data-handler 
+        this.contentID = source.contentID;
+        this.dataHandlerObject = source.dataHandlerObject;
+        
+        this.localName = source.localName;
+        if (source.ns != null) {
+            this.ns = new OMNamespaceImpl(source.ns.getNamespaceURI(), 
+                                          source.ns.getPrefix());
+        }
+        if (source.attribute != null) {
+            this.attribute = factory.createOMAttribute(source.attribute.getLocalName(),
+                                                       source.attribute.getNamespace(),
+                                                       source.attribute.getAttributeValue());
+        }
+    }
 
     public TextImpl(String text, String mimeType, boolean optimize,
                     OMFactory factory) {

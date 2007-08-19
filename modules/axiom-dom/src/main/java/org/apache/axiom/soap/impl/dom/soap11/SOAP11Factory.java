@@ -68,6 +68,11 @@ public class SOAP11Factory extends DOMSOAPFactory {
                         SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX),
                 this);
     }
+    
+    public SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
+        return new SOAPEnvelopeImpl(ns,
+                                    this);
+    }
 
     public SOAPHeader createSOAPHeader(SOAPEnvelope envelope)
             throws SOAPProcessingException {

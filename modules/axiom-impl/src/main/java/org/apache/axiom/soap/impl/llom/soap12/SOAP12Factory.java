@@ -68,6 +68,11 @@ public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactor
                         SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX),
                 this);
     }
+    
+    public SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
+        return new SOAPEnvelopeImpl(ns,
+                                    this);
+    }
 
     public SOAPHeader createSOAPHeader(SOAPEnvelope envelope) throws SOAPProcessingException {
         return new SOAP12HeaderImpl(envelope, this);

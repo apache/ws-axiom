@@ -235,6 +235,17 @@ public class OMDOMFactory implements OMFactory {
         ((OMNodeEx) textNode).setType(type);
         return textNode;
     }
+    
+    
+    /**
+     * Create OMText node that is a copy of the source text node
+     * @param parent
+     * @param source
+     * @return
+     */
+    public OMText createOMText(OMContainer parent, OMText source) {
+        return new TextImpl(parent, (TextImpl) source, this);
+    }
 
     public OMText createOMText(OMContainer parent, char[] charArary, int type) {
         ElementImpl parentElem = (ElementImpl) parent;

@@ -80,6 +80,10 @@ public class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
     public SOAPEnvelope createSOAPEnvelope() throws SOAPProcessingException {
         throw new UnsupportedOperationException();
     }
+    
+    public SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
+        throw new UnsupportedOperationException();
+    }
 
     public SOAPHeader createSOAPHeader(SOAPEnvelope envelope) throws SOAPProcessingException {
         throw new UnsupportedOperationException();
