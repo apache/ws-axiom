@@ -335,8 +335,6 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     public void discard() throws OMException {
         if (done) {
             this.detach();
-        } else {
-            builder.discard((OMElement) this.parentNode);
         }
     }
 

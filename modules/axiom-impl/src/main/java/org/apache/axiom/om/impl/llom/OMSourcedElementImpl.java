@@ -362,6 +362,12 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.setFirstChild(node);
     }
 
+
+    public void setLastChild(OMNode omNode) {
+        forceExpand();
+        super.setLastChild(omNode);
+    }
+
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMElement#getFirstElement()
      */

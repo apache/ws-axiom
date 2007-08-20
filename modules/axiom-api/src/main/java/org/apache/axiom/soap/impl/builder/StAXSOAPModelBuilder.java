@@ -163,6 +163,14 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         return envelope;
     }
 
+
+    public void discard(OMElement element) throws OMException {
+        super.discard(element);
+        //when an element is discarded the element index that was incremented
+        //at creation needs to be decremented !
+        elementLevel--;
+    }
+
     /**
      * Method createOMElement.
      *

@@ -524,9 +524,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     public void discard() throws OMException {
         if (done) {
             this.detach();
-        } else {
-            builder.discard((OMElement) this.parent);
-        }
+        } 
     }
 
     /* (non-Javadoc)

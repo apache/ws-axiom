@@ -100,8 +100,6 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
     public void discard() throws OMException {
         if (done) {
             this.detach();
-        } else {
-            builder.discard((OMElement) this.parent);
-        }
+        } 
     }
 }

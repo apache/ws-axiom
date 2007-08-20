@@ -122,8 +122,6 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
     public void discard() throws OMException {
         if (done) {
             this.detach();
-        } else {
-            builder.discard((OMElement) this.parent);
-        }
+        } 
     }
 }

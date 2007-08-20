@@ -126,6 +126,14 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         this.firstChild = (ChildNode) omNode;
     }
 
+    /**
+     * Forcefully set the last child
+     * @param omNode
+     */
+    public void setLastChild(OMNode omNode) {
+        this.lastChild = (ChildNode) omNode;
+    }
+
     // /
     // /DOM Node methods
     // /

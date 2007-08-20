@@ -573,6 +573,11 @@ public class OMElementImpl extends OMNodeImpl
         this.firstChild = firstChild;
     }
 
+
+    public void setLastChild(OMNode omNode) {
+         this.lastChild = omNode;
+    }
+
     /**
      * Removes this information item and its children, from the model completely.
      *

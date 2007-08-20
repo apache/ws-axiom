@@ -31,5 +31,15 @@ import org.apache.axiom.om.OMNode;
 public interface OMContainerEx extends OMContainer {
     public void setComplete(boolean state);
 
+    /**
+     * forcefully set the first element in this parent element
+     * @param omNode
+     */
     public void setFirstChild(OMNode omNode);
+
+    /**
+     * forcefully set the last element in this parent element
+     * @param omNode
+     */
+    public void setLastChild(OMNode omNode);
 }

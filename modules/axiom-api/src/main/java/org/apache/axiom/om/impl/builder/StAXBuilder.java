@@ -258,25 +258,49 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     /**
      * Method discard.
      *
-     * @param el
+     * @param element
      * @throws OMException
      */
-    public void discard(OMElement el) throws OMException {
-        OMElement element = null;
+    public void discard(OMElement element) throws OMException {
 
         if (element.isComplete() || !cache) {
             throw new OMException();
         }
         try {
-            cache = false;
-            do {
-                while (parser.next() != XMLStreamConstants.END_ELEMENT) ;
 
-                // TODO:
-            } while (!parser.getName().equals(element.getQName()));
+            // We simply cannot use the parser instance from the builder for this case
+            // it is not safe to assume that the parser inside the builder will be in
+            // sync with the parser of the element in question
+            // Note 1 - however  calling getXMLStreamReaderWithoutCaching sets off two flags
+            // the cache flag for this builder and the parserAccessed flag. These flags will be
+            // reset later in this procedure
+
+            int event =0;
+            XMLStreamReader elementParser = element.getXMLStreamReaderWithoutCaching();
+            do{
+               event = elementParser.next();
+            }while(!(event == XMLStreamConstants.END_ELEMENT &&
+                     element.getLocalName().equals(elementParser.getLocalName())));
+
+            //at this point we are safely at the end_element event of the element we discarded
             lastNode = element.getPreviousOMSibling();
+
+            // resetting the flags - see Note 1 above
+            cache = true;
+            parserAccessed = false;
+            
             if (lastNode != null) {
-                ((OMNodeEx) lastNode).setNextOMSibling(null);
+                // if the last node is not an element, we are in trouble because leaf nodes
+                // (such as text) cannot build themselves. worst the lastchild of the
+                // currentparent is still the removed node! we have to correct it
+                OMContainerEx ex = ((OMContainerEx) lastNode.getParent());
+                ex.setLastChild(lastNode);
+                 if (!(lastNode instanceof OMContainerEx)){
+                     ex.buildNext();
+                 }else{
+                    ((OMNodeEx) lastNode).setNextOMSibling(null); 
+                 }
+
             } else {
                 OMElement parent = (OMElement) element.getParent();
                 if (parent == null) {
@@ -285,7 +309,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                 ((OMContainerEx) parent).setFirstChild(null);
                 lastNode = parent;
             }
-            cache = true;
+            
         } catch (OMException e) {
             throw e;
         } catch (Exception e) {

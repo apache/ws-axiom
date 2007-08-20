@@ -271,6 +271,13 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
         this.firstChild = firstChild;
     }
 
+    /**
+     * Forcefully set the last child
+     * @param omNode
+     */
+    public void setLastChild(OMNode omNode) {
+        this.lastChild = omNode;
+    }
 
     /**
      * Returns the character set encoding scheme to be used.
