@@ -548,6 +548,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             throw new RuntimeException(e);
         } finally {
             _isClosed = true;
+            done = true;
             // Release the parser so that it can be GC'd or reused.
             if (_releaseParserOnClose) {
                 parser = null;
