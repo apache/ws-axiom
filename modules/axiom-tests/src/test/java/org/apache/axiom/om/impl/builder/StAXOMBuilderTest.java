@@ -68,4 +68,54 @@ public class StAXOMBuilderTest extends AbstractTestCase {
         }
         assertTrue(childrenCount == 5);
     }
+    
+    public void testClose1() throws Exception {
+        rootElement = stAXOMBuilder.getDocumentElement();
+        assertTrue("Root element can not be null", rootElement != null);
+        assertTrue(" Name of the root element is wrong",
+                   rootElement.getLocalName().equalsIgnoreCase("Root"));
+        // get the first OMElement child
+        OMNode omnode = rootElement.getFirstOMChild();
+        while (omnode instanceof OMText) {
+            omnode = omnode.getNextOMSibling();
+        }
+        // Close the element immediately
+        OMElement omElement = (OMElement) omnode;
+        omElement.close(false);
+        
+        Iterator children = ((OMElement) omnode).getChildren();
+        int childrenCount = 0;
+        while (children.hasNext()) {
+            OMNode node = (OMNode) children.next();
+            if (node instanceof OMElement)
+                childrenCount++;
+        }
+        
+        assertTrue(childrenCount == 0);
+    }
+    
+    public void testClose2() throws Exception {
+        rootElement = stAXOMBuilder.getDocumentElement();
+        assertTrue("Root element can not be null", rootElement != null);
+        assertTrue(" Name of the root element is wrong",
+                   rootElement.getLocalName().equalsIgnoreCase("Root"));
+        // get the first OMElement child
+        OMNode omnode = rootElement.getFirstOMChild();
+        while (omnode instanceof OMText) {
+            omnode = omnode.getNextOMSibling();
+        }
+        // Close the element after building the element
+        OMElement omElement = (OMElement) omnode;
+        omElement.close(true);
+        
+        Iterator children = ((OMElement) omnode).getChildren();
+        int childrenCount = 0;
+        while (children.hasNext()) {
+            OMNode node = (OMNode) children.next();
+            if (node instanceof OMElement)
+                childrenCount++;
+        }
+        
+        assertTrue(childrenCount == 5);
+    }
 }

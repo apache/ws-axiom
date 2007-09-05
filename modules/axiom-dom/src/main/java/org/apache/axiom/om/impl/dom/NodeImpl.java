@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -461,6 +462,20 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         }
     }
 
+    public void close(boolean build) {
+        if (build) {
+            this.build();
+        }
+        this.done = true;
+        
+        // If this is a StAXBuilder, close it.
+        if (builder instanceof StAXBuilder &&
+            !((StAXBuilder) builder).isClosed()) {
+            ((StAXBuilder) builder).releaseParserOnClose(true);
+            ((StAXBuilder) builder).close();
+        }
+    }
+    
     /**
      * Sets the owner document.
      *

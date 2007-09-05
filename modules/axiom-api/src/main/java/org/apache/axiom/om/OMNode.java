@@ -283,8 +283,14 @@ public interface OMNode {
     void buildWithAttachments();
 
     /**
+     * If a builder and parser is associated with the node, it is closed.
+     * @param build if true, the object is built first before closing the builder/parser
+     */
+    void close(boolean build);
+    
+    /**
      * Returns the OMFactory that created this object
-	 */
-	OMFactory getOMFactory();
+     */
+    OMFactory getOMFactory();
 
 }

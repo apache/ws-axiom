@@ -33,6 +33,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.util.StAXUtils;
@@ -330,6 +331,21 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     public void buildWithAttachments() {
         if (!this.done) {
             this.build();
+        }
+    }
+
+    
+    public void close(boolean build) {
+        if (build) {
+            this.build();
+        }
+        this.done = true;
+        
+        // If this is a StAXBuilder, close it.
+        if (builder instanceof StAXBuilder &&
+            !((StAXBuilder) builder).isClosed()) {
+            ((StAXBuilder) builder).releaseParserOnClose(true);
+            ((StAXBuilder) builder).close();
         }
     }
 
