@@ -44,7 +44,7 @@ import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.om.impl.llom.OMTextImpl;
 
 import javax.xml.namespace.QName;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 
 /** Class OMLinkedListImplFactory */
@@ -54,8 +54,9 @@ public class OMLinkedListImplFactory implements OMFactory {
     /**
      * This is a map of namespaces with the namespace URI as the key and Namespace object itself as
      * the value.
+     * OMFactories are shared across threads.  The Hashtable is necessary to prevent concurrent modification exceptions.
      */
-    protected Map namespaceTable = new HashMap(5);
+    protected Map namespaceTable = new Hashtable(5);
 
     /**
      * Method createOMElement.
