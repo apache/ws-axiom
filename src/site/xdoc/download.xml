@@ -12,7 +12,13 @@
 
     <body>
 
-        <section>
+    <script src="http://www.google-analytics.com/urchin.js"  type="text/javascript" />
+    <script type="text/javascript">
+		_uacct = "UA-1954378-4";
+		urchinTracker();
+    </script>
+    
+    <section>
             <h2>Releases</h2>
             <div align="left">
                 <p>AXIOM is becoming more and more stable and the latest official version available for download is
@@ -42,7 +48,8 @@
                             <td align="center">Release</td>
                             <td>Source Distribution
                                 <a href="[preferred]/ws/commons/axiom/1_2_5/axiom-1.2.5-src.zip"
-                                   title="[preferred]/ws/commons/axiom/1_2_5/axiom-1.2.5-src.zip">zip</a>
+                                   title="[preferred]/ws/commons/axiom/1_2_5/axiom-1.2.5-src.zip" 
+				   onClick="javascript:urchinTracker ('/downloads/axiom-1.2.5-src.zip');">zip</a>
 
                                 <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_5/axiom-1.2.5-src.zip.md5"
                                    class="externalLink"
@@ -53,7 +60,8 @@
                                 <br/>
                                 Binary Distribution
                                 <a href="[preferred]/ws/commons/axiom/1_2_5/axiom-1.2.5-bin.zip"
-                                   title="[preferred]/ws/commons/axiom/1_2_5/axiom-1.2.5-bin.zip">zip</a>
+                                   title="[preferred]/ws/commons/axiom/1_2_5/axiom-1.2.5-bin.zip"
+				   onClick="javascript:urchinTracker ('/downloads/axiom-1.2.5-bin.zip');">zip</a>
                                 <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_5/axiom-1.2.5-bin.zip.md5"
                                    class="externalLink"
                                    title="http://www.apache.org/dist/ws/commons/axiom/1_2_5/axiom-1.2.5-bin.zip.md5">MD5</a>
