@@ -782,7 +782,7 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         } else {
             if (parser != null) {
                 try {
-                    if (_isClosed) {
+                    if (!isClosed()) {
                         parser.close();
                     }
                 } finally {
