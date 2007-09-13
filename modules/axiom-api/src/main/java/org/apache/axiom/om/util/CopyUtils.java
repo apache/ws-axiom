@@ -166,7 +166,7 @@ public class CopyUtils {
             copyOMComment(factory, targetParent, (OMComment) sourceNode);
         } else {
             throw new OMException("Internal Failure: Cannot make a copy of "
-                    + sourceNode.getClass().getCanonicalName());
+                    + sourceNode.getClass().getName());
         }
     }
 
@@ -325,7 +325,7 @@ public class CopyUtils {
             copyOMComment(factory, targetFault, (OMComment) sourceNode);
         } else {
             throw new OMException("Internal Failure: Cannot make a copy of "
-                    + sourceNode.getClass().getCanonicalName() + " object found in a SOAPFault.");
+                    + sourceNode.getClass().getName() + " object found in a SOAPFault.");
         }
     }
 

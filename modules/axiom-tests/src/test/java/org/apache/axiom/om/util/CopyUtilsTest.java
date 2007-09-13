@@ -142,12 +142,12 @@ public class CopyUtilsTest extends AbstractTestCase {
      * @param depth
      */
     protected void identityCheck(OMNode source, OMNode target, String depth) {
-        // System.out.println(depth + source.getClass().getCanonicalName());
+        // System.out.println(depth + source.getClass().getName());
         if (source instanceof OMElement) {
             
             if (source instanceof OMSourcedElement) {
-                assertTrue("Source = " + source.getClass().getCanonicalName() + 
-                           "Target = " + target.getClass().getCanonicalName(),
+                assertTrue("Source = " + source.getClass().getName() + 
+                           "Target = " + target.getClass().getName(),
                            target instanceof OMSourcedElement);
                 assertTrue("Source Expansion = " +((OMSourcedElement)source).isExpanded() +
                            "Target Expansion = " + ((OMSourcedElement)target).isExpanded(),
@@ -165,10 +165,10 @@ public class CopyUtilsTest extends AbstractTestCase {
                                i.hasNext() == j.hasNext());
                 }
             } else {
-                assertTrue("Source = " + source.getClass().getCanonicalName() + 
-                           "Target = " + target.getClass().getCanonicalName(),
-                           source.getClass().getCanonicalName().equals(
-                           target.getClass().getCanonicalName()));
+                assertTrue("Source = " + source.getClass().getName() + 
+                           "Target = " + target.getClass().getName(),
+                           source.getClass().getName().equals(
+                           target.getClass().getName()));
                 Iterator i = ((OMElement) source).getChildren();
                 Iterator j = ((OMElement) target).getChildren();
                 while(i.hasNext() && j.hasNext()) {
@@ -180,10 +180,10 @@ public class CopyUtilsTest extends AbstractTestCase {
                            i.hasNext() == j.hasNext());
             }
         } else {
-            assertTrue("Source = " + source.getClass().getCanonicalName() + 
-                   "Target = " + target.getClass().getCanonicalName(),
-                   source.getClass().getCanonicalName().equals(
-                   target.getClass().getCanonicalName()));
+            assertTrue("Source = " + source.getClass().getName() + 
+                   "Target = " + target.getClass().getName(),
+                   source.getClass().getName().equals(
+                   target.getClass().getName()));
         }
     }
 }
