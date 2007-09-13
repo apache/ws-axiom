@@ -254,13 +254,12 @@ public class BoundaryDelimitedStream extends java.io.FilterInputStream {
             boundaryPos = boundaryPosition(readbuf, 0, readBufEnd);
         }
 
-        int bwritten = -1;    // Number of bytes written.
+        int bwritten = 0;    // Number of bytes written.
 
         // read and copy bytes in.
         do
         {                                // Always allow to have a boundary length left in the buffer.
 
-            bwritten = 0;
             int bcopy = Math.min(readBufEnd - readBufPos - boundaryBufLen,
                                  len - bwritten);
 
