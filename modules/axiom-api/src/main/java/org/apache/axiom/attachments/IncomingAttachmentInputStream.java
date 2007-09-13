@@ -27,6 +27,8 @@ import java.util.Map;
 public class IncomingAttachmentInputStream extends InputStream {
     private HashMap _headers = null;
 
+    private HashMap _headersLowerCase = null;
+    
     private InputStream _stream = null;
     private IncomingAttachmentStreams parentContainer;
 
@@ -59,8 +61,10 @@ public class IncomingAttachmentInputStream extends InputStream {
     public void addHeader(String name, String value) {
         if (_headers == null) {
             _headers = new HashMap();
+            _headersLowerCase = new HashMap();
         }
         _headers.put(name, value);
+        _headersLowerCase.put(name.toLowerCase(), value);
     }
 
     /**
@@ -71,7 +75,7 @@ public class IncomingAttachmentInputStream extends InputStream {
      */
     public String getHeader(String name) {
         Object header = null;
-        if (_headers == null || (header = _headers.get(name)) == null) {
+        if (_headersLowerCase == null || (header = _headersLowerCase.get(name.toLowerCase())) == null) {
             return null;
         }
         return header.toString();

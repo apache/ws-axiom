@@ -80,7 +80,7 @@ public final class MultipartAttachmentStreams extends IncomingAttachmentStreams 
         Enumeration e = headers.getAllHeaders();
         while (e != null && e.hasMoreElements()) {
             header = (Header) e.nextElement();
-            name = header.getName().toLowerCase();
+            name = header.getName();
             value = header.getValue();
             if (IncomingAttachmentInputStream.HEADER_CONTENT_ID.equals(name)
                     || IncomingAttachmentInputStream.HEADER_CONTENT_TYPE.equals(name)
