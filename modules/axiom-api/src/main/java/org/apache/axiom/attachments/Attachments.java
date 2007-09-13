@@ -312,13 +312,12 @@ public class Attachments {
      * @param blobContentID
      */
     public void removeDataHandler(String blobContentID) {
-        DataHandler dataHandler;
         if (attachmentsMap.containsKey(blobContentID)) {
             attachmentsMap.remove(blobContentID);
         } else if (!noStreams) {
             //This loop will be terminated by the Exceptions thrown if the Mime
             // part searching was not found
-            while ((dataHandler = this.getNextPartDataHandler()) != null) {
+            while (this.getNextPartDataHandler() != null) {
                 if (attachmentsMap.containsKey(blobContentID)) {
                     attachmentsMap.remove(blobContentID);
                 }
@@ -459,6 +458,26 @@ public class Attachments {
     }
 
     /**
+     * Returns the rest of mime stream. It will contain all attachments without
+     * soappart (first attachment) with headers and mime boundary. Raw content! 
+     */
+    public InputStream getIncomingAttachmentsAsSingleStream() throws IllegalStateException {
+        if (partsRequested) {
+            throw new IllegalStateException(
+                    "The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a " +
+                            "collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
+        }
+        if (noStreams) {
+            throw new IllegalStateException(
+                    "The attachments map was created programatically. No streams are available.");
+        }
+
+        streamsRequested = true;
+
+    	return this.pushbackInStream;
+    }
+
+    /**
      * @return the Next valid MIME part + store the Part in the Parts List
      * @throws OMException throw if content id is null or if two MIME parts contain the same
      *                     content-ID & the exceptions throws by getPart()
@@ -534,8 +553,10 @@ public class Attachments {
         try {
             if (fileCacheEnable) {
                 try {
-                    if (contentLength != 0 &&
-                            contentLength <= fileStorageThreshold) {
+                    // The soapPart is normally the first part, 
+                    // so always keep the first part in memory
+                    if ((contentLength != 0 && contentLength <= fileStorageThreshold) ||
+                         partIndex == 0) {  
                         // Since the content-length is less than the threshold, we can safely 
                         // store it in memory.
                         if (log.isDebugEnabled()) {
