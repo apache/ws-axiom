@@ -190,4 +190,7 @@ public class OMOutputFormat {
     public void setMimeBoundary(String mimeBoundary) {
         this.mimeBoundary = mimeBoundary;
     }
+    public void setRootContentId(String rootContentId) {
+		this.rootContentId = rootContentId;
+	}
 }
