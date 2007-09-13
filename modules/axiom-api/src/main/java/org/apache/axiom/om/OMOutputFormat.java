@@ -45,6 +45,7 @@ public class OMOutputFormat {
 
     private String charSetEncoding;
     private String xmlVersion;
+    private String contentType;
     private boolean ignoreXMLDeclaration = false;
     private boolean autoCloseWriter = false;
 
@@ -56,21 +57,40 @@ public class OMOutputFormat {
         return doOptimize;
     }
 
+    /**
+     * Return the content-type value that should be written with the message.
+     * (i.e. if optimized, then a multipart/related content-type is returned).
+     * @return content-type value
+     */
     public String getContentType() {
-        String soapContentType;
-        if (isSoap11) {
-            soapContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
-        } else {
-            soapContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
+       
+        if (contentType == null) {
+            if (isSoap11) {
+                contentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
+            } else {
+                contentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
+            }
         }
-        // MTOM is given priority
+        // If MTOM or SWA, the returned content-type is an 
+        // appropriate multipart/related content type.
         if (isOptimized()) {
-            return this.getContentTypeForMTOM(soapContentType);
+            return this.getContentTypeForMTOM(contentType);
         } else if (isDoingSWA()) {
-            return this.getContentTypeForSwA(soapContentType);
+            return this.getContentTypeForSwA(contentType);
         } else {
-            return soapContentType;
+            return contentType;
         }
+    }
+    
+    /**
+     * Set a raw content-type 
+     * (i.e. "text/xml" (SOAP 1.1) or "application/xml" (REST))
+     * If this method is not invoked, OMOutputFormat will choose
+     * a content-type value consistent with the soap version.
+     * @param c
+     */
+    public void setContentType(String c) {
+        contentType = c;
     }
 
     public String getMimeBoundary() {
