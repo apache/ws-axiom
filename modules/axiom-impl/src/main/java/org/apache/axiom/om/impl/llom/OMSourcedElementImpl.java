@@ -61,6 +61,7 @@ import java.util.Iterator;
  * heavy overhead penalty, so should be avoided if possible.</p>
  */
 public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElement {
+    
     /** Data source for element data. */
     private OMDataSource dataSource;
 
@@ -768,6 +769,16 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public Iterator getChildrenWithName(QName elementQName) {
         forceExpand();
         return super.getChildrenWithName(elementQName);
+    }
+    
+    public Iterator getChildrenWithLocalName(String localName) {
+        forceExpand();
+        return super.getChildrenWithLocalName(localName);
+    }
+
+    public Iterator getChildrenWithNamespaceURI(String uri) {
+        forceExpand();
+        return super.getChildrenWithNamespaceURI(uri);
     }
 
     /* (non-Javadoc)

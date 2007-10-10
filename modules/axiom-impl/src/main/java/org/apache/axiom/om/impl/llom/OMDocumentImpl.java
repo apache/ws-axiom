@@ -30,6 +30,8 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
+import org.apache.axiom.om.impl.traverse.OMChildrenLocalNameIterator;
+import org.apache.axiom.om.impl.traverse.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
 
 import javax.xml.namespace.QName;
@@ -229,6 +231,16 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
                                            elementQName);
     }
 
+    public Iterator getChildrenWithLocalName(String localName) {
+        return new OMChildrenLocalNameIterator(getFirstOMChild(),
+                                               localName);
+    }
+
+
+    public Iterator getChildrenWithNamespaceURI(String uri) {
+        return new OMChildrenNamespaceIterator(getFirstOMChild(),
+                                               uri);
+    }
     /**
      * Method getFirstOMChild.
      *

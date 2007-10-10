@@ -37,6 +37,9 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
+import org.apache.axiom.om.impl.traverse.OMChildrenLegacyQNameIterator;
+import org.apache.axiom.om.impl.traverse.OMChildrenLocalNameIterator;
+import org.apache.axiom.om.impl.traverse.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
@@ -208,7 +211,27 @@ public class OMElementImpl extends OMNodeImpl
     public Iterator getChildrenWithName(QName elementQName) {
         return new OMChildrenQNameIterator(getFirstOMChild(),
                                            elementQName);
+        
+        // The semantics of this call was changed.
+        // The original sematics had a looser definition of QName equality.
+        // To get this original functionality use:
+        /*
+        return new OMChildrenLegacyQNameIterator(getFirstOMChild(), elementQName);
+        */
     }
+    
+
+    public Iterator getChildrenWithLocalName(String localName) {
+        return new OMChildrenLocalNameIterator(getFirstOMChild(),
+                                               localName);
+    }
+
+
+    public Iterator getChildrenWithNamespaceURI(String uri) {
+        return new OMChildrenNamespaceIterator(getFirstOMChild(),
+                                               uri);
+    }
+
 
     /**
      * Method getFirstChildWithName.

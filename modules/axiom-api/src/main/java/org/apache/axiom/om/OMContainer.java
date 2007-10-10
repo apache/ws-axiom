@@ -45,6 +45,25 @@ public interface OMContainer {
      * @return Returns an iterator of {@link OMElement} items that match the given QName
      */
     Iterator getChildrenWithName(QName elementQName);
+    
+    /**
+     * Returns an iterator for child nodes matching the local name.
+     * <p/>
+     *
+     * @param localName 
+     * @return Returns an iterator of {@link OMElement} items that match the given localName
+     */
+    Iterator getChildrenWithLocalName(String localName);
+    
+    /**
+     * Returns an iterator for child nodes matching the namespace uri.
+     * <p/>
+     *
+     * @param uri 
+     * @return Returns an iterator of {@link OMElement} items that match the given uri
+     */
+    Iterator getChildrenWithNamespaceURI(String uri);
+    
 
     /**
      * Returns the first child in document order that matches the given QName

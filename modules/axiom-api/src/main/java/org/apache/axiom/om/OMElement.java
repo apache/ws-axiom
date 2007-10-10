@@ -40,7 +40,7 @@ public interface OMElement extends OMNode, OMContainer {
      * @see #getChildrenWithName(javax.xml.namespace.QName)
      */
     Iterator getChildElements();
-
+    
     /**
      * Creates a namespace in the current element scope.
      *

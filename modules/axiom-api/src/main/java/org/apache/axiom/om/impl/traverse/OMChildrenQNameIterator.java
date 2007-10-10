@@ -24,10 +24,16 @@ import org.apache.axiom.om.OMNode;
 
 import javax.xml.namespace.QName;
 
-/** Class OMChildrenQNameIterator */
+/** 
+ * Class OMChildrenQNameIterator
+ * 
+ * This iterator returns the elements that have a matching QName.
+ * This class can be extended to customize the QName equality.
+ *
+ */
 public class OMChildrenQNameIterator extends OMChildrenIterator {
     /** Field givenQName */
-    private QName givenQName;
+    private final QName givenQName;
 
     /** Field needToMoveForward */
     private boolean needToMoveForward = true;
@@ -45,6 +51,18 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
         super(currentChild);
         this.givenQName = givenQName;
     }
+    
+    /**
+     * Returns true if the qnames are equal.
+     * The default algorithm is to use the QName equality (which examines the namespace and localPart).
+     * You can extend this class to provide your own equality algorithm.
+     * @param searchQName
+     * @param currentQName
+     * @return true if qnames are equal.
+     */
+    public boolean isEqual(QName searchQName, QName currentQName) {
+        return searchQName.equals(currentQName);
+    }
 
     /**
      * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns
@@ -58,7 +76,8 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
                 // check the current node for the criteria
                 if (currentChild instanceof OMElement) {
                     QName thisQName = ((OMElement)currentChild).getQName();
-                    if (givenQName == null || thisQName.equals(givenQName)) {
+                    // A null givenName is an indicator to return all elements
+                    if (givenQName == null || isEqual(givenQName, thisQName)) {
                         isMatchingNodeFound = true;
                         needToMoveForward = false;
                         break;
@@ -93,4 +112,29 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
         currentChild = currentChild.getNextOMSibling();
         return lastChild;
     }
+    
+    /**
+     * Prior versions of the OMChildrenQNameIterator used the following
+     * logic to check equality.  This algorithm is incorrect; however some customers
+     * have dependency on this behavior.  This method is retained (but deprecated) to allow
+     * them an opportunity to use the old algorithm.
+     * 
+     * @param searchQName
+     * @param currentQName
+     * @return true using legacy equality match
+     * @deprecated
+     */
+    public static boolean isEquals_Legacy(QName searchQName, QName currentQName) {
+        
+        // if the given localname is null, whatever value this.qname has, its a match. But can one give a QName without a localName ??
+        String localPart = searchQName.getLocalPart();
+        boolean localNameMatch =(localPart == null) || (localPart.equals("")) ||
+            ((currentQName != null) && currentQName.getLocalPart().equals(localPart));
+        String namespaceURI = searchQName.getNamespaceURI();
+        boolean namespaceURIMatch = (namespaceURI == null) || (namespaceURI.equals(""))||
+            ((currentQName != null) && currentQName.getNamespaceURI().equals(namespaceURI));
+        return localNameMatch && namespaceURIMatch;
+    }
+    
+    
 }

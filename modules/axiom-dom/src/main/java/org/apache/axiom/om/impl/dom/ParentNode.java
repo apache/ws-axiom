@@ -31,6 +31,8 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
+import org.apache.axiom.om.impl.traverse.OMChildrenLocalNameIterator;
+import org.apache.axiom.om.impl.traverse.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -90,6 +92,17 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
      */
     public Iterator getChildrenWithName(QName elementQName) throws OMException {
         return new OMChildrenQNameIterator(getFirstOMChild(), elementQName);
+    }
+    
+    public Iterator getChildrenWithLocalName(String localName) {
+        return new OMChildrenLocalNameIterator(getFirstOMChild(),
+                                               localName);
+    }
+
+
+    public Iterator getChildrenWithNamespaceURI(String uri) {
+        return new OMChildrenNamespaceIterator(getFirstOMChild(),
+                                               uri);
     }
 
     /**
