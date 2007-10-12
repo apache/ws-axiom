@@ -41,7 +41,7 @@ public class OMChildrenLegacyQNameIterator extends OMChildrenQNameIterator {
      * @param currentQName
      * @return true if equals
      */
-    public boolean isEquals(QName searchQName, QName currentQName) {
+    public boolean isEqual(QName searchQName, QName currentQName) {
         // if the given localname is null, whatever value this.qname has, its a match. 
         // But can one give a QName without a localName ??
         String localPart = searchQName.getLocalPart();
