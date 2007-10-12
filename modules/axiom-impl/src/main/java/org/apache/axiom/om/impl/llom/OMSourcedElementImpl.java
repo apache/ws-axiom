@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
@@ -69,7 +70,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     private OMNamespace definedNamespace = null;
 
     /** Flag for parser provided to base element class. */
-    private boolean isParserSet;
+    private boolean isExpanded = false;
 
     private static Log log = LogFactory.getLog(OMSourcedElementImpl.class);
     private static final boolean isDebugEnabled = log.isDebugEnabled();
@@ -89,6 +90,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super(localName, null, factory);
         dataSource = source;
         definedNamespace = ns;
+        isExpanded = (dataSource == null);
     }
 
     /**
@@ -103,6 +105,37 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super(qName.getLocalPart(), null, factory);
         dataSource = source;
         definedNamespace = new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
+        isExpanded = (dataSource == null);
+    }
+
+    public OMSourcedElementImpl(String localName, OMNamespace ns, OMContainer parent, OMFactory factory) {
+        super(localName, null, parent, factory);
+        dataSource = null;
+        definedNamespace = ns;
+        isExpanded = true;
+        if (ns != null) {
+            this.setNamespace(ns);
+        }
+    }
+
+    public OMSourcedElementImpl(String localName, OMNamespace ns, OMContainer parent, OMXMLParserWrapper builder, OMFactory factory) {
+        super(localName, null, parent, builder, factory);
+        dataSource = null;
+        definedNamespace = ns;
+        isExpanded = true;
+        if (ns != null) {
+            this.setNamespace(ns);
+        }
+    }
+
+    public OMSourcedElementImpl(String localName, OMNamespace ns, OMFactory factory) {
+        super(localName, null, factory);
+        dataSource = null;
+        definedNamespace = ns;
+        isExpanded = true;
+        if (ns != null) {
+            this.setNamespace(ns);
+        }
     }
 
     /**
@@ -146,7 +179,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * tree on demand, this first creates a builder
      */
     private void forceExpand() {
-        if (!isParserSet) {
+        if (!isExpanded) {
 
             if (isDebugEnabled) {
                 log.debug("forceExpand: expanding element " +
@@ -196,7 +229,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             String prefix = getNamespace().getPrefix();
             
             // Set the builder for this element
-            isParserSet = true;
+            isExpanded = true;
             super.setBuilder(new StAXOMBuilder(getOMFactory(), 
                                                readerFromDS, 
                                                this, 
@@ -223,7 +256,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * @return <code>true</code> if expanded, <code>false</code> if not
      */
     public boolean isExpanded() {
-        return isParserSet;
+        return isExpanded;
     }
 
     /* (non-Javadoc)
@@ -384,7 +417,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         if (isDebugEnabled) {
             log.debug("getting XMLStreamReader for " + getPrintableName());
         }
-        if (isParserSet) {
+        if (isExpanded) {
             return super.getXMLStreamReader();
         } else {
             if (isDestructiveRead()) {
@@ -403,7 +436,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             log.debug("getting XMLStreamReader without caching for " +
                     getPrintableName());
         }
-        if (isParserSet) {
+        if (isExpanded) {
             return super.getXMLStreamReaderWithoutCaching();
         } else {
             return getDirectReader();
@@ -853,7 +886,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * @see org.apache.axiom.om.impl.llom.OMElementImpl#isComplete()
      */
     public boolean isComplete() {
-        if (isParserSet) {
+        if (isExpanded) {
             return super.isComplete();
         } else {
             return true;
@@ -941,7 +974,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             }
             this.dataSource = dataSource;
             setComplete(false);
-            isParserSet = false;
+            isExpanded = false;
             return oldDS;
         }
     }

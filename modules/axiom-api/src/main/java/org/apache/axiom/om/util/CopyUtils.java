@@ -256,9 +256,45 @@ public class CopyUtils {
     private static void copySOAPHeaderBlock(SOAPFactory factory, 
                                             OMContainer targetParent,
                                             SOAPHeaderBlock sourceSHB) {
+        // If already expanded or this is not an OMDataSourceExt, then
+        // create a copy of the OM Tree
+        OMDataSource ds = sourceSHB.getDataSource();
+        if (ds == null || 
+            sourceSHB.isExpanded() || 
+            !(ds instanceof OMDataSourceExt)) {
+            copySOAPHeaderBlock_NoDataSource(factory, targetParent, sourceSHB);
+            return;
+        }
         
-        // TODO We need to consider the case where the 
-        // the SOAPHeaderBlock is also an OMSourcedElement
+        // If copying is destructive, then copy the OM tree
+        OMDataSourceExt sourceDS = (OMDataSourceExt) ds;
+        if (sourceDS.isDestructiveRead() ||
+            sourceDS.isDestructiveWrite()) {
+            copySOAPHeaderBlock_NoDataSource(factory, targetParent, sourceSHB);
+            return;
+        }
+        
+        // Otherwise create a copy of the OMDataSource
+        OMDataSourceExt targetDS = ((OMDataSourceExt) ds).copy();
+        SOAPHeaderBlock targetSHB =
+            factory.createSOAPHeaderBlock(sourceSHB.getLocalName(), 
+                                          sourceSHB.getNamespace(), 
+                                          targetDS);
+        targetParent.addChild(targetSHB);
+        copySOAPHeaderBlockData(sourceSHB, targetSHB);
+    }
+    
+    /**
+     * Create a copy of the SOAPHeaderBlock
+     * @param factory
+     * @param targetParent
+     * @param sourceSHB
+     */
+    private static void copySOAPHeaderBlock_NoDataSource(SOAPFactory factory, 
+                                            OMContainer targetParent,
+                                            SOAPHeaderBlock sourceSHB) {
+        
+        
         SOAPHeader header = (SOAPHeader) targetParent;
         String localName = sourceSHB.getLocalName();
         OMNamespace ns = sourceSHB.getNamespace();

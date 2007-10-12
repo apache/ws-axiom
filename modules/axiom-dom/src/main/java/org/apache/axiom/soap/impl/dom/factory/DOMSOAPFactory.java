@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.soap.impl.dom.factory;
 
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
@@ -289,6 +290,10 @@ public class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
 
     public OMNamespace getNamespace() {
         throw new UnsupportedOperationException();
+    }
+
+    public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, OMDataSource ds) throws SOAPProcessingException {
+        throw new UnsupportedOperationException("TODO");
     }
 
 }

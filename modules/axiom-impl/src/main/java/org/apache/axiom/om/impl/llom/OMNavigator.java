@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSourcedElement;
 
 /**
  * Refer to the test, org.apache.axiom.om.OMNavigatorTest, to find out how to use features like
@@ -137,7 +138,7 @@ public class OMNavigator {
      * @return first child or null
      */
     private OMNode _getFirstChild(OMElement node) {
-        if (node instanceof OMSourcedElementImpl) {
+        if (node instanceof OMSourcedElement) {
             OMNode first = node.getFirstOMChild();
             OMNode sibling = first;
             while (sibling != null) {
@@ -157,7 +158,7 @@ public class OMNavigator {
      * @return next sibling or null
      */
     private OMNode getNextSibling(OMNode node) {
-        if (node instanceof OMSourcedElementImpl) {
+        if (node instanceof OMSourcedElement) {
             return node.getNextOMSibling();
         } else {
             // Field access is used to prevent advancing the parser.

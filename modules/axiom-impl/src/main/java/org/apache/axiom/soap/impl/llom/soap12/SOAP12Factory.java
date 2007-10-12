@@ -19,6 +19,7 @@
 
 package org.apache.axiom.soap.impl.llom.soap12;
 
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
@@ -164,6 +165,13 @@ public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactor
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  OMNamespace ns) throws SOAPProcessingException {
         return new SOAP12HeaderBlockImpl(localName, ns, this);
+    }
+    
+    public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
+                                                 OMNamespace ns,
+                                                 OMDataSource ds) 
+        throws SOAPProcessingException {
+        return new SOAP12HeaderBlockImpl(localName, ns, this, ds);
     }
 
     //added

@@ -19,7 +19,7 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMSourcedElement;
 
 /**
  * <P>An object representing the contents in the SOAP header part of the SOAP envelope. The
@@ -27,7 +27,7 @@ import org.apache.axiom.om.OMElement;
  * SOAPHeaderBlock</CODE> objects.</P> <P>B <CODE>SOAPHeaderBlock</CODE> object can have other
  * <CODE>OMElement</CODE> objects as its children.</P>
  */
-public interface SOAPHeaderBlock extends OMElement {
+public interface SOAPHeaderBlock extends OMSourcedElement {
     /**
      * Sets the actor associated with this <CODE> SOAPHeaderBlock</CODE> object to the specified
      * actor.

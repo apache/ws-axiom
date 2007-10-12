@@ -20,6 +20,7 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -114,5 +115,17 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
 
     public void setProcessed() {
         processed = true;
+    }
+
+    public OMDataSource getDataSource() {
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean isExpanded() {
+        throw new UnsupportedOperationException();
+    }
+
+    public OMDataSource setDataSource(OMDataSource dataSource) {
+        throw new UnsupportedOperationException();
     }
 }

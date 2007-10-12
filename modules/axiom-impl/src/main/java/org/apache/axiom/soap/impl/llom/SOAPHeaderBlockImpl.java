@@ -20,12 +20,14 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
+import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -35,7 +37,7 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import javax.xml.namespace.QName;
 
 /** Class SOAPHeaderBlockImpl */
-public abstract class SOAPHeaderBlockImpl extends OMElementImpl
+public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
         implements SOAPHeaderBlock {
 
     private boolean processed = false;
@@ -43,6 +45,11 @@ public abstract class SOAPHeaderBlockImpl extends OMElementImpl
 
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns, SOAPFactory factory) {
         super(localName, ns, factory);
+    }
+    
+    public SOAPHeaderBlockImpl(String localName, OMNamespace ns, SOAPFactory factory, 
+                               OMDataSource ds) {
+        super(localName, ns, factory, ds);
     }
 
     /**

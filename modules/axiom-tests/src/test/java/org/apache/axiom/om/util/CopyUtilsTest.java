@@ -25,6 +25,9 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLInputFactory;
@@ -93,6 +96,37 @@ public class CopyUtilsTest extends AbstractTestCase {
         OMSourcedElement omse =body.getOMFactory().createOMElement(bads, "payload", ns);
         body.addChild(omse);
         copyAndCheck(sourceEnv, true);
+    }
+    
+    public void testOMSE2() throws Exception {
+        File file = getTestResourceFile(TestConstants.EMPTY_BODY_MESSAGE);
+        SOAPEnvelope sourceEnv = createEnvelope(file);
+        SOAPBody body = sourceEnv.getBody();
+        SOAPHeader header = sourceEnv.getHeader();
+        String encoding = "UTF-8";
+        
+        // Create a header OMSE
+        String hdrText = "<hdr:myheader xmlns:hdr=\"urn://test\">Hello World</hdr:myheader>";
+        ByteArrayDataSource badsHdr = 
+            new ByteArrayDataSource(hdrText.getBytes(encoding), encoding);
+        OMNamespace hdrNS = header.getOMFactory().createOMNamespace("urn://test", "hdr");
+        SOAPFactory sf = (SOAPFactory) header.getOMFactory();
+        SOAPHeaderBlock shb = sf.createSOAPHeaderBlock("myheader", hdrNS, badsHdr);
+        shb.setProcessed();  // test setting processing flag
+        header.addChild(shb);
+        
+        // Create a payload
+        String text = "<tns:payload xmlns:tns=\"urn://test\">Hello World</tns:payload>";
+        ByteArrayDataSource bads = new ByteArrayDataSource(text.getBytes(encoding), encoding);
+        OMNamespace ns = body.getOMFactory().createOMNamespace("urn://test", "tns");
+        OMSourcedElement omse =body.getOMFactory().createOMElement(bads, "payload", ns);
+        body.addChild(omse);
+        
+        copyAndCheck(sourceEnv, true);
+        
+        // The source SOAPHeaderBlock should not be expanded in the process
+        assertTrue(shb.isExpanded() == false);
+        
     }
     
     /**

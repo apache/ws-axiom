@@ -19,6 +19,7 @@
 
 package org.apache.axiom.soap.impl.llom.soap11;
 
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -36,6 +37,12 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
     public SOAP11HeaderBlockImpl(String localName, OMNamespace ns,
                                  SOAPFactory factory) {
         super(localName, ns, factory);
+    }
+    
+    public SOAP11HeaderBlockImpl(String localName, OMNamespace ns,
+                                 SOAPFactory factory, 
+                                 OMDataSource ds) {
+        super(localName, ns, factory, ds);
     }
 
     /**
