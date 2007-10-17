@@ -36,6 +36,12 @@ import java.util.Iterator;
 public class OMSerializerUtil {
 
     static long nsCounter = 0;
+    
+    // This property should be used by the parser to indicate whether 
+    // setPrefix should be done before or after the Start Element event.
+    // This property is not yet a standard, but at least one parser.
+    private static final String IS_SET_PREFIX_BEFORE_PROPERTY = 
+        "javax.xml.stream.XMLStreamWriter.isSetPrefixBeforeStartElement";
 
     /**
      * Method serializeEndpart.
@@ -156,8 +162,21 @@ public class OMSerializerUtil {
      * @return true if setPrefix should be generated before startElement
      */
     public static boolean isSetPrefixBeforeStartElement(XMLStreamWriter writer) {
+        try {
+            Boolean value = (Boolean)writer.getProperty(IS_SET_PREFIX_BEFORE_PROPERTY);
+            // this will always be false if the property is defined
+            if (value != null) {
+                return value.booleanValue();
+            }
+        }
+        catch (IllegalArgumentException e) {
+            // Some parsers throw an exception for unknown properties.
+        }
+        // Fallback: Toggle based on sun or woodstox implementation.
         NamespaceContext nc = writer.getNamespaceContext();
-        return (nc == null || (nc.getClass().getName().indexOf("wstx") == -1 && nc.getClass().getName().indexOf("sun") == -1));
+        return (nc == null || 
+                (nc.getClass().getName().indexOf("wstx") == -1 && 
+                 nc.getClass().getName().indexOf("sun") == -1));
     }
 
     /**
