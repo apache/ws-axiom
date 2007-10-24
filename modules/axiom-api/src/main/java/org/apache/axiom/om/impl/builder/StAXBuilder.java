@@ -19,12 +19,6 @@
 
 package org.apache.axiom.om.impl.builder;
 
-import java.io.InputStream;
-
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
@@ -40,6 +34,15 @@ import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * OM should be able to be built from any data source. And the model it builds may be a SOAP
@@ -79,6 +82,16 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected boolean _isClosed = false;              // Indicate if parser is closed
     protected boolean _releaseParserOnClose = false;  // Defaults to legacy behavior, which is keep the reference
 
+    // Fields for Custom Builder implementation
+    protected CustomBuilder customBuilderForPayload = null;
+    protected Map customBuilders = null;
+    protected int maxDepthForCustomBuilders = -1;
+    
+    /**
+     * Element level is the depth of the element. 
+     * The root element (i.e. envelope) is defined as 1.
+     */
+    protected int elementLevel = 0;
     
     /**
      * Constructor StAXBuilder.
@@ -117,7 +130,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         this.parser = parser;
         omfactory = ombuilderFactory;
         charEncoding = characterEncoding;
-
+        
         if (parser instanceof BuilderAwareReader) {
             ((BuilderAwareReader) parser).setBuilder(this);
         }
@@ -314,7 +327,10 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             throw e;
         } catch (Exception e) {
             throw new OMException(e);
-        }
+        } 
+        // when an element is discarded the element index that was incremented
+        //at creation needs to be decremented !
+        elementLevel--;
     }
 
     /**
@@ -503,6 +519,56 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @throws OMException
      */
     public abstract int next() throws OMException;
+    
+    /**
+     * Register a CustomBuilder associated with the indicated QName.
+     * The CustomBuilder will be used when an element of that qname is encountered.
+     * @param qName
+     * @param maxDepth indicate the maximum depth that this qname will be found. (root = 0)
+     * @param customBuilder
+     * @return replaced CustomBuilder or null
+     */
+    public CustomBuilder registerCustomBuilder(QName qName, int maxDepth, CustomBuilder customBuilder) {
+        CustomBuilder old = null;
+        if (customBuilders == null) {
+            customBuilders = new HashMap();
+        } else {
+            old = (CustomBuilder) customBuilders.get(qName);
+        }
+        maxDepthForCustomBuilders = 
+                (maxDepthForCustomBuilders > maxDepth) ?
+                        maxDepthForCustomBuilders: maxDepth;
+        customBuilders.put(qName, customBuilder);
+        return old;
+    }
+    
+    
+    /**
+     * Register a CustomBuilder for a payload.
+     * The payload is defined as the elements inside a SOAPBody or the 
+     * document element of a REST message.
+     * @param customBuilder
+     * @return replaced CustomBuilder or null
+     */
+    public CustomBuilder registerCustomBuilderForPayload(CustomBuilder customBuilder) {
+        CustomBuilder old = null;
+        this.customBuilderForPayload = customBuilder;
+        return old;
+    }
+    
+    /**
+     * Return CustomBuilder associated with the namespace/localPart
+     * @param namespace
+     * @param localPart
+     * @return CustomBuilder or null
+     */ 
+    protected CustomBuilder getCustomBuilder(String namespace, String localPart) {
+        if (customBuilders == null) {
+            return null;
+        }
+        QName qName = new QName(namespace, localPart);
+        return (CustomBuilder) customBuilders.get(qName);
+    }
 
     /** @return Returns short. */
     public short getBuilderType() {

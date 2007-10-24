@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.axiom.om.util;
+package org.apache.axiom.om.impl.builder;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
@@ -23,6 +23,8 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
+import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
+import org.apache.axiom.om.util.CopyUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -40,9 +42,13 @@ import java.util.Iterator;
 /**
  * Validates CopyUtils utility
  */
-public class CopyUtilsTest extends AbstractTestCase {
+/**
+ * @author scheu
+ *
+ */
+public class CustomBuilderTest extends AbstractTestCase {
 
-    public CopyUtilsTest(String testName) {
+    public CustomBuilderTest(String testName) {
         super(testName);
     }
     
@@ -66,19 +72,10 @@ public class CopyUtilsTest extends AbstractTestCase {
         copyAndCheck(createEnvelope(file), true);
     }
     
-    public void testMINIMAL_MESSAGE() throws Exception {
-        File file = getTestResourceFile(TestConstants.MINIMAL_MESSAGE);
-        copyAndCheck(createEnvelope(file), true);
-    }
     public void testREALLY_BIG_MESSAGE() throws Exception {
         File file = getTestResourceFile(TestConstants.REALLY_BIG_MESSAGE);
         copyAndCheck(createEnvelope(file), false);  // Ignore the serialization comparison
     }
-    public void testEMPTY_BODY_MESSAGE() throws Exception {
-        File file = getTestResourceFile(TestConstants.EMPTY_BODY_MESSAGE);
-        copyAndCheck(createEnvelope(file), true);
-    }
-    
     public void testOMSE() throws Exception {
         File file = getTestResourceFile(TestConstants.EMPTY_BODY_MESSAGE);
         SOAPEnvelope sourceEnv = createEnvelope(file);
@@ -134,7 +131,8 @@ public class CopyUtilsTest extends AbstractTestCase {
     protected SOAPEnvelope createEnvelope(File file) throws Exception {
         XMLStreamReader parser =
             XMLInputFactory.newInstance().createXMLStreamReader(new FileReader(file));
-        OMXMLParserWrapper builder = new StAXSOAPModelBuilder(parser, null);
+        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(parser, null);
+        builder.registerCustomBuilderForPayload(new ByteArrayCustomBuilder("utf-8"));
         SOAPEnvelope sourceEnv = (SOAPEnvelope) builder.getDocumentElement();
         return sourceEnv;
     }
@@ -146,7 +144,6 @@ public class CopyUtilsTest extends AbstractTestCase {
      * @throws Exception
      */
     protected void copyAndCheck(SOAPEnvelope sourceEnv, boolean checkText) throws Exception {
-       
         SOAPEnvelope targetEnv = CopyUtils.copy(sourceEnv);
         
         identityCheck(sourceEnv, targetEnv, "");
@@ -161,7 +158,11 @@ public class CopyUtilsTest extends AbstractTestCase {
                    "\nTarget=" + targetText,
                    sourceText.equals(targetText));
         }
+        SOAPBody body = sourceEnv.getBody();
+        OMElement payload = body.getFirstElement();
         
+        assertTrue("Expected OMSourcedElement payload", payload instanceof OMSourcedElement);
+        assertTrue("Expected unexpanded payload", !((OMSourcedElement)payload).isExpanded());
         
     }
     

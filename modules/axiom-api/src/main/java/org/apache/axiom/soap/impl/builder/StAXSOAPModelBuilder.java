@@ -20,6 +20,7 @@
 package org.apache.axiom.soap.impl.builder;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -27,6 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -62,12 +64,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
     /** Field log */
     private static final Log log = LogFactory.getLog(StAXSOAPModelBuilder.class);
-
-    /**
-     * element level 1 = envelope level element level 2 = Header or Body level element level 3 =
-     * HeaderElement or BodyElement level
-     */
-    protected int elementLevel = 0;
 
     private boolean processingFault = false;
 
@@ -163,14 +159,39 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         return envelope;
     }
 
-
-    public void discard(OMElement element) throws OMException {
-        super.discard(element);
-        //when an element is discarded the element index that was incremented
-        //at creation needs to be decremented !
-        elementLevel--;
+    /**
+     * Creates a new OMElement using either a CustomBuilder or 
+     * the default Builder mechanism.
+     * @return
+     */
+    protected OMNode createNextOMElement() {
+        OMNode newElement = null;
+        if (elementLevel == 3 && 
+            customBuilderForPayload != null) {
+            
+            OMNode parent = lastNode;
+            if (parent != null && parent.isComplete()) {
+                parent = (OMNode) lastNode.getParent();
+            }
+            if (parent instanceof SOAPBody) {
+                newElement = createWithCustomBuilder(customBuilderForPayload);
+            }
+        } 
+        if (newElement == null && customBuilders != null && 
+                elementLevel <= maxDepthForCustomBuilders) {
+            String namespace = parser.getNamespaceURI();
+            String localPart = parser.getLocalName();
+            CustomBuilder customBuilder = getCustomBuilder(namespace, localPart);
+            if (customBuilder != null) {
+                createWithCustomBuilder(customBuilder);
+            }
+        }
+        if (newElement == null) {
+            newElement = createOMElement();
+        }
+        return newElement;
     }
-
+    
     /**
      * Method createOMElement.
      *
@@ -178,7 +199,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      * @throws OMException
      */
     protected OMNode createOMElement() throws OMException {
-        elementLevel++;
         OMElement node;
         String elementName = parser.getLocalName();
         if (lastNode == null) {
@@ -379,7 +399,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             OMNode e = lastNode;
             ((OMNodeEx) e).setComplete(true);
         }
-        elementLevel--;
     }
 
     /** Method createDTD. Overriding the default behaviour as a SOAPMessage should not have a DTD. */
@@ -454,4 +473,13 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         return soapFactory;
     }
 
+    /**
+     * Increase or decrease the element level by the desired amount.
+     * This is needed by the SOAP11BuilderHelper to account for the different
+     * depths for the SOAP fault sytax.
+     * @param value
+     */
+    void adjustElementLevel(int value) {
+        elementLevel = elementLevel + value;
+    }
 }

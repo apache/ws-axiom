@@ -160,7 +160,8 @@ public class StAXOMBuilder extends StAXBuilder {
                         log.trace(
                                 "START_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
                     }
-                    lastNode = createOMElement();
+                    elementLevel++;
+                    lastNode = createNextOMElement();
                     break;
                 case XMLStreamConstants.START_DOCUMENT:
                     // Document has already being created.
@@ -189,6 +190,7 @@ public class StAXOMBuilder extends StAXBuilder {
                         log.trace("END_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
                     }
                     endElement();
+                    elementLevel--;
                     break;
                 case XMLStreamConstants.END_DOCUMENT:
                     if (doTrace) {
@@ -238,6 +240,45 @@ public class StAXOMBuilder extends StAXBuilder {
         } catch (Exception e) {
             throw new OMException(e);
         }
+    }
+    
+    /**
+     * Creates a new OMElement using either a CustomBuilder or 
+     * the default Builder mechanism.
+     * @return
+     */
+    protected OMNode createNextOMElement() {
+        OMNode newElement = null;
+        if (elementLevel == 1 && this.customBuilderForPayload != null) {
+            newElement = createWithCustomBuilder(customBuilderForPayload);
+        } else if (customBuilders != null && elementLevel <= this.maxDepthForCustomBuilders) {
+            String namespace = parser.getNamespaceURI();
+            String localPart = parser.getLocalName();
+            CustomBuilder customBuilder = getCustomBuilder(namespace, localPart);
+            if (customBuilder != null) {
+                createWithCustomBuilder(customBuilder);
+            }
+        }
+        if (newElement == null) {
+            newElement = createOMElement();
+        }
+        return newElement;
+    }
+    
+    protected OMNode createWithCustomBuilder(CustomBuilder customBuilder) {
+        String namespace = parser.getNamespaceURI();
+        String localPart = parser.getLocalName();
+        OMContainer parent = null;
+        if (lastNode != null) {
+            if (lastNode.isComplete()) {
+                parent = lastNode.getParent();
+            } else {
+                parent = (OMContainer)lastNode;
+            }
+                
+        }
+        return customBuilder.create(namespace, localPart, parent, parser, omfactory);
+        
     }
 
     /**

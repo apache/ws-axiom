@@ -54,7 +54,18 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
      */
     public void serialize(XMLStreamReader node, XMLStreamWriter writer)
             throws XMLStreamException {
-        serializeNode(node, writer);
+        serialize(node, writer, true);
+    }
+    
+    /**
+     * @param node
+     * @param writer
+     * @param startAtNext indicate if reading should start at next event or current event
+     * @throws XMLStreamException
+     */
+    public void serialize(XMLStreamReader node, XMLStreamWriter writer, boolean startAtNext)
+            throws XMLStreamException {
+        serializeNode(node, writer, startAtNext);
     }
 
     /**
@@ -64,12 +75,31 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
      * @param writer
      * @throws XMLStreamException
      */
-    protected void serializeNode(XMLStreamReader reader, XMLStreamWriter writer)
+    protected void serializeNode(XMLStreamReader reader, XMLStreamWriter writer) 
+        throws XMLStreamException {
+        serializeNode(reader, writer, true);
+    }
+    protected void serializeNode(XMLStreamReader reader, 
+                                 XMLStreamWriter writer, 
+                                 boolean startAtNext)
             throws XMLStreamException {
-        //TODO We get the StAXWriter at this point and uses it hereafter assuming that this is the only entry point to this class.
-        // If there can be other classes calling methodes of this we might need to change methode signatures to OMOutputer
-        while (reader.hasNext()) {
-            int event = reader.next();
+        // TODO We get the StAXWriter at this point and uses it hereafter 
+        // assuming that this is the only entry point to this class.
+        // If there can be other classes calling methodes of this we might 
+        // need to change methode signatures to OMOutputer
+        
+        // If not startAtNext, then seed the processing with the current element.
+        boolean useCurrentEvent = !startAtNext;
+        
+        while (reader.hasNext() || useCurrentEvent) {
+            int event = 0;
+            if (useCurrentEvent) {
+                event = reader.getEventType();
+                useCurrentEvent = false;
+            } else {
+                event = reader.next();
+            }
+            
             if (event == START_ELEMENT) {
                 serializeElement(reader, writer);
                 depth++;

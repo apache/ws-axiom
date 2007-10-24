@@ -63,7 +63,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
                 processText(parser, code);
                 ((OMNodeEx) code).setComplete(true);
                 element = code;
-                builder.elementLevel--;
+                ((StAXSOAPModelBuilder) builder).adjustElementLevel(-1);
 
                 faultcodePresent = true;
             } else if (SOAP_FAULT_STRING_LOCAL_NAME.equals(localName)) {
@@ -76,7 +76,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
                 processText(parser, reason);
                 ((OMNodeEx) reason).setComplete(true);
                 element = reason;
-                builder.elementLevel--;
+                ((StAXSOAPModelBuilder) builder).adjustElementLevel(-1);
 
 
                 faultstringPresent = true;
