@@ -71,18 +71,9 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
 
     protected void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
+        this.registerContentHandler(writer);
 
-        // select the builder
-        short builderType = PULL_TYPE_BUILDER;    // default is pull type
-        if (builder != null) {
-            builderType = this.builder.getBuilderType();
-        }
-        if ((builderType == PUSH_TYPE_BUILDER)
-                && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(
-                    new StreamWriterToContentHandlerConverter(writer));
-        }
-
+        // Special syntax
         OMSerializerUtil.serializeStartpart(this,
                                             SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME,
                                             writer);

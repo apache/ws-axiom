@@ -58,16 +58,7 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
     protected void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
 
-        // select the builder
-        short builderType = PULL_TYPE_BUILDER;    // default is pull type
-        if (builder != null) {
-            builderType = this.builder.getBuilderType();
-        }
-        if ((builderType == PUSH_TYPE_BUILDER)
-                && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(
-                    new StreamWriterToContentHandlerConverter(writer));
-        }
+        this.registerContentHandler(writer);
 
         OMSerializerUtil.serializeStartpart(this,
                                             SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME,

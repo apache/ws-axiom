@@ -26,6 +26,9 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPFaultNodeImpl;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
 
 public class SOAP12FaultNodeImpl extends SOAPFaultNodeImpl {
 
@@ -47,5 +50,11 @@ public class SOAP12FaultNodeImpl extends SOAPFaultNodeImpl {
             throw new SOAPProcessingException(
                     "Expecting SOAP12FaultImpl, got " + parent.getClass());
         }
+    }
+    
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
+    throws XMLStreamException {
+        this.registerContentHandler(writer);
+        super.internalSerialize(writer, cache);
     }
 }

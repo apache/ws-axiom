@@ -127,7 +127,7 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
         SOAPFaultNode faultNode = getNode();
         if (faultNode != null && faultNode.getText() != null
                 && !"".equals(faultNode.getText())) {
-            faultNode.serialize(writer);
+            ((SOAP12FaultNodeImpl) faultNode).internalSerialize(writer);
         }
     }
 

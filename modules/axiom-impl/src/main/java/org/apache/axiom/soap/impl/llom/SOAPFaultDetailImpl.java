@@ -66,30 +66,9 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
 
     protected void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
-        // select the builder
-        short builderType = PULL_TYPE_BUILDER;    // default is pull type
-        if (builder != null) {
-            builderType = this.builder.getBuilderType();
-        }
-        if ((builderType == PUSH_TYPE_BUILDER)
-                && (builder.getRegisteredContentHandler() == null)) {
-            builder.registerExternalContentHandler(
-                    new StreamWriterToContentHandlerConverter(writer));
-        }
+        this.registerContentHandler(writer);
 
-        OMSerializerUtil.serializeStartpart(this,
-                this.localName,
-                writer);
-
-        OMNode child = firstChild;
-        while (child != null && ((!(child instanceof OMElement)) || child.isComplete())) {
-            ((OMNodeImpl) child).internalSerializeAndConsume(writer);
-            child = child.getNextOMSibling();
-        }
-
-        writer.writeEndElement();
-
-
+        super.internalSerialize(writer, cache);
     }
 
 }
