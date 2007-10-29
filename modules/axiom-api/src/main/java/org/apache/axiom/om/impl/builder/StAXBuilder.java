@@ -34,6 +34,8 @@ import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
@@ -51,6 +53,8 @@ import java.util.Map;
  */
 public abstract class StAXBuilder implements OMXMLParserWrapper {
 
+    private static Log log = LogFactory.getLog(StAXBuilder.class);
+    
     /** Field parser */
     protected XMLStreamReader parser;
 
@@ -610,8 +614,13 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             if (!isClosed()) {
                 parser.close();
             }
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
+        } catch (Throwable e) {
+            // Can't see a reason why we would want to surface an exception
+            // while closing the parser.
+            if (log.isDebugEnabled()) {
+                log.debug("Exception occurred during parser close.  " +
+                                "Processing continues. " + e);
+            }
         } finally {
             _isClosed = true;
             done = true;
