@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -46,6 +47,7 @@ public class CharArrayDataSource implements OMDataSourceExt {
 
     char[] chars = null;
     
+    HashMap map = null;  // Map of properties
     /**
      * Constructor
      * @param bytes 
@@ -179,5 +181,24 @@ public class CharArrayDataSource implements OMDataSourceExt {
             builder.close();
         }
     }
+    public Object getProperty(String key) {
+        if (map == null) {
+            return null;
+        }
+        return map.get(key);
+    }
+
+    public Object setProperty(String key, Object value) {
+        if (map == null) {
+            map = new HashMap();
+        }
+        return map.put(key, value);
+    }
     
+    public boolean hasProperty(String key) {
+        if (map == null) {
+            return false;
+        } 
+        return map.containsKey(key);
+    }
 }

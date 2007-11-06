@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -44,6 +45,8 @@ import java.util.Iterator;
 public class ByteArrayDataSource implements OMDataSourceExt {
 
     ByteArray byteArray = null;
+    
+    HashMap map = null;  // Map of properties
     
     /**
      * Constructor
@@ -196,6 +199,27 @@ public class ByteArrayDataSource implements OMDataSourceExt {
     public class ByteArray {
         public byte[] bytes;
         public String encoding;
+    }
+
+    public Object getProperty(String key) {
+        if (map == null) {
+            return null;
+        }
+        return map.get(key);
+    }
+
+    public Object setProperty(String key, Object value) {
+        if (map == null) {
+            map = new HashMap();
+        }
+        return map.put(key, value);
+    }
+
+    public boolean hasProperty(String key) {
+        if (map == null) {
+            return false;
+        } 
+        return map.containsKey(key);
     }
 
     

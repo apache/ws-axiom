@@ -133,4 +133,26 @@ public interface OMDataSourceExt extends OMDataSource {
      * @return OMDataSourceExt
      */
     public OMDataSourceExt copy();
+    
+    /**
+     * Returns true if property is set
+     * @param key
+     * @return
+     */
+    public boolean hasProperty(String key);
+    
+    /**
+     * Query a property stored on the OMDataSource
+     * @param key
+     * @return value or null
+     */
+    public Object getProperty(String key);
+    
+    /**
+     * Set a property on the OMDataSource
+     * @param key
+     * @param value
+     * @return old property object or null
+     */
+    public Object setProperty(String key, Object value);
 }

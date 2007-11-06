@@ -21,6 +21,7 @@ package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -124,5 +125,30 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
 
     public void setProcessed() {
         processed = true;
+    }
+    
+    /**
+     * @param key
+     * @return requested OMDataSourceExt property or null
+     */
+    protected String getOMDataSourceProperty(String key) {
+        if (this.hasOMDataSourceProperty(key)) {
+            return (String) ((OMDataSourceExt) getDataSource()).getProperty(key);
+        }
+        return null;
+    }
+    
+    /**
+     * @param key
+     * @return requested OMDataSourceExt property or null
+     */
+    protected boolean hasOMDataSourceProperty(String key) {
+        if (!this.isExpanded()) {
+            OMDataSource ds = this.getDataSource();
+            if (ds instanceof OMDataSourceExt) {
+                return ((OMDataSourceExt)ds).hasProperty(key);
+            }
+        }
+        return false;
     }
 }

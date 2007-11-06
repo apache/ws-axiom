@@ -90,8 +90,15 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
     }
 
     public String getRole() {
-        return getAttribute(SOAP11Constants.ATTR_ACTOR,
-                            SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+//      Get the property or attribute
+        String val;
+        if (this.hasOMDataSourceProperty(ROLE_PROPERTY)) {
+            val = this.getOMDataSourceProperty(ROLE_PROPERTY);
+        } else {
+            val = getAttribute(SOAP11Constants.ATTR_ACTOR,
+                               SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        }
+        return val;
     }
 
     public void setMustUnderstand(boolean mustUnderstand) {
@@ -122,11 +129,19 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
      *         <CODE>SOAPHeaderBlock</CODE> object is turned on; <CODE>false</CODE> otherwise
      */
     public boolean getMustUnderstand() throws SOAPProcessingException {
+        // First, try getting the information from the property
+        // Fallback to getting the information from the attribute
         String mustUnderstand;
-        if ((mustUnderstand =
+        if (this.hasOMDataSourceProperty(MUST_UNDERSTAND_PROPERTY)) {
+            mustUnderstand = this.getOMDataSourceProperty(this.MUST_UNDERSTAND_PROPERTY);
+        } else {
+            mustUnderstand =
                 getAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,
-                             SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI))
-                != null) {
+                             SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        }
+        
+        // Parse the value
+        if (mustUnderstand != null) {
             if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equals(mustUnderstand) ||
                     SOAPConstants.ATTR_MUSTUNDERSTAND_1.equals(mustUnderstand)) {
                 return true;

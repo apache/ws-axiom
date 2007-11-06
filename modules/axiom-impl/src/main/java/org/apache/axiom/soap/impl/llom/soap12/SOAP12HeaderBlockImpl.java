@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -89,7 +90,14 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12
     }
 
     public String getRole() {
-        return getAttributeValue(QNAME_ROLE);
+        // Get the property or attribute
+        String val;
+        if (this.hasOMDataSourceProperty(ROLE_PROPERTY)) {
+            val = this.getOMDataSourceProperty(ROLE_PROPERTY);
+        } else {
+            val = getAttributeValue(QNAME_ROLE);
+        }
+       return val;
     }
 
     public void setMustUnderstand(boolean mustUnderstand) {
@@ -117,9 +125,17 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12
     }
 
     public boolean getMustUnderstand() throws SOAPProcessingException {
+        // First, try getting the information from the property
+        // Fallback to getting the information from the attribute
         String mustUnderstand;
-        if ((mustUnderstand = getAttribute(ATTR_MUSTUNDERSTAND, SOAP_ENVELOPE_NAMESPACE_URI))
-                != null) {
+        if (this.hasOMDataSourceProperty(MUST_UNDERSTAND_PROPERTY)) {
+            mustUnderstand = this.getOMDataSourceProperty(this.MUST_UNDERSTAND_PROPERTY);
+        } else {
+            mustUnderstand = getAttribute(ATTR_MUSTUNDERSTAND, SOAP_ENVELOPE_NAMESPACE_URI);
+        }
+       
+        // Now parse the value
+        if (mustUnderstand != null) {
             if (SOAPConstants.ATTR_MUSTUNDERSTAND_TRUE.equals(mustUnderstand) ||
                     SOAPConstants.ATTR_MUSTUNDERSTAND_1.equals(mustUnderstand)) {
                 return true;
@@ -143,7 +159,15 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12
 
     public boolean getRelay() {
         boolean ret = false;
-        String val = getAttributeValue(QNAME_RELAY);
+        
+        // Get the property or attribute
+        String val;
+        if (this.hasOMDataSourceProperty(RELAY_PROPERTY)) {
+            val = this.getOMDataSourceProperty(RELAY_PROPERTY);
+        } else {
+            val = getAttributeValue(QNAME_RELAY);
+        }
+        
         if (val != null) {
             ret = "true".equalsIgnoreCase(val);
         }

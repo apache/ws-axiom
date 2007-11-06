@@ -22,6 +22,9 @@ import org.apache.axiom.om.ds.InputStreamDataSource;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPHeaderBlock;
+
 import javax.xml.stream.XMLStreamReader;
 
 import java.io.ByteArrayInputStream;
@@ -61,6 +64,7 @@ public class OMSourcedElementTest extends AbstractTestCase implements OMConstant
         super.setUp();
         soapEnvelope = soapFactory.createSOAPEnvelope();
         SOAPBody soapBody = soapFactory.createSOAPBody(soapEnvelope);
+        SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
         
         bads1 = new ByteArrayDataSource(payload1.getBytes(ENCODING), ENCODING);
         bads2 = new ByteArrayDataSource(payload2.getBytes(ENCODING), ENCODING);
@@ -113,6 +117,59 @@ public class OMSourcedElementTest extends AbstractTestCase implements OMConstant
         // of the OMSourcedElement.
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         soapBody.serialize(baos);
+        String output = baos.toString(ENCODING);
+        System.out.println(output);
+        assertTrue("The payload was not present in the output",
+                   output.indexOf(payload1) > 0);
+        assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
+        
+        // Test getting the raw bytes from the ByteArrayDataSource.
+        OMDataSourceExt ds = (OMDataSourceExt) child.getDataSource();
+        byte[] bytes = ds.getXMLBytes("UTF-16");  // Get the bytes as UTF-16 
+        String payload = new String(bytes, "utf-16");
+        assertTrue("The obtained bytes did not match the payload",
+                   payload1.equals(payload));
+        
+    }
+    
+    /**
+     * Tests functionality of ByteArrayDataSource
+     * @throws Exception
+     */
+    public void testHeader_ByteArrayDS() throws Exception {
+        SOAPHeader soapHeader = soapEnvelope.getHeader();
+        OMFactory factory = soapHeader.getOMFactory();
+        
+        // Set an empty MustUnderstand property on the data source
+        bads1.setProperty(SOAPHeaderBlock.MUST_UNDERSTAND_PROPERTY, null);
+        
+        OMSourcedElement omse = ((SOAPFactory)factory).createSOAPHeaderBlock(localName, ns, bads1);
+        soapHeader.addChild(omse);
+        OMNode firstChild = soapHeader.getFirstOMChild();
+        assertTrue("Expected OMSourcedElement child", firstChild instanceof SOAPHeaderBlock);
+        SOAPHeaderBlock child = (SOAPHeaderBlock) firstChild;
+        assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
+        assertTrue("OMSourcedElement should be backed by a ByteArrayDataSource",
+                   child.getDataSource() instanceof ByteArrayDataSource);
+        
+        // Make sure that getting the MustUnderstand property does not cause expansion.
+        assertTrue(!child.getMustUnderstand());
+        assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
+        assertTrue("OMSourcedElement should be backed by a ByteArrayDataSource",
+                   child.getDataSource() instanceof ByteArrayDataSource);
+        
+        // A ByteArrayDataSource does not consume the backing object when read.
+        // Thus getting the XMLStreamReader of the ByteArrayDataSource should not 
+        // cause expansion of the OMSourcedElement.
+        XMLStreamReader reader = child.getXMLStreamReader();
+        reader.next();
+        assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
+        
+        // Likewise, a ByteArrayDataSource does not consume the backing object when 
+        // written.  Thus serializing the OMSourcedElement should not cause the expansion
+        // of the OMSourcedElement.
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        soapHeader.serialize(baos);
         String output = baos.toString(ENCODING);
         System.out.println(output);
         assertTrue("The payload was not present in the output",
