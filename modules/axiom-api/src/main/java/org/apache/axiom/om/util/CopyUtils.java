@@ -236,9 +236,12 @@ public class CopyUtils {
             copyOMElement(factory, targetParent, sourceOMSE);
             return;
         }
-        
-        // Otherwise create a copy of the OMDataSource
         OMDataSourceExt targetDS = ((OMDataSourceExt) ds).copy();
+        if (targetDS == null) {
+            copyOMElement(factory, targetParent, sourceOMSE);
+            return;
+        }
+        // Otherwise create a target OMSE with the copied DataSource
         OMSourcedElement targetOMSE =
             factory.createOMElement(targetDS, 
                                     sourceOMSE.getLocalName(), 
