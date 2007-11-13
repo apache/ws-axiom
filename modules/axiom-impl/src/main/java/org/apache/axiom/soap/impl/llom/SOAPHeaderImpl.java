@@ -88,6 +88,9 @@ class RoleChecker implements Checker {
 class RolePlayerChecker implements Checker {
     RolePlayer rolePlayer;
 
+    /** Optional namespace - if non-null we'll only return headers that match */
+    String namespace;
+
     /**
      * Constructor.
      *
@@ -98,7 +101,17 @@ class RolePlayerChecker implements Checker {
         this.rolePlayer = rolePlayer;
     }
 
+    public RolePlayerChecker(RolePlayer rolePlayer, String namespace) {
+        this.rolePlayer = rolePlayer;
+        this.namespace = namespace;
+    }
+
     public boolean checkHeader(SOAPHeaderBlock header) {
+        // If we're filtering on namespace, check that first since the compare is simpler.
+        if ((namespace != null) && !namespace.equals(header.getNamespace().getNamespaceURI())) {
+            return false;
+        }
+
         String role = header.getRole();
         SOAPVersion version = header.getVersion();
 
@@ -258,6 +271,22 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
      */
     public Iterator getHeadersToProcess(RolePlayer rolePlayer) {
         return new HeaderIterator(new RolePlayerChecker(rolePlayer));
+    }
+
+    /**
+     * Get the appropriate set of headers for a RolePlayer.
+     * <p/>
+     * The RolePlayer indicates whether it is the ultimate destination (in which case headers with
+     * no role or the explicit UltimateDestination role will be included), and any non-standard
+     * roles it supports.  Headers targeted to "next" will always be included, and those targeted to
+     * "none" (for SOAP 1.2) will never be included.
+     *
+     * @param rolePlayer a RolePlayer containing our role configuration
+     * @param namespace if specified, we'll only return headers from this namespace
+     * @return an Iterator over all the HeaderBlocks this RolePlayer should process.
+     */
+    public Iterator getHeadersToProcess(RolePlayer rolePlayer, String namespace) {
+        return new HeaderIterator(new RolePlayerChecker(rolePlayer, namespace));
     }
 
     /**

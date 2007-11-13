@@ -120,4 +120,21 @@ public interface SOAPHeader extends OMElement {
      * @return Returns ArrayList.
      */
     ArrayList getHeaderBlocksWithNSURI(String nsURI);
+
+    /**
+     * Get the appropriate set of headers for a RolePlayer in a particular namespace
+     * <p/>
+     * The RolePlayer indicates whether it is the ultimate destination (in which case headers with
+     * no role or the explicit UltimateDestination role will be included), and any non-standard
+     * roles it supports.  Headers targeted to "next" will always be included, and those targeted to
+     * "none" (for SOAP 1.2) will never be included.
+     * <p/>
+     * This version of the API allows us to iterate only once over the headers searching for
+     * a particular namespace for headers targeted at "us".
+     *
+     * @param rolePlayer a RolePlayer containing our role configuration
+     * @param namespace if specified, we'll only return headers from this namespace
+     * @return an Iterator over all the HeaderBlocks this RolePlayer should process.
+     */
+    Iterator getHeadersToProcess(RolePlayer rolePlayer, String namespace);
 }

@@ -68,7 +68,6 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
      *         <CODE>SOAPHeader</CODE> object
      * @throws org.apache.axiom.om.OMException
      *                     if a SOAP error occurs
-     * @throws OMException
      */
     public abstract SOAPHeaderBlock addHeaderBlock(String localName,
                                                    OMNamespace ns)
@@ -86,6 +85,10 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
      */
     public Iterator getHeadersToProcess(RolePlayer rolePlayer) {
         return null; // TODO: Implement this!
+    }
+
+    public Iterator getHeadersToProcess(RolePlayer rolePlayer, String namespace) {
+        return null; // TODO: Implement this!    
     }
 
     /**
