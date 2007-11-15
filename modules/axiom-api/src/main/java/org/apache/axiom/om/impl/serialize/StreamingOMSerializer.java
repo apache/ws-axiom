@@ -169,7 +169,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         if (!setPrefixFirst) {
             if (eNamespace != null) {
                 if (ePrefix == null) {
-                    if (writer.getNamespaceContext().getNamespaceURI(eNamespace) == null) {
+                    if (!OMSerializerUtil.isAssociated("", eNamespace, writer)) {
                         
                         if (writePrefixList == null) {
                             writePrefixList = new ArrayList();
@@ -182,7 +182,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                     writer.writeStartElement("", reader.getLocalName(), eNamespace);    
                 } else {
                     
-                    if (writer.getNamespaceContext().getNamespaceURI(eNamespace) == null) {
+                    if (!OMSerializerUtil.isAssociated(ePrefix, eNamespace, writer)) {
                         if (writePrefixList == null) {
                             writePrefixList = new ArrayList();
                             writeNSList = new ArrayList();
@@ -411,14 +411,16 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             prefix = reader.getAttributePrefix(i);
             namespaceName = reader.getAttributeNamespace(i);
             /*
-               Due to parser implementations returning null as the namespace URI
-              (for the empty namespace) we need to make sure that we deal with
-              a namespace name that is not null. The best way to work around this
-              issue is to set the namespace uri to "" if it is null
+               Some parser implementations return null for the unqualified namespace.
+               But getPrefix(null) will throw an exception (according to the XMLStreamWriter
+               javadoc. We guard against this by using "" for the unqualified namespace. 
             */
-            if (namespaceName == null) namespaceName = "";
+            namespaceName =(namespaceName == null) ? "" : namespaceName;
 
-            writerPrefix = writer.getNamespaceContext().getPrefix(namespaceName);
+            // Using getNamespaceContext should be avoided when not necessary.
+            // Some parser implementations construct a new NamespaceContext each time it is invoked.
+            // writerPrefix = writer.getNamespaceContext().getPrefix(namespaceName);
+            writerPrefix = writer.getPrefix(namespaceName);
 
             if (!"".equals(namespaceName)) {
                 //prefix has already being declared but this particular attrib has a

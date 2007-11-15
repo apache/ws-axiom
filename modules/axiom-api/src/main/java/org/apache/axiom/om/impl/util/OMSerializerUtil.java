@@ -25,6 +25,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
@@ -34,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class OMSerializerUtil {
-
+    private static Log log = LogFactory.getLog(OMSerializerUtil.class);
     static long nsCounter = 0;
     
     // This property should be used by the parser to indicate whether 
@@ -239,9 +241,7 @@ public class OMSerializerUtil {
         if (!setPrefixFirst) {
             if (eNamespace != null) {
                 if (ePrefix == null) {
-                    if (writer.getNamespaceContext().getNamespaceURI("") == null 
-                        ||  !writer.getNamespaceContext().getNamespaceURI("").equals(eNamespace)) {
-                        
+                    if (!isAssociated("", eNamespace, writer)) {
                         if (writePrefixList == null) {
                             writePrefixList = new ArrayList();
                             writeNSList = new ArrayList();
@@ -257,7 +257,7 @@ public class OMSerializerUtil {
                      * If XMLStreamWriter.writeStartElement(prefix,localName,namespaceURI) associates
                      * the prefix with the namespace .. 
                      */
-                    if (writer.getNamespaceContext().getNamespaceURI(ePrefix) == null) {
+                    if (!isAssociated(ePrefix, eNamespace, writer)) {
                         if (writePrefixList == null) {
                             writePrefixList = new ArrayList();
                             writeNSList = new ArrayList();
@@ -570,43 +570,105 @@ public class OMSerializerUtil {
      */
     public static String generateSetPrefix(String prefix, String namespace, XMLStreamWriter writer,
                                            boolean attr, boolean isSetPrefixFirst) throws XMLStreamException {
+        prefix = (prefix == null) ? "" : prefix;
+        
+        
+        // If the prefix and namespace are already associated, no generation is needed
+        if (isAssociated(prefix, namespace, writer)) {
+            return null;
+        }
+        
+        // Attributes without a prefix always are associated with the unqualified namespace
+        // according to the schema specification.  No generation is needed.
+        if (prefix.length() == 0 && namespace == null && attr) {
+            return null;
+        }
+        
         // Generate setPrefix/setDefaultNamespace if the prefix is not associated.
         String newPrefix = null;
         if (namespace != null) {
             // Qualified Namespace
-
-            // Get the namespace associated with this writer
-            String writerNS =
-                    writer.getNamespaceContext().getNamespaceURI((prefix == null) ? "" : prefix);
-            writerNS = (writerNS != null && writerNS.length() == 0) ? null : writerNS;
-
-            if (writerNS == null || !writerNS.equals(namespace)) {
-                // Writer has not associated this namespace with a prefix
-                if (prefix == null) {
-                    writer.setDefaultNamespace(namespace);
-                    newPrefix = "";
-                } else {
-                    writer.setPrefix(prefix, namespace);
-                    newPrefix = prefix;
-                }
+            if (prefix.length() == 0) {
+                writer.setDefaultNamespace(namespace);
+                newPrefix = "";
             } else {
-                // No Action needed..The writer already has associated this prefix to this namespace
-                if(isSetPrefixFirst){
-                    newPrefix = writer.getNamespaceContext().getPrefix(namespace);
-                    newPrefix = (newPrefix == null || newPrefix.length() == 0)  ? null : newPrefix ;
-                }
+                writer.setPrefix(prefix, namespace);
+                newPrefix = prefix;
             }
         } else {
             // Unqualified Namespace
-
-            // Make sure the default namespace is either not used or disabled (set to "")
-            String writerNS = writer.getNamespaceContext().getNamespaceURI("");
-            if (writerNS != null && writerNS.length() > 0 && !attr) {
-                // Disable the default namespace
-                writer.setDefaultNamespace("");
-                newPrefix = "";
-            }
+            // Disable the default namespace
+            writer.setDefaultNamespace("");
+            newPrefix = "";
         }
         return newPrefix;
+    }
+    /**
+     * @param prefix 
+     * @param namespace
+     * @param writer
+     * @return true if the prefix is associated with the namespace in the current context
+     */
+    public static boolean isAssociated(String prefix, String namespace, XMLStreamWriter writer) 
+        throws XMLStreamException {
+        
+        // NOTE: Calling getNamespaceContext() on many XMLStreamWriter implementations is expensive.
+        // Please use other writer methods first.
+        
+        // For consistency, convert null arguments.
+        // This helps get around the parser implementation differences.
+        // In addition, the getPrefix/getNamespace methods cannot be called with null parameters.
+        prefix = (prefix == null) ? "" : prefix;
+        namespace = (namespace == null) ? "" : namespace;
+        
+        if (namespace.length() > 0) {
+            // QUALIFIED NAMESPACE
+            // Get the namespace associated with the prefix
+            String writerPrefix = writer.getPrefix(namespace);
+            if (prefix.equals(writerPrefix)) {
+                return true;
+            }
+            
+            // It is possible that the namespace is associated with multiple prefixes,
+            // So try getting the namespace as a second step.
+            if (writerPrefix != null) {
+                String writerNS = writer.getNamespaceContext().getNamespaceURI(prefix);
+                return namespace.equals(writerNS);
+            }
+            return false;
+        } else {
+            // UNQUALIFIED NAMESPACE
+            
+            // Cannot associate a prefix with an unqualifed name.
+            // However sometimes axiom creates a fake prefix name if xmns="" is not in effect.
+            // So return true
+            if (prefix.length() > 0) {
+                return true;  
+            }
+            
+            // Get the namespace associated with the prefix.
+            // It is illegal to call getPrefix with null, but the specification is not
+            // clear on what happens if called with "".  So the following code is 
+            // protected
+            try {
+                String writerPrefix = writer.getPrefix("");
+                if (writerPrefix != null && writerPrefix.length() == 0) {
+                    return true;
+                }
+            } catch (Throwable t) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Caught exception from getPrefix(\"\"). Processing continues: " + t);
+                }
+            }
+            
+            
+            
+            // Fallback to using the namespace context
+            String writerNS = writer.getNamespaceContext().getNamespaceURI("");
+            if (writerNS != null && writerNS.length() > 0) {
+                return false;
+            }
+            return true;
+        }
     }
 }
