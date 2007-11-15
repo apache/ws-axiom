@@ -96,6 +96,11 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     /** Field switchingAllowed */
     boolean switchingAllowed = false;
+    
+    // namespaceURI interning
+    // default is false because most XMLStreamReader implementations don't do interning
+    // due to performance impacts
+    boolean namespaceURIInterning = false;
 
     /** Field elementStack */
     private Stack elementStack = null;
@@ -140,6 +145,22 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         return switchingAllowed;
     }
 
+    /**
+     * Set namespace uri interning
+     * @param b
+     */
+    public void setNamespaceURIInterning(boolean b) {
+        this.namespaceURIInterning = b;
+    }
+    
+    /**
+     * @return if namespace uri interning 
+     */
+    public boolean isNamespaceURIInterning() {
+        return this.namespaceURIInterning;
+    }
+    
+    
     /**
      * When constructing the OMStaxWrapper, the creator must produce the builder (an instance of the
      * OMXMLparserWrapper of the input) and the Element Node to start parsing. The wrapper will
@@ -218,7 +239,16 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
                         : ns.getNamespaceURI();
             }
         }
-        return (returnStr != null) ? returnStr.intern() : null;
+        
+        // By default most parsers don't intern the namespace.
+        // Unfortunately the property to detect interning on the delegate parsers is hard to detect.
+        // Woodstox has a proprietary property on the XMLInputFactory.
+        // IBM has a proprietary property on the XMLStreamReader.
+        // For now only force the interning if requested.
+        if (this.isNamespaceURIInterning()) {
+            returnStr = (returnStr != null) ? returnStr.intern() : null;
+        }
+        return returnStr;
     }
 
     /**
