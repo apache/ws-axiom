@@ -27,6 +27,8 @@ import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPHeader;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -79,7 +81,13 @@ public class ByteArrayCustomBuilder implements CustomBuilder {
             
             // Create an OMSourcedElement backed by the ByteArrayDataSource
             OMNamespace ns = factory.createOMNamespace(namespace, prefix);
-            OMElement om = factory.createOMElement(ds, localPart, ns);
+            
+            OMElement om = null;
+            if (parent instanceof SOAPHeader && factory instanceof SOAPFactory) {
+                om = ((SOAPFactory)factory).createSOAPHeaderBlock(localPart, ns, ds);
+            } else {
+                om = factory.createOMElement(ds, localPart, ns);
+            }
             
             // Add the new OMSourcedElement ot the parent
             parent.addChild(om);

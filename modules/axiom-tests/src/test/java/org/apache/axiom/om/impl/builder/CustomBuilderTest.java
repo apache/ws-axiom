@@ -32,11 +32,13 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -55,6 +57,25 @@ public class CustomBuilderTest extends AbstractTestCase {
     public void testSample1() throws Exception {
         File file = getTestResourceFile(TestConstants.SAMPLE1);
         copyAndCheck(createEnvelope(file), true);
+    }
+    
+    public void testHeaderCustomBuilder() throws Exception{
+        XMLStreamReader parser =
+            XMLInputFactory.newInstance().createXMLStreamReader(new
+                                                                FileReader(getTestResourceFile(TestConstants.SOAP_SOAPMESSAGE)));
+        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(parser, null);
+        builder.registerCustomBuilder(new QName("http://schemas.xmlsoap.org/ws/2004/03/addressing","To"), 3, new
+                                      ByteArrayCustomBuilder("utf-8"));
+        SOAPEnvelope sourceEnv = (SOAPEnvelope) builder.getDocumentElement();
+        SOAPHeader header = sourceEnv.getHeader();
+        ArrayList al =
+            header.getHeaderBlocksWithNSURI("http://schemas.xmlsoap.org/ws/2004/03/addressing");
+        for(int i=0;i<al.size();i++){
+            SOAPHeaderBlock shb = (SOAPHeaderBlock)al.get(i);
+            if("To".equals(shb.getLocalName())){
+                assertNotNull(shb.getDataSource());
+            }
+        }
     }
     
     public void testSOAPMESSAGE() throws Exception {

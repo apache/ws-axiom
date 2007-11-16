@@ -174,7 +174,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
                 parent = (OMNode) lastNode.getParent();
             }
             if (parent instanceof SOAPBody) {
-                newElement = createWithCustomBuilder(customBuilderForPayload);
+                newElement = createWithCustomBuilder(customBuilderForPayload,  soapFactory);
             }
         } 
         if (newElement == null && customBuilders != null && 
@@ -183,11 +183,13 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             String localPart = parser.getLocalName();
             CustomBuilder customBuilder = getCustomBuilder(namespace, localPart);
             if (customBuilder != null) {
-                createWithCustomBuilder(customBuilder);
+                newElement = createWithCustomBuilder(customBuilder, soapFactory);
             }
         }
         if (newElement == null) {
             newElement = createOMElement();
+        } else {
+            elementLevel--; // Decrease level since custom builder read the end element event
         }
         return newElement;
     }

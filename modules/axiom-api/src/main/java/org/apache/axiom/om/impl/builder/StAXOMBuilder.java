@@ -250,22 +250,24 @@ public class StAXOMBuilder extends StAXBuilder {
     protected OMNode createNextOMElement() {
         OMNode newElement = null;
         if (elementLevel == 1 && this.customBuilderForPayload != null) {
-            newElement = createWithCustomBuilder(customBuilderForPayload);
+            newElement = createWithCustomBuilder(customBuilderForPayload,  omfactory);
         } else if (customBuilders != null && elementLevel <= this.maxDepthForCustomBuilders) {
             String namespace = parser.getNamespaceURI();
             String localPart = parser.getLocalName();
             CustomBuilder customBuilder = getCustomBuilder(namespace, localPart);
             if (customBuilder != null) {
-                createWithCustomBuilder(customBuilder);
+                newElement = createWithCustomBuilder(customBuilder, omfactory);
             }
         }
         if (newElement == null) {
             newElement = createOMElement();
+        } else {
+            elementLevel--; // Decrease level since custom builder read the end element event
         }
         return newElement;
     }
     
-    protected OMNode createWithCustomBuilder(CustomBuilder customBuilder) {
+    protected OMNode createWithCustomBuilder(CustomBuilder customBuilder, OMFactory factory) {
         String namespace = parser.getNamespaceURI();
         String localPart = parser.getLocalName();
         OMContainer parent = null;
@@ -277,7 +279,7 @@ public class StAXOMBuilder extends StAXBuilder {
             }
                 
         }
-        return customBuilder.create(namespace, localPart, parent, parser, omfactory);
+        return customBuilder.create(namespace, localPart, parent, parser, factory);
         
     }
 
