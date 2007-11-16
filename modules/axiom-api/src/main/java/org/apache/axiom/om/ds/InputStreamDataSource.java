@@ -44,12 +44,10 @@ import java.util.Iterator;
  * This data source is useful for placing an InputStream into an OM
  * tree, instead of having a deeply nested tree.
  */
-public class InputStreamDataSource implements OMDataSourceExt {
+public class InputStreamDataSource extends OMDataSourceExtBase {
 
     Data data = null;
     private static final int BUFFER_LEN = 4096;
-    
-    HashMap map = null;  // Map of properties
     
     /**
      * Constructor
@@ -82,41 +80,11 @@ public class InputStreamDataSource implements OMDataSourceExt {
         }
     }
 
-    public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        if (data == null) {
-            throw new OMException("The InputStreamDataSource does not have a backing object");
-        }
-        try {
-            // Convert the bytes into a String and write it to the Writer
-            String text = new String(getXMLBytes(format.getCharSetEncoding()));
-            writer.write(text);
-        } catch (UnsupportedEncodingException e) {
-            throw new XMLStreamException(e);
-        } catch (IOException e) {
-            throw new XMLStreamException(e);
-        }
-    }
-
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         if (data == null) {
             throw new OMException("The InputStreamDataSource does not have a backing object");
         }
-        
-        // Some XMLStreamWriters (e.g. MTOMXMLStreamWriter) 
-        // provide direct access to the OutputStream.  
-        // This allows faster writing.
-        OutputStream os = getOutputStream(xmlWriter);
-        if (os != null) {
-            String encoding = getCharacterEncoding(xmlWriter);
-            OMOutputFormat format = new OMOutputFormat();
-            format.setCharSetEncoding(encoding);
-            serialize(os, format);
-        } else {
-            // Read the bytes into a reader and 
-            // write to the writer.
-            XMLStreamReader xmlReader = getReader();
-            reader2writer(xmlReader, xmlWriter);
-        }
+        super.serialize(xmlWriter);
     }
     
     public XMLStreamReader getReader() throws XMLStreamException {
@@ -196,30 +164,6 @@ public class InputStreamDataSource implements OMDataSourceExt {
     }
     
     /**
-     * Some XMLStreamWriters expose an OutputStream that can be
-     * accessed directly.
-     * @return OutputStream or null
-     */
-    private OutputStream getOutputStream(XMLStreamWriter writer) 
-     throws XMLStreamException {
-        if (writer instanceof MTOMXMLStreamWriter) {
-            return ((MTOMXMLStreamWriter) writer).getOutputStream();
-        }
-        return null;
-    }
-    
-    /**
-     * Get the character set encoding of the XMLStreamWriter
-     * @return String or null
-     */
-    private String getCharacterEncoding(XMLStreamWriter writer) {
-        if (writer instanceof MTOMXMLStreamWriter) {
-            return ((MTOMXMLStreamWriter) writer).getCharSetEncoding();
-        }
-        return null;
-    }
-     
-    /**
      * Private utility to write the InputStream contents to the OutputStream.
      * @param is
      * @param os
@@ -266,26 +210,5 @@ public class InputStreamDataSource implements OMDataSourceExt {
     public class Data {
         public String encoding;
         public InputStream is;
-    }
-
-    public Object getProperty(String key) {
-        if (map == null) {
-            return null;
-        }
-        return map.get(key);
-    }
-
-    public Object setProperty(String key, Object value) {
-        if (map == null) {
-            map = new HashMap();
-        }
-        return map.put(key, value);
-    }
-    
-    public boolean hasProperty(String key) {
-        if (map == null) {
-            return false;
-        } 
-        return map.containsKey(key);
     }
 }
