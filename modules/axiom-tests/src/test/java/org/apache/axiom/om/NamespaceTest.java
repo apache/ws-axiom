@@ -21,15 +21,16 @@ package org.apache.axiom.om;
 
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
+import org.apache.axiom.om.impl.llom.util.AXIOMUtil;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -143,7 +144,7 @@ public class NamespaceTest extends XMLTestCase {
 
 
         assertEquals(2, getNumberOfOccurrences(documentElement.toStringWithConsume(),
-                                               "xmlns=\"http://one.org\""));
+                "xmlns=\"http://one.org\""));
     }
 
     public void testNamespaceProblem3() throws XMLStreamException {
@@ -168,7 +169,7 @@ public class NamespaceTest extends XMLTestCase {
         OMElement childTwo = omFac.createOMElement("ChildElementTwo", ns1, childOne);
 
         assertEquals(1, getNumberOfOccurrences(documentElement.toStringWithConsume(),
-                                               "xmlns:ns2=\"http://one.org\""));
+                "xmlns:ns2=\"http://one.org\""));
     }
 
 
@@ -203,7 +204,7 @@ public class NamespaceTest extends XMLTestCase {
         int index = -1;
         int count = 0;
         while ((index = xml.indexOf(pattern, index + 1)) != -1) {
-            count ++;
+            count++;
         }
 
         return count;
@@ -236,7 +237,9 @@ public class NamespaceTest extends XMLTestCase {
 
     }
 
-    /** This is re-producing and testing the bug mentioned in http://issues.apache.org/jira/browse/WSCOMMONS-74 */
+    /**
+     * This is re-producing and testing the bug mentioned in http://issues.apache.org/jira/browse/WSCOMMONS-74
+     */
     public void testNamespaceProblem7() {
 
         String expectedString = "<person xmlns=\"http://ws.apache.org/axis2/apacheconasia/06\">" +
@@ -273,7 +276,9 @@ public class NamespaceTest extends XMLTestCase {
         }
     }
 
-    /** This is re-producing and testing the bug mentioned in http://issues.apache.org/jira/browse/WSCOMMONS-74 */
+    /**
+     * This is re-producing and testing the bug mentioned in http://issues.apache.org/jira/browse/WSCOMMONS-74
+     */
     public void testNamespaceProblem8() {
 
         String expectedXML =
@@ -306,27 +311,27 @@ public class NamespaceTest extends XMLTestCase {
 
     public void testOMElementSerialize() throws Exception {
         String content =
-        "<?xml version='1.0' encoding='UTF-8'?> \n" +
-        "<foo:foo xmlns:foo=\"urn:foo\"> \n" +
-        "    <bar:bar xmlns:bar=\"urn:bar\"> baz </bar:bar> \n" +
-        "    <bar:bar xmlns:bar=\"urn:bar\"> baz </bar:bar> \n" +
-        "    <bar:bar xmlns:bar=\"urn:bar\"> baz </bar:bar> \n" +
-        "</foo:foo>";
+                "<?xml version='1.0' encoding='UTF-8'?> \n" +
+                        "<foo:foo xmlns:foo=\"urn:foo\"> \n" +
+                        "    <bar:bar xmlns:bar=\"urn:bar\"> baz </bar:bar> \n" +
+                        "    <bar:bar xmlns:bar=\"urn:bar\"> baz </bar:bar> \n" +
+                        "    <bar:bar xmlns:bar=\"urn:bar\"> baz </bar:bar> \n" +
+                        "</foo:foo>";
 
         // read and build XML content
         Reader reader = new StringReader(content);
         XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(reader);
         StAXOMBuilder builder = new StAXOMBuilder(parser);
-        OMElement element =  builder.getDocumentElement();
+        OMElement element = builder.getDocumentElement();
 
         int count = 0;
         Iterator iter = element.getChildElements();
         while (iter.hasNext()) {
             OMElement child = (OMElement) iter.next();
-            assertTrue( child.getNamespace().getNamespaceURI().equals("urn:bar"));
+            assertTrue(child.getNamespace().getNamespaceURI().equals("urn:bar"));
             count++;
         }
-        assertEquals( 3, count);
+        assertEquals(3, count);
 
         // serialize it back to a String
         StringWriter stringWriter = new StringWriter();
@@ -342,17 +347,47 @@ public class NamespaceTest extends XMLTestCase {
         reader = new StringReader(output);
         parser = XMLInputFactory.newInstance().createXMLStreamReader(reader);
         builder = new StAXOMBuilder(parser);
-        element =  builder.getDocumentElement();
+        element = builder.getDocumentElement();
 
         count = 0;
         iter = element.getChildElements();
         while (iter.hasNext()) {
             OMElement child = (OMElement) iter.next();
-            assertTrue( child.getNamespace().getNamespaceURI().equals("urn:bar"));
+            assertTrue(child.getNamespace().getNamespaceURI().equals("urn:bar"));
             count++;
         }
-        assertEquals( 3, count);
+        assertEquals(3, count);
     }
 
+    public void testAxis2_3155() {
+        try {
+            String xmlString =
+                    "<outerTag xmlns=\"http://someNamespace\">" +
+                            "<innerTag>" +
+                            "<node1>Hello</node1>" +
+                            "<node2>Hello</node2>" +
+                            "</innerTag>" +
+                            "</outerTag>";
 
+            OMElement elem = AXIOMUtil.stringToOM(xmlString);
+            System.out.println("--- Calling toStringWithConsume() ---\n");
+            System.out.println(elem.toStringWithConsume());
+
+            xmlString =
+                    "<outerTag xmlns=\"http://someNamespace\">" +
+                            "<innerTag>" +
+                            "<node1>Hello</node1>" +
+                            "<node2>Hello</node2>" +
+                            "</innerTag>" +
+                            "</outerTag>";
+
+            elem = AXIOMUtil.stringToOM(xmlString);
+            System.out.println("\n--- Calling toString() ---\n");
+            System.out.println(elem.toString());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }
