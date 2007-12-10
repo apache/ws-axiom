@@ -19,6 +19,7 @@
 
 package org.apache.axiom.attachments;
 
+import org.apache.axiom.attachments.part.DynamicPart;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.UUIDGenerator;
@@ -553,41 +554,22 @@ public class Attachments {
         try {
             if (fileCacheEnable) {
                 try {
-                    // The soapPart is normally the first part, 
-                    // so always keep the first part in memory
-                    if ((contentLength != 0 && contentLength <= fileStorageThreshold) ||
-                         partIndex == 0) {  
-                        // Since the content-length is less than the threshold, we can safely 
-                        // store it in memory.
+                    //If Content-Length defined.
+                    if(contentLength!=0){
                         if (log.isDebugEnabled()) {
-                            log.debug("Creating an Attachment Part (in memory)");
+                            log.debug("Fixed Content-Length Data");
                         }
                         MIMEBodyPartInputStream partStream =
                             new MIMEBodyPartInputStream(pushbackInStream,
                                                         boundary,
                                                         this,
                                                         PUSHBACK_SIZE);
-                        part = new PartOnMemory(partStream);
-                    } else if (contentLength != 0 && 
-                            contentLength > fileStorageThreshold * 2) {  
-                        if (log.isDebugEnabled()) {
-                            log.debug("Creating an Attachment Part (in a temporary file in " + attachmentRepoDir + ")");
-                        }
-                        // The content-length is much bigger than the threshold, then always
-                        // store the attachments in a file.  This prevents unnecessary buffering.
-                        // REVIEW Arbitrary heuristic.  Does this need to be fine-tuned.
-                        MIMEBodyPartInputStream partStream =
-                            new MIMEBodyPartInputStream(pushbackInStream,
-                                                        boundary,
-                                                        this,
-                                                        PUSHBACK_SIZE);
-                        PushbackFilePartInputStream filePartStream =
-                            new PushbackFilePartInputStream(partStream, new byte[0]);
-                        part = new PartOnFile(filePartStream, attachmentRepoDir);
                         
+                        part = DynamicPart.createPart(contentLength, partIndex, partStream, attachmentRepoDir, fileStorageThreshold);
+                 
                     } else {
                         if (log.isDebugEnabled()) {
-                            log.debug("Buffering attachment part to determine if it should be stored in memory");
+                            log.debug("Chunked Data");
                         }
                         // Read chunks of data to determine the size
                         // of the attachment.  This can wasteful because we need to gc the buffers.
@@ -595,29 +577,14 @@ public class Attachments {
                         // this is seldom provided.
                         
                         MIMEBodyPartInputStream partStream;
-                        byte[] buffer = new byte[fileStorageThreshold];
+                 
                         partStream =
                             new MIMEBodyPartInputStream(pushbackInStream,
                                                         boundary,
                                                         this,
                                                         PUSHBACK_SIZE);
-                        int count = readToBuffer(partStream, buffer);
-                  
-                        if (count == fileStorageThreshold) {
-                            if (log.isDebugEnabled()) {
-                                log.debug("The calculated attachment size is " + count + ". Storing Part in file.");
-                            }
-                            PushbackFilePartInputStream filePartStream =
-                                new PushbackFilePartInputStream(partStream, buffer);
-                            part = new PartOnFile(filePartStream, attachmentRepoDir);
-                        } else {
-                            if (log.isDebugEnabled()) {
-                                log.debug("The calculated attachment size is " + count + ". Storing Part in memory.");
-                            }
-                            ByteArrayInputStream byteArrayInStream =
-                                new ByteArrayInputStream(buffer, 0, count);
-                            part = new PartOnMemory(byteArrayInStream);
-                        }
+                        part = DynamicPart.createPart(partStream, attachmentRepoDir, fileStorageThreshold);
+                        
                     } 
                 } catch (Exception e) {
                     throw new OMException("Error creating temporary File.", e);
