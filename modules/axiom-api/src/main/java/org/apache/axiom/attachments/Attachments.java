@@ -19,18 +19,6 @@
 
 package org.apache.axiom.attachments;
 
-import org.apache.axiom.attachments.part.DynamicPart;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.MTOMConstants;
-import org.apache.axiom.om.util.UUIDGenerator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.activation.DataHandler;
-import javax.mail.MessagingException;
-import javax.mail.internet.ContentType;
-import javax.mail.internet.ParseException;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
@@ -39,6 +27,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
+
+import javax.activation.DataHandler;
+import javax.mail.MessagingException;
+import javax.mail.internet.ContentType;
+import javax.mail.internet.ParseException;
+
+import org.apache.axiom.attachments.part.DynamicPart;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.impl.MTOMConstants;
+import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class Attachments {
 
