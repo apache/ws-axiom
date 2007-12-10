@@ -53,6 +53,12 @@ public class StAXOMBuilder extends StAXBuilder {
     private boolean doTrace = log.isDebugEnabled();
     private static int nsCount = 0;
 
+    // namespaceURI interning
+    // default is false because most XMLStreamReader implementations don't do interning
+    // due to performance impacts.  Thus a customer should not assume that a namespace
+    // on an OMElement is interned.
+    boolean namespaceURIInterning = false;
+    
     /**
      * Constructor StAXOMBuilder.
      *
@@ -425,17 +431,30 @@ public class StAXOMBuilder extends StAXBuilder {
             if (nsprefix == null || "".equals(nsprefix)) {
                 node.declareDefaultNamespace(parser.getNamespaceURI(i));
             } else {
-                node.declareNamespace(namespaceURIFromParser.intern(), nsprefix);
+                // NOTE_A:
+                // By default most parsers don't intern the namespace.
+                // Unfortunately the property to detect interning on the delegate parsers is hard to detect.
+                // Woodstox has a proprietary property on the XMLInputFactory.
+                // IBM has a proprietary property on the XMLStreamReader.
+                // For now only force the interning if requested.
+                if (isNamespaceURIInterning()) {
+                    namespaceURIFromParser = namespaceURIFromParser.intern();
+                }
+                node.declareNamespace(namespaceURIFromParser, nsprefix);
             }
         }
 
         if (namespaceURI != null && namespaceURI.length() > 0) {
             OMNamespace namespace = node.findNamespace(namespaceURI, prefix);
             if (namespace == null || (!namespace.getPrefix().equals(prefix))) {
+                // See NOTE_A above
+                if (isNamespaceURIInterning()) {
+                    namespaceURI = namespaceURI.intern();
+                }
                 if (prefix == null || "".equals(prefix)) {
-                    namespace = node.declareDefaultNamespace(namespaceURI.intern());
+                    namespace = node.declareDefaultNamespace(namespaceURI);
                 } else {
-                    namespace = node.declareNamespace(namespaceURI.intern(), prefix);
+                    namespace = node.declareNamespace(namespaceURI, prefix);
                 }
             }
             node.setNamespaceWithNoFindInCurrentScope(namespace);
@@ -454,4 +473,18 @@ public class StAXOMBuilder extends StAXBuilder {
         return "ns" + nsCount++;
     }
 
+    /**
+     * Set namespace uri interning
+     * @param b
+     */
+    public void setNamespaceURIInterning(boolean b) {
+        this.namespaceURIInterning = b;
+    }
+    
+    /**
+     * @return if namespace uri interning 
+     */
+    public boolean isNamespaceURIInterning() {
+        return this.namespaceURIInterning;
+    }
 }
