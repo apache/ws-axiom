@@ -24,6 +24,8 @@ import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 
+import java.util.HashMap;
+
 
 /**
  * Formats options for OM Output.
@@ -49,8 +51,44 @@ public class OMOutputFormat {
     private boolean ignoreXMLDeclaration = false;
     private boolean autoCloseWriter = false;
 
+    HashMap map = null;  // Map of generic properties
+
 
     public OMOutputFormat() {
+    }
+    
+    /**
+     * @param key String
+     * @return property or null
+     */
+    public Object getProperty(String key) {
+        if (map == null) {
+            return null;
+        }
+        return map.get(key);
+    }
+
+    /**
+     * @param key String
+     * @param value Object
+     * @return old value or null
+     */
+    public Object setProperty(String key, Object value) {
+        if (map == null) {
+            map = new HashMap();
+        }
+        return map.put(key, value);
+    }
+    
+    /**
+     * @param key
+     * @return true if known key
+     */
+    public boolean containsKey(String key) {
+        if (map == null) {
+            return false;
+        } 
+        return map.containsKey(key);
     }
 
     public boolean isOptimized() {
