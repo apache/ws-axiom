@@ -33,6 +33,7 @@ import org.apache.axiom.attachments.CachedFileDataSource;
 import org.apache.axiom.attachments.Part;
 import org.apache.axiom.attachments.PushbackFilePartInputStream;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.util.UUIDGenerator;
 /*
  * PartOnFile stores Attachment part data in to a File
  * and provides a DataHandler to access it. 
@@ -65,7 +66,11 @@ public class PartOnFile extends DynamicPart {
                 throw new IllegalArgumentException("Given Axis2 Attachment File Cache Location "
                     + repoDir + "  should be a directory.");
             }
-            cacheFile = File.createTempFile("Axis2", ".att", repoDirFile);
+            //Generate uniqu UUID
+            String id = UUIDGenerator.getUUID();
+            //repleace all colon with underscore
+            id = id.replaceAll(":", "_");
+            cacheFile = File.createTempFile("Axis2"+id, ".att", repoDirFile);
 
             FileOutputStream fileOutStream = new FileOutputStream(cacheFile);
             int value;
