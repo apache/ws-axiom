@@ -51,6 +51,8 @@ public class OMOutputFormat {
     private boolean ignoreXMLDeclaration = false;
     private boolean autoCloseWriter = false;
 
+    public static final String ACTION_PROPERTY = "action";
+    
     HashMap map = null;  // Map of generic properties
 
 
@@ -209,7 +211,29 @@ public class OMOutputFormat {
         this.doingSWA = doingSWA;
     }
 
+    /**
+     * Generates a Content-Type value for MTOM messages.  This is a MIME Multipart/Related
+     * Content-Type value as defined by RFC 2387 and the XOP specification.  The generated
+     * header will look like the following:
+     * 
+     *   Content-Type: multipart/related; boundary=[MIME BOUNDARY VALUE]; 
+     *      type="application/xop+xml"; 
+     *      start="[MESSAGE CONTENT ID]"; 
+     *      start-info="[MESSAGE CONTENT TYPE]";
+     * 
+     * @param SOAPContentType
+     * @return
+     */
     public String getContentTypeForMTOM(String SOAPContentType) {
+        // If an action was set, we need to include it within the value 
+        // for the start-info attribute.  
+        if (containsKey(ACTION_PROPERTY)) {
+            String action = (String) getProperty(ACTION_PROPERTY);
+            if (action != null && action.length() > 0) {
+                SOAPContentType = SOAPContentType + "; action=\\\"" + action + "\\\"";   
+            }                     
+        }
+        
         StringBuffer sb = new StringBuffer();
         sb.append("multipart/related");
         sb.append("; ");
