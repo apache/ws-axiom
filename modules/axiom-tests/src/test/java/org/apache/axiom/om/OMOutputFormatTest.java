@@ -71,8 +71,8 @@ public class OMOutputFormatTest extends TestCase {
         
         // This is rudimentary.  We can add a more complete test that checks
         // sub items in the future.
-        assertTrue(contentType.contains(SOAP11Constants.SOAP_11_CONTENT_TYPE));
-        assertTrue(contentType.contains(MTOMConstants.MTOM_TYPE));
+        assertTrue(contentType.indexOf(SOAP11Constants.SOAP_11_CONTENT_TYPE)!=-1);
+        assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE)!=-1);
     }
     
     public void testGetContentTypeSOAP12MTOM() {
@@ -83,8 +83,8 @@ public class OMOutputFormatTest extends TestCase {
         
         // This is rudimentary.  We can add a more complete test that checks
         // sub items in the future.
-        assertTrue(contentType.contains(SOAP12Constants.SOAP_12_CONTENT_TYPE));
-        assertTrue(contentType.contains(MTOMConstants.MTOM_TYPE));
+        assertTrue(contentType.indexOf(SOAP12Constants.SOAP_12_CONTENT_TYPE)!=-1);
+        assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE)!=-1);
     }
     
     public void testGetContentTypeSOAP12MTOMWithAction() {
@@ -96,8 +96,8 @@ public class OMOutputFormatTest extends TestCase {
         
         // This is rudimentary.  We can add a more complete test that checks
         // sub items in the future.
-        assertTrue(contentType.contains(SOAP12Constants.SOAP_12_CONTENT_TYPE));
-        assertTrue(contentType.contains(MTOMConstants.MTOM_TYPE));
-        assertTrue(contentType.contains("action=\\\"testSoapAction\\\""));
+        assertTrue(contentType.indexOf(SOAP12Constants.SOAP_12_CONTENT_TYPE)!=-1);
+        assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE)!=-1);
+        assertTrue(contentType.indexOf("action=\\\"testSoapAction\\\"")!=-1);
     }
 }
