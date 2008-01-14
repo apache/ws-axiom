@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.io.PushbackInputStream;
 
 /**
- * @author scheu
+ * MIMEBodyPartInputStream
  *
  */
 public class MIMEBodyPartInputStream extends InputStream {

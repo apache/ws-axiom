@@ -19,6 +19,18 @@
 
 package org.apache.axiom.attachments;
 
+import org.apache.axiom.attachments.impl.PartFactory;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.impl.MTOMConstants;
+import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.activation.DataHandler;
+import javax.mail.MessagingException;
+import javax.mail.internet.ContentType;
+import javax.mail.internet.ParseException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
@@ -27,18 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
-
-import javax.activation.DataHandler;
-import javax.mail.MessagingException;
-import javax.mail.internet.ContentType;
-import javax.mail.internet.ParseException;
-
-import org.apache.axiom.attachments.part.DynamicPart;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.MTOMConstants;
-import org.apache.axiom.om.util.UUIDGenerator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class Attachments {
 
@@ -549,56 +549,22 @@ public class Attachments {
 
         partsRequested = true;
 
-        Part part;
+        boolean isSOAPPart = (partIndex == 0);
+        int threshhold = (fileCacheEnable) ? fileStorageThreshold : 0;
 
-        try {
-            if (fileCacheEnable) {
-                try {
-                    //If Content-Length defined.
-                    if(contentLength!=0){
-                        if (log.isDebugEnabled()) {
-                            log.debug("Fixed Content-Length Data");
-                        }
-                        MIMEBodyPartInputStream partStream =
-                            new MIMEBodyPartInputStream(pushbackInStream,
-                                                        boundary,
-                                                        this,
-                                                        PUSHBACK_SIZE);
-                        
-                        part = DynamicPart.createPart(contentLength, partIndex, partStream, attachmentRepoDir, fileStorageThreshold);
-                 
-                    } else {
-                        if (log.isDebugEnabled()) {
-                            log.debug("Chunked Data");
-                        }
-                        // Read chunks of data to determine the size
-                        // of the attachment.  This can wasteful because we need to gc the buffers.
-                        // TODO We could look at the content-length of the individual attachment; however
-                        // this is seldom provided.
-                        
-                        MIMEBodyPartInputStream partStream;
-                 
-                        partStream =
-                            new MIMEBodyPartInputStream(pushbackInStream,
-                                                        boundary,
-                                                        this,
-                                                        PUSHBACK_SIZE);
-                        part = DynamicPart.createPart(partStream, attachmentRepoDir, fileStorageThreshold);
-                        
-                    } 
-                } catch (Exception e) {
-                    throw new OMException("Error creating temporary File.", e);
-                }
-            } else {
-                MIMEBodyPartInputStream partStream;
-                partStream =
-                        new MIMEBodyPartInputStream(pushbackInStream, boundary, this, PUSHBACK_SIZE);
-                part = new PartOnMemory(partStream);
-            }
+        // Create a MIMEBodyPartInputStream that simulates a single stream for this MIME body part
+        MIMEBodyPartInputStream partStream =
+            new MIMEBodyPartInputStream(pushbackInStream,
+                                        boundary,
+                                        this,
+                                        PUSHBACK_SIZE);
 
-        } catch (MessagingException e) {
-            throw new OMException(e);
-        }
+        // The PartFactory will determine which Part implementation is most appropriate.
+        Part part = PartFactory.createPart(partStream, 
+                                      isSOAPPart, 
+                                      threshhold, 
+                                      attachmentRepoDir, 
+                                      contentLength);  // content-length for the whole message
         partIndex++;
         return part;
     }
