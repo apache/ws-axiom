@@ -726,28 +726,46 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     /**
-     * Selects all the text children and concatinates them to a single string.
+     * Selects all the text children and concatenates them to a single string.
      *
      * @return Returns String.
      */
     public String getText() {
-        String childText = "";
+        String childText = null;
+        StringBuffer buffer = null;
         OMNode child = this.getFirstOMChild();
-        OMText textNode;
 
         while (child != null) {
             if (child.getType() == OMNode.TEXT_NODE) {
-                textNode = (OMText) child;
+                OMText textNode = (OMText) child;
                 String textValue = textNode.getText();
-                if (textValue != null &&
-                        !"".equals(textValue)) {
-                    childText += textValue;
+                if (textValue != null && textValue.length() != 0) {
+                    if (childText == null) {
+                        // This is the first non empty text node. Just save the string.
+                        childText = textValue;
+                    } else {
+                        // We've already seen a non empty text node before. Concatenate using
+                        // a StringBuffer.
+                        if (buffer == null) {
+                            // This is the first text node we need to append. Initialize the
+                            // StringBuffer.
+                            buffer = new StringBuffer(childText);
+                        }
+                        buffer.append(textValue);
+                    }
                 }
             }
             child = child.getNextOMSibling();
         }
 
-        return childText;
+        if (childText == null) {
+            // We didn't see any text nodes. Return an empty string.
+            return "";
+        } else if (buffer != null) {
+            return buffer.toString();
+        } else {
+            return childText;
+        }
     }
 
     public QName getTextAsQName() {
@@ -764,23 +782,40 @@ public class OMElementImpl extends OMNodeImpl
      */
     public String getTrimmedText() {
         String childText = null;
+        StringBuffer buffer = null;
         OMNode child = this.getFirstOMChild();
-        OMText textNode;
 
         while (child != null) {
             if (child.getType() == OMNode.TEXT_NODE) {
-                textNode = (OMText) child;
+                OMText textNode = (OMText) child;
                 String textValue = textNode.getText();
-                if (textValue != null &&
-                        !"".equals(textValue.trim())) {
-                    if (childText == null) childText = "";
-                    childText += textValue.trim();
+                if (textValue != null && textValue.length() != 0) {
+                    if (childText == null) {
+                        // This is the first non empty text node. Just save the string.
+                        childText = textValue.trim();
+                    } else {
+                        // We've already seen a non empty text node before. Concatenate using
+                        // a StringBuffer.
+                        if (buffer == null) {
+                            // This is the first text node we need to append. Initialize the
+                            // StringBuffer.
+                            buffer = new StringBuffer(childText);
+                        }
+                        buffer.append(textValue.trim());
+                    }
                 }
             }
             child = child.getNextOMSibling();
         }
 
-        return childText;
+        if (childText == null) {
+            // We didn't see any text nodes. Return an empty string.
+            return "";
+        } else if (buffer != null) {
+            return buffer.toString();
+        } else {
+            return childText;
+        }
     }
 
     /**
