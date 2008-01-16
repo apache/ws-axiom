@@ -34,6 +34,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -168,43 +170,71 @@ public class StAXUtils {
         xmlInputFactoryPool.releaseInstance(factory);
     }
 
-    public static XMLStreamReader createXMLStreamReader(InputStream in, String encoding)
+    public static XMLStreamReader createXMLStreamReader(final InputStream in, final String encoding)
             throws XMLStreamException {
-        XMLInputFactory inputFactory = getXMLInputFactory();
+        final XMLInputFactory inputFactory = getXMLInputFactory();
         try {
-            XMLStreamReader reader = inputFactory.createXMLStreamReader(in, encoding);
+            XMLStreamReader reader = 
+                (XMLStreamReader) 
+                AccessController.doPrivileged(new PrivilegedExceptionAction() {
+                    public Object run() throws XMLStreamException {
+                        return inputFactory.createXMLStreamReader(in, encoding);
+                    }
+                }
+                );
             if (isDebugEnabled) {
                 log.debug("XMLStreamReader is " + reader.getClass().getName());
             }
             return reader;
+        } catch (PrivilegedActionException pae) {
+            throw (XMLStreamException) pae.getException();
         } finally {
             releaseXMLInputFactory(inputFactory);
         }
     }
 
-    public static XMLStreamReader createXMLStreamReader(InputStream in)
+    public static XMLStreamReader createXMLStreamReader(final InputStream in)
             throws XMLStreamException {
-        XMLInputFactory inputFactory = getXMLInputFactory();
+        final XMLInputFactory inputFactory = getXMLInputFactory();
         try {
-            XMLStreamReader reader = inputFactory.createXMLStreamReader(in);
+            XMLStreamReader reader = 
+                (XMLStreamReader)
+                AccessController.doPrivileged(new PrivilegedExceptionAction() {
+                    public Object run() throws XMLStreamException {
+                        return inputFactory.createXMLStreamReader(in);
+                    }
+                }
+                );
+            
             if (isDebugEnabled) {
                 log.debug("XMLStreamReader is " + reader.getClass().getName());
             }
             return reader;
+        } catch (PrivilegedActionException pae) {
+            throw (XMLStreamException) pae.getException();
         } finally {
             releaseXMLInputFactory(inputFactory);
         }
     }
 
-    public static XMLStreamReader createXMLStreamReader(Reader in)
+    public static XMLStreamReader createXMLStreamReader(final Reader in)
             throws XMLStreamException {
-        XMLInputFactory inputFactory = getXMLInputFactory();
+        final XMLInputFactory inputFactory = getXMLInputFactory();
         try {
-            XMLStreamReader reader = inputFactory.createXMLStreamReader(in);
+            XMLStreamReader reader = 
+                (XMLStreamReader)
+                AccessController.doPrivileged(new PrivilegedExceptionAction() {
+                    public Object run() throws XMLStreamException {
+                        return inputFactory.createXMLStreamReader(in);
+                    }
+                }
+                );
             if (isDebugEnabled) {
                 log.debug("XMLStreamReader is " + reader.getClass().getName());
             }
             return reader;
+        } catch (PrivilegedActionException pae) {
+            throw (XMLStreamException) pae.getException();
         } finally {
             releaseXMLInputFactory(inputFactory);
         }
@@ -228,43 +258,72 @@ public class StAXUtils {
         xmlOutputFactoryPool.releaseInstance(factory);
     }
 
-    public static XMLStreamWriter createXMLStreamWriter(OutputStream out)
+    public static XMLStreamWriter createXMLStreamWriter(final OutputStream out)
             throws XMLStreamException {
-        XMLOutputFactory outputFactory = getXMLOutputFactory();
+        final XMLOutputFactory outputFactory = getXMLOutputFactory();
         try {
-            XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out, OMConstants.DEFAULT_CHAR_SET_ENCODING);
+            XMLStreamWriter writer = 
+                (XMLStreamWriter)
+                AccessController.doPrivileged(new PrivilegedExceptionAction() {
+                    public Object run() throws XMLStreamException {
+                        return outputFactory.createXMLStreamWriter(out, OMConstants.DEFAULT_CHAR_SET_ENCODING);
+                    }
+                }
+                );
+                
             if (isDebugEnabled) {
                 log.debug("XMLStreamWriter is " + writer.getClass().getName());
             }
             return writer;
+        } catch (PrivilegedActionException pae) {
+            throw (XMLStreamException) pae.getException();
         } finally {
             releaseXMLOutputFactory(outputFactory);
         }
     }
 
-    public static XMLStreamWriter createXMLStreamWriter(OutputStream out, String encoding)
+    public static XMLStreamWriter createXMLStreamWriter(final OutputStream out, final String encoding)
             throws XMLStreamException {
-        XMLOutputFactory outputFactory = getXMLOutputFactory();
+        final XMLOutputFactory outputFactory = getXMLOutputFactory();
         try {
-            XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out, encoding);
+            XMLStreamWriter writer = 
+                (XMLStreamWriter)
+                AccessController.doPrivileged(new PrivilegedExceptionAction() {
+                    public Object run() throws XMLStreamException {
+                        return outputFactory.createXMLStreamWriter(out, encoding);
+                    }
+                }
+                );
+            
             if (isDebugEnabled) {
                 log.debug("XMLStreamWriter is " + writer.getClass().getName());
             }
             return writer;
+        } catch (PrivilegedActionException pae) {
+            throw (XMLStreamException) pae.getException();
         } finally {
             releaseXMLOutputFactory(outputFactory);
         }
     }
 
-    public static XMLStreamWriter createXMLStreamWriter(Writer out)
+    public static XMLStreamWriter createXMLStreamWriter(final Writer out)
             throws XMLStreamException {
-        XMLOutputFactory outputFactory = getXMLOutputFactory();
+        final XMLOutputFactory outputFactory = getXMLOutputFactory();
         try {
-            XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out);
+            XMLStreamWriter writer = 
+                (XMLStreamWriter)
+                AccessController.doPrivileged(new PrivilegedExceptionAction() {
+                    public Object run() throws XMLStreamException {
+                        return outputFactory.createXMLStreamWriter(out);
+                    }
+                }
+                );
             if (isDebugEnabled) {
                 log.debug("XMLStreamWriter is " + writer.getClass().getName());
             }
             return writer;
+        } catch (PrivilegedActionException pae) {
+            throw (XMLStreamException) pae.getException();
         } finally {
             releaseXMLOutputFactory(outputFactory);
         }
