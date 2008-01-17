@@ -60,6 +60,9 @@ public class BoundaryPushbackInputStream extends InputStream {
     
     // Skip search array
     private short[] skip = null;
+    
+    // Working byte for read()
+    private byte[] read_byte = new  byte[1];
 
     /**
      * @param inStream
@@ -71,7 +74,11 @@ public class BoundaryPushbackInputStream extends InputStream {
         this.is = inStream;
         this.boundary = boundary;
         this.rnBoundaryLen = boundary.length + 2;
-        this.bufferSize = Math.max(rnBoundaryLen * 2, pushBackSize);
+        
+        // The buffer must accomodate twice the boundary length and
+        // the maximum that we will ever push back (which is the entire buffer except for 
+        // the boundary)
+        this.bufferSize = Math.max(rnBoundaryLen * 2, pushBackSize + boundary.length);
     }
     
     /**
@@ -137,15 +144,24 @@ public class BoundaryPushbackInputStream extends InputStream {
      *
      * @throws java.io.IOException
      */
+    
     public int read() throws java.io.IOException {
-
-        byte[] b = new byte[1];    
-        int read = read(b);
+  
+        // Short cut to avoid buffer copying
+        if (buffer != null && index > 0) {
+            if ((bIndex > 0 && (index+1) < bIndex) ||
+                 bIndex < 0 && index < (numBytes - rnBoundaryLen)) {
+                index++;
+                return (buffer[index-1]);
+            }
+        }
+  
+        int read = read(read_byte);
 
         if (read < 0) {
             return -1;
         } else {
-            return b[0];
+            return read_byte[0];
         }
     }
 
@@ -190,7 +206,7 @@ public class BoundaryPushbackInputStream extends InputStream {
         
         do {
             
-            // Never read to the of the buffer because
+            // Never read to the end of the buffer because
             // the boundary may span buffers.
             int bcopy = Math.min((numBytes - rnBoundaryLen) - index,
                     len - bwritten);

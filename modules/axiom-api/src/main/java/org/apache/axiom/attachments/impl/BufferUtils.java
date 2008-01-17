@@ -29,7 +29,7 @@ import java.io.OutputStream;
  */
 public class BufferUtils {
     
-    public static final int BUFFER_LEN = 16 * 1024;
+    public static final int BUFFER_LEN = 4 * 1024;
     
     /**
      * Private utility to write the InputStream contents to the OutputStream.
@@ -48,7 +48,9 @@ public class BufferUtils {
         // Continue reading until no bytes are read and no
         // bytes are now available.
         while (bytesRead > 0 || is.available() > 0) {
-            os.write(buffer, 0, bytesRead);
+            if (bytesRead > 0) {
+                os.write(buffer, 0, bytesRead);
+            }
             bytesRead = is.read(buffer);
         }
         

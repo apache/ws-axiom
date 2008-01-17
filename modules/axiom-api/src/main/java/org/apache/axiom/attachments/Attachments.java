@@ -61,7 +61,7 @@ public class Attachments {
      * has the ability to "push back" or "unread" one byte.
      */
     PushbackInputStream pushbackInStream;
-    int PUSHBACK_SIZE = 1000;
+    int PUSHBACK_SIZE = 4 * 1024;
 
     /**
      * <code>attachmentsMap</code> stores the Data Handlers of the already parsed Mime Body Parts.

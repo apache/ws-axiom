@@ -20,6 +20,8 @@ package org.apache.axiom.attachments.impl;
 
 import org.apache.axiom.attachments.MIMEBodyPartInputStream;
 import org.apache.axiom.attachments.Part;
+import org.apache.axiom.attachments.utils.BAAInputStream;
+import org.apache.axiom.attachments.utils.BAAOutputStream;
 import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -75,8 +77,10 @@ public class PartFactory {
         
         try {
             // Read enough of the InputStream to build the headers 
+            // The readHeaders returns some extra bits that were read, but are part
+            // of the data section.
             Hashtable headers = new Hashtable();
-            readHeaders(in, headers);
+            InputStream dross = readHeaders(in, headers);
             
             
             if (isSOAPPart ||
@@ -88,24 +92,29 @@ public class PartFactory {
                 // If this is a SOAPPart, keep it in memory.
                 
                 // Get the bytes of the data without a lot 
-                // of resizing and GC.  For now I will write to a
-                // private BAOS and get the byte buffer from it.
-                BAOS baos = new BAOS();
-                BufferUtils.inputStream2OutputStream(in, baos);
-                return new PartOnMemory(headers, baos.toByteArray(), baos.size());
+                // of resizing and GC.  The BAAOutputStream 
+                // keeps the data in non-contiguous byte buffers.
+                BAAOutputStream baaos = new BAAOutputStream();
+                BufferUtils.inputStream2OutputStream(dross, baaos);
+                BufferUtils.inputStream2OutputStream(in, baaos);
+                return new PartOnMemoryEnhanced(headers, baaos.buffers(), baaos.length());
             } else {
                 // We need to read the input stream to determine whether
                 // the size is bigger or smaller than the threshhold.
-                BAOS baos = new BAOS();
-                int total = BufferUtils.inputStream2OutputStream(in, baos, threshholdSize);
+                BAAOutputStream baaos = new BAAOutputStream();
+                int t1 = BufferUtils.inputStream2OutputStream(dross, baaos, threshholdSize);
+                int t2 =  BufferUtils.inputStream2OutputStream(in, baaos, threshholdSize - t1);
+                int total = t1 + t2;
+                
                 if (total < threshholdSize) {
-                    return new PartOnMemory(headers, baos.toByteArray(), baos.size());
+                    return new PartOnMemoryEnhanced(headers, baaos.buffers(), baaos.length());
                 } else {
-                    ByteArrayInputStream bais = 
-                        new ByteArrayInputStream(baos.toByteArray(), 0, baos.size());
+                    // A BAAInputStream is an input stream over a list of non-contiguous 4K buffers.
+                    BAAInputStream baais = 
+                        new BAAInputStream(baaos.buffers(), baaos.length());
                     
                     return new PartOnFile(headers, 
-                                          bais,
+                                          baais,
                                           in, 
                                           attachmentDir);
                 }
@@ -123,26 +132,66 @@ public class PartFactory {
      * @param is
      * @param headers
      */
-    private static void readHeaders(InputStream in, Map headers) throws IOException {
-        int ch;
+    private static InputStream readHeaders(InputStream in, Map headers) throws IOException {
         if(log.isDebugEnabled()){
             log.debug("initHeaders");
         }
         boolean done = false;
         
-        // Read the characters into a StringBuffer and
-        // add each header to the map
+        
+        final int BUF_SIZE = 1024;
+        byte[] headerBytes = new byte[BUF_SIZE];
+        
+        int size = in.read(headerBytes);
+        int index = 0;
         StringBuffer sb = new StringBuffer(50);
-        while (!done && (ch = in.read()) != -1) {
+        
+        while (!done && index < size) {
+            
+            // Get the next byte
+            int ch = headerBytes[index];
+            index++;
+            if (index == size) {
+                size = in.read(headerBytes);
+                index =0;
+            }
+                
             if (ch == 13) {
-                if ((ch = in.read()) == 10) {
-                    if ((ch = in.read()) == 13) {
-                        if ((ch = in.read()) == 10) {
+                
+                // Get the next byte
+                ch = headerBytes[index];
+                index++;
+                if (index == size) {
+                    size = in.read(headerBytes);
+                    index =0;
+                }
+                
+                if (ch == 10) {
+                    // 13, 10 indicates we are starting a new line...thus a new header
+                    // Get the next byte
+                    ch = headerBytes[index];
+                    index++;
+                    if (index == size) {
+                        size = in.read(headerBytes);
+                        index =0;
+                    }
+                    
+                    if (ch == 13) {
+                        
+                        // Get the next byte
+                        ch = headerBytes[index];
+                        index++;
+                        if (index == size) {
+                            size = in.read(headerBytes);
+                            index =0;
+                        }
+                        
+                        if (ch == 10) {
                             // Blank line indicates we are done.
                             readHeader(sb, headers);
                             sb.delete(0, sb.length()); // Clear the buffer for reuse
                             done = true;
-                        }
+                        } 
                     } else {
                         // now parse and add the header String
                         readHeader(sb, headers);
@@ -160,8 +209,15 @@ public class PartFactory {
         if(log.isDebugEnabled()){
             log.debug("End initHeaders");
         }
-        return;
+        
+        // Return an input stream containing the dross bits
+        if (index >= size) {
+            index = size;
+        }
+        ByteArrayInputStream dross = new ByteArrayInputStream(headerBytes, index, size-index);
+        return dross;
     }
+    
     
     /**
      * Parse the header into a name and value pair.

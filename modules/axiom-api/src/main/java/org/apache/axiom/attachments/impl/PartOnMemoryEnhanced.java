@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.attachments.impl;
 
+import org.apache.axiom.attachments.utils.BAAInputStream;
 import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,35 +28,35 @@ import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeUtility;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
- * PartOnMemory stores the attachment in memory (in a byte[])
+ * PartOnMemoryEnhanced stores the attachment in memory (in non-contigous byte arrays)
  * This implementation is used for smaller attachments to enhance 
  * performance.
  * 
- * The PartOnMemory object is created by the PartFactory
+ * The PartOnMemoryEnhanced object is created by the PartFactory
  * @see org.apache.axiom.attachments.impl.PartFactory.
  */
-public class PartOnMemory extends AbstractPart {
+public class PartOnMemoryEnhanced extends AbstractPart {
 
-    private static Log log = LogFactory.getLog(PartOnMemory.class);
-    byte[] bytes;
-    int length;
+    private static Log log = LogFactory.getLog(PartOnMemoryEnhanced.class);
+    ArrayList data;  // Arrays of 4K buffers
+    int length;      // total length of data
     
     /**
      * Construct a PartOnMemory
      * @param headers
-     * @param bytes
+     * @param data array list of 4K byte[]
      * @param length (length of data in bytes)
      */
-    PartOnMemory(Hashtable headers, byte[] bytes, int length) {
+    PartOnMemoryEnhanced(Hashtable headers, ArrayList data, int length) {
         super(headers);
-        this.bytes =  bytes;
+        this.data =  data;
         this.length = length;
     }
 
@@ -73,7 +74,7 @@ public class PartOnMemory extends AbstractPart {
     }
 
     public InputStream getInputStream() throws IOException, MessagingException {
-        return new ByteArrayInputStream(bytes, 0, length);
+        return new BAAInputStream(data, length);
     }
     
     public int getSize() throws MessagingException {
@@ -101,7 +102,7 @@ public class PartOnMemory extends AbstractPart {
          * @see javax.activation.DataSource#getInputStream()
          */
         public InputStream getInputStream() throws IOException {
-            InputStream is  = new ByteArrayInputStream(bytes, 0, length);
+            InputStream is  = new BAAInputStream(data, length);
             String cte = null;
             try {
                 cte = getContentTransferEncoding();
