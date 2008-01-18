@@ -426,8 +426,11 @@ public class Attachments {
     }
 
     public String[] getAllContentIDs() {
-        Set keys = getContentIDSet();
-        return (String[]) keys.toArray(new String[keys.size()]);
+        // Force reading of all attachments
+        getContentIDSet();
+        
+        String[] strings = new String[cids.size()];
+        return (String[]) cids.toArray(strings);
     }
 
     public Set getContentIDSet() {
