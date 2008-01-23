@@ -276,8 +276,10 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
                 if (importedNode.getLocalName() == null) {
                     newElement = this.createElement(importedNode.getNodeName());
                 } else {
-                    newElement = createElementNS(importedNode.getNamespaceURI(),
-                                                 importedNode.getNodeName());
+                    
+                    String ns = importedNode.getNamespaceURI();
+                    ns = (ns != null) ? ns.intern() : null;
+                    newElement = createElementNS(ns, importedNode.getNodeName());
                 }
 
                 // Copy element's attributes, if any.
@@ -311,7 +313,9 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
                     if (OMConstants.XMLNS_NS_PREFIX.equals(importedNode.getNodeName())) {
                         newNode = createAttribute(importedNode.getNodeName());
                     } else {
-                        newNode = createAttributeNS(importedNode.getNamespaceURI(),
+                        String ns = importedNode.getNamespaceURI();
+                        ns = (ns != null) ? ns.intern() : null;
+                        newNode = createAttributeNS(ns ,
                                                     importedNode.getNodeName());
                     }
                 }
