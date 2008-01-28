@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -28,6 +29,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.EmptyOMLocation;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.w3c.dom.Attr;
 
@@ -851,7 +853,45 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * @throws IllegalArgumentException
      */
     public Object getProperty(String s) throws IllegalArgumentException {
-        throw new IllegalArgumentException();
+        if (OMConstants.IS_DATA_HANDLERS_AWARE.equals(s)) {
+            return Boolean.TRUE;
+        }
+        if (OMConstants.IS_BINARY.equals(s)) {
+            if (lastNode instanceof OMText) {
+                OMText text = (OMText) lastNode;
+                return new Boolean(text.isBinary());
+            }
+            return Boolean.FALSE;
+        } else if (OMConstants.DATA_HANDLER.equals(s)) {
+            if (lastNode instanceof OMText) {
+                OMText text = (OMText) lastNode;    
+                if (text.isBinary())
+                    return text.getDataHandler();
+            }
+        }
+        // Per spec, throw IllegalArgumentException
+        if (s == null) {
+            throw new IllegalArgumentException();
+        }
+        if (parser != null) {
+            return parser.getProperty(s);               
+        }
+        // Delegate to the builder's parser.
+        if (builder != null && builder instanceof StAXBuilder) {
+            StAXBuilder staxBuilder = (StAXBuilder) builder;
+            if (!staxBuilder.isClosed()) {
+                // If the parser was closed by something other
+                // than the builder, an IllegalStateException is
+                // thrown.  For now, return null as this is unexpected
+                // by the caller.
+                try {
+                    return ((StAXBuilder) builder).getReaderProperty(s);
+                } catch (IllegalStateException ise) {
+                    return null;
+                }
+            }
+        }
+        return null;
     }
 
     /**
