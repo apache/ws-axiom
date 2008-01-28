@@ -251,6 +251,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                     Boolean.TRUE.equals(parser.getProperty(OMConstants.IS_BINARY))) {
                 Object dataHandler = parser.getProperty(OMConstants.DATA_HANDLER);
                 OMText text = omfactory.createOMText(dataHandler, true);
+                text.setBinary(true);
                 omContainer.addChild(text);
                 return text;
             } 
