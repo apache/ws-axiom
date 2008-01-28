@@ -510,7 +510,7 @@
         <axiom.version>${pom.version}</axiom.version>
         <stax.impl.groupid>org.codehaus.woodstox</stax.impl.groupid>
         <stax.impl.artifact>wstx-asl</stax.impl.artifact>
-        <stax.impl.version>3.2.1</stax.impl.version>
+        <stax.impl.version>3.2.4</stax.impl.version>
         <!--
         <stax.impl.groupid>com.sun.xml.stream</stax.impl.groupid>
         <stax.impl.artifact>sjsxp</stax.impl.artifact>
