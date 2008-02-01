@@ -59,7 +59,11 @@ public interface OMConstants {
             "xml";
     String IS_BINARY = "Axiom.IsBinary";
     String DATA_HANDLER = "Axiom.DataHandler";
-    String IS_DATA_HANDLERS_AWARE = "IsDatahandlersAwareParsing";
+    
+    // Indicates if the xmlstream reader is capable of handling data handlers.
+    // Thus it is an immutable property and will either be true of false for the
+    // lifetime of that parser.  @see OMStaxWrapper for an example
+    String IS_DATA_HANDLERS_AWARE = "IsDatahandlersAwareParsing"; 
 
     /** No its not a mistake. This is the default nsURI of the default namespace of a node */
     static final String DEFAULT_DEFAULT_NAMESPACE = "\"\"";

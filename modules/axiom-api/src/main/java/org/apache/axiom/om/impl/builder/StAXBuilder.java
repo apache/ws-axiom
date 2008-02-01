@@ -91,6 +91,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected Map customBuilders = null;
     protected int maxDepthForCustomBuilders = -1;
     
+    protected Boolean isDataHandlerAware = null; // property of parser, https://issues.apache.org/jira/browse/WSCOMMONS-300
+    
     /**
      * Element level is the depth of the element. 
      * The root element (i.e. envelope) is defined as 1.
@@ -247,7 +249,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     private OMNode createOMText(OMContainer omContainer, int textType) {
         try {
-            if (isDataHandlerAware(parser) &&
+            if (isDataHandlerAware() &&
                     Boolean.TRUE.equals(parser.getProperty(OMConstants.IS_BINARY))) {
                 Object dataHandler = parser.getProperty(OMConstants.DATA_HANDLER);
                 OMText text = omfactory.createOMText(dataHandler, true);
@@ -649,19 +651,31 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @param parser
      * @return
      */
-    private boolean isDataHandlerAware(XMLStreamReader parser) {
-        // check whether data handlers are treated seperately
-        try {
-            if (parser != null &&
-                    (Boolean.TRUE == parser.getProperty(OMConstants.IS_DATA_HANDLERS_AWARE))) {
-                return true;
+    private boolean isDataHandlerAware() {
+        
+        // Is datahandler is immutable for a parser's lifetime.  Thus it should
+        // only be checked one time.
+        if (isDataHandlerAware == null) {
+            // check whether data handlers are treated seperately
+            try {
+                if (parser != null &&
+                        (Boolean.TRUE == parser.getProperty(OMConstants.IS_DATA_HANDLERS_AWARE))) {
+                    isDataHandlerAware = Boolean.TRUE;
+                } else {
+                    isDataHandlerAware = Boolean.FALSE;
+                }
+            } catch (IllegalArgumentException e) {
+                // according to the parser api, get property will return IllegalArgumentException, when that
+                // property is not found.
+            } catch (IllegalStateException e) {
+                // it will also throw illegalStateExceptions if in wrong state, ignore
             }
-        } catch (IllegalArgumentException e) {
-            // according to the parser api, get property will return IllegalArgumentException, when that
-            // property is not found.
-        } catch (IllegalStateException e) {
-            // it will also throw illegalStateExceptions if in wrong state, ignore
         }
+
+        if (Boolean.TRUE.equals(isDataHandlerAware)) {
+            return true;
+        }
+
         return false;
     }
 
