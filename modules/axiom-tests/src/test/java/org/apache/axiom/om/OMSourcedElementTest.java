@@ -123,6 +123,13 @@ public class OMSourcedElementTest extends AbstractTestCase implements OMConstant
                    output.indexOf(payload1) > 0);
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
         
+        // If a consumer calls build or buildWithAttachments on the tree, the 
+        // tree should not be expanded.
+        soapBody.build();
+        assertTrue("OMSourcedElement is expanded after build().  This is unexpected", !child.isExpanded());
+        soapBody.buildWithAttachments();
+        assertTrue("OMSourcedElement is expanded after buildWithAttachments().  This is unexpected", !child.isExpanded());
+        
         // Test getting the raw bytes from the ByteArrayDataSource.
         OMDataSourceExt ds = (OMDataSourceExt) child.getDataSource();
         byte[] bytes = ds.getXMLBytes("UTF-16");  // Get the bytes as UTF-16 

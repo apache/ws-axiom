@@ -920,13 +920,23 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
       * @see org.apache.axiom.om.OMNode#buildAll()
       */
     public void buildWithAttachments() {
+        
+        // If not done, force the parser to build the elements
         if (!done) {
             this.build();
         }
-        Iterator iterator = getChildren();
-        while (iterator.hasNext()) {
-            OMNode node = (OMNode) iterator.next();
-            node.buildWithAttachments();
+        
+        // If the OMSourcedElement is in in expanded form, then
+        // walk the descendents to make sure they are built. 
+        // If the OMSourcedElement is backed by a OMDataSource,
+        // we don't want to walk the children (because this will result
+        // in an unnecessary translation from OMDataSource to a full OM tree).
+        if (isExpanded()) {
+            Iterator iterator = getChildren();
+            while (iterator.hasNext()) {
+                OMNode node = (OMNode) iterator.next();
+                node.buildWithAttachments();
+            }
         }
     }
 
