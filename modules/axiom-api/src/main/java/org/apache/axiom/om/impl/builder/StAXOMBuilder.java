@@ -283,7 +283,8 @@ public class StAXOMBuilder extends StAXBuilder {
             } else {
                 parent = (OMContainer)lastNode;
             }
-                
+        } else {
+            parent = document;
         }
         return customBuilder.create(namespace, localPart, parent, parser, factory);
         
