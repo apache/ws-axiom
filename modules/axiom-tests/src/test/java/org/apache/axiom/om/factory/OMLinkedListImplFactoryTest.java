@@ -23,6 +23,7 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMTestUtils;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -67,7 +68,15 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
         OMXMLParserWrapper omBuilder = OMTestUtils.getOMBuilder(
                 getTestResourceFile("soap/whitespacedMessage.xml"));
         OMElement envelope = omBuilder.getDocumentElement();
-        OMElement body = envelope.getFirstElement();
+        
+        // The body is the second element
+        OMNode node = envelope.getFirstElement();
+        node = node.getNextOMSibling();
+        while (node != null && !(node instanceof OMElement)) {
+            node = node.getNextOMSibling();
+        }
+        OMElement body = (OMElement) node;
+        
 
         OMElement child = omFactory.createOMElement("child",
                                                     namespace,

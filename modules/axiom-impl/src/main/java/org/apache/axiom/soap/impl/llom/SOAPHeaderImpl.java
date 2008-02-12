@@ -34,6 +34,8 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -159,6 +161,8 @@ class MURoleChecker extends RoleChecker {
 
 /** A class representing the SOAP Header, primarily allowing access to the contained HeaderBlocks. */
 public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
+    
+    Log log = LogFactory.getLog(SOAPHeaderImpl.class);
     /** An Iterator which walks the header list as needed, potentially filtering as we traverse. */
     class HeaderIterator implements Iterator {
         SOAPHeaderBlock current;
@@ -401,5 +405,34 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
             throw new SOAPProcessingException(
                     "Expecting an implementation of SOAP Envelope as the parent. But received some other implementation");
         }
+    }
+
+    
+    public void addChild(OMNode child) {
+        
+        // Make sure a proper element is added.  The children of a SOAPHeader should be
+        // SOAPHeaderBlock objects.
+        // Due to legacy usages (AXIS2 has a lot of tests that violate this constraint)
+        // I am only going to log an exception when debug is enabled. 
+        if (log.isDebugEnabled()) {
+            if (child instanceof OMElement &&
+            !(child instanceof SOAPHeaderBlock)) {
+                Exception e = new SOAPProcessingException(
+                  "An attempt was made to add a normal OMElement as a child of a SOAPHeader." +
+                  "  This is not supported.  The child should be a SOAPHeaderBlock.");
+                log.debug(exceptionToString(e));
+            }
+        }
+        super.addChild(child);
+    }
+    
+    public static String exceptionToString(Throwable e) {
+        java.io.StringWriter sw = new java.io.StringWriter();
+        java.io.BufferedWriter bw = new java.io.BufferedWriter(sw);
+        java.io.PrintWriter pw = new java.io.PrintWriter(bw);
+        e.printStackTrace(pw);
+        pw.close();
+        String text = sw.getBuffer().toString();
+        return text;
     }
 }
