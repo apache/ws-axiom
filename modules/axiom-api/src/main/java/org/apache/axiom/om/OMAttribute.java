@@ -46,4 +46,10 @@ public interface OMAttribute {
 
     /** Returns the OMFactory that created this object */
     OMFactory getOMFactory();
+
+    /**
+     * Returns the owner element of this attribute
+     * @return OMElement - The owner element
+     */
+    OMElement getOwner();
 }

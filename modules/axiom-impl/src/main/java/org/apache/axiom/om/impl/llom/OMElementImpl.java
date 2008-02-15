@@ -518,9 +518,25 @@ public class OMElementImpl extends OMNodeImpl
      * Inserts an attribute to this element. Implementor can decide as to insert this in the front
      * or at the end of set of attributes.
      *
-     * @return Returns attribute.
+     * <p>The owner of the attribute is set to be the particular <code>OMElement</code>.
+     * If the attribute already has an owner then the attribute is cloned (i.e. its name,
+     * value and namespace are copied to a new attribute) and the new attribute is added
+     * to the element. It's owner is then set to be the particular <code>OMElement</code>.
+     * 
+     * @return The attribute that was added to the element. Note: The added attribute
+     * may not be the same instance that was given to add. This can happen if the given
+     * attribute already has an owner. In such case the returned attribute and the given
+     * attribute are <i>equal</i> but not the same instance.
+     *
+     * @see OMAttributeImpl#equals(Object)
      */
-    public OMAttribute addAttribute(OMAttribute attr) {
+    public OMAttribute addAttribute(OMAttribute attr){
+        // If the attribute already has an owner element then clone the attribute
+        if (attr.getOwner() !=null){
+            attr = new OMAttributeImpl(
+                    attr.getLocalName(), attr.getNamespace(), attr.getAttributeValue(), attr.getOMFactory());
+        }
+
         if (attributes == null) {
             this.attributes = new LinkedHashMap(5);
         }
@@ -533,6 +549,8 @@ public class OMElementImpl extends OMNodeImpl
             this.declareNamespace(nsURI, nsPrefix);
         }
 
+        // Set the owner element of the attribute
+        ((OMAttributeImpl)attr).owner = this;
         attributes.put(attr.getQName(), attr);
         return attr;
     }
@@ -540,14 +558,33 @@ public class OMElementImpl extends OMNodeImpl
     /** Method removeAttribute. */
     public void removeAttribute(OMAttribute attr) {
         if (attributes != null) {
+            // Remove the owner from this attribute
+            ((OMAttributeImpl)attr).owner = null;
             attributes.remove(attr.getQName());
         }
     }
 
     /**
-     * Method addAttribute.
      *
-     * @return Returns OMAttribute.
+     * Creates an <code>OMAttributeImpl</code> instance out of the given arguments and
+     * inserts that attribute to this element. Implementor can decide as to insert this
+     * in the front or at the end of set of attributes.
+     *
+     * <p>The owner of the attribute is set to be the particular <code>OMElement</code>.
+     * If the attribute already has an owner then the attribute is cloned (i.e. its name,
+     * value and namespace are copied to a new attribute) and the new attribute is added
+     * to the element. It's owner is then set to be the particular <code>OMElement</code>.
+     *
+     * @param attributeName The name of the attribute
+     * @param value The value of the attribute
+     * @param ns The namespace of the attribute
+     *
+     * @return The attribute that was added to the element. Note: The added attribute
+     * may not be the same instance that was given to add. This can happen if the given
+     * attribute already has an owner. In such case the returned attribute and the given
+     * attribute are <i>equal</i> but not the same instance.
+     *
+     * @see OMAttributeImpl#equals(Object)
      */
     public OMAttribute addAttribute(String attributeName, String value,
                                     OMNamespace ns) {

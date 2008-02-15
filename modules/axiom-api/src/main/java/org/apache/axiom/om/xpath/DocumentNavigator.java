@@ -762,6 +762,18 @@ public class DocumentNavigator extends DefaultNavigator {
         public OMFactory getOMFactory() {
             return this.factory;
         }
+
+        /**
+         * Returns the owner element of this attribute
+         * 
+         * @return OMElement If the parent <code>OMContainer</code> is an
+         * instanceof <code>OMElement</code> we return that element else
+         * we return null. To get the <code>OMContainer</code> itself use
+         * the <code>getParent()</code> method.
+         */
+        public OMElement getOwner() {
+            return (parent instanceof OMElement) ? (OMElement)parent : null;
+        }
     }
 }
 

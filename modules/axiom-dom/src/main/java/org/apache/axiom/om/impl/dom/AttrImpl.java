@@ -18,13 +18,8 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.*;
+import org.apache.axiom.om.xpath.DocumentNavigator;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -398,6 +393,77 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
         return (this.namespace == null) ? this.attrName : this.namespace
                 .getPrefix()
                 + ":" + this.attrName;
+    }
+
+    /**
+     * Returns the owner element of this attribute
+     * @return OMElement - if the parent OMContainer is an instanceof OMElement
+     * we return that OMElement else return null. To get the OMContainer itself use
+     * getParent() method.
+     */
+    public OMElement getOwner() {
+        return (parent instanceof OMElement) ? (OMElement)parent : null;
+    }
+
+    /**
+     * An instance of <code>AttrImpl</code> can act as an <code>OMAttribute</code> and as well as an
+     * <code>org.w3c.dom.Attr</code>. So we first check if the object to compare with (<code>obj</code>)
+     * is of type <code>OMAttribute</code> (this includes instances of <code>OMAttributeImpl</code> or
+     * <code>AttrImpl</code> (instances of this class)). If so we check for the equality
+     * of namespaces first (note that if the namespace of this instance is null then for the <code>obj</code>
+     * to be equal its namespace must also be null). This condition solely doesn't determine the equality.
+     * So we check for the equality of names and values (note that the value can also be null in which case
+     * the same argument holds as that for the namespace) of the two instances. If all three conditions are
+     * met then we say the two instances are equal.
+     *
+     * <p>If <code>obj</code> is of type <code>org.w3c.dom.Attr</code> then we perform the same equality check
+     * as before. Note that, however, the implementation of the test for equality in this case is little different
+     * than before.
+     *
+     * <p>If <code>obj</code> is neither of type <code>OMAttribute</code> nor of type <code>org.w3c.dom.Attr</code>
+     * then we return false.
+     *
+     * @param obj The object to compare with this instance
+     * @return True if the two objects are equal or else false. The equality is checked as explained above.
+     */
+    public boolean equals(Object obj) {
+        if (obj instanceof OMAttribute) { // Checks equality of an OMAttributeImpl or an AttrImpl with this instance
+            OMAttribute other = (OMAttribute) obj;
+            return (namespace == null ? other.getNamespace() == null :
+                    namespace.equals(other.getNamespace()) &&
+                    attrName.equals(other.getLocalName()) &&
+                    (attrValue == null ? other.getAttributeValue() == null :
+                            attrValue.toString().equals(other.getAttributeValue())));
+        } else if (obj instanceof Attr) {// Checks equality of an org.w3c.dom.Attr with this instance
+            Attr other = (Attr)obj;
+            String otherNs = other.getNamespaceURI();
+            if (namespace == null) { // I don't have a namespace
+                if (otherNs != null) {
+                    return false; // I don't have a namespace and the other has. So return false
+                } else {
+                    // Both of us don't have namespaces. So check for name and value equality only
+                    return (attrName.equals(other.getLocalName()) &&
+                            (attrValue == null ? other.getValue() == null :
+                                    attrValue.toString().equals(other.getValue())));
+                }
+            } else { // Ok, now I've a namespace
+                String ns = namespace.getNamespaceURI();
+                String prefix = namespace.getPrefix();
+                String otherPrefix = other.getPrefix();
+                // First check for namespaceURI equality. Then check for prefix equality.
+                // Then check for name and value equality
+                return (ns.equals(otherNs) && (prefix == null ? otherPrefix == null : prefix.equals(otherPrefix)) &&
+                        (attrName.equals(other.getLocalName())) &&
+                        (attrValue == null ? other.getValue() == null :
+                                attrValue.toString().equals(other.getValue())));
+            }
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        return attrName.hashCode() ^ (attrValue != null ? attrValue.toString().hashCode() : 0) ^
+                (namespace != null ? namespace.hashCode() : 0);
     }
 
 }

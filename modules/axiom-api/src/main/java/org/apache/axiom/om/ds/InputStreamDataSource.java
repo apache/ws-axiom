@@ -131,7 +131,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         try {
             serialize(baos, format);
         } catch (XMLStreamException e) {
-            new OMException(e);
+            throw new OMException(e);
         }
         return baos.toByteArray();
     }
