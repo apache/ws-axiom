@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.attachments.ByteArrayDataSource;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.FactoryConfigurationError;
@@ -149,10 +150,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
                 SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
             }
             try {
-                String bufferedXMLText =
-                        new String(bufferedXML.toByteArray(), format.getCharSetEncoding());
                 MIMEOutputUtils.complete(outStream,
-                                         bufferedXMLText,
+                                         bufferedXML.toByteArray(),
                                          binaryNodeList,
                                          format.getMimeBoundary(),
                                          format.getRootContentId(),
