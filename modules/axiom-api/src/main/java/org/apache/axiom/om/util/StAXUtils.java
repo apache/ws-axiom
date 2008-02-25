@@ -43,6 +43,8 @@ import java.util.List;
 public class StAXUtils {
     private static Log log = LogFactory.getLog(StAXUtils.class);
     private static boolean isDebugEnabled = log.isDebugEnabled();
+    private static XMLInputFactory inputFactory = null;
+    private static XMLOutputFactory outputFactory = null;
 
     /**
      * Gets an XMLInputFactory instance from pool.
@@ -50,22 +52,25 @@ public class StAXUtils {
      * @return an XMLInputFactory instance.
      */
     public static XMLInputFactory getXMLInputFactory() {
-        return (XMLInputFactory) AccessController.doPrivileged(
-                new PrivilegedAction() {
-                    public Object run() {
-                        Thread currentThread = Thread.currentThread();
-                        ClassLoader savedClassLoader = currentThread.getContextClassLoader();
-                        XMLInputFactory factory = null;
-                        try {
-                            currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
-                            factory = XMLInputFactory.newInstance();
+        if (inputFactory == null) {
+            inputFactory = (XMLInputFactory) AccessController.doPrivileged(
+                    new PrivilegedAction() {
+                        public Object run() {
+                            Thread currentThread = Thread.currentThread();
+                            ClassLoader savedClassLoader = currentThread.getContextClassLoader();
+                            XMLInputFactory factory = null;
+                            try {
+                                currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
+                                factory = XMLInputFactory.newInstance();
+                            }
+                            finally {
+                                currentThread.setContextClassLoader(savedClassLoader);
+                            }
+                            return factory;
                         }
-                        finally {
-                            currentThread.setContextClassLoader(savedClassLoader);
-                        }
-                        return factory;
-                    }
-                });
+                    });
+        }
+        return inputFactory;
     }
 
     /**
@@ -153,24 +158,27 @@ public class StAXUtils {
      * @return an XMLOutputFactory instance.
      */
     public static XMLOutputFactory getXMLOutputFactory() {
-        return (XMLOutputFactory) AccessController.doPrivileged(
-                new PrivilegedAction() {
-                    public Object run() {
+        if (outputFactory == null) {
+            outputFactory = (XMLOutputFactory) AccessController.doPrivileged(
+                    new PrivilegedAction() {
+                        public Object run() {
 
-                        Thread currentThread = Thread.currentThread();
-                        ClassLoader savedClassLoader = currentThread.getContextClassLoader();
-                        XMLOutputFactory factory = null;
-                        try {
-                            currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
-                            factory = XMLOutputFactory.newInstance();
-                            factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.FALSE);
+                            Thread currentThread = Thread.currentThread();
+                            ClassLoader savedClassLoader = currentThread.getContextClassLoader();
+                            XMLOutputFactory factory = null;
+                            try {
+                                currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
+                                factory = XMLOutputFactory.newInstance();
+                                factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.FALSE);
+                            }
+                            finally {
+                                currentThread.setContextClassLoader(savedClassLoader);
+                            }
+                            return factory;
                         }
-                        finally {
-                            currentThread.setContextClassLoader(savedClassLoader);
-                        }
-                        return factory;
-                    }
-                });
+                    });
+        }
+        return outputFactory;
     }
 
     /**
