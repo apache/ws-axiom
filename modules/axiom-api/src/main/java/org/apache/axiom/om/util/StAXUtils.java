@@ -41,116 +41,8 @@ import java.util.List;
 
 
 public class StAXUtils {
-
-    private static interface ObjectCreator {
-        Object newObject();
-    }
-
-    private static class Pool {
-        private final int MAX_POOL_SIZE = 100;
-        private final List objects = new ArrayList();
-        private final ObjectCreator objectCreator;
-
-        Pool(ObjectCreator[] creators) {
-            ObjectCreator oc = null;
-            for (int i = 0; i < creators.length; i++) {
-                try {
-                    creators[i].newObject();
-                    oc = creators[i];
-                    break;
-                } catch (Throwable t) {
-                    // Ignore me
-                }
-            }
-            if (oc == null) {
-                throw new IllegalStateException("No valid ObjectCreator found.");
-            }
-            objectCreator = oc;
-        }
-
-        synchronized Object getInstance() {
-            final int size = objects.size();
-            if (size > 0) {
-                return objects.remove(size - 1);
-            }
-            return objectCreator.newObject();
-        }
-
-        synchronized void releaseInstance(Object object) {
-            if (objects.size() < MAX_POOL_SIZE) {
-                objects.add(object);
-            }
-        }
-
-        synchronized void clear() {
-            objects.clear();
-        }
-    }
-
-    private static final Pool xmlInputFactoryPool = new Pool(new ObjectCreator[] {
-            new ObjectCreator() {
-                public Object newObject() {
-                    return AccessController.doPrivileged(
-                            new PrivilegedAction() {
-                                public Object run() {
-                                    Thread currentThread = Thread.currentThread();
-                                    ClassLoader savedClassLoader = currentThread.getContextClassLoader();
-                                    XMLInputFactory factory = null;
-                                    try {
-                                        currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
-                                        factory = XMLInputFactory.newInstance();
-                                    }
-                                    finally {
-                                        currentThread.setContextClassLoader(savedClassLoader);
-                                    }
-                                    return factory; 
-                                }
-                            });
-                }
-            },
-            new ObjectCreator() {
-                public Object newObject() {
-                    return XMLInputFactory.newInstance();
-                }
-            }
-    });
-
-    private static final Pool xmlOutputFactoryPool = new Pool(new ObjectCreator[] {
-            new ObjectCreator() {
-                public Object newObject() {
-                    return AccessController.doPrivileged(
-                            new PrivilegedAction() {
-                                public Object run() {
-                                                                       
-                                    Thread currentThread = Thread.currentThread();
-                                    ClassLoader savedClassLoader = currentThread.getContextClassLoader();
-                                    XMLOutputFactory factory = null;
-                                    try {
-                                        currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
-                                        factory = XMLOutputFactory.newInstance();
-                                        factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.FALSE);
-                                    }
-                                    finally {
-                                        currentThread.setContextClassLoader(savedClassLoader);
-                                    }
-                                    return factory;
-                                }
-                            });
-                }
-            },
-            new ObjectCreator() {
-                public Object newObject() {
-                    XMLOutputFactory factory = XMLOutputFactory.newInstance();
-                    factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.FALSE);
-                    return factory;
-                }
-            }
-    });
-
-
     private static Log log = LogFactory.getLog(StAXUtils.class);
     private static boolean isDebugEnabled = log.isDebugEnabled();
-
 
     /**
      * Gets an XMLInputFactory instance from pool.
@@ -158,16 +50,31 @@ public class StAXUtils {
      * @return an XMLInputFactory instance.
      */
     public static XMLInputFactory getXMLInputFactory() {
-        return (XMLInputFactory) xmlInputFactoryPool.getInstance();
+        return (XMLInputFactory) AccessController.doPrivileged(
+                new PrivilegedAction() {
+                    public Object run() {
+                        Thread currentThread = Thread.currentThread();
+                        ClassLoader savedClassLoader = currentThread.getContextClassLoader();
+                        XMLInputFactory factory = null;
+                        try {
+                            currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
+                            factory = XMLInputFactory.newInstance();
+                        }
+                        finally {
+                            currentThread.setContextClassLoader(savedClassLoader);
+                        }
+                        return factory;
+                    }
+                });
     }
 
     /**
+     * @deprecated
      * Returns an XMLInputFactory instance for reuse.
      *
      * @param factory An XMLInputFactory instance that is available for reuse
      */
     public static void releaseXMLInputFactory(XMLInputFactory factory) {
-        xmlInputFactoryPool.releaseInstance(factory);
     }
 
     public static XMLStreamReader createXMLStreamReader(final InputStream in, final String encoding)
@@ -246,16 +153,33 @@ public class StAXUtils {
      * @return an XMLOutputFactory instance.
      */
     public static XMLOutputFactory getXMLOutputFactory() {
-        return (XMLOutputFactory) xmlOutputFactoryPool.getInstance();
+        return (XMLOutputFactory) AccessController.doPrivileged(
+                new PrivilegedAction() {
+                    public Object run() {
+
+                        Thread currentThread = Thread.currentThread();
+                        ClassLoader savedClassLoader = currentThread.getContextClassLoader();
+                        XMLOutputFactory factory = null;
+                        try {
+                            currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
+                            factory = XMLOutputFactory.newInstance();
+                            factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.FALSE);
+                        }
+                        finally {
+                            currentThread.setContextClassLoader(savedClassLoader);
+                        }
+                        return factory;
+                    }
+                });
     }
 
     /**
+     * @deprecated
      * Returns an XMLOutputFactory instance for reuse.
      *
      * @param factory An XMLOutputFactory instance that is available for reuse.
      */
     public static void releaseXMLOutputFactory(XMLOutputFactory factory) {
-        xmlOutputFactoryPool.releaseInstance(factory);
     }
 
     public static XMLStreamWriter createXMLStreamWriter(final OutputStream out)
@@ -277,8 +201,6 @@ public class StAXUtils {
             return writer;
         } catch (PrivilegedActionException pae) {
             throw (XMLStreamException) pae.getException();
-        } finally {
-            releaseXMLOutputFactory(outputFactory);
         }
     }
 
@@ -301,8 +223,6 @@ public class StAXUtils {
             return writer;
         } catch (PrivilegedActionException pae) {
             throw (XMLStreamException) pae.getException();
-        } finally {
-            releaseXMLOutputFactory(outputFactory);
         }
     }
 
@@ -324,13 +244,12 @@ public class StAXUtils {
             return writer;
         } catch (PrivilegedActionException pae) {
             throw (XMLStreamException) pae.getException();
-        } finally {
-            releaseXMLOutputFactory(outputFactory);
         }
     }
 
+    /**
+     * @deprecated
+     */
     public static void reset() {
-        xmlOutputFactoryPool.clear();
-        xmlInputFactoryPool.clear();
     }
 }
