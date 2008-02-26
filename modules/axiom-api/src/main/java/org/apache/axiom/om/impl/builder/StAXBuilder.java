@@ -416,6 +416,13 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         }
         cache = b;
     }
+    
+    /**
+     * @return true if caching
+     */
+    public boolean isCache() {
+        return cache;
+    }
 
     /**
      * Method getName.

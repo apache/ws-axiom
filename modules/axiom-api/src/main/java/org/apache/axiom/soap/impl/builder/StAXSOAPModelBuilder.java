@@ -20,7 +20,6 @@
 package org.apache.axiom.soap.impl.builder;
 
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -77,7 +76,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
     private String parserVersion = null;
     private static final boolean isDebugEnabled = log.isDebugEnabled();
-
+    
     /**
      * Constructor StAXSOAPModelBuilder soapVersion parameter is to give the soap version from the
      * transport. For example, in HTTP case you can identify the version of the soap message u have
@@ -166,6 +165,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      */
     protected OMNode createNextOMElement() {
         OMNode newElement = null;
+        
         if (elementLevel == 3 && 
             customBuilderForPayload != null) {
             
@@ -328,7 +328,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
                 processNamespaceData(element, true);
                 processAttributes(element);
-
             } else {
                 throw new SOAPProcessingException(elementName
                         +

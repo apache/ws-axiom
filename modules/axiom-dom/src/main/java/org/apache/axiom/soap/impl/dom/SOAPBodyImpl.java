@@ -22,6 +22,7 @@ package org.apache.axiom.soap.impl.dom;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -144,4 +145,24 @@ public abstract class SOAPBodyImpl extends SOAPElement implements SOAPBody,
          throw new SOAPProcessingException(
                  "Can not detach SOAP Body, SOAP Envelope must have a Body !!");
      }*/
+    
+    public OMNamespace getFirstElementNS() {
+        OMElement element = this.getFirstElement();
+        if (element == null) {
+            return null;
+        } else {
+            return element.getNamespace();
+        } 
+
+    }
+
+    public String getFirstElementLocalName() {
+        OMElement element = this.getFirstElement();
+        if (element == null) {
+            return null;
+        } else {
+            return element.getLocalName();
+        } 
+
+    }
 }

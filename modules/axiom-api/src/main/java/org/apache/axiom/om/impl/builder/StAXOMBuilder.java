@@ -59,6 +59,8 @@ public class StAXOMBuilder extends StAXBuilder {
     // on an OMElement is interned.
     boolean namespaceURIInterning = false;
     
+    int lookAheadToken = -1;
+    
     /**
      * Constructor StAXOMBuilder.
      *
@@ -156,7 +158,7 @@ public class StAXOMBuilder extends StAXBuilder {
             if (done) {
                 throw new OMException();
             }
-            int token = parser.next();
+            int token = parserNext();
             if (!cache) {
                 return token;
             }
@@ -487,5 +489,47 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     public boolean isNamespaceURIInterning() {
         return this.namespaceURIInterning;
+    }
+    
+    /**
+     * Pushes the virtual parser ahead one token.
+     * If a look ahead token was calculated it is returned.
+     * @return next token
+     * @throws XMLStreamException
+     */
+    private int parserNext() throws XMLStreamException {
+        if (lookAheadToken >= 0) {
+            int token = lookAheadToken;
+            lookAheadToken = -1; // Reset
+            return token;
+        } else {
+            return parser.next();
+        }
+    }
+    
+    /**
+     * This method looks ahead to the next start element.
+     * @return true if successful
+     */
+    public boolean lookahead()  {
+        try {
+            while (true) {
+                if (lookAheadToken < 0) {
+                    lookAheadToken = parserNext();
+                }
+                if (lookAheadToken == XMLStreamConstants.START_ELEMENT) {
+                    return true;
+                } else if (lookAheadToken == XMLStreamConstants.END_ELEMENT ||
+                        lookAheadToken == XMLStreamConstants.START_DOCUMENT ||
+                        lookAheadToken == XMLStreamConstants.END_DOCUMENT) {
+                    next();
+                    return false;  // leaving scope...start element not found
+                } else {
+                    next();  // continue looking past whitespace etc.
+                }
+            }
+        } catch (XMLStreamException e) {
+            throw new OMException(e);
+        }
     }
 }

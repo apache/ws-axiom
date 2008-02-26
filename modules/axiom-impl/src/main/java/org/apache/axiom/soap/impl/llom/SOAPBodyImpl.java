@@ -33,12 +33,21 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+
+import javax.xml.stream.XMLStreamConstants;
 
 /** Class SOAPBodyImpl */
 public abstract class SOAPBodyImpl extends SOAPElement
         implements SOAPBody, OMConstants {
     /** Field hasSOAPFault */
     private boolean hasSOAPFault = false;
+    
+    private boolean enableLookAhead = true;
+    private boolean lookAheadAttempted = false;
+    private boolean lookAheadSuccessful = false;
+    private String lookAheadLocalName = null;
+    private OMNamespace lookAheadNS = null;
 
     protected SOAPBodyImpl(String localName, OMNamespace ns,
                            SOAPFactory factory) {
@@ -86,22 +95,17 @@ public abstract class SOAPBodyImpl extends SOAPElement
         if (hasSOAPFault) {
             return true;
         } else {
-            OMElement element = getFirstElement();
-            if (element != null
-                    &&
-                    SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(
-                            element.getLocalName())
-                    &&
-                    (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                            element.getNamespace().getNamespaceURI())
-                            ||
-                            SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                                    element.getNamespace().getNamespaceURI()))) {  //added this line
-                hasSOAPFault = true;
-                return true;
-            } else {
-                return false;
-            }
+            // Set hasSOAPFault if it matches the name matches a SOAP Fault
+            String name = this.getFirstElementLocalName();
+            if (SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(name)) {
+                OMNamespace ns = this.getFirstElementNS();
+                if (ns != null &&
+                    (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()) ||
+                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()))) {
+                    hasSOAPFault = true;
+                }                                                             
+            } 
+            return hasSOAPFault;
         }
     }
 
@@ -158,4 +162,72 @@ public abstract class SOAPBodyImpl extends SOAPElement
         throw new SOAPProcessingException(
                 "Can not detach SOAP Body, SOAP Envelope must have a Body !!");
     }
+
+    /* 
+     * Overridden so that we can detect when a child element is built
+     */
+    public void buildNext() {
+        if (builder != null) {
+            int token = builder.next();
+            if (token == XMLStreamConstants.START_ELEMENT) {
+                enableLookAhead = false;
+            }
+        }
+    }
+    
+    private boolean hasLookahead() {
+        if (!enableLookAhead) {
+           return false; 
+        }
+        if (lookAheadAttempted) {
+            return lookAheadSuccessful;
+        }
+        lookAheadAttempted = true;
+        StAXSOAPModelBuilder soapBuilder = (StAXSOAPModelBuilder) this.builder;
+        if (soapBuilder != null &&
+            soapBuilder.isCache() &&
+            !soapBuilder.isCompleted() &&
+            !soapBuilder.isClosed()) {
+            lookAheadSuccessful = soapBuilder.lookahead();
+            if (lookAheadSuccessful) {
+                this.lookAheadLocalName = soapBuilder.getName();
+                this.lookAheadNS = factory.createOMNamespace(soapBuilder.getNamespace(), 
+                                                             soapBuilder.getPrefix());
+            }
+        }
+        return lookAheadSuccessful;
+    }
+    
+    public OMNamespace getFirstElementNS() {
+        if (hasLookahead()) {
+            return this.lookAheadNS;
+        } else {
+            OMElement element = this.getFirstElement();
+            if (element == null) {
+                return null;
+            } else {
+                return element.getNamespace();
+            } 
+        }
+    }
+    
+    public String getFirstElementLocalName() {
+        if (hasLookahead()) {
+            return this.lookAheadLocalName;
+        } else {
+            OMElement element = this.getFirstElement();
+            if (element == null) {
+                return null;
+            } else {
+                return element.getLocalName();
+            } 
+        }
+    }
+
+    public void addChild(OMNode child) {
+        this.enableLookAhead = false;
+        super.addChild(child);
+    }
+    
+    
 }

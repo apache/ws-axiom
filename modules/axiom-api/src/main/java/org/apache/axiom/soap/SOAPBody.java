@@ -21,6 +21,7 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNamespace;
 
 /**
  * An object that represents the contents of the SOAP body element in a SOAP message. B SOAP body
@@ -66,5 +67,23 @@ public interface SOAPBody extends OMElement {
      */
     void addFault(SOAPFault soapFault) throws OMException;
 
-
+    /**
+     * Retrieves the OMNamespace of the first element in the body.
+     * The implementation might build the OMElement or it may
+     * obtain this information from the builder/parser without building
+     * the OMElement.  Use this method in the situations where you need
+     * to know the OMNamespace, but don't necessarily need the OMElement.
+     * @return OMNamespace of first element in the body or null
+     */
+    public OMNamespace getFirstElementNS();
+    
+    /**
+     * Retrieves the local name of the first element in the body.
+     * The implementation might build the OMElement or it may
+     * obtain this information from the builder/parser without building
+     * the OMElement.  Use this method in the situations where you need
+     * to know the name, but don't necessarily need the OMElement.
+     * @return local name of first element in the body or null
+     */
+    public String getFirstElementLocalName();
 }

@@ -20,7 +20,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
@@ -56,8 +55,9 @@ public class CustomBuilderTest extends AbstractTestCase {
     
     public void testSample1() throws Exception {
         File file = getTestResourceFile(TestConstants.SAMPLE1);
-        copyAndCheck(createEnvelope(file), true);
+        copyAndCheck(createEnvelope(file, false), true);
     }
+    
     
     public void testHeaderCustomBuilder() throws Exception{
         XMLStreamReader parser =
@@ -78,28 +78,38 @@ public class CustomBuilderTest extends AbstractTestCase {
         }
     }
     
+    /**
+     * Test OMSE with SOAPMessage
+     * @throws Exception
+     */
     public void testSOAPMESSAGE() throws Exception {
         File file = getTestResourceFile(TestConstants.SOAP_SOAPMESSAGE);
-        copyAndCheck(createEnvelope(file), true);
+        copyAndCheck(createEnvelope(file, false), true);
     }
     
-    public void testSOAPMESSAGE1() throws Exception {
-        File file = getTestResourceFile(TestConstants.SOAP_SOAPMESSAGE1);
-        copyAndCheck(createEnvelope(file), false);  // Ignore the serialization comparison
+    
+    /** 
+     * Same as testSOAPMessage, except that the a fault check is done too.
+     * (The fault check simulates what happens in the engine.)
+     * @throws Exception
+     */
+    public void testSOAPMESSAGE2() throws Exception {
+        File file = getTestResourceFile(TestConstants.SOAP_SOAPMESSAGE);
+        copyAndCheck(createEnvelope(file, true), true);
     }
     
     public void testWHITESPACE_MESSAGE() throws Exception {
         File file = getTestResourceFile(TestConstants.WHITESPACE_MESSAGE);
-        copyAndCheck(createEnvelope(file), true);
+        copyAndCheck(createEnvelope(file, false), true);
     }
     
     public void testREALLY_BIG_MESSAGE() throws Exception {
         File file = getTestResourceFile(TestConstants.REALLY_BIG_MESSAGE);
-        copyAndCheck(createEnvelope(file), false);  // Ignore the serialization comparison
+        copyAndCheck(createEnvelope(file, false), false);  // Ignore the serialization comparison
     }
     public void testOMSE() throws Exception {
         File file = getTestResourceFile(TestConstants.EMPTY_BODY_MESSAGE);
-        SOAPEnvelope sourceEnv = createEnvelope(file);
+        SOAPEnvelope sourceEnv = createEnvelope(file, false);
         SOAPBody body = sourceEnv.getBody();
         
         // Create a payload
@@ -114,7 +124,7 @@ public class CustomBuilderTest extends AbstractTestCase {
     
     public void testOMSE2() throws Exception {
         File file = getTestResourceFile(TestConstants.EMPTY_BODY_MESSAGE);
-        SOAPEnvelope sourceEnv = createEnvelope(file);
+        SOAPEnvelope sourceEnv = createEnvelope(file, false);
         SOAPBody body = sourceEnv.getBody();
         SOAPHeader header = sourceEnv.getHeader();
         String encoding = "UTF-8";
@@ -149,12 +159,22 @@ public class CustomBuilderTest extends AbstractTestCase {
      * @return
      * @throws Exception
      */
-    protected SOAPEnvelope createEnvelope(File file) throws Exception {
+    protected SOAPEnvelope createEnvelope(File file, boolean doFaultCheck) throws Exception {
         XMLStreamReader parser =
             XMLInputFactory.newInstance().createXMLStreamReader(new FileReader(file));
         StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(parser, null);
-        builder.registerCustomBuilderForPayload(new ByteArrayCustomBuilder("utf-8"));
+        
         SOAPEnvelope sourceEnv = (SOAPEnvelope) builder.getDocumentElement();
+        
+        // Do a fault check.  This is normally done in the engine (Axiom) and should
+        // not cause inteference with the custom builder processing
+        if (doFaultCheck) {
+            sourceEnv.getBody().hasFault();
+        }
+        
+        // Do the registration here...this simulates when it could occure in the engine
+        // (After the fault check and during phase processing...probably dispatch phase)
+        builder.registerCustomBuilderForPayload(new ByteArrayCustomBuilder("utf-8"));
         return sourceEnv;
     }
     
