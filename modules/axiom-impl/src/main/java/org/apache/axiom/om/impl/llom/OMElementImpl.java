@@ -713,6 +713,11 @@ public class OMElementImpl extends OMNodeImpl
      * @return Returns reader.
      */
     private XMLStreamReader getXMLStreamReader(boolean cache) {
+        if (builder != null && this.builder instanceof StAXOMBuilder) {
+            if (((StAXOMBuilder) builder).isLookahead()) {
+                this.buildNext();
+            }
+        }
         // The om tree was built by hand and is already complete
         if ((builder == null) && done) {
             return new OMStAXWrapper(null, this, false);

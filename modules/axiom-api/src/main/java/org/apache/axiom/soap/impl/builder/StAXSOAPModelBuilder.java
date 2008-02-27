@@ -202,6 +202,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      * @throws OMException
      */
     protected OMNode createOMElement() throws OMException {
+        
         OMElement node;
         String elementName = parser.getLocalName();
         if (lastNode == null) {
@@ -354,7 +355,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         } else if ((elementLevel == 3) &&
                 parent.getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME) &&
                 elementName.equals(SOAPConstants.BODY_FAULT_LOCAL_NAME)) {
-
             // this is a headerblock
             element = soapFactory.createSOAPFault((SOAPBody) parent, this);
             processNamespaceData(element, false);
@@ -373,7 +373,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         } else if (elementLevel > 3 && processingFault) {
             element = builderHelper.handleEvent(parser, parent, elementLevel);
         } else {
-
             // this is neither of above. Just create an element
             element = soapFactory.createOMElement(elementName, null,
                                                   parent, this);

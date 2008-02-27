@@ -532,4 +532,8 @@ public class StAXOMBuilder extends StAXBuilder {
             throw new OMException(e);
         }
     }
+    
+    public boolean isLookahead() {
+        return lookAheadToken >= 0;
+    }
 }
