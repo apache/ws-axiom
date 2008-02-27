@@ -21,6 +21,7 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNamespace;
 
 /** Interface SOAPEnvelope */
 public interface SOAPEnvelope extends OMElement {
@@ -47,4 +48,32 @@ public interface SOAPEnvelope extends OMElement {
     SOAPBody getBody() throws OMException;
 
     SOAPVersion getVersion();
+    
+    /**
+     * Returns true if there is a SOAPFault in the body.
+     * The implementation may choose to get this information by building the OM
+     * tree or use parser provided information.
+     * @return true if SOAPFault in the body
+     */
+    boolean hasFault();
+    
+    /**
+     * Retrieves the OMNamespace of the first element in the body.
+     * The implementation might build the OMElement or it may
+     * obtain this information from the builder/parser without building
+     * the OMElement.  Use this method in the situations where you need
+     * to know the OMNamespace, but don't necessarily need the OMElement.
+     * @return OMNamespace of first element in the body or null
+     */
+    public OMNamespace getSOAPBodyFirstElementNS();
+    
+    /**
+     * Retrieves the local name of the first element in the body.
+     * The implementation might build the OMElement or it may
+     * obtain this information from the builder/parser without building
+     * the OMElement.  Use this method in the situations where you need
+     * to know the name, but don't necessarily need the OMElement.
+     * @return local name of first element in the body or null
+     */
+    public String getSOAPBodyFirstElementLocalName();
 }

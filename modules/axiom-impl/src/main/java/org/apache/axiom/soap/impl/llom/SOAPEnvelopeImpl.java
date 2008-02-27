@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
+import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -36,7 +37,9 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -241,5 +244,63 @@ public class SOAPEnvelopeImpl extends SOAPElement
             OMSerializerUtil.serializeByPullStream(element, writer, false);
         }
         child.getNextOMSibling();
+    }
+    
+    public boolean hasFault() {      
+        QName payloadQName = this.getPayloadQName_Optimized();
+        if (payloadQName != null) {
+            if (SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(payloadQName.getLocalPart())) {
+                String ns = payloadQName.getNamespaceURI();
+                return (ns != null &&
+                    (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns) ||
+                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns)));                                                         
+            } 
+        }
+        
+        // Fallback: Get the body and get the fault information from the body
+        SOAPBody body = this.getBody();
+        return (body == null) ? false : body.hasFault();
+    }
+
+    public String getSOAPBodyFirstElementLocalName() {
+        QName payloadQName = this.getPayloadQName_Optimized();
+        if (payloadQName != null) {
+            return payloadQName.getLocalPart();
+        }
+        SOAPBody body = this.getBody();
+        return (body == null) ? null : body.getFirstElementLocalName();
+    }
+
+    public OMNamespace getSOAPBodyFirstElementNS() {
+        QName payloadQName = this.getPayloadQName_Optimized();
+        if (payloadQName != null) {
+            return this.factory.createOMNamespace(payloadQName.getNamespaceURI(), 
+                                                  payloadQName.getPrefix());
+        }
+        SOAPBody body = this.getBody();
+        return (body == null) ? null : body.getFirstElementNS();
+    }
+    
+    /**
+     * Use a parser property to fetch the first element in the body.
+     * Returns null if this optimized property is not set or not available.
+     * @return The qname of the first element in the body or null
+     */
+    private QName getPayloadQName_Optimized() {
+        // The parser may expose a SOAPBODY_FIRST_CHILD_ELEMENT_QNAME property
+        // Use that QName to determine if there is a fault
+        OMXMLParserWrapper builder = this.getBuilder();
+        if (builder instanceof StAXSOAPModelBuilder) {
+            try {
+                QName payloadQName = (QName) ((StAXSOAPModelBuilder) builder).
+                    getReaderProperty(SOAPConstants.SOAPBODY_FIRST_CHILD_ELEMENT_QNAME);
+                return payloadQName;
+            } catch (IllegalArgumentException e) {
+                // The parser may not support this property. 
+                // In such cases, processing continues below in the fallback approach
+            }
+            
+        }
+        return null;
     }
 }

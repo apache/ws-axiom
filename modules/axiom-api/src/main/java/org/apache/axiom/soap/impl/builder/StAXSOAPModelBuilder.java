@@ -166,6 +166,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     protected OMNode createNextOMElement() {
         OMNode newElement = null;
         
+        
         if (elementLevel == 3 && 
             customBuilderForPayload != null) {
             

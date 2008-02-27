@@ -625,4 +625,42 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
         element.build();
         this.assertXMLEqual(soap11Fault, element.toString());
     }
+    
+    /**
+     * @throws Exception
+     */
+    public void testOptimizedFault() throws Exception {
+        String soap11Fault = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+                    "<SOAP-ENV:Body>" +
+                    "<SOAP-ENV:Fault>" +
+                        "<faultcode>SOAP-ENV:Server</faultcode>" +
+                        "<faultstring xml:lang=\"en\">handleMessage throws SOAPFaultException for ThrowsSOAPFaultToClientHandlersTest</faultstring>" +
+                        "<detail>" +
+                            "<somefaultentry/>" +
+                        "</detail>" +
+                        "<faultactor>faultActor</faultactor>" +
+                        "</SOAP-ENV:Fault>" +
+                    "</SOAP-ENV:Body>" +
+                "</SOAP-ENV:Envelope>";
+        
+        // Use the test parser that is aware of the first qname in the body.
+        // This simulates the use of the parser that has this information built into its
+        // implementation.
+        
+        XMLStreamReader soap11Parser = XMLInputFactory.newInstance()
+                .createXMLStreamReader(new StringReader(soap11Fault));
+        QName qname = new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP11Constants.BODY_FAULT_LOCAL_NAME, "SOAP-ENV");
+        XMLStreamReaderWithQName parser = new XMLStreamReaderWithQName(soap11Parser, qname);
+        StAXSOAPModelBuilder soap11Builder = new StAXSOAPModelBuilder(parser, null);
+        SOAPEnvelope env = soap11Builder.getSOAPEnvelope();
+        boolean isFault = env.hasFault();
+        this.assertTrue(isFault);
+        this.assertTrue(!parser.isReadBody());
+        
+        // Get the name of the first element in the body
+        String localName = env.getSOAPBodyFirstElementLocalName();
+        this.assertTrue(localName.equals("Fault"));
+        this.assertTrue(!parser.isReadBody());
+    }
 }
