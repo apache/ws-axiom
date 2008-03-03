@@ -20,6 +20,7 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.impl.PartFactory;
+import org.apache.axiom.attachments.lifecycle.LifecycleManagerFactory;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.UUIDGenerator;
@@ -108,9 +109,18 @@ public class Attachments {
     private String attachmentRepoDir;
 
     private int fileStorageThreshold;
-
+    
+    private static LifecycleManagerFactory lmf = new LifecycleManagerFactory();
+    
     protected static Log log = LogFactory.getLog(Attachments.class);
+   
+    public static LifecycleManagerFactory getLifcycleManagerFactory() {
+        return lmf;
+    }
 
+    public static void setlifeCycleManagerFactory(LifecycleManagerFactory lifeCycleManagerFactory) {
+        lmf = lifeCycleManagerFactory;
+    }
 
     /**
      * Moves the pointer to the beginning of the first MIME part. Reads till first MIME boundary is

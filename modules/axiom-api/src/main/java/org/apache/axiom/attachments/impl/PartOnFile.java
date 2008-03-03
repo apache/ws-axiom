@@ -18,18 +18,17 @@
  */
 package org.apache.axiom.attachments.impl;
 
-import org.apache.axiom.attachments.CachedFileDataSource;
-import org.apache.axiom.om.util.UUIDGenerator;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Hashtable;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Hashtable;
+import org.apache.axiom.attachments.lifecycle.LifecycleManager;
+import org.apache.axiom.attachments.lifecycle.LifecycleManagerFactory;
+import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
 
 /**
  * PartOnFile stores that attachment in a file.
@@ -41,7 +40,7 @@ import java.util.Hashtable;
  */
 public class PartOnFile extends AbstractPart {
 
-    File backingFile;
+    FileAccessor fileAccessor;
     
     
     /**
@@ -53,76 +52,44 @@ public class PartOnFile extends AbstractPart {
      */
     PartOnFile(Hashtable headers, InputStream is1, InputStream is2, String attachmentDir) throws IOException {
         super(headers);
-        backingFile = createFile(attachmentDir);
-     
+        LifecycleManager lm = LifecycleManagerFactory.getLifeCycleManager();
+        fileAccessor = lm.create(attachmentDir);
         
         // Now write the data to the backing file
-        FileOutputStream fos = new FileOutputStream(backingFile);
+        OutputStream fos = fileAccessor.getOutputStream();
         BufferUtils.inputStream2OutputStream(is1, fos);
         BufferUtils.inputStream2OutputStream(is2, fos);
         fos.flush();
         fos.close();
-    }
-    
-    /**
-     * Create a unique file in the designated directory
-     * @param attachmentDir
-     * @return File
-     * @throws IOException
-     */
-    private static File createFile(String attachmentDir) throws IOException {
-        File file = null;
-        File dir = null;
-        if (attachmentDir != null) {
-            dir = new File(attachmentDir);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-        }
-        if (!dir.isDirectory()) {
-            throw new IllegalArgumentException("Given Axis2 Attachment File Cache Location "
-                    + dir + "  should be a directory.");
-        }
-        // Generate unique id.  The UUID generator is used so that we can limit
-        // synchronization with the java random number generator.
-        String id = UUIDGenerator.getUUID();
         
-        //Replace colons with underscores
-        id = id.replaceAll(":", "_");
-        
-        String fileString = "Axis2" + id + ".att";
-        file = new File(dir, fileString);
-        return file;
     }
-    
+
     /* (non-Javadoc)
      * @see org.apache.axiom.attachments.impl.AbstractPart#getDataHandler()
      */
     public DataHandler getDataHandler() throws MessagingException {
-        CachedFileDataSource dataSource = new CachedFileDataSource(backingFile);
-        dataSource.setContentType(getContentType());
-        return new DataHandler(dataSource);
+        return fileAccessor.getDataHandler(getContentType());
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.attachments.impl.AbstractPart#getFileName()
      */
     public String getFileName() throws MessagingException {
-        return backingFile.getAbsolutePath();
+        return fileAccessor.getFileName();
     }
 
     /* (non-Javadoc)
      * @see org.apache.axiom.attachments.impl.AbstractPart#getInputStream()
      */
     public InputStream getInputStream() throws IOException, MessagingException {
-        return new FileInputStream(backingFile);
+        return fileAccessor.getInputStream();
     }
     
     /* (non-Javadoc)
      * @see org.apache.axiom.attachments.impl.AbstractPart#getSize()
      */
     public int getSize() {
-        return (int) backingFile.length();
+        return (int) fileAccessor.getSize();
     }
 
 }
