@@ -135,10 +135,10 @@ public class Attachments {
      * @param attachmentRepoDir
      * @throws OMException
      */
-    public Attachments(InputStream inStream, String contentTypeString,
+    public Attachments(LifecycleManager manager, InputStream inStream, String contentTypeString,
                        boolean fileCacheEnable, String attachmentRepoDir,
                        String fileThreshold) throws OMException {
-        this(inStream, contentTypeString, fileCacheEnable, attachmentRepoDir, fileThreshold, 0);
+        this(manager, inStream, contentTypeString, fileCacheEnable, attachmentRepoDir, fileThreshold, 0);
     }
         
         /**
@@ -153,8 +153,9 @@ public class Attachments {
      * @param contentLength
      * @throws OMException
      */
-    public Attachments(InputStream inStream, String contentTypeString, boolean fileCacheEnable,
+    public Attachments(LifecycleManager manager, InputStream inStream, String contentTypeString, boolean fileCacheEnable,
             String attachmentRepoDir, String fileThreshold, int contentLength) throws OMException {
+        this.manager = manager;
         this.contentLength = contentLength;
         this.attachmentRepoDir = attachmentRepoDir;
         this.fileCacheEnable = fileCacheEnable;
@@ -238,6 +239,39 @@ public class Attachments {
     }
 
     /**
+     * Moves the pointer to the beginning of the first MIME part. Reads till first MIME boundary is
+     * found or end of stream is reached.
+     *
+     * @param inStream
+     * @param contentTypeString
+     * @param fileCacheEnable
+     * @param attachmentRepoDir
+     * @throws OMException
+     */
+    public Attachments(InputStream inStream, String contentTypeString,
+                       boolean fileCacheEnable, String attachmentRepoDir,
+                       String fileThreshold) throws OMException {
+        this(null, inStream, contentTypeString, fileCacheEnable, attachmentRepoDir, fileThreshold, 0);
+    }
+        
+        /**
+     * Moves the pointer to the beginning of the first MIME part. Reads
+     * till first MIME boundary is found or end of stream is reached.
+     *
+     * @param inStream
+     * @param contentTypeString
+     * @param fileCacheEnable
+     * @param attachmentRepoDir
+     * @param fileThreshold
+     * @param contentLength
+     * @throws OMException
+     */
+    public Attachments(InputStream inStream, String contentTypeString, boolean fileCacheEnable,
+            String attachmentRepoDir, String fileThreshold, int contentLength) throws OMException {
+            this(null, inStream, contentTypeString, fileCacheEnable,
+            attachmentRepoDir, fileThreshold, contentLength);
+    }
+    /**
      * Sets file cache to false.
      *
      * @param inStream
@@ -246,7 +280,7 @@ public class Attachments {
      */
     public Attachments(InputStream inStream, String contentTypeString)
             throws OMException {
-        this(inStream, contentTypeString, false, null, null);
+        this(null, inStream, contentTypeString, false, null, null);
     }
 
     /**
