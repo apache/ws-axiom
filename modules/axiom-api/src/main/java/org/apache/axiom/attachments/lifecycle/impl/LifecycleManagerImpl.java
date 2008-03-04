@@ -34,7 +34,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
     private Map table = new Hashtable();
     public static LifecycleManager manager = new LifecycleManagerImpl();
 
-    protected LifecycleManagerImpl() {
+    public LifecycleManagerImpl() {
         super(); 
     }
 
@@ -68,7 +68,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
         file = new File(dir, fileString);
         //add the file to table
         table.put(id, file);
-        FileAccessor fa = new FileAccessor(file, id);
+        FileAccessor fa = new FileAccessor(manager, file, id);
         //TODO: change deleteOnExit call such that it's sent as an event to 
         //LifecycleEventHandler. example fa.handleEvent(LifeCycleDefinition.DELETE_ON_EXIT)
         //This is the default behaviour. Delete file on VM Exit.

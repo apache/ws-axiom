@@ -20,7 +20,8 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.impl.PartFactory;
-import org.apache.axiom.attachments.lifecycle.LifecycleManagerFactory;
+import org.apache.axiom.attachments.lifecycle.LifecycleManager;
+import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.UUIDGenerator;
@@ -31,7 +32,6 @@ import javax.activation.DataHandler;
 import javax.mail.MessagingException;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.ParseException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
@@ -110,16 +110,19 @@ public class Attachments {
 
     private int fileStorageThreshold;
     
-    private static LifecycleManagerFactory lmf = new LifecycleManagerFactory();
+    private LifecycleManager manager;
     
     protected static Log log = LogFactory.getLog(Attachments.class);
    
-    public static LifecycleManagerFactory getLifcycleManagerFactory() {
-        return lmf;
+    public LifecycleManager getLifecycleManager() {
+        if(manager == null) {
+            manager = new LifecycleManagerImpl();   
+        }
+        return manager;
     }
 
-    public static void setlifeCycleManagerFactory(LifecycleManagerFactory lifeCycleManagerFactory) {
-        lmf = lifeCycleManagerFactory;
+    public void setLifecycleManager(LifecycleManager manager) {
+        this.manager = manager;
     }
 
     /**
@@ -573,7 +576,7 @@ public class Attachments {
                                         PUSHBACK_SIZE);
 
         // The PartFactory will determine which Part implementation is most appropriate.
-        Part part = PartFactory.createPart(partStream, 
+        Part part = PartFactory.createPart(getLifecycleManager(), partStream, 
                                       isSOAPPart, 
                                       threshhold, 
                                       attachmentRepoDir, 

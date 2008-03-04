@@ -21,13 +21,11 @@ package org.apache.axiom.attachments.lifecycle.impl;
 
 import org.apache.axiom.attachments.CachedFileDataSource;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
-import org.apache.axiom.attachments.lifecycle.LifecycleManagerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -47,10 +45,13 @@ public class FileAccessor implements LifecycleEventHandler{
     private static final Log log = LogFactory.getLog(FileAccessor.class);
     File file = null;
     String id = null;
+    LifecycleManager manager;
+    
     //TODO remove hard coded time interval, 30 mins/1800 secs
     private final static int DELETE_INTERVAL = 1800;
-    public FileAccessor(File file, String id) {
+    public FileAccessor(LifecycleManager manager, File file, String id) {
         super();
+        this.manager = manager;
         this.file = file;
         this.id = id;
     }
@@ -90,7 +91,6 @@ public class FileAccessor implements LifecycleEventHandler{
     }
 
     public void handleEvent(int eventId) throws IOException {
-        LifecycleManager manager = LifecycleManagerFactory.getLifeCycleManager();
         switch (eventId) {
         case LifecycleEventDefinitions.DELETE_ON_EXIT:
             manager.deleteOnExit(id);

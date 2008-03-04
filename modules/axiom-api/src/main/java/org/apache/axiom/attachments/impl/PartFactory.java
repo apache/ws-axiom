@@ -20,6 +20,7 @@ package org.apache.axiom.attachments.impl;
 
 import org.apache.axiom.attachments.MIMEBodyPartInputStream;
 import org.apache.axiom.attachments.Part;
+import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.utils.BAAInputStream;
 import org.apache.axiom.attachments.utils.BAAOutputStream;
 import org.apache.axiom.om.OMException;
@@ -61,7 +62,7 @@ public class PartFactory {
      * @return Part
      * @throws OMException if any exception is encountered while processing.
      */
-    public static Part createPart(MIMEBodyPartInputStream in,
+    public static Part createPart(LifecycleManager manager, MIMEBodyPartInputStream in,
                     boolean isSOAPPart,
                     int threshholdSize,
                     String attachmentDir,
@@ -113,7 +114,7 @@ public class PartFactory {
                     BAAInputStream baais = 
                         new BAAInputStream(baaos.buffers(), baaos.length());
                     
-                    return new PartOnFile(headers, 
+                    return new PartOnFile(manager, headers, 
                                           baais,
                                           in, 
                                           attachmentDir);

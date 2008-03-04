@@ -18,17 +18,15 @@
  */
 package org.apache.axiom.attachments.impl;
 
+import org.apache.axiom.attachments.lifecycle.LifecycleManager;
+import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
+
+import javax.activation.DataHandler;
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Hashtable;
-
-import javax.activation.DataHandler;
-import javax.mail.MessagingException;
-
-import org.apache.axiom.attachments.lifecycle.LifecycleManager;
-import org.apache.axiom.attachments.lifecycle.LifecycleManagerFactory;
-import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
 
 /**
  * PartOnFile stores that attachment in a file.
@@ -41,6 +39,7 @@ import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
 public class PartOnFile extends AbstractPart {
 
     FileAccessor fileAccessor;
+    LifecycleManager manager;
     
     
     /**
@@ -50,10 +49,9 @@ public class PartOnFile extends AbstractPart {
      * @param in2 InputStream containing data
      * @param attachmentDir String 
      */
-    PartOnFile(Hashtable headers, InputStream is1, InputStream is2, String attachmentDir) throws IOException {
+    PartOnFile(LifecycleManager manager, Hashtable headers, InputStream is1, InputStream is2, String attachmentDir) throws IOException {
         super(headers);
-        LifecycleManager lm = LifecycleManagerFactory.getLifeCycleManager();
-        fileAccessor = lm.create(attachmentDir);
+        fileAccessor = manager.create(attachmentDir);
         
         // Now write the data to the backing file
         OutputStream fos = fileAccessor.getOutputStream();
