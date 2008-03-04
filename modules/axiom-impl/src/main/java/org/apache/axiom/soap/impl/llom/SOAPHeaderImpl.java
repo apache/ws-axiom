@@ -162,7 +162,7 @@ class MURoleChecker extends RoleChecker {
 /** A class representing the SOAP Header, primarily allowing access to the contained HeaderBlocks. */
 public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     
-    Log log = LogFactory.getLog(SOAPHeaderImpl.class);
+    static Log log = LogFactory.getLog(SOAPHeaderImpl.class);
     /** An Iterator which walks the header list as needed, potentially filtering as we traverse. */
     class HeaderIterator implements Iterator {
         SOAPHeaderBlock current;
