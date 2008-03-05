@@ -369,6 +369,10 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
         }
     }
 
+    public String getData() throws DOMException {
+        return this.getText();
+    }
+    
     public char[] getTextCharacters() {
         return charArray != null ? charArray : this.textValue.toString()
                 .toCharArray();
