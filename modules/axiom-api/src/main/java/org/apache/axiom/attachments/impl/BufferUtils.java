@@ -18,9 +18,13 @@
  */
 package org.apache.axiom.attachments.impl;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 
 /**
  * Attachment processing uses a lot of buffers.
@@ -29,7 +33,8 @@ import java.io.OutputStream;
  */
 public class BufferUtils {
     
-    public static final int BUFFER_LEN = 4 * 1024;
+    static int BUFFER_LEN = 100 * 1024;         // Copy Buffer size
+    static boolean ENABLE_FILE_CHANNEL = true;  // Enable file channel optimization 
     
     /**
      * Private utility to write the InputStream contents to the OutputStream.
@@ -42,8 +47,15 @@ public class BufferUtils {
         throws IOException {
             
         
+        // If this is a FileOutputStream, use th
+        if (ENABLE_FILE_CHANNEL && os instanceof FileOutputStream) {
+            if (inputStream2FileOutputStream(is, (FileOutputStream) os)) {
+                return;
+            }
+        }
         byte[] buffer = new byte[BUFFER_LEN];
         int bytesRead = is.read(buffer);
+        
         
         // Continue reading until no bytes are read and no
         // bytes are now available.
@@ -85,5 +97,68 @@ public class BufferUtils {
         return totalWritten;
     }
     
-  
+    /**
+     * Opimized writing to FileOutputStream using a channel
+     * @param is
+     * @param fos
+     * @return false if lock was not aquired
+     * @throws IOException
+     */
+    public static boolean inputStream2FileOutputStream(InputStream is, 
+                                                FileOutputStream fos)
+        throws IOException {
+        
+        // See if a file channel and lock can be obtained on the FileOutputStream
+        FileChannel channel = null;
+        FileLock lock = null;
+        ByteBuffer bb = null;
+        try {
+            channel = fos.getChannel();
+            if (channel != null) {
+                lock = channel.tryLock();
+            }
+            bb = ByteBuffer.allocate(BUFFER_LEN);
+        } catch (Throwable t) {
+        }
+        if (lock == null || bb == null || !bb.hasArray()) {
+            return false;  // lock could not be set or bb does not have direct array access
+        }
+        
+        try {
+
+            // Read directly into the ByteBuffer array
+            int bytesRead = is.read(bb.array());
+            // Continue reading until no bytes are read and no
+            // bytes are now available.
+            while (bytesRead > 0 || is.available() > 0) {
+                if (bytesRead > 0) {
+                    int written = 0;
+                    
+                    
+                    if (bytesRead < BUFFER_LEN) {
+                        // If the ByteBuffer is not full, allocate a new one
+                        ByteBuffer temp = ByteBuffer.allocate(bytesRead);
+                        temp.put(bb.array(), 0, bytesRead);
+                        temp.position(0);
+                        written = channel.write(temp);
+                    } else {
+                        // Write to channel
+                        bb.position(0);
+                        written = channel.write(bb);
+                        bb.clear();
+                    }
+                  
+                }
+                
+                // REVIEW: Do we need to ensure that bytesWritten is 
+                // the same as the number of bytes sent ?
+                
+                bytesRead = is.read(bb.array());
+            }
+        } finally {
+            // Release the lock
+           lock.release();
+        }
+        return true;
+    }
 }
