@@ -241,8 +241,17 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         while (node != null) {
             if (node.getType() == OMNode.ELEMENT_NODE) {
                 header = (OMElement) node;
-                if (nsURI.equals(header.getNamespace().getNamespaceURI())) {
-                    headers.add(header);
+                OMNamespace namespace = header.getNamespace();
+                if (nsURI == null) {
+                    if (namespace == null) {
+                        headers.add(header);
+                    }
+                } else {
+                    if (namespace != null) {
+                        if (nsURI.equals(namespace.getNamespaceURI())) {
+                            headers.add(header);
+                        }
+                    }
                 }
             }
             node = node.getNextOMSibling();
