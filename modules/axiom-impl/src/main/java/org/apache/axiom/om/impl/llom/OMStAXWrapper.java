@@ -40,6 +40,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.EmptyOMLocation;
@@ -193,11 +194,25 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
             needToThrowEndDocument = true;
         }
 
-        // initaite the next and current nodes
+        // initiate the next and current nodes
         // Note -  navigator is written in such a way that it first
         // returns the starting node at the first call to it
+        // Note - for OMSourcedElements, temporarily set caching
+        // to get the initial navigator nodes
+        boolean resetCache = false;
+        try {
+            if (startNode instanceof OMSourcedElement && 
+                    !cache && builder != null) {
+                builder.setCache(true); // bootstrap the navigator
+                resetCache = true;
+            }
+        } catch(Throwable t) {}
+        
         currentNode = navigator.next();
         updateNextNode();
+        if (resetCache) {
+            builder.setCache(cache); 
+        }
         switchingAllowed = !cache;
     }
 

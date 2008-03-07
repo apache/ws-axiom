@@ -436,8 +436,9 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             log.debug("getting XMLStreamReader without caching for " +
                     getPrintableName());
         }
-        if (isExpanded) {
-            return super.getXMLStreamReaderWithoutCaching();
+        if (isExpanded) {         
+            XMLStreamReader reader = super.getXMLStreamReaderWithoutCaching();
+            return reader;
         } else {
             return getDirectReader();
         }
