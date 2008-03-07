@@ -82,7 +82,7 @@ public class MIMEBodyPartInputStream extends InputStream {
      */
     public int read(byte[] b, int off, int len) throws IOException {
         if (done) {
-            return 0;
+            return -1;
         } 
         int rc = bpis.read(b, off, len);
         if (getBoundaryStatus()) {
@@ -96,7 +96,7 @@ public class MIMEBodyPartInputStream extends InputStream {
      */
     public int read(byte[] b) throws IOException {
         if (done) {
-            return 0;
+            return -1;
         } 
         int rc = bpis.read(b);
         if (getBoundaryStatus()) {
