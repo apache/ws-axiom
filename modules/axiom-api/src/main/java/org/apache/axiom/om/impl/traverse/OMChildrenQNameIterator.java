@@ -50,6 +50,7 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
     public OMChildrenQNameIterator(OMNode currentChild, QName givenQName) {
         super(currentChild);
         this.givenQName = givenQName;
+        findNextElementWithQName();
     }
     
     /**
@@ -72,26 +73,31 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
      */
     public boolean hasNext() {
         while (needToMoveForward) {
-            if (currentChild != null) {
-                // check the current node for the criteria
-                if (currentChild instanceof OMElement) {
-                    QName thisQName = ((OMElement)currentChild).getQName();
-                    // A null givenName is an indicator to return all elements
-                    if (givenQName == null || isEqual(givenQName, thisQName)) {
-                        isMatchingNodeFound = true;
-                        needToMoveForward = false;
-                        break;
-                    }
-                }
-
-                // get the next named node
-                currentChild = currentChild.getNextOMSibling();
-                isMatchingNodeFound = needToMoveForward = !(currentChild == null);
-            } else {
-                needToMoveForward = false;
-            }
+            findNextElementWithQName();
         }
         return isMatchingNodeFound;
+    }
+
+    private void findNextElementWithQName()
+    {
+        if (currentChild != null) {
+            // check the current node for the criteria
+            if (currentChild instanceof OMElement) {
+                QName thisQName = ((OMElement)currentChild).getQName();
+                // A null givenName is an indicator to return all elements
+                if (givenQName == null || isEqual(givenQName, thisQName)) {
+                    isMatchingNodeFound = true;
+                    needToMoveForward = false;
+                    return;
+                }
+            }
+
+            // get the next named node
+            currentChild = currentChild.getNextOMSibling();
+            isMatchingNodeFound = needToMoveForward = !(currentChild == null);
+        } else {
+            needToMoveForward = false;
+        }
     }
 
     /**
