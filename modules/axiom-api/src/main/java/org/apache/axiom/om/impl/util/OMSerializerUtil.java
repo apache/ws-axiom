@@ -632,8 +632,11 @@ public class OMSerializerUtil {
             // It is possible that the namespace is associated with multiple prefixes,
             // So try getting the namespace as a second step.
             if (writerPrefix != null) {
-                String writerNS = writer.getNamespaceContext().getNamespaceURI(prefix);
-                return namespace.equals(writerNS);
+                NamespaceContext nsContext = writer.getNamespaceContext();
+                if(nsContext != null) {
+                    String writerNS = nsContext.getNamespaceURI(prefix);
+                    return namespace.equals(writerNS);
+                }
             }
             return false;
         } else {
@@ -664,9 +667,12 @@ public class OMSerializerUtil {
             
             
             // Fallback to using the namespace context
-            String writerNS = writer.getNamespaceContext().getNamespaceURI("");
-            if (writerNS != null && writerNS.length() > 0) {
-                return false;
+            NamespaceContext nsContext = writer.getNamespaceContext();
+            if (nsContext != null) {
+                String writerNS = nsContext.getNamespaceURI("");
+                if (writerNS != null && writerNS.length() > 0) {
+                    return false;
+                }
             }
             return true;
         }
