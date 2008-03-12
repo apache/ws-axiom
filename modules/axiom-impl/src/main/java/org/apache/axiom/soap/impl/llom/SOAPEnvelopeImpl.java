@@ -295,7 +295,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
                 QName payloadQName = (QName) ((StAXSOAPModelBuilder) builder).
                     getReaderProperty(SOAPConstants.SOAPBODY_FIRST_CHILD_ELEMENT_QNAME);
                 return payloadQName;
-            } catch (IllegalArgumentException e) {
+            } catch (Throwable e) {
                 // The parser may not support this property. 
                 // In such cases, processing continues below in the fallback approach
             }

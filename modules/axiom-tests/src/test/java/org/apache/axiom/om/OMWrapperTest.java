@@ -87,6 +87,9 @@ public class OMWrapperTest extends TestCase {
             
             // Calling getProperty after a close should return null, not an exception
             assertTrue(reader.getProperty("dummyProperty") == null);
+            
+            // Calling builder.getReaderProperty should return null, not an exception
+            assertTrue(b.getReaderProperty("dummyProperty") == null);
         } catch (XMLStreamException e) {
             fail(e.getMessage());
         }

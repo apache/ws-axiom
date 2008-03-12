@@ -649,7 +649,10 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @return
      */
     public Object getReaderProperty(String name) throws IllegalArgumentException {
-        return parser.getProperty(name);
+        if (!isClosed()) {
+            return parser.getProperty(name);
+        } 
+        return null;
     }
 
     /**
