@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
+import org.apache.axiom.om.util.CommonUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -37,6 +38,9 @@ import java.util.Iterator;
 
 public class OMSerializerUtil {
     private static Log log = LogFactory.getLog(OMSerializerUtil.class);
+    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
+    private static boolean ADV_DEBUG_ENABLED = true;
+    
     static long nsCounter = 0;
     
     // This property should be used by the parser to indicate whether 
@@ -546,8 +550,45 @@ public class OMSerializerUtil {
         }
     }
 
+    /**
+     * Get the next prefix name
+     * @return next prefix name
+     */
     public static String getNextNSPrefix() {
-        return "axis2ns" + ++nsCounter % Long.MAX_VALUE;
+        
+        String prefix = "axis2ns" + ++nsCounter % Long.MAX_VALUE;
+        
+        /**
+         * Calling getNextNSPrefix is "a last gasp" approach
+         * for obtaining a prefix.  In almost all cases, the
+         * OM element should be provided a prefix by the source parser
+         * or programatically by the user.  We only get to this
+         * spot if one was not supplied.
+         * 
+         * The debug information is two-fold.  
+         * (1) It helps users determine at what point in the code this default
+         * prefix is getting built.  This will help them identify
+         * where to change their code if they don't want a default
+         * prefix.
+         * 
+         * (2) It identifies this place in the code as suspect.
+         * Do we really want to keep generating new prefixes (?).
+         * This could result in lots of symbol table entries for the
+         * subsequent parser that reads this data.  This could hamper
+         * extremely long run usages.
+         * This could be a point where we want a plugin so that users can
+         * decide their own strategy.  Examples from other products
+         * include generating a prefix number from the namespace
+         * string.
+         * 
+         */
+        if (DEBUG_ENABLED) {
+            log.debug("Obtained next prefix:" + prefix);
+            if (ADV_DEBUG_ENABLED) {
+                log.debug(CommonUtils.callStackToString());
+            }
+        }
+        return prefix;
     }
 
     public static String getNextNSPrefix(XMLStreamWriter writer) {
@@ -659,7 +700,7 @@ public class OMSerializerUtil {
                     return true;
                 }
             } catch (Throwable t) {
-                if (log.isDebugEnabled()) {
+                if (DEBUG_ENABLED) {
                     log.debug("Caught exception from getPrefix(\"\"). Processing continues: " + t);
                 }
             }
