@@ -37,6 +37,8 @@ import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -45,6 +47,10 @@ import java.io.Writer;
 
 /** Class OMNodeImpl */
 public abstract class OMNodeImpl implements OMNode, OMNodeEx {
+    
+    private static final Log log = LogFactory.getLog(OMNodeImpl.class);
+    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
+    
     /** Field parent */
     protected OMContainerEx parent;
 
@@ -317,6 +323,12 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     public void build() throws OMException {
         while (!done) {
             builder.next();
+            if (builder.isCompleted() && !done) {
+                if (DEBUG_ENABLED) {
+                    log.debug("Builder is complete.  Setting OMNode to complete.");
+                }
+                setComplete(true);
+            }
         }
     }
 

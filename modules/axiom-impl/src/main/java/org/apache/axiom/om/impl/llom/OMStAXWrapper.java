@@ -47,12 +47,18 @@ import org.apache.axiom.om.impl.EmptyOMLocation;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.om.impl.llom.util.NamespaceContextImpl;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Note  - This class also implements the streaming constants interface to get access to the StAX
  * constants
  */
 public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
+    
+    private static final Log log = LogFactory.getLog(OMStAXWrapper.class);
+    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
+    
     /** Field navigator */
     private OMNavigator navigator;
 
@@ -1052,9 +1058,13 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
             nextNode = navigator.next();
         } else {
             if (!switchingAllowed) {
-                if (navigator.isCompleted()) {
+                if (navigator.isCompleted() || builder.isCompleted()) {
                     nextNode = null;
-
+                    if (DEBUG_ENABLED) {
+                        if (builder.isCompleted()) {
+                            log.debug("Builder is complete.  Next node is set to null.");
+                        }
+                    }
                 } else {
                     builder.next();
                     navigator.step();

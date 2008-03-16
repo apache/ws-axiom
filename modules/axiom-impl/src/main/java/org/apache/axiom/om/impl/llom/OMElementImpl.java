@@ -37,7 +37,6 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
-import org.apache.axiom.om.impl.traverse.OMChildrenLegacyQNameIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
@@ -45,12 +44,15 @@ import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -60,6 +62,9 @@ import java.util.LinkedHashMap;
 public class OMElementImpl extends OMNodeImpl
         implements OMElement, OMConstants, OMContainerEx {
 
+    private static final Log log = LogFactory.getLog(OMElementImpl.class);
+    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
+    
     public static final OMNamespace DEFAULT_DEFAULT_NS_OBJECT = new OMNamespaceImpl("", "");
 
     /** Field ns */
@@ -292,11 +297,18 @@ public class OMElementImpl extends OMNodeImpl
      * @throws OMException
      */
     public OMNode getNextOMSibling() throws OMException {
-        while (!done && builder != null) {
-            int token = builder.next();
-            if (token == XMLStreamConstants.END_DOCUMENT) {
-                throw new OMException(
-                        "Parser has already reached end of the document. No siblings found");
+        while (!done && builder != null ) {
+            if (builder.isCompleted()) {
+                if (DEBUG_ENABLED) {
+                    log.debug("Builder is complete.  Setting OMElement to complete.");
+                }
+                setComplete(true);
+            } else {
+                int token = builder.next();
+                if (token == XMLStreamConstants.END_DOCUMENT) {
+                    throw new OMException(
+                    "Parser has already reached end of the document. No siblings found");
+                }
             }
         }
         return super.getNextOMSibling();
@@ -617,7 +629,14 @@ public class OMElementImpl extends OMNodeImpl
     /** Forces the parser to proceed, if parser has not yet finished with the XML input. */
     public void buildNext() {
         if (builder != null) {
-            builder.next();
+            if (!builder.isCompleted()) {
+                builder.next();
+            } else {
+                this.setComplete(true);
+                if (DEBUG_ENABLED) {
+                    log.debug("Builder is complete.  Setting OMElement to complete.");
+                }
+            }         
         }
     }
 
