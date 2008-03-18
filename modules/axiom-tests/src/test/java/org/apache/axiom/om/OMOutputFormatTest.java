@@ -75,6 +75,36 @@ public class OMOutputFormatTest extends TestCase {
         assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE)!=-1);
     }
     
+    public void testGetContentTypeSOAP11SWA() {
+        OMOutputFormat format = new OMOutputFormat();
+        format.setSOAP11(true);
+        format.setDoingSWA(true);
+        String contentType = format.getContentType();
+        
+        // This is rudimentary.  We can add a more complete test that checks
+        // sub items in the future.
+        assertTrue(contentType.indexOf(SOAP11Constants.SOAP_11_CONTENT_TYPE)>=0);
+        assertTrue(contentType.indexOf("multipart/related")>=0);
+        assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE) < 0);
+        
+        // Sometimes the OMOutputFormat has both "optimized" and "doing swa".
+        // In such cases, the winner should be swa.
+        
+        format = new OMOutputFormat();
+        format.setSOAP11(true);
+        format.setDoingSWA(true);
+        format.setDoOptimize(true);
+        contentType = format.getContentType();
+        
+        // This is rudimentary.  We can add a more complete test that checks
+        // sub items in the future.
+        assertTrue(contentType.indexOf(SOAP11Constants.SOAP_11_CONTENT_TYPE)>=0);
+        assertTrue(contentType.indexOf("multipart/related")>=0);
+        assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE) < 0);
+        
+        
+    }
+    
     public void testGetContentTypeSOAP12MTOM() {
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);

@@ -23,6 +23,8 @@ import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.HashMap;
 
@@ -35,6 +37,9 @@ import java.util.HashMap;
  * OMOutputFormat and not to change them later.
  */
 public class OMOutputFormat {
+    
+    private Log log = LogFactory.getLog(OMOutputFormat.class);
+    
     private String mimeBoundary = null;
     private String rootContentId = null;
     private int nextid = 0;
@@ -94,7 +99,7 @@ public class OMOutputFormat {
     }
 
     public boolean isOptimized() {
-        return doOptimize;
+        return doOptimize && !doingSWA;  // optimize is disabled if SWA
     }
 
     /**
@@ -104,6 +109,10 @@ public class OMOutputFormat {
      */
     public String getContentType() {
        
+        String ct = null;
+        if (log.isDebugEnabled()) {
+            log.debug("Start getContentType: " + toString());
+        }
         if (contentType == null) {
             if (isSoap11) {
                 contentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
@@ -114,12 +123,23 @@ public class OMOutputFormat {
         // If MTOM or SWA, the returned content-type is an 
         // appropriate multipart/related content type.
         if (isOptimized()) {
-            return this.getContentTypeForMTOM(contentType);
+            if (isDoingSWA()) {
+                // If both optimized and SWA, then prefer SWA
+                // for the content type
+                ct = this.getContentTypeForSwA(contentType);
+            } else {
+                // Optimized without SWA is MTOM
+                ct = this.getContentTypeForMTOM(contentType);
+            }
         } else if (isDoingSWA()) {
-            return this.getContentTypeForSwA(contentType);
+            ct = this.getContentTypeForSwA(contentType);
         } else {
-            return contentType;
+            ct = contentType;
         }
+        if (log.isDebugEnabled()) {
+            log.debug("getContentType= {" + ct + "}   " + toString());
+        }
+        return ct;
     }
     
     /**
@@ -275,4 +295,53 @@ public class OMOutputFormat {
     public void setRootContentId(String rootContentId) {
 		this.rootContentId = rootContentId;
 	}
+
+    
+    /**
+     * Use toString for logging state of the OMOutputFormat
+     */
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("OMOutputFormat [");
+        
+        sb.append(" mimeBoundary =");
+        sb.append(mimeBoundary);
+        
+        sb.append(" rootContentId=");
+        sb.append(rootContentId);
+        
+        sb.append(" doOptimize=");
+        sb.append(doOptimize);
+        
+        sb.append(" doingSWA=");
+        sb.append(doingSWA);
+        
+        sb.append(" isSOAP11=");
+        sb.append(isSoap11);
+        
+        sb.append(" charSetEncoding=");
+        sb.append(charSetEncoding);
+        
+        sb.append(" xmlVersion=");
+        sb.append(xmlVersion);
+        
+        sb.append(" contentType=");
+        sb.append(contentType);
+        
+        sb.append(" ignoreXmlDeclaration=");
+        sb.append(ignoreXMLDeclaration);
+        
+        sb.append(" autoCloseWriter=");
+        sb.append(autoCloseWriter);
+        
+        // TODO Print all properties
+        sb.append(" actionProperty=");
+        sb.append(getProperty(ACTION_PROPERTY));
+        
+        sb.append("]");
+        return sb.toString();
+        
+    }
+    
+    
 }
