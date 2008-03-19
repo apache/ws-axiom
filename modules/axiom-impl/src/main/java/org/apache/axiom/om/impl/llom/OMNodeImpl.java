@@ -256,12 +256,14 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
         }
         if (sibling instanceof OMNodeImpl) {
             OMNodeImpl siblingImpl = (OMNodeImpl) sibling;
-            siblingImpl.nextSibling = this;
+            
             if (previousSibling == null) {
                 parent.setFirstChild(siblingImpl);
+                siblingImpl.nextSibling = this;
                 siblingImpl.previousSibling = null;
             } else {
                 siblingImpl.setParent(parent);
+                siblingImpl.nextSibling = this;
                 previousSibling.setNextOMSibling(siblingImpl);
                 siblingImpl.setPreviousOMSibling(previousSibling);
             }
