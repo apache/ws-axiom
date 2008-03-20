@@ -19,21 +19,24 @@
 
 package org.apache.axiom.attachments.lifecycle.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
+import java.util.Hashtable;
+
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Map;
-
 public class LifecycleManagerImpl implements LifecycleManager {
     private static final Log log = LogFactory.getLog(LifecycleManagerImpl.class);
-    private Map table = new Hashtable();
-    public static LifecycleManager manager = new LifecycleManagerImpl();
 
+    //Hashtable to store file accessors.
+    private static Hashtable table = new Hashtable();
+    private VMShutdownHook hook = null;
     public LifecycleManagerImpl() {
         super(); 
     }
@@ -66,13 +69,11 @@ public class LifecycleManagerImpl implements LifecycleManager {
 
         String fileString = "Axis2" + id + ".att";
         file = new File(dir, fileString);
-        //add the file to table
-        table.put(id, file);
-        FileAccessor fa = new FileAccessor(manager, file, id);
-        //TODO: change deleteOnExit call such that it's sent as an event to 
-        //LifecycleEventHandler. example fa.handleEvent(LifeCycleDefinition.DELETE_ON_EXIT)
-        //This is the default behaviour. Delete file on VM Exit.
-        deleteOnExit(id);
+        FileAccessor fa = new FileAccessor(this, file);
+        //add the fileAccesor to table
+        table.put(file, fa);
+        //Default behaviour
+        deleteOnExit(file);
         if(log.isDebugEnabled()){
             log.debug("End Create()");
         }
@@ -82,15 +83,27 @@ public class LifecycleManagerImpl implements LifecycleManager {
     /* (non-Javadoc)
      * @see org.apache.axiom.lifecycle.LifecycleManager#delete(java.io.File)
      */
-    public void delete(String id) throws IOException {
+    public void delete(File file) throws IOException {
         if(log.isDebugEnabled()){
             log.debug("Start delete()");
         }
-        File file = getFile(id); 
 
         if(file!=null && file.exists()){
-            file.delete();
-            table.remove(id);
+            table.remove(file);
+            if(log.isDebugEnabled()){
+                log.debug("invoking file.delete()");
+            }
+
+            if(file.delete()){
+                if(log.isDebugEnabled()){
+                    log.debug("delete() successful");
+                }
+            }else{
+                if(log.isDebugEnabled()){
+                    log.debug("Cannot delete file, set to delete on VM shutdown");
+                }
+                deleteOnExit(file);
+            }
         }
         if(log.isDebugEnabled()){
             log.debug("End delete()");
@@ -100,14 +113,20 @@ public class LifecycleManagerImpl implements LifecycleManager {
     /* (non-Javadoc)
      * @see org.apache.axiom.lifecycle.LifecycleManager#deleteOnExit(java.io.File)
      */
-    public void deleteOnExit(String id) throws IOException {
+    public void deleteOnExit(File file) throws IOException {
         if(log.isDebugEnabled()){
             log.debug("Start deleteOnExit()");
         }
-        File file = getFile(id); 
+        if(hook == null){
+            hook = RegisterVMShutdownHook();
+        }
+
         if(file!=null){
-            file.deleteOnExit();
-            table.remove(id);
+            if(log.isDebugEnabled()){
+                log.debug("Invoking deleteOnExit() for file = "+file.getAbsolutePath());
+            }
+            hook.add(file);
+            table.remove(file);
         }
         if(log.isDebugEnabled()){
             log.debug("End deleteOnExit()");
@@ -117,39 +136,59 @@ public class LifecycleManagerImpl implements LifecycleManager {
     /* (non-Javadoc)
      * @see org.apache.axiom.lifecycle.LifecycleManager#deleteOnTimeInterval(int)
      */
-    public void deleteOnTimeInterval(int interval, String id) throws IOException {
+    public void deleteOnTimeInterval(int interval, File file) throws IOException {
         if(log.isDebugEnabled()){
             log.debug("Start deleteOnTimeInterval()");
         }
-        File file = getFile(id);
-        Thread t = new Thread(new LifecycleManagerImpl.FileDeletor(interval, file, id));
+
+        Thread t = new Thread(new LifecycleManagerImpl.FileDeletor(interval, file));
         t.start();
         if(log.isDebugEnabled()){
             log.debug("End deleteOnTimeInterval()");
         }
     }
 
-    private File getFile(String id){
-        return (File)table.get(id);
+    private VMShutdownHook RegisterVMShutdownHook() throws RuntimeException{
+        if(log.isDebugEnabled()){
+            log.debug("Start RegisterVMShutdownHook()");
+        }
+        try{
+            hook = (VMShutdownHook)AccessController.doPrivileged(new PrivilegedExceptionAction() {
+                public Object run() throws SecurityException, IllegalStateException, IllegalArgumentException {
+                    VMShutdownHook hook = VMShutdownHook.hook();
+                    Runtime.getRuntime().addShutdownHook(hook);
+                    return hook;
+                }
+            });
+        }catch (PrivilegedActionException e) {
+            if (log.isDebugEnabled()) {
+                log.debug("Exception thrown from AccessController: " + e);
+                log.debug("VM Shutdown Hook not registered.");
+            }
+            throw new RuntimeException(e);
+        }
+        if(log.isDebugEnabled()){
+            log.debug("Exit RegisterVMShutdownHook()");
+        }
+        return hook;
     }
 
     public class FileDeletor implements Runnable{
         int interval;
         File _file;
-        String _id;
-        public FileDeletor(int interval, File file, String id) {
+
+        public FileDeletor(int interval, File file) {
             super();
             this.interval = interval;
-            this._file = file;
-            this._id = id;
+            this._file = file;           
         }
 
         public void run() {
             try{
                 Thread.sleep(interval*1000);
                 if(_file.exists()){
+                    table.remove(_file);
                     _file.delete();
-                    table.remove(_id);
                 }
             }catch(InterruptedException e){
                 //Log Exception

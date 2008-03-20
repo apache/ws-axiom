@@ -19,6 +19,7 @@
 
 package org.apache.axiom.attachments.lifecycle;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
@@ -48,14 +49,14 @@ public interface LifecycleManager {
      * @param File
      * @throws IOException
      */
-    public void delete(String id) throws IOException;
+    public void delete(File file) throws IOException;
     
     /**
      * Mark the file for deletion on application/VM exit 
      * @param File
      * @throws IOException
      */
-    public void deleteOnExit(String id) throws IOException;
+    public void deleteOnExit(File file) throws IOException;
     
     /**
      * Mark attachment file for deletion when designated time interval in seconds 
@@ -64,5 +65,5 @@ public interface LifecycleManager {
      * @param File
      * @throws IOException
      */
-    public void deleteOnTimeInterval(int interval, String id) throws IOException;
+    public void deleteOnTimeInterval(int interval, File file) throws IOException;
 }

@@ -44,16 +44,14 @@ import java.io.OutputStream;
 public class FileAccessor implements LifecycleEventHandler{
     private static final Log log = LogFactory.getLog(FileAccessor.class);
     File file = null;
-    String id = null;
     LifecycleManager manager;
-    
+
     //TODO remove hard coded time interval, 30 mins/1800 secs
     private final static int DELETE_INTERVAL = 1800;
-    public FileAccessor(LifecycleManager manager, File file, String id) {
+    public FileAccessor(LifecycleManager manager, File file) {
         super();
         this.manager = manager;
-        this.file = file;
-        this.id = id;
+        this.file = file;   
     }
 
     public DataHandler getDataHandler(String contentType) throws MessagingException {
@@ -93,17 +91,17 @@ public class FileAccessor implements LifecycleEventHandler{
     public void handleEvent(int eventId) throws IOException {
         switch (eventId) {
         case LifecycleEventDefinitions.DELETE_ON_EXIT:
-            manager.deleteOnExit(id);
+            manager.deleteOnExit(file);
             break;
         case LifecycleEventDefinitions.DELETE_ON_TIME_INTERVAL:
-            manager.deleteOnTimeInterval(DELETE_INTERVAL, id);
+            manager.deleteOnTimeInterval(DELETE_INTERVAL, file);
             break;
         case LifecycleEventDefinitions.READ_ONCE_AND_DELETE:
-            manager.delete(id);
+            manager.delete(file);
             break;
         default:
-            manager.delete(id);
-            break;
+            manager.delete(file);
+        break;
         }
     }
 
@@ -111,7 +109,8 @@ public class FileAccessor implements LifecycleEventHandler{
         return file;
     }
 
-    public String getId() {
-        return id;
+    public void setFile(File file) {
+        this.file = file;
     }
+
 }
