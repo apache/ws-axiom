@@ -33,8 +33,14 @@ import java.nio.channels.FileLock;
  */
 public class BufferUtils {
     
-    static int BUFFER_LEN = 100 * 1024;         // Copy Buffer size
+    static int BUFFER_LEN = 32 * 1024;         // Copy Buffer size
     static boolean ENABLE_FILE_CHANNEL = true;  // Enable file channel optimization 
+    
+    private static byte[] _cacheBuffer = new byte[BUFFER_LEN];
+    private static boolean _cacheBufferInUse = false;
+    
+    private static ByteBuffer _cacheByteBuffer = ByteBuffer.allocate(BUFFER_LEN);
+    private static boolean _cacheByteBufferInUse = false;
     
     /**
      * Private utility to write the InputStream contents to the OutputStream.
@@ -53,7 +59,10 @@ public class BufferUtils {
                 return;
             }
         }
-        byte[] buffer = new byte[BUFFER_LEN];
+        
+        byte[] buffer = getTempBuffer();
+        
+        try {
         int bytesRead = is.read(buffer);
         
         
@@ -64,6 +73,9 @@ public class BufferUtils {
                 os.write(buffer, 0, bytesRead);
             }
             bytesRead = is.read(buffer);
+        }
+        } finally {
+            releaseTempBuffer(buffer);
         }
         
     }
@@ -80,21 +92,25 @@ public class BufferUtils {
                                                 int limit) 
         throws IOException {
             
-        byte[] buffer = new byte[BUFFER_LEN];
+        byte[] buffer = getTempBuffer();
         int totalWritten = 0;
         int bytesRead = 0;
         
-        do {
-            int len = (limit-totalWritten) > BUFFER_LEN ? BUFFER_LEN : (limit-totalWritten);
-            bytesRead = is.read(buffer, 0, len);
-            if (bytesRead > 0) {
-                os.write(buffer, 0, bytesRead);
+        try {
+            do {
+                int len = (limit-totalWritten) > BUFFER_LEN ? BUFFER_LEN : (limit-totalWritten);
+                bytesRead = is.read(buffer, 0, len);
                 if (bytesRead > 0) {
-                    totalWritten += bytesRead;
+                    os.write(buffer, 0, bytesRead);
+                    if (bytesRead > 0) {
+                        totalWritten += bytesRead;
+                    }
                 }
-            }
-        } while (totalWritten < limit && (bytesRead > 0 || is.available() > 0));
-        return totalWritten;
+            } while (totalWritten < limit && (bytesRead > 0 || is.available() > 0));
+            return totalWritten;
+        } finally {
+            releaseTempBuffer(buffer);
+        }
     }
     
     /**
@@ -117,10 +133,11 @@ public class BufferUtils {
             if (channel != null) {
                 lock = channel.tryLock();
             }
-            bb = ByteBuffer.allocate(BUFFER_LEN);
+            bb = getTempByteBuffer();
         } catch (Throwable t) {
         }
         if (lock == null || bb == null || !bb.hasArray()) {
+            releaseTempByteBuffer(bb);
             return false;  // lock could not be set or bb does not have direct array access
         }
         
@@ -158,7 +175,52 @@ public class BufferUtils {
         } finally {
             // Release the lock
            lock.release();
+           releaseTempByteBuffer(bb);
         }
         return true;
+    }
+    
+    private static synchronized byte[] getTempBuffer() {
+        // Try using cached buffer
+        synchronized(_cacheBuffer) {
+            if (!_cacheBufferInUse) {
+                _cacheBufferInUse = true;
+                return _cacheBuffer;
+            }
+        }
+        
+        // Cache buffer in use, create new buffer
+        return new byte[BUFFER_LEN];
+    }
+    
+    private static void releaseTempBuffer(byte[] buffer) {
+        // Try using cached buffer
+        synchronized(_cacheBuffer) {
+            if (buffer == _cacheBuffer) {
+                _cacheBufferInUse = false;
+            }
+        }
+    }
+    
+    private static synchronized ByteBuffer getTempByteBuffer() {
+        // Try using cached buffer
+        synchronized(_cacheByteBuffer) {
+            if (!_cacheByteBufferInUse) {
+                _cacheByteBufferInUse = true;
+                return _cacheByteBuffer;
+            }
+        }
+        
+        // Cache buffer in use, create new buffer
+        return ByteBuffer.allocate(BUFFER_LEN);
+    }
+    
+    private static void releaseTempByteBuffer(ByteBuffer buffer) {
+        // Try using cached buffer
+        synchronized(_cacheByteBuffer) {
+            if (buffer == _cacheByteBuffer) {
+                _cacheByteBufferInUse = false;
+            }
+        }
     }
 }
