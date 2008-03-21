@@ -29,6 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.ParseException;
@@ -543,44 +544,54 @@ public class Attachments {
             return null;
         } else
             try {
-                if (nextPart.getSize() > 0) {
-                    String partContentID;
-                    try {
-                        partContentID = nextPart.getContentID();
+                int size = nextPart.getSize();
+                String partContentID;
+                DataHandler dataHandler;
+                try {
+                    partContentID = nextPart.getContentID();
 
-                        if (partContentID == null & partIndex == 1) {
-                            String id = "firstPart_" + UUIDGenerator.getUUID();
-                            firstPartId = id;
-                            addDataHandler(id, nextPart.getDataHandler());
-                            return nextPart.getDataHandler();
+                    if (partContentID == null & partIndex == 1) {
+                        String id = "firstPart_" + UUIDGenerator.getUUID();
+                        firstPartId = id;
+                        if (size > 0) {
+                            dataHandler = nextPart.getDataHandler();
+                        } else {
+                            // Either the mime part is empty or the stream ended without having 
+                            // a MIME message terminator
+                            dataHandler = new DataHandler(new ByteArrayDataSource(new byte[]{}));
                         }
-                        if (partContentID == null) {
-                            throw new OMException(
-                                    "Part content ID cannot be blank for non root MIME parts");
-                        }
-                        if ((partContentID.indexOf("<") > -1)
-                                & (partContentID.indexOf(">") > -1)) {
-                            partContentID = partContentID.substring(1, (partContentID
-                                    .length() - 1));
-
-                        } 
-                        if (partIndex == 1) {
-                            firstPartId = partContentID;
-                        }
-                        if (attachmentsMap.containsKey(partContentID)) {
-                            throw new OMException(
-                                    "Two MIME parts with the same Content-ID not allowed.");
-                        }
-                        addDataHandler(partContentID, nextPart.getDataHandler());
-                        return nextPart.getDataHandler();
-                    } catch (MessagingException e) {
-                        throw new OMException("Error reading Content-ID from the Part."
-                                + e);
+                        addDataHandler(id, dataHandler);
+                        return dataHandler;
                     }
-                } // This will take care if stream ended without having MIME
-                // message terminator
-                else {
-                    return null;
+                    if (partContentID == null) {
+                        throw new OMException(
+                                "Part content ID cannot be blank for non root MIME parts");
+                    }
+                    if ((partContentID.indexOf("<") > -1)
+                            & (partContentID.indexOf(">") > -1)) {
+                        partContentID = partContentID.substring(1, (partContentID
+                                .length() - 1));
+
+                    }
+                    if (partIndex == 1) {
+                        firstPartId = partContentID;
+                    }
+                    if (attachmentsMap.containsKey(partContentID)) {
+                        throw new OMException(
+                                "Two MIME parts with the same Content-ID not allowed.");
+                    }
+                    if (size > 0) {
+                        dataHandler = nextPart.getDataHandler();
+                    } else {
+                        // Either the mime part is empty or the stream ended without having 
+                        // a MIME message terminator
+                        dataHandler = new DataHandler(new ByteArrayDataSource(new byte[]{}));
+                    }
+                    addDataHandler(partContentID, dataHandler);
+                    return dataHandler;
+                } catch (MessagingException e) {
+                    throw new OMException("Error reading Content-ID from the Part."
+                            + e);
                 }
             } catch (MessagingException e) {
                 throw new OMException(e);
