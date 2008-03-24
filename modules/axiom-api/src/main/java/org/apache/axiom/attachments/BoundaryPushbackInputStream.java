@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.io.PushbackInputStream;
 
 import org.apache.axiom.attachments.utils.ByteSearch;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * An InputStream that reads bytes up to a boundary.
@@ -44,6 +46,9 @@ import org.apache.axiom.attachments.utils.ByteSearch;
  *
  */
 public class BoundaryPushbackInputStream extends InputStream {
+    
+    private static Log log = LogFactory.getLog(BoundaryPushbackInputStream.class);
+    private static boolean isDebugEnabled = log.isDebugEnabled();
     PushbackInputStream is;
 
     boolean boundaryFound;
@@ -244,6 +249,10 @@ public class BoundaryPushbackInputStream extends InputStream {
                         dstbuf.length - movecnt);
 
                 if (readcnt < 0) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("End of Stream, but boundary not found");
+                        log.debug(toString());
+                    }
                     buffer = null;
                     boundaryFound = true;
                     throw new java.io.IOException("End of Stream, but boundary not found");
@@ -330,5 +339,44 @@ public class BoundaryPushbackInputStream extends InputStream {
     public boolean getBoundaryStatus()
     {
         return boundaryFound;
+    }
+    
+    /**
+     * toString
+     * dumps state information.  Effective for debug trace.
+     */
+    public String toString() {
+        final String newline = "\n";
+        StringBuffer sb = new StringBuffer();
+        
+        sb.append("========================");
+        sb.append(newline);
+        sb.append("BoundaryPushbackInputStream");
+        sb.append(newline);
+        sb.append("  boundary       = " + new String(this.boundary) );
+        sb.append(newline);
+        sb.append(" boundaryFound   = " + boundaryFound);
+        sb.append(newline);
+        int available = 0;
+        try {
+            available = is.available();
+        } catch (Throwable t) {
+            ;  // Suppress...toString is called for debug
+        }
+        sb.append("  is available       = " + available );
+        sb.append(newline);
+        sb.append("  bufferSize     = " + bufferSize);
+        sb.append(newline);
+        sb.append("  bufferNumBytes = " + bufferSize);
+        sb.append(newline);    
+        sb.append("  bufferIndex    = " + index);
+        sb.append(newline);
+        sb.append("  boundaryIndex  = " + bIndex);
+        sb.append(newline);
+        sb.append("  buffer[0,num]  = " + new String(buffer, 0, numBytes));
+        sb.append(newline);
+        sb.append("========================");
+        
+        return sb.toString();
     }
 }
