@@ -33,7 +33,9 @@ import java.nio.channels.FileLock;
  */
 public class BufferUtils {
     
-    static int BUFFER_LEN = 32 * 1024;         // Copy Buffer size
+    // Performance testing indicates that 4K is the best size for medium
+    // and small payloads.  And there is a neglible effect on large payloads.
+    static int BUFFER_LEN = 4 * 1024;         // Copy Buffer size
     static boolean ENABLE_FILE_CHANNEL = true;  // Enable file channel optimization 
     
     private static byte[] _cacheBuffer = new byte[BUFFER_LEN];
