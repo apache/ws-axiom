@@ -89,7 +89,12 @@ public abstract class ChildNode extends NodeImpl {
     }
 
     public OMContainer getParent() throws OMException {
-        return this.parentNode;
+        if(parentNode != null) {
+            return this.parentNode;
+        } else {
+            //This is the case where this child is the document element
+            return this.ownerNode;
+        }
     }
 
     public Node getParentNode() {
