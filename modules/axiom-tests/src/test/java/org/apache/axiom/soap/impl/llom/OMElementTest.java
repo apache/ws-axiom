@@ -41,7 +41,7 @@ import java.util.Iterator;
 public class OMElementTest extends OMTestCase implements OMConstants {
     private static final String WSA_URI = "http://schemas.xmlsoap.org/ws/2004/03/addressing";
     private static final String WSA_TO = "To";
-    private Log log = LogFactory.getLog(getClass());
+    private static Log log = LogFactory.getLog(OMElementTest.class);
 
     OMFactory factory = OMAbstractFactory.getOMFactory();
     private OMElement firstElement;

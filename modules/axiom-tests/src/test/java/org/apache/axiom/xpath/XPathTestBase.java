@@ -50,7 +50,7 @@ public abstract class XPathTestBase extends TestCase {
     protected static boolean verbose = false;
     protected static boolean debug = false;
     private ContextSupport contextSupport;
-    private Log log = LogFactory.getLog(getClass());
+    private static Log log = LogFactory.getLog(XPathTestBase.class);
 
     public XPathTestBase(String name) {
         super(name);

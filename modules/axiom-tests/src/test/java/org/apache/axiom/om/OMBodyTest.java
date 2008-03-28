@@ -28,7 +28,7 @@ import javax.xml.namespace.QName;
 
 public class OMBodyTest extends OMTestCase implements OMConstants {
     SOAPBody soapBody;
-    private Log log = LogFactory.getLog(getClass());
+    private static Log log = LogFactory.getLog(OMBodyTest.class);
 
     public OMBodyTest(String testName) {
         super(testName);

@@ -30,7 +30,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class OMEnvelopeTest extends OMTestCase {
-    private Log log = LogFactory.getLog(getClass());
+    private static Log log = LogFactory.getLog(OMEnvelopeTest.class);
 
     public OMEnvelopeTest(String testName) {
         super(testName);

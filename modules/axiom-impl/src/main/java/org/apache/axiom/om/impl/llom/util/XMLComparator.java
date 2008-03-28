@@ -34,7 +34,7 @@ import java.util.Vector;
 /** @deprecated This class is outdated. Please use XmlUnit to compate two xml files. */
 public class XMLComparator {
     /** Eran Chinthaka (chinthaka@apache.org) */
-    private Log log = LogFactory.getLog(getClass());
+    private static Log log = LogFactory.getLog(XMLComparator.class);
 
     private Vector ignorableNamespaceList = new Vector();
 

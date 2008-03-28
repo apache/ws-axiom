@@ -33,7 +33,7 @@ public class SOAPFactoryTest extends TestCase {
 
     protected static final String SOAP11_FILE_NAME = "test-resources/soap/soap11/soap11message.xml";
     protected static final String SOAP12_FILE_NAME = "test-resources/soap/soap12message.xml";
-    private Log log = LogFactory.getLog(getClass());
+    private static Log log = LogFactory.getLog(SOAPFactoryTest.class);
 
     public void testSOAPFactory() {
 

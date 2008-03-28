@@ -32,7 +32,7 @@ import javax.xml.stream.XMLStreamWriter;
 /** Class StreamWriterToContentHandlerConverter */
 public class StreamWriterToContentHandlerConverter implements ContentHandler {
     /** Field log */
-    private Log log = LogFactory.getLog(getClass());
+    private static Log log = LogFactory.getLog(StreamWriterToContentHandlerConverter.class);
 
     /** Field writer */
     private XMLStreamWriter writer;
