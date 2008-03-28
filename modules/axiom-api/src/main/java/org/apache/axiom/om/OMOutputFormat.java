@@ -38,7 +38,7 @@ import java.util.HashMap;
  */
 public class OMOutputFormat {
     
-    private Log log = LogFactory.getLog(OMOutputFormat.class);
+    private static Log log = LogFactory.getLog(OMOutputFormat.class);
     
     private String mimeBoundary = null;
     private String rootContentId = null;
