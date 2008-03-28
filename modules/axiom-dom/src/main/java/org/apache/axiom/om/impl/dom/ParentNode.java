@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -359,7 +360,11 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                            "HIERARCHY_REQUEST_ERR", null));
         }
 
-        if (newDomChild != null && !this.ownerNode.equals(newDomChild.ownerNode)) {
+        if (newDomChild != null &&
+                //This is the case where this is an Element in the document
+                (this.ownerNode != null && !this.ownerNode.equals(newDomChild.ownerNode)) ||
+                //This is the case where this is the Document itself
+                (this.ownerNode == null && !this.equals(newDomChild.ownerNode))) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
@@ -468,6 +473,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 } else if (this.lastChild == tempNode) {
                     // not the first child, but the last child
                     ChildNode prevSib = tempNode.previousSibling;
+                    this.lastChild = prevSib;
                     prevSib.nextSibling = null;
                     tempNode.parentNode = null;
                     tempNode.previousSibling = null;
