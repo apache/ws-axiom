@@ -44,7 +44,7 @@ public interface OMText extends OMNode {
     /**
      * Returns the Namespace if this contains a QName Return null otherwise
      *
-     * @deprecate This API is going away.  Please use getTextAsQName() instead.
+     * @deprecated This API is going away.  Please use getTextAsQName() instead.
      * @return OMNamespace
      */
     OMNamespace getNamespace();
@@ -62,7 +62,7 @@ public interface OMText extends OMNode {
     /**
      * Sets the optimize flag.
      *
-     * @param value
+     * @param value true to optimize binary content (usually w/MTOM)
      */
     void setOptimize(boolean value);
 
@@ -72,7 +72,7 @@ public interface OMText extends OMNode {
     /**
      * Sets the isBinary flag.
      *
-     * @param value
+     * @param value true if the content is binary
      */
     void setBinary(boolean value);
 

@@ -22,6 +22,7 @@ package org.apache.axiom.om;
 import junit.framework.TestCase;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamConstants;
 import java.util.Iterator;
 
 public class OMTextTest extends TestCase {
@@ -63,5 +64,20 @@ public class OMTextTest extends TestCase {
 
         QName textAsQName = omElement.getTextAsQName();
         assertTrue(textAsQName.equals(new QName(SOME_TEXT)));
+    }
+
+    public void testCDATA() throws Exception {
+        OMFactory factory = OMAbstractFactory.getOMFactory();
+        OMElement omElement = factory.createOMElement("TestElement", null);
+        final String text = "this is <some> text in a CDATA";
+        factory.createOMText(omElement, text, XMLStreamConstants.CDATA);
+        assertEquals(text, omElement.getText());
+
+        // OK, CDATA on its own worked - now confirm that a plain text + a CDATA works
+        omElement = factory.createOMElement("element2", null);
+        final String normalText = "regular text and ";
+        factory.createOMText(omElement, normalText);
+        factory.createOMText(omElement, text, XMLStreamConstants.CDATA);
+        assertEquals(normalText + text, omElement.getText());
     }
 }

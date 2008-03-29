@@ -926,7 +926,8 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         OMText textNode;
 
         while (child != null) {
-            if (child.getType() == OMNode.TEXT_NODE) {
+            final int type = child.getType();
+            if (type == OMNode.TEXT_NODE || type == OMNode.CDATA_SECTION_NODE) {
                 textNode = (OMText) child;
                 if (textNode.getText() != null
                         && !"".equals(textNode.getText())) {
