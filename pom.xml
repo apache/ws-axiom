@@ -75,6 +75,12 @@
             <url>http://www.apache.org/~jaliya</url>
         </developer>
         <developer>
+            <name>Nandana Mihindukulasooriya</name>
+            <id>nandana</id>
+            <email>nandana AT wso2.com</email>
+            <organization>WSO2</organization>
+        </developer>
+        <developer>
             <name>Ruchith Fernando</name>
             <id>ruchith</id>
             <email>ruchith AT wso2.com</email>
