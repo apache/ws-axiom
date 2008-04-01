@@ -148,6 +148,6 @@ abstract class AbstractPart implements Part {
 
     public abstract InputStream getInputStream() throws IOException, MessagingException;
 
-    public abstract int getSize() throws MessagingException;
+    public abstract long getSize() throws MessagingException;
 
 }

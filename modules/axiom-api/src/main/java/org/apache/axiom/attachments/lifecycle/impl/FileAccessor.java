@@ -84,8 +84,8 @@ public class FileAccessor implements LifecycleEventHandler{
         return new FileOutputStream(file);
     }
 
-    public int getSize() {
-        return (int) file.length();
+    public long getSize() {
+        return file.length();
     }
 
     public void handleEvent(int eventId) throws IOException {

@@ -76,7 +76,7 @@ public class PartOnMemory extends AbstractPart {
         return new ByteArrayInputStream(bytes, 0, length);
     }
     
-    public int getSize() throws MessagingException {
+    public long getSize() throws MessagingException {
         return length;
     }
     

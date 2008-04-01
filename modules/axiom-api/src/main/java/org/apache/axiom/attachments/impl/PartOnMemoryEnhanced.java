@@ -77,7 +77,7 @@ public class PartOnMemoryEnhanced extends AbstractPart {
         return new BAAInputStream(data, length);
     }
     
-    public int getSize() throws MessagingException {
+    public long getSize() throws MessagingException {
         return length;
     }
     

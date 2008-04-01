@@ -86,8 +86,8 @@ public class PartOnFile extends AbstractPart {
     /* (non-Javadoc)
      * @see org.apache.axiom.attachments.impl.AbstractPart#getSize()
      */
-    public int getSize() {
-        return (int) fileAccessor.getSize();
+    public long getSize() {
+        return fileAccessor.getSize();
     }
 
 }

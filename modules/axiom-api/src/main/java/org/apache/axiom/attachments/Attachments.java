@@ -544,7 +544,7 @@ public class Attachments {
             return null;
         } else
             try {
-                int size = nextPart.getSize();
+                long size = nextPart.getSize();
                 String partContentID;
                 DataHandler dataHandler;
                 try {

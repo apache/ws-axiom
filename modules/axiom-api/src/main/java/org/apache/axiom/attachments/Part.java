@@ -47,7 +47,7 @@ public interface Part {
      * @return size
      * @throws MessagingException
      */
-    public int getSize() throws MessagingException;
+    public long getSize() throws MessagingException;
 
     /**
      * @return content type of the part
