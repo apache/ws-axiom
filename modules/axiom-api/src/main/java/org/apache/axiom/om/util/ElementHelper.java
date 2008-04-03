@@ -24,10 +24,15 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPHeaderBlock;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
+
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Iterator;
@@ -178,7 +183,28 @@ public class ElementHelper {
             documentElement.build();
             return documentElement;
         }
-
     }
 
+    /**
+     * This is a method to convert regular OMElements to SOAPHeaderBlocks.
+     * 
+     * @param omElement
+     * @param factory
+     * @return
+     * @throws Exception
+     */
+    public static SOAPHeaderBlock toSOAPHeaderBlock(OMElement omElement, SOAPFactory factory) throws Exception {
+        if (omElement instanceof SOAPHeaderBlock)
+            return (SOAPHeaderBlock) omElement;
+        
+        QName name = omElement.getQName();
+        String localName = name.getLocalPart();
+        OMNamespace namespace = factory.createOMNamespace(name.getNamespaceURI(), name.getPrefix());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        omElement.serialize(baos);
+        ByteArrayDataSource bads = new ByteArrayDataSource(baos.toByteArray(), "utf-8");
+        SOAPHeaderBlock block = factory.createSOAPHeaderBlock(localName, namespace, bads);
+        
+        return block;
+    }
 }
