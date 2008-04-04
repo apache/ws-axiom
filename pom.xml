@@ -507,6 +507,7 @@
         <stax.impl.artifact>wstx-asl</stax.impl.artifact>
         <stax.impl.version>3.2.4</stax.impl.version>
         <bundle.plugin.version>1.4.0</bundle.plugin.version>
+        <failIfNoTests>false</failIfNoTests>
         <!--
         <stax.impl.groupid>com.sun.xml.stream</stax.impl.groupid>
         <stax.impl.artifact>sjsxp</stax.impl.artifact>

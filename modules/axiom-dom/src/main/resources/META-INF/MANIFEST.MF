@@ -1,0 +1,42 @@
+Manifest-Version: 1.0
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Import-Package: 
+ javax.activation,
+ javax.xml.namespace,
+ javax.xml.parsers,
+ javax.xml.stream,
+ javax.xml.validation,org.apache.axiom.attachments.utils,
+ org.apache.axiom.om,
+ org.apache.axiom.om.impl,
+ org.apache.axiom.om.impl.builder,
+ org.apache.axiom.om.impl.dom,
+ org.apache.axiom.om.impl.dom.factory,
+ org.apache.axiom.om.impl.dom.jaxp,
+ org.apache.axiom.om.impl.exception,
+ org.apache.axiom.om.impl.serialize,
+ org.apache.axiom.om.impl.traverse,
+ org.apache.axiom.om.impl.util,
+ org.apache.axiom.om.util,
+ org.apache.axiom.soap,
+ org.apache.axiom.soap.impl.builder,
+ org.apache.axiom.soap.impl.dom,
+ org.apache.axiom.soap.impl.dom.factory,
+ org.apache.axiom.soap.impl.dom.soap11,
+ org.apache.axiom.soap.impl.dom.soap12,
+ org.w3c.dom,
+ org.xml.sax
+Export-Package: 
+ org.apache.axiom.om.impl.dom.factory,
+ org.apache.axiom.om.impl.dom.jaxp,
+ org.apache.axiom.om.impl.dom,
+ org.apache.axiom.soap.impl.dom.factory,
+ org.apache.axiom.soap.impl.dom.soap11,
+ org.apache.axiom.soap.impl.dom.soap12,
+ org.apache.axiom.soap.impl.dom
+Bundle-Version: 1.2.6
+Bundle-Name: Axiom DOM
+Bundle-DocURL: http://www.apache.org/
+Bundle-ManifestVersion: 2
+Bundle-Vendor: Apache Software Foundation
+Bundle-SymbolicName: org.apache.ws.commons.axiom.axiom-dom
+
