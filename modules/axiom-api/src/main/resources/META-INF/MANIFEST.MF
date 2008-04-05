@@ -10,6 +10,9 @@ Import-Package:
  org.jaxen;resolution:=optional,
  org.jaxen.saxpath;resolution:=optional,
  org.jaxen.util;resolution:=optional,
+ org.apache.axiom.om.impl.dom.factory;resolution:=optional,
+ org.apache.axiom.soap.impl.dom.factory;resolution:=optional,
+ org.apache.axiom.om.impl.llom.factory;resolution:=optional,
  org.w3c.dom,
  org.xml.sax,
  org.xml.sax.helpers
