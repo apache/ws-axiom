@@ -9,18 +9,12 @@ Import-Package:
  org.apache.axiom.om.impl,
  org.apache.axiom.om.impl.builder,
  org.apache.axiom.om.impl.exception,
- org.apache.axiom.om.impl.llom,
- org.apache.axiom.om.impl.llom.factory,
- org.apache.axiom.om.impl.llom.util,
  org.apache.axiom.om.impl.serialize,
  org.apache.axiom.om.impl.traverse,
  org.apache.axiom.om.impl.util,
  org.apache.axiom.om.util,
  org.apache.axiom.soap,
  org.apache.axiom.soap.impl.builder,
- org.apache.axiom.soap.impl.llom,
- org.apache.axiom.soap.impl.llom.soap11,
- org.apache.axiom.soap.impl.llom.soap12,
  org.apache.commons.logging
 Export-Package: 
  org.apache.axiom.om.impl.llom.factory,
