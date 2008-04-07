@@ -19,9 +19,9 @@
 <assembly>
   <id>bin</id>
   <formats>
-    <format>tar.gz</format>
+        <format>zip</format>
   </formats>
-  <includeSiteDirectory>true</includeSiteDirectory>
+    <includeSiteDirectory>false</includeSiteDirectory>
   <fileSets>
     <fileSet>
       <includes>
@@ -32,24 +32,51 @@
     </fileSet>
     <fileSet>
       <directory>modules/axiom-api/target</directory>
-      <outputDirectory>/lib</outputDirectory>
+      <outputDirectory></outputDirectory>
       <includes>
         <include>*.jar</include>
       </includes>
     </fileSet>
     <fileSet>
       <directory>modules/axiom-impl/target</directory>
-      <outputDirectory>/lib</outputDirectory>
+      <outputDirectory></outputDirectory>
       <includes>
         <include>*.jar</include>
       </includes>
+			<!-- Note that we exclude these txt files and later copy them with
+				 filteres -->
+ 			<excludes>
+                <exclude>README.txt</exclude>
+			    <exclude>RELEASE-NOTE.txt</exclude>
+            </excludes>
     </fileSet>
     <fileSet>
       <directory>modules/axiom-dom/target</directory>
-      <outputDirectory>/lib</outputDirectory>
+      <outputDirectory></outputDirectory>
       <includes>
         <include>*.jar</include>
       </includes>
+            <!-- exclude sources -->
+             <excludes>
+                <exclude>*-sources.jar</exclude>
+            </excludes>
     </fileSet>
   </fileSets>
+    <files>
+	<file>
+      <source>README.txt</source>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+    </file>
+     <file>
+      <source>RELEASE-NOTE.txt</source>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+    </file>
+ </files>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>/lib</outputDirectory>
+        </dependencySet>
+    </dependencySets>
 </assembly>

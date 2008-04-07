@@ -19,28 +19,17 @@
 <assembly>
   <id>src</id>
   <formats>
-    <format>tar.gz</format>
+    <format>zip</format>
   </formats>
   <fileSets>
     <fileSet>
       <includes>
 		<include>*.txt</include>
-		<include>pom.xml</include>
-        <include>maven.xml</include>
-        <include>project.properties</include>
-        <include>project.xml</include>
-        <include>.project</include>
-        <include>.classpath</include>
+        <include>*.xml</include>
+        <include>*.properties</include>
       </includes>
-    </fileSet>
-    <fileSet>
-      <directory>.settings</directory>
-    </fileSet>
-    <fileSet>
-      <directory>legal</directory>
-    </fileSet>
-    <fileSet>
-      <directory>modules</directory>
+	 <!-- Note that we exclude these txt files and later copy them with
+		 filteres -->
       <excludes>
         <exclude>axiom-api/target</exclude>
         <exclude>axiom-api/target/**/*</exclude>
@@ -56,4 +45,16 @@
       <directory>src</directory>
     </fileSet>
   </fileSets>
+   <files>
+	<file>
+      <source>README.txt</source>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+    </file>
+     <file>
+      <source>RELEASE-NOTE.txt</source>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+    </file>
+ </files>
 </assembly>
