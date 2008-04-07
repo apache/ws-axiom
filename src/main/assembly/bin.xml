@@ -31,6 +31,13 @@
       </includes>
     </fileSet>
     <fileSet>
+      <directory>target/site</directory>
+      <outputDirectory>docs</outputDirectory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+    </fileSet>
+    <fileSet>
       <directory>modules/axiom-api/target</directory>
       <outputDirectory></outputDirectory>
       <includes>
@@ -76,7 +83,15 @@
  </files>
     <dependencySets>
         <dependencySet>
-            <outputDirectory>/lib</outputDirectory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>org.codehaus.woodstox:wstx-asl</include>
+                <include>commons-logging:commons-logging</include>
+                <include>jaxen:jaxen</include>
+                <include>org.apache.geronimo.specs:geronimo-activation_1.1_spec</include>
+                <include>org.apache.geronimo.specs:geronimo-javamail_1.4_spec</include>
+                <include>org.apache.geronimo.specs:geronimo-stax-api_1.0_spec</include>
+            </includes>
         </dependencySet>
     </dependencySets>
 </assembly>
