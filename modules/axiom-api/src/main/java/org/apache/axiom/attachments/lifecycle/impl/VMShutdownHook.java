@@ -36,11 +36,18 @@ public class VMShutdownHook extends Thread {
     private static final Log log = LogFactory.getLog(VMShutdownHook.class);
     private static VMShutdownHook instance = null;
     private static Set files = Collections.synchronizedSet(new HashSet());
+    private boolean isRegistered = false;
 
     static VMShutdownHook hook() {
-        if (instance == null)
-            instance = new VMShutdownHook();
-
+        if (instance == null){
+            if(log.isDebugEnabled()){
+                log.debug("creating VMShutdownHook");
+            }
+            instance = new VMShutdownHook();            
+        }
+        if(log.isDebugEnabled()){
+            log.debug("returning VMShutdownHook instance");
+        }
         return instance;
     }
 
@@ -59,7 +66,7 @@ public class VMShutdownHook extends Thread {
     public void run() {
         if(log.isDebugEnabled()){
             log.debug("JVM running VM Shutdown Hook");
-        }
+        }       
         Iterator iter = files.iterator();
         while(iter.hasNext()){
             File file = (File)iter.next();
@@ -67,10 +74,24 @@ public class VMShutdownHook extends Thread {
                 log.debug("Deleting File from Shutdown Hook Collection"+file.getAbsolutePath());
             }    		
             file.delete();
-        }
-
+        }    
         if(log.isDebugEnabled()){
             log.debug("JVM Done running VM Shutdown Hook");
         }
+    }
+
+    public boolean isRegistered() {
+        if(log.isDebugEnabled()){
+            if(!isRegistered){
+                log.debug("hook isRegistered= false");
+            }else{
+                log.debug("hook isRegistered= true");
+            }
+        }
+        return isRegistered;
+    }
+
+    public void setRegistered(boolean isRegistered) {
+        this.isRegistered = isRegistered;
     }
 }

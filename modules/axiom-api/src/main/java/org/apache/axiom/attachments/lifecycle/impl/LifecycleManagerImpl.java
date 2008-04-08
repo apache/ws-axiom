@@ -156,7 +156,10 @@ public class LifecycleManagerImpl implements LifecycleManager {
             hook = (VMShutdownHook)AccessController.doPrivileged(new PrivilegedExceptionAction() {
                 public Object run() throws SecurityException, IllegalStateException, IllegalArgumentException {
                     VMShutdownHook hook = VMShutdownHook.hook();
-                    Runtime.getRuntime().addShutdownHook(hook);
+                    if(!hook.isRegistered()){
+                        Runtime.getRuntime().addShutdownHook(hook);
+                        hook.setRegistered(true);
+                    }
                     return hook;
                 }
             });
