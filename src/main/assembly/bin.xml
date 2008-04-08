@@ -62,8 +62,19 @@
 		<moduleSet>
 			<includes>
 				<include>org.apache.ws.commons.axiom:axiom-dom</include>
-				<include>org.apache.ws.commons.axiom:axiom-impl</include>
 				<include>org.apache.ws.commons.axiom:axiom-api</include>
+			</includes>
+			<binaries>
+				<outputDirectory>lib</outputDirectory>
+				<unpack>false</unpack>
+				<includeDependencies>false</includeDependencies>
+			</binaries>
+		</moduleSet>
+		<moduleSet>
+			<includes>
+				<!--<include>org.apache.ws.commons.axiom:axiom-dom</include>-->
+				<include>org.apache.ws.commons.axiom:axiom-impl</include>
+				<!--<include>org.apache.ws.commons.axiom:axiom-api</include>-->
 			</includes>
 			<binaries>
 				<outputDirectory>lib</outputDirectory>
