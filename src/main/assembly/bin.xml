@@ -18,11 +18,12 @@
   -->
 <assembly>
 	<id>bin</id>
+  <includeBaseDirectory>false</includeBaseDirectory> 
+  <baseDirectory>axiom-${version}</baseDirectory>
 	<formats>
 		<format>zip</format>
 	</formats>
 	<includeSiteDirectory>false</includeSiteDirectory>
-	<includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
 			<includes>

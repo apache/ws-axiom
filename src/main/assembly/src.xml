@@ -18,31 +18,24 @@
   -->
 <assembly>
 	<id>src</id>
+  <includeBaseDirectory>true</includeBaseDirectory> 
+  <baseDirectory>axiom-${version}</baseDirectory>
 	<formats>
 		<format>zip</format>
 	</formats>
 	<fileSets>
 		<fileSet>
 			<includes>
-				<include>*.txt</include>
-				<include>*.xml</include>
-				<include>*.properties</include>
+				<include>**/*</include>
 			</includes>
-			<!-- Note that we exclude these txt files and later copy them with
-		 filteres -->
 			<excludes>
-				<exclude>axiom-api/target</exclude>
-				<exclude>axiom-api/target/**/*</exclude>
-				<exclude>axiom-impl/target</exclude>
-				<exclude>axiom-impl/target/**/*</exclude>
-				<exclude>axiom-dom/target</exclude>
-				<exclude>axiom-dom/target/**/*</exclude>
-				<exclude>axiom-tests/target</exclude>
-				<exclude>axiom-tests/target/**/*</exclude>
+				<exclude>*.ipr</exclude>
+				<exclude>*.iws</exclude>
+				<exclude>*.iml</exclude>
+				<exclude>**/target</exclude>
+				<exclude>**/target/**</exclude>
+				<exclude>**/target/**/*</exclude>
 			</excludes>
-		</fileSet>
-		<fileSet>
-			<directory>src</directory>
 		</fileSet>
 	</fileSets>
 	<files>
