@@ -17,110 +17,106 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   -->
-
-<project
-        xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.apache.ws.commons.axiom</groupId>
-        <artifactId>axiom</artifactId>
-        <version>SNAPSHOT</version>
-        <!-- Should better be ${axiom.version} -->
-    </parent>
-    <artifactId>axiom-tests</artifactId>
-    <name>Axiom Test Suite</name>
-    <version>SNAPSHOT</version>
-    <description>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.apache.ws.commons.axiom</groupId>
+		<artifactId>axiom</artifactId>
+		<version>SNAPSHOT</version>
+		<!-- Should better be ${axiom.version} -->
+	</parent>
+	<artifactId>axiom-tests</artifactId>
+	<name>Axiom Test Suite</name>
+	<version>SNAPSHOT</version>
+	<description>
         The Axiom test suite. This ought to be split into several parts and be made
         a part of axiom-api, axiom-impl and axiom-dom. However, that's not as easy
         as it seems. The intention is to start with axiom-test and continuosly move
         parts to the actual projects.
     </description>
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
-            <artifactId>axiom-api</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.ws.commons.axiom</groupId>
+			<artifactId>axiom-api</artifactId>
 			<version>${axiom.version}</version>
-            <exclusions>
-                <exclusion>
+			<exclusions>
+				<exclusion>
 					<groupId>org.apache.geronimo.specs</groupId>
 					<artifactId>geronimo-javamail_1.4_spec</artifactId>
-                </exclusion>
-            </exclusions>
+				</exclusion>
+			</exclusions>
 		</dependency>
-        <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
-            <artifactId>axiom-impl</artifactId>
+		<dependency>
+			<groupId>org.apache.ws.commons.axiom</groupId>
+			<artifactId>axiom-impl</artifactId>
 			<version>${axiom.version}</version>
-            <exclusions>
-                <exclusion>
+			<exclusions>
+				<exclusion>
 					<groupId>org.apache.geronimo.specs</groupId>
 					<artifactId>geronimo-javamail_1.4_spec</artifactId>
-                </exclusion>
-            </exclusions>
+				</exclusion>
+			</exclusions>
 		</dependency>
-        <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
-            <artifactId>axiom-dom</artifactId>
+		<dependency>
+			<groupId>org.apache.ws.commons.axiom</groupId>
+			<artifactId>axiom-dom</artifactId>
 			<version>${axiom.version}</version>
-            <exclusions>
-                <exclusion>
+			<exclusions>
+				<exclusion>
 					<groupId>org.apache.geronimo.specs</groupId>
 					<artifactId>geronimo-javamail_1.4_spec</artifactId>
-                </exclusion>
-            </exclusions>
+				</exclusion>
+			</exclusions>
 		</dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-activation_1.1_spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>jaxen</groupId>
-            <artifactId>jaxen</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>xmlunit</groupId>
-            <artifactId>xmlunit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-stax-api_1.0_spec</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>${stax.impl.groupid}</groupId>
-            <artifactId>${stax.impl.artifact}</artifactId>
-        </dependency>
-    </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>**/*Test.java</include>
-                        <include>**/*TestCase.java</include>
-                    </includes>
-		    <excludes>
-			<exclude>**/*AbstractOMSerializationTest.java</exclude>
-		    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-activation_1.1_spec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>xmlunit</groupId>
+			<artifactId>xmlunit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-stax-api_1.0_spec</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>${stax.impl.groupid}</groupId>
+			<artifactId>${stax.impl.artifact}</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+						<include>**/*TestCase.java</include>
+					</includes>
+					<excludes>
+						<exclude>**/*AbstractOMSerializationTest.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
