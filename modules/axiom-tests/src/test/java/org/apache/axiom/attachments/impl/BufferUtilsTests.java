@@ -27,6 +27,7 @@ import java.io.IOException;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.activation.MimeType;
+import javax.mail.util.ByteArrayDataSource;
 
 import junit.framework.TestCase;
 
@@ -106,6 +107,23 @@ public class BufferUtilsTests extends TestCase {
         String str = "This is a test String";
         try{
             DataHandler dh = new DataHandler(str, "text/plain");          
+            int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
+            assertEquals(unsupported, -1);
+            int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 10);
+            //Expecting Mark NotSupported
+            assertEquals(doesExceed, -1);
+        }catch(Exception e){
+            e.printStackTrace();
+            fail();
+        }
+        
+    }
+    public void testByteArrayDataSourceBackedDataHandlerExceedLimit(){
+        String str = "This is a test String";
+        byte[] b = str.getBytes();
+        ByteArrayDataSource bads = new ByteArrayDataSource(b, "text/plain");
+        try{
+            DataHandler dh = new DataHandler(bads);          
             int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
             assertEquals(unsupported, -1);
             int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 10);

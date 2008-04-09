@@ -27,6 +27,8 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 
 import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
@@ -212,18 +214,22 @@ public class BufferUtils {
             }
             return -1;
         }
-        InputStream in = getInputStream(dh);
-        if(in == null){
-            if(log.isDebugEnabled()){
-                log.debug("Input Stream is null");
-            }
-            return -1;
-        }
         
+        InputStream in=null;
         //read bytes from input stream to check if 
         //attachment size is greater than the optimized size.        
         int totalRead = 0;
         try{
+            in = getInputStream(dh);
+            if(in.markSupported()){
+                in.mark((int)limit);
+            }
+            if(in == null){
+                if(log.isDebugEnabled()){
+                    log.debug("Input Stream is null");
+                }
+                return -1;
+            }
             do{
                 byte[] buffer = getTempBuffer();
                 int bytesRead = in.read(buffer, 0, BUFFER_LEN);
@@ -231,13 +237,17 @@ public class BufferUtils {
                 releaseTempBuffer(buffer);
             }while((limit>totalRead) && (in.available()>0));
             
+            if(in.markSupported()){                
+                in.reset();
+            }
             if(totalRead > limit){
                 if(log.isDebugEnabled()){
                     log.debug("Attachment size greater than limit");
                 }
                 return 1;
             }
-        }catch(IOException e){
+        }catch(Exception e){            
+            log.warn(e.getMessage());
             return -1;
         }
         
@@ -249,11 +259,19 @@ public class BufferUtils {
     }
     
     private static java.io.InputStream getInputStream(DataHandler dataHandlerObject) throws OMException {
-        InputStream inStream;
+        InputStream inStream = null;
         javax.activation.DataHandler dataHandler =
             (javax.activation.DataHandler) dataHandlerObject;
         try {
-            inStream = dataHandler.getDataSource().getInputStream();
+            DataSource ds = dataHandler.getDataSource();
+            if(ds instanceof FileDataSource){
+                inStream = ds.getInputStream();
+            }else{
+                inStream = dataHandler.getDataSource().getInputStream();
+                if(!inStream.markSupported()){
+                    throw new OMException("Stream does not support mark, Cannot read the stream as DataSource will be consumed.");
+                }
+            }
         } catch (IOException e) {
             throw new OMException(
                 "Cannot get InputStream from DataHandler." + e);
