@@ -19,14 +19,14 @@
 
 package org.apache.axiom.om;
 
+import java.util.HashMap;
+
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.util.HashMap;
 
 
 /**
@@ -46,7 +46,8 @@ public class OMOutputFormat {
     private boolean doOptimize = false;
     private boolean doingSWA = false;
     private boolean isSoap11 = true;
-
+    private long optimizedThreshold = 0;
+    
     /** Field DEFAULT_CHAR_SET_ENCODING. Specifies the default character encoding scheme to be used. */
     public static final String DEFAULT_CHAR_SET_ENCODING = "utf-8";
 
@@ -337,11 +338,21 @@ public class OMOutputFormat {
         // TODO Print all properties
         sb.append(" actionProperty=");
         sb.append(getProperty(ACTION_PROPERTY));
+
+        sb.append(" optimizedThreshold=");
+        sb.append(optimizedThreshold);
         
         sb.append("]");
         return sb.toString();
         
     }
+
+    public void setOptimizedThreshold(long optimizedThreshold) {
+        this.optimizedThreshold = optimizedThreshold;
+    }
     
+    public long getOptimizedThreshold() {
+        return optimizedThreshold;
+    }
     
 }

@@ -16,13 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.attachments.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.activation.MimeType;
 
 import junit.framework.TestCase;
 
@@ -77,4 +81,41 @@ public class BufferUtilsTests extends TestCase {
         file.delete();
     }
     
+    public void testDataSourceBackedDataHandlerExceedLimit(){
+        String imgFileLocation="modules/axiom-tests/test-resources/mtom/img/test2.jpg";
+        try{
+            String baseDir = new File(System.getProperty("basedir",".")).getCanonicalPath();
+            imgFileLocation = new File(baseDir +File.separator+ imgFileLocation).getAbsolutePath();
+        }catch(IOException e){
+            e.printStackTrace();
+            fail();
+        }
+        
+        File imgFile = new File(imgFileLocation);
+        FileDataSource fds = new FileDataSource(imgFile);
+        DataHandler dh = new DataHandler(fds);
+        int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
+        assertEquals(unsupported, -1);
+        int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 1000);
+        assertEquals(doesExceed, 1);
+        int doesNotExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 100000);
+        assertEquals(doesNotExceed, 0);
+        
+    }
+    public void testObjectBackedDataHandlerExceedLimit(){
+        String str = "This is a test String";
+        try{
+            DataHandler dh = new DataHandler(str, "text/plain");          
+            int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
+            assertEquals(unsupported, -1);
+            int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 10);
+            assertEquals(doesExceed, 1);
+            int doesNotExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 100);
+            assertEquals(doesNotExceed, 0);
+        }catch(Exception e){
+            e.printStackTrace();
+            fail();
+        }
+        
+    }
 }

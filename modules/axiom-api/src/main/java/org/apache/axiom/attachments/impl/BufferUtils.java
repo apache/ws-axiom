@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.attachments.impl;
 
 import java.io.FileOutputStream;
@@ -27,13 +26,19 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 
+import javax.activation.DataHandler;
+
+import org.apache.axiom.om.OMException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Attachment processing uses a lot of buffers.
  * The BufferUtils class attempts to reuse buffers to prevent 
  * excessive GarbageCollection
  */
 public class BufferUtils {
-    
+    private static Log log = LogFactory.getLog(BufferUtils.class);
     // Performance testing indicates that 4K is the best size for medium
     // and small payloads.  And there is a neglible effect on large payloads.
     static int BUFFER_LEN = 4 * 1024;         // Copy Buffer size
@@ -181,6 +186,80 @@ public class BufferUtils {
            releaseTempByteBuffer(bb);
         }
         return true;
+    }
+    /**
+     * The method checks to see if attachment is eligble for optimization.
+     * An attachment is eligible for optimization if and only if the size of 
+     * the attachment is greated then the optimzation threshold size limit. 
+     * if the Content represented by DataHandler has size less than the 
+     * optimize threshold size, the attachment will not be eligible for 
+     * optimization, instead it will be inlined.
+     * returns 1 if DataHandler data is bigger than limit.
+     * returns 0 if DataHandler data is smaller.
+     * return -1 if an error occurs or unsupported.
+     * @param in
+     * @return
+     * @throws IOException
+     */
+    public static int doesDataHandlerExceedLimit(DataHandler dh, long limit){
+        if(log.isDebugEnabled()){
+            log.debug("start isEligibleForOptimization");
+        }
+        //If Optimized Threshold not set return true.
+        if(limit==0){
+            if(log.isDebugEnabled()){
+                log.debug("optimizedThreshold not set");
+            }
+            return -1;
+        }
+        InputStream in = getInputStream(dh);
+        if(in == null){
+            if(log.isDebugEnabled()){
+                log.debug("Input Stream is null");
+            }
+            return -1;
+        }
+        
+        //read bytes from input stream to check if 
+        //attachment size is greater than the optimized size.        
+        int totalRead = 0;
+        try{
+            do{
+                byte[] buffer = getTempBuffer();
+                int bytesRead = in.read(buffer, 0, BUFFER_LEN);
+                totalRead = totalRead+bytesRead;
+                releaseTempBuffer(buffer);
+            }while((limit>totalRead) && (in.available()>0));
+            
+            if(totalRead > limit){
+                if(log.isDebugEnabled()){
+                    log.debug("Attachment size greater than limit");
+                }
+                return 1;
+            }
+        }catch(IOException e){
+            return -1;
+        }
+        
+        if(log.isDebugEnabled()){
+            log.debug("Attachment Size smaller than limit");
+        }
+        
+        return 0;        
+    }
+    
+    private static java.io.InputStream getInputStream(DataHandler dataHandlerObject) throws OMException {
+        InputStream inStream;
+        javax.activation.DataHandler dataHandler =
+            (javax.activation.DataHandler) dataHandlerObject;
+        try {
+            inStream = dataHandler.getDataSource().getInputStream();
+        } catch (IOException e) {
+            throw new OMException(
+                "Cannot get InputStream from DataHandler." + e);
+        }
+        return inStream;
+
     }
     
     private static synchronized byte[] getTempBuffer() {

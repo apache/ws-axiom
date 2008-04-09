@@ -19,25 +19,28 @@
 
 package org.apache.axiom.om.impl;
 
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.attachments.ByteArrayDataSource;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
 
+import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.LinkedList;
+import org.apache.axiom.attachments.impl.BufferUtils;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.soap.SOAP11Constants;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -48,6 +51,9 @@ import java.util.LinkedList;
  * optimizable content.
  */
 public class MTOMXMLStreamWriter implements XMLStreamWriter {
+    private static Log log = LogFactory.getLog(MTOMXMLStreamWriter.class);
+    private final static int UNSUPPORTED = -1;
+    private final static int EXCEED_LIMIT = 1;
     private XMLStreamWriter xmlWriter;
     private OutputStream outStream;
     private LinkedList binaryNodeList = new LinkedList();
@@ -268,7 +274,33 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     }
 
     public void writeOptimized(OMText node) {
-        binaryNodeList.add(node);
+        if(log.isDebugEnabled()){
+            log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
+        }
+        DataHandler dh = (DataHandler)node.getDataHandler();
+        int optimized = UNSUPPORTED;
+        if(dh!=null){
+            if(log.isDebugEnabled()){
+                log.debug("DataHandler fetched, starting optimized Threshold processing");
+            }
+            optimized= BufferUtils.doesDataHandlerExceedLimit(dh, format.getOptimizedThreshold());
+        }
+        if(optimized == UNSUPPORTED || optimized == EXCEED_LIMIT){
+            if(log.isDebugEnabled()){
+                log.debug("node added to binart NodeList for optimization");
+            }
+            binaryNodeList.add(node);    
+        }
+        else{
+            try{
+                writeOutput(node);
+            }catch(XMLStreamException e){
+                throw new RuntimeException("XMLStreamException in writeOutput() call", e);
+            }
+        }
+        if(log.isDebugEnabled()){
+            log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
+        }
     }
 
     public void setXmlStreamWriter(XMLStreamWriter xmlWriter) {
@@ -356,5 +388,22 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             this.flush();
         }
         return os;
+    }
+    
+    /**
+     * Writes the relevant output.
+     *
+     * @param writer
+     * @throws XMLStreamException
+     */
+    private void writeOutput(OMText textNode) throws XMLStreamException {
+        int type = textNode.getType();
+        if (type == OMNode.TEXT_NODE || type == OMNode.SPACE_NODE) {
+            writeCharacters(textNode.getText());
+        } else if (type == OMNode.CDATA_SECTION_NODE) {
+            writeCData(textNode.getText());
+        } else if (type == OMNode.ENTITY_REFERENCE_NODE) {
+            writeEntityRef(textNode.getText());
+        }
     }
 }
