@@ -55,46 +55,90 @@ Key Features
 What's New in This Release
 
     * WSCOMMONS-118	BoundaryDelimitedStream read(byte[] b) only works with b.length == 1
+
     * WSCOMMONS-217	nextSibling and previousSibling pointers are corrupted when adding same om element object twice
+
     * WSCOMMONS-222	Serialize methods fail to close locally created XMLStreamWriters
+
     * WSCOMMONS-226	NoScuhElementException thrown from OMNodeImpl.serializeAndConsume()
+
     * WSCOMMONS-229	OMNode.insertSiblingBefore(OMNode) fails if the parent of the argument is different
+
     * WSCOMMONS-230	Method to retrieve the owner element of an OMAttribute instance
+
     * WSCOMMONS-232	OMSourcedElement/OMDataSource Upgrade
+
     * WSCOMMONS-234	Improve OMSourcedElement/OMDataSource forceExpand. Hook up ADBDataSource
+
     * WSCOMMONS-236	Introduce a CopyUtils class that makes copies of OM trees
+
     * WSCOMMONS-240	Add a close method to OMNode
+
     * WSCOMMONS-241	ConcurrentModificationException in OMLinkedListImplFactory.createOMNamespace()
+
     * WSCOMMONS-244	CopyUtils class is not compatible with java 1.4
+
     * WSCOMMONS-245	BoundaryDelimitedStream do not return whole attachment stream
+
     * WSCOMMONS-246	IncomingAttachmentInputStream class changes case of headers
+
     * WSCOMMONS-248	Attachment class shouldn't cache soap part in file
+
     * WSCOMMONS-249	setter for rootContentId in OMOutputFormat
+
     * WSCOMMONS-250	Attachments: a method to provide all attachments in one stream
+
     * WSCOMMONS-251	Quick Change to OMStaXWrapper Close
+
     * WSCOMMONS-252	Expose a method on OMOutputFormat to allow the user to set a content type
+
     * WSCOMMONS-256	OMChildrenQNameIterator too restrictive in matching QNames
+
     * WSCOMMONS-258	SOAPHeaderBlock that is an OMSourcedElement
+
     * WSCOMMONS-262	Improve "setPrefix before startElement" XMLStreamWriter toggle.
+
     * WSCOMMONS-263	Provide OMSourcedElement Construction During StAXBuilder Processing
+
     * WSCOMMONS-267	OMSourcedElement SOAPHeaders will always be forceExpand()ed
+
     * WSCOMMONS-268	SOAPFault* internalSerialize method problems
+
     * WSCOMMONS-275	The read methods of org.apache.axiom.attachments.MIMEBodyPartInputStream return "0" in no more data.
+
     * WSCOMMONS-276	Problem using OMSourcedElement/CustomBuilder for SOAP Headers
+
     * WSCOMMONS-279	Performance: Avoid overuse of XMLStreamWriter.getNamespaceContext()
+
     * WSCOMMONS-286	getChildrenWithQName.next throws ClassCastException, OMChildrenQNameIterator implements Iterator but does not satisfy published interface behavior
+
     * WSCOMMONS-287	Add a simple extension mechanism to OMOutputFormat
+
     * WSCOMMONS-290	Improve compatibility of MIME Mutlipart/Related Content-Type
+
     * WSCOMMONS-292	Attachment Part Performance Speedup
+
     * WSCOMMONS-294	Inefficient string concatenation in OMElementImpl#getText
+
     * WSCOMMONS-297	Java2Security Error. StAXUtils needs a AccessController code.
+
     * WSCOMMONS-300	Many reader.getProperty() calls for each text element in StAXBuilder causes performance down.
+
     * WSCOMMONS-301	OMSourcedElement.buildWithAttachments results in inproper expansion
+
     * WSCOMMONS-302	SOAPHeader children should be SOAPHeaderBlock objects
+
     * WSCOMMONS-303	Get Payload QName information without building OMElement
+
     * WSCOMMONS-305	OMElementImpl.getText() returns an empty String for text in CDATA tags
+
     * WSCOMMONS-307	Attachments BufferUtils is slow when writing to a file
+
     * WSCOMMONS-312	Don't call builder.next() if builder is completed
+
     * WSCOMMONS-313	OMOutputFormat: doSWA and doOptimize should be mutually exclusive...plus we need doOptimizeThreshold
+
     * WSCOMMONS-315	StAXUtils loads a singleton XML*Factory. It should load a singleton XML*Factory per classloader
+
     * WSCOMMONS-318	Attachments larger than Integer.MAX_VALUE (appr 2.1GB) fails
+
