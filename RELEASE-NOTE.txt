@@ -1,7 +1,7 @@
 
 ===========================================
 
-     Apache AXIOM 1.2.5 Release Note
+     Apache AXIOM 1.2.6 Release Note
 
 ===========================================
 
@@ -39,14 +39,49 @@ What's New in This Release
 
 This release contains fixes for following issues.
 
-https://issues.apache.org/jira/browse/WSCOMMONS-175
-https://issues.apache.org/jira/browse/WSCOMMONS-211
-https://issues.apache.org/jira/browse/WSCOMMONS-202
-https://issues.apache.org/jira/browse/WSCOMMONS-201
-https://issues.apache.org/jira/browse/WSCOMMONS-198
-https://issues.apache.org/jira/browse/WSCOMMONS-213
-https://issues.apache.org/jira/browse/WSCOMMONS-216
-https://issues.apache.org/jira/browse/WSCOMMONS-221
-
+https://issues.apache.org/jira/browse/WSCOMMONS-118	BoundaryDelimitedStream read(byte[] b) only works with b.length == 1
+https://issues.apache.org/jira/browse/WSCOMMONS-217	nextSibling and previousSibling pointers are corrupted when adding same om element object twice
+https://issues.apache.org/jira/browse/WSCOMMONS-222	Serialize methods fail to close locally created XMLStreamWriters
+https://issues.apache.org/jira/browse/WSCOMMONS-226	NoScuhElementException thrown from OMNodeImpl.serializeAndConsume()
+https://issues.apache.org/jira/browse/WSCOMMONS-229	OMNode.insertSiblingBefore(OMNode) fails if the parent of the argument is different
+https://issues.apache.org/jira/browse/WSCOMMONS-230	Method to retrieve the owner element of an OMAttribute instance
+https://issues.apache.org/jira/browse/WSCOMMONS-232	OMSourcedElement/OMDataSource Upgrade
+https://issues.apache.org/jira/browse/WSCOMMONS-234	Improve OMSourcedElement/OMDataSource forceExpand. Hook up ADBDataSource
+https://issues.apache.org/jira/browse/WSCOMMONS-236	Introduce a CopyUtils class that makes copies of OM trees
+https://issues.apache.org/jira/browse/WSCOMMONS-240	Add a close method to OMNode
+https://issues.apache.org/jira/browse/WSCOMMONS-241	ConcurrentModificationException in OMLinkedListImplFactory.createOMNamespace()
+https://issues.apache.org/jira/browse/WSCOMMONS-244	CopyUtils class is not compatible with java 1.4
+https://issues.apache.org/jira/browse/WSCOMMONS-245	BoundaryDelimitedStream do not return whole attachment stream
+https://issues.apache.org/jira/browse/WSCOMMONS-246	IncomingAttachmentInputStream class changes case of headers
+https://issues.apache.org/jira/browse/WSCOMMONS-248	Attachment class shouldn't cache soap part in file
+https://issues.apache.org/jira/browse/WSCOMMONS-249	setter for rootContentId in OMOutputFormat
+https://issues.apache.org/jira/browse/WSCOMMONS-250	Attachments: a method to provide all attachments in one stream
+https://issues.apache.org/jira/browse/WSCOMMONS-251	Quick Change to OMStaXWrapper Close
+https://issues.apache.org/jira/browse/WSCOMMONS-252	Expose a method on OMOutputFormat to allow the user to set a content type
+https://issues.apache.org/jira/browse/WSCOMMONS-256	OMChildrenQNameIterator too restrictive in matching QNames
+https://issues.apache.org/jira/browse/WSCOMMONS-258	SOAPHeaderBlock that is an OMSourcedElement
+https://issues.apache.org/jira/browse/WSCOMMONS-262	Improve "setPrefix before startElement" XMLStreamWriter toggle.
+https://issues.apache.org/jira/browse/WSCOMMONS-263	Provide OMSourcedElement Construction During StAXBuilder Processing
+https://issues.apache.org/jira/browse/WSCOMMONS-267	OMSourcedElement SOAPHeaders will always be forceExpand()ed
+https://issues.apache.org/jira/browse/WSCOMMONS-268	SOAPFault* internalSerialize method problems
+https://issues.apache.org/jira/browse/WSCOMMONS-275	The read methods of org.apache.axiom.attachments.MIMEBodyPartInputStream return "0" in no more data.
+https://issues.apache.org/jira/browse/WSCOMMONS-276	Problem using OMSourcedElement/CustomBuilder for SOAP Headers
+https://issues.apache.org/jira/browse/WSCOMMONS-279	Performance: Avoid overuse of XMLStreamWriter.getNamespaceContext()
+https://issues.apache.org/jira/browse/WSCOMMONS-286	getChildrenWithQName.next throws ClassCastException, OMChildrenQNameIterator implements Iterator but does not satisfy published interface behavior
+https://issues.apache.org/jira/browse/WSCOMMONS-287	Add a simple extension mechanism to OMOutputFormat
+https://issues.apache.org/jira/browse/WSCOMMONS-290	Improve compatibility of MIME Mutlipart/Related Content-Type
+https://issues.apache.org/jira/browse/WSCOMMONS-292	Attachment Part Performance Speedup
+https://issues.apache.org/jira/browse/WSCOMMONS-294	Inefficient string concatenation in OMElementImpl#getText
+https://issues.apache.org/jira/browse/WSCOMMONS-297	Java2Security Error. StAXUtils needs a AccessController code.
+https://issues.apache.org/jira/browse/WSCOMMONS-300	Many reader.getProperty() calls for each text element in StAXBuilder causes performance down.
+https://issues.apache.org/jira/browse/WSCOMMONS-301	OMSourcedElement.buildWithAttachments results in inproper expansion
+https://issues.apache.org/jira/browse/WSCOMMONS-302	SOAPHeader children should be SOAPHeaderBlock objects
+https://issues.apache.org/jira/browse/WSCOMMONS-303	Get Payload QName information without building OMElement
+https://issues.apache.org/jira/browse/WSCOMMONS-305	OMElementImpl.getText() returns an empty String for text in CDATA tags
+https://issues.apache.org/jira/browse/WSCOMMONS-307	Attachments BufferUtils is slow when writing to a file
+https://issues.apache.org/jira/browse/WSCOMMONS-312	Don't call builder.next() if builder is completed
+https://issues.apache.org/jira/browse/WSCOMMONS-313	OMOutputFormat: doSWA and doOptimize should be mutually exclusive...plus we need doOptimizeThreshold
+https://issues.apache.org/jira/browse/WSCOMMONS-315	StAXUtils loads a singleton XML*Factory. It should load a singleton XML*Factory per classloader
+https://issues.apache.org/jira/browse/WSCOMMONS-318	Attachments larger than Integer.MAX_VALUE (appr 2.1GB) fails
 
 - The Apache Axiom Team.
