@@ -64,6 +64,13 @@
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
+            <resource>
+              <directory>../..</directory>
+              <includes>
+                <include>LICENSE.txt</include>
+                <include>NOTICE.txt</include>
+              </includes>
+            </resource>
 		</resources>
 		<plugins>
 			<plugin>
