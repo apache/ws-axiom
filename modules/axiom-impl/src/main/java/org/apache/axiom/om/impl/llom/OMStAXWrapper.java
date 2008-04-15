@@ -209,8 +209,11 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
         try {
             if (startNode instanceof OMSourcedElement && 
                     !cache && builder != null) {
+                if (!builder.isCache()) {
+                    resetCache = true;
+                }
                 builder.setCache(true); // bootstrap the navigator
-                resetCache = true;
+                
             }
         } catch(Throwable t) {}
         

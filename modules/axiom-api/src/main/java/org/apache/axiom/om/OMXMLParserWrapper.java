@@ -48,6 +48,11 @@ public interface OMXMLParserWrapper {
      * @throws OMException
      */
     void setCache(boolean b) throws OMException;
+    
+    /**
+     * @return true if caching
+     */
+    boolean isCache();
 
     /**
      * Allows to access the underlying parser. Since the parser depends on the underlying
