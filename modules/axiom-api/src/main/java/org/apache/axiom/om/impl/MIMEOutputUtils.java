@@ -94,10 +94,24 @@ public class MIMEOutputUtils {
             // text nodes int the binary node list)
             Iterator binaryNodeIterator = binaryNodeList.iterator();
             while (binaryNodeIterator.hasNext()) {
-                OMText binaryNode = (OMText) binaryNodeIterator.next();
-                writeBodyPart(outStream, createMimeBodyPart(binaryNode
-                        .getContentID(), (DataHandler) binaryNode
-                        .getDataHandler()), boundary);
+                Object o = binaryNodeIterator.next();
+                /* Upwards compatibiliy: Should be an instance of
+                 * MTOMAttachment, if the user calls us via
+                 * {@link MTOMXMLStreamWriter#writeOptimized(OMText)},
+                 * or {@link MTOMXMLStreamWriter#writeOptimized(MTOMAttachment)}.
+                 * However, this is a public method and possibly someone
+                 * invokes us directly.
+                 */
+                final MTOMAttachment attachment;
+                if (o instanceof OMText) {
+                    final OMText omText = (OMText) o;
+                    attachment = new DefaultMTOMAttachment((DataHandler) omText.getDataHandler(), omText.getContentID());
+                } else {
+                    attachment = (MTOMAttachment) o;
+                }
+                writeBodyPart(outStream, createMimeBodyPart(attachment
+                        .getContentID(), attachment.getDataHandler()),
+                        boundary);
             }
             finishWritingMime(outStream);
             outStream.flush();
