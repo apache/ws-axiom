@@ -22,7 +22,7 @@
 	<groupId>org.apache.ws.commons.axiom</groupId>
 	<artifactId>axiom</artifactId>
 	<name>Axiom</name>
-	<version>SNAPSHOT</version>
+	<version>1.2.6</version>
 	<!-- Should better be ${axiom.version} -->
 	<packaging>pom</packaging>
 	<description>AXIOM API</description>
