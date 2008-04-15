@@ -273,46 +273,32 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         return format.getContentType();
     }
 
-    private boolean isAttachmentPossible(DataHandler pDataHandler) {
-        if (pDataHandler != null) {
+    public void writeOptimized(OMText node) {
+        if(log.isDebugEnabled()){
+            log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
+        }
+        DataHandler dh = (DataHandler)node.getDataHandler();
+        int optimized = UNSUPPORTED;
+        if(dh!=null){
             if(log.isDebugEnabled()){
                 log.debug("DataHandler fetched, starting optimized Threshold processing");
             }
-            int optimized = BufferUtils.doesDataHandlerExceedLimit(pDataHandler, format.getOptimizedThreshold());
-            return optimized != UNSUPPORTED  &&  optimized != EXCEED_LIMIT;
+            optimized= BufferUtils.doesDataHandlerExceedLimit(dh, format.getOptimizedThreshold());
         }
-        return false;
-    }
-
-    public void writeOptimized(MTOMAttachment attachment) {
-        if (log.isDebugEnabled()){
-            log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
+        if(optimized == UNSUPPORTED || optimized == EXCEED_LIMIT){
+            if(log.isDebugEnabled()){
+                log.debug("node added to binart NodeList for optimization");
+            }
+            binaryNodeList.add(node);    
         }
-        if (isAttachmentPossible(attachment.getDataHandler())) {
-            binaryNodeList.add(attachment);    
-        } else {
-            throw new RuntimeException("Unable to inline an attachment.");
-        }
-        if (log.isDebugEnabled()){
-            log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
-        }
-    }
-
-    public void writeOptimized(OMText node) {
-        if (log.isDebugEnabled()){
-            log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
-        }
-        final DataHandler dh = (DataHandler) node.getDataHandler();
-        if (isAttachmentPossible(dh)) {
-            binaryNodeList.add(new DefaultMTOMAttachment(dh, node.getContentID()));
-        } else {
+        else{
             try{
                 writeOutput(node);
-            } catch(XMLStreamException e) {
+            }catch(XMLStreamException e){
                 throw new RuntimeException("XMLStreamException in writeOutput() call", e);
             }
         }
-        if (log.isDebugEnabled()){
+        if(log.isDebugEnabled()){
             log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
         }
     }
