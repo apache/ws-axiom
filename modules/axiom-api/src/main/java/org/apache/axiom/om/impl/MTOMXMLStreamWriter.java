@@ -277,6 +277,21 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         if(log.isDebugEnabled()){
             log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
         }
+        binaryNodeList.add(node);    
+        if(log.isDebugEnabled()){
+            log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
+        }
+    }
+    /*
+     * This method check if size of dataHandler exceeds the optimization Threshold
+     * set on OMOutputFormat. 
+     * return true is size exceeds the threshold limit.
+     * return false otherwise.
+     */
+    public boolean isOptimizedThreshold(OMText node){
+    	if(log.isDebugEnabled()){
+            log.debug("Start MTOMXMLStreamWriter.isOptimizedThreshold()");
+        }
         DataHandler dh = (DataHandler)node.getDataHandler();
         int optimized = UNSUPPORTED;
         if(dh!=null){
@@ -287,22 +302,13 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         }
         if(optimized == UNSUPPORTED || optimized == EXCEED_LIMIT){
             if(log.isDebugEnabled()){
-                log.debug("node added to binart NodeList for optimization");
+                log.debug("node should be added to binart NodeList for optimization");
             }
-            binaryNodeList.add(node);    
+            return true;
         }
-        else{
-            try{
-                writeOutput(node);
-            }catch(XMLStreamException e){
-                throw new RuntimeException("XMLStreamException in writeOutput() call", e);
-            }
-        }
-        if(log.isDebugEnabled()){
-            log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
-        }
+        return false;
     }
-
+    
     public void setXmlStreamWriter(XMLStreamWriter xmlWriter) {
         this.xmlWriter = xmlWriter;
     }

@@ -417,7 +417,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             //we can optimize the writing!
             if (writer2 instanceof MTOMXMLStreamWriter) {
                 MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
-                if (writer.isOptimized()) {
+                if (writer.isOptimized() && writer.isOptimizedThreshold(this)) {
                     if (contentID == null) {
                         contentID = writer.getNextContentId();
                     }

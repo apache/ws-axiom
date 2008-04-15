@@ -46,7 +46,7 @@ public class OMOutputFormat {
     private boolean doOptimize = false;
     private boolean doingSWA = false;
     private boolean isSoap11 = true;
-    private long optimizedThreshold = 0;
+    private int optimizedThreshold = 0;
     
     /** Field DEFAULT_CHAR_SET_ENCODING. Specifies the default character encoding scheme to be used. */
     public static final String DEFAULT_CHAR_SET_ENCODING = "utf-8";
@@ -347,11 +347,11 @@ public class OMOutputFormat {
         
     }
 
-    public void setOptimizedThreshold(long optimizedThreshold) {
+    public void setOptimizedThreshold(int optimizedThreshold) {
         this.optimizedThreshold = optimizedThreshold;
     }
     
-    public long getOptimizedThreshold() {
+    public int getOptimizedThreshold() {
         return optimizedThreshold;
     }
     

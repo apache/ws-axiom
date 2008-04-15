@@ -203,7 +203,7 @@ public class BufferUtils {
      * @return
      * @throws IOException
      */
-    public static int doesDataHandlerExceedLimit(DataHandler dh, long limit){
+    public static int doesDataHandlerExceedLimit(DataHandler dh, int limit){
         if(log.isDebugEnabled()){
             log.debug("start isEligibleForOptimization");
         }
@@ -222,7 +222,7 @@ public class BufferUtils {
         try{
             in = getInputStream(dh);
             if(in.markSupported()){
-                in.mark((int)limit);
+                in.mark(limit);
             }
             if(in == null){
                 if(log.isDebugEnabled()){
