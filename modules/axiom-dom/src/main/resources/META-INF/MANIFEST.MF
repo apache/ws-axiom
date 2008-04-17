@@ -33,7 +33,7 @@ Export-Package:
  org.apache.axiom.soap.impl.dom.soap11,
  org.apache.axiom.soap.impl.dom.soap12,
  org.apache.axiom.soap.impl.dom
-Bundle-Version: 1.2.6
+Bundle-Version: 1.2.7
 Bundle-Name: Axiom DOM
 Bundle-DocURL: http://www.apache.org/
 Bundle-ManifestVersion: 2

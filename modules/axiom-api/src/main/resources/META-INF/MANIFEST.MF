@@ -35,7 +35,7 @@ Export-Package:
  org.apache.axiom.om,
  org.apache.axiom.soap.impl.builder,
  org.apache.axiom.soap
-Bundle-Version: 1.2.6
+Bundle-Version: 1.2.7
 Bundle-Name: Axiom API
 Bundle-DocURL: http://www.apache.org/
 Bundle-ManifestVersion: 2
