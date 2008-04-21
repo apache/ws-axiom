@@ -22,7 +22,7 @@
 	<groupId>org.apache.ws.commons.axiom</groupId>
 	<artifactId>axiom</artifactId>
 	<name>Axiom</name>
-	<version>SNAPSHOT</version>
+	<version>1.2.7</version>
 	<!-- Should better be ${axiom.version} -->
 	<packaging>pom</packaging>
 	<description>AXIOM API</description>
@@ -510,7 +510,7 @@
 	</modules>
 	<properties>
 		<axiom.version>${pom.version}</axiom.version>
-		<axiom.osgi.version>1.2.6</axiom.osgi.version>
+		<axiom.osgi.version>1.2.7</axiom.osgi.version>
 		<stax.impl.groupid>org.codehaus.woodstox</stax.impl.groupid>
 		<stax.impl.artifact>wstx-asl</stax.impl.artifact>
 		<stax.impl.version>3.2.4</stax.impl.version>
