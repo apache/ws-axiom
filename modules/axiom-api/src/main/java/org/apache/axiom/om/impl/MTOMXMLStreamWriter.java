@@ -36,6 +36,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -80,6 +81,11 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      */
     public MTOMXMLStreamWriter(OutputStream outStream, OMOutputFormat format)
             throws XMLStreamException, FactoryConfigurationError {
+        if (log.isDebugEnabled()) {
+            log.debug("OutputStream =" + outStream.getClass());
+            log.debug("OMFormat = " + format.toString());
+            log.debug("Call Stack =" + CommonUtils.callStackToString());
+        }
         this.format = format;
         this.outStream = outStream;
 
