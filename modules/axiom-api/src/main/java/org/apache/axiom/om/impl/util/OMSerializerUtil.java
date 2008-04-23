@@ -167,22 +167,46 @@ public class OMSerializerUtil {
      * @param writer
      * @return true if setPrefix should be generated before startElement
      */
+    private static boolean cache_isSetPrefixBeforeStartElement;
+    private static XMLStreamWriter cache_isSetPrefixBeforeStartElement_writer = null;
+    private static String semifore = "isSetPrefixBeforeStartElement";
     public static boolean isSetPrefixBeforeStartElement(XMLStreamWriter writer) {
+        // Try the cached value
+        if (cache_isSetPrefixBeforeStartElement_writer == writer) {
+            synchronized(semifore) {
+                if (cache_isSetPrefixBeforeStartElement_writer == writer) {
+                    return cache_isSetPrefixBeforeStartElement;
+                }
+            }
+        }
+        
+        // There is no cached value for this writer, so try getting 
+        // the property from the writer.
+        boolean ret = false;
         try {
             Boolean value = (Boolean)writer.getProperty(IS_SET_PREFIX_BEFORE_PROPERTY);
             // this will always be false if the property is defined
             if (value != null) {
-                return value.booleanValue();
+                ret = value.booleanValue();
             }
         }
         catch (IllegalArgumentException e) {
             // Some parsers throw an exception for unknown properties.
         }
-        // Fallback: Toggle based on sun or woodstox implementation.
-        NamespaceContext nc = writer.getNamespaceContext();
-        return (nc == null || 
-                (nc.getClass().getName().indexOf("wstx") == -1 && 
-                 nc.getClass().getName().indexOf("sun") == -1));
+        if (!ret) {
+            // Fallback: Toggle based on sun or woodstox implementation.
+            NamespaceContext nc = writer.getNamespaceContext();
+            ret = (nc == null || 
+                    (nc.getClass().getName().indexOf("wstx") == -1 && 
+                            nc.getClass().getName().indexOf("sun") == -1));
+        }
+        
+        // Cache the answer
+        synchronized(semifore) {
+            cache_isSetPrefixBeforeStartElement_writer = writer;
+            cache_isSetPrefixBeforeStartElement = ret;
+        }
+        return ret;
     }
 
     /**
