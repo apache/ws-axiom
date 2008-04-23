@@ -40,6 +40,9 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     /** Attribute value */
     private TextImpl attrValue;
 
+    /** Attribute type */
+    private String attrType;
+
     /** Attribute namespace */
     private NamespaceImpl namespace;
 
@@ -61,6 +64,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
         super(ownerDocument, factory);
         this.attrName = localName;
         this.attrValue = new TextImpl(ownerDocument, value, factory);
+        this.attrType = OMConstants.XMLATTRTYPE_CDATA;
         this.namespace = (NamespaceImpl) ns;
     }
 
@@ -69,6 +73,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
         super(ownerDocument, factory);
         this.attrName = name;
         this.attrValue = new TextImpl(ownerDocument, value, factory);
+        this.attrType = OMConstants.XMLATTRTYPE_CDATA;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String name, OMFactory factory) {
@@ -79,6 +84,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
             this.namespace = new NamespaceImpl(
                     OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX);
         }
+        this.attrType = OMConstants.XMLATTRTYPE_CDATA;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String localName,
@@ -86,6 +92,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
         super(ownerDocument, factory);
         this.attrName = localName;
         this.namespace = (NamespaceImpl) namespace;
+        this.attrType = OMConstants.XMLATTRTYPE_CDATA;
     }
 
     // /
@@ -248,6 +255,15 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     }
 
     /**
+     * Returns the attribute value.
+     *
+     * @see org.apache.axiom.om.OMAttribute#getAttributeType()
+     */
+    public String getAttributeType() {
+        return this.attrType;
+    }
+
+    /**
      * Sets the name of attribute.
      *
      * @see org.apache.axiom.om.OMAttribute#setLocalName(String)
@@ -280,6 +296,15 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
         }
         this.attrValue = (TextImpl) this.getOwnerDocument().createTextNode(
                 value);
+    }
+
+    /**
+     * Sets the attribute value.
+     *
+     * @see org.apache.axiom.om.OMAttribute#setAttributeType(String)
+     */
+    public void setAttributeType(String attrType) {    
+    	this.attrType = attrType;
     }
 
     /**

@@ -487,8 +487,11 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
             returnString = parser.getAttributeType(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+               	OMAttribute attrib = getAttribute((OMElement) lastNode, i);
+                if (attrib != null) {
+                    returnString = attrib.getAttributeType();
+                }
 
-                // todo implement this
             } else {
                 throw new IllegalStateException(
                         "attribute type accessed in illegal event!");

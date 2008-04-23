@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl.llom;
 import junit.framework.TestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -68,6 +69,14 @@ public class OMAttributeTest extends TestCase {
                 "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"><soapenv:Header name = \"jhon\"/><soapenv:Body><my:uploadFileUsingMTOM xmlns:my=\"http://localhost/my\"><my:folderName>/home/saliya/Desktop</my:folderName></my:uploadFileUsingMTOM></soapenv:Body><Body>TTTT</Body> </soapenv:Envelope>";
 
         assertEquals(addAttributeMethod1(xmlString), addAttributeMethod2(xmlString));
+    }
+
+    public void testDefaultAttributeType() throws Exception {
+        OMFactory factory = OMAbstractFactory.getOMFactory();
+        OMNamespace ns = factory.createOMNamespace("http://www.me.com", "axiom");
+        OMAttribute at = factory.createOMAttribute("id", ns, "value");
+
+        assertEquals(at.getAttributeType(), "CDATA");
     }
 
     private String addAttributeMethod1(String xmlString) throws Exception {

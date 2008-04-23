@@ -35,6 +35,12 @@ public interface OMAttribute {
     /** @param value  */
     void setAttributeValue(String value);
 
+    /** @return Returns String. */
+    String getAttributeType();
+
+    /** @param value  */
+    void setAttributeType(String value);
+
     /** @param omNamespace  */
     void setOMNamespace(OMNamespace omNamespace);
 

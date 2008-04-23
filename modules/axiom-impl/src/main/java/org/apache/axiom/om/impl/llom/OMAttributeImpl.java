@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMElement;
@@ -33,6 +34,9 @@ public class OMAttributeImpl implements OMAttribute {
 
     /** Field value */
     private String value;
+
+    /** Field type */
+    private String type;
 
     /** Field namespace */
     private OMNamespace namespace;
@@ -58,6 +62,7 @@ public class OMAttributeImpl implements OMAttribute {
         this.localName = localName;
         this.value = value;
         this.namespace = ns;
+        this.type = OMConstants.XMLATTRTYPE_CDATA;
         this.factory = factory;
     }
 
@@ -113,6 +118,24 @@ public class OMAttributeImpl implements OMAttribute {
      */
     public void setAttributeValue(String value) {
         this.value = value;
+    }
+
+    /**
+     * Method getAttributeType.
+     *
+     * @return Returns type.
+     */
+    public String getAttributeType() {
+    	return type;
+    }
+
+    /**
+     * Method setAttributeType.
+     *
+     * @param type
+     */
+    public void setAttributeType(String type) {
+        this.type = type;
     }
 
     /**

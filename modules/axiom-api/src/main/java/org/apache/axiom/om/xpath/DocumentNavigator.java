@@ -739,8 +739,16 @@ public class DocumentNavigator extends DefaultNavigator {
             return attribute.getAttributeValue();
         }
 
+        public String getAttributeType() {
+            return attribute.getAttributeType();
+        }
+
         public void setAttributeValue(String value) {
             attribute.setAttributeValue(value);
+        }
+
+        public void setAttributeType(String type) {
+            attribute.setAttributeType(type);
         }
 
         public void setOMNamespace(OMNamespace omNamespace) {

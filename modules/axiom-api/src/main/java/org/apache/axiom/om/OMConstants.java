@@ -67,5 +67,15 @@ public interface OMConstants {
 
     /** No its not a mistake. This is the default nsURI of the default namespace of a node */
     static final String DEFAULT_DEFAULT_NAMESPACE = "\"\"";
+    
+	static final String XMLATTRTYPE_CDATA = "CDATA";
+	static final String XMLATTRTYPE_ID = "ID";
+	static final String XMLATTRTYPE_IDREF = "IDREF"; 
+	static final String XMLATTRTYPE_IDREFS = "IDREFS"; 
+	static final String XMLATTRTYPE_NMTOKEN = "NMTOKEN"; 
+	static final String XMLATTRTYPE_NMTOKENS = "NMTOKENS"; 
+	static final String XMLATTRTYPE_ENTITY = "ENTITY"; 
+	static final String XMLATTRTYPE_ENTITIES = "ENTITIES";  
+	static final String XMLATTRTYPE_NOTATION = "NOTATION"; 
 
 }
