@@ -19,13 +19,6 @@
 
 package org.apache.axiom.attachments.lifecycle.impl;
 
-import org.apache.axiom.attachments.CachedFileDataSource;
-import org.apache.axiom.attachments.lifecycle.LifecycleManager;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.activation.DataHandler;
-import javax.mail.MessagingException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,6 +26,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Observable;
+
+import javax.activation.DataHandler;
+import javax.mail.MessagingException;
+
+import org.apache.axiom.attachments.CachedFileDataSource;
+import org.apache.axiom.attachments.lifecycle.LifecycleManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * FileAccessor wraps the attachment temp file. It is created from PartOnFile.
@@ -41,13 +43,11 @@ import java.io.OutputStream;
  * events to handle the the files lifecycle.
  *
  */
-public class FileAccessor implements LifecycleEventHandler{
+public class FileAccessor extends Observable{
     private static final Log log = LogFactory.getLog(FileAccessor.class);
     File file = null;
     LifecycleManager manager;
-
-    //TODO remove hard coded time interval, 30 mins/1800 secs
-    private final static int DELETE_INTERVAL = 1800;
+    private int accessCount = 0;
     public FileAccessor(LifecycleManager manager, File file) {
         super();
         this.manager = manager;
@@ -57,10 +57,15 @@ public class FileAccessor implements LifecycleEventHandler{
     public DataHandler getDataHandler(String contentType) throws MessagingException {
         if(log.isDebugEnabled()){
             log.debug("getDataHandler()");
+            log.debug("accessCount =" +accessCount);
         }
         CachedFileDataSource dataSource = new CachedFileDataSource(file);
         dataSource.setContentType(contentType);
-        return new DataHandler(dataSource);
+       	accessCount++;
+       	setChanged();
+       	notifyObservers();
+       	DataHandler dataHandler = new DataHandler(dataSource);
+       	return new DataHandlerExtImpl(dataHandler, manager);        
     }
 
     public String getFileName() throws MessagingException {
@@ -87,24 +92,7 @@ public class FileAccessor implements LifecycleEventHandler{
     public long getSize() {
         return file.length();
     }
-
-    public void handleEvent(int eventId) throws IOException {
-        switch (eventId) {
-        case LifecycleEventDefinitions.DELETE_ON_EXIT:
-            manager.deleteOnExit(file);
-            break;
-        case LifecycleEventDefinitions.DELETE_ON_TIME_INTERVAL:
-            manager.deleteOnTimeInterval(DELETE_INTERVAL, file);
-            break;
-        case LifecycleEventDefinitions.READ_ONCE_AND_DELETE:
-            manager.delete(file);
-            break;
-        default:
-            manager.delete(file);
-        break;
-        }
-    }
-
+    
     public File getFile() {
         return file;
     }
@@ -112,5 +100,9 @@ public class FileAccessor implements LifecycleEventHandler{
     public void setFile(File file) {
         this.file = file;
     }
+
+	public int getAccessCount() {
+		return accessCount;
+	}
 
 }

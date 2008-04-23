@@ -66,4 +66,12 @@ public interface LifecycleManager {
      * @throws IOException
      */
     public void deleteOnTimeInterval(int interval, File file) throws IOException;
+    
+    /**
+     * This method will return the file accessor associated with this file.
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public FileAccessor getFileAccessor(String file) throws IOException;
 }

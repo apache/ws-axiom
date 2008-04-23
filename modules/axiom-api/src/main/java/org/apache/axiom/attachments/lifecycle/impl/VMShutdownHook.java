@@ -52,7 +52,15 @@ public class VMShutdownHook extends Thread {
     }
 
     private VMShutdownHook(){}
-
+    void remove(File file){
+        if(file == null){
+            return;
+        }
+        if(log.isDebugEnabled()){
+            log.debug("Removing File to Shutdown Hook Collection");
+        }
+        files.remove(file);
+    }
     void add(File file) {
         if(file == null){
             return;

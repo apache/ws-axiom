@@ -71,7 +71,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
         file = new File(dir, fileString);
         FileAccessor fa = new FileAccessor(this, file);
         //add the fileAccesor to table
-        table.put(file, fa);
+        table.put(fileString, fa);
         //Default behaviour
         deleteOnExit(file);
         if(log.isDebugEnabled()){
@@ -201,6 +201,10 @@ public class LifecycleManagerImpl implements LifecycleManager {
             }
         }        
     }
+
+	public FileAccessor getFileAccessor(String fileName) throws IOException {		
+		return (FileAccessor)table.get(fileName);
+	}
 
 }
 
