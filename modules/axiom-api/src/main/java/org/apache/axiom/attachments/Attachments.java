@@ -24,6 +24,7 @@ import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
+import org.apache.axiom.om.util.DetachableInputStream;
 import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -64,6 +65,7 @@ public class Attachments {
      */
     PushbackInputStream pushbackInStream;
     int PUSHBACK_SIZE = 4 * 1024;
+    DetachableInputStream filterIS = null;
 
     /**
      * <code>attachmentsMap</code> stores the Data Handlers of the already parsed Mime Body Parts.
@@ -196,9 +198,14 @@ public class Attachments {
             throw new OMException(e);
         }
 
-        // do we need to wrap InputStream from a BufferedInputStream before
-        // wrapping from PushbackStream
-        pushbackInStream = new PushbackInputStream(inStream,
+        // If the length is not known, install a TeeInputStream
+        // so that we can retrieve it later.
+        InputStream is = inStream;
+        if (contentLength <= 0) {
+            filterIS = new DetachableInputStream(inStream);
+            is = filterIS;
+        }
+        pushbackInStream = new PushbackInputStream(is,
                                                    PUSHBACK_SIZE);
 
         // Move the read pointer to the beginning of the first part
@@ -498,7 +505,28 @@ public class Attachments {
     public List getContentIDList() {
         return cids;
     }
-
+    
+    /**
+     * If the Attachments is backed by an InputStream, then this
+     * method returns the length of the message contents
+     * (Length of the entire message - Length of the Transport Headers)
+     * @return length of message content or -1 if Attachments is not
+     * backed by an InputStream
+     * @see getMessageLength
+     */
+    public long getContentLength() throws IOException {
+        if (contentLength > 0) {
+            return contentLength;
+        } else if (filterIS != null) {
+            // Ensure all parts are read
+            this.getContentIDSet();
+            // Now get the count from the filter
+            return filterIS.length();
+        } else {
+            return -1; // not backed by an input stream
+        }
+    }
+    
     /**
      * endOfStreamReached will be set to true if the message ended in MIME Style having "--" suffix
      * with the last mime boundary

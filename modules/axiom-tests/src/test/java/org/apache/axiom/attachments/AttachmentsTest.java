@@ -24,6 +24,7 @@ import org.apache.axiom.om.AbstractTestCase;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -145,11 +146,11 @@ public class AttachmentsTest extends AbstractTestCase {
 
         // Confirm that no more streams are left
         assertEquals(null, ias.getNextStream());
-
+        
         // After all is done, we should *still* be able to access and
         // re-consume the SOAP part stream, as it should be cached.. can we?
         is = attachments.getSOAPPartInputStream();
-        while (is.read() != -1) ;
+        while (is.read() != -1) ;  
     }
 
     private void compareStreams(InputStream data, InputStream expected) throws Exception {
@@ -190,7 +191,8 @@ public class AttachmentsTest extends AbstractTestCase {
 
     public void testGetAllContentIDs() throws Exception {
 
-        InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
+        File f = getTestResourceFile(inMimeFileName);
+        InputStream inStream = new FileInputStream(f);
         Attachments attachments = new Attachments(inStream, contentTypeString);
 
         String[] contentIDs = attachments.getAllContentIDs();
@@ -203,6 +205,12 @@ public class AttachmentsTest extends AbstractTestCase {
         assertTrue(idSet.contains("0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org"));
         assertTrue(idSet.contains("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"));
         assertTrue(idSet.contains("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));
+        
+        // Make sure the length is correct
+        long length = attachments.getContentLength();
+        long fileSize = f.length();
+        assertTrue("Expected MessageContent Length of " + fileSize + " but received " + length,
+                   length == fileSize);
     }
 
     /**
