@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.builder;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -104,12 +105,21 @@ public class SAXOMBuilder extends DefaultHandler {
             nextElem = createNextElement(localName);
         else
             nextElem.setLocalName(localName);
-        nextElem
-                .setNamespace(nextElem.findNamespace(namespaceURI, null));
+        
+        nextElem.setNamespace(nextElem.findNamespace(namespaceURI, null));
+        
         int j = atts.getLength();
-        for (int i = 0; i < j; i++)
+        for (int i = 0; i < j; i++) {
             nextElem.addAttribute(atts.getLocalName(i), atts.getValue(i),
                                   nextElem.findNamespace(atts.getURI(i), null));
+        
+            OMAttribute attr = nextElem.addAttribute(atts.getLocalName(i), 
+            										 atts.getValue(i),
+            										 nextElem.findNamespace(atts.getURI(i), null));
+            										 
+            attr.setAttributeType(atts.getType(i));
+        }
+        
         lastNode = nextElem;
         nextElem = null;
     }

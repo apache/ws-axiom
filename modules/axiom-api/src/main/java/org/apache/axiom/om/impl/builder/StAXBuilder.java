@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.builder;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
@@ -216,8 +217,10 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             // todo if the attributes are supposed to namespace qualified all the time
             // todo then this should throw an exception here
 
-            node.addAttribute(parser.getAttributeLocalName(i),
+            OMAttribute attr = node.addAttribute(parser.getAttributeLocalName(i),
                               parser.getAttributeValue(i), namespace);
+            attr.setAttributeType(parser.getAttributeType(i));
+            
         }
     }
 
