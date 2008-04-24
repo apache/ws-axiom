@@ -19,6 +19,12 @@
 
 package org.apache.axiom.om.util;
 
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.commons.logging.Log;
+
+import javax.xml.stream.XMLStreamException;
+
 /**
  * Common Utilities
  */
@@ -92,4 +98,62 @@ public class CommonUtils {
         text = replace(text, "at ", "DEBUG_FRAME = ");
         return text;
     }
+    
+    /**
+     * Writes the om to a log.debug.
+     * This method assumes optimized mtom attachments
+     * Also calculates the length of the message.
+     * @param om OMElement
+     * @param log Log
+     * @return length of entire message
+     */
+    public static long logDebug(OMElement om, Log log) {
+        return logDebug(om, log, Integer.MAX_VALUE);
+    }
+    
+    /**
+     * Writes the om to a log.debug.
+     * This method assumes optimized mtom attachments
+     * Also calculates the length of the message.
+     * @param om OMElement
+     * @param log Log
+     * @param int limit of message to write
+     * @return length of entire message
+     */
+    public static long logDebug(OMElement om, Log log, int limit) {
+        OMOutputFormat format = new OMOutputFormat();
+        format.setDoOptimize(true);
+        format.setAutoCloseWriter(true);
+        format.setIgnoreXMLDeclaration(true);
+        return logDebug(om, log, limit, format);
+    }
+    
+    /**
+     * Writes the om to a log.debug.
+     * Also calculates the length of the message.
+     * @param om OMElement
+     * @param log Log
+     * @param int limit of message to write
+     * @param format OMOutputFormat
+     * @return length of entire message
+     */
+    public static long logDebug(OMElement om, 
+                             Log log, 
+                             int limit,
+                             OMOutputFormat format) {
+        LogOutputStream logStream = new LogOutputStream(log, limit);
+        
+        try {
+            om.serialize(logStream, format);
+            logStream.flush();
+            logStream.close();
+        } catch (Throwable t) {
+            // Problem occur while logging. Log error and continue
+            log.debug(t);
+            log.error(t);
+        }
+        
+        return logStream.getLength();
+    }
+    
 }

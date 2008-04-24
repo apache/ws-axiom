@@ -26,6 +26,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import junit.framework.TestCase;
 
+import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.OMElement;
@@ -33,6 +34,8 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -135,4 +138,63 @@ public class SOAPEnvelopeBuildTest extends TestCase {
 			fail("No children of the Body element");
 		}
 	}
+        
+        public void testTrace() throws Exception{
+                XMLStreamReader parser = StAXUtils.createXMLStreamReader(new StringReader(testMessage));
+                StAXSOAPModelBuilder sob = new StAXSOAPModelBuilder(parser, null);
+                SOAPEnvelope se = (SOAPEnvelope)sob.getDocumentElement();
+                SOAPHeader sh = se.getHeader();
+                
+                MyDebugLogger log = new MyDebugLogger();
+                long length = CommonUtils.logDebug(se, log);
+                assertTrue(length > 100);
+                System.out.println(log.output);
+                System.out.println(length);
+                assertTrue(log.output.contains("x:Content"));
+                           
+        }
+        
+        class MyDebugLogger implements Log {
+
+            String output = "";
+            public void debug(Object arg0) {
+                output = output.concat(arg0.toString());   
+            }
+            public void debug(Object arg0, Throwable arg1) {}           
+            public void error(Object arg0) {}
+            public void error(Object arg0, Throwable arg1) {}
+            public void fatal(Object arg0) {}
+            public void fatal(Object arg0, Throwable arg1) {}
+            public void info(Object arg0) {}
+            public void info(Object arg0, Throwable arg1) {}
+
+            public boolean isDebugEnabled() {
+                return true;
+            }
+
+            public boolean isErrorEnabled() {
+                return false;
+            }
+
+            public boolean isFatalEnabled() {
+                return false;
+            }
+
+            public boolean isInfoEnabled() {
+                return false;
+            }
+
+            public boolean isTraceEnabled() {
+                return false;
+            }
+
+            public boolean isWarnEnabled() {
+                return false;
+            }
+
+            public void trace(Object arg0) {}
+            public void trace(Object arg0, Throwable arg1) {}
+            public void warn(Object arg0) {}
+            public void warn(Object arg0, Throwable arg1) {}
+        }
 }
