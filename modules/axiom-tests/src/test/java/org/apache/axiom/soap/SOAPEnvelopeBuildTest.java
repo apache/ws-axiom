@@ -148,7 +148,7 @@ public class SOAPEnvelopeBuildTest extends TestCase {
                 MyDebugLogger log = new MyDebugLogger();
                 long length = CommonUtils.logDebug(se, log);
                 assertTrue(length > 100);
-                assertTrue(log.outputText.contains("x:Content"));
+                assertTrue(log.outputText.indexOf("x:Content") > 0);
                            
         }
         
