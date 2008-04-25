@@ -22,6 +22,7 @@ package org.apache.axiom.attachments;
 import org.apache.axiom.attachments.impl.PartFactory;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
+import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.DetachableInputStream;
@@ -30,7 +31,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.activation.DataHandler;
-import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.ParseException;
@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class Attachments {
+public class Attachments implements OMAttachmentAccessor {
 
     /** <code>ContentType</code> of the MIME message */
     ContentType contentType;

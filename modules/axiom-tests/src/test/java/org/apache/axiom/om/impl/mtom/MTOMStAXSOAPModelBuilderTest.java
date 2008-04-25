@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl.mtom;
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -30,16 +31,16 @@ import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
+
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ByteArrayInputStream;
-import java.io.BufferedInputStream;
-import java.util.Iterator;
-import java.util.Arrays;
-import java.lang.reflect.Array;
 import java.net.URLEncoder;
+import java.util.Iterator;
 
 public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
 
@@ -87,6 +88,53 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         //  object.read(actualObject,0,10);
 
         //  assertEquals("Object check", expectedObject[5],actualObject[5] );
+    }
+    
+    public void testCreateAndSerializeOptimized() throws Exception {
+        String contentTypeString =
+                "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
+        String inFileName = "mtom/MTOMBuilderTestIn.txt";
+        InputStream inStream = new FileInputStream(getTestResourceFile(inFileName));
+        Attachments attachments = new Attachments(inStream, contentTypeString);
+        XMLStreamReader reader = XMLInputFactory.newInstance()
+                .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
+                        .getSOAPPartInputStream())));
+        OMXMLParserWrapper builder = new MTOMStAXSOAPModelBuilder(reader, attachments,
+                                               SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        OMElement root = builder.getDocumentElement();
+        
+        OMOutputFormat format = new OMOutputFormat();
+        format.setDoOptimize(true);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        root.serializeAndConsume(baos, format);
+        String msg = baos.toString();
+        // Make sure there is an xop:Include element and an optimized attachment
+        assertTrue(msg.indexOf("xop:Include") > 0);
+        assertTrue(msg.indexOf("Content-ID: <cid:-1609420109260943731>") > 0);
+    }
+    
+    public void testCreateAndSerializeInlined() throws Exception {
+        String contentTypeString =
+                "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
+        String inFileName = "mtom/MTOMBuilderTestIn.txt";
+        InputStream inStream = new FileInputStream(getTestResourceFile(inFileName));
+        Attachments attachments = new Attachments(inStream, contentTypeString);
+        XMLStreamReader reader = XMLInputFactory.newInstance()
+                .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
+                        .getSOAPPartInputStream())));
+        OMXMLParserWrapper builder = new MTOMStAXSOAPModelBuilder(reader, attachments,
+                                               SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        OMElement root = builder.getDocumentElement();
+        
+        OMOutputFormat format = new OMOutputFormat();
+        format.setDoOptimize(false);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        root.serializeAndConsume(baos, format);
+        String msg = baos.toString();
+        // Make sure there is not an xop:Include
+        // Make sure there is not an optimized attachment
+        assertTrue(msg.indexOf("xop:Include") < 0);
+        assertTrue(msg.indexOf("Content-ID: <cid:-1609420109260943731>") < 0);
     }
 
     public void testUTF16MTOMMessage() throws Exception {

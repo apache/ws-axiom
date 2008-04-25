@@ -25,6 +25,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
@@ -32,6 +33,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMConstants;
@@ -54,7 +56,8 @@ import org.apache.commons.logging.LogFactory;
  * Note  - This class also implements the streaming constants interface to get access to the StAX
  * constants
  */
-public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
+public class OMStAXWrapper 
+    implements XMLStreamReader, XMLStreamConstants, OMAttachmentAccessor {
     
     private static final Log log = LogFactory.getLog(OMStAXWrapper.class);
     private static boolean DEBUG_ENABLED = log.isDebugEnabled();
@@ -1464,5 +1467,14 @@ public class OMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
             _releaseParserOnClose = value;
         }
         
+    }
+
+    public DataHandler getDataHandler(String blobcid) {
+        DataHandler dh = null;
+        if (builder != null && 
+                builder instanceof OMAttachmentAccessor) {
+            dh = ((OMAttachmentAccessor) builder).getDataHandler(blobcid);
+        }
+        return dh;
     }
 }

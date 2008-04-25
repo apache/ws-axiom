@@ -628,4 +628,8 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
     public OMNamespace getNamespace() {
         return textNS;
     }
+    
+    public void setContentID(String cid) {
+        this.contentID = cid;
+    }
 }

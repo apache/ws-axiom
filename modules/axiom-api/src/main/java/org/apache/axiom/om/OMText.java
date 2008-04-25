@@ -83,5 +83,11 @@ public interface OMText extends OMNode {
      * @return Returns String.
      */
     String getContentID();
+    
+    /**
+     * Set a specific content id
+     * @param cid
+     */
+    void setContentID(String cid);
 
 }

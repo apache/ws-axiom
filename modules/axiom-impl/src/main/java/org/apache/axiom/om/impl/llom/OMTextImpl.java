@@ -538,5 +538,9 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             this.getDataHandler();
         }
     }
+    
+    public void setContentID(String cid) {
+        this.contentID = cid;
+    }
 
 }

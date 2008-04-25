@@ -36,7 +36,8 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class XOPAwareStAXOMBuilder extends StAXOMBuilder implements XOPBuilder {
+public class XOPAwareStAXOMBuilder 
+    extends StAXOMBuilder implements XOPBuilder {
 
     /** <code>Attachments</code> handles deferred parsing of incoming MIME Messages. */
     Attachments attachments;

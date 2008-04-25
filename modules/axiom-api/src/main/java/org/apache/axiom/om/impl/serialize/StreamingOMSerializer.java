@@ -19,18 +19,30 @@
 
 package org.apache.axiom.om.impl.serialize;
 
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMAttachmentAccessor;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSerializer;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+
 import java.util.ArrayList;
 
 /** Class StreamingOMSerializer */
 public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
+    
+    Log log = LogFactory.getLog(StreamingOMSerializer.class);
 
     private static int namespaceSuffix = 0;
     public static final String NAMESPACE_PREFIX = "ns";
@@ -44,6 +56,12 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
 
     /** Field depth */
     private int depth = 0;
+    
+    public static final QName XOP_INCLUDE = 
+        new QName("http://www.w3.org/2004/08/xop/include", "Include");
+    
+    private boolean inputHasAttachments = false;
+    private boolean skipEndElement = false;
 
     /**
      * Method serialize.
@@ -65,6 +83,12 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
      */
     public void serialize(XMLStreamReader node, XMLStreamWriter writer, boolean startAtNext)
             throws XMLStreamException {
+        
+        // Set attachment status
+        if (node instanceof OMAttachmentAccessor) {
+            inputHasAttachments = true;
+        }
+        
         serializeNode(node, writer, startAtNext);
     }
 
@@ -138,6 +162,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
     protected void serializeElement(XMLStreamReader reader,
                                     XMLStreamWriter writer)
             throws XMLStreamException {
+        
 
         // Note: To serialize the start tag, we must follow the order dictated by the JSR-173 (StAX) specification.
         // Please keep this code in sync with the code in OMSerializerUtil.serializeStartpart
@@ -163,6 +188,20 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         ePrefix = (ePrefix != null && ePrefix.length() == 0) ? null : ePrefix;
         String eNamespace = reader.getNamespaceURI();
         eNamespace = (eNamespace != null && eNamespace.length() == 0) ? null : eNamespace;
+        
+        if (this.inputHasAttachments &&
+            XOP_INCLUDE.getNamespaceURI().equals(eNamespace)) {
+            String eLocalPart = reader.getLocalName();
+            if (XOP_INCLUDE.getLocalPart().equals(eLocalPart)) {
+                if (serializeXOPInclude(reader, writer)) {
+                    // Since the xop:include is replaced with inlined text,
+                    // skip the rest of serialize element and skip the end event for 
+                    // of the xop:include
+                    skipEndElement = true;  
+                    return;
+                }
+            }
+        }
 
         // Write the startElement if required
         boolean setPrefixFirst = OMSerializerUtil.isSetPrefixBeforeStartElement(writer);
@@ -355,6 +394,10 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
      */
     protected void serializeEndElement(XMLStreamWriter writer)
             throws XMLStreamException {
+        if (this.skipEndElement) {
+            skipEndElement = false;
+            return;
+        }
         writer.writeEndElement();
     }
 
@@ -492,5 +535,91 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             writer.writeNamespace(prefix, URI);
             writer.setPrefix(prefix, URI);
         }
+    }
+    
+    /**
+     * Inspect the current element and if it is an
+     * XOP Include then write it out as inlined or optimized.
+     * @param reader
+     * @param writer
+     * @return true if inlined
+     */ 
+    protected boolean serializeXOPInclude(XMLStreamReader reader,
+                                          XMLStreamWriter writer) {
+       String cid = reader.getAttributeValue(null, "href");
+       DataHandler dh = getDataHandler(cid, (OMAttachmentAccessor) reader);
+       if (dh == null) {
+           return false;
+       }
+       
+       OMFactory omFactory = OMAbstractFactory.getOMFactory();
+       OMText omText = omFactory.createOMText(dh, true);
+       omText.setContentID(cid);
+       
+       
+       MTOMXMLStreamWriter mtomWriter = 
+           (writer instanceof MTOMXMLStreamWriter) ? 
+                   (MTOMXMLStreamWriter) writer : 
+                       null;
+                   
+       if (mtomWriter != null && 
+               mtomWriter.isOptimized() &&
+               mtomWriter.isOptimizedThreshold(omText)) {
+           // This will write the attachment after the xml message
+           mtomWriter.writeOptimized(omText);
+           return false;
+       }
+       
+       // This will inline the attachment
+       omText.setOptimize(false);
+       try {
+           writer.writeCharacters(omText.getText());
+           return true;
+       } catch (XMLStreamException e) {
+           // Just writer out the xop:include
+           return false;
+       }
+      
+    }
+    
+    private DataHandler getDataHandler(String cid, OMAttachmentAccessor oaa) {
+        DataHandler dh = null;
+        
+        String blobcid = cid;
+        if (blobcid.startsWith("cid:")) {
+            blobcid = blobcid.substring(4);
+        }
+        // Get the attachment
+        if (oaa != null) {
+             dh = oaa.getDataHandler(blobcid);
+        }
+        
+        if (dh == null) {
+            blobcid = getNewCID(cid);
+            if (blobcid.startsWith("cid:")) {
+                blobcid = blobcid.substring(4);
+            }
+            if (oaa != null) {
+                dh = oaa.getDataHandler(blobcid);
+           }
+        }
+        return dh;
+    }
+    
+    /**
+     * @param cid
+     * @return cid with translated characters
+     */
+    private String getNewCID(String cid) {
+        String cid2 = cid;
+
+        try {
+            cid2 = java.net.URLDecoder.decode(cid, "UTF-8");
+        } catch (Exception e) {
+            if (log.isDebugEnabled()) {
+                log.debug("getNewCID decoding " + cid + " as UTF-8 decoding error: " + e);
+            }
+        }
+        return cid2;
     }
 }
