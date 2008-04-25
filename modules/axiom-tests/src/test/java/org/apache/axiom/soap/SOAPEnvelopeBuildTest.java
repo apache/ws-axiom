@@ -148,15 +148,15 @@ public class SOAPEnvelopeBuildTest extends TestCase {
                 MyDebugLogger log = new MyDebugLogger();
                 long length = CommonUtils.logDebug(se, log);
                 assertTrue(length > 100);
-                assertTrue(log.output.contains("x:Content"));
+                assertTrue(log.outputText.contains("x:Content"));
                            
         }
         
         class MyDebugLogger implements Log {
 
-            String output = "";
+            public String outputText = "";
             public void debug(Object arg0) {
-                output = output.concat(arg0.toString());   
+                outputText = outputText.concat(arg0.toString());   
             }
             public void debug(Object arg0, Throwable arg1) {}           
             public void error(Object arg0) {}
