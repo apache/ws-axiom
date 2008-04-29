@@ -188,6 +188,12 @@ public class OMSerializerUtil {
             // this will always be false if the property is defined
             if (value != null) {
                 ret = value.booleanValue();
+                // Cache the answer
+                synchronized(semifore) {
+                    cache_isSetPrefixBeforeStartElement_writer = writer;
+                    cache_isSetPrefixBeforeStartElement = ret;
+                }
+                return ret;
             }
         }
         catch (IllegalArgumentException e) {
