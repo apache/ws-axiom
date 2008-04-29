@@ -303,19 +303,54 @@ public class StAXUtils {
             factory = (XMLInputFactory) inputFactoryPerCL.get(cl);
             if (factory == null) {
 
-                factory =
-                    (XMLInputFactory) 
+                if (log.isDebugEnabled()) {
+                    log.debug("About to create XMLInputFactory implementation with " +
+                                "classloader=" + cl);
+                    log.debug("The classloader for javax.xml.stream.XMLInputFactory is: "
+                              + XMLInputFactory.class.getClassLoader());
+                }
+                factory = null;
+                try {
+                    factory = (XMLInputFactory) 
                     AccessController.doPrivileged(
                         new PrivilegedAction() {
                             public Object run() {
                                 return XMLInputFactory.newInstance();
                             }
                         });
+                } catch (ClassCastException cce) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Failed creation of XMLInputFactory implementation with " +
+                                        "classloader=" + cl);
+                        log.debug("Exception is=" + cce);
+                        log.debug("Attempting with classloader: " + 
+                                  XMLInputFactory.class.getClassLoader());
+                    }
+                    factory = (XMLInputFactory) 
+                    AccessController.doPrivileged(
+                        new PrivilegedAction() {
+                            public Object run() {
+                                XMLInputFactory f = null;
+                                ClassLoader saveCL = getContextClassLoader();
+                                try {                              
+                                    Thread.currentThread().
+                                        setContextClassLoader(
+                                            XMLInputFactory.class.getClassLoader());
+                                    f =XMLInputFactory.newInstance();
+                                } finally {
+                                    Thread.currentThread().
+                                        setContextClassLoader(saveCL);
+                                }
+                                return f;
+                            }
+                        });
+                }
+                    
                 if (factory != null) {
                     inputFactoryPerCL.put(cl, factory);
                     if (log.isDebugEnabled()) {
                         log.debug("Created XMLInputFactory = " + factory.getClass() + 
-                                  " for classloader=" + cl);
+                                  " with classloader=" + cl);
                         log.debug("Size of XMLInputFactory map =" + inputFactoryPerCL.size());
                     }
                 } else {
@@ -370,9 +405,14 @@ public class StAXUtils {
         } else {
             factory = (XMLOutputFactory) outputFactoryPerCL.get(cl);
             if (factory == null) {
-
-                factory =
-                    (XMLOutputFactory) 
+                if (log.isDebugEnabled()) {
+                    log.debug("About to create XMLOutputFactory implementation with " +
+                                "classloader=" + cl);
+                    log.debug("The classloader for javax.xml.stream.XMLOutputFactory is: " + 
+                              XMLOutputFactory.class.getClassLoader());
+                }
+                try {
+                    factory = (XMLOutputFactory) 
                     AccessController.doPrivileged(
                         new PrivilegedAction() {
                             public Object run() {
@@ -382,6 +422,35 @@ public class StAXUtils {
                                 return factory;
                             }
                         });
+                } catch (ClassCastException cce) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Failed creation of XMLOutputFactory implementation with " +
+                                        "classloader=" + cl);
+                        log.debug("Exception is=" + cce);
+                        log.debug("Attempting with classloader: " + 
+                                  XMLOutputFactory.class.getClassLoader());
+                    }
+                    factory = (XMLOutputFactory) 
+                    AccessController.doPrivileged(
+                        new PrivilegedAction() {
+                            public Object run() {
+                                XMLOutputFactory f = null;
+                                ClassLoader saveCL = getContextClassLoader();
+                                try {                              
+                                    Thread.currentThread().
+                                        setContextClassLoader(
+                                           XMLOutputFactory.class.getClassLoader());
+                                    f =XMLOutputFactory.newInstance();
+                                    f.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, 
+                                                        Boolean.FALSE);
+                                } finally {
+                                    Thread.currentThread().
+                                        setContextClassLoader(saveCL);
+                                }
+                                return f;
+                            }
+                        });
+                }
                 if (factory != null) {
                     outputFactoryPerCL.put(cl, factory);
                     if (log.isDebugEnabled()) {
