@@ -332,6 +332,7 @@ public class OMStAXWrapper
      */
     public boolean hasText() {
         return ((currentEvent == CHARACTERS) || (currentEvent == DTD)
+                || (currentEvent == CDATA)
                 || (currentEvent == ENTITY_REFERENCE)
                 || (currentEvent == COMMENT) || (currentEvent == SPACE));
     }
