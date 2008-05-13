@@ -19,20 +19,24 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.impl.EmptyOMLocation;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.w3c.dom.Attr;
 
+import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
@@ -49,7 +53,7 @@ import java.util.Stack;
  * Note - This class also implements the streaming constants interface to get access to the StAX
  * constants.
  */
-public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
+public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     /** Field navigator */
     private DOMNavigator navigator;
 
@@ -117,6 +121,13 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
     private OMNode lastNode = null;
 
     private boolean needToThrowEndDocument = false;
+    
+    /** 
+     * If true then TEXT events are constructed for the MTOM attachment
+     * If false, an <xop:Include href="cid:xxxxx"/> event is constructed and
+     * the consumer must call getDataHandler(cid) to access the datahandler.
+     */
+    private boolean inlineMTOM = true;
 
     /**
      * Method setAllowSwitching.
@@ -266,7 +277,8 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
      * @see javax.xml.stream.XMLStreamReader#hasText()
      */
     public boolean hasText() {
-        return ((currentEvent == CHARACTERS) || (currentEvent == DTD)
+        return ((currentEvent == CHARACTERS) || (currentEvent == DTD) 
+                || (currentEvent == CDATA)
                 || (currentEvent == ENTITY_REFERENCE)
                 || (currentEvent == COMMENT) || (currentEvent == SPACE));
     }
@@ -1207,5 +1219,25 @@ public class DOMStAXWrapper implements XMLStreamReader, XMLStreamConstants {
 
     public void setParser(XMLStreamReader parser) {
         this.parser = parser;
+    }
+
+    public DataHandler getDataHandler(String blobcid) {
+        DataHandler dh = null;
+        if (builder != null && 
+                builder instanceof OMAttachmentAccessor) {
+            dh = ((OMAttachmentAccessor) builder).getDataHandler(blobcid);
+        }
+        return dh;
+    }
+
+    public boolean isInlineMTOM() {
+        return inlineMTOM;
+       
+    }
+
+    public void setInlineMTOM(boolean value) {
+        if (value == true) {
+            throw new OMException("setInlineMTOM(true) is not supported");
+        }
     }
 }

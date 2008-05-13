@@ -45,6 +45,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.impl.EmptyOMLocation;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
@@ -57,7 +58,7 @@ import org.apache.commons.logging.LogFactory;
  * constants
  */
 public class OMStAXWrapper 
-    implements XMLStreamReader, XMLStreamConstants, OMAttachmentAccessor {
+    implements OMXMLStreamReader, XMLStreamConstants {
     
     private static final Log log = LogFactory.getLog(OMStAXWrapper.class);
     private static boolean DEBUG_ENABLED = log.isDebugEnabled();
@@ -91,6 +92,14 @@ public class OMStAXWrapper
     private static final short COMPLETED = 2;
     private static final short SWITCHED = 3;
     private static final short DOCUMENT_COMPLETE = 4;
+    
+    
+    // Variables used to build an xop:include representation
+    private final static QName XOP_INCLUDE = 
+        new QName("http://www.w3.org/2004/08/xop/include", "Include", "xop");
+    private OMElement xopInclude = null;
+    private OMText xopIncludeText = null;
+    private boolean xopIncludeStart = false;
 
 
     /** Field state */
@@ -113,7 +122,7 @@ public class OMStAXWrapper
     boolean namespaceURIInterning = false;
 
     /** Field elementStack */
-    private Stack elementStack = null;
+    private Stack nodeStack = null;
 
     // keeps the next event. The parser actually keeps one step ahead to
     // detect the end of navigation. (at the end of the stream the navigator
@@ -137,6 +146,13 @@ public class OMStAXWrapper
 
     private boolean needToThrowEndDocument = false;
 
+    /** 
+     * If true then TEXT events are constructed for the MTOM attachment
+     * If false, an <xop:Include href="cid:xxxxx"/> event is constructed and
+     * the consumer must call getDataHandler(cid) to access the datahandler.
+     */
+    private boolean inlineMTOM = true;
+    
     /**
      * Method setAllowSwitching.
      *
@@ -239,7 +255,7 @@ public class OMStAXWrapper
         } else {
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)) {
-                OMNamespace ns = ((OMElement) lastNode).getNamespace();
+                OMNamespace ns = ((OMElement) getNode()).getNamespace();
                 returnStr = (ns == null)
                         ? null
                         : ns.getPrefix();
@@ -260,7 +276,7 @@ public class OMStAXWrapper
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)
                     || (currentEvent == NAMESPACE)) {
-                OMNamespace ns = ((OMElement) lastNode).getNamespace();
+                OMNamespace ns = ((OMElement) getNode()).getNamespace();
                 returnStr = (ns == null)
                         ? null
                         : ns.getNamespaceURI();
@@ -303,7 +319,7 @@ public class OMStAXWrapper
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)
                     || (currentEvent == ENTITY_REFERENCE)) {
-                returnStr = ((OMElement) lastNode).getLocalName();
+                returnStr = ((OMElement) getNode()).getLocalName();
             }
         }
         return returnStr;
@@ -320,7 +336,7 @@ public class OMStAXWrapper
         } else {
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)) {
-                returnName = getQName((OMElement) lastNode);
+                returnName = getQName((OMElement) getNode());
             }
         }
         return returnName;
@@ -346,7 +362,7 @@ public class OMStAXWrapper
         if (parser != null) {
             returnLength = parser.getTextLength();
         } else {
-            OMText textNode = (OMText) lastNode;
+            OMText textNode = (OMText) getNode();
             returnLength = textNode.getText().length();
         }
         return returnLength;
@@ -386,7 +402,7 @@ public class OMStAXWrapper
             }
         } else {
             if (hasText()) {
-                OMText textNode = (OMText) lastNode;
+                OMText textNode = (OMText) getNode();
                 String str = textNode.getText();
                 str.getChars(i, i + i2, chars, i1);
             }
@@ -404,7 +420,7 @@ public class OMStAXWrapper
             returnArray = parser.getTextCharacters();
         } else {
             if (hasText()) {
-                OMText textNode = (OMText) lastNode;
+                OMText textNode = (OMText) getNode();
                 String str = textNode.getText();
                 returnArray = str.toCharArray();
             }
@@ -422,10 +438,10 @@ public class OMStAXWrapper
             returnString = parser.getText();
         } else {
             if (hasText()) {
-                if (lastNode instanceof OMText) {
-                    returnString = ((OMText) lastNode).getText();
-                } else if (lastNode instanceof OMComment) {
-                    returnString = ((OMComment) lastNode).getValue();
+                if (getNode() instanceof OMText) {
+                    returnString = ((OMText) getNode()).getText();
+                } else if (getNode() instanceof OMComment) {
+                    returnString = ((OMComment) getNode()).getValue();
                 }
             }
         }
@@ -456,7 +472,7 @@ public class OMStAXWrapper
             if (isStartElement() || isEndElement()
                     || (currentEvent == NAMESPACE)) {
                 OMNamespace ns = (OMNamespace) getItemFromIterator(
-                        ((OMElement) lastNode).getAllDeclaredNamespaces(), i);
+                        ((OMElement) getNode()).getAllDeclaredNamespaces(), i);
                 returnString = (ns == null)
                         ? null
                         : ns.getNamespaceURI();
@@ -490,7 +506,7 @@ public class OMStAXWrapper
             if (isStartElement() || isEndElement()
                     || (currentEvent == NAMESPACE)) {
                 OMNamespace ns = (OMNamespace) getItemFromIterator(
-                        ((OMElement) lastNode).getAllDeclaredNamespaces(), i);
+                        ((OMElement) getNode()).getAllDeclaredNamespaces(), i);
                 returnString = (ns == null)
                         ? null
                         : ns.getPrefix();
@@ -512,7 +528,7 @@ public class OMStAXWrapper
                     || (currentEvent == NAMESPACE)) {
                 returnCount =
                         getCount(
-                                ((OMElement) lastNode).getAllDeclaredNamespaces());
+                                ((OMElement) getNode()).getAllDeclaredNamespaces());
             }
         }
         return returnCount;
@@ -550,7 +566,7 @@ public class OMStAXWrapper
             returnString = parser.getAttributeValue(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                OMAttribute attrib = getAttribute((OMElement) lastNode, i);
+                OMAttribute attrib = getAttribute((OMElement) getNode(), i);
                 if (attrib != null) {
                     returnString = attrib.getAttributeValue();
                 }
@@ -574,7 +590,7 @@ public class OMStAXWrapper
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
                 
-            	OMAttribute attrib = getAttribute((OMElement) lastNode, i);
+            	OMAttribute attrib = getAttribute((OMElement) getNode(), i);
                 if (attrib != null) {
                     returnString = attrib.getAttributeType();
                 }
@@ -599,7 +615,7 @@ public class OMStAXWrapper
             returnString = parser.getAttributePrefix(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                OMAttribute attrib = getAttribute((OMElement) lastNode, i);
+                OMAttribute attrib = getAttribute((OMElement) getNode(), i);
                 if (attrib != null) {
                     OMNamespace nameSpace = attrib.getNamespace();
                     if (nameSpace != null) {
@@ -625,7 +641,7 @@ public class OMStAXWrapper
             returnString = parser.getAttributeLocalName(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                OMAttribute attrib = getAttribute((OMElement) lastNode, i);
+                OMAttribute attrib = getAttribute((OMElement) getNode(), i);
                 if (attrib != null) {
                     returnString = attrib.getLocalName();
                 }
@@ -648,7 +664,7 @@ public class OMStAXWrapper
             returnString = parser.getAttributeNamespace(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                OMAttribute attrib = getAttribute((OMElement) lastNode, i);
+                OMAttribute attrib = getAttribute((OMElement) getNode(), i);
                 if (attrib != null) {
                     OMNamespace nameSpace = attrib.getNamespace();
                     if (nameSpace != null) {
@@ -674,7 +690,7 @@ public class OMStAXWrapper
             returnQName = parser.getAttributeName(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                returnQName = getAttribute((OMElement) lastNode, i).getQName();
+                returnQName = getAttribute((OMElement) getNode(), i).getQName();
             } else {
                 throw new IllegalStateException(
                         "attribute count accessed in illegal event!");
@@ -693,7 +709,7 @@ public class OMStAXWrapper
             returnCount = parser.getAttributeCount();
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                OMElement elt = (OMElement) lastNode;
+                OMElement elt = (OMElement) getNode();
                 returnCount = getCount(elt.getAllAttributes());
             } else {
                 throw new IllegalStateException(
@@ -720,7 +736,7 @@ public class OMStAXWrapper
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
                 QName qname = new QName(s, s1);
-                OMAttribute attrib = ((OMElement) lastNode).getAttribute(qname);
+                OMAttribute attrib = ((OMElement) getNode()).getAttribute(qname);
                 if (attrib != null) {
                     returnString = attrib.getAttributeValue();
                 }
@@ -981,6 +997,7 @@ public class OMStAXWrapper
                 updateCompleteStatus();
                 break;
             case NAVIGABLE:
+                
                 currentEvent = generateEvents(currentNode);
                 updateCompleteStatus();
                 updateLastNode();
@@ -1009,14 +1026,14 @@ public class OMStAXWrapper
             return Boolean.TRUE;
         }
         if (OMConstants.IS_BINARY.equals(s)) {
-            if (lastNode instanceof OMText) {
-                OMText text = (OMText) lastNode;
+            if (getNode() instanceof OMText) {
+                OMText text = (OMText) getNode();
                 return new Boolean(text.isBinary());
             }
             return Boolean.FALSE;
         } else if (OMConstants.DATA_HANDLER.equals(s)) {
-            if (lastNode instanceof OMText) {
-                OMText text = (OMText) lastNode;    
+            if (getNode() instanceof OMText) {
+                OMText text = (OMText) getNode();    
                 if (text.isBinary())
                     return text.getDataHandler();
             }
@@ -1055,6 +1072,15 @@ public class OMStAXWrapper
      * @throws XMLStreamException
      */
     private void updateLastNode() throws XMLStreamException {
+        // Detect XOP:Include element and don't advance if processing
+        // the end tag.
+        if (xopInclude != null && 
+            xopIncludeText == currentNode &&
+            xopIncludeStart) {
+            lastNode = xopIncludeText;
+            return;
+        }  
+        
         lastNode = currentNode;
         currentNode = nextNode;
         try {
@@ -1139,7 +1165,12 @@ public class OMStAXWrapper
         if (state==SWITCHED){
             return parser.getNamespaceContext();
         }
-        return new NamespaceContextImpl(getAllNamespaces(lastNode));
+        Map m = getAllNamespaces(getNode());
+        if (getNode() != lastNode) {
+            // Handle situation involving substituted node.
+            m.putAll(getAllNamespaces(lastNode));
+        }
+        return new NamespaceContextImpl(m);
     }
 
     /**
@@ -1241,7 +1272,7 @@ public class OMStAXWrapper
                 returnEvent = generateElementEvents(element);
                 break;
             case OMNode.TEXT_NODE:
-                returnEvent = generateTextEvents();
+                returnEvent = generateTextEvents(node);
                 break;
             case OMNode.COMMENT_NODE:
                 returnEvent = generateCommentEvents();
@@ -1262,15 +1293,15 @@ public class OMStAXWrapper
      * @return Returns int.
      */
     private int generateElementEvents(OMElement elt) {
-        if (elementStack == null) {
-            elementStack = new Stack();
+        if (nodeStack == null) {
+            nodeStack = new Stack();
         }
         int returnValue = START_ELEMENT;
-        if (!elementStack.isEmpty() && elementStack.peek().equals(elt)) {
+        if (!nodeStack.isEmpty() && nodeStack.peek().equals(elt)) {
             returnValue = END_ELEMENT;
-            elementStack.pop();
+            nodeStack.pop();
         } else {
-            elementStack.push(elt);
+            nodeStack.push(elt);
         }
         return returnValue;
     }
@@ -1280,8 +1311,51 @@ public class OMStAXWrapper
      *
      * @return Returns int.
      */
-    private int generateTextEvents() {
+    private int generateTextEvents(OMNode node) {
+        if (!isInlineMTOM()) {
+            // If this is an optimized MTOM text node
+            // then simulate an XOP_INCLUDE element.
+            if (node instanceof OMText) {
+                OMText text = (OMText) node;
+                if (text.isOptimized()) {
+                    
+                    if (nodeStack == null) {
+                        nodeStack = new Stack();
+                    }
+                    
+                    if (!nodeStack.isEmpty() && nodeStack.peek().equals(text)) {
+                        // Process the end tag of the XOP:Include
+                        nodeStack.pop();
+                        xopIncludeStart = false;
+                        return END_ELEMENT;
+                    } else {
+
+                        // Create an XOPInclude element to represent this node
+                        xopIncludeText = text;
+                        xopInclude = node.getOMFactory().createOMElement(XOP_INCLUDE);
+                        String cid = text.getContentID();
+                        xopInclude.addAttribute("href", "cid:" + cid, null);
+                        xopIncludeStart = true;
+                        nodeStack.push(text);
+                        return START_ELEMENT;
+                    }
+                }
+            }
+        }
         return CHARACTERS;
+    }
+    
+    /**
+     * @return the node to use for the current event
+     */
+    private OMNode getNode() {
+        // This method returns the node used to construct
+        // the current event (lastNode).  
+        // In some cases a new node is substitued (i.e. an XOPInclude element)
+        if (lastNode == xopIncludeText) {
+            return xopInclude;
+        }
+        return lastNode;
     }
 
     /**
@@ -1395,7 +1469,7 @@ public class OMStAXWrapper
         this.parser = parser;
     }
 
-    private Map getAllNamespaces(Object contextNode) {
+    private Map getAllNamespaces(OMNode contextNode) {
         if (!(contextNode instanceof OMContainer &&
                 contextNode instanceof OMElement)) {
             return new HashMap();
@@ -1472,10 +1546,32 @@ public class OMStAXWrapper
 
     public DataHandler getDataHandler(String blobcid) {
         DataHandler dh = null;
+        // The datahandler may be part of the attachments map of the builder
         if (builder != null && 
                 builder instanceof OMAttachmentAccessor) {
             dh = ((OMAttachmentAccessor) builder).getDataHandler(blobcid);
+        } 
+        
+        // Or the datahandler might be part of the current optimized text node
+        if (dh == null &&
+            lastNode != null && 
+            lastNode instanceof OMText) {
+            OMText text = (OMText) lastNode;
+            if (text.isOptimized() &&
+                    blobcid.equals("cid:" + text.getContentID())) {
+               dh = (DataHandler) text.getDataHandler();
+            }
         }
+                
         return dh;
+    }
+
+    public boolean isInlineMTOM() {
+        return inlineMTOM;
+       
+    }
+
+    public void setInlineMTOM(boolean value) {
+        inlineMTOM = value;  
     }
 }

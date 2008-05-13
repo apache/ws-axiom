@@ -101,11 +101,15 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
       */
     public DataHandler getDataHandler(String blobContentID) throws OMException {
         DataHandler dataHandler = attachments.getDataHandler(blobContentID);
+        /* The getDataHandler javadoc indicates that null indicate that the datahandler
+         * was not found
+         * 
         if (dataHandler == null) {
             throw new OMException(
                     "Referenced Attachment not found in the MIME Message. ContentID:"
                             + blobContentID);
         }
+        */
         return dataHandler;
     }
 }

@@ -21,14 +21,17 @@ package org.apache.axiom.om.impl.mtom;
 
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 
 import javax.activation.DataHandler;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
@@ -44,6 +47,9 @@ import java.util.Iterator;
 
 public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
 
+    private final static QName XOP_INCLUDE = 
+        new QName("http://www.w3.org/2004/08/xop/include", "Include");
+    
     /** @param testName  */
     public MTOMStAXSOAPModelBuilderTest(String testName) {
         super(testName);
@@ -113,6 +119,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         assertTrue(msg.indexOf("Content-ID: <cid:-1609420109260943731>") > 0);
     }
     
+    
     public void testCreateAndSerializeInlined() throws Exception {
         String contentTypeString =
                 "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
@@ -172,6 +179,54 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         System.out.println(root.toString());
     }
 
+    public void testCreateAndXMLStreamReader() throws Exception {
+        String contentTypeString =
+                "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
+        String inFileName = "mtom/MTOMBuilderTestIn.txt";
+        InputStream inStream = new FileInputStream(getTestResourceFile(inFileName));
+        Attachments attachments = new Attachments(inStream, contentTypeString);
+        XMLStreamReader reader = XMLInputFactory.newInstance()
+                .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
+                        .getSOAPPartInputStream())));
+        OMXMLParserWrapper builder = new MTOMStAXSOAPModelBuilder(reader, attachments,
+                                               SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        OMElement root = builder.getDocumentElement();
+        
+        // Build tree
+        root.build();
+        
+        // Use tree as input to XMLStreamReader
+        OMXMLStreamReader xmlStreamReader = (OMXMLStreamReader) root.getXMLStreamReader();
+        
+        // Issue XOP:Include events for optimized MTOM text nodes
+        xmlStreamReader.setInlineMTOM(false);
+        
+        DataHandler dh = null;
+        while(xmlStreamReader.hasNext() && dh == null) {
+            xmlStreamReader.next();
+            if (xmlStreamReader.isStartElement()) {
+                QName qName =xmlStreamReader.getName();
+                if (XOP_INCLUDE.equals(qName)) {
+                    String hrefValue = xmlStreamReader.getAttributeValue("", "href");
+                    if (hrefValue != null) {
+                        dh =((OMAttachmentAccessor)xmlStreamReader).getDataHandler(hrefValue);
+                    }
+                }
+            }
+        }
+        assertTrue(dh != null);   
+        
+        // Make sure next event is an an XOP_Include END element
+        xmlStreamReader.next();
+        assertTrue(xmlStreamReader.isEndElement());
+        assertTrue(XOP_INCLUDE.equals(xmlStreamReader.getName()));
+        
+        // Make sure the next event is the end tag of name
+        xmlStreamReader.next();
+        assertTrue(xmlStreamReader.isEndElement());
+        assertTrue("name".equals(xmlStreamReader.getLocalName()));
+    }
+   
     private byte[] append(byte[] a, byte[] b) {
         byte[] z = new byte[a.length + b.length];
         System.arraycopy(a, 0, z, 0, a.length);
