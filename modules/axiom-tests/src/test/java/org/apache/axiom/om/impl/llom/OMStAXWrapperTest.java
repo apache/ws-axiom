@@ -63,7 +63,7 @@ public class OMStAXWrapperTest extends TestCase {
         }
         
         // Only woodstox is guaranteed to generate CDATA events if javax.xml.stream.isCoalescing=false
-        if (reader.toString().contains("wstx")) {
+        if (reader.toString().indexOf("wstx")!=-1) {
             assertEquals(XMLStreamReader.CDATA, event);
             assertEquals("hello world", reader2.getText()); // WSCOMMONS-341
             assertTrue(Arrays.equals("hello world".toCharArray(), reader2.getTextCharacters())); // WSCOMMONS-338
