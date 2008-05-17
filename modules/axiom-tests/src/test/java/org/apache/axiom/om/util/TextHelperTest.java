@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om.util;
 
+import org.apache.axiom.attachments.impl.BufferUtils;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMFactory;
@@ -27,9 +28,11 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 
 /**
  * Validate TextHelper code
@@ -38,7 +41,10 @@ public class TextHelperTest extends AbstractTestCase {
 
     private File file;
     private FileInputStream fis;
-    private static final long SIZE = 10 * 1024;
+    private static final long SIZE = 101 * 1024; // More than the threshold
+    private static final long EXPECTED_BASE64_SIZE = 137900;
+    private static final String EXPECTED_STARTS_WITH = 
+        "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJC";
     
     
     public TextHelperTest(String testName) {
@@ -53,7 +59,8 @@ public class TextHelperTest extends AbstractTestCase {
         for (long i = 0; i < SIZE; i++) {
             bos.write((byte)(i % 256));
         }
-        fos.close();
+        bos.flush();
+        bos.close();
         fis = new FileInputStream(file);
         file.deleteOnExit();
     }
@@ -65,17 +72,36 @@ public class TextHelperTest extends AbstractTestCase {
         }
     }
     
+    /**
+     * Test the InputStream - > BASE64 String 
+     * code.
+     * 
+     * @throws Exception
+     */
     public void test_toString() throws Exception {
         String text = TextHelper.toString(fis);
         assertTrue(text.length() > SIZE);
+        assertTrue(text.length() == EXPECTED_BASE64_SIZE);
+        assertTrue(text.startsWith(EXPECTED_STARTS_WITH));
     }
     
+    /**
+     * Test the InputStream -> BASE64 StringBuffer code
+     * @throws Exception
+     */
     public void test_toStringBuffer() throws Exception {
         StringBuffer buffer = new StringBuffer();
         TextHelper.toStringBuffer(fis, buffer);
         assertTrue(buffer.length() > SIZE);
+        String text = buffer.toString();
+        assertTrue(text.length() == EXPECTED_BASE64_SIZE);
+        assertTrue(text.startsWith(EXPECTED_STARTS_WITH));
     }
     
+    /**
+     * Test the OMText -> StringBuffer code
+     * @throws Exception
+     */
     public void test_fromOMText() throws Exception {
         
         OMFactory factory = OMAbstractFactory.getOMFactory();
@@ -85,6 +111,71 @@ public class TextHelperTest extends AbstractTestCase {
         StringBuffer buffer = new StringBuffer();
         TextHelper.toStringBuffer(omText, buffer);
         assertTrue(buffer.length() > SIZE);
+        String text = buffer.toString();
+        assertTrue(text.length() == EXPECTED_BASE64_SIZE);
+        assertTrue(text.startsWith(EXPECTED_STARTS_WITH));
+    }
+        
+    /**
+     * Test binary bytes -> OMText code
+     * @throws Exception
+     */
+    public void test_toOMText_fromBytes_optimized() throws Exception {
+        // Start with a binary bytes stream
+        InputStream is = new FileInputStream(file);
+        
+        // Get bytes
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        BufferUtils.inputStream2OutputStream(is, baos);
+        byte[] b = baos.toByteArray();
+        
+        // Create an OMText node from the binary bytes
+        OMFactory factory = OMAbstractFactory.getOMFactory();
+        OMText omText = TextHelper.toOMText(b, 0, b.length, 
+                                            factory, true,
+                                            this.tempDir);
+        
+        // Ensure text is optimized
+        assertTrue(omText != null);
+        assertTrue(omText.isOptimized());
+        
+        // Now check the text
+        StringBuffer buffer = new StringBuffer();
+        TextHelper.toStringBuffer(omText, buffer);
+        assertTrue(buffer.length() > SIZE);
+        String text = buffer.toString();
+        assertTrue(text.length() == EXPECTED_BASE64_SIZE);
+        assertTrue(text.startsWith(EXPECTED_STARTS_WITH));
     }
     
+    /**
+     * Test binary bytes -> OMText code
+     * @throws Exception
+     */
+    public void test_toOMText_fromBytes_notOptimized() throws Exception {
+        // Start with a binary bytes stream
+        InputStream is = new FileInputStream(file);
+        
+        // Get bytes
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        BufferUtils.inputStream2OutputStream(is, baos);
+        byte[] b = baos.toByteArray();
+        
+        // Create an OMText node from the binary bytes
+        OMFactory factory = OMAbstractFactory.getOMFactory();
+        OMText omText = TextHelper.toOMText(b, 0, b.length, factory, false);
+        
+        // Ensure text is optimized
+        assertTrue(omText != null);
+        assertTrue(!omText.isOptimized());
+        
+        // Now check the text
+        StringBuffer buffer = new StringBuffer();
+        TextHelper.toStringBuffer(omText, buffer);
+        assertTrue(buffer.length() > SIZE);
+        String text = buffer.toString();
+        assertTrue(text.length() == EXPECTED_BASE64_SIZE);
+        assertTrue(text.startsWith(EXPECTED_STARTS_WITH));
+        
+    }
 }

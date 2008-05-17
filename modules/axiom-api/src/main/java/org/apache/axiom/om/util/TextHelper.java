@@ -19,14 +19,26 @@
 
 package org.apache.axiom.om.util;
 
+import org.apache.axiom.attachments.impl.BufferUtils;
+import org.apache.axiom.attachments.lifecycle.LifecycleManager;
+import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
+import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 
 import javax.activation.DataHandler;
+import javax.mail.MessagingException;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 public class TextHelper {
+    
+    private static int DEFAULT_FILE_THRESHOLD = 100 * 1024;
+    private static String DEFAULT_ATTACHMENT_DIR = "axiomTmp";
+    private static int DELETE_TIME = 60 * 60; // 1 Hour
     
     /**
      * @param inStream InputStream
@@ -91,4 +103,107 @@ public class TextHelper {
         buffer.append(omText.getText());
         return;
     }
+    
+    
+    /**
+     * Create an OMText node from a byte array containing binary data
+     * If the byte array is large and the optimize flag is set, then 
+     * the data is stored in a temp file to reduce in-core memory
+     * @param is
+     * @param factory
+     * @param isOptimize
+     */
+    public static OMText toOMText(byte[] b, int off, int length, 
+                                  OMFactory factory, 
+                                  boolean isOptimize) throws IOException, MessagingException {
+        String attachmentDir = getAttachmentDir(factory);
+        return toOMText(b, off, length, factory, isOptimize, attachmentDir);
+    }
+    
+    /**
+     * Create an OMText node from a byte array containing binary data
+     * If the byte array is large and the optimize flag is set, then 
+     * the data is stored in a temp file to reduce in-core memory
+     * @param is
+     * @param factory
+     * @param isOptimize
+     */
+    public static OMText toOMText(byte[] b, int off, int length, 
+                                      OMFactory factory, 
+                                      boolean isOptimize,
+                                      String attachmentDir) throws IOException, MessagingException {
+        OMText omText = null;
+        if (isOptimize) {
+            LifecycleManager lm = getLifecycleManager(factory);
+            int threshold = getThreshold(factory);
+            
+            // TODO Consider lowering the threshold in low memory situations ?
+            //threshold = lm.getRuntimeThreshold(threshold);
+            
+            if (length >= threshold && attachmentDir != null) {
+                
+                // Get the file accessor
+                FileAccessor fileAccessor = lm.create(attachmentDir);
+                OutputStream fos = fileAccessor.getOutputStream();
+                
+                //Copy the bytes into the file
+                ByteArrayInputStream is = new ByteArrayInputStream(b, off, length);
+                BufferUtils.inputStream2OutputStream(is, fos);
+                fos.close();
+                
+                // Delete this temp file on exit
+                lm.deleteOnExit(fileAccessor.getFile());
+                lm.deleteOnTimeInterval(DELETE_TIME, fileAccessor.getFile());
+                
+                // Create the OMText node from the datahandler
+                DataHandler dh = fileAccessor.getDataHandler(null);
+                omText = factory.createOMText(dh, isOptimize);
+            }
+        }
+        if (omText == null) {
+            omText = factory.createOMText(Base64.encode(b, off, length));
+            omText.setOptimize(isOptimize);
+        }
+        return omText;
+    }
+   
+    private static LifecycleManager getLifecycleManager(OMFactory factory) {
+        LifecycleManager lm = null;
+        
+        /* TODO Support access to lifecycle manager from the factory
+        if (factory.getProperty(LIFECYCLE_MANAGER)) {
+            ...
+        }
+        */
+        if (lm == null) {
+            return new LifecycleManagerImpl();
+        }
+        return lm;
+        
+    }
+    
+    private static int getThreshold(OMFactory factory) {
+       
+        int threshold = DEFAULT_FILE_THRESHOLD;
+        /* TODO Support access to threshold from the factory
+        if (factory.getProperty(FILE_THRESHOLD)) {
+            ...
+        }
+        */
+        return threshold;
+        
+    }
+    
+    private static String getAttachmentDir(OMFactory factory) {
+        
+        String attachmentDir = DEFAULT_ATTACHMENT_DIR;
+        /* TODO Support access to threshold from the factory
+        if (factory.getProperty(FILE_THRESHOLD)) {
+            ...
+        }
+        */
+        return attachmentDir;
+        
+    }
+    
 }
