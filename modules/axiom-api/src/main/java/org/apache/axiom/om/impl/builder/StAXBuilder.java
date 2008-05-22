@@ -680,6 +680,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             } catch (IllegalArgumentException e) {
                 // according to the parser api, get property will return IllegalArgumentException, when that
                 // property is not found.
+                isDataHandlerAware = Boolean.FALSE;
             } catch (IllegalStateException e) {
                 // it will also throw illegalStateExceptions if in wrong state, ignore
             }
