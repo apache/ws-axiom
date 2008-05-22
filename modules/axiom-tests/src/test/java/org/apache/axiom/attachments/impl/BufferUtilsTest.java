@@ -18,23 +18,26 @@
  */
 package org.apache.axiom.attachments.impl;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.mail.util.ByteArrayDataSource;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilterInputStream;
+import java.io.FilterOutputStream;
 import java.io.IOException;
-
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-import javax.activation.MimeType;
-import javax.mail.util.ByteArrayDataSource;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import junit.framework.TestCase;
 
 /**
  * Simple test for the BufferUtils copying code
  */
-public class BufferUtilsTests extends TestCase {
+public class BufferUtilsTest extends TestCase {
 
     byte[] bytes;
     static final int MAX = 1024 * 1024;
@@ -55,17 +58,15 @@ public class BufferUtilsTests extends TestCase {
     public void test() throws Exception {
         // Create temp file
         File file =  File.createTempFile("bufferUtils", "tst");
+        file.deleteOnExit();
         try {
-            //System.out.println(file.getCanonicalPath());
-            //System.out.println(file.getName());
-            FileOutputStream fos = new FileOutputStream(file, true);
+            OutputStream fos = new FileOutputStream(file, true);
             for (int i = 0; i < 20; i++) {
-                //long start = System.currentTimeMillis();
-                ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+                long start = System.currentTimeMillis();
+                InputStream bais = new ByteArrayInputStream(bytes);
                 BufferUtils.inputStream2OutputStream(bais, fos);
                 fos.flush();
-                //long end = System.currentTimeMillis();
-                //System.out.println(end - start);
+                long end = System.currentTimeMillis();
 
             }
             fos.close();
@@ -73,17 +74,15 @@ public class BufferUtilsTests extends TestCase {
             byte[] buffer = new byte[20];
             fis.read(buffer);
             for (int i = 0; i < buffer.length; i++) {
-                //System.out.println(buffer[i]);
                 assertTrue(buffer[i] == (byte) i);
             }
         } finally {
             file.delete();
-        }        
-        file.delete();
+        }    
     }
     
     public void testDataSourceBackedDataHandlerExceedLimit(){
-        String imgFileLocation="modules/axiom-tests/test-resources/mtom/img/test2.jpg";
+        String imgFileLocation="test-resources/mtom/img/test2.jpg";
         try{
             String baseDir = new File(System.getProperty("basedir",".")).getCanonicalPath();
             imgFileLocation = new File(baseDir +File.separator+ imgFileLocation).getAbsolutePath();
@@ -103,6 +102,7 @@ public class BufferUtilsTests extends TestCase {
         assertEquals(doesNotExceed, 0);
         
     }
+    
     public void testObjectBackedDataHandlerExceedLimit(){
         String str = "This is a test String";
         try{

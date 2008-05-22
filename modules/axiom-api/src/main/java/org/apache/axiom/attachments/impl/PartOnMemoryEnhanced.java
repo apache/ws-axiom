@@ -63,7 +63,7 @@ public class PartOnMemoryEnhanced extends AbstractPart {
 
     public DataHandler getDataHandler() throws MessagingException {
         DataSource ds = new MyByteArrayDataSource();
-        return new DataHandler(ds);
+        return new MyDataHandler(ds);
     }
 
     /* (non-Javadoc)
@@ -82,6 +82,22 @@ public class PartOnMemoryEnhanced extends AbstractPart {
         return length;
     }
     
+    
+    class MyDataHandler extends DataHandler {
+
+        DataSource ds;
+        public MyDataHandler(DataSource ds) {
+            super(ds);
+            this.ds = ds;
+        }
+
+        public void writeTo(OutputStream os) throws IOException {
+            InputStream is = ds.getInputStream();
+            if (is instanceof BAAInputStream) {
+                ((BAAInputStream)is).writeTo(os);
+            }
+        }
+    }
     
     /**
      * A DataSource that is backed by the byte[] and 

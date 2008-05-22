@@ -47,7 +47,17 @@ import java.util.Map;
  */
 public class PartFactory {
     
+    private static int inflight = 0;  // How many attachments are currently being built.
+    private static String semifore = "PartFactory.semifore";
+    
     private static Log log = LogFactory.getLog(PartFactory.class);
+    
+    // Maximum number of threads allowed through createPart
+    private static int INFLIGHT_MAX = 4;
+    
+    // Constants for dynamic threshold 
+    // Dynamic Threshold = availMemory / THRESHOLD_FACTOR
+    private static final int THRESHOLD_FACTOR = 5;
     
     /**
      * Creates a part from the input stream.
@@ -57,7 +67,7 @@ public class PartFactory {
      * 
      * @param in MIMEBodyPartInputStream
      * @param isSOAPPart
-     * @param threshholdSize
+     * @param thresholdSize
      * @param attachmentDir
      * @param messageContentLength
      * @return Part
@@ -65,14 +75,14 @@ public class PartFactory {
      */
     public static Part createPart(LifecycleManager manager, MIMEBodyPartInputStream in,
                     boolean isSOAPPart,
-                    int threshholdSize,
+                    int thresholdSize,
                     String attachmentDir,
                     int messageContentLength
                     ) throws OMException {
         if(log.isDebugEnabled()){
             log.debug("Start createPart()");
             log.debug("  isSOAPPart=" + isSOAPPart);
-            log.debug("  threshholdSize= " + threshholdSize);
+            log.debug("  thresholdSize= " + thresholdSize);
             log.debug("  attachmentDir=" + attachmentDir);
             log.debug("  messageContentLength " + messageContentLength);
         }
@@ -84,44 +94,71 @@ public class PartFactory {
             Hashtable headers = new Hashtable();
             InputStream dross = readHeaders(in, headers);
             
-            
-            if (isSOAPPart ||
-                    threshholdSize <= 0 ||  
-                    (messageContentLength > 0 && 
-                            messageContentLength < threshholdSize)) {
-                // If the entire message is less than the threshold size, 
-                // keep it in memory.
-                // If this is a SOAPPart, keep it in memory.
+            Part part;
+            try {
                 
-                // Get the bytes of the data without a lot 
-                // of resizing and GC.  The BAAOutputStream 
-                // keeps the data in non-contiguous byte buffers.
-                BAAOutputStream baaos = new BAAOutputStream();
-                BufferUtils.inputStream2OutputStream(dross, baaos);
-                BufferUtils.inputStream2OutputStream(in, baaos);
-                return new PartOnMemoryEnhanced(headers, baaos.buffers(), baaos.length());
-            } else {
-                // We need to read the input stream to determine whether
-                // the size is bigger or smaller than the threshhold.
-                BAAOutputStream baaos = new BAAOutputStream();
-                int t1 = BufferUtils.inputStream2OutputStream(dross, baaos, threshholdSize);
-                int t2 =  BufferUtils.inputStream2OutputStream(in, baaos, threshholdSize - t1);
-                int total = t1 + t2;
-                
-                if (total < threshholdSize) {
-                    return new PartOnMemoryEnhanced(headers, baaos.buffers(), baaos.length());
-                } else {
-                    // A BAAInputStream is an input stream over a list of non-contiguous 4K buffers.
-                    BAAInputStream baais = 
-                        new BAAInputStream(baaos.buffers(), baaos.length());
-                    
-                    return new PartOnFile(manager, headers, 
-                                          baais,
-                                          in, 
-                                          attachmentDir);
+                // Message throughput is increased if the number of threads in this
+                // section is limited to INFLIGHT_MAX.  Allowing more threads tends to cause
+                // thrashing while reading from the HTTP InputStream.  
+                // Allowing fewer threads reduces the thrashing.  And when the remaining threads
+                // are notified their input (chunked) data is available.
+                synchronized(semifore) {
+                    if (inflight >= INFLIGHT_MAX) {
+                        semifore.wait();
+                    }
+                    inflight++;
                 }
+                if (thresholdSize > 0) {
+                    // Get new threshold based on the current available memory in the runtime
+                    thresholdSize = getRuntimeThreshold(thresholdSize, inflight);
+                }
+
                 
+                if (isSOAPPart ||
+                        thresholdSize <= 0 ||  
+                        (messageContentLength > 0 && 
+                                messageContentLength < thresholdSize)) {
+                    // If the entire message is less than the threshold size, 
+                    // keep it in memory.
+                    // If this is a SOAPPart, keep it in memory.
+
+                    // Get the bytes of the data without a lot 
+                    // of resizing and GC.  The BAAOutputStream 
+                    // keeps the data in non-contiguous byte buffers.
+                    BAAOutputStream baaos = new BAAOutputStream();
+                    BufferUtils.inputStream2OutputStream(dross, baaos);
+                    BufferUtils.inputStream2OutputStream(in, baaos);
+                    part = new PartOnMemoryEnhanced(headers, baaos.buffers(), baaos.length());
+                } else {
+                    // We need to read the input stream to determine whether
+                    // the size is bigger or smaller than the threshold.
+                    BAAOutputStream baaos = new BAAOutputStream();
+                    int t1 = BufferUtils.inputStream2OutputStream(dross, baaos, thresholdSize);
+                    int t2 =  BufferUtils.inputStream2OutputStream(in, baaos, thresholdSize - t1);
+                    int total = t1 + t2;
+
+                    if (total < thresholdSize) {
+                        return new PartOnMemoryEnhanced(headers, baaos.buffers(), baaos.length());
+                    } else {
+                        // A BAAInputStream is an input stream over a list of non-contiguous 4K buffers.
+                        BAAInputStream baais = 
+                            new BAAInputStream(baaos.buffers(), baaos.length());
+
+                        part = new PartOnFile(manager, headers, 
+                                              baais,
+                                              in, 
+                                              attachmentDir);
+                    }
+
+                } 
+            } finally {
+                synchronized(semifore) {
+                    semifore.notify();
+                    inflight--;
+                }
             }
+
+            return part;
             
         } catch (Exception e) {
             throw new OMException(e);
@@ -240,6 +277,63 @@ public class PartFactory {
         // Use the lower case name as the key
         String key = name.toLowerCase();
         headers.put(key, headerObj);
+    }
+    
+    /**
+     * This method checks the configured threshold and
+     * the current runtime information.  If it appears that we could
+     * run out of memory, the threshold is reduced.
+     * 
+     * This method allows the user to request a much larger threshold without 
+     * fear of running out of memory.  Using a larger in memory threshold generally 
+     * results in better throughput.
+     * 
+     * @param configThreshold
+     * @param inflight
+     * @return threshold
+     */
+    private static int getRuntimeThreshold(int configThreshold, int inflight) {
+        
+        // Determine how much free memory is available
+        Runtime r = Runtime.getRuntime();
+        long totalmem = r.totalMemory();
+        long maxmem = r.maxMemory();
+        long freemem = r.freeMemory();
+        
+        // @REVIEW
+        // If maximum is not defined...limit to 1G
+        if (maxmem == java.lang.Long.MAX_VALUE) {
+            maxmem = 1024*1024*1024; 
+        }
+        
+        long availmem = maxmem - (totalmem - freemem);
+        
+       
+        // Now determine the dynamic threshold
+        int dynamicThreshold = (int) availmem / (THRESHOLD_FACTOR * inflight);
+        
+        // If it appears that we might run out of memory with this
+        // threshold, reduce the threshold size.
+        if (dynamicThreshold < configThreshold) {
+            if (log.isDebugEnabled()) {
+                log.debug("Using Runtime Attachment File Threshold " + dynamicThreshold);
+                log.debug("maxmem   = " + maxmem);
+                log.debug("totalmem = " + totalmem);
+                log.debug("freemem  = " + freemem);
+                log.debug("availmem = " + availmem);
+            }
+            
+        } else {
+            dynamicThreshold = configThreshold;
+            if (log.isDebugEnabled()) {
+                log.debug("Using Configured Attachment File Threshold " + configThreshold);
+                log.debug("maxmem   = " + maxmem);
+                log.debug("totalmem = " + totalmem);
+                log.debug("freemem  = " + freemem);
+                log.debug("availmem = " + availmem);
+            }
+        }
+        return dynamicThreshold;
     }
     
     /**

@@ -18,21 +18,24 @@
  */
 package org.apache.axiom.attachments.utils;
 
+import org.apache.axiom.attachments.impl.BufferUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 /**
  * BAAInputStream is like a ByteArrayInputStream.
  * A ByteArrayInputStream stores the backing data in a byte[].
  * BAAInputStream stores the backing data in a Array of 
- * 4K byte[].  Using several non-contiguous chunks reduces 
+ * byte[].  Using several non-contiguous chunks reduces 
  * memory copy and resizing.
  */
 public class BAAInputStream extends InputStream {
 
     ArrayList data = new ArrayList();
-    int BUFFER_SIZE = 4 * 1024;
+    final static int BUFFER_SIZE = BufferUtils.BUFFER_LEN;
     int i;
     int size;
     int currIndex;
@@ -111,4 +114,22 @@ public class BAAInputStream extends InputStream {
         totalIndex = mark;
     }
 
+    /**
+     * Write all of the buffers to the output stream
+     * @param os
+     * @throws IOException
+     */
+    public void writeTo(OutputStream os) throws IOException {
+        
+        if (data != null) {
+            int numBuffers = data.size();
+            for (int j = 0; j < numBuffers-1; j ++) {
+                os.write( (byte[]) data.get(j), 0, BUFFER_SIZE);
+            }
+            if (numBuffers > 0) {
+                int writeLimit = size - ((numBuffers-1) * BUFFER_SIZE);
+                os.write( (byte[]) data.get(numBuffers-1), 0, writeLimit);
+            }
+        }
+    }
 }

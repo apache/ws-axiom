@@ -18,7 +18,10 @@
  */
 package org.apache.axiom.attachments.utils;
 
+import org.apache.axiom.attachments.impl.BufferUtils;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -26,13 +29,13 @@ import java.util.ArrayList;
  * BAAOutputStream is like a ByteArrayOutputStream.
  * A ByteArrayOutputStream stores the backing data in a byte[].
  * BAAOutputStream stores the backing data in a Array of 
- * 4K byte[].  Using several non-contiguous chunks reduces 
+ * byte[].  Using several non-contiguous chunks reduces 
  * memory copy and resizing.
  */
 public class BAAOutputStream extends OutputStream {
 
     ArrayList data = new ArrayList();
-    int BUFFER_SIZE = 4 * 1024;
+    final static int BUFFER_SIZE = BufferUtils.BUFFER_LEN;
     int index = 0;
     byte[] currBuffer = null;
     public BAAOutputStream() {
@@ -77,5 +80,39 @@ public class BAAOutputStream extends OutputStream {
     
     public int length() {
         return (BUFFER_SIZE * (data.size()-1)) + index;
+    }
+    
+    /**
+     * @param is InputStream containing data
+     * @param maxRead the maximum number of bytes to receive
+     * @return bytesReceived
+     */
+    public long receive(InputStream is, long maxRead) throws IOException {
+        long bytesReceived = 0;
+        
+        // Now directly write to the buffers
+        boolean done = false;
+        while (!done) {
+            
+            // Don't get more than will fit in the current buffer
+            int len = (int) Math.min(BUFFER_SIZE - index, maxRead-bytesReceived);
+            
+            // Now get the bytes
+            int bytesRead = is.read(currBuffer, index, len);
+            if (bytesRead >= 0) {
+                bytesReceived += bytesRead;
+                index += bytesRead;
+                if (index >= BUFFER_SIZE) {
+                    addBuffer();
+                }
+                if (bytesReceived >= maxRead) {
+                    done = true;
+                }
+            } else {
+                done = true;
+            }
+        }
+        
+        return bytesReceived;
     }
 }

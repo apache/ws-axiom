@@ -30,6 +30,7 @@ import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 
+import org.apache.axiom.attachments.utils.BAAOutputStream;
 import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,8 +44,9 @@ public class BufferUtils {
     private static Log log = LogFactory.getLog(BufferUtils.class);
     // Performance testing indicates that 4K is the best size for medium
     // and small payloads.  And there is a neglible effect on large payloads.
-    static int BUFFER_LEN = 4 * 1024;         // Copy Buffer size
-    static boolean ENABLE_FILE_CHANNEL = true;  // Enable file channel optimization 
+    public final static int BUFFER_LEN = 4 * 1024;   // Copy Buffer size
+    static boolean ENABLE_FILE_CHANNEL = true;       // Enable file channel optimization
+    static boolean ENABLE_BAAOS_OPT = true;          // Enable BAAOutputStream opt
     
     private static byte[] _cacheBuffer = new byte[BUFFER_LEN];
     private static boolean _cacheBufferInUse = false;
@@ -63,11 +65,17 @@ public class BufferUtils {
         throws IOException {
             
         
-        // If this is a FileOutputStream, use th
+        // If this is a FileOutputStream, use the optimized method
         if (ENABLE_FILE_CHANNEL && os instanceof FileOutputStream) {
             if (inputStream2FileOutputStream(is, (FileOutputStream) os)) {
                 return;
             }
+        }
+        
+        // If this is a BAAOutputStream, use the optimized method
+        if (ENABLE_BAAOS_OPT && os instanceof BAAOutputStream) {
+            inputStream2BAAOutputStream(is, (BAAOutputStream) os, Long.MAX_VALUE);
+            return;
         }
         
         byte[] buffer = getTempBuffer();
@@ -94,13 +102,18 @@ public class BufferUtils {
      * @param is InputStream
      * @param os OutputStream
      * @param limit maximum number of bytes to read
-     * @return total ytes read
+     * @return total bytes read
      * @throws IOException
      */
     public static int inputStream2OutputStream(InputStream is, 
                                                 OutputStream os,
                                                 int limit) 
         throws IOException {
+        
+        // If this is a BAAOutputStream, use the optimized method
+        if (ENABLE_BAAOS_OPT && os instanceof BAAOutputStream) {
+            return (int) inputStream2BAAOutputStream(is, (BAAOutputStream) os, (long) limit);
+        }
             
         byte[] buffer = getTempBuffer();
         int totalWritten = 0;
@@ -189,6 +202,21 @@ public class BufferUtils {
         }
         return true;
     }
+    
+    /** 
+     * inputStream2BAAOutputStream
+     * @param is
+     * @param baaos
+     * @param limit
+     * @return
+     */
+    public static long inputStream2BAAOutputStream(InputStream is, 
+                                               BAAOutputStream baaos,
+                                               long limit) throws IOException {
+        return baaos.receive(is, limit);
+    }
+    
+    
     /**
      * The method checks to see if attachment is eligble for optimization.
      * An attachment is eligible for optimization if and only if the size of 
