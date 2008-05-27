@@ -37,6 +37,7 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
+import org.apache.axiom.om.impl.traverse.OMChildrenLegacyQNameIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
@@ -214,15 +215,28 @@ public class OMElementImpl extends OMNodeImpl
      * @throws OMException
      */
     public Iterator getChildrenWithName(QName elementQName) {
-        return new OMChildrenQNameIterator(getFirstOMChild(),
-                                           elementQName);
+        OMNode firstChild = getFirstOMChild();
+        Iterator it =  new OMChildrenQNameIterator(firstChild, elementQName);
         
-        // The semantics of this call was changed.
-        // The original sematics had a looser definition of QName equality.
-        // To get this original functionality use:
-        /*
-        return new OMChildrenLegacyQNameIterator(getFirstOMChild(), elementQName);
-        */
+        // The getChidrenWithName method used to tolerate an empty namespace
+        // and interpret that as getting any element that matched the local
+        // name.  There are custmers of axiom that have hard-coded dependencies
+        // on this semantic.
+        // The following code falls back to this legacy behavior only if
+        // (a) elementQName has no namespace, (b) the new iterator finds no elements
+        // and (c) there are children.
+        if (elementQName.getNamespaceURI().length() == 0 &&
+            firstChild != null &&
+            !it.hasNext()) {
+            if (log.isDebugEnabled()) {
+                log.debug("There are no child elements that match the unqualifed name: " + 
+                          elementQName);
+                log.debug("Now looking for child elements that have the same local name.");
+            }
+            it = new OMChildrenLegacyQNameIterator(getFirstOMChild(), elementQName);
+        }
+        
+        return it;
     }
     
 

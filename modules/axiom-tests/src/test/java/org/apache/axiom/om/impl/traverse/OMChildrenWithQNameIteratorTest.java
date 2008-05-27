@@ -31,6 +31,10 @@ import java.util.Iterator;
 
 public class OMChildrenWithQNameIteratorTest extends TestCase {
 
+    private final String NS_A = "urn://a";
+    private final String NS_B = "urn://b";
+    private final String NS_C = "urn://c";
+    
     public OMChildrenWithQNameIteratorTest(String testName) {
         super(testName);
     }
@@ -43,7 +47,7 @@ public class OMChildrenWithQNameIteratorTest extends TestCase {
 
         Iterator childrenIter = documentElement.getChildrenWithName(new QName("http://test.ws.org", "Employee", "test"));
 
-        int childCount = getChidrenCount(childrenIter);
+        int childCount = getChildrenCount(childrenIter);
         assertEquals("Iterator must return 1 child with the given qname", childCount, 1);
     }
 
@@ -68,8 +72,54 @@ public class OMChildrenWithQNameIteratorTest extends TestCase {
         e.setText("Apache Developer");
         return documentElement;
     }
+    
+    public void testGetChildrenWithQName() {
+        
+        // Create a document with 2 children, each named "sample" but
+        // have different namespaces.
+        OMFactory factory = OMAbstractFactory.getOMFactory();
+        OMNamespace a = factory.createOMNamespace(NS_A, "a");
+        OMNamespace b = factory.createOMNamespace(NS_B, "b");
+        
+        OMElement documentElement = factory.createOMElement("Document", a);
+        factory.createOMElement("sample", a, documentElement);
+        factory.createOMElement("sample", b, documentElement);
+        
+        
+        // Test for fully qualified names
+        QName qName = new QName(NS_A, "sample");
+        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 1);
+        qName = new QName(NS_B, "sample");
+        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 1);
+        qName = new QName(NS_C, "sample");
+        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 0);
+        
+        // Test for QName with no namespace.
+        // The original Axiom implementation interpretted this as a wildcard.
+        // In order to not break existing code, this should return 2
+        qName = new QName("", "sample");
+        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 2);
+        
+        // Now add an unqualified sample element to the documentElement
+        factory.createOMElement("sample", null, documentElement);
+        
+        
+        // Repeat the tests
+        qName = new QName(NS_A, "sample");
+        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 1);
+        qName = new QName(NS_B, "sample");
+        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 1);
+        qName = new QName(NS_C, "sample");
+        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 0);
+       
+        // Since there actually is an unqualified element child, the most accurate
+        // interpretation of getChildrenWithName should be to return this one 
+        // child
+        qName = new QName("", "sample");
+        assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 1);
+    }
 
-    private int getChidrenCount(Iterator childrenIter) {
+    private int getChildrenCount(Iterator childrenIter) {
         int childCount = 0;
         while (childrenIter.hasNext()) {
             childrenIter.next();
