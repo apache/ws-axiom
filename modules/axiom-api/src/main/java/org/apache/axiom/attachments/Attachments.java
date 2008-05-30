@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.Map;
+import java.util.Collections;
 
 public class Attachments implements OMAttachmentAccessor {
 
@@ -412,6 +414,9 @@ public class Attachments implements OMAttachmentAccessor {
      *         of the first MIME part of the MIME message
      */
     public String getSOAPPartContentID() {
+        if(contentType == null) {
+            return null;
+        }
         String rootContentID = contentType.getParameter("start");
         if (log.isDebugEnabled()) {
             log.debug("getSOAPPartContentID rootContentID=" + rootContentID);
@@ -499,6 +504,17 @@ public class Attachments implements OMAttachmentAccessor {
         return attachmentsMap.keySet();
     }
     
+    public Map getMap() {
+        DataHandler dataHandler;
+        while (!noStreams) {
+            dataHandler = this.getNextPartDataHandler();
+            if (dataHandler == null) {
+                break;
+            }
+        }
+        return Collections.unmodifiableMap(attachmentsMap);
+    }
+
     /**
      * @return List of content ids in order of appearance in message
      */

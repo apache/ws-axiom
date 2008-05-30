@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;
@@ -259,23 +260,30 @@ public class MIMEOutputUtils {
                                                        Attachments attachments,
                                                        OMOutputFormat format) {
         String SOAPContentType;
+        if (format.isSOAP11()) {
+            SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
+        } else {
+            SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
+        }
+        String contentType = SOAPContentType + "; charset=" + format.getCharSetEncoding();
+        javax.activation.DataHandler dh = new javax.activation.DataHandler(
+                writer.toString(), "text/xml; charset="
+                + format.getCharSetEncoding());
+        writeDataHandlerWithAttachmentsMessage(dh, contentType, outputStream, attachments.getMap(), format);
+    }
+
+    public static void writeDataHandlerWithAttachmentsMessage(DataHandler rootDataHandler,
+                                                       String contentType,
+                                                       OutputStream outputStream,
+                                                       Map attachments,
+                                                       OMOutputFormat format) {
         try {
-            if (format.isSOAP11()) {
-                SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
-            } else {
-                SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
-            }
             startWritingMime(outputStream, format.getMimeBoundary());
 
-            javax.activation.DataHandler dh = new javax.activation.DataHandler(
-                    writer.toString(), "text/xml; charset="
-                    + format.getCharSetEncoding());
             MimeBodyPart rootMimeBodyPart = new MimeBodyPart();
-            rootMimeBodyPart.setDataHandler(dh);
+            rootMimeBodyPart.setDataHandler(rootDataHandler);
 
-            rootMimeBodyPart.addHeader("Content-Type",
-                                       SOAPContentType + "; charset="
-                                               + format.getCharSetEncoding());
+            rootMimeBodyPart.addHeader("Content-Type", contentType);
             rootMimeBodyPart.addHeader("Content-Transfer-Encoding", "8bit");
             rootMimeBodyPart.addHeader("Content-ID", "<"
                     + format.getRootContentId() + ">");
@@ -283,12 +291,12 @@ public class MIMEOutputUtils {
             writeBodyPart(outputStream, rootMimeBodyPart, format
                     .getMimeBoundary());
 
-            Iterator attachmentIDIterator = attachments.getContentIDSet().iterator();
-            while (attachmentIDIterator.hasNext()) {
-                String contentID = (String) attachmentIDIterator.next();
-                DataHandler dataHandler = attachments.getDataHandler(contentID);
-                writeBodyPart(outputStream, createMimeBodyPart(contentID,
-                                                               dataHandler),
+            Iterator iterator = attachments.keySet().iterator();
+            while (iterator.hasNext()) {
+                String key = (String) iterator.next();
+                MimeBodyPart part = createMimeBodyPart(key,
+                        (DataHandler) attachments.get(key));
+                writeBodyPart(outputStream, part,
                               format.getMimeBoundary());
             }
             finishWritingMime(outputStream);
