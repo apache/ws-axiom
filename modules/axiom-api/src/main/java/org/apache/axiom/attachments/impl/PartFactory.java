@@ -232,9 +232,14 @@ public class PartFactory {
                             done = true;
                         } 
                     } else {
-                        // now parse and add the header String
-                        readHeader(sb, headers);
-                        sb.delete(0, sb.length()); // Clear the buffer for reuse
+                        
+                        // Semicolon is a continuation character
+                        String check = headers.toString().trim();
+                        if (!check.endsWith(";")) {
+                            // now parse and add the header String
+                            readHeader(sb, headers);
+                            sb.delete(0, sb.length()); // Clear the buffer for reuse
+                        }
                         sb.append((char) ch);
                     }
                 } else {

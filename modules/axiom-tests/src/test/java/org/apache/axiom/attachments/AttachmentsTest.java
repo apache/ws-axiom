@@ -77,8 +77,10 @@ public class AttachmentsTest extends AbstractTestCase {
 
         // These should NOT throw error even though they are using part based access
         try {
-            assertEquals("application/xop+xml; charset=UTF-8; type=\"application/soap+xml\";",
-                         attachments.getSOAPPartContentType());
+            String contentType = attachments.getSOAPPartContentType();
+            assertTrue(contentType.indexOf("application/xop+xml;") >=0);
+            assertTrue(contentType.indexOf("charset=UTF-8;") >=0);
+            assertTrue(contentType.indexOf("type=\"application/soap+xml\";") >=0);
         } catch (IllegalStateException ise) {
             fail("No exception expected when requesting SOAP part data");
             ise.printStackTrace();
