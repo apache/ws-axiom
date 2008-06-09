@@ -73,12 +73,15 @@ public class OMElementImpl extends OMNodeImpl
 
     /** Field localName */
     protected String localName;
+
+    protected QName qName;
+
     /** Field firstChild */
     protected OMNode firstChild;
 
     /** Field namespaces */
     protected HashMap namespaces = null;
-
+    
     /** Field attributes */
     protected HashMap attributes = null;
 
@@ -374,6 +377,7 @@ public class OMElementImpl extends OMNodeImpl
         namespaces.put("", namespace);
         if (ns == null || "".equals(ns.getPrefix())) {
             ns = namespace;
+            this.qName = null;
         }
         return namespace;
     }
@@ -990,6 +994,7 @@ public class OMElementImpl extends OMNodeImpl
     /** Method setLocalName. */
     public void setLocalName(String localName) {
         this.localName = localName;
+        this.qName = null;
     }
 
     /**
@@ -1008,6 +1013,7 @@ public class OMElementImpl extends OMNodeImpl
                 // if it was overriden, then we must explicitly declare default default namespace as the namespace
                 // of this element
                 ns = DEFAULT_DEFAULT_NS_OBJECT;
+                this.qName = null;
             }
         }
         return ns;
@@ -1020,10 +1026,12 @@ public class OMElementImpl extends OMNodeImpl
             nsObject = handleNamespace(namespace);
         }
         this.ns = nsObject;
+        this.qName = null;
     }
 
     public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
         this.ns = namespace;
+        this.qName = null;
     }
 
     /**
@@ -1032,7 +1040,10 @@ public class OMElementImpl extends OMNodeImpl
      * @return Returns QName.
      */
     public QName getQName() {
-        QName qName;
+        if (qName != null) {
+            return qName;
+        }
+
         if (ns != null) {
             if (ns.getPrefix() != null) {
                 qName = new QName(ns.getNamespaceURI(), localName, ns.getPrefix());

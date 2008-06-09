@@ -40,6 +40,8 @@ public class OMAttributeImpl implements OMAttribute {
 
     /** Field namespace */
     private OMNamespace namespace;
+    
+    private QName qName;
 
     /** <code>OMFactory</code> that created this <code>OMAttribute</code> */
     private OMFactory factory;
@@ -68,16 +70,21 @@ public class OMAttributeImpl implements OMAttribute {
 
     /** @return Returns QName. */
     public QName getQName() {
+        if (qName != null) {
+            return qName;
+        }
+
         if (namespace != null) {
             // Guard against QName implementation sillyness.
             if (namespace.getPrefix() == null) {
-                return new QName(namespace.getNamespaceURI(), localName);
+                this.qName = new QName(namespace.getNamespaceURI(), localName);
             } else {
-                return new QName(namespace.getNamespaceURI(), localName, namespace.getPrefix());
+                this.qName =  new QName(namespace.getNamespaceURI(), localName, namespace.getPrefix());
             }
         } else {
-            return new QName(localName);
+            this.qName =  new QName(localName);
         }
+        return this.qName;
     }
 
     // -------- Getters and Setters
@@ -100,6 +107,7 @@ public class OMAttributeImpl implements OMAttribute {
         if (localName == null || localName.trim().length() == 0)
             throw new IllegalArgumentException("Local name may not be null or empty");
         this.localName = localName;
+        this.qName = null;
     }
 
     /**
@@ -145,6 +153,7 @@ public class OMAttributeImpl implements OMAttribute {
      */
     public void setOMNamespace(OMNamespace omNamespace) {
         this.namespace = omNamespace;
+        this.qName = null;
     }
 
     /**
