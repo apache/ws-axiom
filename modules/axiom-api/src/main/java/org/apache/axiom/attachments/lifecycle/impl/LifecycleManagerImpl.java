@@ -142,6 +142,7 @@ public class LifecycleManagerImpl implements LifecycleManager {
         }
 
         Thread t = new Thread(new LifecycleManagerImpl.FileDeletor(interval, file));
+        t.setDaemon(true);
         t.start();
         if(log.isDebugEnabled()){
             log.debug("End deleteOnTimeInterval()");
