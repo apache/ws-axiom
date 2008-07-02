@@ -300,10 +300,9 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
         SOAPFault fault = createSOAPFault(defaultEnvelope.getBody());
 
         SOAPFaultCode faultCode = createSOAPFaultCode(fault);
-        createSOAPFaultValue(faultCode);
 
         SOAPFaultReason reason = createSOAPFaultReason(fault);
-        createSOAPFaultText(reason);
+        //createSOAPFaultText(reason);
 
         createSOAPFaultDetail(fault);
 
