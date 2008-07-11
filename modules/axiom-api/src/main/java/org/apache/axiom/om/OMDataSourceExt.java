@@ -43,6 +43,13 @@ import java.io.Writer;
  * @see OMSourceElementImpl
  */
 public interface OMDataSourceExt extends OMDataSource {
+    
+    /* Property lossyPrefix
+     * Value null or Boolean.TRUE or Boolean.FALSE
+     * If Boolean.TRUE, this indicates that expansion is needed to 
+     * obtain the actual prefix name. 
+     */
+    public static final String LOSSY_PREFIX = "lossyPrefix";
 
     /**
      * Serializes element data directly to stream.
