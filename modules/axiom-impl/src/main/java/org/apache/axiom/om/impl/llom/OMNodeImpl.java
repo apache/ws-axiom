@@ -323,8 +323,14 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      * @throws OMException
      */
     public void build() throws OMException {
+        if (builder != null && builder.isCompleted()) {
+            if (DEBUG_ENABLED) {
+                log.debug("Builder is already complete.");
+            }
+        }
         while (!done) {
-            builder.next();
+
+            builder.next();    
             if (builder.isCompleted() && !done) {
                 if (DEBUG_ENABLED) {
                     log.debug("Builder is complete.  Setting OMNode to complete.");

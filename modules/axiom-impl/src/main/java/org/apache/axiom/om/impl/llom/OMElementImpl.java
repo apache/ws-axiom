@@ -1110,8 +1110,24 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public OMElement cloneOMElement() {
+        
+        if (log.isDebugEnabled()) {
+            log.debug("cloneOMElement start");
+            log.debug("  element string =" + this.toString());
+            log.debug(" isComplete = " + isComplete());
+            log.debug("  builder = " + builder);
+        }
+        // Make sure the source (this node) is completed
+        if (!isComplete()) {
+            this.build();
+        }
+        
+        // Now get a parser for the full tree
+        XMLStreamReader xmlStreamReader = this.getXMLStreamReader(true);
+        
+        // Build the (target) clonedElement from the parser
         OMElement clonedElement =
-                new StAXOMBuilder(this.getXMLStreamReader(true)).getDocumentElement();
+                new StAXOMBuilder(xmlStreamReader).getDocumentElement();
         clonedElement.build();
         return clonedElement;
     }

@@ -1096,10 +1096,10 @@ public class OMStAXWrapper
             nextNode = navigator.next();
         } else {
             if (!switchingAllowed) {
-                if (navigator.isCompleted() || builder.isCompleted()) {
+                if (navigator.isCompleted() || builder == null || builder.isCompleted()) {
                     nextNode = null;
                     if (DEBUG_ENABLED) {
-                        if (builder.isCompleted()) {
+                        if (builder == null || builder.isCompleted()) {
                             log.debug("Builder is complete.  Next node is set to null.");
                         }
                     }
@@ -1117,7 +1117,9 @@ public class OMStAXWrapper
                 } else {
                     // reset caching (the default is ON so it was not needed in the
                     // earlier case!
-                    builder.setCache(false);
+                    if (builder != null) {
+                        builder.setCache(false);
+                    }
                     state = SWITCH_AT_NEXT;
                 }
             }
@@ -1265,6 +1267,13 @@ public class OMStAXWrapper
      */
     private int generateEvents(OMNode node) {
         int returnEvent = 0;
+        if (node == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Node is null...returning END_DOCUMENT");
+            }
+            returnEvent = END_DOCUMENT;
+            return returnEvent;
+        }
         int nodeType = node.getType();
         switch (nodeType) {
             case OMNode.ELEMENT_NODE:
