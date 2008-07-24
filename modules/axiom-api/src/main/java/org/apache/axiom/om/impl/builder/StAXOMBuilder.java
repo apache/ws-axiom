@@ -162,12 +162,21 @@ public class StAXOMBuilder extends StAXBuilder {
             if (!cache) {
                 return token;
             }
+            // Now log the current state of the parser
+            if (doTrace) {
+                logParserState();
+            }
+            
+            int currentParserToken = parser.getEventType();
+            if (currentParserToken != token) {
+                throw new OMException("The current token " + token + 
+                                     " does not match the current event " +
+                                     "reported by the parser token.  The parser did not update its state correctly.  " +
+                                     "The parser is " + parser);
+            }
+           
             switch (token) {
                 case XMLStreamConstants.START_ELEMENT:
-                    if (doTrace) {
-                        log.trace(
-                                "START_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
-                    }
                     elementLevel++;
                     lastNode = createNextOMElement();
                     break;
@@ -177,66 +186,34 @@ public class StAXOMBuilder extends StAXBuilder {
                     document.setXMLVersion(parser.getVersion());
                     document.setCharsetEncoding(parser.getEncoding());
                     document.setStandalone(parser.isStandalone() ? "yes" : "no");
-                    if (doTrace) {
-                        log.trace("START_DOCUMENT: ");
-                    }
                     break;
                 case XMLStreamConstants.CHARACTERS:
-                    if (doTrace) {
-                        log.trace("CHARACTERS: [" + parser.getText() + "]");
-                    }
                     lastNode = createOMText(XMLStreamConstants.CHARACTERS);
                     break;
                 case XMLStreamConstants.CDATA:
-                    if (doTrace) {
-                        log.trace("CDATA: [" + parser.getText() + "]");
-                    }
                     lastNode = createOMText(XMLStreamConstants.CDATA);
                     break;
                 case XMLStreamConstants.END_ELEMENT:
-                    if (doTrace) {
-                        log.trace("END_ELEMENT: " + parser.getName() + ":" + parser.getLocalName());
-                    }
                     endElement();
                     elementLevel--;
                     break;
                 case XMLStreamConstants.END_DOCUMENT:
-                    if (doTrace) {
-                        log.trace("END_DOCUMENT: ");
-                    }
                     done = true;
                     ((OMContainerEx) this.document).setComplete(true);
                     break;
                 case XMLStreamConstants.SPACE:
-                    if (doTrace) {
-                        log.trace("SPACE: [" + parser.getText() + "]");
-                    }
                     lastNode = createOMText(XMLStreamConstants.SPACE);
                     break;
                 case XMLStreamConstants.COMMENT:
-                    if (doTrace) {
-                        log.trace("COMMENT: [" + parser.getText() + "]");
-                    }
                     createComment();
                     break;
                 case XMLStreamConstants.DTD:
-                    if (doTrace) {
-                        log.trace("DTD: [" + parser.getText() + "]");
-                    }
                     createDTD();
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    if (doTrace) {
-                        log.trace("PROCESSING_INSTRUCTION: [" + parser.getPITarget() + "][" +
-                                parser.getPIData() + "]");
-                    }
                     createPI();
                     break;
                 case XMLStreamConstants.ENTITY_REFERENCE:
-                    if (doTrace) {
-                        log.trace("ENTITY_REFERENCE: " + parser.getLocalName() + "[" +
-                                parser.getText() + "]");
-                    }
                     lastNode = createOMText(XMLStreamConstants.ENTITY_REFERENCE);
                     break;
                 default :
@@ -276,8 +253,14 @@ public class StAXOMBuilder extends StAXBuilder {
     }
     
     protected OMNode createWithCustomBuilder(CustomBuilder customBuilder, OMFactory factory) {
+        
         String namespace = parser.getNamespaceURI();
         String localPart = parser.getLocalName();
+        
+        if (log.isDebugEnabled()) {
+            log.debug("Invoking CustomBuilder, " + customBuilder.toString() + 
+                      ", to the OMNode for {" + namespace + "}" + localPart);
+        }
         OMContainer parent = null;
         if (lastNode != null) {
             if (lastNode.isComplete()) {
@@ -288,8 +271,79 @@ public class StAXOMBuilder extends StAXBuilder {
         } else {
             parent = document;
         }
-        return customBuilder.create(namespace, localPart, parent, parser, factory);
-        
+        OMNode node = customBuilder.create(namespace, localPart, parent, parser, factory);
+        if (log.isDebugEnabled()) {
+            if (node != null) {
+                log.debug("The CustomBuilder, " + customBuilder.toString() + 
+                          "successfully constructed the OMNode for {" + namespace + "}" + localPart);
+            } else {
+                log.debug("The CustomBuilder, " + customBuilder.toString() + 
+                          " did not construct an OMNode for {" + namespace + "}" + localPart +
+                          ". The OMNode will be constructed using the installed stax om builder");
+            }
+            log.debug("The current state of the parser is: ");
+            logParserState();
+        }
+        return node;
+    }
+    
+    /**
+     * Dump the current event of the parser.
+     */
+    protected void logParserState() {
+        if (doTrace) {
+            int currentEvent = parser.getEventType();
+            
+            switch (currentEvent) {
+            case XMLStreamConstants.START_ELEMENT:
+                log.trace("START_ELEMENT: ");
+                log.trace("  QName: " + parser.getName());
+                break;
+            case XMLStreamConstants.START_DOCUMENT:
+                log.trace("START_DOCUMENT: ");
+                break;
+            case XMLStreamConstants.CHARACTERS:
+                log.trace("CHARACTERS: ");
+                log.trace(   "[" + parser.getText() + "]");
+                break;
+            case XMLStreamConstants.CDATA:
+                log.trace("CDATA: ");
+                log.trace(   "[" + parser.getText() + "]");
+                break;
+            case XMLStreamConstants.END_ELEMENT:
+                log.trace("END_ELEMENT: ");
+                log.trace("  QName: " + parser.getName());
+                break;
+            case XMLStreamConstants.END_DOCUMENT:
+                log.trace("END_DOCUMENT: ");
+                break;
+            case XMLStreamConstants.SPACE:
+                log.trace("SPACE: ");
+                log.trace(   "[" + parser.getText() + "]");
+                break;
+            case XMLStreamConstants.COMMENT:
+                log.trace("COMMENT: ");
+                log.trace(   "[" + parser.getText() + "]");
+                break;
+            case XMLStreamConstants.DTD:
+                log.trace("DTD: ");
+                log.trace(   "[" + parser.getText() + "]");
+                break;
+            case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                log.trace("PROCESSING_INSTRUCTION: ");
+                log.trace("   [" + parser.getPITarget() + "][" +
+                            parser.getPIData() + "]");
+                break;
+            case XMLStreamConstants.ENTITY_REFERENCE:
+                log.trace("ENTITY_REFERENCE: ");
+                log.trace("    " + parser.getLocalName() + "[" +
+                            parser.getText() + "]");
+                break;
+            default :
+                log.trace("UNKNOWN_STATE: " + currentEvent);
+            
+            }
+        }
     }
 
     /**
@@ -499,6 +553,10 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     private int parserNext() throws XMLStreamException {
         if (lookAheadToken >= 0) {
+            if (log.isDebugEnabled()) {
+                log.debug("Using lookahead start token");
+                log.debug("  QName is " + parser.getName());
+            }
             int token = lookAheadToken;
             lookAheadToken = -1; // Reset
             return token;
