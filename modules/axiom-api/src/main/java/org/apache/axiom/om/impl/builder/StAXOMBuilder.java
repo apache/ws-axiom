@@ -167,6 +167,7 @@ public class StAXOMBuilder extends StAXBuilder {
                 logParserState();
             }
             
+            /*
             int currentParserToken = parser.getEventType();
             if (currentParserToken != token) {
                 throw new OMException("The current token " + token + 
@@ -174,6 +175,7 @@ public class StAXOMBuilder extends StAXBuilder {
                                      "reported by the parser token.  The parser did not update its state correctly.  " +
                                      "The parser is " + parser);
             }
+            */
            
             switch (token) {
                 case XMLStreamConstants.START_ELEMENT:
