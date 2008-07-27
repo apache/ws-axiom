@@ -102,14 +102,20 @@ public class PartFactory {
                 // thrashing while reading from the HTTP InputStream.  
                 // Allowing fewer threads reduces the thrashing.  And when the remaining threads
                 // are notified their input (chunked) data is available.
-                synchronized(semifore) {
-                    if (inflight >= INFLIGHT_MAX) {
-                        semifore.wait();
+                // 
+                // Note: SOAPParts are at the beginning of the message and much smaller than attachments,
+                // so don't wait on soap parts.
+                if (!isSOAPPart) {
+                    synchronized(semifore) {
+                        if (inflight >= INFLIGHT_MAX) {
+                            semifore.wait();
+                        }
+                        inflight++;
                     }
-                    inflight++;
                 }
-                if (thresholdSize > 0) {
-                    // Get new threshold based on the current available memory in the runtime
+                // Get new threshold based on the current available memory in the runtime.
+                // We only use the thresholds for non-soap parts.
+                if (!isSOAPPart && thresholdSize > 0) {     
                     thresholdSize = getRuntimeThreshold(thresholdSize, inflight);
                 }
 
@@ -152,9 +158,11 @@ public class PartFactory {
 
                 } 
             } finally {
-                synchronized(semifore) {
-                    semifore.notify();
-                    inflight--;
+                if (!isSOAPPart) {
+                    synchronized(semifore) {
+                        semifore.notify();
+                        inflight--;
+                    }
                 }
             }
 
@@ -234,7 +242,7 @@ public class PartFactory {
                     } else {
                         
                         // Semicolon is a continuation character
-                        String check = headers.toString().trim();
+                        String check = sb.toString().trim();
                         if (!check.endsWith(";")) {
                             // now parse and add the header String
                             readHeader(sb, headers);
