@@ -179,7 +179,7 @@ public class BoundaryPushbackInputStream extends InputStream {
      *
      * @throws java.io.IOException
      */
-    public synchronized int read(byte[] b, final int off, final int len)
+    public int read(byte[] b, final int off, final int len)
             throws java.io.IOException {
 
         // If already found the buffer, then we are done
