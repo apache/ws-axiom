@@ -147,9 +147,11 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
             while (token != XMLStreamReader.END_ELEMENT) {
                 if (token == XMLStreamReader.CHARACTERS) {
                     factory.createOMText(value, parser.getText());
+                } else if (token == XMLStreamReader.CDATA) {
+                    factory.createOMText(value, parser.getText());
                 } else {
                     throw new SOAPProcessingException(
-                            "Only Characters are allowed here");
+                    "Only Characters are allowed here");
                 }
                 token = parser.next();
             }
