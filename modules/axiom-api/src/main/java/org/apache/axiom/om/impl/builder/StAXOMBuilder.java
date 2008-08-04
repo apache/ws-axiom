@@ -162,20 +162,33 @@ public class StAXOMBuilder extends StAXBuilder {
             if (!cache) {
                 return token;
             }
+           
+            // The current token should be the same as the 
+            // one just obtained.  This bit of code is used to 
+            // detect invalid parser state.
+            if (doTrace) {
+                int currentParserToken = parser.getEventType();
+                if (currentParserToken != token) {
+
+
+                    log.debug("WARNING: The current state of the parser is not equal to the " +
+                              "state just received from the parser. The current state in the paser is " +
+                              getStateString(currentParserToken) + " the state just received is " +
+                              getStateString(token));
+
+                    /*
+                      throw new OMException("The current token " + token + 
+                                     " does not match the current event " +
+                                     "reported by the parser token.  The parser did not update its state correctly.  " +
+                                     "The parser is " + parser);
+                     */
+                }
+            }
+            
             // Now log the current state of the parser
             if (doTrace) {
                 logParserState();
             }
-            
-            /*
-            int currentParserToken = parser.getEventType();
-            if (currentParserToken != token) {
-                throw new OMException("The current token " + token + 
-                                     " does not match the current event " +
-                                     "reported by the parser token.  The parser did not update its state correctly.  " +
-                                     "The parser is " + parser);
-            }
-            */
            
             switch (token) {
                 case XMLStreamConstants.START_ELEMENT:
@@ -595,5 +608,47 @@ public class StAXOMBuilder extends StAXBuilder {
     
     public boolean isLookahead() {
         return lookAheadToken >= 0;
+    }
+    
+    private String getStateString(int token) {
+        String state = null;
+        switch(token) {
+        case XMLStreamConstants.START_ELEMENT:
+            state = "START_ELEMENT";
+            break;
+        case XMLStreamConstants.START_DOCUMENT:
+            state = "START_DOCUMENT";
+            break;
+        case XMLStreamConstants.CHARACTERS:
+            state = "CHARACTERS";
+            break;
+        case XMLStreamConstants.CDATA:
+            state = "CDATA";
+            break;
+        case XMLStreamConstants.END_ELEMENT:
+            state = "END_ELEMENT";
+            break;
+        case XMLStreamConstants.END_DOCUMENT:
+            state = "END_DOCUMENT";
+            break;
+        case XMLStreamConstants.SPACE:
+            state = "SPACE";
+            break;
+        case XMLStreamConstants.COMMENT:
+            state = "COMMENT";
+            break;
+        case XMLStreamConstants.DTD:
+            state = "DTD";
+            break;
+        case XMLStreamConstants.PROCESSING_INSTRUCTION:
+            state = "PROCESSING_INSTRUCTION";
+            break;
+        case XMLStreamConstants.ENTITY_REFERENCE:
+            state = "ENTITY_REFERENCE";
+            break;
+        default :
+            state = "UNKNOWN_STATE: " + token;
+        }
+        return state;
     }
 }
