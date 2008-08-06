@@ -568,10 +568,6 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     private int parserNext() throws XMLStreamException {
         if (lookAheadToken >= 0) {
-            if (log.isDebugEnabled()) {
-                log.debug("Using lookahead start token");
-                log.debug("  QName is " + parser.getName());
-            }
             int token = lookAheadToken;
             lookAheadToken = -1; // Reset
             return token;
