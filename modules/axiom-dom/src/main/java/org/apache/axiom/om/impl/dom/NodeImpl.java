@@ -488,14 +488,18 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
     }
 
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(xmlWriter);
+        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
+                (MTOMXMLStreamWriter) xmlWriter : 
+                    new MTOMXMLStreamWriter(xmlWriter);
         internalSerialize(writer);
         writer.flush();
     }
 
     public void serializeAndConsume(XMLStreamWriter xmlWriter)
             throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(xmlWriter);
+        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
+                (MTOMXMLStreamWriter) xmlWriter : 
+                    new MTOMXMLStreamWriter(xmlWriter);
         internalSerializeAndConsume(writer);
         writer.flush();
     }

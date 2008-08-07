@@ -377,7 +377,11 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      *
      */
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(xmlWriter);
+        
+        // If the input xmlWriter is not an MTOMXMLStreamWriter, then wrapper it
+        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
+                (MTOMXMLStreamWriter) xmlWriter : 
+                    new MTOMXMLStreamWriter(xmlWriter);
         internalSerialize(writer);
         writer.flush();
     }
@@ -390,7 +394,10 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
      *
      */
     public void serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(xmlWriter);
+        // If the input xmlWriter is not an MTOMXMLStreamWriter, then wrapper it
+        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
+                (MTOMXMLStreamWriter) xmlWriter : 
+                    new MTOMXMLStreamWriter(xmlWriter);
         internalSerializeAndConsume(writer);
         writer.flush();
     }
