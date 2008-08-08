@@ -98,6 +98,46 @@ public class OMSourcedElementTest extends AbstractTestCase {
         root.addChild(element);
     }
 
+    /**
+     * Make sure that the incomplete setting of an OMSE is not 
+     * propogated to the root
+     **/
+    public void testComplete() {
+        
+        // Build a root element and child OMSE
+        OMFactory f = new OMLinkedListImplFactory();
+        OMNamespace ns = new OMNamespaceImpl("http://www.sosnoski.com/uwjws/library", "");
+        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMElement child = new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument));
+        OMElement root = f.createOMElement("root", rootNS);
+        
+        // Trigger expansion of the child OMSE
+        // This will cause the child to be partially parsed (i.e. incomplete)
+        child.getChildren();
+        
+        // Add the child OMSE to the root.
+        root.addChild(child);
+        
+        // Normally adding an incomplete child to a parent will 
+        // cause the parent to be marked as incomplete.
+        // But OMSE's are self-contained...therefore the root
+        // should still be complete
+        assertTrue(!child.isComplete());
+        assertTrue(root.isComplete());
+        
+        // Now repeat the test, but this time trigger the 
+        // partial parsing of the child after adding it to the root.
+        child = new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument));
+        root = f.createOMElement("root", rootNS);
+        
+        root.addChild(child);
+        child.getChildren(); // causes partial parsing...i.e. incomplete child
+    
+        assertTrue(!child.isComplete());
+        assertTrue(root.isComplete());
+    }
+    
+    
     /** Ensure that each method of OMElementImpl is overridden in OMSourcedElementImpl */
     public void testMethodOverrides() {
         Method[] submeths = OMSourcedElementImpl.class.getDeclaredMethods();
