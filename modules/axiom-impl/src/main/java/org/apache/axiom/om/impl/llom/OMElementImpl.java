@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -45,6 +46,7 @@ import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.ElementHelper;
+import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -763,19 +765,34 @@ public class OMElementImpl extends OMNodeImpl
                 this.buildNext();
             }
         }
+        
         // The om tree was built by hand and is already complete
+        OMXMLStreamReader reader = null;
         if ((builder == null) && done) {
-            return new OMStAXWrapper(null, this, false);
+            reader =  new OMStAXWrapper(null, this, false);
+        } else {
+            if ((builder == null) && !cache) {
+                throw new UnsupportedOperationException(
+                "This element was not created in a manner to be switched");
+            }
+            if (builder != null && builder.isCompleted() && !cache && !done) {
+                throw new UnsupportedOperationException(
+                "The parser is already consumed!");
+            }
+            reader = new OMStAXWrapper(builder, this, cache);
         }
-        if ((builder == null) && !cache) {
-            throw new UnsupportedOperationException(
-                    "This element was not created in a manner to be switched");
+        
+        // If debug is enabled, wrap the OMXMLStreamReader in a validator.
+        // The validator will check for mismatched events to help determine if the OMStAXWrapper
+        // is functioning correctly.  All problems are reported as debug.log messages
+        
+        if (DEBUG_ENABLED) {
+            reader = 
+                new OMXMLStreamReaderValidator(reader, // delegate to actual reader
+                     false); // log problems (true will cause exceptions to be thrown)
         }
-        if (builder != null && builder.isCompleted() && !cache && !done) {
-            throw new UnsupportedOperationException(
-                    "The parser is already consumed!");
-        }
-        return new OMStAXWrapper(builder, this, cache);
+        
+        return reader;
     }
 
     /**

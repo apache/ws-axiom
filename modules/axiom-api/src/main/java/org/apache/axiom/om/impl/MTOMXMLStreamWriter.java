@@ -53,6 +53,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class MTOMXMLStreamWriter implements XMLStreamWriter {
     private static Log log = LogFactory.getLog(MTOMXMLStreamWriter.class);
+    private static boolean isDebugEnabled = log.isDebugEnabled();
     private final static int UNSUPPORTED = -1;
     private final static int EXCEED_LIMIT = 1;
     private XMLStreamWriter xmlWriter;
@@ -81,7 +82,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      */
     public MTOMXMLStreamWriter(OutputStream outStream, OMOutputFormat format)
             throws XMLStreamException, FactoryConfigurationError {
-        if (log.isDebugEnabled()) {
+        if (isDebugEnabled) {
             log.debug("OutputStream =" + outStream.getClass());
             log.debug("OMFormat = " + format.toString());
             log.debug("Call Stack =" + CommonUtils.callStackToString());
@@ -137,11 +138,17 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     }
 
     public void writeEndDocument() throws XMLStreamException {
+        if (isDebugEnabled) {
+            log.debug("writeEndDocument");
+        }
         xmlWriter.writeEndDocument();
         isEndDocument = true; 
     }
 
     public void close() throws XMLStreamException {
+        if (isDebugEnabled) {
+            log.debug("close");
+        }
         xmlWriter.close();
     }
 
@@ -149,12 +156,18 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      * Flush is overridden to trigger the attachment serialization
      */
     public void flush() throws XMLStreamException {
+        if (isDebugEnabled) {
+            log.debug("Calling MTOMXMLStreamWriter.flush");
+        }
         xmlWriter.flush();
         String SOAPContentType;
         // flush() triggers the optimized attachment writing.
         // If the optimized attachments are specified, and the xml
         // document is completed, then write out the attachments.
         if (format.isOptimized() && !isComplete & (isEndDocument || depth == 0)) {
+            if (isDebugEnabled) {
+                log.debug("The XML writing is completed.  Now the attachments are written");
+            }
             isComplete = true;
             if (format.isSOAP11()) {
                 SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
@@ -280,11 +293,11 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     }
 
     public void writeOptimized(OMText node) {
-        if(log.isDebugEnabled()){
+        if(isDebugEnabled){
             log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
         }
         binaryNodeList.add(node);    
-        if(log.isDebugEnabled()){
+        if(isDebugEnabled){
             log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
         }
     }
@@ -295,13 +308,13 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      * return false otherwise.
      */
     public boolean isOptimizedThreshold(OMText node){
-    	if(log.isDebugEnabled()){
+    	if(isDebugEnabled){
             log.debug("Start MTOMXMLStreamWriter.isOptimizedThreshold()");
         }
         DataHandler dh = (DataHandler)node.getDataHandler();
         int optimized = UNSUPPORTED;
         if(dh!=null){
-            if(log.isDebugEnabled()){
+            if(isDebugEnabled){
                 log.debug("DataHandler fetched, starting optimized Threshold processing");
             }
             optimized= BufferUtils.doesDataHandlerExceedLimit(dh, format.getOptimizedThreshold());
@@ -390,6 +403,16 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             os = bufferedXML;
         } else {
             os = outStream;
+        }
+        
+        if (isDebugEnabled) {
+            if (os == null) {
+                log.debug("Direct access to the output stream is not available.");
+            } else if (bufferedXML != null) {
+                log.debug("Returning access to the buffered xml stream: " + bufferedXML);
+            } else {
+                log.debug("Returning access to the original output stream: " + os);
+            }
         }
        
         if (os != null) {

@@ -38,6 +38,8 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Utility class used to write out XML with Attachments
@@ -45,6 +47,9 @@ import org.apache.axiom.soap.SOAP12Constants;
  *
  */
 public class MIMEOutputUtils {
+    
+    private static Log log = LogFactory.getLog(MIMEOutputUtils.class);
+    private static boolean isDebugEnabled = log.isDebugEnabled();
 
     private static byte[] CRLF = { 13, 10 };
 
@@ -128,6 +133,9 @@ public class MIMEOutputUtils {
                                 String charSetEncoding, 
                                 String SOAPContentType) {
         try {
+            if (isDebugEnabled) {
+                log.debug("Start: write the SOAPPart and the attachments");
+            }
             // TODO: Instead of buffering the SOAPPart contents, it makes more
             // sense to split this method in two.  Write out the SOAPPart headers
             // and later write out the attachments.  This will avoid the cost and
@@ -162,6 +170,9 @@ public class MIMEOutputUtils {
             }
             finishWritingMime(outStream);
             outStream.flush();
+            if (isDebugEnabled) {
+                log.debug("End: write the SOAPPart and the attachments");
+            }
         } catch (IOException e) {
             throw new OMException("Error while writing to the OutputStream.", e);
         } catch (MessagingException e) {
@@ -196,6 +207,9 @@ public class MIMEOutputUtils {
     public static MimeBodyPart createMimeBodyPart(String contentID,
                                                   DataHandler dataHandler)
             throws MessagingException {
+        if (isDebugEnabled) {
+            log.debug("Create MimeBodyPart for " + contentID);
+        }
         String encoding = null;
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
         mimeBodyPart.setDataHandler(dataHandler);
@@ -242,16 +256,25 @@ public class MIMEOutputUtils {
                                      MimeBodyPart part,
                                      String boundary) throws IOException,
             MessagingException {
+        if (isDebugEnabled) {
+            log.debug("Start writeMimeBodyPart for " + part.getContentID());
+        }
         outStream.write(CRLF);
         part.writeTo(outStream);
         outStream.write(CRLF);
         writeMimeBoundary(outStream, boundary);
         outStream.flush();
+        if (isDebugEnabled) {
+            log.debug("End writeMimeBodyPart");
+        }
     }
 
     /** @throws IOException This will write "--" to the end of last boundary */
     public static void finishWritingMime(OutputStream outStream)
             throws IOException {
+        if (isDebugEnabled) {
+            log.debug("Write --, which indicates the end of the last boundary");
+        }
         outStream.write(new byte[] { 45, 45 });
     }
 
