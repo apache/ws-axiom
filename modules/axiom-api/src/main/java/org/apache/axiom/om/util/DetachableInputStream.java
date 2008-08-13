@@ -21,6 +21,8 @@ package org.apache.axiom.om.util;
 import org.apache.axiom.attachments.impl.BufferUtils;
 import org.apache.axiom.attachments.utils.BAAInputStream;
 import org.apache.axiom.attachments.utils.BAAOutputStream;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -44,10 +46,12 @@ import java.io.InputStream;
  */
 public class DetachableInputStream extends FilterInputStream {
 
+    private static Log log = LogFactory.getLog(DetachableInputStream.class);
     
 
     private long count = 0;
     BAAInputStream localStream = null;
+    boolean isClosed = false;
     public DetachableInputStream(InputStream in) {
         super(in);
         count = 0;
@@ -73,14 +77,28 @@ public class DetachableInputStream extends FilterInputStream {
      * @throws IOException
      */
     public void detach() throws IOException {
-        if (localStream == null) {
+        if (localStream == null && !isClosed) {
 
             BAAOutputStream baaos = new BAAOutputStream();
-            BufferUtils.inputStream2OutputStream(in, baaos);
-            super.close();
-            in = null; // GC the incoming stream
+            try {
+                // It is possible that the underlying stream was closed
+                BufferUtils.inputStream2OutputStream(in, baaos);
+                super.close();
+            } catch (Throwable t) {
+                if (log.isDebugEnabled()) {
+                    log.debug("detach caught exception.  Processing continues:" 
+                              + t);
+                    log.debug("  " + stackToString(t));
+                }
+            } finally {
+                in = null; // GC the incoming stream
+            }
             
             localStream = new BAAInputStream(baaos.buffers(), baaos.length());
+            if (log.isDebugEnabled()) {
+                log.debug("The local stream built from the detached " +
+                                "stream has a length of:" + baaos.length());
+            }
             count = count + baaos.length();
         }
     }
@@ -94,6 +112,7 @@ public class DetachableInputStream extends FilterInputStream {
     }
 
     public void close() throws IOException {
+        isClosed = true;
         if (localStream != null) {
             localStream.close();
         } else {
@@ -163,7 +182,15 @@ public class DetachableInputStream extends FilterInputStream {
         }
     }
 
-
+    private static String stackToString(Throwable e) {
+        java.io.StringWriter sw = new java.io.StringWriter();
+        java.io.BufferedWriter bw = new java.io.BufferedWriter(sw);
+        java.io.PrintWriter pw = new java.io.PrintWriter(bw);
+        e.printStackTrace(pw);
+        pw.close();
+        String text = sw.getBuffer().toString();   
+        return text;
+    }
 
 
 }
