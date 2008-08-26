@@ -110,8 +110,11 @@ class RolePlayerChecker implements Checker {
 
     public boolean checkHeader(SOAPHeaderBlock header) {
         // If we're filtering on namespace, check that first since the compare is simpler.
-        if ((namespace != null) && !namespace.equals(header.getNamespace().getNamespaceURI())) {
-            return false;
+        if (namespace != null) {
+            OMNamespace headerNamespace = header.getNamespace();
+            if (headerNamespace == null || !namespace.equals(headerNamespace.getNamespaceURI())) {
+                return false;
+            }
         }
 
         String role = header.getRole();
