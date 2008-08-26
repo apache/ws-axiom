@@ -30,12 +30,16 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
 
 public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
         MTOMConstants, XOPBuilder {
+    
+    private static final Log log = LogFactory.getLog(MTOMStAXSOAPModelBuilder.class);
 
     /** <code>Attachments</code> handles deferred parsing of incoming MIME Messages. */
     Attachments attachments;
@@ -75,6 +79,10 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
             OMText node;
             String contentID = ElementHelper.getContentID(parser, getDocument()
                     .getCharsetEncoding());
+            
+            if (log.isDebugEnabled()) {
+                log.debug("Encountered xop:include for cid:" + contentID);
+            }
 
             if (lastNode == null) {
                 throw new OMException(
@@ -83,6 +91,12 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
                 node = omfactory.createOMText(contentID, lastNode.getParent(), this);
                 ((OMNodeEx) lastNode).setNextOMSibling(node);
                 ((OMNodeEx) node).setPreviousOMSibling(lastNode);
+                if (log.isDebugEnabled()) {
+                    log.debug("Create createOMText for cid:" + contentID);
+                    Object dh = node.getDataHandler();
+                    String dhClass = (dh==null) ? "null" : dh.getClass().toString();
+                    log.debug("The datahandler is " + dhClass);
+                }
             } else {
                 OMContainerEx e = (OMContainerEx) lastNode;
                 node = omfactory.createOMText(contentID, (OMElement) lastNode,
@@ -111,5 +125,9 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
         }
         */
         return dataHandler;
+    }
+    
+    public Attachments getAttachments() {
+        return attachments;
     }
 }

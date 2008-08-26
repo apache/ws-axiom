@@ -45,7 +45,10 @@ import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -62,7 +65,10 @@ import java.util.Iterator;
  */
 public class CopyUtils {
 
-
+    private static Log log = LogFactory.getLog(CopyUtils.class);
+    private static final boolean IS_DEBUG_ENABLED = log.isDebugEnabled();
+    
+    
     /**
      * Private Constructor
      */
@@ -80,6 +86,11 @@ public class CopyUtils {
      */
     public static SOAPEnvelope copy(SOAPEnvelope sourceEnv) {
 
+        // Make sure to build the whole sourceEnv
+        if (log.isDebugEnabled()) {
+            log.debug("start copy SOAPEnvelope");
+        }
+        
         SOAPFactory factory = (SOAPFactory) sourceEnv.getOMFactory();
         // Create envelope with the same prefix
         SOAPEnvelope targetEnv = factory.createSOAPEnvelope(sourceEnv.getNamespace());
@@ -114,6 +125,9 @@ public class CopyUtils {
             }  
         }
 
+        if (log.isDebugEnabled()) {
+            log.debug("end copy SOAPEnvelope");
+        }
         return targetEnv;
     }
 
@@ -195,7 +209,21 @@ public class CopyUtils {
     private static void copyOMText(SOAPFactory factory, 
                                    OMContainer targetParent, 
                                    OMText sourceText) {
+        if (IS_DEBUG_ENABLED) {
+            log.debug("start copyOMText");
+        }
+        if (sourceText.isBinary()) {
+            // This forces a load of the datahandler so that it is saved on the copy.
+            Object dh = sourceText.getDataHandler();
+            if (IS_DEBUG_ENABLED) {
+                String dhclass = (dh == null) ? "null" : dh.getClass().toString();
+                log.debug("The source text's binary data handler is " + dhclass);
+            }
+        }
         factory.createOMText(targetParent, sourceText);
+        if (IS_DEBUG_ENABLED) {
+            log.debug("end copyOMText");
+        }
     }
 
     /**

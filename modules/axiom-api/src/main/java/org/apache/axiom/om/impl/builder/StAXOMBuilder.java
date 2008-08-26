@@ -319,11 +319,13 @@ public class StAXOMBuilder extends StAXBuilder {
                 break;
             case XMLStreamConstants.CHARACTERS:
                 log.trace("CHARACTERS: ");
-                log.trace(   "[" + parser.getText() + "]");
+                // This can bust up a datahandler
+                //log.trace(   "[" + parser.getText() + "]");
                 break;
             case XMLStreamConstants.CDATA:
                 log.trace("CDATA: ");
-                log.trace(   "[" + parser.getText() + "]");
+                // This can but
+                //log.trace(   "[" + parser.getText() + "]");
                 break;
             case XMLStreamConstants.END_ELEMENT:
                 log.trace("END_ELEMENT: ");
@@ -334,11 +336,11 @@ public class StAXOMBuilder extends StAXBuilder {
                 break;
             case XMLStreamConstants.SPACE:
                 log.trace("SPACE: ");
-                log.trace(   "[" + parser.getText() + "]");
+                //log.trace(   "[" + parser.getText() + "]");
                 break;
             case XMLStreamConstants.COMMENT:
                 log.trace("COMMENT: ");
-                log.trace(   "[" + parser.getText() + "]");
+                //log.trace(   "[" + parser.getText() + "]");
                 break;
             case XMLStreamConstants.DTD:
                 log.trace("DTD: ");

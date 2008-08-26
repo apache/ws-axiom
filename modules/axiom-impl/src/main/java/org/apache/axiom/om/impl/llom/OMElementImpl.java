@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
+import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
@@ -36,6 +37,8 @@ import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
+import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
@@ -1138,7 +1141,7 @@ public class OMElementImpl extends OMNodeImpl
         
         if (log.isDebugEnabled()) {
             log.debug("cloneOMElement start");
-            log.debug("  element string =" + this.toString());
+            log.debug("  element string =" + getLocalName());
             log.debug(" isComplete = " + isComplete());
             log.debug("  builder = " + builder);
         }
@@ -1149,10 +1152,32 @@ public class OMElementImpl extends OMNodeImpl
         
         // Now get a parser for the full tree
         XMLStreamReader xmlStreamReader = this.getXMLStreamReader(true);
+        if (log.isDebugEnabled()) {
+            log.debug("  reader = " + xmlStreamReader);
+        }
+        
+        // Get a new builder.  Use an xop aware builder if the original
+        // builder is xop aware
+        StAXOMBuilder newBuilder = null;
+        if (builder instanceof XOPBuilder) {
+            Attachments attachments = ((XOPBuilder)builder).getAttachments();
+            attachments.getAllContentIDs();
+            if (xmlStreamReader instanceof OMXMLStreamReader) {
+                if (log.isDebugEnabled()) {
+                    log.debug("  read optimized xop:include");
+                }
+                ((OMXMLStreamReader)xmlStreamReader).setInlineMTOM(false);
+            }
+            newBuilder = new XOPAwareStAXOMBuilder(xmlStreamReader, attachments);
+        } else {
+            newBuilder = new StAXOMBuilder(xmlStreamReader);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("  newBuilder = " + newBuilder);
+        }
         
         // Build the (target) clonedElement from the parser
-        OMElement clonedElement =
-                new StAXOMBuilder(xmlStreamReader).getDocumentElement();
+        OMElement clonedElement = newBuilder.getDocumentElement();
         clonedElement.build();
         return clonedElement;
     }

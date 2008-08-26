@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.builder;
 
+import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 
@@ -29,4 +30,5 @@ public interface XOPBuilder extends OMAttachmentAccessor {
     DataHandler getDataHandler(String blobContentID)
             throws OMException;
 
+    Attachments getAttachments();
 }

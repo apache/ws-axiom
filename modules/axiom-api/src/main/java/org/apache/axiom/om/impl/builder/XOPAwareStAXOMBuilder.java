@@ -29,6 +29,8 @@ import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.util.ElementHelper;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
@@ -38,6 +40,8 @@ import java.io.InputStream;
 
 public class XOPAwareStAXOMBuilder 
     extends StAXOMBuilder implements XOPBuilder {
+    
+    private static final Log log = LogFactory.getLog(XOPAwareStAXOMBuilder.class);
 
     /** <code>Attachments</code> handles deferred parsing of incoming MIME Messages. */
     Attachments attachments;
@@ -115,6 +119,9 @@ public class XOPAwareStAXOMBuilder
             OMText node;
             String contentID = ElementHelper.getContentID(parser, getDocument()
                     .getCharsetEncoding());
+            if (log.isDebugEnabled()) {
+                log.debug("Encountered xop:include for cid:" + contentID);
+            }
 
             if (lastNode == null) {
                 throw new OMException(
@@ -122,6 +129,12 @@ public class XOPAwareStAXOMBuilder
             } else if (lastNode.isComplete() & lastNode.getParent() != null) {
                 node = omfactory.createOMText(contentID, (OMElement) lastNode
                         .getParent(), this);
+                if (log.isDebugEnabled()) {
+                    log.debug("Create createOMText for cid:" + contentID);
+                    Object dh = node.getDataHandler();
+                    String dhClass = (dh==null) ? "null" : dh.getClass().toString();
+                    log.debug("The datahandler is " + dhClass);
+                }
                 ((OMNodeEx) lastNode).setNextOMSibling(node);
                 ((OMNodeEx) node).setPreviousOMSibling(lastNode);
             } else {
@@ -137,5 +150,9 @@ public class XOPAwareStAXOMBuilder
 
     public DataHandler getDataHandler(String blobContentID) throws OMException {
         return attachments.getDataHandler(blobContentID);
-	}
+    }
+    
+    public Attachments getAttachments() {
+        return attachments;
+    }
 }
