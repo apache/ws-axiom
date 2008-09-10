@@ -202,8 +202,9 @@ public class OMSerializerUtil {
         if (!ret) {
             // Fallback: Toggle based on sun or woodstox implementation.
             NamespaceContext nc = writer.getNamespaceContext();
-            ret = (nc == null || 
-                    (nc.getClass().getName().indexOf("wstx") == -1 && 
+            ret = (nc == null ||
+                    (nc.getClass().getName().indexOf("wstx") == -1 &&
+                            nc.getClass().getName().indexOf("weblogic") == -1 &&
                             nc.getClass().getName().indexOf("sun") == -1));
         }
         
