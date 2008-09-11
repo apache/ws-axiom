@@ -57,6 +57,8 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
     private String xmlVersion;
 
+    private boolean xmlStandalone = false;
+    
     private String charEncoding;
 
     private Vector idAttrs;
@@ -398,8 +400,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public String isStandalone() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        return (this.xmlStandalone) ? "yes" : "no";
     }
 
     public void setCharsetEncoding(String charsetEncoding) {
@@ -411,8 +412,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public void setStandalone(String isStandalone) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        this.xmlStandalone = "yes".equalsIgnoreCase(isStandalone);
     }
 
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
@@ -534,18 +534,15 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public String getXmlEncoding() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+        return this.charEncoding;
     }
 
     public boolean getXmlStandalone() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+        return this.xmlStandalone;
     }
 
     public String getXmlVersion() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+        return getXMLVersion();
     }
 
     public void normalizeDocument() {
@@ -569,14 +566,12 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         throw new UnsupportedOperationException("TODO");
     }
 
-    public void setXmlStandalone(boolean arg0) throws DOMException {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+    public void setXmlStandalone(boolean standalone) throws DOMException {
+        this.xmlStandalone = standalone;
     }
 
-    public void setXmlVersion(String arg0) throws DOMException {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+    public void setXmlVersion(String version) throws DOMException {
+        setXMLVersion(version);
     }
 
 }
