@@ -764,8 +764,10 @@ public class OMElementImpl extends OMNodeImpl
      */
     private XMLStreamReader getXMLStreamReader(boolean cache) {
         if (builder != null && this.builder instanceof StAXOMBuilder) {
-            if (((StAXOMBuilder) builder).isLookahead()) {
-                this.buildNext();
+            if (!isComplete()) {
+                if (((StAXOMBuilder) builder).isLookahead()) {
+                    this.buildNext();
+                }
             }
         }
         
