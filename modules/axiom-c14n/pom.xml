@@ -27,7 +27,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.ws.commons.axiom</groupId>
   <artifactId>axiom-c14n</artifactId>
-  <name/>
+  <name>Axiom C14N</name>
   <version>SNAPSHOT</version>
   <description/>
   <dependencies>
@@ -40,10 +40,6 @@
       <groupId>org.apache.ws.commons.axiom</groupId>
       <artifactId>axiom-impl</artifactId>
       <version>${axiom.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.woodstox</groupId>
-      <artifactId>wstx-asl</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
