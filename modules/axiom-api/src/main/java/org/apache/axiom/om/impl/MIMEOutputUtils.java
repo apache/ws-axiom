@@ -36,6 +36,7 @@ import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.commons.logging.Log;
@@ -114,6 +115,7 @@ public class MIMEOutputUtils {
         }
     }
     
+    
     /**
      * Invoked by MTOMXMLStreamWriter to write the SOAP Part and the attachements. 
      * 
@@ -132,6 +134,29 @@ public class MIMEOutputUtils {
                                 String contentId,
                                 String charSetEncoding, 
                                 String SOAPContentType) {
+        complete(outStream, xmlData, binaryNodeList, boundary,
+                 contentId, charSetEncoding, SOAPContentType, null);
+    }
+    /**
+     * Invoked by MTOMXMLStreamWriter to write the SOAP Part and the attachements. 
+     * 
+     * @param outStream OutputStream target
+     * @param bufferedXML String containing XML of SOAPPart
+     * @param binaryNodeList Text nodes with the attachment Data Handlers
+     * @param boundary Boundary String
+     * @param contentId Content-ID of SOAPPart
+     * @param charSetEncoding Character Encoding of SOAPPart
+     * @param SOAPContentType Content-Type of SOAPPart
+     * @param OMOutputFormat 
+     */
+    public static void complete(OutputStream outStream, 
+                                byte[] xmlData,
+                                LinkedList binaryNodeList, 
+                                String boundary, 
+                                String contentId,
+                                String charSetEncoding, 
+                                String SOAPContentType, 
+                                OMOutputFormat omOutputFormat) {
         try {
             if (isDebugEnabled) {
                 log.debug("Start: write the SOAPPart and the attachments");
@@ -166,7 +191,7 @@ public class MIMEOutputUtils {
                 OMText binaryNode = (OMText) binaryNodeIterator.next();
                 writeBodyPart(outStream, createMimeBodyPart(binaryNode
                         .getContentID(), (DataHandler) binaryNode
-                        .getDataHandler()), boundary);
+                        .getDataHandler(), omOutputFormat), boundary);
             }
             finishWritingMime(outStream);
             outStream.flush();
@@ -205,24 +230,53 @@ public class MIMEOutputUtils {
     }
 
     public static MimeBodyPart createMimeBodyPart(String contentID,
-                                                  DataHandler dataHandler)
+                                                  DataHandler dataHandler) 
             throws MessagingException {
-        if (isDebugEnabled) {
-            log.debug("Create MimeBodyPart for " + contentID);
+        return createMimeBodyPart(contentID, dataHandler, null);
+    }
+                                                  
+    public static MimeBodyPart createMimeBodyPart(String contentID,
+                                                  DataHandler dataHandler,
+                                                  OMOutputFormat omOutputFormat)
+           throws MessagingException {
+        String contentType = dataHandler.getContentType();
+        
+        // Get the content-transfer-encoding
+        String contentTransferEncoding = "binary";
+        if (dataHandler instanceof ConfigurableDataHandler) {
+            ConfigurableDataHandler configurableDataHandler = (ConfigurableDataHandler) dataHandler;
+            contentTransferEncoding = configurableDataHandler.getTransferEncoding();
         }
-        String encoding = null;
+        
+        if (isDebugEnabled) {
+            log.debug("Create MimeBodyPart");
+            log.debug("  Content-ID = " + contentID);
+            log.debug("  Content-Type = " + contentType);
+            log.debug("  Content-Transfer-Encoding = " + contentTransferEncoding);
+        }
+        
+        boolean useCTEBase64 = omOutputFormat != null &&
+            Boolean.TRUE.equals(
+               omOutputFormat.getProperty(
+                   OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS));
+        if (useCTEBase64) {
+            if (!CommonUtils.isTextualPart(contentType) && 
+                "binary".equals(contentTransferEncoding)) {
+                if (isDebugEnabled) {
+                    log.debug(" changing Content-Transfer-Encoding from " + 
+                              contentTransferEncoding + " to base-64");
+                }
+                contentTransferEncoding = "base64";
+            }
+            
+        }
+        
+        // Now create the mimeBodyPart for the datahandler and add the appropriate content headers
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
         mimeBodyPart.setDataHandler(dataHandler);
         mimeBodyPart.addHeader("Content-ID", "<" + contentID + ">");
-        mimeBodyPart.addHeader("Content-Type", dataHandler.getContentType());
-        if (dataHandler instanceof ConfigurableDataHandler) {
-            ConfigurableDataHandler configurableDataHandler = (ConfigurableDataHandler) dataHandler;
-            encoding = configurableDataHandler.getTransferEncoding();
-        }
-        if (encoding == null) {
-            encoding = "binary";
-        }
-        mimeBodyPart.addHeader("Content-Transfer-Encoding", encoding);
+        mimeBodyPart.addHeader("Content-Type", contentType);
+        mimeBodyPart.addHeader("Content-Transfer-Encoding", contentTransferEncoding);
         return mimeBodyPart;
     }
 

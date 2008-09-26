@@ -95,6 +95,8 @@ public class PartOnMemoryEnhanced extends AbstractPart {
             InputStream is = ds.getInputStream();
             if (is instanceof BAAInputStream) {
                 ((BAAInputStream)is).writeTo(os);
+            } else {
+                BufferUtils.inputStream2OutputStream(is, os);
             }
         }
     }

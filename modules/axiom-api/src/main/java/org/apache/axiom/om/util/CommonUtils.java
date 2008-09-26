@@ -156,4 +156,32 @@ public class CommonUtils {
         return logStream.getLength();
     }
     
+    /** 
+     * A "textual part" has one or more of the following criteria
+     *   1) a content-type that start with "text"
+     *      "application/xml" or "application/soap"
+     *   2) has a charset parameter on the content-type.
+     *
+     * Example:
+     *   An part with a content-type of "image/gif" is a non-textual attachment.
+     *   An part with a content-type of "application/soap+xml" is an textual attachment
+     *
+     * @param contentType
+     * @return true if text, false otherwise
+     */
+    public static boolean isTextualPart(String contentType) {
+        String ct = contentType.trim();
+        if (ct.startsWith("text/") ||
+            ct.startsWith("application/soap") ||
+            ct.startsWith("application/xml")) {
+            // REVIEW: What about content-type with a type of "message"
+            return true;
+        } 
+        
+        if (ct.contains("charset")) {
+            return true;
+        }
+        return false;
+                        
+    }
 }

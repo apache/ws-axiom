@@ -59,6 +59,19 @@ public class OMOutputFormat {
 
     public static final String ACTION_PROPERTY = "action";
     
+    // The value of this property is a Boolean.  
+    // A missing value indicates the default action, which is Boolean.FALSE
+    // If Boolean.TRUE, attachments that are "non textual" are written out with 
+    // a content-transfer-encoding type of base64.
+    // @See CommonUtils.isTextualPart for the textual part definition.
+    // 
+    // Example:
+    //   An attachment with a content-type of "image/gif" is a non-textual attachment.
+    //   An attachment with a content-type of "application/soap+xml" is an textual attachment
+    //
+    public static final String USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS = 
+        "org.apache.axiom.om.OMFormat.use.cteBase64.forNonTextualAttachments";
+    
     HashMap map = null;  // Map of generic properties
 
 

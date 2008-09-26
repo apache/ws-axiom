@@ -184,7 +184,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
                                          format.getMimeBoundary(),
                                          format.getRootContentId(),
                                          format.getCharSetEncoding(),
-                                         SOAPContentType);
+                                         SOAPContentType, 
+                                         format);
                 bufferedXML.close();
                 bufferedXML = null;
             } catch (UnsupportedEncodingException e) {

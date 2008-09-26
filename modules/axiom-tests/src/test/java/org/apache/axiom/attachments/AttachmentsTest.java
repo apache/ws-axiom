@@ -20,9 +20,16 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
+import org.apache.axiom.om.util.CommonUtils;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
+
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,8 +48,16 @@ public class AttachmentsTest extends AbstractTestCase {
     String img1FileName = "mtom/img/test.jpg";
     String img2FileName = "mtom/img/test2.jpg";
 
+    String boundary = "MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701";
+    String start= "0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org";
     String contentTypeString =
-            "multipart/related; boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
+                        "multipart/related; " +
+                        "boundary=\"" + boundary + "\"; " +
+                        "type=\"application/xop+xml\"; " +
+                        "start=\"<" + start +">\"; " +
+                        "start-info=\"application/soap+xml\"; " +
+                        "charset=UTF-8;" +
+                        "action=\"mtomSample\"";
 
     public void testMIMEHelper() {
     }
@@ -154,6 +169,100 @@ public class AttachmentsTest extends AbstractTestCase {
         is = attachments.getSOAPPartInputStream();
         while (is.read() != -1) ;  
     }
+    
+    public void testWritingBinaryAttachments() throws Exception {
+
+        // Read in message: SOAPPart and 2 image attachments
+        File f = getTestResourceFile(inMimeFileName);
+        InputStream inStream = new FileInputStream(f);
+        Attachments attachments = new Attachments(inStream, contentTypeString);
+        
+        attachments.getSOAPPartInputStream();
+
+        String[] contentIDs = attachments.getAllContentIDs();
+        
+        OMOutputFormat oof = new OMOutputFormat();
+        oof.setDoOptimize(true);
+        oof.setMimeBoundary(boundary);
+        oof.setRootContentId(start);
+        
+        // Write out the message
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(baos, oof);
+        
+        XOPAwareStAXOMBuilder builder = 
+            new XOPAwareStAXOMBuilder(attachments.getSOAPPartInputStream(),
+                                      attachments);
+        OMElement om = builder.getDocumentElement();
+        om.serialize(writer);
+        String outNormal = baos.toString();
+        
+        assertTrue(!outNormal.contains("base64"));
+        
+        // Now do it again but use base64 content-type-encoding for 
+        // binary attachments
+        baos = new ByteArrayOutputStream();
+        oof.setProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, 
+                        Boolean.TRUE);
+        writer = new MTOMXMLStreamWriter(baos, oof);
+        builder = 
+            new XOPAwareStAXOMBuilder(attachments.getSOAPPartInputStream(),
+                                      attachments);
+        om = builder.getDocumentElement();
+        om.serialize(writer);
+        String outBase64 = baos.toString();
+        
+        
+        // Do a quick check to see if the data is base64 and is
+        // writing base64 compliant code.
+        assertTrue(outBase64.contains("base64"));
+        assertTrue(outBase64.contains("GBgcGBQgHBwcJCQgKDBQNDAsL"));
+        
+        // Now read the data back in
+        InputStream is = new ByteArrayInputStream(outBase64.getBytes());
+        Attachments attachments2 = new Attachments(is, contentTypeString);
+        
+        // Now write it back out with binary...
+        baos = new ByteArrayOutputStream();
+        oof.setProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, 
+                        Boolean.FALSE);
+        writer = new MTOMXMLStreamWriter(baos, oof);
+        builder = 
+            new XOPAwareStAXOMBuilder(attachments2.getSOAPPartInputStream(),
+                                      attachments2);
+        om = builder.getDocumentElement();
+        om.serialize(writer);
+        String outBase64ToNormal = baos.toString();
+        
+        assertTrue(!outBase64ToNormal.contains("base64"));
+        
+        // Now do it again but use base64 content-type-encoding for 
+        // binary attachments
+        baos = new ByteArrayOutputStream();
+        oof.setProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, 
+                        Boolean.TRUE);
+        writer = new MTOMXMLStreamWriter(baos, oof);
+        builder = 
+            new XOPAwareStAXOMBuilder(attachments2.getSOAPPartInputStream(),
+                                      attachments2);
+        om = builder.getDocumentElement();
+        om.serialize(writer);
+        String outBase64ToBase64 = baos.toString();
+        
+        // Do a quick check to see if the data is base64 and is
+        // writing base64 compliant code.
+        assertTrue(outBase64ToBase64.contains("base64"));
+        assertTrue(outBase64ToBase64.contains("GBgcGBQgHBwcJCQgKDBQNDAsL"));
+        
+        // Some quick verifications of the isTextualPart logic
+        assertTrue(CommonUtils.isTextualPart("text/xml"));
+        assertTrue(CommonUtils.isTextualPart("application/xml"));
+        assertTrue(CommonUtils.isTextualPart("application/soap+xml"));
+        assertTrue(CommonUtils.isTextualPart("foo/bar; charset=UTF-8"));
+        assertTrue(!CommonUtils.isTextualPart("image/gif"));
+        
+    }
+    
 
     private void compareStreams(InputStream data, InputStream expected) throws Exception {
         byte[] dataArray = this.getStreamAsByteArray(data, -1);
