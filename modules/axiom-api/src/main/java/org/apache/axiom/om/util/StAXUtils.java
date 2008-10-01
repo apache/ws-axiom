@@ -58,11 +58,13 @@ public class StAXUtils {
     // These static singletons are used when the XML*Factory is created with
     // the StAXUtils classloader.
     private static XMLInputFactory inputFactory = null;
+    private static XMLInputFactory inputNDFactory = null;
     private static XMLOutputFactory outputFactory = null;
     
     // These maps are used for the isFactoryPerClassLoader==true case
     // The maps are synchronized and weak.
     private static Map inputFactoryPerCL = Collections.synchronizedMap(new WeakHashMap());
+    private static Map inputNDFactoryPerCL = Collections.synchronizedMap(new WeakHashMap());
     private static Map outputFactoryPerCL = Collections.synchronizedMap(new WeakHashMap());
     
     /**
@@ -73,9 +75,9 @@ public class StAXUtils {
     public static XMLInputFactory getXMLInputFactory() {
         
         if (isFactoryPerClassLoader) {
-            return getXMLInputFactory_perClassLoader();
+            return getXMLInputFactory_perClassLoader(false);
         } else {
-            return getXMLInputFactory_singleton();
+            return getXMLInputFactory_singleton(false);
         }
     }
     
@@ -88,9 +90,9 @@ public class StAXUtils {
      */
     public static XMLInputFactory getXMLInputFactory(boolean factoryPerClassLoaderPolicy) {
         if (factoryPerClassLoaderPolicy) {
-            return getXMLInputFactory_perClassLoader();
+            return getXMLInputFactory_perClassLoader(false);
         } else {
-            return getXMLInputFactory_singleton();
+            return getXMLInputFactory_singleton(false);
         }
     }
 
@@ -293,14 +295,21 @@ public class StAXUtils {
     /**
      * @return XMLInputFactory for the current classloader
      */
-    private static XMLInputFactory getXMLInputFactory_perClassLoader() {
+    private static XMLInputFactory getXMLInputFactory_perClassLoader(final boolean isNetworkDetached) {
         
         ClassLoader cl = getContextClassLoader();
         XMLInputFactory factory;
         if (cl == null) {
-            factory = getXMLInputFactory_singleton();
+            factory = getXMLInputFactory_singleton(isNetworkDetached);
         } else {
-            factory = (XMLInputFactory) inputFactoryPerCL.get(cl);
+            // Check the cache
+            if (isNetworkDetached) {
+                factory = (XMLInputFactory) inputNDFactoryPerCL.get(cl);
+            } else {
+                factory = (XMLInputFactory) inputFactoryPerCL.get(cl);
+            }
+            
+            // If not found in the cache map, crate a new factory
             if (factory == null) {
 
                 if (log.isDebugEnabled()) {
@@ -315,7 +324,12 @@ public class StAXUtils {
                     AccessController.doPrivileged(
                         new PrivilegedAction() {
                             public Object run() {
-                                return XMLInputFactory.newInstance();
+                                XMLInputFactory f = XMLInputFactory.newInstance();
+                                if (isNetworkDetached) {
+                                    f.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, 
+                                              Boolean.FALSE);
+                                }
+                                return f;
                             }
                         });
                 } catch (ClassCastException cce) {
@@ -337,6 +351,10 @@ public class StAXUtils {
                                         setContextClassLoader(
                                             XMLInputFactory.class.getClassLoader());
                                     f =XMLInputFactory.newInstance();
+                                    if (isNetworkDetached) {
+                                        f.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, 
+                                                  Boolean.FALSE);
+                                    }
                                 } finally {
                                     Thread.currentThread().
                                         setContextClassLoader(saveCL);
@@ -347,14 +365,21 @@ public class StAXUtils {
                 }
                     
                 if (factory != null) {
-                    inputFactoryPerCL.put(cl, factory);
+                    // Cache the new factory
+                    if (isNetworkDetached) {
+                        inputNDFactoryPerCL.put(cl, factory);
+                    } else {
+                        inputFactoryPerCL.put(cl, factory);
+                    }
+                    
                     if (log.isDebugEnabled()) {
                         log.debug("Created XMLInputFactory = " + factory.getClass() + 
                                   " with classloader=" + cl);
                         log.debug("Size of XMLInputFactory map =" + inputFactoryPerCL.size());
+                        log.debug("isNetworkDetached =" + isNetworkDetached);
                     }
                 } else {
-                    factory = getXMLInputFactory_singleton();
+                    factory = getXMLInputFactory_singleton(isNetworkDetached);
                 }
             }
             
@@ -365,10 +390,10 @@ public class StAXUtils {
     /**
      * @return singleton XMLInputFactory loaded with the StAXUtils classloader
      */
-    private static XMLInputFactory getXMLInputFactory_singleton() {
+    private static XMLInputFactory getXMLInputFactory_singleton(final boolean isNetworkDetached) {
  
         if (inputFactory == null) {
-            inputFactory = (XMLInputFactory) AccessController.doPrivileged(
+            XMLInputFactory f = (XMLInputFactory) AccessController.doPrivileged(
                     new PrivilegedAction() {
                         public Object run() {
                             Thread currentThread = Thread.currentThread();
@@ -377,6 +402,10 @@ public class StAXUtils {
                             try {
                                 currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
                                 factory = XMLInputFactory.newInstance();
+                                if (isNetworkDetached) {
+                                    factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, 
+                                                        Boolean.FALSE);
+                                }
                             }
                             finally {
                                 currentThread.setContextClassLoader(savedClassLoader);
@@ -384,9 +413,18 @@ public class StAXUtils {
                             return factory;
                         }
                     });
+            if (isNetworkDetached) {
+                inputNDFactory = f;
+            } else {
+                inputFactory = f;
+            }
             if (log.isDebugEnabled()) {
                 if (inputFactory != null) {
-                    log.debug("Created singleton XMLInputFactory = " + inputFactory.getClass());
+                    if (isNetworkDetached) {
+                        log.debug("Created singleton network detached XMLInputFactory = " + f.getClass());
+                    } else {
+                        log.debug("Created singleton XMLInputFactory = " + f.getClass());
+                    }
                 }
             }
         }
@@ -514,4 +552,118 @@ public class StAXUtils {
         
         return cl;
     }
+
+    /**
+     * Create an XMLStreamReader that will operate when detached from a network.
+     * The XMLStreamReader is created from a OMInputFactory that has external
+     * entities disabled.  This kind of XMLStreamReader is useful for reading 
+     * deployment information.
+     * @param in
+     * @param encoding
+     * @return
+     * @throws XMLStreamException
+     */
+    public static XMLStreamReader createNetworkDetachedXMLStreamReader(final InputStream in, final String encoding)
+        throws XMLStreamException {
+        final XMLInputFactory inputFactory = getNetworkDetachedXMLInputFactory();
+        try {
+            XMLStreamReader reader = 
+                (XMLStreamReader) 
+                AccessController.doPrivileged(new PrivilegedExceptionAction() {
+                    public Object run() throws XMLStreamException {
+                        return inputFactory.createXMLStreamReader(in, encoding);
+                    }
+                }
+                );
+            if (isDebugEnabled) {
+                log.debug("XMLStreamReader is " + reader.getClass().getName());
+            }
+            return reader;
+        } catch (PrivilegedActionException pae) {
+            throw (XMLStreamException) pae.getException();
+        } finally {
+            releaseXMLInputFactory(inputFactory);
+        }
+    }
+
+    /**
+     * Gets an XMLInputFactory instance from pool.
+     *
+     * @return an XMLInputFactory instance.
+     */
+    public static XMLInputFactory getNetworkDetachedXMLInputFactory() {
+        if (isFactoryPerClassLoader) {
+            return getXMLInputFactory_perClassLoader(true);
+        } else {
+            return getXMLInputFactory_singleton(true);
+        }
+    }
+    
+    /**
+     * Create an XMLStreamReader that will operate when detached from a network.
+     * The XMLStreamReader is created from a OMInputFactory that has external
+     * entities disabled.  This kind of XMLStreamReader is useful for reading 
+     * deployment information.
+     * 
+     * @param in
+     * @return
+     * @throws XMLStreamException
+     */
+    public static XMLStreamReader createNetworkDetachedXMLStreamReader(final InputStream in)
+    throws XMLStreamException {
+        final XMLInputFactory inputFactory = getNetworkDetachedXMLInputFactory();
+        try {
+            XMLStreamReader reader = 
+                (XMLStreamReader)
+                AccessController.doPrivileged(new PrivilegedExceptionAction() {
+                    public Object run() throws XMLStreamException {
+                        return inputFactory.createXMLStreamReader(in);
+                    }
+                }
+                );
+
+            if (isDebugEnabled) {
+                log.debug("XMLStreamReader is " + reader.getClass().getName());
+            }
+            return reader;
+        } catch (PrivilegedActionException pae) {
+            throw (XMLStreamException) pae.getException();
+        } finally {
+            releaseXMLInputFactory(inputFactory);
+        }
+    }
+
+    /**
+     * Create an XMLStreamReader that will operate when detached from a network.
+     * The XMLStreamReader is created from a OMInputFactory that has external
+     * entities disabled.  This kind of XMLStreamReader is useful for reading 
+     * deployment information.
+     * 
+     * @param in
+     * @return
+     * @throws XMLStreamException
+     */
+    public static XMLStreamReader createNetworkDetachedXMLStreamReader(final Reader in)
+    throws XMLStreamException {
+        final XMLInputFactory inputFactory = getNetworkDetachedXMLInputFactory();
+        try {
+            XMLStreamReader reader = 
+                (XMLStreamReader)
+                AccessController.doPrivileged(new PrivilegedExceptionAction() {
+                    public Object run() throws XMLStreamException {
+                        return inputFactory.createXMLStreamReader(in);
+                    }
+                }
+                );
+            if (isDebugEnabled) {
+                log.debug("XMLStreamReader is " + reader.getClass().getName());
+            }
+            return reader;
+        } catch (PrivilegedActionException pae) {
+            throw (XMLStreamException) pae.getException();
+        } finally {
+            releaseXMLInputFactory(inputFactory);
+        }
+    }
+
 }

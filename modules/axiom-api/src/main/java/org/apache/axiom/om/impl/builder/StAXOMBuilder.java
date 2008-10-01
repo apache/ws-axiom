@@ -33,6 +33,7 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -432,10 +433,44 @@ public class StAXOMBuilder extends StAXBuilder {
      * @throws OMException
      */
     protected OMNode createDTD() throws OMException {
-        if (!parser.hasText())
+        if (!parser.hasText()) {
             return null;
-        lastNode = omfactory.createOMDocType(document, parser.getText());
+        }
+        String dtdText = getDTDText();
+        lastNode = omfactory.createOMDocType(document, dtdText);
         return lastNode;
+    }
+    
+    /**
+     * The getText() method for a DOCTYPE returns the 
+     * subset of the DOCTYPE (not the direct infoset).
+     * This may force the parser to get information from 
+     * the network.
+     * @return doctype subset
+     * @throws OMException
+     */
+    private String getDTDText() throws OMException { 
+        String text = null;
+        try {
+            text = parser.getText();
+        } catch (RuntimeException e) {
+            // Woodstox (and perhaps other parsers)
+            // attempts to load the external subset even if
+            // external enties is false.  So ignore this error
+            // if external entity support is explicitly disabled.
+            Boolean b = (Boolean) parser.getProperty(
+                   XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES);
+            if (b == null || b == Boolean.TRUE) {
+                throw e;
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("An exception occurred while calling getText() for a DOCTYPE.  " +
+                                "The exception is ignored because external " +
+                                "entites support is disabled.  " +
+                                "The ignored exception is " + e);
+            }
+        }
+        return text;
     }
 
     /**
