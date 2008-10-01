@@ -90,6 +90,9 @@ public class StAXOMBuilder extends StAXBuilder {
                          String characterEncoding) {
         // Use this constructor because the parser is passed the START_DOCUMENT state.
         super(factory, parser, characterEncoding);  
+        doTrace = log.isDebugEnabled();
+        namespaceURIInterning = false;
+        lookAheadToken = -1;
         document = factory.createOMDocument(this);
         if (charEncoding != null) {
             document.setCharsetEncoding(charEncoding);
@@ -126,6 +129,9 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     public StAXOMBuilder(XMLStreamReader parser) {
         super(parser);
+        doTrace = log.isDebugEnabled();
+        namespaceURIInterning = false;
+        lookAheadToken = -1;
         omfactory = OMAbstractFactory.getOMFactory();
         document = omfactory.createOMDocument(this);
         if (charEncoding != null) {
@@ -146,6 +152,9 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     public StAXOMBuilder() {
         super();
+        doTrace = log.isDebugEnabled();
+        namespaceURIInterning = false;
+        lookAheadToken = -1;
     }
 
     /**
