@@ -372,7 +372,7 @@ public class MIMEOutputUtils {
             while (iterator.hasNext()) {
                 String key = (String) iterator.next();
                 MimeBodyPart part = createMimeBodyPart(key,
-                        (DataHandler) attachments.get(key));
+                        (DataHandler) attachments.get(key), format);
                 writeBodyPart(outputStream, part,
                               format.getMimeBoundary());
             }
