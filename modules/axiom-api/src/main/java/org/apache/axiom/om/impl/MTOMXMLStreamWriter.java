@@ -123,16 +123,16 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     }
 
     public void writeEmptyElement(String string, String string1) throws XMLStreamException {
-        xmlWriter.writeStartElement(string, string1);
+        xmlWriter.writeEmptyElement(string, string1);
     }
 
     public void writeEmptyElement(String string, String string1, String string2)
             throws XMLStreamException {
-        xmlWriter.writeStartElement(string, string1, string2);
+        xmlWriter.writeEmptyElement(string, string1, string2);
     }
 
     public void writeEmptyElement(String string) throws XMLStreamException {
-        xmlWriter.writeStartElement(string);
+        xmlWriter.writeEmptyElement(string);
     }
 
     public void writeEndElement() throws XMLStreamException {
