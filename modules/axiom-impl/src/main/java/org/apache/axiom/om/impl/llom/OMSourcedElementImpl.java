@@ -268,7 +268,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             }
             String readerURI = readerFromDS.getNamespaceURI();
             readerURI = (readerURI == null) ? "" : readerURI;
-            String uri = getNamespace().getNamespaceURI();
+            String uri = (getNamespace() == null) ? "" : 
+                ((getNamespace().getNamespaceURI() == null) ? "" : getNamespace().getNamespaceURI());
             if (!readerURI.equals(uri)) {
                 log.error("forceExpand: expected element namespace " +
                         getLocalName() + ", found " + uri);
@@ -282,7 +283,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             String prefix = null;
             
             OMNamespace ns = getNamespace();
-            if (ns instanceof DeferredNamespace) {
+            if (ns == null || ns instanceof DeferredNamespace) {
                 // prefix is not available until after expansion
             } else {
                 prefix = ns.getPrefix();
