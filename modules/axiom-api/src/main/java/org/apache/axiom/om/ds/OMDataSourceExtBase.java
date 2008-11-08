@@ -18,17 +18,6 @@
  */
 package org.apache.axiom.om.ds;
 
-import org.apache.axiom.om.OMDataSourceExt;
-import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,12 +27,28 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+
+import org.apache.axiom.om.OMDataSourceExt;
+import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * OMDataSourceExtBase is a convenient base class that can be extended
  * by other OMDataSourceExt implementations.
  */
 public abstract class OMDataSourceExtBase implements OMDataSourceExt {
 
+    private static final Log log = LogFactory.getLog(OMDataSourceExtBase.class);
+    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
+	
     HashMap map = null;  // Map of properties
 
     public Object getProperty(String key) {
@@ -69,10 +74,16 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
    
     public InputStream getXMLInputStream(String encoding)  throws 
         UnsupportedEncodingException{
+        if (DEBUG_ENABLED) {
+            log.debug("getXMLInputStream encoding="+encoding);
+        }
         return new ByteArrayInputStream(getXMLBytes(encoding));
     }
 
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
+        if (DEBUG_ENABLED) {
+            log.debug("serialize output="+output+" format="+format);
+        }
         try {
             // Write bytes to the output stream
             output.write(getXMLBytes(format.getCharSetEncoding()));
@@ -82,6 +93,9 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
     }
 
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
+        if (DEBUG_ENABLED) {
+            log.debug("serialize writer="+writer+" format="+format);
+        }
         try {
             // Convert the bytes into a String and write it to the Writer
             String text = new String(getXMLBytes(format.getCharSetEncoding()));
@@ -94,16 +108,25 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
     }
 
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
+        if (DEBUG_ENABLED) {
+            log.debug("serialize xmlWriter="+xmlWriter);
+        }
         // Some XMLStreamWriters (e.g. MTOMXMLStreamWriter) 
         // provide direct access to the OutputStream.  
         // This allows faster writing.
         OutputStream os = getOutputStream(xmlWriter);
         if (os != null) {
+        	if (DEBUG_ENABLED) {
+                log.debug("serialize OutputStream optimisation: true");
+            }
             String encoding = getCharacterEncoding(xmlWriter);
             OMOutputFormat format = new OMOutputFormat();
             format.setCharSetEncoding(encoding);
             serialize(os, format);
         } else {
+        	if (DEBUG_ENABLED) {
+                log.debug("serialize OutputStream optimisation: false");
+            }
             // Read the bytes into a reader and 
             // write to the writer.
             XMLStreamReader xmlReader = getReader();

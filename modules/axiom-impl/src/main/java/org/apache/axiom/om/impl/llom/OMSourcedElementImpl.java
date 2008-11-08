@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
@@ -74,6 +75,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     private static Log log = LogFactory.getLog(OMSourcedElementImpl.class);
     private static final boolean isDebugEnabled = log.isDebugEnabled();
+    
+    private static Log forceExpandLog = LogFactory.getLog(OMSourcedElementImpl.class.toString()+".forceExpand");
     
     private XMLStreamReader readerFromDS = null;  // Reader from DataSource
 
@@ -237,6 +240,12 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             if (isDebugEnabled) {
                 log.debug("forceExpand: expanding element " +
                         getPrintableName());
+                if(forceExpandLog.isDebugEnabled()){
+                	// When using an OMSourcedElement, it can be particularly difficult to
+                	// determine why an expand occurs... a stack trace should help debugging this
+                	Exception e = new Exception("Debug Stack Trace");
+                	forceExpandLog.debug("forceExpand stack", e);
+                }
             }
 
             // Get the XMLStreamReader

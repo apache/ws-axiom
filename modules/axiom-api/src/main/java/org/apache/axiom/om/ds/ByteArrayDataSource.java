@@ -20,6 +20,8 @@ package org.apache.axiom.om.ds;
 
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -35,6 +37,9 @@ import java.io.UnsupportedEncodingException;
  */
 public class ByteArrayDataSource extends OMDataSourceExtBase {
 
+    private static final Log log = LogFactory.getLog(ByteArrayDataSource.class);
+    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
+	
     ByteArray byteArray = null;
     
     /**
@@ -50,6 +55,9 @@ public class ByteArrayDataSource extends OMDataSourceExtBase {
    
  
     public XMLStreamReader getReader() throws XMLStreamException {
+        if (DEBUG_ENABLED) {
+            log.debug("getReader");
+        }
         return StAXUtils.createXMLStreamReader(new ByteArrayInputStream(byteArray.bytes),
                                                byteArray.encoding);                                                                       
     }
@@ -69,7 +77,9 @@ public class ByteArrayDataSource extends OMDataSourceExtBase {
     }
 
     public byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException {
-        
+        if (DEBUG_ENABLED) {
+            log.debug("getXMLBytes encoding="+encoding);
+        }
         // Return the byte array directly if it is the same encoding
         // Otherwise convert the bytes to the proper encoding
         if (!byteArray.encoding.equalsIgnoreCase(encoding)) {
