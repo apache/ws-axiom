@@ -221,8 +221,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         }
 
         if (isDebugEnabled) {
-            log.debug("Build the OMElelment " + node.getLocalName() +
-                    "By the StaxSOAPModelBuilder");
+            log.debug("Build the OMElement " + node.getLocalName() +
+                    " by the StaxSOAPModelBuilder");
         }
         return node;
     }
