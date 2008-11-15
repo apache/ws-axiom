@@ -70,7 +70,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     public MTOMXMLStreamWriter(XMLStreamWriter xmlWriter) {
         this.xmlWriter = xmlWriter;
         if (isDebugEnabled) {
-            log.debug("Call Stack =" + CommonUtils.callStackToString());
+            log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
     }
 
@@ -88,7 +88,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         if (isDebugEnabled) {
             log.debug("OutputStream =" + outStream.getClass());
             log.debug("OMFormat = " + format.toString());
-            log.debug("Call Stack =" + CommonUtils.callStackToString());
+            log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         this.format = format;
         this.outStream = outStream;

@@ -237,10 +237,10 @@ public class OMElementImpl extends OMNodeImpl
         if (elementQName.getNamespaceURI().length() == 0 &&
             firstChild != null &&
             !it.hasNext()) {
-            if (log.isDebugEnabled()) {
-                log.debug("There are no child elements that match the unqualifed name: " + 
+            if (log.isTraceEnabled()) {
+                log.trace("There are no child elements that match the unqualifed name: " +
                           elementQName);
-                log.debug("Now looking for child elements that have the same local name.");
+                log.trace("Now looking for child elements that have the same local name.");
             }
             it = new OMChildrenLegacyQNameIterator(getFirstOMChild(), elementQName);
         }
