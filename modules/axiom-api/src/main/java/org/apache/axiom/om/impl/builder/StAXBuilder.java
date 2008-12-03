@@ -92,6 +92,14 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected Map customBuilders = null;
     protected int maxDepthForCustomBuilders = -1;
     
+    /**
+     * Field showing whether the parser is datahandler-aware or not. Client should not directly access this field. 
+     * Instead, they should use {@link #setIsDataHandlerAware(Boolean)} and {@link #isDataHandlerAware()}.
+     * 
+     * @deprecated
+     * @see #isDataHandlerAware()
+     * @see #setIsDataHandlerAware(Boolean)
+     */
     protected Boolean isDataHandlerAware = null; // property of parser, https://issues.apache.org/jira/browse/WSCOMMONS-300
     
     /**
@@ -661,10 +669,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     /**
      * Check if the underlying parse is aware of data handlers. (example ADB generated code)
      *
-     * @param parser
-     * @return
+     * @return true if the parser is aware of data handlers, otherwise false
      */
-    private boolean isDataHandlerAware() {
+    protected boolean isDataHandlerAware() {
         
         // Is datahandler is immutable for a parser's lifetime.  Thus it should
         // only be checked one time.
@@ -693,6 +700,15 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         return false;
     }
 
+    /**
+     * Sets the isDataHandlerAware state of this {@link StAXBuilder}.
+     * 
+     * @param value a boolean value - may be null
+     */
+    protected void setIsDataHandlerAware(Boolean value) {
+        this.isDataHandlerAware = value;
+    }
+    
     /**
      * Returns the encoding style of the XML data
      * @return the character encoding, defaults to "UTF-8"
