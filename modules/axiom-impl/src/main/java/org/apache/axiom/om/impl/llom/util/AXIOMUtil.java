@@ -21,9 +21,10 @@ package org.apache.axiom.om.impl.llom.util;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.stream.XMLStreamException;
-import java.io.ByteArrayInputStream;
+import java.io.StringReader;
 
 public class AXIOMUtil {
 
@@ -36,7 +37,7 @@ public class AXIOMUtil {
      */
     public static OMElement stringToOM(String xmlFragment) throws XMLStreamException {
         if (xmlFragment != null) {
-            return new StAXOMBuilder(new ByteArrayInputStream(xmlFragment.getBytes()))
+            return new StAXOMBuilder(StAXUtils.createXMLStreamReader(new StringReader(xmlFragment)))
                     .getDocumentElement();
         }
         return null;
