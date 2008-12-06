@@ -191,8 +191,11 @@ public class Attachments implements OMAttachmentAccessor {
             if(encoding == null || encoding.length()==0){
                 encoding = "UTF-8";
             }
-            this.boundary = ("--" + contentType.getParameter("boundary"))
-                    .getBytes(encoding);
+            String boundaryParam = contentType.getParameter("boundary");
+            if (boundaryParam == null) {
+                throw new OMException("Content-type has no 'boundary' parameter");
+            }
+            this.boundary = ("--" + boundaryParam).getBytes(encoding);
             if (log.isDebugEnabled()) {
                 log.debug("boundary=" + new String(this.boundary));
             }
