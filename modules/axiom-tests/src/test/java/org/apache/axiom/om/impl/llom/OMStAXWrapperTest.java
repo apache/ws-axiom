@@ -33,6 +33,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
+import org.apache.axiom.om.impl.llom.util.AXIOMUtil;
 import org.apache.axiom.om.util.StAXUtils;
 
 public class OMStAXWrapperTest extends TestCase {
@@ -91,5 +92,23 @@ public class OMStAXWrapperTest extends TestCase {
         assertEquals("hello world", reader2.getText()); // WSCOMMONS-341
         assertTrue(Arrays.equals("hello world".toCharArray(), reader2.getTextCharacters())); // WSCOMMONS-338
         assertEquals(XMLStreamReader.END_ELEMENT, reader2.next());
+    }
+    
+    public void testCommentEvent() throws Exception {
+        OMStAXWrapper reader = (OMStAXWrapper)AXIOMUtil.stringToOM("<a><!--comment text--></a>").getXMLStreamReader();
+        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
+        assertEquals(XMLStreamReader.COMMENT, reader.next());
+        assertEquals("comment text", reader.getText());
+        assertEquals("comment text", new String(reader.getTextCharacters(), reader.getTextStart(), reader.getTextLength()));
+        StringBuffer text = new StringBuffer();
+        char[] buf = new char[5];
+        for (int sourceStart = 0; ; sourceStart += buf.length) {
+            int nCopied = reader.getTextCharacters(sourceStart, buf, 0, buf.length);
+            text.append(buf, 0, nCopied);
+            if (nCopied < buf.length) {
+                break;
+            }
+        }
+        assertEquals("comment text", text.toString());
     }
 }

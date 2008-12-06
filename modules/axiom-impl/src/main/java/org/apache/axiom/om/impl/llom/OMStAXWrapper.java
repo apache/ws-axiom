@@ -358,14 +358,12 @@ public class OMStAXWrapper
      * @see javax.xml.stream.XMLStreamReader#getTextLength()
      */
     public int getTextLength() {
-        int returnLength = 0;
         if (parser != null) {
-            returnLength = parser.getTextLength();
+            return parser.getTextLength();
         } else {
-            OMText textNode = (OMText) getNode();
-            returnLength = textNode.getText().length();
+            String text = getTextFromNode();
+            return text == null ? 0 : text.length();
         }
-        return returnLength;
     }
 
     /**
@@ -373,41 +371,42 @@ public class OMStAXWrapper
      * @see javax.xml.stream.XMLStreamReader#getTextStart()
      */
     public int getTextStart() {
-        int returnLength = 0;
         if (parser != null) {
-            returnLength = parser.getTextStart();
+            return parser.getTextStart();
+        } else {
+            // getTextCharacters always returns a new char array and the start
+            // index is therefore always 0
+            return 0;
         }
-
-        // Note - this has no relevant method in the OM
-        return returnLength;
     }
 
     /**
-     * @param i
-     * @param chars
-     * @param i1
-     * @param i2
+     * @param sourceStart
+     * @param target
+     * @param targetStart
+     * @param length
      * @return Returns int.
      * @throws XMLStreamException
      * @see javax.xml.stream.XMLStreamReader#getTextCharacters(int, char[], int, int)
      */
-    public int getTextCharacters(int i, char[] chars, int i1, int i2)
+    public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
             throws XMLStreamException {
-        int returnLength = 0;
         if (parser != null) {
             try {
-                returnLength = parser.getTextCharacters(i, chars, i1, i2);
+                return parser.getTextCharacters(sourceStart, target, targetStart, length);
             } catch (XMLStreamException e) {
                 throw new OMStreamingException(e);
             }
         } else {
-            if (hasText()) {
-                OMText textNode = (OMText) getNode();
-                String str = textNode.getText();
-                str.getChars(i, i + i2, chars, i1);
+            String text = getTextFromNode();
+            if (text != null) {
+                int copied = Math.min(length, text.length()-sourceStart);
+                text.getChars(sourceStart, sourceStart + copied, target, targetStart);
+                return copied;
+            } else {
+                return 0;
             }
         }
-        return returnLength;
     }
 
     /**
@@ -415,17 +414,12 @@ public class OMStAXWrapper
      * @see javax.xml.stream.XMLStreamReader#getTextCharacters()
      */
     public char[] getTextCharacters() {
-        char[] returnArray = null;
         if (parser != null) {
-            returnArray = parser.getTextCharacters();
+            return parser.getTextCharacters();
         } else {
-            if (hasText()) {
-                OMText textNode = (OMText) getNode();
-                String str = textNode.getText();
-                returnArray = str.toCharArray();
-            }
+            String text = getTextFromNode();
+            return text == null ? null : text.toCharArray();
         }
-        return returnArray;
     }
 
     /**
@@ -433,19 +427,23 @@ public class OMStAXWrapper
      * @see javax.xml.stream.XMLStreamReader#getText()
      */
     public String getText() {
-        String returnString = null;
         if (parser != null) {
-            returnString = parser.getText();
+            return parser.getText();
         } else {
-            if (hasText()) {
-                if (getNode() instanceof OMText) {
-                    returnString = ((OMText) getNode()).getText();
-                } else if (getNode() instanceof OMComment) {
-                    returnString = ((OMComment) getNode()).getValue();
-                }
+            return getTextFromNode();
+        }
+    }
+    
+    private String getTextFromNode() {
+        if (hasText()) {
+            OMNode node = getNode();
+            if (node instanceof OMText) {
+                return ((OMText)node).getText();
+            } else if (node instanceof OMComment) {
+                return ((OMComment)node).getValue();
             }
         }
-        return returnString;
+        return null;
     }
 
     /**
