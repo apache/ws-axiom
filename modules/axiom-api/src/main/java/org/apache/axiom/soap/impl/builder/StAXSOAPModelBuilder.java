@@ -20,6 +20,7 @@
 package org.apache.axiom.soap.impl.builder;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -209,11 +210,22 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             node = constructNode(null, elementName, true);
             setSOAPEnvelope(node);
         } else if (lastNode.isComplete()) {
-            node = constructNode((OMElement) lastNode.getParent(),
-                                 elementName,
-                                 false);
-            ((OMNodeEx) lastNode).setNextOMSibling(node);
-            ((OMNodeEx) node).setPreviousOMSibling(lastNode);
+            OMContainer parent = lastNode.getParent();
+            if (parent == document) {
+                // If we get here, this means that we found the SOAP envelope, but that it was
+                // preceded by a comment node. Since constructNode will create a new document
+                // based on the SOAP version of the envelope, we simply discard the last node 
+                // and do as if we just encountered the first node in the document.
+                lastNode = null;
+                node = constructNode(null, elementName, true);
+                setSOAPEnvelope(node);
+            } else {
+                node = constructNode((OMElement)parent,
+                                     elementName,
+                                     false);
+                ((OMNodeEx) lastNode).setNextOMSibling(node);
+                ((OMNodeEx) node).setPreviousOMSibling(lastNode);
+            }
         } else {
             OMContainerEx e = (OMContainerEx) lastNode;
             node = constructNode((OMElement) lastNode, elementName, false);

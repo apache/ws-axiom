@@ -230,7 +230,7 @@ public class StAXOMBuilder extends StAXBuilder {
                     lastNode = createOMText(XMLStreamConstants.SPACE);
                     break;
                 case XMLStreamConstants.COMMENT:
-                    createComment();
+                    lastNode = createComment();
                     break;
                 case XMLStreamConstants.DTD:
                     createDTD();
