@@ -438,8 +438,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
      */
     public OMElement getOMDocumentElement() {
 
-        //We'r sure that only an element can be the first child of a Document
-        if (this.documentElement == null && !this.done) {
+        while (this.documentElement == null && !this.done) {
             this.builder.next();
         }
         return this.documentElement;
