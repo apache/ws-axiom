@@ -236,7 +236,7 @@ public class StAXOMBuilder extends StAXBuilder {
                     createDTD();
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    createPI();
+                    lastNode = createPI();
                     break;
                 case XMLStreamConstants.ENTITY_REFERENCE:
                     lastNode = createOMText(XMLStreamConstants.ENTITY_REFERENCE);
