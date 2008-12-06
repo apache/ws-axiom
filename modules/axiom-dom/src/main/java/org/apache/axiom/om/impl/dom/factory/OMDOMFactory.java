@@ -216,10 +216,11 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText( org.apache.axiom.om.OMElement,String)
      */
     public OMText createOMText(OMContainer parent, String text) {
-        ElementImpl parentElem = (ElementImpl) parent;
-        TextImpl txt = new TextImpl((DocumentImpl) parentElem
-                .getOwnerDocument(), text, this);
-        parentElem.addChild(txt);
+        // A text node can also be added as the child of a Document node (at least if
+        // it contains whitespace only). Therefore we can't assume that the parent is
+        // an element and we need to use getDocumentFromParent instead.
+        TextImpl txt = new TextImpl(getDocumentFromParent(parent), text, this);
+        parent.addChild(txt);
         return txt;
     }
 
@@ -337,14 +338,7 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMComment createOMComment(OMContainer parent, String content) {
-        DocumentImpl doc;
-        if (parent instanceof DocumentImpl) {
-            doc = (DocumentImpl) parent;
-        } else {
-            doc = (DocumentImpl) ((ParentNode) parent).getOwnerDocument();
-        }
-
-        CommentImpl comment = new CommentImpl(doc, content, this);
+        CommentImpl comment = new CommentImpl(getDocumentFromParent(parent), content, this);
         parent.addChild(comment);
         return comment;
     }
@@ -358,4 +352,11 @@ public class OMDOMFactory implements OMFactory {
         return this.document;
     }
 
+    private DocumentImpl getDocumentFromParent(OMContainer parent) {
+        if (parent instanceof DocumentImpl) {
+            return (DocumentImpl) parent;
+        } else {
+            return (DocumentImpl) ((ParentNode) parent).getOwnerDocument();
+        }
+    }
 }
