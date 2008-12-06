@@ -58,8 +58,6 @@ public class TextHelper {
      * @throws IOException
      */
     public static void toStringBuffer(InputStream inStream, StringBuffer buffer) throws IOException {
-        byte[] data;
-        
         int avail = inStream.available();
         
         // The Base64 will increase the size by 1.33 + some additional 
@@ -69,15 +67,25 @@ public class TextHelper {
             buffer.ensureCapacity((int) (avail* 1.35) + buffer.length());
         }
         
-        
+        // The size of the buffer must be a multiple of 3. Otherwise usage of the
+        // stateless Base64 class would produce filler characters inside the Base64
+        // encoded text.
+        byte[] data = new byte[1023];
+        boolean eos = false;
         do {
-            data = new byte[1023];
-            int len;
-            while ((len = inStream.read(data)) > 0) {
-                Base64.encode(data, 0, len, buffer);
-            }
-        } while (inStream.available() > 0);
-        return;
+            int len = 0;
+            do {
+                // Always fill the buffer entirely (unless the end of the stream has
+                // been reached); see above.
+                int read = inStream.read(data, len, data.length-len);
+                if (read == -1) {
+                    eos = true;
+                    break;
+                }
+                len += read;
+            } while (len < data.length);
+            Base64.encode(data, 0, len, buffer);
+        } while (!eos);
     }
     
     /**

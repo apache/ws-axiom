@@ -28,11 +28,13 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.SequenceInputStream;
 
 /**
  * Validate TextHelper code
@@ -83,6 +85,18 @@ public class TextHelperTest extends AbstractTestCase {
         assertTrue(text.length() > SIZE);
         assertTrue(text.length() == EXPECTED_BASE64_SIZE);
         assertTrue(text.startsWith(EXPECTED_STARTS_WITH));
+    }
+    
+    /**
+     * Regression test for WSCOMMONS-101.
+     * 
+     * @throws Exception
+     */
+    public void test_toString2() throws Exception {
+        InputStream in = new SequenceInputStream(
+                new ByteArrayInputStream("aa".getBytes()),
+                new ByteArrayInputStream("a".getBytes()));
+        assertEquals("YWFh", TextHelper.toString(in));
     }
     
     /**
