@@ -26,6 +26,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Random;
 
+import org.apache.axiom.om.OMException;
+
 public class UUIDGenerator {
     /** This class will give UUIDs for axis2. */
 
@@ -71,8 +73,7 @@ public class UUIDGenerator {
         try {
             md5 = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
-            //System.out.println("Error: " + e);
-            //todo heve to be properly handle
+            throw new OMException(e);
         }
         md5.update(sb.toString().getBytes());
         byte[] array = md5.digest();
