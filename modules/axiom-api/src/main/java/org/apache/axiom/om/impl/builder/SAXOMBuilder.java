@@ -119,11 +119,14 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
         
         int j = atts.getLength();
         for (int i = 0; i < j; i++) {
-            OMAttribute attr = nextElem.addAttribute(atts.getLocalName(i), 
-            										 atts.getValue(i),
-            										 nextElem.findNamespace(atts.getURI(i), null));
-            										 
-            attr.setAttributeType(atts.getType(i));
+            // Note that some SAX parsers report namespace declarations as attributes in addition
+            // to calling start/endPrefixMapping.
+            if (!atts.getQName(i).startsWith("xmlns")) {
+                OMAttribute attr = nextElem.addAttribute(atts.getLocalName(i), atts.getValue(i),
+                        nextElem.findNamespace(atts.getURI(i), null));
+                										 
+                attr.setAttributeType(atts.getType(i));
+            }
         }
         
         lastNode = nextElem;
