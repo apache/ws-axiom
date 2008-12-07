@@ -390,6 +390,19 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         format.setDoOptimize(b);
     }
 
+    /**
+     * Get the output format used by this writer.
+     * <p>
+     * The caller should use the returned instance in a read-only way, i.e.
+     * he should not modify the settings of the output format. Any attempt
+     * to do so will lead to unpredictable results.
+     * 
+     * @return the output format used by this writer
+     */
+    public OMOutputFormat getOutputFormat() {
+        return format;
+    }
+
     public void setOutputFormat(OMOutputFormat format) {
         this.format = format;
     }
