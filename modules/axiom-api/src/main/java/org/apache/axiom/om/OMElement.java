@@ -245,9 +245,17 @@ public interface OMElement extends OMNode, OMContainer {
     void setText(QName text);
 
     /**
-     * Returns the non-empty text children as a String.
+     * Returns the non-empty text children as a string.
+     * <p>
+     * This method iterates over all the text children of the element and concatenates
+     * them to a single string. Only direct children will be considered, i.e. the text
+     * is not extracted recursively. For example the return value for
+     * <tt>&lt;element>A&lt;child>B&lt;/child>C&lt;/element></tt> will be <tt>AC</tt>.
+     * <p>
+     * All whitespace will be preserved.
      *
-     * @return Returns a String representing the concatenation of the child text nodes.
+     * @return A string representing the concatenation of the child text nodes.
+     *         If there are no child text nodes, an empty string is returned.
      */
     String getText();
 
