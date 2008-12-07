@@ -119,9 +119,6 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
         
         int j = atts.getLength();
         for (int i = 0; i < j; i++) {
-            nextElem.addAttribute(atts.getLocalName(i), atts.getValue(i),
-                                  nextElem.findNamespace(atts.getURI(i), null));
-        
             OMAttribute attr = nextElem.addAttribute(atts.getLocalName(i), 
             										 atts.getValue(i),
             										 nextElem.findNamespace(atts.getURI(i), null));
