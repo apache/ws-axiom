@@ -40,6 +40,8 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -95,22 +97,38 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         return (SOAPHeader) header;
     }
 
-    public void addChild(OMNode child) {
+    /**
+     * Check that a node is allowed as a child of a SOAP envelope.
+     * 
+     * @param child
+     */
+    private void checkChild(OMNode child) {
         if ((child instanceof OMElement)
                 && !(child instanceof SOAPHeader || child instanceof SOAPBody)) {
             throw new SOAPProcessingException(
                     "SOAP Envelope can not have children other than SOAP Header and Body",
                     SOAP12Constants.FAULT_CODE_SENDER);
-        } else {
-            if (this.done && (child instanceof SOAPHeader)) {
-                SOAPBody body = getBody();
-                if (body != null) {
-                    body.insertSiblingBefore(child);
-                    return;
-                }
-            }
-            super.addChild(child);
         }
+    }
+
+    public void addChild(OMNode child) {
+        checkChild(child);
+        if (this.done && (child instanceof SOAPHeader)) {
+            SOAPBody body = getBody();
+            if (body != null) {
+                body.insertSiblingBefore(child);
+                return;
+            }
+        }
+        super.addChild(child);
+    }
+
+    public Node insertBefore(Node newChild, Node refChild) throws DOMException {
+        // Check that the child to be added is valid in the context of a SOAP envelope.
+        // Note that this also covers the appendChild case, since that method
+        // calls insertBefore with refChild == null. 
+        checkChild((OMNode)newChild);
+        return super.insertBefore(newChild, refChild);
     }
 
     /**
