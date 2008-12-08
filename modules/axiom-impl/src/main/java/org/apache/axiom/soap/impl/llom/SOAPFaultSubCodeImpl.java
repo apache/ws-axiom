@@ -35,7 +35,7 @@ public abstract class SOAPFaultSubCodeImpl extends SOAPElement implements SOAPFa
     protected SOAPFaultSubCode subCode;
 
     protected SOAPFaultSubCodeImpl(OMNamespace ns, SOAPFactory factory) {
-        super(SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME, ns, factory);
+        super(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, ns, factory);
     }
 
 
