@@ -121,6 +121,10 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
         for (int i = 0; i < j; i++) {
             // Note that some SAX parsers report namespace declarations as attributes in addition
             // to calling start/endPrefixMapping.
+            // NOTE: This filter was introduced to make SAXOMBuilder work with some versions of
+            //       XMLBeans (2.3.0). It is not clear whether this is a bug in XMLBeans or not.
+            //       See http://forum.springframework.org/showthread.php?t=43958 for a discussion.
+            //       If this test causes problems with other parsers, don't hesitate to remove it.
             if (!atts.getQName(i).startsWith("xmlns")) {
                 OMAttribute attr = nextElem.addAttribute(atts.getLocalName(i), atts.getValue(i),
                         nextElem.findNamespace(atts.getURI(i), null));
