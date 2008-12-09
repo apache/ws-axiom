@@ -59,7 +59,7 @@ public class BAAInputStream extends InputStream {
         if (read < 0) {
             return -1;
         } else {
-            return read_byte[0];
+            return read_byte[0] & 0xFF;
         }
     }
 
