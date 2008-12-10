@@ -223,8 +223,17 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
     public void endEntity(String name) throws SAXException {
     }
 
-    /** @return Returns the root. */
+    /**
+     * Get the root element of the Axiom tree built by this content handler.
+     * 
+     * @return the root element of the tree
+     * @throws OMException if the tree is not complete
+     */
     public OMElement getRootElement() {
-        return root;
+        if (root != null && root.isComplete()) {
+            return root;
+        } else {
+            throw new OMException("Tree not complete");
+        }
     }
 }
