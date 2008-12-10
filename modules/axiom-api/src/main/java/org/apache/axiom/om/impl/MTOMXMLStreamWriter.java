@@ -54,6 +54,7 @@ import org.apache.commons.logging.LogFactory;
 public class MTOMXMLStreamWriter implements XMLStreamWriter {
     private static Log log = LogFactory.getLog(MTOMXMLStreamWriter.class);
     private static boolean isDebugEnabled = log.isDebugEnabled();
+    private static boolean isTraceEnabled = log.isTraceEnabled();
     private final static int UNSUPPORTED = -1;
     private final static int EXCEED_LIMIT = 1;
     private XMLStreamWriter xmlWriter;
@@ -69,7 +70,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
 
     public MTOMXMLStreamWriter(XMLStreamWriter xmlWriter) {
         this.xmlWriter = xmlWriter;
-        if (isDebugEnabled) {
+        if (isTraceEnabled) {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
     }
@@ -88,6 +89,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         if (isDebugEnabled) {
             log.debug("OutputStream =" + outStream.getClass());
             log.debug("OMFormat = " + format.toString());
+        }
+        if (isTraceEnabled) {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         this.format = format;

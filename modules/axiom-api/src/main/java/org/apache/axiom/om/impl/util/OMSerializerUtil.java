@@ -615,7 +615,7 @@ public class OMSerializerUtil {
          */
         if (DEBUG_ENABLED) {
             log.debug("Obtained next prefix:" + prefix);
-            if (ADV_DEBUG_ENABLED) {
+            if (ADV_DEBUG_ENABLED && log.isTraceEnabled()) {
                 log.trace(CommonUtils.callStackToString());
             }
         }
