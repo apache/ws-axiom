@@ -118,9 +118,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         // Clone the charArray (if it exists)
         if (source.charArray != null) {
             this.charArray = new char[source.charArray.length];
-            for (int i=0; i<source.charArray.length; i++) {
-                this.charArray[i] = source.charArray[i];
-            }
+            System.arraycopy(source.charArray, 0, this.charArray, 0, source.charArray.length);
         }
         
         // Turn off calcNS...the namespace will need to be recalculated
