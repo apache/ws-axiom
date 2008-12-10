@@ -57,8 +57,9 @@ public interface OMDataSourceExt extends OMDataSource {
      * @see OMDataSourceExt
      *
      * @param output destination stream for element XML text
-     * @param format output format information (<code>null</code> if none; may
-     * be ignored if not supported by data binding even if supplied)
+     * @param format Output format information. The implementation must use this information
+     *               to choose the correct character set encoding when writing to the
+     *               output stream. This parameter must not be null.
      * @throws XMLStreamException
      */
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException;
