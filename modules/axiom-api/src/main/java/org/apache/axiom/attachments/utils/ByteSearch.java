@@ -34,9 +34,11 @@ public class ByteSearch {
 
     
     /**
-     * skipSearch
-     * Searches the com.ibm.env.source byte stream for the pattern
-     * in the indicated direction.
+     * Search a byte sequence for a given pattern. The method uses the
+     * skip search algorithm. The search can be performed in forward
+     * or backward direction, i.e. beginning from the start or end of the
+     * byte sequence.
+     * 
      * @param pattern  byte[] 
      * @param direction true if forward, false if backward
      * @param buffer byte[] to search
