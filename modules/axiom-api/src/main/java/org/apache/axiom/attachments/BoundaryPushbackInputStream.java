@@ -317,13 +317,6 @@ public class BoundaryPushbackInputStream extends InputStream {
         }
         int foundAt = ByteSearch.skipSearch(boundary, true,searchbuf, start, end, skip);
 
-        // First find the boundary marker
-        if (foundAt >= 0) {    // Something was found.
-            if (foundAt + rnBoundaryLen > end) {
-                foundAt = -1;  // Not sure why this check is done
-            }
-        }
-        
         // Backup 2 if the boundary is preceeded by /r/n
         // The /r/n are treated as part of the boundary
         if (foundAt >=2) {
