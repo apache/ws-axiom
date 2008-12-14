@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.apache.axiom.om.impl.dom.jaxp.DocumentBuilderFactoryImpl;
+import org.apache.axiom.om.impl.dom.jaxp.DOOMDocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -113,9 +113,7 @@ public class ElementImplTest extends TestCase {
             String childTextValue = "text value of the child text node";
 
             //Apending am Element node
-            DocumentBuilderFactoryImpl.setDOOMRequired(true);
-            Document doc =
-                    DocumentBuilderFactoryImpl.newInstance().newDocumentBuilder().newDocument();
+            Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
             Element elem = doc.createElement(elementName);
             Element childElem = doc.createElement(childElemName);
 
@@ -136,8 +134,6 @@ public class ElementImplTest extends TestCase {
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
-        } finally {
-            DocumentBuilderFactoryImpl.setDOOMRequired(false);
         }
     }
 
@@ -146,10 +142,7 @@ public class ElementImplTest extends TestCase {
         try {
             String childElementLN = "Child";
 
-            DocumentBuilderFactoryImpl.setDOOMRequired(true);
-
-            Document doc =
-                    DocumentBuilderFactoryImpl.newInstance().newDocumentBuilder().newDocument();
+            Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
             Element docElem = doc.getDocumentElement();
             assertNull("The document element shoudl be null", docElem);
 
@@ -169,8 +162,6 @@ public class ElementImplTest extends TestCase {
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
-        } finally {
-            DocumentBuilderFactoryImpl.setDOOMRequired(false);
         }
     }
 
@@ -179,9 +170,7 @@ public class ElementImplTest extends TestCase {
             String childElementLN = "test:Child";
             String childElementNS = "http://ws.apache.org/ns/axis2/dom";
 
-            DocumentBuilderFactoryImpl.setDOOMRequired(true);
-            Document doc =
-                    DocumentBuilderFactoryImpl.newInstance().newDocumentBuilder().newDocument();
+            Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
             Element docElem = doc.getDocumentElement();
             assertNull("The document element shoudl be null", docElem);
 
@@ -202,8 +191,6 @@ public class ElementImplTest extends TestCase {
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
-        } finally {
-            DocumentBuilderFactoryImpl.setDOOMRequired(false);
         }
     }
 }
