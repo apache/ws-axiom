@@ -171,17 +171,10 @@ public class CommonUtils {
      */
     public static boolean isTextualPart(String contentType) {
         String ct = contentType.trim();
-        if (ct.startsWith("text/") ||
-            ct.startsWith("application/soap") ||
-            ct.startsWith("application/xml")) {
-            // REVIEW: What about content-type with a type of "message"
-            return true;
-        } 
-        
-        if (ct.contains("charset")) {
-            return true;
-        }
-        return false;
-                        
+        // REVIEW: What about content-type with a type of "message"
+        return ct.startsWith("text/") ||
+               ct.startsWith("application/soap") ||
+               ct.startsWith("application/xml") ||
+               ct.indexOf("charset") != -1;
     }
 }

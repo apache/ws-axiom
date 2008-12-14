@@ -197,7 +197,7 @@ public class AttachmentsTest extends AbstractTestCase {
         om.serialize(writer);
         String outNormal = baos.toString();
         
-        assertTrue(!outNormal.contains("base64"));
+        assertTrue(outNormal.indexOf("base64") == -1);
         
         // Now do it again but use base64 content-type-encoding for 
         // binary attachments
@@ -215,8 +215,8 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // Do a quick check to see if the data is base64 and is
         // writing base64 compliant code.
-        assertTrue(outBase64.contains("base64"));
-        assertTrue(outBase64.contains("GBgcGBQgHBwcJCQgKDBQNDAsL"));
+        assertTrue(outBase64.indexOf("base64") != -1);
+        assertTrue(outBase64.indexOf("GBgcGBQgHBwcJCQgKDBQNDAsL") != -1);
         
         // Now read the data back in
         InputStream is = new ByteArrayInputStream(outBase64.getBytes());
@@ -234,7 +234,7 @@ public class AttachmentsTest extends AbstractTestCase {
         om.serialize(writer);
         String outBase64ToNormal = baos.toString();
         
-        assertTrue(!outBase64ToNormal.contains("base64"));
+        assertTrue(outBase64ToNormal.indexOf("base64") == -1);
         
         // Now do it again but use base64 content-type-encoding for 
         // binary attachments
@@ -251,8 +251,8 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // Do a quick check to see if the data is base64 and is
         // writing base64 compliant code.
-        assertTrue(outBase64ToBase64.contains("base64"));
-        assertTrue(outBase64ToBase64.contains("GBgcGBQgHBwcJCQgKDBQNDAsL"));
+        assertTrue(outBase64ToBase64.indexOf("base64") != -1);
+        assertTrue(outBase64ToBase64.indexOf("GBgcGBQgHBwcJCQgKDBQNDAsL") != -1);
         
         // Some quick verifications of the isTextualPart logic
         assertTrue(CommonUtils.isTextualPart("text/xml"));
