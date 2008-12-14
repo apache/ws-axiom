@@ -28,12 +28,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 public class DOMImplementationTest extends TestCase {
-
-    public DOMImplementationTest(String name) {
-        super(name);
-    }
-
-    public void testDOMImpl() {
+    public void testDOMImpl() throws Exception {
         try {
 //			System.setProperty("javax.xml.parsers.DocumentBuilderFactory",DocumentBuilderFactoryImpl.class.getName());
 
@@ -50,9 +45,6 @@ public class DOMImplementationTest extends TestCase {
             assertEquals("Incorrect Document instance", DocumentImpl.class.getName(),
                          doc.getClass().getName());
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
         } finally {
             DocumentBuilderFactoryImpl.setDOOMRequired(false);
         }

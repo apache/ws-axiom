@@ -32,17 +32,12 @@ import java.io.FileInputStream;
 /** @author Ruchith Fernando (ruchith.fernando@gmail.com) */
 public class ElementImportTest extends TestCase {
 
-    public void testImport() {
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);
-            Document doc = dbf.newDocumentBuilder().parse(
-                    new FileInputStream("test-resources/xml/sigEncr.xml"));
-            Node n = new OMDOMFactory().getDocument().importNode(doc.getDocumentElement(), true);
-            OMTestUtils.compare(doc.getDocumentElement(), (OMElement) n);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+    public void testImport() throws Exception {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        Document doc = dbf.newDocumentBuilder().parse(
+                new FileInputStream("test-resources/xml/sigEncr.xml"));
+        Node n = new OMDOMFactory().getDocument().importNode(doc.getDocumentElement(), true);
+        OMTestUtils.compare(doc.getDocumentElement(), (OMElement) n);
     }
 }

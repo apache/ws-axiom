@@ -25,10 +25,6 @@ import org.apache.axiom.soap.SOAPEnvelope;
 public class MessagesTest extends OMDOMTestCase {
     SOAPEnvelope soapEnvelope;
 
-    public MessagesTest(String testName) {
-        super(testName);
-    }
-
     public void testMessageWithLotOfWhiteSpaces() throws OMException,
             Exception {
         soapEnvelope =

@@ -29,15 +29,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 public class DocumentImplTest extends TestCase {
-
-    public DocumentImplTest() {
-        super();
-    }
-
-    public DocumentImplTest(String name) {
-        super(name);
-    }
-
     public void testCreateElement() {
         String tagName = "LocalName";
         String namespace = "http://ws.apache.org/axis2/ns";
@@ -87,22 +78,17 @@ public class DocumentImplTest extends TestCase {
         assertEquals("Text value mismatch", textValue, txt.getData());
     }
 
-    public void testDocumentSiblings() {
-        try {
-            Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
-            Element elem = doc.createElement("test");
-            doc.appendChild(elem);
+    public void testDocumentSiblings() throws Exception {
+        Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        Element elem = doc.createElement("test");
+        doc.appendChild(elem);
 
-            Node node = doc.getNextSibling();
-            assertNull("Document's next sibling has to be null", node);
-            Node node2 = doc.getPreviousSibling();
-            assertNull("Document's previous sibling has to be null", node2);
-            Node node3 = doc.getParentNode();
-            assertNull("Document's parent has to be null", node3);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+        Node node = doc.getNextSibling();
+        assertNull("Document's next sibling has to be null", node);
+        Node node2 = doc.getPreviousSibling();
+        assertNull("Document's previous sibling has to be null", node2);
+        Node node3 = doc.getParentNode();
+        assertNull("Document's parent has to be null", node3);
     }
 
 }

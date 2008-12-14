@@ -26,15 +26,6 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import javax.xml.namespace.QName;
 
 public class OMDOMFactoryTest extends TestCase {
-
-    public OMDOMFactoryTest() {
-        super();
-    }
-
-    public OMDOMFactoryTest(String name) {
-        super(name);
-    }
-
     public void testCreateElement() {
         OMDOMFactory factory = new OMDOMFactory();
         String localName = "TestLocalName";

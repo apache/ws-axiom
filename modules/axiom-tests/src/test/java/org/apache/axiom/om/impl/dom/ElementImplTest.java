@@ -34,15 +34,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
 
 public class ElementImplTest extends TestCase {
-
-    public ElementImplTest() {
-        super();
-    }
-
-    public ElementImplTest(String name) {
-        super(name);
-    }
-
     public void testSetText() {
         OMDOMFactory factory = new OMDOMFactory();
         String localName = "TestLocalName";
@@ -58,7 +49,7 @@ public class ElementImplTest extends TestCase {
 
     }
 
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         OMDOMFactory factory = new OMDOMFactory();
         String localName = "TestLocalName";
         String namespace = "http://ws.apache.org/axis2/ns";
@@ -71,14 +62,10 @@ public class ElementImplTest extends TestCase {
 
         ((Text) textNode).appendData(textToAppend);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            elem.serialize(baos);
-            String xml = new String(baos.toByteArray());
-            assertEquals("Incorrect serialized xml", 0, xml.indexOf("<axis2:TestLocalName"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+
+        elem.serialize(baos);
+        String xml = new String(baos.toByteArray());
+        assertEquals("Incorrect serialized xml", 0, xml.indexOf("<axis2:TestLocalName"));
     }
 
     public void testAddChild() {
@@ -106,91 +93,73 @@ public class ElementImplTest extends TestCase {
         assertEquals("In correct number of children", 1, count);
     }
 
-    public void testAppendChild() {
-        try {
-            String elementName = "TestElem";
-            String childElemName = "TestChildElem";
-            String childTextValue = "text value of the child text node";
+    public void testAppendChild() throws Exception {
+        String elementName = "TestElem";
+        String childElemName = "TestChildElem";
+        String childTextValue = "text value of the child text node";
 
-            //Apending am Element node
-            Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
-            Element elem = doc.createElement(elementName);
-            Element childElem = doc.createElement(childElemName);
+        //Apending am Element node
+        Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        Element elem = doc.createElement(elementName);
+        Element childElem = doc.createElement(childElemName);
 
-            elem.appendChild(childElem);
+        elem.appendChild(childElem);
 
-            Element addedChild = (Element) elem.getFirstChild();
-            assertNotNull("Child Element node missing", addedChild);
-            assertEquals("Incorre node object", childElem, addedChild);
+        Element addedChild = (Element) elem.getFirstChild();
+        assertNotNull("Child Element node missing", addedChild);
+        assertEquals("Incorre node object", childElem, addedChild);
 
-            elem = doc.createElement(elementName);
-            Text text = doc.createTextNode(childTextValue);
-            elem.appendChild(text);
+        elem = doc.createElement(elementName);
+        Text text = doc.createTextNode(childTextValue);
+        elem.appendChild(text);
 
-            Text addedTextnode = (Text) elem.getFirstChild();
-            assertNotNull("Child Text node missing", addedTextnode);
-            assertEquals("Incorrect node object", text, addedTextnode);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+        Text addedTextnode = (Text) elem.getFirstChild();
+        assertNotNull("Child Text node missing", addedTextnode);
+        assertEquals("Incorrect node object", text, addedTextnode);
     }
 
     /** Testing the NodeList returned with the elements's children */
-    public void testGetElementsbyTagName() {
-        try {
-            String childElementLN = "Child";
+    public void testGetElementsbyTagName() throws Exception {
+        String childElementLN = "Child";
 
-            Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
-            Element docElem = doc.getDocumentElement();
-            assertNull("The document element shoudl be null", docElem);
+        Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        Element docElem = doc.getDocumentElement();
+        assertNull("The document element shoudl be null", docElem);
 
-            docElem = doc.createElement("Test");
-            docElem.appendChild(doc.createElement(childElementLN));
-            docElem.appendChild(doc.createElement(childElementLN));
-            docElem.appendChild(doc.createElement(childElementLN));
-            docElem.appendChild(doc.createElement(childElementLN));
-            docElem.appendChild(doc.createElement(childElementLN));
-            docElem.appendChild(doc.createElement(childElementLN));
-            docElem.appendChild(doc.createElement(childElementLN));
+        docElem = doc.createElement("Test");
+        docElem.appendChild(doc.createElement(childElementLN));
+        docElem.appendChild(doc.createElement(childElementLN));
+        docElem.appendChild(doc.createElement(childElementLN));
+        docElem.appendChild(doc.createElement(childElementLN));
+        docElem.appendChild(doc.createElement(childElementLN));
+        docElem.appendChild(doc.createElement(childElementLN));
+        docElem.appendChild(doc.createElement(childElementLN));
 
-            NodeList list = docElem.getElementsByTagName(childElementLN);
+        NodeList list = docElem.getElementsByTagName(childElementLN);
 
-            assertEquals("Incorrect number of child elements", 7, list.getLength());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+        assertEquals("Incorrect number of child elements", 7, list.getLength());
     }
 
-    public void testGetElementsbyTagNameNS() {
-        try {
-            String childElementLN = "test:Child";
-            String childElementNS = "http://ws.apache.org/ns/axis2/dom";
+    public void testGetElementsbyTagNameNS() throws Exception {
+        String childElementLN = "test:Child";
+        String childElementNS = "http://ws.apache.org/ns/axis2/dom";
 
-            Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
-            Element docElem = doc.getDocumentElement();
-            assertNull("The document element shoudl be null", docElem);
+        Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        Element docElem = doc.getDocumentElement();
+        assertNull("The document element shoudl be null", docElem);
 
-            docElem = doc.createElementNS("http://test.org", "test:Test");
+        docElem = doc.createElementNS("http://test.org", "test:Test");
 
-            docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
-            docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
-            docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
-            docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
-            docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
-            docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
-            docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
+        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
+        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
+        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
+        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
+        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
+        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
+        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
 
-            NodeList list = docElem.getElementsByTagNameNS(childElementNS, childElementLN);
+        NodeList list = docElem.getElementsByTagNameNS(childElementNS, childElementLN);
 
-            assertEquals("Incorrect number of child elements", 7, list.getLength());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+        assertEquals("Incorrect number of child elements", 7, list.getLength());
     }
 }

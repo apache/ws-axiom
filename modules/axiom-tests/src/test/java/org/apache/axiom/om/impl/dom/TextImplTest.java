@@ -26,15 +26,6 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.Text;
 
 public class TextImplTest extends TestCase {
-
-    public TextImplTest() {
-        super();
-    }
-
-    public TextImplTest(String name) {
-        super(name);
-    }
-
     public void testSetText() {
         OMDOMFactory factory = new OMDOMFactory();
         String localName = "TestLocalName";

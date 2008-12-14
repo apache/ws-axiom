@@ -45,10 +45,6 @@ public abstract class OMDOMTestCase extends AbstractTestCase {
 
     protected SOAPEnvelope soapEnvelope;
 
-    public OMDOMTestCase(String testName) {
-        super(testName);
-    }
-
     protected void setUp() throws Exception {
         super.setUp();
         soapEnvelope = (SOAPEnvelope) getOMBuilder("").getDocumentElement();
