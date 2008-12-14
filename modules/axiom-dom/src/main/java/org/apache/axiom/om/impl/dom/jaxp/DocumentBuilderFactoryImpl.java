@@ -24,6 +24,17 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 
+/**
+ * @deprecated
+ *    This class has static methods that allow to switch between DOOM and the default
+ *    DOM implementation as returned by JAXP. This was a hack introduced for Rampart.
+ *    Recent versions of Rampart no longer rely on this hack. On the other hand
+ *    usage of {@link #setDOOMRequired(boolean)} in a concurrent environment can
+ *    lead to unexpected behavior and severe bugs, as shown in WSCOMMONS-210 and AXIS2-1570.
+ *    Due to the way {@link #newDocumentBuilder()} is implemented, it is not possible
+ *    to get rid of the setDOOMRequired hack without the risk of breaking existing code.
+ *    Therefore this class has been deprecated in favor of {@link DOOMDocumentBuilderFactory}. 
+ */
 public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
 
     /**

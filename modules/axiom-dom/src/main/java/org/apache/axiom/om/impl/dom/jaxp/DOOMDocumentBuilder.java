@@ -35,23 +35,13 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.validation.Schema;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * @deprecated see {@link DocumentBuilderFactoryImpl}
- */
-public class DocumentBuilderImpl extends DocumentBuilder {
-
-    /** The DocumentBuilderFactory used to create this document builder */
-    private DocumentBuilderFactoryImpl factory;
-
-    protected DocumentBuilderImpl(DocumentBuilderFactoryImpl fac) {
-        super();
-        this.factory = fac;
+public class DOOMDocumentBuilder extends DocumentBuilder {
+    protected DOOMDocumentBuilder() {
     }
 
     /**
@@ -152,14 +142,4 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
-
-    /* (non-Javadoc)
-     * @see javax.xml.parsers.DocumentBuilder#getSchema()
-     */
-    public Schema getSchema() {
-        //HACK : To get opensaml working 
-        return this.factory.schema;
-    }
-
-
 }
