@@ -52,7 +52,6 @@ public class SAXOMBuilderJAXBTest extends XMLTestCase {
         SAXOMBuilder builder = new SAXOMBuilder();
         marshaller.marshal(order, builder);
         
-//        assertXMLIdentical(compareXML(out.toString(), builder.getRootElement().toString()), true);
-        assertXMLEqual(compareXML(out.toString(), builder.getRootElement().toString()), true);
+        assertXMLIdentical(compareXML(out.toString(), builder.getRootElement().toString()), true);
     }
 }

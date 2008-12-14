@@ -43,6 +43,6 @@ public class SAXOMBuilderXMLBeansTest extends XMLTestCase {
         SAXOMBuilder builder = new SAXOMBuilder();
         document.save(builder, builder);
         
-        assertXMLEqual(compareXML(out.toString(), builder.getRootElement().toString()), true);
+        assertXMLIdentical(compareXML(out.toString(), builder.getRootElement().toString()), true);
     }
 }

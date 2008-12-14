@@ -94,7 +94,11 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
             throws SAXException {
         if (nextElem == null)
             nextElem = createNextElement(null);
-        nextElem.declareNamespace(uri, prefix);
+        if (prefix.length() == 0) {
+            nextElem.declareDefaultNamespace(uri);
+        } else {
+            nextElem.declareNamespace(uri, prefix);
+        }
     }
 
     public void endPrefixMapping(String arg0) throws SAXException {

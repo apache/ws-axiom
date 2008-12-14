@@ -51,8 +51,7 @@ public class SAXOMBuilderSAXParserTest extends XMLTestCase {
         }
         in = SAXOMBuilderSAXParserTest.class.getResourceAsStream("test.xml");
         try {
-//            assertXMLIdentical(compareXML(new InputSource(in), toInputSource(builder.getRootElement())), true);
-            assertXMLEqual(compareXML(new InputSource(in), toInputSource(builder.getRootElement())), true);
+            assertXMLIdentical(compareXML(new InputSource(in), toInputSource(builder.getRootElement())), true);
         } finally {
             in.close();
         }
