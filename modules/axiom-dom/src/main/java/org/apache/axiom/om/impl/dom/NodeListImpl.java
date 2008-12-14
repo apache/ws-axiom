@@ -60,30 +60,33 @@ public class NodeListImpl implements NodeList {
         }
     }
 
+    private Iterator getIterator() {
+        if (this.tagName == null) {
+            return ((OMContainerEx) rootNode).getChildren();
+        } else if (!enableNS) {
+            return ((OMContainerEx) rootNode)
+                    .getChildrenWithName(new QName(this.tagName));
+        } else {
+            if (DOMUtil.getPrefix(this.tagName) != null) {
+                return ((OMContainerEx) rootNode)
+                        .getChildrenWithName(new QName(this.nsName, DOMUtil
+                                .getLocalName(this.tagName), DOMUtil
+                                .getPrefix(this.tagName)));
+            } else {
+                return ((OMContainerEx) rootNode)
+                        .getChildrenWithName(new QName(this.nsName, DOMUtil
+                                .getLocalName(this.tagName)));
+            }
+        }
+    }
+
     /**
      * Returns the number of nodes.
      *
      * @see org.w3c.dom.NodeList#getLength()
      */
     public int getLength() {
-        Iterator children;
-        if (this.tagName == null) {
-            children = ((OMContainerEx) rootNode).getChildren();
-        } else if (!enableNS) {
-            children = ((OMContainerEx) rootNode)
-                    .getChildrenWithName(new QName(this.tagName));
-        } else {
-            if (DOMUtil.getPrefix(this.tagName) != null) {
-                children = ((OMContainerEx) rootNode)
-                        .getChildrenWithName(new QName(this.nsName, DOMUtil
-                                .getLocalName(this.tagName), DOMUtil
-                                .getPrefix(this.tagName)));
-            } else {
-                children = ((OMContainerEx) rootNode)
-                        .getChildrenWithName(new QName(this.nsName, DOMUtil
-                                .getLocalName(this.tagName)));
-            }
-        }
+        Iterator children = getIterator();
         int count = 0;
         while (children.hasNext()) {
             count++;
@@ -98,26 +101,7 @@ public class NodeListImpl implements NodeList {
      * @see org.w3c.dom.NodeList#item(int)
      */
     public Node item(int index) {
-        Iterator children;
-
-        if (this.tagName == null) {
-            children = ((OMContainerEx) rootNode).getChildren();
-        } else if (!enableNS) {
-            children = ((OMContainerEx) rootNode)
-                    .getChildrenWithName(new QName(this.tagName));
-        } else {
-            if (DOMUtil.getPrefix(this.tagName) != null) {
-                children = ((OMContainerEx) rootNode)
-                        .getChildrenWithName(new QName(this.nsName, DOMUtil
-                                .getLocalName(this.tagName), DOMUtil
-                                .getPrefix(this.tagName)));
-            } else {
-                children = ((OMContainerEx) rootNode)
-                        .getChildrenWithName(new QName(this.nsName, DOMUtil
-                                .getLocalName(this.tagName)));
-            }
-        }
-
+        Iterator children = getIterator();
         int count = 0;
         while (children.hasNext()) {
             if (count == index) {
