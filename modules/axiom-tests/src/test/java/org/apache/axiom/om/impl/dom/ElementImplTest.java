@@ -30,6 +30,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
 
@@ -94,72 +96,85 @@ public class ElementImplTest extends TestCase {
     }
 
     public void testAppendChild() throws Exception {
-        String elementName = "TestElem";
-        String childElemName = "TestChildElem";
-        String childTextValue = "text value of the child text node";
-
-        //Apending am Element node
-        Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
-        Element elem = doc.createElement(elementName);
-        Element childElem = doc.createElement(childElemName);
-
-        elem.appendChild(childElem);
-
-        Element addedChild = (Element) elem.getFirstChild();
-        assertNotNull("Child Element node missing", addedChild);
-        assertEquals("Incorre node object", childElem, addedChild);
-
-        elem = doc.createElement(elementName);
-        Text text = doc.createTextNode(childTextValue);
-        elem.appendChild(text);
-
-        Text addedTextnode = (Text) elem.getFirstChild();
-        assertNotNull("Child Text node missing", addedTextnode);
-        assertEquals("Incorrect node object", text, addedTextnode);
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                String elementName = "TestElem";
+                String childElemName = "TestChildElem";
+                String childTextValue = "text value of the child text node";
+        
+                //Apending am Element node
+                Document doc = dbf.newDocumentBuilder().newDocument();
+                Element elem = doc.createElement(elementName);
+                Element childElem = doc.createElement(childElemName);
+        
+                elem.appendChild(childElem);
+        
+                Element addedChild = (Element) elem.getFirstChild();
+                assertNotNull("Child Element node missing", addedChild);
+                assertEquals("Incorre node object", childElem, addedChild);
+        
+                elem = doc.createElement(elementName);
+                Text text = doc.createTextNode(childTextValue);
+                elem.appendChild(text);
+        
+                Text addedTextnode = (Text) elem.getFirstChild();
+                assertNotNull("Child Text node missing", addedTextnode);
+                assertEquals("Incorrect node object", text, addedTextnode);
+            }
+        });
     }
 
     /** Testing the NodeList returned with the elements's children */
     public void testGetElementsbyTagName() throws Exception {
-        String childElementLN = "Child";
-
-        Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
-        Element docElem = doc.getDocumentElement();
-        assertNull("The document element shoudl be null", docElem);
-
-        docElem = doc.createElement("Test");
-        docElem.appendChild(doc.createElement(childElementLN));
-        docElem.appendChild(doc.createElement(childElementLN));
-        docElem.appendChild(doc.createElement(childElementLN));
-        docElem.appendChild(doc.createElement(childElementLN));
-        docElem.appendChild(doc.createElement(childElementLN));
-        docElem.appendChild(doc.createElement(childElementLN));
-        docElem.appendChild(doc.createElement(childElementLN));
-
-        NodeList list = docElem.getElementsByTagName(childElementLN);
-
-        assertEquals("Incorrect number of child elements", 7, list.getLength());
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                String childElementLN = "Child";
+        
+                Document doc = dbf.newDocumentBuilder().newDocument();
+                Element docElem = doc.getDocumentElement();
+                assertNull("The document element shoudl be null", docElem);
+        
+                docElem = doc.createElement("Test");
+                docElem.appendChild(doc.createElement(childElementLN));
+                docElem.appendChild(doc.createElement(childElementLN));
+                docElem.appendChild(doc.createElement(childElementLN));
+                docElem.appendChild(doc.createElement(childElementLN));
+                docElem.appendChild(doc.createElement(childElementLN));
+                docElem.appendChild(doc.createElement(childElementLN));
+                docElem.appendChild(doc.createElement(childElementLN));
+        
+                NodeList list = docElem.getElementsByTagName(childElementLN);
+        
+                assertEquals("Incorrect number of child elements", 7, list.getLength());
+            }
+        });
     }
 
     public void testGetElementsbyTagNameNS() throws Exception {
-        String childElementLN = "test:Child";
-        String childElementNS = "http://ws.apache.org/ns/axis2/dom";
-
-        Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
-        Element docElem = doc.getDocumentElement();
-        assertNull("The document element shoudl be null", docElem);
-
-        docElem = doc.createElementNS("http://test.org", "test:Test");
-
-        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
-        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
-        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
-        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
-        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
-        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
-        docElem.appendChild(doc.createElementNS(childElementNS, childElementLN));
-
-        NodeList list = docElem.getElementsByTagNameNS(childElementNS, childElementLN);
-
-        assertEquals("Incorrect number of child elements", 7, list.getLength());
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                String childElementQN = "test:Child";
+                String childElementLN = "Child";
+                String childElementNS = "http://ws.apache.org/ns/axis2/dom";
+        
+                Document doc = dbf.newDocumentBuilder().newDocument();
+                Element docElem = doc.getDocumentElement();
+                assertNull("The document element shoudl be null", docElem);
+        
+                docElem = doc.createElementNS("http://test.org", "test:Test");
+        
+                docElem.appendChild(doc.createElementNS(childElementNS, childElementQN));
+                docElem.appendChild(doc.createElementNS(childElementNS, childElementQN));
+                docElem.appendChild(doc.createElementNS(childElementNS, childElementQN));
+                docElem.appendChild(doc.createElementNS(childElementNS, childElementQN));
+                docElem.appendChild(doc.createElementNS(childElementNS, childElementQN));
+                docElem.appendChild(doc.createElementNS(childElementNS, childElementQN));
+                docElem.appendChild(doc.createElementNS(childElementNS, childElementQN));
+        
+                NodeList list = docElem.getElementsByTagNameNS(childElementNS, childElementLN);
+        
+                assertEquals("Incorrect number of child elements", 7, list.getLength());
+            }
+        });
     }
 }

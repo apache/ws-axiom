@@ -19,9 +19,9 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import junit.framework.TestCase;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.apache.axiom.om.impl.dom.jaxp.DOOMDocumentBuilderFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -29,66 +29,76 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 public class DocumentImplTest extends TestCase {
-    public void testCreateElement() {
-        String tagName = "LocalName";
-        String namespace = "http://ws.apache.org/axis2/ns";
-        OMDOMFactory fac = new OMDOMFactory();
-        DocumentImpl doc = new DocumentImpl(fac);
-        Element elem = doc.createElement(tagName);
+    public void testCreateElement() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                String tagName = "LocalName";
+                String namespace = "http://ws.apache.org/axis2/ns";
+                Document doc = dbf.newDocumentBuilder().newDocument();
+                Element elem = doc.createElement(tagName);
 
-        assertEquals("Local name misnatch", tagName, elem.getNodeName());
+                assertEquals("Local name misnatch", tagName, elem.getNodeName());
 
-        elem = doc.createElementNS(namespace, "axis2:" + tagName);
-        assertEquals("Local name misnatch", tagName, elem.getLocalName());
-        assertEquals("Namespace misnatch", namespace, elem.getNamespaceURI());
-
+                elem = doc.createElementNS(namespace, "axis2:" + tagName);
+                assertEquals("Local name misnatch", tagName, elem.getLocalName());
+                assertEquals("Namespace misnatch", namespace, elem.getNamespaceURI());
+            }
+        });
     }
 
-    public void testCreateAttribute() {
-        String attrName = "attrIdentifier";
-        String attrValue = "attrValue";
-        String attrNs = "http://ws.apache.org/axis2/ns";
-        String attrNsPrefix = "axis2";
-
-        OMDOMFactory fac = new OMDOMFactory();
-        DocumentImpl doc = new DocumentImpl(fac);
-        Attr attr = doc.createAttribute(attrName);
-
-        assertEquals("Attr name mismatch", attrName, attr.getName());
-        assertNull("Namespace value should be null", attr.getNamespaceURI());
-
-
-        attr = doc.createAttributeNS(attrNs, attrNsPrefix + ":" + attrName);
-        assertEquals("Attr name mismatch", attrName, attr.getLocalName());
-        assertNotNull("Namespace value should not be null", attr.getNamespaceURI());
-        assertEquals("NamsspaceURI mismatch", attrNs, attr.getNamespaceURI());
-        assertEquals("namespace prefix mismatch", attrNsPrefix, attr.getPrefix());
-
-        attr.setValue(attrValue);
-
+    public void testCreateAttribute() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                String attrName = "attrIdentifier";
+                String attrValue = "attrValue";
+                String attrNs = "http://ws.apache.org/axis2/ns";
+                String attrNsPrefix = "axis2";
+        
+                Document doc = dbf.newDocumentBuilder().newDocument();
+                Attr attr = doc.createAttribute(attrName);
+        
+                assertEquals("Attr name mismatch", attrName, attr.getName());
+                assertNull("Namespace value should be null", attr.getNamespaceURI());
+        
+        
+                attr = doc.createAttributeNS(attrNs, attrNsPrefix + ":" + attrName);
+                assertEquals("Attr name mismatch", attrName, attr.getLocalName());
+                assertNotNull("Namespace value should not be null", attr.getNamespaceURI());
+                assertEquals("NamsspaceURI mismatch", attrNs, attr.getNamespaceURI());
+                assertEquals("namespace prefix mismatch", attrNsPrefix, attr.getPrefix());
+        
+                attr.setValue(attrValue);
+            }
+        });
     }
 
-    public void testCreateText() {
-        String textValue = "temp text value";
-
-        OMDOMFactory fac = new OMDOMFactory();
-        DocumentImpl doc = new DocumentImpl(fac);
-        Text txt = doc.createTextNode(textValue);
-
-        assertEquals("Text value mismatch", textValue, txt.getData());
+    public void testCreateText() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                String textValue = "temp text value";
+        
+                Document doc = dbf.newDocumentBuilder().newDocument();
+                Text txt = doc.createTextNode(textValue);
+        
+                assertEquals("Text value mismatch", textValue, txt.getData());
+            }
+        });
     }
 
     public void testDocumentSiblings() throws Exception {
-        Document doc = new DOOMDocumentBuilderFactory().newDocumentBuilder().newDocument();
-        Element elem = doc.createElement("test");
-        doc.appendChild(elem);
-
-        Node node = doc.getNextSibling();
-        assertNull("Document's next sibling has to be null", node);
-        Node node2 = doc.getPreviousSibling();
-        assertNull("Document's previous sibling has to be null", node2);
-        Node node3 = doc.getParentNode();
-        assertNull("Document's parent has to be null", node3);
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                Document doc = dbf.newDocumentBuilder().newDocument();
+                Element elem = doc.createElement("test");
+                doc.appendChild(elem);
+        
+                Node node = doc.getNextSibling();
+                assertNull("Document's next sibling has to be null", node);
+                Node node2 = doc.getPreviousSibling();
+                assertNull("Document's previous sibling has to be null", node2);
+                Node node3 = doc.getParentNode();
+                assertNull("Document's parent has to be null", node3);
+            }
+        });
     }
-
 }
