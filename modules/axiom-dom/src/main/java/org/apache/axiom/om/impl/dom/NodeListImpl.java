@@ -19,66 +19,14 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.namespace.QName;
 import java.util.Iterator;
-import java.util.Vector;
 
 /** Implementation of org.w3c.dom.NodeList */
-public class NodeListImpl implements NodeList {
-
-    protected NodeImpl rootNode;
-
-    protected String tagName;
-
-    protected Vector nodes;
-
-    protected String nsName;
-
-    protected boolean enableNS = false;
-
-    /** Constructor. */
-    public NodeListImpl(NodeImpl rootNode, String tagName) {
-        this.rootNode = rootNode;
-        this.tagName = (tagName != null && !tagName.equals("")) ? tagName
-                : null;
-        nodes = new Vector();
-    }
-
-    /** Constructor for Namespace support. */
-    public NodeListImpl(NodeImpl rootNode, String namespaceURI,
-                        String localName) {
-        this(rootNode, localName);
-        this.nsName = (namespaceURI != null && !namespaceURI.equals(""))
-                ? namespaceURI
-                : null;
-        if (this.nsName != null) {
-            enableNS = true;
-        }
-    }
-
-    private Iterator getIterator() {
-        if (this.tagName == null) {
-            return ((OMContainerEx) rootNode).getChildren();
-        } else if (!enableNS) {
-            return ((OMContainerEx) rootNode)
-                    .getChildrenWithName(new QName(this.tagName));
-        } else {
-            if (DOMUtil.getPrefix(this.tagName) != null) {
-                return ((OMContainerEx) rootNode)
-                        .getChildrenWithName(new QName(this.nsName, DOMUtil
-                                .getLocalName(this.tagName), DOMUtil
-                                .getPrefix(this.tagName)));
-            } else {
-                return ((OMContainerEx) rootNode)
-                        .getChildrenWithName(new QName(this.nsName, DOMUtil
-                                .getLocalName(this.tagName)));
-            }
-        }
-    }
+public abstract class NodeListImpl implements NodeList {
+    protected abstract Iterator getIterator();
 
     /**
      * Returns the number of nodes.

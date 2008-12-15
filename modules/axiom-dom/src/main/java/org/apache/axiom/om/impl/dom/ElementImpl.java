@@ -32,6 +32,9 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
+import org.apache.axiom.om.impl.traverse.OMDescendantsIterator;
+import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
+import org.apache.axiom.om.impl.traverse.OMQualifiedNameFilterIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.ElementHelper;
@@ -628,7 +631,13 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      */
     public NodeList getElementsByTagNameNS(String namespaceURI,
                                            String localName) {
-        return new NodeListImpl(this, namespaceURI, localName);
+        final QName qname = new QName(namespaceURI, localName);
+        return new NodeListImpl() {
+            protected Iterator getIterator() {
+                return new OMQNameFilterIterator(
+                        new OMDescendantsIterator(getFirstOMChild()), qname);
+            }
+        };
     }
 
     /*
@@ -636,8 +645,21 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      * 
      * @see org.w3c.dom.Element#getElementsByTagName(java.lang.String)
      */
-    public NodeList getElementsByTagName(String name) {
-        return new NodeListImpl(this, name);
+    public NodeList getElementsByTagName(final String name) {
+        if (name.equals("*")) {
+            return new NodeListImpl() {
+                protected Iterator getIterator() {
+                    return new OMDescendantsIterator(getFirstOMChild());
+                }
+            };
+        } else {
+            return new NodeListImpl() {
+                protected Iterator getIterator() {
+                    return new OMQualifiedNameFilterIterator(
+                            new OMDescendantsIterator(getFirstOMChild()), name);
+                }
+            };
+        }
     }
 
     // /

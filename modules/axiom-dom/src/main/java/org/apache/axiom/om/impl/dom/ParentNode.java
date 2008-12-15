@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMComment;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -157,7 +156,11 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         if (!this.done) {
             this.build();
         }
-        return new NodeListImpl(this, null, null);
+        return new NodeListImpl() {
+            protected Iterator getIterator() {
+                return getChildren();
+            }
+        };
     }
 
     public Node getFirstChild() {

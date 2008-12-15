@@ -19,11 +19,10 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import junit.framework.TestCase;
+import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.apache.axiom.om.impl.dom.jaxp.DOOMDocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -35,7 +34,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
 
-public class ElementImplTest extends TestCase {
+public class ElementImplTest extends AbstractTestCase {
     public void testSetText() {
         OMDOMFactory factory = new OMDOMFactory();
         String localName = "TestLocalName";
@@ -125,7 +124,7 @@ public class ElementImplTest extends TestCase {
     }
 
     /** Testing the NodeList returned with the elements's children */
-    public void testGetElementsbyTagName() throws Exception {
+    public void testGetElementsByTagName() throws Exception {
         DOMTestUtil.execute(new DOMTestUtil.Test() {
             public void execute(DocumentBuilderFactory dbf) throws Exception {
                 String childElementLN = "Child";
@@ -150,7 +149,34 @@ public class ElementImplTest extends TestCase {
         });
     }
 
-    public void testGetElementsbyTagNameNS() throws Exception {
+    public void testGetElementsByTagNameWithNamespaces() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                Document doc = dbf.newDocumentBuilder().newDocument();
+                Element root = doc.createElementNS("urn:ns1", "ns1:root");
+                for (int i=0; i<3; i++) {
+                    root.appendChild(doc.createElementNS("urn:ns2", "ns2:child"));
+                }
+                assertEquals(3, root.getElementsByTagName("ns2:child").getLength());
+                assertEquals(0, root.getElementsByTagName("child").getLength());
+            }
+        });
+    }
+    
+    public void testGetElementsByTagNameWithWildcard() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                Document doc = dbf.newDocumentBuilder().newDocument();
+                Element root = doc.createElement("root");
+                for (int i=0; i<3; i++) {
+                    root.appendChild(doc.createElement("child" + i));
+                }
+                assertEquals(3, root.getElementsByTagName("*").getLength());
+            }
+        });
+    }
+    
+    public void testGetElementsByTagNameNS() throws Exception {
         DOMTestUtil.execute(new DOMTestUtil.Test() {
             public void execute(DocumentBuilderFactory dbf) throws Exception {
                 String childElementQN = "test:Child";
@@ -174,6 +200,18 @@ public class ElementImplTest extends TestCase {
                 NodeList list = docElem.getElementsByTagNameNS(childElementNS, childElementLN);
         
                 assertEquals("Incorrect number of child elements", 7, list.getLength());
+            }
+        });
+    }
+
+    public void testGetElementsByTagNameRecursive() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                Document doc =
+                        dbf.newDocumentBuilder().parse(getTestResourceFile("xml/numbers.xml"));
+                Element element = doc.getDocumentElement();
+                NodeList list = element.getElementsByTagName("nr");
+                assertEquals(10, list.getLength());
             }
         });
     }
