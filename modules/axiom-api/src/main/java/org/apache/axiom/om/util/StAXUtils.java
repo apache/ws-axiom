@@ -123,8 +123,6 @@ public class StAXUtils {
             return reader;
         } catch (PrivilegedActionException pae) {
             throw (XMLStreamException) pae.getException();
-        } finally {
-            releaseXMLInputFactory(inputFactory);
         }
     }
 
@@ -147,8 +145,6 @@ public class StAXUtils {
             return reader;
         } catch (PrivilegedActionException pae) {
             throw (XMLStreamException) pae.getException();
-        } finally {
-            releaseXMLInputFactory(inputFactory);
         }
     }
 
@@ -170,8 +166,6 @@ public class StAXUtils {
             return reader;
         } catch (PrivilegedActionException pae) {
             throw (XMLStreamException) pae.getException();
-        } finally {
-            releaseXMLInputFactory(inputFactory);
         }
     }
 
@@ -581,8 +575,6 @@ public class StAXUtils {
             return reader;
         } catch (PrivilegedActionException pae) {
             throw (XMLStreamException) pae.getException();
-        } finally {
-            releaseXMLInputFactory(inputFactory);
         }
     }
 
@@ -628,8 +620,6 @@ public class StAXUtils {
             return reader;
         } catch (PrivilegedActionException pae) {
             throw (XMLStreamException) pae.getException();
-        } finally {
-            releaseXMLInputFactory(inputFactory);
         }
     }
 
@@ -661,8 +651,6 @@ public class StAXUtils {
             return reader;
         } catch (PrivilegedActionException pae) {
             throw (XMLStreamException) pae.getException();
-        } finally {
-            releaseXMLInputFactory(inputFactory);
         }
     }
 
