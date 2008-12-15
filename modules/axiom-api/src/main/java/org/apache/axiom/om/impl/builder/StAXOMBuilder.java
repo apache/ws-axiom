@@ -44,8 +44,7 @@ import java.io.InputStream;
 
 
 /**
- * Constructs an OM without using SOAP specific classes like SOAPEnvelope, SOAPHeader,
- * SOAPHeaderBlock and SOAPBody. This has the document concept also.
+ * StAX based builder that produces a pure XML infoset compliant object model.
  */
 public class StAXOMBuilder extends StAXBuilder {
     /** Field document */

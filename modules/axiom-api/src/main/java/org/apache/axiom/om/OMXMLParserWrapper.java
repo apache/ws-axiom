@@ -32,7 +32,7 @@ public interface OMXMLParserWrapper {
     int next() throws OMException;
 
     /**
-     * Discards the current element. This will remove the given element and its decendants.
+     * Discards the current element. This will remove the given element and its descendants.
      *
      * @param el
      * @throws OMException
@@ -70,7 +70,8 @@ public interface OMXMLParserWrapper {
     OMElement getDocumentElement();
 
     /**
-     * Returns the type of the builder. Can be either PUSH_TYPE_BUILDER or PULL_TYPE_BUILDER.
+     * Returns the type of the builder. Can be either {@link OMConstants#PUSH_TYPE_BUILDER}
+     * or {@link OMConstants#PULL_TYPE_BUILDER}.
      *
      * @return Returns short.
      */

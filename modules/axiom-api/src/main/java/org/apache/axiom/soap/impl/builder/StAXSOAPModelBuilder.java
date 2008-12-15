@@ -44,7 +44,11 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamReader;
 
-/** Class StAXSOAPModelBuilder */
+/**
+ * StAX based builder that produces a SOAP infoset model.
+ * It builds SOAP specific objects such as {@link SOAPEnvelope}, {@link SOAPHeader},
+ * {@link SOAPHeaderBlock} and {@link SOAPBody}.
+ */
 public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
     SOAPMessage soapMessage;
