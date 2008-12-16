@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "urn://java.sun.com/dtd/web-app_2_3.dtd">
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://localhost:4321/this/should/not/exist.dtd">
 <!-- The location of the DOCTYPE is intentionally invalid to ensure that the document is built even
      if disconnected from the network -->
  <web-app>

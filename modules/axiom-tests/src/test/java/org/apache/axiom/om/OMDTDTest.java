@@ -79,15 +79,11 @@ public class OMDTDTest extends TestCase {
         // can be obtained from StAXUtils and used to process configuration files
         // (like a web.xml) that may contain DTD information.
         //
-        // The following test first reads a normal web.xml that has a proper
-        // DTD.  
-        // The second test has a web.xml where the external link is intentionally
-        // changed to use the "urn" protocol.  This second test is designed to simulate
-        // reading the XML in a "network disconnected environment".  Both
-        // of these examples should pass without error.
-        // Read a web.xml file that contains a DTD.
+        // The following test reads an XML file that has a DTD with a system ID
+        // that intentionally points to a non existing URL. With a network
+        // detached reader this should not produce errors.
         
-        InputStream is = new FileInputStream("test-resources/xml/web_w_dtd.xml");
+        InputStream is = new FileInputStream("test-resources/xml/web_w_dtd2.xml");
         XMLStreamReader reader = StAXUtils.createNetworkDetachedXMLStreamReader(is);
         StAXOMBuilder builder = new StAXOMBuilder(reader);
         OMElement root = builder.getDocumentElement();
@@ -95,25 +91,6 @@ public class OMDTDTest extends TestCase {
         OMDocument document = builder.getDocument();
         Iterator i = document.getChildren();
         OMDocType docType = null;
-        while (docType == null && i.hasNext()) {
-           Object obj = i.next();
-           if (obj instanceof OMDocType) {
-               docType = (OMDocType) obj;
-           }
-        }
-        assertTrue(docType != null);
-       
-        // Make sure that a web.xml with a dtd can be loaded even if disconnected
-        // from the network.  In this case, the dtd has an invalid protocol (urn)
-        // to simulate a disconnect from the network.
-        is = new FileInputStream("test-resources/xml/web_w_dtd2.xml");
-        reader = StAXUtils.createNetworkDetachedXMLStreamReader(is);
-        builder = new StAXOMBuilder(reader);
-        root = builder.getDocumentElement();
-        assertTrue(root.getLocalName().equals("web-app"));
-        document = builder.getDocument();
-        i = document.getChildren();
-        docType = null;
         while (docType == null && i.hasNext()) {
            Object obj = i.next();
            if (obj instanceof OMDocType) {

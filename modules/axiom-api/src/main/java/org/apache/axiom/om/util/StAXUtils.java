@@ -25,9 +25,12 @@ import org.apache.axiom.om.OMConstants;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLResolver;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -292,6 +295,16 @@ public class StAXUtils {
         if (isNetworkDetached) {
             factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, 
                       Boolean.FALSE);
+            // Some StAX parser such as Woodstox still try to load the external DTD subset,
+            // even if IS_SUPPORTING_EXTERNAL_ENTITIES is set to false. To work around this,
+            // we add a custom XMLResolver that returns empty documents. See WSTX-117 for
+            // an interesting discussion about this.
+            factory.setXMLResolver(new XMLResolver() {
+                public Object resolveEntity(String publicID, String systemID, String baseURI,
+                        String namespace) throws XMLStreamException {
+                    return new ByteArrayInputStream(new byte[0]);
+                }
+            });
         }
         return factory;
     }
