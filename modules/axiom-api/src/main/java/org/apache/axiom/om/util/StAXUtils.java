@@ -286,6 +286,16 @@ public class StAXUtils {
     public static void reset() {
     }
     
+    // This has package access since it is used from within anonymous inner classes
+    static XMLInputFactory newXMLInputFactory(boolean isNetworkDetached) {
+        XMLInputFactory factory = XMLInputFactory.newInstance();
+        if (isNetworkDetached) {
+            factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, 
+                      Boolean.FALSE);
+        }
+        return factory;
+    }
+
     /**
      * @return XMLInputFactory for the current classloader
      */
@@ -318,12 +328,7 @@ public class StAXUtils {
                     AccessController.doPrivileged(
                         new PrivilegedAction() {
                             public Object run() {
-                                XMLInputFactory f = XMLInputFactory.newInstance();
-                                if (isNetworkDetached) {
-                                    f.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, 
-                                              Boolean.FALSE);
-                                }
-                                return f;
+                                return newXMLInputFactory(isNetworkDetached);
                             }
                         });
                 } catch (ClassCastException cce) {
@@ -338,22 +343,16 @@ public class StAXUtils {
                     AccessController.doPrivileged(
                         new PrivilegedAction() {
                             public Object run() {
-                                XMLInputFactory f = null;
                                 ClassLoader saveCL = getContextClassLoader();
                                 try {                              
                                     Thread.currentThread().
                                         setContextClassLoader(
                                             XMLInputFactory.class.getClassLoader());
-                                    f =XMLInputFactory.newInstance();
-                                    if (isNetworkDetached) {
-                                        f.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, 
-                                                  Boolean.FALSE);
-                                    }
+                                    return newXMLInputFactory(isNetworkDetached);
                                 } finally {
                                     Thread.currentThread().
                                         setContextClassLoader(saveCL);
                                 }
-                                return f;
                             }
                         });
                 }
@@ -392,19 +391,13 @@ public class StAXUtils {
                         public Object run() {
                             Thread currentThread = Thread.currentThread();
                             ClassLoader savedClassLoader = currentThread.getContextClassLoader();
-                            XMLInputFactory factory = null;
                             try {
                                 currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
-                                factory = XMLInputFactory.newInstance();
-                                if (isNetworkDetached) {
-                                    factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, 
-                                                        Boolean.FALSE);
-                                }
+                                return newXMLInputFactory(isNetworkDetached);
                             }
                             finally {
                                 currentThread.setContextClassLoader(savedClassLoader);
                             }
-                            return factory;
                         }
                     });
             if (isNetworkDetached) {
