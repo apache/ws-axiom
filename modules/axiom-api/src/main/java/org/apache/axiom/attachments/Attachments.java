@@ -440,8 +440,9 @@ public class Attachments implements OMAttachmentAccessor {
                         .length() - 1));
             }
         }
-        // Strips off the "cid" part from content-id
-        if ("cid".equalsIgnoreCase(rootContentID.substring(0, 3))) {
+        // Strips off the "cid:" part from content-id
+        if (rootContentID.length() > 4
+                && "cid:".equalsIgnoreCase(rootContentID.substring(0, 4))) {
             rootContentID = rootContentID.substring(4);
         }
         return rootContentID;

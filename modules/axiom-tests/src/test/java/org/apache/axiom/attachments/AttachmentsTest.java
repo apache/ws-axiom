@@ -348,4 +348,46 @@ public class AttachmentsTest extends AbstractTestCase {
         }
         return byteStream.toByteArray();
     }
+
+    private void testGetSOAPPartContentID(String contentTypeStartParam, String contentId)
+            throws Exception {
+        // It doesn't actually matter what the stream *is* it just needs to exist
+        String contentType = "multipart/related; boundary=\"" + boundary +
+                "\"; type=\"text/xml\"; start=\"" + contentTypeStartParam + "\"";
+        InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
+        Attachments attachments = new Attachments(inStream, contentType);
+        assertEquals("Did not obtain correct content ID", contentId,
+                attachments.getSOAPPartContentID());
+    }
+    
+    public void testGetSOAPPartContentIDWithoutBrackets() throws Exception {
+        testGetSOAPPartContentID("my-content-id@localhost", "my-content-id@localhost");
+    }
+    
+    public void testGetSOAPPartContentIDWithBrackets() throws Exception {
+        testGetSOAPPartContentID("<my-content-id@localhost>", "my-content-id@localhost");
+    }
+    
+    // Not sure when exactly somebody uses the "cid:" prefix in the start parameter, but
+    // this is how the code currently works.
+    public void testGetSOAPPartContentIDWithCidPrefix() throws Exception {
+        testGetSOAPPartContentID("cid:my-content-id@localhost", "my-content-id@localhost");
+    }
+    
+    // Regression test for WSCOMMONS-329
+    public void testGetSOAPPartContentIDWithCidPrefix2() throws Exception {
+        testGetSOAPPartContentID("<cid-73920@192.168.0.1>", "cid-73920@192.168.0.1");
+    }
+    
+    public void testGetSOAPPartContentIDShort() throws Exception {
+        testGetSOAPPartContentID("bbb", "bbb");
+    }
+    
+    public void testGetSOAPPartContentIDShortWithBrackets() throws Exception {
+        testGetSOAPPartContentID("<b>", "b");
+    }
+    
+    public void testGetSOAPPartContentIDBorderline() throws Exception {
+        testGetSOAPPartContentID("cid:", "cid:");
+    }
 }
