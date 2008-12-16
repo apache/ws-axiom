@@ -39,8 +39,6 @@ public class OMChildrenIterator implements Iterator {
     /** Field removeCalled */
     protected boolean removeCalled = false;
 
-    protected boolean isExceptionThrownInAdvancingToNextElement = false;
-
     /**
      * Constructor OMChildrenIterator.
      *
@@ -83,11 +81,10 @@ public class OMChildrenIterator implements Iterator {
      * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns
      * <tt>true</tt> if <tt>next</tt> would return an element rather than throwing an exception.)
      *
-     * @return Returns <tt>true</tt> if the iterator has more elements. This will never throw an
-     *         exception even there is an exception thrown underneath.
+     * @return Returns <tt>true</tt> if the iterator has more elements.
      */
     public boolean hasNext() {
-        return (currentChild != null && !isExceptionThrownInAdvancingToNextElement);
+        return (currentChild != null);
     }
 
     /**
@@ -102,11 +99,7 @@ public class OMChildrenIterator implements Iterator {
         removeCalled = false;
         if (hasNext()) {
             lastChild = currentChild;
-            try {
-                currentChild = currentChild.getNextOMSibling();
-            } catch (OMException e) {
-                isExceptionThrownInAdvancingToNextElement = true;
-            }
+            currentChild = currentChild.getNextOMSibling();
             return lastChild;
         } else {
             throw new NoSuchElementException();
