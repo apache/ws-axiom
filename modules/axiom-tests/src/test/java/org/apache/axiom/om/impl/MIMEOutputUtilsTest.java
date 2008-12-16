@@ -17,11 +17,13 @@
  * under the License.
  */
 
-package org.apache.axiom.om;
+package org.apache.axiom.om.impl;
 
 import junit.framework.TestCase;
 import org.apache.axiom.attachments.ByteArrayDataSource;
-import org.apache.axiom.om.impl.MIMEOutputUtils;
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMText;
 import org.apache.axiom.soap.SOAPFactory;
 
 import javax.activation.DataHandler;
