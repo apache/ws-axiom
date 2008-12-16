@@ -70,6 +70,19 @@ public class OMDocumentTest extends TestCase {
 
     }
 
+    /**
+     * Test that a document that is not well formed triggers an appropriate error.
+     */
+    public void testMalformedDocument() {
+        OMDocument document = getSampleOMDocument("<Root><Child attr='a' attr='a'/></Root>");
+        try {
+            document.serialize(new ByteArrayOutputStream());
+            fail("Expected exception");
+        } catch (Exception ex) {
+            // We expect an exception here
+        }
+    }
+
     private OMDocument getSampleOMDocument(String xml) {
         try {
             XMLStreamReader xmlStreamReader =
