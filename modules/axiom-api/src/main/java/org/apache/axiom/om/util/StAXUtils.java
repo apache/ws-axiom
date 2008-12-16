@@ -397,9 +397,14 @@ public class StAXUtils {
      * @return singleton XMLInputFactory loaded with the StAXUtils classloader
      */
     private static XMLInputFactory getXMLInputFactory_singleton(final boolean isNetworkDetached) {
- 
-        if (inputFactory == null) {
-            XMLInputFactory f = (XMLInputFactory) AccessController.doPrivileged(
+        XMLInputFactory f;
+        if (isNetworkDetached) {
+            f = inputNDFactory;
+        } else {
+            f = inputFactory;
+        }
+        if (f == null) {
+            f = (XMLInputFactory) AccessController.doPrivileged(
                     new PrivilegedAction() {
                         public Object run() {
                             Thread currentThread = Thread.currentThread();
@@ -419,7 +424,7 @@ public class StAXUtils {
                 inputFactory = f;
             }
             if (log.isDebugEnabled()) {
-                if (inputFactory != null) {
+                if (f != null) {
                     if (isNetworkDetached) {
                         log.debug("Created singleton network detached XMLInputFactory = " + f.getClass());
                     } else {
@@ -429,7 +434,7 @@ public class StAXUtils {
             }
         }
         
-        return inputFactory;
+        return f;
     }
     
     /**
