@@ -1037,6 +1037,18 @@ public class OMSourcedElementTest extends AbstractTestCase {
                      child.getAttributeValue(new QName("type")));
     }
 
+    public void testSetDataSourceOnAlreadyExpandedElement() {
+        // Make sure the OMSourcedElement is expanded
+        element.getFirstOMChild();
+        assertTrue(element.isExpanded());
+        // Now set a new data source
+        element.setDataSource(new TestDataSource(testDocument2));
+        assertFalse(element.isExpanded());
+        // getNextOMSibling should not expand the element
+        assertNull(element.getNextOMSibling());
+        assertFalse(element.isExpanded());
+    }
+
     private static class TestDataSource implements OMDataSource {
         // The data source is a ByteArrayInputStream so that we can verify that the datasource 
         // is only accessed once.  Currently there is no way to identify a destructive vs. non-destructive OMDataSource.

@@ -1060,6 +1060,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             this.dataSource = dataSource;
             setComplete(false);
             isExpanded = false;
+            super.setBuilder(null);
             if (isLossyPrefix(dataSource)) {
                 // Create a deferred namespace that forces an expand to get the prefix
                 definedNamespace = new DeferredNamespace(definedNamespace.getNamespaceURI());
