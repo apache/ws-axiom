@@ -116,7 +116,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @param parser
      */
     protected StAXBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
-        this.parser = parser;
         omfactory = ombuilderFactory;
         
         // The getCharacterEncodingScheme and getEncoding information are 
@@ -126,9 +125,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             charEncoding = parser.getEncoding();
         }
 
-        if (parser instanceof BuilderAwareReader) {
-            ((BuilderAwareReader) parser).setBuilder(this);
-        }
+        initParser(parser);
     }
     
     /**
@@ -142,13 +139,16 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected StAXBuilder(OMFactory ombuilderFactory, 
                           XMLStreamReader parser, 
                           String characterEncoding) {
-        this.parser = parser;
         omfactory = ombuilderFactory;
         charEncoding = characterEncoding;
-        
+        initParser(parser);
+    }
+
+    private void initParser(XMLStreamReader parser) {
         if (parser instanceof BuilderAwareReader) {
             ((BuilderAwareReader) parser).setBuilder(this);
         }
+        this.parser = new SafeXMLStreamReader(parser);
     }
 
     /**
