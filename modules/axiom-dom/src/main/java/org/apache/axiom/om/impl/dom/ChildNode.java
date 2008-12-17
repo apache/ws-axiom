@@ -114,6 +114,7 @@ public abstract class ChildNode extends NodeImpl {
             if (!done) {
                 build();
             }
+            getNextOMSibling(); // Make sure that nextSibling is set correctly
             if (previousSibling == null) { // This is the first child
                 if (nextSibling != null) {
                     this.parentNode.setFirstChild(nextSibling);

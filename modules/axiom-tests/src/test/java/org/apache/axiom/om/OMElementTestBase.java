@@ -24,6 +24,8 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 
+import org.apache.axiom.om.impl.llom.util.AXIOMUtil;
+
 public abstract class OMElementTestBase extends AbstractTestCase {
     protected abstract OMFactory getOMFactory();
 
@@ -100,5 +102,32 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         parent.addChild(c3);
         assertXMLEqual("<ns:parent xmlns:ns=\"http://www.testuri.com\">" +
                 "<ns:c1 /><ns:c2 /><ns:c3 /></ns:parent>", parent.toString());
+    }
+
+    private void testDetach(boolean build) throws Exception {
+        OMElement root = AXIOMUtil.stringToOM(getOMFactory(), "<root><a/><b/><c/></root>");
+        if (build) {
+            root.build();
+        } else {
+            assertFalse(root.isComplete());
+        }
+        OMElement a = (OMElement)root.getFirstOMChild();
+        assertEquals("a", a.getLocalName());
+        OMElement b = (OMElement)a.getNextOMSibling();
+        assertEquals("b", b.getLocalName());
+        b.detach();
+        assertNull(b.getParent());
+        OMElement c = (OMElement)a.getNextOMSibling();
+        assertEquals("c", c.getLocalName());
+        assertSame(c, a.getNextOMSibling());
+        assertSame(a, c.getPreviousOMSibling());
+    }
+    
+    public void testDetachWithBuild() throws Exception {
+        testDetach(true);
+    }
+    
+    public void testDetachWithoutBuild() throws Exception {
+        testDetach(false);
     }
 }
