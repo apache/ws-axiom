@@ -80,4 +80,25 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         }
         assertEquals("In correct number of children", 1, count);
     }
+    
+    // Regression test for WSCOMMONS-337
+    public void testInsertSiblingAfterLastChild() throws Exception {
+        OMFactory fac = getOMFactory();
+        OMNamespace ns = fac.createOMNamespace("http://www.testuri.com","ns");
+        OMElement parent = fac.createOMElement("parent", ns);
+        
+        // Create three OMElements
+        OMElement c1 = fac.createOMElement("c1", ns);
+        OMElement c2 = fac.createOMElement("c2", ns);
+        OMElement c3 = fac.createOMElement("c3", ns);
+
+        // Add c1 to parent using parent.addChild()
+        parent.addChild(c1);
+        // Add c2 to c1 as a sibling after
+        c1.insertSiblingAfter(c2);
+        // Now add c3 to parent using parent.addChild()
+        parent.addChild(c3);
+        assertXMLEqual("<ns:parent xmlns:ns=\"http://www.testuri.com\">" +
+                "<ns:c1 /><ns:c2 /><ns:c3 /></ns:parent>", parent.toString());
+    }
 }

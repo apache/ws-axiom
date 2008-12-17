@@ -154,7 +154,9 @@ public abstract class ChildNode extends NodeImpl {
         if (sibling instanceof ChildNode) {
             ChildNode domSibling = (ChildNode) sibling;
             domSibling.previousSibling = this;
-            if (this.nextSibling != null) {
+            if (this.nextSibling == null) {
+                this.parentNode.setLastChild(sibling);
+            } else {
                 this.nextSibling.previousSibling = domSibling;
             }
             domSibling.nextSibling = this.nextSibling;
