@@ -54,9 +54,12 @@ import org.apache.axiom.soap.SOAPFactory;
  *     <td>{@link org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory}</td>
  *   </tr>
  * </table>
- * <p>Since {@link OMFactory} instances are supposed to be stateless, each method in this class
- * returns the same instance on every invocation, i.e. the factory for each OM type is instantiated
- * only once.</p>
+ * <p>The methods in this class assume that {@link OMFactory} instances are stateless and
+ * return the same instance on every invocation, i.e. the factory for each OM type is instantiated
+ * only once. Configuring the system properties with factory implementation that are not
+ * stateless will lead to unexpected results. It should be noted that the factories provided
+ * by the DOOM implementation are not stateless and should therefore never be used as default
+ * factories.</p>
  * <p>Each method in this class uses {@link System#getProperty(String)} to determine the value of
  * the relevant system property. A {@link SecurityException} thrown by this method is simply ignored
  * and the default factory implementation is used.</p> 

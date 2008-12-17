@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.dom.factory;
 
 
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -49,6 +50,30 @@ import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
 
+/**
+ * OM factory implementation for DOOM. It creates nodes that implement
+ * DOM as defined by the interfaces in {@link org.w3c.dom}.
+ * <p>
+ * Since DOM requires every node to have an owner document even if it has not yet
+ * been added to a tree, this factory internally maintains a reference to a
+ * {@link DocumentImpl} instance. The document can be set explicitly using the
+ * {@link #OMDOMFactory(DocumentImpl)} constructor or the {@link #setDocument(DocumentImpl)}
+ * method. If none is set, it will be implicitly created when the first node is created.
+ * All nodes created by this factory will have this {@link DocumentImpl} instance as owner
+ * document.
+ * <p>
+ * This has several important consequences:
+ * <ul>
+ *   <li>The same instance of this class should not be used to parse or construct
+ *       multiple documents unless {@link #setDocument(DocumentImpl)} is used
+ *       to reset the {@link DocumentImpl} instance before processing the next document.</li>
+ *   <li>Instances of this class are not thread safe and using a single instance concurrently
+ *       will lead to undefined results.</li>
+ *   <li>Since instances are not stateless, this class (as well as its subclasses) must
+ *       not be used in conjunction with {@link OMAbstractFactory}. In particular,
+ *       the <tt>om.factory</tt> system property must not be set to this class.</li> 
+ * </ul>
+ */
 public class OMDOMFactory implements OMFactory {
 
     protected DocumentImpl document;
