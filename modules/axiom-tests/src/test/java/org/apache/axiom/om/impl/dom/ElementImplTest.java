@@ -19,8 +19,9 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMElementTestBase;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.Document;
@@ -28,26 +29,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Iterator;
 
-public class ElementImplTest extends AbstractTestCase {
-    public void testSetText() {
-        OMDOMFactory factory = new OMDOMFactory();
-        String localName = "TestLocalName";
-        String namespace = "http://ws.apache.org/axis2/ns";
-        String prefix = "axis2";
-        OMElement elem = factory.createOMElement(localName, namespace, prefix);
-
-        String text = "The quick brown fox jumps over the lazy dog";
-
-        elem.setText(text);
-
-        assertEquals("Text value mismatch", text, elem.getText());
-
+public class ElementImplTest extends OMElementTestBase {
+    protected OMFactory getOMFactory() {
+        return new OMDOMFactory();
     }
 
     public void testSerialize() throws Exception {
@@ -67,31 +55,6 @@ public class ElementImplTest extends AbstractTestCase {
         elem.serialize(baos);
         String xml = new String(baos.toByteArray());
         assertEquals("Incorrect serialized xml", 0, xml.indexOf("<axis2:TestLocalName"));
-    }
-
-    public void testAddChild() {
-        OMDOMFactory factory = new OMDOMFactory();
-        String localName = "TestLocalName";
-        String childLocalName = "TestChildLocalName";
-        String namespace = "http://ws.apache.org/axis2/ns";
-        String prefix = "axis2";
-
-        OMElement elem = factory.createOMElement(localName, namespace, prefix);
-        OMElement childElem = factory.createOMElement(childLocalName, namespace, prefix);
-
-        elem.addChild(childElem);
-
-        Iterator it = elem.getChildrenWithName(new QName(namespace, childLocalName));
-
-        int count = 0;
-        while (it.hasNext()) {
-            OMElement child = (OMElement) it.next();
-            assertEquals("Child local name mismatch", childLocalName, child.getLocalName());
-            assertEquals("Child namespace mismatch", namespace,
-                         child.getNamespace().getNamespaceURI());
-            count ++;
-        }
-        assertEquals("In correct number of children", 1, count);
     }
 
     public void testAppendChild() throws Exception {
