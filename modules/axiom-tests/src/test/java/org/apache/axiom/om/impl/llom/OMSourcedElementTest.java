@@ -21,12 +21,14 @@ package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.ds.CharArrayDataSource;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
@@ -1047,6 +1049,26 @@ public class OMSourcedElementTest extends AbstractTestCase {
         // getNextOMSibling should not expand the element
         assertNull(element.getNextOMSibling());
         assertFalse(element.isExpanded());
+    }
+
+    public void testSerializeModifiedOMSEWithNonDestructiveDataSource() throws Exception {
+        OMDataSourceExt ds = new CharArrayDataSource("<element><child/></element>".toCharArray());
+        assertFalse(ds.isDestructiveWrite());
+        
+        OMFactory f = new OMLinkedListImplFactory();
+        OMElement element = new OMSourcedElementImpl("element", null, f, ds);
+        
+        element.getFirstElement().setText("TEST");
+        
+        StringWriter sw = new StringWriter();
+        element.serialize(sw);
+        assertTrue(sw.toString().indexOf("TEST") != -1);
+        
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        element.serialize(baos);
+        assertTrue(new String(baos.toByteArray(), "UTF-8").indexOf("TEST") != -1);
+        
+        assertTrue(element.toString().indexOf("TEST") != -1);
     }
 
     private static class TestDataSource implements OMDataSource {

@@ -768,7 +768,9 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * serialize(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
      */
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        if (isDestructiveWrite()) {
+        if (isExpanded) {
+            super.serialize(output, format);
+        } else if (isDestructiveWrite()) {
             forceExpand();
             super.serialize(output, format);
         } else {
@@ -781,7 +783,9 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * serialize(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
      */
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        if (isDestructiveWrite()) {
+        if (isExpanded) {
+            super.serialize(writer, format);
+        } else if (isDestructiveWrite()) {
             forceExpand();
             super.serialize(writer, format);
         } else {
@@ -972,7 +976,9 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * @see org.apache.axiom.om.impl.llom.OMElementImpl#toString()
      */
     public String toString() {
-        if (isDestructiveWrite()) {
+        if (isExpanded) {
+            return super.toString();
+        } else if (isDestructiveWrite()) {
             forceExpand();
             return super.toString();
         } else {
