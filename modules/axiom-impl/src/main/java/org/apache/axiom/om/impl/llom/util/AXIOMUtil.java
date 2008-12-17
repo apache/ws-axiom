@@ -19,7 +19,9 @@
 
 package org.apache.axiom.om.impl.llom.util;
 
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 
@@ -27,17 +29,31 @@ import javax.xml.stream.XMLStreamException;
 import java.io.StringReader;
 
 public class AXIOMUtil {
-
     /**
-     * This will help you to create an OMElement from an xml fragment which you have as a string.
+     * Create an OMElement from an XML fragment given as a string.
      *
-     * @param xmlFragment - the well-formed xml fragment
-     * @return The OMElement created out of the string xml fragment.
+     * @param xmlFragment the well-formed XML fragment
+     * @return The OMElement created out of the string XML fragment.
      * @throws XMLStreamException
      */
     public static OMElement stringToOM(String xmlFragment) throws XMLStreamException {
+        return stringToOM(OMAbstractFactory.getOMFactory(), xmlFragment);
+    }
+    
+    /**
+     * Create an OMElement from an XML fragment given as a string.
+     *
+     * @param omFactory the factory used to build the object model
+     * @param xmlFragment the well-formed XML fragment
+     * @return The OMElement created out of the string XML fragment.
+     * @throws XMLStreamException
+     */
+    public static OMElement stringToOM(OMFactory omFactory, String xmlFragment)
+            throws XMLStreamException {
+        
         if (xmlFragment != null) {
-            return new StAXOMBuilder(StAXUtils.createXMLStreamReader(new StringReader(xmlFragment)))
+            return new StAXOMBuilder(omFactory,
+                    StAXUtils.createXMLStreamReader(new StringReader(xmlFragment)))
                     .getDocumentElement();
         }
         return null;
