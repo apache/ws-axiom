@@ -19,12 +19,14 @@
 
 package org.apache.axiom.soap;
 
-public class SOAPFaultNodeTest extends SOAPFaultTestCase {
+import org.apache.axiom.om.OMImplementation;
+
+public class SOAPFaultNodeTestBase extends SOAPFaultTestCase {
     protected SOAPFaultNode soap12FaultNode;
     protected SOAPFaultNode soap12FaultNodeWithParser;
 
-    public SOAPFaultNodeTest(String testName) {
-        super(testName);
+    public SOAPFaultNodeTestBase(OMImplementation omImplementation) {
+        super(omImplementation);
     }
 
     protected void setUp() throws Exception {

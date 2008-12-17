@@ -19,16 +19,12 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMImplementation;
 
-public class SOAPBodyTest extends SOAPBodyTestCase {
+public class SOAPBodyTestBase extends SOAPBodyTestCase {
 
-    public SOAPBodyTest(String testName) {
-        super(testName);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    public SOAPBodyTestBase(OMImplementation omImplementation) {
+        super(omImplementation);
     }
 
     //SOAP 1.1 Body Test (Programaticaly created)----------------------------------------------------------------------------------
@@ -137,21 +133,5 @@ public class SOAPBodyTest extends SOAPBodyTestCase {
                 "SOAP 1.2 Body Test With parser : - SOAP fault name mismatch",
                 soap12BodyWithParser.getFault().getLocalName().equals(
                         SOAPConstants.SOAPFAULT_LOCAL_NAME));
-    }
-
-    public void testSOAPBodyDetachment() {
-        try {
-            soap11Body.detach();
-            fail("Detachment of SOAP Body is not allowed !!");
-        } catch (OMException e) {
-            assertTrue(true);
-        }
-
-        try {
-            soap12Body.detach();
-            fail("Detachment of SOAP Body is not allowed !!");
-        } catch (OMException e) {
-            assertTrue(true);
-        }
     }
 }

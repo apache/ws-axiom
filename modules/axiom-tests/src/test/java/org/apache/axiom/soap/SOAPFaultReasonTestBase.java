@@ -19,14 +19,12 @@
 
 package org.apache.axiom.soap;
 
-public class SOAPFaultReasonTest extends SOAPFaultReasonTestCase {
+import org.apache.axiom.om.OMImplementation;
 
-    public SOAPFaultReasonTest(String testName) {
-        super(testName);
-    }
+public class SOAPFaultReasonTestBase extends SOAPFaultReasonTestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    public SOAPFaultReasonTestBase(OMImplementation omImplementation) {
+        super(omImplementation);
     }
 
     //SOAP 1.1 Fault Reason Test (Programaticaly Created)

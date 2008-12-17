@@ -19,7 +19,7 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMImplementation;
 
 public abstract class SOAPFaultTestCase extends SOAPBodyTestCase {
     protected SOAPFault soap11Fault;
@@ -27,14 +27,14 @@ public abstract class SOAPFaultTestCase extends SOAPBodyTestCase {
     protected SOAPFault soap11FaultWithParser;
     protected SOAPFault soap12FaultWithParser;
 
-    public SOAPFaultTestCase(String testName) {
-        super(testName);
+    public SOAPFaultTestCase(OMImplementation omImplementation) {
+        super(omImplementation);
     }
 
     protected void setUp() throws Exception {
         super.setUp();
-        soap11Fault = OMAbstractFactory.getSOAP11Factory().createSOAPFault(soap11Body);
-        soap12Fault = OMAbstractFactory.getSOAP12Factory().createSOAPFault(soap12Body);
+        soap11Fault = soap11Factory.createSOAPFault(soap11Body);
+        soap12Fault = soap12Factory.createSOAPFault(soap12Body);
         soap11FaultWithParser = soap11BodyWithParser.getFault();
         soap12FaultWithParser = soap12BodyWithParser.getFault();
     }

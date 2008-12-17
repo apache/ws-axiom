@@ -22,15 +22,13 @@ package org.apache.axiom.soap;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class SOAPHeaderTest extends SOAPHeaderTestCase {
+import org.apache.axiom.om.OMImplementation;
+
+public class SOAPHeaderTestBase extends SOAPHeaderTestCase {
     private static final String ROLE_URI = "http://schemas.xmlsoap.org/soap/envelope/actor/next";
 
-    public SOAPHeaderTest(String testName) {
-        super(testName);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    public SOAPHeaderTestBase(OMImplementation omImplementation) {
+        super(omImplementation);
     }
 
     //SOAP 1.1 Header Test (Programaticaly Created)--------------------------------------------------------------------------------

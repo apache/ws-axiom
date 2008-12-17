@@ -20,15 +20,16 @@
 package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMImplementation;
 
-public class SOAPFaultTextTest extends SOAPFaultReasonTestCase {
+public class SOAPFaultTextTestBase extends SOAPFaultReasonTestCase {
     protected SOAPFaultText soap11FaultText;
     protected SOAPFaultText soap12FaultText;
     protected String soap11FaultTextWithParser;
     protected SOAPFaultText soap12FaultTextWithParser;
 
-    public SOAPFaultTextTest(String testName) {
-        super(testName);
+    public SOAPFaultTextTestBase(OMImplementation omImplementation) {
+        super(omImplementation);
     }
 
     protected void setUp() throws Exception {

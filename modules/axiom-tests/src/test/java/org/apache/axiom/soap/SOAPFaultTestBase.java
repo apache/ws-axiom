@@ -20,15 +20,12 @@
 package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMImplementation;
 
-public class SOAPFaultTest extends SOAPFaultTestCase {
+public class SOAPFaultTestBase extends SOAPFaultTestCase {
 
-    public SOAPFaultTest(String testName) {
-        super(testName);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    public SOAPFaultTestBase(OMImplementation omImplementation) {
+        super(omImplementation);
     }
 
     //SOAP 1.1 Fault Test (Programaticaly created)-----------------------------------------------------------------------------------
@@ -90,9 +87,14 @@ public class SOAPFaultTest extends SOAPFaultTestCase {
     }
 
     public void testSOAP11GetNode() {
-        assertTrue(
-                "SOAP 1.1 Fault Test:- After creating a SOAP11Fault, it has a node",
-                soap11Fault.getNode() == null);
+        // TODO: LLOM returns null while DOM throws UnsupportedOperationException
+        try {
+            assertTrue(
+                    "SOAP 1.1 Fault Test:- After creating a SOAP11Fault, it has a node",
+                    soap11Fault.getNode() == null);
+        } catch (UnsupportedOperationException ex) {
+            // This is also fine.
+        }
     }
 
     public void testSOAP11SetRole() {

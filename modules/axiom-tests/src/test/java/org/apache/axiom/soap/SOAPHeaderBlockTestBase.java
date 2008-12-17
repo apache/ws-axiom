@@ -19,11 +19,12 @@
 
 package org.apache.axiom.soap;
 
+import org.apache.axiom.om.OMImplementation;
 import org.apache.axiom.om.OMNamespace;
 
 import java.util.Iterator;
 
-public class SOAPHeaderBlockTest extends SOAPHeaderTestCase {
+public class SOAPHeaderBlockTestBase extends SOAPHeaderTestCase {
     protected SOAPHeaderBlock soap11HeaderBlock;
     protected SOAPHeaderBlock soap12HeaderBlock;
     protected SOAPHeaderBlock soap11HeaderBlock1WithParser;
@@ -33,8 +34,8 @@ public class SOAPHeaderBlockTest extends SOAPHeaderTestCase {
     protected SOAPHeaderBlock soap11HeaderBlock3WithParser;
     protected SOAPHeaderBlock soap12HeaderBlock3WithParser;
 
-    public SOAPHeaderBlockTest(String testName) {
-        super(testName);
+    public SOAPHeaderBlockTestBase(OMImplementation omImplementation) {
+        super(omImplementation);
     }
 
     protected void setUp() throws Exception {

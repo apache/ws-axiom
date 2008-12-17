@@ -20,16 +20,18 @@ package org.apache.axiom.soap;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.om.OMImplementation;
+
 /**
  * @author : Ajith Ranabahu
  *         Date: Aug 15, 2007
  *         Time: 11:57:54 PM
  */
-public class SOAPDiscardTest  extends SOAPTestCase{
+public class SOAPDiscardTestBase  extends SOAPTestCase{
 
 
-    public SOAPDiscardTest(String testName) {
-        super(testName);
+    public SOAPDiscardTestBase(OMImplementation omImplementation) {
+        super(omImplementation);
     }
 
     public void testDiscardHeader(){

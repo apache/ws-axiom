@@ -21,20 +21,21 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMImplementation;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
 
 import java.util.Iterator;
 
-public class SOAPFaultDetailTest extends SOAPFaultTestCase {
+public class SOAPFaultDetailTestBase extends SOAPFaultTestCase {
     protected SOAPFaultDetail soap11FaultDetail;
     protected SOAPFaultDetail soap12FaultDetail;
     protected SOAPFaultDetail soap11FaultDetailWithParser;
     protected SOAPFaultDetail soap12FaultDetailWithParser;
     protected OMNamespace omNamespace;
 
-    public SOAPFaultDetailTest(String testName) {
-        super(testName);
+    public SOAPFaultDetailTestBase(OMImplementation omImplementation) {
+        super(omImplementation);
         omNamespace =
                 omFactory.createOMNamespace("http://www.test.org", "test");
     }

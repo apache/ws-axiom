@@ -19,15 +19,17 @@
 
 package org.apache.axiom.soap;
 
-public class SOAPFaultRoleTest extends SOAPFaultTestCase {
+import org.apache.axiom.om.OMImplementation;
+
+public class SOAPFaultRoleTestBase extends SOAPFaultTestCase {
 
     protected SOAPFaultRole soap11FaultRole;
     protected SOAPFaultRole soap12FaultRole;
     protected SOAPFaultRole soap11FaultRoleWithParser;
     protected SOAPFaultRole soap12FaultRoleWithParser;
 
-    public SOAPFaultRoleTest(String testName) {
-        super(testName);
+    public SOAPFaultRoleTestBase(OMImplementation omImplementation) {
+        super(omImplementation);
     }
 
     protected void setUp() throws Exception {

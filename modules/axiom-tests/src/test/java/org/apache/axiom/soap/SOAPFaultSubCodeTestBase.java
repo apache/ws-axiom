@@ -19,15 +19,13 @@
 
 package org.apache.axiom.soap;
 
+import org.apache.axiom.om.OMImplementation;
 
-public class SOAPFaultSubCodeTest extends SOAPFaultSubCodeTestCase {
 
-    public SOAPFaultSubCodeTest(String testName) {
-        super(testName);
-    }
+public class SOAPFaultSubCodeTestBase extends SOAPFaultSubCodeTestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    public SOAPFaultSubCodeTestBase(OMImplementation omImplementation) {
+        super(omImplementation);
     }
 
     //SOAP Fault SubCode(In Fault Code) Test (Programaticaly Created)

@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap;
 
+import org.apache.axiom.om.OMImplementation;
+
 public abstract class SOAPFaultSubCodeTestCase extends SOAPFaultCodeTestCase {
     protected SOAPFaultValue soap11FaultValue;
     protected SOAPFaultValue soap12FaultValueInFaultCode;
@@ -34,8 +36,8 @@ public abstract class SOAPFaultSubCodeTestCase extends SOAPFaultCodeTestCase {
     protected SOAPFaultValue soap12FaultValueInFaultSubCodeWithParser;
     protected SOAPFaultSubCode soap12FaultSubCodeInSubCodeWithParser;
 
-    public SOAPFaultSubCodeTestCase(String testName) {
-        super(testName);
+    public SOAPFaultSubCodeTestCase(OMImplementation omImplementation) {
+        super(omImplementation);
     }
 
     protected void setUp() throws Exception {
