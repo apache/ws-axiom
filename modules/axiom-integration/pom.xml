@@ -62,6 +62,16 @@
             <artifactId>jaxb-impl</artifactId>
             <version>2.1.9</version>
         </dependency>
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>saxon</artifactId>
+            <version>8.5.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
