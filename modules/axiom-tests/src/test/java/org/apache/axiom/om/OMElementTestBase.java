@@ -130,4 +130,12 @@ public abstract class OMElementTestBase extends AbstractTestCase {
     public void testDetachWithoutBuild() throws Exception {
         testDetach(false);
     }
+
+    public void testFindNamespaceByPrefix() throws Exception {
+        OMElement root =
+                AXIOMUtil.stringToOM(getOMFactory(), "<a:root xmlns:a='urn:a'><child/></a:root>");
+        OMNamespace ns = root.getFirstElement().findNamespace(null, "a");
+        assertNotNull(ns);
+        assertEquals("urn:a", ns.getNamespaceURI());
+    }
 }

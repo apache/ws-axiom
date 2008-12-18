@@ -470,7 +470,7 @@ public class OMElementImpl extends OMNodeImpl
      */
     private OMNamespace findDeclaredNamespace(String uri, String prefix) {
         if (uri == null) {
-            return null;
+            return namespaces == null ? null : (OMNamespace)namespaces.get(prefix);
         }
 
         //If the prefix is available and uri is available and its the xml namespace
