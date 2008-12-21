@@ -51,6 +51,7 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Vector;
 
 public class DocumentImpl extends ParentNode implements Document, OMDocument {
@@ -231,8 +232,17 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public DocumentType getDoctype() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        Iterator it = getChildren();
+        while (it.hasNext()) {
+            Object child = it.next();
+            if (child instanceof DocumentType) {
+                return (DocumentType)child;
+            } else if (child instanceof Element) {
+                // A doctype declaration can only appear before the root element. Stop here.
+                return null;
+            }
+        }
+        return null;
     }
 
     public Element getElementById(String elementId) {

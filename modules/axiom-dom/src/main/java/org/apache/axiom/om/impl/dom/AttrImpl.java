@@ -166,8 +166,8 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     }
 
     public boolean getSpecified() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        // Since we don't support DTD or schema, we always return true
+        return true;
     }
 
     /**
