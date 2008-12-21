@@ -83,6 +83,6 @@ public class OMCachingTest extends AbstractTestCase {
 
     private XMLStreamReader getXMLStreamReader() throws XMLStreamException, FileNotFoundException {
         return XMLInputFactory.newInstance().
-                createXMLStreamReader(getTestResource("soap/soapmessage.xml"));
+                createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
     }
 }

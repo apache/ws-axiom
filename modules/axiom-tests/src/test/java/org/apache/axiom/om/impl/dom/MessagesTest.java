@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 
 public class MessagesTest extends OMDOMTestCase {
@@ -29,7 +30,7 @@ public class MessagesTest extends OMDOMTestCase {
             Exception {
         soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResource("soap/whitespacedMessage.xml"))
+                        getTestResource(TestConstants.WHITESPACE_MESSAGE))
                         .getDocumentElement();
         OMTestUtils.walkThrough(soapEnvelope);
     }
@@ -37,7 +38,7 @@ public class MessagesTest extends OMDOMTestCase {
     public void testMinimalMessage() throws OMException, Exception {
         soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResource("soap/minimalMessage.xml"))
+                        getTestResource(TestConstants.MINIMAL_MESSAGE))
                         .getDocumentElement();
         OMTestUtils.walkThrough(soapEnvelope);
     }
@@ -45,7 +46,7 @@ public class MessagesTest extends OMDOMTestCase {
     public void testReallyBigMessage() throws OMException, Exception {
         soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResource("soap/reallyReallyBigMessage.xml"))
+                        getTestResource(TestConstants.REALLY_BIG_MESSAGE))
                         .getDocumentElement();
         OMTestUtils.walkThrough(soapEnvelope);
     }
@@ -53,7 +54,7 @@ public class MessagesTest extends OMDOMTestCase {
     public void testEmptyBodiedMessage() throws OMException, Exception {
         soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResource("soap/emtyBodymessage.xml"))
+                        getTestResource(TestConstants.EMPTY_BODY_MESSAGE))
                         .getDocumentElement();
         OMTestUtils.walkThrough(soapEnvelope);
     }

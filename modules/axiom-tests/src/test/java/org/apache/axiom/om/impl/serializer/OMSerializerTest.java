@@ -23,6 +23,7 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
@@ -52,7 +53,7 @@ public class OMSerializerTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         reader =
                 XMLInputFactory.newInstance().
-                        createXMLStreamReader(getTestResource("soap/soapmessage.xml"));
+                        createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
         tempFile = File.createTempFile("temp", "xml");
 //        writer =
 //                XMLOutputFactory.newInstance().

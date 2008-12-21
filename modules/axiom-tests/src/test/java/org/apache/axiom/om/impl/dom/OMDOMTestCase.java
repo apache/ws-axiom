@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
@@ -37,7 +38,7 @@ import java.io.OutputStream;
 
 public abstract class OMDOMTestCase extends AbstractTestCase {
 
-    protected static final String IN_FILE_NAME = "soap/soapmessage.xml";
+    protected static final String IN_FILE_NAME = TestConstants.SOAP_SOAPMESSAGE;
     protected StAXSOAPModelBuilder builder;
     protected OMFactory ombuilderFactory;
     protected SOAPFactory soapFactory;

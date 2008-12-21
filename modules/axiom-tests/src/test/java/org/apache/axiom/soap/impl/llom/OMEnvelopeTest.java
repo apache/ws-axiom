@@ -22,6 +22,7 @@ package org.apache.axiom.soap.impl.llom;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.om.OMTestUtils;
+import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
@@ -55,7 +56,7 @@ public class OMEnvelopeTest extends OMTestCase {
 
     private SOAPEnvelope getSecondEnvelope() throws Exception {
         return (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                getTestResource("soap/sample1.xml"))
+                getTestResource(TestConstants.SAMPLE1))
                 .getDocumentElement();
     }
 

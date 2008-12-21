@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl.streamwrapper;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -43,7 +44,7 @@ public class OmStAXBuilderTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         factory = OMAbstractFactory.getSOAP11Factory();
         XMLStreamReader reader = XMLInputFactory.newInstance().
-                createXMLStreamReader(getTestResource("soap/soapmessage.xml"));
+                createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
         builder =
                 OMXMLBuilderFactory.createStAXSOAPModelBuilder(factory,
                                                                reader);

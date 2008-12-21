@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMTestUtils;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -66,7 +67,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
 
     public void testCreateOMElement() throws Exception {
         OMXMLParserWrapper omBuilder = OMTestUtils.getOMBuilder(
-                getTestResource("soap/whitespacedMessage.xml"));
+                getTestResource(TestConstants.WHITESPACE_MESSAGE));
         OMElement envelope = omBuilder.getDocumentElement();
         
         // The body is the second element
@@ -124,7 +125,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
 
     public void testCreateSOAPBody() throws Exception {
         OMXMLParserWrapper omBuilder = OMTestUtils.getOMBuilder(
-                getTestResource("soap/minimalMessage.xml"));
+                getTestResource(TestConstants.MINIMAL_MESSAGE));
         SOAPEnvelope soapEnvelope = (SOAPEnvelope) omBuilder.getDocumentElement();
         SOAPBody soapBodyOne = omFactory.createSOAPBody(soapEnvelope);
         assertTrue(
@@ -134,7 +135,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
 
     public void testCreateSOAPBodyWithBuilder() throws Exception {
         OMXMLParserWrapper omBuilder = OMTestUtils.getOMBuilder(
-                getTestResource("soap/minimalMessage.xml"));
+                getTestResource(TestConstants.MINIMAL_MESSAGE));
         SOAPEnvelope soapEnvelope = (SOAPEnvelope) omBuilder.getDocumentElement();
 
         SOAPBody soapBodyTwo = omFactory.createSOAPBody(soapEnvelope,
@@ -155,7 +156,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
                 soapEnvelopeTwo.isComplete());
         SOAPEnvelope soapEnvelope = omFactory.createSOAPEnvelope(
                 OMTestUtils.getOMBuilder(
-                        getTestResource("soap/minimalMessage.xml")));
+                        getTestResource(TestConstants.MINIMAL_MESSAGE)));
         assertTrue(
                 "SOAPEnvelope with a builder should start with done = false ",
                 !soapEnvelope.isComplete());
@@ -164,7 +165,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
 
     public void testCreateSOAPHeader() throws Exception {
         OMXMLParserWrapper omBuilder = OMTestUtils.getOMBuilder(
-                getTestResource("soap/minimalMessage.xml"));
+                getTestResource(TestConstants.MINIMAL_MESSAGE));
         SOAPEnvelope soapEnvelope = (SOAPEnvelope) omBuilder.getDocumentElement();
         SOAPHeader soapHeader = omFactory.createSOAPHeader(soapEnvelope);
         assertTrue(
@@ -181,7 +182,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
 
     public void testCreateSOAPHeaderBlock() throws Exception {
         OMXMLParserWrapper omBuilder = OMTestUtils.getOMBuilder(
-                getTestResource("soap/soapmessage.xml"));
+                getTestResource(TestConstants.SOAP_SOAPMESSAGE));
         SOAPEnvelope soapEnvelope = (SOAPEnvelope) omBuilder.getDocumentElement();
         SOAPHeader soapHeader = soapEnvelope.getHeader();
         SOAPHeaderBlock soapHeaderBlock = omFactory.createSOAPHeaderBlock(
@@ -199,7 +200,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
 
     public void testCreateSOAPFault() throws Exception {
         OMXMLParserWrapper omBuilder = OMTestUtils.getOMBuilder(
-                getTestResource("soap/soapmessage.xml"));
+                getTestResource(TestConstants.SOAP_SOAPMESSAGE));
         SOAPEnvelope soapEnvelope = (SOAPEnvelope) omBuilder.getDocumentElement();
         SOAPBody soapBody = soapEnvelope.getBody();
         SOAPFault soapFault = omFactory.createSOAPFault(soapBody,

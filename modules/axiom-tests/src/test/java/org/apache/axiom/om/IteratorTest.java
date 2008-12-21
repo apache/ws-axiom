@@ -43,7 +43,7 @@ public class IteratorTest extends AbstractTestCase {
                 new StAXOMBuilder(new OMLinkedListImplFactory(),
                                   XMLInputFactory.newInstance().createXMLStreamReader(
                                                   getTestResource(
-                                                          "soap/soapmessage1.xml")))
+                                                          TestConstants.SOAP_SOAPMESSAGE1)))
                         .getDocumentElement();
     }
 
