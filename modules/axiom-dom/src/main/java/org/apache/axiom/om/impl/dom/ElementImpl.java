@@ -176,7 +176,14 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     /** Returns the value of the namespace URI. */
     public String getNamespaceURI() {
-        return (this.namespace != null) ? this.namespace.getNamespaceURI().intern() : null;
+        if (this.namespace == null) {
+            return null;
+        } else {
+            // If the element has no namespace, the result should be null, not
+            // an empty string.
+            String uri = this.namespace.getNamespaceURI();
+            return uri.length() == 0 ? null : uri.intern();
+        }
     }
 
     // /

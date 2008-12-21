@@ -178,4 +178,18 @@ public class ElementImplTest extends OMElementTestBase {
             }
         });
     }
+    
+    public void testGetNamespaceURIWithNoNamespace() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                Document doc = dbf.newDocumentBuilder().newDocument();
+                Element element = doc.createElement("test");
+                assertNull(element.getNamespaceURI());
+                element = doc.createElementNS(null, "test");
+                assertNull(element.getNamespaceURI());
+                element = doc.createElementNS("", "test");
+                assertNull(element.getNamespaceURI());
+            }
+        });
+    }
 }
