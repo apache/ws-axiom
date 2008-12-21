@@ -19,28 +19,11 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import junit.framework.TestCase;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
+import org.apache.axiom.om.OMAttributeTestBase;
+import org.apache.axiom.om.impl.dom.factory.OMDOMImplementation;
 
-import javax.xml.namespace.QName;
-
-public class AttributeTest extends TestCase {
-    /**
-     * Make sure getQName() works correctly on AttrImpl
-     * @throws Exception
-     */
-    public void testQNames() throws Exception {
-        String ATTR = "attr";
-        String NSURI = "http://ns1";
-        OMFactory fac = new OMDOMFactory();
-        OMNamespace ns = new NamespaceImpl(NSURI);
-        OMAttribute attr = fac.createOMAttribute(ATTR, ns, "value");
-        QName qname = attr.getQName();
-        assertEquals("Wrong namespace", NSURI, qname.getNamespaceURI());
-        assertEquals("Wrong localPart", ATTR, qname.getLocalPart());
-        assertEquals("Wrong prefix", "", qname.getPrefix());
+public class AttributeTest extends OMAttributeTestBase {
+    public AttributeTest() {
+        super(new OMDOMImplementation());
     }
 }
