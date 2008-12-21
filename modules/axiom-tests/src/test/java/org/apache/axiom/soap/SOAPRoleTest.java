@@ -21,7 +21,6 @@ package org.apache.axiom.soap;
 
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLInputFactory;
-import java.io.FileReader;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -67,7 +66,7 @@ public class SOAPRoleTest extends AbstractTestCase {
 
     public StAXSOAPModelBuilder getSOAPBuilder(String fileName) throws Exception {
         XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(
-                new FileReader(getTestResourceFile(fileName)));
+                getTestResource(fileName));
         return new StAXSOAPModelBuilder(parser, null);
     }
 

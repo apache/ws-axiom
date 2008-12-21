@@ -20,7 +20,6 @@
 package org.apache.axiom.om;
 
 import junit.framework.TestCase;
-import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
@@ -32,12 +31,19 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.util.Iterator;
 
 public class OMTestUtils {
     public static OMXMLParserWrapper getOMBuilder(File file) throws Exception {
         XMLStreamReader parser = XMLInputFactory.newInstance()
                 .createXMLStreamReader(new FileReader(file));
+        return new StAXSOAPModelBuilder(parser, null);
+    }
+
+    public static OMXMLParserWrapper getOMBuilder(InputStream in) throws Exception {
+        XMLStreamReader parser = XMLInputFactory.newInstance()
+                .createXMLStreamReader(in);
         return new StAXSOAPModelBuilder(parser, null);
     }
 
@@ -115,9 +121,4 @@ public class OMTestUtils {
             throw new Exception("One is null");
         }
     }
-
-    public static SOAPEnvelope createOM(File file) throws Exception {
-        return (SOAPEnvelope) getOMBuilder(file).getDocumentElement();
-    }
-
 }

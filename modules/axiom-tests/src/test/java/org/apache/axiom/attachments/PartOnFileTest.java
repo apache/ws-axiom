@@ -24,7 +24,6 @@ import org.apache.axiom.om.AbstractTestCase;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 
@@ -52,7 +51,7 @@ public class PartOnFileTest extends AbstractTestCase {
 
     public void testHeaderGetSet() throws Exception {
 
-        InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
+        InputStream inStream = getTestResource(inMimeFileName);
         Attachments attachments =
                 new Attachments(inStream, contentTypeString, true, temp.getPath(), "1");
 

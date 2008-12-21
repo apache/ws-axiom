@@ -32,7 +32,7 @@ public class MessagesTest extends OMTestCase {
             Exception {
         soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResourceFile(TestConstants.WHITESPACE_MESSAGE))
+                        getTestResource(TestConstants.WHITESPACE_MESSAGE))
                         .getDocumentElement();
         OMTestUtils.walkThrough(soapEnvelope);
     }
@@ -40,7 +40,7 @@ public class MessagesTest extends OMTestCase {
     public void testMinimalMessage() throws OMException, Exception {
         soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResourceFile(TestConstants.MINIMAL_MESSAGE))
+                        getTestResource(TestConstants.MINIMAL_MESSAGE))
                         .getDocumentElement();
         OMTestUtils.walkThrough(soapEnvelope);
     }
@@ -48,7 +48,7 @@ public class MessagesTest extends OMTestCase {
     public void testReallyBigMessage() throws OMException, Exception {
         soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResourceFile(TestConstants.REALLY_BIG_MESSAGE))
+                        getTestResource(TestConstants.REALLY_BIG_MESSAGE))
                         .getDocumentElement();
         OMTestUtils.walkThrough(soapEnvelope);
     }
@@ -56,7 +56,7 @@ public class MessagesTest extends OMTestCase {
     public void testEmptyBodiedMessage() throws OMException, Exception {
         soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResourceFile(TestConstants.EMPTY_BODY_MESSAGE))
+                        getTestResource(TestConstants.EMPTY_BODY_MESSAGE))
                         .getDocumentElement();
         OMTestUtils.walkThrough(soapEnvelope);
     }

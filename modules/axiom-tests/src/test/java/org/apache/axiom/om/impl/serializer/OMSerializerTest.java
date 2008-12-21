@@ -37,7 +37,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -53,9 +52,7 @@ public class OMSerializerTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         reader =
                 XMLInputFactory.newInstance().
-                        createXMLStreamReader(
-                                new FileReader(
-                                        getTestResourceFile("soap/soapmessage.xml")));
+                        createXMLStreamReader(getTestResource("soap/soapmessage.xml"));
         tempFile = File.createTempFile("temp", "xml");
 //        writer =
 //                XMLOutputFactory.newInstance().

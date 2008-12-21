@@ -28,7 +28,6 @@ import javax.activation.FileDataSource;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import java.io.File;
-import java.io.FileReader;
 import java.util.Iterator;
 
 public class IteratorTest extends AbstractTestCase {
@@ -43,9 +42,8 @@ public class IteratorTest extends AbstractTestCase {
         envelope =
                 new StAXOMBuilder(new OMLinkedListImplFactory(),
                                   XMLInputFactory.newInstance().createXMLStreamReader(
-                                          new FileReader(
-                                                  getTestResourceFile(
-                                                          "soap/soapmessage1.xml"))))
+                                                  getTestResource(
+                                                          "soap/soapmessage1.xml")))
                         .getDocumentElement();
     }
 

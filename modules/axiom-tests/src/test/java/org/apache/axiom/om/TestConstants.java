@@ -22,9 +22,6 @@ package org.apache.axiom.om;
 /** All the various files created 03-Nov-2005 12:02:12 */
 
 public class TestConstants {
-    public static final String TEST_RESOURCES = "test-resources";
-    public static final String SOAP_DIR = "soap";
-    public static final String SOAPMESSAGE = "soapmessage.xml";
     public static final String SOAP_SOAPMESSAGE = "soap/soapmessage.xml";
     public static final String SOAP_SOAPMESSAGE1 = "soap/soapmessage1.xml";
     public static final String SAMPLE1 = "soap/sample1.xml";

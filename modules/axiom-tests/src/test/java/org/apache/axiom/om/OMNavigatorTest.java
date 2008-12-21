@@ -29,7 +29,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 
 public class OMNavigatorTest extends AbstractTestCase {
     private SOAPEnvelope envelope = null;
@@ -43,9 +42,7 @@ public class OMNavigatorTest extends AbstractTestCase {
 
     protected void setUp() throws Exception {
         XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance().
-                createXMLStreamReader(
-                        new FileReader(
-                                getTestResourceFile(TestConstants.SOAP_SOAPMESSAGE1)));
+                createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE1));
         builder = new StAXSOAPModelBuilder(xmlStreamReader, null);
         envelope = (SOAPEnvelope) builder.getDocumentElement();
         tempFile = File.createTempFile("temp", "xml");

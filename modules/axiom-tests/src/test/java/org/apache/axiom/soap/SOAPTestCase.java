@@ -20,14 +20,12 @@
 package org.apache.axiom.soap;
 
 import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMImplementation;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-import java.io.FileReader;
 
 public abstract class SOAPTestCase extends AbstractTestCase {
     protected SOAPFactory soap11Factory;
@@ -65,7 +63,7 @@ public abstract class SOAPTestCase extends AbstractTestCase {
 
     protected StAXSOAPModelBuilder getSOAPBuilder(String fileName) throws Exception {
         XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(
-                new FileReader(getTestResourceFile(fileName)));
+                getTestResource(fileName));
         return new StAXSOAPModelBuilder(parser, null);
     }
 

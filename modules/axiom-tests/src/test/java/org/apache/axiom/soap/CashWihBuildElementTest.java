@@ -27,12 +27,10 @@ import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory;
 
 import javax.xml.stream.XMLInputFactory;
-import java.io.FileReader;
 
 public class CashWihBuildElementTest extends AbstractTestCase {
 
     StAXOMBuilder stAXOMBuilder;
-    FileReader testFile;
     private OMElement rootElement;
 
     /**
@@ -43,12 +41,11 @@ public class CashWihBuildElementTest extends AbstractTestCase {
     }
 
     protected void setUp() throws Exception {
-        testFile = new FileReader(getTestResourceFile("non_soap.xml"));
         stAXOMBuilder =
                 OMXMLBuilderFactory.createStAXOMBuilder(
                         OMAbstractFactory.getSOAP11Factory(),
                         XMLInputFactory.newInstance().createXMLStreamReader(
-                                testFile));
+                                getTestResource("non_soap.xml")));
         rootElement = stAXOMBuilder.getDocumentElement();
     }
 

@@ -25,7 +25,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 
 public class OMCachingTest extends AbstractTestCase {
     private XMLStreamReader xmlStreamReader;
@@ -84,8 +83,6 @@ public class OMCachingTest extends AbstractTestCase {
 
     private XMLStreamReader getXMLStreamReader() throws XMLStreamException, FileNotFoundException {
         return XMLInputFactory.newInstance().
-                createXMLStreamReader(
-                        new FileReader(
-                                getTestResourceFile("soap/soapmessage.xml")));
+                createXMLStreamReader(getTestResource("soap/soapmessage.xml"));
     }
 }

@@ -27,7 +27,6 @@ import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
 import org.apache.axiom.om.util.CommonUtils;
 
 import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -69,7 +68,7 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream inStream;
         Attachments attachments;
 
-        inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
+        inStream = getTestResource(inMimeFileName);
         attachments = new Attachments(inStream, contentTypeString);
 
         attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
@@ -85,7 +84,7 @@ public class AttachmentsTest extends AbstractTestCase {
         inStream.close();
 
         // Try the other way around.
-        inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
+        inStream = getTestResource(inMimeFileName);
         attachments = new Attachments(inStream, contentTypeString);
 
         attachments.getIncomingAttachmentStreams();
@@ -136,10 +135,9 @@ public class AttachmentsTest extends AbstractTestCase {
     public void testGetInputAttachhmentStreams() throws Exception {
 
         IncomingAttachmentInputStream dataIs;
-        FileDataSource dataSource;
         InputStream expectedDataIs;
 
-        InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
+        InputStream inStream = getTestResource(inMimeFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
 
         // Since SOAP part operated independently of other streams, access it
@@ -152,13 +150,11 @@ public class AttachmentsTest extends AbstractTestCase {
         IncomingAttachmentStreams ias = attachments.getIncomingAttachmentStreams();
 
         dataIs = ias.getNextStream();
-        dataSource = new FileDataSource(getTestResourceFile(img1FileName));
-        expectedDataIs = dataSource.getInputStream();
+        expectedDataIs = getTestResource(img1FileName);
         compareStreams(dataIs, expectedDataIs);
 
         dataIs = ias.getNextStream();
-        dataSource = new FileDataSource(getTestResourceFile(img2FileName));
-        expectedDataIs = dataSource.getInputStream();
+        expectedDataIs = getTestResource(img2FileName);
         compareStreams(dataIs, expectedDataIs);
 
         // Confirm that no more streams are left
@@ -173,8 +169,7 @@ public class AttachmentsTest extends AbstractTestCase {
     public void testWritingBinaryAttachments() throws Exception {
 
         // Read in message: SOAPPart and 2 image attachments
-        File f = getTestResourceFile(inMimeFileName);
-        InputStream inStream = new FileInputStream(f);
+        InputStream inStream = getTestResource(inMimeFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
         
         attachments.getSOAPPartInputStream();
@@ -277,15 +272,14 @@ public class AttachmentsTest extends AbstractTestCase {
 
     public void testGetDataHandler() throws Exception {
 
-        InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
+        InputStream inStream = getTestResource(inMimeFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
 
         DataHandler dh = attachments
                 .getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
         InputStream dataIs = dh.getDataSource().getInputStream();
 
-        FileDataSource dataSource = new FileDataSource(getTestResourceFile(img2FileName));
-        InputStream expectedDataIs = dataSource.getInputStream();
+        InputStream expectedDataIs = getTestResource(img2FileName);
 
         // Compare data across streams
         compareStreams(dataIs, expectedDataIs);
@@ -293,7 +287,7 @@ public class AttachmentsTest extends AbstractTestCase {
 
     public void testNonExistingMIMEPart() throws Exception {
 
-        InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
+        InputStream inStream = getTestResource(inMimeFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
 
         DataHandler dh = attachments.getDataHandler("ThisShouldReturnNull");
@@ -354,7 +348,7 @@ public class AttachmentsTest extends AbstractTestCase {
         // It doesn't actually matter what the stream *is* it just needs to exist
         String contentType = "multipart/related; boundary=\"" + boundary +
                 "\"; type=\"text/xml\"; start=\"" + contentTypeStartParam + "\"";
-        InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
+        InputStream inStream = getTestResource(inMimeFileName);
         Attachments attachments = new Attachments(inStream, contentType);
         assertEquals("Did not obtain correct content ID", contentId,
                 attachments.getSOAPPartContentID());

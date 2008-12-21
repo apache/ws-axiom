@@ -19,9 +19,13 @@
 
 package org.apache.axiom.om;
 
-import junit.framework.TestCase;
-
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 
 import org.custommonkey.xmlunit.XMLTestCase;
 
@@ -60,6 +64,19 @@ public abstract class AbstractTestCase
 
     public File getTestResourceFile(String relativePath) {
         return new File(testResourceDir, relativePath);
+    }
+    
+    public DataSource getTestResourceDataSource(String relativePath) {
+        return new FileDataSource(getTestResourceFile(relativePath));
+    }
+
+    public InputStream getTestResource(String relativePath) {
+        try {
+            return new FileInputStream(getTestResourceFile(relativePath));
+        } catch (FileNotFoundException ex) {
+            fail("The test resource " + relativePath + " could not be found");
+            return null;
+        }
     }
 
     public File getTempOutputFile(String filename) {

@@ -25,7 +25,6 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-import java.io.FileReader;
 
 public class OMFaultSerializerTest extends AbstractTestCase {
     private XMLStreamReader reader1;
@@ -38,14 +37,10 @@ public class OMFaultSerializerTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         reader1 =
                 XMLInputFactory.newInstance().
-                        createXMLStreamReader(
-                                new FileReader(
-                                        getTestResourceFile("soap/soap11/soapfault1.xml")));
+                        createXMLStreamReader(getTestResource("soap/soap11/soapfault1.xml"));
         reader2 =
                 XMLInputFactory.newInstance().
-                        createXMLStreamReader(
-                                new FileReader(
-                                        getTestResourceFile("soap/soap11/soapfault2.xml")));
+                        createXMLStreamReader(getTestResource("soap/soap11/soapfault2.xml"));
 
     }
 

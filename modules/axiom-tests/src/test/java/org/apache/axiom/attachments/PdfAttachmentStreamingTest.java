@@ -20,7 +20,6 @@ package org.apache.axiom.attachments;
 
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,7 +38,7 @@ public class PdfAttachmentStreamingTest extends AbstractTestCase {
 	}
 	
 	public void testStreamingAttachments() throws Exception {
-		FileInputStream inStream = new FileInputStream(getTestResourceFile(inputFile));
+		InputStream inStream = getTestResource(inputFile);
 		// creating attachments using that stream
 		Attachments attachments = new Attachments(inStream, contentType);
 
@@ -55,7 +54,7 @@ public class PdfAttachmentStreamingTest extends AbstractTestCase {
 		copy(firstAttach, output);
 
 		// reading the message again, getting second attachment using datahandlers
-		inStream = new FileInputStream(getTestResourceFile(inputFile));
+		inStream = getTestResource(inputFile);
 		attachments = new Attachments(inStream, contentType);
 		DataHandler h = attachments.getDataHandler((String)attachments.getAllContentIDs()[1]);
 

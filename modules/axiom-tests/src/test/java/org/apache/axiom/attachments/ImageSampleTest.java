@@ -31,7 +31,7 @@ import org.apache.axiom.om.impl.llom.OMTextImpl;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 
 import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
+import javax.activation.DataSource;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
@@ -42,7 +42,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -101,7 +100,7 @@ public class ImageSampleTest extends AbstractTestCase {
                 "http://www.example.org/stuff", "m");
         OMElement data = new OMElementImpl("data", dataName, fac);
 
-        FileDataSource dataSource = new FileDataSource(getTestResourceFile(imageInFileName));
+        DataSource dataSource = getTestResourceDataSource(imageInFileName);
         expectedDH = new DataHandler(dataSource);
         OMText binaryNode = new OMTextImpl(expectedDH, true, fac);
 
@@ -114,8 +113,7 @@ public class ImageSampleTest extends AbstractTestCase {
     }
 
     public void testImageSampleDeserialize() throws Exception {
-        InputStream inStream = new FileInputStream(
-                getTestResourceFile(inMimeFileName));
+        InputStream inStream = getTestResource(inMimeFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
         XMLStreamReader reader = XMLInputFactory.newInstance()
                 .createXMLStreamReader(

@@ -32,7 +32,6 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -55,8 +54,7 @@ public abstract class OMDOMTestCase extends AbstractTestCase {
             fileName = IN_FILE_NAME;
         }
         XMLStreamReader parser = XMLInputFactory.newInstance()
-                .createXMLStreamReader(
-                        new FileReader(getTestResourceFile(fileName)));
+                .createXMLStreamReader(getTestResource(fileName));
         builder = new StAXSOAPModelBuilder(parser, new SOAP11Factory(), null);
         return builder;
     }

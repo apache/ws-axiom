@@ -28,7 +28,6 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.File;
-import java.io.FileReader;
 
 public class OMStaxStreamingWrapperTest extends AbstractTestCase {
     private SOAPEnvelope envelope = null;
@@ -41,9 +40,7 @@ public class OMStaxStreamingWrapperTest extends AbstractTestCase {
 
     protected void setUp() throws Exception {
         XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance().
-                createXMLStreamReader(
-                        new FileReader(
-                                getTestResourceFile("soap/soapmessage1.xml")));
+                createXMLStreamReader(getTestResource("soap/soapmessage1.xml"));
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
                 OMAbstractFactory.getSOAP11Factory(), xmlStreamReader);
         envelope = (SOAPEnvelope) builder.getDocumentElement();

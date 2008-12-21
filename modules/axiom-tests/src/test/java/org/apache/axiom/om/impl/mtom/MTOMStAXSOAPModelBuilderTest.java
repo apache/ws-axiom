@@ -39,7 +39,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
@@ -64,7 +63,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         String contentTypeString =
                 "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
         String inFileName = "mtom/MTOMBuilderTestIn.txt";
-        InputStream inStream = new FileInputStream(getTestResourceFile(inFileName));
+        InputStream inStream = getTestResource(inFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
         XMLStreamReader reader = XMLInputFactory.newInstance()
                 .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
@@ -105,7 +104,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         String contentTypeString =
                 "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
         String inFileName = "mtom/MTOMBuilderTestIn.txt";
-        InputStream inStream = new FileInputStream(getTestResourceFile(inFileName));
+        InputStream inStream = getTestResource(inFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
         XMLStreamReader reader = XMLInputFactory.newInstance()
                 .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
@@ -134,7 +133,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         String contentTypeString =
                 "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
         String inFileName = "mtom/MTOMBuilderTestIn.txt";
-        InputStream inStream = new FileInputStream(getTestResourceFile(inFileName));
+        InputStream inStream = getTestResource(inFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
         XMLStreamReader reader = XMLInputFactory.newInstance()
                 .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
@@ -178,7 +177,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         String contentTypeString =
                 "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
         String inFileName = "mtom/MTOMBuilderTestIn.txt";
-        InputStream inStream = new FileInputStream(getTestResourceFile(inFileName));
+        InputStream inStream = getTestResource(inFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
         XMLStreamReader reader = XMLInputFactory.newInstance()
                 .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
@@ -225,7 +224,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         String contentTypeString =
                 "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
         String inFileName = "mtom/MTOMBuilderTestIn.txt";
-        InputStream inStream = new FileInputStream(getTestResourceFile(inFileName));
+        InputStream inStream = getTestResource(inFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
         XMLStreamReader reader = XMLInputFactory.newInstance()
                 .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
@@ -284,7 +283,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         String contentTypeString =
                 "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
         String inFileName = "mtom/MTOMBuilderTestIn.txt";
-        InputStream inStream = new FileInputStream(getTestResourceFile(inFileName));
+        InputStream inStream = getTestResource(inFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
         XMLStreamReader reader = XMLInputFactory.newInstance()
                 .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments

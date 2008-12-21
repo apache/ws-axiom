@@ -22,7 +22,6 @@ package org.apache.axiom.om;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.custommonkey.xmlunit.XMLTestCase;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -30,17 +29,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 
-public class OMElementCloneTest extends XMLTestCase {
-
-    File dir = new File(TestConstants.TEST_RESOURCES, TestConstants.SOAP_DIR);
+public class OMElementCloneTest extends AbstractTestCase {
 
     public void testElementCloningWithoutUsingOMElementMethod() throws Exception {
         SOAPEnvelope soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        new File(dir, TestConstants.SOAPMESSAGE))
+                        getTestResource(TestConstants.SOAP_SOAPMESSAGE))
                         .getDocumentElement();
         SOAPBody body = soapEnvelope.getBody();
 
@@ -68,7 +64,7 @@ public class OMElementCloneTest extends XMLTestCase {
     public void testElementCloningUsingOMElementMethod() throws Exception {
         SOAPEnvelope soapEnvelope =
                 (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        new File(dir, TestConstants.SOAPMESSAGE))
+                        getTestResource(TestConstants.SOAP_SOAPMESSAGE))
                         .getDocumentElement();
         SOAPBody body = soapEnvelope.getBody();
 

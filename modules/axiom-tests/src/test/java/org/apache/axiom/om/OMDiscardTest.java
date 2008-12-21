@@ -24,7 +24,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLInputFactory;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 
 /**
  *Test the discard method
@@ -55,9 +54,7 @@ public class OMDiscardTest extends AbstractTestCase {
 
     private XMLStreamReader getXMLStreamReader() throws XMLStreamException, FileNotFoundException {
         return XMLInputFactory.newInstance().
-                createXMLStreamReader(
-                        new FileReader(
-                                getTestResourceFile("soap/soapmessage.xml")));
+                createXMLStreamReader(getTestResource("soap/soapmessage.xml"));
     }
 
 }

@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
-import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
@@ -36,14 +35,14 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.InputStream;
 import java.util.Iterator;
 
+// TODO: more or less a copy & paste of the other OMTestUtils class; clean this up
 public class OMTestUtils {
-    public static OMXMLParserWrapper getOMBuilder(File file) throws Exception {
+    public static OMXMLParserWrapper getOMBuilder(InputStream in) throws Exception {
         XMLStreamReader parser = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new FileReader(file));
+                .createXMLStreamReader(in);
         return OMXMLBuilderFactory.createStAXSOAPModelBuilder(
                 new SOAP11Factory(), parser);
     }
@@ -122,9 +121,4 @@ public class OMTestUtils {
             throw new Exception("One is null");
         }
     }
-
-    public static SOAPEnvelope createOM(File file) throws Exception {
-        return (SOAPEnvelope) getOMBuilder(file).getDocumentElement();
-    }
-
 }

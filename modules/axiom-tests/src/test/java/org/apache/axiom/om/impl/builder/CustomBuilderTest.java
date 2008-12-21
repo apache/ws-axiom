@@ -38,8 +38,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
-import java.io.File;
-import java.io.FileReader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -50,6 +49,7 @@ import java.util.Iterator;
  * @author scheu
  *
  */
+// TODO: This class seems to be a copy and paste of CopyUtilsTest. Clean this up.
 public class CustomBuilderTest extends AbstractTestCase {
 
     public CustomBuilderTest(String testName) {
@@ -57,15 +57,13 @@ public class CustomBuilderTest extends AbstractTestCase {
     }
     
     public void testSample1() throws Exception {
-        File file = getTestResourceFile(TestConstants.SAMPLE1);
-        copyAndCheck(createEnvelope(file, false), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.SAMPLE1), false), true);
     }
     
     
     public void testHeaderCustomBuilder() throws Exception{
         XMLStreamReader parser =
-            XMLInputFactory.newInstance().createXMLStreamReader(new
-                                                                FileReader(getTestResourceFile(TestConstants.SOAP_SOAPMESSAGE)));
+            XMLInputFactory.newInstance().createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
         StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(parser, null);
         builder.registerCustomBuilder(new QName("http://schemas.xmlsoap.org/ws/2004/03/addressing","To"), 3, new
                                       ByteArrayCustomBuilder("utf-8"));
@@ -86,8 +84,7 @@ public class CustomBuilderTest extends AbstractTestCase {
      * @throws Exception
      */
     public void testSOAPMESSAGE() throws Exception {
-        File file = getTestResourceFile(TestConstants.SOAP_SOAPMESSAGE);
-        copyAndCheck(createEnvelope(file, false), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.SOAP_SOAPMESSAGE), false), true);
     }
     
     
@@ -97,22 +94,19 @@ public class CustomBuilderTest extends AbstractTestCase {
      * @throws Exception
      */
     public void testSOAPMESSAGE2() throws Exception {
-        File file = getTestResourceFile(TestConstants.SOAP_SOAPMESSAGE);
-        copyAndCheck(createEnvelope(file, true), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.SOAP_SOAPMESSAGE), true), true);
     }
     
     public void testWHITESPACE_MESSAGE() throws Exception {
-        File file = getTestResourceFile(TestConstants.WHITESPACE_MESSAGE);
-        copyAndCheck(createEnvelope(file, false), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.WHITESPACE_MESSAGE), false), true);
     }
     
     public void testREALLY_BIG_MESSAGE() throws Exception {
-        File file = getTestResourceFile(TestConstants.REALLY_BIG_MESSAGE);
-        copyAndCheck(createEnvelope(file, false), false);  // Ignore the serialization comparison
+        // Ignore the serialization comparison
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.REALLY_BIG_MESSAGE), false), false);
     }
     public void testOMSE() throws Exception {
-        File file = getTestResourceFile(TestConstants.EMPTY_BODY_MESSAGE);
-        SOAPEnvelope sourceEnv = createEnvelope(file, false);
+        SOAPEnvelope sourceEnv = createEnvelope(getTestResource(TestConstants.EMPTY_BODY_MESSAGE), false);
         SOAPBody body = sourceEnv.getBody();
         
         // Create a payload
@@ -126,8 +120,7 @@ public class CustomBuilderTest extends AbstractTestCase {
     }
     
     public void testOMSE2() throws Exception {
-        File file = getTestResourceFile(TestConstants.EMPTY_BODY_MESSAGE);
-        SOAPEnvelope sourceEnv = createEnvelope(file, false);
+        SOAPEnvelope sourceEnv = createEnvelope(getTestResource(TestConstants.EMPTY_BODY_MESSAGE), false);
         SOAPBody body = sourceEnv.getBody();
         SOAPHeader header = sourceEnv.getHeader();
         String encoding = "UTF-8";
@@ -162,9 +155,9 @@ public class CustomBuilderTest extends AbstractTestCase {
      * @return
      * @throws Exception
      */
-    protected SOAPEnvelope createEnvelope(File file, boolean doFaultCheck) throws Exception {
+    protected SOAPEnvelope createEnvelope(InputStream in, boolean doFaultCheck) throws Exception {
         XMLStreamReader parser =
-            XMLInputFactory.newInstance().createXMLStreamReader(new FileReader(file));
+            XMLInputFactory.newInstance().createXMLStreamReader(in);
         StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(parser, null);
         
         SOAPEnvelope sourceEnv = (SOAPEnvelope) builder.getDocumentElement();

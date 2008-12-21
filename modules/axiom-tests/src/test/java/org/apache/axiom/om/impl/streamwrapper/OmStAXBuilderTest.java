@@ -30,7 +30,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 
 public class OmStAXBuilderTest extends AbstractTestCase {
     private SOAPFactory factory = null;
@@ -44,9 +43,7 @@ public class OmStAXBuilderTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         factory = OMAbstractFactory.getSOAP11Factory();
         XMLStreamReader reader = XMLInputFactory.newInstance().
-                createXMLStreamReader(
-                        new FileReader(
-                                getTestResourceFile("soap/soapmessage.xml")));
+                createXMLStreamReader(getTestResource("soap/soapmessage.xml"));
         builder =
                 OMXMLBuilderFactory.createStAXSOAPModelBuilder(factory,
                                                                reader);

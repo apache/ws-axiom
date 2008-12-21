@@ -36,8 +36,7 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
-import java.io.File;
-import java.io.FileReader;
+import java.io.InputStream;
 import java.util.Iterator;
 
 /**
@@ -50,41 +49,35 @@ public class CopyUtilsTest extends AbstractTestCase {
     }
     
     public void testSample1() throws Exception {
-        File file = getTestResourceFile(TestConstants.SAMPLE1);
-        copyAndCheck(createEnvelope(file), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.SAMPLE1)), true);
     }
     
     public void testSOAPMESSAGE() throws Exception {
-        File file = getTestResourceFile(TestConstants.SOAP_SOAPMESSAGE);
-        copyAndCheck(createEnvelope(file), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.SOAP_SOAPMESSAGE)), true);
     }
     
     public void testSOAPMESSAGE1() throws Exception {
-        File file = getTestResourceFile(TestConstants.SOAP_SOAPMESSAGE1);
-        copyAndCheck(createEnvelope(file), false);  // Ignore the serialization comparison
+        // Ignore the serialization comparison
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.SOAP_SOAPMESSAGE1)), false);
     }
     
     public void testWHITESPACE_MESSAGE() throws Exception {
-        File file = getTestResourceFile(TestConstants.WHITESPACE_MESSAGE);
-        copyAndCheck(createEnvelope(file), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.WHITESPACE_MESSAGE)), true);
     }
     
     public void testMINIMAL_MESSAGE() throws Exception {
-        File file = getTestResourceFile(TestConstants.MINIMAL_MESSAGE);
-        copyAndCheck(createEnvelope(file), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.MINIMAL_MESSAGE)), true);
     }
     public void testREALLY_BIG_MESSAGE() throws Exception {
-        File file = getTestResourceFile(TestConstants.REALLY_BIG_MESSAGE);
-        copyAndCheck(createEnvelope(file), false);  // Ignore the serialization comparison
+        // Ignore the serialization comparison
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.REALLY_BIG_MESSAGE)), false);
     }
     public void testEMPTY_BODY_MESSAGE() throws Exception {
-        File file = getTestResourceFile(TestConstants.EMPTY_BODY_MESSAGE);
-        copyAndCheck(createEnvelope(file), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.EMPTY_BODY_MESSAGE)), true);
     }
     
     public void testOMSE() throws Exception {
-        File file = getTestResourceFile(TestConstants.EMPTY_BODY_MESSAGE);
-        SOAPEnvelope sourceEnv = createEnvelope(file);
+        SOAPEnvelope sourceEnv = createEnvelope(getTestResource(TestConstants.EMPTY_BODY_MESSAGE));
         SOAPBody body = sourceEnv.getBody();
         
         // Create a payload
@@ -98,8 +91,7 @@ public class CopyUtilsTest extends AbstractTestCase {
     }
     
     public void testOMSE2() throws Exception {
-        File file = getTestResourceFile(TestConstants.EMPTY_BODY_MESSAGE);
-        SOAPEnvelope sourceEnv = createEnvelope(file);
+        SOAPEnvelope sourceEnv = createEnvelope(getTestResource(TestConstants.EMPTY_BODY_MESSAGE));
         SOAPBody body = sourceEnv.getBody();
         SOAPHeader header = sourceEnv.getHeader();
         String encoding = "UTF-8";
@@ -130,13 +122,13 @@ public class CopyUtilsTest extends AbstractTestCase {
     
     /**
      * Create SOAPEnvelope from the test in the indicated file
-     * @param file
+     * @param in
      * @return
      * @throws Exception
      */
-    protected SOAPEnvelope createEnvelope(File file) throws Exception {
+    protected SOAPEnvelope createEnvelope(InputStream in) throws Exception {
         XMLStreamReader parser =
-            XMLInputFactory.newInstance().createXMLStreamReader(new FileReader(file));
+            XMLInputFactory.newInstance().createXMLStreamReader(in);
         OMXMLParserWrapper builder = new StAXSOAPModelBuilder(parser, null);
         SOAPEnvelope sourceEnv = (SOAPEnvelope) builder.getDocumentElement();
         return sourceEnv;

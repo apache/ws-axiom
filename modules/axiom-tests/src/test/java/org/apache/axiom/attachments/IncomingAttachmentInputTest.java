@@ -22,7 +22,6 @@ package org.apache.axiom.attachments;
 import org.apache.axiom.om.AbstractTestCase;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 
@@ -40,7 +39,7 @@ public class IncomingAttachmentInputTest extends AbstractTestCase {
     File temp;
 
     public void testIncomingAttachmentInputStreamFunctions() throws Exception {
-        InputStream inStream = new FileInputStream(getTestResourceFile(inMimeFileName));
+        InputStream inStream = getTestResource(inMimeFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
 
         // Get the inputstream container
