@@ -83,7 +83,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
     }
 
     public Iterator getChildren() {
-        return new OMChildrenIterator(this.firstChild);
+        return new OMChildrenIterator(getFirstOMChild());
     }
 
     /**
