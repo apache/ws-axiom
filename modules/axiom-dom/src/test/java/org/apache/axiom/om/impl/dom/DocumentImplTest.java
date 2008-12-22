@@ -36,7 +36,7 @@ public class DocumentImplTest extends OMDocumentTestBase {
         super(new OMDOMImplementation());
     }
 
-    public void testOMDocument() throws XMLStreamException {
+    public void testSerializeAndConsume() throws XMLStreamException {
         // TODO: temporarily skip this; doesn't work yet
     }
 
@@ -119,6 +119,7 @@ public class DocumentImplTest extends OMDocumentTestBase {
                 Document doc = dbf.newDocumentBuilder().newDocument();
                 
                 doc.appendChild(doc.createComment("some comment"));
+                doc.appendChild(doc.createProcessingInstruction("pi", "data"));
                 
                 // Document Object Model (DOM) Level 3 Core Specification, section 1.1.1
                 // says that text nodes are not allowed as children of a document.
@@ -139,7 +140,8 @@ public class DocumentImplTest extends OMDocumentTestBase {
                     assertEquals(DOMException.HIERARCHY_REQUEST_ERR, ex.code);
                 }
                 
-                // A comment after the document element is allowed
+                // PIs and comments after the document element are allowed
+                doc.appendChild(doc.createProcessingInstruction("pi", "data"));
                 doc.appendChild(doc.createComment("some comment"));
                 
                 // Again, text nodes are not allowed

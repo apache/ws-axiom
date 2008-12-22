@@ -232,9 +232,10 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 // set the document element
                 ((DocumentImpl) this).documentElement = (ElementImpl) newDomChild;
             } else if (!(newDomChild instanceof CommentImpl
+                    || newDomChild instanceof ProcessingInstructionImpl
                     || newDomChild instanceof DocumentFragmentImpl)) {
-                // TODO: we should also check for ProcessingInstruction and DocumentType,
-                //       but since we don't have implementations yet, we can leave it
+                // TODO: we should also check for DocumentType,
+                //       but since we don't have an implementation yet, we can leave it
                 //       like this for now
                 throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                         DOMMessageFormatter.formatMessage(

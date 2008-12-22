@@ -46,6 +46,7 @@ import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.NamespaceImpl;
 import org.apache.axiom.om.impl.dom.OMDOMException;
 import org.apache.axiom.om.impl.dom.ParentNode;
+import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
 import org.apache.axiom.om.impl.dom.TextImpl;
 import org.w3c.dom.Node;
 
@@ -361,8 +362,10 @@ public class OMDOMFactory implements OMFactory {
 
     public OMProcessingInstruction createOMProcessingInstruction(
             OMContainer parent, String piTarget, String piData) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        ProcessingInstructionImpl pi =
+            new ProcessingInstructionImpl(getDocumentFromParent(parent), piTarget, piData, this);
+        parent.addChild(pi);
+        return pi;
     }
 
     public OMComment createOMComment(OMContainer parent, String content) {

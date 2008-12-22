@@ -43,7 +43,11 @@ public class OMDocumentTestBase extends TestCase {
         this.omImplementation = omImplementation;
     }
 
-    public void testOMDocument() throws XMLStreamException {
+    public void testParse() {
+        checkSampleXML(getSampleOMDocument(sampleXML));
+    }
+    
+    public void testSerializeAndConsume() throws XMLStreamException {
         // read the string in to the builder
         OMDocument omDocument = getSampleOMDocument(sampleXML);
 
@@ -54,12 +58,14 @@ public class OMDocumentTestBase extends TestCase {
         outXML = new String(outStream.toByteArray());
 
         // again load that to another builder
-        OMDocument secondDocument = getSampleOMDocument(outXML);
-
+        checkSampleXML(getSampleOMDocument(outXML));
+    }
+    
+    private void checkSampleXML(OMDocument document) {
         // check for the comment and the PI
         boolean commentFound = false;
         boolean piFound = false;
-        Iterator children = secondDocument.getChildren();
+        Iterator children = document.getChildren();
         while (children.hasNext()) {
             OMNode omNode = (OMNode) children.next();
             if (omNode instanceof OMComment) {
@@ -72,8 +78,6 @@ public class OMDocumentTestBase extends TestCase {
             }
         }
         assertTrue(commentFound && piFound);
-
-
     }
 
     /**

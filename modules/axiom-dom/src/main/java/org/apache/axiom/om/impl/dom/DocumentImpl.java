@@ -221,10 +221,9 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         throw new UnsupportedOperationException("TODO");
     }
 
-    public ProcessingInstruction createProcessingInstruction(String arg0,
-                                                             String arg1) throws DOMException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+    public ProcessingInstruction createProcessingInstruction(String target,
+                                                             String data) throws DOMException {
+        return new ProcessingInstructionImpl(this, target, data, factory);
     }
 
     public Text createTextNode(String value) {
