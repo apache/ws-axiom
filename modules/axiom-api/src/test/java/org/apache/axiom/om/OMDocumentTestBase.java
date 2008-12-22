@@ -29,13 +29,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 import java.util.Iterator;
 
-public class OMDocumentTest extends TestCase {
+public class OMDocumentTestBase extends TestCase {
     private String sampleXML = "<?xml version='1.0' encoding='utf-8'?>" +
             "<!--This is some comments at the start of the document-->" +
             "<?PITarget PIData?>" +
             "<Axis2>" +
             "    <ProjectName>The Apache Web Sevices Project</ProjectName>" +
             "</Axis2>";
+    
+    private final OMImplementation omImplementation;
+    
+    public OMDocumentTestBase(OMImplementation omImplementation) {
+        this.omImplementation = omImplementation;
+    }
 
     public void testOMDocument() throws XMLStreamException {
         // read the string in to the builder
@@ -87,7 +93,8 @@ public class OMDocumentTest extends TestCase {
         try {
             XMLStreamReader xmlStreamReader =
                     XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
-            StAXOMBuilder builder = new StAXOMBuilder(xmlStreamReader);
+            StAXOMBuilder builder =
+                    new StAXOMBuilder(omImplementation.getOMFactory(), xmlStreamReader);
             return builder.getDocument();
         } catch (XMLStreamException e) {
             throw new UnsupportedOperationException();

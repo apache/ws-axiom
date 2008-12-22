@@ -102,6 +102,20 @@
             <groupId>${stax.impl.groupid}</groupId>
             <artifactId>${stax.impl.artifact}</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-impl</artifactId>
+            <classifier>tests</classifier>
+            <version>${axiom.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-dom</artifactId>
+            <classifier>tests</classifier>
+            <version>${axiom.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
