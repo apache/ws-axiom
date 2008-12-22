@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
@@ -163,86 +164,96 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     public int next() throws OMException {
         try {
-            if (done) {
-                throw new OMException();
-            }
-            int token = parserNext();
-            if (!cache) {
+            // We need a loop here because we may decide to skip an event
+            while (true) {
+                if (done) {
+                    throw new OMException();
+                }
+                int token = parserNext();
+                if (!cache) {
+                    return token;
+                }
+               
+                // The current token should be the same as the 
+                // one just obtained.  This bit of code is used to 
+                // detect invalid parser state.
+                if (doTrace) {
+                    int currentParserToken = parser.getEventType();
+                    if (currentParserToken != token) {
+    
+    
+                        log.debug("WARNING: The current state of the parser is not equal to the " +
+                                  "state just received from the parser. The current state in the paser is " +
+                                  getStateString(currentParserToken) + " the state just received is " +
+                                  getStateString(token));
+    
+                        /*
+                          throw new OMException("The current token " + token + 
+                                         " does not match the current event " +
+                                         "reported by the parser token.  The parser did not update its state correctly.  " +
+                                         "The parser is " + parser);
+                         */
+                    }
+                }
+                
+                // Now log the current state of the parser
+                if (doTrace) {
+                    logParserState();
+                }
+               
+                switch (token) {
+                    case XMLStreamConstants.START_ELEMENT:
+                        elementLevel++;
+                        lastNode = createNextOMElement();
+                        break;
+                    case XMLStreamConstants.START_DOCUMENT:
+                        // Document has already being created.
+    
+                        document.setXMLVersion(parser.getVersion());
+                        document.setCharsetEncoding(parser.getEncoding());
+                        document.setStandalone(parser.isStandalone() ? "yes" : "no");
+                        break;
+                    case XMLStreamConstants.CHARACTERS:
+                        lastNode = createOMText(XMLStreamConstants.CHARACTERS);
+                        break;
+                    case XMLStreamConstants.CDATA:
+                        lastNode = createOMText(XMLStreamConstants.CDATA);
+                        break;
+                    case XMLStreamConstants.END_ELEMENT:
+                        endElement();
+                        elementLevel--;
+                        break;
+                    case XMLStreamConstants.END_DOCUMENT:
+                        done = true;
+                        ((OMContainerEx) this.document).setComplete(true);
+                        break;
+                    case XMLStreamConstants.SPACE:
+                        try {
+                            lastNode = createOMText(XMLStreamConstants.SPACE);
+                        } catch (OMHierarchyException ex) {
+                            // The OM implementation doesn't allow text nodes at the current
+                            // position in the tree. Since it is only whitespace, we can safely
+                            // skip this event.
+                            continue;
+                        }
+                        break;
+                    case XMLStreamConstants.COMMENT:
+                        lastNode = createComment();
+                        break;
+                    case XMLStreamConstants.DTD:
+                        createDTD();
+                        break;
+                    case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                        lastNode = createPI();
+                        break;
+                    case XMLStreamConstants.ENTITY_REFERENCE:
+                        lastNode = createOMText(XMLStreamConstants.ENTITY_REFERENCE);
+                        break;
+                    default :
+                        throw new OMException();
+                }
                 return token;
             }
-           
-            // The current token should be the same as the 
-            // one just obtained.  This bit of code is used to 
-            // detect invalid parser state.
-            if (doTrace) {
-                int currentParserToken = parser.getEventType();
-                if (currentParserToken != token) {
-
-
-                    log.debug("WARNING: The current state of the parser is not equal to the " +
-                              "state just received from the parser. The current state in the paser is " +
-                              getStateString(currentParserToken) + " the state just received is " +
-                              getStateString(token));
-
-                    /*
-                      throw new OMException("The current token " + token + 
-                                     " does not match the current event " +
-                                     "reported by the parser token.  The parser did not update its state correctly.  " +
-                                     "The parser is " + parser);
-                     */
-                }
-            }
-            
-            // Now log the current state of the parser
-            if (doTrace) {
-                logParserState();
-            }
-           
-            switch (token) {
-                case XMLStreamConstants.START_ELEMENT:
-                    elementLevel++;
-                    lastNode = createNextOMElement();
-                    break;
-                case XMLStreamConstants.START_DOCUMENT:
-                    // Document has already being created.
-
-                    document.setXMLVersion(parser.getVersion());
-                    document.setCharsetEncoding(parser.getEncoding());
-                    document.setStandalone(parser.isStandalone() ? "yes" : "no");
-                    break;
-                case XMLStreamConstants.CHARACTERS:
-                    lastNode = createOMText(XMLStreamConstants.CHARACTERS);
-                    break;
-                case XMLStreamConstants.CDATA:
-                    lastNode = createOMText(XMLStreamConstants.CDATA);
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    endElement();
-                    elementLevel--;
-                    break;
-                case XMLStreamConstants.END_DOCUMENT:
-                    done = true;
-                    ((OMContainerEx) this.document).setComplete(true);
-                    break;
-                case XMLStreamConstants.SPACE:
-                    lastNode = createOMText(XMLStreamConstants.SPACE);
-                    break;
-                case XMLStreamConstants.COMMENT:
-                    lastNode = createComment();
-                    break;
-                case XMLStreamConstants.DTD:
-                    createDTD();
-                    break;
-                case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    lastNode = createPI();
-                    break;
-                case XMLStreamConstants.ENTITY_REFERENCE:
-                    lastNode = createOMText(XMLStreamConstants.ENTITY_REFERENCE);
-                    break;
-                default :
-                    throw new OMException();
-            }
-            return token;
         } catch (OMException e) {
             throw e;
         } catch (Exception e) {

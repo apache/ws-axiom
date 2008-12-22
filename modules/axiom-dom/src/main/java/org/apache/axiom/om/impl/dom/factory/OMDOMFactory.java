@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -241,10 +242,12 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText( org.apache.axiom.om.OMElement,String)
      */
     public OMText createOMText(OMContainer parent, String text) {
-        // A text node can also be added as the child of a Document node (at least if
-        // it contains whitespace only). Therefore we can't assume that the parent is
-        // an element and we need to use getDocumentFromParent instead.
-        TextImpl txt = new TextImpl(getDocumentFromParent(parent), text, this);
+        if (parent instanceof DocumentImpl) {
+            throw new OMHierarchyException(
+                    "DOM doesn't support text nodes as children of a document");
+        }
+        TextImpl txt = new TextImpl((DocumentImpl)((ElementImpl)parent).getOwnerDocument(),
+                text, this);
         parent.addChild(txt);
         return txt;
     }

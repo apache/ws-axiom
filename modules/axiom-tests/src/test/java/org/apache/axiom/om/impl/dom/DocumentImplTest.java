@@ -23,6 +23,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import junit.framework.TestCase;
 import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -98,6 +99,46 @@ public class DocumentImplTest extends TestCase {
                 assertNull("Document's previous sibling has to be null", node2);
                 Node node3 = doc.getParentNode();
                 assertNull("Document's parent has to be null", node3);
+            }
+        });
+    }
+
+    public void testAllowedChildren() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                Document doc = dbf.newDocumentBuilder().newDocument();
+                
+                doc.appendChild(doc.createComment("some comment"));
+                
+                // Document Object Model (DOM) Level 3 Core Specification, section 1.1.1
+                // says that text nodes are not allowed as children of a document.
+                try {
+                    doc.appendChild(doc.createTextNode("    "));
+                    fail("Expected DOMException");
+                } catch (DOMException ex) {
+                    assertEquals(DOMException.HIERARCHY_REQUEST_ERR, ex.code);
+                }
+                
+                doc.appendChild(doc.createElement("root1"));
+                
+                // Multiple document elements are not allowed
+                try {
+                    doc.appendChild(doc.createElement("root2"));
+                    fail("Expected DOMException");
+                } catch (DOMException ex) {
+                    assertEquals(DOMException.HIERARCHY_REQUEST_ERR, ex.code);
+                }
+                
+                // A comment after the document element is allowed
+                doc.appendChild(doc.createComment("some comment"));
+                
+                // Again, text nodes are not allowed
+                try {
+                    doc.appendChild(doc.createTextNode("    "));
+                    fail("Expected DOMException");
+                } catch (DOMException ex) {
+                    assertEquals(DOMException.HIERARCHY_REQUEST_ERR, ex.code);
+                }
             }
         });
     }

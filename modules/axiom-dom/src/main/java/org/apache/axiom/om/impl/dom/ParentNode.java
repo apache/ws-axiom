@@ -218,19 +218,28 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         }
 
         if (this instanceof Document) {
-            if (((DocumentImpl) this).documentElement != null
-                    && !(newDomChild instanceof CommentImpl)) {
-                // Throw exception since there cannot be two document elements
-                throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                                       DOMMessageFormatter.formatMessage(
-                                               DOMMessageFormatter.DOM_DOMAIN,
-                                               "HIERARCHY_REQUEST_ERR", null));
-            } else if (newDomChild instanceof ElementImpl) {
+            if (newDomChild instanceof ElementImpl) {
+                if (((DocumentImpl) this).documentElement != null) {
+                    // Throw exception since there cannot be two document elements
+                    throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
+                                           DOMMessageFormatter.formatMessage(
+                                                   DOMMessageFormatter.DOM_DOMAIN,
+                                                   "HIERARCHY_REQUEST_ERR", null));
+                }
                 if (newDomChild.parentNode == null) {
                     newDomChild.parentNode = this;
                 }
                 // set the document element
                 ((DocumentImpl) this).documentElement = (ElementImpl) newDomChild;
+            } else if (!(newDomChild instanceof CommentImpl
+                    || newDomChild instanceof DocumentFragmentImpl)) {
+                // TODO: we should also check for ProcessingInstruction and DocumentType,
+                //       but since we don't have implementations yet, we can leave it
+                //       like this for now
+                throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
+                        DOMMessageFormatter.formatMessage(
+                                DOMMessageFormatter.DOM_DOMAIN,
+                                "HIERARCHY_REQUEST_ERR", null));
             }
         }
         boolean compositeChild = newDomChild.nextSibling != null;
