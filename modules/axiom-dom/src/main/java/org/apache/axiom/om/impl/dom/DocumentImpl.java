@@ -275,8 +275,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public DOMImplementation getImplementation() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        return new DOMImplementationImpl();
     }
 
     public Node importNode(Node importedNode, boolean deep) throws DOMException {

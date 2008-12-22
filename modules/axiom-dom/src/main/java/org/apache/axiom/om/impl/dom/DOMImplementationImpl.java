@@ -27,9 +27,10 @@ import org.w3c.dom.DocumentType;
 
 public class DOMImplementationImpl implements DOMImplementation {
 
-    public boolean hasFeature(String arg0, String arg1) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+    public boolean hasFeature(String feature, String version) {
+        boolean anyVersion = version == null || version.length() == 0;
+        return (feature.equalsIgnoreCase("Core") || feature.equalsIgnoreCase("XML"))
+                && (anyVersion || version.equals("1.0") || version.equals("2.0"));
     }
 
     public Document createDocument(String namespaceURI, String qualifiedName,
