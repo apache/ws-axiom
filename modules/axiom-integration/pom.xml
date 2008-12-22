@@ -39,6 +39,11 @@
             <version>${axiom.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-dom</artifactId>
+            <version>${axiom.version}</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
@@ -70,7 +75,12 @@
         <dependency>
             <groupId>net.sf.saxon</groupId>
             <artifactId>saxon</artifactId>
-            <version>8.5.1</version>
+            <version>8.9</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>saxon-dom</artifactId>
+            <version>8.9</version>
         </dependency>
     </dependencies>
     <build>

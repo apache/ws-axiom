@@ -518,9 +518,12 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         throw new UnsupportedOperationException("TODO");
     }
 
-    public short compareDocumentPosition(Node arg0) throws DOMException {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+    public short compareDocumentPosition(Node other) throws DOMException {
+        // This is not yet implemented. In the meantime, we throw a DOMException
+        // and not an UnsupportedOperationException, since this works better with
+        // some other libraries (such as Saxon 8.9).
+        throw new DOMException(DOMException.NOT_SUPPORTED_ERR, DOMMessageFormatter
+                .formatMessage(DOMMessageFormatter.DOM_DOMAIN, "NOT_SUPPORTED_ERR", null));
     }
 
     public String getTextContent() throws DOMException {
