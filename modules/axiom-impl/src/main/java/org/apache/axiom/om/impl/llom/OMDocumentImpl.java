@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMDocumentImplUtil;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenLocalNameIterator;
@@ -402,35 +403,9 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
 
     }
 
-    protected void internalSerialize(XMLStreamWriter writer2, boolean cache,
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache,
                                      boolean includeXMLDeclaration) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
-        if (includeXMLDeclaration) {
-            //Check whether the OMOutput char encoding and OMDocument char
-            //encoding matches, if not use char encoding of OMOutput
-            String outputCharEncoding = writer.getCharSetEncoding();
-            if (outputCharEncoding == null || "".equals(outputCharEncoding)) {
-                writer.getXmlStreamWriter().writeStartDocument(charSetEncoding,
-                                                               xmlVersion);
-            } else {
-                writer.getXmlStreamWriter().writeStartDocument(outputCharEncoding,
-                                                               xmlVersion);
-            }
-        }
-
-        Iterator children = this.getChildren();
-
-        if (cache) {
-            while (children.hasNext()) {
-                OMNodeEx omNode = (OMNodeEx) children.next();
-                omNode.internalSerialize(writer);
-            }
-        } else {
-            while (children.hasNext()) {
-                OMNodeEx omNode = (OMNodeEx) children.next();
-                omNode.internalSerializeAndConsume(writer);
-            }
-        }
+        OMDocumentImplUtil.internalSerialize(this, writer, cache, includeXMLDeclaration);
     }
 
     public OMFactory getOMFactory() {

@@ -28,6 +28,8 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.OMDocumentImplUtil;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
@@ -101,7 +103,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        // TODO Auto-generated method stub
+        internalSerialize(writer, true, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
     }
 
     // /
@@ -379,21 +381,9 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
     }
 
-    public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
     public void internalSerializeAndConsume(XMLStreamWriter writer)
             throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public void serializeAndConsume(XMLStreamWriter xmlWriter)
-            throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        internalSerialize(writer, false, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
     }
 
     // /
@@ -425,14 +415,15 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
+        internalSerializeAndConsume(writer);
+        writer.flush();
     }
 
-    public void serialize(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+    public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
+        internalSerialize(writer);
+        writer.flush();
     }
 
     public void setXMLVersion(String version) {
@@ -581,4 +572,8 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         setXMLVersion(version);
     }
 
+    protected void internalSerialize(XMLStreamWriter writer, boolean cache,
+            boolean includeXMLDeclaration) throws XMLStreamException {
+        OMDocumentImplUtil.internalSerialize(this, writer, cache, includeXMLDeclaration);
+    }
 }

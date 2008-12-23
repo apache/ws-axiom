@@ -36,10 +36,6 @@ public class DocumentImplTest extends OMDocumentTestBase {
         super(new OMDOMImplementation());
     }
 
-    public void testSerializeAndConsume() throws XMLStreamException {
-        // TODO: temporarily skip this; doesn't work yet
-    }
-
     public void testCreateElement() throws Exception {
         DOMTestUtil.execute(new DOMTestUtil.Test() {
             public void execute(DocumentBuilderFactory dbf) throws Exception {
