@@ -22,22 +22,19 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.util.ByteArrayDataSource;
 
+import org.apache.axiom.om.AbstractTestCase;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FilterInputStream;
-import java.io.FilterOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import junit.framework.TestCase;
 
 /**
  * Simple test for the BufferUtils copying code
  */
-public class BufferUtilsTest extends TestCase {
+public class BufferUtilsTest extends AbstractTestCase {
 
     byte[] bytes;
     static final int MAX = 1024 * 1024;
@@ -82,16 +79,7 @@ public class BufferUtilsTest extends TestCase {
     }
     
     public void testDataSourceBackedDataHandlerExceedLimit(){
-        String imgFileLocation="test-resources/mtom/img/test2.jpg";
-        try{
-            String baseDir = new File(System.getProperty("basedir",".")).getCanonicalPath();
-            imgFileLocation = new File(baseDir +File.separator+ imgFileLocation).getAbsolutePath();
-        }catch(IOException e){
-            e.printStackTrace();
-            fail();
-        }
-        
-        File imgFile = new File(imgFileLocation);
+        File imgFile = getTestResourceFile("mtom/img/test2.jpg");
         FileDataSource fds = new FileDataSource(imgFile);
         DataHandler dh = new DataHandler(fds);
         int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);

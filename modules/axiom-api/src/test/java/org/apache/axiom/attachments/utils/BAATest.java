@@ -16,11 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.attachments;
+package org.apache.axiom.attachments.utils;
 
 import org.apache.axiom.attachments.impl.BufferUtils;
-import org.apache.axiom.attachments.utils.BAAInputStream;
-import org.apache.axiom.attachments.utils.BAAOutputStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

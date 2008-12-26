@@ -17,10 +17,9 @@
  * under the License.
  */
 
-package org.apache.axiom.attachments;
+package org.apache.axiom.om.util;
 
 import junit.framework.TestCase;
-import org.apache.axiom.om.util.Base64;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
