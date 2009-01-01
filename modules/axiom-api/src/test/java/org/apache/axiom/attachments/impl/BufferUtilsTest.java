@@ -93,11 +93,11 @@ public class BufferUtilsTest extends TestCase {
             FileDataSource fds = new FileDataSource(file);
             DataHandler dh = new DataHandler(fds);
             int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
-            assertEquals(unsupported, -1);
+            assertEquals(-1, unsupported);
             int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 1000);
-            assertEquals(doesExceed, 1);
+            assertEquals(1, doesExceed);
             int doesNotExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 100000);
-            assertEquals(doesNotExceed, 0);
+            assertEquals(0, doesNotExceed);
         } finally {
             file.delete();
         }    
@@ -108,10 +108,10 @@ public class BufferUtilsTest extends TestCase {
         try{
             DataHandler dh = new DataHandler(str, "text/plain");          
             int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
-            assertEquals(unsupported, -1);
+            assertEquals(-1, unsupported);
             int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 10);
             //Expecting Mark NotSupported
-            assertEquals(doesExceed, -1);
+            assertEquals(-1, doesExceed);
         }catch(Exception e){
             e.printStackTrace();
             fail();
@@ -125,11 +125,11 @@ public class BufferUtilsTest extends TestCase {
         try{
             DataHandler dh = new DataHandler(bads);          
             int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
-            assertEquals(unsupported, -1);
+            assertEquals(-1, unsupported);
             int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 10);
-            assertEquals(doesExceed, 1);
+            assertEquals(1, doesExceed);
             int doesNotExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 100);
-            assertEquals(doesNotExceed, 0);
+            assertEquals(0, doesNotExceed);
         }catch(Exception e){
             e.printStackTrace();
             fail();
