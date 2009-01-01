@@ -22,19 +22,21 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.util.ByteArrayDataSource;
 
-import org.apache.axiom.om.AbstractTestCase;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
+
+import junit.framework.TestCase;
 
 /**
  * Simple test for the BufferUtils copying code
  */
-public class BufferUtilsTest extends AbstractTestCase {
+public class BufferUtilsTest extends TestCase {
 
     byte[] bytes;
     static final int MAX = 1024 * 1024;
@@ -78,17 +80,27 @@ public class BufferUtilsTest extends AbstractTestCase {
         }    
     }
     
-    public void testDataSourceBackedDataHandlerExceedLimit(){
-        File imgFile = getTestResourceFile("mtom/img/test2.jpg");
-        FileDataSource fds = new FileDataSource(imgFile);
-        DataHandler dh = new DataHandler(fds);
-        int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
-        assertEquals(unsupported, -1);
-        int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 1000);
-        assertEquals(doesExceed, 1);
-        int doesNotExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 100000);
-        assertEquals(doesNotExceed, 0);
-        
+    public void testDataSourceBackedDataHandlerExceedLimit() throws IOException {
+        File file =  File.createTempFile("bufferUtils", "tst");
+        file.deleteOnExit();
+        try {
+            RandomAccessFile raf = new RandomAccessFile(file, "rw");
+            try {
+                raf.setLength(5000);
+            } finally {
+                raf.close();
+            }
+            FileDataSource fds = new FileDataSource(file);
+            DataHandler dh = new DataHandler(fds);
+            int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
+            assertEquals(unsupported, -1);
+            int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 1000);
+            assertEquals(doesExceed, 1);
+            int doesNotExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 100000);
+            assertEquals(doesNotExceed, 0);
+        } finally {
+            file.delete();
+        }    
     }
     
     public void testObjectBackedDataHandlerExceedLimit(){
