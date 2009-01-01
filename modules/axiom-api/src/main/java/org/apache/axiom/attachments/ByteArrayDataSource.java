@@ -19,13 +19,12 @@
 
 package org.apache.axiom.attachments;
 
-import javax.activation.DataSource;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class ByteArrayDataSource implements DataSource {
+public class ByteArrayDataSource implements SizeAwareDataSource {
 
     private byte[] data;
 
@@ -64,6 +63,10 @@ public class ByteArrayDataSource implements DataSource {
 
     public OutputStream getOutputStream() throws IOException {
         throw new IOException("Not Supported");
+    }
+
+    public long getSize() {
+        return data == null ? 0 : data.length;
     }
 }
 

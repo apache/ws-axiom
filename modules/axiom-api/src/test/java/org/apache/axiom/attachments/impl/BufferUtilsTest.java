@@ -110,8 +110,9 @@ public class BufferUtilsTest extends TestCase {
             int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
             assertEquals(-1, unsupported);
             int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 10);
-            //Expecting Mark NotSupported
-            assertEquals(-1, doesExceed);
+            assertEquals(1, doesExceed);
+            int doesNotExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 100);
+            assertEquals(0, doesNotExceed);
         }catch(Exception e){
             e.printStackTrace();
             fail();

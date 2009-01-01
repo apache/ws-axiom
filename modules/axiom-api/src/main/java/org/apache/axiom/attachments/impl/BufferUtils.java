@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.attachments.impl;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,8 +31,8 @@ import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 
+import org.apache.axiom.attachments.SizeAwareDataSource;
 import org.apache.axiom.attachments.utils.BAAOutputStream;
-import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -216,7 +217,47 @@ public class BufferUtils {
         return baaos.receive(is, limit);
     }
     
+    /**
+     * Exception used by SizeLimitedOutputStream if the size limit has been exceeded.
+     */
+    private static class SizeLimitExceededException extends IOException {
+        private static final long serialVersionUID = -6644887187061182165L;
+    }
     
+    /**
+     * An output stream that counts the number of bytes written to it and throws an
+     * exception when the size exceeds a given limit.
+     */
+    private static class SizeLimitedOutputStream extends OutputStream {
+        private final int maxSize;
+        private int size;
+        
+        public SizeLimitedOutputStream(int maxSize) {
+            this.maxSize = maxSize;
+        }
+
+        public void write(byte[] b, int off, int len) throws IOException {
+            size += len;
+            checkSize();
+        }
+
+        public void write(byte[] b) throws IOException {
+            size += b.length;
+            checkSize();
+        }
+
+        public void write(int b) throws IOException {
+            size++;
+            checkSize();
+        }
+        
+        private void checkSize() throws SizeLimitExceededException {
+            if (size > maxSize) {
+                throw new SizeLimitExceededException();
+            }
+        }
+    }
+
     /**
      * The method checks to see if attachment is eligble for optimization.
      * An attachment is eligible for optimization if and only if the size of 
@@ -232,80 +273,46 @@ public class BufferUtils {
      * @throws IOException
      */
     public static int doesDataHandlerExceedLimit(DataHandler dh, int limit){
-        if(log.isDebugEnabled()){
-            log.debug("start isEligibleForOptimization");
-        }
         //If Optimized Threshold not set return true.
         if(limit==0){
-            if(log.isDebugEnabled()){
-                log.debug("optimizedThreshold not set");
-            }
             return -1;
         }
-        
-        InputStream in=null;
-        //read bytes from input stream to check if 
-        //attachment size is greater than the optimized size.        
-        int totalRead = 0;
-        try{
-            in = getInputStream(dh);
-            if(in.markSupported()){
-                in.mark(limit);
-            }
-            if(in == null){
-                if(log.isDebugEnabled()){
-                    log.debug("Input Stream is null");
-                }
+        DataSource ds = dh.getDataSource();
+        if (ds instanceof SizeAwareDataSource) {
+            return ((SizeAwareDataSource)ds).getSize() > limit ? 1 : 0;
+        } else if (ds instanceof javax.mail.util.ByteArrayDataSource) {
+            // Special optimization for JavaMail's ByteArrayDataSource (Axiom's ByteArrayDataSource
+            // already implements SizeAwareDataSource and doesn't need further optimization):
+            // we know that ByteArrayInputStream#available() directly returns the size of the
+            // data source.
+            try {
+                return ((ByteArrayInputStream)ds.getInputStream()).available() > limit ? 1 : 0;
+            } catch (IOException ex) {
+                // We will never get here...
                 return -1;
             }
-            do{
-                byte[] buffer = getTempBuffer();
-                int bytesRead = in.read(buffer, 0, BUFFER_LEN);
-                totalRead = totalRead+bytesRead;
-                releaseTempBuffer(buffer);
-            }while((limit>totalRead) && (in.available()>0));
-            
-            if(in.markSupported()){                
-                in.reset();
-            }
-            if(totalRead > limit){
-                if(log.isDebugEnabled()){
-                    log.debug("Attachment size greater than limit");
-                }
+        } else if (ds instanceof FileDataSource) {
+            // Special optimization for FileDataSources: no need to open and read the file
+            // to know its size!
+            return ((FileDataSource)ds).getFile().length() > limit ? 1 : 0;
+        } else {
+            // In all other cases, we prefer DataHandler#writeTo over DataSource#getInputStream.
+            // The reason is that if the DataHandler was constructed from an Object rather than
+            // a DataSource, a call to DataSource#getInputStream() will start a new thread and
+            // return a PipedInputStream. This is so for Geronimo's as well as Sun's JAF
+            // implementaion. The reason is that DataContentHandler only has a writeTo and no
+            // getInputStream method. Obviously starting a new thread just to check the size of
+            // the data is an overhead that we should avoid.
+            try {
+                dh.writeTo(new SizeLimitedOutputStream(limit));
+            } catch (SizeLimitExceededException ex) {
                 return 1;
+            } catch (IOException ex) {
+                log.warn(ex.getMessage());
+                return -1;
             }
-        }catch(Exception e){            
-            log.warn(e.getMessage());
-            return -1;
+            return 0;
         }
-        
-        if(log.isDebugEnabled()){
-            log.debug("Attachment Size smaller than limit");
-        }
-        
-        return 0;        
-    }
-    
-    private static java.io.InputStream getInputStream(DataHandler dataHandlerObject) throws OMException {
-        InputStream inStream = null;
-        javax.activation.DataHandler dataHandler =
-            (javax.activation.DataHandler) dataHandlerObject;
-        try {
-            DataSource ds = dataHandler.getDataSource();
-            if(ds instanceof FileDataSource){
-                inStream = ds.getInputStream();
-            }else{
-                inStream = dataHandler.getDataSource().getInputStream();
-                if(!inStream.markSupported()){
-                    throw new OMException("Stream does not support mark, Cannot read the stream as DataSource will be consumed.");
-                }
-            }
-        } catch (IOException e) {
-            throw new OMException(
-                "Cannot get InputStream from DataHandler." + e);
-        }
-        return inStream;
-
     }
     
     private static synchronized byte[] getTempBuffer() {
