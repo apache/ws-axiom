@@ -117,8 +117,7 @@ public class XOPAwareStAXOMBuilder
         if (MTOMConstants.XOP_INCLUDE.equals(elementName)
                 && MTOMConstants.XOP_NAMESPACE_URI.equals(namespaceURI)) {
             OMText node;
-            String contentID = ElementHelper.getContentID(parser, getDocument()
-                    .getCharsetEncoding());
+            String contentID = ElementHelper.getContentID(parser);
             if (log.isDebugEnabled()) {
                 log.debug("Encountered xop:include for cid:" + contentID);
             }

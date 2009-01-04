@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMSerializer;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
+import org.apache.axiom.om.util.ElementHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -546,7 +547,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
      */ 
     protected boolean serializeXOPInclude(XMLStreamReader reader,
                                           XMLStreamWriter writer) {
-       String cid = reader.getAttributeValue(null, "href");
+       String cid = ElementHelper.getContentID(reader);
        DataHandler dh = getDataHandler(cid, (OMAttachmentAccessor) reader);
        if (dh == null) {
            return false;

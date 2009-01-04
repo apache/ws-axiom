@@ -77,8 +77,7 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
         // create an OMBlob if the element is an <xop:Include>
         if (XOP_INCLUDE.equals(elementName) && XOP_NAMESPACE_URI.equals(namespaceURI)) {
             OMText node;
-            String contentID = ElementHelper.getContentID(parser, getDocument()
-                    .getCharsetEncoding());
+            String contentID = ElementHelper.getContentID(parser);
             
             if (log.isDebugEnabled()) {
                 log.debug("Encountered xop:include for cid:" + contentID);

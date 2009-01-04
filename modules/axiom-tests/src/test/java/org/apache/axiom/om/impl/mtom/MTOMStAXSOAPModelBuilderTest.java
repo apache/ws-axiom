@@ -100,6 +100,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
      * the XOP is preserved when it is serialized.
      * @throws Exception
      */
+    // TODO: because of the serializeAndConsume, this is actually NOT testing MTOMStAXSOAPModelBuilder, but StreamingOMSerializer!!!
     public void testCreateAndSerializeOptimized() throws Exception {
         String contentTypeString =
                 "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
@@ -120,7 +121,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         String msg = baos.toString();
         // Make sure there is an xop:Include element and an optimized attachment
         assertTrue(msg.indexOf("xop:Include") > 0);
-        assertTrue(msg.indexOf("Content-ID: <cid:-1609420109260943731>") > 0);
+        assertTrue(msg.indexOf("Content-ID: <-1609420109260943731>") > 0);
     }
     
     /**
@@ -248,7 +249,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         String contentTypeString =
                 "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
         String originalCID = "1.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org";
-        String encodedCID = URLEncoder.encode(originalCID, "UTF-16");
+        String encodedCID = URLEncoder.encode(originalCID, "UTF-8"); // URIs are always encoded using UTF-8 (see WSCOMMONS-429)
         String xmlPlusMime1 = "------=_AxIs2_Def_boundary_=42214532\r\n" +
                 "Content-Type: application/xop+xml; charset=UTF-16\r\n" +
                 "Content-Transfer-Encoding: 8bit\r\n" +

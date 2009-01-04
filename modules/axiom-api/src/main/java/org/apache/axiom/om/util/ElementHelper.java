@@ -134,35 +134,46 @@ public class ElementHelper {
         return null;
     }
 
+    /**
+     * @deprecated use {@link #getContentID(XMLStreamReader)} instead (see WSCOMMONS-429)
+     */
     public static String getContentID(XMLStreamReader parser, String charsetEncoding) {
-        String contentID;
-        String contentIDName;
-        if (parser.getAttributeCount() > 0) {
-            contentID = parser.getAttributeValue(0);
-            contentID = contentID.trim();
-            contentIDName = parser.getAttributeLocalName(0);
-            if (contentIDName.equalsIgnoreCase("href")
-                    & contentID.substring(0, 3).equalsIgnoreCase("cid")) {
-                contentID = contentID.substring(4);
-                String charEnc = charsetEncoding == null || "".equals(charsetEncoding) ? "UTF-8" :
-                        charsetEncoding;
-                try {
-                    contentID = URLDecoder.decode(contentID, charEnc);
-                } catch (UnsupportedEncodingException e) {
-                    throw new OMException("Unsupported Character Encoding Found", e);
-                }
-            } else if (!(contentIDName.equalsIgnoreCase("href")
-                    & (!contentID.equals("")))) {
-                throw new OMException(
-                        "contentID not Found in XOP:Include element");
-            }
+        return getContentID(parser);
+    }
+
+    public static String getContentID(XMLStreamReader parser) {
+        if (parser.getAttributeCount() > 0 &&
+                parser.getAttributeLocalName(0).equals("href")) {
+            return getContentIDFromHref(parser.getAttributeValue(0));
         } else {
             throw new OMException(
                     "Href attribute not found in XOP:Include element");
         }
-        return contentID;
     }
 
+    /**
+     * Extract the content ID from a href attribute value, i.e. from a URI following the
+     * cid: scheme defined by RFC2392.
+     * 
+     * @param href the value of the href attribute
+     * @return the corresponding content ID
+     */
+    public static String getContentIDFromHref(String href) {
+        if (href.startsWith("cid:")) {
+            try {
+                // URIs should always be decoded using UTF-8 (see WSCOMMONS-429). On the
+                // other hand, since non ASCII characters are not allowed in content IDs,
+                // we can simply decode using ASCII (which is a subset of UTF-8)
+                return URLDecoder.decode(href.substring(4), "ascii");
+            } catch (UnsupportedEncodingException ex) {
+                // We should never get here
+                throw new OMException(ex);
+            }
+        } else {
+            throw new OMException("href attribute didn't contain a valid cid: URI");
+        }
+    }
+    
     /**
      * Some times two OMElements needs to be added to the same object tree. But in Axiom, a single
      * tree should always contain object created from the same type of factory (eg:
