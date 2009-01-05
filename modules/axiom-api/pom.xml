@@ -23,7 +23,6 @@
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
         <version>SNAPSHOT</version>
-        <!-- Should better be ${axiom.version} -->
     </parent>
     <artifactId>axiom-api</artifactId>
     <name>Axiom API</name>
