@@ -510,14 +510,6 @@
             <url>scpexe://people.apache.org/www/ws.apache.org/commons/axiom</url>
         </site>
     </distributionManagement>
-    <!-- maven download repositry -->
-    <repositories>
-        <repository>
-            <id>maven2</id>
-            <name>Maven Central Development Repository</name>
-            <url>http://repo1.maven.org/maven2</url>
-        </repository>
-    </repositories>
     <modules>
         <module>modules/axiom-api</module>
         <module>modules/axiom-impl</module>
