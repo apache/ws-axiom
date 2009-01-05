@@ -95,6 +95,10 @@
                 <configuration>
                     <archive>
                         <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                        <manifestEntries>
+                           <!-- Put the correct Bundle-Version: in the manifest -->
+                           <Bundle-Version>${version}</Bundle-Version>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
