@@ -30,6 +30,7 @@ import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -90,48 +91,61 @@ public class SOAPEnvelopeImpl extends SOAPElement
     }
 
     /**
+     * Check that a node is allowed as a child of a SOAP envelope.
+     * 
+     * @param child
+     */
+    private void checkChild(OMNode child) {
+        if ((child instanceof OMElement)
+                && !(child instanceof SOAPHeader || child instanceof SOAPBody)) {
+            throw new SOAPProcessingException(
+                    "SOAP Envelope can not have children other than SOAP Header and Body",
+                    SOAP12Constants.FAULT_CODE_SENDER);
+        }
+    }
+    
+    /**
      * Add a SOAPHeader or SOAPBody object
      * @param child an OMNode to add - must be either a SOAPHeader or a SOAPBody
      */
     public void addChild(OMNode child) {
-        if ((child instanceof OMElement) &&
-            !(child instanceof SOAPHeader || child instanceof SOAPBody)) {
-            throw new SOAPProcessingException(
-                    "SOAP Envelope can not have children other than SOAP Header and Body",
-                    SOAP12Constants.FAULT_CODE_SENDER);
-        } else {
-            if (child instanceof SOAPHeader) {
-                // The SOAPHeader is added before the SOAPBody
-                // We must be sensitive to the state of the parser.  It is possible that the
-                // has not been processed yet.
-                if (this.done) {
-                    // Parsing is complete, therefore it is safe to
-                    // call getBody.
-                    SOAPBody body = getBody();
-                    if (body != null) {
-                        body.insertSiblingBefore(child);
+        // SOAP 1.1 allows for arbitrary elements after SOAPBody so do NOT check for
+        // node types when appending to SOAP 1.1 envelope.
+        if (getVersion() instanceof SOAP12Version) {
+            checkChild((OMNode)child);
+        }
+
+        if (child instanceof SOAPHeader) {
+            // The SOAPHeader is added before the SOAPBody
+            // We must be sensitive to the state of the parser.  It is possible that the
+            // has not been processed yet.
+            if (this.done) {
+                // Parsing is complete, therefore it is safe to
+                // call getBody.
+                SOAPBody body = getBody();
+                if (body != null) {
+                    body.insertSiblingBefore(child);
+                    return;
+                }
+            } else {
+                // Flow to here indicates that we are still expanding the
+                // envelope.  The body or body contents may not be
+                // parsed yet.  We can't use getBody() yet...it will
+                // cause a failure.  So instead, carefully find the
+                // body and insert the header.  If the body is not found,
+                // this indicates that it has not been parsed yet...and
+                // the code will fall through to the super.addChild.
+                OMNode node = this.lastChild;
+                while (node != null) {
+                    if (node instanceof SOAPBody) {
+                        node.insertSiblingBefore(child);
                         return;
                     }
-                } else {
-                    // Flow to here indicates that we are still expanding the
-                    // envelope.  The body or body contents may not be
-                    // parsed yet.  We can't use getBody() yet...it will
-                    // cause a failure.  So instead, carefully find the
-                    // body and insert the header.  If the body is not found,
-                    // this indicates that it has not been parsed yet...and
-                    // the code will fall through to the super.addChild.
-                    OMNode node = this.lastChild;
-                    while (node != null) {
-                        if (node instanceof SOAPBody) {
-                            node.insertSiblingBefore(child);
-                            return;
-                        }
-                        node = node.getPreviousOMSibling();
-                    }
+                    node = node.getPreviousOMSibling();
                 }
             }
-            super.addChild(child);
         }
+        super.addChild(child);        
     }
     
     /**

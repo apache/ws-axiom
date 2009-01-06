@@ -30,6 +30,7 @@ import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.NodeImpl;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
+import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
@@ -112,7 +113,6 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
     }
 
     public void addChild(OMNode child) {
-        checkChild(child);
         if (this.done && (child instanceof SOAPHeader)) {
             SOAPBody body = getBody();
             if (body != null) {
@@ -126,8 +126,13 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
         // Check that the child to be added is valid in the context of a SOAP envelope.
         // Note that this also covers the appendChild case, since that method
-        // calls insertBefore with refChild == null. 
-        checkChild((OMNode)newChild);
+        // calls insertBefore with refChild == null.
+        
+        // SOAP 1.1 allows for arbitrary elements after SOAPBody so do NOT check for
+        // allowed node types when appending to SOAP 1.1 envelope.
+        if (!(getVersion() instanceof SOAP11Version && refChild == null)) {
+            checkChild((OMNode)newChild);
+        }
         return super.insertBefore(newChild, refChild);
     }
 
