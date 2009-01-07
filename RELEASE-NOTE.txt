@@ -1,7 +1,7 @@
 
 ===========================================
 
-     Apache AXIOM 1.2.7 Release Note
+     Apache AXIOM 1.2.8 Release Note
 
 ===========================================
 
@@ -30,16 +30,55 @@ Key Features
     * Two implementations included:
           o Linked list based implementation
           o W3C DOM supporting implementation
-    * High performant
+    * Highly performant
 
     
 
 What's New in This Release
 ==========================
 
-This release contains fixes for following issues.
+This release contains fixes for following issues (see
+                              http://issues.apache.org/jira/browse/WSCOMMONS/component/12310703)
 
-https://issues.apache.org/jira/browse/WSCOMMONS-319	Refactor Optimized Threshold in OMOutputFormat.
-https://issues.apache.org/jira/browse/WSCOMMONS-321 OMStaXWrapper is inadvertently turning off caching
+WSCOMMONS-434 org.apache.axiom.om.impl.dom.NodeImpl#getTextContent() and org.apache.axiom.om.impl.dom.NodeImpl#setTextContent(String arg0) are not implemented 
+WSCOMMONS-429 XOPAwareStAXOMBuilder / MTOMStAXSOAPModelBuilder should use UTF-8 to decode cid: URIs 
+WSCOMMONS-427 StreamingOMSerializer#serializeXOPInclude doesn't decode cid: URLs 
+WSCOMMONS-424 BufferUtils#doesDataHandlerExceedLimit needs review 
+WSCOMMONS-423 DOOM doesn't correctly enforce hierarchy constraints on Document 
+WSCOMMONS-420 Attempted validation of DomSource leads to "java.lang.UnsupportedOperationException: TODO" from "org.apache.axiom.om.impl.dom.DocumentImpl.getDoctype" 
+WSCOMMONS-415 Provide implementations of javax.xml.transform.Source and javax.xml.transform.Result 
+WSCOMMONS-413 Build failure with JDK 1.4.2 
+WSCOMMONS-412 Get rid of the setDOOMRequired hack 
+WSCOMMONS-394 StAXUtils: Add Network Detached XMLStreamReader capability 
+WSCOMMONS-393 Error using AxiomSoapMessageFactory with comments in request 
+WSCOMMONS-386 Exception thrown is not descriptive, if content-type missing boundary parameter 
+WSCOMMONS-381 StringIndexOutOfBoundsException in org.apache.axiom.attachments.impl.PartFactory.readHeader() 
+WSCOMMONS-373 SAXOMBuilder needs to support default namespaces 
+WSCOMMONS-372 Sometimes accessing an AXIOM tree while the underlying input stream is closed causes an OutOfMemoryError 
+WSCOMMONS-357 NPE will result in Axiom code if MD5 algorithm is not in classpath 
+WSCOMMONS-340 Error calling getTextCharacters() on a comment node 
+WSCOMMONS-337 insertSiblingAfter() method doesn't set last child 
+WSCOMMONS-336 Inconsistent specification for OMDataSource#serialize(OutputStream, OMOutputFormat) 
+WSCOMMONS-335 Add a getOutputFormat method to MTOMXMLStreamWriter 
+WSCOMMONS-334 OMSourcedElementImpl#serialize produces wrong result when element is expanded 
+WSCOMMONS-333 Add an addNamespaces(OMElement) method to AXIOMXPath 
+WSCOMMONS-329 org.apache.axiom.attachments.Attachments#getSOAPPartContentID() does not parse content ids correctly. 
+WSCOMMONS-328 Failure in boundaryPosition condition for checking position validity 
+WSCOMMONS-327 Namespace High verbosity combined with XMLBeans 
+WSCOMMONS-323 XML Element lost when there is an OMException inside OMChildrenIterator.next() 
+WSCOMMONS-317 Reverted code, need to review code 
+WSCOMMONS-281 xmlns:xml declaration is unnecessary and fails in some parsers 
+WSCOMMONS-255 AXIOM DOM based org.w3c.dom.Element.getElementsByTagName and getElementsByTagNameNS do not funcion according to spec 
+WSCOMMONS-254 AXIOM DOM based implementation fails to parse documents that start with xml comment. 
+WSCOMMONS-253 mvn: creating axiom.jar (bundle of axiom-api.jar, axiom-dom.jar and axiom-impl.jar) 
+WSCOMMONS-239 org.apache.axiom.om.OMElement#getText() is not documented sufficiently 
+WSCOMMONS-237 Can't retrieve children from OMDocument 
+WSCOMMONS-233 SecurityException thrown in OMAbstractFactory when run from an applet (2) 
+WSCOMMONS-207 Finding namespace based on prefix is broken 
+WSCOMMONS-197 SOAP headers added using DOOM are lost during serialization 
+WSCOMMONS-182 Infinite loop in OMElement possible 
+WSCOMMONS-121 Handling of xml documents with two top level elements is errorneous 
+WSCOMMONS-115 Problem in serialization when comments presents 
+WSCOMMONS-101 axiom base64 encoding is incorrect 
 
 - The Apache Axiom Team.
