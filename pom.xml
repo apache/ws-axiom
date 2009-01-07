@@ -271,6 +271,7 @@
                             <useReleaseProfiles>false</useReleaseProfiles>
                             <goals>deploy</goals>
                             <arguments>-Prelease</arguments>
+                            <preparationGoals>clean install</preparationGoals>
                         </configuration>
                     </plugin>
                     <plugin>
