@@ -26,12 +26,15 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import java.io.ByteArrayOutputStream;
+import java.io.StringReader;
 
 public class ElementImplTest extends OMElementTestBase {
     protected OMFactory getOMFactory() {
@@ -189,6 +192,31 @@ public class ElementImplTest extends OMElementTestBase {
                 assertNull(element.getNamespaceURI());
                 element = doc.createElementNS("", "test");
                 assertNull(element.getNamespaceURI());
+            }
+        });
+    }
+    
+    public void testGetTextContent() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                Document doc = dbf.newDocumentBuilder().parse(new InputSource(
+                        new StringReader("<a>1<!--c--><b>2</b>3</a>")));
+                assertEquals("123", doc.getDocumentElement().getTextContent());
+            }
+        });
+    }
+    
+    public void testSetTextContent() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                Document doc = dbf.newDocumentBuilder().parse(new InputSource(
+                        new StringReader("<a>1<!--c--><b>2</b>3</a>")));
+                Element element = doc.getDocumentElement();
+                element.setTextContent("test");
+                Node firstChild = element.getFirstChild();
+                assertTrue(firstChild instanceof Text);
+                assertEquals("test", firstChild.getNodeValue());
+                assertNull(firstChild.getNextSibling());
             }
         });
     }

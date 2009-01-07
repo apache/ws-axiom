@@ -506,6 +506,14 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     * DOM-Level 3 methods
     */
 
+    public String getTextContent() throws DOMException {
+        return null;
+    }
+
+    public void setTextContent(String textContent) throws DOMException {
+        // no-op
+    }
+
     public Node adoptNode(Node node) throws DOMException {
         //OK... I'm cheating here,  a BIG TODO
         return this.importNode(node, true);

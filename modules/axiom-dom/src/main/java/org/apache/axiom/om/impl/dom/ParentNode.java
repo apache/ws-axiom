@@ -613,4 +613,50 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             }
         }
     }
+    
+    public String getTextContent() throws DOMException {
+        Node child = getFirstChild();
+        if (child != null) {
+            Node next = child.getNextSibling();
+            if (next == null) {
+                return hasTextContent(child) ? ((NodeImpl)child).getTextContent() : "";
+            }
+            StringBuffer buf = new StringBuffer();
+            getTextContent(buf);
+            return buf.toString();
+        } else {
+            return "";
+        }
+    }
+
+    void getTextContent(StringBuffer buf) throws DOMException {
+        Node child = getFirstChild();
+        while (child != null) {
+            if (hasTextContent(child)) {
+                ((NodeImpl)child).getTextContent(buf);
+            }
+            child = child.getNextSibling();
+        }
+    }
+    
+    // internal method returning whether to take the given node's text content
+    private static boolean hasTextContent(Node child) {
+        return child.getNodeType() != Node.COMMENT_NODE &&
+            child.getNodeType() != Node.PROCESSING_INSTRUCTION_NODE /* &&
+            (child.getNodeType() != Node.TEXT_NODE ||
+             ((TextImpl) child).isIgnorableWhitespace() == false)*/;
+    }
+    
+    public void setTextContent(String textContent) throws DOMException {
+        // get rid of any existing children
+        // TODO: there is probably a better way to remove all children
+        Node child;
+        while ((child = getFirstChild()) != null) {
+            removeChild(child);
+        }
+        // create a Text node to hold the given content
+        if (textContent != null && textContent.length() != 0) {
+            addChild(factory.createOMText(textContent));
+        }
+    }
 }

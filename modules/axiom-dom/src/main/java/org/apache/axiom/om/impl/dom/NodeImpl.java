@@ -527,13 +527,19 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
     }
 
     public String getTextContent() throws DOMException {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+        return getNodeValue();  // overriden in some subclasses
     }
 
-    public void setTextContent(String arg0) throws DOMException {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+    // internal method taking a StringBuffer in parameter
+    void getTextContent(StringBuffer buf) throws DOMException {
+        String content = getNodeValue();
+        if (content != null) {
+            buf.append(content);
+        }
+    }
+
+    public void setTextContent(String textContent) throws DOMException {
+        setNodeValue(textContent);  // overriden in some subclasses
     }
 
     public boolean isSameNode(Node node) {
