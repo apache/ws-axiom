@@ -226,8 +226,7 @@
     </licenses>
     <scm>
         <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</connection>
-        <developerConnection>
-            scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</developerConnection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</developerConnection>
         <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/trunk/modules/axiom</url>
     </scm>
     <organization>
