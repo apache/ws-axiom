@@ -22,14 +22,14 @@
     <parent>
         <artifactId>axiom</artifactId>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <version>SNAPSHOT</version>
+        <version>1.2.8</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom-c14n</artifactId>
     <name>Axiom C14N</name>
-    <version>SNAPSHOT</version>
-    <description/>
+    <version>1.2.8</version>
+    <description />
     <dependencies>
         <dependency>
             <groupId>org.apache.ws.commons.axiom</groupId>
@@ -66,8 +66,8 @@
                             <tasks>
                                 <copy todir="${project.build.directory}/legal-files">
                                     <fileset dir="../..">
-                                        <include name="LICENSE.txt"/>
-                                        <include name="NOTICE.txt"/>
+                                        <include name="LICENSE.txt" />
+                                        <include name="NOTICE.txt" />
                                     </fileset>
                                 </copy>
                             </tasks>
