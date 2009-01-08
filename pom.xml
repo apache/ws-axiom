@@ -325,32 +325,6 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>rc</id>
-            <activation>
-                <property>
-                    <name>rc</name>
-                    <value />
-                </property>
-            </activation>
-            <build>
-                <plugins>
-<!--                    <plugin>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>javadoc</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <attach>true</attach>
-                        </configuration>
-                    </plugin> -->
-                </plugins>
-            </build>
-        </profile>
     </profiles>
     <build>
         <pluginManagement>
@@ -363,14 +337,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <configuration>
-                        <descriptors>
-                            <descriptor>src/main/assembly/jar.xml</descriptor>
-                            <descriptor>src/main/assembly/bin.xml</descriptor>
-                            <descriptor>src/main/assembly/src.xml</descriptor>
-                        </descriptors>
-                        <tarLongFileMode>gnu</tarLongFileMode>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -382,10 +348,6 @@
                     <source>1.3</source>
                     <target>1.3</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
             </plugin>
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
@@ -568,6 +530,7 @@
         <module>modules/axiom-dom</module>
         <module>modules/axiom-c14n</module>
         <module>modules/axiom-tests</module>
+        <module>modules/distribution</module>
     </modules>
     <properties>
         <axiom.version>${pom.version}</axiom.version>

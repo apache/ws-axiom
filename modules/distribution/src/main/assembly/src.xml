@@ -25,6 +25,8 @@
     </formats>
     <fileSets>
         <fileSet>
+            <directory>../../</directory>
+            <outputDirectory></outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
@@ -40,12 +42,12 @@
     </fileSets>
     <files>
         <file>
-            <source>README.txt</source>
+            <source>../../README.txt</source>
             <outputDirectory>/</outputDirectory>
             <filtered>true</filtered>
         </file>
         <file>
-            <source>RELEASE-NOTE.txt</source>
+            <source>../../RELEASE-NOTE.txt</source>
             <outputDirectory>/</outputDirectory>
             <filtered>true</filtered>
         </file>
