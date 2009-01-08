@@ -19,6 +19,9 @@
 
 package org.apache.axiom.c14n.omwrapper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.axiom.c14n.omwrapper.factory.WrapperFactory;
 import org.apache.axiom.c14n.omwrapper.interfaces.Document;
 import org.apache.axiom.c14n.omwrapper.interfaces.Element;
@@ -69,8 +72,17 @@ public class AttrImplTest extends TestCase {
     public void testAttrProperties(){
         // e5 has 7 attributes
         assertEquals(7, nnm.getLength());
+        
+        Map map = new HashMap();
+        for (int i = 0; i < 7; i++) {
+            attr = (Attr)nnm.item(i);
+            QName name = new QName(attr.getNamespaceURI(), attr.getLocalName());
+            map.put(name, attr);
+        }
+        
         //attr is a:attr="out"
-        attr = (Attr)nnm.item(0);
+        attr = (Attr)map.get(new QName("http://www.w3.org", "attr"));
+        assertNotNull(attr);
         assertEquals("attr", attr.getLocalName());
         assertEquals("a:attr", attr.getName());
         assertEquals("a:attr", attr.getNodeName());
@@ -78,7 +90,8 @@ public class AttrImplTest extends TestCase {
         assertEquals("http://www.w3.org", attr.getNamespaceURI());
 
         // attr is attr2="all"
-        attr = (Attr)nnm.item(2);
+        attr = (Attr)map.get(new QName("attr2"));
+        assertNotNull(attr);
         assertEquals("attr2", attr.getLocalName());
         assertEquals("attr2", attr.getName());
         assertEquals("attr2", attr.getNodeName());
@@ -88,7 +101,8 @@ public class AttrImplTest extends TestCase {
         assertEquals("all", attr.getNodeValue());
 
         // attr is xmlns:a="http://www.w3.org"
-        attr = (Attr)nnm.item(4);
+        attr = (Attr)map.get(new QName("http://www.w3.org/2000/xmlns/", "a"));
+        assertNotNull(attr);
         assertEquals("a", attr.getLocalName());
         assertEquals("xmlns:a", attr.getName());
         assertEquals("xmlns:a", attr.getNodeName());
@@ -99,7 +113,8 @@ public class AttrImplTest extends TestCase {
         assertEquals("http://www.w3.org", attr.getNodeValue());
 
         // attr is xmlns="http://example.org"
-        attr = (Attr)nnm.item(6);
+        attr = (Attr)map.get(new QName("http://www.w3.org/2000/xmlns/", "xmlns"));
+        assertNotNull(attr);
         assertEquals("xmlns", attr.getLocalName());
         assertEquals("xmlns", attr.getName());
         assertEquals("xmlns", attr.getNodeName());
