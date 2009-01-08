@@ -22,11 +22,11 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
-        <version>SNAPSHOT</version>
+        <version>1.2.8</version>
     </parent>
     <artifactId>distribution</artifactId>
     <name>Axiom Distribution</name>
-    <version>SNAPSHOT</version>
+    <version>1.2.8</version>
     <description>Axiom Distribution</description>
     <packaging>pom</packaging>
     <dependencies>
