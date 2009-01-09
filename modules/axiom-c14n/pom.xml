@@ -22,13 +22,13 @@
     <parent>
         <artifactId>axiom</artifactId>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <version>1.2.8</version>
+        <version>SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom-c14n</artifactId>
     <name>Axiom C14N</name>
-    <version>1.2.8</version>
+    <version>SNAPSHOT</version>
     <description />
     <dependencies>
         <dependency>

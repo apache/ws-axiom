@@ -22,7 +22,7 @@
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom</artifactId>
     <name>Axiom</name>
-    <version>1.2.8</version>
+    <version>SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>AXIOM API</description>
     <url>http://ws.apache.org/commons/axiom/</url>
@@ -225,9 +225,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/tags/axiom/1.2.8</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/tags/axiom/1.2.8</developerConnection>
-        <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/tags/axiom/1.2.8</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</developerConnection>
+        <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/trunk/modules/axiom</url>
     </scm>
     <organization>
         <name>The Apache Software Foundation</name>
