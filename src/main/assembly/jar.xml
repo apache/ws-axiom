@@ -22,15 +22,18 @@
     <formats>
         <format>jar</format>
     </formats>
-    <dependencySets>
-        <dependencySet>
+    <moduleSets>
+        <moduleSet>
             <includes>
                 <include>org.apache.ws.commons.axiom:axiom-api</include>
                 <include>org.apache.ws.commons.axiom:axiom-impl</include>
                 <include>org.apache.ws.commons.axiom:axiom-dom</include>
                 <include>org.apache.ws.commons.axiom:axiom-c14n</include>
             </includes>
-            <unpack>true</unpack>
-        </dependencySet>
-    </dependencySets>
+            <binaries>
+                <includeDependencies>false</includeDependencies>
+                <unpack>true</unpack>
+            </binaries>
+        </moduleSet>
+    </moduleSets>    
 </assembly>
