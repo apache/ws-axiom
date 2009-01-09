@@ -22,11 +22,11 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
-        <version>SNAPSHOT</version>
+        <version>1.2.8</version>
     </parent>
     <artifactId>axiom-impl</artifactId>
     <name>Axiom Impl</name>
-    <version>SNAPSHOT</version>
+    <version>1.2.8</version>
     <description>The Axiom default implementation.</description>
     <dependencies>
         <dependency>
