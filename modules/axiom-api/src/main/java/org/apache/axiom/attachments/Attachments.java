@@ -306,8 +306,13 @@ public class Attachments implements OMAttachmentAccessor {
     }
 
     /**
-     * @return whether Message Type is SOAP with Attachments or MTOM optimized, by checking the
-     *         application type parameter in the Content Type.
+     * Identify the type of message (MTOM or SOAP with attachments) represented by this
+     * object.
+     * 
+     * @return One of the {@link MTOMConstants#MTOM_TYPE}, {@link MTOMConstants#SWA_TYPE}
+     *         or {@link MTOMConstants#SWA_TYPE_12} constants.
+     * @throws OMException if the message doesn't have one of the supported types, i.e. is
+     *         neither MTOM nor SOAP with attachments
      */
     public String getAttachmentSpecType() {
         if (this.applicationType == null) {
