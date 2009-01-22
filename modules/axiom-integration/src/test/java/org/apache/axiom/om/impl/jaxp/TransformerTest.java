@@ -19,8 +19,13 @@
 
 package org.apache.axiom.om.impl.jaxp;
 
+import static org.custommonkey.xmlunit.XMLAssert.assertXMLIdentical;
+import static org.custommonkey.xmlunit.XMLUnit.compareXML;
+
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -28,14 +33,33 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.custommonkey.xmlunit.XMLTestCase;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
-public class TransformerTest extends XMLTestCase {
+@RunWith(Parameterized.class)
+public class TransformerTest {
+    private final TransformerFactory factory;
+    
+    @Parameters
+    public static List<Object[]> parameters() {
+        return Arrays.asList(new Object[][] {
+                { org.apache.xalan.processor.TransformerFactoryImpl.class },
+                { net.sf.saxon.TransformerFactoryImpl.class }
+        });
+    }
+    
+    public TransformerTest(Class<? extends TransformerFactory> factoryClass) throws Exception {
+        this.factory = factoryClass.newInstance();
+    }
+
     private InputStream getInput() {
         return TransformerTest.class.getResourceAsStream("test.xml");
     }
     
-    private void test(TransformerFactory factory) throws Exception {
+    @Test
+    public void test() throws Exception {
         Transformer transformer = factory.newTransformer();
         
         OMSource omSource = new OMSource(new StAXOMBuilder(getInput()).getDocumentElement());
@@ -48,13 +72,5 @@ public class TransformerTest extends XMLTestCase {
         transformer.transform(streamSource, streamResult);
         
         assertXMLIdentical(compareXML(out.toString(), omResult.getRootElement().toString()), true);
-    }
-
-    public void testXalan() throws Exception {
-        test(new org.apache.xalan.processor.TransformerFactoryImpl());
-    }
-    
-    public void testSaxon() throws Exception {
-        test(new net.sf.saxon.TransformerFactoryImpl());
     }
 }

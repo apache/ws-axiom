@@ -19,14 +19,18 @@
 
 package org.apache.axiom.om.impl.builder;
 
+import static org.custommonkey.xmlunit.XMLAssert.assertXMLIdentical;
+import static org.custommonkey.xmlunit.XMLUnit.compareXML;
+
 import java.io.StringWriter;
 
 import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument;
 import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument.Order;
 import org.apache.axiom.om.impl.builder.test.xmlbeans.OrderDocument.Order.Item;
-import org.custommonkey.xmlunit.XMLTestCase;
+import org.junit.Test;
 
-public class SAXOMBuilderXMLBeansTest extends XMLTestCase {
+public class SAXOMBuilderXMLBeansTest {
+    @Test
     public void test() throws Exception {
         OrderDocument document = OrderDocument.Factory.newInstance();
         Order order = document.addNewOrder();

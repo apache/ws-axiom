@@ -19,6 +19,9 @@
 
 package org.apache.axiom.om.impl.dom.jaxp;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -28,11 +31,31 @@ import javax.xml.transform.dom.DOMSource;
 
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+@RunWith(Parameterized.class)
 public class TransformerTest extends XMLTestCase {
-    private void testStylesheet(TransformerFactory tf) throws Exception {
+    private final TransformerFactory factory;
+    
+    @Parameters
+    public static List<Object[]> parameters() {
+        return Arrays.asList(new Object[][] {
+                { org.apache.xalan.processor.TransformerFactoryImpl.class },
+                { net.sf.saxon.TransformerFactoryImpl.class }
+        });
+    }
+    
+    public TransformerTest(Class<? extends TransformerFactory> factoryClass) throws Exception {
+        this.factory = factoryClass.newInstance();
+    }
+
+    @Test
+    public void testStylesheet() throws Exception {
         DocumentBuilderFactory dbf = new DOOMDocumentBuilderFactory();
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Document input = builder.parse(TransformerTest.class.getResourceAsStream("input.xml"));
@@ -40,23 +63,16 @@ public class TransformerTest extends XMLTestCase {
                 = builder.parse(TransformerTest.class.getResourceAsStream("stylesheet.xslt"));
         Document expected = builder.parse(TransformerTest.class.getResourceAsStream("output.xml"));
         Document actual = builder.newDocument();
-        Transformer transformer = tf.newTransformer(new DOMSource(stylesheet));
+        Transformer transformer = factory.newTransformer(new DOMSource(stylesheet));
         transformer.transform(new DOMSource(input), new DOMResult(actual));
         XMLUnit.setIgnoreWhitespace(true);
         assertXMLEqual(expected, actual);
     }
 
-    public void testStylesheetWithXalan() throws Exception {
-        testStylesheet(new org.apache.xalan.processor.TransformerFactoryImpl());
-    }
-    
-    public void testStyleSheetWithSaxon() throws Exception {
-        testStylesheet(new net.sf.saxon.TransformerFactoryImpl());
-    }
-    
     // This test failed with Saxon 8.9 because NodeImpl#compareDocumentPosition
     // threw an UnsupportedOperationException instead of a DOMException.
-    private void testIdentity(TransformerFactory tf) throws Exception {
+    @Test
+    public void testIdentity() throws Exception {
         DocumentBuilderFactory dbf = new DOOMDocumentBuilderFactory();
         DocumentBuilder builder = dbf.newDocumentBuilder();
         
@@ -71,17 +87,9 @@ public class TransformerTest extends XMLTestCase {
         Document stylesheet
                 = builder.parse(TransformerTest.class.getResourceAsStream("identity.xslt"));
         Document output = builder.newDocument();
-        Transformer transformer = tf.newTransformer(new DOMSource(stylesheet));
+        Transformer transformer = factory.newTransformer(new DOMSource(stylesheet));
         transformer.transform(new DOMSource(document), new DOMResult(output));
         XMLUnit.setIgnoreWhitespace(false);
         assertXMLEqual(document, output);
-    }
-
-    public void testIdentityWithXalan() throws Exception {
-        testIdentity(new org.apache.xalan.processor.TransformerFactoryImpl());
-    }
-    
-    public void testIdentityWithSaxon() throws Exception {
-        testIdentity(new net.sf.saxon.TransformerFactoryImpl());
     }
 }

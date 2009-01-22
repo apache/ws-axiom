@@ -19,6 +19,9 @@
 
 package org.apache.axiom.om.impl.builder;
 
+import static org.custommonkey.xmlunit.XMLAssert.assertXMLIdentical;
+import static org.custommonkey.xmlunit.XMLUnit.compareXML;
+
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +31,10 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.axiom.om.impl.builder.test.jaxb.Order;
 import org.apache.axiom.om.impl.builder.test.jaxb.OrderItem;
-import org.custommonkey.xmlunit.XMLTestCase;
+import org.junit.Test;
 
-public class SAXOMBuilderJAXBTest extends XMLTestCase {
+public class SAXOMBuilderJAXBTest {
+    @Test
     public void test() throws Exception {
         List<OrderItem> items = new ArrayList<OrderItem>(2);
         OrderItem item = new OrderItem();

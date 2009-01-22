@@ -27,10 +27,10 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.apache.xerces.jaxp.validation.XMLSchemaFactory;
+import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class ValidatorTest extends TestCase {
+public class ValidatorTest {
+    @Test
     public void test() throws Exception {
         SchemaFactory factory = new XMLSchemaFactory();
         DocumentBuilderFactory dbf = new DOOMDocumentBuilderFactory();

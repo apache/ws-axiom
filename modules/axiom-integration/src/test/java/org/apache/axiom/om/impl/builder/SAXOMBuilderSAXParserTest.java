@@ -19,25 +19,49 @@
 
 package org.apache.axiom.om.impl.builder;
 
+import static org.custommonkey.xmlunit.XMLAssert.assertXMLIdentical;
+import static org.custommonkey.xmlunit.XMLUnit.compareXML;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.axiom.om.OMElement;
-import org.custommonkey.xmlunit.XMLTestCase;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-public class SAXOMBuilderSAXParserTest extends XMLTestCase {
+@RunWith(Parameterized.class)
+public class SAXOMBuilderSAXParserTest {
+    private final SAXParserFactory factory;
+    
+    @Parameters
+    public static List<Object[]> parameters() {
+        return Arrays.asList(new Object[][] {
+                { org.apache.crimson.jaxp.SAXParserFactoryImpl.class },
+                { org.apache.xerces.jaxp.SAXParserFactoryImpl.class }
+        });
+    }
+    
+    public SAXOMBuilderSAXParserTest(Class<? extends SAXParserFactory> factoryClass) throws Exception {
+        this.factory = factoryClass.newInstance();
+    }
+
     private InputSource toInputSource(OMElement element) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         element.serialize(baos);
         return new InputSource(new ByteArrayInputStream(baos.toByteArray()));
     }
     
-    private void test(SAXParserFactory factory) throws Exception {
+    @Test
+    public void test() throws Exception {
         factory.setNamespaceAware(true);
         XMLReader reader = factory.newSAXParser().getXMLReader();
         SAXOMBuilder builder = new SAXOMBuilder();
@@ -55,13 +79,5 @@ public class SAXOMBuilderSAXParserTest extends XMLTestCase {
         } finally {
             in.close();
         }
-    }
-    
-    public void testCrimson() throws Exception {
-        test(new org.apache.crimson.jaxp.SAXParserFactoryImpl());
-    }
-    
-    public void testXerces() throws Exception {
-        test(new org.apache.xerces.jaxp.SAXParserFactoryImpl());
     }
 }
