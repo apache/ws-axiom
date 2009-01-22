@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<root>
+<root xmlns:p="urn:some:namespace">
     <!-- Some comment -->
     <element xmlns="urn:ns1" xmlns:ns2="urn:ns2">
         <ns2:subelement attr1="test" attr2="test2">Some text</ns2:subelement>

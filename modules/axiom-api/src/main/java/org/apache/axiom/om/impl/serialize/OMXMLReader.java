@@ -21,11 +21,14 @@ package org.apache.axiom.om.impl.serialize;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -46,6 +49,18 @@ import org.xml.sax.ext.LexicalHandler;
  * SAX {@link XMLReader} implementation that traverses a given OM tree and invokes the
  * callback methods on the configured {@link ContentHandler}. This can be used to
  * serialize an Axiom tree to SAX.
+ * <p>
+ * This class can also generate SAX events for a subtree. This is the case if the
+ * element passed to the constructor is not the root element of the document. In this
+ * case, care is taken to properly generate <code>startPrefixMapping</code> and
+ * <code>endPrefixMapping</code> events also for namespace mappings declared on the ancestors
+ * of the element.
+ * <p>
+ * To understand why this is important, consider the following example:
+ * <pre>&lt;root xmlns:ns="urn:ns">&lt;element attr="ns:someThing"/>&lt;root></pre>
+ * In that case, to correctly interpret the attribute value, the SAX content handler must be
+ * aware of the namespace mapping for the <tt>ns</tt> prefix, even if the serialization starts
+ * only at the child element.
  */
 public class OMXMLReader implements XMLReader {
     private static final String URI_LEXICAL_HANDLER = "http://xml.org/sax/properties/lexical-handler";
@@ -148,21 +163,55 @@ public class OMXMLReader implements XMLReader {
     
     private void parse() throws SAXException {
         contentHandler.startDocument();
+        generateParentPrefixMappingEvents(element, true);
         generateEvents(element);
+        generateParentPrefixMappingEvents(element, false);
         contentHandler.endDocument();
+    }
+    
+    private void generatePrefixMappingEvents(OMNamespace ns, boolean start) throws SAXException {
+        String prefix = ns.getPrefix();
+        if (prefix != null) {
+            if (start) {
+                contentHandler.startPrefixMapping(prefix, ns.getNamespaceURI());
+            } else {
+                contentHandler.endPrefixMapping(prefix);
+            }
+        }
     }
     
     private void generatePrefixMappingEvents(OMElement omElement, boolean start)
             throws SAXException {
         
         for (Iterator it = omElement.getAllDeclaredNamespaces(); it.hasNext(); ) {
-            OMNamespace ns = (OMNamespace)it.next();
-            String prefix = ns.getPrefix();
-            if (prefix != null) {
-                if (start) {
-                    contentHandler.startPrefixMapping(prefix, ns.getNamespaceURI());
-                } else {
-                    contentHandler.endPrefixMapping(prefix);
+            generatePrefixMappingEvents((OMNamespace)it.next(), start);
+        }
+    }
+
+    private void generateParentPrefixMappingEvents(OMElement omElement, boolean start)
+            throws SAXException {
+        
+        if (!(omElement.getParent() instanceof OMElement)) {
+            return;
+        }
+        // Maintain a set of the prefixes we have already seen. This is required to take into
+        // account that a namespace mapping declared on an element can hide another one declared
+        // for the same prefix on an ancestor of the element.
+        Set/*<String>*/ seenPrefixes = new HashSet();
+        for (Iterator it = omElement.getAllDeclaredNamespaces(); it.hasNext(); ) {
+            seenPrefixes.add(((OMNamespace)it.next()).getPrefix());
+        }
+        OMElement current = omElement;
+        while (true) {
+            OMContainer parent = current.getParent();
+            if (!(parent instanceof OMElement)) {
+                return;
+            }
+            current = (OMElement)parent;
+            for (Iterator it = current.getAllDeclaredNamespaces(); it.hasNext(); ) {
+                OMNamespace ns = (OMNamespace)it.next();
+                if (seenPrefixes.add(ns.getPrefix())) {
+                    generatePrefixMappingEvents(ns, start);
                 }
             }
         }

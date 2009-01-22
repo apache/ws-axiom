@@ -21,6 +21,8 @@ package org.apache.axiom.om.impl.jaxp;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLIdentical;
 import static org.custommonkey.xmlunit.XMLUnit.compareXML;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -32,6 +34,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,7 +63,7 @@ public class TransformerTest {
     }
     
     @Test
-    public void test() throws Exception {
+    public void testIdentity() throws Exception {
         Transformer transformer = factory.newTransformer();
         
         OMSource omSource = new OMSource(new StAXOMBuilder(getInput()).getDocumentElement());
@@ -72,5 +76,38 @@ public class TransformerTest {
         transformer.transform(streamSource, streamResult);
         
         assertXMLIdentical(compareXML(out.toString(), omResult.getRootElement().toString()), true);
+    }
+    
+    /**
+     * Test that all namespace mappings in scope of the source element are available on the result.
+     * This checks for an issue that may arise under the following circumstances:
+     * <ol>
+     *   <li>The source element, i.e. the element passed as argument to
+     *   {@link OMSource#OMSource(OMElement)} is not the root element of the document.</li>
+     *   <li>One of the ancestors declares a namespace mapping.</li>
+     *   <li>The namespace mapping is not used in the name of the source element or any of its
+     *   descendant elements or attributes (but may be used in the value of an attribute).</li>   
+     * </ol>
+     * Example:
+     * <pre>&lt;root xmlns:ns="urn:ns">&lt;element attr="ns:someThing"/>&lt;root></pre>
+     * In that case, when constructing an {@link OMSource} from the child element, the namespace
+     * mapping for the <tt>ns</tt> prefix should be visible to the consumer. Otherwise it would not
+     * be able to interpret the attribute value correctly. This is relevant e.g. when validating
+     * a part of a document against an XML schema (see SYNAPSE-501).
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testNamespaceMappingsOnFragment() throws Exception {
+        Transformer transformer = factory.newTransformer();
+        
+        OMElement element = new StAXOMBuilder(getInput()).getDocumentElement().getFirstElement();
+        OMSource omSource = new OMSource(element);
+        OMResult omResult = new OMResult();
+        transformer.transform(omSource, omResult);
+        
+        OMNamespace ns = omResult.getRootElement().findNamespaceURI("p");
+        assertNotNull(ns);
+        assertEquals("urn:some:namespace", ns.getNamespaceURI());
     }
 }
