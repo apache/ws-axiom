@@ -20,28 +20,35 @@
 package org.apache.axiom.om;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URL;
 
 import javax.activation.DataSource;
-import javax.activation.FileDataSource;
+import javax.activation.URLDataSource;
 
 import org.custommonkey.xmlunit.XMLTestCase;
 
 /** Abstract base class for test cases. */
 public abstract class AbstractTestCase
         extends XMLTestCase {
-    protected String testDir = "test" + File.separator;
-    protected String sampleDir = "samples" + File.separator;
-    protected String outDir = "target" + File.separator + "generated" +
-            File.separator +
-            "samples" +
-            File.separator;
     protected String tempDir = "target" + File.separator + "generated" +
             File.separator +
             "temp";
-    protected String testResourceDir = "test-resources";
+    
+    public static final String[] soapFiles = {
+        "emtyBodymessage.xml",
+        "invalidMustUnderstandSOAP12.xml",
+        "minimalMessage.xml",
+        "OMElementTest.xml",
+        "reallyReallyBigMessage.xml",
+        "sample1.xml",
+        "security2-soap.xml",
+        "soap12message.xml",
+        "soap12RoleMessage.xml",
+        "soapmessage.xml",
+        "soapmessage1.xml",
+        "whitespacedMessage.xml"
+    };
 
     /** Basedir for all file I/O. Important when running tests from the reactor. */
     public String basedir = System.getProperty("basedir");
@@ -56,27 +63,23 @@ public abstract class AbstractTestCase
         if (basedir == null) {
             basedir = new File(".").getAbsolutePath();
         }
-        testDir = new File(basedir, testDir).getAbsolutePath();
-        sampleDir = new File(basedir, sampleDir).getAbsolutePath();
-        outDir = new File(basedir, outDir).getAbsolutePath();
         tempDir = new File(basedir, tempDir).getAbsolutePath();
     }
 
-    public File getTestResourceFile(String relativePath) {
-        return new File(testResourceDir, relativePath);
-    }
-    
     public DataSource getTestResourceDataSource(String relativePath) {
-        return new FileDataSource(getTestResourceFile(relativePath));
+        URL url = AbstractTestCase.class.getClassLoader().getResource(relativePath);
+        if (url == null) {
+            fail("The test resource " + relativePath + " could not be found");
+        }
+        return new URLDataSource(url);
     }
 
     public InputStream getTestResource(String relativePath) {
-        try {
-            return new FileInputStream(getTestResourceFile(relativePath));
-        } catch (FileNotFoundException ex) {
+        InputStream in = AbstractTestCase.class.getClassLoader().getResourceAsStream(relativePath);
+        if (in == null) {
             fail("The test resource " + relativePath + " could not be found");
-            return null;
         }
+        return in;
     }
 
     public File getTempOutputFile(String filename) {

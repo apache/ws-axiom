@@ -19,6 +19,7 @@
 
 package org.apache.axiom.attachments;
 
+import org.apache.axiom.attachments.utils.IOUtils;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
@@ -30,8 +31,6 @@ import javax.activation.DataHandler;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -296,8 +295,7 @@ public class AttachmentsTest extends AbstractTestCase {
 
     public void testGetAllContentIDs() throws Exception {
 
-        File f = getTestResourceFile(inMimeFileName);
-        InputStream inStream = new FileInputStream(f);
+        InputStream inStream = getTestResource(inMimeFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
 
         String[] contentIDs = attachments.getAllContentIDs();
@@ -313,7 +311,7 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // Make sure the length is correct
         long length = attachments.getContentLength();
-        long fileSize = f.length();
+        long fileSize = IOUtils.getStreamAsByteArray(getTestResource(inMimeFileName)).length;
         assertTrue("Expected MessageContent Length of " + fileSize + " but received " + length,
                    length == fileSize);
     }

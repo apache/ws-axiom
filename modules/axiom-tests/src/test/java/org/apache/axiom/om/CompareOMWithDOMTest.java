@@ -24,7 +24,6 @@ import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
 
 /** @version $Rev: $ $Date: $ */
 public class CompareOMWithDOMTest extends AbstractTestCase {
@@ -34,24 +33,16 @@ public class CompareOMWithDOMTest extends AbstractTestCase {
     }
 
     public void testAllMessagesInSOAP() throws OMException, Exception {
-        File dir = new File(testResourceDir, "soap");
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isFile() && files[i].getName().endsWith(".xml") &&
-                        !files[i].getName().startsWith("wrong")) {
-                    SOAPEnvelope soapEnvelope = (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                            files[i])
-                            .getDocumentElement();
-                    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                    dbf.setNamespaceAware(true);
-                    DocumentBuilder builder = dbf.newDocumentBuilder();
-                    Document doc = builder.parse(files[i].getAbsolutePath());
-                    OMTestUtils.compare(doc.getDocumentElement(),
-                                        soapEnvelope);
-                }
-            }
-
+        for (int i = 0; i < soapFiles.length; i++) {
+            String file = "soap/" + soapFiles[i];
+            SOAPEnvelope soapEnvelope = (SOAPEnvelope) OMTestUtils.getOMBuilder(
+                    getTestResource(file)).getDocumentElement();
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            DocumentBuilder builder = dbf.newDocumentBuilder();
+            Document doc = builder.parse(getTestResource(file));
+            OMTestUtils.compare(doc.getDocumentElement(),
+                                soapEnvelope);
         }
     }
 }
