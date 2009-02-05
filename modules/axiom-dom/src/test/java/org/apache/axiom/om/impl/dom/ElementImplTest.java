@@ -31,6 +31,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import java.io.ByteArrayOutputStream;
@@ -88,7 +89,49 @@ public class ElementImplTest extends OMElementTestBase {
             }
         });
     }
+    
+    public void testRemoveSingleChild() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                DocumentBuilder builder = dbf.newDocumentBuilder();
+                Element element = builder.parse(new InputSource(new StringReader(
+                        "<root><a/></root>"))).getDocumentElement();
+                element.removeChild(element.getFirstChild());
+                assertNull(element.getFirstChild());
+                assertNull(element.getLastChild());
+            }
+        });
+    }
+    
+    // Regression test for WSCOMMONS-435
+    public void testRemoveFirstChild() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                DocumentBuilder builder = dbf.newDocumentBuilder();
+                Element element = builder.parse(new InputSource(new StringReader(
+                        "<root><a/><b/><c/></root>"))).getDocumentElement();
+                element.removeChild(element.getFirstChild());
+                Node firstChild = element.getFirstChild();
+                assertNotNull(firstChild);
+                assertEquals("b", firstChild.getNodeName());
+            }
+        });
+    }
 
+    public void testRemoveLastChild() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                DocumentBuilder builder = dbf.newDocumentBuilder();
+                Element element = builder.parse(new InputSource(new StringReader(
+                        "<root><a/><b/><c/></root>"))).getDocumentElement();
+                element.removeChild(element.getLastChild());
+                Node lastChild = element.getLastChild();
+                assertNotNull(lastChild);
+                assertEquals("b", lastChild.getNodeName());
+            }
+        });
+    }
+    
     /** Testing the NodeList returned with the elements's children */
     public void testGetElementsByTagName() throws Exception {
         DOMTestUtil.execute(new DOMTestUtil.Test() {

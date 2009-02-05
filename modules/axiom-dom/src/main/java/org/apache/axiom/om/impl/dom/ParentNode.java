@@ -481,9 +481,15 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
                 if (this.firstChild == tempNode) {
                     // If this is the first child
-                    this.firstChild = null;
-                    this.lastChild = null;
+                    ChildNode nextSib = tempNode.nextSibling;
+                    this.firstChild = nextSib;
+                    if (nextSib == null) {
+                        this.lastChild = null;
+                    } else {
+                        nextSib.previousSibling = null;
+                    }
                     tempNode.parentNode = null;
+                    tempNode.nextSibling = null;
                 } else if (this.lastChild == tempNode) {
                     // not the first child, but the last child
                     ChildNode prevSib = tempNode.previousSibling;
