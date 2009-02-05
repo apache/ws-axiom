@@ -38,14 +38,25 @@ import org.jaxen.function.StringFunction;
 import org.jaxen.pattern.Pattern;
 import org.jaxen.saxpath.helpers.XPathReaderFactory;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public abstract class XPathTestBase extends TestCase {
     protected static String VAR_URI = "http://jaxen.org/test-harness/var";
-    protected static String TESTS_ROOT = "test-resources/";
+    protected static String TESTS_ROOT;
     protected static String TESTS_XML = TESTS_ROOT + "xml/test/tests.xml";
+
+    static {
+        URL testsXmlUrl = XPathTestBase.class.getClassLoader().getResource("xml/test/tests.xml");
+        try {
+            TESTS_ROOT = new URL(testsXmlUrl, "../..").toExternalForm();
+        } catch (MalformedURLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     protected static boolean verbose = false;
     protected static boolean debug = false;

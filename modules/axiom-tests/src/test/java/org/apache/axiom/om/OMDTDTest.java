@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om;
 
-import junit.framework.TestCase;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 
@@ -27,17 +26,16 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 
-public class OMDTDTest extends TestCase {
+public class OMDTDTest extends AbstractTestCase {
 
     private OMDocument document;
 
     protected void setUp() throws Exception {
         try {
-            StAXOMBuilder stAXOMBuilder = new StAXOMBuilder("test-resources/xml/dtd.xml");
+            StAXOMBuilder stAXOMBuilder = new StAXOMBuilder(getTestResource("xml/dtd.xml"));
             document = this.document = stAXOMBuilder.getDocument();
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +81,7 @@ public class OMDTDTest extends TestCase {
         // that intentionally points to a non existing URL. With a network
         // detached reader this should not produce errors.
         
-        InputStream is = new FileInputStream("test-resources/xml/web_w_dtd2.xml");
+        InputStream is = getTestResource("xml/web_w_dtd2.xml");
         XMLStreamReader reader = StAXUtils.createNetworkDetachedXMLStreamReader(is);
         StAXOMBuilder builder = new StAXOMBuilder(reader);
         OMElement root = builder.getDocumentElement();

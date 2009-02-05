@@ -22,7 +22,6 @@ package org.apache.axiom.om;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.XMLTestCase;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -34,22 +33,21 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 
 
-public class SpacesTest extends XMLTestCase {
-    private static final String filePath = "test-resources/xml/spaces.xml";
-    private static final String filePath2 = "test-resources/xml/spaces2.xml";
+public class SpacesTest extends AbstractTestCase {
+    private static final String filePath = "xml/spaces.xml";
+    private static final String filePath2 = "xml/spaces2.xml";
 
 
     private OMElement rootElement;
 
     public void testCData() throws Exception {
-        checkOMConformance(new FileInputStream(filePath));
+        checkOMConformance(getTestResource(filePath));
     }
 
     private void checkOMConformance(InputStream iStream) throws Exception {
@@ -70,7 +68,7 @@ public class SpacesTest extends XMLTestCase {
             InputSource resultXML = new InputSource(new InputStreamReader(
                     new ByteArrayInputStream(baos.toByteArray())));
 
-            Document dom1 = newDocument(new InputSource(new FileInputStream(file)));
+            Document dom1 = newDocument(new InputSource(getTestResource(file)));
             Document dom2 = newDocument(resultXML);
             Diff diff = compareXML(dom1, dom2);
             assertXMLEqual(diff, true);

@@ -19,27 +19,25 @@
 
 package org.apache.axiom.om.util;
 
+import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.dom.DOOMAbstractFactory;
-import org.custommonkey.xmlunit.XMLTestCase;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
-public class OMElementHelperTest extends XMLTestCase {
+public class OMElementHelperTest extends AbstractTestCase {
 
-    private String testXMLFilePath = "test-resources/soap/soapmessage.xml";
+    private String testXMLFilePath = "soap/soapmessage.xml";
 
 
     public void testImportOMElement() {
         try {
             XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance()
-                    .createXMLStreamReader(new FileInputStream(testXMLFilePath));
+                    .createXMLStreamReader(getTestResource(testXMLFilePath));
             OMElement documentElement =
                     new StAXOMBuilder(OMAbstractFactory.getOMFactory(), xmlStreamReader)
                             .getDocumentElement();
@@ -57,9 +55,6 @@ public class OMElementHelperTest extends XMLTestCase {
                     DOOMAbstractFactory.getOMFactory()));
 
         } catch (XMLStreamException e) {
-            e.printStackTrace();
-            fail();
-        } catch (FileNotFoundException e) {
             e.printStackTrace();
             fail();
         }

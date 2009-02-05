@@ -20,6 +20,8 @@
 package org.apache.axiom.om.impl.dom;
 
 import junit.framework.TestCase;
+
+import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMTestUtils;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
@@ -27,16 +29,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.FileInputStream;
 
 /** @author Ruchith Fernando (ruchith.fernando@gmail.com) */
-public class ElementImportTest extends TestCase {
+public class ElementImportTest extends AbstractTestCase {
 
     public void testImport() throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         Document doc = dbf.newDocumentBuilder().parse(
-                new FileInputStream("test-resources/xml/sigEncr.xml"));
+                getTestResource("xml/sigEncr.xml"));
         Node n = new OMDOMFactory().getDocument().importNode(doc.getDocumentElement(), true);
         OMTestUtils.compare(doc.getDocumentElement(), (OMElement) n);
     }

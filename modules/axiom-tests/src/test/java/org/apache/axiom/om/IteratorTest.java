@@ -24,10 +24,9 @@ import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.soap.SOAP11Constants;
 
 import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
+import javax.activation.DataSource;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
-import java.io.File;
 import java.util.Iterator;
 
 public class IteratorTest extends AbstractTestCase {
@@ -184,20 +183,20 @@ public class IteratorTest extends AbstractTestCase {
     }
 
     private OMElement createSampleXMLForTesting() throws Exception {
-        File imageSource = new File("test-resources/mtom/img/test.jpg");
+        String imageSource = "mtom/img/test.jpg";
         OMFactory fac = OMAbstractFactory.getOMFactory();
         OMNamespace omNs = fac.createOMNamespace("http://localhost/my", "my");
 
         OMElement data = fac.createOMElement("mtomSample", omNs);
         OMElement image = fac.createOMElement("image", omNs);
 
-        FileDataSource dataSource = new FileDataSource(imageSource);
+        DataSource dataSource = getTestResourceDataSource(imageSource);
         DataHandler expectedDH = new DataHandler(dataSource);
         OMText textData = fac.createOMText(expectedDH, true);
         image.addChild(textData);
 
         OMElement imageName = fac.createOMElement("fileName", omNs);
-        imageName.setText(imageSource.getAbsolutePath());
+        imageName.setText(imageSource);
         data.addChild(image);
         data.addChild(imageName);
 

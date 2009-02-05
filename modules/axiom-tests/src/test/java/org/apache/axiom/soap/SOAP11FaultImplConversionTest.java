@@ -19,22 +19,21 @@
 
 package org.apache.axiom.soap;
 
-import junit.framework.TestCase;
+import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 
-public class SOAP11FaultImplConversionTest extends TestCase {
+public class SOAP11FaultImplConversionTest extends AbstractTestCase {
 
-    private String soap11FaulXmlPath = "test-resources/soap/soap11/soapfault2.xml";
+    private String soap11FaulXmlPath = "soap/soap11/soapfault2.xml";
 
     public void testConversion() {
         try {
-            InputStream is = new FileInputStream(soap11FaulXmlPath);
+            InputStream is = getTestResource(soap11FaulXmlPath);
             XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
             xmlInputFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.TRUE) ;
             XMLStreamReader reader = xmlInputFactory.createXMLStreamReader(is);

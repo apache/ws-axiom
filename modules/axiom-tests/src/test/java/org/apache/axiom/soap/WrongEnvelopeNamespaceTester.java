@@ -19,27 +19,23 @@
 
 package org.apache.axiom.soap;
 
-import junit.framework.TestCase;
+import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
-public class WrongEnvelopeNamespaceTester extends TestCase {
+public class WrongEnvelopeNamespaceTester extends AbstractTestCase {
     public void testCode() {
         try {
-            String filename = "test-resources/soap/wrongEnvelopeNamespace.xml";
+            String filename = "soap/wrongEnvelopeNamespace.xml";
             XMLStreamReader xmlr = XMLInputFactory.newInstance()
-                    .createXMLStreamReader(new FileInputStream(filename));
+                    .createXMLStreamReader(getTestResource(filename));
             StAXBuilder builder = new StAXSOAPModelBuilder(xmlr, null); //exception here
             fail("Builder must fail here due to wrong SOAP namespace");
         } catch (SOAPProcessingException e) {
             assertTrue(true);
-        } catch (FileNotFoundException e) {
-            fail("Only SOAPProcessingException can be thrown here");
         } catch (Exception e) {
             fail("Only SOAPProcessingException can be thrown here");
         }
