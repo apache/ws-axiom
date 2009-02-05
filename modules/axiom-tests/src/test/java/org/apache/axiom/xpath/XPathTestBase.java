@@ -1207,7 +1207,7 @@ public abstract class XPathTestBase extends TestCase {
             Object context = iter.next();
             try {
                 Object result =
-                        assertCountXPath2(1, context, "document('test-resources/xml/web.xml')");
+                        assertCountXPath2(1, context, "document('" + TESTS_ROOT + "xml/web.xml')");
                 assertValueOfXPath("snoop", result, "/web-app/servlet[1]/servlet-name");
                 assertValueOfXPath("snoop", result, "/web-app/servlet[1]/servlet-name/text()");
             }
@@ -1215,7 +1215,7 @@ public abstract class XPathTestBase extends TestCase {
                 log(debug, "      ## SKIPPED -- Unsupported Axis");
             }
             assertValueOfXPath("snoop", context,
-                               "document('test-resources/xml/web.xml')/web-app/servlet[1]/servlet-name");
+                               "document('" + TESTS_ROOT + "xml/web.xml')/web-app/servlet[1]/servlet-name");
         }
     }
 
@@ -1236,7 +1236,7 @@ public abstract class XPathTestBase extends TestCase {
             Object context = iter.next();
             assertValueOfXPath("3foo3", context, "concat(./@id,'foo',@id)");
             assertValueOfXPath("3snoop3", context,
-                               "concat(./@id,document('test-resources/xml/web.xml')/web-app/servlet[1]/servlet-name,./@id)");
+                               "concat(./@id,document('" + TESTS_ROOT + "xml/web.xml')/web-app/servlet[1]/servlet-name,./@id)");
         }
     }
 
@@ -1254,7 +1254,7 @@ public abstract class XPathTestBase extends TestCase {
             assertValueOfXPath("Pruefgebiete", context,
                                "/message/body/data/items/item[name/text()='parentinfo']/value");
             assertValueOfXPath("Pruefgebiete", context,
-                               "document('test-resources/xml/message.xml')/message/body/data/items/item[name/text()='parentinfo']/value");
+                               "document('" + TESTS_ROOT + "xml/message.xml')/message/body/data/items/item[name/text()='parentinfo']/value");
         }
     }
 

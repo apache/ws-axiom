@@ -24,7 +24,7 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 
-import org.apache.axiom.om.impl.llom.util.AXIOMUtil;
+import org.apache.axiom.om.util.AXIOMUtil;
 
 public abstract class OMElementTestBase extends AbstractTestCase {
     protected abstract OMFactory getOMFactory();
