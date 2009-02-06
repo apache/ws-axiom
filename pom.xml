@@ -22,7 +22,7 @@
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom</artifactId>
     <name>Axiom</name>
-    <version>SNAPSHOT</version>
+    <version>1.2.9-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>AXIOM API</description>
     <url>http://ws.apache.org/commons/axiom/</url>
@@ -360,7 +360,20 @@
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.0-beta-8</version>
                 </plugin>
-                <plugin>
+              	<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-scr-plugin</artifactId>
+				<version>1.0.9-SNAPSHOT</version> <!-- Need to use 1.0.9 because need QDox 1.8. See FELIX-917 -->
+				<executions>
+					<execution>
+						<id>generate-scr-scrdescriptor</id>
+						<goals>
+							<goal>scr</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		  <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <configuration>
@@ -568,6 +581,7 @@
         <module>modules/axiom-dom</module>
         <module>modules/axiom-c14n</module>
         <module>modules/axiom-tests</module>
+        <module>modules/axiom-osgi</module>
     </modules>
     <properties>
         <axiom.version>${pom.version}</axiom.version>

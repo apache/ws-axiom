@@ -291,7 +291,14 @@ public class StAXUtils {
     
     // This has package access since it is used from within anonymous inner classes
     static XMLInputFactory newXMLInputFactory(boolean isNetworkDetached) {
-        XMLInputFactory factory = XMLInputFactory.newInstance();
+    	ClassLoader cl = (ClassLoader) AccessController.doPrivileged(
+                new PrivilegedAction() {
+                    public Object run()  {
+                        return Thread.currentThread().getContextClassLoader();
+                    }
+                }
+        );
+        XMLInputFactory factory = XMLInputFactory.newInstance("javax.xml.stream.XMLInputFactory", cl);
         if (isNetworkDetached) {
             factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, 
                       Boolean.FALSE);

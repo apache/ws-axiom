@@ -46,6 +46,12 @@ import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.impl.llom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.llom.SOAPMessageImpl;
 
+/**
+ * @scr.component name="soap12factory.llom.component" immediate="true"
+ * @scr.service interface="org.apache.axiom.soap.SOAPFactory"
+ * @scr.property name="implementationName" type="String" value="llom"
+ * @scr.property name="axiom.soapVersion" type="String" value="soap12"
+ */
 public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactory {
     /** Eran Chinthaka (chinthaka@apache.org) */
 

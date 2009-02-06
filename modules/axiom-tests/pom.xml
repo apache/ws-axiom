@@ -22,11 +22,11 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
-        <version>SNAPSHOT</version>
+        <version>1.2.9-SNAPSHOT</version>
     </parent>
     <artifactId>axiom-tests</artifactId>
     <name>Axiom Test Suite</name>
-    <version>SNAPSHOT</version>
+    <version>1.2.9-SNAPSHOT</version>
     <description>
         The Axiom test suite. This ought to be split into several parts and be made
         a part of axiom-api, axiom-impl and axiom-dom. However, that's not as easy

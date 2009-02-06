@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om;
 
+import org.apache.axiom.injection.FactoryInjectionComponent;
 import org.apache.axiom.soap.SOAPFactory;
 
 /**
@@ -90,9 +91,15 @@ public class OMAbstractFactory {
      *                     or if the class can't be instantiated
      */
     public static OMFactory getOMFactory() {
-        if (defaultOMFactory != null) {
+        OMFactory of = FactoryInjectionComponent.getOMFactory();
+        if(of!=null){
+        	return of;
+        }
+    	
+    	if (defaultOMFactory != null) {
             return defaultOMFactory;
         }
+        
         String omFactory;
         try {
             omFactory = System.getProperty(OM_FACTORY_NAME_PROPERTY);
@@ -124,9 +131,15 @@ public class OMAbstractFactory {
      *                     or if the class can't be instantiated
      */
     public static SOAPFactory getSOAP11Factory() {
+        SOAPFactory sf = FactoryInjectionComponent.getSOAP11Factory();
+        if(sf != null){
+        	return sf;
+        }
+        
         if (defaultSOAP11OMFactory != null) {
             return defaultSOAP11OMFactory;
         }
+        
         String omFactory;
         try {
             omFactory = System.getProperty(SOAP11_FACTORY_NAME_PROPERTY);
@@ -158,9 +171,15 @@ public class OMAbstractFactory {
      *                     or if the class can't be instantiated
      */
     public static SOAPFactory getSOAP12Factory() {
-        if (defaultSOAP12OMFactory != null) {
+        SOAPFactory sf = FactoryInjectionComponent.getSOAP12Factory();
+        if(sf != null){
+        	return sf;
+        }
+        
+    	if (defaultSOAP12OMFactory != null) {
             return defaultSOAP12OMFactory;
         }
+        
         String omFactory;
         try {
             omFactory = System.getProperty(SOAP12_FACTORY_NAME_PROPERTY);

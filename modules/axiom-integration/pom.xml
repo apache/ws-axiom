@@ -22,11 +22,11 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
-        <version>SNAPSHOT</version>
+        <version>1.2.9-SNAPSHOT</version>
     </parent>
     <artifactId>axiom-integration</artifactId>
     <name>Axiom Integration Test Suite</name>
-    <version>SNAPSHOT</version>
+    <version>1.2.9-SNAPSHOT</version>
     <description>
         This module contains tests that validate the interoperability of Axiom with
         other libraries.

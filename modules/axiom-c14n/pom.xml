@@ -22,13 +22,14 @@
     <parent>
         <artifactId>axiom</artifactId>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <version>SNAPSHOT</version>
+        <version>1.2.9-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom-c14n</artifactId>
     <name>Axiom C14N</name>
-    <version>SNAPSHOT</version>
+    <version>1.2.9-SNAPSHOT</version>
+    <packaging>bundle</packaging>
     <description />
     <dependencies>
         <dependency>
@@ -90,6 +91,19 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<excludeDependencies>true</excludeDependencies>
+					<instructions>
+						<_nouses>true</_nouses>
+						<_removeheaders>Private-Package</_removeheaders>
+						<Export-Package>*;-noimport:=true</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
 </project>

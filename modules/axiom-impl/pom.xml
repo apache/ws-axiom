@@ -22,11 +22,12 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
-        <version>SNAPSHOT</version>
+        <version>1.2.9-SNAPSHOT</version>
     </parent>
     <artifactId>axiom-impl</artifactId>
     <name>Axiom Impl</name>
-    <version>SNAPSHOT</version>
+    <version>1.2.9-SNAPSHOT</version>
+    <packaging>bundle</packaging>
     <description>The Axiom default implementation.</description>
     <dependencies>
         <dependency>
@@ -103,17 +104,21 @@
                 </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-                        <manifestEntries>
-                           <!-- Put the correct Bundle-Version: in the manifest -->
-                           <Bundle-Version>${version}</Bundle-Version>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<excludeDependencies>true</excludeDependencies>
+					<instructions>
+						<_nouses>true</_nouses>
+						<Private-Package>org.apache.axiom.*</Private-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-scr-plugin</artifactId>
+			</plugin>
             <!-- Attach a JAR with the test classes so that we can reuse them in other modules
                  (see http://maven.apache.org/guides/mini/guide-attached-tests.html). -->
             <plugin>
