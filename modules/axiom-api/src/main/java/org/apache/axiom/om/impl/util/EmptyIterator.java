@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.util;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class EmptyIterator implements Iterator {
     public void remove() {
@@ -32,7 +33,7 @@ public class EmptyIterator implements Iterator {
     }
 
     public Object next() {
-        throw new UnsupportedOperationException();
+        throw new NoSuchElementException();
     }
 }
 
