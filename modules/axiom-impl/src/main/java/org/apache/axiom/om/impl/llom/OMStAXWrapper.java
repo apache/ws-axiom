@@ -1264,7 +1264,7 @@ public class OMStAXWrapper
      * @return Returns int.
      */
     private int generateEvents(OMNode node) {
-        int returnEvent = 0;
+        int returnEvent;
         if (node == null) {
             if (log.isDebugEnabled()) {
                 log.debug("Node is null...returning END_DOCUMENT");
@@ -1288,7 +1288,8 @@ public class OMStAXWrapper
                 returnEvent = generateCdataEvents();
                 break;
             default :
-                break;    // just ignore any other nodes
+                throw new OMStreamingException("Encountered node with unknown node type "
+                        + nodeType);
         }
         return returnEvent;
     }
