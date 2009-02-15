@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.builder;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -69,10 +70,7 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     public StAXOMBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
         super(ombuilderFactory, parser);
-        document = ombuilderFactory.createOMDocument(this);
-        if (charEncoding != null) {
-            document.setCharsetEncoding(charEncoding);
-        }
+        document = createDocument();
     }
 
     /**
@@ -92,10 +90,7 @@ public class StAXOMBuilder extends StAXBuilder {
         doTrace = log.isDebugEnabled();
         namespaceURIInterning = false;
         lookAheadToken = -1;
-        document = factory.createOMDocument(this);
-        if (charEncoding != null) {
-            document.setCharsetEncoding(charEncoding);
-        }
+        document = createDocument();
         lastNode = element;
         document.setOMDocumentElement(element);
         populateOMElement(element);
@@ -132,10 +127,7 @@ public class StAXOMBuilder extends StAXBuilder {
         namespaceURIInterning = false;
         lookAheadToken = -1;
         omfactory = OMAbstractFactory.getOMFactory();
-        document = omfactory.createOMDocument(this);
-        if (charEncoding != null) {
-            document.setCharsetEncoding(charEncoding);
-        }
+        document = createDocument();
     }
 
     /**
@@ -154,6 +146,16 @@ public class StAXOMBuilder extends StAXBuilder {
         doTrace = log.isDebugEnabled();
         namespaceURIInterning = false;
         lookAheadToken = -1;
+    }
+
+    private OMDocument createDocument() {
+        OMDocument document = omfactory.createOMDocument(this);
+        if (charEncoding != null) {
+            document.setCharsetEncoding(charEncoding);
+        }
+        document.setXMLVersion(parser.getVersion());
+        document.setStandalone(parser.isStandalone() ? "yes" : "no");
+        return document;
     }
 
     /**
@@ -205,13 +207,6 @@ public class StAXOMBuilder extends StAXBuilder {
                     case XMLStreamConstants.START_ELEMENT:
                         elementLevel++;
                         lastNode = createNextOMElement();
-                        break;
-                    case XMLStreamConstants.START_DOCUMENT:
-                        // Document has already being created.
-    
-                        document.setXMLVersion(parser.getVersion());
-                        document.setCharsetEncoding(parser.getEncoding());
-                        document.setStandalone(parser.isStandalone() ? "yes" : "no");
                         break;
                     case XMLStreamConstants.CHARACTERS:
                         lastNode = createOMText(XMLStreamConstants.CHARACTERS);
