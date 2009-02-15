@@ -35,6 +35,8 @@ public interface OMContainer {
      *
      * @param omNode
      */
+    // TODO: specify whether the node is removed from its original location
+    // TODO: specify what happens if the node has been created by a foreign OMFactory
     void addChild(OMNode omNode);
 
     /**

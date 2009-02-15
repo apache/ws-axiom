@@ -193,7 +193,7 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     public OMNode detach() throws OMException {
         if (parent == null) {
             throw new OMException(
-                    "Elements that doesn't have a parent can not be detached");
+                    "Nodes that don't have a parent can not be detached");
         }
         OMNodeImpl nextSibling = (OMNodeImpl) getNextOMSibling();
         if (previousSibling == null) {

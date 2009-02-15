@@ -90,7 +90,7 @@ public interface OMNode {
     static final short ENTITY_REFERENCE_NODE = XMLStreamConstants.ENTITY_REFERENCE;
 
     /**
-     * This node is an <code>Entity Reference</code>.
+     * This node represents white space.
      *
      * @see #getType()
      */
@@ -135,6 +135,7 @@ public interface OMNode {
      * @throws OMException If a node is not complete, the detach can trigger further parsing, which may
      *                     cause an exception.
      */
+    // TODO: LLOM's OMNodeImpl triggers an exception if the node doesn't have a parent. This is not specified here.
     OMNode detach() throws OMException;
 
     /**
