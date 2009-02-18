@@ -1279,6 +1279,7 @@ public class OMStAXWrapper
                 returnEvent = generateElementEvents(element);
                 break;
             case OMNode.TEXT_NODE:
+            case OMNode.SPACE_NODE:
                 returnEvent = generateTextEvents(node);
                 break;
             case OMNode.COMMENT_NODE:
