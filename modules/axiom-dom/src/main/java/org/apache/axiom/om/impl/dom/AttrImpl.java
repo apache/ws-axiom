@@ -400,6 +400,8 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
             }
         }
         clone.isSpecified(true);
+        clone.setParent(null);
+        clone.setUsed(false);
         return clone;
     }
 

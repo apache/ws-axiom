@@ -156,11 +156,32 @@ public interface OMElement extends OMNode, OMContainer {
 
     /**
      * Adds an attribute to this element.
-     * <p/>
-     * <p>There is no order implied by added attributes.</p>
+     * <p>
+     * If the attribute already has an owner, the attribute is cloned (i.e. its name, value and
+     * namespace are copied to a new attribute) and the new attribute is added to the element.
+     * Otherwise the existing instance specified by the <code>attr</code> parameter is added to
+     * the element. In both cases the owner of the added attribute is set to be the particular
+     * <code>OMElement</code>.
+     * <p>
+     * If there is already an attribute with the same name and namespace URI, it will be replaced
+     * and its owner set to <code>null</code>.
+     * <p>
+     * In the particular case where the attribute specified by <code>attr</code> is already owned
+     * by the element, calling this method has no effect. 
+     * <p>
+     * Attributes are not stored in any particular order. In particular, there is no guarantee
+     * that the added attribute will be returned as the last item by the iterator produced by
+     * a subsequent call to {@link #getAllAttributes()}.
+     * <p>
+     * If the attribute being added has a namespace, but no corresponding namespace declaration is
+     * in scope for the element (i.e. declared on the element or one of its ancestors), a new
+     * namespace declaration is added to the element. Note that both the namespace prefix and URI
+     * are taken into account when looking for an existing namespace declaration.
      *
      * @param attr The attribute to add.
-     * @return Returns the passed in attribute.
+     * @return The attribute that was added to the element. As described above this may or may
+     *         not be the same as <code>attr</code>, depending on whether the attribute specified
+     *         by this parameter already has an owner or not.  
      */
     OMAttribute addAttribute(OMAttribute attr);
 

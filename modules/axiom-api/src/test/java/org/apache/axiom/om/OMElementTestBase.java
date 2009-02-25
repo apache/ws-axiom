@@ -20,6 +20,8 @@
 package org.apache.axiom.om;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
@@ -137,5 +139,99 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         OMNamespace ns = root.getFirstElement().findNamespace(null, "a");
         assertNotNull(ns);
         assertEquals("urn:a", ns.getNamespaceURI());
+    }
+    
+    /**
+     * Test that calling {@link OMElement#addAttribute(OMAttribute)} with an attribute that is
+     * already owned by another element will clone the attribute.
+     */
+    public void testAddAttributeAlreadyOwnedByOtherElement() {
+        OMFactory factory = getOMFactory();
+        OMElement element1 = factory.createOMElement(new QName("test"));
+        OMElement element2 = factory.createOMElement(new QName("test"));
+        OMAttribute att1 = element1.addAttribute("test", "test", null);
+        OMAttribute att2 = element2.addAttribute(att1);
+        assertSame(element1, att1.getOwner());
+        assertNotSame(att1, att2);
+        assertSame(element2, att2.getOwner());
+    }
+    
+    /**
+     * Test that calling {@link OMElement#addAttribute(OMAttribute)} with an attribute that is
+     * already owned by the element is a no-op.
+     */
+    public void testAddAttributeAlreadyOwnedByElement() {
+        OMFactory factory = getOMFactory();
+        OMElement element = factory.createOMElement(new QName("test"));
+        OMAttribute att = element.addAttribute("test", "test", null);
+        OMAttribute result = element.addAttribute(att);
+        assertSame(result, att);
+        assertSame(element, att.getOwner());
+        Iterator it = element.getAllAttributes();
+        assertTrue(it.hasNext());
+        assertSame(att, it.next());
+        assertFalse(it.hasNext());
+    }
+    
+    /**
+     * Test that {@link OMElement#addAttribute(OMAttribute)} behaves correctly when an attribute
+     * with the same name and namespace URI already exists.
+     */
+    public void testAddAttributeReplace() {
+        OMFactory factory = getOMFactory();
+        // Use same namespace URI but different prefixes
+        OMNamespace ns1 = factory.createOMNamespace("urn:ns", "p1");
+        OMNamespace ns2 = factory.createOMNamespace("urn:ns", "p2");
+        OMElement element = factory.createOMElement(new QName("test"));
+        OMAttribute att1 = factory.createOMAttribute("test", ns1, "test");
+        OMAttribute att2 = factory.createOMAttribute("test", ns2, "test");
+        element.addAttribute(att1);
+        element.addAttribute(att2);
+        Iterator it = element.getAllAttributes();
+        assertTrue(it.hasNext());
+        assertSame(att2, it.next());
+        assertFalse(it.hasNext());
+        assertNull(att1.getOwner());
+        assertSame(element, att2.getOwner());
+    }
+    
+    // This methods filters out the ("", "") namespace declaration (empty namespace
+    // to default). This declaration is present on OMElements produced by DOOM.
+    // TODO: check if this is not a bug in DOOM
+    private Iterator getRealAllDeclaredNamespaces(OMElement element) {
+        List namespaces = new LinkedList();
+        for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
+            OMNamespace ns = (OMNamespace)it.next();
+            if (!("".equals(ns.getPrefix()) && "".equals(ns.getNamespaceURI()))) {
+                namespaces.add(ns);
+            }
+        }
+        return namespaces.iterator();
+    }
+    
+    public void testAddAttributeWithoutExistingNamespaceDeclaration() {
+        OMFactory factory = getOMFactory();
+        OMElement element = factory.createOMElement(new QName("test"));
+        OMNamespace ns = factory.createOMNamespace("urn:ns", "p");
+        OMAttribute att = factory.createOMAttribute("test", ns, "test");
+        element.addAttribute(att);
+        assertEquals(ns, element.findNamespace(ns.getNamespaceURI(), ns.getPrefix()));
+        Iterator it = getRealAllDeclaredNamespaces(element);
+        assertTrue(it.hasNext());
+        assertEquals(ns, it.next());
+        assertFalse(it.hasNext());
+    }
+
+    public void testAddAttributeWithExistingNamespaceDeclaration() {
+        OMFactory factory = getOMFactory();
+        OMElement element = factory.createOMElement(new QName("test"));
+        OMNamespace ns = factory.createOMNamespace("urn:ns", "p");
+        element.declareNamespace(ns);
+        OMAttribute att = factory.createOMAttribute("test", ns, "test");
+        element.addAttribute(att);
+        Iterator it = getRealAllDeclaredNamespaces(element);
+        assertTrue(it.hasNext());
+        assertEquals(ns, it.next());
+        assertFalse(it.hasNext());
     }
 }

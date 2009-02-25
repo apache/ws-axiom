@@ -574,8 +574,13 @@ public class OMElementImpl extends OMNodeImpl
      * @see OMAttributeImpl#equals(Object)
      */
     public OMAttribute addAttribute(OMAttribute attr){
-        // If the attribute already has an owner element then clone the attribute
-        if (attr.getOwner() !=null){
+        // If the attribute already has an owner element then clone the attribute (except if it is owned
+        // by the this element)
+        OMElement owner = attr.getOwner();
+        if (owner != null) {
+            if (owner == this) {
+                return attr;
+            }
             attr = new OMAttributeImpl(
                     attr.getLocalName(), attr.getNamespace(), attr.getAttributeValue(), attr.getOMFactory());
         }
@@ -594,7 +599,11 @@ public class OMElementImpl extends OMNodeImpl
 
         // Set the owner element of the attribute
         ((OMAttributeImpl)attr).owner = this;
-        attributes.put(attr.getQName(), attr);
+        OMAttributeImpl oldAttr = (OMAttributeImpl)attributes.put(attr.getQName(), attr);
+        // Did we replace an existing attribute?
+        if (oldAttr != null) {
+            oldAttr.owner = null;
+        }
         return attr;
     }
 

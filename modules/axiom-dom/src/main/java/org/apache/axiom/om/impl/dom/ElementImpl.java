@@ -675,6 +675,16 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     /** @see org.apache.axiom.om.OMElement#addAttribute (org.apache.axiom.om.OMAttribute) */
     public OMAttribute addAttribute(OMAttribute attr) {
+        // If the attribute already has an owner element then clone the attribute (except if it is owned
+        // by the this element)
+        OMElement owner = attr.getOwner();
+        if (owner != null) {
+            if (owner == this) {
+                return attr;
+            }
+            attr = (OMAttribute)((AttrImpl)attr).cloneNode(false);
+        }
+        
         OMNamespace namespace = attr.getNamespace();
         if (namespace != null && namespace.getNamespaceURI() != null
                 && !"".equals(namespace.getNamespaceURI())
@@ -684,10 +694,11 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         }
 
         if (attr.getNamespace() != null) { // If the attr has a namespace
-            return (AttrImpl) this.setAttributeNode((Attr) attr);
+            this.setAttributeNodeNS((Attr) attr);
         } else {
-            return (AttrImpl) this.setAttributeNodeNS((Attr) attr);
+            this.setAttributeNode((Attr) attr);
         }
+        return attr;
     }
 
     /**

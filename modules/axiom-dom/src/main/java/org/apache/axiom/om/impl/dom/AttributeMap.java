@@ -149,6 +149,7 @@ public class AttributeMap extends NamedNodeMapImpl {
         }
         //Set the owner node
         attr.ownerNode = (DocumentImpl) this.ownerNode.getOwnerDocument();
+        attr.parent = this.ownerNode;
         attr.isOwned(true); // To indicate that this attr belong to an element
 
         int i = findNamePoint(attr.getNamespaceURI(), attr.getLocalName());
@@ -159,6 +160,7 @@ public class AttributeMap extends NamedNodeMapImpl {
             nodes.setElementAt(attr, i);
             previous.ownerNode = (DocumentImpl) this.ownerNode
                     .getOwnerDocument();
+            previous.parent = null;
             previous.isOwned(false);
             // make sure it won't be mistaken with defaults in case it's reused
             previous.isSpecified(true);
