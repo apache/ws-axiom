@@ -19,7 +19,13 @@
 
 package org.apache.axiom.om;
 
-/** Interface OMNamespace */
+/**
+ * Interface OMNamespace.
+ * <p>
+ * Implementations of this interface must be immutable or behave as if they were immutable,
+ * i.e. {@link #getPrefix()} and {@link #getNamespaceURI()} must always return the same
+ * values when invoked on the same instance.
+ */
 public interface OMNamespace {
     /**
      * Method equals.

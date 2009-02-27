@@ -1108,7 +1108,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     
     class DeferredNamespace implements OMNamespace {
         
-        String uri;
+        final String uri;
         
         DeferredNamespace(String ns) {
             this.uri = ns;

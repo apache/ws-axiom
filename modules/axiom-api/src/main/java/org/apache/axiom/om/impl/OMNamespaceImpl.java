@@ -24,10 +24,10 @@ import org.apache.axiom.om.OMNamespace;
 /** Class OMNamespaceImpl */
 public class OMNamespaceImpl implements OMNamespace {
     /** Field prefix */
-    private String prefix;
+    private final String prefix;
 
     /** Field uri */
-    private String uri;
+    private final String uri;
 
     /**
      * @param uri

@@ -23,19 +23,19 @@ import org.apache.axiom.om.OMNamespace;
 
 public class NamespaceImpl implements OMNamespace {
 
-    private String nsUri;
+    private final String nsUri;
 
-    private String nsPrefix;
+    private final String nsPrefix;
 
     public NamespaceImpl(String uri) {
+        this(uri, null);
+    }
+
+    public NamespaceImpl(String uri, String prefix) {
         if (uri == null) {
             throw new IllegalArgumentException("Namespace URI may not be null");
         }
         this.nsUri = uri;
-    }
-
-    public NamespaceImpl(String uri, String prefix) {
-        this(uri);
         this.nsPrefix = prefix;
     }
 

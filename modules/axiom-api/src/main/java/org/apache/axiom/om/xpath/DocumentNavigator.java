@@ -687,8 +687,8 @@ public class DocumentNavigator extends DefaultNavigator {
     }
 
     class OMNamespaceEx implements OMNamespace {
-        OMNamespace originalNsp = null;
-        OMContainer parent = null;
+        final OMNamespace originalNsp;
+        final OMContainer parent;
 
         OMNamespaceEx(OMNamespace nsp, OMContainer parent) {
             originalNsp = nsp;
