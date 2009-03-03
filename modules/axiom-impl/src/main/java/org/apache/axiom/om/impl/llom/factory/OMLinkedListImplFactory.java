@@ -48,9 +48,6 @@ import java.util.Hashtable;
 import java.util.Map;
 
 /** Class OMLinkedListImplFactory
- * @scr.component name="om.llom.component" immediate="true"
- * @scr.service interface="org.apache.axiom.om.OMFactory"
- * @scr.property name="implementationName" type="String" value="llom"
  */
 public class OMLinkedListImplFactory implements OMFactory {
 

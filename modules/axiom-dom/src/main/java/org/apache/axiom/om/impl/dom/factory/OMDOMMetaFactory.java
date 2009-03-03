@@ -31,6 +31,10 @@ import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
  * As explained in {@link OMDOMFactory}, OM factories for DOOM are not stateless.
  * Therefore {@link #getOMFactory()}, {@link #getSOAP11Factory()} and
  * {@link #getSOAP12Factory()} will return a new instance on every invocation.
+ * 
+ * @scr.component name="metafactory.dom.component" immediate="true"
+ * @scr.service interface="org.apache.axiom.om.OMMetaFactory"
+ * @scr.property name="implementationName" type="String" value="doom"
  */
 public class OMDOMMetaFactory implements OMMetaFactory {
     public OMFactory getOMFactory() {

@@ -66,23 +66,54 @@ import org.apache.axiom.soap.SOAPFactory;
  * and the default factory implementation is used.</p> 
  */
 public class OMAbstractFactory {
-    public static final String OM_FACTORY_NAME_PROPERTY = "om.factory";
-    public static final String SOAP11_FACTORY_NAME_PROPERTY = "soap11.factory";
-    public static final String SOAP12_FACTORY_NAME_PROPERTY = "soap12.factory";
+    public static final String META_FACTORY_NAME_PROPERTY = "org.apache.axiom.om.OMMetaFactory";
 
-    private static final String DEFAULT_OM_FACTORY_CLASS_NAME =
-            "org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory";
-    private static final String DEFAULT_SOAP11_FACTORY_CLASS_NAME =
-            "org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory";
-    private static final String DEFAULT_SOAP12_FACTORY_CLASS_NAME =
-            "org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory";
+    private static final String DEFAULT_META_FACTORY_CLASS_NAME =
+            "org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory";
 
-    private static OMFactory defaultOMFactory = null;
-    private static SOAPFactory defaultSOAP11OMFactory = null;
-    private static SOAPFactory defaultSOAP12OMFactory = null;
+    private static OMMetaFactory defaultMetaFactory;
 
     private OMAbstractFactory() {}
 
+    /**
+     * Get the default meta factory instance.
+     *
+     * @return the default OM factory instance
+     * @throws OMException if the factory's implementation class can't be found
+     *                     or if the class can't be instantiated
+     */
+    public static OMMetaFactory getMetaFactory() {
+        OMMetaFactory of = FactoryInjectionComponent.getMetaFactory();
+        if(of!=null){
+            return of;
+        }
+        
+        if (defaultMetaFactory != null) {
+            return defaultMetaFactory;
+        }
+        
+        String omFactory;
+        try {
+            omFactory = System.getProperty(META_FACTORY_NAME_PROPERTY);
+            if (omFactory == null || "".equals(omFactory)) {
+                omFactory = DEFAULT_META_FACTORY_CLASS_NAME;
+            }
+        } catch (SecurityException e) {
+            omFactory = DEFAULT_META_FACTORY_CLASS_NAME;
+        }
+
+        try {
+            defaultMetaFactory = (OMMetaFactory) Class.forName(omFactory).newInstance();
+        } catch (InstantiationException e) {
+            throw new OMException(e);
+        } catch (IllegalAccessException e) {
+            throw new OMException(e);
+        } catch (ClassNotFoundException e) {
+            throw new OMException(e);
+        }
+        return defaultMetaFactory;
+    }
+    
     /**
      * Get the default OM factory instance.
      *
@@ -91,35 +122,7 @@ public class OMAbstractFactory {
      *                     or if the class can't be instantiated
      */
     public static OMFactory getOMFactory() {
-        OMFactory of = FactoryInjectionComponent.getOMFactory();
-        if(of!=null){
-        	return of;
-        }
-    	
-    	if (defaultOMFactory != null) {
-            return defaultOMFactory;
-        }
-        
-        String omFactory;
-        try {
-            omFactory = System.getProperty(OM_FACTORY_NAME_PROPERTY);
-            if (omFactory == null || "".equals(omFactory)) {
-                omFactory = DEFAULT_OM_FACTORY_CLASS_NAME;
-            }
-        } catch (SecurityException e) {
-            omFactory = DEFAULT_OM_FACTORY_CLASS_NAME;
-        }
-
-        try {
-            defaultOMFactory = (OMFactory) Class.forName(omFactory).newInstance();
-        } catch (InstantiationException e) {
-            throw new OMException(e);
-        } catch (IllegalAccessException e) {
-            throw new OMException(e);
-        } catch (ClassNotFoundException e) {
-            throw new OMException(e);
-        }
-        return defaultOMFactory;
+        return getMetaFactory().getOMFactory();
     }
 
 
@@ -131,35 +134,7 @@ public class OMAbstractFactory {
      *                     or if the class can't be instantiated
      */
     public static SOAPFactory getSOAP11Factory() {
-        SOAPFactory sf = FactoryInjectionComponent.getSOAP11Factory();
-        if(sf != null){
-        	return sf;
-        }
-        
-        if (defaultSOAP11OMFactory != null) {
-            return defaultSOAP11OMFactory;
-        }
-        
-        String omFactory;
-        try {
-            omFactory = System.getProperty(SOAP11_FACTORY_NAME_PROPERTY);
-            if (omFactory == null || "".equals(omFactory)) {
-                omFactory = DEFAULT_SOAP11_FACTORY_CLASS_NAME;
-            }
-        } catch (SecurityException e) {
-            omFactory = DEFAULT_SOAP11_FACTORY_CLASS_NAME;
-        }
-        
-        try {
-            defaultSOAP11OMFactory = (SOAPFactory) Class.forName(omFactory).newInstance();
-        } catch (InstantiationException e) {
-            throw new OMException(e);
-        } catch (IllegalAccessException e) {
-            throw new OMException(e);
-        } catch (ClassNotFoundException e) {
-            throw new OMException(e);
-        }
-        return defaultSOAP11OMFactory;
+        return getMetaFactory().getSOAP11Factory();
     }
 
 
@@ -171,34 +146,6 @@ public class OMAbstractFactory {
      *                     or if the class can't be instantiated
      */
     public static SOAPFactory getSOAP12Factory() {
-        SOAPFactory sf = FactoryInjectionComponent.getSOAP12Factory();
-        if(sf != null){
-        	return sf;
-        }
-        
-    	if (defaultSOAP12OMFactory != null) {
-            return defaultSOAP12OMFactory;
-        }
-        
-        String omFactory;
-        try {
-            omFactory = System.getProperty(SOAP12_FACTORY_NAME_PROPERTY);
-            if (omFactory == null || "".equals(omFactory)) {
-                omFactory = DEFAULT_SOAP12_FACTORY_CLASS_NAME;
-            }
-        } catch (SecurityException e) {
-            omFactory = DEFAULT_SOAP12_FACTORY_CLASS_NAME;
-        }
-        
-        try {
-            defaultSOAP12OMFactory = (SOAPFactory) Class.forName(omFactory).newInstance();
-        } catch (InstantiationException e) {
-            throw new OMException(e);
-        } catch (IllegalAccessException e) {
-            throw new OMException(e);
-        } catch (ClassNotFoundException e) {
-            throw new OMException(e);
-        }
-        return defaultSOAP12OMFactory;
+        return getMetaFactory().getSOAP12Factory();
     }
 }

@@ -75,10 +75,6 @@ import javax.xml.namespace.QName;
  *       not be used in conjunction with {@link OMAbstractFactory}. In particular,
  *       the <tt>om.factory</tt> system property must not be set to this class.</li> 
  * </ul>
- * 
- * @scr.component name="om.dom.component" immediate="true"
- * @scr.service interface="org.apache.axiom.om.OMFactory"
- * @scr.property name="implementationName" type="String" value="dom"
  */
 public class OMDOMFactory implements OMFactory {
 

@@ -44,10 +44,6 @@ import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
 
 /**
- * @scr.component name="soap12factory.doom.component" immediate="true"
- * @scr.service interface="org.apache.axiom.soap.SOAPFactory" 
- * @scr.property name="axiom.soapVersion" type="String" value="soap12"
- * @scr.property name="implementationName" type="String" value="doom"
  */
 public class SOAP12Factory extends DOMSOAPFactory {
 
