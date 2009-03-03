@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMContainerEx;
@@ -57,6 +58,11 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     private OMNamespace envelopeNamespace;
     private String namespaceURI;
 
+    /**
+     * The meta factory used to get the SOAPFactory implementation when SOAP version detection
+     * is enabled. This is only used if <code>soapFactory</code> is <code>null</code>.
+     */
+    private OMMetaFactory metaFactory;
 
     private SOAPFactory soapFactory;
 
@@ -93,11 +99,17 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      * @param soapVersion parameter is to give the soap version for the transport.
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, String soapVersion) {
-        super(parser);
+        this(OMAbstractFactory.getMetaFactory(), parser, soapVersion);
+    }
+
+    public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser,
+            String soapVersion) {
+        super(metaFactory.getOMFactory(), parser);
+        this.metaFactory = metaFactory;
         parserVersion = parser.getVersion();
         identifySOAPVersion(soapVersion);
     }
-
+    
     /**
      * Constructor StAXSOAPModelBuilder Users of this constructor needs to externally take care
      * validating the transport level soap version with the Envelope version.
@@ -105,7 +117,12 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
      * @param parser
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser) {
-        super(parser);
+        this(OMAbstractFactory.getMetaFactory(), parser);
+    }
+    
+    public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser) {
+        super(metaFactory.getOMFactory(), parser);
+        this.metaFactory = metaFactory;
         parserVersion = parser.getVersion();
         SOAPEnvelope soapEnvelope = getSOAPEnvelope();
         envelopeNamespace = soapEnvelope.getNamespace();
@@ -273,12 +290,12 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
             if (soapFactory == null) {
                 namespaceURI = this.parser.getNamespaceURI();
                 if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                    soapFactory = OMAbstractFactory.getSOAP12Factory();
+                    soapFactory = metaFactory.getSOAP12Factory();
                     if (isDebugEnabled) {
                         log.debug("Starting to process SOAP 1.2 message");
                     }
                 } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                    soapFactory = OMAbstractFactory.getSOAP11Factory();
+                    soapFactory = metaFactory.getSOAP11Factory();
                     if (isDebugEnabled) {
                         log.debug("Starting to process SOAP 1.1 message");
                     }

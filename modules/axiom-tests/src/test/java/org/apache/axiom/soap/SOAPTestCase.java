@@ -28,6 +28,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public abstract class SOAPTestCase extends AbstractTestCase {
+    protected OMMetaFactory omMetaFactory;
     protected SOAPFactory soap11Factory;
     protected SOAPFactory soap12Factory;
     protected OMFactory omFactory;
@@ -42,6 +43,7 @@ public abstract class SOAPTestCase extends AbstractTestCase {
     protected static final String SOAP12_FILE_NAME = "soap/soap12message.xml";
 
     public SOAPTestCase(OMMetaFactory omMetaFactory) {
+        this.omMetaFactory = omMetaFactory;
         soap11Factory = omMetaFactory.getSOAP11Factory();
         soap12Factory = omMetaFactory.getSOAP12Factory();
         omFactory = omMetaFactory.getOMFactory();
@@ -64,7 +66,7 @@ public abstract class SOAPTestCase extends AbstractTestCase {
     protected StAXSOAPModelBuilder getSOAPBuilder(String fileName) throws Exception {
         XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(
                 getTestResource(fileName));
-        return new StAXSOAPModelBuilder(parser, null);
+        return new StAXSOAPModelBuilder(omMetaFactory, parser, null);
     }
 
 }
