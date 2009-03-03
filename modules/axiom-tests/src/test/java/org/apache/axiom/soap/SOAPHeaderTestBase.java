@@ -424,14 +424,17 @@ public class SOAPHeaderTestBase extends SOAPHeaderTestCase {
 
     public void testSOAP12ExamineAllHeaderBlocksWithParser() {
         Iterator iterator = soap12HeaderWithParser.examineAllHeaderBlocks();
+        assertTrue(iterator.hasNext());
         SOAPHeaderBlock headerBlock1 = (SOAPHeaderBlock) iterator.next();
         assertTrue(
                 "SOAP 1.2 Header Test With Parser : - headerBlock1 localname mmismatch",
                 headerBlock1.getLocalName().equals("echoOk"));
+        assertTrue(iterator.hasNext());
         SOAPHeaderBlock headerBlock2 = (SOAPHeaderBlock) iterator.next();
         assertTrue(
                 "SOAP 1.2 Header Test With Parser : - headerBlock1 localname mmismatch",
                 headerBlock2.getLocalName().equals("echoOk1"));
+        assertTrue(iterator.hasNext());
         SOAPHeaderBlock headerBlock3 = (SOAPHeaderBlock) iterator.next();
         assertTrue(
                 "SOAP 1.2 Header Test With Parser : - headerBlock1 localname mmismatch",
