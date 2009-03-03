@@ -35,8 +35,6 @@ import org.apache.axiom.soap.SOAPFactory;
  * code using an implementation of this class must call the relevant method once and only once
  * for every document processed.
  */
-// NOTE: It is intentional that this is implemented as an abstract class rather than an interface.
-//       Probably there will be a static getInstance() method in the future.
 public interface OMMetaFactory {
     /**
      * Get an OM factory instance for the XML infoset model.
