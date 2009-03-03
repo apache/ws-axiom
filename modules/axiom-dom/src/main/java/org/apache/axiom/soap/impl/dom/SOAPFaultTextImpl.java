@@ -35,7 +35,7 @@ public abstract class SOAPFaultTextImpl extends SOAPElement implements SOAPFault
 
     protected OMAttribute langAttr;
 
-    protected OMNamespace langNamespace = null;
+    protected final OMNamespace langNamespace;
 
     protected SOAPFaultTextImpl(SOAPFaultReason parent, SOAPFactory factory)
             throws SOAPProcessingException {
@@ -49,6 +49,9 @@ public abstract class SOAPFaultTextImpl extends SOAPElement implements SOAPFault
                                 OMXMLParserWrapper builder, SOAPFactory factory) {
         super(parent, SOAP12Constants.SOAP_FAULT_TEXT_LOCAL_NAME, builder,
               factory);
+        this.langNamespace = factory.createOMNamespace(
+                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
+                SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
     }
 
 
