@@ -17,35 +17,31 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.llom.factory;
+package org.apache.axiom.om.impl.dom.factory;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMImplementation;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory;
-import org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory;
+import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
+import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
 
 /**
- * Class encapsulating the linked list OM implementation.
+ * Class encapsulating the DOOM implementation.
  * <p>
- * Since all OM factories for LLOM are stateless, {@link #getOMFactory()},
- * {@link #getSOAP11Factory()} and {@link #getSOAP12Factory()} will return the
- * same instance on every invocation.
+ * As explained in {@link OMDOMFactory}, OM factories for DOOM are not stateless.
+ * Therefore {@link #getOMFactory()}, {@link #getSOAP11Factory()} and
+ * {@link #getSOAP12Factory()} will return a new instance on every invocation.
  */
-public class OMLinkedListImplementation extends OMImplementation {
-    private final OMFactory omFactory = new OMLinkedListImplFactory();
-    private final SOAPFactory soap11Factory = new SOAP11Factory();
-    private final SOAPFactory soap12Factory = new SOAP12Factory();
-    
+public class OMDOMMetaFactory implements OMMetaFactory {
     public OMFactory getOMFactory() {
-        return omFactory;
+        return new OMDOMFactory();
     }
-    
+
     public SOAPFactory getSOAP11Factory() {
-        return soap11Factory;
+        return new SOAP11Factory();
     }
-    
+
     public SOAPFactory getSOAP12Factory() {
-        return soap12Factory;
+        return new SOAP12Factory();
     }
 }

@@ -22,7 +22,7 @@ package org.apache.axiom.om;
 import org.apache.axiom.soap.SOAPFactory;
 
 /**
- * Abstract class encapsulating a particular object model.
+ * Interface encapsulating a particular object model.
  * It provides instances for plain XML, SOAP 1.1 and SOAP 1.2 object model factories for the
  * given object model implementation. Currently the two OM implementations provided by
  * Axiom are LLOM (linked list) and DOM.
@@ -37,25 +37,25 @@ import org.apache.axiom.soap.SOAPFactory;
  */
 // NOTE: It is intentional that this is implemented as an abstract class rather than an interface.
 //       Probably there will be a static getInstance() method in the future.
-public abstract class OMImplementation {
+public interface OMMetaFactory {
     /**
      * Get an OM factory instance for the XML infoset model.
      *
      * @return the OM factory instance
      */
-    public abstract OMFactory getOMFactory();
+    OMFactory getOMFactory();
     
     /**
      * Get an OM factory instance for the SOAP 1.1 infoset model.
      *
      * @return the OM factory instance
      */
-    public abstract SOAPFactory getSOAP11Factory();
+    SOAPFactory getSOAP11Factory();
     
     /**
      * Get an OM factory instance for the SOAP 1.2 infoset model.
      *
      * @return the OM factory instance
      */
-    public abstract SOAPFactory getSOAP12Factory();
+    SOAPFactory getSOAP12Factory();
 }

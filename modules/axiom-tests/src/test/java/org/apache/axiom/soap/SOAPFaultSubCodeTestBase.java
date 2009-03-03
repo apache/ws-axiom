@@ -19,13 +19,13 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMImplementation;
+import org.apache.axiom.om.OMMetaFactory;
 
 
 public class SOAPFaultSubCodeTestBase extends SOAPFaultSubCodeTestCase {
 
-    public SOAPFaultSubCodeTestBase(OMImplementation omImplementation) {
-        super(omImplementation);
+    public SOAPFaultSubCodeTestBase(OMMetaFactory omMetaFactory) {
+        super(omMetaFactory);
     }
 
     //SOAP Fault SubCode(In Fault Code) Test (Programaticaly Created)

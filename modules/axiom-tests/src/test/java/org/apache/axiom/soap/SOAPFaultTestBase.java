@@ -20,12 +20,12 @@
 package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMImplementation;
+import org.apache.axiom.om.OMMetaFactory;
 
 public class SOAPFaultTestBase extends SOAPFaultTestCase {
 
-    public SOAPFaultTestBase(OMImplementation omImplementation) {
-        super(omImplementation);
+    public SOAPFaultTestBase(OMMetaFactory omMetaFactory) {
+        super(omMetaFactory);
     }
 
     //SOAP 1.1 Fault Test (Programaticaly created)-----------------------------------------------------------------------------------

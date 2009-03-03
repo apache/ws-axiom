@@ -19,7 +19,7 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMImplementation;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 
 public abstract class SOAPHeaderTestCase extends SOAPTestCase {
@@ -29,8 +29,8 @@ public abstract class SOAPHeaderTestCase extends SOAPTestCase {
     protected SOAPHeader soap12HeaderWithParser;
     protected OMNamespace namespace;
 
-    public SOAPHeaderTestCase(OMImplementation omImplementation) {
-        super(omImplementation);
+    public SOAPHeaderTestCase(OMMetaFactory omMetaFactory) {
+        super(omMetaFactory);
         namespace =
                 omFactory.createOMNamespace("http://www.example.org", "test");
     }

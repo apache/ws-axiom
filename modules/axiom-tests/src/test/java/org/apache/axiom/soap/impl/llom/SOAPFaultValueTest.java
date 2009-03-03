@@ -19,11 +19,11 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplementation;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.SOAPFaultValueTestBase;
 
 public class SOAPFaultValueTest extends SOAPFaultValueTestBase {
     public SOAPFaultValueTest() {
-        super(new OMLinkedListImplementation());
+        super(new OMLinkedListMetaFactory());
     }
 }

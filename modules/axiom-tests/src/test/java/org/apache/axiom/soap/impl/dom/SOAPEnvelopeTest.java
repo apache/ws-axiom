@@ -19,11 +19,11 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMImplementation;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelopeTestBase;
 
 public class SOAPEnvelopeTest extends SOAPEnvelopeTestBase {
     public SOAPEnvelopeTest() {
-        super(new OMDOMImplementation());
+        super(new OMDOMMetaFactory());
     }
 }

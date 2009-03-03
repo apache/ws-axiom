@@ -20,11 +20,11 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMAttributeTestBase;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplementation;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 
 public class AttributeImplTest extends OMAttributeTestBase {
     public AttributeImplTest() {
-        super(new OMLinkedListImplementation());
+        super(new OMLinkedListMetaFactory());
     }
     
 }

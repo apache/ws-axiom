@@ -24,10 +24,10 @@ import javax.xml.namespace.QName;
 import junit.framework.TestCase;
 
 public class OMAttributeTestBase extends TestCase {
-    private final OMImplementation omImplementation;
+    private final OMMetaFactory omMetaFactory;
 
-    public OMAttributeTestBase(OMImplementation omImplementation) {
-        this.omImplementation = omImplementation;
+    public OMAttributeTestBase(OMMetaFactory omMetaFactory) {
+        this.omMetaFactory = omMetaFactory;
     }
     
     /**
@@ -37,7 +37,7 @@ public class OMAttributeTestBase extends TestCase {
     public void testQNames() throws Exception {
         String ATTR = "attr";
         String NSURI = "http://ns1";
-        OMFactory fac = omImplementation.getOMFactory();
+        OMFactory fac = omMetaFactory.getOMFactory();
         OMNamespace ns = fac.createOMNamespace(NSURI, null);
         OMAttribute attr = fac.createOMAttribute(ATTR, ns, "value");
         QName qname = attr.getQName();

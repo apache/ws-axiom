@@ -37,10 +37,10 @@ public class OMDocumentTestBase extends TestCase {
             "    <ProjectName>The Apache Web Sevices Project</ProjectName>" +
             "</Axis2>";
     
-    private final OMImplementation omImplementation;
+    private final OMMetaFactory omMetaFactory;
     
-    public OMDocumentTestBase(OMImplementation omImplementation) {
-        this.omImplementation = omImplementation;
+    public OMDocumentTestBase(OMMetaFactory omMetaFactory) {
+        this.omMetaFactory = omMetaFactory;
     }
 
     public void testParse() {
@@ -98,7 +98,7 @@ public class OMDocumentTestBase extends TestCase {
             XMLStreamReader xmlStreamReader =
                     XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
             StAXOMBuilder builder =
-                    new StAXOMBuilder(omImplementation.getOMFactory(), xmlStreamReader);
+                    new StAXOMBuilder(omMetaFactory.getOMFactory(), xmlStreamReader);
             return builder.getDocument();
         } catch (XMLStreamException e) {
             throw new UnsupportedOperationException();

@@ -19,12 +19,12 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMImplementation;
+import org.apache.axiom.om.OMMetaFactory;
 
 public class SOAPBodyTestBase extends SOAPBodyTestCase {
 
-    public SOAPBodyTestBase(OMImplementation omImplementation) {
-        super(omImplementation);
+    public SOAPBodyTestBase(OMMetaFactory omMetaFactory) {
+        super(omMetaFactory);
     }
 
     //SOAP 1.1 Body Test (Programaticaly created)----------------------------------------------------------------------------------

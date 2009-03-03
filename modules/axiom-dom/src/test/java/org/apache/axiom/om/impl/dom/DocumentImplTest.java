@@ -23,7 +23,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.om.OMDocumentTestBase;
-import org.apache.axiom.om.impl.dom.factory.OMDOMImplementation;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -33,7 +33,7 @@ import org.w3c.dom.Text;
 
 public class DocumentImplTest extends OMDocumentTestBase {
     public DocumentImplTest() {
-        super(new OMDOMImplementation());
+        super(new OMDOMMetaFactory());
     }
 
     public void testCreateElement() throws Exception {

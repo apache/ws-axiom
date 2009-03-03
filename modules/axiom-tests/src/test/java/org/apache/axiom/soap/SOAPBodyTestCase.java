@@ -19,7 +19,7 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMImplementation;
+import org.apache.axiom.om.OMMetaFactory;
 
 public abstract class SOAPBodyTestCase extends SOAPTestCase {
     protected SOAPBody soap11Body;
@@ -28,8 +28,8 @@ public abstract class SOAPBodyTestCase extends SOAPTestCase {
     protected SOAPBody soap11BodyWithParser;
     protected SOAPBody soap12BodyWithParser;
 
-    public SOAPBodyTestCase(OMImplementation omImplementation) {
-        super(omImplementation);
+    public SOAPBodyTestCase(OMMetaFactory omMetaFactory) {
+        super(omMetaFactory);
 
     }
 

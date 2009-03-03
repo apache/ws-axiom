@@ -20,12 +20,12 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplementation;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.SOAPBodyTestBase;
 
 public class SOAPBodyTest extends SOAPBodyTestBase {
     public SOAPBodyTest() {
-        super(new OMLinkedListImplementation());
+        super(new OMLinkedListMetaFactory());
     }
 
     public void testSOAPBodyDetachment() {

@@ -20,7 +20,7 @@
 package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMImplementation;
+import org.apache.axiom.om.OMMetaFactory;
 
 public class SOAPFaultTextTestBase extends SOAPFaultReasonTestCase {
     protected SOAPFaultText soap11FaultText;
@@ -28,8 +28,8 @@ public class SOAPFaultTextTestBase extends SOAPFaultReasonTestCase {
     protected String soap11FaultTextWithParser;
     protected SOAPFaultText soap12FaultTextWithParser;
 
-    public SOAPFaultTextTestBase(OMImplementation omImplementation) {
-        super(omImplementation);
+    public SOAPFaultTextTestBase(OMMetaFactory omMetaFactory) {
+        super(omMetaFactory);
     }
 
     protected void setUp() throws Exception {

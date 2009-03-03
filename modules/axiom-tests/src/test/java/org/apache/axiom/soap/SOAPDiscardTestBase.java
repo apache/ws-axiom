@@ -20,7 +20,7 @@ package org.apache.axiom.soap;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.axiom.om.OMImplementation;
+import org.apache.axiom.om.OMMetaFactory;
 
 /**
  * @author : Ajith Ranabahu
@@ -30,8 +30,8 @@ import org.apache.axiom.om.OMImplementation;
 public class SOAPDiscardTestBase  extends SOAPTestCase{
 
 
-    public SOAPDiscardTestBase(OMImplementation omImplementation) {
-        super(omImplementation);
+    public SOAPDiscardTestBase(OMMetaFactory omMetaFactory) {
+        super(omMetaFactory);
     }
 
     public void testDiscardHeader(){

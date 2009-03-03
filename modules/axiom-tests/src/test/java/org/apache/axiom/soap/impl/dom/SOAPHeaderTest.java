@@ -19,11 +19,11 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMImplementation;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAPHeaderTestBase;
 
 public class SOAPHeaderTest extends SOAPHeaderTestBase {
     public SOAPHeaderTest() {
-        super(new OMDOMImplementation());
+        super(new OMDOMMetaFactory());
     }
 }

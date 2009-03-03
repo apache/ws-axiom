@@ -20,10 +20,10 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMDocumentTestBase;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplementation;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 
 public class OMDocumentImplTest extends OMDocumentTestBase {
     public OMDocumentImplTest() {
-        super(new OMLinkedListImplementation());
+        super(new OMLinkedListMetaFactory());
     }
 }

@@ -20,17 +20,17 @@
 package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMImplementation;
+import org.apache.axiom.om.OMMetaFactory;
 
 
 public class SOAPEnvelopeTestBase extends SOAPTestCase {
     protected SOAPEnvelope soap11Envelope;
     protected SOAPEnvelope soap12Envelope;
 
-    public SOAPEnvelopeTestBase(OMImplementation omImplementation) {
-        super(omImplementation);
-        soap11Envelope = omImplementation.getSOAP11Factory().getDefaultEnvelope();
-        soap12Envelope = omImplementation.getSOAP12Factory().getDefaultEnvelope();
+    public SOAPEnvelopeTestBase(OMMetaFactory omMetaFactory) {
+        super(omMetaFactory);
+        soap11Envelope = omMetaFactory.getSOAP11Factory().getDefaultEnvelope();
+        soap12Envelope = omMetaFactory.getSOAP12Factory().getDefaultEnvelope();
     }
 
     //SOAP 1.1 Envelope Test (Programaticaly Created)-----------------------------------------------

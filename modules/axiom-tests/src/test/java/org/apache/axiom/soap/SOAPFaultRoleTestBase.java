@@ -19,7 +19,7 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMImplementation;
+import org.apache.axiom.om.OMMetaFactory;
 
 public class SOAPFaultRoleTestBase extends SOAPFaultTestCase {
 
@@ -28,8 +28,8 @@ public class SOAPFaultRoleTestBase extends SOAPFaultTestCase {
     protected SOAPFaultRole soap11FaultRoleWithParser;
     protected SOAPFaultRole soap12FaultRoleWithParser;
 
-    public SOAPFaultRoleTestBase(OMImplementation omImplementation) {
-        super(omImplementation);
+    public SOAPFaultRoleTestBase(OMMetaFactory omMetaFactory) {
+        super(omMetaFactory);
     }
 
     protected void setUp() throws Exception {

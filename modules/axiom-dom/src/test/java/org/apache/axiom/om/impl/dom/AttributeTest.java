@@ -20,10 +20,10 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMAttributeTestBase;
-import org.apache.axiom.om.impl.dom.factory.OMDOMImplementation;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 
 public class AttributeTest extends OMAttributeTestBase {
     public AttributeTest() {
-        super(new OMDOMImplementation());
+        super(new OMDOMMetaFactory());
     }
 }

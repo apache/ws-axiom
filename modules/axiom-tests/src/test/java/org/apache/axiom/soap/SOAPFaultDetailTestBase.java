@@ -21,7 +21,7 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMImplementation;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
 
@@ -34,8 +34,8 @@ public class SOAPFaultDetailTestBase extends SOAPFaultTestCase {
     protected SOAPFaultDetail soap12FaultDetailWithParser;
     protected OMNamespace omNamespace;
 
-    public SOAPFaultDetailTestBase(OMImplementation omImplementation) {
-        super(omImplementation);
+    public SOAPFaultDetailTestBase(OMMetaFactory omMetaFactory) {
+        super(omMetaFactory);
         omNamespace =
                 omFactory.createOMNamespace("http://www.test.org", "test");
     }

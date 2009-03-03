@@ -19,11 +19,11 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMImplementation;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAPFaultRoleTestBase;
 
 public class SOAPFaultRoleTest extends SOAPFaultRoleTestBase {
     public SOAPFaultRoleTest() {
-        super(new OMDOMImplementation());
+        super(new OMDOMMetaFactory());
     }
 }

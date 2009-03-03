@@ -19,11 +19,11 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMImplementation;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAPFaultDetailTestBase;
 
 public class SOAPFaultDetailTest extends SOAPFaultDetailTestBase {
     public SOAPFaultDetailTest() {
-        super(new OMDOMImplementation());
+        super(new OMDOMMetaFactory());
     }
 }

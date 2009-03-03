@@ -21,7 +21,7 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMImplementation;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLInputFactory;
@@ -41,10 +41,10 @@ public abstract class SOAPTestCase extends AbstractTestCase {
     protected static final String SOAP11_FILE_NAME = "soap/soap11/soap11message.xml";
     protected static final String SOAP12_FILE_NAME = "soap/soap12message.xml";
 
-    public SOAPTestCase(OMImplementation omImplementation) {
-        soap11Factory = omImplementation.getSOAP11Factory();
-        soap12Factory = omImplementation.getSOAP12Factory();
-        omFactory = omImplementation.getOMFactory();
+    public SOAPTestCase(OMMetaFactory omMetaFactory) {
+        soap11Factory = omMetaFactory.getSOAP11Factory();
+        soap12Factory = omMetaFactory.getSOAP12Factory();
+        omFactory = omMetaFactory.getOMFactory();
     }
 
     protected void setUp() throws Exception {
