@@ -168,6 +168,22 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         checkSerialization(root2, true);
     }
     
+    /**
+     * Test reading a message containing XOP.
+     * Serialize the tree (with caching).
+     * Then ensure that the XOP is preserved when it is serialized again.
+     * @throws Exception
+     */
+    // Test for unresolved issue WSCOMMONS-446
+    public void _testCreateSerializeAndSerializeOptimized() throws Exception {
+        OMElement root = createTestMTOMMessage();
+        
+        // Serialize the tree (with caching).
+        root.serialize(new ByteArrayOutputStream());
+        
+        // Write out the source
+        checkSerialization(root, true);
+    }
     
     /**
      * Test reading a message containing XOP.
