@@ -59,7 +59,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         super.setUp();
     }
 
-    public void testCreateOMElement() throws Exception {
+    private OMElement createTestMTOMMessage() throws Exception {
         String contentTypeString =
                 "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
         String inFileName = "mtom/MTOMBuilderTestIn.txt";
@@ -70,7 +70,27 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
                         .getSOAPPartInputStream())));
         OMXMLParserWrapper builder = new MTOMStAXSOAPModelBuilder(reader, attachments,
                                                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        OMElement root = builder.getDocumentElement();
+        return builder.getDocumentElement();
+    }
+    
+    private void checkSerialization(OMElement root, boolean optimize) throws Exception {
+        OMOutputFormat format = new OMOutputFormat();
+        format.setDoOptimize(optimize);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        root.serializeAndConsume(baos, format);
+        String msg = baos.toString();
+        if (optimize) {
+            // Make sure there is an xop:Include element and an optimized attachment
+            assertTrue(msg.indexOf("xop:Include") > 0);
+            assertTrue(msg.indexOf("Content-ID: <-1609420109260943731>") > 0);
+        } else {
+            assertTrue(msg.indexOf("xop:Include") < 0);
+            assertTrue(msg.indexOf("Content-ID: <-1609420109260943731>") < 0);
+        }
+    }
+    
+    public void testCreateOMElement() throws Exception {
+        OMElement root = createTestMTOMMessage();
         OMElement body = (OMElement) root.getFirstOMChild();
         OMElement data = (OMElement) body.getFirstOMChild();
 
@@ -102,26 +122,8 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
      */
     // TODO: because of the serializeAndConsume, this is actually NOT testing MTOMStAXSOAPModelBuilder, but StreamingOMSerializer!!!
     public void testCreateAndSerializeOptimized() throws Exception {
-        String contentTypeString =
-                "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
-        String inFileName = "mtom/MTOMBuilderTestIn.txt";
-        InputStream inStream = getTestResource(inFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
-        XMLStreamReader reader = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
-                        .getSOAPPartInputStream())));
-        OMXMLParserWrapper builder = new MTOMStAXSOAPModelBuilder(reader, attachments,
-                                               SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        OMElement root = builder.getDocumentElement();
-        
-        OMOutputFormat format = new OMOutputFormat();
-        format.setDoOptimize(true);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        root.serializeAndConsume(baos, format);
-        String msg = baos.toString();
-        // Make sure there is an xop:Include element and an optimized attachment
-        assertTrue(msg.indexOf("xop:Include") > 0);
-        assertTrue(msg.indexOf("Content-ID: <-1609420109260943731>") > 0);
+        OMElement root = createTestMTOMMessage();
+        checkSerialization(root, true);
     }
     
     /**
@@ -131,40 +133,16 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
      * @throws Exception
      */
     public void testCreateCloneAndSerializeOptimized() throws Exception {
-        String contentTypeString =
-                "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
-        String inFileName = "mtom/MTOMBuilderTestIn.txt";
-        InputStream inStream = getTestResource(inFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
-        XMLStreamReader reader = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
-                        .getSOAPPartInputStream())));
-        OMXMLParserWrapper builder = new MTOMStAXSOAPModelBuilder(reader, attachments,
-                                               SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        OMElement root = builder.getDocumentElement();
+        OMElement root = createTestMTOMMessage();
         
         // Create a clone of root
         OMElement root2 = root.cloneOMElement();
         
         // Write out the source
-        OMOutputFormat format = new OMOutputFormat();
-        format.setDoOptimize(true);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        root.serializeAndConsume(baos, format);
-        String msg = baos.toString();
-        // Make sure there is an xop:Include element and an optimized attachment
-        assertTrue(msg.indexOf("xop:Include") > 0);
-        assertTrue(msg.indexOf("Content-ID: <-1609420109260943731>") > 0);
+        checkSerialization(root, true);
         
         // Write out the clone
-        format = new OMOutputFormat();
-        format.setDoOptimize(true);
-        baos = new ByteArrayOutputStream();
-        root2.serializeAndConsume(baos, format);
-        msg = baos.toString();
-        // Make sure there is an xop:Include element and an optimized attachment
-        assertTrue(msg.indexOf("xop:Include") > 0);
-        assertTrue(msg.indexOf("Content-ID: <-1609420109260943731>") > 0);
+        checkSerialization(root2, true);
     }
     
     /**
@@ -175,17 +153,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
      * @throws Exception
      */
     public void testCreateBuildCloneAndSerializeOptimized() throws Exception {
-        String contentTypeString =
-                "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
-        String inFileName = "mtom/MTOMBuilderTestIn.txt";
-        InputStream inStream = getTestResource(inFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
-        XMLStreamReader reader = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
-                        .getSOAPPartInputStream())));
-        OMXMLParserWrapper builder = new MTOMStAXSOAPModelBuilder(reader, attachments,
-                                               SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        OMElement root = builder.getDocumentElement();
+        OMElement root = createTestMTOMMessage();
         
         // Fully build the root
         root.buildWithAttachments();
@@ -194,24 +162,10 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         OMElement root2 = root.cloneOMElement();
         
         // Write out the source
-        OMOutputFormat format = new OMOutputFormat();
-        format.setDoOptimize(true);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        root.serializeAndConsume(baos, format);
-        String msg = baos.toString();
-        // Make sure there is an xop:Include element and an optimized attachment
-        assertTrue(msg.indexOf("xop:Include") > 0);
-        assertTrue(msg.indexOf("Content-ID: <-1609420109260943731>") > 0);
+        checkSerialization(root, true);
         
         // Write out the clone
-        format = new OMOutputFormat();
-        format.setDoOptimize(true);
-        baos = new ByteArrayOutputStream();
-        root2.serializeAndConsume(baos, format);
-        msg = baos.toString();
-        // Make sure there is an xop:Include element and an optimized attachment
-        assertTrue(msg.indexOf("xop:Include") > 0);
-        assertTrue(msg.indexOf("Content-ID: <-1609420109260943731>") > 0);
+        checkSerialization(root2, true);
     }
     
     
@@ -222,27 +176,9 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
      * @throws Exception
      */
     public void testCreateAndSerializeInlined() throws Exception {
-        String contentTypeString =
-                "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
-        String inFileName = "mtom/MTOMBuilderTestIn.txt";
-        InputStream inStream = getTestResource(inFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
-        XMLStreamReader reader = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
-                        .getSOAPPartInputStream())));
-        OMXMLParserWrapper builder = new MTOMStAXSOAPModelBuilder(reader, attachments,
-                                               SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        OMElement root = builder.getDocumentElement();
+        OMElement root = createTestMTOMMessage();
         
-        OMOutputFormat format = new OMOutputFormat();
-        format.setDoOptimize(false);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        root.serializeAndConsume(baos, format);
-        String msg = baos.toString();
-        // Make sure there is not an xop:Include
-        // Make sure there is not an optimized attachment
-        assertTrue(msg.indexOf("xop:Include") < 0);
-        assertTrue(msg.indexOf("Content-ID: <cid:-1609420109260943731>") < 0);
+        checkSerialization(root, false);
     }
 
     public void testUTF16MTOMMessage() throws Exception {
@@ -281,17 +217,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
     }
 
     public void testCreateAndXMLStreamReader() throws Exception {
-        String contentTypeString =
-                "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
-        String inFileName = "mtom/MTOMBuilderTestIn.txt";
-        InputStream inStream = getTestResource(inFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
-        XMLStreamReader reader = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
-                        .getSOAPPartInputStream())));
-        OMXMLParserWrapper builder = new MTOMStAXSOAPModelBuilder(reader, attachments,
-                                               SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        OMElement root = builder.getDocumentElement();
+        OMElement root = createTestMTOMMessage();
         
         // Build tree
         root.build();
