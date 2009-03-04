@@ -19,9 +19,7 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
-
 
 public class SOAPEnvelopeTestBase extends SOAPTestCase {
     protected SOAPEnvelope soap11Envelope;
@@ -110,7 +108,7 @@ public class SOAPEnvelopeTestBase extends SOAPTestCase {
     }
 
     public void testRandomSOAPHeader() {
-        SOAPFactory soapFac = OMAbstractFactory.getSOAP12Factory();
+        SOAPFactory soapFac = omMetaFactory.getSOAP12Factory();
         SOAPEnvelope defaultEnvelope = soapFac.getDefaultEnvelope();
         defaultEnvelope.build();
         defaultEnvelope.getHeader().detach();
@@ -121,8 +119,7 @@ public class SOAPEnvelopeTestBase extends SOAPTestCase {
 
     // Make sure order of header/body creation doesn't matter
     public void testBodyHeaderOrder() throws Exception {
-//        SOAPFactory soapFac = new org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory();
-        SOAPFactory soapFac = new org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory();
+        SOAPFactory soapFac = omMetaFactory.getSOAP11Factory();
         SOAPEnvelope env = soapFac.createSOAPEnvelope();
         SOAPBody body = soapFac.createSOAPBody(env);
         SOAPHeader header = soapFac.createSOAPHeader(env);
