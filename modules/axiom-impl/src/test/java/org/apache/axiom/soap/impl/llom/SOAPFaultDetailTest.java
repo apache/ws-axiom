@@ -19,11 +19,31 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPFaultDetailTestBase;
 
 public class SOAPFaultDetailTest extends SOAPFaultDetailTestBase {
     public SOAPFaultDetailTest() {
         super(new OMLinkedListMetaFactory());
+    }
+
+    // TODO: this should also work for DOOM, but the SOAPFactory#createSOAPxxx methods
+    //       are not implemented or don't work correctly
+    public void testWSCommons202() {
+        SOAPFactory factory = omMetaFactory.getSOAP12Factory();
+        SOAPFaultDetail soapFaultDetail = factory.createSOAPFaultDetail();
+        soapFaultDetail.setText("a");
+
+        assertTrue(soapFaultDetail.getText().trim().equals("a"));
+        assertTrue("Text serialization has problems. It had serialized same text twice", soapFaultDetail.toString().indexOf("aa") == -1);
+
+        OMElement omElement = factory.createOMElement("DummyElement", null);
+        soapFaultDetail.addChild(omElement);
+        omElement.setText("Some text is here");
+
+        assertTrue("Children of SOAP Fault Detail element are not serialized properly", soapFaultDetail.toString().indexOf("Some text is here") != -1);
     }
 }
