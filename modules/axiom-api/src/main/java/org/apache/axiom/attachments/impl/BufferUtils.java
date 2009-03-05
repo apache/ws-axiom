@@ -279,8 +279,12 @@ public class BufferUtils {
         }
         DataSource ds = dh.getDataSource();
         if (ds instanceof SizeAwareDataSource) {
-            return ((SizeAwareDataSource)ds).getSize() > limit ? 1 : 0;
-        } else if (ds instanceof javax.mail.util.ByteArrayDataSource) {
+            long size = ((SizeAwareDataSource)ds).getSize();
+            if (size != -1) {
+                return size > limit ? 1 : 0;
+            }
+        }
+        if (ds instanceof javax.mail.util.ByteArrayDataSource) {
             // Special optimization for JavaMail's ByteArrayDataSource (Axiom's ByteArrayDataSource
             // already implements SizeAwareDataSource and doesn't need further optimization):
             // we know that ByteArrayInputStream#available() directly returns the size of the
