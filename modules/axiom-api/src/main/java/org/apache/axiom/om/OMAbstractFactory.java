@@ -23,47 +23,22 @@ import org.apache.axiom.injection.FactoryInjectionComponent;
 import org.apache.axiom.soap.SOAPFactory;
 
 /**
- * Provides default instances for plain XML, SOAP 1.1 and SOAP 1.2 object model factories.
- * 
- * <p>The implementation class for each object model type is determined by a specific
- * system property. If the system property is not set, a default implementation class
- * is chosen. The following table summarizes the system properties and default implementation
- * used:</p>
- * <table border="1">
- *   <tr>
- *     <th>Object model</th>
- *     <th>Method</th>
- *     <th>System property</th>
- *     <th>Default implementation</th>
- *   </tr>
- *   <tr>
- *     <td>Plain XML</td>
- *     <td>{@link #getOMFactory()}</td>
- *     <td><tt>om.factory</tt></td>
- *     <td>{@link org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory}</td>
- *   </tr>
- *   <tr>
- *     <td>SOAP 1.1</td>
- *     <td>{@link #getSOAP11Factory()}</td>
- *     <td><tt>soap11.factory</tt></td>
- *     <td>{@link org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory}</td>
- *   </tr>
- *   <tr>
- *     <td>SOAP 1.2</td>
- *     <td>{@link #getSOAP12Factory()}</td>
- *     <td><tt>soap12.factory</tt></td>
- *     <td>{@link org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory}</td>
- *   </tr>
- * </table>
- * <p>The methods in this class assume that {@link OMFactory} instances are stateless and
- * return the same instance on every invocation, i.e. the factory for each OM type is instantiated
- * only once. Configuring the system properties with factory implementation that are not
- * stateless will lead to unexpected results. It should be noted that the factories provided
- * by the DOOM implementation are not stateless and should therefore never be used as default
- * factories.</p>
- * <p>Each method in this class uses {@link System#getProperty(String)} to determine the value of
- * the relevant system property. A {@link SecurityException} thrown by this method is simply ignored
- * and the default factory implementation is used.</p> 
+ * Provides default instances for object model and meta factories.
+ * <p>
+ * The {@link #getMetaFactory()} method returns the default {@link OMMetaFactory} instance.
+ * The implementation class is determined by the <code>org.apache.axiom.om.OMMetaFactory</code>
+ * system property. If this property is not set, the meta factory for the LLOM implementation
+ * is used.
+ * <p>
+ * The {@link #getOMFactory()}, {@link #getSOAP11Factory()} and {@link #getSOAP12Factory()}
+ * methods return default instances for plain XML, SOAP 1.1 and SOAP 1.2 object model factories.
+ * They are convenience methods calling {@link #getMetaFactory()} and then delegating to the
+ * returned {@link OMMetaFactory}.
+ * <p>
+ * Note that while {@link #getMetaFactory()} always returns the same instance, the other methods
+ * may return new instances on every invocation, depending on the {@link OMMetaFactory}
+ * implementation.
+ * <p>
  */
 public class OMAbstractFactory {
     public static final String META_FACTORY_NAME_PROPERTY = "org.apache.axiom.om.OMMetaFactory";
@@ -76,7 +51,14 @@ public class OMAbstractFactory {
     private OMAbstractFactory() {}
 
     /**
-     * Get the default meta factory instance.
+     * Get the default meta factory instance. The implementation class is determined by the
+     * <code>org.apache.axiom.om.OMMetaFactory</code> system property. If this property is not
+     * set, the meta factory for the LLOM implementation is returned.
+     * <p>
+     * This method uses {@link System#getProperty(String)} to determine the value of
+     * the <code>org.apache.axiom.om.OMMetaFactory</code> system property. A
+     * {@link SecurityException} thrown by this method is simply ignored
+     * and the default factory implementation is used.
      *
      * @return the default OM factory instance
      * @throws OMException if the factory's implementation class can't be found

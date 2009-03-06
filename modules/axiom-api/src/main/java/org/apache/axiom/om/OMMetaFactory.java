@@ -22,8 +22,9 @@ package org.apache.axiom.om;
 import org.apache.axiom.soap.SOAPFactory;
 
 /**
- * Interface encapsulating a particular object model.
- * It provides instances for plain XML, SOAP 1.1 and SOAP 1.2 object model factories for the
+ * Object model meta factory.
+ * This interface encapsulates a particular object model and provides instances
+ * for plain XML, SOAP 1.1 and SOAP 1.2 object model factories for the
  * given object model implementation. Currently the two OM implementations provided by
  * Axiom are LLOM (linked list) and DOM.
  * <p>

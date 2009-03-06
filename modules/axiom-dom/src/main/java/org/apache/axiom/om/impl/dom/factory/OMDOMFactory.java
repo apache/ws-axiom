@@ -19,8 +19,6 @@
 
 package org.apache.axiom.om.impl.dom.factory;
 
-
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -71,9 +69,6 @@ import javax.xml.namespace.QName;
  *       to reset the {@link DocumentImpl} instance before processing the next document.</li>
  *   <li>Instances of this class are not thread safe and using a single instance concurrently
  *       will lead to undefined results.</li>
- *   <li>Since instances are not stateless, this class (as well as its subclasses) must
- *       not be used in conjunction with {@link OMAbstractFactory}. In particular,
- *       the <tt>om.factory</tt> system property must not be set to this class.</li> 
  * </ul>
  */
 public class OMDOMFactory implements OMFactory {

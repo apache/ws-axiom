@@ -26,7 +26,7 @@ import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
 import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
 
 /**
- * Class encapsulating the DOOM implementation.
+ * Meta factory for the DOOM implementation.
  * <p>
  * As explained in {@link OMDOMFactory}, OM factories for DOOM are not stateless.
  * Therefore {@link #getOMFactory()}, {@link #getSOAP11Factory()} and
