@@ -49,6 +49,21 @@ import javax.xml.stream.XMLStreamReader;
  * StAX based builder that produces a SOAP infoset model.
  * It builds SOAP specific objects such as {@link SOAPEnvelope}, {@link SOAPHeader},
  * {@link SOAPHeaderBlock} and {@link SOAPBody}.
+ * <p>
+ * This builder offers two different ways to handle SOAP versions:
+ * <ul>
+ *   <li>Either the SOAP version is specified when the builder is constructed. If the specified
+ *       version doesn't match the envelope namespace of the actual message, an exception is
+ *       triggered. This approach should be used when the SOAP version is known from information
+ *       other than the content of the message. For example, in the HTTP case it is possible
+ *       to identify the SOAP version based on the <tt>Content-Type</tt> header.</li>
+ *   <li>If no SOAP version is specified, the builder will automatically detect it from the
+ *       envelope namespace. It will then build the object model using the
+ *       {@link SOAPFactory} implementation corresponding to that SOAP version.</li>
+ * </ul>
+ * In both cases, the {@link SOAPFactory} is retrieved either from the {@link OMMetaFactory}
+ * specified when the builder is constructed, or if none is specified, from the default
+ * meta factory returned by {@link OMAbstractFactory#getMetaFactory()}.
  */
 public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
@@ -89,19 +104,25 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     private static final boolean isDebugEnabled = log.isDebugEnabled();
     
     /**
-     * Constructor StAXSOAPModelBuilder soapVersion parameter is to give the soap version from the
-     * transport. For example, in HTTP case you can identify the version of the soap message u have
-     * recd by looking at the HTTP headers. It is used to check whether the actual soap message
-     * contained is of that version. If one is creates the builder from the transport, then can just
-     * pass null for version.
+     * Constructor.
      *
-     * @param parser
-     * @param soapVersion parameter is to give the soap version for the transport.
+     * @param parser the parser to read the SOAP message from
+     * @param soapVersion the namespace URI corresponding to the expected SOAP version
+     *                    of the message
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, String soapVersion) {
         this(OMAbstractFactory.getMetaFactory(), parser, soapVersion);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param metaFactory the meta factory used to get the appropriate {@link SOAPFactory}
+     *                    implementation
+     * @param parser the parser to read the SOAP message from
+     * @param soapVersion the namespace URI corresponding to the expected SOAP version
+     *                    of the message
+     */
     public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser,
             String soapVersion) {
         super(metaFactory.getOMFactory(), parser);
@@ -111,15 +132,21 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     }
     
     /**
-     * Constructor StAXSOAPModelBuilder Users of this constructor needs to externally take care
-     * validating the transport level soap version with the Envelope version.
-     *
-     * @param parser
+     * Constructor.
+     * 
+     * @param parser the parser to read the SOAP message from
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser) {
         this(OMAbstractFactory.getMetaFactory(), parser);
     }
     
+    /**
+     * Constructor.
+     * 
+     * @param metaFactory the meta factory used to get the appropriate {@link SOAPFactory}
+     *                    implementation
+     * @param parser the parser to read the SOAP message from
+     */
     public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser) {
         super(metaFactory.getOMFactory(), parser);
         this.metaFactory = metaFactory;
@@ -129,13 +156,12 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
     }
 
     /**
-     * @param parser
-     * @param factory
-     * @param soapVersion parameter is to give the soap version from the transport. For example, in
-     *                    HTTP case you can identify the version of the soap message u have recd by
-     *                    looking at the HTTP headers. It is used to check whether the actual soap
-     *                    message contained is of that version.If one is creates the builder from
-     *                    the transport, then can just pass null for version.
+     * Constructor.
+     * 
+     * @param parser the parser to read the SOAP message from
+     * @param factory the SOAP factory to use
+     * @param soapVersion the namespace URI corresponding to the expected SOAP version
+     *                    of the message
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
         super(factory, parser);
