@@ -27,14 +27,12 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.File;
-import java.io.FileOutputStream;
+
+import java.io.ByteArrayOutputStream;
 
 public class OMNavigatorTest extends AbstractTestCase {
     private SOAPEnvelope envelope = null;
     private OMXMLParserWrapper builder;
-    private File tempFile;
-    private XMLStreamWriter output;
 
     public OMNavigatorTest(String testName) {
         super(testName);
@@ -45,15 +43,14 @@ public class OMNavigatorTest extends AbstractTestCase {
                 createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE1));
         builder = new StAXSOAPModelBuilder(xmlStreamReader, null);
         envelope = (SOAPEnvelope) builder.getDocumentElement();
-        tempFile = File.createTempFile("temp", "xml");
-        output =
-                XMLOutputFactory.newInstance().createXMLStreamWriter(
-                        new FileOutputStream(tempFile), OMConstants.DEFAULT_CHAR_SET_ENCODING);
     }
 
     public void testnavigatorFullyBuilt() throws Exception {
         assertNotNull(envelope);
         //dump the out put to a  temporary file
+        XMLStreamWriter output =
+            XMLOutputFactory.newInstance().createXMLStreamWriter(
+                    new ByteArrayOutputStream(), OMConstants.DEFAULT_CHAR_SET_ENCODING);
         envelope.serialize(output);
 
         //now the OM is fully created -> test the navigation
@@ -95,9 +92,4 @@ public class OMNavigatorTest extends AbstractTestCase {
         }
 
     }
-
-    protected void tearDown() throws Exception {
-        tempFile.delete();
-    }
-
 }
