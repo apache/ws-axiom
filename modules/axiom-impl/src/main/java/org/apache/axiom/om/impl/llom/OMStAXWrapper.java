@@ -55,8 +55,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Note  - This class also implements the streaming constants interface to get access to the StAX
- * constants
+ * Note - This class also implements the streaming constants interface to get access to the StAX
+ * constants.
  */
 public class OMStAXWrapper 
     implements OMXMLStreamReader, XMLStreamConstants {
@@ -75,7 +75,6 @@ public class OMStAXWrapper
     private boolean _isClosed = false;              // Indicate if parser is closed
     private boolean _releaseParserOnClose = false;  // Defaults to legacy behavior, which is keep the reference
 
-
     /** Field rootNode */
     private OMNode rootNode;
 
@@ -93,15 +92,13 @@ public class OMStAXWrapper
     private static final short COMPLETED = 2;
     private static final short SWITCHED = 3;
     private static final short DOCUMENT_COMPLETE = 4;
-    
-    
+
     // Variables used to build an xop:include representation
     private final static QName XOP_INCLUDE = 
         new QName("http://www.w3.org/2004/08/xop/include", "Include", "xop");
     private OMElement xopInclude = null;
     private OMText xopIncludeText = null;
     private boolean xopIncludeStart = false;
-
 
     /** Field state */
     private short state;
@@ -132,7 +129,8 @@ public class OMStAXWrapper
     /** Field nextNode */
     private OMNode nextNode = null;
 
-    // holder for the current node. Needs this to generate events from the current node
+    // holder for the current node. Needs this to generate events from the
+    // current node
 
     /** Field currentNode */
     private OMNode currentNode = null;
@@ -153,7 +151,7 @@ public class OMStAXWrapper
      * the consumer must call getDataHandler(cid) to access the datahandler.
      */
     private boolean inlineMTOM = true;
-    
+
     /**
      * Method setAllowSwitching.
      *
@@ -221,7 +219,7 @@ public class OMStAXWrapper
         }
 
         // initiate the next and current nodes
-        // Note -  navigator is written in such a way that it first
+        // Note - navigator is written in such a way that it first
         // returns the starting node at the first call to it
         // Note - for OMSourcedElements, temporarily set caching
         // to get the initial navigator nodes
@@ -257,9 +255,7 @@ public class OMStAXWrapper
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)) {
                 OMNamespace ns = ((OMElement) getNode()).getNamespace();
-                returnStr = (ns == null)
-                        ? null
-                        : ns.getPrefix();
+                returnStr = (ns == null) ? null : ns.getPrefix();
             }
         }
         return returnStr;
@@ -278,9 +274,7 @@ public class OMStAXWrapper
                     || (currentEvent == END_ELEMENT)
                     || (currentEvent == NAMESPACE)) {
                 OMNamespace ns = ((OMElement) getNode()).getNamespace();
-                returnStr = (ns == null)
-                        ? null
-                        : ns.getNamespaceURI();
+                returnStr = (ns == null) ? null : ns.getNamespaceURI();
             }
         }
         
@@ -466,7 +460,6 @@ public class OMStAXWrapper
         String returnString = null;
         if (parser != null) {
             returnString = parser.getNamespaceURI(i);
-
         } else {
             if (isStartElement() || isEndElement()
                     || (currentEvent == NAMESPACE)) {
@@ -506,9 +499,7 @@ public class OMStAXWrapper
                     || (currentEvent == NAMESPACE)) {
                 OMNamespace ns = (OMNamespace) getItemFromIterator(
                         ((OMElement) getNode()).getAllDeclaredNamespaces(), i);
-                returnString = (ns == null)
-                        ? null
-                        : ns.getPrefix();
+                returnString = (ns == null) ? null : ns.getPrefix();
             }
         }
         return returnString;
@@ -525,9 +516,8 @@ public class OMStAXWrapper
         } else {
             if (isStartElement() || isEndElement()
                     || (currentEvent == NAMESPACE)) {
-                returnCount =
-                        getCount(
-                                ((OMElement) getNode()).getAllDeclaredNamespaces());
+                returnCount = getCount(((OMElement) getNode())
+                        .getAllDeclaredNamespaces());
             }
         }
         return returnCount;
@@ -588,8 +578,7 @@ public class OMStAXWrapper
             returnString = parser.getAttributeType(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                
-            	OMAttribute attrib = getAttribute((OMElement) getNode(), i);
+                OMAttribute attrib = getAttribute((OMElement) getNode(), i);
                 if (attrib != null) {
                     returnString = attrib.getAttributeType();
                 }
@@ -599,7 +588,6 @@ public class OMStAXWrapper
                         "attribute type accessed in illegal event!");
             }
         }
-        
         return returnString;
     }
 
@@ -840,8 +828,6 @@ public class OMStAXWrapper
                 }
             }
         }
-
-
         return returnString;
     }
 
@@ -986,17 +972,15 @@ public class OMStAXWrapper
                 }
 
                 // We should throw an END_DOCUMENT
-                if ((currentEvent == START_DOCUMENT) &&
-                        (currentEvent == parser.getEventType())) {
+                if ((currentEvent == START_DOCUMENT)
+                        && (currentEvent == parser.getEventType())) {
                     currentEvent = parser.next();
                 } else {
                     currentEvent = parser.getEventType();
                 }
-
                 updateCompleteStatus();
                 break;
             case NAVIGABLE:
-                
                 currentEvent = generateEvents(currentNode);
                 updateCompleteStatus();
                 updateLastNode();
@@ -1007,7 +991,7 @@ public class OMStAXWrapper
                 }
                 updateCompleteStatus();
                 break;
-            default :
+            default:
                 throw new OMStreamingException("unsuppported state!");
         }
         return currentEvent;
@@ -1042,7 +1026,7 @@ public class OMStAXWrapper
             throw new IllegalArgumentException();
         }
         if (parser != null) {
-            return parser.getProperty(s);       	
+            return parser.getProperty(s);
         }
         // Delegate to the builder's parser.
         if (builder != null && builder instanceof StAXBuilder) {
@@ -1061,13 +1045,12 @@ public class OMStAXWrapper
         }
         return null;
     }
-        
 
     /**
      * This is a very important method. It keeps the navigator one step ahead and pushes it one
      * event ahead. If the nextNode is null then navigable is set to false. At the same time the
      * parser and builder are set up for the upcoming event generation.
-     * 
+     *
      * @throws XMLStreamException
      */
     private void updateLastNode() throws XMLStreamException {
@@ -1200,7 +1183,6 @@ public class OMStAXWrapper
     public String getVersion() {
         return "1.0"; //todo put the constant
     }
-
 
     /**
      * Method isStandalone.
@@ -1369,16 +1351,17 @@ public class OMStAXWrapper
     }
 
     /**
-     * Method generateCommentEvents
+     * Method generateCommentEvents.
      *
      * @return Returns int.
+     * @noinspection SameReturnValue
      */
     private int generateCommentEvents() {
         return COMMENT;
     }
 
     /**
-     * Method generateCdataEvents
+     * Method generateCdataEvents.
      *
      * @return Returns int.
      */

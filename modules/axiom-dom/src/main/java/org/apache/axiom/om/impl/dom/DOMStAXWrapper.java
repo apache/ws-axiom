@@ -70,20 +70,16 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     /** Field isFirst */
     private boolean isFirst = true;
 
-    // Navigable means the output should be taken from the navigator
-    // as soon as the navigator returns a null navigable will be reset
+    // Navigable means the output should be taken from the navigator.
+    // As soon as the navigator returns a null navigable will be reset
     // to false and the subsequent events will be taken from the builder
     // or the parser directly.
 
     /** Field NAVIGABLE */
     private static final short NAVIGABLE = 0;
-
     private static final short SWITCH_AT_NEXT = 1;
-
     private static final short COMPLETED = 2;
-
     private static final short SWITCHED = 3;
-
     private static final short DOCUMENT_COMPLETE = 4;
 
     /** Field state */
@@ -92,10 +88,10 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     /** Field currentEvent Default set to START_DOCUMENT */
     private int currentEvent = START_DOCUMENT;
 
-    // SwitchingAllowed is set to false by default
-    // this means that unless the user explicitly states
+    // SwitchingAllowed is set to false by default.
+    // This means that unless the user explicitly states
     // that he wants things not to be cached, everything will
-    // be cached
+    // be cached.
 
     /** Field switchingAllowed */
     boolean switchingAllowed = false;
@@ -150,9 +146,9 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
 
     /**
      * When constructing the OMStaxWrapper, the creator must produce the builder (an instance of the
-     * OMXMLparserWrapper of the input) and the Element Node to start parsing. The wrapper
-     * parses(proceed) until the end of the given element. Hence care must be taken to pass the root
-     * element if the entire document is needed.
+     * OMXMLparserWrapper of the input) and the Element Node to start parsing. The wrapper will
+     * parse(proceed) until the end of the given element. Hence care should be taken to pass the
+     * root element if the entire document is needed.
      *
      * @param builder
      * @param startNode
@@ -162,7 +158,7 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     }
 
     /**
-     * Constructor OMStAXWrapper
+     * Constructor OMStAXWrapper.
      *
      * @param builder
      * @param startNode
@@ -175,12 +171,12 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
         this.navigator = new OMNavigator(startNode);
         this.builder = builder;
         this.rootNode = startNode;
-        if (rootNode != null && rootNode.getParent() != null
-                && rootNode.getParent() instanceof OMDocument) {
+        if (rootNode != null && rootNode.getParent() != null &&
+                rootNode.getParent() instanceof OMDocument) {
             needToThrowEndDocument = true;
         }
 
-        // initaite the next and current nodes
+        // initiate the next and current nodes
         // Note - navigator is written in such a way that it first
         // returns the starting node at the first call to it
         currentNode = navigator.next();
@@ -226,15 +222,15 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     }
 
     /**
-     * @return Returns String.
+     * @return Returns boolean.
      * @see javax.xml.stream.XMLStreamReader#hasName()
      */
     public boolean hasName() {
         if (parser != null) {
             return parser.hasName();
         } else {
-            return ((currentEvent == START_ELEMENT) ||
-                    (currentEvent == END_ELEMENT));
+            return ((currentEvent == START_ELEMENT)
+                    || (currentEvent == END_ELEMENT));
         }
     }
 
@@ -278,7 +274,7 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
      * @see javax.xml.stream.XMLStreamReader#hasText()
      */
     public boolean hasText() {
-        return ((currentEvent == CHARACTERS) || (currentEvent == DTD) 
+        return ((currentEvent == CHARACTERS) || (currentEvent == DTD)
                 || (currentEvent == CDATA)
                 || (currentEvent == ENTITY_REFERENCE)
                 || (currentEvent == COMMENT) || (currentEvent == SPACE));
@@ -626,8 +622,8 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
                 returnCount = getCount(elt.getAllAttributes());
             } else {
                 throw new IllegalStateException(
-                        "attribute count accessed in illegal event ("
-                                + currentEvent + ")!");
+                        "attribute count accessed in illegal event (" +
+                                currentEvent + ")!");
             }
         }
         return returnCount;
@@ -890,7 +886,7 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
             throw new IllegalArgumentException();
         }
         if (parser != null) {
-            return parser.getProperty(s);               
+            return parser.getProperty(s);
         }
         // Delegate to the builder's parser.
         if (builder != null && builder instanceof StAXBuilder) {
@@ -911,9 +907,9 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     }
 
     /**
-     * This is a very important method. This keeps the navigator one step ahead and pushes the
-     * navigator one event ahead. If the nextNode is null then navigable is set to false; At the
-     * same time the parser and builder are set up for the upcoming event generation
+     * This is a very important method. It keeps the navigator one step ahead and pushes it one
+     * event ahead. If the nextNode is null then navigable is set to false. At the same time the
+     * parser and builder are set up for the upcoming event generation.
      *
      * @throws XMLStreamException
      */
@@ -1048,15 +1044,15 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     }
 
     /*
-     * 
+     *
      * ################################################################
      * Generator methods for the OMNodes returned by the navigator
      * ################################################################
-     * 
+     *
      */
 
     /**
-     * Method generateEvents
+     * Method generateEvents.
      *
      * @param node
      * @return Returns int.
@@ -1137,7 +1133,7 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
      */
 
     /**
-     * helper method.
+     * helper method getCount.
      *
      * @param it
      * @return Returns int.
@@ -1154,7 +1150,7 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     }
 
     /**
-     * Helper method.
+     * Helper method getItemFromIterator.
      *
      * @param it
      * @param index
@@ -1181,7 +1177,7 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     }
 
     /**
-     * Helper method.
+     * Helper method getQName.
      *
      * @param element
      * @return Returns QName.
