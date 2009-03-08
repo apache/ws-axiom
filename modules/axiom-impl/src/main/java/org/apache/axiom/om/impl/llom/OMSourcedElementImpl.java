@@ -917,6 +917,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getFirstOMChild();
     }
 
+    public OMNode getFirstOMChildIfAvailable() {
+        return super.getFirstOMChildIfAvailable();
+    }
+
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMContainer#buildNext()
      */
@@ -943,6 +947,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public OMNode getNextOMSibling() throws OMException {
         // no need to expand the tree, just call base method directly
         return super.getNextOMSibling();
+    }
+
+    public OMNode getNextOMSiblingIfAvailable() {
+        return super.getNextOMSiblingIfAvailable();
     }
 
     /* (non-Javadoc)

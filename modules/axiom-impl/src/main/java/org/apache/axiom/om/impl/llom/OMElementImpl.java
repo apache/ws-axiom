@@ -692,6 +692,11 @@ public class OMElementImpl extends OMNodeImpl
         return firstChild;
     }
 
+    public OMNode getFirstOMChildIfAvailable() {
+        return firstChild;
+    }
+
+
     /** Method setFirstChild. */
     public void setFirstChild(OMNode firstChild) {
         if (firstChild != null) {

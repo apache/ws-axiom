@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.llom;
+package org.apache.axiom.om.impl;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
@@ -83,7 +83,7 @@ public class OMNavigator {
     /**
      * Gets the next node.
      *
-     * @return Returns OMnode in the sequence of preorder traversal. Note however that an element
+     * @return Returns OMNode in the sequence of preorder traversal. Note however that an element
      *         node is treated slightly differently. Once the element is passed it returns the same
      *         element in the next encounter as well.
      */
@@ -109,7 +109,6 @@ public class OMNavigator {
 
     /** Private method to encapsulate the searching logic. */
     private void updateNextNode() {
-
         if ((next instanceof OMElement) && !visited) {
             OMNode firstChild = _getFirstChild((OMElement) next);
             if (firstChild != null) {
@@ -125,7 +124,7 @@ public class OMNavigator {
             if (nextSibling != null) {
                 next = nextSibling;
             } else if ((parent != null) && parent.isComplete() && !(parent instanceof OMDocument)) {
-                next = (OMNodeImpl) parent;
+                next = (OMNode) parent;
                 backtracked = true;
             } else {
                 next = null;
@@ -146,10 +145,7 @@ public class OMNavigator {
             }
             return first;
         } else {
-            // Field access is used to prevent advancing the parser.
-            // Some tests fail if the following is used
-            // return node.getFirstOMChild()
-            return ((OMElementImpl) node).firstChild;
+            return ((OMContainerEx) node).getFirstOMChildIfAvailable();
         }
     }
 
@@ -161,10 +157,7 @@ public class OMNavigator {
         if (node instanceof OMSourcedElement) {
             return node.getNextOMSibling();
         } else {
-            // Field access is used to prevent advancing the parser.
-            // Some tests fail if the following is used
-            // return node.getNextOMSibling()
-            return ((OMNodeImpl) node).nextSibling;
+            return ((OMNodeEx) node).getNextOMSiblingIfAvailable();
         }
     }
 

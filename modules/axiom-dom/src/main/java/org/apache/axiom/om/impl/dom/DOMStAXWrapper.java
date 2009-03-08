@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.impl.EmptyOMLocation;
+import org.apache.axiom.om.impl.OMNavigator;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.w3c.dom.Attr;
@@ -55,7 +56,7 @@ import java.util.Stack;
  */
 public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     /** Field navigator */
-    private DOMNavigator navigator;
+    private OMNavigator navigator;
 
     /** Field builder */
     private OMXMLParserWrapper builder;
@@ -171,7 +172,7 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
                           boolean cache) {
 
         // create a navigator
-        this.navigator = new DOMNavigator(startNode);
+        this.navigator = new OMNavigator(startNode);
         this.builder = builder;
         this.rootNode = startNode;
         if (rootNode != null && rootNode.getParent() != null

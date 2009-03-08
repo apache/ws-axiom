@@ -254,6 +254,10 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
         return firstChild;
     }
 
+    public OMNode getFirstOMChildIfAvailable() {
+        return firstChild;
+    }
+
     /**
      * Method getFirstChildWithName.
      *

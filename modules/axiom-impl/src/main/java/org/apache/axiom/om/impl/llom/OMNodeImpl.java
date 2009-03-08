@@ -143,6 +143,10 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
         return nextSibling;
     }
 
+    public OMNode getNextOMSiblingIfAvailable() {
+        return nextSibling;
+    }
+
     /**
      * Method setNextOMSibling.
      *

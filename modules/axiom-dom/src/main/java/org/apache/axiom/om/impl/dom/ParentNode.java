@@ -133,6 +133,10 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         return firstChild;
     }
 
+    public OMNode getFirstOMChildIfAvailable() {
+        return firstChild;
+    }
+
     public void setFirstChild(OMNode omNode) {
         if (firstChild != null) {
             ((OMNodeEx) omNode).setParent(this);

@@ -429,6 +429,10 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         return null;
     }
 
+    public OMNode getNextOMSiblingIfAvailable() {
+        return null;
+    }
+
     public void setPreviousOMSibling(OMNode previousSibling) {
         throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                DOMMessageFormatter.formatMessage(

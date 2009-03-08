@@ -60,4 +60,16 @@ public interface OMNodeEx extends OMNode {
      * @throws XMLStreamException
      */
     public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException;
+    
+    /**
+     * Get the next sibling if it is available. The sibling is available if it is complete or
+     * if the builder has started building the node. In the latter case,
+     * {@link OMNode#isComplete()} may return <code>false</code> when called on the sibling. 
+     * In contrast to {@link OMNode#getNextOMSibling()}, this method will never modify
+     * the state of the underlying parser.
+     * 
+     * @return the next sibling or <code>null</code> if the node has no next sibling or
+     *         the builder has not yet started to build the next sibling
+     */
+    public OMNode getNextOMSiblingIfAvailable();
 }

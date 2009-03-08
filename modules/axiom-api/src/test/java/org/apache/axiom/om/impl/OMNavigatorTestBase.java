@@ -17,9 +17,15 @@
  * under the License.
  */
 
-package org.apache.axiom.om;
+package org.apache.axiom.om.impl;
 
-import org.apache.axiom.om.impl.llom.OMNavigator;
+import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.TestConstants;
+import org.apache.axiom.om.impl.OMNavigator;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
@@ -30,18 +36,19 @@ import javax.xml.stream.XMLStreamWriter;
 
 import java.io.ByteArrayOutputStream;
 
-public class OMNavigatorTest extends AbstractTestCase {
+public class OMNavigatorTestBase extends AbstractTestCase {
+    private final OMMetaFactory omMetaFactory;
     private SOAPEnvelope envelope = null;
     private OMXMLParserWrapper builder;
 
-    public OMNavigatorTest(String testName) {
-        super(testName);
+    public OMNavigatorTestBase(OMMetaFactory omMetaFactory) {
+        this.omMetaFactory = omMetaFactory;
     }
 
     protected void setUp() throws Exception {
         XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance().
                 createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE1));
-        builder = new StAXSOAPModelBuilder(xmlStreamReader, null);
+        builder = new StAXSOAPModelBuilder(omMetaFactory, xmlStreamReader, null);
         envelope = (SOAPEnvelope) builder.getDocumentElement();
     }
 

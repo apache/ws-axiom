@@ -50,6 +50,10 @@ public abstract class ChildNode extends NodeImpl {
         return nextSibling;
     }
 
+    public OMNode getNextOMSiblingIfAvailable() {
+        return nextSibling;
+    }
+
     public Node getNextSibling() {
         return (Node) this.getNextOMSibling();
     }
