@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.llom;
+package org.apache.axiom.om.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -29,14 +29,19 @@ import junit.framework.TestCase;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
-import org.apache.axiom.om.impl.llom.util.AXIOMUtil;
-import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.util.AXIOMUtil;
 
-public class OMStAXWrapperTest extends TestCase {
+public class OMStAXWrapperTestBase extends TestCase {
+    private final OMMetaFactory omMetaFactory;
+    
+    public OMStAXWrapperTestBase(OMMetaFactory omMetaFactory) {
+        this.omMetaFactory = omMetaFactory;
+    }
+
     // Regression test for WSCOMMONS-338 and WSCOMMONS-341
     public void testCDATAEvent_FromParser() throws Exception {
         // Make sure that the parser is non coalescing (otherwise no CDATA events will be
@@ -47,7 +52,7 @@ public class OMStAXWrapperTest extends TestCase {
         InputStream is = new ByteArrayInputStream("<test><![CDATA[hello world]]></test>".getBytes());
         XMLStreamReader reader = factory.createXMLStreamReader(is);
         
-        OMFactory omfactory = new OMLinkedListImplFactory();
+        OMFactory omfactory = omMetaFactory.getOMFactory();
         OMElement element = new StAXOMBuilder(omfactory, reader).getDocumentElement();
         
         // Build the element so we have a full StAX tree
@@ -73,7 +78,7 @@ public class OMStAXWrapperTest extends TestCase {
     }
     
     public void testCDATAEvent_FromElement() throws Exception {
-        OMFactory omfactory = new OMLinkedListImplFactory();
+        OMFactory omfactory = omMetaFactory.getOMFactory();
         OMElement element = omfactory.createOMElement("test", null);
         OMText cdata = omfactory.createOMText("hello world", OMNode.CDATA_SECTION_NODE);
         element.addChild(cdata);
@@ -95,7 +100,8 @@ public class OMStAXWrapperTest extends TestCase {
     }
     
     public void testCommentEvent() throws Exception {
-        OMStAXWrapper reader = (OMStAXWrapper)AXIOMUtil.stringToOM("<a><!--comment text--></a>").getXMLStreamReader();
+        XMLStreamReader reader = AXIOMUtil.stringToOM(omMetaFactory.getOMFactory(),
+                "<a><!--comment text--></a>").getXMLStreamReader();
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals(XMLStreamReader.COMMENT, reader.next());
         assertEquals("comment text", reader.getText());
