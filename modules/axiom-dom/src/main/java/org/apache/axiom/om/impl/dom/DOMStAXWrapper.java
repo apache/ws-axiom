@@ -1063,6 +1063,7 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
                 returnEvent = generateElementEvents(element);
                 break;
             case OMNode.TEXT_NODE:
+            case OMNode.SPACE_NODE:
                 returnEvent = generateTextEvents();
                 break;
             case OMNode.COMMENT_NODE:
