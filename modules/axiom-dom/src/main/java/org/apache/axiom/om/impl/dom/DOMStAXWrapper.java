@@ -1055,7 +1055,7 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
      * @return Returns int.
      */
     private int generateEvents(OMNode node) {
-        int returnEvent = 0;
+        int returnEvent;
         int nodeType = node.getType();
         switch (nodeType) {
             case OMNode.ELEMENT_NODE:
@@ -1072,8 +1072,9 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
             case OMNode.CDATA_SECTION_NODE:
                 returnEvent = generateCdataEvents();
                 break;
-            default:
-                break; // just ignore any other nodes
+            default :
+                throw new OMStreamingException("Encountered node with unknown node type "
+                        + nodeType);
         }
         return returnEvent;
     }
