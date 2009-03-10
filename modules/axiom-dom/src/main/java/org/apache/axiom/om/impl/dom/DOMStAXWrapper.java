@@ -288,8 +288,8 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
         if (parser != null) {
             return parser.getTextLength();
         } else {
-            OMText textNode = (OMText) lastNode;
-            return textNode.getText().length();
+            String text = getTextFromNode();
+            return text == null ? 0 : text.length();
         }
     }
 
@@ -318,19 +318,22 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
      */
     public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
             throws XMLStreamException {
-        int returnLength = 0;
-        if (hasText()) {
-            if (parser != null) {
-                try {
-                    returnLength = parser.getTextCharacters(sourceStart, target, targetStart, length);
-                } catch (XMLStreamException e) {
-                    throw new OMStreamingException(e);
-                }
+        if (parser != null) {
+            try {
+                return parser.getTextCharacters(sourceStart, target, targetStart, length);
+            } catch (XMLStreamException e) {
+                throw new OMStreamingException(e);
             }
-
-            // Note - this has no relevant method in the OM
+        } else {
+            String text = getTextFromNode();
+            if (text != null) {
+                int copied = Math.min(length, text.length()-sourceStart);
+                text.getChars(sourceStart, sourceStart + copied, target, targetStart);
+                return copied;
+            } else {
+                return 0;
+            }
         }
-        return returnLength;
     }
 
     /**
@@ -341,13 +344,8 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
         if (parser != null) {
             return parser.getTextCharacters();
         } else {
-            if (hasText()) {
-                OMText textNode = (OMText) lastNode;
-                String str = textNode.getText();
-                return str.toCharArray();
-            } else {
-                return null;
-            }
+            String text = getTextFromNode();
+            return text == null ? null : text.toCharArray();
         }
     }
 
@@ -359,12 +357,17 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
         if (parser != null) {
             return parser.getText();
         } else {
-            if (hasText()) {
-                if (lastNode instanceof OMText) {
-                    return ((OMText) lastNode).getText();
-                } else if (lastNode instanceof OMComment) {
-                    return ((OMComment) lastNode).getValue();
-                }
+            return getTextFromNode();
+        }
+    }
+    
+    private String getTextFromNode() {
+        if (hasText()) {
+            OMNode node = lastNode;
+            if (node instanceof OMText) {
+                return ((OMText)node).getText();
+            } else if (node instanceof OMComment) {
+                return ((OMComment)node).getValue();
             }
         }
         return null;
