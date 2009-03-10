@@ -285,14 +285,12 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
      * @see javax.xml.stream.XMLStreamReader#getTextLength()
      */
     public int getTextLength() {
-        int returnLength = 0;
         if (parser != null) {
-            returnLength = parser.getTextLength();
+            return parser.getTextLength();
         } else {
             OMText textNode = (OMText) lastNode;
-            returnLength = textNode.getText().length();
+            return textNode.getText().length();
         }
-        return returnLength;
     }
 
     /**
@@ -300,31 +298,31 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
      * @see javax.xml.stream.XMLStreamReader#getTextStart()
      */
     public int getTextStart() {
-        int returnLength = 0;
         if (parser != null) {
-            returnLength = parser.getTextStart();
+            return parser.getTextStart();
+        } else {
+            // getTextCharacters always returns a new char array and the start
+            // index is therefore always 0
+            return 0;
         }
-
-        // Note - this has no relevant method in the OM
-        return returnLength;
     }
 
     /**
-     * @param i
-     * @param chars
-     * @param i1
-     * @param i2
+     * @param sourceStart
+     * @param target
+     * @param targetStart
+     * @param length
      * @return Returns int.
      * @throws XMLStreamException
      * @see javax.xml.stream.XMLStreamReader#getTextCharacters(int, char[], int, int)
      */
-    public int getTextCharacters(int i, char[] chars, int i1, int i2)
+    public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
             throws XMLStreamException {
         int returnLength = 0;
         if (hasText()) {
             if (parser != null) {
                 try {
-                    returnLength = parser.getTextCharacters(i, chars, i1, i2);
+                    returnLength = parser.getTextCharacters(sourceStart, target, targetStart, length);
                 } catch (XMLStreamException e) {
                     throw new OMStreamingException(e);
                 }
@@ -340,17 +338,17 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
      * @see javax.xml.stream.XMLStreamReader#getTextCharacters()
      */
     public char[] getTextCharacters() {
-        char[] returnArray = null;
         if (parser != null) {
-            returnArray = parser.getTextCharacters();
+            return parser.getTextCharacters();
         } else {
             if (hasText()) {
                 OMText textNode = (OMText) lastNode;
                 String str = textNode.getText();
-                returnArray = str.toCharArray();
+                return str.toCharArray();
+            } else {
+                return null;
             }
         }
-        return returnArray;
     }
 
     /**
@@ -358,19 +356,18 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
      * @see javax.xml.stream.XMLStreamReader#getText()
      */
     public String getText() {
-        String returnString = null;
         if (parser != null) {
-            returnString = parser.getText();
+            return parser.getText();
         } else {
             if (hasText()) {
                 if (lastNode instanceof OMText) {
-                    returnString = ((OMText) lastNode).getText();
+                    return ((OMText) lastNode).getText();
                 } else if (lastNode instanceof OMComment) {
-                    returnString = ((OMComment) lastNode).getValue();
+                    return ((OMComment) lastNode).getValue();
                 }
             }
         }
-        return returnString;
+        return null;
     }
 
     /**
@@ -731,13 +728,13 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     /**
      * Method getNamespaceURI.
      *
-     * @param s
+     * @param prefix
      * @return Returns String.
      */
-    public String getNamespaceURI(String s) {
+    public String getNamespaceURI(String prefix) {
         String returnString = null;
         if (parser != null) {
-            returnString = parser.getNamespaceURI(s);
+            returnString = parser.getNamespaceURI(prefix);
         } else {
             if (isStartElement() || isEndElement()
                     || (currentEvent == NAMESPACE)) {
@@ -793,21 +790,21 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
      * @see javax.xml.stream.XMLStreamReader#getElementText()
      */
     public String getElementText() throws XMLStreamException {
-        String returnText = "";
         if (parser != null) {
             try {
-                returnText = parser.getElementText();
+                return parser.getElementText();
             } catch (XMLStreamException e) {
                 throw new OMStreamingException(e);
             }
         } else {
             if (currentNode.getType() == OMNode.ELEMENT_NODE) {
-                returnText = ((OMElement) currentNode).getText();
+                return ((OMElement) currentNode).getText();
             } else if (currentNode.getType() == OMNode.TEXT_NODE) {
-                returnText = ((OMText) currentNode).getText();
+                return ((OMText) currentNode).getText();
+            } else {
+                return "";
             }
         }
-        return returnText;
     }
 
     /**
@@ -1208,8 +1205,8 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     private OMAttribute getAttribute(OMElement elt, int index) {
         OMAttribute returnAttrib = null;
         if (elt != null) {
-            returnAttrib = (OMAttribute) getItemFromIterator(elt
-                    .getAllAttributes(), index);
+            returnAttrib = (OMAttribute) getItemFromIterator(
+                    elt.getAllAttributes(), index);
         }
         return returnAttrib;
     }

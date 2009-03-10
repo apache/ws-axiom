@@ -465,9 +465,7 @@ public class OMStAXWrapper
                     || (currentEvent == NAMESPACE)) {
                 OMNamespace ns = (OMNamespace) getItemFromIterator(
                         ((OMElement) getNode()).getAllDeclaredNamespaces(), i);
-                returnString = (ns == null)
-                        ? null
-                        : ns.getNamespaceURI();
+                returnString = (ns == null) ? null : ns.getNamespaceURI();
             }
         }
 
@@ -813,7 +811,6 @@ public class OMStAXWrapper
      * @return Returns String.
      */
     public String getNamespaceURI(String prefix) {
-
         String returnString = null;
         if (parser != null) {
             returnString = parser.getNamespaceURI(prefix);
@@ -1181,7 +1178,7 @@ public class OMStAXWrapper
      * @return Returns String.
      */
     public String getVersion() {
-        return "1.0"; //todo put the constant
+        return "1.0"; // todo put the constant
     }
 
     /**
@@ -1451,9 +1448,8 @@ public class OMStAXWrapper
     private OMAttribute getAttribute(OMElement elt, int index) {
         OMAttribute returnAttrib = null;
         if (elt != null) {
-            returnAttrib =
-                    (OMAttribute) getItemFromIterator(elt.getAllAttributes(),
-                                                      index);
+            returnAttrib = (OMAttribute) getItemFromIterator(
+                    elt.getAllAttributes(), index);
         }
         return returnAttrib;
     }
