@@ -116,7 +116,7 @@ public class ElementHelper {
     }
 
     /**
-     * @deprecate please use OMElement.getFirstChildWithName(qname) instead!
+     * @deprecated please use OMElement.getFirstChildWithName(qname) instead!
      * @param parent
      * @param childName
      * @return
