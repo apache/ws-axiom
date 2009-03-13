@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -116,5 +117,24 @@ public class OMStAXWrapperTestBase extends TestCase {
             }
         }
         assertEquals("comment text", text.toString());
+    }
+    
+    public void testGetElementText() throws Exception {
+        OMFactory factory = omMetaFactory.getOMFactory();
+
+        OMNamespace namespace = factory.createOMNamespace("http://testuri.org", "test");
+        OMElement documentElement = factory.createOMElement("DocumentElement", namespace);
+        factory.createOMText(documentElement, "this is a TEXT");
+        factory.createOMComment(documentElement, "this is a comment");
+        factory.createOMText(documentElement, "this is a TEXT block 2");
+        
+        XMLStreamReader xmlStreamReader = documentElement.getXMLStreamReader();
+        //move to the Start_Element
+        while (xmlStreamReader.getEventType() != XMLStreamReader.START_ELEMENT) {
+            xmlStreamReader.next();
+        }
+
+        String elementText = xmlStreamReader.getElementText();
+        assertEquals("this is a TEXTthis is a TEXT block 2", elementText);
     }
 }
