@@ -117,6 +117,9 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     /** Field lastNode */
     private OMNode lastNode = null;
 
+    /** Track depth to ensure we stop generating events when we are done with the root node. */
+    int depth = 0;
+
     private boolean needToThrowEndDocument = false;
     
     /** 
@@ -982,6 +985,21 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
                 }
             }
         } else {
+            if (state == SWITCHED) {
+                //this is a potential place for bugs
+                //we have to test if the root node of this parser
+                //has the same name for this test
+                if (currentEvent == START_ELEMENT &&
+                        (parser.getLocalName().equals(((OMElement)rootNode).getLocalName()))) {
+                    ++depth;
+                } else if (currentEvent == END_ELEMENT   &&
+                       (parser.getLocalName().equals(((OMElement)rootNode).getLocalName())) ) {                                      
+                    --depth;
+                    if (depth < 0) {
+                        state = COMPLETED;
+                    }
+                }
+            }
             state = (currentEvent == END_DOCUMENT) ? DOCUMENT_COMPLETE : state;
         }
     }

@@ -137,4 +137,28 @@ public class OMStAXWrapperTestBase extends TestCase {
         String elementText = xmlStreamReader.getElementText();
         assertEquals("this is a TEXTthis is a TEXT block 2", elementText);
     }
+    
+    private void testNonRootElement(boolean cache) throws Exception {
+        OMElement root = AXIOMUtil.stringToOM(omMetaFactory.getOMFactory(),
+                "<a><b><c/></b></a>");
+        OMElement child = (OMElement)root.getFirstOMChild();
+        XMLStreamReader stream = cache ? child.getXMLStreamReader()
+                : child.getXMLStreamReaderWithoutCaching();
+        assertEquals(XMLStreamReader.START_DOCUMENT, stream.getEventType());
+        assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
+        assertEquals("b", stream.getLocalName());
+        assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
+        assertEquals("c", stream.getLocalName());
+        assertEquals(XMLStreamReader.END_ELEMENT, stream.next());
+        assertEquals(XMLStreamReader.END_ELEMENT, stream.next());
+        assertEquals(XMLStreamReader.END_DOCUMENT, stream.next());
+    }
+    
+    public void testNonRootElementWithCaching() throws Exception {
+        testNonRootElement(true);
+    }
+    
+    public void testNonRootElementWithoutCaching() throws Exception {
+        testNonRootElement(false);
+    }
 }
