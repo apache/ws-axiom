@@ -1028,6 +1028,9 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
      * @return Returns NamespaceContext.
      */
     public NamespaceContext getNamespaceContext() {
+        if (state==SWITCHED){
+            return parser.getNamespaceContext();
+        }
         return new NamespaceContextImpl(getAllNamespaces(lastNode));
     }
 

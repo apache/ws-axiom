@@ -178,10 +178,11 @@ public class OMStAXWrapperTestBase extends TestCase {
         assertEquals("c", stream.getLocalName());
     }
     
-    public void testGetNamespaceContext() throws Exception {
+    private void testGetNamespaceContext(boolean cache) throws Exception {
         OMElement element = AXIOMUtil.stringToOM(omMetaFactory.getOMFactory(),
                 "<a xmlns='urn:ns1' xmlns:ns2='urn:ns2'><b xmlns:ns3='urn:ns3'/></a>");
-        XMLStreamReader stream = element.getXMLStreamReader();
+        XMLStreamReader stream = cache ? element.getXMLStreamReader()
+                : element.getXMLStreamReaderWithoutCaching();
         stream.next();
         assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
         assertEquals("b", stream.getLocalName());
@@ -190,5 +191,13 @@ public class OMStAXWrapperTestBase extends TestCase {
         assertEquals("urn:ns2", context.getNamespaceURI("ns2"));
         assertEquals("urn:ns3", context.getNamespaceURI("ns3"));
         assertEquals("ns2", context.getPrefix("urn:ns2"));
+    }
+    
+    public void testGetNamespaceContextWithCaching() throws Exception {
+        testGetNamespaceContext(true);
+    }
+    
+    public void testGetNamespaceContextWithoutCaching() throws Exception {
+        testGetNamespaceContext(false);
     }
 }
