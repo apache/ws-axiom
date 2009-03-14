@@ -779,7 +779,7 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
     }
 
     /**
-     * Not implemented yet
+     * Returns the next tag.
      *
      * @return Returns int.
      * @throws org.apache.axiom.om.impl.exception.OMStreamingException
@@ -787,7 +787,19 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
      * @throws XMLStreamException
      */
     public int nextTag() throws XMLStreamException {
-        throw new UnsupportedOperationException();
+        int eventType = next();
+        while ((eventType == XMLStreamConstants.CHARACTERS && isWhiteSpace()) // skip whitespace
+                || (eventType == XMLStreamConstants.CDATA && isWhiteSpace()) // skip whitespace
+                || eventType == XMLStreamConstants.SPACE
+                || eventType == XMLStreamConstants.PROCESSING_INSTRUCTION
+                || eventType == XMLStreamConstants.COMMENT) {
+            eventType = next();
+        }
+        if (eventType != XMLStreamConstants.START_ELEMENT &&
+                eventType != XMLStreamConstants.END_ELEMENT) {
+            throw new XMLStreamException("expected start or end tag", getLocation());
+        }
+        return eventType;
     }
 
     /**

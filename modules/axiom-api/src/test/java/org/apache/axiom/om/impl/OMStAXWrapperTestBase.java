@@ -161,4 +161,19 @@ public class OMStAXWrapperTestBase extends TestCase {
     public void testNonRootElementWithoutCaching() throws Exception {
         testNonRootElement(false);
     }
+    
+    public void testNextTag() throws Exception {
+        OMElement element = AXIOMUtil.stringToOM(omMetaFactory.getOMFactory(),
+                "<a> <b> </b> <?pi?> <!--comment--> <c/> </a>");
+        XMLStreamReader stream = element.getXMLStreamReaderWithoutCaching();
+        assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
+        stream.nextTag();
+        assertEquals(XMLStreamReader.START_ELEMENT, stream.getEventType());
+        assertEquals("b", stream.getLocalName());
+        stream.nextTag();
+        assertEquals(XMLStreamReader.END_ELEMENT, stream.getEventType());
+        stream.nextTag();
+        assertEquals(XMLStreamReader.START_ELEMENT, stream.getEventType());
+        assertEquals("c", stream.getLocalName());
+    }
 }
