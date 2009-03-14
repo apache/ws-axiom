@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.llom.util;
+package org.apache.axiom.om.impl.util;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;

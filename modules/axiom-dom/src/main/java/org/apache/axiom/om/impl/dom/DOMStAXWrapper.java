@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -35,6 +36,7 @@ import org.apache.axiom.om.impl.EmptyOMLocation;
 import org.apache.axiom.om.impl.OMNavigator;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
+import org.apache.axiom.om.impl.util.NamespaceContextImpl;
 import org.w3c.dom.Attr;
 
 import javax.activation.DataHandler;
@@ -44,7 +46,11 @@ import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -1022,7 +1028,7 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
      * @return Returns NamespaceContext.
      */
     public NamespaceContext getNamespaceContext() {
-        throw new UnsupportedOperationException();
+        return new NamespaceContextImpl(getAllNamespaces(lastNode));
     }
 
     /**
@@ -1272,6 +1278,40 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
 
     public void setParser(XMLStreamReader parser) {
         this.parser = parser;
+    }
+
+    private Map getAllNamespaces(OMNode contextNode) {
+        if (!(contextNode instanceof OMContainer &&
+                contextNode instanceof OMElement)) {
+            return new HashMap();
+        }
+        Map nsMap = new LinkedHashMap();
+        for (OMContainer context = (OMContainer) contextNode;
+             context != null && !(context instanceof OMDocument);
+             context = ((OMElement) context).getParent()) {
+            OMElement element = (OMElement) context;
+            Iterator i = element.getAllDeclaredNamespaces();
+            while (i != null && i.hasNext()) {
+                addNamespaceToMap((OMNamespace) i.next(), nsMap);
+            }
+            if (element.getNamespace() != null) {
+                addNamespaceToMap(element.getNamespace(), nsMap);
+            }
+            for (Iterator iter = element.getAllAttributes();
+                 iter != null && iter.hasNext();) {
+                OMAttribute attr = (OMAttribute) iter.next();
+                if (attr.getNamespace() != null) {
+                    addNamespaceToMap(attr.getNamespace(), nsMap);
+                }
+            }
+        }
+        return nsMap;
+    }
+
+    private void addNamespaceToMap(OMNamespace ns, Map map) {
+        if (map.get(ns.getPrefix()) == null) {
+            map.put(ns.getPrefix(), ns.getNamespaceURI());
+        }
     }
 
     public DataHandler getDataHandler(String blobcid) {

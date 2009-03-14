@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
@@ -175,5 +176,19 @@ public class OMStAXWrapperTestBase extends TestCase {
         stream.nextTag();
         assertEquals(XMLStreamReader.START_ELEMENT, stream.getEventType());
         assertEquals("c", stream.getLocalName());
+    }
+    
+    public void testGetNamespaceContext() throws Exception {
+        OMElement element = AXIOMUtil.stringToOM(omMetaFactory.getOMFactory(),
+                "<a xmlns='urn:ns1' xmlns:ns2='urn:ns2'><b xmlns:ns3='urn:ns3'/></a>");
+        XMLStreamReader stream = element.getXMLStreamReader();
+        stream.next();
+        assertEquals(XMLStreamReader.START_ELEMENT, stream.next());
+        assertEquals("b", stream.getLocalName());
+        NamespaceContext context = stream.getNamespaceContext();
+        assertEquals("urn:ns1", context.getNamespaceURI(""));
+        assertEquals("urn:ns2", context.getNamespaceURI("ns2"));
+        assertEquals("urn:ns3", context.getNamespaceURI("ns3"));
+        assertEquals("ns2", context.getPrefix("urn:ns2"));
     }
 }
