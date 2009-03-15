@@ -37,7 +37,6 @@ import org.apache.axiom.om.impl.OMNavigator;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.om.impl.util.NamespaceContextImpl;
-import org.w3c.dom.Attr;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
@@ -557,11 +556,7 @@ public class DOMStAXWrapper implements OMXMLStreamReader, XMLStreamConstants {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
                 OMAttribute attrib = getAttribute((OMElement) lastNode, i);
                 if (attrib != null) {
-                    if (attrib.getNamespace() != null) {
-                        returnString = attrib.getLocalName();
-                    } else {
-                        returnString = ((Attr) attrib).getNodeName();
-                    }
+                    returnString = attrib.getLocalName();
                 }
             } else {
                 throw new IllegalStateException(
