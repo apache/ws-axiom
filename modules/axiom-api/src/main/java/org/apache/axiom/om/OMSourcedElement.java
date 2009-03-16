@@ -19,19 +19,25 @@
 package org.apache.axiom.om;
 
 /**
- * An OMSourcedElement is an OMElement whose data is backed by 
- * an arbitrary java object.  The backing java object is accessed via
- * the OMDataSource (or OMDataSourceExt) interface.
- * 
- * An OMSourcedElement can be in one of two states.
- *   Not Expanded: In this state the backing object is used to read and write the xml
- *   Expanded: In this state, the OMSourcedElement is backed by a normal OM tree.
- * 
- * Here are the steps to place an arbitrary java object into the OM tree.
- *   1) Write an OMDataSourceExt class that provides access to your java object.
- *   2) Use OMFactory.createOMElement(OMDataSource, String, OMNamespace) to create
- *      the OMSourcedElement.
- *   3) Attach the OMSourcedElement to your OMTree.
+ * Element whose data is backed by an arbitrary Java object. The backing Java object is accessed
+ * via the {@link OMDataSource} (or {@link OMDataSourceExt}) interface.
+ * <p>
+ * An OMSourcedElement can be in one of two states:
+ * <dl>
+ *   <dt>Not Expanded</dt>
+ *   <dd>In this state the backing object is used to read and write the XML.</dd>
+ *   <dt>Expanded</dt>
+ *   <dd>In this state, the OMSourcedElement is backed by a normal OM tree.</dd>
+ * </dl>
+ * <p>
+ * Here are the steps to place an arbitrary java object into the OM tree:
+ * <ol>
+ *   <li>Write an {@link OMDataSourceExt} implementation that provides access to your Java
+ *       object.</li>
+ *   <li>Use {@link OMFactory#createOMElement(OMDataSource, String, OMNamespace)} to create
+ *       the OMSourcedElement.</li>
+ *   <li>Attach the OMSourcedElement to the tree.</li>
+ * </ol>
  */
 public interface OMSourcedElement extends OMElement {
     
