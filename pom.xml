@@ -454,12 +454,12 @@
             <dependency>
                 <groupId>org.apache.geronimo.specs</groupId>
                 <artifactId>geronimo-activation_1.1_spec</artifactId>
-                <version>1.0.1</version>
+                <version>1.0.2</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.geronimo.specs</groupId>
                 <artifactId>geronimo-javamail_1.4_spec</artifactId>
-                <version>1.2</version>
+                <version>1.6</version>
             </dependency>
             <dependency>
                 <groupId>commons-logging</groupId>
