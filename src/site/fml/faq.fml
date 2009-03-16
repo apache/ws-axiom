@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs xmlns="http://maven.apache.org/FML/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://maven.apache.org/FML/1.0 http://maven.apache.org/xsd/fml-1.0.xsd"
+      title="Frequently (and less frequently) Asked Questions"
+      toplink="false">
+    <part id="general">
+        <faq id="geronimo_deps">
+            <question>
+                I'm working with Maven and I have a dependency problem with the JavaMail and Activation
+                implementation from Sun and Geronimo. What's happening?
+            </question>
+            <answer>
+                <p>Axiom requires the Java Activation Framework and the JavaMail API to work. There are two
+                commonly used incarnations of these libraries: one is Sun's reference implementation, the other
+                is part of the <a href="http://geronimo.apache.org/">Geronimo</a> project. Axiom declares
+                dependencies on the Geronimo versions (though that might
+                <a href="https://issues.apache.org/jira/browse/WSCOMMONS-417">change</a> in the future).
+                If your project uses another library that depends on JAF and/or JavaMail, but that refers
+                to Sun's implementation, your project will end up with dependencies on two different
+                artifacts implementing the same API.</p>
+                <p>If you prefer Sun's implementations, then you should change the declaration of the
+                Axiom dependencies in your POM file as follow:</p> 
+<source><![CDATA[
+<dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-xxx</artifactId>
+    <version>1.2.x</version>
+    <exclusions>
+        <exclusion>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-activation_1.1_spec</artifactId>
+        </exclusion>
+        <exclusion>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-javamail_1.4_spec</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+]]></source>
+                <p>If you prefer Geronimo's implementation, then you need to identify the libraries
+                depending on Sun's artifacts (<code>javax.activation:activation</code> and
+                <code>javax.mail:mail</code>) and add the relevant exclusions. You can use
+                <code>mvn dependency:tree</code> to easily identify where a transitive dependency
+                comes from.</p>
+                <p>The choice between Sun's and Geronimo's implementation is to a large extend
+                a question of belief. Note however that the <code>geronimo-javamail_1.4_spec</code>
+                artifact used by Axiom only contains the JavaMail API, while Sun's library
+                bundles the API together with the providers for IMAP and POP3. Depending on your
+                use case that might be an advantage or disadvantage.</p>
+            </answer>
+        </faq>
+        <faq id="dom">
+            <question>
+                I'm using Axiom, but I need to integrate with a library using DOM. What can I do?
+            </question>
+            <answer>
+                <p>There are currently two solutions:</p>
+                <ol>
+                    <li>Axiom separates API and implementation. The default implementation is called
+                    LLOM (Linked List Object Model) and provided by the <code>axiom-impl</code>
+                    artifact. There is also a second implementation called DOOM (DOM over OM) that
+                    implements both the Axiom API and DOM. It is provided by the <code>axiom-dom</code>
+                    artifact. You can use this implementation to integrate with DOM based code.
+                    Note however that the DOM implementation provided by DOOM is not perfect. In
+                    particular it doesn't implement DOM 3.</li>
+                    <li>Starting with version 1.2.8, Axiom has
+                    <a href="apidocs/org/apache/axiom/om/impl/jaxp/OMSource.html"><code>OMSource</code></a> and
+                    <a href="apidocs/org/apache/axiom/om/impl/jaxp/OMResult.html"><code>OMResult</code></a>
+                    classes which are implementations of JAXP's
+                    <a href="http://java.sun.com/j2se/1.4.2/docs/api/javax/xml/transform/Source.html"><code>Source</code></a> and
+                    <a href="http://java.sun.com/j2se/1.4.2/docs/api/javax/xml/transform/Result.html"><code>Result</code></a>
+                    classes. You can use these to transform an Axiom tree into DOM (using
+                    a standard implementation of DOM) and vice-versa. These two classes are based on
+                    <a href="http://java.sun.com/j2se/1.4.2/docs/api/javax/xml/transform/sax/SAXSource.html">SAXSource</a> and
+                    <a href="http://java.sun.com/j2se/1.4.2/docs/api/javax/xml/transform/sax/SAXResult.html">SAXResult</a>,
+                    which means that you loose the deferred parsing capabilities of Axiom, but in many cases this will be
+                    acceptable.</li>
+                </ol>
+            </answer>
+        </faq>
+    </part>
+</faqs>
