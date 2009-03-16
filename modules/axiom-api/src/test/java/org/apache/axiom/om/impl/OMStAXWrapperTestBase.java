@@ -38,7 +38,7 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.AXIOMUtil;
 
 public class OMStAXWrapperTestBase extends TestCase {
-    private final OMMetaFactory omMetaFactory;
+    protected final OMMetaFactory omMetaFactory;
     
     public OMStAXWrapperTestBase(OMMetaFactory omMetaFactory) {
         this.omMetaFactory = omMetaFactory;
