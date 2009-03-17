@@ -42,6 +42,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -1217,7 +1218,15 @@ public class OMStAXWrapper
      * @return Returns String.
      */
     public String getPITarget() {
-        throw new UnsupportedOperationException();
+        if (parser != null) {
+            return parser.getPIData();
+        } else {
+            if (currentEvent == PROCESSING_INSTRUCTION) {
+                return ((OMProcessingInstruction)getNode()).getTarget();
+            } else {
+                throw new IllegalStateException();
+            }
+        }
     }
 
     /**
@@ -1226,7 +1235,15 @@ public class OMStAXWrapper
      * @return Returns String.
      */
     public String getPIData() {
-        throw new UnsupportedOperationException();
+        if (parser != null) {
+            return parser.getPIData();
+        } else {
+            if (currentEvent == PROCESSING_INSTRUCTION) {
+                return ((OMProcessingInstruction)getNode()).getValue();
+            } else {
+                throw new IllegalStateException();
+            }
+        }
     }
 
     /*
@@ -1267,6 +1284,9 @@ public class OMStAXWrapper
                 break;
             case OMNode.CDATA_SECTION_NODE:
                 returnEvent = generateCdataEvents();
+                break;
+            case OMNode.PI_NODE:
+                returnEvent = PROCESSING_INSTRUCTION;
                 break;
             default :
                 throw new OMStreamingException("Encountered node with unknown node type "
