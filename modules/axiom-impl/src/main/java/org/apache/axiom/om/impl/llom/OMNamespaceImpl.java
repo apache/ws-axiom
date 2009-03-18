@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-/** @deprecated Use {@link OMNamespaceImpl} */
+/** @deprecated Use {@link org.apache.axiom.om.impl.OMNamespaceImpl} */
 public class OMNamespaceImpl extends org.apache.axiom.om.impl.OMNamespaceImpl {
     public OMNamespaceImpl(String pUri, String prefix) {
         super(pUri, prefix);
