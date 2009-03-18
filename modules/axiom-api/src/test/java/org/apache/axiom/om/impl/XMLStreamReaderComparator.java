@@ -139,12 +139,12 @@ public class XMLStreamReaderComparator extends Assert {
                     actualNamespaces.put(actual.getNamespacePrefix(i),
                             actual.getNamespaceURI(i));
                 }
-//                assertEquals(expectedNamespaces, actualNamespaces);
+                assertEquals(expectedNamespaces, actualNamespaces);
             }
             assertSameResult("getNamespaceURI", null);
             assertSameResult("getPIData", null);
             assertSameResult("getPITarget", null);
-//            assertSameResult("getPrefix", null);
+            assertSameResult("getPrefix", null);
             assertSameResult("getText", null);
             assertSameResult("getTextLength", null);
             assertSameResult("hasName", null);

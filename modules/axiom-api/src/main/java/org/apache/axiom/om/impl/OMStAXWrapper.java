@@ -255,7 +255,12 @@ public class OMStAXWrapper
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)) {
                 OMNamespace ns = ((OMElement) getNode()).getNamespace();
-                return (ns == null) ? null : ns.getPrefix();
+                if (ns == null) {
+                    return null;
+                } else {
+                    String prefix = ns.getPrefix();
+                    return prefix == null || prefix.length() == 0 ? null : prefix; 
+                }
             } else {
                 throw new IllegalStateException();
             }
@@ -495,7 +500,10 @@ public class OMStAXWrapper
                     || (currentEvent == NAMESPACE)) {
                 OMNamespace ns = (OMNamespace) getItemFromIterator(
                         ((OMElement) getNode()).getAllDeclaredNamespaces(), i);
-                returnString = (ns == null) ? null : ns.getPrefix();
+                if (ns != null) {
+                    String prefix = ns.getPrefix();
+                    returnString = prefix == null || prefix.length() == 0 ? null : prefix; 
+                }
             }
         }
         return returnString;
