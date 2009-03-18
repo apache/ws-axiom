@@ -249,17 +249,17 @@ public class OMStAXWrapper
      * @see javax.xml.stream.XMLStreamReader#getPrefix()
      */
     public String getPrefix() {
-        String returnStr = null;
         if (parser != null) {
-            returnStr = parser.getPrefix();
+            return parser.getPrefix();
         } else {
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)) {
                 OMNamespace ns = ((OMElement) getNode()).getNamespace();
-                returnStr = (ns == null) ? null : ns.getPrefix();
+                return (ns == null) ? null : ns.getPrefix();
+            } else {
+                throw new IllegalStateException();
             }
         }
-        return returnStr;
     }
 
     /**
@@ -267,7 +267,7 @@ public class OMStAXWrapper
      * @see javax.xml.stream.XMLStreamReader#getNamespaceURI()
      */
     public String getNamespaceURI() {
-        String returnStr = null;
+        String returnStr;
         if (parser != null) {
             returnStr = parser.getNamespaceURI();
         } else {
@@ -276,6 +276,8 @@ public class OMStAXWrapper
                     || (currentEvent == NAMESPACE)) {
                 OMNamespace ns = ((OMElement) getNode()).getNamespace();
                 returnStr = (ns == null) ? null : ns.getNamespaceURI();
+            } else {
+                throw new IllegalStateException();
             }
         }
         
@@ -308,17 +310,17 @@ public class OMStAXWrapper
      * @see javax.xml.stream.XMLStreamReader#getLocalName()
      */
     public String getLocalName() {
-        String returnStr = null;
         if (parser != null) {
-            returnStr = parser.getLocalName();
+            return parser.getLocalName();
         } else {
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)
                     || (currentEvent == ENTITY_REFERENCE)) {
-                returnStr = ((OMElement) getNode()).getLocalName();
+                return ((OMElement) getNode()).getLocalName();
+            } else {
+                throw new IllegalStateException();
             }
         }
-        return returnStr;
     }
 
     /**
@@ -326,16 +328,16 @@ public class OMStAXWrapper
      * @see javax.xml.stream.XMLStreamReader#getName()
      */
     public QName getName() {
-        QName returnName = null;
         if (parser != null) {
-            returnName = parser.getName();
+            return parser.getName();
         } else {
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)) {
-                returnName = getQName((OMElement) getNode());
+                return getQName((OMElement) getNode());
+            } else {
+                throw new IllegalStateException();
             }
         }
-        return returnName;
     }
 
     /**
@@ -357,8 +359,7 @@ public class OMStAXWrapper
         if (parser != null) {
             return parser.getTextLength();
         } else {
-            String text = getTextFromNode();
-            return text == null ? 0 : text.length();
+            return getTextFromNode().length();
         }
     }
 
@@ -395,13 +396,9 @@ public class OMStAXWrapper
             }
         } else {
             String text = getTextFromNode();
-            if (text != null) {
-                int copied = Math.min(length, text.length()-sourceStart);
-                text.getChars(sourceStart, sourceStart + copied, target, targetStart);
-                return copied;
-            } else {
-                return 0;
-            }
+            int copied = Math.min(length, text.length()-sourceStart);
+            text.getChars(sourceStart, sourceStart + copied, target, targetStart);
+            return copied;
         }
     }
 
@@ -413,8 +410,7 @@ public class OMStAXWrapper
         if (parser != null) {
             return parser.getTextCharacters();
         } else {
-            String text = getTextFromNode();
-            return text == null ? null : text.toCharArray();
+            return getTextFromNode().toCharArray();
         }
     }
 
@@ -431,15 +427,16 @@ public class OMStAXWrapper
     }
     
     private String getTextFromNode() {
-        if (hasText()) {
-            OMNode node = getNode();
-            if (node instanceof OMText) {
-                return ((OMText)node).getText();
-            } else if (node instanceof OMComment) {
-                return ((OMComment)node).getValue();
-            }
+        switch (currentEvent) {
+            case CHARACTERS:
+            case CDATA:
+            case SPACE:
+                return ((OMText)getNode()).getText();
+            case COMMENT:
+                return ((OMComment)getNode()).getValue();
+            default:
+                throw new IllegalStateException();
         }
-        return null;
     }
 
     /**
@@ -509,17 +506,17 @@ public class OMStAXWrapper
      * @see javax.xml.stream.XMLStreamReader#getNamespaceCount()
      */
     public int getNamespaceCount() {
-        int returnCount = 0;
         if (parser != null) {
-            returnCount = parser.getNamespaceCount();
+            return parser.getNamespaceCount();
         } else {
             if (isStartElement() || isEndElement()
                     || (currentEvent == NAMESPACE)) {
-                returnCount = getCount(((OMElement) getNode())
+                return getCount(((OMElement) getNode())
                         .getAllDeclaredNamespaces());
+            } else {
+                throw new IllegalStateException();
             }
         }
-        return returnCount;
     }
 
     /**

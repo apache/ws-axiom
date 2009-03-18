@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.util.Arrays;
 
 import javax.xml.namespace.NamespaceContext;
@@ -36,6 +37,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.om.util.StAXUtils;
 
 public class OMStAXWrapperTestBase extends TestCase {
     protected final OMMetaFactory omMetaFactory;
@@ -199,5 +201,19 @@ public class OMStAXWrapperTestBase extends TestCase {
     
     public void testGetNamespaceContextWithoutCaching() throws Exception {
         testGetNamespaceContext(false);
+    }
+    
+    private void testWithComparator(String xml) throws Exception {
+        XMLStreamReader expected = StAXUtils.createXMLStreamReader(new StringReader(xml));
+        XMLStreamReader actual = AXIOMUtil.stringToOM(omMetaFactory.getOMFactory(), xml).getXMLStreamReader();
+        new XMLStreamReaderComparator(expected, actual).compare();
+    }
+    
+    public void testProcessingInstruction() throws Exception {
+        testWithComparator("<root><?pi data?></root>");
+    }
+    
+    public void testNamespaces() throws Exception {
+        testWithComparator("<a xmlns='urn:ns1' xmlns:ns2='urn:ns2' ns2:att='test'><ns2:b att='test'/></a>");
     }
 }
