@@ -121,12 +121,13 @@ public class OMSerializerTest extends AbstractTestCase {
         try {
             env.serializeAndConsume(writer);
             fail();
-        } catch (XMLStreamException e) {
+        } catch (UnsupportedOperationException e) {
             e.printStackTrace(new PrintWriter(stringWriter, true));
             assertTrue(stringWriter.toString()
-                    .indexOf("problem accessing the parser. Parser already accessed!") > -1);
+                                   .indexOf("The parser is already consumed!") > -1);
         } catch (Exception e) {
-            fail("Expecting an XMLStreamException " + e.getMessage());
+            e.printStackTrace();
+            fail("Expecting an XMLStreamException, but got instead: " + e.getClass().getName() + ": " + e.getMessage());
         }
     }
 

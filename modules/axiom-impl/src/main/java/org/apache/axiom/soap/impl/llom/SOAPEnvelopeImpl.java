@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -28,6 +30,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.llom.OMNodeImpl;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAP12Version;
@@ -47,6 +50,8 @@ import javax.xml.stream.XMLStreamWriter;
 /** Class SOAPEnvelopeImpl */
 public class SOAPEnvelopeImpl extends SOAPElement
         implements SOAPEnvelope, OMConstants {
+    private static Log log = LogFactory.getLog(SOAPEnvelopeImpl.class);
+    private static final boolean isDebugEnabled = log.isDebugEnabled();
 
     /**
      * Constructor
@@ -244,6 +249,32 @@ public class SOAPEnvelopeImpl extends SOAPElement
                 OMSerializerUtil.serializeEndpart(writer);
             } else {
                 OMSerializerUtil.serializeByPullStream(this, writer, cache);
+            }
+            // let's try to close the builder/parser here since we are now done with the
+            // non-caching code block serializing the top-level SOAPEnvelope element
+            // TODO: should use 'instance of OMXMLParserWrapper' instead?  StAXBuilder is more generic
+            if ((builder != null) && (builder instanceof StAXBuilder)) {
+                try {
+                    if (isDebugEnabled) {
+                        log.debug("closing builder: " + builder);
+                    }
+                    StAXBuilder staxBuilder = (StAXBuilder) builder;
+                    staxBuilder.close();
+                } catch (Exception e) {
+                    if (isDebugEnabled) {
+                        log.error("Could not close builder or parser due to: ", e);
+                    }
+                }
+            } else {
+                if (isDebugEnabled) {
+                    log.debug("Could not close builder or parser due to:");
+                    if (builder == null) {
+                        log.debug("builder is null");
+                    }
+                    if ((builder != null) && !(builder instanceof StAXBuilder)) {
+                        log.debug("builder is not instance of " + StAXBuilder.class.getName());
+                    }
+                }
             }
         }
     }
