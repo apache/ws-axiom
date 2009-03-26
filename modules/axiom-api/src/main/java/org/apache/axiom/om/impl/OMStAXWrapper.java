@@ -376,9 +376,13 @@ public class OMStAXWrapper
         if (parser != null) {
             return parser.getTextStart();
         } else {
-            // getTextCharacters always returns a new char array and the start
-            // index is therefore always 0
-            return 0;
+            if (hasText()) {
+                // getTextCharacters always returns a new char array and the start
+                // index is therefore always 0
+                return 0;
+            } else {
+                throw new IllegalStateException();
+            }
         }
     }
 

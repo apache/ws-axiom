@@ -21,7 +21,10 @@ package org.apache.axiom.om.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.stream.XMLStreamReader;
 
@@ -41,23 +44,8 @@ public class XMLStreamReaderComparator extends Assert {
         this.actual = actual;
     }
 
-    private Object[] invoke(String methodName, Object[] args) throws Exception {
-        if (args == null) {
-            args = new Object[0];
-        }
-        Method[] methods = XMLStreamReader.class.getMethods();
-        Method method = null;
-        for (int i=0; i<methods.length; i++) {
-            Method candidate = methods[i];
-            if (candidate.getName().equals(methodName) &&
-                    candidate.getParameterTypes().length == args.length) {
-                method = candidate;
-                break;
-            }
-        }
-        if (method == null) {
-            fail("Method " + methodName + " not found");
-        }
+    private Object[] invoke(String methodName, Class[] paramTypes, Object[] args) throws Exception {
+        Method method = XMLStreamReader.class.getMethod(methodName, paramTypes);
         
         Object expectedResult;
         Throwable expectedException;
@@ -100,8 +88,12 @@ public class XMLStreamReaderComparator extends Assert {
         return null;
     }
     
-    private Object assertSameResult(String methodName, Object[] args) throws Exception {
-        Object[] results = invoke(methodName, args);
+    private Object[] invoke(String methodName) throws Exception {
+        return invoke(methodName, new Class[0], new Object[0]);
+    }
+
+    private Object assertSameResult(String methodName, Class[] paramTypes, Object[] args) throws Exception {
+        Object[] results = invoke(methodName, paramTypes, args);
         if (results != null) {
             assertEquals("Return value of " + methodName + " (event type " +
                         StAXUtils.getEventTypeString(expected.getEventType()) + ")",
@@ -112,47 +104,73 @@ public class XMLStreamReaderComparator extends Assert {
         }
     }
     
+    private Object assertSameResult(String methodName) throws Exception {
+        return assertSameResult(methodName, new Class[0], new Object[0]);
+    }
+
     public void compare() throws Exception {
+        // Collect all prefixes seen in the document to be able to test getNamespaceURI(String)
+        Set prefixes = new HashSet();
         while (expected.next() != XMLStreamReader.END_DOCUMENT) {
             actual.next();
-            Integer attributeCount = (Integer)assertSameResult("getAttributeCount", null);
+            Integer attributeCount = (Integer)assertSameResult("getAttributeCount");
             if (attributeCount != null) {
                 for (int i=0; i<attributeCount.intValue(); i++) {
+                    Class[] paramTypes = { Integer.TYPE };
                     Object[] args = { Integer.valueOf(i) };
-                    assertSameResult("getAttributeLocalName", args);
-                    assertSameResult("getAttributeName", args);
-                    assertSameResult("getAttributeNamespace", args);
-                    assertSameResult("getAttributePrefix", args);
-                    assertSameResult("getAttributeType", args);
-                    assertSameResult("getAttributeValue", args);
+                    assertSameResult("getAttributeLocalName", paramTypes, args);
+                    assertSameResult("getAttributeName", paramTypes, args);
+                    assertSameResult("getAttributeNamespace", paramTypes, args);
+                    prefixes.add(assertSameResult("getAttributePrefix", paramTypes, args));
+                    assertSameResult("getAttributeType", paramTypes, args);
+                    assertSameResult("getAttributeValue", paramTypes, args);
                 }
             }
-            assertSameResult("getLocalName", null);
-            assertSameResult("getName", null);
-            Integer namespaceCount = (Integer)assertSameResult("getNamespaceCount", null);
+            assertSameResult("getLocalName");
+            assertSameResult("getName");
+            Integer namespaceCount = (Integer)assertSameResult("getNamespaceCount");
             if (namespaceCount != null) {
                 Map expectedNamespaces = new HashMap();
                 Map actualNamespaces = new HashMap();
                 for (int i=0; i<namespaceCount.intValue(); i++) {
-                    expectedNamespaces.put(expected.getNamespacePrefix(i),
+                    String prefix = expected.getNamespacePrefix(i);
+                    expectedNamespaces.put(prefix,
                             expected.getNamespaceURI(i));
                     actualNamespaces.put(actual.getNamespacePrefix(i),
                             actual.getNamespaceURI(i));
+                    prefixes.add(prefix);
                 }
                 assertEquals(expectedNamespaces, actualNamespaces);
             }
-            assertSameResult("getNamespaceURI", null);
-            assertSameResult("getPIData", null);
-            assertSameResult("getPITarget", null);
-            assertSameResult("getPrefix", null);
-            assertSameResult("getText", null);
-            assertSameResult("getTextLength", null);
-            assertSameResult("hasName", null);
-            assertSameResult("hasText", null);
-            assertSameResult("isCharacters", null);
-            assertSameResult("isEndElement", null);
-            assertSameResult("isStartElement", null);
-            assertSameResult("isWhiteSpace", null);
+            assertSameResult("getNamespaceURI");
+            assertSameResult("getPIData");
+            assertSameResult("getPITarget");
+            prefixes.add(assertSameResult("getPrefix"));
+            assertSameResult("getText");
+            Integer textLength = (Integer)assertSameResult("getTextLength");
+            Object[] textStart = invoke("getTextStart");
+            Object[] textCharacters = invoke("getTextCharacters");
+            if (textLength != null) {
+                assertEquals(new String((char[])textCharacters[0],
+                                        ((Integer)textStart[0]).intValue(),
+                                        textLength.intValue()),
+                             new String((char[])textCharacters[1],
+                                        ((Integer)textStart[1]).intValue(),
+                                        textLength.intValue()));
+            }
+            assertSameResult("hasName");
+            assertSameResult("hasText");
+            assertSameResult("isCharacters");
+            assertSameResult("isEndElement");
+            assertSameResult("isStartElement");
+            assertSameResult("isWhiteSpace");
+            for (Iterator it = prefixes.iterator(); it.hasNext(); ) {
+                String prefix = (String)it.next();
+                if (prefix != null) {
+                    assertSameResult("getNamespaceURI",
+                            new Class[] { String.class }, new Object[] { prefix });
+                }
+            }
         }
     }
 }
