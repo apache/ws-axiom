@@ -22,7 +22,9 @@ package org.apache.axiom.attachments.utils;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
-public final class BAAInputStreamTestCase extends junit.framework.TestCase {
+import junit.framework.TestCase;
+
+public final class BAAInputStreamTest extends TestCase {
     
     public void testRead() throws Exception {
         byte [] data = new byte [] { 5, 10, -10, -5, 0 };

@@ -61,12 +61,9 @@ public class BufferUtilsTest extends TestCase {
         try {
             OutputStream fos = new FileOutputStream(file, true);
             for (int i = 0; i < 20; i++) {
-                long start = System.currentTimeMillis();
                 InputStream bais = new ByteArrayInputStream(bytes);
                 BufferUtils.inputStream2OutputStream(bais, fos);
                 fos.flush();
-                long end = System.currentTimeMillis();
-
             }
             fos.close();
             FileInputStream fis = new FileInputStream(file);
@@ -103,38 +100,27 @@ public class BufferUtilsTest extends TestCase {
         }    
     }
     
-    public void testObjectBackedDataHandlerExceedLimit(){
+    public void testObjectBackedDataHandlerExceedLimit() throws Exception {
         String str = "This is a test String";
-        try{
-            DataHandler dh = new DataHandler(str, "text/plain");          
-            int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
-            assertEquals(-1, unsupported);
-            int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 10);
-            assertEquals(1, doesExceed);
-            int doesNotExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 100);
-            assertEquals(0, doesNotExceed);
-        }catch(Exception e){
-            e.printStackTrace();
-            fail();
-        }
-        
+        DataHandler dh = new DataHandler(str, "text/plain");          
+        int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
+        assertEquals(-1, unsupported);
+        int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 10);
+        assertEquals(1, doesExceed);
+        int doesNotExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 100);
+        assertEquals(0, doesNotExceed);
     }
-    public void testByteArrayDataSourceBackedDataHandlerExceedLimit(){
+    
+    public void testByteArrayDataSourceBackedDataHandlerExceedLimit() throws Exception {
         String str = "This is a test String";
         byte[] b = str.getBytes();
         ByteArrayDataSource bads = new ByteArrayDataSource(b, "text/plain");
-        try{
-            DataHandler dh = new DataHandler(bads);          
-            int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
-            assertEquals(-1, unsupported);
-            int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 10);
-            assertEquals(1, doesExceed);
-            int doesNotExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 100);
-            assertEquals(0, doesNotExceed);
-        }catch(Exception e){
-            e.printStackTrace();
-            fail();
-        }
-        
+        DataHandler dh = new DataHandler(bads);          
+        int unsupported= BufferUtils.doesDataHandlerExceedLimit(dh, 0);
+        assertEquals(-1, unsupported);
+        int doesExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 10);
+        assertEquals(1, doesExceed);
+        int doesNotExceed = BufferUtils.doesDataHandlerExceedLimit(dh, 100);
+        assertEquals(0, doesNotExceed);
     }
 }

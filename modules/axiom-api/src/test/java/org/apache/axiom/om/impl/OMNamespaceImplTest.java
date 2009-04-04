@@ -19,14 +19,14 @@
 
 package org.apache.axiom.om.impl;
 
-public final class NamespaceImplTestCase extends junit.framework.TestCase {
+public final class OMNamespaceImplTest extends junit.framework.TestCase {
     public void testEqualsHashCodeContract() {
         assertEquals(
-                new org.apache.axiom.om.impl.OMNamespaceImpl("anyURI", "prefix"),
-                new org.apache.axiom.om.impl.OMNamespaceImpl("anyURI", "prefix"));
+                new OMNamespaceImpl("anyURI", "prefix"),
+                new OMNamespaceImpl("anyURI", "prefix"));
 
         assertEquals(
-                new org.apache.axiom.om.impl.OMNamespaceImpl("anyURI", "prefix").hashCode(),
-                new org.apache.axiom.om.impl.OMNamespaceImpl("anyURI", "prefix").hashCode());
+                new OMNamespaceImpl("anyURI", "prefix").hashCode(),
+                new OMNamespaceImpl("anyURI", "prefix").hashCode());
     }
 }
