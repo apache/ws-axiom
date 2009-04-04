@@ -51,7 +51,11 @@ public class OMStAXWrapperConformanceTestCase extends AbstractTestCase {
         InputStream in2 = getTestResource(file);
         try {
             XMLStreamReader expected = StAXUtils.createXMLStreamReader(in1);
-            expected.nextTag();
+            // Skip to document element. Note that nextTag is not appropriate here because
+            // there could be a DTD event.
+            while (expected.next() != XMLStreamReader.START_ELEMENT) {
+                // just loop
+            }
             XMLStreamReader actual = new StAXOMBuilder(omMetaFactory.getOMFactory(),
                     StAXUtils.createXMLStreamReader(in2)).getDocumentElement().getXMLStreamReader();
             new XMLStreamReaderComparator(new XMLFragmentStreamReader(expected), actual).compare();

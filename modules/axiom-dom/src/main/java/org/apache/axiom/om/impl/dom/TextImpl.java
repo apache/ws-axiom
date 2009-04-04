@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class TextImpl extends CharacterImpl implements Text, OMText {
+    private boolean isWhitespace;
 
     private String mimeType;
 
@@ -300,7 +301,7 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
      * @see org.apache.axiom.om.OMNode#getType()
      */
     public int getType() throws OMException {
-        return OMNode.TEXT_NODE;
+        return isWhitespace ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;
     }
 
     /*
@@ -309,8 +310,17 @@ public class TextImpl extends CharacterImpl implements Text, OMText {
      * @see org.apache.axiom.om.OMNode#setType(int)
      */
     public void setType(int nodeType) throws OMException {
-        // do not do anything here
-        // Its not clear why we should let someone change the type of a node
+        switch (nodeType) {
+            case OMNode.TEXT_NODE:
+            case OMNode.CDATA_SECTION_NODE: // TODO: this is not entirely correct
+                isWhitespace = false;
+                break;
+            case OMNode.SPACE_NODE:
+                isWhitespace = true;
+                break;
+            default:
+                throw new UnsupportedOperationException();
+        }
     }
 
     public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {

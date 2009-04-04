@@ -750,13 +750,29 @@ public class OMStAXWrapper
      * @return Returns boolean.
      */
     public boolean isWhiteSpace() {
-        boolean b;
         if (parser != null) {
-            b = parser.isWhiteSpace();
+            return parser.isWhiteSpace();
         } else {
-            b = (currentEvent == SPACE);
+            switch (currentEvent) {
+                case SPACE:
+                    return true;
+                case CHARACTERS:
+                    // XMLStreamReader Javadoc says that isWhiteSpace "returns true if the cursor
+                    // points to a character data event that consists of all whitespace". This
+                    // means that this method may return true for a CHARACTER event and we need
+                    // to scan the text of the node.
+                    String text = getTextFromNode();
+                    for (int i=0; i<text.length(); i++) {
+                        char c = text.charAt(i);
+                        if (c != ' ' && c != '\t' && c != '\r' && c != '\n') {
+                            return false;
+                        }
+                    }
+                    return true;
+                default:
+                    return false;
+            }
         }
-        return b;
     }
 
     /**
@@ -1331,37 +1347,33 @@ public class OMStAXWrapper
      * @return Returns int.
      */
     private int generateTextEvents(OMNode node) {
-        if (!isInlineMTOM()) {
-            // If this is an optimized MTOM text node
-            // then simulate an XOP_INCLUDE element.
-            if (node instanceof OMText) {
-                OMText text = (OMText) node;
-                if (text.isOptimized()) {
-                    
-                    if (nodeStack == null) {
-                        nodeStack = new Stack();
-                    }
-                    
-                    if (!nodeStack.isEmpty() && nodeStack.peek().equals(text)) {
-                        // Process the end tag of the XOP:Include
-                        nodeStack.pop();
-                        xopIncludeStart = false;
-                        return END_ELEMENT;
-                    } else {
-
-                        // Create an XOPInclude element to represent this node
-                        xopIncludeText = text;
-                        xopInclude = node.getOMFactory().createOMElement(XOP_INCLUDE);
-                        String cid = text.getContentID();
-                        xopInclude.addAttribute("href", "cid:" + cid, null);
-                        xopIncludeStart = true;
-                        nodeStack.push(text);
-                        return START_ELEMENT;
-                    }
-                }
+        OMText text = (OMText) node;
+        // If this is an optimized MTOM text node
+        // then simulate an XOP_INCLUDE element.
+        if (!isInlineMTOM() && text.isOptimized()) {
+            if (nodeStack == null) {
+                nodeStack = new Stack();
             }
+            
+            if (!nodeStack.isEmpty() && nodeStack.peek().equals(text)) {
+                // Process the end tag of the XOP:Include
+                nodeStack.pop();
+                xopIncludeStart = false;
+                return END_ELEMENT;
+            } else {
+
+                // Create an XOPInclude element to represent this node
+                xopIncludeText = text;
+                xopInclude = node.getOMFactory().createOMElement(XOP_INCLUDE);
+                String cid = text.getContentID();
+                xopInclude.addAttribute("href", "cid:" + cid, null);
+                xopIncludeStart = true;
+                nodeStack.push(text);
+                return START_ELEMENT;
+            }
+        } else {
+            return text.getType();
         }
-        return CHARACTERS;
     }
     
     /**

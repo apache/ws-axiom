@@ -40,6 +40,7 @@ import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;
 import org.apache.axiom.om.impl.dom.DocumentFragmentImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
+import org.apache.axiom.om.impl.dom.DocumentTypeImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.NamespaceImpl;
 import org.apache.axiom.om.impl.dom.OMDOMException;
@@ -351,8 +352,9 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMDocType createOMDocType(OMContainer parent, String content) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        DocumentTypeImpl docType = new DocumentTypeImpl(this.getDocument(), this);
+        parent.addChild(docType);
+        return docType;
     }
 
     public OMProcessingInstruction createOMProcessingInstruction(
