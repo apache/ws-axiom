@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl;
+package org.apache.axiom.stax;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -111,8 +111,8 @@ public class XMLStreamReaderComparator extends Assert {
     public void compare() throws Exception {
         // Collect all prefixes seen in the document to be able to test getNamespaceURI(String)
         Set prefixes = new HashSet();
-        while (expected.next() != XMLStreamReader.END_DOCUMENT) {
-            actual.next();
+        do {
+            int eventType = ((Integer)assertSameResult("getEventType")).intValue();
             Integer attributeCount = (Integer)assertSameResult("getAttributeCount");
             if (attributeCount != null) {
                 for (int i=0; i<attributeCount.intValue(); i++) {
@@ -164,13 +164,20 @@ public class XMLStreamReaderComparator extends Assert {
             assertSameResult("isEndElement");
             assertSameResult("isStartElement");
             assertSameResult("isWhiteSpace");
-            for (Iterator it = prefixes.iterator(); it.hasNext(); ) {
-                String prefix = (String)it.next();
-                if (prefix != null) {
-                    assertSameResult("getNamespaceURI",
-                            new Class[] { String.class }, new Object[] { prefix });
+            
+            // Only check getNamespaceURI(String) for START_ELEMENT and END_ELEMENT. The Javadoc
+            // of XMLStreamReader suggests that this method is valid for all states, but Woodstox
+            // only allows it for some states.
+            if (eventType == XMLStreamReader.START_ELEMENT ||
+                    eventType == XMLStreamReader.END_ELEMENT) {
+                for (Iterator it = prefixes.iterator(); it.hasNext(); ) {
+                    String prefix = (String)it.next();
+                    if (prefix != null) {
+                        assertSameResult("getNamespaceURI",
+                                new Class[] { String.class }, new Object[] { prefix });
+                    }
                 }
             }
-        }
+        } while (assertSameResult("next") != null);
     }
 }

@@ -59,6 +59,11 @@
                         <groupId>xmlunit</groupId>
                         <artifactId>xmlunit</artifactId>
                 </dependency>
+        <dependency>
+            <groupId>${stax.impl.groupid}</groupId>
+            <artifactId>${stax.impl.artifact}</artifactId>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 	<build>
 		<resources>
@@ -69,6 +74,14 @@
 				<directory>${project.build.directory}/legal-files</directory>
 			</resource>
 		</resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>${project.build.directory}/generated-test-resources</directory>
+            </testResource>
+        </testResources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -92,6 +105,35 @@
 					</execution>
 				</executions>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.geronimo.genesis.plugins</groupId>
+                <artifactId>script-maven-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>groovy</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                <!-- This generates a list of the files in src/test/resources/conformance.
+                                     This is useful when loading these files from the classpath. -->
+                                <body>
+                                    def filelist = new File("${project.build.directory}/generated-test-resources/conformance/filelist");
+                                    filelist.parentFile.mkdirs();
+                                    filelist.delete();
+                                    new File("${basedir}/src/test/resources/conformance").eachFile({
+                                        if (it.file) {
+                                            filelist.append("$it.name\n");
+                                        }
+                                    })
+                                </body>
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -130,7 +172,6 @@
 				<configuration>
 					<includes>
 						<include>**/*Test.java</include>
-						<include>**/*TestCase.java</include>
 					</includes>
 				</configuration>
 			</plugin>
