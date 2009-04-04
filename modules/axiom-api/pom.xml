@@ -120,10 +120,10 @@
                                 <!-- This generates a list of the files in src/test/resources/conformance.
                                      This is useful when loading these files from the classpath. -->
                                 <body>
-                                    def filelist = new File("${project.build.directory}/generated-test-resources/conformance/filelist");
+                                    def filelist = new File(project.build.directory, "generated-test-resources/conformance/filelist");
                                     filelist.parentFile.mkdirs();
                                     filelist.delete();
-                                    new File("${basedir}/src/test/resources/conformance").eachFile({
+                                    new File(project.basedir, "src/test/resources/conformance").eachFile({
                                         if (it.file) {
                                             filelist.append("$it.name\n");
                                         }
