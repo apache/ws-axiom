@@ -34,6 +34,11 @@ import org.apache.axiom.om.util.StAXUtils;
 
 /**
  * Helper class that compares the events produced by two {@link XMLStreamReader} objects.
+ * Note that this class is not meant to be used to compare two XML documents (the error
+ * reporting would not be clear enough for that purpose), but to validate implementations
+ * of the {@link XMLStreamReader} interface. It uses a brute force approach: for each event,
+ * all methods (that don't modify the reader state) are called on both readers and the results
+ * (return values or exceptions thrown) of these invocations are compared to each other.
  */
 public class XMLStreamReaderComparator extends Assert {
     private final XMLStreamReader expected;
