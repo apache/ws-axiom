@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Stack;
 
 import javax.activation.DataHandler;
@@ -962,7 +963,7 @@ public class OMStAXWrapper
     public int next() throws XMLStreamException {
         switch (state) {
             case DOCUMENT_COMPLETE:
-                throw new XMLStreamException("End of the document reached");
+                throw new NoSuchElementException("End of the document reached");
             case COMPLETED:
                 state = DOCUMENT_COMPLETE;
                 currentEvent = END_DOCUMENT;
