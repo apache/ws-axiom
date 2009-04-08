@@ -845,9 +845,10 @@ public class OMStAXWrapper
             if (isStartElement() || isEndElement()
                     || (currentEvent == NAMESPACE)) {
 
-                if (rootNode instanceof OMElement) {
+                OMNode node = getNode();
+                if (node instanceof OMElement) {
                     OMNamespace namespaceURI =
-                            ((OMElement) rootNode).findNamespaceURI(prefix);
+                            ((OMElement) node).findNamespaceURI(prefix);
                     return namespaceURI != null ? namespaceURI.getNamespaceURI() : null;
                 }
             }
