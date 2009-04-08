@@ -20,9 +20,11 @@ package org.apache.axiom.stax;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,12 +45,22 @@ import org.apache.axiom.om.util.StAXUtils;
 public class XMLStreamReaderComparator extends Assert {
     private final XMLStreamReader expected;
     private final XMLStreamReader actual;
+    private final LinkedList path = new LinkedList();
     
     public XMLStreamReaderComparator(XMLStreamReader expected, XMLStreamReader actual) {
         this.expected = expected;
         this.actual = actual;
     }
 
+    private String getLocation() {
+        StringBuffer buffer = new StringBuffer();
+        for (Iterator it = path.iterator(); it.hasNext(); ) {
+            buffer.append('/');
+            buffer.append(it.next());
+        }
+        return buffer.toString();
+    }
+    
     private Object[] invoke(String methodName, Class[] paramTypes, Object[] args) throws Exception {
         Method method = XMLStreamReader.class.getMethod(methodName, paramTypes);
         
@@ -74,6 +86,7 @@ public class XMLStreamReaderComparator extends Assert {
         
         if (expectedException == null) {
             if (actualException != null) {
+                actualException.printStackTrace(System.out);
                 fail("Method " + methodName + " threw unexpected exception " +
                         actualException.getClass().getName() + "; event type was " +
                         StAXUtils.getEventTypeString(expected.getEventType()));
@@ -100,8 +113,10 @@ public class XMLStreamReaderComparator extends Assert {
     private Object assertSameResult(String methodName, Class[] paramTypes, Object[] args) throws Exception {
         Object[] results = invoke(methodName, paramTypes, args);
         if (results != null) {
-            assertEquals("Return value of " + methodName + " (event type " +
-                        StAXUtils.getEventTypeString(expected.getEventType()) + ")",
+            assertEquals("Return value of " + methodName + " for arguments " +
+                        Arrays.asList(args) + " (event type " +
+                        StAXUtils.getEventTypeString(expected.getEventType()) +
+                        "; location " + getLocation() + ")",
                         results[0], results[1]);
             return results[0];
         } else {
@@ -118,6 +133,9 @@ public class XMLStreamReaderComparator extends Assert {
         Set prefixes = new HashSet();
         do {
             int eventType = ((Integer)assertSameResult("getEventType")).intValue();
+            if (eventType == XMLStreamReader.START_ELEMENT) {
+                path.addLast(expected.getName());
+            }
             Integer attributeCount = (Integer)assertSameResult("getAttributeCount");
             if (attributeCount != null) {
                 for (int i=0; i<attributeCount.intValue(); i++) {
@@ -182,6 +200,10 @@ public class XMLStreamReaderComparator extends Assert {
                                 new Class[] { String.class }, new Object[] { prefix });
                     }
                 }
+            }
+            
+            if (eventType == XMLStreamReader.END_ELEMENT) {
+                path.removeLast();
             }
         } while (assertSameResult("next") != null);
     }
