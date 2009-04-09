@@ -534,8 +534,8 @@ public class StAXOMBuilder extends StAXBuilder {
         }
 
         if (namespaceURI != null && namespaceURI.length() > 0) {
-            OMNamespace namespace = node.findNamespace(namespaceURI, prefix);
-            if (namespace == null || (!namespace.getPrefix().equals(prefix))) {
+            OMNamespace namespace = node.findNamespaceURI(prefix == null ? "" : prefix);
+            if (namespace == null || !namespace.getNamespaceURI().equals(namespaceURI)) {
                 // See NOTE_A above
                 if (isNamespaceURIInterning()) {
                     namespaceURI = namespaceURI.intern();
