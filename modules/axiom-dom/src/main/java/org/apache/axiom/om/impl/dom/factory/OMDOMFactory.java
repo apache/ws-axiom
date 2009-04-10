@@ -202,7 +202,9 @@ public class OMDOMFactory implements OMFactory {
     public OMElement createOMElement(QName qname, OMContainer parent)
             throws OMException {
         NamespaceImpl ns;
-        if (qname.getPrefix() != null) {
+        if (qname.getNamespaceURI().length() == 0) {
+            ns = null;
+        } else if (qname.getPrefix() != null) {
             ns = new NamespaceImpl(qname.getNamespaceURI(), qname.getPrefix());
         } else {
             ns = new NamespaceImpl(qname.getNamespaceURI());

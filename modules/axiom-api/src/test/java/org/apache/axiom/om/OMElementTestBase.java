@@ -20,8 +20,6 @@
 package org.apache.axiom.om;
 
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
@@ -195,20 +193,6 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         assertSame(element, att2.getOwner());
     }
     
-    // This methods filters out the ("", "") namespace declaration (empty namespace
-    // to default). This declaration is present on OMElements produced by DOOM.
-    // TODO: check if this is not a bug in DOOM
-    private Iterator getRealAllDeclaredNamespaces(OMElement element) {
-        List namespaces = new LinkedList();
-        for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
-            OMNamespace ns = (OMNamespace)it.next();
-            if (!("".equals(ns.getPrefix()) && "".equals(ns.getNamespaceURI()))) {
-                namespaces.add(ns);
-            }
-        }
-        return namespaces.iterator();
-    }
-    
     public void testAddAttributeWithoutExistingNamespaceDeclaration() {
         OMFactory factory = getOMFactory();
         OMElement element = factory.createOMElement(new QName("test"));
@@ -216,7 +200,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         OMAttribute att = factory.createOMAttribute("test", ns, "test");
         element.addAttribute(att);
         assertEquals(ns, element.findNamespace(ns.getNamespaceURI(), ns.getPrefix()));
-        Iterator it = getRealAllDeclaredNamespaces(element);
+        Iterator it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         assertEquals(ns, it.next());
         assertFalse(it.hasNext());
@@ -229,7 +213,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         element.declareNamespace(ns);
         OMAttribute att = factory.createOMAttribute("test", ns, "test");
         element.addAttribute(att);
-        Iterator it = getRealAllDeclaredNamespaces(element);
+        Iterator it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         assertEquals(ns, it.next());
         assertFalse(it.hasNext());
