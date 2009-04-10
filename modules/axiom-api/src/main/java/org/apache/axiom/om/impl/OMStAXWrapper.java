@@ -281,7 +281,12 @@ public class OMStAXWrapper
                     || (currentEvent == END_ELEMENT)
                     || (currentEvent == NAMESPACE)) {
                 OMNamespace ns = ((OMElement) getNode()).getNamespace();
-                returnStr = (ns == null) ? null : ns.getNamespaceURI();
+                if (ns == null) {
+                    returnStr = null;
+                } else {
+                    String namespaceURI = ns.getNamespaceURI();
+                    returnStr = namespaceURI.length() == 0 ? null : namespaceURI;
+                }
             } else {
                 throw new IllegalStateException();
             }
