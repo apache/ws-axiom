@@ -593,7 +593,7 @@ public class OMElementImpl extends OMNodeImpl
         String nsPrefix;
         if (namespace != null && (nsURI = namespace.getNamespaceURI()) != null &&
                 !"".equals(nsURI) &&
-                this.findNamespace(nsURI, (nsPrefix = namespace.getPrefix())) == null) {
+                !nsURI.equals(this.findNamespaceURI(nsPrefix = namespace.getPrefix()))) {
             this.declareNamespace(nsURI, nsPrefix);
         }
 

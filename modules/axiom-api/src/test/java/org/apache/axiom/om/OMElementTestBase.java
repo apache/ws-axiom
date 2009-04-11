@@ -218,4 +218,38 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         assertEquals(ns, it.next());
         assertFalse(it.hasNext());
     }
+
+    /**
+     * Test checking that {@link OMElement#addAttribute(OMAttribute)} correctly generates a
+     * new namespace declaration if an equivalent namespace declaration exists but is masked.
+     * The test attempts to create the following XML:
+     * <pre>
+     * &lt;a xmlns:p="urn:ns1">
+     *   &lt;b xmlns:p="urn:ns2">
+     *     &lt;c xmlns:p="urn:ns1" p:attr="test"/>
+     *   &lt;/b>
+     * &lt;/a></pre>
+     * It only explicitly creates the namespace declarations on <tt>&lt;a></tt> and
+     * <tt>&lt;b></tt>. When adding the attribute to <tt>&lt;c></tt>, Axiom must generate
+     * a new namespace declaration because the declaration on <tt>&lt;a></tt> is masked
+     * by the one on <tt>&lt;b></tt>.
+     * <p>
+     * Note that because of WSTX-202, Axiom will not be able to serialize the resulting XML.
+     */
+    public void testAddAttributeWithMaskedNamespaceDeclaration() {
+        OMFactory factory = getOMFactory();
+        OMNamespace ns1 = factory.createOMNamespace("urn:ns1", "p");
+        OMNamespace ns2 = factory.createOMNamespace("urn:ns2", "p");
+        OMElement element1 = factory.createOMElement(new QName("a"));
+        element1.declareNamespace(ns1);
+        OMElement element2 = factory.createOMElement(new QName("b"), element1);
+        element2.declareNamespace(ns2);
+        OMElement element3 = factory.createOMElement(new QName("c"), element2);
+        OMAttribute att = factory.createOMAttribute("attr", ns1, "test");
+        element3.addAttribute(att);
+        Iterator it = element3.getAllDeclaredNamespaces();
+        assertTrue(it.hasNext());
+        assertEquals(ns1, it.next());
+        assertFalse(it.hasNext());
+    }
 }
