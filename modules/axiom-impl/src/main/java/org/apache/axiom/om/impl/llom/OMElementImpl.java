@@ -589,12 +589,15 @@ public class OMElementImpl extends OMNodeImpl
             this.attributes = new LinkedHashMap(5);
         }
         OMNamespace namespace = attr.getNamespace();
-        String nsURI;
-        String nsPrefix;
-        if (namespace != null && (nsURI = namespace.getNamespaceURI()) != null &&
-                !"".equals(nsURI) &&
-                !nsURI.equals(this.findNamespaceURI(nsPrefix = namespace.getPrefix()))) {
-            this.declareNamespace(nsURI, nsPrefix);
+        if (namespace != null) {
+            String uri = namespace.getNamespaceURI();
+            if (uri.length() > 0) {
+                String prefix = namespace.getPrefix();
+                OMNamespace ns2 = findNamespaceURI(prefix);
+                if (ns2 == null || !uri.equals(ns2.getNamespaceURI())) {
+                    declareNamespace(uri, prefix);
+                }
+            }
         }
 
         // Set the owner element of the attribute

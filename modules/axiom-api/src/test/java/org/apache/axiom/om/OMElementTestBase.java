@@ -206,7 +206,11 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         assertFalse(it.hasNext());
     }
 
-    public void testAddAttributeWithExistingNamespaceDeclaration() {
+    /**
+     * Test that adding an attribute doesn't create an additional namespace declaration if
+     * a corresponding declaration already exists on the element.
+     */
+    public void testAddAttributeWithExistingNamespaceDeclarationOnSameElement() {
         OMFactory factory = getOMFactory();
         OMElement element = factory.createOMElement(new QName("test"));
         OMNamespace ns = factory.createOMNamespace("urn:ns", "p");
@@ -216,6 +220,22 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         Iterator it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         assertEquals(ns, it.next());
+        assertFalse(it.hasNext());
+    }
+
+    /**
+     * Test that adding an attribute doesn't create an additional namespace declaration if
+     * a corresponding declaration is already in scope.
+     */
+    public void testAddAttributeWithExistingNamespaceDeclarationInScope() {
+        OMFactory factory = getOMFactory();
+        OMElement root = factory.createOMElement(new QName("test"));
+        OMNamespace ns = factory.createOMNamespace("urn:ns", "p");
+        root.declareNamespace(ns);
+        OMElement child = factory.createOMElement(new QName("test"), root);
+        OMAttribute att = factory.createOMAttribute("test", ns, "test");
+        child.addAttribute(att);
+        Iterator it = child.getAllDeclaredNamespaces();
         assertFalse(it.hasNext());
     }
 

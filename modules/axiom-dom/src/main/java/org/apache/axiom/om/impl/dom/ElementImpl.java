@@ -686,11 +686,15 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         }
         
         OMNamespace namespace = attr.getNamespace();
-        if (namespace != null && namespace.getNamespaceURI() != null
-                && !"".equals(namespace.getNamespaceURI())
-                && !namespace.getNamespaceURI().equals(this.findNamespaceURI(namespace
-                .getPrefix()))) {
-            this.declareNamespace(namespace.getNamespaceURI(), namespace.getPrefix());
+        if (namespace != null) {
+            String uri = namespace.getNamespaceURI();
+            if (uri.length() > 0) {
+                String prefix = namespace.getPrefix();
+                OMNamespace ns2 = findNamespaceURI(prefix);
+                if (ns2 == null || !uri.equals(ns2.getNamespaceURI())) {
+                    declareNamespace(uri, prefix);
+                }
+            }
         }
 
         if (attr.getNamespace() != null) { // If the attr has a namespace
@@ -708,8 +712,15 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      */
     public OMAttribute addAttribute(String attributeName, String value,
                                     OMNamespace ns) {
-        if (ns != null && findNamespace(ns.getNamespaceURI(), ns.getPrefix()) != null) {
-            declareNamespace(ns);
+        if (ns != null) {
+            String uri = ns.getNamespaceURI();
+            if (uri.length() > 0) {
+                String prefix = ns.getPrefix();
+                OMNamespace ns2 = findNamespaceURI(prefix);
+                if (ns2 == null || !uri.equals(ns2.getNamespaceURI())) {
+                    declareNamespace(uri, prefix);
+                }
+            }
         }
         if (ns != null) {
             return this.addAttribute(ns.getNamespaceURI(), ns.getPrefix() + ":"
