@@ -19,65 +19,76 @@
 
 package org.apache.axiom.om.impl.builder;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXMLIdentical;
-import static org.custommonkey.xmlunit.XMLUnit.compareXML;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.axiom.om.OMElement;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import junit.framework.TestSuite;
+
+import org.apache.axiom.om.AbstractTestCase;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-@RunWith(Parameterized.class)
-public class SAXOMBuilderSAXParserTest {
+public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
     private final SAXParserFactory factory;
+    private final String file;
     
-    @Parameters
-    public static List<Object[]> parameters() {
-        return Arrays.asList(new Object[][] {
-                { org.apache.crimson.jaxp.SAXParserFactoryImpl.class },
-                { org.apache.xerces.jaxp.SAXParserFactoryImpl.class }
-        });
-    }
-    
-    public SAXOMBuilderSAXParserTest(Class<? extends SAXParserFactory> factoryClass) throws Exception {
-        this.factory = factoryClass.newInstance();
+    public SAXOMBuilderSAXParserTest(String name, SAXParserFactory factory, String file) {
+        super(name);
+        this.factory = factory;
+        this.file = file;
     }
 
-    private InputSource toInputSource(OMElement element) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        element.serialize(baos);
-        return new InputSource(new ByteArrayInputStream(baos.toByteArray()));
+    private Document toDocument(InputStream in) throws Exception {
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(in);
+        DocumentType docType = doc.getDoctype();
+        if (docType != null) {
+            doc.removeChild(docType);
+        }
+        return doc;
     }
     
-    @Test
-    public void test() throws Exception {
+    @Override
+    protected void runTest() throws Throwable {
         factory.setNamespaceAware(true);
         XMLReader reader = factory.newSAXParser().getXMLReader();
         SAXOMBuilder builder = new SAXOMBuilder();
         reader.setContentHandler(builder);
         reader.setProperty("http://xml.org/sax/properties/lexical-handler", builder);
-        InputStream in = SAXOMBuilderSAXParserTest.class.getResourceAsStream("test.xml");
+        InputStream in = getTestResource(file);
         try {
             reader.parse(new InputSource(in));
         } finally {
             in.close();
         }
-        in = SAXOMBuilderSAXParserTest.class.getResourceAsStream("test.xml");
+        in = getTestResource(file);
         try {
-            assertXMLIdentical(compareXML(new InputSource(in), toInputSource(builder.getRootElement())), true);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            builder.getDocument().serialize(baos);
+            assertXMLIdentical(compareXML(
+                    toDocument(in),
+                    toDocument(new ByteArrayInputStream(baos.toByteArray()))), true);
         } finally {
             in.close();
         }
+    }
+    
+    private static void addTests(TestSuite suite, SAXParserFactory factory, String name) throws Exception {
+        for (String file : getConformanceTestFiles()) {
+            suite.addTest(new SAXOMBuilderSAXParserTest(
+                    file.substring(file.lastIndexOf('/')+1) + " - " + name, factory, file));
+        }
+    }
+    
+    public static TestSuite suite() throws Exception {
+        TestSuite suite = new TestSuite();
+        addTests(suite, new org.apache.crimson.jaxp.SAXParserFactoryImpl(), "crimson");
+        addTests(suite, new org.apache.xerces.jaxp.SAXParserFactoryImpl(), "xerces");
+        return suite;
     }
 }

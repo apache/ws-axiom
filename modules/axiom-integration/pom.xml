@@ -87,6 +87,12 @@
             <artifactId>saxon-dom</artifactId>
             <version>8.9</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-api</artifactId>
+            <classifier>tests</classifier>
+            <version>${version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

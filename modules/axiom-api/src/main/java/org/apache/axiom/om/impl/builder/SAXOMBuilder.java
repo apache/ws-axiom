@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl.builder;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -38,50 +39,77 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
+    private OMDocument document;
+    
     OMElement root = null;
 
     OMNode lastNode = null;
 
     OMElement nextElem = null;
 
-    OMFactory factory = OMAbstractFactory.getOMFactory();
+    private final OMFactory factory;
 
     List prefixMappings = new ArrayList();
     
     int textNodeType = OMNode.TEXT_NODE;
 
+    public SAXOMBuilder(OMFactory factory) {
+        this.factory = factory;
+    }
+    
+    public SAXOMBuilder() {
+        this(OMAbstractFactory.getOMFactory());
+    }
+    
+    private OMContainer getContainer() {
+        if (lastNode != null) {
+            return lastNode.isComplete() ? lastNode.getParent() : (OMContainer)lastNode;
+        } else if (document != null) {
+            return document;
+        } else {
+            throw new OMException("Unexpected event. There is no container to add the node to.");
+        }
+    }
+    
+    private void addNode(OMNode node) {
+        if (lastNode != null) {
+            if (lastNode.isComplete()) {
+                ((OMNodeEx) lastNode).setNextOMSibling(node);
+                ((OMNodeEx) node).setPreviousOMSibling(lastNode);
+            } else {
+                ((OMContainerEx) lastNode).setFirstChild(node);
+            }
+        } else if (document != null) {
+            ((OMContainerEx)document).setFirstChild(node);
+        }
+        if (root == null && node instanceof OMElement) {
+            root = (OMElement)node;
+        }
+        lastNode = node;
+    }
+    
     public void setDocumentLocator(Locator arg0) {
     }
 
     public void startDocument() throws SAXException {
-
+        document = factory.createOMDocument(null);
     }
 
     public void endDocument() throws SAXException {
+        ((OMContainerEx)document).setComplete(true);
     }
 
     public void startDTD(String name, String publicId, String systemId) throws SAXException {
+//        addNode(factory.createOMDocType(getContainer(), ""));
     }
 
     public void endDTD() throws SAXException {
     }
 
     protected OMElement createNextElement(String localName) throws OMException {
-        OMElement e;
-        if (lastNode == null) {
-            root = e = factory.createOMElement(localName, null, null, null);
-        } else if (lastNode.isComplete()) {
-            e = factory.createOMElement(localName, null, lastNode.getParent(),
-                                        null);
-            ((OMNodeEx) lastNode).setNextOMSibling(e);
-            ((OMNodeEx) e).setPreviousOMSibling(lastNode);
-        } else {
-            OMContainerEx parent = (OMContainerEx) lastNode;
-            e = factory.createOMElement(localName, null, (OMElement) lastNode,
-                                        null);
-            parent.setFirstChild(e);
-        }
-        return e;
+        OMElement element = factory.createOMElement(localName, null, getContainer(), null);
+        addNode(element);
+        return element;
     }
 
     /*
@@ -92,8 +120,9 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
      */
     public void startPrefixMapping(String prefix, String uri)
             throws SAXException {
-        if (nextElem == null)
+        if (nextElem == null) {
             nextElem = createNextElement(null);
+        }
         if (prefix.length() == 0) {
             nextElem.declareDefaultNamespace(uri);
         } else {
@@ -167,36 +196,27 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
         textNodeType = OMNode.TEXT_NODE;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.xml.sax.ContentHandler#characters(char[], int, int)
-     */
-    public void characters(char[] ch, int start, int length)
+    public void characterData(char[] ch, int start, int length, int nodeType)
             throws SAXException {
         if (lastNode == null) {
             throw new SAXException("");
         }
-        OMNode node;
-        if (lastNode.isComplete()) {
-            node = factory.createOMText(lastNode.getParent(),
-                    new String(ch, start, length), textNodeType);
-            ((OMNodeEx) lastNode).setNextOMSibling(node);
-            ((OMNodeEx) node).setPreviousOMSibling(lastNode);
-        } else {
-            OMContainerEx e = (OMContainerEx) lastNode;
-            node = factory.createOMText(e, new String(ch, start, length), textNodeType);
-            e.setFirstChild(node);
-        }
-        lastNode = node;
+        addNode(factory.createOMText(getContainer(), new String(ch, start, length), nodeType));
     }
 
-    public void ignorableWhitespace(char[] arg0, int arg1, int arg2)
+    public void characters(char[] ch, int start, int length)
             throws SAXException {
+        characterData(ch, start, length, textNodeType);
+    }
+    
+    public void ignorableWhitespace(char[] ch, int start, int length)
+            throws SAXException {
+        characterData(ch, start, length, OMNode.SPACE_NODE);
     }
 
-    public void processingInstruction(String arg0, String arg1)
+    public void processingInstruction(String target, String data)
             throws SAXException {
+        addNode(factory.createOMProcessingInstruction(getContainer(), target, data));
     }
 
     public void comment(char[] ch, int start, int length) throws SAXException {
@@ -204,18 +224,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
             // Do nothing: the comment appears before the root element.
             return;
         } 
-        OMNode node;
-        if (lastNode.isComplete()) {
-            node = factory.createOMComment(lastNode.getParent(),
-                    new String(ch, start, length));
-            ((OMNodeEx) lastNode).setNextOMSibling(node);
-            ((OMNodeEx) node).setPreviousOMSibling(lastNode);
-        } else {
-            OMContainerEx e = (OMContainerEx) lastNode;
-            node = factory.createOMComment(e, new String(ch, start, length));
-            e.setFirstChild(node);
-        }
-        lastNode = node;
+        addNode(factory.createOMComment(getContainer(), new String(ch, start, length)));
     }
 
     public void skippedEntity(String arg0) throws SAXException {
@@ -227,6 +236,14 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
     public void endEntity(String name) throws SAXException {
     }
 
+    public OMDocument getDocument() {
+        if (document != null && document.isComplete()) {
+            return document;
+        } else {
+            throw new OMException("Tree not complete");
+        }
+    }
+    
     /**
      * Get the root element of the Axiom tree built by this content handler.
      * 
