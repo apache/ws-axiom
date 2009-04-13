@@ -37,6 +37,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.dom.AttrImpl;
+import org.apache.axiom.om.impl.dom.CDATASectionImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;
 import org.apache.axiom.om.impl.dom.DocumentFragmentImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
@@ -47,6 +48,7 @@ import org.apache.axiom.om.impl.dom.OMDOMException;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
 import org.apache.axiom.om.impl.dom.TextImpl;
+import org.apache.axiom.om.impl.dom.TextNodeImpl;
 import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
@@ -241,14 +243,7 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText( org.apache.axiom.om.OMElement,String)
      */
     public OMText createOMText(OMContainer parent, String text) {
-        if (parent instanceof DocumentImpl) {
-            throw new OMHierarchyException(
-                    "DOM doesn't support text nodes as children of a document");
-        }
-        TextImpl txt = new TextImpl((DocumentImpl)((ElementImpl)parent).getOwnerDocument(),
-                text, this);
-        parent.addChild(txt);
-        return txt;
+        return createOMText(parent, text, OMNode.TEXT_NODE);
     }
 
     public OMText createOMText(OMContainer parent, QName text) {
@@ -260,9 +255,19 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMText createOMText(OMContainer parent, String text, int type) {
-        OMText textNode = createOMText(parent, text);
-        ((OMNodeEx) textNode).setType(type);
-        return textNode;
+        if (parent instanceof DocumentImpl) {
+            throw new OMHierarchyException(
+                    "DOM doesn't support text nodes as children of a document");
+        }
+        DocumentImpl ownerDocument = (DocumentImpl)((ElementImpl)parent).getOwnerDocument(); 
+        TextNodeImpl txt;
+        if (type == OMNode.CDATA_SECTION_NODE) {
+            txt = new CDATASectionImpl(ownerDocument, text, this);
+        } else {
+            txt = new TextImpl(ownerDocument, text, type, this);
+        }
+        parent.addChild(txt);
+        return txt;
     }
     
     

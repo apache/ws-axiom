@@ -16,25 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.om.impl.jaxp;
 
-import javax.xml.transform.sax.SAXSource;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.serialize.OMXMLReader;
-import org.xml.sax.InputSource;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
+import org.apache.xalan.processor.TransformerFactoryImpl;
 
-/**
- * Implementation of {@link javax.xml.transform.Source} for AXIOM.
- * The implementation is based on {@link SAXSource} and directly transforms an AXIOM
- * tree into a stream of SAX events using {@link OMXMLReader}.
- * <p>
- * Note that {@link org.apache.axiom.om.OMDocType} nodes are not supported and will be
- * silently skipped.
- */
-public class OMSource extends SAXSource {
-    public OMSource(OMElement element) {
-        super(new OMXMLReader(element), new InputSource());
+public class OMSourceToStreamResultTest extends TestCase {
+    public static TestSuite suite() throws Exception {
+        return OMSourceToStreamResultTestCase.suite(new OMLinkedListMetaFactory(),
+                new TransformerFactoryImpl());
     }
 }

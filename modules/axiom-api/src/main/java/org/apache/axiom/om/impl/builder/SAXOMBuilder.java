@@ -198,9 +198,6 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
 
     public void characterData(char[] ch, int start, int length, int nodeType)
             throws SAXException {
-        if (lastNode == null) {
-            throw new SAXException("");
-        }
         addNode(factory.createOMText(getContainer(), new String(ch, start, length), nodeType));
     }
 

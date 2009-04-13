@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -49,6 +50,9 @@ import org.xml.sax.ext.LexicalHandler;
  * SAX {@link XMLReader} implementation that traverses a given OM tree and invokes the
  * callback methods on the configured {@link ContentHandler}. This can be used to
  * serialize an Axiom tree to SAX.
+ * <p>
+ * Note that this class doesn't support serializing {@link org.apache.axiom.om.OMDocType}
+ * nodes. They will be silently skipped.
  * <p>
  * This class can also generate SAX events for a subtree. This is the case if the
  * element passed to the constructor is not the root element of the document. In this
@@ -247,13 +251,16 @@ public class OMXMLReader implements XMLReader {
                     generateEvents((OMElement)node);
                     break;
                 case OMNode.TEXT_NODE:
-                    generateEvents((OMText)node);
+                    generateEvents((OMText)node, false);
+                    break;
+                case OMNode.SPACE_NODE:
+                    generateEvents((OMText)node, true);
                     break;
                 case OMNode.CDATA_SECTION_NODE:
                     if (lexicalHandler != null) {
                         lexicalHandler.startCDATA();
                     }
-                    generateEvents((OMText)node);
+                    generateEvents((OMText)node, false);
                     if (lexicalHandler != null) {
                         lexicalHandler.endCDATA();
                     }
@@ -263,15 +270,23 @@ public class OMXMLReader implements XMLReader {
                         char[] ch = ((OMComment)node).getValue().toCharArray();
                         lexicalHandler.comment(ch, 0, ch.length);
                     }
+                    break;
+                case OMNode.PI_NODE:
+                    OMProcessingInstruction pi = (OMProcessingInstruction)node;
+                    contentHandler.processingInstruction(pi.getTarget(), pi.getValue());
             }
         }
         contentHandler.endElement(uri, localName, qName);
         generatePrefixMappingEvents(omElement, false);
     }
     
-    private void generateEvents(OMText omText) throws SAXException {
+    private void generateEvents(OMText omText, boolean space) throws SAXException {
         char[] ch = omText.getTextCharacters();
-        contentHandler.characters(ch, 0, ch.length);
+        if (space) {
+            contentHandler.ignorableWhitespace(ch, 0, ch.length);
+        } else {
+            contentHandler.characters(ch, 0, ch.length);
+        }
     }
 
     protected static class AttributesAdapter implements Attributes {

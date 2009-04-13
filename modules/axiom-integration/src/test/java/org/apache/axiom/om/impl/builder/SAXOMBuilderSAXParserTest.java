@@ -23,14 +23,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParserFactory;
 
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
-import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
@@ -44,15 +41,6 @@ public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
         this.file = file;
     }
 
-    private Document toDocument(InputStream in) throws Exception {
-        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(in);
-        DocumentType docType = doc.getDoctype();
-        if (docType != null) {
-            doc.removeChild(docType);
-        }
-        return doc;
-    }
-    
     @Override
     protected void runTest() throws Throwable {
         factory.setNamespaceAware(true);
@@ -71,8 +59,8 @@ public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             builder.getDocument().serialize(baos);
             assertXMLIdentical(compareXML(
-                    toDocument(in),
-                    toDocument(new ByteArrayInputStream(baos.toByteArray()))), true);
+                    toDocumentWithoutDTD(in),
+                    toDocumentWithoutDTD(new ByteArrayInputStream(baos.toByteArray()))), true);
         } finally {
             in.close();
         }
