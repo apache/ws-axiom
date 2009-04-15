@@ -67,30 +67,30 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
     /**
      * Method serialize.
      *
-     * @param node
+     * @param reader
      * @param writer
      * @throws XMLStreamException
      */
-    public void serialize(XMLStreamReader node, XMLStreamWriter writer)
+    public void serialize(XMLStreamReader reader, XMLStreamWriter writer)
             throws XMLStreamException {
-        serialize(node, writer, true);
+        serialize(reader, writer, true);
     }
     
     /**
-     * @param node
+     * @param reader
      * @param writer
      * @param startAtNext indicate if reading should start at next event or current event
      * @throws XMLStreamException
      */
-    public void serialize(XMLStreamReader node, XMLStreamWriter writer, boolean startAtNext)
+    public void serialize(XMLStreamReader reader, XMLStreamWriter writer, boolean startAtNext)
             throws XMLStreamException {
         
         // Set attachment status
-        if (node instanceof OMAttachmentAccessor) {
+        if (reader instanceof OMAttachmentAccessor) {
             inputHasAttachments = true;
         }
         
-        serializeNode(node, writer, startAtNext);
+        serializeNode(reader, writer, startAtNext);
     }
 
     /**
@@ -117,7 +117,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         boolean useCurrentEvent = !startAtNext;
         
         while (reader.hasNext() || useCurrentEvent) {
-            int event = 0;
+            int event;
             if (useCurrentEvent) {
                 event = reader.getEventType();
                 useCurrentEvent = false;
@@ -125,29 +125,37 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                 event = reader.next();
             }
             
-            if (event == START_ELEMENT) {
-                serializeElement(reader, writer);
-                depth++;
-            } else if (event == ATTRIBUTE) {
-                serializeAttributes(reader, writer);
-            } else if (event == CHARACTERS) {
-                serializeText(reader, writer);
-            } else if (event == COMMENT) {
-                serializeComment(reader, writer);
-            } else if (event == CDATA) {
-                serializeCData(reader, writer);
-            } else if (event == END_ELEMENT) {
-                serializeEndElement(writer);
-                depth--;
-            } else if (event == START_DOCUMENT) {
-                depth++; //if a start document is found then increment the depth
-            } else if (event == END_DOCUMENT) {
-                if (depth != 0) depth--;  //for the end document - reduce the depth
-                try {
+            switch (event) {
+                case START_ELEMENT:
+                    serializeElement(reader, writer);
+                    depth++;
+                    break;
+                case ATTRIBUTE:
+                    serializeAttributes(reader, writer);
+                    break;
+                case CHARACTERS:
+                    serializeText(reader, writer);
+                    break;
+                case COMMENT:
+                    serializeComment(reader, writer);
+                    break;
+                case CDATA:
+                    serializeCData(reader, writer);
+                    break;
+                case END_ELEMENT:
                     serializeEndElement(writer);
-                } catch (Exception e) {
-                    //TODO: log exceptions
-                }
+                    depth--;
+                    break;
+                case START_DOCUMENT:
+                    depth++; //if a start document is found then increment the depth
+                    break;
+                case END_DOCUMENT:
+                    if (depth != 0) depth--;  //for the end document - reduce the depth
+                    try {
+                        serializeEndElement(writer);
+                    } catch (Exception e) {
+                        //TODO: log exceptions
+                    }
             }
             if (depth == 0) {
                 break;
