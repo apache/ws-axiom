@@ -62,6 +62,7 @@ public interface OMDataSource {
      * @param xmlWriter destination writer
      * @throws XMLStreamException
      */
+    // TODO: specify whether the implementation MUST, MAY or MUST NOT write START_DOCUMENT and END_DOCUMENT events to the stream
     void serialize(XMLStreamWriter xmlWriter)
             throws XMLStreamException;
 
