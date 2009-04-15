@@ -134,6 +134,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                     serializeAttributes(reader, writer);
                     break;
                 case CHARACTERS:
+                case SPACE:
                     serializeText(reader, writer);
                     break;
                 case COMMENT:
@@ -141,6 +142,9 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                     break;
                 case CDATA:
                     serializeCData(reader, writer);
+                    break;
+                case PROCESSING_INSTRUCTION:
+                    serializeProcessingInstruction(reader, writer);
                     break;
                 case END_ELEMENT:
                     serializeEndElement(writer);
@@ -445,6 +449,19 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                                     XMLStreamWriter writer)
             throws XMLStreamException {
         writer.writeComment(reader.getText());
+    }
+
+    /**
+     * Method serializeProcessingInstruction.
+     *
+     * @param reader
+     * @param writer
+     * @throws XMLStreamException
+     */
+    protected void serializeProcessingInstruction(XMLStreamReader reader,
+                                                  XMLStreamWriter writer)
+            throws XMLStreamException {
+        writer.writeProcessingInstruction(reader.getPITarget(), reader.getPIData());
     }
 
     /**
