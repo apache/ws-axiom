@@ -26,7 +26,14 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLStreamReader;
 
-/** Class OMXMLBuilderFactory */
+/**
+ * Class OMXMLBuilderFactory
+ * 
+ * @deprecated This class is deprecated because it is located in the wrong package and JAR
+ *             (it is implementation independent but belongs to LLOM). Please use
+ *             the constructors of {@link StAXOMBuilder} and {@link StAXSOAPModelBuilder}
+ *             directly.
+ */
 public class OMXMLBuilderFactory {
     /** Field PARSER_XPP */
     public static final String PARSER_XPP = "XPP";
