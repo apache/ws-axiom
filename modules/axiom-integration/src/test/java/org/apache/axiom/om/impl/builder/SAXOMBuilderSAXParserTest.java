@@ -28,6 +28,7 @@ import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
@@ -58,6 +59,7 @@ public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             builder.getDocument().serialize(baos);
+            XMLUnit.setIgnoreAttributeOrder(true);
             assertXMLIdentical(compareXML(
                     toDocumentWithoutDTD(in),
                     toDocumentWithoutDTD(new ByteArrayInputStream(baos.toByteArray()))), true);
