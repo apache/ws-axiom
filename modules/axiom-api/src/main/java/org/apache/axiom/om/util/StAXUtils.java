@@ -32,6 +32,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -41,10 +42,49 @@ import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 import java.util.WeakHashMap;
 
-
+/**
+ * Utility class containing StAX related methods.
+ * <p>This class defines a set of methods to get {@link XMLStreamReader} and {@link XMLStreamWriter}
+ * instances. This class caches the corresponding factories ({@link XMLInputFactory}
+ * and {@link XMLOutputFactory} objects) by classloader (default) or as singletons.
+ * The behavior can be changed using {@link #setFactoryPerClassLoader(boolean)}.</p>
+ * <p>Default properties for these factories can be specified using
+ * <tt>XMLInputFactory.properties</tt> and <tt>XMLOutputFactory.properties</tt> files.
+ * When a new factory is instantiated, this class will attempt to load the corresponding file using
+ * the context classloader. This class supports properties with boolean, integer and string values.
+ * Both standard StAX properties and implementation specific properties can be specified. This
+ * feature should be used with care since changing some properties to non default values will break
+ * Axiom. Good candidates for <tt>XMLInputFactory.properties</tt> are:</p>
+ * <dl>
+ *   <dt><tt>javax.xml.stream.isCoalescing</tt></dt>
+ *   <dd>Requires the processor to coalesce adjacent character data (text nodes and CDATA
+ *       sections). This property also controls whether CDATA sections are reported or not.</dd>
+ *   <dt><tt>com.ctc.wstx.inputBufferLength</tt></dt>
+ *   <dd>Size of input buffer (in chars), to use for reading XML content from input stream/reader.
+ *       This property is Woodstox specific.</dd>
+ *   <dt><tt>com.ctc.wstx.minTextSegment</tt></dt>
+ *   <dd>Property to specify shortest non-complete text segment (part of CDATA section or text
+ *       content) that the parser is allowed to return, if not required to coalesce text.
+ *       This property is Woodstox specific.</dt>
+ * </dl>
+ * <p>Good candidates for <tt>XMLOutputFactory.properties</tt> are:</p>
+ * <dl>
+ *   <dt><tt>com.ctc.wstx.outputEscapeCr</tt></dt>
+ *   <dd>Property that determines whether Carriage Return (\r) characters are to be escaped when
+ *       output or not. If enabled, all instances of of character \r are escaped using a character
+ *       entity (where possible, that is, within CHARACTERS events, and attribute values).
+ *       Otherwise they are output as is. The main reason to enable this property is to ensure
+ *       that carriage returns are preserved as is through parsing, since otherwise they will be
+ *       converted to canonical XML linefeeds (\n), when occurring along or as part of \r\n pair.
+ *       This property is Woodstox specific.</dd>
+ * </dl>
+ */
 public class StAXUtils {
     private static Log log = LogFactory.getLog(StAXUtils.class);
     private static boolean isDebugEnabled = log.isDebugEnabled();
@@ -290,9 +330,68 @@ public class StAXUtils {
     public static void reset() {
     }
     
+    /**
+     * Load factory properties from a resource. The context class loader is used to locate
+     * the resource. The method converts boolean and integer values to the right Java types.
+     * All other values are returned as strings.
+     * 
+     * @param name
+     * @return
+     */
+    private static Map loadFactoryProperties(String name) {
+        ClassLoader cl = getContextClassLoader();
+        InputStream in = cl.getResourceAsStream(name);
+        if (in == null) {
+            return null;
+        } else {
+            try {
+                Properties rawProps = new Properties();
+                Map props = new HashMap();
+                rawProps.load(in);
+                for (Iterator it = rawProps.entrySet().iterator(); it.hasNext(); ) {
+                    Map.Entry entry = (Map.Entry)it.next();
+                    String strValue = (String)entry.getValue();
+                    Object value;
+                    if (strValue.equals("true")) {
+                        value = Boolean.TRUE;
+                    } else if (strValue.equals("false")) {
+                        value = Boolean.FALSE;
+                    } else {
+                        try {
+                            value = Integer.valueOf(strValue);
+                        } catch (NumberFormatException ex) {
+                            value = strValue;
+                        }
+                    }
+                    props.put(entry.getKey(), value);
+                }
+                if (log.isDebugEnabled()) {
+                    log.debug("Loaded factory properties from " + name + ": " + props);
+                }
+                return props;
+            } catch (IOException ex) {
+                log.error("Failed to read " + name, ex);
+                return null;
+            } finally {
+                try {
+                    in.close();
+                } catch (IOException ex) {
+                    // Ignore
+                }
+            }
+        }
+    }
+    
     // This has package access since it is used from within anonymous inner classes
     static XMLInputFactory newXMLInputFactory(boolean isNetworkDetached) {
         XMLInputFactory factory = XMLInputFactory.newInstance();
+        Map props = loadFactoryProperties("XMLInputFactory.properties");
+        if (props != null) {
+            for (Iterator it = props.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry entry = (Map.Entry)it.next();
+                factory.setProperty((String)entry.getKey(), entry.getValue());
+            }
+        }
         if (isNetworkDetached) {
             factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, 
                       Boolean.FALSE);
@@ -438,6 +537,21 @@ public class StAXUtils {
         return f;
     }
     
+    // This has package access since it is used from within anonymous inner classes
+    static XMLOutputFactory newXMLOutputFactory() {
+        XMLOutputFactory factory = XMLOutputFactory.newInstance();
+        factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, 
+                            Boolean.FALSE);
+        Map props = loadFactoryProperties("XMLOutputFactory.properties");
+        if (props != null) {
+            for (Iterator it = props.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry entry = (Map.Entry)it.next();
+                factory.setProperty((String)entry.getKey(), entry.getValue());
+            }
+        }
+        return factory;
+    }
+    
     /**
      * @return XMLOutputFactory for the current classloader
      */
@@ -460,10 +574,7 @@ public class StAXUtils {
                     AccessController.doPrivileged(
                         new PrivilegedAction() {
                             public Object run() {
-                                XMLOutputFactory factory = XMLOutputFactory.newInstance();
-                                factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, 
-                                                    Boolean.FALSE);
-                                return factory;
+                                return newXMLOutputFactory();
                             }
                         });
                 } catch (ClassCastException cce) {
@@ -478,20 +589,16 @@ public class StAXUtils {
                     AccessController.doPrivileged(
                         new PrivilegedAction() {
                             public Object run() {
-                                XMLOutputFactory f = null;
                                 ClassLoader saveCL = getContextClassLoader();
                                 try {                              
                                     Thread.currentThread().
                                         setContextClassLoader(
                                            XMLOutputFactory.class.getClassLoader());
-                                    f =XMLOutputFactory.newInstance();
-                                    f.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, 
-                                                        Boolean.FALSE);
+                                    return newXMLOutputFactory();
                                 } finally {
                                     Thread.currentThread().
                                         setContextClassLoader(saveCL);
                                 }
-                                return f;
                             }
                         });
                 }
@@ -522,17 +629,13 @@ public class StAXUtils {
 
                             Thread currentThread = Thread.currentThread();
                             ClassLoader savedClassLoader = currentThread.getContextClassLoader();
-                            XMLOutputFactory factory = null;
                             try {
                                 currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
-                                factory = XMLOutputFactory.newInstance();
-                                factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, 
-                                                    Boolean.FALSE);
+                                return newXMLOutputFactory();
                             }
                             finally {
                                 currentThread.setContextClassLoader(savedClassLoader);
                             }
-                            return factory;
                         }
                     });
             if (log.isDebugEnabled()) {
