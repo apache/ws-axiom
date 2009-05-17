@@ -594,7 +594,7 @@
         <axiom.osgi.version>${pom.version}</axiom.osgi.version>
         <stax.impl.groupid>org.codehaus.woodstox</stax.impl.groupid>
         <stax.impl.artifact>wstx-asl</stax.impl.artifact>
-        <stax.impl.version>3.2.4</stax.impl.version>
+        <stax.impl.version>3.2.9</stax.impl.version>
         <bundle.plugin.version>1.4.0</bundle.plugin.version>
         <failIfNoTests>false</failIfNoTests>
         <!--
