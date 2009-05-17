@@ -494,15 +494,10 @@ public class Attachments implements OMAttachmentAccessor {
         return this.streams;
     }
 
-    public String[] getAllContentIDs() {
-        // Force reading of all attachments
-        getContentIDSet();
-        
-        String[] strings = new String[cids.size()];
-        return (String[]) cids.toArray(strings);
-    }
-
-    public Set getContentIDSet() {
+    /**
+     * Force reading of all attachments.
+     */
+    private void fetchAllParts() {
         DataHandler dataHandler;
         while (!noStreams) {
             dataHandler = this.getNextPartDataHandler();
@@ -510,22 +505,56 @@ public class Attachments implements OMAttachmentAccessor {
                 break;
             }
         }
+    }
+
+    /**
+     * Get the content IDs of all MIME parts in the message. This includes the content ID of the
+     * SOAP part as well as the content IDs of the attachments. Note that if this object has been
+     * created from a stream, a call to this method will force reading of all MIME parts that
+     * have not been fetched from the stream yet.
+     * 
+     * @return an array with the content IDs in order of appearance in the message
+     */
+    public String[] getAllContentIDs() {
+        fetchAllParts();
+        return (String[]) cids.toArray(new String[cids.size()]);
+    }
+
+    /**
+     * Get the content IDs of all MIME parts in the message. This includes the content ID of the
+     * SOAP part as well as the content IDs of the attachments. Note that if this object has been
+     * created from a stream, a call to this method will force reading of all MIME parts that
+     * have not been fetched from the stream yet.
+     * 
+     * @return the set of content IDs
+     */
+    public Set getContentIDSet() {
+        fetchAllParts();
         return attachmentsMap.keySet();
     }
     
+    /**
+     * Get a map of all MIME parts in the message. This includes the SOAP part as well as the
+     * attachments. Note that if this object has been created from a stream, a call to this
+     * method will force reading of all MIME parts that have not been fetched from the stream yet.
+     * 
+     * @return A map of all MIME parts in the message, with content IDs as keys and
+     *         {@link DataHandler} objects as values.
+     */
     public Map getMap() {
-        DataHandler dataHandler;
-        while (!noStreams) {
-            dataHandler = this.getNextPartDataHandler();
-            if (dataHandler == null) {
-                break;
-            }
-        }
+        fetchAllParts();
         return Collections.unmodifiableMap(attachmentsMap);
     }
 
     /**
-     * @return List of content ids in order of appearance in message
+     * Get the content IDs of the already loaded MIME parts in the message. This includes the
+     * content ID of the SOAP part as well as the content IDs of the attachments. If this
+     * object has been created from a stream, only the content IDs of the MIME parts that
+     * have already been fetched from the stream are returned. If this is not the desired
+     * behavior, {@link #getAllContentIDs()} or {@link #getContentIDSet()} should be used
+     * instead.
+     * 
+     * @return List of content IDs in order of appearance in message
      */
     public List getContentIDList() {
         return cids;
