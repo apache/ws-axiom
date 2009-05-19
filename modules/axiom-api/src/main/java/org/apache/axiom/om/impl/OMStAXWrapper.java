@@ -53,6 +53,7 @@ import org.apache.axiom.om.impl.OMNavigator;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.om.impl.util.NamespaceContextImpl;
+import org.apache.axiom.stax.AbstractXMLStreamReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -60,7 +61,7 @@ import org.apache.commons.logging.LogFactory;
  * Note - This class also implements the streaming constants interface to get access to the StAX
  * constants.
  */
-public class OMStAXWrapper 
+public class OMStAXWrapper extends AbstractXMLStreamReader
     implements OMXMLStreamReader, XMLStreamConstants {
     
     private static final Log log = LogFactory.getLog(OMStAXWrapper.class);
@@ -349,17 +350,6 @@ public class OMStAXWrapper
                 throw new IllegalStateException();
             }
         }
-    }
-
-    /**
-     * @return Returns boolean.
-     * @see javax.xml.stream.XMLStreamReader#hasText()
-     */
-    public boolean hasText() {
-        return ((currentEvent == CHARACTERS) || (currentEvent == DTD)
-                || (currentEvent == CDATA)
-                || (currentEvent == ENTITY_REFERENCE)
-                || (currentEvent == COMMENT) || (currentEvent == SPACE));
     }
 
     /**
@@ -811,17 +801,6 @@ public class OMStAXWrapper
     }
 
     /**
-     * @param i
-     * @param s
-     * @param s1
-     * @throws XMLStreamException
-     * @see javax.xml.stream.XMLStreamReader#require(int, String, String)
-     */
-    public void require(int i, String s, String s1) throws XMLStreamException {
-        throw new XMLStreamException();
-    }
-
-    /**
      * Method isStartElement.
      *
      * @return Returns boolean.
@@ -902,30 +881,6 @@ public class OMStAXWrapper
         } else {
             return (state != COMPLETED && currentEvent != END_DOCUMENT);
         }
-    }
-
-    /**
-     * Returns the next tag.
-     *
-     * @return Returns int.
-     * @throws org.apache.axiom.om.impl.exception.OMStreamingException
-     *
-     * @throws XMLStreamException
-     */
-    public int nextTag() throws XMLStreamException {
-        int eventType = next();
-        while ((eventType == XMLStreamConstants.CHARACTERS && isWhiteSpace()) // skip whitespace
-                || (eventType == XMLStreamConstants.CDATA && isWhiteSpace()) // skip whitespace
-                || eventType == XMLStreamConstants.SPACE
-                || eventType == XMLStreamConstants.PROCESSING_INSTRUCTION
-                || eventType == XMLStreamConstants.COMMENT) {
-            eventType = next();
-        }
-        if (eventType != XMLStreamConstants.START_ELEMENT &&
-                eventType != XMLStreamConstants.END_ELEMENT) {
-            throw new XMLStreamException("expected start or end tag", getLocation());
-        }
-        return eventType;
     }
 
     /**
