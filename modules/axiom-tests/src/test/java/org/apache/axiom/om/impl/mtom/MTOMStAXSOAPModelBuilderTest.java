@@ -22,11 +22,14 @@ package org.apache.axiom.om.impl.mtom;
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAttachmentAccessor;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
+import org.apache.axiom.om.impl.traverse.OMDescendantsIterator;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 
@@ -42,7 +45,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
 
@@ -59,7 +64,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         super.setUp();
     }
 
-    private OMElement createTestMTOMMessage() throws Exception {
+    private MTOMStAXSOAPModelBuilder createBuilderForTestMTOMMessage() throws Exception {
         String contentTypeString =
                 "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
         String inFileName = "mtom/MTOMBuilderTestIn.txt";
@@ -68,9 +73,12 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         XMLStreamReader reader = XMLInputFactory.newInstance()
                 .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
                         .getSOAPPartInputStream())));
-        OMXMLParserWrapper builder = new MTOMStAXSOAPModelBuilder(reader, attachments,
+        return new MTOMStAXSOAPModelBuilder(reader, attachments,
                                                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        return builder.getDocumentElement();
+    }
+
+    private OMElement createTestMTOMMessage() throws Exception {
+        return createBuilderForTestMTOMMessage().getDocumentElement();
     }
     
     private void checkSerialization(OMElement root, boolean optimize) throws Exception {
@@ -113,6 +121,38 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         //  object.read(actualObject,0,10);
 
         //  assertEquals("Object check", expectedObject[5],actualObject[5] );
+    }
+
+    /**
+     * Test that MIME parts are not loaded before requesting the DataHandlers from the corresponding
+     * OMText nodes.
+     *  
+     * @throws Exception
+     */
+    public void testDeferredLoadingOfAttachments() throws Exception {
+        MTOMStAXSOAPModelBuilder builder = createBuilderForTestMTOMMessage();
+        Attachments attachments = builder.getAttachments();
+        OMDocument doc = builder.getDocument();
+        // Find all the binary nodes
+        List/*<OMText>*/ binaryNodes = new ArrayList();
+        for (Iterator it = new OMDescendantsIterator(doc.getFirstOMChild()); it.hasNext(); ) {
+            OMNode node = (OMNode)it.next();
+            if (node instanceof OMText) {
+                OMText text = (OMText)node;
+                if (text.isBinary()) {
+                    binaryNodes.add(text);
+                }
+            }
+        }
+        assertFalse(binaryNodes.isEmpty());
+        // At this moment only the SOAP part should have been loaded
+        assertEquals(1, attachments.getContentIDList().size());
+        for (Iterator it = binaryNodes.iterator(); it.hasNext(); ) {
+            // Request the DataHandler and do something with it to make sure
+            // the part is loaded
+            ((DataHandler)((OMText)it.next()).getDataHandler()).getInputStream().close();
+        }
+        assertEquals(binaryNodes.size() + 1, attachments.getContentIDList().size());
     }
     
     /**
