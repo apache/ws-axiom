@@ -1549,6 +1549,9 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
             lastNode != null && 
             lastNode instanceof OMText) {
             OMText text = (OMText) lastNode;
+            // TODO: this is in contradiction with the Javadoc
+            //       which says that blobcid is the content ID without the surrounding
+            //       angle brackets and "cid:" prefix
             if (text.isOptimized() &&
                     blobcid.equals("cid:" + text.getContentID())) {
                dh = (DataHandler) text.getDataHandler();
