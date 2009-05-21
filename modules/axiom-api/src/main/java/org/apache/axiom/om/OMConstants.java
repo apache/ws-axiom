@@ -57,12 +57,33 @@ public interface OMConstants {
 
     static final String XMLNS_PREFIX =
             "xml";
+    
+    /**
+     * {@link javax.xml.stream.XMLStreamReader} property used to check if a given
+     * {@link javax.xml.stream.XMLStreamConstants#CHARACTERS} event represents
+     * base64 encoded binary data exposed as a {@link javax.activation.DataHandler}.
+     * 
+     * @see org.apache.axiom.om.impl.builder.StAXOMBuilder
+     */
     String IS_BINARY = "Axiom.IsBinary";
+    
+    /**
+     * {@link javax.xml.stream.XMLStreamReader} property used to retrieve the
+     * {@link javax.activation.DataHandler} for a
+     * {@link javax.xml.stream.XMLStreamConstants#CHARACTERS} event representing
+     * base64 encoded binary data.
+     * 
+     * @see org.apache.axiom.om.impl.builder.StAXOMBuilder
+     */
     String DATA_HANDLER = "Axiom.DataHandler";
     
-    // Indicates if the xmlstream reader is capable of handling data handlers.
-    // Thus it is an immutable property and will either be true of false for the
-    // lifetime of that parser.  @see OMStaxWrapper for an example
+    /**
+     * {@link javax.xml.stream.XMLStreamReader} property indicating that the
+     * reader is capable of exposing base64 encoded binary content as
+     * {@link javax.activation.DataHandler} objects.
+     * 
+     * @see org.apache.axiom.om.impl.builder.StAXOMBuilder
+     */
     String IS_DATA_HANDLERS_AWARE = "IsDatahandlersAwareParsing"; 
 
     /** No its not a mistake. This is the default nsURI of the default namespace of a node */
