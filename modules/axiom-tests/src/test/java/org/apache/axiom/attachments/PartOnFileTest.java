@@ -20,6 +20,7 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.TestConstants;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -35,10 +36,6 @@ public class PartOnFileTest extends AbstractTestCase {
         super(testName);
     }
 
-    String inMimeFileName = "mtom/MTOMAttachmentStream.bin";
-    String contentTypeString =
-            "multipart/related; boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
-
     File temp;
 
     public void setUp() throws Exception {
@@ -51,9 +48,9 @@ public class PartOnFileTest extends AbstractTestCase {
 
     public void testHeaderGetSet() throws Exception {
 
-        InputStream inStream = getTestResource(inMimeFileName);
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
         Attachments attachments =
-                new Attachments(inStream, contentTypeString, true, temp.getPath(), "1");
+                new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE, true, temp.getPath(), "1");
 
         DataHandler p = attachments
                 .getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");

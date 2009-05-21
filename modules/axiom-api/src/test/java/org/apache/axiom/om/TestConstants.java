@@ -35,6 +35,19 @@ public class TestConstants {
     public static final String BAD_ENVELOPE_MISSING = "badsoap/envelopeMissing.xml";
     public static final String BAD_HEADER_BODY_WRONG_ORDER = "badsoap/haederBodyWrongOrder.xml";
 
+    public static final String MTOM_MESSAGE = "mtom/MTOMAttachmentStream.bin";
+    public static final String MTOM_MESSAGE_BOUNDARY = "MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701";
+    public static final String MTOM_MESSAGE_START = "0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org";
+    public static final String MTOM_MESSAGE_CONTENT_TYPE =
+                        "multipart/related; " +
+                        "boundary=\"" + MTOM_MESSAGE_BOUNDARY + "\"; " +
+                        "type=\"application/xop+xml\"; " +
+                        "start=\"<" + MTOM_MESSAGE_START +">\"; " +
+                        "start-info=\"application/soap+xml\"; " +
+                        "charset=UTF-8;" +
+                        "action=\"mtomSample\"";
+    
+    
     private TestConstants() {
     }
 

@@ -23,6 +23,7 @@ import org.apache.axiom.attachments.utils.IOUtils;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
 
@@ -41,20 +42,8 @@ public class AttachmentsTest extends AbstractTestCase {
         super(testName);
     }
 
-    String inMimeFileName = "mtom/MTOMAttachmentStream.bin";
     String img1FileName = "mtom/img/test.jpg";
     String img2FileName = "mtom/img/test2.jpg";
-
-    String boundary = "MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701";
-    String start= "0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org";
-    String contentTypeString =
-                        "multipart/related; " +
-                        "boundary=\"" + boundary + "\"; " +
-                        "type=\"application/xop+xml\"; " +
-                        "start=\"<" + start +">\"; " +
-                        "start-info=\"application/soap+xml\"; " +
-                        "charset=UTF-8;" +
-                        "action=\"mtomSample\"";
 
     public void testMIMEHelper() {
     }
@@ -66,8 +55,8 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream inStream;
         Attachments attachments;
 
-        inStream = getTestResource(inMimeFileName);
-        attachments = new Attachments(inStream, contentTypeString);
+        inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
 
         attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
 
@@ -82,8 +71,8 @@ public class AttachmentsTest extends AbstractTestCase {
         inStream.close();
 
         // Try the other way around.
-        inStream = getTestResource(inMimeFileName);
-        attachments = new Attachments(inStream, contentTypeString);
+        inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
 
         attachments.getIncomingAttachmentStreams();
 
@@ -135,8 +124,8 @@ public class AttachmentsTest extends AbstractTestCase {
         IncomingAttachmentInputStream dataIs;
         InputStream expectedDataIs;
 
-        InputStream inStream = getTestResource(inMimeFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
 
         // Since SOAP part operated independently of other streams, access it
         // directly, and then get to the streams. If this sequence throws an
@@ -167,8 +156,8 @@ public class AttachmentsTest extends AbstractTestCase {
     public void testWritingBinaryAttachments() throws Exception {
 
         // Read in message: SOAPPart and 2 image attachments
-        InputStream inStream = getTestResource(inMimeFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
         
         attachments.getSOAPPartInputStream();
 
@@ -176,8 +165,8 @@ public class AttachmentsTest extends AbstractTestCase {
         
         OMOutputFormat oof = new OMOutputFormat();
         oof.setDoOptimize(true);
-        oof.setMimeBoundary(boundary);
-        oof.setRootContentId(start);
+        oof.setMimeBoundary(TestConstants.MTOM_MESSAGE_BOUNDARY);
+        oof.setRootContentId(TestConstants.MTOM_MESSAGE_START);
         
         // Write out the message
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -213,7 +202,7 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // Now read the data back in
         InputStream is = new ByteArrayInputStream(outBase64.getBytes());
-        Attachments attachments2 = new Attachments(is, contentTypeString);
+        Attachments attachments2 = new Attachments(is, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
         
         // Now write it back out with binary...
         baos = new ByteArrayOutputStream();
@@ -262,8 +251,8 @@ public class AttachmentsTest extends AbstractTestCase {
 
     public void testGetDataHandler() throws Exception {
 
-        InputStream inStream = getTestResource(inMimeFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
 
         DataHandler dh = attachments
                 .getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
@@ -277,8 +266,8 @@ public class AttachmentsTest extends AbstractTestCase {
 
     public void testNonExistingMIMEPart() throws Exception {
 
-        InputStream inStream = getTestResource(inMimeFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
 
         DataHandler dh = attachments.getDataHandler("ThisShouldReturnNull");
         assertNull(dh);
@@ -286,8 +275,8 @@ public class AttachmentsTest extends AbstractTestCase {
 
     public void testGetAllContentIDs() throws Exception {
 
-        InputStream inStream = getTestResource(inMimeFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
 
         String[] contentIDs = attachments.getAllContentIDs();
         assertEquals(contentIDs.length, 3);
@@ -302,7 +291,7 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // Make sure the length is correct
         long length = attachments.getContentLength();
-        long fileSize = IOUtils.getStreamAsByteArray(getTestResource(inMimeFileName)).length;
+        long fileSize = IOUtils.getStreamAsByteArray(getTestResource(TestConstants.MTOM_MESSAGE)).length;
         assertTrue("Expected MessageContent Length of " + fileSize + " but received " + length,
                    length == fileSize);
     }
@@ -335,9 +324,9 @@ public class AttachmentsTest extends AbstractTestCase {
     private void testGetSOAPPartContentID(String contentTypeStartParam, String contentId)
             throws Exception {
         // It doesn't actually matter what the stream *is* it just needs to exist
-        String contentType = "multipart/related; boundary=\"" + boundary +
+        String contentType = "multipart/related; boundary=\"" + TestConstants.MTOM_MESSAGE_BOUNDARY +
                 "\"; type=\"text/xml\"; start=\"" + contentTypeStartParam + "\"";
-        InputStream inStream = getTestResource(inMimeFileName);
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
         Attachments attachments = new Attachments(inStream, contentType);
         assertEquals("Did not obtain correct content ID", contentId,
                 attachments.getSOAPPartContentID());
