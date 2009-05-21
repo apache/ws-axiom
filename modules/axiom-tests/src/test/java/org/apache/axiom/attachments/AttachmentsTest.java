@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
-import org.apache.axiom.om.util.CommonUtils;
 
 import javax.activation.DataHandler;
 
@@ -247,14 +246,6 @@ public class AttachmentsTest extends AbstractTestCase {
         // writing base64 compliant code.
         assertTrue(outBase64ToBase64.indexOf("base64") != -1);
         assertTrue(outBase64ToBase64.indexOf("GBgcGBQgHBwcJCQgKDBQNDAsL") != -1);
-        
-        // Some quick verifications of the isTextualPart logic
-        assertTrue(CommonUtils.isTextualPart("text/xml"));
-        assertTrue(CommonUtils.isTextualPart("application/xml"));
-        assertTrue(CommonUtils.isTextualPart("application/soap+xml"));
-        assertTrue(CommonUtils.isTextualPart("foo/bar; charset=UTF-8"));
-        assertTrue(!CommonUtils.isTextualPart("image/gif"));
-        
     }
     
 
