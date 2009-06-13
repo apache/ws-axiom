@@ -23,12 +23,11 @@
         <artifactId>axiom</artifactId>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <version>1.2.9-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom-c14n</artifactId>
     <name>Axiom C14N</name>
-    <version>1.2.9-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <description />
     <dependencies>

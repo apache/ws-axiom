@@ -24,10 +24,10 @@
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
         <version>1.2.9-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>axiom-osgi</artifactId>
     <name>Axiom OSGI Test Suite Parent</name>
-    <version>1.2.9-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>axiom-osgi-build</module>
