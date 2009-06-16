@@ -41,6 +41,6 @@ public class OMChildrenLocalNameIterator extends OMChildrenQNameIterator {
      * @return true if equals
      */
     public boolean isEqual(QName searchQName, QName currentQName) {
-        return searchQName.getLocalPart().equals(searchQName.getLocalPart());
+        return searchQName.getLocalPart().equals(currentQName.getLocalPart());
     }
 }

@@ -159,6 +159,16 @@ public abstract class OMElementTestBase extends AbstractTestCase {
                      counter);
     }
 
+    public void testGetChildrenWithLocalName() {
+        OMElement elt = getTestResourceAsElement(omMetaFactory, TestConstants.SOAP_SOAPMESSAGE1);
+        Iterator it = elt.getChildrenWithLocalName(SOAP11Constants.BODY_LOCAL_NAME);
+        assertTrue(it.hasNext());
+        OMElement child = (OMElement)it.next();
+        assertEquals(new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
+                SOAP11Constants.BODY_LOCAL_NAME), child.getQName());
+        assertFalse(it.hasNext());
+    }
+
     public void testSetText() {
         OMFactory factory = omMetaFactory.getOMFactory();
         String localName = "TestLocalName";
