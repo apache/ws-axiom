@@ -27,10 +27,14 @@ import javax.xml.stream.XMLStreamConstants;
 import org.apache.axiom.om.util.AXIOMUtil;
 
 public abstract class OMElementTestBase extends AbstractTestCase {
-    protected abstract OMFactory getOMFactory();
+    protected final OMMetaFactory omMetaFactory;
+
+    public OMElementTestBase(OMMetaFactory omMetaFactory) {
+        this.omMetaFactory = omMetaFactory;
+    }
 
     public void testSetText() {
-        OMFactory factory = getOMFactory();
+        OMFactory factory = omMetaFactory.getOMFactory();
         String localName = "TestLocalName";
         String namespace = "http://ws.apache.org/axis2/ns";
         String prefix = "axis2";
@@ -44,7 +48,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
     }
 
     public void testCDATA() throws Exception {
-        OMFactory factory = getOMFactory();
+        OMFactory factory = omMetaFactory.getOMFactory();
         OMElement omElement = factory.createOMElement("TestElement", null);
         final String text = "this is <some> text in a CDATA";
         factory.createOMText(omElement, text, XMLStreamConstants.CDATA);
@@ -59,7 +63,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
     }
     
     public void testAddChild() {
-        OMFactory factory = getOMFactory();
+        OMFactory factory = omMetaFactory.getOMFactory();
         String localName = "TestLocalName";
         String childLocalName = "TestChildLocalName";
         String namespace = "http://ws.apache.org/axis2/ns";
@@ -85,7 +89,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
     
     // Regression test for WSCOMMONS-337
     public void testInsertSiblingAfterLastChild() throws Exception {
-        OMFactory fac = getOMFactory();
+        OMFactory fac = omMetaFactory.getOMFactory();
         OMNamespace ns = fac.createOMNamespace("http://www.testuri.com","ns");
         OMElement parent = fac.createOMElement("parent", ns);
         
@@ -105,7 +109,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
     }
 
     private void testDetach(boolean build) throws Exception {
-        OMElement root = AXIOMUtil.stringToOM(getOMFactory(), "<root><a/><b/><c/></root>");
+        OMElement root = AXIOMUtil.stringToOM(omMetaFactory.getOMFactory(), "<root><a/><b/><c/></root>");
         if (build) {
             root.build();
         } else {
@@ -133,7 +137,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
 
     public void testFindNamespaceByPrefix() throws Exception {
         OMElement root =
-                AXIOMUtil.stringToOM(getOMFactory(), "<a:root xmlns:a='urn:a'><child/></a:root>");
+                AXIOMUtil.stringToOM(omMetaFactory.getOMFactory(), "<a:root xmlns:a='urn:a'><child/></a:root>");
         OMNamespace ns = root.getFirstElement().findNamespace(null, "a");
         assertNotNull(ns);
         assertEquals("urn:a", ns.getNamespaceURI());
@@ -144,7 +148,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
      * already owned by another element will clone the attribute.
      */
     public void testAddAttributeAlreadyOwnedByOtherElement() {
-        OMFactory factory = getOMFactory();
+        OMFactory factory = omMetaFactory.getOMFactory();
         OMElement element1 = factory.createOMElement(new QName("test"));
         OMElement element2 = factory.createOMElement(new QName("test"));
         OMAttribute att1 = element1.addAttribute("test", "test", null);
@@ -159,7 +163,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
      * already owned by the element is a no-op.
      */
     public void testAddAttributeAlreadyOwnedByElement() {
-        OMFactory factory = getOMFactory();
+        OMFactory factory = omMetaFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("test"));
         OMAttribute att = element.addAttribute("test", "test", null);
         OMAttribute result = element.addAttribute(att);
@@ -176,7 +180,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
      * with the same name and namespace URI already exists.
      */
     public void testAddAttributeReplace() {
-        OMFactory factory = getOMFactory();
+        OMFactory factory = omMetaFactory.getOMFactory();
         // Use same namespace URI but different prefixes
         OMNamespace ns1 = factory.createOMNamespace("urn:ns", "p1");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns", "p2");
@@ -194,7 +198,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
     }
     
     public void testAddAttributeWithoutExistingNamespaceDeclaration() {
-        OMFactory factory = getOMFactory();
+        OMFactory factory = omMetaFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("test"));
         OMNamespace ns = factory.createOMNamespace("urn:ns", "p");
         OMAttribute att = factory.createOMAttribute("test", ns, "test");
@@ -211,7 +215,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
      * a corresponding declaration already exists on the element.
      */
     public void testAddAttributeWithExistingNamespaceDeclarationOnSameElement() {
-        OMFactory factory = getOMFactory();
+        OMFactory factory = omMetaFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("test"));
         OMNamespace ns = factory.createOMNamespace("urn:ns", "p");
         element.declareNamespace(ns);
@@ -228,7 +232,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
      * a corresponding declaration is already in scope.
      */
     public void testAddAttributeWithExistingNamespaceDeclarationInScope() {
-        OMFactory factory = getOMFactory();
+        OMFactory factory = omMetaFactory.getOMFactory();
         OMElement root = factory.createOMElement(new QName("test"));
         OMNamespace ns = factory.createOMNamespace("urn:ns", "p");
         root.declareNamespace(ns);
@@ -257,7 +261,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
      * Note that because of WSTX-202, Axiom will not be able to serialize the resulting XML.
      */
     public void testAddAttributeWithMaskedNamespaceDeclaration() {
-        OMFactory factory = getOMFactory();
+        OMFactory factory = omMetaFactory.getOMFactory();
         OMNamespace ns1 = factory.createOMNamespace("urn:ns1", "p");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns2", "p");
         OMElement element1 = factory.createOMElement(new QName("a"));

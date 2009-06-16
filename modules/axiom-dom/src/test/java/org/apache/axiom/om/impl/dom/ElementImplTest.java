@@ -21,9 +21,9 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMElementTestBase;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -38,8 +38,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 
 public class ElementImplTest extends OMElementTestBase {
-    protected OMFactory getOMFactory() {
-        return new OMDOMFactory();
+    public ElementImplTest() {
+        super(new OMDOMMetaFactory());
     }
 
     public void testSerialize() throws Exception {

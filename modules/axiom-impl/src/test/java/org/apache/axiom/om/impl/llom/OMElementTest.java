@@ -27,19 +27,19 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMElementTestBase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 
 public class OMElementTest extends OMElementTestBase {
     private static final String AXIS2_NS_URI = "http://ws.apache.org/axis2";
     private static final String AXIS2_NS_PREFIX = "axis2";
     private static final String SOME_TEXT = "Some Text";
     
-    protected OMFactory getOMFactory() {
-        return new OMLinkedListImplFactory();
+    public OMElementTest() {
+        super(new OMLinkedListMetaFactory());
     }
 
     public void testTextQNames() {
-        OMFactory factory = getOMFactory();
+        OMFactory factory = omMetaFactory.getOMFactory();
         OMElement omElement = factory.createOMElement("TestElement", null);
         omElement.setText(new QName(AXIS2_NS_URI, SOME_TEXT, AXIS2_NS_PREFIX));
 
@@ -63,7 +63,7 @@ public class OMElementTest extends OMElementTestBase {
     }
 
     public void testTextQNamesWithoutQNames() {
-        OMFactory factory = getOMFactory();
+        OMFactory factory = omMetaFactory.getOMFactory();
         OMElement omElement = factory.createOMElement("TestElement", null);
         omElement.setText(SOME_TEXT);
 
