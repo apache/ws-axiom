@@ -25,12 +25,138 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 
 import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.soap.SOAP11Constants;
 
 public abstract class OMElementTestBase extends AbstractTestCase {
     protected final OMMetaFactory omMetaFactory;
 
     public OMElementTestBase(OMMetaFactory omMetaFactory) {
         this.omMetaFactory = omMetaFactory;
+    }
+
+    /** Test the plain iterator which includes all the children (including the texts) */
+    public void testGetChildren() {
+        OMElement elt = getTestResourceAsElement(omMetaFactory, TestConstants.SOAP_SOAPMESSAGE1);
+        Iterator iter = elt.getChildren();
+        int counter = 0;
+        while (iter.hasNext()) {
+            counter ++;
+            assertNotNull("Must return not null objects!", iter.next());
+        }
+        assertEquals("This element should contain only five children including the text ", 5,
+                     counter);
+    }
+
+    /** test the remove exception behavior */
+    public void testGetChildrenRemove1() {
+        OMElement elt = getTestResourceAsElement(omMetaFactory, TestConstants.SOAP_SOAPMESSAGE1);
+        Iterator iter = elt.getChildren();
+
+        //this is supposed to throw an illegal state exception
+        try {
+            iter.remove();
+            fail("remove should throw an exception");
+        } catch (IllegalStateException e) {
+            //ok. this is what should happen
+        }
+
+    }
+
+    /** test the remove exception behavior, consecutive remove calls */
+    public void testGetChildrenRemove2() {
+        OMElement elt = getTestResourceAsElement(omMetaFactory, TestConstants.SOAP_SOAPMESSAGE1);
+        Iterator iter = elt.getChildren();
+        if (iter.hasNext()) {
+            iter.next();
+        }
+        iter.remove();
+
+        //this call must generate an exception
+        try {
+            iter.remove();
+            fail("calling remove twice without a call to next is prohibited");
+        } catch (IllegalStateException e) {
+            //ok if we come here :)
+        }
+
+    }
+
+    /** Remove all! */
+    public void testGetChildrenRemove3() {
+        OMElement elt = getTestResourceAsElement(omMetaFactory, TestConstants.SOAP_SOAPMESSAGE1);
+        Iterator iter = elt.getChildren();
+        while (iter.hasNext()) {
+            iter.next();
+            iter.remove();
+        }
+        iter = elt.getChildren();
+        if (iter.hasNext()) {
+            //we shouldn't reach here!
+            fail("No children should remain after removing all!");
+        }
+
+
+    }
+
+    /** test whether the children count reduces. */
+    public void testGetChildrenRemove4() {
+        OMElement elt = getTestResourceAsElement(omMetaFactory, TestConstants.SOAP_SOAPMESSAGE1);
+        Iterator iter = elt.getChildren();
+        int firstChildrenCount = 0;
+        int secondChildrenCount = 0;
+        while (iter.hasNext()) {
+            assertNotNull(iter.next());
+            firstChildrenCount++;
+        }
+
+        //remove the last node
+        iter.remove();
+
+        //reloop and check the count
+        //Note- here we should get a fresh iterator since there is no method to
+        //reset the iterator
+        iter = elt.getChildren(); //reset the iterator
+        while (iter.hasNext()) {
+            assertNotNull(iter.next());
+            secondChildrenCount++;
+        }
+        assertEquals("children count must reduce from 1",
+                     firstChildrenCount - 1,
+                     secondChildrenCount);
+
+    }
+
+    /** Test the element iterator */
+    public void testGetChildElements() {
+        OMElement elt = getTestResourceAsElement(omMetaFactory, TestConstants.SOAP_SOAPMESSAGE1);
+        Iterator iter = elt.getChildElements();
+        int counter = 0;
+        while (iter.hasNext()) {
+            counter ++;
+            Object o = iter.next();
+            assertNotNull("Must return not null objects!", o);
+            assertTrue("All these should be elements!",
+                       ((OMNode) o).getType() == OMNode.ELEMENT_NODE);
+        }
+        assertEquals("This element should contain only two elements ", 2, counter);
+    }
+    
+    /** Test the element iterator */
+    public void testGetChildrenWithName() {
+        OMElement elt = getTestResourceAsElement(omMetaFactory, TestConstants.SOAP_SOAPMESSAGE1);
+        QName qname = new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
+                                SOAP11Constants.BODY_LOCAL_NAME);
+        Iterator iter = elt.getChildrenWithName(qname);
+        int counter = 0;
+        while (iter.hasNext()) {
+            counter ++;
+            Object o = iter.next();
+            assertNotNull("Must return not null objects!", o);
+            assertTrue("All these should be elements!",
+                       ((OMNode) o).getType() == OMNode.ELEMENT_NODE);
+        }
+        assertEquals("This element should contain only one element with the given QName ", 1,
+                     counter);
     }
 
     public void testSetText() {
