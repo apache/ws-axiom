@@ -29,7 +29,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -37,8 +36,6 @@ import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -46,10 +43,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /** Class OMNodeImpl */
-public abstract class OMNodeImpl implements OMNode, OMNodeEx {
-    
-    private static final Log log = LogFactory.getLog(OMNodeImpl.class);
-    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
+public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, OMNodeEx {
     
     /** Field parent */
     protected OMContainerEx parent;
@@ -59,16 +53,9 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
 
     /** Field previousSibling */
     protected OMNodeImpl previousSibling;
-    /** Field builder */
-    public OMXMLParserWrapper builder;
-
-    /** Field done */
-    protected boolean done = false;
 
     /** Field nodeType */
     protected int nodeType;
-
-    protected OMFactory factory;
 
     /**
      * Constructor OMNodeImpl
@@ -159,18 +146,6 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
             this.nextSibling = (OMNodeImpl) importNode(node);
         }
         this.nextSibling = (OMNodeImpl) node;
-    }
-
-
-    /**
-     * Indicates whether parser has parsed this information item completely or not. If some
-     * information is not available in the item, one has to check this attribute to make sure that,
-     * this item has been parsed completely or not.
-     *
-     * @return Returns boolean.
-     */
-    public boolean isComplete() {
-        return done;
     }
 
     /**
@@ -322,31 +297,6 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
     }
 
     /**
-     * Parses this node and builds the object structure in memory. However a node, created
-     * programmatically, will have done set to true by default and this will cause populateyourself
-     * not to work properly!
-     *
-     * @throws OMException
-     */
-    public void build() throws OMException {
-        if (builder != null && builder.isCompleted()) {
-            if (DEBUG_ENABLED) {
-                log.debug("Builder is already complete.");
-            }
-        }
-        while (!done) {
-
-            builder.next();    
-            if (builder.isCompleted() && !done) {
-                if (DEBUG_ENABLED) {
-                    log.debug("Builder is complete.  Setting OMNode to complete.");
-                }
-                setComplete(true);
-            }
-        }
-    }
-
-    /**
      * Parses this node and builds the object structure in memory. AXIOM supports two levels of
      * deffered building. First is deffered building of AXIOM using StAX. Second level is the
      * deffered building of attachments. AXIOM reads in the attachements from the stream only when
@@ -373,59 +323,6 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
             ((StAXBuilder) builder).releaseParserOnClose(true);
             ((StAXBuilder) builder).close();
         }
-    }
-
-    /**
-     * Serializes the node with caching.
-     *
-     * @param xmlWriter
-     * @throws javax.xml.stream.XMLStreamException
-     *
-     */
-    public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        
-        // If the input xmlWriter is not an MTOMXMLStreamWriter, then wrapper it
-        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
-                (MTOMXMLStreamWriter) xmlWriter : 
-                    new MTOMXMLStreamWriter(xmlWriter);
-        internalSerialize(writer);
-        writer.flush();
-    }
-
-    /**
-     * Serializes the node without caching.
-     *
-     * @param xmlWriter
-     * @throws javax.xml.stream.XMLStreamException
-     *
-     */
-    public void serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        // If the input xmlWriter is not an MTOMXMLStreamWriter, then wrapper it
-        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
-                (MTOMXMLStreamWriter) xmlWriter : 
-                    new MTOMXMLStreamWriter(xmlWriter);
-        internalSerializeAndConsume(writer);
-        writer.flush();
-    }
-
-    /**
-     * Serializes the node with caching.
-     *
-     * @param writer
-     * @throws XMLStreamException
-     */
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        throw new RuntimeException("Not implemented yet!");
-    }
-
-    /**
-     * Serializes the node without caching.
-     *
-     * @param writer
-     * @throws XMLStreamException
-     */
-    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
-        throw new RuntimeException("Not implemented yet!");
     }
 
     public void serialize(OutputStream output) throws XMLStreamException {
@@ -504,10 +401,6 @@ public abstract class OMNodeImpl implements OMNode, OMNodeEx {
         if (format.isAutoCloseWriter()) {
             writer.close();
         }
-    }
-
-    public OMFactory getOMFactory() {
-        return this.factory;
     }
 
     /**

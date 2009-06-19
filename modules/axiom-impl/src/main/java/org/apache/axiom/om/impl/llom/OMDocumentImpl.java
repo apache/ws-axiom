@@ -42,7 +42,7 @@ import java.io.OutputStream;
 import java.util.Iterator;
 
 /** Class OMDocumentImpl */
-public class OMDocumentImpl implements OMDocument, OMContainerEx {
+public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OMContainerEx {
     /** Field documentElement */
     protected OMElement documentElement;
 
@@ -52,12 +52,6 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
     /** Field lastChild */
     protected OMNode lastChild;
 
-    /** Field done */
-    protected boolean done = false;
-
-    /** Field parserWrapper */
-    protected OMXMLParserWrapper parserWrapper;
-
     /** Field charSetEncoding Default : UTF-8 */
     protected String charSetEncoding = "UTF-8";
 
@@ -65,8 +59,6 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
     protected String xmlVersion = "1.0";
 
     protected String isStandalone;
-
-    protected OMFactory factory;
 
     /** Default constructor */
     public OMDocumentImpl() {
@@ -79,12 +71,12 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
      */
     public OMDocumentImpl(OMElement documentElement, OMXMLParserWrapper parserWrapper) {
         this.documentElement = documentElement;
-        this.parserWrapper = parserWrapper;
+        this.builder = parserWrapper;
     }
 
     /** @param parserWrapper  */
     public OMDocumentImpl(OMXMLParserWrapper parserWrapper) {
-        this.parserWrapper = parserWrapper;
+        this.builder = parserWrapper;
     }
 
     /**
@@ -129,8 +121,8 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
      * @return Returns OMElement.
      */
     public OMElement getOMDocumentElement() {
-        while (documentElement == null && parserWrapper != null) {
-            parserWrapper.next();
+        while (documentElement == null && builder != null) {
+            builder.next();
         }
         return documentElement;
     }
@@ -145,17 +137,6 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
     }
 
     /**
-     * Indicates whether parser has parsed this information item completely or not. If some
-     * information is not available in the item, one has to check this attribute to make sure that,
-     * this item has been parsed completely or not.
-     *
-     * @return Returns boolean.
-     */
-    public boolean isComplete() {
-        return done;
-    }
-
-    /**
      * Method setComplete.
      *
      * @param state
@@ -166,8 +147,8 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
 
     /** Forces the parser to proceed, if parser has not yet finished with the XML input. */
     public void buildNext() {
-        if (parserWrapper != null && !parserWrapper.isCompleted()) {
-            parserWrapper.next();
+        if (builder != null && !builder.isCompleted()) {
+            builder.next();
         }
     }
 
@@ -411,10 +392,4 @@ public class OMDocumentImpl implements OMDocument, OMContainerEx {
                                      boolean includeXMLDeclaration) throws XMLStreamException {
         OMDocumentImplUtil.internalSerialize(this, writer, cache, includeXMLDeclaration);
     }
-
-    public OMFactory getOMFactory() {
-        return this.getOMDocumentElement().getOMFactory();
-    }
-
-
 }

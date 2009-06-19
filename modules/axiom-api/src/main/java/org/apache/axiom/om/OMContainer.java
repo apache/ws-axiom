@@ -27,7 +27,7 @@ import java.util.Iterator;
  * <p/>
  * <p>Exposes the ability to add, find, and iterate over the children of a document or element.</p>
  */
-public interface OMContainer {
+public interface OMContainer extends OMSerializable {
 
     /**
      * Adds the given node as the last child. One must preserve the order of children, in this
@@ -95,8 +95,6 @@ public interface OMContainer {
      * @return Returns the first child.  May return null if the container has no children.
      */
     OMNode getFirstOMChild();
-
-    boolean isComplete();
 
     void buildNext();
 }

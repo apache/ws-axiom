@@ -21,7 +21,6 @@ package org.apache.axiom.om;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
 import java.io.Writer;
 
@@ -39,7 +38,7 @@ import java.io.Writer;
  * addition, while {@link OMDocument} and {@link OMAttribute} exist, neither is an extension of
  * <code>OMNode</code>. </p>
  */
-public interface OMNode {
+public interface OMNode extends OMSerializable {
     /**
      * The node is an <code>Element</code>.
      *
@@ -114,15 +113,6 @@ public interface OMNode {
     OMNode getNextOMSibling() throws OMException;
 
     /**
-     * Indicates whether parser has parsed this information item completely or not. If some info are
-     * not available in the item, one has to check this attribute to make sure that, this item has been
-     * parsed completely or not.
-     *
-     * @return Returns boolean.
-     */
-    boolean isComplete();
-
-    /**
      * Removes a node (and all of its children) from its containing parent.
      * <p/>
      * <p/>
@@ -184,14 +174,6 @@ public interface OMNode {
     /**
      * Serializes the node with caching.
      *
-     * @param xmlWriter
-     * @throws XMLStreamException
-     */
-    void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException;
-
-    /**
-     * Serializes the node with caching.
-     *
      * @param output
      * @throws XMLStreamException
      */
@@ -223,15 +205,6 @@ public interface OMNode {
      * @throws XMLStreamException
      */
     void serialize(Writer writer, OMOutputFormat format)
-            throws XMLStreamException;
-
-    /**
-     * Serializes the node without caching.
-     *
-     * @param xmlWriter
-     * @throws XMLStreamException
-     */
-    void serializeAndConsume(XMLStreamWriter xmlWriter)
             throws XMLStreamException;
 
     /**
@@ -271,9 +244,6 @@ public interface OMNode {
     void serializeAndConsume(Writer writer, OMOutputFormat format)
             throws XMLStreamException;
 
-    /** Builds itself. */
-    void build();
-
     /**
      * Builds itself with the OMText binary content. AXIOM supports two levels of deffered building.
      * First is deffered building of AXIOM using StAX. Second level is the deffered building of
@@ -288,10 +258,4 @@ public interface OMNode {
      * @param build if true, the object is built first before closing the builder/parser
      */
     void close(boolean build);
-    
-    /**
-     * Returns the OMFactory that created this object
-     */
-    OMFactory getOMFactory();
-
 }

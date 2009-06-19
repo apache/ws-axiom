@@ -19,8 +19,8 @@
 
 package org.apache.axiom.om;
 
-import junit.framework.TestCase;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.commons.io.input.CountingInputStream;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -29,7 +29,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 import java.util.Iterator;
 
-public class OMDocumentTestBase extends TestCase {
+public class OMDocumentTestBase extends AbstractTestCase {
     private String sampleXML = "<?xml version='1.0' encoding='utf-8'?>" +
             "<!--This is some comments at the start of the document-->" +
             "<?PITarget PIData?>" +
@@ -120,4 +120,21 @@ public class OMDocumentTestBase extends TestCase {
 //        return omDocument;
 //    }
 
+    public void testBuild() throws Exception {
+        CountingInputStream in = new CountingInputStream(getTestResource(
+                TestConstants.REALLY_BIG_MESSAGE));
+        OMDocument doc = new StAXOMBuilder(omMetaFactory.getOMFactory(),
+                XMLInputFactory.newInstance().createXMLStreamReader(in)).getDocument();
+        assertFalse(doc.isComplete());
+        int countBeforeBuild = in.getCount();
+        doc.build();
+        assertTrue(doc.isComplete());
+        int countAfterBuild = in.getCount();
+        assertTrue(countAfterBuild > countBeforeBuild);
+        OMNode node = doc.getFirstOMChild();
+        while (node != null) {
+            node = node.getNextOMSibling();
+        }
+        assertEquals(countAfterBuild, in.getCount());
+    }
 }

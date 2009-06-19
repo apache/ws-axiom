@@ -118,8 +118,4 @@ public interface OMDocument extends OMContainer {
      * @throws XMLStreamException
      */
     void serialize(OutputStream output) throws XMLStreamException;
-
-    /** Returns the OMFactory that created this object */
-    OMFactory getOMFactory();
-
 }

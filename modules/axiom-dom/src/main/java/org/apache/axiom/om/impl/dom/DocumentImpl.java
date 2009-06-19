@@ -481,13 +481,6 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         }
     }
 
-    public void build() {
-        if (this.firstChild != null && !this.firstChild.done) {
-            this.firstChild.build();
-        }
-        this.done = true;
-    }
-
     protected void addIdAttr(Attr attr) {
         if (this.idAttrs == null) {
             this.idAttrs = new Vector();
