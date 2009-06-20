@@ -1,0 +1,74 @@
+<html>
+<body>
+Contains core interfaces of the Axiom API.
+<p>In particular, this package defines interfaces for the information items identified by the
+<a href="http://www.w3.org/TR/xml-infoset/">XML Information Set</a> W3C Recommendation:</p>
+<table border="2" rules="all" cellpadding="4" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Section</th><th>Information item</th><th>Interface</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="http://www.w3.org/TR/xml-infoset/#infoitem.document">2.1</a></td>
+            <td>Document information item</td>
+            <td>{@link org.apache.axiom.om.OMDocument}</td>
+        </tr>
+        <tr>
+            <td><a href="http://www.w3.org/TR/xml-infoset/#infoitem.element">2.2</a></td>
+            <td>Element information item</td>
+            <td>{@link org.apache.axiom.om.OMElement}</td>
+        </tr>
+        <tr>
+            <td><a href="http://www.w3.org/TR/xml-infoset/#infoitem.attribute">2.3</a></td>
+            <td>Attribute information item</td>
+            <td>{@link org.apache.axiom.om.OMAttribute}</td>
+        </tr>
+        <tr>
+            <td><a href="http://www.w3.org/TR/xml-infoset/#infoitem.pi">2.4</a></td>
+            <td>Processing instruction information item</td>
+            <td>{@link org.apache.axiom.om.OMProcessingInstruction}</td>
+        </tr>
+        <tr>
+            <td><a href="http://www.w3.org/TR/xml-infoset/#infoitem.rse">2.5</a></td>
+            <td>Unexpanded entity reference information item</td>
+            <td>Not supported</td>
+        </tr>
+        <tr>
+            <td><a href="http://www.w3.org/TR/xml-infoset/#infoitem.character">2.6</a></td>
+            <td>Character information item</td>
+            <td>{@link org.apache.axiom.om.OMText}</td>
+        </tr>
+        <tr>
+            <td><a href="http://www.w3.org/TR/xml-infoset/#infoitem.comment">2.7</a></td>
+            <td>Comment information item</td>
+            <td>{@link org.apache.axiom.om.OMComment}</td>
+        </tr>
+        <tr>
+            <td><a href="http://www.w3.org/TR/xml-infoset/#infoitem.doctype">2.8</a></td>
+            <td>Document type declaration information item</td>
+            <td>{@link org.apache.axiom.om.OMDocType}</td>
+        </tr>
+        <tr>
+            <td><a href="http://www.w3.org/TR/xml-infoset/#infoitem.entity.unparsed">2.9</a></td>
+            <td>Unparsed entity information item</td>
+            <td>Not supported</td>
+        </tr>
+        <tr>
+            <td><a href="http://www.w3.org/TR/xml-infoset/#infoitem.notation">2.10</a></td>
+            <td>Notation information item</td>
+            <td>Not supported</td>
+        </tr>
+        <tr>
+            <td><a href="http://www.w3.org/TR/xml-infoset/#infoitem.namespace">2.11</a></td>
+            <td>Namespace information item</td>
+            <td>{@link org.apache.axiom.om.OMNamespace}</td>
+        </tr>
+    </tbody>
+</table>
+<p>The package also contains a set of super-interfaces that define common properties and operations
+shared by several information items: {@link org.apache.axiom.om.OMSerializable},
+{@link org.apache.axiom.om.OMNode} and {@link org.apache.axiom.om.OMContainer}.</p>
+</body>
+</html>
