@@ -61,6 +61,15 @@ public interface OMFactory {
                                      OMNamespace ns);
 
     /**
+     * Construct element with arbitrary data source. This is an optional operation which may not be
+     * supported by all factories.
+     *
+     * @param source the data source
+     * @param qname the name of the element produced by the data source
+     */
+    OMSourcedElement createOMElement(OMDataSource source, QName qname);
+
+    /**
      * This is almost the same as as createOMElement(localName,OMNamespace) method above. But some
      * people may, for some reason, need to use the conventional method of putting a namespace. Or
      * in other words people might not want to use the new OMNamespace. Well, this is for those

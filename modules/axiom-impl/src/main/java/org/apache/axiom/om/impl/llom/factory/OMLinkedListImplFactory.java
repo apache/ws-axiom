@@ -154,6 +154,16 @@ public class OMLinkedListImplFactory implements OMFactory {
     }
 
     /**
+     * Construct element with arbitrary data source.
+     * 
+     * @param source the data source
+     * @param qname the name of the element produced by the data source
+     */
+    public OMSourcedElement createOMElement(OMDataSource source, QName qname) {
+        return new OMSourcedElementImpl(qname, this, source);
+    }
+
+    /**
      * Method createOMNamespace.
      *
      * @param uri

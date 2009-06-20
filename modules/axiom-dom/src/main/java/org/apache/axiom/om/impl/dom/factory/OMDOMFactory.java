@@ -183,6 +183,13 @@ public class OMDOMFactory implements OMFactory {
     }
 
     /**
+     * Unsupported.
+     */
+    public OMSourcedElement createOMElement(OMDataSource source, QName qname) {
+        throw new UnsupportedOperationException("Not supported for DOM");
+    }
+
+    /**
      * Creates an OMElement.
      *
      * @see org.apache.axiom.om.OMFactory#createOMElement(String, String,
