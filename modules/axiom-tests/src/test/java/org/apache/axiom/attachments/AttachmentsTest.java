@@ -24,23 +24,15 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.TestConstants;
-import org.apache.axiom.om.impl.MIMEOutputUtils;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
-import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 
 import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -52,10 +44,6 @@ public class AttachmentsTest extends AbstractTestCase {
 
     String img1FileName = "mtom/img/test.jpg";
     String img2FileName = "mtom/img/test2.jpg";
-    String inSWAFileName = "soap/soap11/SWAAttachmentStream.txt";
-    
-    String contentTypeString =
-        "multipart/related; boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
 
     public void testMIMEHelper() {
     }
@@ -259,78 +247,6 @@ public class AttachmentsTest extends AbstractTestCase {
             System.out.println("Skipping compare because of lossy image i/o [" + dataArray.length +
                     "][" + expectedArray.length + "]");
         }
-    }
-    
-    public void testSWAWriteWithContentIDOrder() throws Exception {
-
-        // Read the stream that has soap xml followed by BAttachment then AAttachment
-        InputStream inStream = getTestResource(inSWAFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
-
-        // Get the contentIDs to force the reading
-        String[] contentIDs = attachments.getAllContentIDs();
-        
-        // Get the root
-        XMLStreamReader reader =
-            XMLInputFactory.newInstance()
-                           .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments.getSOAPPartInputStream())));
-        MTOMStAXSOAPModelBuilder builder = 
-            new MTOMStAXSOAPModelBuilder(reader, attachments, null);
-        OMElement root = builder.getDocumentElement();
-        StringWriter xmlWriter = new StringWriter();
-        root.serialize(xmlWriter);
-        
-        // Serialize the message using the legacy behavior (order by content id)
-        OMOutputFormat format = new OMOutputFormat();
-        format.setCharSetEncoding("utf-8");
-        format.setDoingSWA(true);
-        format.setProperty(OMOutputFormat.RESPECT_SWA_ATTACHMENT_ORDER, Boolean.FALSE);
-        
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        
-        MIMEOutputUtils.writeSOAPWithAttachmentsMessage(xmlWriter, baos, attachments, format);
-        
-        String text = baos.toString();
-        // Assert that AAttachment occurs before BAttachment since
-        // that is the natural ordering of the content ids.
-        assertTrue(text.indexOf("AAttachment") < text.indexOf("BAttachment"));
-        
-    }
-    
-    public void testSWAWriteWithIncomingOrder() throws Exception {
-
-        // Read the stream that has soap xml followed by BAttachment then AAttachment
-        InputStream inStream = getTestResource(inSWAFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
-
-        // Get the contentIDs to force the reading
-        String[] contentIDs = attachments.getAllContentIDs();
-        
-        // Get the root
-        XMLStreamReader reader =
-            XMLInputFactory.newInstance()
-                           .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments.getSOAPPartInputStream())));
-        MTOMStAXSOAPModelBuilder builder = 
-            new MTOMStAXSOAPModelBuilder(reader, attachments, null);
-        OMElement root = builder.getDocumentElement();
-        StringWriter xmlWriter = new StringWriter();
-        root.serialize(xmlWriter);
-        
-        // Serialize the message using the legacy behavior (order by content id)
-        OMOutputFormat format = new OMOutputFormat();
-        format.setCharSetEncoding("utf-8");
-        format.setDoingSWA(true);
-        format.setProperty(OMOutputFormat.RESPECT_SWA_ATTACHMENT_ORDER, Boolean.TRUE);
-        
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        
-        MIMEOutputUtils.writeSOAPWithAttachmentsMessage(xmlWriter, baos, attachments, format);
-        
-        String text = baos.toString();
-        // Assert that AAttachment occurs before BAttachment since
-        // that is the natural ordering of the content ids.
-        assertTrue(text.indexOf("BAttachment") < text.indexOf("AAttachment"));
-        
     }
 
     public void testGetDataHandler() throws Exception {
