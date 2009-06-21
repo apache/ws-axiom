@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
@@ -260,14 +261,40 @@ public class MIMEOutputUtils {
         javax.activation.DataHandler dh = new javax.activation.DataHandler(
                 writer.toString(), "text/xml; charset="
                 + format.getCharSetEncoding());
-        writeDataHandlerWithAttachmentsMessage(dh, contentType, outputStream, attachments.getMap(), format);
+        
+        // Get the collection of ids associated with the attachments
+        Collection ids = null;         
+        if (respectSWAAttachmentOrder(format)) {
+            // ContentIDList is the order of the incoming/added attachments
+            ids = attachments.getContentIDList();
+        } else {
+            // ContentIDSet is an undefined order (the implemenentation currently
+            // orders the attachments using the natural order of the content ids)
+            ids = attachments.getContentIDSet();
+        }
+        writeDataHandlerWithAttachmentsMessage(dh, contentType, outputStream, 
+                    attachments.getMap(), format, ids);
     }
 
+    public static void writeDataHandlerWithAttachmentsMessage(DataHandler rootDataHandler,
+            String contentType,
+            OutputStream outputStream,
+            Map attachments,
+            OMOutputFormat format) {
+        writeDataHandlerWithAttachmentsMessage(rootDataHandler,
+                contentType,
+                outputStream,
+                attachments,
+                format,
+                null);
+                    
+    }
     public static void writeDataHandlerWithAttachmentsMessage(DataHandler rootDataHandler,
                                                        String contentType,
                                                        OutputStream outputStream,
                                                        Map attachments,
-                                                       OMOutputFormat format) {
+                                                       OMOutputFormat format,
+                                                       Collection ids) {
         try {
             startWritingMime(outputStream, format.getMimeBoundary());
 
@@ -282,9 +309,20 @@ public class MIMEOutputUtils {
             writeBodyPart(outputStream, rootMimeBodyPart, format
                     .getMimeBoundary());
 
-            Iterator iterator = attachments.keySet().iterator();
-            while (iterator.hasNext()) {
-                String key = (String) iterator.next();
+            Iterator idIterator = null;
+            if (ids == null) {
+                // If ids are not provided, use the attachment map
+                // to get the keys
+                idIterator = attachments.keySet().iterator();  
+            } else {
+                // if ids are provided (normal case), iterate
+                // over the ids so that the attachments are 
+                // written in the same order as the id keys.
+                idIterator = ids.iterator();
+            }
+            
+            while (idIterator.hasNext()) {
+                String key = (String) idIterator.next();
                 MimeBodyPart part = createMimeBodyPart(key,
                         (DataHandler) attachments.get(key), format);
                 writeBodyPart(outputStream, part,
@@ -357,7 +395,15 @@ public class MIMEOutputUtils {
                 outputStream.write(CRLF);
                 outputStream.write(CRLF);
                 startWritingMime(outputStream, innerBoundary);
-                Iterator attachmentIDIterator = attachments.getContentIDSet().iterator();
+                Iterator attachmentIDIterator = null;
+                if (respectSWAAttachmentOrder(format)) {
+                    // ContentIDList is the order of the incoming/added attachments
+                    attachmentIDIterator = attachments.getContentIDList().iterator();
+                } else {
+                    // ContentIDSet is an undefined order (the implemenentation currently
+                    // orders the attachments using the natural order of the content ids)
+                    attachmentIDIterator = attachments.getContentIDSet().iterator();
+                }
                 while (attachmentIDIterator.hasNext()) {
                     String contentID = (String) attachmentIDIterator.next();
                     DataHandler dataHandler = attachments.getDataHandler(contentID);
@@ -375,5 +421,17 @@ public class MIMEOutputUtils {
         } catch (MessagingException e) {
             throw new OMException("Problem writing Mime Parts.", e);
         }
+    }
+    
+    /**
+     * @param format
+     * @return true if the incoming attachment order should be respected
+     */
+    private static boolean respectSWAAttachmentOrder(OMOutputFormat format) {
+        Boolean value = (Boolean) format.getProperty(OMOutputFormat.RESPECT_SWA_ATTACHMENT_ORDER);
+        if (value == null) {
+            value = OMOutputFormat.RESPECT_SWA_ATTACHMENT_ORDER_DEFAULT;
+        }
+        return value.booleanValue();
     }
 }

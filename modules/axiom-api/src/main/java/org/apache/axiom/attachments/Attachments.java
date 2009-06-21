@@ -389,7 +389,7 @@ public class Attachments implements OMAttachmentAccessor {
                 }
             }
         }
-        if (!cids.contains(blobContentID)) {
+        if (cids.contains(blobContentID)) {
             cids.remove(blobContentID);
         }
     }
