@@ -22,7 +22,7 @@
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom</artifactId>
     <name>Axiom</name>
-    <version>SNAPSHOT</version>
+    <version>1.2.9-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>AXIOM API</description>
     <url>http://ws.apache.org/commons/axiom/</url>
