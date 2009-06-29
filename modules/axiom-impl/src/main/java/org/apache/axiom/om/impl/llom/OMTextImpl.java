@@ -385,7 +385,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                 inStream = dataHandler.getDataSource().getInputStream();
             } catch (IOException e) {
                 throw new OMException(
-                        "Cannot get InputStream from DataHandler." + e);
+                        "Cannot get InputStream from DataHandler.", e);
             }
             return inStream;
         } else {

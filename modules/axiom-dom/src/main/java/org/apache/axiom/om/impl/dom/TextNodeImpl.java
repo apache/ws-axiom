@@ -444,7 +444,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
                 inStream = dataHandler.getDataSource().getInputStream();
             } catch (IOException e) {
                 throw new OMException(
-                        "Cannot get InputStream from DataHandler." + e);
+                        "Cannot get InputStream from DataHandler.", e);
             }
             return inStream;
         } else {
