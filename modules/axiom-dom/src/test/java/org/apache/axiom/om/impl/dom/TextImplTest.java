@@ -21,28 +21,20 @@ package org.apache.axiom.om.impl.dom;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMTextTestBase;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-public class TextImplTest extends TestCase {
-    public void testSetText() {
-        OMDOMFactory factory = new OMDOMFactory();
-        String localName = "TestLocalName";
-        String namespace = "http://ws.apache.org/axis2/ns";
-        String prefix = "axis2";
-        String tempText = "The quick brown fox jumps over the lazy dog";
-
-        OMElement elem = factory.createOMElement(localName, namespace, prefix);
-        OMText textNode = factory.createOMText(elem, tempText);
-
-        assertEquals("Text value mismatch", tempText, textNode.getText());
+public class TextImplTest extends OMTextTestBase {
+    public TextImplTest() {
+        super(new OMDOMMetaFactory());
     }
-
+    
     public void testAppendText() {
         OMDOMFactory factory = new OMDOMFactory();
         String localName = "TestLocalName";

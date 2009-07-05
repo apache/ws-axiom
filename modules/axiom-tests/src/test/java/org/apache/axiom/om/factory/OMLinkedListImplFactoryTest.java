@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMTestUtils;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -108,19 +107,6 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
         assertTrue("OMNamespace prefix not correct",
                    nsPrefix.equals(
                            namespace.getPrefix()));  // here equalsIgnoreCase should not be used as case does matter
-    }
-
-    public void testCreateText() {
-        OMElement omElement = omFactory.createOMElement("chinthaka",
-                                                        namespace);
-        String text = "sampleText";
-        OMText omText = omFactory.createOMText(omElement, text);
-        assertTrue("Programatically created OMText should have done = true ",
-                   omText.isComplete());
-        assertTrue(
-                "Programatically created OMText should have correct text value ",
-                text.equals(omText.getText()));
-
     }
 
     public void testCreateSOAPBody() throws Exception {
