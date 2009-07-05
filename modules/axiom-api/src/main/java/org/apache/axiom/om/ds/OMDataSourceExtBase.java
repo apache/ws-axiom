@@ -148,6 +148,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
             OMDocument omDocument = builder.getDocument();
             Iterator it = omDocument.getChildren();
             while (it.hasNext()) {
+                // TODO: this is extremely inefficient since next() will actually build the node!
                 OMNode omNode = (OMNode) it.next();
                 omNode.serializeAndConsume(writer);
             }
