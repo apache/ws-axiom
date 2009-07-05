@@ -66,6 +66,24 @@ public abstract class AbstractXMLStreamReader implements XMLStreamReader {
         return eventType;
     }
 
+    public boolean isStartElement() {
+        return getEventType() == START_ELEMENT;
+    }
+
+    public boolean isEndElement() {
+        return getEventType() == END_ELEMENT;
+    }
+
+    public boolean isCharacters() {
+        return getEventType() == CHARACTERS;
+    }
+
+    public boolean hasName() {
+        int event = getEventType();
+        // TODO: need to check the StAX specs if this is correct
+        return event == START_ELEMENT || event == END_ELEMENT;
+    }
+
     /**
      * @param i
      * @param s
