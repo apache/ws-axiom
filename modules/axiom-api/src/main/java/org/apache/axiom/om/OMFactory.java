@@ -21,6 +21,8 @@ package org.apache.axiom.om;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.stax.ext.DataHandlerProvider;
+
 /** Class OMFactory */
 public interface OMFactory {
 
@@ -176,6 +178,21 @@ public interface OMFactory {
 
     OMText createOMText(OMContainer parent, String s, String mimeType,
                                boolean optimize);
+
+    /**
+     * Create a binary {@link OMText} node supporting deferred loading of the content.
+     * 
+     * @param contentID
+     *            the content ID identifying the binary content; may be <code>null</code>
+     * @param dataHandlerProvider
+     *            used to load the {@link DataHandler} when requested from the returned
+     *            {@link OMText} node
+     * @param optimize
+     *            determines whether the binary content should be optimized
+     * @return
+     */
+    OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
+            boolean optimize);
 
     OMText createOMText(String contentID, OMContainer parent,
                                OMXMLParserWrapper builder);

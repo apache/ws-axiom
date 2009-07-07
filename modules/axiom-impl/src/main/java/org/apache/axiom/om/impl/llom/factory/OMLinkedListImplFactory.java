@@ -42,6 +42,7 @@ import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.om.impl.llom.OMTextImpl;
+import org.apache.axiom.stax.ext.DataHandlerProvider;
 
 import javax.xml.namespace.QName;
 import java.util.Hashtable;
@@ -256,6 +257,11 @@ public class OMLinkedListImplFactory implements OMFactory {
      */
     public OMText createOMText(Object dataHandler, boolean optimize) {
         return new OMTextImpl(dataHandler, optimize, this);
+    }
+
+    public OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
+            boolean optimize) {
+        return new OMTextImpl(contentID, dataHandlerProvider, optimize, this);
     }
 
     public OMText createOMText(String contentID, OMContainer parent,

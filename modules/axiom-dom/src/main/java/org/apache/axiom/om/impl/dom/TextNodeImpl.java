@@ -33,6 +33,7 @@ import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.util.TextHelper;
 import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.axiom.stax.ext.DataHandlerProvider;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
@@ -183,6 +184,24 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         this.optimize = optimize;
         done = true;
         this.ns = XOP_NS;
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param contentID
+     * @param dataHandlerProvider
+     * @param optimize
+     * @param factory
+     */
+    public TextNodeImpl(DocumentImpl ownerNode, String contentID, DataHandlerProvider
+            dataHandlerProvider, boolean optimize, OMFactory factory) {
+        super(ownerNode, factory);
+        this.contentID = contentID;
+        dataHandlerObject = dataHandlerProvider;
+        isBinary = true;
+        this.optimize = optimize;
+        done = true;
     }
 
     /** @param ownerNode  */
@@ -427,6 +446,8 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
                 }
                 dataHandlerObject = ((XOPBuilder) builder)
                         .getDataHandler(contentID);
+            } else if (dataHandlerObject instanceof DataHandlerProvider) {
+                dataHandlerObject = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
             }
             return dataHandlerObject;
         }

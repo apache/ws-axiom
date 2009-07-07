@@ -35,6 +35,7 @@ import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.stax.ext.DataHandlerReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -93,14 +94,10 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected int maxDepthForCustomBuilders = -1;
     
     /**
-     * Field showing whether the parser is datahandler-aware or not. Client should not directly access this field. 
-     * Instead, they should use {@link #setIsDataHandlerAware(Boolean)} and {@link #isDataHandlerAware()}.
-     * 
-     * @deprecated
-     * @see #isDataHandlerAware()
-     * @see #setIsDataHandlerAware(Boolean)
+     * Reference to the {@link DataHandlerReader} extension of the parser, or <code>null</code> if
+     * the parser doesn't support this extension.
      */
-    protected Boolean isDataHandlerAware = null; // property of parser, https://issues.apache.org/jira/browse/WSCOMMONS-300
+    protected DataHandlerReader dataHandlerReader;
     
     /**
      * Element level is the depth of the element. 
@@ -148,6 +145,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         if (parser instanceof BuilderAwareReader) {
             ((BuilderAwareReader) parser).setBuilder(this);
         }
+        dataHandlerReader = DataHandlerReaderUtil.getDataHandlerReader(parser);
         this.parser = new SafeXMLStreamReader(parser);
     }
 
@@ -259,21 +257,17 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @return omNode
      */
     private OMNode createOMText(OMContainer omContainer, int textType) {
-        try {
-            if (isDataHandlerAware() &&
-                    Boolean.TRUE.equals(parser.getProperty(OMConstants.IS_BINARY))) {
-                Object dataHandler = parser.getProperty(OMConstants.DATA_HANDLER);
-                OMText text = omfactory.createOMText(dataHandler, true);
-                text.setBinary(true);
-                omContainer.addChild(text);
-                return text;
-            } 
-        } catch (IllegalArgumentException e) { 
-        	//parser.getProperty may throw illegalArgument exception, ignore
-        } catch (IllegalStateException e) {	
-        	//parser.getProperty may throw illegalState exceptions, ignore
+        if (dataHandlerReader != null && dataHandlerReader.isBinary()) {
+            Object dataHandlerObject =
+                dataHandlerReader.isDeferred() ? (Object)dataHandlerReader.getDataHandlerProvider()
+                                               : (Object)dataHandlerReader.getDataHandler();
+            OMText text = omfactory.createOMText(dataHandlerObject, true);
+            text.setBinary(true);
+            omContainer.addChild(text);
+            return text;
+        } else {
+            return omfactory.createOMText(omContainer, parser.getText(), textType);
         }
-        return omfactory.createOMText(omContainer, parser.getText(), textType);
     }
 
     /**
@@ -666,49 +660,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         return null;
     }
 
-    /**
-     * Check if the underlying parse is aware of data handlers. (example ADB generated code)
-     *
-     * @return true if the parser is aware of data handlers, otherwise false
-     */
-    protected boolean isDataHandlerAware() {
-        
-        // Is datahandler is immutable for a parser's lifetime.  Thus it should
-        // only be checked one time.
-        if (isDataHandlerAware == null) {
-            // check whether data handlers are treated seperately
-            try {
-                if (parser != null &&
-                        (Boolean.TRUE == parser.getProperty(OMConstants.IS_DATA_HANDLERS_AWARE))) {
-                    isDataHandlerAware = Boolean.TRUE;
-                } else {
-                    isDataHandlerAware = Boolean.FALSE;
-                }
-            } catch (IllegalArgumentException e) {
-                // according to the parser api, get property will return IllegalArgumentException, when that
-                // property is not found.
-                isDataHandlerAware = Boolean.FALSE;
-            } catch (IllegalStateException e) {
-                // it will also throw illegalStateExceptions if in wrong state, ignore
-            }
-        }
-
-        if (Boolean.TRUE.equals(isDataHandlerAware)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Sets the isDataHandlerAware state of this {@link StAXBuilder}.
-     * 
-     * @param value a boolean value - may be null
-     */
-    protected void setIsDataHandlerAware(Boolean value) {
-        this.isDataHandlerAware = value;
-    }
-    
     /**
      * Returns the encoding style of the XML data
      * @return the character encoding, defaults to "UTF-8"

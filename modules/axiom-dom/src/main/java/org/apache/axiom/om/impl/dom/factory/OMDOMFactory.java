@@ -49,6 +49,7 @@ import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
 import org.apache.axiom.om.impl.dom.TextImpl;
 import org.apache.axiom.om.impl.dom.TextNodeImpl;
+import org.apache.axiom.stax.ext.DataHandlerProvider;
 import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
@@ -337,6 +338,11 @@ public class OMDOMFactory implements OMFactory {
      */
     public OMText createOMText(Object dataHandler, boolean optimize) {
         return new TextImpl(this.document, dataHandler, optimize, this);
+    }
+
+    public OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
+            boolean optimize) {
+        return new TextImpl(this.document, contentID, dataHandlerProvider, optimize, this);
     }
 
     /**

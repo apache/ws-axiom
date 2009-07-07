@@ -19,7 +19,26 @@
 
 package org.apache.axiom.om;
 
+import javax.activation.DataHandler;
+
+import org.apache.axiom.stax.ext.DataHandlerProvider;
+
 public class OMTextTestBase extends AbstractTestCase {
+    static class TestDataHandlerProvider implements DataHandlerProvider {
+        private DataHandler dh;
+        
+        public DataHandler getDataHandler() {
+            if (dh == null) {
+                dh = new DataHandler("Data", "text/plain");
+            }
+            return dh;
+        }
+        
+        public boolean isDataHandlerCreated() {
+            return dh != null;
+        }
+    }
+    
     protected final OMMetaFactory omMetaFactory;
 
     public OMTextTestBase(OMMetaFactory omMetaFactory) {
@@ -40,6 +59,15 @@ public class OMTextTestBase extends AbstractTestCase {
                 "Programatically created OMText should have correct text value ",
                 text.equals(omText.getText()));
 
+    }
+    
+    public void testCreateFromDataHandlerProvider() throws Exception {
+        TestDataHandlerProvider prov = new TestDataHandlerProvider();
+        OMFactory factory = omMetaFactory.getOMFactory();
+        OMText text = factory.createOMText(null, prov, true);
+        assertFalse(prov.isDataHandlerCreated());
+        assertEquals(((DataHandler)text.getDataHandler()).getContent(), "Data");
+        assertTrue(prov.isDataHandlerCreated());
     }
 
     public void testSetText() {

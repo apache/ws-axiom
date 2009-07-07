@@ -47,55 +47,10 @@ import java.io.InputStream;
 
 /**
  * StAX based builder that produces a pure XML infoset compliant object model.
- * 
- * <h3>XMLStreamReader extensions for optimized base64 handling</h3>
- * 
- * <p>This class supports {@link XMLStreamReader} instances that expose base64 encoded binary
- * content as {@link javax.activation.DataHandler} objects. For this to work, the
- * {@link XMLStreamReader} must conform to the following requirements:</p>
- * <ol>
- *   <li>{@link XMLStreamReader#getProperty(String)} must return {@link Boolean#TRUE}
- *       for the property identified by
- *       {@link org.apache.axiom.om.OMConstants#IS_DATA_HANDLERS_AWARE}, regardless of
- *       the current event. The property is assumed to be immutable and its value must
- *       not change during the lifetime of the {@link XMLStreamReader} implementation.</li>
- *   <li><p>If the {@link XMLStreamReader} wishes to expose base64 encoded content using
- *       a {@link javax.activation.DataHandler} object, it must do so using a single
- *       {@link XMLStreamConstants#CHARACTERS} event.</p>
- *       <p>To maintain compatibility with consumers that are unaware of the extensions
- *       described here, the implementation should make sure that
- *       {@link XMLStreamReader#getText()}, {@link XMLStreamReader#getTextStart()},
- *       {@link XMLStreamReader#getTextLength()}, {@link XMLStreamReader#getTextCharacters()},
- *       {@link XMLStreamReader#getTextCharacters(int, char[], int, int)} and
- *       {@link XMLStreamReader#getElementText()} behave as expected for this type of event,
- *       i.e. return the base64 representation of the binary content.</p></li>
- *   <li>{@link XMLStreamReader#getProperty(String)} must return {@link Boolean#TRUE}
- *       for the property identified by
- *       {@link org.apache.axiom.om.OMConstants#IS_BINARY} if the current event is a
- *       {@link XMLStreamConstants#CHARACTERS} event representing base64 encoded binary
- *       content and for which a {@link javax.activation.DataHandler} is available.
- *       For all other events, the returned value must be {@link Boolean#FALSE}.</li>
- *   <li><p>If for a given event, the implementation returned {@link Boolean#TRUE} for the
- *       {@link org.apache.axiom.om.OMConstants#IS_BINARY} property, then a call to
- *       {@link XMLStreamReader#getProperty(String)} with argument
- *       {@link org.apache.axiom.om.OMConstants#DATA_HANDLER} must return the
- *       corresponding {@link javax.activation.DataHandler} object.</p>
- *       <p>The {@link org.apache.axiom.om.OMConstants#DATA_HANDLER} property is undefined
- *       for any other type of event. This implies that the consumer of the
- *       {@link XMLStreamReader} must check the {@link org.apache.axiom.om.OMConstants#IS_BINARY}
- *       property before retrieving the {@link org.apache.axiom.om.OMConstants#DATA_HANDLER}
- *       property.</p></li>
- * </ol>
- * <p>The extension described will typically be implemented by {@link XMLStreamReader} instances
- * provided by databinding frameworks or {@link XMLStreamReader} proxies that enrich a stream of
- * StAX events with binary data existing outside of the XML document. Another example is
- * {@link org.apache.axiom.om.impl.OMStAXWrapper}.</p>
- * <p>One may ask why this extension is defined using {@link XMLStreamReader} properties and not
- * simply as an extension interface that the reader may implement. The reason is that the property
- * based approach continues to work if the {@link XMLStreamReader} implementing the extension
- * is accessed through a proxy implementing the {@link XMLStreamReader} interface but unaware
- * of the extension, at least if the proxy correctly delegates calls to the
- * {@link XMLStreamReader#getProperty(String)} method.</p>
+ * <p>
+ * This class supports the {@link XMLStreamReader} extension defined by
+ * {@link org.apache.axiom.stax.ext.DataHandlerReader} as well as the legacy extension mechanism
+ * defined in the documentation of {@link DataHandlerReaderUtil}.
  */
 public class StAXOMBuilder extends StAXBuilder {
     /** Field document */

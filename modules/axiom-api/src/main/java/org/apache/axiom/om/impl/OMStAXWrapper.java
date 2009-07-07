@@ -37,7 +37,6 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -50,10 +49,13 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.impl.EmptyOMLocation;
 import org.apache.axiom.om.impl.OMNavigator;
+import org.apache.axiom.om.impl.builder.DataHandlerReaderUtil;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.om.impl.util.NamespaceContextImpl;
 import org.apache.axiom.stax.AbstractXMLStreamReader;
+import org.apache.axiom.stax.ext.DataHandlerProvider;
+import org.apache.axiom.stax.ext.DataHandlerReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -62,7 +64,7 @@ import org.apache.commons.logging.LogFactory;
  * constants.
  */
 public class OMStAXWrapper extends AbstractXMLStreamReader
-    implements OMXMLStreamReader, XMLStreamConstants {
+    implements OMXMLStreamReader, DataHandlerReader, XMLStreamConstants {
     
     private static final Log log = LogFactory.getLog(OMStAXWrapper.class);
     private static boolean DEBUG_ENABLED = log.isDebugEnabled();
@@ -75,6 +77,13 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
 
     /** Field parser */
     private XMLStreamReader parser;
+    
+    /**
+     * The {@link DataHandlerReader} extension of the underlying parser, or <code>null</code>
+     * if the parser doesn't support this extension.
+     */
+    private DataHandlerReader dataHandlerReader;
+    
     private boolean _isClosed = false;              // Indicate if parser is closed
     private boolean _releaseParserOnClose = false;  // Defaults to legacy behavior, which is keep the reference
 
@@ -851,7 +860,7 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
         if (builder != null && builder instanceof StAXBuilder) {
             StAXBuilder staxBuilder = (StAXBuilder) builder;
             staxBuilder.close();
-            parser = null;
+            setParser(null);
         } else {
             if (parser != null) {
                 try {
@@ -862,7 +871,7 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
                     _isClosed = true;
                     // Release the parser so that it can be GC'd or reused.
                     if (_releaseParserOnClose) {
-                        parser = null;
+                        setParser(null);
                     }
                 }
             }
@@ -950,7 +959,7 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
 
                 // load the parser
                 try {
-                    parser = (XMLStreamReader) builder.getParser();
+                    setParser((XMLStreamReader) builder.getParser());
                 } catch (Exception e) {
                     throw new XMLStreamException("problem accessing the parser. " + e.getMessage(),
                                                  e);
@@ -990,25 +999,9 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
      * @throws IllegalArgumentException
      */
     public Object getProperty(String s) throws IllegalArgumentException {
-        if (OMConstants.IS_DATA_HANDLERS_AWARE.equals(s)) {
-            return Boolean.TRUE;
-        }
-        if (OMConstants.IS_BINARY.equals(s)) {
-            if (getNode() instanceof OMText) {
-                OMText text = (OMText) getNode();
-                return new Boolean(text.isBinary());
-            }
-            return Boolean.FALSE;
-        } else if (OMConstants.DATA_HANDLER.equals(s)) {
-            if (getNode() instanceof OMText) {
-                OMText text = (OMText) getNode();    
-                if (text.isBinary())
-                    return text.getDataHandler();
-            }
-        }
-        // Per spec, throw IllegalArgumentException
-        if (s == null) {
-            throw new IllegalArgumentException();
+        Object value = DataHandlerReaderUtil.processGetProperty(this, s);
+        if (value != null) {
+            return value;
         }
         if (parser != null) {
             return parser.getProperty(s);
@@ -1230,6 +1223,94 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
             } else {
                 throw new IllegalStateException();
             }
+        }
+    }
+
+    /*
+     *
+     * ################################################################
+     * DataHandlerReader extension methods
+     * ################################################################
+     *
+     */
+
+    public boolean isBinary() {
+        if (parser != null) {
+            if (dataHandlerReader != null) {
+                return dataHandlerReader.isBinary();
+            } else {
+                return false;
+            }
+        } else {
+            OMNode node = getNode();
+            if (node instanceof OMText) {
+                return ((OMText)node).isBinary();
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public boolean isDeferred() {
+        if (parser != null) {
+            if (dataHandlerReader != null) {
+                return dataHandlerReader.isDeferred();
+            } else {
+                throw new IllegalStateException();
+            }
+        } else {
+            if (getNode() instanceof OMText) {
+                // TODO: we should support deferred building of the DataHandler
+                return false;
+            } else {
+                throw new IllegalStateException();
+            }
+        }
+    }
+
+    public String getContentID() {
+        if (parser != null) {
+            if (dataHandlerReader != null) {
+                return dataHandlerReader.getContentID();
+            } else {
+                throw new IllegalStateException();
+            }
+        } else {
+            OMNode node = getNode();
+            if (node instanceof OMText) {
+                return ((OMText)node).getContentID();
+            } else {
+                throw new IllegalStateException();
+            }
+        }
+    }
+
+    public DataHandler getDataHandler() {
+        if (parser != null) {
+            if (dataHandlerReader != null) {
+                return dataHandlerReader.getDataHandler();
+            } else {
+                throw new IllegalStateException();
+            }
+        } else {
+            OMNode node = getNode();
+            if (node instanceof OMText) {
+                return (DataHandler)((OMText)node).getDataHandler();
+            } else {
+                throw new IllegalStateException();
+            }
+        }
+    }
+
+    public DataHandlerProvider getDataHandlerProvider() {
+        if (parser != null) {
+            if (dataHandlerReader != null) {
+                return dataHandlerReader.getDataHandlerProvider();
+            } else {
+                throw new IllegalStateException();
+            }
+        } else {
+            throw new IllegalStateException();
         }
     }
 
@@ -1459,6 +1540,8 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
 
     public void setParser(XMLStreamReader parser) {
         this.parser = parser;
+        dataHandlerReader =
+                parser == null ? null : DataHandlerReaderUtil.getDataHandlerReader(parser);
     }
 
     private Map getAllNamespaces(OMNode contextNode) {
@@ -1523,13 +1606,13 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
         if (builder != null && builder instanceof StAXBuilder) {
             ((StAXBuilder) builder).releaseParserOnClose(value);
             if (isClosed() && value) {
-                parser = null;
+                setParser(null);
             }
             return;
         } else {
             // Release parser if already closed
             if (isClosed() && value) {
-                parser = null;
+                setParser(null);
             }
             _releaseParserOnClose = value;
         }

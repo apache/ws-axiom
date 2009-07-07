@@ -59,30 +59,23 @@ public interface OMConstants {
             "xml";
     
     /**
-     * {@link javax.xml.stream.XMLStreamReader} property used to check if a given
-     * {@link javax.xml.stream.XMLStreamConstants#CHARACTERS} event represents
-     * base64 encoded binary data exposed as a {@link javax.activation.DataHandler}.
+     * @deprecated
      * 
-     * @see org.apache.axiom.om.impl.builder.StAXOMBuilder
+     * @see org.apache.axiom.om.impl.builder.DataHandlerReaderUtil
      */
     String IS_BINARY = "Axiom.IsBinary";
     
     /**
-     * {@link javax.xml.stream.XMLStreamReader} property used to retrieve the
-     * {@link javax.activation.DataHandler} for a
-     * {@link javax.xml.stream.XMLStreamConstants#CHARACTERS} event representing
-     * base64 encoded binary data.
+     * @deprecated
      * 
-     * @see org.apache.axiom.om.impl.builder.StAXOMBuilder
+     * @see org.apache.axiom.om.impl.builder.DataHandlerReaderUtil
      */
     String DATA_HANDLER = "Axiom.DataHandler";
     
     /**
-     * {@link javax.xml.stream.XMLStreamReader} property indicating that the
-     * reader is capable of exposing base64 encoded binary content as
-     * {@link javax.activation.DataHandler} objects.
+     * @deprecated
      * 
-     * @see org.apache.axiom.om.impl.builder.StAXOMBuilder
+     * @see org.apache.axiom.om.impl.builder.DataHandlerReaderUtil
      */
     String IS_DATA_HANDLERS_AWARE = "IsDatahandlersAwareParsing"; 
 

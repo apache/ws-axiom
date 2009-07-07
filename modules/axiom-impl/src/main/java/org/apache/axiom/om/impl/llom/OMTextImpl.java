@@ -35,6 +35,7 @@ import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.TextHelper;
 import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.axiom.stax.ext.DataHandlerProvider;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -217,6 +218,24 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     }
 
     /**
+     * Constructor.
+     * 
+     * @param dataHandlerProvider
+     * @param optimize
+     * @param factory
+     */
+    public OMTextImpl(String contentID, DataHandlerProvider dataHandlerProvider, boolean optimize,
+            OMFactory factory) {
+        super(factory);
+        this.contentID = contentID;
+        dataHandlerObject = dataHandlerProvider;
+        isBinary = true;
+        this.optimize = optimize;
+        done = true;
+        nodeType = TEXT_NODE;
+    }
+
+    /**
      * @param contentID
      * @param parent
      * @param builder   Used when the builder is encountered with a XOP:Include tag Stores a
@@ -364,6 +383,8 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                 }
                 dataHandlerObject = ((XOPBuilder) builder)
                         .getDataHandler(contentID);
+            } else if (dataHandlerObject instanceof DataHandlerProvider) {
+                dataHandlerObject = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
             }
             return dataHandlerObject;
         }

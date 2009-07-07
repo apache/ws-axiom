@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.stax.ext.DataHandlerProvider;
 import org.w3c.dom.Node;
 
 public class TextImpl extends TextNodeImpl {
@@ -37,6 +38,11 @@ public class TextImpl extends TextNodeImpl {
 
     public TextImpl(DocumentImpl ownerNode, Object dataHandler, boolean optimize, OMFactory factory) {
         super(ownerNode, dataHandler, optimize, factory);
+    }
+
+    public TextImpl(DocumentImpl ownerNode, String contentID,
+            DataHandlerProvider dataHandlerProvider, boolean optimize, OMFactory factory) {
+        super(ownerNode, contentID, dataHandlerProvider, optimize, factory);
     }
 
     public TextImpl(DocumentImpl ownerNode, OMFactory factory) {
