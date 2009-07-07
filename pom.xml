@@ -374,6 +374,11 @@
                     </executions>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>1.4.0</version>
+                </plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <configuration>
@@ -595,7 +600,6 @@
         <stax.impl.groupid>org.codehaus.woodstox</stax.impl.groupid>
         <stax.impl.artifact>wstx-asl</stax.impl.artifact>
         <stax.impl.version>3.2.9</stax.impl.version>
-        <bundle.plugin.version>1.4.0</bundle.plugin.version>
         <failIfNoTests>false</failIfNoTests>
         <!--
         <stax.impl.groupid>com.sun.xml.stream</stax.impl.groupid>
