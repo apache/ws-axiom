@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -1126,10 +1126,15 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
         if (state==SWITCHED){
             return parser.getNamespaceContext();
         }
-        Map m = getAllNamespaces(getNode());
-        if (getNode() != lastNode) {
-            // Handle situation involving substituted node.
-            m.putAll(getAllNamespaces(lastNode));
+        Map m;
+        if (currentEvent == END_DOCUMENT) {
+            m = Collections.EMPTY_MAP;
+        } else {
+            m = getAllNamespaces(getNode());
+            if (getNode() != lastNode) {
+                // Handle situation involving substituted node.
+                m.putAll(getAllNamespaces(lastNode));
+            }
         }
         return new NamespaceContextImpl(m);
     }
@@ -1544,14 +1549,17 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
     }
 
     private Map getAllNamespaces(OMNode contextNode) {
-        if (!(contextNode instanceof OMContainer &&
-                contextNode instanceof OMElement)) {
-            return new HashMap();
+        if (contextNode == null) {
+            return Collections.EMPTY_MAP;
+        }
+        OMContainer context;
+        if (contextNode instanceof OMContainer) {
+            context = (OMContainer)contextNode;
+        } else {
+            context = contextNode.getParent();
         }
         Map nsMap = new LinkedHashMap();
-        for (OMContainer context = (OMContainer) contextNode;
-             context != null && !(context instanceof OMDocument);
-             context = ((OMElement) context).getParent()) {
+        while (context != null && !(context instanceof OMDocument)) {
             OMElement element = (OMElement) context;
             Iterator i = element.getAllDeclaredNamespaces();
             while (i != null && i.hasNext()) {
@@ -1567,6 +1575,7 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
                     addNamespaceToMap(attr.getNamespace(), nsMap);
                 }
             }
+            context = element.getParent();
         }
         return nsMap;
     }

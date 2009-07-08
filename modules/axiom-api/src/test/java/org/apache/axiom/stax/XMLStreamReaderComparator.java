@@ -28,6 +28,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
 
 import junit.framework.Assert;
@@ -47,6 +48,12 @@ public class XMLStreamReaderComparator extends Assert {
     private final XMLStreamReader actual;
     private final LinkedList path = new LinkedList();
     
+    /**
+     * Set collecting all prefixes seen in the document to be able to test
+     * {@link XMLStreamReader#getNamespaceURI(String)}.
+     */
+    private final Set prefixes = new HashSet();
+    
     public XMLStreamReaderComparator(XMLStreamReader expected, XMLStreamReader actual) {
         this.expected = expected;
         this.actual = actual;
@@ -54,6 +61,9 @@ public class XMLStreamReaderComparator extends Assert {
 
     private String getLocation() {
         StringBuffer buffer = new StringBuffer();
+        buffer.append("event type ");
+        buffer.append(StAXUtils.getEventTypeString(expected.getEventType()));
+        buffer.append("; location ");
         for (Iterator it = path.iterator(); it.hasNext(); ) {
             buffer.append('/');
             buffer.append(it.next());
@@ -88,8 +98,7 @@ public class XMLStreamReaderComparator extends Assert {
             if (actualException != null) {
                 actualException.printStackTrace(System.out);
                 fail("Method " + methodName + " threw unexpected exception " +
-                        actualException.getClass().getName() + "; event type was " +
-                        StAXUtils.getEventTypeString(expected.getEventType()));
+                        actualException.getClass().getName() + " (" + getLocation() + ")");
             } else {
                 return new Object[] { expectedResult, actualResult };
             }
@@ -97,8 +106,7 @@ public class XMLStreamReaderComparator extends Assert {
             if (actualException == null) {
                 fail("Expected " + methodName + " to throw " +
                         expectedException.getClass().getName() +
-                        ", but the method retuned normally; event type was " +
-                        StAXUtils.getEventTypeString(expected.getEventType()));
+                        ", but the method retuned normally (" + getLocation() + ")");
             } else {
                 assertEquals(expectedException.getClass(), actualException.getClass());
             }
@@ -114,9 +122,7 @@ public class XMLStreamReaderComparator extends Assert {
         Object[] results = invoke(methodName, paramTypes, args);
         if (results != null) {
             assertEquals("Return value of " + methodName + " for arguments " +
-                        Arrays.asList(args) + " (event type " +
-                        StAXUtils.getEventTypeString(expected.getEventType()) +
-                        "; location " + getLocation() + ")",
+                        Arrays.asList(args) + " (" + getLocation() + ")",
                         results[0], results[1]);
             return results[0];
         } else {
@@ -128,27 +134,45 @@ public class XMLStreamReaderComparator extends Assert {
         return assertSameResult(methodName, new Class[0], new Object[0]);
     }
 
+    private void compareNamespaceContexts(NamespaceContext expected, NamespaceContext actual) {
+        for (Iterator it = prefixes.iterator(); it.hasNext(); ) {
+            String prefix = (String)it.next();
+            if (prefix != null) {
+                assertEquals("Namespace URI for prefix '" + prefix + "' (" + getLocation() + ")", expected.getNamespaceURI(prefix), actual.getNamespaceURI(prefix));
+            }
+        }
+    }
+    
+    /**
+     * Add a prefix that should be used in testing the
+     * {@link XMLStreamReader#getNamespaceURI(String)} method.
+     * 
+     * @param prefix the prefix to add
+     */
+    public void addPrefix(String prefix) {
+        prefixes.add(prefix);
+    }
+    
     public void compare() throws Exception {
-        // Collect all prefixes seen in the document to be able to test getNamespaceURI(String)
-        Set prefixes = new HashSet();
         do {
             int eventType = ((Integer)assertSameResult("getEventType")).intValue();
             if (eventType == XMLStreamReader.START_ELEMENT) {
                 path.addLast(expected.getName());
             }
             Integer attributeCount = (Integer)assertSameResult("getAttributeCount");
-            if (attributeCount != null) {
-                for (int i=0; i<attributeCount.intValue(); i++) {
-                    Class[] paramTypes = { Integer.TYPE };
-                    Object[] args = { Integer.valueOf(i) };
-                    assertSameResult("getAttributeLocalName", paramTypes, args);
-                    assertSameResult("getAttributeName", paramTypes, args);
-                    assertSameResult("getAttributeNamespace", paramTypes, args);
-                    prefixes.add(assertSameResult("getAttributePrefix", paramTypes, args));
-                    assertSameResult("getAttributeType", paramTypes, args);
-                    assertSameResult("getAttributeValue", paramTypes, args);
-                    assertSameResult("isAttributeSpecified", paramTypes, args);
-                }
+            // Test the behavior of the getAttributeXxx methods for all types of events,
+            // to check that an appropriate exception is thrown for events other than
+            // START_ELEMENT
+            for (int i=0; i < (attributeCount == null ? 1 : attributeCount.intValue()); i++) {
+                Class[] paramTypes = { Integer.TYPE };
+                Object[] args = { Integer.valueOf(i) };
+                assertSameResult("getAttributeLocalName", paramTypes, args);
+                assertSameResult("getAttributeName", paramTypes, args);
+                assertSameResult("getAttributeNamespace", paramTypes, args);
+                prefixes.add(assertSameResult("getAttributePrefix", paramTypes, args));
+                assertSameResult("getAttributeType", paramTypes, args);
+                assertSameResult("getAttributeValue", paramTypes, args);
+                assertSameResult("isAttributeSpecified", paramTypes, args);
             }
             assertSameResult("getLocalName");
             assertSameResult("getName");
@@ -202,6 +226,8 @@ public class XMLStreamReaderComparator extends Assert {
                     }
                 }
             }
+            
+            compareNamespaceContexts(expected.getNamespaceContext(), actual.getNamespaceContext());
             
             if (eventType == XMLStreamReader.END_ELEMENT) {
                 path.removeLast();
