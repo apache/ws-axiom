@@ -147,6 +147,7 @@ public class XMLStreamReaderComparator extends Assert {
                     prefixes.add(assertSameResult("getAttributePrefix", paramTypes, args));
                     assertSameResult("getAttributeType", paramTypes, args);
                     assertSameResult("getAttributeValue", paramTypes, args);
+                    assertSameResult("isAttributeSpecified", paramTypes, args);
                 }
             }
             assertSameResult("getLocalName");

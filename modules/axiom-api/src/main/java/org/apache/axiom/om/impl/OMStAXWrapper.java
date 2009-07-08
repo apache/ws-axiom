@@ -542,19 +542,18 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#isAttributeSpecified
      */
     public boolean isAttributeSpecified(int i) {
-        boolean returnValue = false;
         if (parser != null) {
-            returnValue = parser.isAttributeSpecified(i);
+            return parser.isAttributeSpecified(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-
-                // theres nothing to be returned here
+                // The Axiom object model doesn't store this information,
+                // but returning true is a reasonable default.
+                return true;
             } else {
                 throw new IllegalStateException(
                         "attribute type accessed in illegal event!");
             }
         }
-        return returnValue;
     }
 
     /**
