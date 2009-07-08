@@ -239,7 +239,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
         } else {
-            return isAttributeSpecified(index);
+            return parent.isAttributeSpecified(index);
         }
     }
 
