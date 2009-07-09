@@ -54,6 +54,12 @@ public class XMLStreamReaderComparator extends Assert {
      */
     private final Set prefixes = new HashSet();
     
+    /**
+     * Set collecting all namespace URIs seen in the document to be able to
+     * test {@link NamespaceContext#getPrefix(String)}.
+     */
+    private final Set namespaceURIs = new HashSet();
+    
     public XMLStreamReaderComparator(XMLStreamReader expected, XMLStreamReader actual) {
         this.expected = expected;
         this.actual = actual;
@@ -134,11 +140,36 @@ public class XMLStreamReaderComparator extends Assert {
         return assertSameResult(methodName, new Class[0], new Object[0]);
     }
 
+    private Set toPrefixSet(Iterator it) {
+        Set set = new HashSet();
+        while (it.hasNext()) {
+            String prefix = (String)it.next();
+            // TODO: Woodstox returns null instead of "" for the default namespace.
+            //       This seems incorrect, but the javax.namespace.NamespaceContext specs are
+            //       not very clear.
+            set.add(prefix == null ? "" : prefix);
+        }
+        return set;
+    }
+    
     private void compareNamespaceContexts(NamespaceContext expected, NamespaceContext actual) {
         for (Iterator it = prefixes.iterator(); it.hasNext(); ) {
             String prefix = (String)it.next();
             if (prefix != null) {
                 assertEquals("Namespace URI for prefix '" + prefix + "' (" + getLocation() + ")", expected.getNamespaceURI(prefix), actual.getNamespaceURI(prefix));
+            }
+        }
+        for (Iterator it = namespaceURIs.iterator(); it.hasNext(); ) {
+            String namespaceURI = (String)it.next();
+            if (namespaceURI != null && namespaceURI.length() > 0) {
+                assertEquals(
+                        "Prefix for namespace URI '" + namespaceURI + "' (" + getLocation() + ")",
+                        expected.getPrefix(namespaceURI),
+                        actual.getPrefix(namespaceURI));
+                assertEquals(
+                        "Prefixes for namespace URI '" + namespaceURI + "' (" + getLocation() + ")",
+                        toPrefixSet(expected.getPrefixes(namespaceURI)),
+                        toPrefixSet(actual.getPrefixes(namespaceURI)));
             }
         }
     }
@@ -168,7 +199,7 @@ public class XMLStreamReaderComparator extends Assert {
                 Object[] args = { Integer.valueOf(i) };
                 assertSameResult("getAttributeLocalName", paramTypes, args);
                 assertSameResult("getAttributeName", paramTypes, args);
-                assertSameResult("getAttributeNamespace", paramTypes, args);
+                namespaceURIs.add(assertSameResult("getAttributeNamespace", paramTypes, args));
                 prefixes.add(assertSameResult("getAttributePrefix", paramTypes, args));
                 assertSameResult("getAttributeType", paramTypes, args);
                 assertSameResult("getAttributeValue", paramTypes, args);
@@ -182,15 +213,16 @@ public class XMLStreamReaderComparator extends Assert {
                 Map actualNamespaces = new HashMap();
                 for (int i=0; i<namespaceCount.intValue(); i++) {
                     String prefix = expected.getNamespacePrefix(i);
-                    expectedNamespaces.put(prefix,
-                            expected.getNamespaceURI(i));
+                    String namespaceURI = expected.getNamespaceURI(i);
+                    expectedNamespaces.put(prefix, namespaceURI);
                     actualNamespaces.put(actual.getNamespacePrefix(i),
                             actual.getNamespaceURI(i));
                     prefixes.add(prefix);
+                    namespaceURIs.add(namespaceURI);
                 }
                 assertEquals(expectedNamespaces, actualNamespaces);
             }
-            assertSameResult("getNamespaceURI");
+            namespaceURIs.add(assertSameResult("getNamespaceURI"));
             assertSameResult("getPIData");
             assertSameResult("getPITarget");
             prefixes.add(assertSameResult("getPrefix"));
