@@ -1289,7 +1289,7 @@ public class OMStAXWrapper extends AbstractXMLStreamReader
         }
     }
 
-    public DataHandler getDataHandler() {
+    public DataHandler getDataHandler() throws XMLStreamException {
         if (parser != null) {
             if (dataHandlerReader != null) {
                 return dataHandlerReader.getDataHandler();

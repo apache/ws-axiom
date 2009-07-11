@@ -384,7 +384,11 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                 dataHandlerObject = ((XOPBuilder) builder)
                         .getDataHandler(contentID);
             } else if (dataHandlerObject instanceof DataHandlerProvider) {
-                dataHandlerObject = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
+                try {
+                    dataHandlerObject = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
+                } catch (XMLStreamException ex) {
+                    throw new OMException(ex);
+                }
             }
             return dataHandlerObject;
         }

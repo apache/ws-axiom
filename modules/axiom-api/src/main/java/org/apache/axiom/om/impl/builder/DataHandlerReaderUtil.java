@@ -21,11 +21,13 @@ package org.apache.axiom.om.impl.builder;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMException;
 
 /**
  * Utility class to work with the {@link XMLStreamReader} extension defined by
@@ -167,7 +169,11 @@ public class DataHandlerReaderUtil {
         } else if (propertyName.equals(OMConstants.IS_BINARY)) {
             return Boolean.valueOf(extension.isBinary());
         } else if (propertyName.equals(OMConstants.DATA_HANDLER)) {
-            return extension.getDataHandler();
+            try {
+                return extension.getDataHandler();
+            } catch (XMLStreamException ex) {
+                throw new OMException(ex);
+            }
         } else {
             return null;
         }

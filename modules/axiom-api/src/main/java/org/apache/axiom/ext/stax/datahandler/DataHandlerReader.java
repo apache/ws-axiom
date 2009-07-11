@@ -20,6 +20,7 @@
 package org.apache.axiom.ext.stax.datahandler;
 
 import javax.activation.DataHandler;
+import javax.xml.stream.XMLStreamException;
 
 /**
  * Extension interface for {@link javax.xml.stream.XMLStreamReader} implementations that expose
@@ -126,8 +127,10 @@ public interface DataHandlerReader {
      * force the implementation to load the binary content immediately.
      * 
      * @return the binary content for the current event
+     * 
+     * @throws XMLStreamException if an error occurs while loading the {@link DataHandler}
      */
-    DataHandler getDataHandler();
+    DataHandler getDataHandler() throws XMLStreamException;
     
     /**
      * Get a {@link DataHandlerProvider} instance for deferred loading of the binary content for the

@@ -447,7 +447,11 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
                 dataHandlerObject = ((XOPBuilder) builder)
                         .getDataHandler(contentID);
             } else if (dataHandlerObject instanceof DataHandlerProvider) {
-                dataHandlerObject = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
+                try {
+                    dataHandlerObject = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
+                } catch (XMLStreamException ex) {
+                    throw new OMException(ex);
+                }
             }
             return dataHandlerObject;
         }
