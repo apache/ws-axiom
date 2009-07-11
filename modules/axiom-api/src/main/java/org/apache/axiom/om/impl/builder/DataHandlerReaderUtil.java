@@ -23,9 +23,9 @@ import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.stax.ext.DataHandlerProvider;
-import org.apache.axiom.stax.ext.DataHandlerReader;
 
 /**
  * Utility class to work with the {@link XMLStreamReader} extension defined by

@@ -28,8 +28,8 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.stax.XMLFragmentStreamReader;
-import org.apache.axiom.stax.XMLStreamReaderComparator;
+import org.apache.axiom.util.stax.XMLFragmentStreamReader;
+import org.apache.axiom.util.stax.XMLStreamReaderComparator;
 
 /**
  * Test comparing the output of {@link OMStAXWrapper} with that of a native StAX parser.

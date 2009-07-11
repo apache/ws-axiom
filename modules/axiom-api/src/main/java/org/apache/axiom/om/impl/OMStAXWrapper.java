@@ -34,6 +34,8 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
@@ -53,9 +55,7 @@ import org.apache.axiom.om.impl.builder.DataHandlerReaderUtil;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.om.impl.util.NamespaceContextImpl;
-import org.apache.axiom.stax.AbstractXMLStreamReader;
-import org.apache.axiom.stax.ext.DataHandlerProvider;
-import org.apache.axiom.stax.ext.DataHandlerReader;
+import org.apache.axiom.util.stax.AbstractXMLStreamReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

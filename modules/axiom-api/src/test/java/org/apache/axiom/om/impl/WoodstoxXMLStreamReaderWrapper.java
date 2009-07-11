@@ -23,7 +23,7 @@ import javax.xml.stream.util.StreamReaderDelegate;
 
 /**
  * Wrapper fixing known issues in the Woodstox parser. We need this to avoid
- * false positives in {@link org.apache.axiom.stax.XMLStreamReaderComparator}.
+ * false positives in {@link org.apache.axiom.util.stax.XMLStreamReaderComparator}.
  * Once the issues are fixed in Woodstox we can remove this class.
  */
 public class WoodstoxXMLStreamReaderWrapper extends StreamReaderDelegate {

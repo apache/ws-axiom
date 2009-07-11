@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.builder;
 
+import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
@@ -35,7 +36,6 @@ import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.stax.ext.DataHandlerReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

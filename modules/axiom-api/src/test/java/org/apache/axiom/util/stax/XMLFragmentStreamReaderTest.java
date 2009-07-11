@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.stax;
+package org.apache.axiom.util.stax;
 
 import java.io.StringReader;
 
@@ -25,6 +25,7 @@ import javax.xml.stream.XMLStreamReader;
 import junit.framework.TestCase;
 
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.util.stax.XMLFragmentStreamReader;
 
 public class XMLFragmentStreamReaderTest extends TestCase {
     /**

@@ -21,7 +21,7 @@ package org.apache.axiom.om;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.stax.ext.DataHandlerProvider;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 
 /** Class OMFactory */
 public interface OMFactory {

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.stax.ext;
+package org.apache.axiom.ext.stax.datahandler;
 
 import javax.activation.DataHandler;
 

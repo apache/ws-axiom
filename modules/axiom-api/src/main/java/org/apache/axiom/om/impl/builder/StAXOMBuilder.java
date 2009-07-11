@@ -49,7 +49,7 @@ import java.io.InputStream;
  * StAX based builder that produces a pure XML infoset compliant object model.
  * <p>
  * This class supports the {@link XMLStreamReader} extension defined by
- * {@link org.apache.axiom.stax.ext.DataHandlerReader} as well as the legacy extension mechanism
+ * {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader} as well as the legacy extension mechanism
  * defined in the documentation of {@link DataHandlerReaderUtil}.
  */
 public class StAXOMBuilder extends StAXBuilder {

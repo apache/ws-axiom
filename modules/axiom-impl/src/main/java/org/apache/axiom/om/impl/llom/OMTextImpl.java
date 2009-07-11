@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.llom;
 
 
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
@@ -35,7 +36,6 @@ import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.TextHelper;
 import org.apache.axiom.om.util.UUIDGenerator;
-import org.apache.axiom.stax.ext.DataHandlerProvider;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;

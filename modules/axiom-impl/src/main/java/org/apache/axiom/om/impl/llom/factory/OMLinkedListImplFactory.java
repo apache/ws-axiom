@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.llom.factory;
 
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -42,7 +43,6 @@ import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.om.impl.llom.OMTextImpl;
-import org.apache.axiom.stax.ext.DataHandlerProvider;
 
 import javax.xml.namespace.QName;
 import java.util.Hashtable;

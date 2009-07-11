@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.dom.factory;
 
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -49,7 +50,6 @@ import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
 import org.apache.axiom.om.impl.dom.TextImpl;
 import org.apache.axiom.om.impl.dom.TextNodeImpl;
-import org.apache.axiom.stax.ext.DataHandlerProvider;
 import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.stax;
+package org.apache.axiom.util.stax;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;

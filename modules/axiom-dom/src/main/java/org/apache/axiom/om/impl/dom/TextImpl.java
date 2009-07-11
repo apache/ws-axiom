@@ -21,12 +21,12 @@ package org.apache.axiom.om.impl.dom;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.stax.ext.DataHandlerProvider;
 import org.w3c.dom.Node;
 
 public class TextImpl extends TextNodeImpl {

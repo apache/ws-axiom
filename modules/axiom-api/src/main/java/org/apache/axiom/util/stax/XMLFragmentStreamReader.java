@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.stax;
+package org.apache.axiom.util.stax;
 
 import java.util.NoSuchElementException;
 

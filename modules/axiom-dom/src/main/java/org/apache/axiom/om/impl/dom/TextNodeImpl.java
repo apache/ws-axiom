@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.attachments.utils.DataHandlerUtils;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
@@ -33,7 +34,6 @@ import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.util.TextHelper;
 import org.apache.axiom.om.util.UUIDGenerator;
-import org.apache.axiom.stax.ext.DataHandlerProvider;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
