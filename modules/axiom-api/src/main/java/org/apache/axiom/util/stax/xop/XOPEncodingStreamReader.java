@@ -21,10 +21,12 @@ package org.apache.axiom.util.stax.xop;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
@@ -109,7 +111,7 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
     private final DataHandlerReader dataHandlerReader;
     private int state = STATE_PASS_THROUGH;
     private String currentContentID;
-    private Map dataHandlerObjects = new HashMap();
+    private Map dataHandlerObjects = new LinkedHashMap();
 
     /**
      * Constructor.
@@ -141,16 +143,32 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
     }
 
     /**
+     * Get the set of content IDs referenced in <tt>xop:Include</tt> element information items
+     * produced by this wrapper.
+     * 
+     * @return The set of content IDs in their order of appearance in the infoset. If no
+     *         <tt>xop:Include</tt> element information items have been produced yet, an empty
+     *         set will be returned.
+     */
+    public Set/*<String>*/ getContentIDs() {
+        return Collections.unmodifiableSet(dataHandlerObjects.keySet());
+    }
+
+    /**
      * Get the data handler for a given content ID.
      * 
      * @param contentID a content ID previously returned by an <tt>xop:Include</tt> element
      *                  produced by this reader
-     * @return the corresponding data handler
-     * @throws XMLStreamException if an error occurred while loading the data handler
+     * @return the corresponding data handler; may not be <code>null</code>
+     * @throws XMLStreamException if the content ID is unknown or an error occurred while loading
+     *         the data handler
      */
     public DataHandler getDataHandler(String contentID) throws XMLStreamException {
         Object dataHandlerObject = dataHandlerObjects.get(contentID);
-        if (dataHandlerObject instanceof DataHandler) {
+        if (dataHandlerObject == null) {
+            throw new XMLStreamException("No DataHandler object found for content ID '" +
+                    contentID + "'");
+        } else if (dataHandlerObject instanceof DataHandler) {
             return (DataHandler)dataHandlerObject;
         } else {
             return ((DataHandlerProvider)dataHandlerObject).getDataHandler();
@@ -370,7 +388,8 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
     public String getAttributeValue(String namespaceURI, String localName) {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
-                if (namespaceURI == null && localName.equals("href")) {
+                if ((namespaceURI == null || namespaceURI.length() == 0)
+                        && localName.equals("href")) {
                     return "cid:" + currentContentID;
                 } else {
                     return null;
