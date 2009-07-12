@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.attachments.impl;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,11 +27,9 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 
 import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 
-import org.apache.axiom.attachments.SizeAwareDataSource;
 import org.apache.axiom.attachments.utils.BAAOutputStream;
+import org.apache.axiom.util.activation.DataSourceUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -277,28 +274,9 @@ public class BufferUtils {
         if(limit==0){
             return -1;
         }
-        DataSource ds = dh.getDataSource();
-        if (ds instanceof SizeAwareDataSource) {
-            long size = ((SizeAwareDataSource)ds).getSize();
-            if (size != -1) {
-                return size > limit ? 1 : 0;
-            }
-        }
-        if (ds instanceof javax.mail.util.ByteArrayDataSource) {
-            // Special optimization for JavaMail's ByteArrayDataSource (Axiom's ByteArrayDataSource
-            // already implements SizeAwareDataSource and doesn't need further optimization):
-            // we know that ByteArrayInputStream#available() directly returns the size of the
-            // data source.
-            try {
-                return ((ByteArrayInputStream)ds.getInputStream()).available() > limit ? 1 : 0;
-            } catch (IOException ex) {
-                // We will never get here...
-                return -1;
-            }
-        } else if (ds instanceof FileDataSource) {
-            // Special optimization for FileDataSources: no need to open and read the file
-            // to know its size!
-            return ((FileDataSource)ds).getFile().length() > limit ? 1 : 0;
+        long size = DataSourceUtils.getSize(dh.getDataSource());
+        if (size != -1) {
+            return size > limit ? 1 : 0;
         } else {
             // In all other cases, we prefer DataHandler#writeTo over DataSource#getInputStream.
             // The reason is that if the DataHandler was constructed from an Object rather than

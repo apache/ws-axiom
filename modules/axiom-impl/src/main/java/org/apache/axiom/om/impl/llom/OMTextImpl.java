@@ -34,8 +34,8 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.om.util.TextHelper;
 import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtil;
 
 import javax.activation.DataHandler;
@@ -285,7 +285,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             return getTextFromProperPlace();
         } else {
             try {
-                return TextHelper.toString(getInputStream());
+                return Base64Utils.encode((DataHandler)getDataHandler());
             } catch (Exception e) {
                 throw new OMException(e);
             }

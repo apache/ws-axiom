@@ -20,7 +20,6 @@
 package org.apache.axiom.util.stax.xop;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -34,7 +33,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.om.util.TextHelper;
+import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -390,13 +389,7 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
 
     private static String toBase64(DataHandler dh) throws XMLStreamException {
         try {
-            InputStream in = dh.getInputStream();
-            try {
-                // TODO: we should also move the base64 stuff to org.apache.axiom.util
-                return TextHelper.toString(in);
-            } finally {
-                in.close();
-            }
+            return Base64Utils.encode(dh);
         } catch (IOException ex) {
             throw new XMLStreamException("Exception when encoding data handler as base64", ex);
         }

@@ -34,6 +34,7 @@ import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.util.TextHelper;
 import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtil;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
@@ -363,7 +364,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
             return getTextFromProperPlace();
         } else {
             try {
-                return TextHelper.toString(getInputStream());
+                return Base64Utils.encode((DataHandler)getDataHandler());
             } catch (Exception e) {
                 throw new OMException(e);
             }
@@ -413,7 +414,8 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
             return new QName(getTextFromProperPlace());
         } else {
             try {
-                return new QName(TextHelper.toString(getInputStream()));
+                // TODO: do we really want to build a QName from base64 encoded data?!?
+                return new QName(Base64Utils.encode((DataHandler)getDataHandler()));
             } catch (Exception e) {
                 throw new OMException(e);
             }
