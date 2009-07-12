@@ -34,10 +34,12 @@ import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.util.TextHelper;
 import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.axiom.util.stax.XMLStreamWriterUtil;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
+import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -496,7 +498,11 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
                 writer.writeOptimized(this);
                 writer.writeEndElement();
             } else {
-                writer.writeCharacters(this.getText());
+                try {
+                    XMLStreamWriterUtil.writeBase64(writer, (DataHandler)getDataHandler());
+                } catch (IOException ex) {
+                    throw new OMException("Error reading data handler", ex);
+                }
             }
         }
     }

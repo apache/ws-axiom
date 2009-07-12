@@ -36,7 +36,9 @@ import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.TextHelper;
 import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.axiom.util.stax.XMLStreamWriterUtil;
 
+import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -433,12 +435,12 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
 
     private void internalSerializeLocal(XMLStreamWriter writer2) throws XMLStreamException {
 
-        if ((!this.isBinary) || (!this.isOptimized())) {
+        if (!this.isBinary) {
             writeOutput(writer2);
         } else {
             //check whether we have a MTOMXMLStreamWriter. if so
             //we can optimize the writing!
-            if (writer2 instanceof MTOMXMLStreamWriter) {
+            if (this.isOptimized() && writer2 instanceof MTOMXMLStreamWriter) {
                 MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
                 if (writer.isOptimized() && writer.isOptimizedThreshold(this)) {
                     if (contentID == null) {
@@ -451,16 +453,15 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
                     this.serializeStartpart(writer);
                     writer.writeOptimized(this);
                     writer.writeEndElement();
-                } else {
-                    //do normal base64
-                    writeOutput(writer);
+                    return;
                 }
-            } else {
-                //we do not have a optimized writer. Just do the normal
-                //base64 writing
-                writeOutput(writer2);
             }
-
+            //do normal base64
+            try {
+                XMLStreamWriterUtil.writeBase64(writer2, (DataHandler)getDataHandler());
+            } catch (IOException ex) {
+                throw new OMException("Error reading data handler", ex);
+            }
         }
     }
 

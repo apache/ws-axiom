@@ -20,8 +20,11 @@
 package org.apache.axiom.om;
 
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.util.activation.TestDataSource;
+import org.apache.commons.io.output.NullOutputStream;
 
 public class OMTextTestBase extends AbstractTestCase {
     static class TestDataHandlerProvider implements DataHandlerProvider {
@@ -81,5 +84,26 @@ public class OMTextTestBase extends AbstractTestCase {
         OMText textNode = factory.createOMText(elem, tempText);
 
         assertEquals("Text value mismatch", tempText, textNode.getText());
+    }
+    
+    /**
+     * Test that when an OMText node is written to an XMLStreamWriter without MTOM support,
+     * the implementation doesn't construct an in-memory base64 representation of the complete
+     * binary content, but writes it in chunks (streaming).
+     * <p>
+     * Regression test for WSCOMMONS-433.
+     * 
+     * @throws Exception
+     */
+    public void testBase64Streaming() throws Exception {
+        OMFactory factory = omMetaFactory.getOMFactory();
+        OMElement elem = factory.createOMElement("test", null);
+        // Create a data source that would eat up all memory when loaded. If the test
+        // doesn't fail with an OutOfMemoryError, we know that the OMText implementation
+        // supports streaming.
+        DataSource ds = new TestDataSource('A', Runtime.getRuntime().maxMemory());
+        OMText text = factory.createOMText(new DataHandler(ds), false);
+        elem.addChild(text);
+        elem.serialize(new NullOutputStream());
     }
 }
