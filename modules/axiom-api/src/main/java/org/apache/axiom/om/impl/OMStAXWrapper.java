@@ -97,7 +97,10 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
             }
         } else {
             if (xopEncoder == null) {
-                xopEncoder = new XOPEncodingStreamReader(switchingWrapper, contentIDGenerator);
+                // Since the intention is to support an efficient way to pass binary content to a
+                // consumer that is not aware of our data handler extension (see WSCOMMONS-344), we
+                // use optimizeAll=true, i.e. we ignore OMText#isOptimized().
+                xopEncoder = new XOPEncodingStreamReader(switchingWrapper, contentIDGenerator, true);
                 setParent(xopEncoder);
             }
         }

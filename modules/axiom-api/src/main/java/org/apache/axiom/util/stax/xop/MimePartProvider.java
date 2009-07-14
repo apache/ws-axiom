@@ -28,6 +28,17 @@ import javax.xml.stream.XMLStreamException;
  */
 public interface MimePartProvider {
     /**
+     * Check whether the MIME part identified by a given content ID has already been loaded. A
+     * return value of <code>true</code> means that a call to {@link #getMimePart(String)} (for
+     * the same content ID) will not block or will retrieve the {@link DataHandler} without
+     * overhead.
+     * 
+     * @return <code>true</code> if the MIME part has already been loaded; <code>false</code>
+     *         otherwise
+     */
+    boolean isLoaded(String contentID);
+    
+    /**
      * Get the {@link DataHandler} for the MIME part identified by a given content ID.
      * 
      * @param contentID the content ID

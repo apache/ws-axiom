@@ -30,6 +30,20 @@ import javax.xml.stream.XMLStreamException;
  */
 public interface DataHandlerProvider {
     /**
+     * Check whether the {@link DataHandler} has already been loaded. A return value of
+     * <code>true</code> means that a call to {@link #getDataHandler()} will not block or will
+     * retrieve the {@link DataHandler} without overhead. Note the return value of this method for a
+     * given instance of this class may change over time due to events other than a call to
+     * {@link #getDataHandler()} on the same instance. E.g. a call to {@link #getDataHandler()} on
+     * one instance may change the return value of the method on another instance (because the
+     * {@link DataHandler} objects can only be loaded in a certain sequence).
+     * 
+     * @return <code>true</code> if the {@link DataHandler} has already been loaded;
+     *         <code>false</code> otherwise
+     */
+    boolean isLoaded();
+    
+    /**
      * Get the {@link DataHandler} object for the binary content.
      * 
      * @return the binary content

@@ -30,6 +30,10 @@ public class OMTextTestBase extends AbstractTestCase {
     static class TestDataHandlerProvider implements DataHandlerProvider {
         private DataHandler dh;
         
+        public boolean isLoaded() {
+            return false;
+        }
+
         public DataHandler getDataHandler() {
             if (dh == null) {
                 dh = new DataHandler("Data", "text/plain");

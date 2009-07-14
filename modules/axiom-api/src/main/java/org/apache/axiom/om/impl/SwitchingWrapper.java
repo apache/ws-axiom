@@ -1204,6 +1204,22 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
+    public boolean isOptimized() {
+        if (parser != null) {
+            if (dataHandlerReader != null) {
+                return dataHandlerReader.isOptimized();
+            } else {
+                throw new IllegalStateException();
+            }
+        } else {
+            if (lastNode instanceof OMText) {
+                return ((OMText)lastNode).isOptimized();
+            } else {
+                throw new IllegalStateException();
+            }
+        }
+    }
+
     public boolean isDeferred() {
         if (parser != null) {
             if (dataHandlerReader != null) {

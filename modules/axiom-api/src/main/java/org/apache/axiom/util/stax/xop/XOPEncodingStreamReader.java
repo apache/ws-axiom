@@ -109,6 +109,7 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
     private final XMLStreamReader parent;
     private final ContentIDGenerator contentIDGenerator;
     private final DataHandlerReader dataHandlerReader;
+    private final boolean optimizeAll;
     private int state = STATE_PASS_THROUGH;
     private String currentContentID;
     private Map dataHandlerObjects = new LinkedHashMap();
@@ -122,12 +123,17 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
      * @param contentIDGenerator
      *            used to generate content IDs for the binary content exposed as
      *            <tt>xop:Include</tt> element information items
+     * @param optimizeAll
+     *            if set to <code>true</code>, <tt>xop:Include</tt> element information items
+     *            will be generated for all data handlers, regardless of the return value of
+     *            {@link DataHandlerReader#isOptimized()}
      * 
      * @throws IllegalArgumentException
      *             if the provided {@link XMLStreamReader} doesn't implement the extension defined
      *             by {@link DataHandlerReader}
      */
-    public XOPEncodingStreamReader(XMLStreamReader parent, ContentIDGenerator contentIDGenerator) {
+    public XOPEncodingStreamReader(XMLStreamReader parent, ContentIDGenerator contentIDGenerator,
+            boolean optimizeAll) {
         this.parent = parent;
         this.contentIDGenerator = contentIDGenerator;
         DataHandlerReader dataHandlerReader;
@@ -140,6 +146,7 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
             throw new IllegalArgumentException("The supplied XMLStreamReader doesn't implement the DataHandlerReader extension");
         }
         this.dataHandlerReader = dataHandlerReader;
+        this.optimizeAll = optimizeAll;
     }
 
     /**
@@ -186,7 +193,8 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
                 // Fall through
             default:
                 int event = parent.next();
-                if (event == CHARACTERS && dataHandlerReader.isBinary()) {
+                if (event == CHARACTERS && dataHandlerReader.isBinary()
+                        && (optimizeAll || dataHandlerReader.isOptimized())) {
                     String contentID = dataHandlerReader.getContentID();
                     contentID = contentIDGenerator.generateContentID(contentID);
                     Object dataHandlerObject = dataHandlerReader.isDeferred()

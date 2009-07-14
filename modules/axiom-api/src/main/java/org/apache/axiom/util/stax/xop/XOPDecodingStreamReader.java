@@ -73,6 +73,10 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
             return contentID;
         }
 
+        public boolean isLoaded() {
+            return mimePartProvider.isLoaded(contentID);
+        }
+
         public DataHandler getDataHandler() throws XMLStreamException {
             return mimePartProvider.getMimePart(contentID);
         }
@@ -511,6 +515,11 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
 
     public boolean isBinary() {
         return dh != null;
+    }
+
+    public boolean isOptimized() {
+        // xop:Include implies optimized
+        return true;
     }
 
     public boolean isDeferred() {

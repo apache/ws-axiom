@@ -77,6 +77,17 @@ public interface DataHandlerReader {
      *         available; <code>false</code> for all other types of events.
      */
     boolean isBinary();
+
+    /**
+     * Check if the binary content is eligible for optimization (e.g. using XOP) or if it should
+     * be serialized as base64.
+     * Calling this method is only meaningful if {@link #isBinary()} returns <code>true</code> for
+     * the current event. The behavior of this method is undefined if this is not the case.
+     * 
+     * @return <code>true</code> if the binary content is eligible for optimization;
+     *         <code>false</code> otherwise
+     */
+    boolean isOptimized();
     
     /**
      * Check whether the {@link javax.xml.stream.XMLStreamReader} supports deferred loading of the

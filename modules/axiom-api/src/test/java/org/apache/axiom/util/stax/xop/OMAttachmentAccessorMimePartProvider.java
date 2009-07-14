@@ -34,6 +34,11 @@ public class OMAttachmentAccessorMimePartProvider implements MimePartProvider {
         this.attachments = attachments;
     }
 
+    public boolean isLoaded(String contentID) {
+        // TODO: probably we can only determine this for an Attachments object
+        return false;
+    }
+
     public DataHandler getMimePart(String contentID) throws XMLStreamException {
         DataHandler dh = attachments.getDataHandler(contentID);
         if (dh == null) {

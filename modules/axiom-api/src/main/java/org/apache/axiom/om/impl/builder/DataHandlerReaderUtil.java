@@ -122,6 +122,11 @@ public class DataHandlerReaderUtil {
                     return ((Boolean)reader.getProperty(OMConstants.IS_BINARY)).booleanValue();
                 }
 
+                public boolean isOptimized() {
+                    // This is compatible with the old StAXBuilder implementation
+                    return true;
+                }
+
                 public boolean isDeferred() {
                     return false;
                 }
