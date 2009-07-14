@@ -17,10 +17,9 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.llom;
+package org.apache.axiom.om;
 
 import junit.framework.TestCase;
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -32,7 +31,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
 /** This tests the serializeAndConsume method */
-public class OMDocumentSerilizationTest extends TestCase {
+public class OMDocumentSerilizationTestBase extends TestCase {
+    private final OMMetaFactory omMetaFactory;
 
     private OMDocument document;
     private String xmlDeclStart = "<?xml";
@@ -45,8 +45,12 @@ public class OMDocumentSerilizationTest extends TestCase {
     private String version2 = "version=\"1.0\"";
     private String version2_11 = "version=\"1.1\"";
 
+    public OMDocumentSerilizationTestBase(OMMetaFactory omMetaFactory) {
+        this.omMetaFactory = omMetaFactory;
+    }
+
     public void setUp() {
-        OMFactory factory = OMAbstractFactory.getOMFactory();
+        OMFactory factory = omMetaFactory.getOMFactory();
 
         OMNamespace namespace = factory.createOMNamespace("http://testuri.org", "test");
         OMElement documentElement = factory.createOMElement("DocumentElement", namespace);
@@ -59,11 +63,6 @@ public class OMDocumentSerilizationTest extends TestCase {
         document.setOMDocumentElement(documentElement);
 
     }
-
-    public OMDocumentSerilizationTest(String name) {
-        super(name);
-    }
-
 
     public void testXMLDecleration() throws XMLStreamException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -88,6 +87,9 @@ public class OMDocumentSerilizationTest extends TestCase {
     }
 
     public void testCharsetEncoding() throws XMLStreamException {
+        // LLOM already sets the charset encoding to UTF-8, but DOOM does not
+        document.setCharsetEncoding("UTF-8");
+        
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         document.serializeAndConsume(baos);
 
