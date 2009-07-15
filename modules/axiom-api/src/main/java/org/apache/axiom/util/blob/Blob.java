@@ -24,26 +24,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public interface Blob {
-    OutputStream getOutputStream();
-
     /**
-     * Fill this object with data read from a given InputStream.
-     * <p>
-     * A call <code>tmp.readFrom(in)</code> has the same effect as the
-     * following code:
-     * <pre>
-     * OutputStream out = tmp.getOutputStream();
-     * IOUtils.copy(in, out);
-     * out.close();
-     * </pre>
-     * However it does so in a more efficient way.
+     * Get an input stream to read the data in the blob.
      * 
-     * @param in An InputStream to read data from. This method will not
-     *           close the stream.
+     * @return the input stream to read the data from
      * @throws IOException
      */
-    void readFrom(InputStream in) throws IOException;
-
     InputStream getInputStream() throws IOException;
 
     /**
@@ -55,5 +41,10 @@ public interface Blob {
      */
     void writeTo(OutputStream out) throws IOException;
 
+    /**
+     * Get the length of the data in the blob, i.e. the number of bytes.
+     * 
+     * @return the length of the data in the blob
+     */
     long getLength();
 }

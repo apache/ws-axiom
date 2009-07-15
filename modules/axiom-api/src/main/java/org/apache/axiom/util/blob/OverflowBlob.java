@@ -1,3 +1,22 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package org.apache.axiom.util.blob;
 
 import java.io.File;
@@ -23,9 +42,12 @@ import org.apache.commons.logging.LogFactory;
  * on demand. Since a temporary file may be created it is mandatory to
  * call {@link #release()} to discard the temporary data.
  */
-public class OverflowBlob implements Blob {
-    
+public class OverflowBlob implements WritableBlob {
     private static final Log log = LogFactory.getLog(OverflowBlob.class);
+    
+    static final int STATE_NEW = 0;
+    static final int STATE_UNCOMMITTED = 1;
+    static final int STATE_COMMITTED = 2;
     
     class OutputStreamImpl extends OutputStream {
         
@@ -85,6 +107,7 @@ public class OverflowBlob implements Blob {
             if (fileOutputStream != null) {
                 fileOutputStream.close();
             }
+            state = STATE_COMMITTED;
         }
     }
     
@@ -145,7 +168,7 @@ public class OverflowBlob implements Blob {
 
         public int read() throws IOException {
             byte[] b = new byte[1];
-            return read(b) == -1 ? -1 : (int)b[0] & 0xFF;
+            return read(b) == -1 ? -1 : b[0] & 0xFF;
         }
 
         public boolean markSupported() {
@@ -216,6 +239,11 @@ public class OverflowBlob implements Blob {
      */
     File temporaryFile;
     
+    /**
+     * The state of the blob.
+     */
+    int state = STATE_NEW;
+    
     public OverflowBlob(int numberOfChunks, int chunkSize, String tempPrefix, String tempSuffix) {
         this.chunkSize = chunkSize;
         this.tempPrefix = tempPrefix;
@@ -270,10 +298,16 @@ public class OverflowBlob implements Blob {
     }
     
     public OutputStream getOutputStream() {
-        return new OutputStreamImpl();
+        if (state != STATE_NEW) {
+            throw new IllegalStateException();
+        } else {
+            state = STATE_UNCOMMITTED;
+            return new OutputStreamImpl();
+        }
     }
     
-    public void readFrom(InputStream in) throws IOException {
+    public void readFrom(InputStream in, boolean commit) throws IOException {
+        // TODO: this will not work if the blob is in state UNCOMMITTED and we have already switched to a temporary file
         while (true) {
             int c = in.read(getCurrentChunk(), chunkOffset, chunkSize-chunkOffset);
             if (c == -1) {
@@ -291,10 +325,17 @@ public class OverflowBlob implements Blob {
                 }
             }
         }
+        state = commit ? STATE_COMMITTED : STATE_UNCOMMITTED;
     }
     
+    public void readFrom(InputStream in) throws IOException {
+        readFrom(in, state == STATE_NEW);
+    }
+
     public InputStream getInputStream() throws IOException {
-        if (temporaryFile != null) {
+        if (state != STATE_COMMITTED) {
+            throw new IllegalStateException();
+        } else if (temporaryFile != null) {
             return new FileInputStream(temporaryFile);
         } else {
             return new InputStreamImpl();

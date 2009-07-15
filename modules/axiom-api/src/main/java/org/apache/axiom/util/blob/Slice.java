@@ -19,12 +19,6 @@
 
 package org.apache.axiom.util.blob;
 
-public class OverflowBlobTest extends WritableBlobTestBase {
-    protected WritableBlob createBlob() {
-        return new OverflowBlob(16, 1024, "test", ".dat");
-    }
+public class Slice {
 
-    protected void releaseBlob(WritableBlob blob) {
-        ((OverflowBlob)blob).release();
-    }
 }
