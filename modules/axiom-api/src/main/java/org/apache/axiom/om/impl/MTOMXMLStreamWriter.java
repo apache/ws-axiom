@@ -19,10 +19,9 @@
 
 package org.apache.axiom.om.impl;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.activation.DataHandler;
@@ -38,8 +37,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -60,7 +57,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     private XMLStreamWriter xmlWriter;
     private OutputStream outStream;
     private LinkedList binaryNodeList = new LinkedList();
-    private ByteArrayOutputStream bufferedXML;  // XML for the SOAPPart
+    private OMMultipartWriter multipartWriter;
+    private OutputStream rootPartOutputStream;
     private OMOutputFormat format = new OMOutputFormat();
     
     // State variables
@@ -96,13 +94,19 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         this.format = format;
         this.outStream = outStream;
 
-        if (format.getCharSetEncoding() == null) //Default encoding is UTF-8
-            format.setCharSetEncoding(OMOutputFormat.DEFAULT_CHAR_SET_ENCODING);
+        String encoding = format.getCharSetEncoding();
+        if (encoding == null) { //Default encoding is UTF-8
+            format.setCharSetEncoding(encoding = OMOutputFormat.DEFAULT_CHAR_SET_ENCODING);
+        }
 
         if (format.isOptimized()) {
-            // REVIEW If the buffered XML gets too big, should it be written out to a file 
-            bufferedXML = new ByteArrayOutputStream();
-            xmlWriter = StAXUtils.createXMLStreamWriter(bufferedXML,format.getCharSetEncoding());
+            multipartWriter = new OMMultipartWriter(outStream, format);
+            try {
+                rootPartOutputStream = multipartWriter.writeRootPart();
+            } catch (IOException ex) {
+                throw new XMLStreamException(ex);
+            }
+            xmlWriter = StAXUtils.createXMLStreamWriter(rootPartOutputStream, encoding);
         } else {
             xmlWriter = StAXUtils.createXMLStreamWriter(outStream,
                                                         format.getCharSetEncoding());
@@ -166,7 +170,6 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             log.debug("Calling MTOMXMLStreamWriter.flush");
         }
         xmlWriter.flush();
-        String SOAPContentType;
         // flush() triggers the optimized attachment writing.
         // If the optimized attachments are specified, and the xml
         // document is completed, then write out the attachments.
@@ -175,24 +178,14 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
                 log.debug("The XML writing is completed.  Now the attachments are written");
             }
             isComplete = true;
-            if (format.isSOAP11()) {
-                SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
-            } else {
-                SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
-            }
             try {
-                MIMEOutputUtils.complete(outStream,
-                                         bufferedXML.toByteArray(),
-                                         binaryNodeList,
-                                         format.getMimeBoundary(),
-                                         format.getRootContentId(),
-                                         format.getCharSetEncoding(),
-                                         SOAPContentType, 
-                                         format);
-                bufferedXML.close();
-                bufferedXML = null;
-            } catch (UnsupportedEncodingException e) {
-                throw new OMException(e);
+                rootPartOutputStream.close();
+                for (Iterator it = binaryNodeList.iterator(); it.hasNext();) {
+                    OMText text = (OMText) it.next();
+                    multipartWriter.writePart((DataHandler) text.getDataHandler(),
+                            text.getContentID());
+                }
+                multipartWriter.complete();
             } catch (IOException e) {
                 throw new OMException(e);
             }
@@ -419,8 +412,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      */
     public OutputStream getOutputStream() throws XMLStreamException {  
         OutputStream os = null;
-        if (bufferedXML != null) {
-            os = bufferedXML;
+        if (rootPartOutputStream != null) {
+            os = rootPartOutputStream;
         } else {
             os = outStream;
         }
@@ -428,8 +421,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         if (isDebugEnabled) {
             if (os == null) {
                 log.debug("Direct access to the output stream is not available.");
-            } else if (bufferedXML != null) {
-                log.debug("Returning access to the buffered xml stream: " + bufferedXML);
+            } else if (rootPartOutputStream != null) {
+                log.debug("Returning access to the buffered xml stream: " + rootPartOutputStream);
             } else {
                 log.debug("Returning access to the original output stream: " + os);
             }

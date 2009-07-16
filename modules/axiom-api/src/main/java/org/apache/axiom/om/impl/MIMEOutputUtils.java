@@ -56,15 +56,7 @@ public class MIMEOutputUtils {
     private static byte[] CRLF = { 13, 10 };
 
     /**
-     * Invoked by MTOMXMLStreamWriter to write the SOAP Part and the attachements. 
-     * 
-     * @param outStream OutputStream target
-     * @param bufferedXML String containing XML of SOAPPart
-     * @param binaryNodeList Text nodes with the attachment Data Handlers
-     * @param boundary Boundary String
-     * @param contentId Content-ID of SOAPPart
-     * @param charSetEncoding Character Encoding of SOAPPart
-     * @param SOAPContentType Content-Type of SOAPPart
+     * @deprecated use {@link OMMultipartWriter} instead
      */
     public static void complete(OutputStream outStream, 
                                 byte[] xmlData,
@@ -76,17 +68,9 @@ public class MIMEOutputUtils {
         complete(outStream, xmlData, binaryNodeList, boundary,
                  contentId, charSetEncoding, SOAPContentType, null);
     }
+    
     /**
-     * Invoked by MTOMXMLStreamWriter to write the SOAP Part and the attachements. 
-     * 
-     * @param outStream OutputStream target
-     * @param bufferedXML String containing XML of SOAPPart
-     * @param binaryNodeList Text nodes with the attachment Data Handlers
-     * @param boundary Boundary String
-     * @param contentId Content-ID of SOAPPart
-     * @param charSetEncoding Character Encoding of SOAPPart
-     * @param SOAPContentType Content-Type of SOAPPart
-     * @param OMOutputFormat 
+     * @deprecated use {@link OMMultipartWriter} instead
      */
     public static void complete(OutputStream outStream, 
                                 byte[] xmlData,
