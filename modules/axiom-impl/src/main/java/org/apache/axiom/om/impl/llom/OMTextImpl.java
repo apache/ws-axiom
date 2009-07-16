@@ -71,9 +71,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      */
     private Object dataHandlerObject = null;
 
-    /** Field localName used when serializing Binary stuff as MTOM optimized. */
-    protected String localName = "Include";
-
     /** Field attributes used when serializing Binary stuff as MTOM optimized. */
     protected OMAttribute attribute;
     private static final String EMTPY_STRING = "";
@@ -139,7 +136,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.contentID = source.contentID;
         this.dataHandlerObject = source.dataHandlerObject;
         
-        this.localName = source.localName;
         if (source.attribute != null) {
             this.attribute = factory.createOMAttribute(source.attribute.getLocalName(),
                                                        source.attribute.getNamespace(),
@@ -396,10 +392,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         }
     }
 
-    public String getLocalName() {
-        return localName;
-    }
-
     public java.io.InputStream getInputStream() throws OMException {
         if (isBinary) {
             if (dataHandlerObject == null) {
@@ -474,17 +466,16 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         String writer_prefix = writer.getPrefix(nameSpaceName);
         String prefix = XOP_NS.getPrefix();
         if (writer_prefix != null) {
-            writer.writeStartElement(nameSpaceName, this
-                    .getLocalName());
+            writer.writeStartElement(nameSpaceName, "Include");
         } else {
             // According to StAX, setPrefix must occur before
             // writeStartElement
             if (OMSerializerUtil.isSetPrefixBeforeStartElement(writer)) {
                 writer.setPrefix(prefix, nameSpaceName);
-                writer.writeStartElement(prefix, this.getLocalName(),
+                writer.writeStartElement(prefix, "Include",
                                          nameSpaceName);
             } else {
-                writer.writeStartElement(prefix, this.getLocalName(),
+                writer.writeStartElement(prefix, "Include",
                                          nameSpaceName);
                 writer.setPrefix(prefix, nameSpaceName);
             }

@@ -69,9 +69,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     /** Field nameSpace is used when serializing Binary stuff as MTOM optimized. */
     protected OMNamespace ns = null;
 
-    /** Field localName is used when serializing Binary stuff as MTOM optimized. */
-    protected String localName = "Include";
-
     /** Field attribute is used when serializing Binary stuff as MTOM optimized. */
     protected OMAttribute attribute;
 
@@ -150,7 +147,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         this.contentID = source.contentID;
         this.dataHandlerObject = source.dataHandlerObject;
         
-        this.localName = source.localName;
         if (source.ns != null) {
             this.ns = new OMNamespaceImpl(source.ns.getNamespaceURI(), 
                                           source.ns.getPrefix());
@@ -518,10 +514,9 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         String writer_prefix = writer.getPrefix(nameSpaceName);
         String prefix = XOP_NS.getPrefix();
         if (writer_prefix != null) {
-            writer.writeStartElement(nameSpaceName, this
-                    .getLocalName());
+            writer.writeStartElement(nameSpaceName, "Include");
         } else {
-            writer.writeStartElement(prefix, this.getLocalName(),
+            writer.writeStartElement(prefix, "Include",
                                      nameSpaceName);
             writer.setPrefix(prefix, nameSpaceName);
         }
@@ -577,10 +572,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
             writer.writeNamespace(ns_prefix, namespace.getNamespaceURI());
             writer.setPrefix(ns_prefix, uri);
         }
-    }
-
-    public String getLocalName() {
-        return this.localName;
     }
 
     /*
