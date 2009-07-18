@@ -222,7 +222,7 @@
                         <ulink url="http://ws.apache.org/commons/axiom/download.cgi">download</ulink> the
                         latest release. After the source download, the binary can be built. For
                         both MS Windows and Linux, move it to the project directory and execute
-                        the command <command>maven jar</command>. All other necessary jars will be automatically
+                        the command <userinput>maven jar</userinput>. All other necessary jars will be automatically
                         downloaded. When the build is completed successfully, the
                         <filename>axiom-api-&version;.jar</filename> and <filename>axiom-impl-&version;.jar</filename> can be
                         found in the newly created "targets" directory.
@@ -629,15 +629,99 @@ while (navigator.isNavigable()) {
     </chapter>
 
     <chapter>
-        <title>Summary</title>
-        <para>
-            This is meant to be a small yet comprehensive introduction to Axiom. Axiom
-            however, is a lot more than what is described in this tutorial. Readers are
-            welcome to explore Axiom, especially it's capabilities to handle binary
-            content.
-        </para>
+        <title>Integrating Axiom into your project</title>
+        <section>
+            <title>Using Axiom in a Maven 2 project</title>
+            <section>
+                <title>Adding Axiom as a dependency</title>
+                <para>
+                    If your project uses Maven 2, it is fairly easy to add Axiom to your project.
+                    Simply add the following entries to the <sgmltag class="element">dependencies</sgmltag>
+                    section of <filename>pom.xml</filename>:
+                </para>
+<programlisting><![CDATA[<dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-api</artifactId>
+    <version>]]>&version;<![CDATA[</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-impl</artifactId>
+    <version>]]>&version;<![CDATA[</version>
+</dependency>]]></programlisting>
+                <para>
+                    All Axiom releases are deployed to the Maven central repository and there is no need
+                    to add an entry to the <sgmltag class="element">repositories</sgmltag> section.
+                    However, if you want to work with the development (snapshot) version of Axiom, it
+                    is necessary to add the Apache Snapshot Repository:
+                </para>
+<programlisting><![CDATA[<repository>
+    <id>apache.snapshots</id>
+    <name>Apache Snapshot Repository</name>
+    <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+    <releases>
+        <enabled>false</enabled>
+    </releases>
+</repository>]]></programlisting>
+                <tip>
+                    <para>
+                        If you are working on another Apache project, you don't need to add the snapshot repository
+                        in the POM file since it is already declared in the <literal>org.apache:apache</literal>
+                        parent POM.
+                    </para>
+                </tip>
+            </section>
+            <section>
+                <title>Managing the JAF and JavaMail dependencies</title>
+                <para>
+                    Axiom requires the Java Activation Framework (JAF) and the JavaMail API to work. There are two
+                    commonly used incarnations of these libraries: one is Sun's reference implementation, the other
+                    is part of the <ulink url="http://geronimo.apache.org/">Geronimo</ulink> project. Axiom declares
+                    dependencies on the Geronimo versions (though that might
+                    <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-417">change</ulink> in the future).
+                    If your project uses another library that depends on JAF and/or JavaMail, but that refers
+                    to Sun's implementation, your project will end up with dependencies on two different
+                    artifacts implementing the same API.
+                </para>
+                <para>
+                    If you prefer Sun's implementations, then you should change the declaration of the
+                    Axiom dependencies in your POM file as follow:
+                </para> 
+<programlisting><![CDATA[
+<dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-]]><replaceable>xxx</replaceable><![CDATA[</artifactId>
+    <version>]]>&version;<![CDATA[</version>
+    <exclusions>
+        <exclusion>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-activation_1.1_spec</artifactId>
+        </exclusion>
+        <exclusion>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-javamail_1.4_spec</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+]]></programlisting>
+                <para>
+                    If you prefer Geronimo's implementation, then you need to identify the libraries
+                    depending on Sun's artifacts (<literal>javax.activation:activation</literal> and
+                    <literal>javax.mail:mail</literal>) and add the relevant exclusions. You can use
+                    <userinput>mvn dependency:tree</userinput> to easily identify where a transitive dependency
+                    comes from.
+                </para>
+                <para>
+                    The choice between Sun's and Geronimo's implementation is to a large extend
+                    a question of belief. Note however that the <literal>geronimo-javamail_1.4_spec</literal>
+                    artifact used by Axiom only contains the JavaMail API, while Sun's library
+                    bundles the API together with the providers for IMAP and POP3. Depending on your
+                    use case that might be an advantage or disadvantage.
+                </para>
+            </section>
+        </section>
     </chapter>
-    
+
     <chapter id="appendix">
         <title>Appendix</title>
         <section>

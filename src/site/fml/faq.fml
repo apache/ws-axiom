@@ -5,51 +5,6 @@
       title="Frequently (and less frequently) Asked Questions"
       toplink="false">
     <part id="general">
-        <faq id="geronimo_deps">
-            <question>
-                I'm working with Maven and I have a dependency problem with the JavaMail and Activation
-                implementation from Sun and Geronimo. What's happening?
-            </question>
-            <answer>
-                <p>Axiom requires the Java Activation Framework and the JavaMail API to work. There are two
-                commonly used incarnations of these libraries: one is Sun's reference implementation, the other
-                is part of the <a href="http://geronimo.apache.org/">Geronimo</a> project. Axiom declares
-                dependencies on the Geronimo versions (though that might
-                <a href="https://issues.apache.org/jira/browse/WSCOMMONS-417">change</a> in the future).
-                If your project uses another library that depends on JAF and/or JavaMail, but that refers
-                to Sun's implementation, your project will end up with dependencies on two different
-                artifacts implementing the same API.</p>
-                <p>If you prefer Sun's implementations, then you should change the declaration of the
-                Axiom dependencies in your POM file as follow:</p> 
-<source><![CDATA[
-<dependency>
-    <groupId>org.apache.ws.commons.axiom</groupId>
-    <artifactId>axiom-xxx</artifactId>
-    <version>1.2.x</version>
-    <exclusions>
-        <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-activation_1.1_spec</artifactId>
-        </exclusion>
-        <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-javamail_1.4_spec</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-]]></source>
-                <p>If you prefer Geronimo's implementation, then you need to identify the libraries
-                depending on Sun's artifacts (<code>javax.activation:activation</code> and
-                <code>javax.mail:mail</code>) and add the relevant exclusions. You can use
-                <code>mvn dependency:tree</code> to easily identify where a transitive dependency
-                comes from.</p>
-                <p>The choice between Sun's and Geronimo's implementation is to a large extend
-                a question of belief. Note however that the <code>geronimo-javamail_1.4_spec</code>
-                artifact used by Axiom only contains the JavaMail API, while Sun's library
-                bundles the API together with the providers for IMAP and POP3. Depending on your
-                use case that might be an advantage or disadvantage.</p>
-            </answer>
-        </faq>
         <faq id="dom">
             <question>
                 I'm using Axiom, but I need to integrate with a library using DOM. What can I do?
