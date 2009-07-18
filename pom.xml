@@ -418,6 +418,66 @@
                     <attach>true</attach>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.agilejava.docbkx</groupId>
+                <artifactId>docbkx-maven-plugin</artifactId>
+                <version>2.0.8</version>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <id>tutorial-html</id>
+                        <goals>
+                            <goal>generate-html</goal>
+                        </goals>
+                        <phase>pre-site</phase>
+                        <configuration>
+                            <chunkedOutput>true</chunkedOutput>
+                            <targetDirectory>target/site/tutorial</targetDirectory>
+                            <htmlCustomization>src/docbkx/xsl/html.xsl</htmlCustomization>
+                            <postProcess>
+                                <copy todir="target/site/tutorial/images">
+                                    <fileset dir="src/docbkx/images">
+                                        <include name="**/*.jpg"/>
+                                        <include name="**/*.png"/>
+                                    </fileset>
+                                </copy>
+                            </postProcess>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>tutorial-pdf</id>
+                        <goals>
+                            <goal>generate-pdf</goal>
+                        </goals>
+                        <phase>pre-site</phase>
+                        <configuration>
+                            <foCustomization>src/docbkx/xsl/fo.xsl</foCustomization>
+                            <postProcess>
+                                <copy file="target/docbkx/pdf/tutorial.pdf"
+                                      tofile="target/site/tutorial.pdf"/>
+                            </postProcess>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.docbook</groupId>
+                        <artifactId>docbook-xml</artifactId>
+                        <version>4.4</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <includes>tutorial.xml</includes>
+                    <admonGraphics>true</admonGraphics>
+                    <entities>
+                        <entity>
+                            <name>version</name>
+                            <value>${pom.version}</value>
+                        </entity>
+                    </entities>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <pluginRepositories>

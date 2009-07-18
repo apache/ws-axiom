@@ -1,0 +1,709 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+<book>
+    <bookinfo>
+        <title>Axiom Tutorial</title>
+        <releaseinfo>&version;
+        </releaseinfo>
+
+        <legalnotice>
+            <para>
+                Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See
+                the NOTICE file distributed with this work for additional information regarding copyright ownership. The
+                ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use
+                this file except in compliance with the License. You may obtain a copy of the License at
+            </para>
+            <para>
+                <ulink url="http://www.apache.org/licenses/LICENSE-2.0"/>
+            </para>
+            <para>
+                Unless required by applicable law or agreed to in writing, software distributed under the License is
+                distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+                implied. See the License for the specific language governing permissions and limitations under the
+                License.
+            </para>
+        </legalnotice>
+    </bookinfo>
+
+    <toc/>
+
+    <chapter>
+        <title>Introduction</title>
+        <section>
+            <title>What is OM?</title>
+            <para>
+                OM stands for Object Model (also known as AXIOM - AXis Object Model) and refers to the XML infoset model
+                that is initially developed for Apache Axis2. XML infoset refers to the information included inside the
+                XML, and for programmatic manipulation it is convenient to have a representation of this XML infoset in
+                a language specific manner. For an object oriented language the obvious choice is a model made up of
+                objects. <ulink url="http://www.w3.org/DOM/">DOM</ulink> and <ulink url="http://www.jdom.org/">JDOM</ulink>
+                are two such XML models. OM is conceptually similar to such an XML model by its external behavior but
+                deep down it is very much different. The objective of this tutorial is to introduce the basics of OM and
+                explain the best practices to be followed while using OM. However, before diving in to the deep end of
+                OM it is better to skim the surface and see what it is all about!
+            </para>
+        </section>
+        <section>
+            <title>For whom is this Tutorial?</title>
+            <para>
+                This tutorial can be used by anyone who is interested in OM and needs to
+                gain a deeper knowledge about the model. However, it is assumed that the
+                reader has a basic understanding of the concepts of XML (such as
+                <ulink src="http://www.w3.org/TR/REC-xml-names/">Namespaces</ulink>) and a working
+                knowledge of tools such as <ulink href="http://ant.apache.org/">Ant</ulink>.
+                Knowledge in similar object models such as DOM will be quite helpful in
+                understanding OM, mainly to highlight the differences and similarities
+                between the two, but such knowledge is not assumed. Several links are listed
+                in <xref linkend="links"/> that will help understand the basics of
+                XML.
+            </para>
+        </section>
+        <section>
+            <title>What is Pull Parsing?</title>
+            <para>
+                Pull parsing is a recent trend in XML processing. The previously popular XML
+                processing frameworks such as
+                <ulink url="http://en.wikipedia.org/wiki/Simple_API_for_XML">SAX</ulink> and
+                <ulink url="http://en.wikipedia.org/wiki/Document_Object_Model">DOM</ulink> were
+                "push-based" which means the control of the parsing was in the hands of the
+                parser itself. This approach is fine and easy to use, but it was not
+                efficient in handling large XML documents since a complete memory model will
+                be generated in the memory. Pull parsing inverts the control and hence the
+                parser only proceeds at the users command. The user can decide to store or
+                discard events generated from the parser. OM is based on pull parsing. To
+                learn more about XML pull parsing see the
+                <ulink url="http://www.bearcave.com/software/java/xml/xmlpull.html">XML pull
+                parsing introduction</ulink>.
+            </para>
+        </section>
+        <section>
+            <title>A Bit of History</title>
+            <para>
+                The original OM was proposed as a store for the pull parser events for
+                later processing, at the Axis summit held in Colombo, Sri Lanka, in September
+                2004. However, this approach was soon improved and OM was pursued as a
+                complete <ulink url="http://dret.net/glossary/xmlinfoset">XML infoset</ulink> model
+                due to its flexibility. Several implementation techniques were attempted
+                during the initial phases. The two most promising techniques were the table
+                based technique and the link list based technique. During the intermediate
+                performance tests the link list based technique proved to be much more memory
+                efficient for smaller and mid sized XML documents. The advantage of the table
+                based OM was only visible for the large and very large XML documents, and
+                hence, the link list based technique was chosen as the most suitable. Initial
+                efforts were focused on implementing the XML infoset (XML Information Set)
+                items which are relevant to the SOAP specification (DTD support, Processing
+                Instruction support, etc were not considered). The advantage of having a
+                tight integration was evident at this stage and this resulted in having SOAP
+                specific interfaces as part of OM rather than a layer on top of it. OM was
+                deliberately made
+                <ulink url="http://en.wikipedia.org/wiki/Application_programming_interface">API</ulink>
+                centric. It allows the implementations to take place independently and
+                swapped without affecting the program later.
+            </para>
+        </section>
+        <section>
+            <title>Features of OM</title>
+            <para>
+                OM is a lightweight, deferred built XML infoset representation based on
+                StAX (<ulink url="http://www.jcp.org/en/jsr/detail?id=173">JSR 173</ulink>), which
+                is the standard streaming pull parser API. The object model can be
+                manipulated as flexibly as any other object model (Such as
+                <ulink url="http://www.jdom.org/">JDOM</ulink>), but underneath, the objects will be
+                created only when they are absolutely required. This leads to much less
+                memory intensive programming. Following is a short feature overview of OM.
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">Lightweight</emphasis>: OM is specifically targeted to be
+                        lightweight. This is achieved by reducing the depth of the hierarchy,
+                        number of methods and the attributes enclosed in the objects. This makes
+                        the objects less memory intensive.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">Deferred building</emphasis>: By far this is the most important
+                        feature of OM. The objects are not made unless a need arises for them.
+                        This passes the control of building over to the object model itself
+                        rather than an external builder.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">Pull based</emphasis>: For a deferred building mechanism a pull
+                        based parser is required. OM is based on
+                        <ulink url="http://today.java.net/pub/a/today/2006/07/20/introduction-to-stax.html">StAX</ulink>,
+                        the standard pull parser API.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <important>
+                <para>
+                    OM is tightly bound to StAX API. To work with OM
+                    a StAX compliant parser and the API <emphasis>must</emphasis> be present in the
+                    classpath.
+                </para>
+            </important>
+            <para>
+                The Following image shows how OM API is viewed by the user
+            </para>
+            <figure>
+                <title>Architecture overview</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="architecture.jpg" format="JPG"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>
+                OM Builder wraps the raw xml character stream through the StAX reader API.
+                Hence, the complexities of the pull event stream is transparent to the
+                user.
+            </para>
+        </section>
+        <section>
+            <title>A Bit About Caching</title>
+            <para>
+                Since OM is a deferred built object model, It incorporates the concept of
+                caching. Caching refers to the creation of the objects while parsing the pull
+                stream. The reason why this is so important is because caching can be turned
+                off in certain situations. If so the  parser proceeds without building the
+                object structure. User can extract the raw pull stream from OM and use that
+                instead of the OM. In this case it is sometimes beneficial to switch off
+                caching. <xref linkend="advanced"/> explains
+                more on accessing the raw pull stream and switching on and off the
+                caching.
+            </para>
+        </section>
+        <section>
+            <title>Where Does SOAP Come into Play?</title>
+            <para>
+                In a nutshell <ulink url="http://www.w3schools.com/SOAP/soap_intro.asp">SOAP</ulink> is an
+                information exchange protocol based on XML. SOAP has a defined set of XML
+                elements that should be used in messages. Since Axis2 is a "SOAP Engine" and
+                OM is built for Axis2, a set of SOAP specific objects were also defined along
+                with OM. These SOAP Objects are extensions of the general OM objects.
+            </para>
+        </section>
+    </chapter>
+
+    <chapter>
+        <title>Working with OM</title>
+        <section>
+            <title>Obtaining the OM Binary</title>
+            <para>
+                There are two methods through which the OM-binary can be obtained:
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        The easiest way to obtain the OM binary is to
+                        <ulink url="http://ws.apache.org/commons/axiom/download.cgi">download</ulink> the
+                        latest release. After the source download, OM-binary can be built. For
+                        both MS Windows and Linux, move it to the project directory and execute
+                        the command "maven jar". All other necessary jars will be automatically
+                        downloaded. When the build is completed successfully, the
+                        axiom-api-&version;.jar and axiom-impl-&version;.jar can be
+                        found in the newly created "targets" directory.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        However, more adventurous users can build the OM from source, which is
+                        described in the next section. Detailed information on getting source
+                        from SVN repository is found <ulink url="svn.html">here</ulink>.
+                    </para>
+                </listitem>
+            </orderedlist>
+            <para>
+                Once the OM-binary is obtained by any of the above ways, it should be
+                included in the classpath for any of the OM based programs to work.
+                Subsequent sections of this tutorial assume that this build step is complete
+                and axiom-api-&version;.jar, and axiom-impl-&version;.jar are
+                present in the classpath along with the StAX API jar file and a StAX
+                implementation.
+            </para>
+        </section>
+        <section id="creation">
+            <title>Creation</title>
+            <para>
+                Creation is the first and foremost action when using an Object
+                representation. This part explains how OM can be built from an existing
+                document or simply programmatically. OM provides a notion of a factory and a
+                builder to create objects. The factory helps to keep the code at the
+                interface level and the implementations separately as shown in
+                <xref linkend="fig_api"/>. Since OM is tightly bound to StAX, a StAX
+                compliant reader should be created first with the desired input stream. Then
+                one can select one of the different builders available.
+            </para>
+            <para>
+                StAXOMBuilder will build pure XML infoset compliant object model whilst
+                the SOAPModelBuilder returns SOAP specific objects (such as the SOAPEnvelope,
+                which are sub classes of the OMElement) through its builder methods. The
+                following piece of code shows the correct method of creating an OM document
+                from an input stream.
+            </para>
+            <example id="list1">
+                <title>Creating an OM document from an input stream</title>
+<programlisting>//create the parser
+XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(new FileInputStream(file));
+
+//create the builder
+StAXOMBuilder builder = new StAXOMBuilder(parser);
+
+//get the root element (in this case the envelope)
+OMElement documentElement =  builder.getDocumentElement();</programlisting>
+            </example>
+            <para>
+                As the example shows, creating an OM from an input stream is pretty
+                straightforward. However, elements and nodes can be created programmatically
+                to modify the structure as well. The recommended way to create OM objects
+                programmatically is to use the factory. OMAbstractFactory.getOMFactory() will
+                return the proper factory and the creator methods for each type that should
+                be called. Currently OM has two builders, namely the OM builder
+                (StAXOMBuilder) and the SOAP model builder (StAXSOAPModelBuilder). These
+                builders provide the necessary information to the XML infoset model to build
+                itself.
+            </para>
+            <figure id="fig_api">
+                <title>The Axiom API with different implementations</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="api.jpg" format="JPG"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>
+                A simple example is shown below:
+            </para>
+            <example id="list2">
+                <title>Creating an OM document programmatically</title>
+<programlisting>//create a factory
+OMFactory factory = OMAbstractFactory.getOMFactory();
+//use the factory to create two namespace objects
+OMNamespace ns1 = factory.createOMNamespace("bar","x");
+OMNamespace ns2 = factory.createOMNamespace("bar1","y");
+//use the factory to create three elements
+OMElement root = factory.createOMElement("root",ns1);
+OMElement elt11 = factory.createOMElement("foo1",ns1);
+OMElement elt12 = factory.createOMElement("foo2",ns1);</programlisting>
+            </example>
+            <para>
+                The reason as to have a set of factory.createXXX methods is to cater for
+                different implementations, but keep the programmers code intact. Its highly
+                recommended to use the factory for creating OM objects as this will ease the
+                switching of different OM implementations. Several differences exist between
+                a programmatically created OMNode and a conventionally built OMNode. The most
+                important difference is that the former will have no builder object enclosed,
+                where as the latter always carries a reference to its builder.
+            </para>
+            <para>
+                As stated earlier in this tutorial, since the object model is built as and
+                when required, each and every OMNode should have a reference to its builder.
+                If this information is not available, it is due to the object being created
+                without a builder. This difference becomes evident when the user tries to get
+                a non caching pull parser from the OMElement. This will be discussed in more
+                detail in <xref linkend="advanced"/>.
+            </para>
+            <para>
+                In order to understand the requirement of the builder reference in each
+                and every OMNode, consider the following scenario. Assume that the parent
+                element is built but the children elements are not. If the parent is asked to
+                iterate through its children, this information is not readily available to
+                the parent element and it should build its children first before attempting
+                to iterate them. In order to provide a reference of the builder, each and
+                every node of an OM structure should carry the reference to its builder. Each
+                and every OMNode carries a flag that states its build status. Apart from this
+                restriction there are no other constraints that keep the programmer away from
+                mixing up programmatically made OMNode objects with OMNode objects built from
+                builders.
+            </para>
+            <para>
+                The SOAP object hierarchy is made in the most natural way for a
+                programmer. An inspection of the API will show that it is quite close to the
+                SAAJ API but with no bindings to DOM or any other model. The SOAP classes
+                extend basic OM classes (such as the OMElement) hence, one can access a SOAP
+                document either with the abstraction of SOAP or drill down to the underlying
+                XML Object model with a simple casting.
+            </para>
+        </section>
+        <section>
+            <title>Addition of Nodes</title>
+            <para>
+                Addition and removal methods are primarily defined in the OMElement
+                interface. The following are the most important in adding nodes.
+            </para>
+<programlisting>public void addChild(OMNode omNode);
+public void addAttribute(OMAttribute attr);</programlisting>
+            <para>
+                This code segment shows how the addition takes place. Note that it is
+                related to the code listings <xref linkend="list1"/> &amp; <xref linkend="list2"/> in <xref linkend="creation"/>.
+            </para>
+<programlisting>//set the children
+elt11.addChild(elt21);
+elt12.addChild(elt22);
+root.addChild(elt11);
+root.addChild(elt12);</programlisting>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        AddChild method will always add the child as the last child of the parent.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        A given node can be removed from the tree by calling the detach()
+                        method. A node can also be removed from the tree by calling the remove
+                        method of the returned iterator which will also call the detach method of
+                        the particular node internally.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Namespaces are a tricky part of any XML object model and is the same in
+                        OM. However, the interface to the namespace have been made very simple.
+                        OMNamespace is the class that represents a namespace with intentionally
+                        removed setter methods. This makes the OMNamespace immutable and allows
+                        the underlying implementation to share the objects without any
+                        difficulty.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <para>
+                Following are the important methods available in OMElement to handle
+                namespaces.
+            </para>
+<programlisting>public OMNamespace declareNamespace(String uri, String prefix);
+public OMNamespace declareNamespace(OMNamespace namespace);
+public OMNamespace findNamespace(String uri, String prefix) throws OMException;</programlisting>
+            <para>
+                The declareNamespaceXX methods are fairly straightforward. Add a namespace
+                to namespace declarations section. Note that a namespace declaration that has
+                already being added will not be added twice. findNamespace is a very handy
+                method to locate a namespace object higher up the object tree. It searches
+                for a matching namespace in its own declarations section and jumps to the
+                parent if it's not found. The search progresses up the tree until a matching
+                namespace is found or the root has been reached.
+            </para>
+            <para>
+                During the serialization a directly created namespace from the factory
+                will only be added to the declarations when that prefix is encountered by the
+                serializer. More of the serialization matters will be discussed in
+                <xref linkend="serializer"/>.
+            </para>
+            <para>
+                The following simple code segment shows how the namespaces are dealt in OM
+            </para>
+            <example id="list6">
+                <title>Creating an OM document with namespaces</title>
+<programlisting>OMFactory factory = OMAbstractFactory.getOMFactory();
+OMNamespace ns1 = factory.createOMNamespace("bar","x");
+OMElement root = factory.createOMElement("root",ns1);
+OMNamespace ns2 = root.declareNamespace("bar1","y");
+OMElement elt1 = factory.createOMElement("foo",ns1);
+OMElement elt2 = factory.createOMElement("yuck",ns2);
+OMText txt1 = factory.createOMText(elt2,"blah");
+elt2.addChild(txt1);
+elt1.addChild(elt2);
+root.addChild(elt1);</programlisting>
+            </example>
+            <para>
+                Serialization of the root element produces the following XML:
+            </para>
+<screen>&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</screen>
+        </section>
+        <section>
+            <title>Traversing</title>
+            <para>
+                Traversing the object structure can be done in the usual way by using the
+                list of children. Note however, that the child nodes are returned as an
+                iterator. The Iterator supports the 'OM way' of accessing elements and is
+                more convenient than a list for sequential access. The following code sample
+                shows how the children can be accessed. The children are of the type OMNode
+                that can either be OMText or OMElement.
+            </para>
+<programlisting>Iterator children = root.getChildren();
+while(children.hasNext()){
+        OMNode node = (OMNode)children.next();
+}</programlisting>
+            <para>
+                Apart from this, every OMNode has links to its siblings. If more thorough
+                navigation is needed the nextSibling() and PreviousSibling() methods can be
+                used. A more selective set can be chosen by using the
+                getChildrenWithName(QName) methods. The getChildWithName(Qname) method
+                returns the first child that matches the given QName and
+                getChildrenWithName(QName) returns a collection containing all the matching
+                children. The advantage of these iterators is that they won't build the whole
+                object structure at once, until its required.
+            </para>
+            <important>
+                <para>
+                    All iterator implementations internally stay one
+                    step ahead of their apparent location to provide the correct value
+                    for the hasNext() method. This hidden advancement can build elements
+                    that are not intended to be built at all. Hence these iterators are
+                    recommended only when caching is not a concern.
+                </para>
+            </important>
+        </section>
+        <section id="serializer">
+            <title>Serializer</title>
+            <para>
+                OM can be serialized either as the pure object model or the pull event
+                stream. The serialization uses a XMLStreamWriter object to write out the
+                output and hence, the same serialization mechanism can be used to write
+                different types of outputs (such as text, binary, etc.).
+            </para>
+            <para>
+                A caching flag is provided by OM to control the building of the in-memory
+                OM. The OMNode has two methods, serializeAndConsume and serialize. When
+                serializeAndConsume is called the cache flag is reset and the serializer does
+                not cache the stream. Hence, the object model will not be built if the cache
+                flag is not set.
+            </para>
+            <para>
+                The serializer serializes namespaces in the following way:
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        When a namespace that is in the scope but not yet declared is
+                        encountered, it will then be declared.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        When a namespace that is in scope and already declared is encountered,
+                        the existing declarations prefix is used.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        When the namespaces are declared explicitly using the elements
+                        declareNamespace() method, they will be serialized even if those
+                        namespaces are not used in that scope.
+                    </para>
+                </listitem>
+            </orderedlist>
+            <para>
+                Because of this behavior, if a fragment of the XML is serialized, it will
+                also be <emphasis>namespace qualified</emphasis> with the necessary namespace
+                declarations.
+            </para>
+            <para>
+                Here is an example that shows how to write the output to the console, with
+                reference to the earlier code sample- <xref linkend="list1"/>
+                that created a SOAP envelope.
+            </para>
+<programlisting>XMLStreamWriter writer = XMLOutputFactory.newInstance().createXMLStreamWriter(System.out);
+//dump the output to console with caching
+envelope.serialize(writer); 
+writer.flush();</programlisting>
+            <para>
+                or simply
+            </para>
+<programlisting>System.out.println(root.toStringWithConsume());</programlisting>
+            <para>
+                The above mentioned features of the serializer forces a correct
+                serialization even if only a part of the OM tree is serialized. The following
+                serializations show how the serialization mechanism takes the trouble to
+                accurately figure out the namespaces. The example is from <xref linkend="list6"/>
+                which creates a small OM programmatically.
+                Serialization of the root element produces the following:
+            </para>
+<screen>&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</screen>
+            <para>
+                However, serialization of only the foo element produces the following:
+            </para>
+<screen>&lt;x:foo xmlns:x="bar"&gt;&lt;y:yuck xmlns:y="bar1"&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;</screen>
+            <para>
+                Note how the serializer puts the relevant namespace declarations in place.
+            </para>
+        </section>
+        <section>
+            <title>Complete Code for the OM based Document Building and Serialization</title>
+            <para>
+                The following code segment shows how to use the OM for completely building
+                a document and then serializing it into text pushing the output to the
+                console. Only the important sections are shown here. The complete program
+                listing can be found in <xref linkend="appendix"/>.
+            </para>
+<programlisting>//create the parser
+XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(new FileInputStream(file));
+//create the builder
+StAXOMBuilder builder = new StAXOMBuilder(parser);
+
+//get the root element (in this case the envelope)
+OMElement documentElement = builder.getDocumentElement();
+
+//dump the out put to console with caching
+System.out.println(documentElement.toStringWithConsume());</programlisting>
+        </section>
+    </chapter>
+
+    <chapter id="advanced">
+        <title>Advanced Operations with OM</title>
+        <section>
+            <title>Use of the OMNavigator for Traversal</title>
+            <para>
+                OM provides a utility class to navigate the OM structure. The navigator
+                provides an in-order traversal of the OM tree up to the last-built node. The
+                Navigator has two states called the navigable state and the completion state.
+                Since the navigator provides the navigation starting from an OMElement, it is
+                deemed to have completed the navigation when the starting node is reached
+                again. This state is known as the completion state. Once the navigator has
+                reached the complete status its navigation is done and it cannot proceed.
+            </para>
+            <para>
+                It is possible that the OM tree does not get built completely when it is
+                navigated. The navigable status shows whether the tree structure is
+                navigable. When the navigator is complete it is not navigable anymore.
+                However, it is possible for a navigator to become non-navigable without being
+                complete. The following code sample shows how the navigator should be used
+                and handled using its states.
+            </para>
+<programlisting>//Create a navigator
+OMNavigator navigator = new OMNavigator(envelope);
+OMNode node = null;
+while (navigator.isNavigable()) {
+     node = navigator.next();
+}</programlisting>
+        </section>
+        <section>
+            <title>Accessing the Pull Parser</title>
+            <para>
+                OM is tightly integrated with StAX and the
+                getXMLStreamReader()/getXMLStreamReaderWithoutCaching() methods in the
+                OMElement provides a XMLStreamReader object. This XMLStreamReader instance
+                has a special capability of switching between the underlying stream and the
+                OM object tree if the cache setting is off. However, this functionality is
+                completely transparent to the user. This is further explained in the
+                following paragraphs.
+            </para>
+            <para>
+                OM has the concept of caching, and OM is the actual cache of the events
+                fired. However, the requester can choose to get the pull events from the
+                underlying stream rather than the OM tree. This can be achieved by getting
+                the pull parser with the cache off. If the pull parser was obtained without
+                switching off cache, the new events fired will be cached and the tree
+                updated. This returned pull parser will switch between the object structure
+                and the stream underneath, and the users need not worry about the differences
+                caused by the switching. The exact pull stream the original document would
+                have provided would be produced even if the OM tree was fully or partially
+                built. The getXMLStreamReaderWithoutCaching() method is very useful when the
+                events need to be handled in a pull based manner without any intermediate
+                models. This makes such operations faster and efficient.
+            </para>
+            <important>
+                <para>
+                    For consistency reasons once the cache is
+                    switched off it cannot be switched on again.
+                </para>
+            </important>
+        </section>
+    </chapter>
+
+    <chapter>
+        <title>Summary</title>
+        <para>
+            This is meant to be a small yet comprehensive introduction to AXIOM. AXIOM
+            however, is a lot more than what is described in this tutorial. Readers are
+            welcome to explore AXIOM, especially it's capabilities to handle binary
+            content.
+        </para>
+    </chapter>
+    
+    <chapter id="appendix">
+        <title>Appendix</title>
+        <section>
+            <title>Program Listing for Complete OM - Build and Serialize</title>
+<programlisting>import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+public class TestOMBuilder {
+
+    /**
+     * Pass the file name as an argument
+     * @param args
+     */
+    public static void main(String[] args) {
+        try {
+            //create the parser
+            XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(new FileInputStream(args[0]));
+            StAXOMBuilder builder = new StAXOMBuilder(parser);
+            //get the root element
+            OMElement documentElement = builder.getDocumentElement();
+
+            //dump the out put to console with caching
+            System.out.println(documentElement.toStringWithConsume()); 
+
+        } catch (XMLStreamException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+}</programlisting>
+        </section>
+        <section id="links">
+            <title>Links</title>
+            <para>
+                For basics in XML
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <ulink url="http://www-128.ibm.com/developerworks/xml/newto/index.html">Developerworks Introduction to XML</ulink>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <ulink url="http://www.bearcave.com/software/java/xml/xmlpull.html">Introduction to Pull parsing</ulink>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <ulink url="http://today.java.net/pub/a/today/2006/07/20/introduction-to-stax.html">Introduction to StAX</ulink>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <ulink url="http://www.jaxmag.com/itr/online_artikel/psecom,id,726,nodeid,147.html">Fast and Lightweight Object Model for XML</ulink>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <ulink url="http://www-128.ibm.com/developerworks/library/x-axiom/">Get the most out of XML processing with AXIOM</ulink>
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </section>
+    </chapter>
+</book>

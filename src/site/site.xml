@@ -38,7 +38,8 @@
             </item>
             <item name="Documentation">
                 <item name="Changes" href="changes.html"/>
-                <item name="OM Tutorial" href="OMTutorial.html"/>
+                <item name="Tutorial" href="tutorial/tutorial.html"/>
+                <item name="Tutorial (PDF)" href="tutorial.pdf"/>
                 <item name="Javadocs" href="/apidocs/index.html"/>
                 <item name="FAQ" href="faq.html"/>
                 <item name="View Source" href="http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/?root=Apache-SVN"/>
