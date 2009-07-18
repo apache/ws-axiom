@@ -563,6 +563,104 @@ OMElement documentElement = builder.getDocumentElement();
 //dump the out put to console with caching
 System.out.println(documentElement.toStringWithConsume());</programlisting>
         </section>
+        <section>
+            <title>Exception handling</title>
+            <para>
+                The fact that Axiom uses deferred building means that a call to a method in one
+                of the object model classes may cause Axiom to read events from the underlying
+                StAX parser, unless the node has already been built or if it was created
+                programmatically. If an I/O error occurs or if the XML document being read is
+                not well formed, an exception will be reported by the parser. This exception is
+                propagated to the user code as an <classname>OMException</classname>.
+            </para>
+            <para>
+                Note that <classname>OMException</classname> is an unchecked exception.
+                Strictly speaking this is in violation of the principle that unchecked exceptions
+                should be reserved for problems resulting from programming problems.
+                There are however several compelling reasons to use unchecked exceptions in this
+                case:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        The same API is used to work with programmatically created object models
+                        and with object models created from an XML document. On a programmatically
+                        created object model, an <classname>OMException</classname> in general
+                        indicates a programming problem. Moreover one of the design goals of Axiom
+                        is to give the user code the illusion that it is interacting with a complete
+                        in-memory representation of an XML document, even if behind the scenes
+                        Axiom will only create the objects on demand. Using checked exceptions
+                        would break that abstraction.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        In most cases, code interacting with the object model will not be able
+                        to recover from an <classname>OMException</classname>. Consider for example
+                        a utility method that receives an <classname>OMElement</classname> as input
+                        and that is supposed to extract some data from this information item.
+                        When a parsing error occurs while iterating over the children of that
+                        element, there is nothing the utility method could do to recover from this
+                        error.
+                    </para>
+                    <para>
+                        The only place where it makes sense to catch this type of exception and to
+                        attempt to recover from it is in the code that creates the
+                        <classname>XMLStreamReader</classname> and builder. It is clear that
+                        it would not be reasonable to force developers to declare a checked exception
+                        on every method that interacts with an Axiom object model only to allow
+                        propagation of that exception to the code that initially created the parser.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <para>
+                The situation is actually quite similar to that encountered in three-tier
+                applications, where the DAO layer in general wraps checked exceptions from
+                the database in an unchecked exception because the business logic and the
+                presentation tier will not be able to recover from these errors.
+            </para>
+            <para>
+                When catching an <classname>OMException</classname> special attention should
+                be paid if the code handling the exception again tries to access the object model.
+                Indeed this will inevitably result in another exception being triggered, unless the
+                code only accesses those parts of the tree that have been built successfully.
+                E.g. the following code will give unexpected results because the call to
+                <methodname>serializeAndConsume</methodname> will almost certainly trigger another
+                exception:
+            </para>
+<programlisting>OMElement element = ...
+try {
+    ...
+} catch (OMException ex) {
+    ex.printStackTrace();
+    element.serializeAndConsume(System.out);
+}</programlisting>
+            <caution>
+                <para>
+                    In Axiom versions prior to 1.2.8, an attempt to access the object model after
+                    an exception has been reported by the underlying parser may result in an
+                    <classname>OutOfMemoryError</classname> or cause Axiom to lock itself up in
+                    an infinite loop. The reason for this is that in some cases, after throwing an
+                    exception, the Woodstox parser (which is the default StAX implementation used
+                    by Axiom) is left in an inconsistent state in which it will return an infinite
+                    sequence of events. Starting with Axiom 1.2.8, the object model builder
+                    will never attempt to read new events from a parser that has previously reported
+                    an I/O or parsing error. These versions of Axiom are therefore safe; see
+                    <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-372">WSCOMMONS-372</ulink>
+                    for more details.
+                </para>
+            </caution>
+            <note>
+                <para>
+                    The discussion in this section suggests that Axiom should make a
+                    clear distinction between exceptions caused by parser errors and
+                    exceptions caused by programming problems or other errors, e.g.
+                    by using distinct subclasses of <classname>OMException</classname>.
+                    This is currently not the case. This issue may be addressed in a future
+                    version of Axiom.
+                </para>
+            </note>
+        </section>
     </chapter>
 
     <chapter id="advanced">
