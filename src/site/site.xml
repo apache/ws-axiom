@@ -37,7 +37,6 @@
                 <item name="Source Code" href="source-repository.html"/>
             </item>
             <item name="Documentation">
-                <item name="Changes" href="changes.html"/>
                 <item name="Tutorial" href="tutorial/tutorial.html"/>
                 <item name="Tutorial (PDF)" href="tutorial.pdf"/>
                 <item name="Javadocs" href="/apidocs/index.html"/>

@@ -818,6 +818,65 @@ while (navigator.isNavigable()) {
                 </para>
             </section>
         </section>
+        <section>
+            <title>Migrating from older Axiom versions</title>
+            <para>
+                This section provides information about changes in Axiom that might impact existing
+                code when migrating from an older version of Axiom. Note that this section is not
+                meant as a change log that lists all changes or new features. Also, before upgrading
+                to a newer Axiom version, you should always check if your code uses methods or classes
+                that have been deprecated. You should fix all deprecation warnings before changing the
+                Axiom version. In general the Javadoc of the deprecated class or method gives you
+                a hint on how to change your code.
+            </para>
+            <section>
+                <title>Changes in Axiom 1.2.9</title>
+                <section>
+                    <title>System properties used by <classname>OMAbstractFactory</classname></title>
+                    <para>
+                        Prior to Axiom 1.2.9, <classname>OMAbstractFactory</classname> used system properties
+                        as defined in the following table to determine the factory implementations to use:
+                    </para>
+                    <segmentedlist>
+                        <?dbhtml list-presentation="table"?>
+                        <segtitle>Object model</segtitle>
+                        <segtitle>Method</segtitle>
+                        <segtitle>System property</segtitle>
+                        <segtitle>Default</segtitle>
+                        <seglistitem>
+                            <seg>Plain XML</seg>
+                            <seg><methodname>getOMFactory()</methodname></seg>
+                            <seg><varname>om.factory</varname></seg>
+                            <seg><literal>org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory</literal></seg>
+                        </seglistitem>
+                        <seglistitem>
+                            <seg>SOAP 1.1</seg>
+                            <seg><methodname>getSOAP11Factory()</methodname></seg>
+                            <seg><varname>soap11.factory</varname></seg>
+                            <seg><literal>org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory</literal></seg>
+                        </seglistitem>
+                        <seglistitem>
+                            <seg>SOAP 1.2</seg>
+                            <seg><methodname>getSOAP12Factory()</methodname></seg>
+                            <seg><varname>soap12.factory</varname></seg>
+                            <seg><literal>org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory</literal></seg>
+                        </seglistitem>
+                    </segmentedlist>
+                    <para>
+                        This in principle allowed to mix default factory implementations from different implementations
+                        of the Axiom API (e.g. an OMFactory from the LLOM implementation and SOAP factories from DOOM).
+                        This however doesn't make sense. The system properties as described above are no longer
+                        supported in 1.2.9 and the default Axiom implementation is chosen using the new
+                        <varname>org.apache.axiom.om.OMMetaFactory</varname> system property. For LLOM, you should set:
+                    </para>
+<programlisting>org.apache.axiom.om.OMMetaFactory=org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory</programlisting>
+                    <para>
+                        This is the default and is equivalent to the defaults in 1.2.8. For DOOM, you should set:
+                    </para>
+<programlisting>org.apache.axiom.om.OMMetaFactory=org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory</programlisting>
+                </section>
+            </section>
+        </section>
     </chapter>
 
     <chapter id="appendix">
