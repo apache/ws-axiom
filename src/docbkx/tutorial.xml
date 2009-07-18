@@ -563,6 +563,71 @@ OMElement documentElement = builder.getDocumentElement();
 //dump the out put to console with caching
 System.out.println(documentElement.toStringWithConsume());</programlisting>
         </section>
+        <section id="StAXUtils">
+            <title>Creating stream readers and writers using <classname>StAXUtils</classname></title>
+            <para>
+                The normal way to create <classname>XMLStreamReader</classname> and
+                <classname>XMLStreamWriter</classname> instances is to first request a
+                <classname>XMLInputFactory</classname> or <classname>XMLOutputFactory</classname>
+                instance from the StAX API and then use the factory methods to create the
+                reader or writer.
+            </para>
+            <para>
+                Doing this every time a reader or writer is created is cumbersome and also
+                introduces some overhead because on every invocation the <methodname>newInstance</methodname>
+                methods in <classname>XMLInputFactory</classname> and <classname>XMLOutputFactory</classname>
+                go through the process of looking up the StAX implementation to use and creating
+                a new instance of the factory. The only case where this is really needed is when
+                it is necessary to configure the factory in a special way (by setting properties on it).
+            </para>
+            <para>
+                Axiom has a utility class called <classname>StAXUtils</classname> that provides
+                methods to easily create readers and writers configured with default settings.
+                It also keeps the created factories in a cache to improve performance. The caching
+                occurs by (context) class loader and it is therefore safe to use <classname>StAXUtils</classname>
+                in a runtime environment with a complex class loader hierarchy.
+            </para>
+            <caution>
+                <para>
+                    Axiom implicitly assumes that <classname>XMLInputFactory</classname> and
+                    <classname>XMLOutputFactory</classname> instances are thread safe. This is the case
+                    for Woodstox (which is the default StAX implementation used by Axiom), but not
+                    e.g. for the StAX implementation shipped with Sun's Java 6 runtime environment.
+                    Therefore you should avoid using <classname>StAXUtils</classname>
+                    together with a StAX implementation other than Woodstox, especially in a highly
+                    concurrent environment. See
+                    <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-489">WSCOMMONS-489</ulink>
+                    for more details.
+                </para>
+            </caution>
+            <para>
+                <classname>StAXUtils</classname> also enables a property file based configuration
+                mechanism to change the default factory settings at assembly or deployment time of
+                the application using Axiom. This is described in more details in
+                <xref linkend="factory.properties"/>.
+            </para>
+            <important>
+                <para>
+                    The <methodname>getInputFactory</methodname> and <methodname>getOutputFactory</methodname>
+                    methods in <classname>StAXUtils</classname> give access to the cached factories.
+                    Axiom doesn't restrict access to the <methodname>setProperty</methodname> method
+                    of these factories. In principle this makes it possible to change the configuration
+                    of these factories for the whole application. However, since this depends on the
+                    implementation details of <classname>StAXUtils</classname> (e.g. how factories
+                    are cached) and since there is a proper configuration mechanism for that purpose,
+                    using this possibility is strongly discouraged. Future versions of Axiom may
+                    restrict access to <methodname>setProperty</methodname> to prevent tampering with
+                    the cached factories.
+                </para>
+            </important>
+            <para>
+                The methods in <classname>StAXUtils</classname> to create readers and writers
+                are rather self-explaining. For example to create an <classname>XMLStreamReader</classname>
+                from an <classname>InputStream</classname>, use the following code:
+            </para>
+<programlisting>InputStream in = ...
+XMLStreamReader reader = StAXUtils.createXMLStreamReader(in);</programlisting>
+        </section>
         <section>
             <title>Exception handling</title>
             <para>
@@ -819,6 +884,105 @@ while (navigator.isNavigable()) {
             </section>
         </section>
         <section>
+            <title>Applying application wide configuration</title>
+            <para>
+                Sometimes it is necessary to customize some particular aspects of Axiom for an entire
+                application. There are several things that can be configured through system properties
+                and/or property files. This is also important when using third party applications or
+                libraries that depend on Axiom.
+            </para>
+            <section id="factory.properties">
+                <title>Changing the default StAX factory settings</title>
+                <note>
+                    <para>
+                        The information in this section only applies to
+                        <classname>XMLStreamReader</classname> or <classname>XMLStreamWriter</classname>
+                        instances created using <classname>StAXUtils</classname>
+                        (see <xref linkend="StAXUtils"/>). Readers and writers created using the
+                        standard StAX APIs will keep their default settings as defined by the
+                        implementation (or dictated by the StAX specifications).
+                    </para>
+                </note>
+                <note>
+                    <para>
+                        The feature described in this section was introduced in Axiom 1.2.9.
+                    </para>
+                </note>
+                <para>
+                    When creating a new <classname>XMLInputFactory</classname> (resp.
+                    <classname>XMLInputFactory</classname>), <classname>StAXUtils</classname>
+                    looks for a property file named <filename>XMLInputFactory.properties</filename>
+                    (resp. <filename>XMLOutputFactory.properties</filename>) in the classpath,
+                    using the same class loader as the one from which the factory is loaded
+                    (by default this is the context classloader).
+                    If a corresponding resource is found, the properties in that file
+                    are applied to the factory using the <methodname>XMLInputFactory#setProperty</methodname>
+                    (resp. <methodname>XMLOutputFactory#setProperty</methodname>) method.
+                </para>
+                <para>
+                    This feature can be used to set factory properties of type <classname>Boolean</classname>,
+                    <classname>Integer</classname> and <classname>String</classname>. The following
+                    sections present some sample use cases.
+                </para>
+                <section>
+                    <title>Changing the serialization of the CR-LF character sequence</title>
+                    <para>
+                        Section 2.11 of <biblioref linkend="bib.xml"/> specifies that an <quote>XML processor
+                        must behave as if it normalized all line breaks in external parsed entities (including
+                        the document entity) on input, before parsing, by translating both the two-character
+                        sequence #xD #xA and any #xD that is not followed by #xA to a single #xA
+                        character.</quote> This implies that when a Windows style line ending, i.e. a CR-LF
+                        character sequence is serialized literally into an XML document, the CR character
+                        will be lost during deserialization. Depending on the use case this may or may not
+                        be desirable.
+                    </para>
+                    <para>
+                        The only way to strictly preserve CR characters is to serialize them as
+                        character entities, i.e. <sgmltag class="genentity">#xD</sgmltag>. This is the default
+                        behavior of Woodstox. This can be easily checked using the following Java snippet:
+                    </para>
+<programlisting>OMFactory factory = OMAbstractFactory.getOMFactory();
+OMElement element = factory.createOMElement("root", null);
+element.setText("Test\r\nwith CRLF");
+element.serialize(System.out);</programlisting>
+                    <para>
+                        This code produces the following output:
+                    </para>
+<screen><![CDATA[<root>Test&#xd;
+with CRLF</root>]]></screen>
+                    <note>
+                        <para>
+                            From Axiom's point of view this is actually a reasonable behavior.
+                            The reason is that when creating an <classname>OMText</classname> node programmatically,
+                            it is easy for the user code to normalize the text content to avoid the
+                            appearance of the character entity. On the other hand, if the default
+                            behavior was to serialize CR-LF literally (implying that the CR character
+                            will be lost during deserialization), it would be difficult (if not
+                            impossible) for user code that needs to strictly preserve the text data
+                            to construct the object model in such a way as to force serialization of
+                            the CR as character entity.
+                        </para>
+                    </note>
+                    <para>
+                        In some cases this behavior may be undesirable<footnote><para>See
+                        <ulink url="http://jira.codehaus.org/browse/WSTX-94">WSTX-94</ulink> for a discussion
+                        about this.</para></footnote>. Fortunately Woodstox allows to modify this behavior
+                        by changing the value of the <varname>com.ctc.wstx.outputEscapeCr</varname> property
+                        on the <classname>XMLOutputFactory</classname>. If Axiom is used (and in particular
+                        <classname>StAXUtils</classname>) than this can be achieved by adding
+                        a <filename>XMLOutputFactory.properties</filename> file with the following content
+                        to the classpath (in the default package):
+                    </para>
+<programlisting>com.ctc.wstx.outputEscapeCr=false</programlisting>
+                    <para>
+                        Now the output of the Java snippet shown above will be:
+                    </para>
+<screen><![CDATA[<root>Test
+with CRLF</root>]]></screen>
+                </section>
+            </section>
+        </section>
+        <section>
             <title>Migrating from older Axiom versions</title>
             <para>
                 This section provides information about changes in Axiom that might impact existing
@@ -953,4 +1117,17 @@ public class TestOMBuilder {
             </itemizedlist>
         </section>
     </chapter>
+
+    <bibliography>
+        <title>References</title>
+        <bibliodiv>
+            <title>Specifications</title>
+            <biblioentry id="bib.xml">
+                <abbrev>XML</abbrev>
+                <title><ulink url="http://www.w3.org/TR/2008/REC-xml-20081126/">Extensible Markup Language (XML) 1.0 (Fifth Edition)</ulink></title>
+                <publishername>W3C Recommendation</publishername>
+                <pubdate>26 November 2008</pubdate>
+            </biblioentry>
+        </bibliodiv>
+    </bibliography>
 </book>
