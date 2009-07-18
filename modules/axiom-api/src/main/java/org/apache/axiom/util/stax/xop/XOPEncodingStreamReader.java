@@ -19,6 +19,7 @@
 
 package org.apache.axiom.util.stax.xop;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -170,10 +171,10 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
      * @throws XMLStreamException if the content ID is unknown or an error occurred while loading
      *         the data handler
      */
-    public DataHandler getDataHandler(String contentID) throws XMLStreamException {
+    public DataHandler getDataHandler(String contentID) throws IOException {
         Object dataHandlerObject = dataHandlerObjects.get(contentID);
         if (dataHandlerObject == null) {
-            throw new XMLStreamException("No DataHandler object found for content ID '" +
+            throw new IOException("No DataHandler object found for content ID '" +
                     contentID + "'");
         } else if (dataHandlerObject instanceof DataHandler) {
             return (DataHandler)dataHandlerObject;

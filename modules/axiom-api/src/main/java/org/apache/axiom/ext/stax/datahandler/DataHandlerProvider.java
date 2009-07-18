@@ -19,8 +19,9 @@
 
 package org.apache.axiom.ext.stax.datahandler;
 
+import java.io.IOException;
+
 import javax.activation.DataHandler;
-import javax.xml.stream.XMLStreamException;
 
 /**
  * Interface used for deferred loading of binary content.
@@ -48,7 +49,7 @@ public interface DataHandlerProvider {
      * 
      * @return the binary content
      * 
-     * @throws XMLStreamException if an error occurs while loading the {@link DataHandler}
+     * @throws IOException if an error occurs while loading the {@link DataHandler}
      */
-    DataHandler getDataHandler() throws XMLStreamException;
+    DataHandler getDataHandler() throws IOException;
 }

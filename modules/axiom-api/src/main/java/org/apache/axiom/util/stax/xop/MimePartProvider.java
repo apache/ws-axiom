@@ -19,8 +19,9 @@
 
 package org.apache.axiom.util.stax.xop;
 
+import java.io.IOException;
+
 import javax.activation.DataHandler;
-import javax.xml.stream.XMLStreamException;
 
 /**
  * Interface used by {@link XOPDecodingStreamReader} to load MIME parts referenced by
@@ -44,8 +45,8 @@ public interface MimePartProvider {
      * @param contentID the content ID
      * @return the {@link DataHandler} for the MIME part identified by the content ID; may not
      *         be <code>null</code>
-     * @throws XMLStreamException if the MIME part was not found or if an error occurred while
+     * @throws IOException if the MIME part was not found or if an error occurred while
      *         loading the part
      */
-    DataHandler getMimePart(String contentID) throws XMLStreamException;
+    DataHandler getMimePart(String contentID) throws IOException;
 }

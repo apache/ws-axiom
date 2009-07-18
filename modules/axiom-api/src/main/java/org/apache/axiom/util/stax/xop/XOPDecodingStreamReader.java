@@ -77,7 +77,7 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
             return mimePartProvider.isLoaded(contentID);
         }
 
-        public DataHandler getDataHandler() throws XMLStreamException {
+        public DataHandler getDataHandler() throws IOException {
             return mimePartProvider.getMimePart(contentID);
         }
     }
@@ -264,7 +264,12 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
         if (event == START_ELEMENT
                 && parent.getLocalName().equals(XOPConstants.INCLUDE)
                 && parent.getNamespaceURI().equals(XOPConstants.NAMESPACE_URI)) {
-            return toBase64(mimePartProvider.getMimePart(processXopInclude()));
+            String contentID = processXopInclude();
+            try {
+                return toBase64(mimePartProvider.getMimePart(contentID));
+            } catch (IOException ex) {
+                throw new XMLStreamException("Failed to load MIME part '" + contentID + "'", ex);
+            }
         } else {
             String text = null;
             StringBuffer buffer = null;
@@ -401,7 +406,11 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
     
     private String toBase64() throws XMLStreamException {
         if (base64 == null) {
-            base64 = toBase64(dh.getDataHandler());
+            try {
+                base64 = toBase64(dh.getDataHandler());
+            } catch (IOException ex) {
+                throw new XMLStreamException("Failed to load MIME part '" + dh.getContentID() + "'", ex);
+            }
         }
         return base64;
     }
@@ -531,7 +540,11 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
     }
 
     public DataHandler getDataHandler() throws XMLStreamException{
-        return dh.getDataHandler();
+        try {
+            return dh.getDataHandler();
+        } catch (IOException ex) {
+            throw new XMLStreamException("Failed to load MIME part '" + dh.getContentID() + "'");
+        }
     }
 
     public DataHandlerProvider getDataHandlerProvider() {

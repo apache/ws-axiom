@@ -19,6 +19,8 @@
 
 package org.apache.axiom.util.stax.xop;
 
+import java.io.IOException;
+
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 
@@ -39,10 +41,10 @@ public class OMAttachmentAccessorMimePartProvider implements MimePartProvider {
         return false;
     }
 
-    public DataHandler getMimePart(String contentID) throws XMLStreamException {
+    public DataHandler getMimePart(String contentID) throws IOException {
         DataHandler dh = attachments.getDataHandler(contentID);
         if (dh == null) {
-            throw new XMLStreamException("No attachment found for content ID '" + contentID + "'");
+            throw new IOException("No attachment found for content ID '" + contentID + "'");
         } else {
             return dh;
         }

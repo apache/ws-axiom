@@ -449,7 +449,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
             } else if (dataHandlerObject instanceof DataHandlerProvider) {
                 try {
                     dataHandlerObject = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
-                } catch (XMLStreamException ex) {
+                } catch (IOException ex) {
                     throw new OMException(ex);
                 }
             }

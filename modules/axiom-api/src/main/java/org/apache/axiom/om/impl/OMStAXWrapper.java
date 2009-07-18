@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl;
 
+import java.io.IOException;
+
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -129,7 +131,7 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
         if (xopEncoder.getContentIDs().contains(contentID)) {
             try {
                 return xopEncoder.getDataHandler(contentID);
-            } catch (XMLStreamException ex) {
+            } catch (IOException ex) {
                 throw new OMException(ex);
             }
         } else {
