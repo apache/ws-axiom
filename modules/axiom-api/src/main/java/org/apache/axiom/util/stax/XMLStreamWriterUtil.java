@@ -66,11 +66,43 @@ public class XMLStreamWriterUtil {
         }
     }
 
-    private static DataHandlerWriter getDataHandlerWriter(XMLStreamWriter writer) {
+    private static DataHandlerWriter internalGetDataHandlerWriter(XMLStreamWriter writer) {
         try {
             return (DataHandlerWriter)writer.getProperty(DataHandlerWriter.PROPERTY);
         } catch (IllegalArgumentException ex) {
             return null;
+        }
+    }
+
+    /**
+     * Get the {@link DataHandlerWriter} extension for a given {@link XMLStreamWriter}. If the
+     * writer expose the extension, a reference to the extension interface implementation is
+     * returned. If the writer doesn't expose the extension, this method returns an instance of the
+     * extension interface that emulates the extension (by writing the binary data as base64
+     * character data to the stream).
+     * 
+     * @param writer
+     *            the stream for which the method should return the {@link DataHandlerWriter}
+     *            extension
+     * @return a reference to the extension interface exposed by the writer or an implementation the
+     *         emulates the extension; the return value is never <code>null</code>
+     */
+    public static DataHandlerWriter getDataHandlerWriter(final XMLStreamWriter writer) {
+        DataHandlerWriter dataHandlerWriter = internalGetDataHandlerWriter(writer);
+        if (dataHandlerWriter == null) {
+            return new DataHandlerWriter() {
+                public void writeDataHandler(DataHandler dataHandler, String contentID,
+                        boolean optimize) throws IOException, XMLStreamException {
+                    writeBase64(writer, dataHandler);
+                }
+
+                public void writeDataHandler(DataHandlerProvider dataHandlerProvider,
+                        String contentID, boolean optimize) throws IOException, XMLStreamException {
+                    writeBase64(writer, dataHandlerProvider.getDataHandler());
+                }
+            };
+        } else {
+            return dataHandlerWriter;
         }
     }
 
@@ -99,7 +131,7 @@ public class XMLStreamWriterUtil {
      */
     public static void writeDataHandler(XMLStreamWriter writer, DataHandler dataHandler,
             String contentID, boolean optimize) throws IOException, XMLStreamException {
-        DataHandlerWriter dataHandlerWriter = getDataHandlerWriter(writer);
+        DataHandlerWriter dataHandlerWriter = internalGetDataHandlerWriter(writer);
         if (dataHandlerWriter != null) {
             dataHandlerWriter.writeDataHandler(dataHandler, contentID, optimize);
         } else {
@@ -127,7 +159,7 @@ public class XMLStreamWriterUtil {
      */
     public static void writeDataHandler(XMLStreamWriter writer, DataHandlerProvider dataHandlerProvider,
             String contentID, boolean optimize) throws IOException, XMLStreamException {
-        DataHandlerWriter dataHandlerWriter = getDataHandlerWriter(writer);
+        DataHandlerWriter dataHandlerWriter = internalGetDataHandlerWriter(writer);
         if (dataHandlerWriter != null) {
             dataHandlerWriter.writeDataHandler(dataHandlerProvider, contentID, optimize);
         } else {

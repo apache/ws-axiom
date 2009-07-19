@@ -19,14 +19,12 @@
 
 package org.apache.axiom.om.impl.serialize;
 
-import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMAttachmentAccessor;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSerializer;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.ElementHelper;
+import org.apache.axiom.util.stax.XMLStreamWriterUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -38,6 +36,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /** Class StreamingOMSerializer */
@@ -61,6 +60,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
     public static final QName XOP_INCLUDE = 
         new QName("http://www.w3.org/2004/08/xop/include", "Include");
     
+    private DataHandlerWriter dataHandlerWriter;
     private boolean inputHasAttachments = false;
     private boolean skipEndElement = false;
 
@@ -89,6 +89,8 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         if (reader instanceof OMAttachmentAccessor) {
             inputHasAttachments = true;
         }
+        
+        dataHandlerWriter = XMLStreamWriterUtil.getDataHandlerWriter(writer);
         
         serializeNode(reader, writer, startAtNext);
     }
@@ -571,41 +573,23 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
      * @return true if inlined
      */ 
     protected boolean serializeXOPInclude(XMLStreamReader reader,
-                                          XMLStreamWriter writer) {
+                                          XMLStreamWriter writer) throws XMLStreamException {
        String cid = ElementHelper.getContentID(reader);
+       // TODO: this is suboptimal because it forces loading of the data; we could do deferred loading here
        DataHandler dh = getDataHandler(cid, (OMAttachmentAccessor) reader);
        if (dh == null) {
            return false;
        }
        
-       OMFactory omFactory = OMAbstractFactory.getOMFactory();
-       OMText omText = omFactory.createOMText(dh, true);
-       omText.setContentID(cid);
-       
-       
-       MTOMXMLStreamWriter mtomWriter = 
-           (writer instanceof MTOMXMLStreamWriter) ? 
-                   (MTOMXMLStreamWriter) writer : 
-                       null;
-                   
-       if (mtomWriter != null && 
-               mtomWriter.isOptimized() &&
-               mtomWriter.isOptimizedThreshold(omText)) {
-           // This will write the attachment after the xml message
-           mtomWriter.writeOptimized(omText);
-           return false;
-       }
-       
-       // This will inline the attachment
-       omText.setOptimize(false);
        try {
-           writer.writeCharacters(omText.getText());
-           return true;
-       } catch (XMLStreamException e) {
-           // Just writer out the xop:include
-           return false;
+           dataHandlerWriter.writeDataHandler(dh, cid, true);
+       } catch (IOException ex) {
+           throw new XMLStreamException("Unable to read data handler for content ID '" + cid + "'");
        }
-      
+       // The binary data always appears as "inlined" because DataHandlerWriter either uses base64
+       // or generates an xop:Include element. Therefore we must always skip the xop:Include in
+       // the original stream.
+       return true;
     }
     
     private DataHandler getDataHandler(String cid, OMAttachmentAccessor oaa) {
