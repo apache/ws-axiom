@@ -19,9 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -30,10 +28,8 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtil;
@@ -71,8 +67,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      */
     private Object dataHandlerObject = null;
 
-    /** Field attributes used when serializing Binary stuff as MTOM optimized. */
-    protected OMAttribute attribute;
     private static final String EMTPY_STRING = "";
 
     /**
@@ -135,12 +129,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         // Do we need a deep copy of the data-handler 
         this.contentID = source.contentID;
         this.dataHandlerObject = source.dataHandlerObject;
-        
-        if (source.attribute != null) {
-            this.attribute = factory.createOMAttribute(source.attribute.getLocalName(),
-                                                       source.attribute.getNamespace(),
-                                                       source.attribute.getAttributeValue());
-        }
     }
 
     public OMTextImpl(OMContainer parent, String text, int nodeType,
@@ -425,109 +413,17 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         internalSerializeLocal(writer);
     }
 
-    private void internalSerializeLocal(XMLStreamWriter writer2) throws XMLStreamException {
+    private void internalSerializeLocal(XMLStreamWriter writer) throws XMLStreamException {
 
         if (!this.isBinary) {
-            writeOutput(writer2);
+            writeOutput(writer);
         } else {
-            //check whether we have a MTOMXMLStreamWriter. if so
-            //we can optimize the writing!
-            if (this.isOptimized() && writer2 instanceof MTOMXMLStreamWriter) {
-                MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
-                if (writer.isOptimized() && writer.isOptimizedThreshold(this)) {
-                    if (contentID == null) {
-                        contentID = writer.getNextContentId();
-                    }
-                    // send binary as MTOM optimised
-                    this.attribute = new OMAttributeImpl("href",
-                                                         new OMNamespaceImpl("", ""),
-                                                         "cid:" + getContentID(), this.factory);
-                    this.serializeStartpart(writer);
-                    writer.writeOptimized(this);
-                    writer.writeEndElement();
-                    return;
-                }
-            }
-            //do normal base64
             try {
-                XMLStreamWriterUtil.writeBase64(writer2, (DataHandler)getDataHandler());
+                XMLStreamWriterUtil.writeDataHandler(writer, (DataHandler)getDataHandler(),
+                        contentID, optimize);
             } catch (IOException ex) {
                 throw new OMException("Error reading data handler", ex);
             }
-        }
-    }
-
-    /*
-     * Methods to copy from OMSerialize utils
-     */
-    private void serializeStartpart(XMLStreamWriter writer)
-            throws XMLStreamException {
-        String nameSpaceName = XOP_NS.getNamespaceURI();
-        String writer_prefix = writer.getPrefix(nameSpaceName);
-        String prefix = XOP_NS.getPrefix();
-        if (writer_prefix != null) {
-            writer.writeStartElement(nameSpaceName, "Include");
-        } else {
-            // According to StAX, setPrefix must occur before
-            // writeStartElement
-            if (OMSerializerUtil.isSetPrefixBeforeStartElement(writer)) {
-                writer.setPrefix(prefix, nameSpaceName);
-                writer.writeStartElement(prefix, "Include",
-                                         nameSpaceName);
-            } else {
-                writer.writeStartElement(prefix, "Include",
-                                         nameSpaceName);
-                writer.setPrefix(prefix, nameSpaceName);
-            }
-        }
-        // add the elements attribute "href"
-        serializeAttribute(this.attribute, writer);
-        // add the namespace
-        serializeNamespace(XOP_NS, writer);
-    }
-
-    /**
-     * Method serializeAttribute.
-     *
-     * @param attr
-     * @throws XMLStreamException
-     */
-    static void serializeAttribute(OMAttribute attr, XMLStreamWriter writer)
-            throws XMLStreamException {
-        // first check whether the attribute is associated with a namespace
-        OMNamespace ns = attr.getNamespace();
-        String prefix;
-        String namespaceName;
-        if (ns != null) {
-            // add the prefix if it's availble
-            prefix = ns.getPrefix();
-            namespaceName = ns.getNamespaceURI();
-            if (prefix != null) {
-                writer.writeAttribute(prefix, namespaceName, attr
-                        .getLocalName(), attr.getAttributeValue());
-            } else {
-                writer.writeAttribute(namespaceName, attr.getLocalName(), attr
-                        .getAttributeValue());
-            }
-        } else {
-            writer.writeAttribute(attr.getLocalName(), attr.getAttributeValue());
-        }
-    }
-
-    /**
-     * Method serializeNamespace.
-     *
-     * @param namespace
-     * @param writer
-     * @throws XMLStreamException
-     */
-    static void serializeNamespace(OMNamespace namespace, XMLStreamWriter writer)
-            throws XMLStreamException {
-        if (namespace != null) {
-            String uri = namespace.getNamespaceURI();
-            String ns_prefix = namespace.getPrefix();
-            writer.writeNamespace(ns_prefix, namespace.getNamespaceURI());
-            writer.setPrefix(ns_prefix, uri);
         }
     }
 

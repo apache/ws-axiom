@@ -48,7 +48,7 @@ public class XOPEncodingStreamReaderTest extends AbstractTestCase {
                     TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
             soapPartReader[i] = StAXUtils.createXMLStreamReader(attachments[i].getSOAPPartInputStream());
         }
-        XMLStreamReader actual = new XOPEncodingStreamReader(new XOPDecodingStreamReader(soapPartReader[1], new OMAttachmentAccessorMimePartProvider(attachments[1])), contentIDGenerator, false);
+        XMLStreamReader actual = new XOPEncodingStreamReader(new XOPDecodingStreamReader(soapPartReader[1], new OMAttachmentAccessorMimePartProvider(attachments[1])), contentIDGenerator, OptimizationPolicy.DEFAULT);
         new XMLStreamReaderComparator(soapPartReader[0], actual).compare();
     }
 

@@ -30,13 +30,16 @@ import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.attachments.impl.BufferUtils;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.util.stax.XMLStreamWriterUtil;
+import org.apache.axiom.util.stax.xop.ContentIDGenerator;
+import org.apache.axiom.util.stax.xop.OptimizationPolicy;
+import org.apache.axiom.util.stax.xop.XOPEncodingStreamWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -52,14 +55,13 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     private static Log log = LogFactory.getLog(MTOMXMLStreamWriter.class);
     private static boolean isDebugEnabled = log.isDebugEnabled();
     private static boolean isTraceEnabled = log.isTraceEnabled();
-    private final static int UNSUPPORTED = -1;
-    private final static int EXCEED_LIMIT = 1;
     private XMLStreamWriter xmlWriter;
     private OutputStream outStream;
     private LinkedList binaryNodeList = new LinkedList();
     private OMMultipartWriter multipartWriter;
     private OutputStream rootPartOutputStream;
     private OMOutputFormat format = new OMOutputFormat();
+    private final OptimizationPolicy optimizationPolicy;
     
     // State variables
     private boolean isEndDocument = false; // has endElement been called
@@ -71,6 +73,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         if (isTraceEnabled) {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
+        optimizationPolicy = new OptimizationPolicyImpl(format);
     }
 
     /**
@@ -99,6 +102,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             format.setCharSetEncoding(encoding = OMOutputFormat.DEFAULT_CHAR_SET_ENCODING);
         }
 
+        optimizationPolicy = new OptimizationPolicyImpl(format);
+        
         if (format.isOptimized()) {
             multipartWriter = new OMMultipartWriter(outStream, format);
             try {
@@ -106,7 +111,13 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             } catch (IOException ex) {
                 throw new XMLStreamException(ex);
             }
-            xmlWriter = StAXUtils.createXMLStreamWriter(rootPartOutputStream, encoding);
+            ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
+                public String generateContentID(String existingContentID) {
+                    return existingContentID != null ? existingContentID : getNextContentId();
+                }
+            };
+            xmlWriter = new XOPEncodingStreamWriter(StAXUtils.createXMLStreamWriter(
+                    rootPartOutputStream, encoding), contentIDGenerator, optimizationPolicy);
         } else {
             xmlWriter = StAXUtils.createXMLStreamWriter(outStream,
                                                         format.getCharSetEncoding());
@@ -180,6 +191,13 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             isComplete = true;
             try {
                 rootPartOutputStream.close();
+                // First write the attachments added properly through the DataHandlerWriter extension
+                XOPEncodingStreamWriter encoder = (XOPEncodingStreamWriter)xmlWriter;
+                for (Iterator it = encoder.getContentIDs().iterator(); it.hasNext(); ) {
+                    String contentID = (String)it.next();
+                    multipartWriter.writePart(encoder.getDataHandler(contentID), contentID);
+                }
+                // This is for compatibility with writeOptimized
                 for (Iterator it = binaryNodeList.iterator(); it.hasNext();) {
                     OMText text = (OMText) it.next();
                     multipartWriter.writePart((DataHandler) text.getDataHandler(),
@@ -284,6 +302,16 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         return xmlWriter.getProperty(string);
     }
 
+    /**
+     * @deprecated
+     * Serialization code should use
+     * {@link XMLStreamWriterUtil#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
+     * or {@link XMLStreamWriterUtil#writeDataHandler(XMLStreamWriter, org.apache.axiom.ext.stax.datahandler.DataHandlerProvider, String, boolean)}
+     * to submit any binary content and let this writer decide whether the content should be
+     * written as base64 encoded character data or using <tt>xop:Include</tt>.
+     * This makes optimization entirely transparent for the caller and there should be no need
+     * to check if the writer is producing MTOM.
+     */
     public boolean isOptimized() {
         return format.isOptimized();
     }
@@ -292,6 +320,14 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         return format.getContentType();
     }
 
+    /**
+     * @deprecated
+     * Serialization code should use
+     * {@link XMLStreamWriterUtil#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
+     * or {@link XMLStreamWriterUtil#writeDataHandler(XMLStreamWriter, org.apache.axiom.ext.stax.datahandler.DataHandlerProvider, String, boolean)}
+     * to submit any binary content and let this writer decide whether the content should be
+     * written as base64 encoded character data or using <tt>xop:Include</tt>.
+     */
     public void writeOptimized(OMText node) {
         if(isDebugEnabled){
             log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
@@ -301,31 +337,25 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
         }
     }
-    /*
-     * This method check if size of dataHandler exceeds the optimization Threshold
-     * set on OMOutputFormat. 
-     * return true is size exceeds the threshold limit.
-     * return false otherwise.
+
+    /**
+     * @deprecated
+     * Serialization code should use
+     * {@link XMLStreamWriterUtil#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
+     * or {@link XMLStreamWriterUtil#writeDataHandler(XMLStreamWriter, org.apache.axiom.ext.stax.datahandler.DataHandlerProvider, String, boolean)}
+     * to submit any binary content and let this writer decide whether the content should be
+     * written as base64 encoded character data or using <tt>xop:Include</tt>.
+     * Since the writer applies the settings defined in {@link OMOutputFormat} (including MTOM
+     * thresholds), there is not need for this method anymore.
      */
     public boolean isOptimizedThreshold(OMText node){
-    	if(isDebugEnabled){
-            log.debug("Start MTOMXMLStreamWriter.isOptimizedThreshold()");
-        }
-        DataHandler dh = (DataHandler)node.getDataHandler();
-        int optimized = UNSUPPORTED;
-        if(dh!=null){
-            if(isDebugEnabled){
-                log.debug("DataHandler fetched, starting optimized Threshold processing");
-            }
-            optimized= BufferUtils.doesDataHandlerExceedLimit(dh, format.getOptimizedThreshold());
-        }
-        if(optimized == UNSUPPORTED || optimized == EXCEED_LIMIT){
-            if(log.isDebugEnabled()){
-                log.debug("node should be added to binart NodeList for optimization");
-            }
+        // The optimize argument is set to true for compatibility. Indeed, older versions
+        // left it to the caller to check OMText#isOptimized().
+        try {
+            return optimizationPolicy.isOptimized((DataHandler)node.getDataHandler(), true);
+        } catch (IOException ex) {
             return true;
         }
-        return false;
     }
     
     public void setXmlStreamWriter(XMLStreamWriter xmlWriter) {

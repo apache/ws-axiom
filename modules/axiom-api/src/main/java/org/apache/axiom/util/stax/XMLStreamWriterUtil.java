@@ -25,6 +25,8 @@ import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.util.base64.Base64WriterOutputStream;
 
 /**
@@ -38,6 +40,12 @@ public class XMLStreamWriterUtil {
      * i.e. the data is streamed from the data handler directly to the stream writer.
      * Since no in-memory base64 representation of the entire binary data is built, this
      * method is suitable for very large amounts of data.
+     * <p>
+     * Note that this method will always serialize the data as base64 encoded character data.
+     * Serialization code should prefer using
+     * {@link #writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)} or
+     * {@link #writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)} to
+     * enable optimization (if supported by the {@link XMLStreamWriter}).
      * 
      * @param writer the stream writer to write the data to
      * @param dh the data handler containing the data to encode
@@ -55,6 +63,75 @@ public class XMLStreamWriterUtil {
             out.close();
         } catch (XMLStreamIOException ex) {
             throw ex.getXMLStreamException();
+        }
+    }
+
+    private static DataHandlerWriter getDataHandlerWriter(XMLStreamWriter writer) {
+        try {
+            return (DataHandlerWriter)writer.getProperty(DataHandlerWriter.PROPERTY);
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * Write binary content to the stream. Depending on the supplied {@link XMLStreamWriter},
+     * the content will be written as base64 encoded character data or using an optimization
+     * scheme such as XOP/MTOM. The method attempts to submit the binary content using the
+     * {@link DataHandlerWriter} extension. If the writer doesn't expose this extension,
+     * the method will fall back to {@link #writeBase64(XMLStreamWriter, DataHandler)}.
+     * <p>
+     * Please refer to the documentation of {@link DataHandlerWriter} for a more
+     * detailed description of the semantics of the different arguments.
+     * 
+     * @param writer
+     *            the stream writer to write the data to
+     * @param dataHandler
+     *            the binary content to write
+     * @param contentID
+     *            an existing content ID for the binary data
+     * @param optimize
+     *            indicates whether the content is eligible for optimization
+     * @throws IOException
+     *             if an error occurs while reading from the data handler
+     * @throws XMLStreamException
+     *             if an error occurs while writing to the underlying stream
+     */
+    public static void writeDataHandler(XMLStreamWriter writer, DataHandler dataHandler,
+            String contentID, boolean optimize) throws IOException, XMLStreamException {
+        DataHandlerWriter dataHandlerWriter = getDataHandlerWriter(writer);
+        if (dataHandlerWriter != null) {
+            dataHandlerWriter.writeDataHandler(dataHandler, contentID, optimize);
+        } else {
+            writeBase64(writer, dataHandler);
+        }
+    }
+    
+    /**
+     * Write binary content to the stream. This method is similar to
+     * {@link #writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)},
+     * but supports deferred loading of the data handler.
+     * 
+     * @param writer
+     *            the stream writer to write the data to
+     * @param dataHandlerProvider
+     *            the binary content to write
+     * @param contentID
+     *            an existing content ID for the binary data
+     * @param optimize
+     *            indicates whether the content is eligible for optimization
+     * @throws IOException
+     *             if an error occurs while reading from the data handler
+     * @throws XMLStreamException
+     *             if an error occurs while writing to the underlying stream
+     */
+    public static void writeDataHandler(XMLStreamWriter writer, DataHandlerProvider dataHandlerProvider,
+            String contentID, boolean optimize) throws IOException, XMLStreamException {
+        DataHandlerWriter dataHandlerWriter = getDataHandlerWriter(writer);
+        if (dataHandlerWriter != null) {
+            dataHandlerWriter.writeDataHandler(dataHandlerProvider, contentID, optimize);
+        } else {
+            writeBase64(writer, dataHandlerProvider.getDataHandler());
         }
     }
 }

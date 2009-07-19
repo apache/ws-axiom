@@ -32,4 +32,5 @@ interface XOPConstants {
     String NAMESPACE_URI = "http://www.w3.org/2004/08/xop/include";
     String DEFAULT_PREFIX = "xop";
     QName INCLUDE_QNAME = new QName(NAMESPACE_URI, INCLUDE, DEFAULT_PREFIX);
+    String HREF = "href";
 }

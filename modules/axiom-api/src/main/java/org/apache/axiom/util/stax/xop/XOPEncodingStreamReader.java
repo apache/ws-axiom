@@ -22,12 +22,8 @@ package org.apache.axiom.util.stax.xop;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
@@ -36,7 +32,6 @@ import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 
 /**
@@ -49,15 +44,15 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
  * an instance of this class can be retrieved using the {@link #getDataHandler(String)} method.
  * <p>
  * Note that the primary purpose of this class is not to serialize an XML infoset to an XOP package
- * (this is better done using a specialized {@link javax.xml.stream.XMLStreamWriter}
- * implementation), but rather to optimize interaction (by exchanging {@link DataHandler} objects
- * instead of base64 encoded representations) with databinding frameworks that understand XOP, but
- * that are not aware of the {@link DataHandlerReader} extension.
+ * (this is better done using {@link XOPEncodingStreamWriter}), but rather to optimize interaction
+ * (by exchanging {@link DataHandler} objects instead of base64 encoded representations) with
+ * databinding frameworks that understand XOP, but that are not aware of the
+ * {@link DataHandlerReader} extension.
  * <p>
  * This class defers loading of {@link DataHandler} objects until {@link #getDataHandler(String)} is
  * called, except if this is not supported by the underlying stream.
  */
-public class XOPEncodingStreamReader implements XMLStreamReader {
+public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements XMLStreamReader {
     /**
      * Wrapper that adds the XOP namespace to another namespace context.
      */
@@ -108,12 +103,9 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
     private static final int STATE_XOP_INCLUDE_END_ELEMENT = 2;
     
     private final XMLStreamReader parent;
-    private final ContentIDGenerator contentIDGenerator;
     private final DataHandlerReader dataHandlerReader;
-    private final boolean optimizeAll;
     private int state = STATE_PASS_THROUGH;
     private String currentContentID;
-    private Map dataHandlerObjects = new LinkedHashMap();
 
     /**
      * Constructor.
@@ -124,19 +116,17 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
      * @param contentIDGenerator
      *            used to generate content IDs for the binary content exposed as
      *            <tt>xop:Include</tt> element information items
-     * @param optimizeAll
-     *            if set to <code>true</code>, <tt>xop:Include</tt> element information items
-     *            will be generated for all data handlers, regardless of the return value of
-     *            {@link DataHandlerReader#isOptimized()}
+     * @param optimizationPolicy
+     *            the policy to apply to decide which binary content to optimize
      * 
      * @throws IllegalArgumentException
      *             if the provided {@link XMLStreamReader} doesn't implement the extension defined
      *             by {@link DataHandlerReader}
      */
     public XOPEncodingStreamReader(XMLStreamReader parent, ContentIDGenerator contentIDGenerator,
-            boolean optimizeAll) {
+            OptimizationPolicy optimizationPolicy) {
+        super(contentIDGenerator, optimizationPolicy);
         this.parent = parent;
-        this.contentIDGenerator = contentIDGenerator;
         DataHandlerReader dataHandlerReader;
         try {
             dataHandlerReader = (DataHandlerReader)parent.getProperty(DataHandlerReader.PROPERTY);
@@ -147,42 +137,8 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
             throw new IllegalArgumentException("The supplied XMLStreamReader doesn't implement the DataHandlerReader extension");
         }
         this.dataHandlerReader = dataHandlerReader;
-        this.optimizeAll = optimizeAll;
     }
 
-    /**
-     * Get the set of content IDs referenced in <tt>xop:Include</tt> element information items
-     * produced by this wrapper.
-     * 
-     * @return The set of content IDs in their order of appearance in the infoset. If no
-     *         <tt>xop:Include</tt> element information items have been produced yet, an empty
-     *         set will be returned.
-     */
-    public Set/*<String>*/ getContentIDs() {
-        return Collections.unmodifiableSet(dataHandlerObjects.keySet());
-    }
-
-    /**
-     * Get the data handler for a given content ID.
-     * 
-     * @param contentID a content ID previously returned by an <tt>xop:Include</tt> element
-     *                  produced by this reader
-     * @return the corresponding data handler; may not be <code>null</code>
-     * @throws XMLStreamException if the content ID is unknown or an error occurred while loading
-     *         the data handler
-     */
-    public DataHandler getDataHandler(String contentID) throws IOException {
-        Object dataHandlerObject = dataHandlerObjects.get(contentID);
-        if (dataHandlerObject == null) {
-            throw new IOException("No DataHandler object found for content ID '" +
-                    contentID + "'");
-        } else if (dataHandlerObject instanceof DataHandler) {
-            return (DataHandler)dataHandlerObject;
-        } else {
-            return ((DataHandlerProvider)dataHandlerObject).getDataHandler();
-        }
-    }
-    
     public int next() throws XMLStreamException {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
@@ -194,17 +150,30 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
                 // Fall through
             default:
                 int event = parent.next();
-                if (event == CHARACTERS && dataHandlerReader.isBinary()
-                        && (optimizeAll || dataHandlerReader.isOptimized())) {
-                    String contentID = dataHandlerReader.getContentID();
-                    contentID = contentIDGenerator.generateContentID(contentID);
-                    Object dataHandlerObject = dataHandlerReader.isDeferred()
-                            ? (Object)dataHandlerReader.getDataHandlerProvider()
-                            : (Object)dataHandlerReader.getDataHandler();
-                    dataHandlerObjects.put(contentID, dataHandlerObject);
-                    currentContentID = contentID;
-                    state = STATE_XOP_INCLUDE_START_ELEMENT;
-                    return START_ELEMENT;
+                if (event == CHARACTERS && dataHandlerReader.isBinary()) {
+                    String contentID;
+                    try {
+                        if (dataHandlerReader.isDeferred()) {
+                            contentID = processDataHandler(
+                                    dataHandlerReader.getDataHandlerProvider(),
+                                    dataHandlerReader.getContentID(),
+                                    dataHandlerReader.isOptimized());
+                        } else {
+                            contentID = processDataHandler(
+                                    dataHandlerReader.getDataHandler(),
+                                    dataHandlerReader.getContentID(),
+                                    dataHandlerReader.isOptimized());
+                        }
+                    } catch (IOException ex) {
+                        throw new XMLStreamException("Error while processing data handler", ex);
+                    }
+                    if (contentID != null) {
+                        currentContentID = contentID;
+                        state = STATE_XOP_INCLUDE_START_ELEMENT;
+                        return START_ELEMENT;
+                    } else {
+                        return CHARACTERS;
+                    }
                 } else {
                     return event;
                 }
@@ -298,7 +267,7 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
                 if (index != 0) {
                     throw new IllegalArgumentException();
                 }
-                return "href";
+                return XOPConstants.HREF;
             case STATE_XOP_INCLUDE_END_ELEMENT:
                 throw new IllegalStateException();
             default:
@@ -312,7 +281,7 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
                 if (index != 0) {
                     throw new IllegalArgumentException();
                 }
-                return new QName("href");
+                return new QName(XOPConstants.HREF);
             case STATE_XOP_INCLUDE_END_ELEMENT:
                 throw new IllegalStateException();
             default:
@@ -398,7 +367,7 @@ public class XOPEncodingStreamReader implements XMLStreamReader {
         switch (state) {
             case STATE_XOP_INCLUDE_START_ELEMENT:
                 if ((namespaceURI == null || namespaceURI.length() == 0)
-                        && localName.equals("href")) {
+                        && localName.equals(XOPConstants.HREF)) {
                     return "cid:" + currentContentID;
                 } else {
                     return null;

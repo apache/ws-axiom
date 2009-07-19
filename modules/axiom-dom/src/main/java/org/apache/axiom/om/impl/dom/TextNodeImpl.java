@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.attachments.utils.DataHandlerUtils;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -29,10 +28,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
-import org.apache.axiom.om.util.TextHelper;
 import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtil;
@@ -68,9 +65,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
 
     /** Field nameSpace is used when serializing Binary stuff as MTOM optimized. */
     protected OMNamespace ns = null;
-
-    /** Field attribute is used when serializing Binary stuff as MTOM optimized. */
-    protected OMAttribute attribute;
 
     /** Field nameSpace used when serializing Binary stuff as MTOM optimized. */
     public static final OMNamespace XOP_NS = new OMNamespaceImpl(
@@ -150,11 +144,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         if (source.ns != null) {
             this.ns = new OMNamespaceImpl(source.ns.getNamespaceURI(), 
                                           source.ns.getPrefix());
-        }
-        if (source.attribute != null) {
-            this.attribute = factory.createOMAttribute(source.attribute.getLocalName(),
-                                                       source.attribute.getNamespace(),
-                                                       source.attribute.getAttributeValue());
         }
     }
 
@@ -477,100 +466,17 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         }
     }
 
-    private void internalSerializeLocal(XMLStreamWriter writer2)
+    private void internalSerializeLocal(XMLStreamWriter writer)
             throws XMLStreamException {
-        MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
         if (!this.isBinary) {
             writeOutput(writer);
         } else {
-            if (writer.isOptimized()) {
-                if (contentID == null) {
-                    contentID = writer.getNextContentId();
-                }
-                // send binary as MTOM optimised
-                this.attribute = new AttrImpl(this.ownerNode, "href",
-                                              new NamespaceImpl("", ""),
-                                              "cid:" + getContentID(),
-                                              this.factory);
-                this.serializeStartpart(writer);
-                writer.writeOptimized(this);
-                writer.writeEndElement();
-            } else {
-                try {
-                    XMLStreamWriterUtil.writeBase64(writer, (DataHandler)getDataHandler());
-                } catch (IOException ex) {
-                    throw new OMException("Error reading data handler", ex);
-                }
+            try {
+                XMLStreamWriterUtil.writeDataHandler(writer, (DataHandler)getDataHandler(),
+                        contentID, optimize);
+            } catch (IOException ex) {
+                throw new OMException("Error reading data handler", ex);
             }
-        }
-    }
-
-    /*
-     * Methods to copy from OMSerialize utils.
-     */
-    private void serializeStartpart(XMLStreamWriter writer)
-            throws XMLStreamException {
-        String nameSpaceName = XOP_NS.getNamespaceURI();
-        String writer_prefix = writer.getPrefix(nameSpaceName);
-        String prefix = XOP_NS.getPrefix();
-        if (writer_prefix != null) {
-            writer.writeStartElement(nameSpaceName, "Include");
-        } else {
-            writer.writeStartElement(prefix, "Include",
-                                     nameSpaceName);
-            writer.setPrefix(prefix, nameSpaceName);
-        }
-        // add the elements attribute "href"
-        serializeAttribute(this.attribute, writer);
-        // add the namespace
-        serializeNamespace(XOP_NS, writer);
-    }
-
-    /**
-     * Method serializeAttribute.
-     *
-     * @param attr
-     * @param writer
-     * @throws XMLStreamException
-     */
-    static void serializeAttribute(OMAttribute attr, XMLStreamWriter writer)
-            throws XMLStreamException {
-        // first check whether the attribute is associated with a namespace
-        OMNamespace ns = attr.getNamespace();
-        String prefix;
-        String namespaceName;
-        if (ns != null) {
-            // add the prefix if it's availble
-            prefix = ns.getPrefix();
-            namespaceName = ns.getNamespaceURI();
-            if (prefix != null) {
-                writer.writeAttribute(prefix, namespaceName, attr
-                        .getLocalName(), attr.getAttributeValue());
-            } else {
-                writer.writeAttribute(namespaceName, attr.getLocalName(), attr
-                        .getAttributeValue());
-            }
-        } else {
-            writer
-                    .writeAttribute(attr.getLocalName(), attr
-                            .getAttributeValue());
-        }
-    }
-
-    /**
-     * Method serializeNamespace.
-     *
-     * @param namespace
-     * @param writer
-     * @throws XMLStreamException
-     */
-    static void serializeNamespace(OMNamespace namespace, XMLStreamWriter writer)
-            throws XMLStreamException {
-        if (namespace != null) {
-            String uri = namespace.getNamespaceURI();
-            String ns_prefix = namespace.getPrefix();
-            writer.writeNamespace(ns_prefix, namespace.getNamespaceURI());
-            writer.setPrefix(ns_prefix, uri);
         }
     }
 

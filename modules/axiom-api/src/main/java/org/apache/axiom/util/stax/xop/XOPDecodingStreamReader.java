@@ -126,7 +126,7 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
      */
     private String processXopInclude() throws XMLStreamException {
         if (parent.getAttributeCount() != 1 ||
-                !parent.getAttributeLocalName(0).equals("href")) {
+                !parent.getAttributeLocalName(0).equals(XOPConstants.HREF)) {
             throw new XMLStreamException("Expected xop:Include element information item with " +
                     "a (single) href attribute");
         }

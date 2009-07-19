@@ -33,6 +33,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
+import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.axiom.util.stax.xop.XOPEncodingStreamReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -101,8 +102,9 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
             if (xopEncoder == null) {
                 // Since the intention is to support an efficient way to pass binary content to a
                 // consumer that is not aware of our data handler extension (see WSCOMMONS-344), we
-                // use optimizeAll=true, i.e. we ignore OMText#isOptimized().
-                xopEncoder = new XOPEncodingStreamReader(switchingWrapper, contentIDGenerator, true);
+                // use OptimizationPolicy.ALL, i.e. we ignore OMText#isOptimized().
+                xopEncoder = new XOPEncodingStreamReader(switchingWrapper, contentIDGenerator,
+                        OptimizationPolicy.ALL);
                 setParent(xopEncoder);
             }
         }

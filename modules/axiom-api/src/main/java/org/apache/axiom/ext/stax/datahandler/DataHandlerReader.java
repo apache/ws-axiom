@@ -26,22 +26,9 @@ import javax.xml.stream.XMLStreamException;
  * Extension interface for {@link javax.xml.stream.XMLStreamReader} implementations that expose
  * base64 encoded binary content as {@link DataHandler} objects.
  * <p>
- * The {@link javax.xml.stream.XMLStreamReader} MAY implement this interface directly, but a
- * consumer MUST use {@link javax.xml.stream.XMLStreamReader#getProperty(String)} with the property
- * name defined by {@link #PROPERTY} to get a reference to this extension interface. The rationale
- * for this requirement is that a property based approach continues to work even if the
- * {@link javax.xml.stream.XMLStreamReader} implementing the extension is accessed indirectly
- * through a proxy implementing the {@link javax.xml.stream.XMLStreamReader} interface but unaware
- * of the extension. Note that this assumes that the proxy correctly delegates calls to the
- * {@link javax.xml.stream.XMLStreamReader#getProperty(String)} method.
- * <p>
- * The property defined by {@link #PROPERTY} MUST be available regardless of the current state of
- * the {@link javax.xml.stream.XMLStreamReader}. In addition it is assumed to be immutable, i.e.
- * its value MUST NOT not change during the lifetime of the {@link javax.xml.stream.XMLStreamReader}
- * implementation. For a consumer it is therefore sufficient to look up the extension once and to
- * continue using the reference returned by
- * {@link javax.xml.stream.XMLStreamReader#getProperty(String)} during the entire lifetime of the
- * {@link javax.xml.stream.XMLStreamReader}.
+ * A consumer MUST use {@link javax.xml.stream.XMLStreamReader#getProperty(String)} with the property
+ * name defined by {@link #PROPERTY} to get a reference to this extension interface. See
+ * the package Javadoc for additional requirements.
  * <p>
  * If the {@link javax.xml.stream.XMLStreamReader} wishes to expose base64 encoded content using
  * this extension interface, it MUST do so using a single
