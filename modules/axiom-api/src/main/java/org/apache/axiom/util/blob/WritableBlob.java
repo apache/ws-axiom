@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.axiom.ext.io.StreamCopyException;
+
 /**
  * A writable blob.
  * <p>
@@ -63,7 +65,7 @@ public interface WritableBlob extends Blob {
      * 
      * @throws IllegalStateException if the blob is not in state NEW
      */
-    OutputStream getOutputStream();
+    BlobOutputStream getOutputStream();
 
     /**
      * Read data from the given input stream and write it to the blob.
@@ -80,15 +82,27 @@ public interface WritableBlob extends Blob {
      * The precondition implies that this method may be used after a call to
      * {@link #getOutputStream()}. In that case it is illegal to set <code>commit</code> to
      * <code>true</code> (because this would invalidate the state of the output stream).
+     * <p>
+     * The method transfers data from the input stream to the blob until one of the following
+     * conditions is met:
+     * <ul>
+     *   <li>The end of the input stream is reached.
+     *   <li>The value of the <code>length</code> argument is different from <code>-1</code>
+     *       and the number of bytes transferred is equal to <code>length</code>.
+     * </ul>
      * 
      * @param in An input stream to read data from. This method will not
      *           close the stream.
-     * @throws IOException
+     * @param length the number of bytes to transfer, or <code>-1</code> if the method should
+     *               transfer data until the end of the input stream is reached
+     * @param commit indicates whether the blob should be in state COMMITTED after the operation
+     * @return the number of bytes transferred
+     * @throws StreamCopyException
      * @throws IllegalStateException if the blob is in state COMMITTED or if
      *         {@link #getOutputStream()} has been called before and <code>commit</code> is
      *         <code>true</code>
      */
-    void readFrom(InputStream in, boolean commit) throws IOException;
+    long readFrom(InputStream in, long length, boolean commit) throws StreamCopyException;
 
     /**
      * Read data from the given input stream and write it to the blob.
@@ -117,8 +131,13 @@ public interface WritableBlob extends Blob {
      *       data is written using this method (for efficiency reasons).
      * </ol>
      * 
-     * @throws IOException
+     * @param in An input stream to read data from. This method will not
+     *           close the stream.
+     * @param length the number of bytes to transfer, or <code>-1</code> if the method should
+     *               transfer data until the end of the input stream is reached
+     * @return the number of bytes transferred
+     * @throws StreamCopyException
      * @throws IllegalStateException if the blob is in state COMMITTED
      */
-    void readFrom(InputStream in) throws IOException;
+    long readFrom(InputStream in, long length) throws StreamCopyException;
 }

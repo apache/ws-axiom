@@ -29,6 +29,7 @@ import java.nio.channels.FileLock;
 import javax.activation.DataHandler;
 
 import org.apache.axiom.attachments.utils.BAAOutputStream;
+import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.axiom.util.activation.DataSourceUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,7 +73,7 @@ public class BufferUtils {
         
         // If this is a BAAOutputStream, use the optimized method
         if (ENABLE_BAAOS_OPT && os instanceof BAAOutputStream) {
-            inputStream2BAAOutputStream(is, (BAAOutputStream) os, Long.MAX_VALUE);
+            ((ReadFromSupport)os).readFrom(is, Long.MAX_VALUE);
             return;
         }
         
@@ -108,9 +109,9 @@ public class BufferUtils {
                                                 int limit) 
         throws IOException {
         
-        // If this is a BAAOutputStream, use the optimized method
-        if (ENABLE_BAAOS_OPT && os instanceof BAAOutputStream) {
-            return (int) inputStream2BAAOutputStream(is, (BAAOutputStream) os, (long) limit);
+        // If the stream implements ReadFromSupport, use the optimized method
+        if (ENABLE_BAAOS_OPT && os instanceof ReadFromSupport) {
+            return (int) ((ReadFromSupport)os).readFrom(is, limit);
         }
             
         byte[] buffer = getTempBuffer();

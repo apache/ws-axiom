@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.axiom.attachments.impl.BufferUtils;
+import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -49,10 +50,14 @@ public class OverflowBlob implements WritableBlob {
     static final int STATE_UNCOMMITTED = 1;
     static final int STATE_COMMITTED = 2;
     
-    class OutputStreamImpl extends OutputStream {
+    class OutputStreamImpl extends BlobOutputStream {
         
         private FileOutputStream fileOutputStream;
         
+        public WritableBlob getBlob() {
+            return OverflowBlob.this;
+        }
+
         public void write(byte[] b, int off, int len) throws IOException {
 
             if (fileOutputStream != null) {
@@ -297,7 +302,7 @@ public class OverflowBlob implements WritableBlob {
         return fileOutputStream;
     }
     
-    public OutputStream getOutputStream() {
+    public BlobOutputStream getOutputStream() {
         if (state != STATE_NEW) {
             throw new IllegalStateException();
         } else {
@@ -306,30 +311,54 @@ public class OverflowBlob implements WritableBlob {
         }
     }
     
-    public void readFrom(InputStream in, boolean commit) throws IOException {
+    public long readFrom(InputStream in, long length, boolean commit) throws StreamCopyException {
         // TODO: this will not work if the blob is in state UNCOMMITTED and we have already switched to a temporary file
+        long read = 0;
+        long toRead = length == -1 ? Long.MAX_VALUE : length;
         while (true) {
-            int c = in.read(getCurrentChunk(), chunkOffset, chunkSize-chunkOffset);
+            int c;
+            try {
+                int len = chunkSize-chunkOffset;
+                if (len > toRead) {
+                    len = (int)toRead;
+                }
+                c = in.read(getCurrentChunk(), chunkOffset, len);
+            } catch (IOException ex) {
+                throw new StreamCopyException(StreamCopyException.READ, ex);
+            }
             if (c == -1) {
                 break;
             }
+            read += c;
+            toRead -= c;
             chunkOffset += c;
             if (chunkOffset == chunkSize) {
                 chunkIndex++;
                 chunkOffset = 0;
                 if (chunkIndex == chunks.length) {
-                    FileOutputStream fileOutputStream = switchToTempFile();
-                    BufferUtils.inputStream2OutputStream(in, fileOutputStream);
-                    fileOutputStream.close();
+                    try {
+                        FileOutputStream fileOutputStream = switchToTempFile();
+                        // TODO: this will not trigger the FileOutputStream optimization!
+                        // TODO: fix the long -> int conversion
+                        read += BufferUtils.inputStream2OutputStream(in, fileOutputStream, (int)Math.min(toRead, Integer.MAX_VALUE));
+                        fileOutputStream.close();
+                    } catch (IOException ex) {
+                        if (ex instanceof StreamCopyException) {
+                            throw (StreamCopyException)ex;
+                        } else {
+                            throw new StreamCopyException(StreamCopyException.WRITE, ex);
+                        }
+                    }
                     break;
                 }
             }
         }
         state = commit ? STATE_COMMITTED : STATE_UNCOMMITTED;
+        return read;
     }
     
-    public void readFrom(InputStream in) throws IOException {
-        readFrom(in, state == STATE_NEW);
+    public long readFrom(InputStream in, long length) throws StreamCopyException {
+        return readFrom(in, length, state == STATE_NEW);
     }
 
     public InputStream getInputStream() throws IOException {

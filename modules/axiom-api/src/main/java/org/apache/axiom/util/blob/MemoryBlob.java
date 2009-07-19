@@ -26,11 +26,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.axiom.attachments.impl.BufferUtils;
+import org.apache.axiom.ext.io.StreamCopyException;
 
 public class MemoryBlob implements WritableBlob {
     final static int BUFFER_SIZE = BufferUtils.BUFFER_LEN;
     
-    class OutputStreamImpl extends OutputStream {
+    class OutputStreamImpl extends BlobOutputStream {
+        public WritableBlob getBlob() {
+            return MemoryBlob.this;
+        }
+
         public void write(byte[] b, int off, int len) throws IOException {
            int total = 0;
            while (total < len) {
@@ -158,7 +163,7 @@ public class MemoryBlob implements WritableBlob {
         return (BUFFER_SIZE * (data.size()-1)) + index;
     }
 
-    public OutputStream getOutputStream() {
+    public BlobOutputStream getOutputStream() {
         if (data != null) {
             throw new IllegalStateException();
         } else {
@@ -167,11 +172,14 @@ public class MemoryBlob implements WritableBlob {
         }
     }
 
-    public void readFrom(InputStream in, boolean commit) throws IOException {
+    public long readFrom(InputStream in, long length, boolean commit) throws StreamCopyException {
         if (data == null) {
             init();
         }
         
+        if (length == -1) {
+            length = Long.MAX_VALUE;
+        }
         long bytesReceived = 0;
         
         // Now directly write to the buffers
@@ -179,15 +187,23 @@ public class MemoryBlob implements WritableBlob {
         while (!done) {
             
             // Don't get more than will fit in the current buffer
-            int len = BUFFER_SIZE - index;
+            int len = (int) Math.min(BUFFER_SIZE - index, length-bytesReceived);
             
             // Now get the bytes
-            int bytesRead = in.read(currBuffer, index, len);
+            int bytesRead;
+            try {
+                bytesRead = in.read(currBuffer, index, len);
+            } catch (IOException ex) {
+                throw new StreamCopyException(StreamCopyException.READ, ex);
+            }
             if (bytesRead >= 0) {
                 bytesReceived += bytesRead;
                 index += bytesRead;
                 if (index >= BUFFER_SIZE) {
                     addBuffer();
+                }
+                if (bytesReceived >= length) {
+                    done = true;
                 }
             } else {
                 done = true;
@@ -195,10 +211,12 @@ public class MemoryBlob implements WritableBlob {
         }
         
         committed = commit;
+        
+        return bytesReceived;
     }
 
-    public void readFrom(InputStream in) throws IOException {
-        readFrom(in, data == null);
+    public long readFrom(InputStream in, long length) throws StreamCopyException {
+        return readFrom(in, length, data == null);
     }
 
     public InputStream getInputStream() throws IOException {

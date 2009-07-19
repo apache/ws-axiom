@@ -117,7 +117,7 @@ public abstract class WritableBlobTestBase extends TestCase {
         random.nextBytes(data);
         WritableBlob blob = createBlob();
         try {
-            blob.readFrom(new ByteArrayInputStream(data));
+            blob.readFrom(new ByteArrayInputStream(data), -1);
             InputStream in = blob.getInputStream();
             try {
                 assertTrue(Arrays.equals(data, IOUtils.toByteArray(in)));

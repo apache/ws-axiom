@@ -19,6 +19,8 @@
 package org.apache.axiom.attachments.utils;
 
 import org.apache.axiom.attachments.impl.BufferUtils;
+import org.apache.axiom.ext.io.ReadFromSupport;
+import org.apache.axiom.ext.io.StreamCopyException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +34,7 @@ import java.util.ArrayList;
  * byte[].  Using several non-contiguous chunks reduces 
  * memory copy and resizing.
  */
-public class BAAOutputStream extends OutputStream {
+public class BAAOutputStream extends OutputStream implements ReadFromSupport {
 
     ArrayList data = new ArrayList();
     final static int BUFFER_SIZE = BufferUtils.BUFFER_LEN;
@@ -88,6 +90,13 @@ public class BAAOutputStream extends OutputStream {
      * @return bytesReceived
      */
     public long receive(InputStream is, long maxRead) throws IOException {
+        return readFrom(is, maxRead);
+    }
+    
+    public long readFrom(InputStream is, long maxRead) throws StreamCopyException {
+        if (maxRead == -1) {
+            maxRead = Long.MAX_VALUE;
+        }
         long bytesReceived = 0;
         
         // Now directly write to the buffers
@@ -98,7 +107,12 @@ public class BAAOutputStream extends OutputStream {
             int len = (int) Math.min(BUFFER_SIZE - index, maxRead-bytesReceived);
             
             // Now get the bytes
-            int bytesRead = is.read(currBuffer, index, len);
+            int bytesRead;
+            try {
+                bytesRead = is.read(currBuffer, index, len);
+            } catch (IOException ex) {
+                throw new StreamCopyException(StreamCopyException.READ, ex);
+            }
             if (bytesRead >= 0) {
                 bytesReceived += bytesRead;
                 index += bytesRead;
