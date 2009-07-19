@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.axiom.util.stax.xop;
+package org.apache.axiom.om.impl.builder;
 
 import java.io.IOException;
 
 import javax.activation.DataHandler;
-import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.om.OMAttachmentAccessor;
+import org.apache.axiom.util.stax.xop.MimePartProvider;
 
 /**
  * Adapts an {@link OMAttachmentAccessor} instance to the {@link MimePartProvider} interface.

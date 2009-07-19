@@ -268,8 +268,11 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                     throw new OMException(ex);
                 }
             }
-            OMText text = omfactory.createOMText(dataHandlerObject, true);
-            text.setBinary(true);
+            OMText text = omfactory.createOMText(dataHandlerObject, dataHandlerReader.isOptimized());
+            String contentID = dataHandlerReader.getContentID();
+            if (contentID != null) {
+                text.setContentID(contentID);
+            }
             omContainer.addChild(text);
             return text;
         } else {

@@ -20,27 +20,17 @@
 package org.apache.axiom.soap.impl.builder;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.MTOMConstants;
-import org.apache.axiom.om.impl.OMContainerEx;
-import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
-import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
 
-public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
-        MTOMConstants, XOPBuilder {
+public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements XOPBuilder {
     
-    private static final Log log = LogFactory.getLog(MTOMStAXSOAPModelBuilder.class);
-
     /** <code>Attachments</code> handles deferred parsing of incoming MIME Messages. */
     Attachments attachments;
 
@@ -49,7 +39,8 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
     public MTOMStAXSOAPModelBuilder(XMLStreamReader parser,
                                     SOAPFactory factory, Attachments attachments,
                                     String soapVersion) {
-        super(parser, factory, soapVersion);
+        super(new XOPDecodingStreamReader(parser, new OMAttachmentAccessorMimePartProvider(
+                attachments)), factory, soapVersion);
         this.attachments = attachments;
     }
 
@@ -59,54 +50,16 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements
      */
     public MTOMStAXSOAPModelBuilder(XMLStreamReader reader,
                                     Attachments attachments, String soapVersion) {
-        super(reader, soapVersion);
+        super(new XOPDecodingStreamReader(reader, new OMAttachmentAccessorMimePartProvider(
+                attachments)), soapVersion);
         this.attachments = attachments;
     }
 
     public MTOMStAXSOAPModelBuilder(XMLStreamReader reader,
                                     Attachments attachments) {
-        super(reader);
+        super(new XOPDecodingStreamReader(reader, new OMAttachmentAccessorMimePartProvider(
+                attachments)));
         this.attachments = attachments;
-    }
-
-    protected OMNode createOMElement() throws OMException {
-
-        String elementName = parser.getLocalName();
-        String namespaceURI = parser.getNamespaceURI();
-
-        // create an OMBlob if the element is an <xop:Include>
-        if (XOP_INCLUDE.equals(elementName) && XOP_NAMESPACE_URI.equals(namespaceURI)) {
-            OMText node;
-            String contentID = ElementHelper.getContentID(parser);
-            
-            if (log.isDebugEnabled()) {
-                log.debug("Encountered xop:include for cid:" + contentID);
-            }
-
-            if (lastNode == null) {
-                throw new OMException(
-                        "XOP:Include element is not supported here");
-            } else if (lastNode.isComplete() & lastNode.getParent() != null) {
-                node = omfactory.createOMText(contentID, lastNode.getParent(), this);
-                ((OMNodeEx) lastNode).setNextOMSibling(node);
-                ((OMNodeEx) node).setPreviousOMSibling(lastNode);
-                if (log.isDebugEnabled()) {
-                    log.debug("Create createOMText for cid:" + contentID);
-                    Object dh = node.getDataHandler();
-                    String dhClass = (dh==null) ? "null" : dh.getClass().toString();
-                    log.debug("The datahandler is " + dhClass);
-                }
-            } else {
-                OMContainerEx e = (OMContainerEx) lastNode;
-                node = omfactory.createOMText(contentID, (OMElement) lastNode,
-                                              this);
-                e.setFirstChild(node);
-            }
-            return node;
-
-        } else {
-            return super.createOMElement();
-        }
     }
 
     /* (non-Javadoc)

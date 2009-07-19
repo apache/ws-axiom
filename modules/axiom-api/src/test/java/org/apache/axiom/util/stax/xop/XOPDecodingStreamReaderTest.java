@@ -27,6 +27,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.TestConstants;
+import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.util.Base64;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderComparator;
