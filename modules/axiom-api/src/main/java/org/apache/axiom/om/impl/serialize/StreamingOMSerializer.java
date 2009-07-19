@@ -19,9 +19,11 @@
 
 package org.apache.axiom.om.impl.serialize;
 
+import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMSerializer;
+import org.apache.axiom.om.impl.builder.DataHandlerReaderUtil;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.util.stax.XMLStreamWriterUtil;
@@ -60,6 +62,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
     public static final QName XOP_INCLUDE = 
         new QName("http://www.w3.org/2004/08/xop/include", "Include");
     
+    private DataHandlerReader dataHandlerReader;
     private DataHandlerWriter dataHandlerWriter;
     private boolean inputHasAttachments = false;
     private boolean skipEndElement = false;
@@ -90,6 +93,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             inputHasAttachments = true;
         }
         
+        dataHandlerReader = DataHandlerReaderUtil.getDataHandlerReader(reader);
         dataHandlerWriter = XMLStreamWriterUtil.getDataHandlerWriter(writer);
         
         serializeNode(reader, writer, startAtNext);
@@ -136,6 +140,11 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                     serializeAttributes(reader, writer);
                     break;
                 case CHARACTERS:
+                    if (dataHandlerReader != null && dataHandlerReader.isBinary()) {
+                        serializeDataHandler();
+                        break;
+                    }
+                    // Fall through
                 case SPACE:
                     serializeText(reader, writer);
                     break;
@@ -631,5 +640,19 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             }
         }
         return cid2;
+    }
+    
+    private void serializeDataHandler() throws XMLStreamException {
+        try {
+            if (dataHandlerReader.isDeferred()) {
+                dataHandlerWriter.writeDataHandler(dataHandlerReader.getDataHandlerProvider(),
+                        dataHandlerReader.getContentID(), dataHandlerReader.isOptimized());
+            } else {
+                dataHandlerWriter.writeDataHandler(dataHandlerReader.getDataHandler(),
+                        dataHandlerReader.getContentID(), dataHandlerReader.isOptimized());
+            }
+        } catch (IOException ex) {
+            throw new XMLStreamException("Error while reading data handler", ex);
+        }
     }
 }
