@@ -85,8 +85,8 @@ import org.apache.axiom.om.OMException;
  * The extension mechanism described here has been deprecated mainly because it doesn't support
  * deferred loading of the binary content.
  */
-public class DataHandlerReaderUtil {
-    private DataHandlerReaderUtil() {}
+public class DataHandlerReaderUtils {
+    private DataHandlerReaderUtils() {}
     
     /**
      * Get the {@link DataHandlerReader} extension for a given {@link XMLStreamReader}, if

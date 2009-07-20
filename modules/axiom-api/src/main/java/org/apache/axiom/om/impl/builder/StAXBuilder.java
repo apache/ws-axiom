@@ -145,7 +145,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         if (parser instanceof BuilderAwareReader) {
             ((BuilderAwareReader) parser).setBuilder(this);
         }
-        dataHandlerReader = DataHandlerReaderUtil.getDataHandlerReader(parser);
+        dataHandlerReader = DataHandlerReaderUtils.getDataHandlerReader(parser);
         this.parser = new SafeXMLStreamReader(parser);
     }
 

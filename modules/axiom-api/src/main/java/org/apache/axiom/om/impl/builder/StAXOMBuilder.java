@@ -50,7 +50,7 @@ import java.io.InputStream;
  * <p>
  * This class supports the {@link XMLStreamReader} extension defined by
  * {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader} as well as the legacy extension mechanism
- * defined in the documentation of {@link DataHandlerReaderUtil}.
+ * defined in the documentation of {@link DataHandlerReaderUtils}.
  */
 public class StAXOMBuilder extends StAXBuilder {
     /** Field document */

@@ -23,10 +23,10 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMSerializer;
-import org.apache.axiom.om.impl.builder.DataHandlerReaderUtil;
+import org.apache.axiom.om.impl.builder.DataHandlerReaderUtils;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.ElementHelper;
-import org.apache.axiom.util.stax.XMLStreamWriterUtil;
+import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -93,8 +93,8 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             inputHasAttachments = true;
         }
         
-        dataHandlerReader = DataHandlerReaderUtil.getDataHandlerReader(reader);
-        dataHandlerWriter = XMLStreamWriterUtil.getDataHandlerWriter(writer);
+        dataHandlerReader = DataHandlerReaderUtils.getDataHandlerReader(reader);
+        dataHandlerWriter = XMLStreamWriterUtils.getDataHandlerWriter(writer);
         
         serializeNode(reader, writer, startAtNext);
     }

@@ -32,7 +32,7 @@ import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
-import org.apache.axiom.util.stax.XMLStreamWriterUtil;
+import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
@@ -472,7 +472,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
             writeOutput(writer);
         } else {
             try {
-                XMLStreamWriterUtil.writeDataHandler(writer, (DataHandler)getDataHandler(),
+                XMLStreamWriterUtils.writeDataHandler(writer, (DataHandler)getDataHandler(),
                         contentID, optimize);
             } catch (IOException ex) {
                 throw new OMException("Error reading data handler", ex);

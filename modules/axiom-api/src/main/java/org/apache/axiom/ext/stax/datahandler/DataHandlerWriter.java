@@ -61,8 +61,8 @@ import javax.xml.stream.XMLStreamException;
  *     to override this value or ignore it entirely.
  * </dl>
  * Instead of interacting directly with this extension interface, the consumer may use the
- * {@link org.apache.axiom.util.stax.XMLStreamWriterUtil#writeDataHandler(javax.xml.stream.XMLStreamWriter, DataHandler, String, boolean)} or
- * {@link org.apache.axiom.util.stax.XMLStreamWriterUtil#writeDataHandler(javax.xml.stream.XMLStreamWriter, DataHandlerProvider, String, boolean)}
+ * {@link org.apache.axiom.util.stax.XMLStreamWriterUtils#writeDataHandler(javax.xml.stream.XMLStreamWriter, DataHandler, String, boolean)} or
+ * {@link org.apache.axiom.util.stax.XMLStreamWriterUtils#writeDataHandler(javax.xml.stream.XMLStreamWriter, DataHandlerProvider, String, boolean)}
  * utility methods. These methods make the processing of binary data entirely transparent for
  * the caller.
  */

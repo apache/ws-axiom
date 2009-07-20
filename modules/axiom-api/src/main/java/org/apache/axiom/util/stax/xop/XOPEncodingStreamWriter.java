@@ -29,7 +29,7 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.util.stax.XMLStreamWriterUtil;
+import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 
 /**
  * {@link XMLStreamWriter} wrapper that encodes XOP. It implements the extension
@@ -93,7 +93,7 @@ public class XOPEncodingStreamWriter extends XOPEncodingStreamWrapper
         if (contentID != null) {
             writeXOPInclude(contentID);
         } else {
-            XMLStreamWriterUtil.writeBase64(parent, dataHandler);
+            XMLStreamWriterUtils.writeBase64(parent, dataHandler);
         }
     }
 
@@ -103,7 +103,7 @@ public class XOPEncodingStreamWriter extends XOPEncodingStreamWrapper
         if (contentID != null) {
             writeXOPInclude(contentID);
         } else {
-            XMLStreamWriterUtil.writeBase64(parent, dataHandlerProvider.getDataHandler());
+            XMLStreamWriterUtils.writeBase64(parent, dataHandlerProvider.getDataHandler());
         }
     }
 

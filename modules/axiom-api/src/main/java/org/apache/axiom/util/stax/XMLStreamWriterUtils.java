@@ -32,7 +32,7 @@ import org.apache.axiom.util.base64.Base64WriterOutputStream;
 /**
  * Contains utility methods to work with {@link XMLStreamWriter} objects.
  */
-public class XMLStreamWriterUtil {
+public class XMLStreamWriterUtils {
     /**
      * Write base64 encoded data to a stream writer. This will result in one or more
      * {@link javax.xml.stream.XMLStreamConstants#CHARACTERS} events to be written

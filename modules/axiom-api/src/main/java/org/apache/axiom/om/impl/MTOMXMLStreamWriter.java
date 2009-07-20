@@ -36,7 +36,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.util.stax.XMLStreamWriterUtil;
+import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.axiom.util.stax.xop.XOPEncodingStreamWriter;
@@ -305,8 +305,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     /**
      * @deprecated
      * Serialization code should use
-     * {@link XMLStreamWriterUtil#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
-     * or {@link XMLStreamWriterUtil#writeDataHandler(XMLStreamWriter, org.apache.axiom.ext.stax.datahandler.DataHandlerProvider, String, boolean)}
+     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
+     * or {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, org.apache.axiom.ext.stax.datahandler.DataHandlerProvider, String, boolean)}
      * to submit any binary content and let this writer decide whether the content should be
      * written as base64 encoded character data or using <tt>xop:Include</tt>.
      * This makes optimization entirely transparent for the caller and there should be no need
@@ -323,8 +323,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     /**
      * @deprecated
      * Serialization code should use
-     * {@link XMLStreamWriterUtil#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
-     * or {@link XMLStreamWriterUtil#writeDataHandler(XMLStreamWriter, org.apache.axiom.ext.stax.datahandler.DataHandlerProvider, String, boolean)}
+     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
+     * or {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, org.apache.axiom.ext.stax.datahandler.DataHandlerProvider, String, boolean)}
      * to submit any binary content and let this writer decide whether the content should be
      * written as base64 encoded character data or using <tt>xop:Include</tt>.
      */
@@ -341,8 +341,8 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     /**
      * @deprecated
      * Serialization code should use
-     * {@link XMLStreamWriterUtil#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
-     * or {@link XMLStreamWriterUtil#writeDataHandler(XMLStreamWriter, org.apache.axiom.ext.stax.datahandler.DataHandlerProvider, String, boolean)}
+     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
+     * or {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, org.apache.axiom.ext.stax.datahandler.DataHandlerProvider, String, boolean)}
      * to submit any binary content and let this writer decide whether the content should be
      * written as base64 encoded character data or using <tt>xop:Include</tt>.
      * Since the writer applies the settings defined in {@link OMOutputFormat} (including MTOM

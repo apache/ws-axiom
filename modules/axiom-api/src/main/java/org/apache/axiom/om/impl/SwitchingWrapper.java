@@ -49,7 +49,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.EmptyOMLocation;
 import org.apache.axiom.om.impl.OMNavigator;
-import org.apache.axiom.om.impl.builder.DataHandlerReaderUtil;
+import org.apache.axiom.om.impl.builder.DataHandlerReaderUtils;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.om.impl.util.NamespaceContextImpl;
@@ -966,7 +966,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @throws IllegalArgumentException
      */
     public Object getProperty(String s) throws IllegalArgumentException {
-        Object value = DataHandlerReaderUtil.processGetProperty(this, s);
+        Object value = DataHandlerReaderUtils.processGetProperty(this, s);
         if (value != null) {
             return value;
         }
@@ -1469,7 +1469,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     public void setParser(XMLStreamReader parser) {
         this.parser = parser;
         dataHandlerReader =
-                parser == null ? null : DataHandlerReaderUtil.getDataHandlerReader(parser);
+                parser == null ? null : DataHandlerReaderUtils.getDataHandlerReader(parser);
     }
 
     private Map getAllNamespaces(OMNode contextNode) {
