@@ -867,7 +867,9 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     public String getElementText() throws XMLStreamException {
         if (parser != null) {
             try {
-                return parser.getElementText();
+                String elementText = parser.getElementText();
+                currentEvent = END_ELEMENT;
+                return elementText;
             } catch (XMLStreamException e) {
                 throw new OMStreamingException(e);
             }
