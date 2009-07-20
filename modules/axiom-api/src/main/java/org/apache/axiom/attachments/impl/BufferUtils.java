@@ -71,8 +71,8 @@ public class BufferUtils {
             }
         }
         
-        // If this is a BAAOutputStream, use the optimized method
-        if (ENABLE_BAAOS_OPT && os instanceof BAAOutputStream) {
+        // If the stream implements ReadFromSupport, use the optimized method
+        if (ENABLE_BAAOS_OPT && os instanceof ReadFromSupport) {
             ((ReadFromSupport)os).readFrom(is, Long.MAX_VALUE);
             return;
         }
