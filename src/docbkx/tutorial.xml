@@ -1043,6 +1043,304 @@ with CRLF</root>]]></screen>
         </section>
     </chapter>
 
+    <chapter>
+        <title>Common mistakes, problems and anti-patterns</title>
+        <para>
+            This chapter presents some of the common mistakes and problems people face when writing code
+            using Axiom, as well as anti-patterns that should be avoided.
+        </para>
+        <section>
+            <title>Violating the <classname>javax.activation.DataSource</classname> contract</title>
+            <para>
+                When working with binary (base64) content, it is sometimes necessary to write a
+                custom <classname>DataSource</classname> implementation to wrap binary data that is
+                available in a different form (and for which Axiom or the Java Activation Framework
+                has no out-of-the-box data source implementation). Data sources are also sometimes
+                (but less frequently) used in conjunction with <classname>OMSourcedElement</classname>
+                and <classname>OMDataSource</classname>.
+            </para>
+            <para>
+                The documentation of the <classname>DataSource</classname> is very clear on the expected
+                behavior of the <methodname>getInputStream</methodname> method:
+            </para>
+<programlisting>/**
+ * This method returns an InputStream representing
+ * the data and throws the appropriate exception if it can
+ * not do so. Note that a new InputStream object must be
+ * returned each time this method is called, and the stream must be
+ * positioned at the beginning of the data.
+ *
+ * @return an InputStream
+ */
+public InputStream getInputStream() throws IOException;</programlisting>
+            <para>
+                A common mistake is to implement the data source in a way that makes
+                <methodname>getInputStream</methodname> <quote>destructive</quote>. Consider
+                the implementation shown in <xref linkend="InputStreamDataSource"/><footnote><para>The example
+                shown is actually a simplified version of code that is 
+                <ulink url="http://svn.apache.org/repos/asf/webservices/axis2/tags/java/v1.5/modules/kernel/src/org/apache/axis2/builder/unknowncontent/InputStreamDataSource.java">part of Axis2 1.5</ulink>.</para></footnote>.
+                It is clear that this data source can only be read once and that any subsequent call to
+                <methodname>getInputStream</methodname> will return an already closed input stream.
+            </para>
+            <example id="InputStreamDataSource">
+                <title><classname>DataSource</classname> implementation that violates the interface contract</title>
+<programlisting>public class InputStreamDataSource implements DataSource {
+    private final InputStream is;
+
+    public InputStreamDataSource(InputStream is) {
+        this.is = is;
+    }
+
+    public String getContentType() {
+        return "application/octet-stream";
+    }
+
+    public InputStream getInputStream() throws IOException {
+        return is;
+    }
+
+    public String getName() {
+        return null;
+    }
+
+    public OutputStream getOutputStream() throws IOException {
+        throw new UnsupportedOperationException();
+    }
+}</programlisting>
+            </example>
+            <para>
+                What makes this mistake so vicious is that very likely it will not cause
+                problems immediately. The reason is that Axiom is optimized to read the data
+                only when necessary, which in most cases means only once! However, in some cases
+                it is unavoidable to read the data several times. When that happens, the broken
+                <classname>DataSource</classname> implementation will cause problems that may
+                be extremely hard to debug.
+            </para>
+            <para>
+                Imagine for example<footnote><para>For another example, see
+                <ulink url="http://markmail.org/thread/omx7umk5fnpb6dnc"/>.</para></footnote>
+                that the implementation shown above is used to produce an
+                MTOM message. At first this will work without any problems because the data
+                source is read only once when serializing the message. If later on the MTOM
+                threshold feature is enabled, the broken implementation will (in the worst case)
+                cause the corresponding MIME parts to be empty or (in the best case) trigger an
+                I/O error because Axiom attempts to read from an already closed stream.
+                The reason for this is that when an MTOM threshold is set, Axiom reads the data
+                source twice: once to determine if its size exceeds the
+                threshold<footnote><para>To do this, Axiom doesn't read the entire data source,
+                but only reads up to the threshold.</para></footnote> and once during
+                serialization of the message.
+            </para>
+        </section>
+        <section>
+            <title>Issues that <quote>magically</quote> disappear</title>
+            <para>
+                Quite frequently users post messages on the Axiom related mailing lists about
+                issues that seem to disappear by <quote>magic</quote> when they try to debug
+                them. The reason why this can happen is simple. As explained earlier, Axiom uses
+                deferred building, but at the same time does its best to hide that from the user,
+                so that he doesn't need to worry about whether the object model has already been
+                built or not. On the other hand, when serializing the object model to XML or when
+                requesting a pull parser (<classname>XMLStreamReader</classname>) from a node,
+                the code paths taken may be radically different depending on whether or not
+                the corresponding part of the tree has already been built. This is especially
+                true when caching is disabled.
+            </para>
+            <para>
+                While the end result should be the same in all cases, it is also clear that
+                in some circumstances an issue that occurs with an incompletely built tree may
+                disappear if there is something that causes Axiom to build the rest of the object
+                model. What is important to understand is that the <quote>something</quote> may
+                be as trivial as a call to the <methodname>toString</methodname> method of an
+                <classname>OMNode</classname>! The fact that adding
+                <methodname>System.out.println</methodname> statements or logging instructions
+                is a common debugging technique then explains why issues sometimes seem to
+                <quote>magically</quote> disappear during debugging.
+            </para>
+            <para>
+                Finally, it should be noted that inspecting an <classname>OMNode</classname>
+                in a debugger also causes a call to the <methodname>toString</methodname>
+                method on that object. This means that by just clicking on something in the
+                <quote>Variables</quote> window of your debugger, you may completely change the
+                state of the process that is being debugged!
+            </para>
+        </section>
+        <section>
+            <title>The OM-inside-OMDataSource anti-pattern</title>
+            <section>
+                <title>Weak version</title>
+                <para>
+                    <classname>OMDataSource</classname> objects are used in conjunction with
+                    <classname>OMSourcedElement</classname> to build Axiom object model instances
+                    that contain information items that are represented using a framework or API
+                    other than Axiom. Wrapping this <quote>foreign</quote> data in an
+                    <classname>OMDataSource</classname> and adding it to the Axiom object model
+                    using an <classname>OMSourcedElement</classname> in most cases avoids the
+                    conversion of the data to the <quote>native</quote> Axiom object
+                    model<footnote><para>An exception is when code tries to access the children
+                    of the <classname>OMSourcedElement</classname>. In this case, the
+                    <classname>OMSourcedElement</classname> will be <firstterm>expanded</firstterm>,
+                    i.e. the data will be converted to the native Axiom object model.</para></footnote>. 
+                    The <classname>OMDataSource</classname> contract requires the implementation
+                    to support two different ways of providing the data, both relying on StAX:
+                </para>
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            The implementation must be able to provide a pull parser
+                            (<classname>XMLStreamReader</classname>) from which the infoset can be
+                            read.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            The data source must be able to serialize the infoset to an
+                            <classname>XMLStreamWriter</classname> (push).
+                        </para>
+                    </listitem>
+                </itemizedlist>
+                <para>
+                    For the consumer of an event based representation of an XML infoset, it is in
+                    general easier to work in pull mode. That is the reason why StAX has gained
+                    popularity over push based approaches such as SAX. On the other hand for a producer
+                    such as an <classname>OMDataSource</classname> implementation, it's exactly the
+                    other way round: it is far easier to serialize an infoset to an
+                    <classname>XMLStreamWriter</classname> (push) than to build an
+                    <classname>XMLStreamReader</classname> from which a consumer can read (pull) events.
+                </para>
+                <para>
+                    Experience indeed shows that the most challenging part in creating an
+                    <classname>OMDataSource</classname> implementation is to write the
+                    <methodname>getReader</methodname> method. To avoid that difficulty some
+                    implementations simply build an Axiom tree and return the
+                    <classname>XMLStreamReader</classname> provided by
+                    <methodname>OMElement#getXMLStreamReader()</methodname>. For example, some ADB
+                    (Axis2 Data Binding) versions use the following code<footnote><para>For the complete
+                    code, see <ulink url="http://svn.apache.org/repos/asf/webservices/axis2/tags/java/v1.5/modules/adb/src/org/apache/axis2/databinding/ADBDataSource.java"/>.</para></footnote>:
+                </para>
+                <example id="adb-getReader">
+                    <title><methodname>OMDataSource#getReader()</methodname> implementation used by ADB</title>
+<programlisting>public XMLStreamReader getReader() throws XMLStreamException {
+    MTOMAwareOMBuilder mtomAwareOMBuilder = new MTOMAwareOMBuilder();
+    serialize(mtomAwareOMBuilder);
+    return mtomAwareOMBuilder.getOMElement().getXMLStreamReader();
+}</programlisting>
+                </example>
+                <para>
+                    The <classname>MTOMAwareOMBuilder</classname> class referenced by this code is a special
+                    implementation of <classname>XMLStreamWriter</classname> that builds an Axiom tree from the
+                    sequence of events send to it. The code than uses this Axiom tree to get the
+                    <classname>XMLStreamReader</classname> implementation. While this is a functionally correct
+                    implementation of the <methodname>getReader</methodname> method, it is not a good
+                    solution from a performance perspective and also contradicts some of the ideas on
+                    which Axiom is based, namely that the object model should only be built when necessary.
+                </para>
+                <para>
+                    Indeed, it should not be necessary to build an intermediary tree when requesting a pull
+                    parser from the <classname>OMDataSource</classname> because all the required information
+                    is already present in the ADB beans. Worse, if the <classname>OMSourcedElement</classname>
+                    is expanded, the object model instance will be built twice: once by the
+                    <methodname>getReader</methodname> and once by Axiom itself!
+                </para>
+                <para>
+                    While constructing an Axiom tree inside the <methodname>getReader</methodname> method is clearly
+                    an anti-pattern, at least in the case of ADB it is not as bad as it seems at first glance.
+                    The reason is that in the case which is the most relevant for performance
+                    (which is sending a Web Service response prepared using ADB), Axiom will only invoke
+                    the <methodname>serialize</methodname> method and not make use of
+                    <methodname>getReader</methodname>.
+                </para>
+                <note>
+                    <para>
+                        At the time of writing there is no general solution available to avoid the
+                        weak version of the OM-inside-OMDataSource anti-pattern in cases where it would be far
+                        too difficult to build a proper <classname>XMLStreamReader</classname>
+                        implementation. Future versions of Axiom may implement a solution that
+                        avoids the complexity of implementing <classname>XMLStreamReader</classname>
+                        without too much performance trade-offs.
+                    </para>
+                </note>
+            </section>
+            <section>
+                <title>Strong version</title>
+                <para>
+                    There is also a stronger version of the anti-pattern which consists in
+                    implementing the <methodname>serialize</methodname> method by building an Axiom tree
+                    and then serializing the tree to the <classname>XMLStreamWriter</classname>.
+                    Except for very special cases, there is <emphasis role="strong">no valid reason
+                    whatsoever</emphasis> to do this! To see why this is so, consider the two
+                    possible cases:
+                </para>
+                <orderedlist>
+                    <listitem>
+                        <para>
+                            The <classname>OMDataSource</classname> already implements the
+                            <methodname>getReader</methodname> method in a proper way, i.e. without
+                            building an intermediary Axiom tree. To properly implement
+                            <methodname>serialize</methodname>, it is then sufficient
+                            to pull the events from the reader returned by a call to
+                            <methodname>getReader</methodname> and copy them to the
+                            <classname>XMLStreamReader</classname>. The easiest and most efficient
+                            way to do this is using <classname>StreamingOMSerializer</classname>:
+                        </para>
+                        <example id="OMDataSource-serialize">
+                            <title>Proper implementation of the <methodname>OMDataSource#serialize</methodname> method</title>
+<programlisting>public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
+    StreamingOMSerializer serializer = new StreamingOMSerializer();
+    serializer.serialize(getReader(), xmlWriter);
+}</programlisting>
+                        </example>
+                        <para>
+                            There is thus no need to build an intermediary object model in this case.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            The <methodname>getReader</methodname> method also uses an intermediary
+                            Axiom tree<footnote><para>See e.g.
+                            <ulink url="http://svn.apache.org/repos/asf/webservices/axis2/tags/java/v1.5/modules/kernel/src/org/apache/axis2/builder/unknowncontent/UnknownContentOMDataSource.java"/>.</para></footnote>.
+                            In that case it doesn't make sense to use an <classname>OMSourcedElement</classname>
+                            in the first place! At least it doesn't make sense if one assumes that
+                            in general the <classname>OMSourcedElement</classname> will either be
+                            serialized or its content accessed after being added to the tree. Indeed,
+                            in this case the Axiom tree will be built at least once (if not multiple times),
+                            so that the code might as well use a normal <classname>OMElement</classname>.
+                        </para>
+                        <para>
+                            This only leaves the very special case where the <classname>OMSourcedElement</classname>
+                            is in general neither accessed nor serialized, either because it will usually be somehow
+                            discarded or because the code uses <methodname>OMDataSourceExt#getObject()</methodname>
+                            to retrieve the raw data. Even in that case one can argue that in general
+                            it should not be too hard to implement at least the <methodname>serialize</methodname>
+                            method properly by transforming the raw or foreign data directly to StAX events written to the
+                            <classname>XMLStreamWriter</classname>.
+                        </para>
+                        <note>
+                            <para>
+                                Implementing the <methodname>serialize</methodname> method to serialize
+                                directly to an <classname>XMLStreamWriter</classname>
+                                instead of using an intermediary Axiom tree of course still leaves the question about
+                                the <methodname>getReader</methodname> method open.
+                                Since we are assuming that implementing <methodname>getReader</methodname>
+                                properly would be too complex (otherwise one could use the code shown in
+                                <xref linkend="OMDataSource-serialize"/> to avoid the
+                                OM-inside-OMDataSource anti-pattern entirely), one is forced to
+                                use the code shown in <xref linkend="adb-getReader"/> (and thus the weaker version of
+                                the anti-pattern). However this code depends on the <classname>MTOMAwareOMBuilder</classname>
+                                class which is part of <literal>axis2-adb</literal>. In some cases, depending on
+                                that library may not be an option. Therefore this class should probably
+                                be moved to Axiom.
+                            </para>
+                        </note>
+                    </listitem>
+                </orderedlist>
+                <para>
+                    QED
+                </para>
+            </section>
+        </section>
+    </chapter>
+
     <chapter id="appendix">
         <title>Appendix</title>
         <section>
