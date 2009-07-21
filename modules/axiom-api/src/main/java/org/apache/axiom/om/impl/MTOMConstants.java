@@ -29,7 +29,14 @@ public interface MTOMConstants {
     String SWA_TYPE = "text/xml";
     String SWA_TYPE_12 = "application/soap+xml";
 
-    /** <code>rootPart</code> is used as the key for the root BodyPart in the Parts HashMap */
+    /**
+     * @deprecated 
+     */
     String ROOT_PART = "SoapPart";
+    
+    /**
+     * @deprecated This was used in old versions of Axis2 as the key identifying the attachments map
+     *             in the message context. You should no longer use this.
+     */
     String ATTACHMENTS = "Attachments";
 }
