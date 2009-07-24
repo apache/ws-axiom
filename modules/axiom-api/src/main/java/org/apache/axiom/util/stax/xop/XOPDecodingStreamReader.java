@@ -131,6 +131,9 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
                     "a (single) href attribute");
         }
         String href = parent.getAttributeValue(0);
+        if(log.isDebugEnabled()){
+             log.debug("processXopInclude - found href : " + href);
+        }
         if (!href.startsWith("cid:")) {
             throw new XMLStreamException("Expected href attribute containing a URL in the " +
                     "cid scheme");
@@ -141,6 +144,9 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
             // characters are not allowed in content IDs, we can simply decode using ASCII
             // (which is a subset of UTF-8)
             contentID = URLDecoder.decode(href.substring(4), "ascii");
+            if(log.isDebugEnabled()){
+                 log.debug("processXopInclude - decoded contentID : " + contentID);
+            }
         } catch (UnsupportedEncodingException ex) {
             // We should never get here
             throw new XMLStreamException(ex);
