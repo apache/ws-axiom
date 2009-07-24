@@ -116,21 +116,21 @@
                 </executions>
             </plugin>
             <plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<extensions>true</extensions>
-				<configuration>
-					<excludeDependencies>true</excludeDependencies>
-					<instructions>
-						<_nouses>true</_nouses>
-						<Private-Package>org.apache.axiom.*</Private-Package>
-					</instructions>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-scr-plugin</artifactId>
-			</plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <excludeDependencies>true</excludeDependencies>
+                    <instructions>
+                        <_nouses>true</_nouses>
+                        <Private-Package>org.apache.axiom.*</Private-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-scr-plugin</artifactId>
+            </plugin>
             <!-- Attach a JAR with the test classes so that we can reuse them in other modules
                  (see http://maven.apache.org/guides/mini/guide-attached-tests.html). -->
             <plugin>
