@@ -102,25 +102,5 @@
                 <directory>test-resources</directory>
             </testResource>
         </testResources>
-        <plugins>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>**/*Test.java</include>
-                        <include>**/*TestCase.java</include>
-                    </includes>
-                    <excludes>
-                        <exclude>**/*AbstractOMSerializationTest.java</exclude>
-                    </excludes>
-                    <systemProperties>
-                        <property>
-                            <name>java.awt.headless</name>
-                            <value>true</value>
-                        </property>
-                    </systemProperties>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 </project>

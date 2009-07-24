@@ -50,7 +50,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class AbstractOMSerializationTest extends XMLTestCase {
+public abstract class AbstractOMSerializationTest extends XMLTestCase {
 
     protected boolean ignoreXMLDeclaration = true;
     protected boolean ignoreDocument = false;

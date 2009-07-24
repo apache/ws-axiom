@@ -41,7 +41,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 
 
-public class SourcedOMElementTestCase extends TestCase {
+public class SourcedOMElementTest extends TestCase {
     
     public void testSerialization() throws Exception {
         SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();

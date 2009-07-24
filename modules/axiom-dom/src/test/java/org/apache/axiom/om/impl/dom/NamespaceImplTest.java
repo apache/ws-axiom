@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
-public final class NamespaceImplTestCase extends junit.framework.TestCase {
+public final class NamespaceImplTest extends junit.framework.TestCase {
     public void testEqualsHashCodeContract() {
         assertEquals(
                 new org.apache.axiom.om.impl.dom.NamespaceImpl("anyURI"),
