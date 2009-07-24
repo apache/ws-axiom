@@ -338,7 +338,8 @@ public class StAXUtils {
      * @param name
      * @return
      */
-    private static Map loadFactoryProperties(String name) {
+    // This has package access since it is used from within anonymous inner classes
+    static Map loadFactoryProperties(String name) {
         ClassLoader cl = getContextClassLoader();
         InputStream in = cl.getResourceAsStream(name);
         if (in == null) {
@@ -382,31 +383,49 @@ public class StAXUtils {
         }
     }
     
-    // This has package access since it is used from within anonymous inner classes
-    static XMLInputFactory newXMLInputFactory(boolean isNetworkDetached) {
-        XMLInputFactory factory = XMLInputFactory.newInstance();
-        Map props = loadFactoryProperties("XMLInputFactory.properties");
-        if (props != null) {
-            for (Iterator it = props.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry entry = (Map.Entry)it.next();
-                factory.setProperty((String)entry.getKey(), entry.getValue());
-            }
-        }
-        if (isNetworkDetached) {
-            factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, 
-                      Boolean.FALSE);
-            // Some StAX parser such as Woodstox still try to load the external DTD subset,
-            // even if IS_SUPPORTING_EXTERNAL_ENTITIES is set to false. To work around this,
-            // we add a custom XMLResolver that returns empty documents. See WSTX-117 for
-            // an interesting discussion about this.
-            factory.setXMLResolver(new XMLResolver() {
-                public Object resolveEntity(String publicID, String systemID, String baseURI,
-                        String namespace) throws XMLStreamException {
-                    return new ByteArrayInputStream(new byte[0]);
+    private static XMLInputFactory newXMLInputFactory(final ClassLoader classLoader,
+            final boolean isNetworkDetached) {
+        
+        return (XMLInputFactory)AccessController.doPrivileged(new PrivilegedAction() {
+            public Object run() {
+                ClassLoader savedClassLoader;
+                if (classLoader == null) {
+                    savedClassLoader = null;
+                } else {
+                    savedClassLoader = Thread.currentThread().getContextClassLoader();
+                    Thread.currentThread().setContextClassLoader(classLoader);
                 }
-            });
-        }
-        return factory;
+                try {
+                    XMLInputFactory factory = XMLInputFactory.newInstance();
+                    Map props = loadFactoryProperties("XMLInputFactory.properties");
+                    if (props != null) {
+                        for (Iterator it = props.entrySet().iterator(); it.hasNext(); ) {
+                            Map.Entry entry = (Map.Entry)it.next();
+                            factory.setProperty((String)entry.getKey(), entry.getValue());
+                        }
+                    }
+                    if (isNetworkDetached) {
+                        factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, 
+                                  Boolean.FALSE);
+                        // Some StAX parser such as Woodstox still try to load the external DTD subset,
+                        // even if IS_SUPPORTING_EXTERNAL_ENTITIES is set to false. To work around this,
+                        // we add a custom XMLResolver that returns empty documents. See WSTX-117 for
+                        // an interesting discussion about this.
+                        factory.setXMLResolver(new XMLResolver() {
+                            public Object resolveEntity(String publicID, String systemID, String baseURI,
+                                    String namespace) throws XMLStreamException {
+                                return new ByteArrayInputStream(new byte[0]);
+                            }
+                        });
+                    }
+                    return factory;
+                } finally {
+                    if (savedClassLoader != null) {
+                        Thread.currentThread().setContextClassLoader(savedClassLoader);
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -437,13 +456,7 @@ public class StAXUtils {
                 }
                 factory = null;
                 try {
-                    factory = (XMLInputFactory) 
-                    AccessController.doPrivileged(
-                        new PrivilegedAction() {
-                            public Object run() {
-                                return newXMLInputFactory(isNetworkDetached);
-                            }
-                        });
+                    factory = newXMLInputFactory(null, isNetworkDetached);
                 } catch (ClassCastException cce) {
                     if (log.isDebugEnabled()) {
                         log.debug("Failed creation of XMLInputFactory implementation with " +
@@ -452,22 +465,8 @@ public class StAXUtils {
                         log.debug("Attempting with classloader: " + 
                                   XMLInputFactory.class.getClassLoader());
                     }
-                    factory = (XMLInputFactory) 
-                    AccessController.doPrivileged(
-                        new PrivilegedAction() {
-                            public Object run() {
-                                ClassLoader saveCL = getContextClassLoader();
-                                try {                              
-                                    Thread.currentThread().
-                                        setContextClassLoader(
-                                            XMLInputFactory.class.getClassLoader());
-                                    return newXMLInputFactory(isNetworkDetached);
-                                } finally {
-                                    Thread.currentThread().
-                                        setContextClassLoader(saveCL);
-                                }
-                            }
-                        });
+                    factory = newXMLInputFactory(XMLInputFactory.class.getClassLoader(),
+                            isNetworkDetached);
                 }
                     
                 if (factory != null) {
@@ -504,20 +503,7 @@ public class StAXUtils {
             f = inputFactory;
         }
         if (f == null) {
-            f = (XMLInputFactory) AccessController.doPrivileged(
-                    new PrivilegedAction() {
-                        public Object run() {
-                            Thread currentThread = Thread.currentThread();
-                            ClassLoader savedClassLoader = currentThread.getContextClassLoader();
-                            try {
-                                currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
-                                return newXMLInputFactory(isNetworkDetached);
-                            }
-                            finally {
-                                currentThread.setContextClassLoader(savedClassLoader);
-                            }
-                        }
-                    });
+            f = newXMLInputFactory(StAXUtils.class.getClassLoader(), isNetworkDetached);
             if (isNetworkDetached) {
                 inputNDFactory = f;
             } else {
@@ -537,19 +523,35 @@ public class StAXUtils {
         return f;
     }
     
-    // This has package access since it is used from within anonymous inner classes
-    static XMLOutputFactory newXMLOutputFactory() {
-        XMLOutputFactory factory = XMLOutputFactory.newInstance();
-        factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, 
-                            Boolean.FALSE);
-        Map props = loadFactoryProperties("XMLOutputFactory.properties");
-        if (props != null) {
-            for (Iterator it = props.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry entry = (Map.Entry)it.next();
-                factory.setProperty((String)entry.getKey(), entry.getValue());
+    private static XMLOutputFactory newXMLOutputFactory(final ClassLoader classLoader) {
+        return (XMLOutputFactory)AccessController.doPrivileged(new PrivilegedAction() {
+            public Object run() {
+                ClassLoader savedClassLoader;
+                if (classLoader == null) {
+                    savedClassLoader = null;
+                } else {
+                    savedClassLoader = Thread.currentThread().getContextClassLoader();
+                    Thread.currentThread().setContextClassLoader(classLoader);
+                }
+                try {
+                    XMLOutputFactory factory = XMLOutputFactory.newInstance();
+                    factory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, 
+                                        Boolean.FALSE);
+                    Map props = loadFactoryProperties("XMLOutputFactory.properties");
+                    if (props != null) {
+                        for (Iterator it = props.entrySet().iterator(); it.hasNext(); ) {
+                            Map.Entry entry = (Map.Entry)it.next();
+                            factory.setProperty((String)entry.getKey(), entry.getValue());
+                        }
+                    }
+                    return factory;
+                } finally {
+                    if (savedClassLoader != null) {
+                        Thread.currentThread().setContextClassLoader(savedClassLoader);
+                    }
+                }
             }
-        }
-        return factory;
+        });
     }
     
     /**
@@ -570,13 +572,7 @@ public class StAXUtils {
                               XMLOutputFactory.class.getClassLoader());
                 }
                 try {
-                    factory = (XMLOutputFactory) 
-                    AccessController.doPrivileged(
-                        new PrivilegedAction() {
-                            public Object run() {
-                                return newXMLOutputFactory();
-                            }
-                        });
+                    factory = newXMLOutputFactory(null);
                 } catch (ClassCastException cce) {
                     if (log.isDebugEnabled()) {
                         log.debug("Failed creation of XMLOutputFactory implementation with " +
@@ -585,22 +581,7 @@ public class StAXUtils {
                         log.debug("Attempting with classloader: " + 
                                   XMLOutputFactory.class.getClassLoader());
                     }
-                    factory = (XMLOutputFactory) 
-                    AccessController.doPrivileged(
-                        new PrivilegedAction() {
-                            public Object run() {
-                                ClassLoader saveCL = getContextClassLoader();
-                                try {                              
-                                    Thread.currentThread().
-                                        setContextClassLoader(
-                                           XMLOutputFactory.class.getClassLoader());
-                                    return newXMLOutputFactory();
-                                } finally {
-                                    Thread.currentThread().
-                                        setContextClassLoader(saveCL);
-                                }
-                            }
-                        });
+                    factory = newXMLOutputFactory(XMLOutputFactory.class.getClassLoader());
                 }
                 if (factory != null) {
                     outputFactoryPerCL.put(cl, factory);
@@ -623,21 +604,7 @@ public class StAXUtils {
      */
     public static XMLOutputFactory getXMLOutputFactory_singleton() {
         if (outputFactory == null) {
-            outputFactory = (XMLOutputFactory) AccessController.doPrivileged(
-                    new PrivilegedAction() {
-                        public Object run() {
-
-                            Thread currentThread = Thread.currentThread();
-                            ClassLoader savedClassLoader = currentThread.getContextClassLoader();
-                            try {
-                                currentThread.setContextClassLoader(StAXUtils.class.getClassLoader());
-                                return newXMLOutputFactory();
-                            }
-                            finally {
-                                currentThread.setContextClassLoader(savedClassLoader);
-                            }
-                        }
-                    });
+            outputFactory = newXMLOutputFactory(StAXUtils.class.getClassLoader());
             if (log.isDebugEnabled()) {
                 if (outputFactory != null) {
                     log.debug("Created singleton XMLOutputFactory = " + outputFactory.getClass());
