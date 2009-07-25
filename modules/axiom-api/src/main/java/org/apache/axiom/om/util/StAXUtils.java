@@ -22,6 +22,7 @@ package org.apache.axiom.om.util;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -397,6 +398,11 @@ public class StAXUtils {
                 }
                 try {
                     XMLInputFactory factory = XMLInputFactory.newInstance();
+                    // Woodstox by default creates coalescing parsers. Even if this violates
+                    // the StAX specs, for compatibility with Woodstox, we always enable the
+                    // coalescing mode. Note that we need to do that before loading
+                    // XMLInputFactory.properties so that this setting can be overridden.
+                    factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
                     Map props = loadFactoryProperties("XMLInputFactory.properties");
                     if (props != null) {
                         for (Iterator it = props.entrySet().iterator(); it.hasNext(); ) {
@@ -418,7 +424,7 @@ public class StAXUtils {
                             }
                         });
                     }
-                    return factory;
+                    return StAXDialectDetector.normalize(factory);
                 } finally {
                     if (savedClassLoader != null) {
                         Thread.currentThread().setContextClassLoader(savedClassLoader);
@@ -544,7 +550,7 @@ public class StAXUtils {
                             factory.setProperty((String)entry.getKey(), entry.getValue());
                         }
                     }
-                    return factory;
+                    return StAXDialectDetector.normalize(factory);
                 } finally {
                     if (savedClassLoader != null) {
                         Thread.currentThread().setContextClassLoader(savedClassLoader);

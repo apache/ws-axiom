@@ -33,10 +33,9 @@ import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
+import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -243,14 +242,14 @@ public class OMSourcedElementTest extends AbstractTestCase {
      */
     public void testSerializeToXMLWriter() throws Exception {
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         element.serialize(writer);
         xmlwriter.flush();
         assertEquals("Serialized text error", testDocument, writer.toString());
         assertTrue("Element not expanded when serializing", element.isExpanded());
 
         writer = new StringWriter();
-        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         element.serialize(writer);
         xmlwriter.flush();
         assertEquals("Serialized text error", testDocument, writer.toString());
@@ -264,7 +263,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
      */
     public void testSerializeAndConsumeToXMLWriter() throws Exception {
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         element.serializeAndConsume(writer);
         xmlwriter.flush();
         assertEquals("Serialized text error", testDocument, writer.toString());
@@ -278,7 +277,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
      */
     public void testSerializeToXMLWriterEmbedded() throws Exception {
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serialize(writer);
         xmlwriter.flush();
         String result = writer.toString();
@@ -288,7 +287,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertTrue("Element not expanded when serializing", element.isExpanded());
 
         writer = new StringWriter();
-        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serialize(writer);
         xmlwriter.flush();
         result = writer.toString();
@@ -326,7 +325,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
 
         // Serialize and cache.  This should cause expansion.  The prefix should be updated to match the testDocument string
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serialize(writer);
         xmlwriter.flush();
         String result = writer.toString();
@@ -342,7 +341,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
 
         // Serialize again
         writer = new StringWriter();
-        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serialize(writer);
         xmlwriter.flush();
         result = writer.toString();
@@ -387,7 +386,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         // Serialize and consume.  This should not cause expansion and currently won't update
         // the name of the element.
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serializeAndConsume(writer);
         xmlwriter.flush();
         String result = writer.toString();
@@ -429,7 +428,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
 
         // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
 
         try {
             root.serialize(writer);
@@ -454,7 +453,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
 
         // Serialize again
         writer = new StringWriter();
-        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serialize(writer);
         xmlwriter.flush();
         result = writer.toString();
@@ -499,7 +498,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         // Serialize and consume.  This should not cause expansion and currently won't update
         // the name of the element.
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serializeAndConsume(writer);
         xmlwriter.flush();
         String result = writer.toString();
@@ -540,7 +539,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
 
         // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serialize(writer);
         xmlwriter.flush();
         String result = writer.toString();
@@ -556,7 +555,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
 
         // Serialize again
         writer = new StringWriter();
-        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serialize(writer);
         xmlwriter.flush();
         result = writer.toString();
@@ -600,7 +599,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         // Serialize and consume.  This should not cause expansion and currently won't update
         // the name of the element.
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serializeAndConsume(writer);
         xmlwriter.flush();
         String result = writer.toString();
@@ -641,7 +640,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
 
         // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
 
         try {
             root.serialize(writer);
@@ -667,7 +666,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
 
         // Serialize again
         writer = new StringWriter();
-        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serialize(writer);
         xmlwriter.flush();
         result = writer.toString();
@@ -711,7 +710,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         // Serialize and consume.  This should not cause expansion and currently won't update
         // the name of the element.
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serializeAndConsume(writer);
         xmlwriter.flush();
         String result = writer.toString();
@@ -753,7 +752,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
 
         // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serialize(writer);
         xmlwriter.flush();
         String result = writer.toString();
@@ -769,7 +768,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
 
         // Serialize again
         writer = new StringWriter();
-        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serialize(writer);
         xmlwriter.flush();
         result = writer.toString();
@@ -812,7 +811,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         // Serialize and consume.  This should not cause expansion and currently won't update
         // the name of the element.
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serializeAndConsume(writer);
         xmlwriter.flush();
         String result = writer.toString();
@@ -852,7 +851,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
 
         // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
 
         try {
             root.serialize(writer);
@@ -877,7 +876,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
 
         // Serialize again
         writer = new StringWriter();
-        xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serialize(writer);
         xmlwriter.flush();
         result = writer.toString();
@@ -921,7 +920,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         // Serialize and consume.  This should not cause expansion and currently won't update
         // the name of the element.
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serializeAndConsume(writer);
         xmlwriter.flush();
         String result = writer.toString();
@@ -945,7 +944,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
      */
     public void testSerializeAndConsumeToXMLWriterEmbedded() throws Exception {
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         root.serializeAndConsume(writer);
         xmlwriter.flush();
         String result = writer.toString();
@@ -963,7 +962,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
      */
     public void testSerializeToXMLWriterFromReader() throws Exception {
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
 
         StAXOMBuilder builder = new StAXOMBuilder(element.getXMLStreamReader());
         OMDocument omDocument = builder.getDocument();
@@ -989,7 +988,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
      */
     public void testSerializeToXMLWriterFromReaderEmbedded() throws Exception {
         StringWriter writer = new StringWriter();
-        XMLStreamWriter xmlwriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer);
+        XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
 
         StAXOMBuilder builder = new StAXOMBuilder(root.getXMLStreamReader());
         OMDocument omDocument = builder.getDocument();
@@ -1116,8 +1115,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
          * @see org.apache.axiom.om.OMDataSource#getReader()
          */
         public XMLStreamReader getReader() throws XMLStreamException {
-            XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-            return inputFactory.createXMLStreamReader(new StringReader(getString()));
+            return StAXUtils.createXMLStreamReader(new StringReader(getString()));
         }
 
         private byte[] getBytes() throws XMLStreamException {

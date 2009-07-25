@@ -129,16 +129,17 @@
                             <source>
                                 <!-- This generates a list of the files in src/test/resources/conformance.
                                      This is useful when loading these files from the classpath. -->
-                                <body>
+                                <body><![CDATA[
                                     def filelist = new File(project.build.directory, "generated-test-resources/conformance/filelist");
                                     filelist.parentFile.mkdirs();
                                     filelist.delete();
                                     new File(project.basedir, "src/test/resources/conformance").eachFile({
-                                        if (it.file) {
+                                        // TODO: SJSXP has a problem with iso-8859-1.xml, so exclude it for now
+                                        if (it.file && it.name != "iso-8859-1.xml") {
                                             filelist.append("$it.name\n");
                                         }
                                     })
-                                </body>
+                                ]]></body>
                             </source>
                         </configuration>
                     </execution>

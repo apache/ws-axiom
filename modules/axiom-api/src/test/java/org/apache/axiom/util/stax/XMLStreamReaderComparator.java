@@ -21,11 +21,13 @@ package org.apache.axiom.util.stax;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.xml.namespace.NamespaceContext;
@@ -44,6 +46,8 @@ import org.apache.axiom.om.util.StAXUtils;
  * (return values or exceptions thrown) of these invocations are compared to each other.
  */
 public class XMLStreamReaderComparator extends Assert {
+    private static final Map noPrefixValueMap = Collections.singletonMap("", null);
+    
     private final XMLStreamReader expected;
     private final XMLStreamReader actual;
     private final LinkedList path = new LinkedList();
@@ -124,22 +128,43 @@ public class XMLStreamReaderComparator extends Assert {
         return invoke(methodName, new Class[0], new Object[0]);
     }
 
-    private Object assertSameResult(String methodName, Class[] paramTypes, Object[] args) throws Exception {
+    private Object assertSameResult(String methodName, Class[] paramTypes, Object[] args,
+            Map valueMap) throws Exception {
+        
         Object[] results = invoke(methodName, paramTypes, args);
         if (results != null) {
+            Object expected = results[0];
+            Object actual = results[1];
+            if (valueMap != null) {
+                // Attention! The value in the map can be null
+                if (valueMap.containsKey(expected)) {
+                    expected = valueMap.get(expected);
+                }
+                if (valueMap.containsKey(actual)) {
+                    actual = valueMap.get(actual);
+                }
+            }
             assertEquals("Return value of " + methodName + " for arguments " +
                         Arrays.asList(args) + " (" + getLocation() + ")",
-                        results[0], results[1]);
+                        expected, actual);
             return results[0];
         } else {
             return null;
         }
     }
     
-    private Object assertSameResult(String methodName) throws Exception {
-        return assertSameResult(methodName, new Class[0], new Object[0]);
+    private Object assertSameResult(String methodName, Class[] paramTypes, Object[] args) throws Exception {
+        return assertSameResult(methodName, paramTypes, args, null);
+    }
+    
+    private Object assertSameResult(String methodName, Map valueMap) throws Exception {
+        return assertSameResult(methodName, new Class[0], new Object[0], valueMap);
     }
 
+    private Object assertSameResult(String methodName) throws Exception {
+        return assertSameResult(methodName, null);
+    }
+    
     private Set toPrefixSet(Iterator it) {
         Set set = new HashSet();
         while (it.hasNext()) {
@@ -185,7 +210,7 @@ public class XMLStreamReaderComparator extends Assert {
     }
     
     public void compare() throws Exception {
-        do {
+        while (true) {
             int eventType = ((Integer)assertSameResult("getEventType")).intValue();
             if (eventType == XMLStreamReader.START_ELEMENT) {
                 path.addLast(expected.getName());
@@ -200,7 +225,7 @@ public class XMLStreamReaderComparator extends Assert {
                 assertSameResult("getAttributeLocalName", paramTypes, args);
                 assertSameResult("getAttributeName", paramTypes, args);
                 namespaceURIs.add(assertSameResult("getAttributeNamespace", paramTypes, args));
-                prefixes.add(assertSameResult("getAttributePrefix", paramTypes, args));
+                prefixes.add(assertSameResult("getAttributePrefix", paramTypes, args, noPrefixValueMap));
                 assertSameResult("getAttributeType", paramTypes, args);
                 assertSameResult("getAttributeValue", paramTypes, args);
                 assertSameResult("isAttributeSpecified", paramTypes, args);
@@ -212,13 +237,20 @@ public class XMLStreamReaderComparator extends Assert {
                 Map expectedNamespaces = new HashMap();
                 Map actualNamespaces = new HashMap();
                 for (int i=0; i<namespaceCount.intValue(); i++) {
-                    String prefix = expected.getNamespacePrefix(i);
-                    String namespaceURI = expected.getNamespaceURI(i);
-                    expectedNamespaces.put(prefix, namespaceURI);
-                    actualNamespaces.put(actual.getNamespacePrefix(i),
-                            actual.getNamespaceURI(i));
-                    prefixes.add(prefix);
-                    namespaceURIs.add(namespaceURI);
+                    String expectedPrefix = expected.getNamespacePrefix(i);
+                    String expectedNamespaceURI = expected.getNamespaceURI(i);
+                    if (expectedNamespaceURI != null && expectedNamespaceURI.length() == 0) {
+                        expectedNamespaceURI = null;
+                    }
+                    String actualPrefix = actual.getNamespacePrefix(i);
+                    String actualNamespaceURI = actual.getNamespaceURI(i);
+                    if (actualNamespaceURI != null && actualNamespaceURI.length() == 0) {
+                        actualNamespaceURI = null;
+                    }
+                    expectedNamespaces.put(expectedPrefix, expectedNamespaceURI);
+                    actualNamespaces.put(actualPrefix, actualNamespaceURI);
+                    prefixes.add(expectedPrefix);
+                    namespaceURIs.add(expectedNamespaceURI);
                 }
                 assertEquals(expectedNamespaces, actualNamespaces);
             }
@@ -264,6 +296,27 @@ public class XMLStreamReaderComparator extends Assert {
             if (eventType == XMLStreamReader.END_ELEMENT) {
                 path.removeLast();
             }
-        } while (assertSameResult("next") != null);
+            
+            int expectedNextEvent;
+            try {
+                expectedNextEvent = expected.next();
+            } catch (IllegalStateException ex) {
+                expectedNextEvent = -1;
+            } catch (NoSuchElementException ex) {
+                expectedNextEvent = -1;
+            }
+            if (expectedNextEvent == -1) {
+                try {
+                    actual.next();
+                } catch (IllegalStateException ex) {
+                    break;
+                } catch (NoSuchElementException ex) {
+                    break;
+                }
+                fail("Expected reader to throw IllegalStateException or NoSuchElementException");
+            } else {
+                assertEquals(expectedNextEvent, actual.next());
+            }
+        };
     }
 }

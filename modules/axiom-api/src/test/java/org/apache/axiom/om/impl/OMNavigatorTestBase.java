@@ -26,11 +26,10 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.OMNavigator;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -46,7 +45,7 @@ public class OMNavigatorTestBase extends AbstractTestCase {
     }
 
     protected void setUp() throws Exception {
-        XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance().
+        XMLStreamReader xmlStreamReader = StAXUtils.
                 createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE1));
         builder = new StAXSOAPModelBuilder(omMetaFactory, xmlStreamReader, null);
         envelope = (SOAPEnvelope) builder.getDocumentElement();
@@ -56,7 +55,7 @@ public class OMNavigatorTestBase extends AbstractTestCase {
         assertNotNull(envelope);
         //dump the out put to a  temporary file
         XMLStreamWriter output =
-            XMLOutputFactory.newInstance().createXMLStreamWriter(
+            StAXUtils.createXMLStreamWriter(
                     new ByteArrayOutputStream(), OMConstants.DEFAULT_CHAR_SET_ENCODING);
         envelope.serialize(output);
 

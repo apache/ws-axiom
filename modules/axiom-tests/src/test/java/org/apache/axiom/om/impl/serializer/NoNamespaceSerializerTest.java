@@ -25,11 +25,10 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayInputStream;
@@ -75,18 +74,14 @@ public class NoNamespaceSerializerTest extends TestCase {
 
 
     protected void setUp() throws Exception {
-        readerOne =
-                XMLInputFactory.newInstance().
-                        createXMLStreamReader(
+        readerOne = StAXUtils.createXMLStreamReader(
                                 new InputStreamReader(
                                         new ByteArrayInputStream(xmlTextOne.getBytes())));
-        readerTwo =
-                XMLInputFactory.newInstance().
-                        createXMLStreamReader(
+        readerTwo = StAXUtils.createXMLStreamReader(
                                 new InputStreamReader(
                                         new ByteArrayInputStream(xmlTextTwo.getBytes())));
-        writer = XMLOutputFactory.newInstance().
-                createXMLStreamWriter(new ByteArrayOutputStream(), OMConstants.DEFAULT_CHAR_SET_ENCODING);
+        writer = StAXUtils.createXMLStreamWriter(new ByteArrayOutputStream(),
+                OMConstants.DEFAULT_CHAR_SET_ENCODING);
         builderOne =
                 OMXMLBuilderFactory.createStAXSOAPModelBuilder(
                         OMAbstractFactory.getSOAP11Factory(), readerOne);
@@ -117,8 +112,7 @@ public class NoNamespaceSerializerTest extends TestCase {
         SOAPEnvelope env = omFactory.getDefaultEnvelope();
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(
                 omFactory,
-                XMLInputFactory.newInstance().
-                        createXMLStreamReader(
+                StAXUtils.createXMLStreamReader(
                         new InputStreamReader(
                                 new ByteArrayInputStream(xmlText2.getBytes()))));
         env.getBody().addChild(builder.getDocumentElement());
@@ -132,8 +126,8 @@ public class NoNamespaceSerializerTest extends TestCase {
     /** Will just do a probe test to check serialize with caching on works without any exception */
     public void testSerilizationWithCacheOn() throws Exception {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = XMLOutputFactory.newInstance().
-                createXMLStreamWriter(byteArrayOutputStream, OMConstants.DEFAULT_CHAR_SET_ENCODING);
+        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream,
+                OMConstants.DEFAULT_CHAR_SET_ENCODING);
 
         SOAPEnvelope env = (SOAPEnvelope) builderOne.getDocumentElement();
         env.serialize(writer);
@@ -143,8 +137,8 @@ public class NoNamespaceSerializerTest extends TestCase {
 
     /** Will just do a probe test to check serialize with caching off works without any exception */
     public void testSerilizationWithCacheOff() throws Exception {
-        writer = XMLOutputFactory.newInstance().
-                createXMLStreamWriter(new ByteArrayOutputStream(), OMConstants.DEFAULT_CHAR_SET_ENCODING);
+        writer = StAXUtils.createXMLStreamWriter(new ByteArrayOutputStream(),
+                OMConstants.DEFAULT_CHAR_SET_ENCODING);
 
         SOAPEnvelope env = (SOAPEnvelope) builderOne.getDocumentElement();
         env.serializeAndConsume(writer);

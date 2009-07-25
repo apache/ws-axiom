@@ -24,12 +24,14 @@ import java.io.ByteArrayOutputStream;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
-import org.xml.sax.InputSource;
+import org.apache.axiom.util.stax.dialect.StAXDialect;
+import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 
 public class StreamingOMSerializerTest extends AbstractTestCase {
     private final String file;
@@ -41,15 +43,20 @@ public class StreamingOMSerializerTest extends AbstractTestCase {
 
     protected void runTest() throws Throwable {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+        StAXDialect dialect = StAXDialectDetector.getDialect(inputFactory.getClass());
+        inputFactory = dialect.normalize(inputFactory);
         // Allow CDATA events
-        inputFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
-        XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
+        dialect.enableCDataReporting(inputFactory);
+        XMLOutputFactory outputFactory = dialect.normalize(XMLOutputFactory.newInstance());
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out);
-        writer.writeStartDocument();
-        serializer.serialize(inputFactory.createXMLStreamReader(getTestResource(file)), writer, false);
+        XMLStreamReader reader = inputFactory.createXMLStreamReader(getTestResource(file));
+        String encoding = reader.getEncoding();
+        XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out, encoding);
+        writer.writeStartDocument(encoding, reader.getVersion());
+        serializer.serialize(reader, writer, false);
         writer.writeEndDocument();
+        writer.flush();
         assertXMLIdentical(compareXML(toDocumentWithoutDTD(getTestResource(file)),
                 toDocumentWithoutDTD(new ByteArrayInputStream(out.toByteArray()))), true);
     }

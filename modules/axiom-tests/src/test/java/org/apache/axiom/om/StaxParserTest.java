@@ -20,9 +20,8 @@
 package org.apache.axiom.om;
 
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
+import org.apache.axiom.om.util.StAXUtils;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -50,15 +49,14 @@ public class StaxParserTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         //make the parsers
         //Parser 1 is a plain parser from the stax implementation
-        parser1 =
-                XMLInputFactory.newInstance().createXMLStreamReader(
+        parser1 = StAXUtils.createXMLStreamReader(
                         new ByteArrayInputStream(xmlDocument.getBytes()));
 
         //parser 2 is one of our parsers taken with cache. i.e. when the parser
         //proceeds the object model will be built
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
-                XMLInputFactory.newInstance().createXMLStreamReader(
+                StAXUtils.createXMLStreamReader(
                         new ByteArrayInputStream(xmlDocument.getBytes())));
         parser2 = builder.getDocumentElement().getXMLStreamReader();
 
@@ -66,7 +64,7 @@ public class StaxParserTest extends AbstractTestCase {
         //parser proceeds, it's gone forever.
         OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createStAXOMBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
-                XMLInputFactory.newInstance().createXMLStreamReader(
+                StAXUtils.createXMLStreamReader(
                         new ByteArrayInputStream(xmlDocument.getBytes())));
         parser3 =
                 builder2.getDocumentElement().getXMLStreamReaderWithoutCaching();
@@ -125,7 +123,7 @@ public class StaxParserTest extends AbstractTestCase {
 
         OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createStAXOMBuilder(
                 OMAbstractFactory.getOMFactory(),
-                XMLInputFactory.newInstance().createXMLStreamReader(
+                StAXUtils.createXMLStreamReader(
                         new ByteArrayInputStream(xmlDocument.getBytes())));
 
         OMElement documentElement = builder2.getDocumentElement();
@@ -156,7 +154,7 @@ public class StaxParserTest extends AbstractTestCase {
 
         OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createStAXOMBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
-                XMLInputFactory.newInstance().createXMLStreamReader(
+                StAXUtils.createXMLStreamReader(
                         new ByteArrayInputStream(xmlDocument.getBytes())));
 
         OMElement documentElement = builder2.getDocumentElement();
@@ -190,7 +188,7 @@ public class StaxParserTest extends AbstractTestCase {
 
         OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createStAXOMBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
-                XMLInputFactory.newInstance().createXMLStreamReader(
+                StAXUtils.createXMLStreamReader(
                         new ByteArrayInputStream(xmlDocument.getBytes())));
 
         OMElement documentElement = builder2.getDocumentElement();
@@ -208,9 +206,7 @@ public class StaxParserTest extends AbstractTestCase {
         //error since the underlying stream is fully consumed without building the object tree
         Iterator childElements = documentElement.getChildElements();
         try {
-            XMLStreamWriter writer =
-                    XMLOutputFactory.newInstance().
-                            createXMLStreamWriter(System.out);
+            XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(System.out);
             documentElement.serializeAndConsume(writer);
             fail("Stream should be consumed by now");
         } catch (XMLStreamException e) {

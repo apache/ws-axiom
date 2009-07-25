@@ -31,6 +31,8 @@ import junit.framework.TestSuite;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.util.stax.dialect.StAXDialect;
+import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 
 public class OMSourceToStreamResultTestCase extends AbstractTestCase {
     private final OMMetaFactory omMetaFactory;
@@ -47,8 +49,10 @@ public class OMSourceToStreamResultTestCase extends AbstractTestCase {
 
     protected void runTest() throws Throwable {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-        // Turn off coalescing mode so that CDATA sections are reported by the StAX parser
-        inputFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
+        StAXDialect dialect = StAXDialectDetector.getDialect(inputFactory.getClass());
+        inputFactory = dialect.normalize(inputFactory);
+        // Make sure CDATA sections are reported by the StAX parser
+        dialect.enableCDataReporting(inputFactory);
         XMLStreamReader reader = inputFactory.createXMLStreamReader(getTestResource(file));
         StAXOMBuilder builder = new StAXOMBuilder(omMetaFactory.getOMFactory(), reader);
         OMSource source = new OMSource(builder.getDocumentElement());

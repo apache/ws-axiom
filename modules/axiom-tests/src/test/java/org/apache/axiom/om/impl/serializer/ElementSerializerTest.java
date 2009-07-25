@@ -30,11 +30,10 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
@@ -52,12 +51,10 @@ public class ElementSerializerTest extends AbstractTestCase {
     }
 
     protected void setUp() throws Exception {
-        reader =
-                XMLInputFactory.newInstance().
-                        createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
+        reader = StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
         tempFile = File.createTempFile("temp", "xml");
-        writer = XMLOutputFactory.newInstance().
-                createXMLStreamWriter(new FileOutputStream(tempFile), OMConstants.DEFAULT_CHAR_SET_ENCODING);
+        writer = StAXUtils.createXMLStreamWriter(new FileOutputStream(tempFile),
+                OMConstants.DEFAULT_CHAR_SET_ENCODING);
         builder =
                 OMXMLBuilderFactory.createStAXSOAPModelBuilder(
                         OMAbstractFactory.getSOAP11Factory(), reader);

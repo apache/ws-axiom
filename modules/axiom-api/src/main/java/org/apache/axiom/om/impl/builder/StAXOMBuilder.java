@@ -556,7 +556,8 @@ public class StAXOMBuilder extends StAXBuilder {
             // check whether this is the default namespace and make sure we have not declared that earlier
             namespaceURIFromParser = parser.getNamespaceURI(i);
             if (nsprefix == null || "".equals(nsprefix)) {
-                node.declareDefaultNamespace(parser.getNamespaceURI(i));
+                String nsuri = parser.getNamespaceURI(i);
+                node.declareDefaultNamespace(nsuri == null ? "" : nsuri);
             } else {
                 // NOTE_A:
                 // By default most parsers don't intern the namespace.
