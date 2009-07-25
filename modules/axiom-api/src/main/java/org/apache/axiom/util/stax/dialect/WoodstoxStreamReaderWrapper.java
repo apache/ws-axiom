@@ -16,22 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl;
+package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.util.StreamReaderDelegate;
 
-/**
- * Wrapper fixing known issues in the Woodstox parser. We need this to avoid
- * false positives in {@link org.apache.axiom.util.stax.XMLStreamReaderComparator}.
- * Once the issues are fixed in Woodstox we can remove this class.
- */
-public class WoodstoxXMLStreamReaderWrapper extends StreamReaderDelegate {
-    public WoodstoxXMLStreamReaderWrapper(XMLStreamReader reader) {
+import org.apache.axiom.util.stax.XMLStreamReaderWrapper;
+
+class WoodstoxStreamReaderWrapper extends XMLStreamReaderWrapper {
+    public WoodstoxStreamReaderWrapper(XMLStreamReader reader) {
         super(reader);
     }
 
     public boolean isCharacters() {
+        // TODO: in the dialect detection we should take into account the Woodstox version,
+        //       so that we can avoid creating the wrapper for Woodstox versions where this
+        //       issue has been fixed
         // This addresses WSTX-201:
         return getEventType() == CHARACTERS;
     }

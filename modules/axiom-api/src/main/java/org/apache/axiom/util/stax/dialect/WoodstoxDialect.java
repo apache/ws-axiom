@@ -21,8 +21,10 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 
-class WoodstoxDialect implements StAXDialect {
+class WoodstoxDialect extends AbstractStAXDialect {
     public static final WoodstoxDialect INSTANCE = new WoodstoxDialect();
 
     public String getName() {
@@ -34,8 +36,16 @@ class WoodstoxDialect implements StAXDialect {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
     }
 
+    public XMLStreamReader normalize(XMLStreamReader reader) {
+        return new WoodstoxStreamReaderWrapper(reader);
+    }
+
+    public XMLStreamWriter normalize(XMLStreamWriter writer) {
+        return writer;
+    }
+
     public XMLInputFactory normalize(XMLInputFactory factory) {
-        return factory;
+        return new NormalizingXMLInputFactoryWrapper(factory, this);
     }
 
     public XMLOutputFactory normalize(XMLOutputFactory factory) {

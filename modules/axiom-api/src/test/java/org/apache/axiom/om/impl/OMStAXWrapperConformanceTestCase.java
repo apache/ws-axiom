@@ -50,8 +50,7 @@ public class OMStAXWrapperConformanceTestCase extends AbstractTestCase {
         InputStream in1 = getTestResource(file);
         InputStream in2 = getTestResource(file);
         try {
-            XMLStreamReader expected = new WoodstoxXMLStreamReaderWrapper(
-                    StAXUtils.createXMLStreamReader(in1));
+            XMLStreamReader expected = StAXUtils.createXMLStreamReader(in1);
             // Skip to document element. Note that nextTag is not appropriate here because
             // there could be a DTD event.
             while (expected.next() != XMLStreamReader.START_ELEMENT) {
