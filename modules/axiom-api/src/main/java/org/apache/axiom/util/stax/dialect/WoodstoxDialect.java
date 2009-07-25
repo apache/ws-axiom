@@ -36,6 +36,16 @@ class WoodstoxDialect extends AbstractStAXDialect {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
     }
 
+    public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
+        // Woodstox' factories are designed to be thread safe
+        return factory;
+    }
+
+    public XMLOutputFactory makeThreadSafe(XMLOutputFactory factory) {
+        // Woodstox' factories are designed to be thread safe
+        return factory;
+    }
+
     public XMLStreamReader normalize(XMLStreamReader reader) {
         return new WoodstoxStreamReaderWrapper(reader);
     }

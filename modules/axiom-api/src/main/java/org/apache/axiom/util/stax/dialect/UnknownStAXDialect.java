@@ -34,6 +34,16 @@ class UnknownStAXDialect implements StAXDialect {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
     }
 
+    public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
+        // Cross fingers and assume that the factory is already thread safe
+        return factory;
+    }
+
+    public XMLOutputFactory makeThreadSafe(XMLOutputFactory factory) {
+        // Cross fingers and assume that the factory is already thread safe
+        return factory;
+    }
+
     public XMLInputFactory normalize(XMLInputFactory factory) {
         return factory;
     }

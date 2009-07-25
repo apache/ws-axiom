@@ -37,6 +37,16 @@ class SJSXPDialect extends AbstractStAXDialect {
                 Boolean.TRUE);
     }
 
+    public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
+        factory.setProperty("reuse-instance", Boolean.FALSE);
+        return factory;
+    }
+
+    public XMLOutputFactory makeThreadSafe(XMLOutputFactory factory) {
+        factory.setProperty("reuse-instance", Boolean.FALSE);
+        return factory;
+    }
+
     public XMLStreamReader normalize(XMLStreamReader reader) {
         return new SJSXPStreamReaderWrapper(reader);
     }

@@ -71,6 +71,26 @@ public interface StAXDialect {
     void enableCDataReporting(XMLInputFactory factory);
     
     /**
+     * Make an {@link XMLInputFactory} object thread safe. The implementation may do this either by
+     * configuring the factory or by creating a thread safe wrapper.
+     * 
+     * @param factory
+     *            the factory to make thread safe
+     * @return the thread safe factory
+     */
+    XMLInputFactory makeThreadSafe(XMLInputFactory factory);
+    
+    /**
+     * Make an {@link XMLOutputFactory} object thread safe. The implementation may do this either by
+     * configuring the factory or by creating a thread safe wrapper.
+     * 
+     * @param factory
+     *            the factory to make thread safe
+     * @return the thread safe factory
+     */
+    XMLOutputFactory makeThreadSafe(XMLOutputFactory factory);
+    
+    /**
      * Normalize an {@link XMLInputFactory}. This will make sure that the readers created from the
      * factory conform to the StAX specifications.
      * 
