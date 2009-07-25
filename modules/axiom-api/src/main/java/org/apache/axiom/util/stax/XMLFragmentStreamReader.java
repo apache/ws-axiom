@@ -36,6 +36,7 @@ import javax.xml.stream.XMLStreamReader;
  * <pre>&lt;a>&lt;b>text&lt;/b>&lt;/a></pre>
  * If the current event is <code>&lt;b></code> when the wrapper is created, it will produce
  * the following sequence of events:
+ * <p>
  * <ul>
  *   <li>A synthetic START_DOCUMENT event.</li>
  *   <li>START_ELEMENT, CHARACTERS and END_ELEMENT events for <code>&lt;b>text&lt;/b></code>.
@@ -45,6 +46,10 @@ import javax.xml.stream.XMLStreamReader;
  * After all events have been consumed from the wrapper, the current event on the parent reader
  * will be the event following the last END_ELEMENT of the fragment. In the example above this
  * will be <code>&lt;/a></code>.
+ * <p>
+ * The wrapper will release the reference to the parent reader when {@link #close()} is called.
+ * For obvious reasons, the wrapper will never call {@link XMLStreamReader#close()} on the parent
+ * reader.
  */
 public class XMLFragmentStreamReader implements XMLStreamReader {
     // The current event is a synthetic START_DOCUMENT event
@@ -59,7 +64,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
     // The current event is a synthetic END_DOCUMENT event
     private static final int STATE_END_DOCUMENT = 3;
     
-    private final XMLStreamReader parent;
+    private XMLStreamReader parent;
     private int state;
     private int depth;
     
@@ -147,8 +152,7 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
     }
 
     public void close() throws XMLStreamException {
-        // TODO: not sure if we should always allow this!
-        parent.close();
+        parent = null;
     }
 
     public Object getProperty(String name) throws IllegalArgumentException {
