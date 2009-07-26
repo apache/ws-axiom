@@ -85,4 +85,230 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
             </variablelist>
         </section>
     </chapter>
+    
+    <chapter>
+        <title>The StAX specification</title>
+        <para>
+            The StAX specification comprises two parts: a specification document titled <quote>Streaming API
+            For XML JSR-173 Specification</quote> and a Javadoc describing the API. Both can be downloaded from the
+            <ulink url="http://jcp.org/en/jsr/detail?id=173">JSR-173 page</ulink>. Since StAX is part of Java 6,
+            the Javadocs can also be viewed
+            <ulink url="http://java.sun.com/javase/6/docs/api/javax/xml/stream/package-summary.html">online</ulink>. 
+        </para>
+        <section>
+            <title>Semantics of the <methodname>setPrefix</methodname> method</title>
+            <para>
+                Probably one of the more obscure parts of the StAX specifications is the meaning of the
+                <methodname>setPrefix</methodname><footnote><para>For simplicity, we only discuss
+                <methodname>setPrefix</methodname> here. The same remarks also apply to
+                <methodname>setDefaultNamespace</methodname>.</para></footnote> method defined by <classname>XMLStreamWriter</classname>.
+                To understand how this method works, it is necessary to look at different parts of the specification:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        The Javadoc of the <methodname>setPrefix</methodname> method.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        The table shown in the Javadoc of the <classname>XMLStreamWriter</classname> class
+                        in Java 6<footnote><para>This table is not included in the Javadoc in the original StAX
+                        specification.</para></footnote>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Section 5.2.2, <quote>Binding Prefixes</quote> of the specification.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        The example shown in section 5.3.2, <quote>XMLStreamWriter</quote> of the specification.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <para>
+                In addition, it is important to note the following facts:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        The terms <firstterm>defaulting prefixes</firstterm> used in section 5.2.2 of the
+                        specification and <firstterm>namespace repairing</firstterm> used in the Javadocs
+                        of <classname>XMLStreamWriter</classname> are synonyms.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        The methods writing namespace qualified information items, i.e.
+                        <methodname>writeStartElement</methodname>, <methodname>writeEmptyElement</methodname>
+                        and <methodname>writeAttribute</methodname> all come in two variants: one that
+                        takes a namespace URI and a prefix as arguments and one that only takes a
+                        namespace URI, but no prefix.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <para>
+                The purpose of the <methodname>setPrefix</methodname> method is simply to define the prefixes that
+                will be used by the variants of the <methodname>writeStartElement</methodname>,
+                <methodname>writeEmptyElement</methodname> and <methodname>writeAttribute</methodname> methods
+                that only take a namespace URI (and the local name). This becomes clear by looking at the
+                table in the <classname>XMLStreamWriter</classname> Javadoc. Note that a call to
+                <methodname>setPrefix</methodname> doesn't cause any output and it is still necessary
+                to use <methodname>writeNamespace</methodname> to actually write the necessary
+                namespace declarations. Otherwise the produced document will not be well formed with
+                respect to namespaces.
+            </para>
+            <para>
+                The Javadoc of the <methodname>setPrefix</methodname> method also clearly defines the scope
+                of the prefix bindings defined using that method: a prefix bound using
+                <methodname>setPrefix</methodname> remains valid till the invocation of
+                <methodname>writeEndElement</methodname> corresponding to the last invocation of
+                <methodname>writeStartElement</methodname>. While not explicitly mentioned in the
+                specifications, it is clear that a prefix binding may be masked by another binding
+                for the same prefix defined in a nested element.
+            </para>
+            <para>
+                An aspect that may cause confusion is the fact that in the example shown in section
+                5.3.2 of the specifications, the calls to <methodname>setPrefix</methodname> (and
+                <methodname>setDefaultNamespace</methodname>) all appear immediately before a
+                call to <methodname>writeStartElement</methodname> or <methodname>writeEmptyElement</methodname>.
+                This may lead people to incorrectly believe that a prefix binding defined using
+                <methodname>setPrefix</methodname> only applies to the next element
+                written<footnote><para>Another factor that contributes to the confusion is that in SAX,
+                prefix mappings are always generated before the corresponding <methodname>startElement</methodname>
+                event and that their scope ends with the corresponding <methodname>endElement</methodname>
+                event. This is so because the <classname>ContentHandler</classname> interface specifies that
+                <quote>all <methodname>startPrefixMapping</methodname> events will occur immediately before the
+                corresponding <methodname>startElement</methodname> event, and all <methodname>endPrefixMapping</methodname>
+                events will occur immediately after the corresponding <methodname>endElement</methodname>
+                event</quote>.</para></footnote>.
+                This interpretation is clearly in contradiction with the <methodname>setPrefix</methodname>
+                Javadoc, unless one assumes that <quote>the current START_ELEMENT / END_ELEMENT pair</quote>
+                means the element opened by a call to <methodname>writeStartElement</methodname> immediately following
+                the call to <methodname>setPrefix</methodname>. This however would be a very arbitrary interpretation
+                of the Javadoc.
+            </para>
+            <para>
+                The correctness of the comments in the previous paragraph can be checked using the following
+                code snippet:
+            </para>
+<programlisting>XMLOutputFactory f = XMLOutputFactory.newInstance();
+XMLStreamWriter writer = f.createXMLStreamWriter(System.out);
+writer.writeStartElement("root");
+writer.setPrefix("p", "urn:ns1");
+writer.writeEmptyElement("urn:ns1", "element1");
+writer.writeEmptyElement("urn:ns1", "element2");
+writer.writeEndElement();
+writer.flush();
+writer.close();</programlisting>
+            <para>
+                This produces the following output<footnote><para>This has been tested with
+                Woodstox 3.2.9, SJSXP 1.0.1 and version 1.2.0 of the reference
+                implementation.</para></footnote>:
+            </para>
+<screen><![CDATA[<root><p:element1/><p:element2/></root>]]></screen>
+            <para>
+                Since the code doesn't call <methodname>writeNamespace</methodname>, the output is obviously not
+                well formed with respect to namespaces, but it also clearly shows that the scope of the
+                prefix binding for <literal>p</literal> extends to the end of the
+                <sgmltag class="element">root</sgmltag> element and is not limited to
+                <sgmltag class="element">element1</sgmltag>.
+            </para>
+            <para>
+                To avoid unexpected results and keep the code maintainable, it is in general advisable to keep
+                the calls to <methodname>setPrefix</methodname> and <methodname>writeNamespace</methodname> aligned,
+                i.e. to make sure that the scope (in <classname>XMLStreamWriter</classname>) of the prefix binding
+                defined by <methodname>setPrefix</methodname> is compatible with the scope (in the produced
+                document) of the namespace declaration written by the corresponding call
+                to <methodname>writeNamespace</methodname>. This makes it necessary to write code like this:
+            </para>
+<programlisting>writer.writeStartElement("p", "element1", "urn:ns1");
+writer.setPrefix("p", "urn:ns1");
+writer.writeNamespace("p", "urn:ns1");</programlisting>
+            <para>
+                As can be seen from this code snippet, keeping the two scopes in sync makes it necessary to use
+                the <methodname>writeStartElement</methodname> variant which takes an explicit prefix. Note that
+                this somewhat conflicts with the purpose of the <methodname>setPrefix</methodname> method;
+                one may consider this as a flaw in the design of the StAX API.
+            </para>
+        </section>
+        <section>
+            <title>The three <classname>XMLStreamWriter</classname> usage patterns</title>
+            <para>
+                Drawing the conclusions from the previous section and taking into account that
+                <classname>XMLStreamWriter</classname> also has a <quote>namespace repairing</quote>
+                mode, one can see that there are in fact three different ways to use
+                <classname>XMLStreamWriter</classname>. These usage patterns correspond to the
+                three bullets in section 5.2.2 of the StAX specification<footnote><para>The content
+                of this section is largely based on a <ulink url="http://markmail.org/message/olsdl3p3gciqqeob">reply
+                posted by Tatu Saloranta on the Axiom mailing list</ulink>. Tatu is the main developer of the
+                Woodstox project.</para></footnote>:
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        In the <quote>namespace repairing</quote> mode (enabled by the
+                        <varname>javax.xml.stream.isRepairingNamespaces</varname> property), the writer
+                        takes care of all namespace bindings and declarations, with minimal help from
+                        the calling code. This will always produce output that is well-formed with respect
+                        to namespaces. On the other hand, this adds some overhead and the result may
+                        depend on the particular StAX implementation (though the result produced by
+                        different implementations will be equivalent).
+                    </para>
+                    <para>
+                        In repairing mode the calling code should avoid writing namespaces explicitly
+                        and leave that job to the writer. There is also no need to call
+                        <methodname>setPrefix</methodname>, except to suggest a preferred prefix for
+                        a namespace URI. All variants of <methodname>writeStartElement</methodname>,
+                        <methodname>writeEmptyElement</methodname> and <methodname>writeAttribute</methodname>
+                        may be used in this mode, but the implementation can choose whatever prefix mapping
+                        it wants, as long as the output results in proper URI mapping for elements and
+                        attributes.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Only use the variants of the writer methods that take an explicit prefix together
+                        with the namespace URI. In this usage pattern, <methodname>setPrefix</methodname>
+                        is not used at all and it is the responsibility of the calling code to keep
+                        track of prefix bindings.
+                    </para>
+                    <para>
+                        Note that this approach is difficult to implement when different parts of the output document
+                        will be produced by different components (or even different libraries). Indeed, when
+                        passing the <classname>XMLStreamWriter</classname> from one method or component
+                        to the other, it will also be necessary to pass additional information about the
+                        prefix mappings in scope at that moment, unless the it is acceptable to let the
+                        called method write (potentially redundant) namespace declarations for all namespaces
+                        it uses.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Use <methodname>setPrefix</methodname> to keep track of prefix bindings and make sure that
+                        the bindings are in sync with the namespace declarations that have been written,
+                        i.e. always use <methodname>setPrefix</methodname> immediately before or immediately
+                        after each call to <methodname>writeNamespace</methodname>. Note that the code is
+                        still free to use all variants of <methodname>writeStartElement</methodname>,
+                        <methodname>writeEmptyElement</methodname> and <methodname>writeAttribute</methodname>;
+                        it only needs to make sure that the usage it makes of these methods is consistent with
+                        the prefix bindings in scope.
+                    </para>
+                    <para>
+                        The advantage of this approach is that it allows to write modular code: when a
+                        method receives an <classname>XMLStreamWriter</classname> object (to write
+                        part of the document), it can use
+                        the namespace context of that writer (i.e. <methodname>getPrefix</methodname>
+                        and <methodname>getNamespaceContext</methodname>) to determine which namespace
+                        declarations are currently in scope in the output document and to avoid
+                        redundant or conflicting namespace declarations. Note that in order to do so,
+                        such code will have to check for an existing prefix binding before starting
+                        to use a namespace.
+                    </para>
+                </listitem>
+            </orderedlist>
+        </section>
+    </chapter>
 </book>
