@@ -389,6 +389,14 @@
                                 <name>java.awt.headless</name>
                                 <value>true</value>
                             </property>
+                            <!-- property>
+                                <name>javax.xml.stream.XMLInputFactory</name>
+                                <value>com.bea.xml.stream.MXParserFactory</value>
+                            </property>
+                            <property>
+                                <name>javax.xml.stream.XMLOutputFactory</name>
+                                <value>com.bea.xml.stream.XMLOutputFactoryBase</value>
+                            </property -->
                         </systemProperties>
                     </configuration>
                 </plugin>
@@ -445,11 +453,33 @@
                         </goals>
                         <phase>pre-site</phase>
                         <configuration>
+                            <includes>tutorial.xml</includes>
                             <chunkedOutput>true</chunkedOutput>
                             <targetDirectory>target/site/tutorial</targetDirectory>
                             <htmlCustomization>src/docbkx/xsl/html.xsl</htmlCustomization>
                             <postProcess>
                                 <copy todir="target/site/tutorial/images">
+                                    <fileset dir="src/docbkx/images">
+                                        <include name="**/*.jpg"/>
+                                        <include name="**/*.png"/>
+                                    </fileset>
+                                </copy>
+                            </postProcess>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>devguide-html</id>
+                        <goals>
+                            <goal>generate-html</goal>
+                        </goals>
+                        <phase>pre-site</phase>
+                        <configuration>
+                            <includes>devguide.xml</includes>
+                            <chunkedOutput>true</chunkedOutput>
+                            <targetDirectory>target/site/devguide</targetDirectory>
+                            <htmlCustomization>src/docbkx/xsl/html.xsl</htmlCustomization>
+                            <postProcess>
+                                <copy todir="target/site/devguide/images">
                                     <fileset dir="src/docbkx/images">
                                         <include name="**/*.jpg"/>
                                         <include name="**/*.png"/>
@@ -465,10 +495,26 @@
                         </goals>
                         <phase>pre-site</phase>
                         <configuration>
+                            <includes>tutorial.xml</includes>
                             <foCustomization>src/docbkx/xsl/fo.xsl</foCustomization>
                             <postProcess>
                                 <copy file="target/docbkx/pdf/tutorial.pdf"
                                       tofile="target/site/tutorial.pdf"/>
+                            </postProcess>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>devguide-pdf</id>
+                        <goals>
+                            <goal>generate-pdf</goal>
+                        </goals>
+                        <phase>pre-site</phase>
+                        <configuration>
+                            <includes>devguide.xml</includes>
+                            <foCustomization>src/docbkx/xsl/fo.xsl</foCustomization>
+                            <postProcess>
+                                <copy file="target/docbkx/pdf/devguide.pdf"
+                                      tofile="target/site/devguide.pdf"/>
                             </postProcess>
                         </configuration>
                     </execution>
@@ -680,6 +726,11 @@
         <stax.impl.groupid>com.sun.xml.stream</stax.impl.groupid>
         <stax.impl.artifact>sjsxp</stax.impl.artifact>
         <stax.impl.version>1.0.1</stax.impl.version>
+        -->
+        <!--
+        <stax.impl.groupid>stax</stax.impl.groupid>
+        <stax.impl.artifact>stax</stax.impl.artifact>
+        <stax.impl.version>1.2.0</stax.impl.version>
         -->
     </properties>
 </project>
