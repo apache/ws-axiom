@@ -82,6 +82,22 @@
 javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</programlisting>
                     </listitem>
                 </varlistentry>
+                <varlistentry>
+                    <term>XL XP-J</term>
+                    <listitem>
+                        <para>
+                            <quote>XL XML Processor for Java</quote> is IBM's implementation of StAX 1.0
+                            and is part of IBM's JRE/JDK v6. Note that due
+                            to an agreement between IBM and Sun, IBM's Java implementation for the Windows
+                            platform is not freely available. The JDK for Linux can be downloaded from the
+                            <link url="https://www.ibm.com/developerworks/java/jdk/linux/download.html">developerWorks
+                            site</link>. There are versions for 32-bit x86 (<quote>xSeries</quote>) and 64-bit AMD.
+                            They are available as RPMs and tarballs. To install the JDK properly on a Debian
+                            based system (including Ubuntu), follow the instructions given in
+                            <xref linkend="install.ibm.jdk"/>.
+                        </para>
+                    </listitem>
+                </varlistentry>
             </variablelist>
         </section>
     </chapter>
@@ -311,4 +327,44 @@ writer.writeNamespace("p", "urn:ns1");</programlisting>
             </orderedlist>
         </section>
     </chapter>
+    
+    <appendix>
+        <title>Appendix</title>
+        <section id="install.ibm.jdk">
+            <title>Installing IBM's JDK on Debian Linux</title>
+            <procedure>
+                <step>
+                    <para>
+                        Make sure that <literal>fakeroot</literal> and <literal>java-package</literal>
+                        are installed:
+                    </para>
+                    <screen># <userinput>apt-get install fakeroot java-package</userinput></screen>
+                </step>
+                <step>
+                    <para>
+                        Download the <filename>.tgz</filename> version of the JDK from
+                        <ulink url="http://www.ibm.com/developerworks/java/jdk/linux/download.html"/>.
+                    </para>
+                </step>
+                <step>
+                    <para>
+                        Edit <filename>/usr/share/java-package/ibm-j2sdk.sh</filename> and (if necessary)
+                        add an entry for the particular version of the IBM JDK downloaded in the previous
+                        step.
+                    </para>
+                </step>
+                <step>
+                    <para>
+                        Build a Debian package from the tarball:
+                    </para>
+                    <screen>$ <userinput>fakeroot make-jpkg <replaceable>xxxx</replaceable>.tgz</userinput></screen>
+                </step>
+                <step>
+                    <para>
+                        Install the Debian package.
+                    </para>
+                </step>
+            </procedure>
+        </section>
+    </appendix>
 </book>
