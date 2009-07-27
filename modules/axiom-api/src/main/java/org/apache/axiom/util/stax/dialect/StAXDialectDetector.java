@@ -167,12 +167,13 @@ public class StAXDialectDetector {
         }
         // For the moment, the dialect detection is quite simple, but in the future we will probably
         // have to differentiate by version number
-        if (vendor.toLowerCase().indexOf("woodstox") != -1) {
-            return WoodstoxDialect.INSTANCE;
-        } else if (title.indexOf("SJSXP") != -1) {
-            return SJSXPDialect.INSTANCE;
-        } else {
-            return UnknownStAXDialect.INSTANCE;
+        if(vendor != null) {
+            if (vendor.toLowerCase().indexOf("woodstox") != -1) {
+                return WoodstoxDialect.INSTANCE;
+            } else if (title.indexOf("SJSXP") != -1) {
+                return SJSXPDialect.INSTANCE;
+            } 
         }
+        return UnknownStAXDialect.INSTANCE;
     }
 }
