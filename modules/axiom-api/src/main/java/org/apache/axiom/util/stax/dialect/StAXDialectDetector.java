@@ -53,6 +53,14 @@ public class StAXDialectDetector {
     private static final Attributes.Name IMPLEMENTATION_VERSION =
             new Attributes.Name("Implementation-Version");
     
+    /**
+     * Map that stores detected dialects by location. The location is the URL corresponding to the
+     * root folder of the classpath entry from which the StAX implementation is loaded. Note that
+     * in the case of a JAR file, this is not the URL pointing to the JAR, but a <tt>jar:</tt>
+     * URL that points to the root folder of the archive. The <code>null</code> location is used
+     * to represent StAX implementations that are loaded from the bootstrap class loader, i.e.
+     * which are part of the JRE.
+     */
     private static final Map/*<URL,StAXDialect>*/ dialectByUrl =
             Collections.synchronizedMap(new HashMap());
 
@@ -119,15 +127,21 @@ public class StAXDialectDetector {
      * @return the detected dialect
      */
     public static StAXDialect getDialect(Class implementationClass) {
-        URL rootUrl = getRootUrlForResource(implementationClass.getClassLoader(),
-                implementationClass.getName().replace('.', '/') + ".class");
-        if (rootUrl == null) {
-            log.warn("Unable to determine location of StAX implementation containing class "
-                    + implementationClass.getName() + "; using default dialect");
-            return UnknownStAXDialect.INSTANCE;
+        URL rootUrl;
+        ClassLoader classLoader = implementationClass.getClassLoader();
+        if (classLoader == null) {
+            // null means bootstrap classloader; represent this location as null
+            rootUrl = null;
         } else {
-            return getDialect(rootUrl);
+            rootUrl = getRootUrlForResource(classLoader,
+                    implementationClass.getName().replace('.', '/') + ".class");
+            if (rootUrl == null) {
+                log.warn("Unable to determine location of StAX implementation containing class "
+                        + implementationClass.getName() + "; using default dialect");
+                return UnknownStAXDialect.INSTANCE;
+            }
         }
+        return getDialect(rootUrl);
     }
 
     private static StAXDialect getDialect(URL rootUrl) {
@@ -142,6 +156,35 @@ public class StAXDialectDetector {
     }
     
     private static StAXDialect detectDialect(URL rootUrl) {
+        StAXDialect dialect;
+        if (rootUrl == null) {
+            dialect = detectDialectFromJRE();
+        } else {
+            dialect = detectDialectFromJar(rootUrl);
+        }
+        if (log.isInfoEnabled()) {
+            log.info("Detected StAX dialect: " + dialect.getName());
+        }
+        return dialect;
+    }
+    
+    private static StAXDialect detectDialectFromJRE() {
+        String vendor = System.getProperty("java.vendor");
+        String version = System.getProperty("java.version");
+        if (log.isDebugEnabled()) {
+            log.debug("StAX implementation is part of the JRE:\n" +
+                    "  Vendor:  " + vendor + "\n" +
+                    "  Version: " + version);
+        }
+        if (vendor.startsWith("Sun") || vendor.startsWith("Apple")) {
+            return SJSXPDialect.INSTANCE;
+        } else {
+            log.warn("Unable to determine dialect of StAX implementation provided by the JRE");
+            return UnknownStAXDialect.INSTANCE;
+        }
+    }
+    
+    private static StAXDialect detectDialectFromJar(URL rootUrl) {
         Manifest manifest;
         try {
             URL metaInfUrl = new URL(rootUrl, "META-INF/MANIFEST.MF");
@@ -167,13 +210,14 @@ public class StAXDialectDetector {
         }
         // For the moment, the dialect detection is quite simple, but in the future we will probably
         // have to differentiate by version number
-        if(vendor != null) {
-            if (vendor.toLowerCase().indexOf("woodstox") != -1) {
-                return WoodstoxDialect.INSTANCE;
-            } else if (title.indexOf("SJSXP") != -1) {
-                return SJSXPDialect.INSTANCE;
-            } 
+        if (vendor != null && vendor.toLowerCase().indexOf("woodstox") != -1) {
+            return WoodstoxDialect.INSTANCE;
+        } else if (title != null && title.indexOf("SJSXP") != -1) {
+            return SJSXPDialect.INSTANCE;
+        } else {
+            log.warn("Unable to determine dialect of the StAX implementation at " + rootUrl
+                    + " (using JAR manifest)");
+            return UnknownStAXDialect.INSTANCE;
         }
-        return UnknownStAXDialect.INSTANCE;
     }
 }
