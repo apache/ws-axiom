@@ -44,14 +44,15 @@ public abstract class SOAPTestCase extends AbstractTestCase {
 
     public SOAPTestCase(OMMetaFactory omMetaFactory) {
         this.omMetaFactory = omMetaFactory;
-        soap11Factory = omMetaFactory.getSOAP11Factory();
-        soap12Factory = omMetaFactory.getSOAP12Factory();
-        omFactory = omMetaFactory.getOMFactory();
     }
 
     protected void setUp() throws Exception {
         super.setUp();
 
+        soap11Factory = omMetaFactory.getSOAP11Factory();
+        soap12Factory = omMetaFactory.getSOAP12Factory();
+        omFactory = omMetaFactory.getOMFactory();
+        
         soap11Envelope = soap11Factory.createSOAPEnvelope();
         soap12Envelope = soap12Factory.createSOAPEnvelope();
 

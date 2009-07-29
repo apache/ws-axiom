@@ -31,12 +31,12 @@ public abstract class SOAPHeaderTestCase extends SOAPTestCase {
 
     public SOAPHeaderTestCase(OMMetaFactory omMetaFactory) {
         super(omMetaFactory);
-        namespace =
-                omFactory.createOMNamespace("http://www.example.org", "test");
     }
 
     protected void setUp() throws Exception {
         super.setUp();
+        namespace =
+            omFactory.createOMNamespace("http://www.example.org", "test");
         soap11Header = soap11Factory.createSOAPHeader(soap11Envelope);
         soap12Header = soap12Factory.createSOAPHeader(soap12Envelope);
         soap11HeaderWithParser = soap11EnvelopeWithParser.getHeader();

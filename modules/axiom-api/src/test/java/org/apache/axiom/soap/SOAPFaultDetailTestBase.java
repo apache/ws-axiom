@@ -35,12 +35,12 @@ public class SOAPFaultDetailTestBase extends SOAPFaultTestCase {
 
     public SOAPFaultDetailTestBase(OMMetaFactory omMetaFactory) {
         super(omMetaFactory);
-        omNamespace =
-                omFactory.createOMNamespace("http://www.test.org", "test");
     }
 
     protected void setUp() throws Exception {
         super.setUp();
+        omNamespace =
+            omFactory.createOMNamespace("http://www.test.org", "test");
         soap11FaultDetail = soap11Factory.createSOAPFaultDetail(soap11Fault);
         soap12FaultDetail = soap12Factory.createSOAPFaultDetail(soap12Fault);
         soap11FaultDetailWithParser = soap11FaultWithParser.getDetail();
