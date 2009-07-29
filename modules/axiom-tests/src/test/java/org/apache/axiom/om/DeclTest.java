@@ -27,12 +27,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 public class DeclTest extends XMLTestCase {
+    private OMFactory factory;
 
-    static OMFactory factory = OMAbstractFactory.getOMFactory();
-
-    static OMDocument model = factory.createOMDocument();
-
-    static {
+    private OMDocument model;
+    
+    protected void setUp() throws Exception {
+        super.setUp();
+        factory = OMAbstractFactory.getOMFactory();
+        model = factory.createOMDocument();
         OMElement root = factory.createOMElement("root", null);
         model.addChild(root);
     }
@@ -51,11 +53,10 @@ public class DeclTest extends XMLTestCase {
     public void testDecl() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        DeclTest app = new DeclTest();
-        model.getOMDocumentElement().addChild(app.getElement("foo"));
-        model.getOMDocumentElement().addChild(app.getElement("bar"));
-        model.getOMDocumentElement().addChild(app.getElement("foo"));
-        app.writeModel(baos);
+        model.getOMDocumentElement().addChild(getElement("foo"));
+        model.getOMDocumentElement().addChild(getElement("bar"));
+        model.getOMDocumentElement().addChild(getElement("foo"));
+        writeModel(baos);
 
         String xmlExpected = "<?xml version=\"1.0\" encoding=\"utf-8\"?><root><test:foo xmlns:test=\"axiom:declaration-test,2007:1\"></test:foo><test:bar xmlns:test=\"axiom:declaration-test,2007:1\"></test:bar><test:foo xmlns:test=\"axiom:declaration-test,2007:1\"></test:foo></root>";
         this.assertXMLEqual(new InputStreamReader(new ByteArrayInputStream(xmlExpected.getBytes())),
