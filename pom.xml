@@ -714,6 +714,7 @@
         <module>modules/axiom-c14n</module>
         <module>modules/axiom-tests</module>
         <module>modules/axiom-osgi</module>
+        <module>modules/axiom-parser-tests</module>
     </modules>
     <properties>
         <axiom.version>${pom.version}</axiom.version>
