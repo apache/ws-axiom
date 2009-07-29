@@ -89,7 +89,12 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                             <quote>XL XML Processor for Java</quote> is IBM's implementation of StAX 1.0
                             and is part of IBM's JRE/JDK v6. Note that due
                             to an agreement between IBM and Sun, IBM's Java implementation for the Windows
-                            platform is not freely available. The JDK for Linux can be downloaded from the
+                            platform is not available as a separate download, but only bundled with another
+                            IBM product, e.g. <ulink url="http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/">WebSphere
+                            Application Server for Developers</ulink>.
+                        </para>
+                        <para>    
+                            On the other hand, the JDK for Linux can be downloaded as a separate package from the
                             <link url="https://www.ibm.com/developerworks/java/jdk/linux/download.html">developerWorks
                             site</link>. There are versions for 32-bit x86 (<quote>xSeries</quote>) and 64-bit AMD.
                             They are available as RPMs and tarballs. To install the JDK properly on a Debian
@@ -204,7 +209,13 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 Javadoc, unless one assumes that <quote>the current START_ELEMENT / END_ELEMENT pair</quote>
                 means the element opened by a call to <methodname>writeStartElement</methodname> immediately following
                 the call to <methodname>setPrefix</methodname>. This however would be a very arbitrary interpretation
-                of the Javadoc.
+                of the Javadoc<footnote><para>Early versions of XL XP-J were based on this interpretation of the
+                specifications, but this has been corrected. Versions conforming to the specifications support
+                a special property called <varname>javax.xml.stream.XMLStreamWriter.isSetPrefixBeforeStartElement</varname>,
+                which always returns <code>Boolean.FALSE</code>. This allows to easily distinguish the non
+                conforming versions from the newer versions. Note that in contrast to what the usage of the reserved
+                <literal>javax.xml.stream</literal> prefix suggests, this is a vendor specific property that
+                is not supported by other implementations.</para></footnote>.
             </para>
             <para>
                 The correctness of the comments in the previous paragraph can be checked using the following
