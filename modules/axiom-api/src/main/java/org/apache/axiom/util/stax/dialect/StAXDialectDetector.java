@@ -168,6 +168,27 @@ public class StAXDialectDetector {
         return dialect;
     }
     
+    /**
+     * Check that a given class is part of the bootstrap classes. This method is used to detect
+     * different JRE flavors and to check which StAX implementation is part of the JRE.
+     * <p>
+     * Note: We look for a well defined class instead of just checking the package name of the class
+     * passed to {@link #getDialect(Class)} because on some JREs, the implementations of the StAX
+     * interfaces (factories, readers and writers) are not in the same package.
+     * 
+     * @param className
+     *            the class name
+     * @return <code>true</code> if the class can be loaded from the bootstrap class loader
+     */
+    private static boolean isBootstrapClass(String className) {
+        try {
+            Class cls = ClassLoader.getSystemClassLoader().loadClass(className);
+            return cls.getClassLoader() == null;
+        } catch (ClassNotFoundException ex) {
+            return false;
+        }
+    }
+    
     private static StAXDialect detectDialectFromJRE() {
         String vendor = System.getProperty("java.vendor");
         String version = System.getProperty("java.version");
@@ -176,7 +197,7 @@ public class StAXDialectDetector {
                     "  Vendor:  " + vendor + "\n" +
                     "  Version: " + version);
         }
-        if (vendor.startsWith("Sun") || vendor.startsWith("Apple")) {
+        if (isBootstrapClass("com.sun.xml.internal.stream.XMLInputFactoryImpl")) {
             return SJSXPDialect.INSTANCE;
         } else {
             log.warn("Unable to determine dialect of StAX implementation provided by the JRE");
