@@ -55,7 +55,7 @@ public class SourcedOMElementTest extends TestCase {
         payload.getBuilder().setCache(false); // Or This line will cause NoSuchElementException
         StringWriter writer = new StringWriter();
         envelope.serializeAndConsume(writer);
-        System.out.println(writer);
+//        System.out.println(writer);
     }
     
     private static class DummySource implements OMDataSource {

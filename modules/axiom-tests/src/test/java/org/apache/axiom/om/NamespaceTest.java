@@ -370,8 +370,8 @@ public class NamespaceTest extends XMLTestCase {
                             "</outerTag>";
 
             OMElement elem = AXIOMUtil.stringToOM(xmlString);
-            System.out.println("--- Calling toStringWithConsume() ---\n");
-            System.out.println(elem.toStringWithConsume());
+//            System.out.println("--- Calling toStringWithConsume() ---\n");
+//            System.out.println(elem.toStringWithConsume());
 
             xmlString =
                     "<outerTag xmlns=\"http://someNamespace\">" +
@@ -382,8 +382,8 @@ public class NamespaceTest extends XMLTestCase {
                             "</outerTag>";
 
             elem = AXIOMUtil.stringToOM(xmlString);
-            System.out.println("\n--- Calling toString() ---\n");
-            System.out.println(elem.toString());
+//            System.out.println("\n--- Calling toString() ---\n");
+//            System.out.println(elem.toString());
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -271,7 +271,6 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
                                                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
         OMElement root = builder.getDocumentElement();
         root.build();
-        System.out.println(root.toString());
     }
 
     public void testCreateAndXMLStreamReader() throws Exception {

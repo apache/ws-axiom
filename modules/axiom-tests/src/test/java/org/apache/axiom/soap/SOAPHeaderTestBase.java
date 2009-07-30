@@ -64,7 +64,6 @@ public class SOAPHeaderTestBase extends SOAPHeaderTestCase {
     }
 
     public void testSOAP11ExamineHeaderBlocks() {
-        System.out.println("Failing test...");
         soap11Header.addHeaderBlock("echoOk1", namespace).setRole(
                 "http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver");
         soap11Header.addHeaderBlock("echoOk2", namespace).setRole(ROLE_URI);

@@ -121,7 +121,7 @@ public class OMSourcedElementTest extends AbstractTestCase implements OMConstant
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         soapBody.serialize(baos);
         String output = baos.toString(ENCODING);
-        System.out.println(output);
+//        System.out.println(output);
         assertTrue("The payload was not present in the output",
                    output.indexOf(payload1) > 0);
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
@@ -181,7 +181,7 @@ public class OMSourcedElementTest extends AbstractTestCase implements OMConstant
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         soapHeader.serialize(baos);
         String output = baos.toString(ENCODING);
-        System.out.println(output);
+//        System.out.println(output);
         assertTrue("The payload was not present in the output",
                    output.indexOf(payload1) > 0);
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
@@ -224,7 +224,7 @@ public class OMSourcedElementTest extends AbstractTestCase implements OMConstant
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         soapBody.serialize(baos);
         String output = baos.toString(ENCODING);
-        System.out.println(output);
+//        System.out.println(output);
         assertTrue("The payload was not present in the output",
                    output.indexOf(payload1) > 0);
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
@@ -326,7 +326,7 @@ public class OMSourcedElementTest extends AbstractTestCase implements OMConstant
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         soapBody.serialize(baos);
         String output = baos.toString(ENCODING);
-        System.out.println(output);
+//        System.out.println(output);
         assertTrue("The payload was not present in the output",
                    output.indexOf(payload1) > 0);
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
@@ -340,7 +340,7 @@ public class OMSourcedElementTest extends AbstractTestCase implements OMConstant
         baos = new ByteArrayOutputStream();
         soapBody.serialize(baos);
         output = baos.toString(ENCODING);
-        System.out.println(output);
+//        System.out.println(output);
         assertTrue("The payload was not present in the output",
                    output.indexOf(payload2) > 0);
         assertTrue("OMSourcedElement is expanded.  This is unexpected", !child.isExpanded());
@@ -350,7 +350,7 @@ public class OMSourcedElementTest extends AbstractTestCase implements OMConstant
         baos = new ByteArrayOutputStream();
         soapBody.serialize(baos);
         output = baos.toString(ENCODING);
-        System.out.println(output);
+//        System.out.println(output);
         assertTrue("The payload was not present in the output",
                    output.indexOf(payload1) > 0);
         
@@ -360,7 +360,7 @@ public class OMSourcedElementTest extends AbstractTestCase implements OMConstant
         baos = new ByteArrayOutputStream();
         soapBody.serialize(baos);
         output = baos.toString(ENCODING);
-        System.out.println(output);
+//        System.out.println(output);
         assertTrue("The payload was not present in the output",
                    output.indexOf(payload2) > 0);
         
