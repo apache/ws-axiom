@@ -79,9 +79,16 @@ public class ParserTest extends TestCase {
             }
         }
         
+        TestSuite superSuite = new TestSuite();
+        
+        // On Java 1.6, also add the StAX implementation from the JRE
+        // The check is not very clean but it should be enough for a unit test...
+        if (System.getProperty("java.version").startsWith("1.6")) {
+            superSuite.addTest(new SetContextClassLoaderTestWrapper(suite, ClassLoader.getSystemClassLoader()));
+        }
+        
         // Build decorators that execute the test suite using different StAX implementations
         File[] parserJars = new File(targetDir, "parsers").listFiles(jarFilter);
-        TestSuite superSuite = new TestSuite();
         for (int i=0; i<parserJars.length; i++) {
             ClassLoader parserClassLoader = new URLClassLoader(new URL[] { parserJars[i].toURL() }, parentClassLoader);
             superSuite.addTest(new SetContextClassLoaderTestWrapper(suite, parserClassLoader));
