@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -72,6 +73,20 @@ public abstract class OMSerializableImpl implements OMSerializable {
                 }
                 setComplete(true);
             }
+        }
+    }
+    
+    public void close(boolean build) {
+        if (build) {
+            this.build();
+        }
+        this.done = true;
+        
+        // If this is a StAXBuilder, close it.
+        if (builder instanceof StAXBuilder &&
+            !((StAXBuilder) builder).isClosed()) {
+            ((StAXBuilder) builder).releaseParserOnClose(true);
+            ((StAXBuilder) builder).close();
         }
     }
     

@@ -58,6 +58,12 @@ public interface OMSerializable {
     void build();
 
     /**
+     * If a builder and parser is associated with the node, it is closed.
+     * @param build if true, the object is built first before closing the builder/parser
+     */
+    void close(boolean build);
+
+    /**
      * Serializes the information item with caching.
      *
      * @param xmlWriter

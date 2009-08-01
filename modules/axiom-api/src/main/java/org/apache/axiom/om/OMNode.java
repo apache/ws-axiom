@@ -252,10 +252,4 @@ public interface OMNode extends OMSerializable {
      * together with attachement data. This becomes handy when user wants to free the input stream.
      */
     void buildWithAttachments();
-
-    /**
-     * If a builder and parser is associated with the node, it is closed.
-     * @param build if true, the object is built first before closing the builder/parser
-     */
-    void close(boolean build);
 }

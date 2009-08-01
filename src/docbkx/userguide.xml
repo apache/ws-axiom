@@ -634,7 +634,7 @@ XMLStreamReader reader = StAXUtils.createXMLStreamReader(in);</programlisting>
                 As we have seen previously, when creating an object model from a stream, all nodes keep a
                 reference to the builder and thus to the underlying parser. Since an XML parser instance is
                 a heavyweight object, it is important to release it as soon as it is no longer required.
-                The <methodname>close</methodname> method defined by the <classname>OMNode</classname>
+                The <methodname>close</methodname> method defined by the <classname>OMSerializable</classname>
                 interface it used for that. Note that it doesn't matter an which node this method is
                 called; it will always close and release the parser for the whole tree. The
                 <varname>build</varname> parameter of the <methodname>close</methodname> method specifies
