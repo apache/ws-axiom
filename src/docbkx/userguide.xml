@@ -629,6 +629,33 @@ System.out.println(documentElement.toStringWithConsume());</programlisting>
 XMLStreamReader reader = StAXUtils.createXMLStreamReader(in);</programlisting>
         </section>
         <section>
+            <title>Releasing the parser</title>
+            <para>
+                As we have seen previously, when creating an object model from a stream, all nodes keep a
+                reference to the builder and thus to the underlying parser. Since an XML parser instance is
+                a heavyweight object, it is important to release it as soon as it is no longer required.
+                The <methodname>close</methodname> method defined by the <classname>OMNode</classname>
+                interface it used for that. Note that it doesn't matter an which node this method is
+                called; it will always close and release the parser for the whole tree. The
+                <varname>build</varname> parameter of the <methodname>close</methodname> method specifies
+                if the node should be built before closing the parser.
+            </para>
+            <para>
+                To illustrate this, consider <xref linkend="list1"/>. After finishing the processing of the
+                object model and assuming that it will not access the object model afterwards, the code should
+                be completed by the following instruction:
+            </para>
+<programlisting>documentElement.close(false);</programlisting>
+            <para>
+                Closing the parser is especially important in applications that process large numbers of
+                XML documents. In addition, some StAX implementation are able to <quote>recycle</quote>
+                parsers, i.e. to reset a parser instance and to reuse it on another input stream. However, this
+                can only work if the parser has been closed explicitly or if the instance has been marked for
+                finalization by the Java VM. Closing the parser explicitly as shown above will reduce the
+                memory footprint of the application if this type of parser is used. 
+            </para>
+        </section>
+        <section>
             <title>Exception handling</title>
             <para>
                 The fact that Axiom uses deferred building means that a call to a method in one
