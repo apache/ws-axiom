@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl.dom.jaxp;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.dom.DOMImplementationImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
-import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.w3c.dom.DOMImplementation;
@@ -97,8 +96,8 @@ public class DOOMDocumentBuilder extends DocumentBuilder {
                     .createXMLStreamReader(inputSource.getCharacterStream());
             StAXOMBuilder builder = new StAXOMBuilder(factory, reader);
             DocumentImpl doc = (DocumentImpl) builder.getDocument();
-            ((ElementImpl) doc.getDocumentElement()).build();
-            return (DocumentImpl) builder.getDocument();
+            doc.close(true);
+            return doc;
         } catch (XMLStreamException e) {
             throw new SAXException(e);
         }
@@ -111,7 +110,9 @@ public class DOOMDocumentBuilder extends DocumentBuilder {
             XMLStreamReader reader = StAXUtils
                     .createXMLStreamReader(is);
             StAXOMBuilder builder = new StAXOMBuilder(factory, reader);
-            return (DocumentImpl) builder.getDocument();
+            DocumentImpl doc = (DocumentImpl) builder.getDocument();
+            doc.close(true);
+            return doc;
         } catch (XMLStreamException e) {
             throw new SAXException(e);
         }
@@ -119,14 +120,11 @@ public class DOOMDocumentBuilder extends DocumentBuilder {
 
     /** @see javax.xml.parsers.DocumentBuilder#parse(java.io.File) */
     public Document parse(File file) throws SAXException, IOException {
+        FileInputStream in = new FileInputStream(file);
         try {
-            OMDOMFactory factory = new OMDOMFactory();
-            XMLStreamReader reader = StAXUtils
-                    .createXMLStreamReader(new FileInputStream(file));
-            StAXOMBuilder builder = new StAXOMBuilder(factory, reader);
-            return (DocumentImpl) builder.getDocument();
-        } catch (XMLStreamException e) {
-            throw new SAXException(e);
+            return parse(in);
+        } finally {
+            in.close();
         }
     }
 
