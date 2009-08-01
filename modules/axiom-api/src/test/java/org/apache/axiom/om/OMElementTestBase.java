@@ -45,6 +45,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         }
         assertEquals("This element should contain only five children including the text ", 5,
                      counter);
+        elt.close(false);
     }
 
     /** test the remove exception behavior */
@@ -60,6 +61,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
             //ok. this is what should happen
         }
 
+        elt.close(false);
     }
 
     /** test the remove exception behavior, consecutive remove calls */
@@ -79,6 +81,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
             //ok if we come here :)
         }
 
+        elt.close(false);
     }
 
     /** Remove all! */
@@ -95,7 +98,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
             fail("No children should remain after removing all!");
         }
 
-
+        elt.close(false);
     }
 
     /** test whether the children count reduces. */
@@ -124,6 +127,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
                      firstChildrenCount - 1,
                      secondChildrenCount);
 
+        elt.close(false);
     }
 
     /** Test the element iterator */
@@ -139,6 +143,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
                        ((OMNode) o).getType() == OMNode.ELEMENT_NODE);
         }
         assertEquals("This element should contain only two elements ", 2, counter);
+        elt.close(false);
     }
     
     /** Test the element iterator */
@@ -157,6 +162,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         }
         assertEquals("This element should contain only one element with the given QName ", 1,
                      counter);
+        elt.close(false);
     }
 
     public void testGetChildrenWithLocalName() {
@@ -167,6 +173,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         assertEquals(new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
                 SOAP11Constants.BODY_LOCAL_NAME), child.getQName());
         assertFalse(it.hasNext());
+        elt.close(false);
     }
 
     public void testSetText() {
@@ -261,6 +268,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         assertEquals("c", c.getLocalName());
         assertSame(c, a.getNextOMSibling());
         assertSame(a, c.getPreviousOMSibling());
+        root.close(false);
     }
     
     public void testDetachWithBuild() throws Exception {
@@ -277,6 +285,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         OMNamespace ns = root.getFirstElement().findNamespace(null, "a");
         assertNotNull(ns);
         assertEquals("urn:a", ns.getNamespaceURI());
+        root.close(false);
     }
     
     /**

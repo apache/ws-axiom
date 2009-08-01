@@ -45,7 +45,9 @@ public class OMDocumentTestBase extends AbstractTestCase {
     }
 
     public void testParse() {
-        checkSampleXML(getSampleOMDocument(sampleXML));
+        OMDocument doc = getSampleOMDocument(sampleXML);
+        checkSampleXML(doc);
+        doc.close(false);
     }
     
     public void testSerializeAndConsume() throws XMLStreamException {
@@ -59,7 +61,11 @@ public class OMDocumentTestBase extends AbstractTestCase {
         outXML = new String(outStream.toByteArray());
 
         // again load that to another builder
-        checkSampleXML(getSampleOMDocument(outXML));
+        OMDocument omDocument2 = getSampleOMDocument(outXML);
+        checkSampleXML(omDocument2);
+        
+        omDocument.close(false);
+        omDocument2.close(false);
     }
     
     private void checkSampleXML(OMDocument document) {
@@ -92,6 +98,7 @@ public class OMDocumentTestBase extends AbstractTestCase {
         } catch (Exception ex) {
             // We expect an exception here
         }
+        document.close(false);
     }
 
     private OMDocument getSampleOMDocument(String xml) {

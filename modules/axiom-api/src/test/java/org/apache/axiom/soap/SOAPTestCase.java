@@ -64,6 +64,16 @@ public abstract class SOAPTestCase extends AbstractTestCase {
                         .getDocumentElement();
     }
 
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        
+        soap11Envelope.close(false);
+        soap12Envelope.close(false);
+        
+        soap11EnvelopeWithParser.close(false);
+        soap12EnvelopeWithParser.close(false);
+    }
+
     protected StAXSOAPModelBuilder getSOAPBuilder(String fileName) throws Exception {
         XMLStreamReader parser = StAXUtils.createXMLStreamReader(
                 getTestResource(fileName));

@@ -23,7 +23,6 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.OMNavigator;
 import org.apache.axiom.om.util.StAXUtils;
@@ -38,7 +37,7 @@ import java.io.ByteArrayOutputStream;
 public class OMNavigatorTestBase extends AbstractTestCase {
     private final OMMetaFactory omMetaFactory;
     private SOAPEnvelope envelope = null;
-    private OMXMLParserWrapper builder;
+    private StAXSOAPModelBuilder builder;
 
     public OMNavigatorTestBase(OMMetaFactory omMetaFactory) {
         this.omMetaFactory = omMetaFactory;
@@ -49,6 +48,10 @@ public class OMNavigatorTestBase extends AbstractTestCase {
                 createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE1));
         builder = new StAXSOAPModelBuilder(omMetaFactory, xmlStreamReader, null);
         envelope = (SOAPEnvelope) builder.getDocumentElement();
+    }
+
+    protected void tearDown() throws Exception {
+        builder.close();
     }
 
     public void testnavigatorFullyBuilt() throws Exception {

@@ -43,5 +43,7 @@ public class XMLFragmentStreamReaderTest extends TestCase {
         XMLStreamReader actual = new XMLFragmentStreamReader(reader);
         new XMLStreamReaderComparator(expected, actual).compare();
         assertEquals(XMLStreamReader.END_DOCUMENT, reader.getEventType());
+        expected.close();
+        reader.close();
     }
 }

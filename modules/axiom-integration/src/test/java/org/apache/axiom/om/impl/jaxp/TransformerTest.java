@@ -66,7 +66,8 @@ public class TransformerTest {
     public void testIdentity() throws Exception {
         Transformer transformer = factory.newTransformer();
         
-        OMSource omSource = new OMSource(new StAXOMBuilder(getInput()).getDocumentElement());
+        OMElement element = new StAXOMBuilder(getInput()).getDocumentElement();
+        OMSource omSource = new OMSource(element);
         OMResult omResult = new OMResult();
         transformer.transform(omSource, omResult);
         
@@ -76,6 +77,8 @@ public class TransformerTest {
         transformer.transform(streamSource, streamResult);
         
         assertXMLIdentical(compareXML(out.toString(), omResult.getRootElement().toString()), true);
+        
+        element.close(false);
     }
     
     /**
@@ -109,5 +112,7 @@ public class TransformerTest {
         OMNamespace ns = omResult.getRootElement().findNamespaceURI("p");
         assertNotNull(ns);
         assertEquals("urn:some:namespace", ns.getNamespaceURI());
+        
+        element.close(false);
     }
 }

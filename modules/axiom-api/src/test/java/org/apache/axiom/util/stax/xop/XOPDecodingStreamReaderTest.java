@@ -48,6 +48,8 @@ public class XOPDecodingStreamReaderTest extends AbstractTestCase {
         XMLStreamReaderComparator comparator = new XMLStreamReaderComparator(expected, actual);
         comparator.addPrefix("xop");
         comparator.compare();
+        expected.close();
+        actual.close();
     }
     
     public void testGetElementText() throws Exception {
@@ -60,5 +62,6 @@ public class XOPDecodingStreamReaderTest extends AbstractTestCase {
         // The data is actually a JPEG image. Try to decode it to check that the data is not
         // corrupted.
         ImageIO.read(new ByteArrayInputStream(data));
+        reader.close();
     }
 }

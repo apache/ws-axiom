@@ -51,6 +51,9 @@ public class XOPEncodingStreamReaderTest extends AbstractTestCase {
         }
         XMLStreamReader actual = new XOPEncodingStreamReader(new XOPDecodingStreamReader(soapPartReader[1], new OMAttachmentAccessorMimePartProvider(attachments[1])), contentIDGenerator, OptimizationPolicy.DEFAULT);
         new XMLStreamReaderComparator(soapPartReader[0], actual).compare();
+        for (int i=0; i<2; i++) {
+            soapPartReader[i].close();
+        }
     }
 
 }

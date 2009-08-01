@@ -102,8 +102,9 @@ public class OMStAXWrapperTestBase extends TestCase {
     }
     
     public void testCommentEvent() throws Exception {
-        XMLStreamReader reader = AXIOMUtil.stringToOM(omMetaFactory.getOMFactory(),
-                "<a><!--comment text--></a>").getXMLStreamReader();
+        OMElement element = AXIOMUtil.stringToOM(omMetaFactory.getOMFactory(),
+                "<a><!--comment text--></a>");
+        XMLStreamReader reader = element.getXMLStreamReader();
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals(XMLStreamReader.COMMENT, reader.next());
         assertEquals("comment text", reader.getText());
@@ -118,6 +119,7 @@ public class OMStAXWrapperTestBase extends TestCase {
             }
         }
         assertEquals("comment text", text.toString());
+        element.close(false);
     }
     
     public void testGetElementText() throws Exception {
@@ -153,6 +155,7 @@ public class OMStAXWrapperTestBase extends TestCase {
         assertEquals(XMLStreamReader.END_ELEMENT, stream.next());
         assertEquals(XMLStreamReader.END_ELEMENT, stream.next());
         assertEquals(XMLStreamReader.END_DOCUMENT, stream.next());
+        root.close(false);
     }
     
     public void testNonRootElementWithCaching() throws Exception {
@@ -176,6 +179,7 @@ public class OMStAXWrapperTestBase extends TestCase {
         stream.nextTag();
         assertEquals(XMLStreamReader.START_ELEMENT, stream.getEventType());
         assertEquals("c", stream.getLocalName());
+        element.close(false);
     }
     
     private void testGetNamespaceContext(boolean cache) throws Exception {
@@ -191,6 +195,7 @@ public class OMStAXWrapperTestBase extends TestCase {
         assertEquals("urn:ns2", context.getNamespaceURI("ns2"));
         assertEquals("urn:ns3", context.getNamespaceURI("ns3"));
         assertEquals("ns2", context.getPrefix("urn:ns2"));
+        element.close(false);
     }
     
     public void testGetNamespaceContextWithCaching() throws Exception {

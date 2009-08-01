@@ -390,9 +390,9 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
         assertTrue("SOAP 1.2 :- Text value in Time element mismatch",
                    element21.getText().trim().equals("P3M"));
 
-        XMLStreamReader sopa11Parser = StAXUtils.createXMLStreamReader(
+        XMLStreamReader soap11Parser = StAXUtils.createXMLStreamReader(
                 new StringReader(soap11Message));
-        OMXMLParserWrapper soap11Builder = new StAXSOAPModelBuilder(sopa11Parser, null);
+        OMXMLParserWrapper soap11Builder = new StAXSOAPModelBuilder(soap11Parser, null);
         SOAPEnvelope soap11Envelope = (SOAPEnvelope) soap11Builder.getDocumentElement();
 //            soap11Envelope.build();
 //            writer = XMLOutputFactory.newInstance().createXMLStreamWriter(System.out);
@@ -561,6 +561,9 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                            "http:www.Test.org"));
         assertTrue("SOAP 1.1 :- Test element child value mismatch",
                    childOfTestElement.getText().trim().equals("This is only a test"));
+        
+        soap12Parser.close();
+        soap11Parser.close();
     }
 
     /**
@@ -591,13 +594,17 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                     badEnvEnd;
             XMLStreamReader soap12Parser = StAXUtils.createXMLStreamReader(
                     new StringReader(soap12Message));
-            StAXSOAPModelBuilder soap12Builder = new StAXSOAPModelBuilder(soap12Parser, null);
-            SOAPEnvelope soap12Envelope = (SOAPEnvelope) soap12Builder.getDocumentElement();
             try {
-                soap12Envelope.getHeader();
-            } catch (OMException e) {
-                // Good, we failed.  Keep going.
-                continue;
+                StAXSOAPModelBuilder soap12Builder = new StAXSOAPModelBuilder(soap12Parser, null);
+                SOAPEnvelope soap12Envelope = (SOAPEnvelope) soap12Builder.getDocumentElement();
+                try {
+                    soap12Envelope.getHeader();
+                } catch (OMException e) {
+                    // Good, we failed.  Keep going.
+                    continue;
+                }
+            } finally {
+                soap12Parser.close();
             }
             fail("Successfully parsed bad envelope ('" + badHeaders[i] + "')");
         }
@@ -623,6 +630,7 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
         OMElement element = soap11Builder.getDocumentElement();
         element.build();
         this.assertXMLEqual(soap11Fault, element.toString());
+        soap11Parser.close();
     }
     
     /**
@@ -661,6 +669,7 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
         String localName = env.getSOAPBodyFirstElementLocalName();
         this.assertTrue(localName.equals("Fault"));
         this.assertTrue(!parser.isReadBody());
+        parser.close();
     }
     
     public void testFaultWithCDATA() throws Exception {
@@ -687,5 +696,6 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
         SOAPFault fault = se.getBody().getFault();
         SOAPFaultReason reason = fault.getReason();
         assertTrue(reason.getText().equals("handleMessage throws SOAPFaultException for ThrowsSOAPFaultToClientHandlersTest"));
+        soap11Parser.close();
     }
 }

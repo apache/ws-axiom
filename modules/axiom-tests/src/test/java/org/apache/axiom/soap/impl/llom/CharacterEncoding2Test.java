@@ -64,5 +64,7 @@ public class CharacterEncoding2Test extends XMLTestCase {
 
         assertXMLEqual(new InputStreamReader(new ByteArrayInputStream(xml.getBytes("iso-8859-1")),"iso-8859-1"),
                 new InputStreamReader(new ByteArrayInputStream(byteOutStr.toByteArray()),"iso-8859-1"));
+        
+        builder.close();
     }
 }

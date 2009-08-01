@@ -83,7 +83,7 @@ public class CharacterEncodingTest extends TestCase {
 
         assertEquals("Expected result not received.", expected, result);
 
-
+        builder.close();
     }
 
     private void runtest(String value) throws Exception {
