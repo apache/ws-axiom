@@ -20,7 +20,7 @@
   -->
 <book>
     <bookinfo>
-        <title>Axiom Tutorial</title>
+        <title>Axiom User Guide</title>
         <releaseinfo>&version;
         </releaseinfo>
 
@@ -239,7 +239,7 @@
             <para>
                 Once the Axiom binary is obtained by any of the above ways, it should be
                 included in the classpath for any of the Axiom based programs to work.
-                Subsequent sections of this tutorial assume that this build step is complete
+                Subsequent sections of this guide assume that this build step is complete
                 and <filename>axiom-api-&version;.jar</filename> and <filename>axiom-impl-&version;.jar</filename> are
                 present in the classpath along with the StAX API jar file and a StAX
                 implementation.
@@ -319,7 +319,7 @@ OMElement elt12 = factory.createOMElement("foo2",ns1);</programlisting>
                 where as the latter always carries a reference to its builder.
             </para>
             <para>
-                As stated earlier in this tutorial, since the object model is built as and
+                As stated earlier, since the object model is built as and
                 when required, each and every <classname>OMNode</classname> should have a reference to its builder.
                 If this information is not available, it is due to the object being created
                 without a builder. This difference becomes evident when the user tries to get

@@ -447,18 +447,18 @@
                 <inherited>false</inherited>
                 <executions>
                     <execution>
-                        <id>tutorial-html</id>
+                        <id>userguide-html</id>
                         <goals>
                             <goal>generate-html</goal>
                         </goals>
                         <phase>pre-site</phase>
                         <configuration>
-                            <includes>tutorial.xml</includes>
+                            <includes>userguide.xml</includes>
                             <chunkedOutput>true</chunkedOutput>
-                            <targetDirectory>target/site/tutorial</targetDirectory>
+                            <targetDirectory>target/site/userguide</targetDirectory>
                             <htmlCustomization>src/docbkx/xsl/html.xsl</htmlCustomization>
                             <postProcess>
-                                <copy todir="target/site/tutorial/images">
+                                <copy todir="target/site/userguide/images">
                                     <fileset dir="src/docbkx/images">
                                         <include name="**/*.jpg"/>
                                         <include name="**/*.png"/>
@@ -489,17 +489,17 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>tutorial-pdf</id>
+                        <id>userguide-pdf</id>
                         <goals>
                             <goal>generate-pdf</goal>
                         </goals>
                         <phase>pre-site</phase>
                         <configuration>
-                            <includes>tutorial.xml</includes>
+                            <includes>userguide.xml</includes>
                             <foCustomization>src/docbkx/xsl/fo.xsl</foCustomization>
                             <postProcess>
-                                <copy file="target/docbkx/pdf/tutorial.pdf"
-                                      tofile="target/site/tutorial.pdf"/>
+                                <copy file="target/docbkx/pdf/userguide.pdf"
+                                      tofile="target/site/userguide.pdf"/>
                             </postProcess>
                         </configuration>
                     </execution>
@@ -528,7 +528,6 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <includes>tutorial.xml</includes>
                     <admonGraphics>true</admonGraphics>
                     <entities>
                         <entity>
