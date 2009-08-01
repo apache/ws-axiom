@@ -21,17 +21,17 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public class WrongEnvelopeNamespaceTester extends AbstractTestCase {
     public void testCode() {
         try {
             String filename = "soap/wrongEnvelopeNamespace.xml";
-            XMLStreamReader xmlr = XMLInputFactory.newInstance()
-                    .createXMLStreamReader(getTestResource(filename));
+            XMLStreamReader xmlr = StAXUtils.createXMLStreamReader(
+                    getTestResource(filename));
             StAXBuilder builder = new StAXSOAPModelBuilder(xmlr, null); //exception here
             fail("Builder must fail here due to wrong SOAP namespace");
         } catch (SOAPProcessingException e) {

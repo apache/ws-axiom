@@ -24,9 +24,8 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory;
-
-import javax.xml.stream.XMLInputFactory;
 
 public class CashWihBuildElementTest extends AbstractTestCase {
 
@@ -44,7 +43,7 @@ public class CashWihBuildElementTest extends AbstractTestCase {
         stAXOMBuilder =
                 OMXMLBuilderFactory.createStAXOMBuilder(
                         OMAbstractFactory.getSOAP11Factory(),
-                        XMLInputFactory.newInstance().createXMLStreamReader(
+                        StAXUtils.createXMLStreamReader(
                                 getTestResource("non_soap.xml")));
         rootElement = stAXOMBuilder.getDocumentElement();
     }

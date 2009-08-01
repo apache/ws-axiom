@@ -17,17 +17,16 @@
  * under the License.
  */
 
-
 package org.apache.axiom.xpath;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.om.xpath.DocumentNavigator;
 import org.jaxen.FunctionCallException;
 import org.jaxen.Navigator;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.FileInputStream;
 
@@ -46,9 +45,7 @@ public class AXIOMXPathTest extends XPathTestBase {
 
     public Object getDocument(String uri) throws Exception {
         try {
-            XMLStreamReader parser =
-                    XMLInputFactory.newInstance().createXMLStreamReader(
-                            new FileInputStream(uri));
+            XMLStreamReader parser = StAXUtils.createXMLStreamReader(new FileInputStream(uri));
             StAXOMBuilder builder =
                     new StAXOMBuilder(parser);
             return builder.getDocumentElement();

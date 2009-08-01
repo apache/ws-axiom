@@ -20,6 +20,7 @@
 package org.apache.axiom.om;
 
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.jaxen.JaxenException;
@@ -27,8 +28,6 @@ import org.jaxen.SimpleNamespaceContext;
 import org.jaxen.XPath;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -104,8 +103,8 @@ public class DefaultNSHandlingTest extends XMLTestCase {
                     elem);
             String xml = elem.toString();
 
-            XMLStreamReader reader = XMLInputFactory.newInstance()
-                    .createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
+            XMLStreamReader reader = StAXUtils.createXMLStreamReader(
+                    new ByteArrayInputStream(xml.getBytes()));
 
             StAXOMBuilder builder = new StAXOMBuilder(reader);
             builder.getDocumentElement().build();
@@ -197,7 +196,7 @@ public class DefaultNSHandlingTest extends XMLTestCase {
     public static void main(String[] args) {
         try {
             XMLStreamWriter xmlStreamWriter =
-                    XMLOutputFactory.newInstance().createXMLStreamWriter(System.out);
+                    StAXUtils.createXMLStreamWriter(System.out);
 
             xmlStreamWriter.writeStartElement("Foo");
             xmlStreamWriter.writeDefaultNamespace("test.org");

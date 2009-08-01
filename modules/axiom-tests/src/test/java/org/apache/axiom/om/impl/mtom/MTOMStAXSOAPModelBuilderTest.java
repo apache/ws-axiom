@@ -27,15 +27,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.impl.traverse.OMDescendantsIterator;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import java.io.BufferedInputStream;
@@ -70,9 +69,8 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         String inFileName = "mtom/MTOMBuilderTestIn.txt";
         InputStream inStream = getTestResource(inFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
-        XMLStreamReader reader = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments
-                        .getSOAPPartInputStream())));
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new BufferedReader(
+                new InputStreamReader(attachments.getSOAPPartInputStream())));
         return new MTOMStAXSOAPModelBuilder(reader, attachments,
                                                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
@@ -264,9 +262,8 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         
         InputStream inStream = new BufferedInputStream(new ByteArrayInputStream(full));
         Attachments attachments = new Attachments(inStream, contentTypeString);
-        XMLStreamReader reader = XMLInputFactory.newInstance()
-                .createXMLStreamReader(attachments
-                        .getSOAPPartInputStream(),"UTF-16");
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(
+                attachments.getSOAPPartInputStream(), "UTF-16");
         MTOMStAXSOAPModelBuilder builder = new MTOMStAXSOAPModelBuilder(reader, attachments,
                                                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
         OMElement root = builder.getDocumentElement();

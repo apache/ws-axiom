@@ -23,13 +23,13 @@ import junit.framework.TestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
 
@@ -84,8 +84,8 @@ public class ConvertLLOMToDOOMTest extends TestCase {
                 "      </soapenv:Body>\n" +
                 "   </soapenv:Envelope>";
 
-        XMLStreamReader reader = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new ByteArrayInputStream(origXML.getBytes()));
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(
+                new ByteArrayInputStream(origXML.getBytes()));
         StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(reader, null);
 
         SOAPEnvelope env = builder.getSOAPEnvelope();

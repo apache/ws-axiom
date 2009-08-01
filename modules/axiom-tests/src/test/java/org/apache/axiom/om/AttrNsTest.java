@@ -20,13 +20,13 @@
 package org.apache.axiom.om;
 
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 import org.custommonkey.xmlunit.Diff;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -142,8 +142,8 @@ public class AttrNsTest extends AbstractOMSerializationTest {
         try {
             String xmlString =
                     "<root xmlns='http://custom.com'><node cust:id='123' xmlns:cust='http://custom.com' /></root>";
-            XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance()
-                    .createXMLStreamReader(new StringReader(xmlString));
+            XMLStreamReader xmlStreamReader = StAXUtils.createXMLStreamReader(
+                    new StringReader(xmlString));
 
             // copied code from the generated stub class toOM method
             org.apache.axiom.om.impl.builder.StAXOMBuilder builder =

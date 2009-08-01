@@ -22,13 +22,12 @@ package org.apache.axiom.om.impl.llom;
 import junit.framework.TestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
 
@@ -82,8 +81,7 @@ public class OMAttributeTest extends TestCase {
     private String addAttributeMethod1(String xmlString) throws Exception {
         XMLStreamReader parser2;
 
-        parser2 = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
+        parser2 = StAXUtils.createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
         StAXOMBuilder builder2 = new StAXOMBuilder(parser2);
         OMElement doc = builder2.getDocumentElement();
 
@@ -100,8 +98,7 @@ public class OMAttributeTest extends TestCase {
     private String addAttributeMethod2(String xmlString) throws Exception {
         XMLStreamReader parser2;
 
-        parser2 = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
+        parser2 = StAXUtils.createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
         StAXOMBuilder builder2 = new StAXOMBuilder(parser2);
         OMElement doc = builder2.getDocumentElement();
 

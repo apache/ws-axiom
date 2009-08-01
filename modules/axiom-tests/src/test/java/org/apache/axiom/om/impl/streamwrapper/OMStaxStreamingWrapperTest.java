@@ -24,9 +24,9 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.File;
 
@@ -40,8 +40,8 @@ public class OMStaxStreamingWrapperTest extends AbstractTestCase {
     }
 
     protected void setUp() throws Exception {
-        XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance().
-                createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE1));
+        XMLStreamReader xmlStreamReader = StAXUtils.createXMLStreamReader(
+                getTestResource(TestConstants.SOAP_SOAPMESSAGE1));
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
                 OMAbstractFactory.getSOAP11Factory(), xmlStreamReader);
         envelope = (SOAPEnvelope) builder.getDocumentElement();

@@ -25,8 +25,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
+import org.apache.axiom.om.util.StAXUtils;
 
-import javax.xml.stream.XMLInputFactory;
 import java.util.Iterator;
 
 public class StAXOMBuilderTest extends AbstractTestCase {
@@ -42,7 +42,7 @@ public class StAXOMBuilderTest extends AbstractTestCase {
         stAXOMBuilder =
                 OMXMLBuilderFactory.createStAXOMBuilder(
                         OMAbstractFactory.getSOAP11Factory(),
-                        XMLInputFactory.newInstance().createXMLStreamReader(
+                        StAXUtils.createXMLStreamReader(
                                 getTestResource("non_soap.xml")));
     }
 

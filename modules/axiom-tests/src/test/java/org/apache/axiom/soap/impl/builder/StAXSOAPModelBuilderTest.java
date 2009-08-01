@@ -19,11 +19,11 @@
 
 package org.apache.axiom.soap.impl.builder;
 
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
@@ -41,10 +41,8 @@ import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.custommonkey.xmlunit.XMLTestCase;
-import org.custommonkey.xmlunit.XMLUnit;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
 import java.util.Iterator;
@@ -142,8 +140,8 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                         "   </env:Body>\n" +
                         "</env:Envelope>";
 
-        XMLStreamReader soap12Parser = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new StringReader(soap12Message));
+        XMLStreamReader soap12Parser = StAXUtils.createXMLStreamReader(
+                new StringReader(soap12Message));
         OMXMLParserWrapper soap12Builder = new StAXSOAPModelBuilder(soap12Parser, null);
         SOAPEnvelope soap12Envelope = (SOAPEnvelope) soap12Builder.getDocumentElement();
 
@@ -392,8 +390,8 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
         assertTrue("SOAP 1.2 :- Text value in Time element mismatch",
                    element21.getText().trim().equals("P3M"));
 
-        XMLStreamReader sopa11Parser = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new StringReader(soap11Message));
+        XMLStreamReader sopa11Parser = StAXUtils.createXMLStreamReader(
+                new StringReader(soap11Message));
         OMXMLParserWrapper soap11Builder = new StAXSOAPModelBuilder(sopa11Parser, null);
         SOAPEnvelope soap11Envelope = (SOAPEnvelope) soap11Builder.getDocumentElement();
 //            soap11Envelope.build();
@@ -591,8 +589,8 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
             String soap12Message = badEnvStart + "<" + badHeaders[i] + ">\n" +
                     badEnvHeader + "</" + badHeaders[i] + ">\n" +
                     badEnvEnd;
-            XMLStreamReader soap12Parser = XMLInputFactory.newInstance()
-                    .createXMLStreamReader(new StringReader(soap12Message));
+            XMLStreamReader soap12Parser = StAXUtils.createXMLStreamReader(
+                    new StringReader(soap12Message));
             StAXSOAPModelBuilder soap12Builder = new StAXSOAPModelBuilder(soap12Parser, null);
             SOAPEnvelope soap12Envelope = (SOAPEnvelope) soap12Builder.getDocumentElement();
             try {
@@ -619,8 +617,8 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                         "</SOAP-ENV:Fault>" +
                     "</SOAP-ENV:Body>" +
                 "</SOAP-ENV:Envelope>";
-        XMLStreamReader soap11Parser = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new StringReader(soap11Fault));
+        XMLStreamReader soap11Parser = StAXUtils.createXMLStreamReader(
+                new StringReader(soap11Fault));
         StAXSOAPModelBuilder soap11Builder = new StAXSOAPModelBuilder(soap11Parser, null);
         OMElement element = soap11Builder.getDocumentElement();
         element.build();
@@ -649,8 +647,8 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
         // This simulates the use of the parser that has this information built into its
         // implementation.
         
-        XMLStreamReader soap11Parser = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new StringReader(soap11Fault));
+        XMLStreamReader soap11Parser = StAXUtils.createXMLStreamReader(
+                new StringReader(soap11Fault));
         QName qname = new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP11Constants.BODY_FAULT_LOCAL_NAME, "SOAP-ENV");
         XMLStreamReaderWithQName parser = new XMLStreamReaderWithQName(soap11Parser, qname);
         StAXSOAPModelBuilder soap11Builder = new StAXSOAPModelBuilder(parser, null);
@@ -679,8 +677,8 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                         "</SOAP-ENV:Fault>" +
                     "</SOAP-ENV:Body>" +
                 "</SOAP-ENV:Envelope>";
-        XMLStreamReader soap11Parser = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new StringReader(soap11Fault));
+        XMLStreamReader soap11Parser = StAXUtils.createXMLStreamReader(
+                new StringReader(soap11Fault));
         StAXSOAPModelBuilder soap11Builder = new StAXSOAPModelBuilder(soap11Parser, null);
         OMElement element = soap11Builder.getDocumentElement();
         element.build();

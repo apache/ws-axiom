@@ -27,11 +27,10 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.MIMEOutputUtils;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 
 import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import java.io.BufferedReader;
@@ -272,8 +271,7 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // Get the root
         XMLStreamReader reader =
-            XMLInputFactory.newInstance()
-                           .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments.getSOAPPartInputStream())));
+                StAXUtils.createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments.getSOAPPartInputStream())));
         MTOMStAXSOAPModelBuilder builder = 
             new MTOMStAXSOAPModelBuilder(reader, attachments, null);
         OMElement root = builder.getDocumentElement();
@@ -308,8 +306,7 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // Get the root
         XMLStreamReader reader =
-            XMLInputFactory.newInstance()
-                           .createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments.getSOAPPartInputStream())));
+                StAXUtils.createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments.getSOAPPartInputStream())));
         MTOMStAXSOAPModelBuilder builder = 
             new MTOMStAXSOAPModelBuilder(reader, attachments, null);
         OMElement root = builder.getDocumentElement();

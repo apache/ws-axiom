@@ -22,8 +22,8 @@ package org.apache.axiom.om;
 import junit.framework.TestCase;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.OMStAXWrapper;
+import org.apache.axiom.om.util.StAXUtils;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
@@ -43,7 +43,7 @@ public class OMWrapperTest extends TestCase {
                     "</root>";
 
             XMLStreamReader xmlStreamReader =
-                    XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
+                    StAXUtils.createXMLStreamReader(new StringReader(xml));
             StAXOMBuilder b = new StAXOMBuilder(xmlStreamReader);
 
             OMElement documentElement = b.getDocumentElement();

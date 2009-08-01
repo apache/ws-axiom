@@ -24,7 +24,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -36,6 +35,7 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -59,7 +59,6 @@ public class SourcedOMElementTest extends TestCase {
     }
     
     private static class DummySource implements OMDataSource {
-        private XMLInputFactory factory = XMLInputFactory.newInstance();
         private XMLStreamReader reader;
         //private String xml = "<?xml version='1.0'?><d:dummy name='1' xmlns:d='http://ns1'/>";
         private String xml = "<?xml version='1.0'?><d:dummy name='1' xmlns:d='http://ns1'>hello<mixed/>world</d:dummy>";
@@ -69,7 +68,7 @@ public class SourcedOMElementTest extends TestCase {
          */
         public XMLStreamReader getReader() throws XMLStreamException {
             // TODO Auto-generated method stub
-            return factory.createXMLStreamReader(new StringReader(xml));
+            return StAXUtils.createXMLStreamReader(new StringReader(xml));
         }
 
         /**

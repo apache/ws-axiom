@@ -24,17 +24,16 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
 
 /** Test for serialization and deserialization using UTF-16 character encoding */
 public class CharacterEncodingTest extends TestCase {
@@ -70,7 +69,7 @@ public class CharacterEncodingTest extends TestCase {
         ByteArrayInputStream byteInStr = new ByteArrayInputStream(byteOutStr.toByteArray());
 
         StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(
-                XMLInputFactory.newInstance().createXMLStreamReader(byteInStr, UTF_16), null);
+                StAXUtils.createXMLStreamReader(byteInStr, UTF_16), null);
 
         SOAPEnvelope resultEnv = builder.getSOAPEnvelope();
 

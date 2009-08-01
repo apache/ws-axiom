@@ -21,6 +21,7 @@ package org.apache.axiom.om;
 
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
+import org.apache.axiom.om.util.StAXUtils;
 import org.custommonkey.xmlunit.Diff;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -29,7 +30,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -52,11 +52,9 @@ public class SpacesTest extends AbstractTestCase {
 
     private void checkOMConformance(InputStream iStream) throws Exception {
         try {
-            XMLInputFactory factory = XMLInputFactory.newInstance();
-
             StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
                     createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
-                                        factory.createXMLStreamReader(
+                                        StAXUtils.createXMLStreamReader(
                                                 iStream));
             rootElement = staxOMBuilder.getDocumentElement();
             boolean hasCDataNode = hasCDataNode(rootElement);

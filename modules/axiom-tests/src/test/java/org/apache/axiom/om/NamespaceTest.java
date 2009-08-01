@@ -22,12 +22,12 @@ package org.apache.axiom.om;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.llom.util.AXIOMUtil;
+import org.apache.axiom.om.util.StAXUtils;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -176,8 +176,8 @@ public class NamespaceTest extends XMLTestCase {
     public void testNamespaceProblem4() throws Exception {
         String xml =
                 "<getCreditScoreResponse xmlns=\"http://www.example.org/creditscore/doclitwrapped/\"><score xmlns=\"\">750</score></getCreditScoreResponse>";
-        XMLStreamReader parser = XMLInputFactory.newInstance()
-                .createXMLStreamReader(new ByteArrayInputStream(xml.getBytes()));
+        XMLStreamReader parser = StAXUtils.createXMLStreamReader(
+                new ByteArrayInputStream(xml.getBytes()));
         OMXMLParserWrapper builder =
                 OMXMLBuilderFactory.createStAXOMBuilder(OMAbstractFactory.getOMFactory(), parser);
         OMElement root = builder.getDocumentElement();
@@ -320,7 +320,7 @@ public class NamespaceTest extends XMLTestCase {
 
         // read and build XML content
         Reader reader = new StringReader(content);
-        XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(reader);
+        XMLStreamReader parser = StAXUtils.createXMLStreamReader(reader);
         StAXOMBuilder builder = new StAXOMBuilder(parser);
         OMElement element = builder.getDocumentElement();
 
@@ -345,7 +345,7 @@ public class NamespaceTest extends XMLTestCase {
 
         // reread and rebuild XML content
         reader = new StringReader(output);
-        parser = XMLInputFactory.newInstance().createXMLStreamReader(reader);
+        parser = StAXUtils.createXMLStreamReader(reader);
         builder = new StAXOMBuilder(parser);
         element = builder.getDocumentElement();
 

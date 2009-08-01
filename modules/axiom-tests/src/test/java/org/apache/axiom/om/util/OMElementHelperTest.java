@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.dom.DOOMAbstractFactory;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -36,8 +35,8 @@ public class OMElementHelperTest extends AbstractTestCase {
 
     public void testImportOMElement() {
         try {
-            XMLStreamReader xmlStreamReader = XMLInputFactory.newInstance()
-                    .createXMLStreamReader(getTestResource(testXMLFilePath));
+            XMLStreamReader xmlStreamReader = StAXUtils.createXMLStreamReader(
+                    getTestResource(testXMLFilePath));
             OMElement documentElement =
                     new StAXOMBuilder(OMAbstractFactory.getOMFactory(), xmlStreamReader)
                             .getDocumentElement();

@@ -21,6 +21,7 @@ package org.apache.axiom.om;
 
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.custommonkey.xmlunit.Diff;
@@ -32,7 +33,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -68,13 +68,11 @@ public abstract class AbstractOMSerializationTest extends XMLTestCase {
 
     public String getSerializedOM(String xmlString) throws Exception {
         try {
-            XMLInputFactory factory = XMLInputFactory.newInstance();
-
             ByteArrayInputStream byteArrayInputStream =
                     new ByteArrayInputStream(xmlString.getBytes());
             StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
                     createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
-                                        factory.createXMLStreamReader(byteArrayInputStream));
+                                        StAXUtils.createXMLStreamReader(byteArrayInputStream));
             OMElement rootElement = staxOMBuilder.getDocumentElement();
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -93,11 +91,9 @@ public abstract class AbstractOMSerializationTest extends XMLTestCase {
     public Diff getDiffForComparison(InputStream inStream) throws Exception {
 
         try {
-            XMLInputFactory factory = XMLInputFactory.newInstance();
-
             StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
                     createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
-                                        factory.createXMLStreamReader(inStream));
+                                        StAXUtils.createXMLStreamReader(inStream));
             OMElement rootElement = staxOMBuilder.getDocumentElement();
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

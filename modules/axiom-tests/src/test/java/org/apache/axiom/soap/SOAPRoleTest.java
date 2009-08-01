@@ -20,13 +20,13 @@
 package org.apache.axiom.soap;
 
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLInputFactory;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.util.StAXUtils;
 
 public class SOAPRoleTest extends AbstractTestCase {
     public static final String CUSTOM_ROLE = "http://example.org/myCustomRole";
@@ -65,7 +65,7 @@ public class SOAPRoleTest extends AbstractTestCase {
     }
 
     public StAXSOAPModelBuilder getSOAPBuilder(String fileName) throws Exception {
-        XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(
+        XMLStreamReader parser = StAXUtils.createXMLStreamReader(
                 getTestResource(fileName));
         return new StAXSOAPModelBuilder(parser, null);
     }

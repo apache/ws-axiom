@@ -19,10 +19,10 @@
 package org.apache.axiom.om;
 
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLInputFactory;
 import java.io.FileNotFoundException;
 
 /**
@@ -53,8 +53,7 @@ public class OMDiscardTest extends AbstractTestCase {
     }
 
     private XMLStreamReader getXMLStreamReader() throws XMLStreamException, FileNotFoundException {
-        return XMLInputFactory.newInstance().
-                createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
+        return StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
     }
 
 }

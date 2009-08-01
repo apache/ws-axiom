@@ -20,11 +20,11 @@
 package org.apache.axiom.soap;
 
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 
 public class SOAPFactoryTest extends AbstractTestCase {
@@ -37,12 +37,12 @@ public class SOAPFactoryTest extends AbstractTestCase {
 
         try {
             SOAPEnvelope soapEnvelope =
-                    (SOAPEnvelope) new StAXSOAPModelBuilder(XMLInputFactory.newInstance().
+                    (SOAPEnvelope) new StAXSOAPModelBuilder(StAXUtils.
                             createXMLStreamReader(getTestResource(SOAP11_FILE_NAME)), null)
                             .getDocumentElement();
             assertTrue(soapEnvelope != null);
 
-            soapEnvelope = (SOAPEnvelope) new StAXSOAPModelBuilder(XMLInputFactory.newInstance().
+            soapEnvelope = (SOAPEnvelope) new StAXSOAPModelBuilder(StAXUtils.
                     createXMLStreamReader(getTestResource(SOAP12_FILE_NAME)), null)
                     .getDocumentElement();
             assertTrue(soapEnvelope != null);

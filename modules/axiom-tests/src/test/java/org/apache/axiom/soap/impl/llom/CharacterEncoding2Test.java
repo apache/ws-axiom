@@ -22,13 +22,11 @@ package org.apache.axiom.soap.impl.llom;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.util.StAXUtils;
 import org.custommonkey.xmlunit.XMLTestCase;
-import org.custommonkey.xmlunit.XMLUnit;
 
-import javax.xml.stream.XMLInputFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.StringReader;
 import java.io.InputStreamReader;
 
 public class CharacterEncoding2Test extends XMLTestCase {
@@ -52,7 +50,7 @@ public class CharacterEncoding2Test extends XMLTestCase {
         ByteArrayInputStream byteInStr = new ByteArrayInputStream(xml.getBytes("iso-8859-1"));
 
         StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(
-                XMLInputFactory.newInstance().createXMLStreamReader(byteInStr));
+                StAXUtils.createXMLStreamReader(byteInStr));
 
         SOAPEnvelope envelope = builder.getSOAPEnvelope();
         envelope.build();

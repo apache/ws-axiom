@@ -20,6 +20,7 @@
 package org.apache.axiom.om;
 
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.io.input.CountingInputStream;
 
 import javax.xml.stream.XMLInputFactory;
@@ -96,7 +97,7 @@ public class OMDocumentTestBase extends AbstractTestCase {
     private OMDocument getSampleOMDocument(String xml) {
         try {
             XMLStreamReader xmlStreamReader =
-                    XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
+                    StAXUtils.createXMLStreamReader(new StringReader(xml));
             StAXOMBuilder builder =
                     new StAXOMBuilder(omMetaFactory.getOMFactory(), xmlStreamReader);
             return builder.getDocument();

@@ -30,11 +30,9 @@ import java.util.List;
 import javax.activation.DataSource;
 import javax.activation.URLDataSource;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -96,7 +94,7 @@ public abstract class AbstractTestCase
     public OMElement getTestResourceAsElement(OMMetaFactory omMetaFactory, String relativePath) {
         try {
             return new StAXOMBuilder(omMetaFactory.getOMFactory(),
-                    XMLInputFactory.newInstance().createXMLStreamReader(
+                    StAXUtils.createXMLStreamReader(
                             getTestResource(relativePath))).getDocumentElement();
         } catch (Exception ex) {
             fail("Unable to load test file " + relativePath + ": " + ex.getMessage());

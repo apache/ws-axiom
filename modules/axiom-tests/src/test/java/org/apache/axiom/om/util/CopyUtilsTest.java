@@ -33,7 +33,6 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import java.io.InputStream;
@@ -127,8 +126,7 @@ public class CopyUtilsTest extends AbstractTestCase {
      * @throws Exception
      */
     protected SOAPEnvelope createEnvelope(InputStream in) throws Exception {
-        XMLStreamReader parser =
-            XMLInputFactory.newInstance().createXMLStreamReader(in);
+        XMLStreamReader parser = StAXUtils.createXMLStreamReader(in);
         OMXMLParserWrapper builder = new StAXSOAPModelBuilder(parser, null);
         SOAPEnvelope sourceEnv = (SOAPEnvelope) builder.getDocumentElement();
         return sourceEnv;

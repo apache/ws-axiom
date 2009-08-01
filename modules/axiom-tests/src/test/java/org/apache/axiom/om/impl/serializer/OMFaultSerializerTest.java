@@ -21,9 +21,9 @@ package org.apache.axiom.om.impl.serializer;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public class OMFaultSerializerTest extends AbstractTestCase {
@@ -35,18 +35,14 @@ public class OMFaultSerializerTest extends AbstractTestCase {
     }
 
     protected void setUp() throws Exception {
-        reader1 =
-                XMLInputFactory.newInstance().
-                        createXMLStreamReader(getTestResource("soap/soap11/soapfault1.xml"));
-        reader2 =
-                XMLInputFactory.newInstance().
-                        createXMLStreamReader(getTestResource("soap/soap11/soapfault2.xml"));
+        reader1 = StAXUtils.createXMLStreamReader(getTestResource("soap/soap11/soapfault1.xml"));
+        reader2 = StAXUtils.createXMLStreamReader(getTestResource("soap/soap11/soapfault2.xml"));
 
     }
 
     /**
      * Test SOAPFault that does not disable the default namespace (i.e. does not use xmlns="")
-     *
+     * 
      * @throws Exception
      */
     public void test1() throws Exception {

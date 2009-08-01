@@ -22,9 +22,9 @@ package org.apache.axiom.soap;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public abstract class SOAPTestCase extends AbstractTestCase {
@@ -65,7 +65,7 @@ public abstract class SOAPTestCase extends AbstractTestCase {
     }
 
     protected StAXSOAPModelBuilder getSOAPBuilder(String fileName) throws Exception {
-        XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(
+        XMLStreamReader parser = StAXUtils.createXMLStreamReader(
                 getTestResource(fileName));
         return new StAXSOAPModelBuilder(omMetaFactory, parser, null);
     }

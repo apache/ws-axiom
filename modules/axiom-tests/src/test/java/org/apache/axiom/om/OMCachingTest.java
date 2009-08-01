@@ -20,8 +20,8 @@
 package org.apache.axiom.om;
 
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXUtils;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.FileNotFoundException;
@@ -82,7 +82,6 @@ public class OMCachingTest extends AbstractTestCase {
     }
 
     private XMLStreamReader getXMLStreamReader() throws XMLStreamException, FileNotFoundException {
-        return XMLInputFactory.newInstance().
-                createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
+        return StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
     }
 }
