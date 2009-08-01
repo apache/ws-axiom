@@ -20,7 +20,7 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.util.stax.XMLStreamReaderWrapper;
+import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
 class WoodstoxStreamReaderWrapper extends XMLStreamReaderWrapper {
     public WoodstoxStreamReaderWrapper(XMLStreamReader reader) {

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.util.stax;
+package org.apache.axiom.util.stax.wrapper;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;

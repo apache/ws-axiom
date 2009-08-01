@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.util.stax.XMLStreamReaderWrapper;
+import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
 class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
     public SJSXPStreamReaderWrapper(XMLStreamReader parent) {

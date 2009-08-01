@@ -21,7 +21,7 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.util.stax.XMLStreamWriterWrapper;
+import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
 
 class SJSXPStreamWriterWrapper extends XMLStreamWriterWrapper {
     public SJSXPStreamWriterWrapper(XMLStreamWriter parent) {
