@@ -56,7 +56,6 @@ class BEADialect extends AbstractStAXDialect {
     }
 
     public XMLInputFactory normalize(XMLInputFactory factory) {
-        factory.setProperty("javax.xml.stream.isRepairingNamespaces", Boolean.FALSE);
         return new NormalizingXMLInputFactoryWrapper(factory, this);
     }
 
