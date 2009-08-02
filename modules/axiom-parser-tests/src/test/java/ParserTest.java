@@ -20,10 +20,12 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
@@ -31,17 +33,21 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-public class ParserTest extends TestCase {
-    public static Test suite() throws Exception {
-        ClassLoader parentClassLoader = ParserTest.class.getClassLoader();
-        File targetDir = new File("target");
-        FilenameFilter jarFilter = new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".jar");
-            }
-        };
-        File[] testJars = new File(targetDir, "test-jars").listFiles(jarFilter);
-        
+public class ParserTest extends TestSuite {
+    private static final FilenameFilter jarFilter = new FilenameFilter() {
+        public boolean accept(File dir, String name) {
+            return name.endsWith(".jar");
+        }
+    };
+    
+    private final ClassLoader parentClassLoader;
+    private TestSuite suite;
+
+    public ParserTest() {
+        parentClassLoader = ParserTest.class.getClassLoader();
+    }
+    
+    private void loadTestJars(File[] testJars) throws Exception {
         // Build the class loader. We use a single class loader for all test JARs because there
         // are dependencies between them.
         URL[] testJarUrls = new URL[testJars.length];
@@ -51,7 +57,7 @@ public class ParserTest extends TestCase {
         ClassLoader testClassLoader = new URLClassLoader(testJarUrls, parentClassLoader);
         
         // Scan the test JARs for test cases/suites and build a test suite from them
-        TestSuite suite = new TestSuite();
+        suite = new TestSuite();
         for (int i=0; i<testJars.length; i++) {
             JarInputStream jar = new JarInputStream(new FileInputStream(testJars[i]));
             try {
@@ -78,21 +84,66 @@ public class ParserTest extends TestCase {
                 jar.close();
             }
         }
+    }
+    
+    private void addParserFromJRE() {
+        addTest(new ParserTestSetup(suite, ClassLoader.getSystemClassLoader(), null));
+    }
+    
+    private void addParsersFromDirectory(File dir) throws Exception {
+        // Build decorators that execute the test suite using different StAX implementations
+        File[] parserJars = dir.listFiles(jarFilter);
+        for (int i=0; i<parserJars.length; i++) {
+            addParserJar(parserJars[i]);
+        }
+    }
+    
+    private void addParserJar(File parserJar) throws Exception {
+        Properties props = null;
         
-        TestSuite superSuite = new TestSuite();
+        String name = parserJar.getName();
+        int delimiterIndex = name.length();
+        outer: while (true) {
+            while (true) {
+                if (delimiterIndex-- == 0) {
+                    break outer;
+                }
+                char c = name.charAt(delimiterIndex);
+                if (c == '.' || c == '_' || c == '-') {
+                    break;
+                }
+            }
+            InputStream in = ParserTest.class.getResourceAsStream("/" + name.substring(0, delimiterIndex) + ".properties");
+            if (in != null) {
+                try {
+                    props = new Properties();
+                    props.load(in);
+                } finally {
+                    in.close();
+                }
+                break;
+            }
+        }
+        
+        ClassLoader parserClassLoader = new URLClassLoader(new URL[] { parserJar.toURL() }, parentClassLoader);
+        addTest(new ParserTestSetup(suite, parserClassLoader, props));
+    }
+
+    public static Test suite() throws Exception {
+        ParserTest suite = new ParserTest();
+        
+        File targetDir = new File("target");
+        suite.loadTestJars(new File(targetDir, "test-jars").listFiles(jarFilter));
         
         // On Java 1.6, also add the StAX implementation from the JRE
         // The check is not very clean but it should be enough for a unit test...
         if (System.getProperty("java.version").startsWith("1.6")) {
-            superSuite.addTest(new SetContextClassLoaderTestWrapper(suite, ClassLoader.getSystemClassLoader()));
+            suite.addParserFromJRE();
         }
         
-        // Build decorators that execute the test suite using different StAX implementations
-        File[] parserJars = new File(targetDir, "parsers").listFiles(jarFilter);
-        for (int i=0; i<parserJars.length; i++) {
-            ClassLoader parserClassLoader = new URLClassLoader(new URL[] { parserJars[i].toURL() }, parentClassLoader);
-            superSuite.addTest(new SetContextClassLoaderTestWrapper(suite, parserClassLoader));
-        }
-        return superSuite;
+        suite.addParsersFromDirectory(new File("parsers"));
+        suite.addParsersFromDirectory(new File(targetDir, "parsers"));
+        
+        return suite;
     }
 }

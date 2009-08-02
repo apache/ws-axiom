@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+<project>
+    <!-- Use this to extract the XLXP parser from the Feature Pack for Web Services for
+         WebSphere Application Server V6.1.
+         
+         Usage: ant extract-xlxp -Dfile=/path/to/6.1.0-WS-WAS-WSFEP-WinX32.zip -->
+    <target name="extract-xlxp">
+        <property name="file" value=""/>
+        <mkdir dir=".tmp"/>
+        <unzip src="${file}" dest=".tmp">
+            <patternset>
+                <include name="EBIFMaintenance/6.1.0.9-WS-WASFeature-IFII000002.pak"/>
+            </patternset>
+        </unzip>
+        <unzip src=".tmp/EBIFMaintenance/6.1.0.9-WS-WASFeature-IFII000002.pak" dest=".tmp">
+            <patternset>
+            	<include name="repository/was.rt.bundle/plugins/com.ibm.ws.runtime_6.1.0.jar/**/*"/>
+            </patternset>
+        </unzip>
+        <zip destfile="com.ibm.ws.runtime_6.1.0.jar" >
+            <fileset dir=".tmp/repository/was.rt.bundle/plugins/com.ibm.ws.runtime_6.1.0.jar"/>
+        </zip>
+        <delete dir=".tmp"/>
+    </target>
+</project>
