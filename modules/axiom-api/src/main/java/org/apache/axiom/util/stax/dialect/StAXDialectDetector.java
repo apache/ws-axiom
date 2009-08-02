@@ -57,9 +57,7 @@ public class StAXDialectDetector {
      * Map that stores detected dialects by location. The location is the URL corresponding to the
      * root folder of the classpath entry from which the StAX implementation is loaded. Note that
      * in the case of a JAR file, this is not the URL pointing to the JAR, but a <tt>jar:</tt>
-     * URL that points to the root folder of the archive. The <code>null</code> location is used
-     * to represent StAX implementations that are loaded from the bootstrap class loader, i.e.
-     * which are part of the JRE.
+     * URL that points to the root folder of the archive.
      */
     private static final Map/*<URL,StAXDialect>*/ dialectByUrl =
             Collections.synchronizedMap(new HashMap());
@@ -75,6 +73,12 @@ public class StAXDialectDetector {
      *         possible to determine the root URL
      */
     private static URL getRootUrlForResource(ClassLoader classLoader, String resource) {
+        if (classLoader == null) {
+            // A null class loader means the bootstrap class loader. In this case we use the
+            // system class loader. This is safe since we can assume that the system class
+            // loader uses parent first as delegation policy.
+            classLoader = ClassLoader.getSystemClassLoader();
+        }
         URL url = classLoader.getResource(resource);
         if (url == null) {
             return null;
@@ -90,6 +94,11 @@ public class StAXDialectDetector {
         } else {
             return null;
         }
+    }
+    
+    private static URL getRootUrlForClass(Class cls) {
+        return getRootUrlForResource(cls.getClassLoader(),
+                cls.getName().replace('.', '/') + ".class");
     }
     
     /**
@@ -127,85 +136,46 @@ public class StAXDialectDetector {
      * @return the detected dialect
      */
     public static StAXDialect getDialect(Class implementationClass) {
-        URL rootUrl;
-        ClassLoader classLoader = implementationClass.getClassLoader();
-        if (classLoader == null) {
-            // null means bootstrap classloader; represent this location as null
-            rootUrl = null;
-        } else {
-            rootUrl = getRootUrlForResource(classLoader,
-                    implementationClass.getName().replace('.', '/') + ".class");
-            if (rootUrl == null) {
-                log.warn("Unable to determine location of StAX implementation containing class "
-                        + implementationClass.getName() + "; using default dialect");
-                return UnknownStAXDialect.INSTANCE;
-            }
+        URL rootUrl = getRootUrlForClass(implementationClass);
+        if (rootUrl == null) {
+            log.warn("Unable to determine location of StAX implementation containing class "
+                    + implementationClass.getName() + "; using default dialect");
+            return UnknownStAXDialect.INSTANCE;
         }
-        return getDialect(rootUrl);
+        return getDialect(implementationClass.getClassLoader(), rootUrl);
     }
 
-    private static StAXDialect getDialect(URL rootUrl) {
+    private static StAXDialect getDialect(ClassLoader classLoader, URL rootUrl) {
         StAXDialect dialect = (StAXDialect)dialectByUrl.get(rootUrl);
         if (dialect != null) {
             return dialect;
         } else {
-            dialect = detectDialect(rootUrl);
+            dialect = detectDialect(classLoader, rootUrl);
             dialectByUrl.put(rootUrl, dialect);
             return dialect;
         }
     }
     
-    private static StAXDialect detectDialect(URL rootUrl) {
-        StAXDialect dialect;
-        if (rootUrl == null) {
-            dialect = detectDialectFromJRE();
-        } else {
-            dialect = detectDialectFromJar(rootUrl);
+    private static StAXDialect detectDialect(ClassLoader classLoader, URL rootUrl) {
+        StAXDialect dialect = detectDialectFromJarManifest(rootUrl);
+        if (dialect == null) {
+            // Note: We look for well defined classes instead of just checking the package name
+            // of the class passed to getDialect(Class) because in some parsers, the implementations
+            // of the StAX interfaces (factories, readers and writers) are not in the same package.
+            dialect = detectDialectFromClasses(classLoader, rootUrl);
         }
-        if (log.isInfoEnabled()) {
-            log.info("Detected StAX dialect: " + dialect.getName());
-        }
-        return dialect;
-    }
-    
-    /**
-     * Check that a given class is part of the bootstrap classes. This method is used to detect
-     * different JRE flavors and to check which StAX implementation is part of the JRE.
-     * <p>
-     * Note: We look for a well defined class instead of just checking the package name of the class
-     * passed to {@link #getDialect(Class)} because on some JREs, the implementations of the StAX
-     * interfaces (factories, readers and writers) are not in the same package.
-     * 
-     * @param className
-     *            the class name
-     * @return <code>true</code> if the class can be loaded from the bootstrap class loader
-     */
-    private static boolean isBootstrapClass(String className) {
-        try {
-            Class cls = ClassLoader.getSystemClassLoader().loadClass(className);
-            return cls.getClassLoader() == null;
-        } catch (ClassNotFoundException ex) {
-            return false;
-        }
-    }
-    
-    private static StAXDialect detectDialectFromJRE() {
-        String vendor = System.getProperty("java.vendor");
-        String version = System.getProperty("java.version");
-        if (log.isDebugEnabled()) {
-            log.debug("StAX implementation is part of the JRE:\n" +
-                    "  Vendor:  " + vendor + "\n" +
-                    "  Version: " + version);
-        }
-        if (isBootstrapClass("com.sun.xml.internal.stream.XMLInputFactoryImpl")) {
-            return SJSXPDialect.INSTANCE;
-        } else {
-            log.warn("Unable to determine dialect of StAX implementation provided by the JRE");
+        if (dialect == null) {
+            log.warn("Unable to determine dialect of the StAX implementation at " + rootUrl);
             return UnknownStAXDialect.INSTANCE;
+        } else {
+            if (log.isInfoEnabled()) {
+                log.info("Detected StAX dialect: " + dialect.getName());
+            }
+            return dialect;
         }
     }
     
-    private static StAXDialect detectDialectFromJar(URL rootUrl) {
+    private static StAXDialect detectDialectFromJarManifest(URL rootUrl) {
         Manifest manifest;
         try {
             URL metaInfUrl = new URL(rootUrl, "META-INF/MANIFEST.MF");
@@ -236,9 +206,41 @@ public class StAXDialectDetector {
         } else if (title != null && title.indexOf("SJSXP") != -1) {
             return SJSXPDialect.INSTANCE;
         } else {
-            log.warn("Unable to determine dialect of the StAX implementation at " + rootUrl
-                    + " (using JAR manifest)");
-            return UnknownStAXDialect.INSTANCE;
+            return null;
         }
+    }
+
+    private static Class loadClass(ClassLoader classLoader, URL rootUrl, String name) {
+        try {
+            Class cls = classLoader.loadClass(name);
+            // Cross check if the class was loaded from the same location (JAR)
+            return rootUrl.equals(getRootUrlForClass(cls)) ? cls : null;
+        } catch (ClassNotFoundException ex) {
+            return null;
+        }
+    }
+    
+    private static StAXDialect detectDialectFromClasses(ClassLoader classLoader, URL rootUrl) {
+        // Try Sun's implementation found in JREs
+        if (loadClass(classLoader, rootUrl, "com.sun.xml.internal.stream.XMLInputFactoryImpl")
+                != null) {
+            return SJSXPDialect.INSTANCE;
+        }
+        
+        // Try IBM's XL XP-J
+        Class cls = loadClass(classLoader, rootUrl, "com.ibm.xml.xlxp.api.stax.StAXImplConstants");
+        if (cls != null) {
+            boolean isStAXCompliant;
+            try {
+                cls.getField("IS_SETPREFIX_BEFORE_STARTELEMENT");
+                isStAXCompliant = true;
+            } catch (NoSuchFieldException ex) {
+                isStAXCompliant = false;
+            }
+            return isStAXCompliant ? CompliantXLXPDialect.INSTANCE
+                    : NonCompliantXLXPDialect.INSTANCE;
+        }
+        
+        return null;
     }
 }
