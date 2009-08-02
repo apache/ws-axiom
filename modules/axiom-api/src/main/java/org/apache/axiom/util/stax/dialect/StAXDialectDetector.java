@@ -205,6 +205,8 @@ public class StAXDialectDetector {
             return WoodstoxDialect.INSTANCE;
         } else if (title != null && title.indexOf("SJSXP") != -1) {
             return SJSXPDialect.INSTANCE;
+        } else if ("BEA".equals(vendor)) {
+            return BEADialect.INSTANCE;
         } else {
             return null;
         }

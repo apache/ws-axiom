@@ -21,13 +21,29 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamReader;
 
 /**
  * Encapsulates the specific characteristics of a particular StAX implementation.
  * In particular, an implementation of this interface is able to wrap (if necessary) the
  * readers and writers produced by the StAX implementation to make them conform to the
  * StAX specifications. This is called <em>normalization</em>.
+ * <p>
+ * In addition to bugs in particular StAX implementations and clear violations of the StAX
+ * specifications, the following ambiguities and gray areas in the specifications are also addressed
+ * by the dialect implementations:
+ * <ul>
+ *   <li>The specifications don't tell whether it is allowed to use a <code>null</code> value
+ *       for the charset encoding parameter in the following methods:
+ *       <ul>
+ *         <li>{@link XMLOutputFactory#createXMLEventWriter(java.io.OutputStream, String)}</li>
+ *         <li>{@link javax.xml.stream.XMLStreamWriter#writeStartDocument(String, String)}</li>
+ *       </ul>
+ *       Most implementations accept <code>null</code> values, but some throw a
+ *       {@link NullPointerException}. To avoid portability issues, the dialect implementation
+ *       normalizes the behavior of these methods so that they accept <code>null</code> values
+ *       (in which case the methods will delegate to the corresponding variants without
+ *       charset encoding parameter).</li>
+ * </ul>
  * <p>
  * Note that there are several ambiguities in the StAX specification which are not addressed by
  * the different dialect implementations:
@@ -41,7 +57,12 @@ import javax.xml.stream.XMLStreamReader;
  *       {@link javax.xml.stream.XMLStreamReader#next()} about the exception that is thrown when
  *       this method is called after {@link javax.xml.stream.XMLStreamReader#hasNext()} returns
  *       false. It can either be {@link IllegalStateException} or
- *       {@link java.util.NoSuchElementException}.</li>
+ *       {@link java.util.NoSuchElementException}.
+ *       <p>
+ *       Note that some implementations (including the reference implementation) throw an
+ *       {@link javax.xml.stream.XMLStreamException} in this case. This is considered as a
+ *       violation of the specifications because this exception should only be used
+ *       "if there is an error processing the underlying XML source", which is not the case.</li>
  *   <li>An XML document may contain a namespace declaration such as <tt>xmlns=""</tt>. In this
  *       case, it is not clear if {@link javax.xml.stream.XMLStreamReader#getNamespaceURI(int)}
  *       should return <code>null</code> or an empty string.</li>
@@ -57,10 +78,11 @@ public interface StAXDialect {
     
     /**
      * Configure the given factory to enable reporting of CDATA sections by stream readers created
-     * from it. The example in the documentation of the {@link XMLStreamReader#next()} method
-     * suggests that even if the parser is non coalescing, CDATA sections should be reported as
-     * CHARACTERS events. Some implementations strictly follow the example, while for others it is
-     * sufficient to make the parser non coalescing.
+     * from it. The example in the documentation of the
+     * {@link java.xml.stream.XMLStreamReader#next()} method suggests that even if the parser is non
+     * coalescing, CDATA sections should be reported as CHARACTERS events. Some implementations
+     * strictly follow the example, while for others it is sufficient to make the parser non
+     * coalescing.
      * 
      * @param factory
      *            the factory to configure; this may be an already normalized factory or a "raw"

@@ -204,6 +204,7 @@ public class OMSerializerUtil {
             NamespaceContext nc = writer.getNamespaceContext();
             ret = (nc == null ||
                     (nc.getClass().getName().indexOf("wstx") == -1 &&
+                            nc.getClass().getName().indexOf("bea") == -1 &&
                             nc.getClass().getName().indexOf("weblogic") == -1 &&
                             nc.getClass().getName().indexOf("sun") == -1));
         }

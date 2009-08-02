@@ -40,14 +40,15 @@ public class OMDocumentImplUtil {
         if (includeXMLDeclaration) {
             //Check whether the OMOutput char encoding and OMDocument char
             //encoding matches, if not use char encoding of OMOutput
-            String outputCharEncoding = writer.getCharSetEncoding();
-            if (outputCharEncoding == null || "".equals(outputCharEncoding)) {
-                writer.getXmlStreamWriter().writeStartDocument(document.getCharsetEncoding(),
-                                                               document.getXMLVersion());
-            } else {
-                writer.getXmlStreamWriter().writeStartDocument(outputCharEncoding,
-                                                               document.getXMLVersion());
+            String encoding = writer.getCharSetEncoding();
+            if (encoding == null || "".equals(encoding)) {
+                encoding = document.getCharsetEncoding();
             }
+            String version = document.getXMLVersion();
+            if (version == null) {
+                version = "1.0";
+            }
+            writer.getXmlStreamWriter().writeStartDocument(encoding, version);
         }
 
         Iterator children = document.getChildren();
