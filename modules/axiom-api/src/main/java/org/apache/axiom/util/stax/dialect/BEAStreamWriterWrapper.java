@@ -22,9 +22,10 @@ package org.apache.axiom.util.stax.dialect;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
-
-class BEAStreamWriterWrapper extends XMLStreamWriterWrapper {
+// The stream writer implementation of the reference implementation doesn't handle masked namespace
+// bindings correctly. We extend NamespaceContextCorrectingXMLStreamWriterWrapper to work around
+// this problem.
+class BEAStreamWriterWrapper extends NamespaceContextCorrectingXMLStreamWriterWrapper {
     public BEAStreamWriterWrapper(XMLStreamWriter parent) {
         super(parent);
     }
