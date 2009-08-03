@@ -150,11 +150,11 @@
                                     <artifactId>sjsxp</artifactId>
                                     <version>1.0.1</version>
                                 </artifactItem>
-                                <!-- artifactItem>
+                                <artifactItem>
                                     <groupId>stax</groupId>
                                     <artifactId>stax</artifactId>
                                     <version>1.2.0</version>
-                                </artifactItem -->
+                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/parsers</outputDirectory>
                         </configuration>

@@ -25,8 +25,14 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
 class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
-    public BEAStreamReaderWrapper(XMLStreamReader parent) {
+    /**
+     * The character set encoding as inferred from the start bytes of the stream.
+     */
+    private final String encodingFromStartBytes;
+    
+    public BEAStreamReaderWrapper(XMLStreamReader parent, String encodingFromStartBytes) {
         super(parent);
+        this.encodingFromStartBytes = encodingFromStartBytes;
     }
 
     public int next() throws XMLStreamException {
@@ -36,6 +42,26 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
             throw new IllegalStateException("Already reached end of document");
         } else {
             return super.next();
+        }
+    }
+
+    public String getEncoding() {
+        // TODO: this needs some more unit testing!
+        String encoding = super.getEncoding();
+        if (encoding != null) {
+            return encoding;
+        } else {
+            if (encodingFromStartBytes == null) {
+                // This means that the reader was created from a character stream
+                // ==> always return null
+                return null;
+            } else {
+                // If an XML encoding declaration was present, return the specified
+                // encoding, otherwise fall back to the encoding we detected in
+                // the factory wrapper
+                encoding = getCharacterEncodingScheme();
+                return encoding == null ? encodingFromStartBytes : encoding;
+            }
         }
     }
 }

@@ -48,7 +48,7 @@ class BEADialect extends AbstractStAXDialect {
     }
 
     public XMLStreamReader normalize(XMLStreamReader reader) {
-        return new BEAStreamReaderWrapper(reader);
+        return new BEAStreamReaderWrapper(reader, null);
     }
 
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
@@ -56,7 +56,7 @@ class BEADialect extends AbstractStAXDialect {
     }
 
     public XMLInputFactory normalize(XMLInputFactory factory) {
-        return new NormalizingXMLInputFactoryWrapper(factory, this);
+        return new BEAInputFactoryWrapper(factory);
     }
 
     public XMLOutputFactory normalize(XMLOutputFactory factory) {

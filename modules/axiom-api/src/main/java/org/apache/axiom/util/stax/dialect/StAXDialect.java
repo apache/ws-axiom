@@ -43,6 +43,26 @@ import javax.xml.stream.XMLOutputFactory;
  *       normalizes the behavior of these methods so that they accept <code>null</code> values
  *       (in which case the methods will delegate to the corresponding variants without
  *       charset encoding parameter).</li>
+ *   <li>The StAX specifications require that {@link javax.xml.stream.XMLStreamReader#getEncoding()}
+ *       returns the "input encoding if known or <code>null</code> if unknown". This requirement
+ *       is not precise enough to guarantee consistent behavior across different implementations.
+ *       In order to provide the consumer of the stream reader with complete and unambiguous information about
+ *       the encoding of the underlying stream, the dialect implementations normalize the
+ *       behavior of the {@link javax.xml.stream.XMLStreamReader#getEncoding()} method such that
+ *       it returns a non null value if and only if the reader was created from a byte stream, in
+ *       which case the return value is the effective charset encoding used by the parser to
+ *       decode the byte stream. According to the XML specifications, this value is determined
+ *       by one of the following means:
+ *       <ul>
+ *         <li>The encoding was provided when the stream reader was created, i.e. as a parameter
+ *             to the {@link javax.xml.stream.XMLInputFactory#createXMLStreamReader(java.io.InputStream, String)}
+ *             method. This is referred to as "external encoding information" by the XML
+ *             specifications.</li>
+ *         <li>The encoding was specified by the XML encoding declaration.</li>
+ *         <li>The encoding was detected using the first four bytes of the stream, as described
+ *             in appendix of the XML specifications.</li>
+ *       </ul>
+ *       </li>
  * </ul>
  * <p>
  * Note that there are several ambiguities in the StAX specification which are not addressed by
