@@ -142,7 +142,7 @@ public class OMSerializerTest extends AbstractTestCase {
 
     public void testDefaultNsSerialization() {
         try {
-            StAXOMBuilder builder = new StAXOMBuilder(getTestResource("xml/original.xml"));
+            StAXOMBuilder builder = new StAXOMBuilder(getTestResource("original.xml"));
             String xml = builder.getDocumentElement().toString();
             assertEquals("There shouldn't be any xmlns=\"\"", -1, xml.indexOf("xmlns=\"\""));
         } catch (Exception e) {
