@@ -37,7 +37,7 @@ public class ElementImportTest extends AbstractTestCase {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         Document doc = dbf.newDocumentBuilder().parse(
-                getTestResource("xml/sigEncr.xml"));
+                getTestResource("sigEncr.xml"));
         Node n = new OMDOMFactory().getDocument().importNode(doc.getDocumentElement(), true);
         OMTestUtils.compare(doc.getDocumentElement(), (OMElement) n);
     }
