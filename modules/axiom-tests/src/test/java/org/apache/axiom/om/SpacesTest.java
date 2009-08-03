@@ -41,7 +41,7 @@ import java.util.Iterator;
 
 public class SpacesTest extends AbstractTestCase {
     private static final String filePath = "xml/spaces.xml";
-    private static final String filePath2 = "xml/spaces2.xml";
+    private static final String filePath2 = "spaces2.xml";
 
 
     private OMElement rootElement;
