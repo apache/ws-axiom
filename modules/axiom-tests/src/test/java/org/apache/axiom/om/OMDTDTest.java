@@ -35,7 +35,7 @@ public class OMDTDTest extends AbstractTestCase {
 
     protected void setUp() throws Exception {
         try {
-            StAXOMBuilder stAXOMBuilder = new StAXOMBuilder(getTestResource("xml/dtd.xml"));
+            StAXOMBuilder stAXOMBuilder = new StAXOMBuilder(getTestResource("dtd.xml"));
             document = this.document = stAXOMBuilder.getDocument();
         } catch (Exception e) {
             e.printStackTrace();
