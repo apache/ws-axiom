@@ -81,7 +81,7 @@ public class OMDTDTest extends AbstractTestCase {
         // that intentionally points to a non existing URL. With a network
         // detached reader this should not produce errors.
         
-        InputStream is = getTestResource("xml/web_w_dtd2.xml");
+        InputStream is = getTestResource("web_w_dtd2.xml");
         XMLStreamReader reader = StAXUtils.createNetworkDetachedXMLStreamReader(is);
         StAXOMBuilder builder = new StAXOMBuilder(reader);
         OMElement root = builder.getDocumentElement();
