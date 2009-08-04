@@ -214,6 +214,9 @@ public class StAXDialectDetector {
 
     private static Class loadClass(ClassLoader classLoader, URL rootUrl, String name) {
         try {
+            if (classLoader == null) {
+                classLoader = ClassLoader.getSystemClassLoader();
+            }
             Class cls = classLoader.loadClass(name);
             // Cross check if the class was loaded from the same location (JAR)
             return rootUrl.equals(getRootUrlForClass(cls)) ? cls : null;
