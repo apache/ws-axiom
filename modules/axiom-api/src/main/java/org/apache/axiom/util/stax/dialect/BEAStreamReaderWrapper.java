@@ -30,6 +30,8 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
      */
     private final String encodingFromStartBytes;
     
+    private int depth;
+    
     public BEAStreamReaderWrapper(XMLStreamReader parent, String encodingFromStartBytes) {
         super(parent);
         this.encodingFromStartBytes = encodingFromStartBytes;
@@ -41,7 +43,12 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
             // This can't be considered as compliant with the specifications.
             throw new IllegalStateException("Already reached end of document");
         } else {
-            return super.next();
+            int event = super.next();
+            switch (event) {
+                case START_ELEMENT: depth++; break;
+                case END_ELEMENT: depth--;
+            }
+            return event;
         }
     }
 
@@ -62,6 +69,33 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
                 encoding = getCharacterEncodingScheme();
                 return encoding == null ? encodingFromStartBytes : encoding;
             }
+        }
+    }
+
+    public String getText() {
+        // The reference implementation fails to normalize line endings in the prolog/epilog; we work
+        // around this at least for getText since this bug causes a test failure in the Axiom unit
+        // tests on Windowsd.
+        if (depth == 0) {
+            String text = super.getText();
+            StringBuffer buffer = null;
+            int len = text.length();
+            for (int i=0; i<len; i++) {
+                char c = text.charAt(i);
+                if (c == '\r' && (i==len || text.charAt(i+1) == '\n')) {
+                    if (buffer == null) {
+                        buffer = new StringBuffer(len-1);
+                        buffer.append(text.substring(0, i));
+                    }
+                } else {
+                    if (buffer != null) {
+                        buffer.append(c);
+                    }
+                }
+            }
+            return buffer != null ? buffer.toString() : text;
+        } else {
+            return super.getText();
         }
     }
 }
