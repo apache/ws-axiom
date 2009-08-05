@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.dom.DOOMAbstractFactory;
 
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class OMElementHelperTest extends AbstractTestCase {
@@ -33,29 +32,23 @@ public class OMElementHelperTest extends AbstractTestCase {
     private String testXMLFilePath = "soap/soapmessage.xml";
 
 
-    public void testImportOMElement() {
-        try {
-            XMLStreamReader xmlStreamReader = StAXUtils.createXMLStreamReader(
-                    getTestResource(testXMLFilePath));
-            OMElement documentElement =
-                    new StAXOMBuilder(OMAbstractFactory.getOMFactory(), xmlStreamReader)
-                            .getDocumentElement();
+    public void testImportOMElement() throws Exception {
+        XMLStreamReader xmlStreamReader = StAXUtils.createXMLStreamReader(
+                getTestResource(testXMLFilePath));
+        OMElement documentElement =
+                new StAXOMBuilder(OMAbstractFactory.getOMFactory(), xmlStreamReader)
+                        .getDocumentElement();
 
-            // first lets try to import an element created from llom in to llom factory. This should return the same element
-            assertTrue(ElementHelper
-                    .importOMElement(documentElement, OMAbstractFactory.getOMFactory()) ==
-                    documentElement);
+        // first lets try to import an element created from llom in to llom factory. This should return the same element
+        assertTrue(ElementHelper
+                .importOMElement(documentElement, OMAbstractFactory.getOMFactory()) ==
+                documentElement);
 
-            // then lets pass in an OMElement created using llom and pass DOOMFactory
-            OMElement importedElement = ElementHelper
-                    .importOMElement(documentElement, DOOMAbstractFactory.getOMFactory());
-            assertTrue(importedElement != documentElement);
-            assertTrue(importedElement.getOMFactory().getClass().isInstance(
-                    DOOMAbstractFactory.getOMFactory()));
-
-        } catch (XMLStreamException e) {
-            e.printStackTrace();
-            fail();
-        }
+        // then lets pass in an OMElement created using llom and pass DOOMFactory
+        OMElement importedElement = ElementHelper
+                .importOMElement(documentElement, DOOMAbstractFactory.getOMFactory());
+        assertTrue(importedElement != documentElement);
+        assertTrue(importedElement.getOMFactory().getClass().isInstance(
+                DOOMAbstractFactory.getOMFactory()));
     }
 }
