@@ -40,7 +40,7 @@ import java.util.Iterator;
 
 
 public class SpacesTest extends AbstractTestCase {
-    private static final String filePath = "xml/spaces.xml";
+    private static final String filePath = "spaces.xml";
     private static final String filePath2 = "spaces2.xml";
 
 
