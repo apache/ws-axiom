@@ -42,9 +42,9 @@ import org.jaxen.saxpath.SAXPathException;
 import org.jaxen.util.SingleObjectIterator;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -552,30 +552,23 @@ public class DocumentNavigator extends DefaultNavigator {
      */
     public Object getDocument(String uri)
             throws FunctionCallException {
+        InputStream in = null;
         try {
-            XMLStreamReader parser;
-            XMLInputFactory xmlInputFactory = StAXUtils.getXMLInputFactory();
-            Boolean oldValue = (Boolean) xmlInputFactory.getProperty(XMLInputFactory.IS_COALESCING);
-            try {
-                xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-                if (uri.indexOf(':') == -1) {
-                    parser = xmlInputFactory.createXMLStreamReader(
-                            new FileInputStream(uri));
-                } else {
-                    URL url = new URL(uri);
-                    parser = xmlInputFactory.createXMLStreamReader(
-                            url.openStream());
-                }
-            } finally {
-                if (oldValue != null) {
-                    xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, oldValue);
-                }
-                StAXUtils.releaseXMLInputFactory(xmlInputFactory);
+            if (uri.indexOf(':') == -1) {
+                in = new FileInputStream(uri);
+            } else {
+                URL url = new URL(uri);
+                in = url.openStream();
             }
-            StAXOMBuilder builder =
-                    new StAXOMBuilder(parser);
-            return builder.getDocumentElement().getParent();
+            return new StAXOMBuilder(StAXUtils.createXMLStreamReader(in)).getDocument();
         } catch (Exception e) {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException ex) {
+                    // Ignore
+                }
+            }
             throw new FunctionCallException(e);
         }
     }

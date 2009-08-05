@@ -610,13 +610,13 @@ System.out.println(documentElement.toStringWithConsume());</programlisting>
                 <para>
                     The <methodname>getInputFactory</methodname> and <methodname>getOutputFactory</methodname>
                     methods in <classname>StAXUtils</classname> give access to the cached factories.
-                    Axiom doesn't restrict access to the <methodname>setProperty</methodname> method
+                    In versions prior to 1.2.9, Axiom didn't restrict access to the <methodname>setProperty</methodname> method
                     of these factories. In principle this makes it possible to change the configuration
                     of these factories for the whole application. However, since this depends on the
                     implementation details of <classname>StAXUtils</classname> (e.g. how factories
                     are cached) and since there is a proper configuration mechanism for that purpose,
-                    using this possibility is strongly discouraged. Future versions of Axiom may
-                    restrict access to <methodname>setProperty</methodname> to prevent tampering with
+                    using this possibility is strongly discouraged. Starting with version 1.2.9, Axiom
+                    restricts access to <methodname>setProperty</methodname> to prevent tampering with
                     the cached factories.
                 </para>
             </important>
@@ -1065,6 +1065,22 @@ with CRLF</root>]]></screen>
                         This is the default and is equivalent to the defaults in 1.2.8. For DOOM, you should set:
                     </para>
 <programlisting>org.apache.axiom.om.OMMetaFactory=org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory</programlisting>
+                </section>
+                <section>
+                    <title>Factories returned by <classname>StAXUtils</classname></title>
+                    <para>
+                        In versions prior to 1.2.9, the <classname>XMLInputFactory</classname> and
+                        <classname>XMLOutputFactory</classname> instances returned by <classname>StAXUtils</classname>
+                        were mutable, i.e. it was possible to change the properties of these factories. This is obviously
+                        an issue since the factory instances are cached and can be shared among several thread.
+                        To avoid programming errors, starting from 1.2.9, the factories are immutable and any attempt to
+                        change their state will result in an <classname>IllegalStateException</classname>.
+                    </para>
+                    <para>
+                        Note that the possibility to change the properties of these factories could be used to apply
+                        application wide settings. Starting with 1.2.9, Axiom has a proper mechanism to allow this.
+                        This feature is described in <xref linkend="factory.properties"/>.
+                    </para>
                 </section>
             </section>
         </section>

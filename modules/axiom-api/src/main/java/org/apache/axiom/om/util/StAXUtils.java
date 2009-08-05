@@ -24,6 +24,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
+import org.apache.axiom.util.stax.wrapper.ImmutableXMLInputFactory;
+import org.apache.axiom.util.stax.wrapper.ImmutableXMLOutputFactory;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -426,7 +428,8 @@ public class StAXUtils {
                         });
                     }
                     StAXDialect dialect = StAXDialectDetector.getDialect(factory.getClass());
-                    return dialect.normalize(dialect.makeThreadSafe(factory));
+                    return new ImmutableXMLInputFactory(dialect.normalize(
+                            dialect.makeThreadSafe(factory)));
                 } finally {
                     if (savedClassLoader != null) {
                         Thread.currentThread().setContextClassLoader(savedClassLoader);
@@ -553,7 +556,8 @@ public class StAXUtils {
                         }
                     }
                     StAXDialect dialect = StAXDialectDetector.getDialect(factory.getClass());
-                    return dialect.normalize(dialect.makeThreadSafe(factory));
+                    return new ImmutableXMLOutputFactory(dialect.normalize(
+                            dialect.makeThreadSafe(factory)));
                 } finally {
                     if (savedClassLoader != null) {
                         Thread.currentThread().setContextClassLoader(savedClassLoader);

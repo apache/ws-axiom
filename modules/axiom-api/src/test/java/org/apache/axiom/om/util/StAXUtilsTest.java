@@ -112,4 +112,24 @@ public class StAXUtilsTest extends TestCase {
         writer.writeEmptyElement("root");
         writer.close();
     }
+    
+    public void testInputFactoryIsImmutable() throws Exception {
+        try {
+            StAXUtils.getXMLInputFactory().setProperty("javax.xml.stream.isValidating",
+                    Boolean.TRUE);
+            fail("Expected IllegalStateException");
+        } catch (IllegalStateException ex) {
+            // Expected
+        }
+    }
+    
+    public void testOutputFactoryIsImmutable() throws Exception {
+        try {
+            StAXUtils.getXMLOutputFactory().setProperty("javax.xml.stream.isRepairingNamespaces",
+                    Boolean.TRUE);
+            fail("Expected IllegalStateException");
+        } catch (IllegalStateException ex) {
+            // Expected
+        }
+    }
 }

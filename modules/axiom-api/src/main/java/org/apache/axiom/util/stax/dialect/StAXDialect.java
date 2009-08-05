@@ -114,7 +114,13 @@ public interface StAXDialect {
     
     /**
      * Make an {@link XMLInputFactory} object thread safe. The implementation may do this either by
-     * configuring the factory or by creating a thread safe wrapper.
+     * configuring the factory or by creating a thread safe wrapper. The returned factory must be
+     * thread safe for all method calls that don't change the (visible) state of the factory. This
+     * means that thread safety is not required for
+     * {@link XMLInputFactory#setEventAllocator(javax.xml.stream.util.XMLEventAllocator)},
+     * {@link XMLInputFactory#setProperty(String, Object)},
+     * {@link XMLInputFactory#setXMLReporter(javax.xml.stream.XMLReporter)} and
+     * {@link XMLInputFactory#setXMLResolver(javax.xml.stream.XMLResolver)}.
      * 
      * @param factory
      *            the factory to make thread safe
@@ -124,7 +130,9 @@ public interface StAXDialect {
     
     /**
      * Make an {@link XMLOutputFactory} object thread safe. The implementation may do this either by
-     * configuring the factory or by creating a thread safe wrapper.
+     * configuring the factory or by creating a thread safe wrapper. The returned factory must be
+     * thread safe for all method calls that don't change the (visible) state, i.e. the properties,
+     * of the factory.
      * 
      * @param factory
      *            the factory to make thread safe
