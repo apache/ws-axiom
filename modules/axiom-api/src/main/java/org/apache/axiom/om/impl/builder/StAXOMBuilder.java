@@ -158,8 +158,16 @@ public class StAXOMBuilder extends StAXBuilder {
         if (charEncoding != null) {
             document.setCharsetEncoding(charEncoding);
         }
-        document.setXMLVersion(parser.getVersion());
-        document.setStandalone(parser.isStandalone() ? "yes" : "no");
+        if (parser.getEventType() == XMLStreamConstants.START_DOCUMENT) {
+            document.setXMLVersion(parser.getVersion());
+            document.setStandalone(parser.isStandalone() ? "yes" : "no");
+        } else {
+            // We allow creating a StAXOMWrapper from a parser in state START_ELEMENT. In that
+            // case, we must not call getVersion or isStandalone since this is forbidden by the
+            // StAX specs. Set some reasonable defaults.
+            document.setXMLVersion("1.0");
+            document.setStandalone("yes");
+        }
         return document;
     }
 
