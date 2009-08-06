@@ -62,6 +62,9 @@ public class OMElementTest extends OMTestCase implements OMConstants {
         secondElement = factory.createOMElement("SecondElement", factory.createOMNamespace(
                 "http://moretesting.ws.org", "ws"), firstElement);
     }
+    
+    protected void tearDown() throws Exception {
+    }
 
     public void testGetText() {
         try {
