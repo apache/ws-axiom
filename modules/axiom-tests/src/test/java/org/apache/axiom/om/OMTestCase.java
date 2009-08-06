@@ -48,6 +48,11 @@ public abstract class OMTestCase extends AbstractTestCase {
         soapEnvelope = (SOAPEnvelope) getOMBuilder("").getDocumentElement();
     }
 
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        soapEnvelope.close(false);
+    }
+
     protected StAXSOAPModelBuilder getOMBuilder(String fileName) throws Exception {
         if ("".equals(fileName) || fileName == null) {
             fileName = TestConstants.SOAP_SOAPMESSAGE;

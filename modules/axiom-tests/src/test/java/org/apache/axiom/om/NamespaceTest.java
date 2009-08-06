@@ -381,9 +381,13 @@ public class NamespaceTest extends XMLTestCase {
                             "</innerTag>" +
                             "</outerTag>";
 
+            elem.close(false);
+            
             elem = AXIOMUtil.stringToOM(xmlString);
 //            System.out.println("\n--- Calling toString() ---\n");
 //            System.out.println(elem.toString());
+            
+            elem.close(false);
         }
         catch (Exception e) {
             e.printStackTrace();

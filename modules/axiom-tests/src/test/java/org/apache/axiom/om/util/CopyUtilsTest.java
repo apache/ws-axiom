@@ -155,7 +155,7 @@ public class CopyUtilsTest extends AbstractTestCase {
                    sourceText.equals(targetText));
         }
         
-        
+        sourceEnv.close(false);
     }
     
     /**

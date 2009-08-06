@@ -48,6 +48,10 @@ public class CashWihBuildElementTest extends AbstractTestCase {
         rootElement = stAXOMBuilder.getDocumentElement();
     }
 
+    protected void tearDown() throws Exception {
+        rootElement.close(false);
+    }
+
     public void testWithCashAndBuild() throws Exception {
         SOAPFactory soapFactory = new SOAP11Factory();
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();

@@ -65,12 +65,14 @@ public class OMEnvelopeTest extends OMTestCase {
         assertTrue("Header information retrieved not correct",
                    (header != null &&
                            header.getLocalName().equalsIgnoreCase("Header")));
+        header.close(false);
     }
 
     public void testGetBody2() throws Exception {
         SOAPBody body = getSecondEnvelope().getBody();
         assertTrue("Header information retrieved not correct",
                    (body != null && body.getLocalName().equalsIgnoreCase("Body")));
+        body.close(false);
     }
 
     public void testDefaultEnveleope() {

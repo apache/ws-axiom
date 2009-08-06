@@ -333,6 +333,9 @@ public class SerializationTest extends TestCase {
             rootElement.addChild(childTwo);
 
             assertTrue(expectedXML.equals(rootElement.toString()));
+            
+            childOne.close(false);
+            childTwo.close(false);
         } catch (XMLStreamException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om;
 
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 
@@ -31,7 +32,9 @@ import java.util.Iterator;
 public class StaxParserTest extends AbstractTestCase {
 
     XMLStreamReader parser1;
+    OMXMLParserWrapper builder2;
     XMLStreamReader parser2;
+    OMXMLParserWrapper builder3;
     XMLStreamReader parser3;
     XMLStreamReader parser4;
     String xmlDocument = "<purchase-order xmlns=\"http://openuri.org/easypo\">" +
@@ -54,26 +57,32 @@ public class StaxParserTest extends AbstractTestCase {
 
         //parser 2 is one of our parsers taken with cache. i.e. when the parser
         //proceeds the object model will be built
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(
+        builder2 = OMXMLBuilderFactory.createStAXOMBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
                 StAXUtils.createXMLStreamReader(
                         new ByteArrayInputStream(xmlDocument.getBytes())));
-        parser2 = builder.getDocumentElement().getXMLStreamReader();
+        parser2 = builder2.getDocumentElement().getXMLStreamReader();
 
         //same as parser2 but this time the parser is not a caching parser. Once the
         //parser proceeds, it's gone forever.
-        OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createStAXOMBuilder(
+        builder3 = OMXMLBuilderFactory.createStAXOMBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
                 StAXUtils.createXMLStreamReader(
                         new ByteArrayInputStream(xmlDocument.getBytes())));
         parser3 =
-                builder2.getDocumentElement().getXMLStreamReaderWithoutCaching();
+                builder3.getDocumentElement().getXMLStreamReaderWithoutCaching();
 
         //parser4 is another instance of our parser accessing the same stream as parser3.
         // Note - The implementation returns a *new* instance but with reference to
         //the same underlying stream!
         parser4 = builder2.getDocumentElement().getXMLStreamReaderWithoutCaching();
 
+    }
+
+    protected void tearDown() throws Exception {
+        parser1.close();
+        ((StAXOMBuilder)builder2).close();
+        ((StAXOMBuilder)builder3).close();
     }
 
     public void testParserEventsWithCache() throws Exception {
@@ -147,6 +156,8 @@ public class StaxParserTest extends AbstractTestCase {
         } catch (Exception e) {
             //if we are here without failing, then we are successful
         }
+        
+        documentElement.close(false);
     }
 
 
@@ -181,6 +192,8 @@ public class StaxParserTest extends AbstractTestCase {
         }
 
         assertEquals("Number of elements need to be 2", count, 2);
+        
+        documentElement.close(false);
     }
 
 
@@ -214,6 +227,8 @@ public class StaxParserTest extends AbstractTestCase {
         } catch (Exception e) {
             fail("This should throw an XMLStreamException");
         }
+        
+        documentElement.close(false);
     }
 
 }

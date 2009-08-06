@@ -50,5 +50,7 @@ public class OMElementHelperTest extends AbstractTestCase {
         assertTrue(importedElement != documentElement);
         assertTrue(importedElement.getOMFactory().getClass().isInstance(
                 DOOMAbstractFactory.getOMFactory()));
+        
+        documentElement.close(false);
     }
 }
