@@ -27,6 +27,46 @@ class WoodstoxStreamReaderWrapper extends XMLStreamReaderWrapper {
         super(reader);
     }
 
+    public String getCharacterEncodingScheme() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.getCharacterEncodingScheme();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public String getEncoding() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.getEncoding();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public String getVersion() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.getVersion();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public boolean isStandalone() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.isStandalone();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public boolean standaloneSet() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.standaloneSet();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
     public boolean isCharacters() {
         // TODO: in the dialect detection we should take into account the Woodstox version,
         //       so that we can avoid creating the wrapper for Woodstox versions where this

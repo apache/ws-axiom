@@ -31,6 +31,46 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
         super(parent);
     }
 
+    public String getCharacterEncodingScheme() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.getCharacterEncodingScheme();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public String getEncoding() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.getEncoding();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public String getVersion() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.getVersion();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public boolean isStandalone() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.isStandalone();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public boolean standaloneSet() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.standaloneSet();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
     public String getLocalName() {
         // Fix for https://sjsxp.dev.java.net/issues/show_bug.cgi?id=21
         int event = super.getEventType();

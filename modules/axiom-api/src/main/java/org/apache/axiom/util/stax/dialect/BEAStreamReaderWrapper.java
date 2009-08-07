@@ -37,6 +37,38 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
         this.encodingFromStartBytes = encodingFromStartBytes;
     }
 
+    public String getCharacterEncodingScheme() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.getCharacterEncodingScheme();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public String getVersion() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.getVersion();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public boolean isStandalone() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.isStandalone();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public boolean standaloneSet() {
+        if (getEventType() == START_DOCUMENT) {
+            return super.standaloneSet();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
     public int next() throws XMLStreamException {
         if (!hasNext()) {
             // The reference implementation throws an XMLStreamException in this case.
@@ -53,22 +85,26 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
     }
 
     public String getEncoding() {
-        // TODO: this needs some more unit testing!
-        String encoding = super.getEncoding();
-        if (encoding != null) {
-            return encoding;
-        } else {
-            if (encodingFromStartBytes == null) {
-                // This means that the reader was created from a character stream
-                // ==> always return null
-                return null;
+        if (getEventType() == START_DOCUMENT) {
+            // TODO: this needs some more unit testing!
+            String encoding = super.getEncoding();
+            if (encoding != null) {
+                return encoding;
             } else {
-                // If an XML encoding declaration was present, return the specified
-                // encoding, otherwise fall back to the encoding we detected in
-                // the factory wrapper
-                encoding = getCharacterEncodingScheme();
-                return encoding == null ? encodingFromStartBytes : encoding;
+                if (encodingFromStartBytes == null) {
+                    // This means that the reader was created from a character stream
+                    // ==> always return null
+                    return null;
+                } else {
+                    // If an XML encoding declaration was present, return the specified
+                    // encoding, otherwise fall back to the encoding we detected in
+                    // the factory wrapper
+                    encoding = getCharacterEncodingScheme();
+                    return encoding == null ? encodingFromStartBytes : encoding;
+                }
             }
+        } else {
+            throw new IllegalStateException();
         }
     }
 

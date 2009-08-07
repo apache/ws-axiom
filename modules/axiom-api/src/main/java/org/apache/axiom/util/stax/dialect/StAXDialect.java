@@ -63,6 +63,19 @@ import javax.xml.stream.XMLOutputFactory;
  *             in appendix of the XML specifications.</li>
  *       </ul>
  *       </li>
+ *   <li>According to the table shown in the documentation of the
+ *       {@link javax.xml.stream.XMLStreamReader} class, calls to
+ *       {@link javax.xml.stream.XMLStreamReader#getEncoding()},
+ *       {@link javax.xml.stream.XMLStreamReader#getVersion()},
+ *       {@link javax.xml.stream.XMLStreamReader#isStandalone()},
+ *       {@link javax.xml.stream.XMLStreamReader#standaloneSet()} and
+ *       {@link javax.xml.stream.XMLStreamReader#getCharacterEncodingScheme()} are only allowed
+ *       in the {@link javax.xml.stream.XMLStreamConstants#START_DOCUMENT} state. On the other
+ *       hand, this requirement is not mentioned in the documentation of the individual methods
+ *       and the majority of StAX implementations support calls to these methods in any state.
+ *       However, to improve portability, the dialect implementations normalize these methods to
+ *       throw an {@link IllegalStateException} if they are called in a state other than
+ *       {@link javax.xml.stream.XMLStreamConstants#START_DOCUMENT}.</li>
  * </ul>
  * <p>
  * Note that there are several ambiguities in the StAX specification which are not addressed by
