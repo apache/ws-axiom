@@ -25,31 +25,23 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.xml.stream.XMLStreamException;
-
 public class SOAPFactoryTest extends AbstractTestCase {
 
     protected static final String SOAP11_FILE_NAME = "soap/soap11/soap11message.xml";
     protected static final String SOAP12_FILE_NAME = "soap/soap12message.xml";
     private static Log log = LogFactory.getLog(SOAPFactoryTest.class);
 
-    public void testSOAPFactory() {
+    public void testSOAPFactory() throws Exception {
+        SOAPEnvelope soapEnvelope =
+                (SOAPEnvelope) new StAXSOAPModelBuilder(StAXUtils.
+                        createXMLStreamReader(getTestResource(SOAP11_FILE_NAME)), null)
+                        .getDocumentElement();
+        assertNotNull(soapEnvelope);
 
-        try {
-            SOAPEnvelope soapEnvelope =
-                    (SOAPEnvelope) new StAXSOAPModelBuilder(StAXUtils.
-                            createXMLStreamReader(getTestResource(SOAP11_FILE_NAME)), null)
-                            .getDocumentElement();
-            assertTrue(soapEnvelope != null);
-
-            soapEnvelope = (SOAPEnvelope) new StAXSOAPModelBuilder(StAXUtils.
-                    createXMLStreamReader(getTestResource(SOAP12_FILE_NAME)), null)
-                    .getDocumentElement();
-            assertTrue(soapEnvelope != null);
-        } catch (XMLStreamException e) {
-            fail("Can not load soap envelope. Exception = " + e);
-        }
-
+        soapEnvelope = (SOAPEnvelope) new StAXSOAPModelBuilder(StAXUtils.
+                createXMLStreamReader(getTestResource(SOAP12_FILE_NAME)), null)
+                .getDocumentElement();
+        assertNotNull(soapEnvelope);
     }
 
 }
