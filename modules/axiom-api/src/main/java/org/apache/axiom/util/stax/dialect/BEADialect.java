@@ -52,7 +52,10 @@ class BEADialect extends AbstractStAXDialect {
     }
 
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
-        return new BEAStreamWriterWrapper(writer);
+        // The stream writer implementation of the reference implementation doesn't handle masked
+        // namespace bindings correctly. We wrap the writer in a
+        // NamespaceContextCorrectingXMLStreamWriterWrapper to work around this problem.
+        return new NamespaceContextCorrectingXMLStreamWriterWrapper(writer);
     }
 
     public XMLInputFactory normalize(XMLInputFactory factory) {
@@ -60,6 +63,6 @@ class BEADialect extends AbstractStAXDialect {
     }
 
     public XMLOutputFactory normalize(XMLOutputFactory factory) {
-        return new BEAOutputFactoryWrapper(factory, this);
+        return new NormalizingXMLOutputFactoryWrapper(factory, this);
     }
 }

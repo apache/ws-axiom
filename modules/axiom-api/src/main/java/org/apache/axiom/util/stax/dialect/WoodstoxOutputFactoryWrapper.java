@@ -19,31 +19,33 @@
 
 package org.apache.axiom.util.stax.dialect;
 
+import java.io.OutputStream;
+
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
-
-class SJSXPStreamWriterWrapper extends XMLStreamWriterWrapper {
-    public SJSXPStreamWriterWrapper(XMLStreamWriter parent) {
-        super(parent);
+class WoodstoxOutputFactoryWrapper extends NormalizingXMLOutputFactoryWrapper {
+    public WoodstoxOutputFactoryWrapper(XMLOutputFactory parent, AbstractStAXDialect dialect) {
+        super(parent, dialect);
     }
 
-    public void writeStartDocument(String encoding, String version) throws XMLStreamException {
+    public XMLEventWriter createXMLEventWriter(OutputStream stream, String encoding)
+            throws XMLStreamException {
         if (encoding == null) {
             throw new IllegalArgumentException();
         } else {
-            super.writeStartDocument(encoding, version);
+            return super.createXMLEventWriter(stream, encoding);
         }
     }
 
-    public Object getProperty(String name) throws IllegalArgumentException {
-        // When no properties have been set on the writer, getProperty throws a
-        // NullPointerException; see https://sjsxp.dev.java.net/issues/show_bug.cgi?id=28
-        try {
-            return super.getProperty(name);
-        } catch (NullPointerException ex) {
+    public XMLStreamWriter createXMLStreamWriter(OutputStream stream, String encoding)
+            throws XMLStreamException {
+        if (encoding == null) {
             throw new IllegalArgumentException();
+        } else {
+            return super.createXMLStreamWriter(stream, encoding);
         }
     }
 }

@@ -23,12 +23,37 @@ import java.io.ByteArrayInputStream;
 import java.io.StringReader;
 
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 
 import junit.framework.TestCase;
 
 import org.apache.axiom.om.util.StAXUtils;
 
 public class StAXDialectTest extends TestCase {
+    public void testCreateXMLStreamWriterWithNullEncoding() {
+        // This should cause an exception
+        try {
+            StAXUtils.createXMLStreamWriter(System.out, null);
+        } catch (Throwable ex) {
+            // Expected
+            return;
+        }
+        // Attention here: since the fail method works by throwing an exception and we
+        // catch Throwable, it must be invoked outside of the catch block!
+        fail("Expected createXMLStreamWriter to throw an exception");
+    }
+    
+    public void testWriteStartDocumentWithNullEncoding() throws Exception {
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(System.out, "UTF-8");
+        try {
+            writer.writeStartDocument(null, "1.0");
+        } catch (Throwable ex) {
+            // Expected
+            return;
+        }
+        fail("Expected writeStartDocument to throw an exception");
+    }
+    
     public void testGetEncoding() throws Exception {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(new ByteArrayInputStream(
                 "<?xml version='1.0' encoding='iso-8859-15'?><root/>".getBytes("iso-8859-15")));

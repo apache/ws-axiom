@@ -21,21 +21,29 @@ package org.apache.axiom.util.stax.dialect;
 
 import java.io.OutputStream;
 
+import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-class BEAOutputFactoryWrapper extends NormalizingXMLOutputFactoryWrapper {
-    public BEAOutputFactoryWrapper(XMLOutputFactory parent, AbstractStAXDialect dialect) {
+class SJSXPOutputFactoryWrapper extends NormalizingXMLOutputFactoryWrapper {
+    public SJSXPOutputFactoryWrapper(XMLOutputFactory parent, AbstractStAXDialect dialect) {
         super(parent, dialect);
+    }
+
+    public XMLEventWriter createXMLEventWriter(OutputStream stream, String encoding)
+            throws XMLStreamException {
+        if (encoding == null) {
+            throw new IllegalArgumentException();
+        } else {
+            return super.createXMLEventWriter(stream, encoding);
+        }
     }
 
     public XMLStreamWriter createXMLStreamWriter(OutputStream stream, String encoding)
             throws XMLStreamException {
         if (encoding == null) {
-            // We delegate to the other variant of createXMLStreamWriter to avoid a
-            // NullPointerException
-            return super.createXMLStreamWriter(stream);
+            throw new IllegalArgumentException();
         } else {
             return super.createXMLStreamWriter(stream, encoding);
         }

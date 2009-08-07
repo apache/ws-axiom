@@ -36,13 +36,14 @@ import javax.xml.stream.XMLOutputFactory;
  *       for the charset encoding parameter in the following methods:
  *       <ul>
  *         <li>{@link XMLOutputFactory#createXMLEventWriter(java.io.OutputStream, String)}</li>
+ *         <li>{@link XMLOutputFactory#createXMLStreamWriter(java.io.OutputStream, String)}</li>
  *         <li>{@link javax.xml.stream.XMLStreamWriter#writeStartDocument(String, String)}</li>
  *       </ul>
- *       Most implementations accept <code>null</code> values, but some throw a
- *       {@link NullPointerException}. To avoid portability issues, the dialect implementation
- *       normalizes the behavior of these methods so that they accept <code>null</code> values
- *       (in which case the methods will delegate to the corresponding variants without
- *       charset encoding parameter).</li>
+ *       Some implementations accept <code>null</code> values, while others throw an exception.
+ *       To make sure that code written to run with a normalized {@link XMLOutputFactory} remains
+ *       portable, the dialect implementation normalizes the behavior of these methods so that they
+ *       consistently throw an exception when called with a <code>null</code> encoding. Note that
+ *       the type of exception to be thrown remains unspecified.</li>
  *   <li>The StAX specifications require that {@link javax.xml.stream.XMLStreamReader#getEncoding()}
  *       returns the "input encoding if known or <code>null</code> if unknown". This requirement
  *       is not precise enough to guarantee consistent behavior across different implementations.

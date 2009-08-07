@@ -22,19 +22,16 @@ package org.apache.axiom.util.stax.dialect;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-// The stream writer implementation of the reference implementation doesn't handle masked namespace
-// bindings correctly. We extend NamespaceContextCorrectingXMLStreamWriterWrapper to work around
-// this problem.
-class BEAStreamWriterWrapper extends NamespaceContextCorrectingXMLStreamWriterWrapper {
-    public BEAStreamWriterWrapper(XMLStreamWriter parent) {
+import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
+
+class WoodstoxStreamWriterWrapper extends XMLStreamWriterWrapper {
+    public WoodstoxStreamWriterWrapper(XMLStreamWriter parent) {
         super(parent);
     }
 
     public void writeStartDocument(String encoding, String version) throws XMLStreamException {
         if (encoding == null) {
-            // We delegate to the other variant of writeStartDocument to avoid a
-            // NullPointerException
-            super.writeStartDocument(version);
+            throw new IllegalArgumentException();
         } else {
             super.writeStartDocument(encoding, version);
         }

@@ -106,13 +106,6 @@ public class StAXUtilsTest extends TestCase {
         });
     }
     
-    public void testCreateXMLStreamWriterWithNullEncoding() throws Exception {
-        // This should not cause a NullPointerException
-        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(System.out, null);
-        writer.writeEmptyElement("root");
-        writer.close();
-    }
-    
     public void testInputFactoryIsImmutable() throws Exception {
         try {
             StAXUtils.getXMLInputFactory().setProperty("javax.xml.stream.isValidating",

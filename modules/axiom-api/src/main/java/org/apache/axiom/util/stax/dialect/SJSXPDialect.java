@@ -60,6 +60,6 @@ class SJSXPDialect extends AbstractStAXDialect {
     }
     
     public XMLOutputFactory normalize(XMLOutputFactory factory) {
-        return new NormalizingXMLOutputFactoryWrapper(factory, this);
+        return new SJSXPOutputFactoryWrapper(factory, this);
     }
 }

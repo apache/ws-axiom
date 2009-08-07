@@ -48,7 +48,11 @@ public class OMDocumentImplUtil {
             if (version == null) {
                 version = "1.0";
             }
-            writer.getXmlStreamWriter().writeStartDocument(encoding, version);
+            if (encoding == null) {
+                writer.getXmlStreamWriter().writeStartDocument(version);
+            } else {
+                writer.getXmlStreamWriter().writeStartDocument(encoding, version);
+            }
         }
 
         Iterator children = document.getChildren();

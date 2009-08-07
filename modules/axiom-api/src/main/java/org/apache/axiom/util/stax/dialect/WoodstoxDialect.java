@@ -51,7 +51,7 @@ class WoodstoxDialect extends AbstractStAXDialect {
     }
 
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
-        return writer;
+        return new WoodstoxStreamWriterWrapper(writer);
     }
 
     public XMLInputFactory normalize(XMLInputFactory factory) {
@@ -59,6 +59,6 @@ class WoodstoxDialect extends AbstractStAXDialect {
     }
 
     public XMLOutputFactory normalize(XMLOutputFactory factory) {
-        return factory;
+        return new WoodstoxOutputFactoryWrapper(factory, this);
     }
 }
