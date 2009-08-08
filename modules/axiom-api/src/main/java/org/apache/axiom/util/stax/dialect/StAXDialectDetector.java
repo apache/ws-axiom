@@ -235,15 +235,14 @@ public class StAXDialectDetector {
         // Try IBM's XL XP-J
         Class cls = loadClass(classLoader, rootUrl, "com.ibm.xml.xlxp.api.stax.StAXImplConstants");
         if (cls != null) {
-            boolean isStAXCompliant;
+            boolean isSetPrefixBroken;
             try {
                 cls.getField("IS_SETPREFIX_BEFORE_STARTELEMENT");
-                isStAXCompliant = true;
+                isSetPrefixBroken = false;
             } catch (NoSuchFieldException ex) {
-                isStAXCompliant = false;
+                isSetPrefixBroken = true;
             }
-            return isStAXCompliant ? CompliantXLXPDialect.INSTANCE
-                    : NonCompliantXLXPDialect.INSTANCE;
+            return new XLXPDialect(isSetPrefixBroken);
         }
         
         return null;

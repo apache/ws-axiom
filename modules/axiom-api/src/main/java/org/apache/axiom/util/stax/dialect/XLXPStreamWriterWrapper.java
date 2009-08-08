@@ -19,10 +19,21 @@
 
 package org.apache.axiom.util.stax.dialect;
 
-class NonCompliantXLXPDialect extends BaseXLXPDialect {
-    public static final StAXDialect INSTANCE = new NonCompliantXLXPDialect();
-    
-    public String getName() {
-        return "XL XP-J (StAX non-compliant versions)";
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
+import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
+
+class XLXPStreamWriterWrapper extends XMLStreamWriterWrapper {
+    public XLXPStreamWriterWrapper(XMLStreamWriter parent) {
+        super(parent);
+    }
+
+    public void writeStartDocument(String encoding, String version) throws XMLStreamException {
+        if (encoding == null) {
+            throw new IllegalArgumentException();
+        } else {
+            super.writeStartDocument(encoding, version);
+        }
     }
 }

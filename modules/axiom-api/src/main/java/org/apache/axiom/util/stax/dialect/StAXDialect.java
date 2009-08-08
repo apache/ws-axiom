@@ -77,6 +77,18 @@ import javax.xml.stream.XMLOutputFactory;
  *       However, to improve portability, the dialect implementations normalize these methods to
  *       throw an {@link IllegalStateException} if they are called in a state other than
  *       {@link javax.xml.stream.XMLStreamConstants#START_DOCUMENT}.</li>
+ *   <li>The documentation of {@link javax.xml.stream.XMLStreamReader#isCharacters()} specifies
+ *       that this method "returns true if the cursor points to a character data event".
+ *       On the other hand, the documentation of {@link javax.xml.stream.XMLStreamReader}
+ *       states that "parsing events are defined as the XML Declaration, a DTD, start tag,
+ *       character data, white space, end tag, comment, or processing instruction" and thus
+ *       makes a clear distinction between character data events and white space events.
+ *       This means that {@link javax.xml.stream.XMLStreamReader#isCharacters()} should return
+ *       <code>true</code> if and only if the current event is
+ *       {@link javax.xml.stream.XMLStreamConstants#CHARACTERS}. This is the case for most parsers,
+ *       but some return <code>true</code> for {@link javax.xml.stream.XMLStreamConstants#SPACE}
+ *       events as well. Where necessary, the dialect implementations correct this behavior.
+ *       </li>
  * </ul>
  * <p>
  * Note that there are several ambiguities in the StAX specification which are not addressed by

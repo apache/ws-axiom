@@ -19,30 +19,17 @@
 
 package org.apache.axiom.util.stax.dialect;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamReader;
 
-abstract class BaseXLXPDialect implements StAXDialect {
-    public void enableCDataReporting(XMLInputFactory factory) {
-        // TODO: check if that is enough
-        factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
+import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
+
+class XLXPStreamReaderWrapper extends XMLStreamReaderWrapper {
+    public XLXPStreamReaderWrapper(XMLStreamReader parent) {
+        super(parent);
     }
 
-    public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
-        // XLXP's factories are thread safe
-        return factory;
-    }
-
-    public XMLOutputFactory makeThreadSafe(XMLOutputFactory factory) {
-        // XLXP's factories are thread safe
-        return factory;
-    }
-
-    public XMLInputFactory normalize(XMLInputFactory factory) {
-        return factory;
-    }
-
-    public XMLOutputFactory normalize(XMLOutputFactory factory) {
-        return factory;
+    public boolean isCharacters() {
+        // XLXP returns true for SPACE events as well; this is not correct
+        return getEventType() == CHARACTERS;
     }
 }
