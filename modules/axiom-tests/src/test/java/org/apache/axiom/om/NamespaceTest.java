@@ -28,7 +28,6 @@ import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -336,9 +335,7 @@ public class NamespaceTest extends XMLTestCase {
 
         // serialize it back to a String
         StringWriter stringWriter = new StringWriter();
-        XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
-        xmlOutputFactory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, Boolean.FALSE);
-        XMLStreamWriter xmlWriter = xmlOutputFactory.createXMLStreamWriter(stringWriter);
+        XMLStreamWriter xmlWriter = StAXUtils.createXMLStreamWriter(stringWriter);
         element.serialize(xmlWriter);
         String output = stringWriter.toString();
 
