@@ -180,13 +180,13 @@ public class OMSourcedElementTest extends AbstractTestCase {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         element.serialize(bos);
         String newText = new String(bos.toByteArray());
-        assertEquals("Serialized text error", testDocument, newText);
+        assertXMLIdentical("Serialized text error", compareXML(testDocument, newText), true);
         assertTrue("Element not expanded when serializing", element.isExpanded());
 
         bos = new ByteArrayOutputStream();
         element.serialize(bos);
-        assertEquals("Serialized text error", testDocument,
-                     new String(bos.toByteArray()));
+        assertXMLIdentical("Serialized text error", compareXML(testDocument,
+                     new String(bos.toByteArray())), true);
         assertTrue("Element not expanded when serializing", element.isExpanded());
     }
 
@@ -198,8 +198,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
     public void testSerializeAndConsumeToStream() throws Exception {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         element.serializeAndConsume(bos);
-        assertEquals("Serialized text error", testDocument,
-                     new String(bos.toByteArray()));
+        assertXMLIdentical("Serialized text error", compareXML(testDocument,
+                     new String(bos.toByteArray())), true);
         assertFalse("Element expansion when serializing", element.isExpanded());
     }
 
@@ -212,13 +212,13 @@ public class OMSourcedElementTest extends AbstractTestCase {
         StringWriter writer = new StringWriter();
         element.serialize(writer);
         String result = writer.toString();
-        assertEquals("Serialized text error", testDocument, result);
+        assertXMLIdentical("Serialized text error", compareXML(testDocument, result), true);
         assertTrue("Element not expanded when serializing", element.isExpanded());
 
         writer = new StringWriter();
         element.serialize(writer);
         result = writer.toString();
-        assertEquals("Serialized text error", testDocument, result);
+        assertXMLIdentical("Serialized text error", compareXML(testDocument, result), true);
         assertTrue("Element not expanded when serializing", element.isExpanded());
     }
 
@@ -231,7 +231,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         StringWriter writer = new StringWriter();
         element.serializeAndConsume(writer);
         String result = writer.toString();
-        assertEquals("Serialized text error", testDocument, result);
+        assertXMLIdentical("Serialized text error", compareXML(testDocument, result), true);
         assertFalse("Element expansion when serializing", element.isExpanded());
     }
 
@@ -245,14 +245,14 @@ public class OMSourcedElementTest extends AbstractTestCase {
         XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         element.serialize(writer);
         xmlwriter.flush();
-        assertEquals("Serialized text error", testDocument, writer.toString());
+        assertXMLIdentical("Serialized text error", compareXML(testDocument, writer.toString()), true);
         assertTrue("Element not expanded when serializing", element.isExpanded());
 
         writer = new StringWriter();
         xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         element.serialize(writer);
         xmlwriter.flush();
-        assertEquals("Serialized text error", testDocument, writer.toString());
+        assertXMLIdentical("Serialized text error", compareXML(testDocument, writer.toString()), true);
         assertTrue("Element not expanded when serializing", element.isExpanded());
     }
 
@@ -266,7 +266,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
         element.serializeAndConsume(writer);
         xmlwriter.flush();
-        assertEquals("Serialized text error", testDocument, writer.toString());
+        assertXMLIdentical("Serialized text error", compareXML(testDocument, writer.toString()), true);
         assertFalse("Element expansion when serializing", element.isExpanded());
     }
 
