@@ -24,16 +24,11 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
-class XLXPDialect extends AbstractStAXDialect {
-    private final boolean isSetPrefixBroken;
-    
-    public XLXPDialect(boolean isSetPrefixBroken) {
-        this.isSetPrefixBroken = isSetPrefixBroken;
-    }
+public class XLXP2Dialect extends AbstractStAXDialect {
+    public static final StAXDialect INSTANCE = new XLXP2Dialect();
     
     public String getName() {
-        return isSetPrefixBroken ? "XL XP-J (StAX non-compliant versions)"
-                                 : "XL XP-J (StAX compliant versions)";
+        return "XLXP2";
     }
 
     public void enableCDataReporting(XMLInputFactory factory) {
@@ -51,17 +46,12 @@ class XLXPDialect extends AbstractStAXDialect {
     }
 
     public XMLStreamReader normalize(XMLStreamReader reader) {
-        return new XLXPStreamReaderWrapper(reader);
+        // XLXP2's getNamespaceContext implementation is broken
+        return new NamespaceContextCorrectingXMLStreamReaderWrapper(reader);
     }
 
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
-        XMLStreamWriter wrapper = new XLXPStreamWriterWrapper(writer);
-        // Early versions of XLXP the scope of the prefix bindings defined by setPrefix
-        // is incorrect
-        if (isSetPrefixBroken) {
-            wrapper = new NamespaceContextCorrectingXMLStreamWriterWrapper(wrapper);
-        }
-        return wrapper;
+        return new XLXPStreamWriterWrapper(writer);
     }
 
     public XMLInputFactory normalize(XMLInputFactory factory) {

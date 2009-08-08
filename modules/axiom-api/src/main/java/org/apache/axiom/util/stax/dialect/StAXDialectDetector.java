@@ -53,6 +53,15 @@ public class StAXDialectDetector {
     private static final Attributes.Name IMPLEMENTATION_VERSION =
             new Attributes.Name("Implementation-Version");
     
+    private static final Attributes.Name BUNDLE_SYMBOLIC_NAME =
+            new Attributes.Name("Bundle-SymbolicName");
+    
+    private static final Attributes.Name BUNDLE_VENDOR =
+            new Attributes.Name("Bundle-Vendor");
+
+    private static final Attributes.Name BUNDLE_VERSION =
+            new Attributes.Name("Bundle-Version");
+
     /**
      * Map that stores detected dialects by location. The location is the URL corresponding to the
      * root folder of the classpath entry from which the StAX implementation is loaded. Note that
@@ -191,13 +200,27 @@ public class StAXDialectDetector {
         }
         Attributes attrs = manifest.getMainAttributes();
         String title = attrs.getValue(IMPLEMENTATION_TITLE);
+        String symbolicName = attrs.getValue(BUNDLE_SYMBOLIC_NAME);
+        if (symbolicName != null) {
+            int i = symbolicName.indexOf(';');
+            if (i != -1) {
+                symbolicName = symbolicName.substring(0, i);
+            }
+        }
         String vendor = attrs.getValue(IMPLEMENTATION_VENDOR);
+        if (vendor == null) {
+            vendor = attrs.getValue(BUNDLE_VENDOR);
+        }
         String version = attrs.getValue(IMPLEMENTATION_VERSION);
+        if (version == null) {
+            version = attrs.getValue(BUNDLE_VERSION);
+        }
         if (log.isDebugEnabled()) {
             log.debug("StAX implementation at " + rootUrl + " is:\n" +
-                    "  Title:   " + title + "\n" +
-                    "  Vendor:  " + vendor + "\n" +
-                    "  Version: " + version);
+                    "  Title:         " + title + "\n" +
+                    "  Symbolic name: " + symbolicName + "\n" +
+                    "  Vendor:        " + vendor + "\n" +
+                    "  Version:       " + version);
         }
         // For the moment, the dialect detection is quite simple, but in the future we will probably
         // have to differentiate by version number
@@ -207,6 +230,8 @@ public class StAXDialectDetector {
             return SJSXPDialect.INSTANCE;
         } else if ("BEA".equals(vendor)) {
             return BEADialect.INSTANCE;
+        } else if ("com.ibm.ws.prereq.banshee".equals(symbolicName)) {
+            return XLXP2Dialect.INSTANCE;
         } else {
             return null;
         }

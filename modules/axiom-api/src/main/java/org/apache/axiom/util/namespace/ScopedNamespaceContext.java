@@ -65,10 +65,14 @@ public class ScopedNamespaceContext implements NamespaceContext {
      * well as each nested scope, unless the prefix is bound to a different namespace URI in that
      * scope.
      * 
-     * @param prefix the prefix to bind
-     * @param namespaceURI the corresponding namespace URI
+     * @param prefix the prefix to bind or the empty string to set the default namespace; may not
+     *               be <code>null</code>
+     * @param namespaceURI the corresponding namespace URI; may not be <code>null</code>
      */
     public void setPrefix(String prefix, String namespaceURI) {
+        if (prefix == null || namespaceURI == null) {
+            throw new IllegalArgumentException("prefix and namespaceURI may not be null");
+        }
         if (bindings == prefixArray.length) {
             int len = prefixArray.length;
             int newLen = len*2;
