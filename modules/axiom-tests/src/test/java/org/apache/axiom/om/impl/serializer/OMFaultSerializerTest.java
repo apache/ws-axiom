@@ -40,6 +40,11 @@ public class OMFaultSerializerTest extends AbstractTestCase {
 
     }
 
+    protected void tearDown() throws Exception {
+        reader1.close();
+        reader2.close();
+    }
+
     /**
      * Test SOAPFault that does not disable the default namespace (i.e. does not use xmlns="")
      * 

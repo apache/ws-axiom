@@ -70,6 +70,7 @@ public class SpacesTest extends AbstractTestCase {
             Document dom2 = newDocument(resultXML);
             Diff diff = compareXML(dom1, dom2);
             assertXMLEqual(diff, true);
+            rootElement.close(false);
         } catch (XMLStreamException e) {
             fail(e.getMessage());
             throw new Exception(e);

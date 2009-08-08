@@ -104,6 +104,8 @@ public class SOAPRoleTest extends AbstractTestCase {
         }
 
         assertEquals("Didn't get right number of headers (no custom role)", 3, numHeaders);
+        
+        env.close(false);
     }
 
     public void testSOAP12Roles() throws Exception {
@@ -152,5 +154,7 @@ public class SOAPRoleTest extends AbstractTestCase {
         }
 
         assertEquals("Didn't get right number of headers (no custom role)", 1, numHeaders);
+        
+        env.close(false);
     }
 }

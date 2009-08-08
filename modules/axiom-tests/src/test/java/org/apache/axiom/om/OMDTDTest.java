@@ -42,6 +42,10 @@ public class OMDTDTest extends AbstractTestCase {
         }
     }
 
+    protected void tearDown() throws Exception {
+        document.close(false);
+    }
+
     public void testDTDSerialization() {
         try {
 
@@ -96,5 +100,6 @@ public class OMDTDTest extends AbstractTestCase {
            }
         }
         assertTrue(docType != null);
+        root.close(false);
     }
 }

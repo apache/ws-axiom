@@ -127,6 +127,7 @@ public class ElementSerializerTest extends AbstractTestCase {
     }
 
     protected void tearDown() throws Exception {
+        reader.close();
         tempFile.delete();
     }
 }

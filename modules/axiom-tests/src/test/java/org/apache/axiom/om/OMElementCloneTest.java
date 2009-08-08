@@ -59,6 +59,7 @@ public class OMElementCloneTest extends AbstractTestCase {
         assertNotSame(body.getParent(), secondClonedBodyElement.getParent());
         assertNotSame(firstClonedBodyElement.getParent(), secondClonedBodyElement.getParent());
 
+        soapEnvelope.close(false);
     }
 
     public void testElementCloningUsingOMElementMethod() throws Exception {
@@ -84,6 +85,7 @@ public class OMElementCloneTest extends AbstractTestCase {
         assertNotSame(body.getParent(), secondClonedBodyElement.getParent());
         assertNotSame(firstClonedBodyElement.getParent(), secondClonedBodyElement.getParent());
 
+        soapEnvelope.close(false);
     }
 
     public Document newDocument(String xml)

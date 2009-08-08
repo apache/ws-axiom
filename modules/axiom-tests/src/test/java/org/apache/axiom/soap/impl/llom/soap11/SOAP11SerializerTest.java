@@ -36,10 +36,12 @@ public class SOAP11SerializerTest extends OMTestCase {
     }
 
     protected void setUp() throws Exception {
-        super.setUp();
         soapEnvelope =
                 (SOAPEnvelope) getOMBuilder("soap/soap11/soap11fault.xml")
                         .getDocumentElement();
+    }
+
+    protected void tearDown() throws Exception {
     }
 
     /**

@@ -188,6 +188,7 @@ public class AttachmentsTest extends AbstractTestCase {
                                       attachments);
         OMElement om = builder.getDocumentElement();
         om.serialize(writer);
+        om.close(false);
         String outNormal = baos.toString();
         
         assertTrue(outNormal.indexOf("base64") == -1);
@@ -203,6 +204,7 @@ public class AttachmentsTest extends AbstractTestCase {
                                       attachments);
         om = builder.getDocumentElement();
         om.serialize(writer);
+        om.close(false);
         String outBase64 = baos.toString();
         
         
@@ -225,6 +227,7 @@ public class AttachmentsTest extends AbstractTestCase {
                                       attachments2);
         om = builder.getDocumentElement();
         om.serialize(writer);
+        om.close(false);
         String outBase64ToNormal = baos.toString();
         
         assertTrue(outBase64ToNormal.indexOf("base64") == -1);
@@ -240,6 +243,7 @@ public class AttachmentsTest extends AbstractTestCase {
                                       attachments2);
         om = builder.getDocumentElement();
         om.serialize(writer);
+        om.close(false);
         String outBase64ToBase64 = baos.toString();
         
         // Do a quick check to see if the data is base64 and is

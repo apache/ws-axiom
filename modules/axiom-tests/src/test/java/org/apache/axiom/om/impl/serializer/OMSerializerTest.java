@@ -152,6 +152,7 @@ public class OMSerializerTest extends AbstractTestCase {
     }
 
     protected void tearDown() throws Exception {
+        reader.close();
         tempFile.delete();
     }
 }

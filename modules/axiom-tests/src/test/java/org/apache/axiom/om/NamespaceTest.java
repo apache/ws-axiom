@@ -194,6 +194,7 @@ public class NamespaceTest extends XMLTestCase {
                     .getDocumentElement();
             String actualXML = documentElement.toString();
             assertXMLEqual(xml, actualXML);
+            documentElement.close(false);
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -342,6 +343,8 @@ public class NamespaceTest extends XMLTestCase {
         String output = stringWriter.toString();
 
         content = output;
+        
+        element.close(false);
 
         // reread and rebuild XML content
         reader = new StringReader(output);
@@ -357,6 +360,8 @@ public class NamespaceTest extends XMLTestCase {
             count++;
         }
         assertEquals(3, count);
+        
+        element.close(false);
     }
 
     public void testAxis2_3155() {

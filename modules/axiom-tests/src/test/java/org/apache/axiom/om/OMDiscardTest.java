@@ -50,6 +50,7 @@ public class OMDiscardTest extends AbstractTestCase {
         } catch (Exception e) {
             fail("discarding an element should work!");
         }
+        documentElement.close(false);
     }
 
     private XMLStreamReader getXMLStreamReader() throws XMLStreamException, FileNotFoundException {

@@ -21,11 +21,15 @@ package org.apache.axiom.om.xpath;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
@@ -80,10 +84,19 @@ public class AXIOMXPathTestBase extends XPathTestBase {
     }
     
     final OMMetaFactory omMetaFactory;
+    final List documents = new ArrayList();
     
     public AXIOMXPathTestBase(String name, OMMetaFactory omMetaFactory) {
         super(name);
         this.omMetaFactory = omMetaFactory;
+    }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        for (Iterator it = documents.iterator(); it.hasNext(); ) {
+            ((OMDocument)it.next()).close(false);
+        }
+        documents.clear();
     }
 
     protected Object getDocument(String url) throws Exception {
@@ -101,7 +114,10 @@ public class AXIOMXPathTestBase extends XPathTestBase {
                     URL url = new URL(TESTS_ROOT + uri);
                     XMLStreamReader reader = new RootWhitespaceFilter(
                             StAXUtils.createXMLStreamReader(url.openStream()));
-                    return new StAXOMBuilder(omMetaFactory.getOMFactory(), reader).getDocument();
+                    OMDocument document = new StAXOMBuilder(omMetaFactory.getOMFactory(),
+                            reader).getDocument();
+                    documents.add(document);
+                    return document;
                 } catch (Exception ex) {
                     throw new FunctionCallException(ex);
                 }

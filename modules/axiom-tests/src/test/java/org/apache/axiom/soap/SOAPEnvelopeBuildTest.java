@@ -73,6 +73,8 @@ public class SOAPEnvelopeBuildTest extends TestCase {
 		se.serialize(sw);
 
 		checkBodyExists(sw.toString());
+		
+		se.close(false);
 	}
 
 	public void testBodyPreservedSerializeAndConsume() throws Exception{
@@ -85,6 +87,8 @@ public class SOAPEnvelopeBuildTest extends TestCase {
 		se.serializeAndConsume(sw);
 
 		checkBodyExists(sw.toString());
+        
+        se.close(false);
 	}
 
     public void testBodyPreservedSerializeAndConsumeAsXML() throws Exception{
@@ -98,6 +102,8 @@ public class SOAPEnvelopeBuildTest extends TestCase {
 		se.serializeAndConsume(sw);
 
 		checkBodyExists(sw.toString());
+        
+        se.close(false);
 	}
 
     public void testBodyPreservedSerializeAndConsumeDoesntTouchHeaders() throws Exception{
@@ -109,6 +115,8 @@ public class SOAPEnvelopeBuildTest extends TestCase {
 		se.serializeAndConsume(sw);
 
 		checkBodyExists(sw.toString());
+        
+        se.close(false);
 	}
 
 	public void testBodyPreservedSerializeAndConsumeTouchesBody() throws Exception{
@@ -123,6 +131,8 @@ public class SOAPEnvelopeBuildTest extends TestCase {
 		se.serializeAndConsume(sw);
 
 		checkBodyExists(sw.toString());
+        
+        se.close(false);
 	}
 
 	private void checkBodyExists(String str) throws Exception{
@@ -137,6 +147,8 @@ public class SOAPEnvelopeBuildTest extends TestCase {
 		if(!children.hasNext()){
 			fail("No children of the Body element");
 		}
+        
+        se.close(false);
 	}
         
         public void testTrace() throws Exception{
@@ -149,7 +161,8 @@ public class SOAPEnvelopeBuildTest extends TestCase {
                 long length = CommonUtils.logDebug(se, log);
                 assertTrue(length > 100);
                 assertTrue(log.outputText.indexOf("x:Content") > 0);
-                           
+                
+                se.close(false);
         }
         
         class MyDebugLogger implements Log {

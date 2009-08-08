@@ -46,6 +46,10 @@ public class StAXOMBuilderTest extends AbstractTestCase {
                                 getTestResource("non_soap.xml")));
     }
 
+    protected void tearDown() throws Exception {
+        stAXOMBuilder.close();
+    }
+
     public void testGetRootElement() throws Exception {
         rootElement = stAXOMBuilder.getDocumentElement();
         assertTrue("Root element can not be null", rootElement != null);

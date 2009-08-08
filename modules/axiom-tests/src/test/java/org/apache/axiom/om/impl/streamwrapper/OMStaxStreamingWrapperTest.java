@@ -59,6 +59,7 @@ public class OMStaxStreamingWrapperTest extends AbstractTestCase {
     }
 
     protected void tearDown() throws Exception {
+        envelope.close(false);
         tempFile.delete();
     }
 }

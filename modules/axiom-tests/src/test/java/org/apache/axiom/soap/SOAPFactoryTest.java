@@ -37,11 +37,13 @@ public class SOAPFactoryTest extends AbstractTestCase {
                         createXMLStreamReader(getTestResource(SOAP11_FILE_NAME)), null)
                         .getDocumentElement();
         assertNotNull(soapEnvelope);
+        soapEnvelope.close(false);
 
         soapEnvelope = (SOAPEnvelope) new StAXSOAPModelBuilder(StAXUtils.
                 createXMLStreamReader(getTestResource(SOAP12_FILE_NAME)), null)
                 .getDocumentElement();
         assertNotNull(soapEnvelope);
+        soapEnvelope.close(false);
     }
 
 }

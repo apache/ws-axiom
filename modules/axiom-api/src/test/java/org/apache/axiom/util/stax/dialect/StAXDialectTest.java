@@ -65,6 +65,7 @@ public class StAXDialectTest extends TestCase {
         } catch (IllegalStateException ex) {
             // Expected
         }
+        reader.close();
     }
 
     public void testGetVersion() throws Exception {
@@ -78,6 +79,7 @@ public class StAXDialectTest extends TestCase {
         } catch (IllegalStateException ex) {
             // Expected
         }
+        reader.close();
     }
 
     public void testIsStandalone() throws Exception {
@@ -91,6 +93,7 @@ public class StAXDialectTest extends TestCase {
         } catch (IllegalStateException ex) {
             // Expected
         }
+        reader.close();
     }
 
     public void testStandaloneSet() throws Exception {
@@ -104,6 +107,7 @@ public class StAXDialectTest extends TestCase {
         } catch (IllegalStateException ex) {
             // Expected
         }
+        reader.close();
     }
 
     public void testGetCharacterEncodingScheme() throws Exception {
@@ -117,5 +121,6 @@ public class StAXDialectTest extends TestCase {
         } catch (IllegalStateException ex) {
             // Expected
         }
+        reader.close();
     }
 }

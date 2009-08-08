@@ -42,6 +42,10 @@ public class OMTest extends AbstractTestCase {
         envelope = (SOAPEnvelope) builder.getDocumentElement();
     }
 
+    protected void tearDown() throws Exception {
+        envelope.close(false);
+    }
+
     /** Sometime the hasNext() in the childeren iterator is true yet the next() is null */
     public void testNullInChilderen() {
         isNullChildrenThere(envelope);

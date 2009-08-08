@@ -60,6 +60,7 @@ public class OMCachingTest extends AbstractTestCase {
             assertTrue(true);
         }
 
+        documentElement.close(false);
     }
 
     /** This will first serialize the OMElement with caching and again will try to serialize. */
@@ -79,6 +80,7 @@ public class OMCachingTest extends AbstractTestCase {
             fail("Parser should not failt as the element was serialized with caching");
         }
 
+        documentElement.close(false);
     }
 
     private XMLStreamReader getXMLStreamReader() throws XMLStreamException, FileNotFoundException {
