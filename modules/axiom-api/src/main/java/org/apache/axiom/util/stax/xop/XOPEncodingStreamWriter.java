@@ -28,7 +28,6 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 
 /**
@@ -71,16 +70,9 @@ public class XOPEncodingStreamWriter extends XOPEncodingStreamWrapper
         if (writerPrefix != null) {
             parent.writeStartElement(XOPConstants.NAMESPACE_URI, "Include");
         } else {
-            // According to StAX, setPrefix must occur before writeStartElement
-            if (OMSerializerUtil.isSetPrefixBeforeStartElement(parent)) {
-                parent.setPrefix(XOPConstants.DEFAULT_PREFIX, XOPConstants.NAMESPACE_URI);
-                parent.writeStartElement(XOPConstants.DEFAULT_PREFIX, XOPConstants.INCLUDE,
-                        XOPConstants.NAMESPACE_URI);
-            } else {
-                parent.writeStartElement(XOPConstants.DEFAULT_PREFIX, XOPConstants.INCLUDE,
-                        XOPConstants.NAMESPACE_URI);
-                parent.setPrefix(XOPConstants.DEFAULT_PREFIX, XOPConstants.NAMESPACE_URI);
-            }
+            parent.writeStartElement(XOPConstants.DEFAULT_PREFIX, XOPConstants.INCLUDE,
+                    XOPConstants.NAMESPACE_URI);
+            parent.setPrefix(XOPConstants.DEFAULT_PREFIX, XOPConstants.NAMESPACE_URI);
             parent.writeNamespace(XOPConstants.DEFAULT_PREFIX, XOPConstants.NAMESPACE_URI);
         }
         parent.writeAttribute(XOPConstants.HREF, "cid:" + contentID); // TODO: wrong; need to URI encode

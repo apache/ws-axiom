@@ -43,12 +43,6 @@ public class OMSerializerUtil {
     
     static long nsCounter = 0;
     
-    // This property should be used by the parser to indicate whether 
-    // setPrefix should be done before or after the Start Element event.
-    // This property is not yet a standard, but at least one parser.
-    private static final String IS_SET_PREFIX_BEFORE_PROPERTY = 
-        "javax.xml.stream.XMLStreamWriter.isSetPrefixBeforeStartElement";
-
     /**
      * Method serializeEndpart.
      *
@@ -151,67 +145,13 @@ public class OMSerializerUtil {
     }
 
     /**
-     * Unfortunately there is disagreement in the user community about the semantics of setPrefix on
-     * the XMLStreamWriter.  An example will explain the difference: writer.startElement("a")
-     * writer.setPrefix("pre", "urn://sample") writer.startElement("b")
-     * <p/>
-     * Some user communities (woodstox) believe that the setPrefix is associate with the scope for
-     * "a" and thus remains in scope until the end of a.  The basis for this believe is
-     * XMLStreamWriter javadoc (which some would argue is incomplete).
-     * <p/>
-     * Some user communities believe that the setPrefix is associated with the "b" element. These
-     * communities reference an example in the specification and historical usage of SAX.
-     * <p/>
-     * This method will return true if the setPrefix is associated with the next writeStartElement.
-     *
-     * @param writer
-     * @return true if setPrefix should be generated before startElement
+     * @deprecated This method was used to work around a StAX conformance issue in early versions
+     * of the XL XP-J parser. This is now handled by
+     * {@link org.apache.axiom.util.stax.dialect.StAXDialect}, and this method always returns
+     * <code>false</code>.
      */
-    private static boolean cache_isSetPrefixBeforeStartElement;
-    private static XMLStreamWriter cache_isSetPrefixBeforeStartElement_writer = null;
-    private static String semifore = "isSetPrefixBeforeStartElement";
     public static boolean isSetPrefixBeforeStartElement(XMLStreamWriter writer) {
-        // Try the cached value
-        if (cache_isSetPrefixBeforeStartElement_writer == writer) {
-            synchronized(semifore) {
-                if (cache_isSetPrefixBeforeStartElement_writer == writer) {
-                    return cache_isSetPrefixBeforeStartElement;
-                }
-            }
-        }
-        
-        // There is no cached value for this writer, so try getting 
-        // the property from the writer.
-        boolean ret = false;
-        try {
-            Boolean value = (Boolean)writer.getProperty(IS_SET_PREFIX_BEFORE_PROPERTY);
-            // this will always be false if the property is defined
-            if (value != null) {
-                ret = value.booleanValue();
-                // Cache the answer
-                synchronized(semifore) {
-                    cache_isSetPrefixBeforeStartElement_writer = writer;
-                    cache_isSetPrefixBeforeStartElement = ret;
-                }
-                return ret;
-            }
-        }
-        catch (IllegalArgumentException e) {
-            // Some parsers throw an exception for unknown properties.
-        }
-        if (!ret) {
-            // Fallback: Toggle based on sun or woodstox implementation.
-            NamespaceContext nc = writer.getNamespaceContext();
-            ret = (nc == null ||
-                    (nc.getClass().getName().indexOf("xlxp") != -1));
-        }
-        
-        // Cache the answer
-        synchronized(semifore) {
-            cache_isSetPrefixBeforeStartElement_writer = writer;
-            cache_isSetPrefixBeforeStartElement = ret;
-        }
-        return ret;
+        return false;
     }
 
     /**
@@ -242,17 +182,14 @@ public class OMSerializerUtil {
         // Please keep this code in sync with the code in StreamingOMSerializer.serializeElement
 
         // The algorithm is:
+        // ... generate writeStartElement
+        //
         // ... generate setPrefix/setDefaultNamespace for each namespace declaration if the prefix is unassociated.
         // ... generate setPrefix/setDefaultNamespace if the prefix of the element is unassociated
         // ... generate setPrefix/setDefaultNamespace for each unassociated prefix of the attributes.
         //
-        // ... generate writeStartElement (See NOTE_A)
-        //
         // ... generate writeNamespace/writerDefaultNamespace for the new namespace declarations determine during the "set" processing
         // ... generate writeAttribute for each attribute
-
-        // NOTE_A: To confuse matters, some StAX vendors (including woodstox), believe that the setPrefix bindings
-        // should occur after the writeStartElement.  If this is the case, the writeStartElement is generated first.
 
         ArrayList writePrefixList = null;
         ArrayList writeNSList = null;
@@ -268,44 +205,39 @@ public class OMSerializerUtil {
         ePrefix = (ePrefix != null && ePrefix.length() == 0) ? null : ePrefix;
         eNamespace = (eNamespace != null && eNamespace.length() == 0) ? null : eNamespace;
 
-        // Write the startElement if required
-        boolean setPrefixFirst = isSetPrefixBeforeStartElement(writer);
-        
-        if (!setPrefixFirst) {
-            if (eNamespace != null) {
-                if (ePrefix == null) {
-                    if (!isAssociated("", eNamespace, writer)) {
-                        if (writePrefixList == null) {
-                            writePrefixList = new ArrayList();
-                            writeNSList = new ArrayList();
-                        }
-                        if (! writePrefixList.contains("")) {
-                            writePrefixList.add("");
-                            writeNSList.add(eNamespace);
-                        }
+        if (eNamespace != null) {
+            if (ePrefix == null) {
+                if (!isAssociated("", eNamespace, writer)) {
+                    if (writePrefixList == null) {
+                        writePrefixList = new ArrayList();
+                        writeNSList = new ArrayList();
                     }
-                    writer.writeStartElement("", localName, eNamespace);
-                } else {
-                    /*
-                     * If XMLStreamWriter.writeStartElement(prefix,localName,namespaceURI) associates
-                     * the prefix with the namespace .. 
-                     */
-                    if (!isAssociated(ePrefix, eNamespace, writer)) {
-                        if (writePrefixList == null) {
-                            writePrefixList = new ArrayList();
-                            writeNSList = new ArrayList();
-                        }
-                        if (! writePrefixList.contains(ePrefix)) {
-                            writePrefixList.add(ePrefix);
-                            writeNSList.add(eNamespace);
-                        }
+                    if (! writePrefixList.contains("")) {
+                        writePrefixList.add("");
+                        writeNSList.add(eNamespace);
                     }
-                    
-                    writer.writeStartElement(ePrefix, localName, eNamespace);
                 }
+                writer.writeStartElement("", localName, eNamespace);
             } else {
-                writer.writeStartElement(localName);
+                /*
+                 * If XMLStreamWriter.writeStartElement(prefix,localName,namespaceURI) associates
+                 * the prefix with the namespace .. 
+                 */
+                if (!isAssociated(ePrefix, eNamespace, writer)) {
+                    if (writePrefixList == null) {
+                        writePrefixList = new ArrayList();
+                        writeNSList = new ArrayList();
+                    }
+                    if (! writePrefixList.contains(ePrefix)) {
+                        writePrefixList.add(ePrefix);
+                        writeNSList.add(eNamespace);
+                    }
+                }
+                
+                writer.writeStartElement(ePrefix, localName, eNamespace);
             }
+        } else {
+            writer.writeStartElement(localName);
         }
 
         // Generate setPrefix for the namespace declarations
@@ -322,7 +254,7 @@ public class OMSerializerUtil {
             namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
 
 
-            String newPrefix = generateSetPrefix(prefix, namespace, writer, false, setPrefixFirst);
+            String newPrefix = generateSetPrefix(prefix, namespace, writer, false);
             // If this is a new association, remember it so that it can written out later
             if (newPrefix != null) {
                 if (writePrefixList == null) {
@@ -338,7 +270,7 @@ public class OMSerializerUtil {
 
         // Generate setPrefix for the element
         // Get the prefix and namespace of the element.  "" and null are identical.
-        String newPrefix = generateSetPrefix(ePrefix, eNamespace, writer, false, setPrefixFirst);
+        String newPrefix = generateSetPrefix(ePrefix, eNamespace, writer, false);
         // If this is a new association, remember it so that it can written out later
         if (newPrefix != null) {
             if (writePrefixList == null) {
@@ -373,7 +305,7 @@ public class OMSerializerUtil {
                 prefix = (writerPrefix != null) ?
                         writerPrefix : getNextNSPrefix();
             }
-            newPrefix = generateSetPrefix(prefix, namespace, writer, true, setPrefixFirst);
+            newPrefix = generateSetPrefix(prefix, namespace, writer, true);
             // If the prefix is not associated with a namespace yet, remember it so that we can
             // write out a namespace declaration
             if (newPrefix != null) {
@@ -385,19 +317,6 @@ public class OMSerializerUtil {
                     writePrefixList.add(newPrefix);
                     writeNSList.add(namespace);
                 }
-            }
-        }
-
-        // Write the startElement if required
-        if (setPrefixFirst) {
-            if (eNamespace != null) {
-                if (ePrefix == null) {
-                    writer.writeStartElement("", localName, eNamespace);
-                } else {
-                    writer.writeStartElement(ePrefix, localName, eNamespace);
-                }
-            } else {
-                writer.writeStartElement(localName);
             }
         }
 
@@ -639,7 +558,7 @@ public class OMSerializerUtil {
      * @return prefix name if a setPrefix/setDefaultNamespace is performed
      */
     public static String generateSetPrefix(String prefix, String namespace, XMLStreamWriter writer,
-                                           boolean attr, boolean isSetPrefixFirst) throws XMLStreamException {
+                                           boolean attr) throws XMLStreamException {
         prefix = (prefix == null) ? "" : prefix;
         
         

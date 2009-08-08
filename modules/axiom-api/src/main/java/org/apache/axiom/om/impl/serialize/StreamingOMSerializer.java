@@ -178,17 +178,14 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         // Please keep this code in sync with the code in OMSerializerUtil.serializeStartpart
 
         // The algorithm is:
+        // ... generate writeStartElement
+        //
         // ... generate setPrefix/setDefaultNamespace for each namespace declaration if the prefix is unassociated.
         // ... generate setPrefix/setDefaultNamespace if the prefix of the element is unassociated
         // ... generate setPrefix/setDefaultNamespace for each unassociated prefix of the attributes.
         //
-        // ... generate writeStartElement (See NOTE_A)
-        //
         // ... generate writeNamespace/writerDefaultNamespace for the new namespace declarations determine during the "set" processing
         // ... generate writeAttribute for each attribute
-
-        // NOTE_A: To confuse matters, some StAX vendors (including woodstox), believe that the setPrefix bindings
-        // should occur after the writeStartElement.  If this is the case, the writeStartElement is generated first.
 
         ArrayList writePrefixList = null;
         ArrayList writeNSList = null;
@@ -200,37 +197,34 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         eNamespace = (eNamespace != null && eNamespace.length() == 0) ? null : eNamespace;
         
         // Write the startElement if required
-        boolean setPrefixFirst = OMSerializerUtil.isSetPrefixBeforeStartElement(writer);
-        if (!setPrefixFirst) {
-            if (eNamespace != null) {
-                if (ePrefix == null) {
-                    if (!OMSerializerUtil.isAssociated("", eNamespace, writer)) {
-                        
-                        if (writePrefixList == null) {
-                            writePrefixList = new ArrayList();
-                            writeNSList = new ArrayList();
-                        }
-                        writePrefixList.add("");
-                        writeNSList.add(eNamespace);
-                    }   
+        if (eNamespace != null) {
+            if (ePrefix == null) {
+                if (!OMSerializerUtil.isAssociated("", eNamespace, writer)) {
                     
-                    writer.writeStartElement("", reader.getLocalName(), eNamespace);    
-                } else {
-                    
-                    if (!OMSerializerUtil.isAssociated(ePrefix, eNamespace, writer)) {
-                        if (writePrefixList == null) {
-                            writePrefixList = new ArrayList();
-                            writeNSList = new ArrayList();
-                        }   
-                        writePrefixList.add(ePrefix);
-                        writeNSList.add(eNamespace);
+                    if (writePrefixList == null) {
+                        writePrefixList = new ArrayList();
+                        writeNSList = new ArrayList();
                     }
-                    
-                    writer.writeStartElement(ePrefix, reader.getLocalName(), eNamespace);
-                }
+                    writePrefixList.add("");
+                    writeNSList.add(eNamespace);
+                }   
+                
+                writer.writeStartElement("", reader.getLocalName(), eNamespace);    
             } else {
-                writer.writeStartElement(reader.getLocalName());
+                
+                if (!OMSerializerUtil.isAssociated(ePrefix, eNamespace, writer)) {
+                    if (writePrefixList == null) {
+                        writePrefixList = new ArrayList();
+                        writeNSList = new ArrayList();
+                    }   
+                    writePrefixList.add(ePrefix);
+                    writeNSList.add(eNamespace);
+                }
+                
+                writer.writeStartElement(ePrefix, reader.getLocalName(), eNamespace);
             }
+        } else {
+            writer.writeStartElement(reader.getLocalName());
         }
 
         // Generate setPrefix for the namespace declarations
@@ -241,7 +235,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             String namespace = reader.getNamespaceURI(i);
             namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
 
-            String newPrefix = OMSerializerUtil.generateSetPrefix(prefix, namespace, writer, false, setPrefixFirst);
+            String newPrefix = OMSerializerUtil.generateSetPrefix(prefix, namespace, writer, false);
             // If this is a new association, remember it so that it can written out later
             if (newPrefix != null) {
                 if (writePrefixList == null) {
@@ -258,7 +252,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         // Generate setPrefix for the element
         // If the prefix is not associated with a namespace yet, remember it so that we can
         // write out a namespace declaration
-        String newPrefix = OMSerializerUtil.generateSetPrefix(ePrefix, eNamespace, writer, false, setPrefixFirst);
+        String newPrefix = OMSerializerUtil.generateSetPrefix(ePrefix, eNamespace, writer, false);
         // If this is a new association, remember it so that it can written out later
         if (newPrefix != null) {
             if (writePrefixList == null) {
@@ -288,7 +282,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                         writerPrefix :
                         generateUniquePrefix(writer.getNamespaceContext());
             }
-            newPrefix = OMSerializerUtil.generateSetPrefix(prefix, namespace, writer, true, setPrefixFirst);
+            newPrefix = OMSerializerUtil.generateSetPrefix(prefix, namespace, writer, true);
             // If the prefix is not associated with a namespace yet, remember it so that we can
             // write out a namespace declaration
             if (newPrefix != null) {
@@ -300,19 +294,6 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                     writePrefixList.add(newPrefix);
                     writeNSList.add(namespace);
                 }
-            }
-        }
-
-        // Now write the startElement
-        if (setPrefixFirst) {
-            if (eNamespace != null) {
-                if (ePrefix == null) {
-                    writer.writeStartElement("", reader.getLocalName(), eNamespace);
-                } else {
-                    writer.writeStartElement(ePrefix, reader.getLocalName(), eNamespace);
-                }
-            } else {
-                writer.writeStartElement(reader.getLocalName());
             }
         }
 
