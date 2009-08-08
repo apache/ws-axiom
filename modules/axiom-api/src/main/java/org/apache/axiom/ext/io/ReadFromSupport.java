@@ -36,7 +36,7 @@ public interface ReadFromSupport {
      *       and the number of bytes transferred is equal to <code>length</code>.
      * </ul>
      * 
-     * @param in
+     * @param inputStream
      *            An input stream to read data from. This method will not close the stream.
      * @param length
      *            the number of bytes to transfer, or <code>-1</code> if the method should

@@ -2,8 +2,9 @@
 <body>
 Defines an Axiom specific extension to the StAX API to work with DataHandler objects.
 <p>
-This package defines two extensions, {@link DataHandlerReader} for {@link javax.xml.stream.XMLStreamReader}
-and {@link DataHandlerWriter} for {@link javax.xml.stream.XMLStreamWriter}. The reader or writer wishing to support the
+This package defines two extensions, {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader}
+for {@link javax.xml.stream.XMLStreamReader} and {@link org.apache.axiom.ext.stax.datahandler.DataHandlerWriter}
+for {@link javax.xml.stream.XMLStreamWriter}. The reader or writer wishing to support the
 extension MAY implement the corresponding interface directly, but a consumer MUST use
 the property mechanism to get a reference to this extension interface, i.e. it MUST call
 {@link javax.xml.stream.XMLStreamReader#getProperty(String)} or

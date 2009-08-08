@@ -31,7 +31,7 @@ import javax.xml.transform.Source;
 
 import org.apache.axiom.util.stax.wrapper.XMLInputFactoryWrapper;
 
-public class BEAInputFactoryWrapper extends XMLInputFactoryWrapper {
+class BEAInputFactoryWrapper extends XMLInputFactoryWrapper {
     public BEAInputFactoryWrapper(XMLInputFactory parent) {
         super(parent);
     }
