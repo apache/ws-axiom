@@ -35,6 +35,10 @@ public class XLXP2Dialect extends AbstractStAXDialect {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
     }
 
+    public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {
+        return StAXDialectUtils.disallowDoctypeDecl(factory);
+    }
+
     public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
         // XLXP's factories are thread safe
         return factory;

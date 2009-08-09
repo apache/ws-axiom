@@ -20,8 +20,12 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.StringReader;
 
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -122,5 +126,98 @@ public class StAXDialectTest extends TestCase {
             // Expected
         }
         reader.close();
+    }
+    
+    public void testDisallowDoctypeDeclWithExternalSubset() throws Exception {
+        XMLInputFactory factory = XMLInputFactory.newInstance();
+        StAXDialect dialect = StAXDialectDetector.getDialect(factory.getClass());
+        factory = dialect.disallowDoctypeDecl(dialect.normalize(factory));
+        DummyHTTPServer server = new DummyHTTPServer();
+        server.start();
+        try {
+            boolean gotException = false;
+            boolean reachedDocumentElement = false;
+            try {
+                XMLStreamReader reader = factory.createXMLStreamReader(new StringReader(
+                        "<?xml version='1.0'?><!DOCTYPE root SYSTEM '" + server.getBaseURL() +
+                        "dummy.dtd'><root/>"));
+                try {
+                    while (reader.hasNext()) {
+                        if (reader.next() == XMLStreamConstants.START_ELEMENT) {
+                            reachedDocumentElement = true;
+                        }
+                    }
+                } finally {
+                    reader.close();
+                }
+            } catch (XMLStreamException ex) {
+                gotException = true;
+            } catch (RuntimeException ex) {
+                gotException = true;
+            }
+            assertTrue("Expected exception", gotException);
+            assertFalse("The parser tried to load external DTD subset", server.isRequestReceived());
+            assertFalse("The parser failed to throw an exception before reaching the document element", reachedDocumentElement);
+        } finally {
+            server.stop();
+        }
+    }
+    
+    public void testDisallowDoctypeDeclWithInternalSubset() throws Exception {
+        XMLInputFactory factory = XMLInputFactory.newInstance();
+        StAXDialect dialect = StAXDialectDetector.getDialect(factory.getClass());
+        factory = dialect.disallowDoctypeDecl(dialect.normalize(factory));
+        boolean gotException = false;
+        boolean reachedDocumentElement = false;
+        try {
+            XMLStreamReader reader = factory.createXMLStreamReader(new StringReader(
+                    "<?xml version='1.0'?><!DOCTYPE root []><root/>"));
+            try {
+                while (reader.hasNext()) {
+                    if (reader.next() == XMLStreamConstants.START_ELEMENT) {
+                        reachedDocumentElement = true;
+                    }
+                }
+            } finally {
+                reader.close();
+            }
+        } catch (XMLStreamException ex) {
+            gotException = true;
+        } catch (RuntimeException ex) {
+            gotException = true;
+        }
+        assertTrue("Expected exception", gotException);
+        assertFalse("The parser failed to throw an exception before reaching the document element", reachedDocumentElement);
+    }
+    
+    public void testDisallowDoctypeDeclWithDenialOfService() throws Exception {
+        XMLInputFactory factory = XMLInputFactory.newInstance();
+        StAXDialect dialect = StAXDialectDetector.getDialect(factory.getClass());
+        factory = dialect.disallowDoctypeDecl(dialect.normalize(factory));
+        InputStream in = StAXDialectTest.class.getResourceAsStream("doctype_dos.xml");
+        try {
+            boolean gotException = false;
+            boolean reachedDocumentElement = false;
+            try {
+                XMLStreamReader reader = factory.createXMLStreamReader(in);
+                try {
+                    while (reader.hasNext()) {
+                        if (reader.next() == XMLStreamConstants.START_ELEMENT) {
+                            reachedDocumentElement = true;
+                        }
+                    }
+                } finally {
+                    reader.close();
+                }
+            } catch (XMLStreamException ex) {
+                gotException = true;
+            } catch (RuntimeException ex) {
+                gotException = true;
+            }
+            assertTrue("Expected exception", gotException);
+            assertFalse("The parser failed to throw an exception before reaching the document element", reachedDocumentElement);
+        } finally {
+            in.close();
+        }
     }
 }

@@ -21,6 +21,7 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamConstants;
 
 /**
  * Encapsulates the specific characteristics of a particular StAX implementation.
@@ -137,6 +138,32 @@ public interface StAXDialect {
      *             if reporting of CDATA sections is not supported
      */
     void enableCDataReporting(XMLInputFactory factory);
+    
+    /**
+     * Configure the given factory to disallow DOCTYPE declarations. The effect of this is similar
+     * to the <tt>http://apache.org/xml/features/disallow-doctype-decl</tt> feature in Xerces. The
+     * factory instance returned by this method MUST satisfy the following requirements:
+     * <ul>
+     * <li>The factory or the reader implementation MUST throw an exception when requested to parse
+     * a document containing a DOCTYPE declaration. If the exception is not thrown by the factory,
+     * it MUST be thrown by the reader before the first {@link XMLStreamConstants#START_ELEMENT}
+     * event.
+     * <li>The parser MUST NOT attempt to load the external DTD subset or any other external
+     * entity.
+     * <li>The parser MUST protect itself against denial of service attacks based on deeply nested
+     * entity definitions present in the internal DTD subset. Ideally, the parser SHOULD NOT process
+     * the internal subset at all and throw an exception immediately when encountering the DOCTYPE
+     * declaration.
+     * </ul>
+     * This method is typically useful in the context of SOAP processing since a SOAP message must
+     * not contain a Document Type Declaration.
+     * 
+     * @param factory
+     *            the factory to configure
+     * @return the factory that disallows DOCTYPE declarations; this may be the original factory
+     *         instance or a wrapper
+     */
+    XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory);
     
     /**
      * Make an {@link XMLInputFactory} object thread safe. The implementation may do this either by

@@ -33,6 +33,10 @@ class UnknownStAXDialect implements StAXDialect {
         // This is in principle only the prerequisite; let's hope that it is sufficient
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
     }
+    
+    public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {
+        return StAXDialectUtils.disallowDoctypeDecl(factory);
+    }
 
     public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
         // Cross fingers and assume that the factory is already thread safe

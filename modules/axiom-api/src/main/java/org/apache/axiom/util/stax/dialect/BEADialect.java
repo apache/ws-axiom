@@ -37,6 +37,10 @@ class BEADialect extends AbstractStAXDialect {
                 Boolean.TRUE);
     }
 
+    public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {
+        return StAXDialectUtils.disallowDoctypeDecl(factory);
+    }
+
     public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
         // Factories are already thread safe
         return factory;

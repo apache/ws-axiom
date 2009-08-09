@@ -21,6 +21,8 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLResolver;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -35,6 +37,23 @@ class SJSXPDialect extends AbstractStAXDialect {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
         factory.setProperty("http://java.sun.com/xml/stream/properties/report-cdata-event",
                 Boolean.TRUE);
+    }
+
+    public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {
+        // SJSXP is particular because when SUPPORT_DTD is set to false, no DTD event is reported.
+        // This means that we would not be able to throw an exception. The trick is to enable
+        // DTD support and trigger an exception if the parser attempts to load the external subset
+        // or returns a DTD event.
+        factory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
+        factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
+        factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
+        factory.setXMLResolver(new XMLResolver() {
+            public Object resolveEntity(String publicID, String systemID, String baseURI,
+                    String namespace) throws XMLStreamException {
+                throw new XMLStreamException("DOCTYPE is not allowed");
+            }
+        });
+        return new DisallowDoctypeDeclInputFactoryWrapper(factory);
     }
 
     public XMLInputFactory makeThreadSafe(XMLInputFactory factory) {
