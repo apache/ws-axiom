@@ -46,7 +46,7 @@ public class StreamingOMSerializerTest extends AbstractTestCase {
         StAXDialect dialect = StAXDialectDetector.getDialect(inputFactory.getClass());
         inputFactory = dialect.normalize(inputFactory);
         // Allow CDATA events
-        dialect.enableCDataReporting(inputFactory);
+        inputFactory = dialect.enableCDataReporting(inputFactory);
         XMLOutputFactory outputFactory = dialect.normalize(XMLOutputFactory.newInstance());
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         ByteArrayOutputStream out = new ByteArrayOutputStream();

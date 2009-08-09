@@ -31,8 +31,9 @@ class XLXP2Dialect extends AbstractStAXDialect {
         return "XLXP2";
     }
 
-    public void enableCDataReporting(XMLInputFactory factory) {
+    public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
+        return factory;
     }
 
     public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {

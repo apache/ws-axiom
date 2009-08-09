@@ -36,8 +36,9 @@ class XLXPDialect extends AbstractStAXDialect {
                                  : "XL XP-J (StAX compliant versions)";
     }
 
-    public void enableCDataReporting(XMLInputFactory factory) {
+    public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
+        return factory;
     }
 
     public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {

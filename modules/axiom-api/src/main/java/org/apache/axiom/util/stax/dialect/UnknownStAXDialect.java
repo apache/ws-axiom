@@ -29,9 +29,10 @@ class UnknownStAXDialect implements StAXDialect {
         return "Unknown";
     }
 
-    public void enableCDataReporting(XMLInputFactory factory) {
+    public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         // This is in principle only the prerequisite; let's hope that it is sufficient
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
+        return factory;
     }
     
     public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {

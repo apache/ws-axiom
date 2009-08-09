@@ -33,10 +33,11 @@ class SJSXPDialect extends AbstractStAXDialect {
         return "SJSXP";
     }
 
-    public void enableCDataReporting(XMLInputFactory factory) {
+    public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
         factory.setProperty("http://java.sun.com/xml/stream/properties/report-cdata-event",
                 Boolean.TRUE);
+        return factory;
     }
 
     public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {

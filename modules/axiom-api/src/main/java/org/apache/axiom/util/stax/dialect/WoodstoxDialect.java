@@ -31,9 +31,10 @@ class WoodstoxDialect extends AbstractStAXDialect {
         return "Woodstox";
     }
 
-    public void enableCDataReporting(XMLInputFactory factory) {
+    public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
         // For Woodstox, this is sufficient
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
+        return factory;
     }
 
     public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {

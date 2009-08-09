@@ -52,7 +52,7 @@ public class OMSourceToStreamResultTestCase extends AbstractTestCase {
         StAXDialect dialect = StAXDialectDetector.getDialect(inputFactory.getClass());
         inputFactory = dialect.normalize(inputFactory);
         // Make sure CDATA sections are reported by the StAX parser
-        dialect.enableCDataReporting(inputFactory);
+        inputFactory = dialect.enableCDataReporting(inputFactory);
         XMLStreamReader reader = inputFactory.createXMLStreamReader(getTestResource(file));
         StAXOMBuilder builder = new StAXOMBuilder(omMetaFactory.getOMFactory(), reader);
         OMSource source = new OMSource(builder.getDocumentElement());

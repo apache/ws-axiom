@@ -134,10 +134,12 @@ public interface StAXDialect {
      * @param factory
      *            the factory to configure; this may be an already normalized factory or a "raw"
      *            factory object
+     * @return the factory with CDATA reporting enabled; this may be the original factory instance
+     *         or a wrapper
      * @throws UnsupportedOperationException
      *             if reporting of CDATA sections is not supported
      */
-    void enableCDataReporting(XMLInputFactory factory);
+    XMLInputFactory enableCDataReporting(XMLInputFactory factory);
     
     /**
      * Configure the given factory to disallow DOCTYPE declarations. The effect of this is similar
@@ -159,7 +161,8 @@ public interface StAXDialect {
      * not contain a Document Type Declaration.
      * 
      * @param factory
-     *            the factory to configure
+     *            the factory to configure; this may be an already normalized factory or a "raw"
+     *            factory object
      * @return the factory that disallows DOCTYPE declarations; this may be the original factory
      *         instance or a wrapper
      */
