@@ -113,6 +113,36 @@ import javax.xml.stream.XMLStreamConstants;
  *   <li>An XML document may contain a namespace declaration such as <tt>xmlns=""</tt>. In this
  *       case, it is not clear if {@link javax.xml.stream.XMLStreamReader#getNamespaceURI(int)}
  *       should return <code>null</code> or an empty string.</li>
+ *   <li>The documentation of {@link javax.xml.stream.XMLStreamWriter#setPrefix(String, String)}
+ *       and {@link javax.xml.stream.XMLStreamWriter#setDefaultNamespace(String)} requires that
+ *       the namespace "is bound in the scope of the current START_ELEMENT / END_ELEMENT pair".
+ *       The meaning of this requirement is clear in the context of an element written using
+ *       the <code>writeStartElement</code> and <code>writeEndElement</code> methods. On the
+ *       other hand, the requirement is ambiguous in the context of an element written using
+ *       <code>writeEmptyElement</code> and there are two competing interpretations:
+ *       <ol>
+ *         <li>Since the element is empty, it doesn't define a nested scope and the namespace
+ *             should be bound in the scope of the enclosing element.</li>
+ *         <li>An invocation of one of the <code>writeEmptyElement</code> methods actually
+ *             doesn't write a complete element because it can be followed by invocations
+ *             of <code>writeAttribute</code>, <code>writeNamespace</code> or
+ *             <code>writeDefaultNamespace</code>. The element is only completed by a
+ *             call to a <code>write</code> method other than the aforementioned methods.
+ *             An element written using <code>writeEmptyElement</code> therefore also
+ *             defines a scope and the namespace should be bound in that scope.</li>
+ *       </ol>
+ *       While the second interpretation seems to be more consistent, it would introduce another
+ *       ambiguity for the following sequence of calls: <code>writeEmptyElement</code>,
+ *       <code>writeAttribute</code>, <code>setPrefix</code>, <code>writeCharacters</code>.
+ *       In this case, it is not clear if the scope of the empty element should end at the call to
+ *       <code>writeAttribute</code> or <code>writeCharacters</code>.
+ *       <p>
+ *       Because of these ambiguities, the dialect implementations don't attempt to normalize the
+ *       behavior of {@link javax.xml.stream.XMLStreamWriter#setPrefix(String, String)}
+ *       and {@link javax.xml.stream.XMLStreamWriter#setDefaultNamespace(String)} in this particular
+ *       context, and their usage in conjunction with <code>writeEmptyElement</code> should be
+ *       avoided.
+ *       </li>
  * </ul>
  */
 public interface StAXDialect {

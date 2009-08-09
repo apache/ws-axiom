@@ -23,8 +23,7 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.util.namespace.ScopedNamespaceContext;
-import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
+import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 /**
  * {@link XMLStreamWriter} wrapper that handles namespace bindings on behalf of the underlying
@@ -67,69 +66,110 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
  * This implies that if the wrapper is used, these methods will never be called on the underlying
  * writer.
  */
-public class NamespaceContextCorrectingXMLStreamWriterWrapper extends XMLStreamWriterWrapper {
-    private final ScopedNamespaceContext namespaceContext = new ScopedNamespaceContext();
-
-    public NamespaceContextCorrectingXMLStreamWriterWrapper(XMLStreamWriter parent) {
-        super(parent);
-    }
-
-    public NamespaceContext getNamespaceContext() {
-        return namespaceContext;
-    }
-
-    public void setNamespaceContext(NamespaceContext context) throws XMLStreamException {
-        // TODO: not sure yet how to implement this method
-        throw new UnsupportedOperationException();
-    }
-
-    public String getPrefix(String uri) throws XMLStreamException {
-        return namespaceContext.getPrefix(uri);
-    }
-
-    public void setDefaultNamespace(String uri) throws XMLStreamException {
-        namespaceContext.setPrefix("", uri);
-    }
-
-    public void setPrefix(String prefix, String uri) throws XMLStreamException {
-        namespaceContext.setPrefix(prefix, uri);
-    }
-
-    private String internalGetPrefix(String namespaceURI) throws XMLStreamException {
-        String prefix = namespaceContext.getPrefix(namespaceURI);
-        if (prefix == null) {
-            throw new XMLStreamException("Unbound namespace URI '" + namespaceURI + "'");
-        } else {
-            return prefix;
-        }
-    }
+public class NamespaceContextCorrectingXMLStreamWriterWrapper extends AbstractXMLStreamWriter {
+    private final XMLStreamWriter parent;
     
-    public void writeStartElement(String prefix, String localName, String namespaceURI)
+    public NamespaceContextCorrectingXMLStreamWriterWrapper(XMLStreamWriter parent) {
+        this.parent = parent;
+    }
+
+    protected void doWriteAttribute(String prefix, String namespaceURI, String localName,
+            String value) throws XMLStreamException {
+        parent.writeAttribute(prefix, namespaceURI, localName, value);
+    }
+
+    protected void doWriteAttribute(String localName, String value) throws XMLStreamException {
+        parent.writeAttribute(localName, value);
+    }
+
+    protected void doWriteCData(String data) throws XMLStreamException {
+        parent.writeCData(data);
+    }
+
+    protected void doWriteCharacters(char[] text, int start, int len) throws XMLStreamException {
+        parent.writeCharacters(text, start, len);
+    }
+
+    protected void doWriteCharacters(String text) throws XMLStreamException {
+        parent.writeCharacters(text);
+    }
+
+    protected void doWriteComment(String data) throws XMLStreamException {
+        parent.writeComment(data);
+    }
+
+    protected void doWriteDefaultNamespace(String namespaceURI) throws XMLStreamException {
+        parent.writeDefaultNamespace(namespaceURI);
+    }
+
+    protected void doWriteDTD(String dtd) throws XMLStreamException {
+        parent.writeDTD(dtd);
+    }
+
+    protected void doWriteEmptyElement(String prefix, String localName, String namespaceURI)
             throws XMLStreamException {
-        super.writeStartElement(prefix, localName, namespaceURI);
-        namespaceContext.startScope();
+        parent.writeEmptyElement(prefix, localName, namespaceURI);
     }
 
-    public void writeStartElement(String namespaceURI, String localName) throws XMLStreamException {
-        super.writeStartElement(internalGetPrefix(namespaceURI), namespaceURI, localName);
+    protected void doWriteEmptyElement(String localName) throws XMLStreamException {
+        parent.writeEmptyElement(localName);
     }
 
-    public void writeStartElement(String localName) throws XMLStreamException {
-        super.writeStartElement(localName);
-        namespaceContext.startScope();
+    protected void doWriteEndDocument() throws XMLStreamException {
+        parent.writeEndDocument();
     }
 
-    public void writeEndElement() throws XMLStreamException {
-        super.writeEndElement();
-        namespaceContext.endScope();
+    protected void doWriteEndElement() throws XMLStreamException {
+        parent.writeEndElement();
     }
 
-    public void writeEmptyElement(String namespaceURI, String localName) throws XMLStreamException {
-        super.writeEmptyElement(internalGetPrefix(namespaceURI), namespaceURI, localName);
+    protected void doWriteEntityRef(String name) throws XMLStreamException {
+        parent.writeEntityRef(name);
     }
 
-    public void writeAttribute(String namespaceURI, String localName, String value)
+    protected void doWriteNamespace(String prefix, String namespaceURI) throws XMLStreamException {
+        parent.writeNamespace(prefix, namespaceURI);
+    }
+
+    protected void doWriteProcessingInstruction(String target, String data)
             throws XMLStreamException {
-        super.writeAttribute(internalGetPrefix(namespaceURI), namespaceURI, localName, value);
+        parent.writeProcessingInstruction(target, data);
+    }
+
+    protected void doWriteProcessingInstruction(String target) throws XMLStreamException {
+        parent.writeProcessingInstruction(target);
+    }
+
+    protected void doWriteStartDocument() throws XMLStreamException {
+        parent.writeStartDocument();
+    }
+
+    protected void doWriteStartDocument(String encoding, String version) throws XMLStreamException {
+        parent.writeStartDocument(encoding, version);
+    }
+
+    protected void doWriteStartDocument(String version) throws XMLStreamException {
+        parent.writeStartDocument(version);
+    }
+
+    protected void doWriteStartElement(String prefix, String localName, String namespaceURI)
+            throws XMLStreamException {
+        parent.writeStartElement(prefix, localName, namespaceURI);
+    }
+
+    protected void doWriteStartElement(String localName) throws XMLStreamException {
+        parent.writeStartElement(localName);
+    }
+
+    public void close() throws XMLStreamException {
+        parent.close();
+    }
+
+    public void flush() throws XMLStreamException {
+        parent.flush();
+    }
+
+    public Object getProperty(String name) throws IllegalArgumentException {
+        return parent.getProperty(name);
     }
 }
