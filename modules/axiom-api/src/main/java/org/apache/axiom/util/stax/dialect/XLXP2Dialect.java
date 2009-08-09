@@ -24,7 +24,7 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
-public class XLXP2Dialect extends AbstractStAXDialect {
+class XLXP2Dialect extends AbstractStAXDialect {
     public static final StAXDialect INSTANCE = new XLXP2Dialect();
     
     public String getName() {
