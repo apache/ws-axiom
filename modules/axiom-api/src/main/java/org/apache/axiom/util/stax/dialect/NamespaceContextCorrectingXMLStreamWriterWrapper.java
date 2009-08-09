@@ -95,7 +95,7 @@ public class NamespaceContextCorrectingXMLStreamWriterWrapper extends XMLStreamW
         namespaceContext.setPrefix(prefix, uri);
     }
 
-    public String internalGetPrefix(String namespaceURI) throws XMLStreamException {
+    private String internalGetPrefix(String namespaceURI) throws XMLStreamException {
         String prefix = namespaceContext.getPrefix(namespaceURI);
         if (prefix == null) {
             throw new XMLStreamException("Unbound namespace URI '" + namespaceURI + "'");
