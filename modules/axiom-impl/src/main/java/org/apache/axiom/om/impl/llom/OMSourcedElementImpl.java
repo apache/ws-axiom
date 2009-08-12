@@ -31,7 +31,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;

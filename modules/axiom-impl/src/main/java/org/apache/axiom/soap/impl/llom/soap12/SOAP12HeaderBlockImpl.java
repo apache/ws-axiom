@@ -23,7 +23,6 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -129,7 +128,7 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12
         // Fallback to getting the information from the attribute
         String mustUnderstand;
         if (this.hasOMDataSourceProperty(MUST_UNDERSTAND_PROPERTY)) {
-            mustUnderstand = this.getOMDataSourceProperty(this.MUST_UNDERSTAND_PROPERTY);
+            mustUnderstand = this.getOMDataSourceProperty(MUST_UNDERSTAND_PROPERTY);
         } else {
             mustUnderstand = getAttribute(ATTR_MUSTUNDERSTAND, SOAP_ENVELOPE_NAMESPACE_URI);
         }

@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
-import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;

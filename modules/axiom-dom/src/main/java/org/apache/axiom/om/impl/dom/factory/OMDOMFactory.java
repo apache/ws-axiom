@@ -36,7 +36,6 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;

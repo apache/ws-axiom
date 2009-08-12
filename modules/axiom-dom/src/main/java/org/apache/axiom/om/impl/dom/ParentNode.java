@@ -603,7 +603,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 if (this instanceof DocumentImpl) {
                     doc = (DocumentImpl) this;
                 } else {
-                    doc = (DocumentImpl) ((ParentNode) this).getOwnerDocument();
+                    doc = (DocumentImpl) getOwnerDocument();
                 }
                 newComment = new CommentImpl(doc, importedComment.getValue(),
                                              this.factory);

@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
-import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;

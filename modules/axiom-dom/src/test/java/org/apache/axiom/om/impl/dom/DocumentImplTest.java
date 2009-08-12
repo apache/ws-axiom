@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.dom;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.om.OMDocumentTestBase;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;

@@ -117,7 +117,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
         // SOAP 1.1 allows for arbitrary elements after SOAPBody so do NOT check for
         // node types when appending to SOAP 1.1 envelope.
         if (getVersion() instanceof SOAP12Version) {
-            checkChild((OMNode)child);
+            checkChild(child);
         }
 
         if (child instanceof SOAPHeader) {

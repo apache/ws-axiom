@@ -32,7 +32,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.util.StAXUtils;

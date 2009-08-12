@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;

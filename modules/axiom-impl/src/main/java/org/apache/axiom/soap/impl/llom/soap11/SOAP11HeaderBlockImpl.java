@@ -133,7 +133,7 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
         // Fallback to getting the information from the attribute
         String mustUnderstand;
         if (this.hasOMDataSourceProperty(MUST_UNDERSTAND_PROPERTY)) {
-            mustUnderstand = this.getOMDataSourceProperty(this.MUST_UNDERSTAND_PROPERTY);
+            mustUnderstand = this.getOMDataSourceProperty(MUST_UNDERSTAND_PROPERTY);
         } else {
             mustUnderstand =
                 getAttribute(SOAPConstants.ATTR_MUSTUNDERSTAND,

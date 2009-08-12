@@ -20,19 +20,12 @@
 package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.llom.OMNodeImpl;
-import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPFaultDetailImpl;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
 
