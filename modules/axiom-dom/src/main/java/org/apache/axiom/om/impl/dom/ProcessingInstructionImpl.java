@@ -96,11 +96,7 @@ public class ProcessingInstructionImpl extends ChildNode implements ProcessingIn
         return value;
     }
 
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
+    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         writer.writeProcessingInstruction(target + " ", value);
-    }
-
-    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer);
     }
 }

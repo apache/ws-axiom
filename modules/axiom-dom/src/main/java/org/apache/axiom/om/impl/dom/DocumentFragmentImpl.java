@@ -72,18 +72,12 @@ public class DocumentFragmentImpl extends ParentNode implements
         // DO Nothing :-?
     }
 
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
+    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
 
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public void internalSerializeAndConsume(XMLStreamWriter writer)
-            throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }

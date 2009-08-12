@@ -311,25 +311,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
         this.xmlVersion = xmlVersion;
     }
 
-    /** Serialize the docuement with/without the XML declaration */
-    public void internalSerializeAndConsume(XMLStreamWriter writer, boolean includeXMLDeclaration)
-            throws XMLStreamException {
-        internalSerialize(writer, false, includeXMLDeclaration);
-    }
-
-    /** Serializes the document with the XML declaration. */
-    public void internalSerializeAndConsume(XMLStreamWriter writer)
-            throws XMLStreamException {
-        internalSerialize(writer, false, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
-    }
-
-
-    /** Serializes the document with cache. */
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, true, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
-
-    }
-
     /**
      * Serializes the document directly to the output stream with caching disabled.
      *
@@ -338,7 +319,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
      */
     public void serializeAndConsume(OutputStream output) throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, new OMOutputFormat());
-        internalSerializeAndConsume(writer);
+        internalSerialize(writer, false);
         writer.flush();
     }
 
@@ -350,7 +331,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
      */
     public void serialize(OutputStream output) throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, new OMOutputFormat());
-        internalSerialize(writer);
+        internalSerialize(writer, true);
         writer.flush();
     }
 
@@ -364,7 +345,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerializeAndConsume(writer);
+        internalSerialize(writer, false);
         writer.flush();
     }
 
@@ -377,15 +358,12 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
      */
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerialize(writer);
+        internalSerialize(writer, true);
         writer.flush();
     }
 
-    /** Serializes the document with cache. */
-    public void internalSerialize(XMLStreamWriter writer, boolean includeXMLDeclaration)
-            throws XMLStreamException {
-        internalSerialize(writer, true, includeXMLDeclaration);
-
+    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+        internalSerialize(writer, cache, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
     }
 
     protected void internalSerialize(XMLStreamWriter writer, boolean cache,

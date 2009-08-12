@@ -53,7 +53,7 @@ public class SOAP11FaultRoleImpl extends SOAPFaultRoleImpl {
         }
     }
 
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
+    public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
 
         // select the builder

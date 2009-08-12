@@ -53,24 +53,8 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
         this(parentNode, null, factory);
     }
 
-    /**
-     * Serializes the node with caching.
-     *
-     * @param writer
-     * @throws XMLStreamException
-     */
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
+    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         writer.writeDTD(this.value);
-    }
-
-    /**
-     * Serializes the node without caching.
-     *
-     * @param writer
-     * @throws XMLStreamException
-     */
-    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer);
     }
 
     /**

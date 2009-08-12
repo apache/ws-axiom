@@ -686,29 +686,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getType();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#internalSerialize(javax.xml.stream.XMLStreamWriter)
-     */
-    public void internalSerialize(javax.xml.stream.XMLStreamWriter writer)
-            throws XMLStreamException {
-        // The contract of internalSerialize is to "cache" the om
-        if (isExpanded()) {
-            super.internalSerialize(writer);
-        } else {
-            if (isDestructiveWrite()) {
-                forceExpand();
-                super.internalSerialize(writer);
-            } else {
-                dataSource.serialize(writer);
-            }
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.impl.llom.OMElementImpl#
-     * internalSerialize(javax.xml.stream.XMLStreamWriter, boolean)
-     */
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
+    public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
         if (isExpanded()) {
             super.internalSerialize(writer, cache);
@@ -720,20 +698,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 dataSource.serialize(writer);
             }
         } else {
-            internalSerializeAndConsume(writer);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#internalSerializeAndConsume(javax.xml.stream.XMLStreamWriter)
-     */
-    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
-        if (isDebugEnabled) {
-            log.debug("serialize " + getPrintableName() + " to XMLStreamWriter");
-        }
-        if (isExpanded()) {
-            super.internalSerializeAndConsume(writer);
-        } else {
             dataSource.serialize(writer); 
         }
     }
@@ -743,7 +707,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      */
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         // The contract is to serialize with caching
-        internalSerialize(xmlWriter);
+        internalSerialize(xmlWriter, true);
     }
 
     /* (non-Javadoc)
@@ -797,7 +761,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      */
     public void serializeAndConsume(javax.xml.stream.XMLStreamWriter xmlWriter)
             throws XMLStreamException {
-        internalSerializeAndConsume(xmlWriter);
+        internalSerialize(xmlWriter, false);
     }
 
     /* (non-Javadoc)

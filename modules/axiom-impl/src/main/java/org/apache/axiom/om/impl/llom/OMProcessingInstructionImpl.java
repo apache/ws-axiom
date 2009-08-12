@@ -57,24 +57,8 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
         this(parentNode, null, null, factory);
     }
 
-    /**
-     * Serializes the node with caching.
-     *
-     * @param writer
-     * @throws XMLStreamException
-     */
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
+    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         writer.writeProcessingInstruction(this.target + " ", this.value);
-    }
-
-    /**
-     * Serializes the node without caching.
-     *
-     * @param writer
-     * @throws XMLStreamException
-     */
-    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer);
     }
 
     /**

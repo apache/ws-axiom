@@ -52,7 +52,7 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
         return this.getText();
     }
 
-    protected void internalSerialize(
+    public void internalSerialize(
             XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
         // select the builder
@@ -70,7 +70,7 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
             //No caching
             if (this.firstChild != null) {
                 OMSerializerUtil.serializeStartpart(this, writer);
-                firstChild.internalSerializeAndConsume(writer);
+                firstChild.internalSerialize(writer, false);
                 OMSerializerUtil.serializeEndpart(writer);
             } else if (!this.done) {
                 if (builderType == PULL_TYPE_BUILDER) {

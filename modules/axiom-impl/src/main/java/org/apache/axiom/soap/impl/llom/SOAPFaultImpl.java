@@ -152,7 +152,7 @@ public abstract class SOAPFaultImpl extends SOAPElement
         this.addChild(newElement);
     }
 
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
+    public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
         this.registerContentHandler(writer);
         
@@ -163,23 +163,23 @@ public abstract class SOAPFaultImpl extends SOAPElement
         OMSerializerUtil.serializeStartpart(this, writer);
         SOAPFaultCode faultCode = getCode();
         if (faultCode != null) {
-            ((OMNodeEx) faultCode).internalSerialize(writer);
+            ((OMNodeEx) faultCode).internalSerialize(writer, true);
         }
         SOAPFaultReason faultReason = getReason();
         if (faultReason != null) {
-            ((OMNodeEx) faultReason).internalSerialize(writer);
+            ((OMNodeEx) faultReason).internalSerialize(writer, true);
         }
 
         serializeFaultNode(writer);
 
         SOAPFaultRole faultRole = getRole();
         if (faultRole != null && faultRole.getText() != null && !"".equals(faultRole.getText())) {
-            ((OMNodeEx) faultRole).internalSerialize(writer);
+            ((OMNodeEx) faultRole).internalSerialize(writer, true);
         }
 
         SOAPFaultDetail faultDetail = getDetail();
         if (faultDetail != null) {
-            ((OMNodeEx) faultDetail).internalSerialize(writer);
+            ((OMNodeEx) faultDetail).internalSerialize(writer, true);
         }
 
         OMSerializerUtil.serializeEndpart(writer);

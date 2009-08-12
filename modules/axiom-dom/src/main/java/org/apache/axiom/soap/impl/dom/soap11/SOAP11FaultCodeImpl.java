@@ -79,7 +79,7 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
         }
     }
 
-    protected void internalSerialize(
+    public void internalSerialize(
             XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
 

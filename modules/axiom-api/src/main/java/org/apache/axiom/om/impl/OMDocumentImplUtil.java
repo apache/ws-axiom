@@ -57,16 +57,9 @@ public class OMDocumentImplUtil {
 
         Iterator children = document.getChildren();
 
-        if (cache) {
-            while (children.hasNext()) {
-                OMNodeEx omNode = (OMNodeEx) children.next();
-                omNode.internalSerialize(writer);
-            }
-        } else {
-            while (children.hasNext()) {
-                OMNodeEx omNode = (OMNodeEx) children.next();
-                omNode.internalSerializeAndConsume(writer);
-            }
+        while (children.hasNext()) {
+            OMNodeEx omNode = (OMNodeEx) children.next();
+            omNode.internalSerialize(writer, cache);
         }
     }
 }

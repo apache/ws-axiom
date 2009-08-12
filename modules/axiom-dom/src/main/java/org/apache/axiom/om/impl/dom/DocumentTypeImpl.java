@@ -42,11 +42,7 @@ public class DocumentTypeImpl extends ChildNode implements DocumentType, OMDocTy
         return DOCUMENT_TYPE_NODE;
     }
 
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        throw new UnsupportedOperationException();
-    }
-
-    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
+    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         throw new UnsupportedOperationException();
     }
 

@@ -383,12 +383,6 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
 
     }
 
-    /** There no concept of caching in this OM-DOM implementation. */
-    public void internalSerializeWithCache(XMLStreamWriter writer)
-            throws XMLStreamException {
-        this.internalSerialize(writer);
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -492,19 +486,18 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
     }
 
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
-                (MTOMXMLStreamWriter) xmlWriter : 
-                    new MTOMXMLStreamWriter(xmlWriter);
-        internalSerialize(writer);
-        writer.flush();
+        serialize(xmlWriter, true);
     }
 
-    public void serializeAndConsume(XMLStreamWriter xmlWriter)
-            throws XMLStreamException {
+    public void serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
+        serialize(xmlWriter, false);
+    }
+
+    public void serialize(XMLStreamWriter xmlWriter, boolean cache) throws XMLStreamException {
         MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
                 (MTOMXMLStreamWriter) xmlWriter : 
                     new MTOMXMLStreamWriter(xmlWriter);
-        internalSerializeAndConsume(writer);
+        internalSerialize(writer, cache);
         writer.flush();
     }
 
@@ -802,7 +795,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
         try {
-            internalSerialize(writer);
+            internalSerialize(writer, true);
             writer.flush();
         } finally {
             if (format.isAutoCloseWriter()) {
@@ -817,7 +810,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
                 .createXMLStreamWriter(writer2));
         writer.setOutputFormat(format);
         try {
-            internalSerialize(writer);
+            internalSerialize(writer, true);
             writer.flush();
         } finally {
             if (format.isAutoCloseWriter()) {
@@ -830,7 +823,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
         try {
-            internalSerializeAndConsume(writer);
+            internalSerialize(writer, false);
             writer.flush();
         } finally {
             if (format.isAutoCloseWriter()) {
@@ -845,7 +838,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
                 .createXMLStreamWriter(writer2));
         try {
             writer.setOutputFormat(format);
-            internalSerializeAndConsume(writer);
+            internalSerialize(writer, false);
             writer.flush();
         } finally {
             if (format.isAutoCloseWriter()) {

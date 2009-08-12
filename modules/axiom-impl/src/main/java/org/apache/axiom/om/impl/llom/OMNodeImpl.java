@@ -347,7 +347,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
 
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerialize(writer);
+        internalSerialize(writer, true);
         writer.flush();
         if (format.isAutoCloseWriter()) {
             writer.close();
@@ -358,7 +358,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
         MTOMXMLStreamWriter writer =
                 new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
         writer.setOutputFormat(format);
-        internalSerialize(writer);
+        internalSerialize(writer, true);
         writer.flush();
         if (format.isAutoCloseWriter()) {
             writer.close();
@@ -368,7 +368,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerializeAndConsume(writer);
+        internalSerialize(writer, false);
         writer.flush();
         if (format.isAutoCloseWriter()) {
             writer.close();
@@ -380,7 +380,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
         MTOMXMLStreamWriter writer =
                 new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
         writer.setOutputFormat(format);
-        internalSerializeAndConsume(writer);
+        internalSerialize(writer, false);
         writer.flush();
         if (format.isAutoCloseWriter()) {
             writer.close();

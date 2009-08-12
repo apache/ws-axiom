@@ -44,22 +44,15 @@ public interface OMNodeEx extends OMNode {
     public void setType(int nodeType) throws OMException;
 
     /**
-     * Serializes the node with caching.
+     * Serializes the node.
      *
      * @param writer
+     * @param cache indicates if caching should be enabled
      * @throws javax.xml.stream.XMLStreamException
      *
      */
-    public void internalSerialize(XMLStreamWriter writer)
+    public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException;
-
-    /**
-     * Serializes the node without caching.
-     *
-     * @param writer
-     * @throws XMLStreamException
-     */
-    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException;
     
     /**
      * Get the next sibling if it is available. The sibling is available if it is complete or

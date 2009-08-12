@@ -936,19 +936,10 @@ public class OMElementImpl extends OMNodeImpl
         }
     }
 
-    /**
-     * Method internalSerialize.
-     *
-     * @throws XMLStreamException
-     */
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, true);
-    }
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
+    public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
 
         if (cache) {
@@ -958,7 +949,7 @@ public class OMElementImpl extends OMNodeImpl
             //serialize children
             Iterator children = this.getChildren();
             while (children.hasNext()) {
-                ((OMNodeEx) children.next()).internalSerialize(writer);
+                ((OMNodeEx) children.next()).internalSerialize(writer, true);
             }
             OMSerializerUtil.serializeEndpart(writer);
 
@@ -971,7 +962,7 @@ public class OMElementImpl extends OMNodeImpl
                 while (child != null) {
                     if ((!(child instanceof OMElement)) || child.isComplete() ||
                             child.builder == null) {
-                        child.internalSerializeAndConsume(writer);
+                        child.internalSerialize(writer, false);
                     } else {
                         OMElement element = (OMElement) child;
                         element.getBuilder().setCache(false);
@@ -990,18 +981,6 @@ public class OMElementImpl extends OMNodeImpl
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * This method serializes and consumes without building the object structure in memory. Misuse
-     * of this method will cause loss of data. So it is advised to use populateYourSelf() method,
-     * before calling this method, if one wants to preserve data in the stream. This was requested
-     * during the second Axis2 summit.
-     *
-     * @throws XMLStreamException
-     */
-    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
-        this.internalSerialize(writer, false);
-    }
 
     /**
      * Gets first element.

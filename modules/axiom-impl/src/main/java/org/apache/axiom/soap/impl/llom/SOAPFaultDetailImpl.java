@@ -60,7 +60,7 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
         return this.getChildren();
     }
 
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
+    public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
         this.registerContentHandler(writer);
 

@@ -189,7 +189,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         // here do nothing as SOAPEnvelope doesn't have a parent !!!
     }
 
-    protected void internalSerialize(XMLStreamWriter writer2, boolean cache)
+    public void internalSerialize(XMLStreamWriter writer2, boolean cache)
             throws XMLStreamException {
 
         MTOMXMLStreamWriter writer = (MTOMXMLStreamWriter) writer2;
@@ -209,12 +209,12 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
             //serialize children
             SOAPHeader header = getHeader();
             if ((header != null) && (header.getFirstOMChild() != null)) {
-                ((SOAPHeaderImpl) header).internalSerialize(writer);
+                ((SOAPHeaderImpl) header).internalSerialize(writer, true);
             }
             SOAPBody body = getBody();
             //REVIEW: getBody has statements to return null..Can it be null in any case?
             if (body != null) {
-                ((org.apache.axiom.soap.impl.dom.SOAPBodyImpl) body).internalSerialize(writer);
+                ((org.apache.axiom.soap.impl.dom.SOAPBodyImpl) body).internalSerialize(writer, true);
             }
             OMSerializerUtil.serializeEndpart(writer);
 
@@ -241,7 +241,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
     private void serializeInternally(NodeImpl child, MTOMXMLStreamWriter writer)
             throws XMLStreamException {
         if ((!(child instanceof OMElement)) || child.isComplete() || child.builder == null) {
-            child.internalSerializeAndConsume(writer);
+            child.internalSerialize(writer, false);
         } else {
             OMElement element = (OMElement) child;
             element.getBuilder().setCache(false);

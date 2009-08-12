@@ -207,19 +207,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      * This is not supported since attributes serialization is handled by the serialization of the
      * owner nodes.
      */
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        throw new UnsupportedOperationException("Not supported");
-    }
-
-    /**
-     * This is not supported since attributes serialization is handled by the serialization of the
-     * owner nodes.
-     *
-     * @see org.apache.axiom.om.impl.OMNodeEx#internalSerializeAndConsume
-     *      (org.apache.axiom.om.impl.MTOMXMLStreamWriter)
-     */
-    public void internalSerializeAndConsume(XMLStreamWriter writer)
-            throws XMLStreamException {
+    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         throw new UnsupportedOperationException("Not supported");
     }
 

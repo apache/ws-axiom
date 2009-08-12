@@ -239,14 +239,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     }
 
     /**
-     * @param writer
-     * @throws XMLStreamException
-     */
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerializeLocal(writer);
-    }
-
-    /**
      * Writes the relevant output.
      *
      * @param writer
@@ -408,12 +400,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         return this.contentID;
     }
 
-    public void internalSerializeAndConsume(XMLStreamWriter writer)
-            throws XMLStreamException {
-        internalSerializeLocal(writer);
-    }
-
-    private void internalSerializeLocal(XMLStreamWriter writer) throws XMLStreamException {
+    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
 
         if (!this.isBinary) {
             writeOutput(writer);

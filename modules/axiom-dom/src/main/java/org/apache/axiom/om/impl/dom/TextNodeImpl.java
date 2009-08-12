@@ -299,15 +299,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     // /OMNode methods
     // /
 
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerializeLocal(writer);
-    }
-
-    public void internalSerializeAndConsume(XMLStreamWriter writer)
-            throws XMLStreamException {
-        internalSerializeLocal(writer);
-    }
-
     public boolean isOptimized() {
         return this.optimize;
     }
@@ -466,7 +457,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         }
     }
 
-    private void internalSerializeLocal(XMLStreamWriter writer)
+    public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
         if (!this.isBinary) {
             writeOutput(writer);

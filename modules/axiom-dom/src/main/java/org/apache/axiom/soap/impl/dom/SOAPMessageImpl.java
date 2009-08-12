@@ -59,10 +59,6 @@ public class SOAPMessageImpl extends DocumentImpl implements SOAPMessage {
 
     protected void internalSerialize(XMLStreamWriter writer, boolean cache,
                                      boolean includeXMLDeclaration) throws XMLStreamException {
-        if (cache) {
-            ((OMNodeEx) this.ownerNode.getDocumentElement()).internalSerialize(writer);
-        } else {
-            ((OMNodeEx) this.ownerNode.getDocumentElement()).internalSerializeAndConsume(writer);
-        }
+        ((OMNodeEx) this.ownerNode.getDocumentElement()).internalSerialize(writer, cache);
     }
 }

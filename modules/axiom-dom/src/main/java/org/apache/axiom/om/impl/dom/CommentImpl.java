@@ -67,13 +67,7 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
                 "You should not set the node type of a comment");
     }
 
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
+    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         writer.writeComment(this.textValue.toString());
     }
-
-    public void internalSerializeAndConsume(XMLStreamWriter writer)
-            throws XMLStreamException {
-        internalSerialize(writer);
-    }
-
 }

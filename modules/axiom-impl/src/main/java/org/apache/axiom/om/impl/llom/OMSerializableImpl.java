@@ -93,38 +93,27 @@ public abstract class OMSerializableImpl implements OMSerializable {
     public abstract void setComplete(boolean state);
 
     /**
-     * Serializes the node with caching.
+     * Serializes the node.
      *
      * @param writer
      * @throws XMLStreamException
      */
-    public abstract void internalSerialize(XMLStreamWriter writer) throws XMLStreamException;
-
-    /**
-     * Serializes the node without caching.
-     *
-     * @param writer
-     * @throws XMLStreamException
-     */
-    public abstract void internalSerializeAndConsume(XMLStreamWriter writer)
-            throws XMLStreamException;
+    public abstract void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException;
 
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        
-        // If the input xmlWriter is not an MTOMXMLStreamWriter, then wrapper it
-        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
-                (MTOMXMLStreamWriter) xmlWriter : 
-                    new MTOMXMLStreamWriter(xmlWriter);
-        internalSerialize(writer);
-        writer.flush();
+        serialize(xmlWriter, true);
     }
 
     public void serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
+        serialize(xmlWriter, false);
+    }
+
+    public void serialize(XMLStreamWriter xmlWriter, boolean cache) throws XMLStreamException {
         // If the input xmlWriter is not an MTOMXMLStreamWriter, then wrapper it
         MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
                 (MTOMXMLStreamWriter) xmlWriter : 
                     new MTOMXMLStreamWriter(xmlWriter);
-        internalSerializeAndConsume(writer);
+        internalSerialize(writer, cache);
         writer.flush();
     }
 }

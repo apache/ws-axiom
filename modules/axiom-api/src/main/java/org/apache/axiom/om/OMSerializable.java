@@ -64,7 +64,9 @@ public interface OMSerializable {
     void close(boolean build);
 
     /**
-     * Serializes the information item with caching.
+     * Serializes the information item with caching. This method has the same effect as
+     * {@link #serialize(XMLStreamWriter, boolean)} with <code>cache</code> set to
+     * <code>true</code>.
      *
      * @param xmlWriter
      * @throws XMLStreamException
@@ -72,10 +74,21 @@ public interface OMSerializable {
     void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException;
 
     /**
-     * Serializes the information item without caching.
+     * Serializes the information item without caching. This method has the same effect as
+     * {@link #serialize(XMLStreamWriter, boolean)} with <code>cache</code> set to
+     * <code>false</code>.
      *
      * @param xmlWriter
      * @throws XMLStreamException
      */
     void serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException;
+    
+    /**
+     * Serializes the information item.
+     * 
+     * @param xmlWriter
+     * @param cache indicates if caching should be enabled
+     * @throws XMLStreamException
+     */
+    void serialize(XMLStreamWriter xmlWriter, boolean cache) throws XMLStreamException;
 }

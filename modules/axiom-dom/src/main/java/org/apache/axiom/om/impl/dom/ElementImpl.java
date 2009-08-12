@@ -1093,16 +1093,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         throw new UnsupportedOperationException();
     }
 
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, true);
-    }
-
-    public void internalSerializeAndConsume(XMLStreamWriter writer)
-            throws XMLStreamException {
-        this.internalSerialize(writer, false);
-    }
-
-    protected void internalSerialize(XMLStreamWriter writer,
+    public void internalSerialize(XMLStreamWriter writer,
                                      boolean cache) throws XMLStreamException {
 
         if (!cache) {
@@ -1112,7 +1103,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             // serilize children
             Iterator children = this.getChildren();
             while (children.hasNext()) {
-                ((OMNodeEx) children.next()).internalSerialize(writer);
+                ((OMNodeEx) children.next()).internalSerialize(writer, true);
             }
             OMSerializerUtil.serializeEndpart(writer);
 
@@ -1126,7 +1117,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                 while (child != null
                         && ((!(child instanceof OMElement)) || child
                         .isComplete())) {
-                    child.internalSerializeAndConsume(writer);
+                    child.internalSerialize(writer, false);
                     child = child.nextSibling;
                 }
                 if (child != null) {

@@ -102,8 +102,8 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
                 "In OM Document object doesn't have a type");
     }
 
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, true, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
+    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+        internalSerialize(writer, cache, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
     }
 
     // /
@@ -381,11 +381,6 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
     }
 
-    public void internalSerializeAndConsume(XMLStreamWriter writer)
-            throws XMLStreamException {
-        internalSerialize(writer, false, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
-    }
-
     // /
     // /OMDocument Methods
     // /
@@ -416,13 +411,13 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerializeAndConsume(writer);
+        internalSerialize(writer, false);
         writer.flush();
     }
 
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerialize(writer);
+        internalSerialize(writer, true);
         writer.flush();
     }
 

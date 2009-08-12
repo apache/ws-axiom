@@ -68,7 +68,7 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
         }
     }
 
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
+    public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
         this.registerContentHandler(writer);
 

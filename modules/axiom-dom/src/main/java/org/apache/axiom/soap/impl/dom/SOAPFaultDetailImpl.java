@@ -62,7 +62,7 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
         return this.getChildren();
     }
 
-    protected void internalSerialize(XMLStreamWriter writer, boolean cache)
+    public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
         // select the builder
         short builderType = PULL_TYPE_BUILDER;    // default is pull type
@@ -79,7 +79,7 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
             //No caching
             if (this.firstChild != null) {
                 OMSerializerUtil.serializeStartpart(this, writer);
-                firstChild.internalSerializeAndConsume(writer);
+                firstChild.internalSerialize(writer, false);
                 OMSerializerUtil.serializeEndpart(writer);
             } else if (!this.done) {
                 if (builderType == PULL_TYPE_BUILDER) {
