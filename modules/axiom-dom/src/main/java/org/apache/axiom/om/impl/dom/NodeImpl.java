@@ -796,11 +796,10 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
         try {
             internalSerialize(writer, true);
+            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
             writer.flush();
         } finally {
-            if (format.isAutoCloseWriter()) {
-                writer.close();
-            }
+            writer.close();
         }
     }
 
@@ -811,11 +810,10 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         writer.setOutputFormat(format);
         try {
             internalSerialize(writer, true);
+            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
             writer.flush();
         } finally {
-            if (format.isAutoCloseWriter()) {
-                writer.close();
-            }
+            writer.close();
         }
     }
 
@@ -824,11 +822,10 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
         try {
             internalSerialize(writer, false);
+            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
             writer.flush();
         } finally {
-            if (format.isAutoCloseWriter()) {
-                writer.close();
-            }
+            writer.close();
         }
     }
 
@@ -838,12 +835,11 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
                 .createXMLStreamWriter(writer2));
         try {
             writer.setOutputFormat(format);
+            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
             internalSerialize(writer, false);
             writer.flush();
         } finally {
-            if (format.isAutoCloseWriter()) {
-                writer.close();
-            }
+            writer.close();
         }
     }
 

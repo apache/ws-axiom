@@ -347,9 +347,11 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
 
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerialize(writer, true);
-        writer.flush();
-        if (format.isAutoCloseWriter()) {
+        try {
+            internalSerialize(writer, true);
+            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
+            writer.flush();
+        } finally {
             writer.close();
         }
     }
@@ -358,9 +360,11 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
         MTOMXMLStreamWriter writer =
                 new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
         writer.setOutputFormat(format);
-        internalSerialize(writer, true);
-        writer.flush();
-        if (format.isAutoCloseWriter()) {
+        try {
+            internalSerialize(writer, true);
+            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
+            writer.flush();
+        } finally {
             writer.close();
         }
     }
@@ -368,9 +372,11 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerialize(writer, false);
-        writer.flush();
-        if (format.isAutoCloseWriter()) {
+        try {
+            internalSerialize(writer, false);
+            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
+            writer.flush();
+        } finally {
             writer.close();
         }
     }
@@ -380,9 +386,11 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
         MTOMXMLStreamWriter writer =
                 new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
         writer.setOutputFormat(format);
-        internalSerialize(writer, false);
-        writer.flush();
-        if (format.isAutoCloseWriter()) {
+        try {
+            internalSerialize(writer, false);
+            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
+            writer.flush();
+        } finally {
             writer.close();
         }
     }

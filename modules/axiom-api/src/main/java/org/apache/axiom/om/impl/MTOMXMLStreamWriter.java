@@ -167,6 +167,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     }
 
     public void close() throws XMLStreamException {
+        // TODO: we should probably call flush if the attachments have not been written yet
         if (isDebugEnabled) {
             log.debug("close");
         }

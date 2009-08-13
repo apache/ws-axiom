@@ -307,10 +307,16 @@ public class OMOutputFormat {
         return sb.toString();
     }
 
+    /**
+     * @deprecated
+     */
     public boolean isAutoCloseWriter() {
         return autoCloseWriter;
     }
 
+    /**
+     * @deprecated
+     */
     public void setAutoCloseWriter(boolean autoCloseWriter) {
         this.autoCloseWriter = autoCloseWriter;
     }

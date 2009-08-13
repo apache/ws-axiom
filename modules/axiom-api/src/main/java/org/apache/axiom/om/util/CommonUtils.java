@@ -123,7 +123,6 @@ public class CommonUtils {
     public static long logDebug(OMElement om, Log log, int limit) {
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(true);
-        format.setAutoCloseWriter(true);
         format.setIgnoreXMLDeclaration(true);
         return logDebug(om, log, limit, format);
     }
