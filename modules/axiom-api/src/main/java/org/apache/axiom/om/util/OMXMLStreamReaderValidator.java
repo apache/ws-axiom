@@ -32,6 +32,7 @@ import javax.xml.stream.XMLStreamException;
 
 import java.util.Stack;
 
+// TODO: this needs reformatting; the (generated) Javadoc is unreadable!
 /**
  * There are several places in the code where events are passed from 
  * a source to a consumer using XMLStreamReader events. 
@@ -48,6 +49,7 @@ import java.util.Stack;
  * In the initial version, the XMStreamValidator ensures that the start element events match the 
  * end element events.
  *
+ * @see org.apache.axiom.om.OMElement#getXMLStreamReader(boolean)
  */
 public class OMXMLStreamReaderValidator implements OMXMLStreamReader {
 
