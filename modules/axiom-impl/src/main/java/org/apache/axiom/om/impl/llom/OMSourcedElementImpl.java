@@ -483,17 +483,15 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getFirstElement();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getXMLStreamReader()
-     */
-    public XMLStreamReader getXMLStreamReader() {
+    public XMLStreamReader getXMLStreamReader(boolean cache) {
         if (isDebugEnabled) {
-            log.debug("getting XMLStreamReader for " + getPrintableName());
+            log.debug("getting XMLStreamReader for " + getPrintableName()
+                    + " with cache=" + cache);
         }
         if (isExpanded) {
-            return super.getXMLStreamReader();
+            return super.getXMLStreamReader(cache);
         } else {
-            if (isDestructiveRead()) {
+            if (cache && isDestructiveRead()) {
                 forceExpand();
                 return super.getXMLStreamReader();
             }
@@ -501,20 +499,12 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getXMLStreamReaderWithoutCaching()
-     */
+    public XMLStreamReader getXMLStreamReader() {
+        return getXMLStreamReader(true);
+    }
+
     public XMLStreamReader getXMLStreamReaderWithoutCaching() {
-        if (isDebugEnabled) {
-            log.debug("getting XMLStreamReader without caching for " +
-                    getPrintableName());
-        }
-        if (isExpanded) {         
-            XMLStreamReader reader = super.getXMLStreamReaderWithoutCaching();
-            return reader;
-        } else {
-            return getDirectReader();
-        }
+        return getXMLStreamReader(false);
     }
 
     /* (non-Javadoc)

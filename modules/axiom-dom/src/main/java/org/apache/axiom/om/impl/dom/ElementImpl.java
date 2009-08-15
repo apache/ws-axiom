@@ -1160,7 +1160,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      *
      * @return Returns reader.
      */
-    private XMLStreamReader getXMLStreamReader(boolean cache) {
+    public XMLStreamReader getXMLStreamReader(boolean cache) {
         if ((builder == null) && !cache) {
             throw new UnsupportedOperationException(
                     "This element was not created in a manner to be switched");

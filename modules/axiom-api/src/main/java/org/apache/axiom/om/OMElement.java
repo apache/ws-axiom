@@ -246,22 +246,30 @@ public interface OMElement extends OMNode, OMContainer {
 
 
     /**
-     * Returns the pull parser that will generate the pull events relevant to THIS element.
-     * <p/>
-     * <p>Caching is on.</p>
-     *
-     * @return Returns an XMLStreamReader relative to this element.
+     * Get a pull parser representation of this element with caching enabled. This method has the
+     * same effect as {@link #getXMLStreamReader(boolean)} with <code>cache</code> set to
+     * <code>true</code>.
+     * 
+     * @return an {@link XMLStreamReader} representation of this element
      */
     XMLStreamReader getXMLStreamReader();
 
     /**
-     * Returns the pull parser that will generate the pull events relevant to THIS element.
-     * <p/>
-     * <p>Caching is off.</p>
-     *
-     * @return Returns an XMLStreamReader relative to this element, with no caching.
+     * Get a pull parser representation of this element with caching disabled. This method has the
+     * same effect as {@link #getXMLStreamReader(boolean)} with <code>cache</code> set to
+     * <code>false</code>.
+     * 
+     * @return an {@link XMLStreamReader} representation of this element
      */
     XMLStreamReader getXMLStreamReaderWithoutCaching();
+
+    /**
+     * Get a pull parser representation of this element.
+     *
+     * @param cache indicates if caching should be enabled
+     * @return an {@link XMLStreamReader} representation of this element
+     */
+    XMLStreamReader getXMLStreamReader(boolean cache);
 
     /** @param text  */
     void setText(String text);
