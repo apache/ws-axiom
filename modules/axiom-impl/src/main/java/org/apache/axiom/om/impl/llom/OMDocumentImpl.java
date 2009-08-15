@@ -24,7 +24,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
@@ -38,7 +37,6 @@ import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.OutputStream;
 import java.util.Iterator;
 
 /** Class OMDocumentImpl */
@@ -309,57 +307,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
 
     public void setXMLVersion(String xmlVersion) {
         this.xmlVersion = xmlVersion;
-    }
-
-    /**
-     * Serializes the document directly to the output stream with caching disabled.
-     *
-     * @param output
-     * @throws XMLStreamException
-     */
-    public void serializeAndConsume(OutputStream output) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, new OMOutputFormat());
-        internalSerialize(writer, false);
-        writer.flush();
-    }
-
-    /**
-     * Serializes the document directly to the output stream with caching enabled.
-     *
-     * @param output
-     * @throws XMLStreamException
-     */
-    public void serialize(OutputStream output) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, new OMOutputFormat());
-        internalSerialize(writer, true);
-        writer.flush();
-    }
-
-    /**
-     * Serializes the document directly to the output stream with caching disabled.
-     *
-     * @param output
-     * @param format
-     * @throws XMLStreamException
-     */
-    public void serializeAndConsume(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerialize(writer, false);
-        writer.flush();
-    }
-
-    /**
-     * Serializes the document directly to the output stream with caching enabled.
-     *
-     * @param output
-     * @param format
-     * @throws XMLStreamException
-     */
-    public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        internalSerialize(writer, true);
-        writer.flush();
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {

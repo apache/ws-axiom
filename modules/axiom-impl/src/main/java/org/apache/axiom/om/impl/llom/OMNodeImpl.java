@@ -26,20 +26,12 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
-import org.apache.axiom.om.util.StAXUtils;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-import java.io.OutputStream;
-import java.io.Writer;
 
 /** Class OMNodeImpl */
 public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, OMNodeEx {
@@ -306,92 +298,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
     public void buildWithAttachments() {
         if (!this.done) {
             this.build();
-        }
-    }
-
-    public void serialize(OutputStream output) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serialize(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serialize(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serialize(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serializeAndConsume(OutputStream output) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serializeAndConsume(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        try {
-            internalSerialize(writer, true);
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
-    public void serialize(Writer writer2, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter writer =
-                new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
-        writer.setOutputFormat(format);
-        try {
-            internalSerialize(writer, true);
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
-    public void serializeAndConsume(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
-        try {
-            internalSerialize(writer, false);
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
-    public void serializeAndConsume(Writer writer2, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer =
-                new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer2));
-        writer.setOutputFormat(format);
-        try {
-            internalSerialize(writer, false);
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
-        } finally {
-            writer.close();
         }
     }
 

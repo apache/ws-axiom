@@ -22,6 +22,9 @@ package org.apache.axiom.om;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
+import java.io.OutputStream;
+import java.io.Writer;
 import java.util.Iterator;
 
 /**
@@ -362,4 +365,101 @@ public interface OMElement extends OMNode, OMContainer {
     void setLineNumber(int lineNumber);
 
     int getLineNumber();
+
+    /**
+     * Serializes the node with caching.
+     *
+     * @param output
+     * @throws XMLStreamException
+     */
+    // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
+    //       OMNode. We redeclare it here to make sure that people don't get a deprecation
+    //       warning when using the method on an OMElement.
+    void serialize(OutputStream output) throws XMLStreamException;
+
+    /**
+     * Serializes the node with caching.
+     *
+     * @param writer
+     * @throws XMLStreamException
+     */
+    // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
+    //       OMNode. We redeclare it here to make sure that people don't get a deprecation
+    //       warning when using the method on an OMElement.
+    void serialize(Writer writer) throws XMLStreamException;
+
+    /**
+     * Serializes the node with caching.
+     *
+     * @param output
+     * @param format
+     * @throws XMLStreamException
+     */
+    // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
+    //       OMNode. We redeclare it here to make sure that people don't get a deprecation
+    //       warning when using the method on an OMElement.
+    void serialize(OutputStream output, OMOutputFormat format)
+            throws XMLStreamException;
+
+    /**
+     * Serializes the node with caching.
+     *
+     * @param writer
+     * @param format
+     * @throws XMLStreamException
+     */
+    // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
+    //       OMNode. We redeclare it here to make sure that people don't get a deprecation
+    //       warning when using the method on an OMElement.
+    void serialize(Writer writer, OMOutputFormat format)
+            throws XMLStreamException;
+
+    /**
+     * Serializes the node without caching.
+     *
+     * @param output
+     * @throws XMLStreamException
+     */
+    // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
+    //       OMNode. We redeclare it here to make sure that people don't get a deprecation
+    //       warning when using the method on an OMElement.
+    void serializeAndConsume(OutputStream output)
+            throws XMLStreamException;
+
+    /**
+     * Serializes the node without caching.
+     *
+     * @param writer
+     * @throws XMLStreamException
+     */
+    // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
+    //       OMNode. We redeclare it here to make sure that people don't get a deprecation
+    //       warning when using the method on an OMElement.
+    void serializeAndConsume(Writer writer) throws XMLStreamException;
+
+    /**
+     * Serializes the node without caching.
+     *
+     * @param output
+     * @param format
+     * @throws XMLStreamException
+     */
+    // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
+    //       OMNode. We redeclare it here to make sure that people don't get a deprecation
+    //       warning when using the method on an OMElement.
+    void serializeAndConsume(OutputStream output, OMOutputFormat format)
+            throws XMLStreamException;
+
+    /**
+     * Serializes the node without caching.
+     *
+     * @param writer
+     * @param format
+     * @throws XMLStreamException
+     */
+    // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
+    //       OMNode. We redeclare it here to make sure that people don't get a deprecation
+    //       warning when using the method on an OMElement.
+    void serializeAndConsume(Writer writer, OMOutputFormat format)
+            throws XMLStreamException;
 }

@@ -172,74 +172,54 @@ public interface OMNode extends OMSerializable {
     OMNode getPreviousOMSibling();
 
     /**
-     * Serializes the node with caching.
-     *
-     * @param output
-     * @throws XMLStreamException
+     * @deprecated This method is not meaningful on a node in general, but only on an
+     *             {@link OMElement}.
      */
     void serialize(OutputStream output) throws XMLStreamException;
 
     /**
-     * Serializes the node with caching.
-     *
-     * @param writer
-     * @throws XMLStreamException
+     * @deprecated This method is not meaningful on a node in general, but only on an
+     *             {@link OMElement}.
      */
     void serialize(Writer writer) throws XMLStreamException;
 
     /**
-     * Serializes the node with caching.
-     *
-     * @param output
-     * @param format
-     * @throws XMLStreamException
+     * @deprecated This method is not meaningful on a node in general, but only on an
+     *             {@link OMElement}.
      */
     void serialize(OutputStream output, OMOutputFormat format)
             throws XMLStreamException;
 
     /**
-     * Serializes the node with caching.
-     *
-     * @param writer
-     * @param format
-     * @throws XMLStreamException
+     * @deprecated This method is not meaningful on a node in general, but only on an
+     *             {@link OMElement}.
      */
     void serialize(Writer writer, OMOutputFormat format)
             throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
-     *
-     * @param output
-     * @throws XMLStreamException
+     * @deprecated This method is not meaningful on a node in general, but only on an
+     *             {@link OMElement}.
      */
     void serializeAndConsume(OutputStream output)
             throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
-     *
-     * @param writer
-     * @throws XMLStreamException
+     * @deprecated This method is not meaningful on a node in general, but only on an
+     *             {@link OMElement}.
      */
     void serializeAndConsume(Writer writer) throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
-     *
-     * @param output
-     * @param format
-     * @throws XMLStreamException
+     * @deprecated This method is not meaningful on a node in general, but only on an
+     *             {@link OMElement}.
      */
     void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
-     *
-     * @param writer
-     * @param format
-     * @throws XMLStreamException
+     * @deprecated This method is not meaningful on a node in general, but only on an
+     *             {@link OMElement}.
      */
     void serializeAndConsume(Writer writer, OMOutputFormat format)
             throws XMLStreamException;

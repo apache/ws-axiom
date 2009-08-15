@@ -20,6 +20,10 @@
 package org.apache.axiom.om;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+
+import java.io.OutputStream;
+import java.io.Writer;
 import java.util.Iterator;
 
 /**
@@ -95,6 +99,79 @@ public interface OMContainer extends OMSerializable {
      * @return Returns the first child.  May return null if the container has no children.
      */
     OMNode getFirstOMChild();
+
+    /**
+     * Serializes the node with caching.
+     *
+     * @param output
+     * @throws XMLStreamException
+     */
+    void serialize(OutputStream output) throws XMLStreamException;
+
+    /**
+     * Serializes the node with caching.
+     *
+     * @param writer
+     * @throws XMLStreamException
+     */
+    void serialize(Writer writer) throws XMLStreamException;
+
+    /**
+     * Serializes the node with caching.
+     *
+     * @param output
+     * @param format
+     * @throws XMLStreamException
+     */
+    void serialize(OutputStream output, OMOutputFormat format)
+            throws XMLStreamException;
+
+    /**
+     * Serializes the node with caching.
+     *
+     * @param writer
+     * @param format
+     * @throws XMLStreamException
+     */
+    void serialize(Writer writer, OMOutputFormat format)
+            throws XMLStreamException;
+
+    /**
+     * Serializes the node without caching.
+     *
+     * @param output
+     * @throws XMLStreamException
+     */
+    void serializeAndConsume(OutputStream output)
+            throws XMLStreamException;
+
+    /**
+     * Serializes the node without caching.
+     *
+     * @param writer
+     * @throws XMLStreamException
+     */
+    void serializeAndConsume(Writer writer) throws XMLStreamException;
+
+    /**
+     * Serializes the node without caching.
+     *
+     * @param output
+     * @param format
+     * @throws XMLStreamException
+     */
+    void serializeAndConsume(OutputStream output, OMOutputFormat format)
+            throws XMLStreamException;
+
+    /**
+     * Serializes the node without caching.
+     *
+     * @param writer
+     * @param format
+     * @throws XMLStreamException
+     */
+    void serializeAndConsume(Writer writer, OMOutputFormat format)
+            throws XMLStreamException;
 
     void buildNext();
 }

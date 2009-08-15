@@ -19,10 +19,6 @@
 
 package org.apache.axiom.om;
 
-import javax.xml.stream.XMLStreamException;
-import java.io.OutputStream;
-
-
 public interface OMDocument extends OMContainer {
 
     /** Field XML_10 XML Version 1.0 */
@@ -43,6 +39,10 @@ public interface OMDocument extends OMContainer {
      *
      * @param rootElement
      */
+    // TODO: this method and its implementations need review:
+    //        - LLOM doesn't add the element as a child (!!!)
+    //        - Neither LLOM nor DOOM updates the parent of the element
+    // Note that OMSourcedElementImpl seems to depend on this behavior
     void setOMDocumentElement(OMElement rootElement);
 
     /**
@@ -83,39 +83,4 @@ public interface OMDocument extends OMContainer {
     String isStandalone();
 
     void setStandalone(String isStandalone);
-
-    /**
-     * Serializes the OMDocument.
-     *
-     * @param output
-     * @param format
-     * @throws XMLStreamException
-     */
-    void serializeAndConsume(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException;
-
-    /**
-     * Builds the OM node/tree and then serializes the document.
-     *
-     * @param output
-     * @param format
-     * @throws XMLStreamException
-     */
-    void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException;
-
-    /**
-     * Serializes the OMDocument.
-     *
-     * @param output
-     * @throws XMLStreamException
-     */
-    void serializeAndConsume(OutputStream output) throws XMLStreamException;
-
-    /**
-     * Serializes the document with cache on.
-     *
-     * @param output
-     * @throws XMLStreamException
-     */
-    void serialize(OutputStream output) throws XMLStreamException;
 }
