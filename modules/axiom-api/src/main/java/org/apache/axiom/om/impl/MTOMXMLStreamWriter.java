@@ -435,11 +435,22 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     }
     
     /**
-     * If this XMLStreamWriter is connected to an OutputStream
-     * then the OutputStream is returned.  This allows a node
-     * (perhaps an OMSourcedElement) to write its content
-     * directly to the OutputStream.
-     * @return OutputStream or null
+     * Get the underlying {@link OutputStream} for this writer, if available. This method allows a
+     * node (perhaps an {@link org.apache.axiom.om.OMSourcedElement}) to write its content directly
+     * to the byte stream.
+     * <p>
+     * <b>WARNING:</b> This method should be used with extreme care. The caller must be prepared to
+     * handle the following issues:
+     * <ul>
+     * <li>The caller must use the right charset encoding when writing to the stream.
+     * <li>The caller should avoid writing byte order marks to the stream.
+     * <li>The caller must be aware of the fact that a default namespace might have been set in the
+     * context where the byte stream is requested. If the XML data written to the stream contains
+     * unqualified elements, then the caller must make sure that the default namespace is redeclared
+     * as appropriate.
+     * </ul>
+     * 
+     * @return the underlying byte stream, or <code>null</code> if the stream is not accessible
      */
     public OutputStream getOutputStream() throws XMLStreamException {  
         OutputStream os = null;
