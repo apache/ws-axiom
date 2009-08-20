@@ -43,6 +43,8 @@ public class OMSerializerUtil {
     
     static long nsCounter = 0;
     
+    private static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
+    private static final String XSI_LOCAL_NAME = "type";
     /**
      * Method serializeEndpart.
      *
@@ -316,6 +318,62 @@ public class OMSerializerUtil {
                 if (!writePrefixList.contains(newPrefix)) {
                     writePrefixList.add(newPrefix);
                     writeNSList.add(namespace);
+                }
+            }
+        }
+        
+        // Now Generate setPrefix for each prefix referenced in an xsi:type
+        // For example xsi:type="p:dataType"
+        // The following code will make sure that setPrefix is called for "p".
+        attrs = element.getAllAttributes();
+        while (attrs != null && attrs.hasNext()) {
+            OMAttribute attr = (OMAttribute) attrs.next();
+            OMNamespace omNamespace = attr.getNamespace();
+            String prefix = null;
+            String namespace = null;
+            if (omNamespace != null) {
+                prefix = omNamespace.getPrefix();
+                namespace = omNamespace.getNamespaceURI();
+            }
+            prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
+            namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
+            String local = attr.getLocalName();
+
+            if (XSI_URI.equals(namespace) &&
+                    XSI_LOCAL_NAME.equals(local)) {
+                String value = attr.getAttributeValue();
+                if (DEBUG_ENABLED) {
+                    log.debug("The value of xsi:type is " + value);
+                }
+                if (value != null) {
+                    value = value.trim();
+                    if (value.indexOf(":") > 0) {
+                        String refPrefix = value.substring(0, value.indexOf(":"));
+                        OMNamespace omNS = element.findNamespaceURI(refPrefix);
+                        String refNamespace = (omNS == null) ? null : omNS.getNamespaceURI();
+                        if (refNamespace != null && refNamespace.length() > 0) {
+
+                            newPrefix = generateSetPrefix(refPrefix, 
+                                    refNamespace, 
+                                    writer, 
+                                    true);
+                            // If the prefix is not associated with a namespace yet, remember it so that we can
+                            // write out a namespace declaration
+                            if (newPrefix != null) {
+                                if (DEBUG_ENABLED) {
+                                    log.debug("An xmlns:" + newPrefix +"=\"" +  refNamespace +"\" will be written");
+                                }
+                                if (writePrefixList == null) {
+                                    writePrefixList = new ArrayList();
+                                    writeNSList = new ArrayList();
+                                }
+                                if (!writePrefixList.contains(newPrefix)) {
+                                    writePrefixList.add(newPrefix);
+                                    writeNSList.add(refNamespace);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -32,11 +32,14 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -149,6 +152,71 @@ public class OMSerializerTest extends AbstractTestCase {
             e.printStackTrace();
             fail(e.getMessage());
         }
+    }
+    
+    public void testXSITypePullStream() throws Exception {
+        
+        // Read the SOAP Message that defines prefix "usr" on the envelope and only uses it within an xsi:type
+        // within a payload element.
+        final String USR_URI = "http://ws.apache.org/axis2/user";
+        final String USR_DEF = "xmlns:usr";
+        
+        reader =
+            XMLInputFactory.newInstance()
+                           .createXMLStreamReader(getTestResource("soap/soapmessageWithXSI.xml"));
+        OMXMLParserWrapper builder =
+            OMXMLBuilderFactory.createStAXSOAPModelBuilder(OMAbstractFactory.getSOAP11Factory(),
+                                                           reader);
+        
+        // Get the envelope and then get the body
+        SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
+        SOAPBody body = env.getBody();
+        
+        StreamingOMSerializer serializer = new StreamingOMSerializer();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
+
+        // Serializing the body should cause the usr prefix to be pulled down from the
+        // envelope and written in the message.
+        serializer.serialize(body.getXMLStreamReaderWithoutCaching(), writer);
+        writer.flush();
+        String outputString = new String(byteArrayOutputStream.toByteArray());
+        
+        assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
+        assertTrue(outputString.indexOf(USR_DEF) > 0);
+        assertTrue(outputString.indexOf(USR_URI) > 0);
+    }
+    
+    public void testXSITypeNoPullStream() throws Exception {
+        
+        // Read the SOAP Message that defines prefix "usr" on the envelope and only uses it within an xsi:type
+        // within a payload element.
+        final String USR_URI = "http://ws.apache.org/axis2/user";
+        final String USR_DEF = "xmlns:usr";
+        
+        reader =
+            XMLInputFactory.newInstance()
+                           .createXMLStreamReader(getTestResource("soap/soapmessageWithXSI.xml"));
+        OMXMLParserWrapper builder =
+            OMXMLBuilderFactory.createStAXSOAPModelBuilder(OMAbstractFactory.getSOAP11Factory(),
+                                                           reader);
+        
+        // Get and build the whole tree...this will cause no streaming when doing the write
+        SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
+        env.build();
+        
+        // Get the body
+        SOAPBody body = env.getBody();
+        
+        // Serialize the body
+        String outputString = body.toString();
+       
+        // Serializing the body should cause the usr prefix to be pulled down from the
+        // envelope and written in the message.
+        
+        assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
+        assertTrue(outputString.indexOf(USR_DEF) > 0);
+        assertTrue(outputString.indexOf(USR_URI) > 0);
     }
 
     protected void tearDown() throws Exception {

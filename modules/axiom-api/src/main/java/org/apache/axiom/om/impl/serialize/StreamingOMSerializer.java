@@ -40,11 +40,14 @@ import java.util.ArrayList;
 /** Class StreamingOMSerializer */
 public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
     
-    Log log = LogFactory.getLog(StreamingOMSerializer.class);
-
+    static Log log = LogFactory.getLog(StreamingOMSerializer.class);
+    private static final boolean DEBUG_ENABLED = log.isDebugEnabled();
+    
     private static int namespaceSuffix = 0;
     public static final String NAMESPACE_PREFIX = "ns";
 
+    private static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
+    private static final String XSI_LOCAL_NAME = "type";
     /*
     * The behavior of the serializer is such that it returns when it encounters the
     * starting element for the second time. The depth variable tracks the depth of the
@@ -293,6 +296,56 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                 if (!writePrefixList.contains(newPrefix)) {
                     writePrefixList.add(newPrefix);
                     writeNSList.add(namespace);
+                }
+            }
+        }
+        
+        // Now Generate setPrefix for each prefix referenced in an xsi:type
+        // For example xsi:type="p:dataType"
+        // The following code will make sure that setPrefix is called for "p".
+        count = reader.getAttributeCount();
+        for (int i = 0; i < count; i++) {
+            String prefix = reader.getAttributePrefix(i);
+            prefix = (prefix != null && prefix.length() == 0) ? null : prefix;
+            String namespace = reader.getAttributeNamespace(i);
+            namespace = (namespace != null && namespace.length() == 0) ? null : namespace;
+            String localName = reader.getAttributeLocalName(i);
+            
+            if  (XSI_URI.equals(namespace) &&
+                XSI_LOCAL_NAME.equals(localName)) {
+                String value = reader.getAttributeValue(i);
+                if (DEBUG_ENABLED) {
+                    log.debug("The value of xsi:type is " + value);
+                }
+                if (value != null) {
+                    value = value.trim();
+                    if (value.indexOf(":") > 0) {
+                        String refPrefix = value.substring(0, value.indexOf(":"));
+                        String refNamespace = reader.getNamespaceURI(refPrefix);
+                        if (refNamespace != null && refNamespace.length() > 0) {
+                            
+                            newPrefix = OMSerializerUtil.generateSetPrefix(refPrefix, 
+                                            refNamespace, 
+                                            writer, 
+                                            true);
+                            // If the prefix is not associated with a namespace yet, remember it so that we can
+                            // write out a namespace declaration
+                            if (newPrefix != null) {
+                                if (DEBUG_ENABLED) {
+                                    log.debug("An xmlns:" + newPrefix +"=\"" +  refNamespace +"\" will be written");
+                                }
+                                if (writePrefixList == null) {
+                                    writePrefixList = new ArrayList();
+                                    writeNSList = new ArrayList();
+                                }
+                                if (!writePrefixList.contains(newPrefix)) {
+                                    writePrefixList.add(newPrefix);
+                                    writeNSList.add(refNamespace);
+                                }
+                            }
+                        }
+                        
+                    }
                 }
             }
         }
