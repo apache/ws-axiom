@@ -847,4 +847,12 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
     public OMFactory getOMFactory() {
         return this.factory;
     }
+
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
+        internalSerialize(writer, true);
+    }
+
+    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
+        internalSerialize(writer, false);
+    }
 }
