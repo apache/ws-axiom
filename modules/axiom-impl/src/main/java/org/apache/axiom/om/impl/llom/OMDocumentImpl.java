@@ -317,4 +317,16 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
                                      boolean includeXMLDeclaration) throws XMLStreamException {
         OMDocumentImplUtil.internalSerialize(this, writer, cache, includeXMLDeclaration);
     }
+
+    /** Serializes the document with the XML declaration. */
+    public void internalSerializeAndConsume(XMLStreamWriter writer)
+            throws XMLStreamException {
+        internalSerialize(writer, false);
+    }
+
+
+    /** Serializes the document with cache. */
+    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
+        internalSerialize(writer, true);
+    }
 }
