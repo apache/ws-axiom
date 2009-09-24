@@ -214,7 +214,7 @@ public class OMOutputFormat {
      * @return Returns encoding string.
      */
     public String getCharSetEncoding() {
-        return this.charSetEncoding;
+        return (this.charSetEncoding != null)?this.charSetEncoding:DEFAULT_CHAR_SET_ENCODING;
     }
 
     public void setCharSetEncoding(String charSetEncoding) {
