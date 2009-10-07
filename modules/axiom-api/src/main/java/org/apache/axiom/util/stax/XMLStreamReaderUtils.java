@@ -64,17 +64,26 @@ public class XMLStreamReaderUtils {
      */
     public static DataHandler getDataHandlerFromElement(XMLStreamReader reader)
             throws XMLStreamException {
+
+        // according to the pre and post conditions it is possible to have an
+        // empty element eg. <ns3:inByteArray xmlns:ns3="http://tempuri.org/"></ns3:inByteArray> for empty data handlers
+        // in that case we return a new data handler.
+        // This method is used by adb parser we can not return null since this element is not null.
+        reader.next();
+        if (!reader.hasText()){
+            DataHandler dataHandler = new DataHandler(new ByteArrayDataSource(new byte[0]));
+            // return from here since reader at the end element
+            return dataHandler;
+        }
         
         DataHandlerReader dhr = getDataHandlerReader(reader);
         String base64;
         if (dhr == null) {
-            // In this case the best way to get the content of the element is using
-            // the getElementText method
-            base64 = reader.getElementText();
+            // since we have advance the reader to next have to use the
+            // reader.getText
+            base64 = reader.getText();
+            reader.next();
         } else {
-            if (reader.next() != XMLStreamConstants.CHARACTERS) {
-                throw new XMLStreamException("Expected a CHARACTER event");
-            }
             if (dhr.isBinary()) {
                 DataHandler dh = dhr.getDataHandler();
                 reader.next();
