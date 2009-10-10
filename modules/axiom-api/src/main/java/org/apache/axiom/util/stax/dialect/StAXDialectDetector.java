@@ -260,7 +260,7 @@ public class StAXDialectDetector {
             // https://sjsxp.dev.java.net/source/browse/sjsxp/zephyr/src/com/sun/xml/stream/ZephyrWriterFactory.java?rev=1.8&r1=1.4&r2=1.5
             boolean isUnsafeStreamResult;
             try {
-                cls.getField("fStreamResult");
+                cls.getDeclaredField("fStreamResult");
                 isUnsafeStreamResult = true;
             } catch (NoSuchFieldException ex) {
                 isUnsafeStreamResult = false;
