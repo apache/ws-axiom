@@ -27,10 +27,14 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 class SJSXPDialect extends AbstractStAXDialect {
-    public static final SJSXPDialect INSTANCE = new SJSXPDialect();
+    private final boolean isUnsafeStreamResult;
+    
+    public SJSXPDialect(boolean isUnsafeStreamResult) {
+        this.isUnsafeStreamResult = isUnsafeStreamResult;
+    }
 
     public String getName() {
-        return "SJSXP";
+        return isUnsafeStreamResult ? "SJSXP (with thread safety issue)" : "SJSXP";
     }
 
     public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
@@ -64,6 +68,9 @@ class SJSXPDialect extends AbstractStAXDialect {
 
     public XMLOutputFactory makeThreadSafe(XMLOutputFactory factory) {
         factory.setProperty("reuse-instance", Boolean.FALSE);
+        if (isUnsafeStreamResult) {
+            factory = new SynchronizedOutputFactoryWrapper(factory);
+        }
         return factory;
     }
 

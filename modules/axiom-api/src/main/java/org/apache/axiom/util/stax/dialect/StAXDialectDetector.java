@@ -227,7 +227,7 @@ public class StAXDialectDetector {
         if (vendor != null && vendor.toLowerCase().indexOf("woodstox") != -1) {
             return WoodstoxDialect.INSTANCE;
         } else if (title != null && title.indexOf("SJSXP") != -1) {
-            return SJSXPDialect.INSTANCE;
+            return new SJSXPDialect(false);
         } else if ("BEA".equals(vendor)) {
             return BEADialect.INSTANCE;
         } else if ("com.ibm.ws.prereq.banshee".equals(symbolicName)) {
@@ -251,14 +251,25 @@ public class StAXDialectDetector {
     }
     
     private static StAXDialect detectDialectFromClasses(ClassLoader classLoader, URL rootUrl) {
+        Class cls;
+        
         // Try Sun's implementation found in JREs
-        if (loadClass(classLoader, rootUrl, "com.sun.xml.internal.stream.XMLInputFactoryImpl")
-                != null) {
-            return SJSXPDialect.INSTANCE;
+        cls = loadClass(classLoader, rootUrl, "com.sun.xml.internal.stream.XMLOutputFactoryImpl");
+        if (cls != null) {
+            // Check if the implementation has the bug fixed here:
+            // https://sjsxp.dev.java.net/source/browse/sjsxp/zephyr/src/com/sun/xml/stream/ZephyrWriterFactory.java?rev=1.8&r1=1.4&r2=1.5
+            boolean isUnsafeStreamResult;
+            try {
+                cls.getField("fStreamResult");
+                isUnsafeStreamResult = true;
+            } catch (NoSuchFieldException ex) {
+                isUnsafeStreamResult = false;
+            }
+            return new SJSXPDialect(isUnsafeStreamResult);
         }
         
         // Try IBM's XL XP-J
-        Class cls = loadClass(classLoader, rootUrl, "com.ibm.xml.xlxp.api.stax.StAXImplConstants");
+        cls = loadClass(classLoader, rootUrl, "com.ibm.xml.xlxp.api.stax.StAXImplConstants");
         if (cls != null) {
             boolean isSetPrefixBroken;
             try {
