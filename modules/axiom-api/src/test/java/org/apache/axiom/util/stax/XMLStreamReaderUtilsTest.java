@@ -19,17 +19,54 @@
 package org.apache.axiom.util.stax;
 
 import java.io.StringReader;
+import java.util.Arrays;
+import java.util.Random;
 
 import javax.activation.DataHandler;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-
-import org.apache.axiom.om.util.StAXUtils;
 
 import junit.framework.TestCase;
 
+import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.util.base64.Base64StringBufferOutputStream;
+import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
+import org.apache.commons.io.IOUtils;
+
 public class XMLStreamReaderUtilsTest extends TestCase {
-    public void testGetDataHandlerFromElementWithZeroLength() throws Exception {
+    /**
+     * Test that {@link XMLStreamReaderUtils#getDataHandlerFromElement(XMLStreamReader)}
+     * returns an empty {@link DataHandler} when the element is empty. The test uses
+     * an {@link XMLStreamReader} instance that doesn't implement the
+     * {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader} extension.
+     * 
+     * @throws Exception
+     */
+    public void testGetDataHandlerFromElementWithZeroLengthNonDHR() throws Exception {
+        testGetDataHandlerFromElementWithZeroLength(false);
+    }
+    
+    /**
+     * Test that {@link XMLStreamReaderUtils#getDataHandlerFromElement(XMLStreamReader)}
+     * returns an empty {@link DataHandler} when the element is empty. The test uses
+     * an {@link XMLStreamReader} instance that implements the
+     * {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader} extension.
+     * 
+     * @throws Exception
+     */
+    public void testGetDataHandlerFromElementWithZeroLengthDHR() throws Exception {
+        testGetDataHandlerFromElementWithZeroLength(true);
+    }
+    
+    private void testGetDataHandlerFromElementWithZeroLength(boolean useDHR) throws Exception {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<test/>"));
+        if (useDHR) {
+            // To have an XMLStreamReader that uses the DataHandlerReader extension, we wrap
+            // the parser using an XOPDecodingStreamReader (even if the document doesn't contain
+            // any xop:Include).
+            reader = new XOPDecodingStreamReader(reader, null);
+        }
         try {
             reader.next();
             
@@ -41,6 +78,111 @@ public class XMLStreamReaderUtilsTest extends TestCase {
             // Check postcondition
             assertTrue(reader.isEndElement());
             assertEquals(-1, dh.getInputStream().read());
+        } finally {
+            reader.close();
+        }
+    }
+    
+    /**
+     * Test that {@link XMLStreamReaderUtils#getDataHandlerFromElement(XMLStreamReader)}
+     * throws an exception if the element has unexpected content. The test uses
+     * an {@link XMLStreamReader} instance that doesn't implement the
+     * {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader} extension.
+     * 
+     * @throws Exception
+     */
+    public void testGetDataHandlerFromElementWithUnexpectedContentNonDHR() throws Exception {
+        testGetDataHandlerFromElementWithUnexpectedContent(false);
+    }
+    
+    /**
+     * Test that {@link XMLStreamReaderUtils#getDataHandlerFromElement(XMLStreamReader)}
+     * throws an exception if the element has unexpected content. The test uses
+     * an {@link XMLStreamReader} instance that implements the
+     * {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader} extension.
+     * 
+     * @throws Exception
+     */
+    public void testGetDataHandlerFromElementWithUnexpectedContentDHR() throws Exception {
+        testGetDataHandlerFromElementWithUnexpectedContent(true);
+    }
+    
+    private void testGetDataHandlerFromElementWithUnexpectedContent(boolean useDHR) throws Exception {
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<test>\n<child/>\n</test>"));
+        if (useDHR) {
+            reader = new XOPDecodingStreamReader(reader, null);
+        }
+        try {
+            reader.next();
+            
+            // Check precondition
+            assertTrue(reader.isStartElement());
+            
+            try {
+                XMLStreamReaderUtils.getDataHandlerFromElement(reader);
+                fail("Expected XMLStreamException");
+            } catch (XMLStreamException ex) {
+                // Expected
+            }
+        } finally {
+            reader.close();
+        }
+    }
+    
+    /**
+     * Test that {@link XMLStreamReaderUtils#getDataHandlerFromElement(XMLStreamReader)}
+     * correctly decodes base64 data if the parser is non coalescing and produces the data
+     * as multiple <tt>CHARACTER</tt> events. The test uses an {@link XMLStreamReader} instance
+     * that doesn't implement the {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader}
+     * extension.
+     * 
+     * @throws Exception
+     */
+    public void testGetDataHandlerFromElementNonCoalescingNonDHR() throws Exception {
+        testGetDataHandlerFromElementNonCoalescing(false);
+    }
+    
+    /**
+     * Test that {@link XMLStreamReaderUtils#getDataHandlerFromElement(XMLStreamReader)}
+     * correctly decodes base64 data if the parser is non coalescing and produces the data
+     * as multiple <tt>CHARACTER</tt> events. The test uses an {@link XMLStreamReader} instance
+     * that implements the {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader}
+     * extension.
+     * 
+     * @throws Exception
+     */
+    public void testGetDataHandlerFromElementNonCoalescingDHR() throws Exception {
+        testGetDataHandlerFromElementNonCoalescing(true);
+    }
+    
+    private void testGetDataHandlerFromElementNonCoalescing(boolean useDHR) throws Exception {
+        // We generate base64 that is sufficiently large to force the parser to generate
+        // multiple CHARACTER events
+        StringBuffer buffer = new StringBuffer("<test>");
+        Base64StringBufferOutputStream out = new Base64StringBufferOutputStream(buffer);
+        byte[] data = new byte[65536];
+        new Random().nextBytes(data);
+        out.write(data);
+        out.complete();
+        buffer.append("</test>");
+        // StAXUtils return coalescing parsers, so we need to use XMLInputFactory here
+        XMLInputFactory factory = XMLInputFactory.newInstance();
+        factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
+        XMLStreamReader reader = factory.createXMLStreamReader(new StringReader(buffer.toString()));
+        if (useDHR) {
+            reader = new XOPDecodingStreamReader(reader, null);
+        }
+        try {
+            reader.next();
+            
+            // Check precondition
+            assertTrue(reader.isStartElement());
+            
+            DataHandler dh = XMLStreamReaderUtils.getDataHandlerFromElement(reader);
+            
+            // Check postcondition
+            assertTrue(reader.isEndElement());
+            assertTrue(Arrays.equals(data, IOUtils.toByteArray(dh.getInputStream())));
         } finally {
             reader.close();
         }
