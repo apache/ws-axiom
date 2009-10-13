@@ -19,6 +19,7 @@
 
 package org.apache.axiom.attachments;
 
+import org.apache.axiom.attachments.AttachmentCacheMonitor;
 import org.apache.axiom.attachments.utils.IOUtils;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
@@ -36,6 +37,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -379,6 +381,78 @@ public class AttachmentsTest extends AbstractTestCase {
         long fileSize = IOUtils.getStreamAsByteArray(getTestResource(TestConstants.MTOM_MESSAGE)).length;
         assertTrue("Expected MessageContent Length of " + fileSize + " but received " + length,
                    length == fileSize);
+    }
+    
+    public void testCachedFilesExpired() throws Exception {
+    	
+    	// Set file expiration to 10 seconds
+    	long INTERVAL = 5 * 1000; // 5 seconds for Thread to sleep
+        Thread t = Thread.currentThread();
+
+       
+        // Get the AttachmentCacheMonitor and force it to remove files after
+        // 10 seconds.
+        AttachmentCacheMonitor acm = AttachmentCacheMonitor.getAttachmentCacheMonitor();
+        int previousTime = acm.getTimeout();
+        
+        try {
+            acm.setTimeout(10); 
+
+
+            File aFile = new File("A");
+            aFile.createNewFile();
+            String aFileName = aFile.getCanonicalPath();
+            acm.register(aFileName);
+
+            t.sleep(INTERVAL);
+
+            File bFile = new File("B");
+            bFile.createNewFile();
+            String bFileName = bFile.getCanonicalPath();
+            acm.register(bFileName);
+
+            t.sleep(INTERVAL);
+
+            acm.access(aFileName);
+
+            // time since file A registration <= cached file expiration
+            assertTrue("File A should still exist", aFile.exists());
+
+            t.sleep(INTERVAL);
+
+            acm.access(bFileName);
+
+            // time since file B registration <= cached file expiration
+            assertTrue("File B should still exist", bFile.exists());
+
+            t.sleep(INTERVAL);
+
+            File cFile = new File("C");
+            cFile.createNewFile();
+            String cFileName = cFile.getCanonicalPath();
+            acm.register(cFileName);
+            acm.access(bFileName);
+
+            t.sleep(INTERVAL);
+
+            acm.checkForAgedFiles();
+
+            // time since file C registration <= cached file expiration
+            assertTrue("File C should still exist", cFile.exists());
+
+            t.sleep(10* INTERVAL);  // Give task loop time to delete aged files
+
+
+            // All files should be gone by now
+            assertFalse("File A should no longer exist", aFile.exists());
+            assertFalse("File B should no longer exist", bFile.exists());
+            assertFalse("File C should no longer exist", cFile.exists());
+        } finally {
+       
+            // Reset the timeout to the previous value so that no 
+            // other tests are affected
+            acm.setTimeout(previousTime);
+        }
     }
 
     /**
