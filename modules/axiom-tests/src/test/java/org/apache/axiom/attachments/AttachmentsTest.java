@@ -386,7 +386,7 @@ public class AttachmentsTest extends AbstractTestCase {
     public void testCachedFilesExpired() throws Exception {
     	
     	// Set file expiration to 10 seconds
-    	long INTERVAL = 5 * 1000; // 5 seconds for Thread to sleep
+    	long INTERVAL = 3 * 1000; // 3 seconds for Thread to sleep
         Thread t = Thread.currentThread();
 
        
