@@ -29,6 +29,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.util.StreamReaderDelegate;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
@@ -55,7 +56,7 @@ import org.apache.commons.logging.LogFactory;
  * {@link DataHandlerReader#getDataHandlerProvider()}, then the {@link MimePartProvider} will only
  * be invoked when {@link DataHandlerProvider#getDataHandler()} is called.
  */
-public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerReader {
+public class XOPDecodingStreamReader extends StreamReaderDelegate implements XMLStreamReader, DataHandlerReader {
     private static final String SOLE_CHILD_MSG =
             "Expected xop:Include as the sole child of an element information item (see section " +
             "3.2 of http://www.w3.org/TR/xop10/)";
@@ -101,6 +102,7 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
      *            stream.
      */
     public XOPDecodingStreamReader(XMLStreamReader parent, MimePartProvider mimePartProvider) {
+        super(parent);
         this.parent = parent;
         this.mimePartProvider = mimePartProvider;
     }
@@ -217,50 +219,6 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
         }
     }
 
-    public void close() throws XMLStreamException {
-        parent.close();
-    }
-
-    public int getAttributeCount() {
-        return parent.getAttributeCount();
-    }
-
-    public String getAttributeLocalName(int index) {
-        return parent.getAttributeLocalName(index);
-    }
-
-    public QName getAttributeName(int index) {
-        return parent.getAttributeName(index);
-    }
-
-    public String getAttributeNamespace(int index) {
-        return parent.getAttributeNamespace(index);
-    }
-
-    public String getAttributePrefix(int index) {
-        return parent.getAttributePrefix(index);
-    }
-
-    public String getAttributeType(int index) {
-        return parent.getAttributeType(index);
-    }
-
-    public String getAttributeValue(int index) {
-        return parent.getAttributeValue(index);
-    }
-
-    public boolean isAttributeSpecified(int index) {
-        return parent.isAttributeSpecified(index);
-    }
-
-    public String getAttributeValue(String namespaceURI, String localName) {
-        return parent.getAttributeValue(namespaceURI, localName);
-    }
-
-    public String getCharacterEncodingScheme() {
-        return parent.getCharacterEncodingScheme();
-    }
-
     public String getElementText() throws XMLStreamException {
         if (parent.getEventType() != START_ELEMENT) {
             throw new XMLStreamException("The current event is not a START_ELEMENT event");
@@ -317,10 +275,6 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
         }
     }
 
-    public String getEncoding() {
-        return parent.getEncoding();
-    }
-
     public String getPrefix() {
         if (dh != null) {
             throw new IllegalStateException();
@@ -357,11 +311,6 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
         return parent.getLocation();
     }
 
-    // Attention!
-    public NamespaceContext getNamespaceContext() {
-        return parent.getNamespaceContext();
-    }
-
     public String getNamespaceURI(String prefix) {
         String uri = parent.getNamespaceURI(prefix);
         if ("xop".equals(prefix) && uri != null) {
@@ -392,14 +341,6 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
         } else {
             return parent.getNamespaceURI(index);
         }
-    }
-
-    public String getPIData() {
-        return parent.getPIData();
-    }
-
-    public String getPITarget() {
-        return parent.getPITarget();
     }
 
     private static String toBase64(DataHandler dh) throws XMLStreamException {
@@ -475,22 +416,6 @@ public class XOPDecodingStreamReader implements XMLStreamReader, DataHandlerRead
         } else {
             return parent.getTextStart();
         }
-    }
-
-    public String getVersion() {
-        return parent.getVersion();
-    }
-
-    public boolean hasNext() throws XMLStreamException {
-        return parent.hasNext();
-    }
-
-    public boolean isStandalone() {
-        return parent.isStandalone();
-    }
-
-    public boolean standaloneSet() {
-        return parent.standaloneSet();
     }
 
     public boolean hasText() {
