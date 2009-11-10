@@ -177,8 +177,8 @@ public class StAXDialectDetector {
             log.warn("Unable to determine dialect of the StAX implementation at " + rootUrl);
             return UnknownStAXDialect.INSTANCE;
         } else {
-            if (log.isInfoEnabled()) {
-                log.info("Detected StAX dialect: " + dialect.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Detected StAX dialect: " + dialect.getName());
             }
             return dialect;
         }
