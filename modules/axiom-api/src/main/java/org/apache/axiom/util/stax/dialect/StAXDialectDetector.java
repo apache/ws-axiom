@@ -222,6 +222,7 @@ public class StAXDialectDetector {
                     "  Vendor:        " + vendor + "\n" +
                     "  Version:       " + version);
         }
+        
         // For the moment, the dialect detection is quite simple, but in the future we will probably
         // have to differentiate by version number
         if (vendor != null && vendor.toLowerCase().indexOf("woodstox") != -1) {
@@ -230,7 +231,7 @@ public class StAXDialectDetector {
             return new SJSXPDialect(false);
         } else if ("BEA".equals(vendor)) {
             return BEADialect.INSTANCE;
-        } else if ("IBM".equals(symbolicName)) {
+        } else if ("IBM".equals(vendor) || "com.ibm.ws.prereq.banshee".equals(symbolicName)) {
             return XLXP2Dialect.INSTANCE;
         } else {
             return null;
