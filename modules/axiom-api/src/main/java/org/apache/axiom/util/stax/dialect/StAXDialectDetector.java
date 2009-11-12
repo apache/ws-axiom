@@ -230,7 +230,7 @@ public class StAXDialectDetector {
             return new SJSXPDialect(false);
         } else if ("BEA".equals(vendor)) {
             return BEADialect.INSTANCE;
-        } else if ("com.ibm.ws.prereq.banshee".equals(symbolicName)) {
+        } else if ("IBM".equals(symbolicName)) {
             return XLXP2Dialect.INSTANCE;
         } else {
             return null;
