@@ -208,10 +208,9 @@ public class OMOutputFormat {
     }
 
     /**
-     * Returns the character set encoding scheme. If the value of the charSetEncoding is not set
-     * then the default will be returned.
+     * Returns the character set encoding scheme.
      *
-     * @return Returns encoding string.
+     * @return Returns encoding string or null if it has not been set.
      */
     public String getCharSetEncoding() {
         return this.charSetEncoding;

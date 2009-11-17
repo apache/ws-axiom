@@ -19,6 +19,7 @@
 package org.apache.axiom.om.ds;
 
 import org.apache.axiom.om.OMDataSourceExt;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -77,9 +78,15 @@ public class ByteArrayDataSource extends OMDataSourceExtBase {
     }
 
     public byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException {
+        if (encoding == null)
+        {
+          encoding = OMOutputFormat.DEFAULT_CHAR_SET_ENCODING;
+        }
+
         if (DEBUG_ENABLED) {
             log.debug("getXMLBytes encoding="+encoding);
         }
+
         // Return the byte array directly if it is the same encoding
         // Otherwise convert the bytes to the proper encoding
         if (!byteArray.encoding.equalsIgnoreCase(encoding)) {

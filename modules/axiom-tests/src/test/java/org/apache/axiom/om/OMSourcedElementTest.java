@@ -140,6 +140,15 @@ public class OMSourcedElementTest extends AbstractTestCase implements OMConstant
         assertTrue("The obtained bytes did not match the payload",
                    payload1.equals(payload));
         
+       
+        // Test getting the raw bytes with the default encoding
+        OMOutputFormat outputFormat = new OMOutputFormat();
+        baos = new ByteArrayOutputStream();
+        ds.serialize(baos, outputFormat);
+        output = baos.toString(OMOutputFormat.DEFAULT_CHAR_SET_ENCODING);
+        System.out.println(output);
+        assertTrue("The obtained bytes did not match the payload",
+                   payload1.equals(output));     
     }
     
     /**
