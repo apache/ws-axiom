@@ -261,7 +261,7 @@ public class OMOutputFormat {
      * Content-Type value as defined by RFC 2387 and the XOP specification.  The generated
      * header will look like the following:
      * 
-     *   Content-Type: multipart/related; boundary=[MIME BOUNDARY VALUE]; 
+     *   Content-Type: multipart/related; boundary="[MIME BOUNDARY VALUE]"; 
      *      type="application/xop+xml"; 
      *      start="[MESSAGE CONTENT ID]"; 
      *      start-info="[MESSAGE CONTENT TYPE]";
@@ -283,7 +283,13 @@ public class OMOutputFormat {
         sb.append("multipart/related");
         sb.append("; ");
         sb.append("boundary=");
+        // The value of the boundary parameter must be enclosed in double quotation  
+        // marks, according to the Basic Profile 2.0 Specification, Rule R1109:
+        // "Parameters on the Content-Type MIME header field-value in a request 
+        // MESSAGE MUST be a quoted string."
+        sb.append("\"");
         sb.append(getMimeBoundary());
+        sb.append("\"");
         sb.append("; ");
         sb.append("type=\"" + MTOMConstants.MTOM_TYPE + "\"");
         sb.append("; ");
@@ -298,7 +304,13 @@ public class OMOutputFormat {
         sb.append("multipart/related");
         sb.append("; ");
         sb.append("boundary=");
+        // The value of the boundary parameter must be enclosed in double quotation  
+        // marks, according to the Basic Profile 2.0 Specification, Rule R1109:
+        // "Parameters on the Content-Type MIME header field-value in a request 
+        // MESSAGE MUST be a quoted string."
+        sb.append("\"");
         sb.append(getMimeBoundary());
+        sb.append("\"");
         sb.append("; ");
         sb.append("type=\"").append(SOAPContentType).append("\"");
         sb.append("; ");

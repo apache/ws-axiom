@@ -73,6 +73,12 @@ public class OMOutputFormatTest extends TestCase {
         // sub items in the future.
         assertTrue(contentType.indexOf(SOAP11Constants.SOAP_11_CONTENT_TYPE)!=-1);
         assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE)!=-1);
+        
+        // Test for a double quoted boundary value.
+        // The Basic Profile 2.0 Specification, Rule R1109 says,
+        // "Parameters on the Content-Type MIME header field-value 
+        // in a request MESSAGE MUST be a quoted string."
+        assertTrue(contentType.indexOf("boundary=\"")!=-1);
     }
     
     public void testGetContentTypeSOAP11SWA() {
@@ -102,7 +108,11 @@ public class OMOutputFormatTest extends TestCase {
         assertTrue(contentType.indexOf("multipart/related")>=0);
         assertTrue(contentType.indexOf(MTOMConstants.MTOM_TYPE) < 0);
         
-        
+        // Test for a double quoted boundary value.
+        // The Basic Profile 2.0 Specification, Rule R1109 says,
+        // "Parameters on the Content-Type MIME header field-value 
+        // in a request MESSAGE MUST be a quoted string."
+        assertTrue(contentType.indexOf("boundary=\"")!=-1);
     }
     
     public void testGetContentTypeSOAP12MTOM() {
