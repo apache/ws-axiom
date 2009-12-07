@@ -48,7 +48,7 @@ public abstract class OMSerializableImpl implements OMSerializable {
 
     protected OMFactory factory;
 
-    public final OMFactory getOMFactory() {
+    public OMFactory getOMFactory() {
         return factory;
     }
 

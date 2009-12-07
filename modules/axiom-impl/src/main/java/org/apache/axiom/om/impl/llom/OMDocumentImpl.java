@@ -112,6 +112,12 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
         this.factory = factory;
     }
 
+    public OMFactory getOMFactory() {
+        if (factory == null) {
+            factory = this.getOMDocumentElement().getOMFactory();
+        }
+        return factory;
+    }
 
     /**
      * Method getDocumentElement.
