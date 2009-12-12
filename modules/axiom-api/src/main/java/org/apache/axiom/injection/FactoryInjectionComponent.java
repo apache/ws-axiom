@@ -49,7 +49,7 @@ public class FactoryInjectionComponent {
 			    metaFactories = new ArrayList();
 			}
 			// Special case llom - it's the default
-			if (metafactory.getClass().toString().contains("llom")) {
+			if (metafactory.getClass().toString().indexOf("llom") != -1) {
 				metaFactories.add(0, metafactory);
 			} else {
 				metaFactories.add(metafactory);

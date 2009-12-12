@@ -382,7 +382,7 @@ public class ParserInputStreamDataSource extends OMDataSourceExtBase {
             if(log.isDebugEnabled()){
                 String clsName = inputStream == null ? 
                         null : 
-                            inputStream.getClass().getCanonicalName();
+                            inputStream.getClass().getName();
                 log.debug("Enter setInputStream: The kind of InputStream is:" + clsName);
             }
             this.numReads = 0;

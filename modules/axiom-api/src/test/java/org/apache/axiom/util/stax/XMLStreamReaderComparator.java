@@ -221,7 +221,7 @@ public class XMLStreamReaderComparator extends Assert {
             // START_ELEMENT
             for (int i=0; i < (attributeCount == null ? 1 : attributeCount.intValue()); i++) {
                 Class[] paramTypes = { Integer.TYPE };
-                Object[] args = { Integer.valueOf(i) };
+                Object[] args = { new Integer(i) };
                 assertSameResult("getAttributeLocalName", paramTypes, args);
                 assertSameResult("getAttributeName", paramTypes, args);
                 namespaceURIs.add(assertSameResult("getAttributeNamespace", paramTypes, args));
