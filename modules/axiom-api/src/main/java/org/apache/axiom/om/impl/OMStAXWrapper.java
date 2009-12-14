@@ -27,6 +27,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.StreamReaderDelegate;
 
 import org.apache.axiom.om.OMAttachmentAccessor;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -170,5 +171,24 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
 
     public void setNamespaceURIInterning(boolean b) {
         switchingWrapper.setNamespaceURIInterning(b);
+    }
+    
+    
+    /**
+     * @return OMDataSource if available
+     */
+    public OMDataSource getDataSource() {
+        return switchingWrapper.getDataSource();
+    }
+    
+    /**
+     * If enabled, treat OMSourcedElements that have
+     * a OMDataSource as leaf nodes.  The caller
+     * should use the getDataSource method to obtain
+     * the OMDataSource for these events.
+     * @param value boolean
+     */
+    public void enableDataSourceEvents(boolean value) {
+        switchingWrapper.enableDataSourceEvents(value);
     }
 }

@@ -21,7 +21,10 @@ package org.apache.axiom.om.impl.serialize;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMSerializer;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.OMStAXWrapper;
 import org.apache.axiom.om.impl.builder.DataHandlerReaderUtils;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -35,6 +38,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 /** Class StreamingOMSerializer */
@@ -85,7 +89,29 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         dataHandlerReader = DataHandlerReaderUtils.getDataHandlerReader(reader);
         dataHandlerWriter = XMLStreamWriterUtils.getDataHandlerWriter(writer);
         
-        serializeNode(reader, writer, startAtNext);
+        if (reader instanceof OMStAXWrapper) {
+            int event = reader.getEventType();
+            if (event <= 0 ||
+                event == XMLStreamReader.PROCESSING_INSTRUCTION ||
+                event == XMLStreamReader.START_DOCUMENT) {
+                // Since we are serializing an entire document,
+                // enable the the optimized DataSource events.
+                // This will allow OMDataSource elements to be serialized
+                // directly without expansion.
+                if (log.isDebugEnabled()) {
+                    log.debug("Enable OMDataSource events while serializing this document");
+                }
+                ((OMStAXWrapper) reader).enableDataSourceEvents(true);
+            }
+        }
+        try {
+            serializeNode(reader, writer, startAtNext);
+        } finally {
+            if (reader instanceof OMStAXWrapper) {
+                ((OMStAXWrapper) reader).enableDataSourceEvents(false);
+            }
+        }
+        
     }
 
     /**
@@ -112,15 +138,25 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         boolean useCurrentEvent = !startAtNext;
         
         while (reader.hasNext() || useCurrentEvent) {
-            int event;
+            int event = 0;
+            OMDataSource ds = null;
             if (useCurrentEvent) {
                 event = reader.getEventType();
                 useCurrentEvent = false;
             } else {
-                event = reader.next();
+                event = reader.next(); 
             }
             
-            switch (event) {
+            // If the reader is exposing a DataSourc
+            // for this event, then simply serialize the
+            // DataSource
+            if (reader instanceof OMStAXWrapper) {
+                ds = ((OMStAXWrapper) reader).getDataSource();
+            }
+            if (ds != null) {
+                ds.serialize(writer);
+            } else {
+                switch (event) {
                 case START_ELEMENT:
                     serializeElement(reader, writer);
                     depth++;
@@ -160,6 +196,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                     } catch (Exception e) {
                         //TODO: log exceptions
                     }
+                }
             }
             if (depth == 0) {
                 break;

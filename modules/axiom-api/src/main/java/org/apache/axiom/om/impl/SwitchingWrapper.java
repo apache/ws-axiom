@@ -39,6 +39,7 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -1551,5 +1552,38 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             _releaseParserOnClose = value;
         }
         
+    }
+    
+    /**
+     * @return OMDataSource associated with the current node or Null
+     */
+    public OMDataSource getDataSource() {
+        OMDataSource ds = null;
+        if (lastNode != null &&
+            lastNode instanceof OMSourcedElement) {
+            try {
+                ds = ((OMSourcedElement) lastNode).getDataSource();
+            } catch (UnsupportedOperationException e) {
+                ds =null;
+            }
+            if (log.isDebugEnabled()) {
+                if (ds != null) {
+                    log.debug("OMSourcedElement exposed an OMDataSource." + ds);
+                } else {
+                    log.debug("OMSourcedElement does not have a OMDataSource.");
+                }
+            }
+        }
+        return ds;
+    }
+    
+    /**
+     * Enable if an OMSourcedElement with an OMDataSource should be treated as a
+     * leaf node.  Disable (the default) if the OMDataSource should be parsed and
+     * converted into events.
+     * @param value boolean
+     */
+    public void enableDataSourceEvents(boolean value) {
+        navigator.setDataSourceIsLeaf(value);
     }
 }

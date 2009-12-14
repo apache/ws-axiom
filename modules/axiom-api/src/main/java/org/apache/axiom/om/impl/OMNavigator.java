@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl;
 
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
@@ -55,6 +56,10 @@ public class OMNavigator {
 
     /** Field start */
     private boolean start = true;
+    
+    // Indicates if an OMSourcedElement with an OMDataSource should
+    // be considered as an interior node or a leaf node.
+    private boolean isDataSourceALeaf = false;
 
     /** Constructor OMNavigator. */
     public OMNavigator() {
@@ -78,6 +83,16 @@ public class OMNavigator {
         next = node;
         root = node;
         backtracked = false;
+    }
+    
+    /**
+     * Indicate if an OMSourcedElement with a OMDataSource
+     * should be considered as an interior element node or as
+     * a leaf.  
+     * @param value boolean
+     */
+    public void setDataSourceIsLeaf(boolean value) {
+        isDataSourceALeaf = value;
     }
 
     /**
@@ -109,7 +124,7 @@ public class OMNavigator {
 
     /** Private method to encapsulate the searching logic. */
     private void updateNextNode() {
-        if ((next instanceof OMElement) && !visited) {
+        if (!isLeaf(next) && !visited) {
             OMNode firstChild = _getFirstChild((OMElement) next);
             if (firstChild != null) {
                 next = firstChild;
@@ -129,6 +144,29 @@ public class OMNavigator {
             } else {
                 next = null;
             }
+        }
+    }
+    
+    /**
+     * @param n OMNode
+     * @return true if this OMNode should be considered a leaf node
+     */
+    private boolean isLeaf(OMNode n) {
+        if (n instanceof OMElement) {
+            if (this.isDataSourceALeaf && (n instanceof OMSourcedElement)) {
+                OMDataSource ds = null;
+                try {
+                    ds = ((OMSourcedElement) n).getDataSource();
+                } catch (UnsupportedOperationException e) {
+                    ; // Operation unsupported for DOM impl
+                }
+                if (ds != null) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return true;
         }
     }
 
