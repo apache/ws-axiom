@@ -153,12 +153,12 @@ public class OMNavigator {
      */
     private boolean isLeaf(OMNode n) {
         if (n instanceof OMElement) {
-            if (this.isDataSourceALeaf && (n instanceof OMSourcedElement)) {
+            if (this.isDataSourceALeaf && (n instanceof OMSourcedElement) && n != root) {
                 OMDataSource ds = null;
                 try {
                     ds = ((OMSourcedElement) n).getDataSource();
                 } catch (UnsupportedOperationException e) {
-                    ; // Operation unsupported for DOM impl
+                    ; // Operation unsupported for some implementations
                 }
                 if (ds != null) {
                     return true;

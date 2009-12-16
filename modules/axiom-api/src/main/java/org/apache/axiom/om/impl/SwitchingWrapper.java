@@ -1558,12 +1558,18 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @return OMDataSource associated with the current node or Null
      */
     public OMDataSource getDataSource() {
+        if (getEventType() != XMLStreamReader.START_ELEMENT ||
+                !(state == this.NAVIGABLE || 
+                  state == this.SWITCH_AT_NEXT)) {
+            return null;
+        }
         OMDataSource ds = null;
         if (lastNode != null &&
             lastNode instanceof OMSourcedElement) {
             try {
                 ds = ((OMSourcedElement) lastNode).getDataSource();
             } catch (UnsupportedOperationException e) {
+                // Some implementations throw an UnsupportedOperationException.
                 ds =null;
             }
             if (log.isDebugEnabled()) {

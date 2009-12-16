@@ -297,9 +297,13 @@ public class OMSerializerTest extends AbstractTestCase {
         String outputString = new String(byteArrayOutputStream.toByteArray());
         assertTrue("Expected output was incorrect.  Received:" + outputString,
                 outputString != null && !"".equals(outputString) && outputString.length() > 1);
+        int indexHelloWorld = outputString.indexOf("Hello World");
         assertTrue("Expected output was incorrect.  Received:" + outputString,
-                outputString.contains("Hello World"));
-        
+                indexHelloWorld > 0);
+        int indexHelloWorld2 = outputString.indexOf("Hello World", indexHelloWorld+1);
+        assertTrue("Expected output was incorrect.  Received:" + outputString,
+                indexHelloWorld2 < 0);
+
         assertTrue("Expectation is that an OMSourcedElement was created for the payload", 
                 omse != null);
         assertTrue("Expectation is that the OMSourcedElement was not expanded by serialization ", 
