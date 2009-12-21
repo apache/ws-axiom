@@ -1007,6 +1007,30 @@ with CRLF</root>]]></screen>
 <screen><![CDATA[<root>Test
 with CRLF</root>]]></screen>
                 </section>
+                <section>
+                    <title>Preserving CDATA sections during parsing</title>
+                    <para>
+                        By default, <classname>StAXUtils</classname> creates StAX parsers in coaelescing mode.
+                        In this mode, the parser will never return two character data events in sequence, while
+                        in non coaelescing mode, the parser is allowed to break up character data into smaller
+                        chunks and to return multiple consecutive character events, which may improve throughput
+                        for documents containing large text nodes.
+                        It should be noted that <classname>StAXUtils</classname> overrides the default settings
+                        mandated by the StAX specification, which specifies that by default, a StAX parser must
+                        be in non coalescing mode. The primary reason is compatibility: older versions of
+                        Woodstox had coalescing switched on by default.
+                    </para>
+                    <para>
+                        A side effect of the default settings chosen by Axiom is that by default, CDATA sections
+                        are not reported by parser created by
+                        <classname>StAXUtils</classname>. The reason is that in coalescing mode, the parser will
+                        not only coaelsce adjacent text nodes, but also CDATA sections. Applications that require
+                        correct reporting of CDATA sections should therefore disable coalescing. This can be
+                        achieved by creating a <filename>XMLInputFactory.properties</filename> file with the
+                        following content:
+                    </para>
+<programlisting>javax.xml.stream.isCoalescing=false</programlisting>
+                </section>
             </section>
         </section>
         <section>
