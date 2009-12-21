@@ -160,7 +160,7 @@ public interface OMNode extends OMSerializable {
      *
      * @return Returns one of {@link #ELEMENT_NODE}, {@link #TEXT_NODE}, {@link #CDATA_SECTION_NODE},
      *         {@link #COMMENT_NODE}, {@link #DTD_NODE}, {@link #PI_NODE}, {@link
-     *         #ENTITY_REFERENCE_NODE}, {@link #SPACE_NODE}, or {@link #TEXT_NODE}.
+     *         #ENTITY_REFERENCE_NODE} or {@link #SPACE_NODE}.
      */
     int getType();
 
