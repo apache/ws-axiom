@@ -943,7 +943,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      *
      * @see org.apache.axiom.om.OMElement#getNamespace()
      */
-    public OMNamespace getNamespace() throws OMException {
+    public OMNamespace getNamespace() {
         return namespace != null ? namespace : getDefaultNamespace();
     }
 

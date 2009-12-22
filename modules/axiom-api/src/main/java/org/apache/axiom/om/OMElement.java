@@ -400,9 +400,8 @@ public interface OMElement extends OMNode, OMContainer {
 
     /**
      * @return Returns the OMNamespace object associated with this element
-     * @throws OMException
      */
-    OMNamespace getNamespace() throws OMException;
+    OMNamespace getNamespace();
 
     /**
      * Sets the Namespace. This will first search for a namespace in the current scope with the

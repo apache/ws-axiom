@@ -1014,12 +1014,7 @@ public class OMElementImpl extends OMNodeImpl
         this.qName = null;
     }
 
-    /**
-     * Method getNamespace.
-     *
-     * @throws OMException
-     */
-    public OMNamespace getNamespace() throws OMException {
+    public OMNamespace getNamespace() {
 //        return ns != null ? ns : DEFAULT_DEFAULT_NS_OBJECT;
         if (ns == null) {
             // User wants to keep this element in the default default namespace. Let's try to see the default namespace
