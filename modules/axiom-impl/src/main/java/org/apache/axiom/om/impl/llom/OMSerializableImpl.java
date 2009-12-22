@@ -46,7 +46,11 @@ public abstract class OMSerializableImpl implements OMSerializable {
     /** Field done */
     protected boolean done = false;
 
-    protected OMFactory factory;
+    protected final OMFactory factory;
+
+    public OMSerializableImpl(OMFactory factory) {
+        this.factory = factory;
+    }
 
     public OMFactory getOMFactory() {
         return factory;

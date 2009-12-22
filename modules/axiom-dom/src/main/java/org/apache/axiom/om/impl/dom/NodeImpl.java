@@ -57,7 +57,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
     protected DocumentImpl ownerNode;
 
     /** Factory that created this node */
-    protected OMFactory factory;
+    protected final OMFactory factory;
 
     // data
 

@@ -348,13 +348,13 @@ public class OMLinkedListImplFactory implements OMFactory {
     * @see org.apache.axiom.om.OMFactory#createOMDocument()
     */
     public OMDocument createOMDocument() {
-        return new OMDocumentImpl();
+        return new OMDocumentImpl(this);
     }
 
     /* (non-Javadoc)
       * @see org.apache.axiom.om.OMFactory#createOMDocument(org.apache.axiom.om.OMXMLParserWrapper)
       */
     public OMDocument createOMDocument(OMXMLParserWrapper builder) {
-        return new OMDocumentImpl(builder);
+        return new OMDocumentImpl(builder, this);
     }
 }

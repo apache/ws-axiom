@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.llom.OMDocumentImpl;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 
@@ -34,15 +35,16 @@ import javax.xml.stream.XMLStreamWriter;
 public class SOAPMessageImpl extends OMDocumentImpl implements SOAPMessage {
 
 
-    public SOAPMessageImpl() {
+    public SOAPMessageImpl(SOAPFactory factory) {
+        super(factory);
     }
 
-    public SOAPMessageImpl(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper) {
-        super(envelope, parserWrapper);
+    public SOAPMessageImpl(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper, SOAPFactory factory) {
+        super(envelope, parserWrapper, factory);
     }
 
-    public SOAPMessageImpl(OMXMLParserWrapper parserWrapper) {
-        super(parserWrapper);
+    public SOAPMessageImpl(OMXMLParserWrapper parserWrapper, SOAPFactory factory) {
+        super(parserWrapper, factory);
     }
 
 

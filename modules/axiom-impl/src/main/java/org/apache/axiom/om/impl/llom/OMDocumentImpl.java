@@ -58,33 +58,14 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
 
     protected String isStandalone;
 
-    /** Default constructor */
-    public OMDocumentImpl() {
-        this.done = true;
-    }
-
-    /**
-     * @param documentElement
-     * @param parserWrapper
-     */
-    public OMDocumentImpl(OMElement documentElement, OMXMLParserWrapper parserWrapper) {
-        this.documentElement = documentElement;
-        this.builder = parserWrapper;
-    }
-
-    /** @param parserWrapper  */
-    public OMDocumentImpl(OMXMLParserWrapper parserWrapper) {
-        this.builder = parserWrapper;
-    }
-
     /**
      * Create a <code>OMDocument</code> given the <code>OMFactory</code>
      *
      * @param factory The <code>OMFactory</code> that created this instace
      */
     public OMDocumentImpl(OMFactory factory) {
-        this();
-        this.factory = factory;
+        super(factory);
+        this.done = true;
     }
 
     /**
@@ -94,8 +75,8 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
      * @param factory
      */
     public OMDocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
-        this(parserWrapper);
-        this.factory = factory;
+        super(factory);
+        this.builder = parserWrapper;
     }
 
     /**
@@ -108,15 +89,9 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
      */
     public OMDocumentImpl(OMElement documentElement, OMXMLParserWrapper parserWrapper,
                           OMFactory factory) {
-        this(documentElement, parserWrapper);
-        this.factory = factory;
-    }
-
-    public OMFactory getOMFactory() {
-        if (factory == null) {
-            factory = this.getOMDocumentElement().getOMFactory();
-        }
-        return factory;
+        super(factory);
+        this.documentElement = documentElement;
+        this.builder = parserWrapper;
     }
 
     /**

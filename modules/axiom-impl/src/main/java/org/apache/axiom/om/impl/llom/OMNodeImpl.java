@@ -57,7 +57,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
      * @param factory The <code>OMFactory</code> that created this
      */
     public OMNodeImpl(OMFactory factory) {
-        this.factory = factory;
+        super(factory);
     }
 
     /**
@@ -67,8 +67,8 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
      * @param factory The <code>OMFactory</code> that created this
      */
     public OMNodeImpl(OMContainer parent, OMFactory factory, boolean done) {
+        super(factory);
         this.done = done;
-        this.factory = factory;
         if ((parent != null)) {
             this.parent = (OMContainerEx) parent;
             parent.addChild(this);

@@ -314,16 +314,16 @@ public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactor
     }
 
     public SOAPMessage createSOAPMessage() {
-        return new SOAPMessageImpl();
+        return new SOAPMessageImpl(this);
     }
 
     public SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
-        return new SOAPMessageImpl(builder);
+        return new SOAPMessageImpl(builder, this);
     }
 
 
     public SOAPMessage createSOAPMessage(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper) {
-        return new SOAPMessageImpl(envelope, parserWrapper);
+        return new SOAPMessageImpl(envelope, parserWrapper, this);
     }
 
 

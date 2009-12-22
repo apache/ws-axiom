@@ -60,7 +60,6 @@ public class SOAPEnvelopeImpl extends SOAPElement
      */
     public SOAPEnvelopeImpl(OMXMLParserWrapper builder, SOAPFactory factory) {
         super(null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, builder, factory);
-        this.factory = factory;
     }
 
     /**
@@ -70,7 +69,6 @@ public class SOAPEnvelopeImpl extends SOAPElement
      */
     public SOAPEnvelopeImpl(OMNamespace ns, SOAPFactory factory) {
         super(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
-        this.factory = factory;
     }
 
     public SOAPVersion getVersion() {
