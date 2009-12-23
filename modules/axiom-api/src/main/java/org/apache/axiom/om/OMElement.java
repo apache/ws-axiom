@@ -399,7 +399,9 @@ public interface OMElement extends OMNode, OMContainer {
     void setLocalName(String localName);
 
     /**
-     * @return Returns the OMNamespace object associated with this element
+     * Get the namespace this element is part of.
+     * 
+     * @return the namespace of this element, or <code>null</code> if the element has no namespace
      */
     OMNamespace getNamespace();
 
