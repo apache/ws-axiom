@@ -113,9 +113,16 @@ public interface OMFactory {
     OMElement createOMElement(QName qname) throws OMException;
 
     /**
+     * Create an {@link OMNamespace} instance or retrieve an existing one if the factory supports
+     * pooling.
+     * 
      * @param uri
+     *            the namespace URI; must not be <code>null</code>
      * @param prefix
-     * @return Returns OMNameSpace.
+     *            the prefix
+     * @return the {@link OMNamespace} instance
+     * @throws IllegalArgumentException
+     *             if <code>uri</code> is null
      */
     OMNamespace createOMNamespace(String uri, String prefix);
 
