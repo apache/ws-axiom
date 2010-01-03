@@ -140,18 +140,26 @@ public interface OMNode extends OMSerializable {
     void discard() throws OMException;
 
     /**
-     * Inserts a new sibling after the current node.
-     *
-     * @param sibling The node that will be added after the current node.
+     * Inserts a new sibling after the current node. The current node must have a parent for this
+     * operation to succeed. If the node to be inserted has a parent, then it will first be
+     * detached.
+     * 
+     * @param sibling
+     *            The node that will be added after the current node.
      * @throws OMException
+     *             if the current node has no parent
      */
     void insertSiblingAfter(OMNode sibling) throws OMException;
 
     /**
-     * Inserts a sibling just before the current node.
-     *
-     * @param sibling The node that will be added before the current node.
+     * Inserts a sibling just before the current node. The current node must have a parent for this
+     * operation to succeed. If the node to be inserted has a parent, then it will first be
+     * detached.
+     * 
+     * @param sibling
+     *            The node that will be added before the current node.
      * @throws OMException
+     *             if the current node has no parent
      */
     void insertSiblingBefore(OMNode sibling) throws OMException;
 

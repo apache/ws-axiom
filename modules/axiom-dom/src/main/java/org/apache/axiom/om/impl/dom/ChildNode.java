@@ -149,13 +149,12 @@ public abstract class ChildNode extends NodeImpl {
 
     /** Inserts the given sibling next to this item. */
     public void insertSiblingAfter(OMNode sibling) throws OMException {
-
-        if (this.parentNode != null) {
-            ((OMNodeEx) sibling).setParent(this.parentNode);
+        if (this.parentNode == null) {
+            throw new OMException("Parent can not be null");
         } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
-
+        ((OMNodeEx) sibling).setParent(this.parentNode);
         if (sibling instanceof ChildNode) {
             ChildNode domSibling = (ChildNode) sibling;
             domSibling.previousSibling = this;
@@ -176,7 +175,9 @@ public abstract class ChildNode extends NodeImpl {
     /** Inserts the given sibling before this item. */
     public void insertSiblingBefore(OMNode sibling) throws OMException {
         // ((OMNodeEx)sibling).setParent(this.parentNode);
-        if (this == sibling) {
+        if (this.parentNode == null) {
+            throw new OMException("Parent can not be null");
+        } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
         if (sibling instanceof ChildNode) {

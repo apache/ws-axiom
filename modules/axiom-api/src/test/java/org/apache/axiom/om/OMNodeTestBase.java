@@ -28,6 +28,27 @@ public class OMNodeTestBase extends AbstractTestCase {
         this.omMetaFactory = omMetaFactory;
     }
 
+    public void testInsertSiblingAfter() {
+        OMFactory fac = omMetaFactory.getOMFactory();
+        OMElement parent = fac.createOMElement("test", null);
+        OMText text1 = fac.createOMText("text1");
+        OMText text2 = fac.createOMText("text2");
+        parent.addChild(text1);
+        text1.insertSiblingAfter(text2);
+        assertSame(parent, text2.getParent());
+    }
+    
+    public void testInsertSiblingBefore() {
+        OMFactory fac = omMetaFactory.getOMFactory();
+        OMElement parent = fac.createOMElement("test", null);
+        OMText text1 = fac.createOMText("text1");
+        OMText text2 = fac.createOMText("text2");
+        parent.addChild(text1);
+        text1.insertSiblingBefore(text2);
+        assertSame(parent, text2.getParent());
+        assertSame(text2, parent.getFirstOMChild());
+    }
+    
     // Regression test for WSCOMMONS-337
     public void testInsertSiblingAfterLastChild() throws Exception {
         OMFactory fac = omMetaFactory.getOMFactory();
@@ -49,6 +70,30 @@ public class OMNodeTestBase extends AbstractTestCase {
                 "<ns:c1 /><ns:c2 /><ns:c3 /></ns:parent>", parent.toString());
     }
 
+    public void testInsertSiblingAfterOnOrphan() {
+        OMFactory fac = omMetaFactory.getOMFactory();
+        OMText text1 = fac.createOMText("text1");
+        OMText text2 = fac.createOMText("text2");
+        try {
+            text1.insertSiblingAfter(text2);
+            fail("Expected OMException because node has no parent");
+        } catch (OMException ex) {
+            // Expected
+        }
+    }
+    
+    public void testInsertSiblingBeforeOnOrphan() {
+        OMFactory fac = omMetaFactory.getOMFactory();
+        OMText text1 = fac.createOMText("text1");
+        OMText text2 = fac.createOMText("text2");
+        try {
+            text1.insertSiblingBefore(text2);
+            fail("Expected OMException because node has no parent");
+        } catch (OMException ex) {
+            // Expected
+        }
+    }
+    
     private void testDetach(boolean build) throws Exception {
         OMElement root = AXIOMUtil.stringToOM(omMetaFactory.getOMFactory(), "<root><a/><b/><c/></root>");
         if (build) {
