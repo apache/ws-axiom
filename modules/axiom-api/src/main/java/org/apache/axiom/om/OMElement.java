@@ -29,9 +29,52 @@ import java.util.Iterator;
 
 /**
  * A particular kind of node that represents an element infoset information item.
- * <p/>
- * <p>An element has a collection of children, attributes, and namespaces.</p> <p>In contrast with
- * DOM, this interface exposes namespaces separately from the attributes.</p>
+ * <p>
+ * An element has a collection of children, attributes, and namespace declarations. In contrast with
+ * DOM, this interface exposes namespace declarations separately from the attributes.
+ * <p>
+ * Namespace declarations are either added explicitly using
+ * {@link #declareNamespace(String, String)}, {@link #declareDefaultNamespace(String)} or
+ * {@link #declareNamespace(OMNamespace)}, or are created implicitly as side effect of other method
+ * calls:
+ * <ul>
+ * <li>If the element is created with a namespace and no matching namespace declaration is in scope
+ * in the location in the tree where the element is created, then an appropriate namespace
+ * declaration will be automatically added to the newly created element. The exact rules depend on
+ * the method chosen to create the element; see for example {@link OMFactory#createOMElement(QName)}.
+ * <li>If an attribute with a namespace is added, but no matching namespace declaration is in scope
+ * in the element, one is automatically added. See {@link #addAttribute(OMAttribute)} for more
+ * details.
+ * </ul>
+ * Thus, creating a new element or adding an attribute preserves the consistency of the object model
+ * with respect to namespaces. However, Axiom does not enforce namespace well-formedness for all
+ * possible operations on the object model. E.g. moving an element from one location in the tree to
+ * another one may cause the object model to loose its namespace well-formedness. In that case it is
+ * possible that the object model contains elements or attributes with namespaces for which no
+ * corresponding namespace declarations are in scope.
+ * <p>
+ * Fortunately, loosing namespace well-formedness has only very limited impact:
+ * <ul>
+ * <li>If namespace well-formedness is lost, the string to {@link QName} resolution for attribute
+ * values and element content may be inconsistent, i.e. {@link #resolveQName(String)},
+ * {@link #getTextAsQName()} and {@link OMText#getTextAsQName()} may return incorrect results.
+ * However, it should be noted that these methods are most relevant for object model instances that
+ * have been loaded from existing documents or messages. These object models are guaranteed to be
+ * well-formed with respect to namespaces (unless they have been modified after loading).
+ * <li>During serialization, Axiom will automatically repair any namespace inconsistencies. It will
+ * add necessary namespace declarations to the output document where they are missing in the object
+ * model and generate modified namespace declarations where the original ones in the object model
+ * are inconsistent. It will also omit redundant namespace declarations. Axiom guarantees that in
+ * the output document, every element and attribute (and {@link OMText} instance with a
+ * {@link QName} value) will have the same namespace URI as in the object model, thus preserving the
+ * intended semantics of the document. On the other hand, the namespace prefixes used in the output
+ * document may differ from the ones in the object model.
+ * <li>More precisely, Axiom will always make sure that any {@link OMElement} or {@link OMAttribute}
+ * node will keep the namespace URI that has been assigned to the node at creation time, unless the
+ * namespace is explicitly changed using {@link #setNamespace(OMNamespace)} or
+ * {@link OMAttribute#setOMNamespace(OMNamespace)}. [TODO: this is currently not entirely true; see
+ * WSCOMMONS-517]
+ * </ul>
  */
 public interface OMElement extends OMNode, OMContainer {
 
