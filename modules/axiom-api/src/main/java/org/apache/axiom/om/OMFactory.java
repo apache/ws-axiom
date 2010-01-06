@@ -101,14 +101,17 @@ public interface OMFactory {
     OMElement createOMElement(QName qname, OMContainer parent) throws OMException;
 
     /**
-     * Create an OMElement with the given QName
-     *
-     * If the QName contains a prefix, we will ensure that an OMNamespace is created
-     * mapping the given namespace to the given prefix.  If no prefix is passed, we'll
-     * use whatever's already mapped in the parent, or create a generated one.
-     *
+     * Create an element with the given {@link QName}. If a namespace URI is given but no prefix,
+     * the method will automatically generate a prefix for the element. If a namespace URI is given,
+     * the method will also add a namespace declaration to the element, binding the auto-generated
+     * prefix or the prefix given in the {@link QName} to the given namespace URI. If neither a
+     * namespace URI nor a prefix is given, no namespace declaration will be added.
+     * 
      * @param qname
-     * @return the new OMElement.
+     *            the {@link QName} defining the name of the element to be created
+     * @return the new element
+     * @throws OMException
+     *             TODO: when???
      */
     OMElement createOMElement(QName qname) throws OMException;
 
