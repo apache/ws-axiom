@@ -35,6 +35,7 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.base64.Base64Utils;
+import org.apache.axiom.util.stax.wrapper.XMLStreamReaderContainer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -56,7 +57,8 @@ import org.apache.commons.logging.LogFactory;
  * {@link DataHandlerReader#getDataHandlerProvider()}, then the {@link MimePartProvider} will only
  * be invoked when {@link DataHandlerProvider#getDataHandler()} is called.
  */
-public class XOPDecodingStreamReader extends StreamReaderDelegate implements XMLStreamReader, DataHandlerReader {
+public class XOPDecodingStreamReader extends StreamReaderDelegate 
+    implements XMLStreamReader, DataHandlerReader, XMLStreamReaderContainer {
     private static final String SOLE_CHILD_MSG =
             "Expected xop:Include as the sole child of an element information item (see section " +
             "3.2 of http://www.w3.org/TR/xop10/)";

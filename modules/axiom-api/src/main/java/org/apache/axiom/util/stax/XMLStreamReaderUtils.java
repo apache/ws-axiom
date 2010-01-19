@@ -26,12 +26,19 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.util.Base64;
+import org.apache.axiom.util.stax.wrapper.XMLStreamReaderContainer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Contains utility methods to work with {@link XMLStreamReader} objects.
  */
 public class XMLStreamReaderUtils {
+    
+    private static Log log = LogFactory.getLog(XMLStreamReaderUtils.class);
+   
     /**
      * Get the {@link DataHandlerReader} extension from a given {@link XMLStreamReader}.
      * 
@@ -107,5 +114,61 @@ public class XMLStreamReaderUtils {
             }
         }
         return new DataHandler(new ByteArrayDataSource(Base64.decode(base64)));
+    }
+    
+    /**
+     * getOriginalXMLStreamReader
+     * Searches the wrapper and delegate classes to find the original XMLStreamReader
+     * This method should only be used when a consumer of Axiom really needs to 
+     * access the original stream reader.
+     * @param parser XMLStreamReader used by Axiom
+     * @return original parser 
+     */
+    public static XMLStreamReader getOriginalXMLStreamReader(XMLStreamReader parser) {
+        if (log.isDebugEnabled()) {
+            String clsName = (parser != null) ? parser.getClass().toString() : "null";
+            log.debug("Entry getOriginalXMLStreamReader: " + clsName);
+        }
+        while (parser instanceof XMLStreamReaderContainer) {
+            parser = ((XMLStreamReaderContainer) parser).getParent();
+            if (log.isDebugEnabled()) {
+                String clsName = (parser != null) ? parser.getClass().toString() : "null";
+                log.debug("  parent: " + clsName);
+            }
+        }
+        if (log.isDebugEnabled()) {
+            String clsName = (parser != null) ? parser.getClass().toString() : "null";
+            log.debug("Exit getOriginalXMLStreamReader: " + clsName);
+        }
+        return parser;
+    }
+    
+    /**
+     * Searches the wrapper and delegate classes to find an XMLStreamReader
+     * that implements the OMAttachmentAccessor
+     * @param parser
+     * @return XMLStreamREader that implements OMAttachmentAccessor or null
+     */
+    public static XMLStreamReader getOMAttachmentAccessorXMLStreamReader(XMLStreamReader parser) {
+        if (log.isDebugEnabled()) {
+            String clsName = (parser != null) ? parser.getClass().toString() : "null";
+            log.debug("Entry getOMAttachmentAccessorXMLStreamReader: " + clsName);
+        }
+        while (!(parser instanceof OMAttachmentAccessor) &&
+                (parser instanceof XMLStreamReaderContainer)) {
+            parser = ((XMLStreamReaderContainer) parser).getParent();
+            if (log.isDebugEnabled()) {
+                String clsName = (parser != null) ? parser.getClass().toString() : "null";
+                log.debug("  parent: " + clsName);
+            }
+        }
+        if (!(parser instanceof OMAttachmentAccessor)) {
+            parser = null;
+        }
+        if (log.isDebugEnabled()) {
+            String clsName = (parser != null) ? parser.getClass().toString() : "null";
+            log.debug("Exit getOMAttachmentAccessorXMLStreamReader: " + clsName);
+        }
+        return parser;
     }
 }

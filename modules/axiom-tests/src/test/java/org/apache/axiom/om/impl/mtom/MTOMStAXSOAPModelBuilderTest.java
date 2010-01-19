@@ -28,10 +28,13 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLStreamReader;
+import org.apache.axiom.om.impl.OMStAXWrapper;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.traverse.OMDescendantsIterator;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
@@ -79,6 +82,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         return createBuilderForTestMTOMMessage().getDocumentElement();
     }
     
+    
     private void checkSerialization(OMElement root, boolean optimize) throws Exception {
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(optimize);
@@ -93,6 +97,45 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
             assertTrue(msg.indexOf("xop:Include") < 0);
             assertTrue(msg.indexOf("Content-ID: <-1609420109260943731>") < 0);
         }
+    }
+    
+    public void testAccessToParser() throws Exception {
+        OMElement root = createTestMTOMMessage();
+        StAXBuilder builder = (StAXBuilder) root.getBuilder();
+        // Disable caching so that the reader can be accessed.
+        builder.setCache(false);
+        XMLStreamReader reader = (XMLStreamReader) builder.getParser();
+        
+        XMLStreamReader original = XMLStreamReaderUtils.getOriginalXMLStreamReader(reader);
+        
+        // The streaming parser is wrapped by a SafeXMLStreamReader and dialect readers.
+        // Thus the reader and original readers will not be the same.
+        assertTrue(reader != original);
+        
+        // The streaming parser will not have access to the attachments.  Thus this will
+        // return null
+        XMLStreamReader attachmentAccessor = 
+            XMLStreamReaderUtils.getOMAttachmentAccessorXMLStreamReader(reader);
+        
+        assertTrue(attachmentAccessor == null);
+        
+    }
+    
+    public void testAccessToCachedParser() throws Exception {
+        OMElement root = createTestMTOMMessage();
+        XMLStreamReader reader = root.getXMLStreamReader(true);
+        
+        XMLStreamReader original = XMLStreamReaderUtils.getOriginalXMLStreamReader(reader);
+        
+        // The caching parser will be an OMStaXWrapper.
+        assertTrue(original instanceof OMStAXWrapper);
+        
+        XMLStreamReader attachmentAccessor = 
+            XMLStreamReaderUtils.getOMAttachmentAccessorXMLStreamReader(reader);
+        
+        // Thus the attachmentAccessor should also be the OMStaXWrapper
+        assertTrue(attachmentAccessor instanceof OMStAXWrapper);
+        
     }
     
     public void testCreateOMElement() throws Exception {

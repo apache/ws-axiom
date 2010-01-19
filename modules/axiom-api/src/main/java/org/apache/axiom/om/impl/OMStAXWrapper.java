@@ -41,6 +41,8 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * {@link XMLStreamReader} implementation that generates events from a given Axiom tree.
+ * This class does intentionally does not implement XMLStreamReaderContainer because
+ * it does not wrap a parser (it wraps an OM graph).
  */
 public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReader {
     private static final Log log = LogFactory.getLog(OMStAXWrapper.class);

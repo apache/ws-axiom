@@ -23,6 +23,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.StreamReaderDelegate;
 
+import org.apache.axiom.util.stax.wrapper.XMLStreamReaderContainer;
+
 /**
  * XMLStreamReader wrapper that prevents access to the underlying parser
  * after the first error occurs.
@@ -55,7 +57,7 @@ import javax.xml.stream.util.StreamReaderDelegate;
  * to {@link XMLStreamReader#next()} and similar methods on the underlying parser.
  * Any attempt to do so will immediately result in an error.
  */
-public class SafeXMLStreamReader extends StreamReaderDelegate {
+public class SafeXMLStreamReader extends StreamReaderDelegate implements XMLStreamReaderContainer {
     private boolean parserError;
 
     public SafeXMLStreamReader(XMLStreamReader reader) {

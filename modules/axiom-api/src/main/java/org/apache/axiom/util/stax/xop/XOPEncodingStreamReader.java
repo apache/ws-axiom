@@ -33,6 +33,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.util.stax.wrapper.XMLStreamReaderContainer;
 
 /**
  * {@link XMLStreamReader} wrapper that encodes XOP. It assumes that the underlying reader
@@ -52,7 +53,8 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
  * This class defers loading of {@link DataHandler} objects until {@link #getDataHandler(String)} is
  * called, except if this is not supported by the underlying stream.
  */
-public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements XMLStreamReader {
+public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper 
+    implements XMLStreamReader, XMLStreamReaderContainer {
     /**
      * Wrapper that adds the XOP namespace to another namespace context.
      */
@@ -529,5 +531,9 @@ public class XOPEncodingStreamReader extends XOPEncodingStreamWrapper implements
             case STATE_XOP_INCLUDE_END_ELEMENT: return true;
             default: return parent.isEndElement();
         }
+    }
+
+    public XMLStreamReader getParent() {
+        return parent;
     }
 }

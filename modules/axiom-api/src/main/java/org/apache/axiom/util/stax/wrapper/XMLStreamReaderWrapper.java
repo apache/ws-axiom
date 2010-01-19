@@ -31,7 +31,7 @@ import javax.xml.stream.XMLStreamReader;
  * similar to {@link javax.xml.stream.util.StreamReaderDelegate}, with the difference that it is
  * immutable.
  */
-public class XMLStreamReaderWrapper implements XMLStreamReader {
+public class XMLStreamReaderWrapper implements XMLStreamReader, XMLStreamReaderContainer {
     private final XMLStreamReader parent;
 
     /**
@@ -41,6 +41,15 @@ public class XMLStreamReaderWrapper implements XMLStreamReader {
      */
     public XMLStreamReaderWrapper(XMLStreamReader parent) {
         this.parent = parent;
+    }
+    
+    /**
+     * Get Parent
+     * Note that setParent is intentionally omitted.  XMLStreamReaderWrapper is immutable.
+     * @return XMLStreamReader parent
+     */
+    public XMLStreamReader getParent() {
+        return parent;
     }
 
     public void close() throws XMLStreamException {
