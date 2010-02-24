@@ -39,7 +39,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 
 /**
- * Validates CopyUtils utility
+ * Validates CopyUtils 
  */
 public class CopyUtilsTest extends AbstractTestCase {
 
