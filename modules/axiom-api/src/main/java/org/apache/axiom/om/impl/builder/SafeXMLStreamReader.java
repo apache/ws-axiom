@@ -24,6 +24,8 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.StreamReaderDelegate;
 
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderContainer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * XMLStreamReader wrapper that prevents access to the underlying parser
@@ -55,10 +57,15 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamReaderContainer;
  * This class provides a simple way to prevent this type of issue by wrapping the underlying
  * parser implementation. After the first parsing error occurs, the wrapper prevents any call
  * to {@link XMLStreamReader#next()} and similar methods on the underlying parser.
- * Any attempt to do so will immediately result in an error.
+ * Any attempt to do so will immediately result in the original error being thrown.
  */
 public class SafeXMLStreamReader extends StreamReaderDelegate implements XMLStreamReaderContainer {
+    
+    private static Log log = LogFactory.getLog(SafeXMLStreamReader.class);
     private boolean parserError;
+    private XMLStreamException xmlStreamException = null;
+    private RuntimeException runtimeException = null;
+    private Error error = null;
 
     public SafeXMLStreamReader(XMLStreamReader reader) {
         super(reader);
@@ -66,8 +73,18 @@ public class SafeXMLStreamReader extends StreamReaderDelegate implements XMLStre
 
     private void checkError() throws XMLStreamException {
         if (parserError) {
-            throw new XMLStreamException(
-                    "Trying to read events from a parser that already reported an error before");
+            if (log.isDebugEnabled()) {
+                log.debug("Trying to read events from a parser that already reported an error before");
+            }
+            if (xmlStreamException != null) {
+                throw xmlStreamException;
+            } else if (runtimeException != null) {
+                throw runtimeException;
+            } else if (error != null) {
+                throw error;
+            } else {
+                throw new XMLStreamException("Trying to read events from a parser that already reported an error before");
+            }
         }
     }
 
@@ -76,12 +93,15 @@ public class SafeXMLStreamReader extends StreamReaderDelegate implements XMLStre
             return super.getElementText();
         } catch (XMLStreamException ex) {
             parserError = true;
+            xmlStreamException = ex;
             throw ex;
         } catch (RuntimeException ex) {
             parserError = true;
+            runtimeException = ex;
             throw ex;
         } catch (Error ex) {
             parserError = true;
+            error = ex;
             throw ex;
         }
     }
@@ -91,9 +111,11 @@ public class SafeXMLStreamReader extends StreamReaderDelegate implements XMLStre
             return super.getPIData();
         } catch (RuntimeException ex) {
             parserError = true;
+            runtimeException = ex;
             throw ex;
         } catch (Error ex) {
             parserError = true;
+            error = ex;
             throw ex;
         }
     }
@@ -103,9 +125,11 @@ public class SafeXMLStreamReader extends StreamReaderDelegate implements XMLStre
             return super.getText();
         } catch (RuntimeException ex) {
             parserError = true;
+            runtimeException = ex;
             throw ex;
         } catch (Error ex) {
             parserError = true;
+            error = ex;
             throw ex;
         }
     }
@@ -115,9 +139,11 @@ public class SafeXMLStreamReader extends StreamReaderDelegate implements XMLStre
             return super.getTextCharacters();
         } catch (RuntimeException ex) {
             parserError = true;
+            runtimeException = ex;
             throw ex;
         } catch (Error ex) {
             parserError = true;
+            error = ex;
             throw ex;
         }
     }
@@ -129,12 +155,15 @@ public class SafeXMLStreamReader extends StreamReaderDelegate implements XMLStre
             return super.getTextCharacters(sourceStart, target, targetStart, length);
         } catch (XMLStreamException ex) {
             parserError = true;
+            xmlStreamException = ex;
             throw ex;
         } catch (RuntimeException ex) {
             parserError = true;
+            runtimeException = ex;
             throw ex;
         } catch (Error ex) {
             parserError = true;
+            error = ex;
             throw ex;
         }
     }
@@ -144,9 +173,11 @@ public class SafeXMLStreamReader extends StreamReaderDelegate implements XMLStre
             return super.getTextLength();
         } catch (RuntimeException ex) {
             parserError = true;
+            runtimeException = ex;
             throw ex;
         } catch (Error ex) {
             parserError = true;
+            error = ex;
             throw ex;
         }
     }
@@ -156,9 +187,11 @@ public class SafeXMLStreamReader extends StreamReaderDelegate implements XMLStre
             return super.getTextStart();
         } catch (RuntimeException ex) {
             parserError = true;
+            runtimeException = ex;
             throw ex;
         } catch (Error ex) {
             parserError = true;
+            error = ex;
             throw ex;
         }
     }
@@ -169,12 +202,15 @@ public class SafeXMLStreamReader extends StreamReaderDelegate implements XMLStre
             return super.hasNext();
         } catch (XMLStreamException ex) {
             parserError = true;
+            xmlStreamException = ex;
             throw ex;
         } catch (RuntimeException ex) {
             parserError = true;
+            runtimeException = ex;
             throw ex;
         } catch (Error ex) {
             parserError = true;
+            error = ex;
             throw ex;
         }
     }
@@ -185,12 +221,15 @@ public class SafeXMLStreamReader extends StreamReaderDelegate implements XMLStre
             return super.next();
         } catch (XMLStreamException ex) {
             parserError = true;
+            xmlStreamException = ex;
             throw ex;
         } catch (RuntimeException ex) {
             parserError = true;
+            runtimeException = ex;
             throw ex;
         } catch (Error ex) {
             parserError = true;
+            error = ex;
             throw ex;
         }
     }
@@ -201,12 +240,15 @@ public class SafeXMLStreamReader extends StreamReaderDelegate implements XMLStre
             return super.nextTag();
         } catch (XMLStreamException ex) {
             parserError = true;
+            xmlStreamException = ex;
             throw ex;
         } catch (RuntimeException ex) {
             parserError = true;
+            runtimeException = ex;
             throw ex;
         } catch (Error ex) {
             parserError = true;
+            error = ex;
             throw ex;
         }
     }

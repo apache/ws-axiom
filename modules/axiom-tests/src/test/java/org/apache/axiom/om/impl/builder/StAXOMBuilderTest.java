@@ -27,7 +27,10 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 
+import java.io.FileReader;
 import java.util.Iterator;
+
+import javax.xml.stream.XMLInputFactory;
 
 public class StAXOMBuilderTest extends AbstractTestCase {
     StAXOMBuilder stAXOMBuilder;
@@ -118,5 +121,38 @@ public class StAXOMBuilderTest extends AbstractTestCase {
         }
         
         assertTrue(childrenCount == 5);
+    }
+    
+ public void testInvalidXML() throws Exception {
+        
+        StAXOMBuilder stAXOMBuilder =
+                OMXMLBuilderFactory.createStAXOMBuilder(OMAbstractFactory.getSOAP11Factory(),
+                                                        XMLInputFactory.newInstance()
+                                                                       .createXMLStreamReader(
+                                                                         getTestResource("invalid_xml.xml")));
+        
+        Exception exception = null;
+        while (exception == null || stAXOMBuilder.isCompleted()) {
+            try {
+                stAXOMBuilder.next();
+            } catch (Exception e) {
+                exception =e;
+            }
+        }
+        
+        assertTrue("Expected an exception because invalid_xml.xml is wrong", exception != null);
+        
+        // Intentionally call builder again to make sure the same error is returned.
+        Exception exception2 = null;
+        try {
+            stAXOMBuilder.next();
+        } catch (Exception e) {
+            exception2 = e;
+        }
+        
+        assertTrue("Expected a second exception because invalid_xml.xml is wrong", exception2 != null);
+        assertTrue("Expected the same exception. first=" + exception + " second=" + exception2, 
+                    exception.getMessage().equals(exception2.getMessage()));
+        
     }
 }
