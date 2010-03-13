@@ -17,13 +17,13 @@
  * under the License.
  */
 
-package org.apache.axiom.soap.impl.llom;
+package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAPFaultTestBase;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import org.apache.axiom.soap.SOAP12FaultTestBase;
 
-public class SOAPFaultTest extends SOAPFaultTestBase {
-    public SOAPFaultTest() {
-        super(new OMLinkedListMetaFactory());
+public class SOAP12FaultTest extends SOAP12FaultTestBase {
+    public SOAP12FaultTest() {
+        super(new OMDOMMetaFactory());
     }
 }

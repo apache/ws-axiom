@@ -39,8 +39,8 @@ public abstract class SOAPTestCase extends AbstractTestCase {
     protected SOAPEnvelope soap11EnvelopeWithParser;
     protected SOAPEnvelope soap12EnvelopeWithParser;
 
-    protected static final String SOAP11_FILE_NAME = "soap/soap11/soap11message.xml";
-    protected static final String SOAP12_FILE_NAME = "soap/soap12message.xml";
+    protected static final String SOAP11_FILE_NAME = "soap/soap11/message.xml";
+    protected static final String SOAP12_FILE_NAME = "soap/soap12/message.xml";
 
     public SOAPTestCase(OMMetaFactory omMetaFactory) {
         this.omMetaFactory = omMetaFactory;

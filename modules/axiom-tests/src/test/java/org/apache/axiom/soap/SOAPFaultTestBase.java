@@ -19,394 +19,198 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 
-public class SOAPFaultTestBase extends SOAPFaultTestCase {
-
-    public SOAPFaultTestBase(OMMetaFactory omMetaFactory) {
-        super(omMetaFactory);
+public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
+    protected final String faultCodeLocalName;
+    protected final String faultReasonLocalName;
+    protected final String faultRoleLocalName;
+    protected final String faultDetailLocalName;
+    protected SOAPFactory altSoapFactory;
+    
+    public SOAPFaultTestBase(OMMetaFactory omMetaFactory, String envelopeNamespaceURI,
+            String faultCodeLocalName, String faultReasonLocalName, String faultRoleLocalName,
+            String faultDetailLocalName) {
+        super(omMetaFactory, envelopeNamespaceURI);
+        this.faultCodeLocalName = faultCodeLocalName;
+        this.faultReasonLocalName = faultReasonLocalName;
+        this.faultRoleLocalName = faultRoleLocalName;
+        this.faultDetailLocalName = faultDetailLocalName;
     }
 
-    //SOAP 1.1 Fault Test (Programaticaly created)-----------------------------------------------------------------------------------
-    public void testSOAP11SetCode() {
-        soap11Fault.setCode(soap11Factory.createSOAPFaultCode(soap11Fault));
+    protected void setUp() throws Exception {
+        super.setUp();
+        altSoapFactory = isSOAP11() ? omMetaFactory.getSOAP12Factory() : omMetaFactory.getSOAP11Factory();
+    }
+
+    // Fault Test (Programaticaly created)-----------------------------------------------------------------------------------
+    public void testSetCode() {
+        SOAPFault soapFault = soapFactory.createSOAPFault();
+        soapFault.setCode(soapFactory.createSOAPFaultCode(soapFault));
         assertNotNull(
-                "SOAP 1.1 Fault Test:- After calling setCode method, Fault has no code",
-                soap11Fault.getCode());
+                "Fault Test:- After calling setCode method, Fault has no code",
+                soapFault.getCode());
+        assertTrue("Fault Test:- Code local name mismatch",
+                   soapFault.getCode().getLocalName().equals(
+                           faultCodeLocalName));
         try {
-            soap11Fault.setCode(soap12Factory.createSOAPFaultCode(soap12Fault));
-            fail("SOAP12FaultCode should not not be set in to a SOAP11Fault");
+            soapFault.setCode(altSoapFactory.createSOAPFaultCode());
+            fail("SOAPFaultCode should not be set in to a SOAPFault for a different SOAP version");
         } catch (Exception e) {
+            // Expected
         }
     }
 
-    public void testSOAP11GetCode() {
+    public void testGetCode() {
+        SOAPFault soapFault = soapFactory.createSOAPFault();
         assertTrue(
-                "SOAP 1.1 Fault Test:- After creating a SOAP11Fault, it has a code",
-                soap11Fault.getCode() == null);
-        soap11Fault.setCode(soap11Factory.createSOAPFaultCode(soap11Fault));
+                "Fault Test:- After creating a SOAPFault, it has a code",
+                soapFault.getCode() == null);
+        soapFault.setCode(soapFactory.createSOAPFaultCode(soapFault));
         assertFalse(
-                "SOAP 1.1 Fault Test:- After calling setCode method, Fault has no code",
-                soap11Fault.getCode() == null);
+                "Fault Test:- After calling setCode method, Fault has no code",
+                soapFault.getCode() == null);
+        assertTrue("Fault Test:- Fault code local name mismatch",
+                   soapFault.getCode().getLocalName().equals(
+                           faultCodeLocalName));
     }
 
-    public void testSOAP11SetReason() {
-        soap11Fault.setReason(soap11Factory.createSOAPFaultReason(soap11Fault));
+    public void testSetReason() {
+        SOAPFault soapFault = soapFactory.createSOAPFault();
+        soapFault.setReason(soapFactory.createSOAPFaultReason(soapFault));
         assertFalse(
-                "SOAP 1.1 Fault Test:- After calling setReason method, Fault has no reason",
-                soap11Fault.getReason() == null);
+                "Fault Test:- After calling setReason method, Fault has no reason",
+                soapFault.getReason() == null);
+        assertTrue("Fault Test:- Fault reason local name mismatch",
+                   soapFault.getReason().getLocalName().equals(
+                           faultReasonLocalName));
         try {
-            soap11Fault.setReason(
-                    soap12Factory.createSOAPFaultReason(soap12Fault));
-            fail("SOAP12FaultReason should not be set in to a SOAP11Fault");
-
-        } catch (Exception e) {
-            assertTrue(true);
-        }
-    }
-
-    public void testSOAP11GetReason() {
-        assertTrue(
-                "SOAP 1.1 Fault Test:- After creating a SOAP11Fault, it has a reason",
-                soap11Fault.getReason() == null);
-        soap11Fault.setReason(soap11Factory.createSOAPFaultReason(soap11Fault));
-        assertFalse(
-                "SOAP 1.1 Fault Test:- After calling setReason method, Fault has no reason",
-                soap11Fault.getReason() == null);
-    }
-
-    public void testSOAP11SetNode() {
-        try {
-            soap11Fault.setNode(soap11Factory.createSOAPFaultNode(soap11Fault));
-        } catch (UnsupportedOperationException e) {
-            // Exactly!
-            return;
-        }
-        fail("Didn't get UnsupportedOperationException");
-    }
-
-    public void testSOAP11GetNode() {
-        // TODO: LLOM returns null while DOM throws UnsupportedOperationException
-        try {
-            assertTrue(
-                    "SOAP 1.1 Fault Test:- After creating a SOAP11Fault, it has a node",
-                    soap11Fault.getNode() == null);
-        } catch (UnsupportedOperationException ex) {
-            // This is also fine.
-        }
-    }
-
-    public void testSOAP11SetRole() {
-        soap11Fault.setRole(soap11Factory.createSOAPFaultRole(soap11Fault));
-        assertFalse(
-                "SOAP 1.1 Fault Test:- After calling setRole method, Fault has no role",
-                soap11Fault.getRole() == null);
-        try {
-            soap11Fault.setRole(soap12Factory.createSOAPFaultRole(soap12Fault));
-            fail("SOAP12FaultRole should not be set in to a SOAP11Fault");
-        } catch (Exception e) {
-            assertTrue(true);
-        }
-    }
-
-    public void testSOAP11GetRole() {
-        assertTrue(
-                "SOAP 1.1 Fault Test:- After creating a SOAP11Fault, it has a role",
-                soap11Fault.getRole() == null);
-        soap11Fault.setRole(soap11Factory.createSOAPFaultRole(soap11Fault));
-        assertFalse(
-                "SOAP 1.1 Fault Test:- After calling setRole method, Fault has no role",
-                soap11Fault.getRole() == null);
-    }
-
-    public void testSOAP11SetDetail() {
-        soap11Fault.setDetail(soap11Factory.createSOAPFaultDetail(soap11Fault));
-        assertFalse(
-                "SOAP 1.1 Fault Test:- After calling setDetail method, Fault has no detail",
-                soap11Fault.getDetail() == null);
-        try {
-            soap11Fault.setDetail(
-                    soap12Factory.createSOAPFaultDetail(soap12Fault));
-            fail("SOAP12FaultDetail should not be set in to a SOAP11Fault");
-        } catch (Exception e) {
-            assertTrue(true);
-        }
-    }
-
-    public void testSOAP11GetDetail() {
-        assertTrue(
-                "SOAP 1.1 Fault Test:- After creating a SOAP11Fault, it has a detail",
-                soap11Fault.getDetail() == null);
-        soap11Fault.setDetail(soap11Factory.createSOAPFaultDetail(soap11Fault));
-        assertFalse(
-                "SOAP 1.1 Fault Test:- After calling setDetail method, Fault has no detail",
-                soap11Fault.getDetail() == null);
-    }
-
-    //SOAP 1.2 Fault Test ((Programaticaly created)--------------------------------------------------------------------------------
-    public void testSOAP12SetCode() {
-        soap12Fault.setCode(soap12Factory.createSOAPFaultCode(soap12Fault));
-        assertFalse(
-                "SOAP 1.2 Fault Test:- After calling setCode method, Fault has no code",
-                soap12Fault.getCode() == null);
-        assertTrue("SOAP 1.2 Fault Test:- Code local name mismatch",
-                   soap12Fault.getCode().getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME));
-        try {
-            soap12Fault.setCode(soap11Factory.createSOAPFaultCode(soap11Fault));
-            fail("SOAP11FaultCode should not be set in to a SOAP12Fault");
-        } catch (Exception e) {
-            assertTrue(true);
-        }
-    }
-
-    public void testSOAP12GetCode() {
-        assertTrue(
-                "SOAP 1.2 Fault Test:- After creating a SOAP12Fault, it has a code",
-                soap12Fault.getCode() == null);
-        soap12Fault.setCode(soap12Factory.createSOAPFaultCode(soap12Fault));
-        assertFalse(
-                "SOAP 1.2 Fault Test:- After calling setCode method, Fault has no code",
-                soap12Fault.getCode() == null);
-        assertTrue("SOAP 1.2 Fault Test:- Fault code local name mismatch",
-                   soap12Fault.getCode().getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME));
-    }
-
-    public void testSOAP12SetReason() {
-        soap12Fault.setReason(soap12Factory.createSOAPFaultReason(soap12Fault));
-        assertFalse(
-                "SOAP 1.2 Fault Test:- After calling setReason method, Fault has no reason",
-                soap12Fault.getReason() == null);
-        assertTrue("SOAP 1.2 Fault Test:- Fault reason local name mismatch",
-                   soap12Fault.getReason().getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME));
-        try {
-            soap12Fault.setReason(
-                    soap11Factory.createSOAPFaultReason(soap11Fault));
-            fail("SOAP11FaultReason should not be set in to a SOAP12Fault");
+            soapFault.setReason(altSoapFactory.createSOAPFaultReason());
+            fail("SOAPFaultReason should not be set in to a SOAPFault for a different SOAP version");
 
         } catch (Exception e) {
             assertTrue(true);
         }
     }
 
-    public void testSOAP12GetReason() {
+    public void testGetReason() {
+        SOAPFault soapFault = soapFactory.createSOAPFault();
         assertTrue(
-                "SOAP 1.2 Fault Test:- After creating a SOAP12Fault, it has a reason",
-                soap12Fault.getReason() == null);
-        soap12Fault.setReason(soap12Factory.createSOAPFaultReason(soap12Fault));
+                "Fault Test:- After creating a SOAPFault, it has a reason",
+                soapFault.getReason() == null);
+        soapFault.setReason(soapFactory.createSOAPFaultReason(soapFault));
         assertFalse(
-                "SOAP 1.2 Fault Test:- After calling setReason method, Fault has no reason",
-                soap12Fault.getReason() == null);
-        assertTrue("SOAP 1.2 Fault Test:- Fault reason local name mismatch",
-                   soap12Fault.getReason().getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME));
+                "Fault Test:- After calling setReason method, Fault has no reason",
+                soapFault.getReason() == null);
+        assertTrue("Fault Test:- Fault reason local name mismatch",
+                   soapFault.getReason().getLocalName().equals(
+                           faultReasonLocalName));
     }
 
-    public void testSOAP12SetNode() {
-        soap12Fault.setNode(soap12Factory.createSOAPFaultNode(soap12Fault));
+    public void testSetRole() {
+        SOAPFault soapFault = soapFactory.createSOAPFault();
+        soapFault.setRole(soapFactory.createSOAPFaultRole(soapFault));
         assertFalse(
-                "SOAP 1.2 Fault Test:- After calling setNode method, Fault has no node",
-                soap12Fault.getNode() == null);
-        assertTrue("SOAP 1.2 Fault Test:- Fault node local name mismatch",
-                   soap12Fault.getNode().getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME));
+                "Fault Test:- After calling setRole method, Fault has no role",
+                soapFault.getRole() == null);
+        assertTrue("Fault Test:- Fault role local name mismatch",
+                   soapFault.getRole().getLocalName().equals(
+                           faultRoleLocalName));
         try {
-            soap12Fault.setNode(soap11Factory.createSOAPFaultNode(soap11Fault));
-            fail("SOAP11FaultNode should nott be set in to a SOAP12Fault");
-
+            soapFault.setRole(altSoapFactory.createSOAPFaultRole());
+            fail("SOAPFaultRole should not be set in to a SOAPFault for a different SOAP version");
         } catch (Exception e) {
             assertTrue(true);
         }
     }
 
-    public void testSOAP12GetNode() {
+    public void testGetRole() {
+        SOAPFault soapFault = soapFactory.createSOAPFault();
         assertTrue(
-                "SOAP 1.2 Fault Test:- After creating a SOAP12Fault, it has a node",
-                soap12Fault.getNode() == null);
-        soap12Fault.setNode(soap12Factory.createSOAPFaultNode(soap12Fault));
+                "Fault Test:- After creating a SOAPFault, it has a role",
+                soapFault.getRole() == null);
+        soapFault.setRole(soapFactory.createSOAPFaultRole(soapFault));
         assertFalse(
-                "SOAP 1.2 Fault Test:- After calling setNode method, Fault has no node",
-                soap12Fault.getNode() == null);
-        assertTrue("SOAP 1.2 Fault Test:- Fault node local name mismatch",
-                   soap12Fault.getNode().getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME));
+                "Fault Test:- After calling setRole method, Fault has no role",
+                soapFault.getRole() == null);
+        assertTrue("Fault Test:- Fault role local name mismatch",
+                   soapFault.getRole().getLocalName().equals(
+                           faultRoleLocalName));
     }
 
-    public void testSOAP12SetRole() {
-        soap12Fault.setRole(soap12Factory.createSOAPFaultRole(soap12Fault));
+    public void testSetDetail() {
+        SOAPFault soapFault = soapFactory.createSOAPFault();
+        soapFault.setDetail(soapFactory.createSOAPFaultDetail(soapFault));
         assertFalse(
-                "SOAP 1.2 :- After calling setRole method, Fault has no role",
-                soap12Fault.getRole() == null);
-        assertTrue("SOAP 1.2 Fault Test:- Fault role local name mismatch",
-                   soap12Fault.getRole().getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME));
+                "Fault Test:- After calling setDetail method, Fault has no detail",
+                soapFault.getDetail() == null);
+        assertTrue("Fault Test:- Fault detail local name mismatch",
+                   soapFault.getDetail().getLocalName().equals(
+                           faultDetailLocalName));
         try {
-            soap12Fault.setRole(soap11Factory.createSOAPFaultRole(soap11Fault));
-            fail("SOAP11FaultRole should not be set in to a SOAP12Fault");
+            soapFault.setDetail(altSoapFactory.createSOAPFaultDetail());
+            fail("SOAPFaultDetail should not be set in to a SOAPFault for a different SOAP version");
         } catch (Exception e) {
             assertTrue(true);
         }
     }
 
-    public void testSOAP12GetRole() {
+    public void testGetDetail() {
+        SOAPFault soapFault = soapFactory.createSOAPFault();
         assertTrue(
-                "SOAP 1.2 Fault Test:- After creating a SOAP11Fault, it has a role",
-                soap12Fault.getRole() == null);
-        soap12Fault.setRole(soap12Factory.createSOAPFaultRole(soap12Fault));
+                "Fault Test:- After creating a SOAPFault, it has a detail",
+                soapFault.getDetail() == null);
+        soapFault.setDetail(soapFactory.createSOAPFaultDetail(soapFault));
         assertFalse(
-                "SOAP 1.2 Fault Test:- After calling setRole method, Fault has no role",
-                soap12Fault.getRole() == null);
-        assertTrue("SOAP 1.2 Fault Test:- Fault role local name mismatch",
-                   soap12Fault.getRole().getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME));
+                "Fault Test:- After calling setDetail method, Fault has no detail",
+                soapFault.getDetail() == null);
+        assertTrue("Fault Test:- Fault detail local name mismatch",
+                   soapFault.getDetail().getLocalName().equals(
+                           faultDetailLocalName));
     }
 
-    public void testSOAP12SetDetail() {
-        soap12Fault.setDetail(soap12Factory.createSOAPFaultDetail(soap12Fault));
-        assertFalse(
-                "SOAP 1.2 Fault Test:- After calling setDetaile method, Fault has no detail",
-                soap12Fault.getDetail() == null);
-        assertTrue("SOAP 1.2 Fault Test:- Fault detail local name mismatch",
-                   soap12Fault.getDetail().getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME));
-        try {
-            soap12Fault.setDetail(
-                    soap11Factory.createSOAPFaultDetail(soap11Fault));
-            fail("SOAP11FaultDetail should not be set in to a SOAP12Fault");
-
-        } catch (Exception e) {
-            assertTrue(true);
-        }
-    }
-
-    public void testSOAP12GetDetail() {
-        assertTrue(
-                "SOAP 1.2 Fault Test:- After creating a SOAP12Fault, it has a detail",
-                soap12Fault.getDetail() == null);
-        soap12Fault.setDetail(soap12Factory.createSOAPFaultDetail(soap12Fault));
-        assertFalse(
-                "SOAP 1.2 Fault Test:- After calling setDetail method, Fault has no detail",
-                soap12Fault.getDetail() == null);
-        assertTrue("SOAP 1.2 Fault Test:- Fault detail local name mismatch",
-                   soap12Fault.getDetail().getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME));
-    }
-
-    //SOAP 1.1 Fault Test (With parser)
-    public void testSOAP11GetCodeWithParser() {
-        assertFalse(
-                "SOAP 1.1 Fault Test with parser: - getCode method returns null",
-                soap11FaultWithParser.getCode() == null);
-    }
-
-    public void testSOAP11GetRoleWithParser() {
-        assertFalse(
-                "SOAP 1.1 Fault Test with parser: - getRole method returns null",
-                soap11FaultWithParser.getRole() == null);
-    }
-
-    public void testSOAP11GetDetailWithParser() {
+    // Fault Test (With parser)
+    public void testGetCodeWithParser() {
+        SOAPFault soapFaultWithParser = getTestMessage(MESSAGE).getBody().getFault();
         assertNotNull(
-                "SOAP 1.1 Fault Test with parser: - getDetail method returns null",
-                soap11FaultWithParser.getDetail());
+                "Fault Test with parser: - getCode method returns null",
+                soapFaultWithParser.getCode());
+        assertTrue(
+                "Fault Test with parser: - Fault code local name mismatch",
+                soapFaultWithParser.getCode().getLocalName().equals(
+                        faultCodeLocalName));
     }
 
-    //SOAP 1.2 Fault Test (With parser)
-    public void testSOAP12GetCodeWithParser() {
+    public void testGetReasonWithParser() {
+        SOAPFault soapFaultWithParser = getTestMessage(MESSAGE).getBody().getFault();
+        assertFalse(
+                "Fault Test with parser: - getReason method returns null",
+                soapFaultWithParser.getReason() == null);
+        assertTrue(
+                "Fault Test with parser: - Fault reason local name mismatch",
+                soapFaultWithParser.getReason().getLocalName().equals(
+                        faultReasonLocalName));
+    }
+
+    public void testGetRoleWithParser() {
+        SOAPFault soapFaultWithParser = getTestMessage(MESSAGE).getBody().getFault();
+        assertFalse(
+                "Fault Test with parser: - getRole method returns null",
+                soapFaultWithParser.getRole() == null);
+        assertTrue(
+                "Fault Test with parser: - Fault role local name mismatch",
+                soapFaultWithParser.getRole().getLocalName().equals(
+                        faultRoleLocalName));
+    }
+
+    public void testGetDetailWithParser() {
+        SOAPFault soapFaultWithParser = getTestMessage(MESSAGE).getBody().getFault();
         assertNotNull(
-                "SOAP 1.2 Fault Test with parser: - getCode method returns null",
-                soap12FaultWithParser.getCode());
+                "Fault Test with parser: - getDetail method returns null",
+                soapFaultWithParser.getDetail());
         assertTrue(
-                "SOAP 1.2 Fault Test with parser: - Fault code local name mismatch",
-                soap12FaultWithParser.getCode().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME));
-    }
-
-    public void testSOAP12GetReasonWithParser() {
-        assertFalse(
-                "SOAP 1.2 Fault Test with parser: - getReason method returns null",
-                soap12FaultWithParser.getReason() == null);
-        assertTrue(
-                "SOAP 1.2 Fault Test with parser: - Fault reason local name mismatch",
-                soap12FaultWithParser.getReason().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME));
-    }
-
-    public void testSOAP12GetNodeWithParser() {
-        assertFalse(
-                "SOAP 1.2 Fault Test with parser: - getNode method returns null",
-                soap12FaultWithParser.getNode() == null);
-        assertTrue(
-                "SOAP 1.2 Fault Test with parser: - Fault node local name mismatch",
-                soap12FaultWithParser.getNode().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME));
-    }
-
-    public void testSOAP12GetRoleWithParser() {
-        assertFalse(
-                "SOAP 1.2 Fault Test with parser: - getRole method returns null",
-                soap12FaultWithParser.getRole() == null);
-        assertTrue(
-                "SOAP 1.2 Fault Test with parser: - Fault role local name mismatch",
-                soap12FaultWithParser.getRole().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME));
-    }
-
-    public void testSOAP12GetDetailWithParser() {
-        assertFalse(
-                "SOAP 1.2 Fault Test with parser: - getDetail method returns null",
-                soap12FaultWithParser.getDetail() == null);
-        assertTrue(
-                "SOAP 1.2 Fault Test with parser: - Fault detail local name mismatch",
-                soap12FaultWithParser.getDetail().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME));
-    }
-
-    public void testMoreChildrenAddition() {
-        try {
-            SOAPFactory soapFactory = OMAbstractFactory.getSOAP12Factory();
-            SOAPEnvelope envelope = soapFactory.getDefaultFaultEnvelope();
-
-            assertNotNull("Default FaultEnvelope must have a SOAPFault in it",
-                          envelope.getBody().getFault());
-            assertNotNull(
-                    "Default FaultEnvelope must have a SOAPFaultCode in it",
-                    envelope.getBody().getFault().getCode());
-            assertNotNull(
-                    "Default FaultEnvelope must have a SOAPFaultCodeValue in it",
-                    envelope.getBody().getFault().getCode().getValue());
-            assertNotNull(
-                    "Default FaultEnvelope must have a SOAPFaultReason in it",
-                    envelope.getBody().getFault().getReason());
-            assertNotNull(
-                    "Default FaultEnvelope must have a SOAPFaultText in it",
-                    envelope.getBody().getFault().getReason().getFirstSOAPText());
-
-            SOAPEnvelope soapEnvelope = soapFactory.getDefaultFaultEnvelope();
-            String errorCodeString = "Some Error occurred !!";
-            soapEnvelope.getBody().getFault().getCode().getValue().setText(
-                    errorCodeString);
-
-            SOAPFaultCode code = soapEnvelope.getBody().getFault().getCode();
-            envelope.getBody().getFault().setCode(code);
-
-            assertTrue("Parent Value of Code has not been set to new fault",
-                       code.getParent() == envelope.getBody().getFault());
-            assertTrue("Parent Value of Code is still pointing to old fault",
-                       code.getParent() != soapEnvelope.getBody().getFault());
-            assertNull("Old fault must not have a fault code",
-                       soapEnvelope.getBody().getFault().getCode());
-            assertEquals("The SOAP Code value must be " + errorCodeString,
-                         errorCodeString,
-                         envelope.getBody().getFault().getCode().getValue().getText());
-
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-
-
+                "Fault Test with parser: - Fault detail local name mismatch",
+                soapFaultWithParser.getDetail().getLocalName().equals(
+                        faultDetailLocalName));
     }
 }

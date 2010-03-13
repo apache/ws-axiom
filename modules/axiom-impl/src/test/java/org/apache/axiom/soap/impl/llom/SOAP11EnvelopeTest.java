@@ -20,10 +20,11 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
+import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPEnvelopeTestBase;
 
-public class SOAPEnvelopeTest extends SOAPEnvelopeTestBase {
-    public SOAPEnvelopeTest() {
-        super(new OMLinkedListMetaFactory());
+public class SOAP11EnvelopeTest extends SOAPEnvelopeTestBase {
+    public SOAP11EnvelopeTest() {
+        super(new OMLinkedListMetaFactory(), SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
 }

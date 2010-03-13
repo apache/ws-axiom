@@ -20,10 +20,11 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.apache.axiom.soap.SOAPBodyTestBase;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPEnvelopeTestBase;
 
-public class SOAPBodyTest extends SOAPBodyTestBase {
-    public SOAPBodyTest() {
-        super(new OMDOMMetaFactory());
+public class SOAP12EnvelopeTest extends SOAPEnvelopeTestBase {
+    public SOAP12EnvelopeTest() {
+        super(new OMDOMMetaFactory(), SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
 }

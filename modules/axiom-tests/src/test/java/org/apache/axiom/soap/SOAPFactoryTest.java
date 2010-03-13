@@ -27,8 +27,8 @@ import org.apache.commons.logging.LogFactory;
 
 public class SOAPFactoryTest extends AbstractTestCase {
 
-    protected static final String SOAP11_FILE_NAME = "soap/soap11/soap11message.xml";
-    protected static final String SOAP12_FILE_NAME = "soap/soap12message.xml";
+    protected static final String SOAP11_FILE_NAME = "soap/soap11/message.xml";
+    protected static final String SOAP12_FILE_NAME = "soap/soap12/message.xml";
     private static Log log = LogFactory.getLog(SOAPFactoryTest.class);
 
     public void testSOAPFactory() throws Exception {

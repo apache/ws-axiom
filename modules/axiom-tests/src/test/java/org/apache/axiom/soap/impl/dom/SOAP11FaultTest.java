@@ -17,30 +17,13 @@
  * under the License.
  */
 
-package org.apache.axiom.soap.impl.llom;
+package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAPBodyTestBase;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import org.apache.axiom.soap.SOAP11FaultTestBase;
 
-public class SOAPBodyTest extends SOAPBodyTestBase {
-    public SOAPBodyTest() {
-        super(new OMLinkedListMetaFactory());
-    }
-
-    public void testSOAPBodyDetachment() {
-        try {
-            soap11Body.detach();
-            fail("Detachment of SOAP Body is not allowed !!");
-        } catch (OMException e) {
-            assertTrue(true);
-        }
-
-        try {
-            soap12Body.detach();
-            fail("Detachment of SOAP Body is not allowed !!");
-        } catch (OMException e) {
-            assertTrue(true);
-        }
+public class SOAP11FaultTest extends SOAP11FaultTestBase {
+    public SOAP11FaultTest() {
+        super(new OMDOMMetaFactory());
     }
 }

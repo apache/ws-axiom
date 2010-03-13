@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package org.apache.axiom.soap.impl.dom;
+package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelopeTestBase;
 
-public class SOAPEnvelopeTest extends SOAPEnvelopeTestBase {
-    public SOAPEnvelopeTest() {
-        super(new OMDOMMetaFactory());
+public class SOAP12EnvelopeTest extends SOAPEnvelopeTestBase {
+    public SOAP12EnvelopeTest() {
+        super(new OMLinkedListMetaFactory(), SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
 }

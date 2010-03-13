@@ -21,117 +21,71 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMMetaFactory;
 
-public class SOAPBodyTestBase extends SOAPBodyTestCase {
-
-    public SOAPBodyTestBase(OMMetaFactory omMetaFactory) {
-        super(omMetaFactory);
+public class SOAPBodyTestBase extends UnifiedSOAPTestCase {
+    public SOAPBodyTestBase(OMMetaFactory omMetaFactory, String envelopeNamespaceURI) {
+        super(omMetaFactory, envelopeNamespaceURI);
     }
 
-    //SOAP 1.1 Body Test (Programaticaly created)----------------------------------------------------------------------------------
-    public void testSOAP11AddFault1() {
-        soap11Body.addFault(new Exception("This an exception for testing"));
+    // Body Test (Programaticaly created)----------------------------------------------------------------------------------
+    public void testAddFault1() {
+        SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
+        SOAPBody body = soapFactory.createSOAPBody(envelope);
+        body.addFault(new Exception("This an exception for testing"));
         assertTrue(
-                "SOAP 1.1 Body Test:- After calling addFault method, SOAP body has no fault",
-                soap11Body.hasFault());
+                "Body Test:- After calling addFault method, SOAP body has no fault",
+                body.hasFault());
 
     }
 
-    public void testSOAP11addFault2() {
-        soap11Body.addFault(soap11Factory.createSOAPFault(soap11Body));
+    public void testAddFault2() {
+        SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
+        SOAPBody body = soapFactory.createSOAPBody(envelope);
+        body.addFault(soapFactory.createSOAPFault(body));
         assertTrue(
-                "SOAP 1.1 Body Test:- After calling addFault method, SOAP body has no fault",
-                soap11Body.hasFault());
-
-
+                "Body Test:- After calling addFault method, SOAP body has no fault",
+                body.hasFault());
     }
 
-    public void testSOAP11HasFault() {
+    public void testHasFault() {
+        SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
+        SOAPBody body = soapFactory.createSOAPBody(envelope);
         assertFalse(
-                "SOAP 1.1 Body Test:- After creating a soap body it has a fault",
-                soap11Body.hasFault());
-        soap11Body.addFault(new Exception("This an exception for testing"));
+                "Body Test:- After creating a soap body it has a fault",
+                body.hasFault());
+        body.addFault(new Exception("This an exception for testing"));
         assertTrue(
-                "SOAP 1.1 Body Test:- After calling addFault method, hasFault method returns false",
-                soap11Body.hasFault());
+                "Body Test:- After calling addFault method, hasFault method returns false",
+                body.hasFault());
     }
 
-    public void testSOAP11GetFault() {
+    public void testGetFault() {
+        SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
+        SOAPBody body = soapFactory.createSOAPBody(envelope);
         assertTrue(
-                "SOAP 1.1 Body Test:- After creating a soap body it has a fault",
-                soap11Body.getFault() == null);
-        soap11Body.addFault(new Exception("This an exception for testing"));
+                "Body Test:- After creating a soap body it has a fault",
+                body.getFault() == null);
+        body.addFault(new Exception("This an exception for testing"));
         assertFalse(
-                "SOAP 1.1 Body Test:- After calling addFault method, getFault method returns null",
-                soap11Body.getFault() == null);
+                "Body Test:- After calling addFault method, getFault method returns null",
+                body.getFault() == null);
     }
 
-    //SOAP 1.2 Body Test (Programaticaly Created)----------------------------------------------------------------------------------
-    public void testSOAP12AddFault1() {
-        soap12Body.addFault(new Exception("This an exception for testing"));
+    // Body Test (With Parser)-------------------------------------------------------------------------------------------
+    public void testHasFaultWithParser() {
+        SOAPBody body = getTestMessage(MESSAGE).getBody();
         assertTrue(
-                "SOAP 1.2 Body Test:- After calling addFault method, SOAP body has no fault",
-                soap12Body.hasFault());
-
+                "Body Test With parser :- hasFault method returns false",
+                body.hasFault());
     }
 
-    public void testSOAP12AddFault2() {
-        soap12Body.addFault(soap12Factory.createSOAPFault(soap12Body));
-        assertTrue(
-                "SOAP 1.2 Body Test:- After calling addFault method, SOAP body has no fault",
-                soap12Body.hasFault());
-    }
-
-    public void testSOAP12HasFault() {
+    public void testGetFaultWithParser() {
+        SOAPBody body = getTestMessage(MESSAGE).getBody();
         assertFalse(
-                "SOAP 1.2 Body Test:- After creating a soap body it has a fault",
-                soap12Body.hasFault());
-        soap12Body.addFault(new Exception("This an exception for testing"));
+                "Body Test With parser :- getFault method returns null",
+                body.getFault() == null);
         assertTrue(
-                "SOAP 1.2 Body Test:- After calling addFault method, hasFault method returns false",
-                soap12Body.hasFault());
-    }
-
-    public void testSOAP12GetFault() {
-        assertTrue(
-                "SOAP 1.2 Body Test:- After creating a soap body it has a fault",
-                soap12Body.getFault() == null);
-        soap12Body.addFault(new Exception("This an exception for testing"));
-        assertFalse(
-                "SOAP 1.2 Body Test:- After calling addFault method, getFault method returns null",
-                soap12Body.getFault() == null);
-    }
-
-    //SOAP 1.1 Body Test (With Parser)-------------------------------------------------------------------------------------------
-    public void testSOAP11HasFaultWithParser() {
-        assertTrue(
-                "SOAP 1.1 Body Test With parser :- hasFault method returns false",
-                soap11BodyWithParser.hasFault());
-    }
-
-    public void testSOAP11GetFaultWithParser() {
-        assertFalse(
-                "SOAP 1.1 Body Test With parser :- getFault method returns null",
-                soap11BodyWithParser.getFault() == null);
-        assertTrue(
-                "SOAP 1.1 Body Test With parser : - SOAP fault name mismatch",
-                soap11BodyWithParser.getFault().getLocalName().equals(
-                        SOAPConstants.SOAPFAULT_LOCAL_NAME));
-    }
-
-    //SOAP 1.2 Body Test (With Parser)-------------------------------------------------------------------------------------------------
-    public void testSOAP12HasFaultWithParser() {
-        assertTrue(
-                "SOAP 1.2 Body Test With parser :- hasFault method returns false",
-                soap12BodyWithParser.hasFault());
-    }
-
-    public void testSOAP12GetFaultWithParser() {
-        assertFalse(
-                "SOAP 1.2 Body Test With parser :- getFault method returns null",
-                soap12BodyWithParser.getFault() == null);
-        assertTrue(
-                "SOAP 1.2 Body Test With parser : - SOAP fault name mismatch",
-                soap12BodyWithParser.getFault().getLocalName().equals(
+                "Body Test With parser : - SOAP fault name mismatch",
+                body.getFault().getLocalName().equals(
                         SOAPConstants.SOAPFAULT_LOCAL_NAME));
     }
 }

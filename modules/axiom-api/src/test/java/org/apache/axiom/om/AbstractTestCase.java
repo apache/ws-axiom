@@ -53,7 +53,7 @@ public abstract class AbstractTestCase
         "reallyReallyBigMessage.xml",
         "sample1.xml",
         "security2-soap.xml",
-        "soap12message.xml",
+        "soap12/message.xml",
         "soap12RoleMessage.xml",
         "soapmessage.xml",
         "soapmessage1.xml",
