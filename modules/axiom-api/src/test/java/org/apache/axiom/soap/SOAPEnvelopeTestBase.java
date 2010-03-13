@@ -75,4 +75,15 @@ public class SOAPEnvelopeTestBase extends UnifiedSOAPTestCase {
         soapFactory.createSOAPHeader(env);
         assertTrue("Header isn't the first child!", env.getFirstElement() instanceof SOAPHeader);
     }
+    
+    public void testGetBodyOnEmptyEnvelope() {
+        assertNull(soapFactory.createSOAPEnvelope().getBody());
+    }
+    
+    // Regression test for WSCOMMONS-526
+    public void testGetBodyOnEnvelopeWithHeaderOnly() {
+        SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
+        soapFactory.createSOAPHeader(envelope);
+        assertNull(envelope.getBody());
+    }
 }

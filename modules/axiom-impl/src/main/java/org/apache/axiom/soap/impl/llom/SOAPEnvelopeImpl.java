@@ -171,11 +171,11 @@ public class SOAPEnvelopeImpl extends SOAPElement
                 while (node != null && node.getType() != OMNode.ELEMENT_NODE) {
                     node = node.getNextOMSibling();
                 }
-                element = (OMElement) node;
-
-                if (node != null &&
-                        SOAPConstants.BODY_LOCAL_NAME.equals(element.getLocalName())) {
-                    return (SOAPBody) element;
+                if (node == null) {
+                    // The envelope only contains a header
+                    return null;
+                } else if (SOAPConstants.BODY_LOCAL_NAME.equals(((OMElement)node).getLocalName())) {
+                    return (SOAPBody)node;
                 } else {
                     throw new OMException("SOAPEnvelope must contain a body element " +
                             "which is either first or second child element of the SOAPEnvelope.");
