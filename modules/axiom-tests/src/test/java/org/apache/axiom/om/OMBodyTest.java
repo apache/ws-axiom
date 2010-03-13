@@ -47,14 +47,9 @@ public class OMBodyTest extends OMTestCase implements OMConstants {
      */
     public void testAddFault() {
         log.debug("Adding SOAP fault to body ....");
-        try {
-            soapBody.addChild(
-                    soapFactory.createSOAPFault(soapBody,
-                                                new Exception("Testing soap fault")));
-        } catch (SOAPProcessingException e) {
-            log.info(e.getMessage());
-            fail(e.getMessage());
-        }
+        soapBody.addChild(
+                soapFactory.createSOAPFault(soapBody,
+                                            new Exception("Testing soap fault")));
         log.debug("\t checking for SOAP Fault ...");
         assertTrue("SOAP body has no SOAP fault", soapBody.hasFault());
         log.debug("\t checking for not-nullity ...");

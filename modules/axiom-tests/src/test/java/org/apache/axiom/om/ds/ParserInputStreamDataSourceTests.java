@@ -75,56 +75,40 @@ public class ParserInputStreamDataSourceTests extends TestCase {
 	
 	
 	
-	public void testCreateParserInputStreamDataSource(){
-		try{
-			ParserInputStreamDataSource peds = createPeds();
-			assertNotNull(peds);
-		}catch(Exception e){
-			fail(e.getMessage());
-		}
+	public void testCreateParserInputStreamDataSource() throws Exception {
+		ParserInputStreamDataSource peds = createPeds();
+		assertNotNull(peds);
 	}
 	
-	public void testParserInputStreamDataSourceSerialize(){
-		try{
-			ParserInputStreamDataSource peds = createPeds();
-			//lets test Serialze() call.
-			ByteArrayOutputStream output = new ByteArrayOutputStream();
-			peds.serialize(output, null);
-			String str = new String(output.toByteArray());
-			assertNotNull(str);
-			assertEquals(str, "<invokeOp>Hello Provider OM</invokeOp>");
-		}catch(Exception e){
-			fail(e.getMessage());
-		}
+	public void testParserInputStreamDataSourceSerialize() throws Exception {
+		ParserInputStreamDataSource peds = createPeds();
+		//lets test Serialze() call.
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		peds.serialize(output, null);
+		String str = new String(output.toByteArray());
+		assertNotNull(str);
+		assertEquals(str, "<invokeOp>Hello Provider OM</invokeOp>");
 	}
 	
-	public void testParserInputStreamDataSourceSerializeWithWriter(){
-		try{
-			ParserInputStreamDataSource peds = createPeds();
-			//lets test Serialze() call.
-			ByteArrayOutputStream output = new ByteArrayOutputStream();
-			XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(output);
-			peds.serialize(writer);
-			String str = new String(output.toByteArray());
-			assertNotNull(str);
-			assertEquals(str, "<invokeOp>Hello Provider OM</invokeOp>");
-		}catch(Exception e){
-			fail(e.getMessage());
-		}
+	public void testParserInputStreamDataSourceSerializeWithWriter() throws Exception {
+		ParserInputStreamDataSource peds = createPeds();
+		//lets test Serialze() call.
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(output);
+		peds.serialize(writer);
+		String str = new String(output.toByteArray());
+		assertNotNull(str);
+		assertEquals(str, "<invokeOp>Hello Provider OM</invokeOp>");
 	}
 	
-	public void testParserInputStreamDataSourceGetXMLBytes(){
-		try{
-			ParserInputStreamDataSource peds = createPeds();
-			
-			//lets test getXMLBytes().
-			byte[] bytes = peds.getXMLBytes("UTF-8");
-			String str = new String(bytes);
-			assertNotNull(bytes);
-			assertEquals(str, "<invokeOp>Hello Provider OM</invokeOp>");
-		}catch(Exception e){
-			fail(e.getMessage());
-		}
+	public void testParserInputStreamDataSourceGetXMLBytes() throws Exception {
+		ParserInputStreamDataSource peds = createPeds();
+		
+		//lets test getXMLBytes().
+		byte[] bytes = peds.getXMLBytes("UTF-8");
+		String str = new String(bytes);
+		assertNotNull(bytes);
+		assertEquals(str, "<invokeOp>Hello Provider OM</invokeOp>");
 	}
 	
 	private void updatePedsDataWithMockInputStream(ParserInputStreamDataSource peds) throws Exception{

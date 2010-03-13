@@ -26,7 +26,6 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -76,13 +75,7 @@ public class OMEnvelopeTest extends OMTestCase {
     }
 
     public void testDefaultEnveleope() {
-        SOAPEnvelope env = null;
-        try {
-            env = OMAbstractFactory.getSOAP11Factory().getDefaultEnvelope();
-        } catch (SOAPProcessingException e) {
-            log.info(e.getMessage());
-            fail(e.getMessage());
-        }
+        SOAPEnvelope env = OMAbstractFactory.getSOAP11Factory().getDefaultEnvelope();
         assertNotNull(env);
         assertNotNull("Body should not be null", env.getBody());
     }

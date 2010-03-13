@@ -31,26 +31,21 @@ public class SOAP11FaultImplConversionTest extends AbstractTestCase {
 
     private String soap11FaulXmlPath = "soap/soap11/soapfault2.xml";
 
-    public void testConversion() {
-        try {
-            InputStream is = getTestResource(soap11FaulXmlPath);
-            XMLStreamReader reader = StAXUtils.createXMLStreamReader(is);
+    public void testConversion() throws Exception {
+        InputStream is = getTestResource(soap11FaulXmlPath);
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(is);
 
-            SOAPEnvelope env = new StAXSOAPModelBuilder(reader, null).getSOAPEnvelope();
+        SOAPEnvelope env = new StAXSOAPModelBuilder(reader, null).getSOAPEnvelope();
 
-            env.build();
+        env.build();
 
-            SOAPEnvelope env2 =
-                    new StAXSOAPModelBuilder(env.getXMLStreamReader(), null).getSOAPEnvelope();
+        SOAPEnvelope env2 =
+                new StAXSOAPModelBuilder(env.getXMLStreamReader(), null).getSOAPEnvelope();
 
-            env2.build();
+        env2.build();
 
-            env2.toString();
+        env2.toString();
 
-            //System.out.println(env2);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+        //System.out.println(env2);
     }
 }

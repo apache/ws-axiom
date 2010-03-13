@@ -99,75 +99,56 @@ public class AttrNsTest extends AbstractOMSerializationTest {
                      attr.getNamespace().getNamespaceURI());
     }
 
-    public void testAttributesWithProgrammaticalCreation() {
+    public void testAttributesWithProgrammaticalCreation() throws Exception {
+        String expectedXML =
+                "<AttributeTester xmlns=\"\" xmlns:myAttr2NS=\"http://test-attributes-2.org\" " +
+                        "xmlns:myAttr1NS=\"http://test-attributes-1.org\" myAttr2NS:attrNumber=\"2\" myAttr1NS:attrNumber=\"1\" />";
 
-        try {
-            String expectedXML =
-                    "<AttributeTester xmlns=\"\" xmlns:myAttr2NS=\"http://test-attributes-2.org\" " +
-                            "xmlns:myAttr1NS=\"http://test-attributes-1.org\" myAttr2NS:attrNumber=\"2\" myAttr1NS:attrNumber=\"1\" />";
+        OMFactory omFactory = OMAbstractFactory.getOMFactory();
 
-            OMFactory omFactory = OMAbstractFactory.getOMFactory();
+        OMNamespace attrNS1 =
+                omFactory.createOMNamespace("http://test-attributes-1.org", "myAttr1NS");
+        OMNamespace attrNS2 =
+                omFactory.createOMNamespace("http://test-attributes-2.org", "myAttr2NS");
+        OMElement omElement = omFactory.createOMElement("AttributeTester", null);
+        omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS1, "1"));
+        omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS2, "2"));
 
-            OMNamespace attrNS1 =
-                    omFactory.createOMNamespace("http://test-attributes-1.org", "myAttr1NS");
-            OMNamespace attrNS2 =
-                    omFactory.createOMNamespace("http://test-attributes-2.org", "myAttr2NS");
-            OMElement omElement = omFactory.createOMElement("AttributeTester", null);
-            omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS1, "1"));
-            omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS2, "2"));
-
-            int nsCount = 0;
-            for (Iterator iterator = omElement.getAllDeclaredNamespaces(); iterator.hasNext();) {
-                iterator.next();
-                nsCount++;
-            }
-            assertTrue(nsCount == 2);
-
-            Document document1 = newDocument(expectedXML);
-            Document document2 = newDocument(omElement.toString());
-
-            Diff diff = compareXML(document1, document2);
-            assertXMLEqual(diff, true);
-        } catch (ParserConfigurationException e) {
-            fail(e.getMessage());
-        } catch (SAXException e) {
-            fail(e.getMessage());
-        } catch (IOException e) {
-            fail(e.getMessage());
+        int nsCount = 0;
+        for (Iterator iterator = omElement.getAllDeclaredNamespaces(); iterator.hasNext();) {
+            iterator.next();
+            nsCount++;
         }
+        assertTrue(nsCount == 2);
+
+        Document document1 = newDocument(expectedXML);
+        Document document2 = newDocument(omElement.toString());
+
+        Diff diff = compareXML(document1, document2);
+        assertXMLEqual(diff, true);
     }
 
 
-    public void testAttributesWithNamespaceSerialization() {
-        try {
-            String xmlString =
-                    "<root xmlns='http://custom.com'><node cust:id='123' xmlns:cust='http://custom.com' /></root>";
-            XMLStreamReader xmlStreamReader = StAXUtils.createXMLStreamReader(
-                    new StringReader(xmlString));
+    public void testAttributesWithNamespaceSerialization() throws Exception {
+        String xmlString =
+                "<root xmlns='http://custom.com'><node cust:id='123' xmlns:cust='http://custom.com' /></root>";
+        XMLStreamReader xmlStreamReader = StAXUtils.createXMLStreamReader(
+                new StringReader(xmlString));
 
-            // copied code from the generated stub class toOM method
-            org.apache.axiom.om.impl.builder.StAXOMBuilder builder =
-                    new org.apache.axiom.om.impl.builder.StAXOMBuilder(xmlStreamReader);
-            org.apache.axiom.om.OMElement documentElement = builder
-                    .getDocumentElement();
+        // copied code from the generated stub class toOM method
+        org.apache.axiom.om.impl.builder.StAXOMBuilder builder =
+                new org.apache.axiom.om.impl.builder.StAXOMBuilder(xmlStreamReader);
+        org.apache.axiom.om.OMElement documentElement = builder
+                .getDocumentElement();
 
-            ((org.apache.axiom.om.impl.OMNodeEx) documentElement).setParent(null);
-            // end copied code
+        ((org.apache.axiom.om.impl.OMNodeEx) documentElement).setParent(null);
+        // end copied code
 
-            // now print the object after it has been processed
-            System.out.println("after - '" + documentElement.toString() + "'");
-            Document document1 = newDocument(xmlString);
-            Document document2 = newDocument(documentElement.toString());
-            Diff diff = compareXML(document1, document2);
-            assertXMLEqual(diff, true);
-        } catch (ParserConfigurationException e) {
-            fail(e.getMessage());
-        } catch (SAXException e) {
-            fail(e.getMessage());
-        } catch (IOException e) {
-            fail(e.getMessage());
-        } catch (javax.xml.stream.XMLStreamException e) {
-            fail(e.getMessage());
-        }
+        // now print the object after it has been processed
+        System.out.println("after - '" + documentElement.toString() + "'");
+        Document document1 = newDocument(xmlString);
+        Document document2 = newDocument(documentElement.toString());
+        Diff diff = compareXML(document1, document2);
+        assertXMLEqual(diff, true);
     }
 }

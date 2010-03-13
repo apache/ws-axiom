@@ -240,7 +240,7 @@ public class NamespaceTest extends XMLTestCase {
     /**
      * This is re-producing and testing the bug mentioned in http://issues.apache.org/jira/browse/WSCOMMONS-74
      */
-    public void testNamespaceProblem7() {
+    public void testNamespaceProblem7() throws Exception {
 
         String expectedString = "<person xmlns=\"http://ws.apache.org/axis2/apacheconasia/06\">" +
                 "<name>John</name>" +
@@ -269,17 +269,13 @@ public class NamespaceTest extends XMLTestCase {
         String result = personElem.toString();
 
 
-        try {
-            assertXMLEqual(expectedString, result);
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        assertXMLEqual(expectedString, result);
     }
 
     /**
      * This is re-producing and testing the bug mentioned in http://issues.apache.org/jira/browse/WSCOMMONS-74
      */
-    public void testNamespaceProblem8() {
+    public void testNamespaceProblem8() throws Exception {
 
         String expectedXML =
                 "<person xmlns=\"http://ws.apache.org/axis2/apacheconasia/06\"><name xmlns=\"\">John</name><age>34</age><weight>50</weight></person>";
@@ -301,12 +297,7 @@ public class NamespaceTest extends XMLTestCase {
         personElem.addChild(ageElem);
         personElem.addChild(weightElem);
 
-        try {
-            assertXMLEqual(expectedXML, personElem.toString());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-
+        assertXMLEqual(expectedXML, personElem.toString());
     }
 
     public void testOMElementSerialize() throws Exception {

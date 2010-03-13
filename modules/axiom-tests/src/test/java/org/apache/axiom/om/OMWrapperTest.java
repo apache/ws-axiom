@@ -24,77 +24,70 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.OMStAXWrapper;
 import org.apache.axiom.om.util.StAXUtils;
 
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
 
 public class OMWrapperTest extends TestCase {
 
-    public void testSingleElementWrapper() {
-        try {
-            String xml = "<root>" +
-                    "<wrap1>" +
-                    "<wrap3>" +
-                    "<wrap2>" +
-                    "IncludedText" +
-                    "</wrap2>" +
-                    "</wrap3>" +
-                    "</wrap1>" +
-                    "</root>";
+    public void testSingleElementWrapper() throws Exception {
+        String xml = "<root>" +
+                "<wrap1>" +
+                "<wrap3>" +
+                "<wrap2>" +
+                "IncludedText" +
+                "</wrap2>" +
+                "</wrap3>" +
+                "</wrap1>" +
+                "</root>";
 
-            XMLStreamReader xmlStreamReader =
-                    StAXUtils.createXMLStreamReader(new StringReader(xml));
-            StAXOMBuilder b = new StAXOMBuilder(xmlStreamReader);
+        XMLStreamReader xmlStreamReader =
+                StAXUtils.createXMLStreamReader(new StringReader(xml));
+        StAXOMBuilder b = new StAXOMBuilder(xmlStreamReader);
 
-            OMElement documentElement = b.getDocumentElement();
-            OMElement wrap2Element =
-                    documentElement.getFirstElement().
-                            getFirstElement().
-                            getFirstElement();
+        OMElement documentElement = b.getDocumentElement();
+        OMElement wrap2Element =
+                documentElement.getFirstElement().
+                        getFirstElement().
+                        getFirstElement();
 
-            OMElement elt = OMAbstractFactory.getOMFactory().createOMElement(
-                    "testName", "urn:testNs", "ns1"
-            );
+        OMElement elt = OMAbstractFactory.getOMFactory().createOMElement(
+                "testName", "urn:testNs", "ns1"
+        );
 
-            elt.addChild(wrap2Element);
+        elt.addChild(wrap2Element);
 
 
-            XMLStreamReader reader = wrap2Element.getXMLStreamReaderWithoutCaching();
-            
-            // Make sure the reader is an OMStAXWrapper
-            if (reader instanceof OMStAXWrapper) {
-                OMStAXWrapper wrapper = (OMStAXWrapper) reader;
-                assertTrue(!wrapper.isClosed());
-                wrapper.releaseParserOnClose(true);
-            }
-            
-            int count = 0;
-            while (reader.hasNext()) {
-                reader.next();
-                count ++;
-            }
-
-            assertEquals(3, count);
-            
-            
-            // Make sure that the wrapper can be closed without failing
-            reader.close();
-            reader.close();  // This should be a noop since the parser is closed.
-            
-            // Closing the parser should also close the parser on the builder (since they are the same)
-            assertTrue(b.isClosed());
-            b.close(); // This should be a noop since the parser is closed
-            
-            // Calling getProperty after a close should return null, not an exception
-            assertTrue(reader.getProperty("dummyProperty") == null);
-            
-            // Calling builder.getReaderProperty should return null, not an exception
-            assertTrue(b.getReaderProperty("dummyProperty") == null);
-        } catch (XMLStreamException e) {
-            fail(e.getMessage());
+        XMLStreamReader reader = wrap2Element.getXMLStreamReaderWithoutCaching();
+        
+        // Make sure the reader is an OMStAXWrapper
+        if (reader instanceof OMStAXWrapper) {
+            OMStAXWrapper wrapper = (OMStAXWrapper) reader;
+            assertTrue(!wrapper.isClosed());
+            wrapper.releaseParserOnClose(true);
+        }
+        
+        int count = 0;
+        while (reader.hasNext()) {
+            reader.next();
+            count ++;
         }
 
-
+        assertEquals(3, count);
+        
+        
+        // Make sure that the wrapper can be closed without failing
+        reader.close();
+        reader.close();  // This should be a noop since the parser is closed.
+        
+        // Closing the parser should also close the parser on the builder (since they are the same)
+        assertTrue(b.isClosed());
+        b.close(); // This should be a noop since the parser is closed
+        
+        // Calling getProperty after a close should return null, not an exception
+        assertTrue(reader.getProperty("dummyProperty") == null);
+        
+        // Calling builder.getReaderProperty should return null, not an exception
+        assertTrue(b.getReaderProperty("dummyProperty") == null);
     }
 
 

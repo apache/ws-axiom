@@ -90,62 +90,54 @@ public class DefaultNSHandlingTest extends XMLTestCase {
         assertTrue("".equals(omElementTwoChild.getNamespace().getNamespaceURI()));
     }
 
-    public void testChildReDeclaringParentsDefaultNSWithPrefix() {
-        try {
-            OMFactory fac = OMAbstractFactory.getOMFactory();
-            OMElement elem = fac.createOMElement("RequestSecurityToken", null);
-            elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
-            fac.createOMElement(new QName("TokenType"), elem).setText("test");
-            fac.createOMElement(new QName("RequestType"), elem).setText("test1");
+    public void testChildReDeclaringParentsDefaultNSWithPrefix() throws Exception {
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+        OMElement elem = fac.createOMElement("RequestSecurityToken", null);
+        elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
+        fac.createOMElement(new QName("TokenType"), elem).setText("test");
+        fac.createOMElement(new QName("RequestType"), elem).setText("test1");
 
-            fac.createOMElement(
-                    new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
-                    elem);
-            String xml = elem.toString();
+        fac.createOMElement(
+                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
+                elem);
+        String xml = elem.toString();
 
-            XMLStreamReader reader = StAXUtils.createXMLStreamReader(
-                    new ByteArrayInputStream(xml.getBytes()));
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(
+                new ByteArrayInputStream(xml.getBytes()));
 
-            StAXOMBuilder builder = new StAXOMBuilder(reader);
-            builder.getDocumentElement().build();
+        StAXOMBuilder builder = new StAXOMBuilder(reader);
+        builder.getDocumentElement().build();
 
-            // The StAX implementation may or may not have a trailing blank in the tag
-            String assertText1 =
-                    "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\" />";
-            String assertText2 =
-                    "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"/>";
-            String assertText3 =
-                    "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"></wst:Entropy>";
+        // The StAX implementation may or may not have a trailing blank in the tag
+        String assertText1 =
+                "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\" />";
+        String assertText2 =
+                "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"/>";
+        String assertText3 =
+                "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"></wst:Entropy>";
 
-            assertTrue((xml.indexOf(assertText1) != -1) ||
-                    (xml.indexOf(assertText2) != -1) ||
-                    (xml.indexOf(assertText3) != -1));
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        assertTrue((xml.indexOf(assertText1) != -1) ||
+                (xml.indexOf(assertText2) != -1) ||
+                (xml.indexOf(assertText3) != -1));
     }
 
     public void testChildReDeclaringGrandParentsDefaultNSWithPrefix() {
-        try {
-            OMFactory fac = OMAbstractFactory.getOMFactory();
-            OMElement elem = fac.createOMElement("RequestSecurityToken", null);
-            elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
-            fac.createOMElement(new QName("TokenType"), elem).setText("test");
-            fac.createOMElement(new QName("RequestType"), elem).setText("test1");
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+        OMElement elem = fac.createOMElement("RequestSecurityToken", null);
+        elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
+        fac.createOMElement(new QName("TokenType"), elem).setText("test");
+        fac.createOMElement(new QName("RequestType"), elem).setText("test1");
 
-            OMElement entElem = fac.createOMElement(
-                    new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
-                    elem);
-            OMElement binSecElem = fac.createOMElement(
-                    new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Binarysecret", "wst"),
-                    entElem);
-            binSecElem.setText("secret value");
-            String xml = elem.toString();
-            assertTrue("Binarysecret element should have \'wst\' ns prefix",
-                       xml.indexOf("<wst:Binarysecret") != -1);
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        OMElement entElem = fac.createOMElement(
+                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
+                elem);
+        OMElement binSecElem = fac.createOMElement(
+                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Binarysecret", "wst"),
+                entElem);
+        binSecElem.setText("secret value");
+        String xml = elem.toString();
+        assertTrue("Binarysecret element should have \'wst\' ns prefix",
+                   xml.indexOf("<wst:Binarysecret") != -1);
     }
 
 //    public void testForIssueWSCOMMONS119() {

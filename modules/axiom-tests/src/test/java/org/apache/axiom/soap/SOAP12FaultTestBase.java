@@ -76,45 +76,40 @@ public class SOAP12FaultTestBase extends SOAPFaultTestBase {
 
 
     public void testMoreChildrenAddition() {
-        try {
-            SOAPFactory soapFactory = OMAbstractFactory.getSOAP12Factory();
-            SOAPEnvelope envelope = soapFactory.getDefaultFaultEnvelope();
+        SOAPFactory soapFactory = OMAbstractFactory.getSOAP12Factory();
+        SOAPEnvelope envelope = soapFactory.getDefaultFaultEnvelope();
 
-            assertNotNull("Default FaultEnvelope must have a SOAPFault in it",
-                          envelope.getBody().getFault());
-            assertNotNull(
-                    "Default FaultEnvelope must have a SOAPFaultCode in it",
-                    envelope.getBody().getFault().getCode());
-            assertNotNull(
-                    "Default FaultEnvelope must have a SOAPFaultCodeValue in it",
-                    envelope.getBody().getFault().getCode().getValue());
-            assertNotNull(
-                    "Default FaultEnvelope must have a SOAPFaultReason in it",
-                    envelope.getBody().getFault().getReason());
-            assertNotNull(
-                    "Default FaultEnvelope must have a SOAPFaultText in it",
-                    envelope.getBody().getFault().getReason().getFirstSOAPText());
+        assertNotNull("Default FaultEnvelope must have a SOAPFault in it",
+                      envelope.getBody().getFault());
+        assertNotNull(
+                "Default FaultEnvelope must have a SOAPFaultCode in it",
+                envelope.getBody().getFault().getCode());
+        assertNotNull(
+                "Default FaultEnvelope must have a SOAPFaultCodeValue in it",
+                envelope.getBody().getFault().getCode().getValue());
+        assertNotNull(
+                "Default FaultEnvelope must have a SOAPFaultReason in it",
+                envelope.getBody().getFault().getReason());
+        assertNotNull(
+                "Default FaultEnvelope must have a SOAPFaultText in it",
+                envelope.getBody().getFault().getReason().getFirstSOAPText());
 
-            SOAPEnvelope soapEnvelope = soapFactory.getDefaultFaultEnvelope();
-            String errorCodeString = "Some Error occurred !!";
-            soapEnvelope.getBody().getFault().getCode().getValue().setText(
-                    errorCodeString);
+        SOAPEnvelope soapEnvelope = soapFactory.getDefaultFaultEnvelope();
+        String errorCodeString = "Some Error occurred !!";
+        soapEnvelope.getBody().getFault().getCode().getValue().setText(
+                errorCodeString);
 
-            SOAPFaultCode code = soapEnvelope.getBody().getFault().getCode();
-            envelope.getBody().getFault().setCode(code);
+        SOAPFaultCode code = soapEnvelope.getBody().getFault().getCode();
+        envelope.getBody().getFault().setCode(code);
 
-            assertTrue("Parent Value of Code has not been set to new fault",
-                       code.getParent() == envelope.getBody().getFault());
-            assertTrue("Parent Value of Code is still pointing to old fault",
-                       code.getParent() != soapEnvelope.getBody().getFault());
-            assertNull("Old fault must not have a fault code",
-                       soapEnvelope.getBody().getFault().getCode());
-            assertEquals("The SOAP Code value must be " + errorCodeString,
-                         errorCodeString,
-                         envelope.getBody().getFault().getCode().getValue().getText());
-
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        assertTrue("Parent Value of Code has not been set to new fault",
+                   code.getParent() == envelope.getBody().getFault());
+        assertTrue("Parent Value of Code is still pointing to old fault",
+                   code.getParent() != soapEnvelope.getBody().getFault());
+        assertNull("Old fault must not have a fault code",
+                   soapEnvelope.getBody().getFault().getCode());
+        assertEquals("The SOAP Code value must be " + errorCodeString,
+                     errorCodeString,
+                     envelope.getBody().getFault().getCode().getValue().getText());
     }
 }

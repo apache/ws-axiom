@@ -30,7 +30,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -51,39 +50,25 @@ public class SpacesTest extends AbstractTestCase {
     }
 
     private void checkOMConformance(InputStream iStream) throws Exception {
-        try {
-            StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
-                    createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
-                                        StAXUtils.createXMLStreamReader(
-                                                iStream));
-            rootElement = staxOMBuilder.getDocumentElement();
-            boolean hasCDataNode = hasCDataNode(rootElement);
-            String file = hasCDataNode ? filePath : filePath2;
+        StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
+                createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
+                                    StAXUtils.createXMLStreamReader(
+                                            iStream));
+        rootElement = staxOMBuilder.getDocumentElement();
+        boolean hasCDataNode = hasCDataNode(rootElement);
+        String file = hasCDataNode ? filePath : filePath2;
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ((OMDocument) rootElement.getParent()).serialize(baos);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ((OMDocument) rootElement.getParent()).serialize(baos);
 
-            InputSource resultXML = new InputSource(new InputStreamReader(
-                    new ByteArrayInputStream(baos.toByteArray())));
+        InputSource resultXML = new InputSource(new InputStreamReader(
+                new ByteArrayInputStream(baos.toByteArray())));
 
-            Document dom1 = newDocument(new InputSource(getTestResource(file)));
-            Document dom2 = newDocument(resultXML);
-            Diff diff = compareXML(dom1, dom2);
-            assertXMLEqual(diff, true);
-            rootElement.close(false);
-        } catch (XMLStreamException e) {
-            fail(e.getMessage());
-            throw new Exception(e);
-        } catch (ParserConfigurationException e) {
-            fail(e.getMessage());
-            throw new Exception(e);
-        } catch (SAXException e) {
-            fail(e.getMessage());
-            throw new Exception(e);
-        } catch (IOException e) {
-            fail(e.getMessage());
-            throw new Exception(e);
-        }
+        Document dom1 = newDocument(new InputSource(getTestResource(file)));
+        Document dom2 = newDocument(resultXML);
+        Diff diff = compareXML(dom1, dom2);
+        assertXMLEqual(diff, true);
+        rootElement.close(false);
     }
 
     private boolean hasCDataNode(OMNode pNode) {

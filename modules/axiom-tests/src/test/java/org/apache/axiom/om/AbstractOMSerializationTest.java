@@ -89,41 +89,26 @@ public abstract class AbstractOMSerializationTest extends XMLTestCase {
     }
 
     public Diff getDiffForComparison(InputStream inStream) throws Exception {
+        StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
+                createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
+                                    StAXUtils.createXMLStreamReader(inStream));
+        OMElement rootElement = staxOMBuilder.getDocumentElement();
 
-        try {
-            StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
-                    createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
-                                        StAXUtils.createXMLStreamReader(inStream));
-            OMElement rootElement = staxOMBuilder.getDocumentElement();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            if (ignoreDocument) {
-                rootElement.serialize(baos);
-            } else {
-                ((OMDocument) rootElement.getParent()).serialize(baos);
-            }
-
-            InputSource resultXML = new InputSource(new InputStreamReader(
-                    new ByteArrayInputStream(baos.toByteArray())));
-
-            Document dom2 = newDocument(resultXML);
-            Document dom1 = newDocument(inStream);
-
-            return compareXML(dom1, dom2);
-        } catch (XMLStreamException e) {
-            fail(e.getMessage());
-            throw new Exception(e);
-        } catch (ParserConfigurationException e) {
-            fail(e.getMessage());
-            throw new Exception(e);
-        } catch (SAXException e) {
-            fail(e.getMessage());
-            throw new Exception(e);
-        } catch (IOException e) {
-            fail(e.getMessage());
-            throw new Exception(e);
+        if (ignoreDocument) {
+            rootElement.serialize(baos);
+        } else {
+            ((OMDocument) rootElement.getParent()).serialize(baos);
         }
+
+        InputSource resultXML = new InputSource(new InputStreamReader(
+                new ByteArrayInputStream(baos.toByteArray())));
+
+        Document dom2 = newDocument(resultXML);
+        Document dom1 = newDocument(inStream);
+
+        return compareXML(dom1, dom2);
     }
 
     public Document newDocument(InputSource in)
