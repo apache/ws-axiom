@@ -555,14 +555,12 @@ public class StAXOMBuilder extends StAXBuilder {
 
 
         int namespaceCount = parser.getNamespaceCount();
-        String nsprefix;
-        String namespaceURIFromParser;
         for (int i = 0; i < namespaceCount; i++) {
-            nsprefix = parser.getNamespacePrefix(i);
+            String nsprefix = parser.getNamespacePrefix(i);
 
             //if the namespace is not defined already when we write the start tag declare it
             // check whether this is the default namespace and make sure we have not declared that earlier
-            namespaceURIFromParser = parser.getNamespaceURI(i);
+            String namespaceURIFromParser = parser.getNamespaceURI(i);
             if (nsprefix == null || "".equals(nsprefix)) {
                 String nsuri = parser.getNamespaceURI(i);
                 node.declareDefaultNamespace(nsuri == null ? "" : nsuri);
