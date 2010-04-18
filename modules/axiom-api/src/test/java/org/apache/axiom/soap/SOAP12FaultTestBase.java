@@ -19,7 +19,6 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 
 public class SOAP12FaultTestBase extends SOAPFaultTestBase {
@@ -72,44 +71,5 @@ public class SOAP12FaultTestBase extends SOAPFaultTestBase {
                 "SOAP 1.2 Fault Test with parser: - Fault node local name mismatch",
                 soapFaultWithParser.getNode().getLocalName().equals(
                         SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME));
-    }
-
-
-    public void testMoreChildrenAddition() {
-        SOAPFactory soapFactory = OMAbstractFactory.getSOAP12Factory();
-        SOAPEnvelope envelope = soapFactory.getDefaultFaultEnvelope();
-
-        assertNotNull("Default FaultEnvelope must have a SOAPFault in it",
-                      envelope.getBody().getFault());
-        assertNotNull(
-                "Default FaultEnvelope must have a SOAPFaultCode in it",
-                envelope.getBody().getFault().getCode());
-        assertNotNull(
-                "Default FaultEnvelope must have a SOAPFaultCodeValue in it",
-                envelope.getBody().getFault().getCode().getValue());
-        assertNotNull(
-                "Default FaultEnvelope must have a SOAPFaultReason in it",
-                envelope.getBody().getFault().getReason());
-        assertNotNull(
-                "Default FaultEnvelope must have a SOAPFaultText in it",
-                envelope.getBody().getFault().getReason().getFirstSOAPText());
-
-        SOAPEnvelope soapEnvelope = soapFactory.getDefaultFaultEnvelope();
-        String errorCodeString = "Some Error occurred !!";
-        soapEnvelope.getBody().getFault().getCode().getValue().setText(
-                errorCodeString);
-
-        SOAPFaultCode code = soapEnvelope.getBody().getFault().getCode();
-        envelope.getBody().getFault().setCode(code);
-
-        assertTrue("Parent Value of Code has not been set to new fault",
-                   code.getParent() == envelope.getBody().getFault());
-        assertTrue("Parent Value of Code is still pointing to old fault",
-                   code.getParent() != soapEnvelope.getBody().getFault());
-        assertNull("Old fault must not have a fault code",
-                   soapEnvelope.getBody().getFault().getCode());
-        assertEquals("The SOAP Code value must be " + errorCodeString,
-                     errorCodeString,
-                     envelope.getBody().getFault().getCode().getValue().getText());
     }
 }
