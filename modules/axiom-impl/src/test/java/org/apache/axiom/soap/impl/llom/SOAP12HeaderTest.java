@@ -17,13 +17,13 @@
  * under the License.
  */
 
-package org.apache.axiom.soap.impl.dom;
+package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.apache.axiom.soap.SOAPHeaderTestBase;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
+import org.apache.axiom.soap.SOAP12HeaderTestBase;
 
-public class SOAPHeaderTest extends SOAPHeaderTestBase {
-    public SOAPHeaderTest() {
-        super(new OMDOMMetaFactory());
+public class SOAP12HeaderTest extends SOAP12HeaderTestBase {
+    public SOAP12HeaderTest() {
+        super(new OMLinkedListMetaFactory());
     }
 }
