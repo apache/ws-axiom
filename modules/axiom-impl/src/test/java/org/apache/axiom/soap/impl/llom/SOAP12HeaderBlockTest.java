@@ -20,10 +20,10 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAPHeaderBlockTestBase;
+import org.apache.axiom.soap.SOAP12HeaderBlockTestBase;
 
-public class SOAPHeaderBlockTest extends SOAPHeaderBlockTestBase {
-    public SOAPHeaderBlockTest() {
+public class SOAP12HeaderBlockTest extends SOAP12HeaderBlockTestBase {
+    public SOAP12HeaderBlockTest() {
         super(new OMLinkedListMetaFactory());
     }
 }
