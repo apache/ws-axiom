@@ -16,14 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.soap;
 
-package org.apache.axiom.soap.impl.llom;
+import org.apache.axiom.om.OMMetaFactory;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAPDiscardTestBase;
+public class SOAP11EnvelopeTestBase extends SOAPEnvelopeTestBase {
+    public SOAP11EnvelopeTestBase(OMMetaFactory omMetaFactory) {
+        super(omMetaFactory, SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+    }
 
-public class SOAPDiscardTest extends SOAPDiscardTestBase {
-    public SOAPDiscardTest() {
-        super(new OMLinkedListMetaFactory());
+    // TODO: this should actually go to SOAPEnvelopeTestBase because it applies equally well to SOAP 1.1 and 1.2;
+    //       however, this causes a test failure in axiom-parser-tests with SJSXP
+    // Regression test for WSCOMMONS-235 (see r567512)
+    public void testDiscardHeader() throws Exception {
+        SOAPEnvelope envelope = getTestMessage(MESSAGE);
+        envelope.getHeader().discard();
+        envelope.getBody().toStringWithConsume();
     }
 }

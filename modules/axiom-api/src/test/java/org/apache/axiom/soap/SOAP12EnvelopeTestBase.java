@@ -18,31 +18,10 @@
  */
 package org.apache.axiom.soap;
 
-import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.om.OMMetaFactory;
 
-/**
- * @author : Ajith Ranabahu
- *         Date: Aug 15, 2007
- *         Time: 11:57:54 PM
- */
-public class SOAPDiscardTestBase  extends SOAPTestCase{
-
-
-    public SOAPDiscardTestBase(OMMetaFactory omMetaFactory) {
-        super(omMetaFactory);
+public class SOAP12EnvelopeTestBase extends SOAPEnvelopeTestBase {
+    public SOAP12EnvelopeTestBase(OMMetaFactory omMetaFactory) {
+        super(omMetaFactory, SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
-
-    public void testDiscardHeader(){
-
-        try {
-            soap11EnvelopeWithParser.getHeader().discard();
-            soap11EnvelopeWithParser.getBody().toStringWithConsume();
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
-    }
-
 }
