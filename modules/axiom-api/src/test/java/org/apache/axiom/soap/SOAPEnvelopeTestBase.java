@@ -86,4 +86,11 @@ public class SOAPEnvelopeTestBase extends UnifiedSOAPTestCase {
         soapFactory.createSOAPHeader(envelope);
         assertNull(envelope.getBody());
     }
+
+    // Regression test for WSCOMMONS-235 (see r567512)
+    public void testDiscardHeader() throws Exception {
+        SOAPEnvelope envelope = getTestMessage(MESSAGE);
+        envelope.getHeader().discard();
+        envelope.getBody().toStringWithConsume();
+    }
 }

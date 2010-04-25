@@ -24,13 +24,4 @@ public class SOAP11EnvelopeTestBase extends SOAPEnvelopeTestBase {
     public SOAP11EnvelopeTestBase(OMMetaFactory omMetaFactory) {
         super(omMetaFactory, SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
-
-    // TODO: this should actually go to SOAPEnvelopeTestBase because it applies equally well to SOAP 1.1 and 1.2;
-    //       however, this causes a test failure in axiom-parser-tests with SJSXP
-    // Regression test for WSCOMMONS-235 (see r567512)
-    public void testDiscardHeader() throws Exception {
-        SOAPEnvelope envelope = getTestMessage(MESSAGE);
-        envelope.getHeader().discard();
-        envelope.getBody().toStringWithConsume();
-    }
 }
