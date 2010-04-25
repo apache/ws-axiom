@@ -22,7 +22,6 @@ package org.apache.axiom.soap.impl.dom;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
-import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultDetail;
@@ -75,34 +74,6 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
                     new StreamWriterToContentHandlerConverter(writer));
         }
 
-        if (!cache) {
-            //No caching
-            if (this.firstChild != null) {
-                OMSerializerUtil.serializeStartpart(this, writer);
-                firstChild.internalSerialize(writer, false);
-                OMSerializerUtil.serializeEndpart(writer);
-            } else if (!this.done) {
-                if (builderType == PULL_TYPE_BUILDER) {
-                    OMSerializerUtil.serializeByPullStream(this, writer);
-                } else {
-                    OMSerializerUtil.serializeStartpart(this, writer);
-                    builder.setCache(cache);
-                    builder.next();
-                    OMSerializerUtil.serializeEndpart(writer);
-                }
-            } else {
-                OMSerializerUtil.serializeNormal(this, writer, cache);
-            }
-            // do not serialise the siblings
-
-
-        } else {
-            //Cached
-            OMSerializerUtil.serializeNormal(this, writer, cache);
-
-            // do not serialise the siblings
-        }
-
-
+        super.internalSerialize(writer, cache);
     }
 }

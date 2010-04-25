@@ -19,6 +19,7 @@
 
 package org.apache.axiom.soap;
 
+import java.io.StringWriter;
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
@@ -122,5 +123,19 @@ public class SOAPFaultDetailTestBase extends SOAPFaultTestCase {
         assertTrue(
                 "SOAP Fault Detail Test With Parser : - getAllDetailEntries method returns an itrator with more than two detail entries",
                 !iterator.hasNext());
+    }
+    
+    // Regression test for WSCOMMONS-530
+    public void testSerialization() throws Exception {
+        soapFaultDetail.addDetailEntry(
+                omFactory.createOMElement("DetailEntry1", omNamespace));
+        soapFaultDetail.addDetailEntry(
+                omFactory.createOMElement("DetailEntry2", omNamespace));
+        StringWriter out = new StringWriter();
+        soapFaultDetail.serialize(out);
+        String msg = out.toString();
+        System.out.println(msg);
+        assertTrue(msg.indexOf("DetailEntry1") != -1);
+        assertTrue(msg.indexOf("DetailEntry2") != -1);
     }
 }
