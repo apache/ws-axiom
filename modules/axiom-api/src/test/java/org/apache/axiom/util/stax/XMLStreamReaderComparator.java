@@ -284,7 +284,9 @@ public class XMLStreamReaderComparator extends Assert {
                     eventType == XMLStreamReader.END_ELEMENT) {
                 for (Iterator it = prefixes.iterator(); it.hasNext(); ) {
                     String prefix = (String)it.next();
-                    if (prefix != null) {
+                    // The StAX specs are not clear about the expected result of getNamespaceURI
+                    // when called with prefix "xml" (which doesn't require an explicit declaration)
+                    if (prefix != null && !prefix.equals("xml")) {
                         assertSameResult("getNamespaceURI",
                                 new Class[] { String.class }, new Object[] { prefix });
                     }

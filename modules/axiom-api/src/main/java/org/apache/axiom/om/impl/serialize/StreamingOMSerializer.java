@@ -431,7 +431,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                         }
                     }
                 }
-            } else if (namespace != null) {
+            } else if (namespace != null && !prefix.equals("xml")) {
                 // Use the writer's prefix if it is different, but if the writers 
                 // prefix is empty then do not replace because attributes do not
                 // default to the default namespace like elements do.

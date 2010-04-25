@@ -463,13 +463,17 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             namespaceCount = 0;
             for (Iterator it = ((OMElement)lastNode).getAllDeclaredNamespaces(); it.hasNext(); ) {
                 OMNamespace ns = (OMNamespace)it.next();
-                if (namespaceCount == namespaces.length) {
-                    OMNamespace[] newNamespaces = new OMNamespace[namespaces.length*2];
-                    System.arraycopy(namespaces, 0, newNamespaces, 0, namespaces.length);
-                    namespaces = newNamespaces;
+                // Axiom internally creates an OMNamespace instance for the "xml" prefix, even
+                // if it is not declared explicitly. Filter this instance out.
+                if (!"xml".equals(ns.getPrefix())) {
+                    if (namespaceCount == namespaces.length) {
+                        OMNamespace[] newNamespaces = new OMNamespace[namespaces.length*2];
+                        System.arraycopy(namespaces, 0, newNamespaces, 0, namespaces.length);
+                        namespaces = newNamespaces;
+                    }
+                    namespaces[namespaceCount] = ns;
+                    namespaceCount++;
                 }
-                namespaces[namespaceCount] = ns;
-                namespaceCount++;
             }
         }
     }

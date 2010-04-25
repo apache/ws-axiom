@@ -19,9 +19,13 @@
 
 package org.apache.axiom.util.stax.dialect;
 
+import java.util.Iterator;
+
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.util.namespace.AbstractNamespaceContext;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
 class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
@@ -133,5 +137,25 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
         } else {
             return super.getText();
         }
+    }
+
+    public NamespaceContext getNamespaceContext() {
+        // The NamespaceContext returned by the reference doesn't handle the
+        // implicit namespace bindings (for the "xml" and "xmlns" prefixes)
+        // correctly
+        final NamespaceContext parent = super.getNamespaceContext();
+        return new AbstractNamespaceContext() {
+            protected String doGetNamespaceURI(String prefix) {
+                return parent.getNamespaceURI(prefix);
+            }
+            
+            protected String doGetPrefix(String namespaceURI) {
+                return parent.getPrefix(namespaceURI);
+            }
+
+            protected Iterator doGetPrefixes(String namespaceURI) {
+                return parent.getPrefixes(namespaceURI);
+            }
+        };
     }
 }

@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -37,6 +38,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.XMLConstants;
 
 public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
     private OMDocument document;
@@ -159,9 +162,23 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
             //       See http://forum.springframework.org/showthread.php?t=43958 for a discussion.
             //       If this test causes problems with other parsers, don't hesitate to remove it.
             if (!atts.getQName(i).startsWith("xmlns")) {
-                OMAttribute attr = nextElem.addAttribute(atts.getLocalName(i), atts.getValue(i),
-                        nextElem.findNamespace(atts.getURI(i), null));
-                										 
+                String attrNamespaceURI = atts.getURI(i);
+                OMNamespace ns;
+                if (attrNamespaceURI.length() > 0) {
+                    ns = nextElem.findNamespace(atts.getURI(i), null);
+                    if (ns == null) {
+                        // The "xml" prefix is not necessarily declared explicitly; in this case,
+                        // create a new OMNamespace instance.
+                        if (attrNamespaceURI.equals(XMLConstants.XML_NS_URI)) {
+                            ns = factory.createOMNamespace(XMLConstants.XML_NS_URI, XMLConstants.XML_NS_PREFIX);
+                        } else {
+                            throw new SAXException("Unbound namespace " + attrNamespaceURI);
+                        }
+                    }
+                } else {
+                    ns = null;
+                }
+                OMAttribute attr = nextElem.addAttribute(atts.getLocalName(i), atts.getValue(i), ns);
                 attr.setAttributeType(atts.getType(i));
             }
         }
