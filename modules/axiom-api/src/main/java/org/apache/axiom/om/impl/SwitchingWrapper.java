@@ -148,6 +148,15 @@ class SwitchingWrapper extends AbstractXMLStreamReader
 
     private boolean needToThrowEndDocument = false;
 
+    // Cache attributes and namespaces. This avoids creating a new Iterator for every call
+    // to getAttributeXXX and getNamespaceXXX. A value of -1 indicates that the
+    // attributes or namespaces for the current element have not been loaded yet. The
+    // two arrays are resized on demand.
+    private int attributeCount = -1;
+    private OMAttribute[] attributes = new OMAttribute[16];
+    private int namespaceCount = -1;
+    private OMNamespace[] namespaces = new OMNamespace[16];
+    
     /**
      * Method setAllowSwitching.
      *
@@ -433,6 +442,38 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         return currentEvent;
     }
 
+    private void loadAttributes() {
+        if (attributeCount == -1) {
+            attributeCount = 0;
+            for (Iterator it = ((OMElement)lastNode).getAllAttributes(); it.hasNext(); ) {
+                OMAttribute attr = (OMAttribute)it.next();
+                if (attributeCount == attributes.length) {
+                    OMAttribute[] newAttributes = new OMAttribute[attributes.length*2];
+                    System.arraycopy(attributes, 0, newAttributes, 0, attributes.length);
+                    attributes = newAttributes;
+                }
+                attributes[attributeCount] = attr;
+                attributeCount++;
+            }
+        }
+    }
+    
+    private void loadNamespaces() {
+        if (namespaceCount == -1) {
+            namespaceCount = 0;
+            for (Iterator it = ((OMElement)lastNode).getAllDeclaredNamespaces(); it.hasNext(); ) {
+                OMNamespace ns = (OMNamespace)it.next();
+                if (namespaceCount == namespaces.length) {
+                    OMNamespace[] newNamespaces = new OMNamespace[namespaces.length*2];
+                    System.arraycopy(namespaces, 0, newNamespaces, 0, namespaces.length);
+                    namespaces = newNamespaces;
+                }
+                namespaces[namespaceCount] = ns;
+                namespaceCount++;
+            }
+        }
+    }
+    
     /**
      * @param i
      * @return Returns String.
@@ -445,9 +486,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } else {
             if (isStartElement() || isEndElement()
                     || (currentEvent == NAMESPACE)) {
-                OMNamespace ns = (OMNamespace) getItemFromIterator(
-                        ((OMElement) lastNode).getAllDeclaredNamespaces(), i);
-                returnString = (ns == null) ? null : ns.getNamespaceURI();
+                loadNamespaces();
+                returnString = namespaces[i].getNamespaceURI();
             }
         }
 
@@ -477,12 +517,9 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } else {
             if (isStartElement() || isEndElement()
                     || (currentEvent == NAMESPACE)) {
-                OMNamespace ns = (OMNamespace) getItemFromIterator(
-                        ((OMElement) lastNode).getAllDeclaredNamespaces(), i);
-                if (ns != null) {
-                    String prefix = ns.getPrefix();
-                    returnString = prefix == null || prefix.length() == 0 ? null : prefix; 
-                }
+                loadNamespaces();
+                String prefix = namespaces[i].getPrefix();
+                returnString = prefix == null || prefix.length() == 0 ? null : prefix; 
             }
         }
         return returnString;
@@ -498,8 +535,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } else {
             if (isStartElement() || isEndElement()
                     || (currentEvent == NAMESPACE)) {
-                return getCount(((OMElement) lastNode)
-                        .getAllDeclaredNamespaces());
+                loadNamespaces();
+                return namespaceCount;
             } else {
                 throw new IllegalStateException();
             }
@@ -537,10 +574,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             returnString = parser.getAttributeValue(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                OMAttribute attrib = getAttribute((OMElement) lastNode, i);
-                if (attrib != null) {
-                    returnString = attrib.getAttributeValue();
-                }
+                loadAttributes();
+                returnString = attributes[i].getAttributeValue();
             } else {
                 throw new IllegalStateException(
                         "attribute type accessed in illegal event!");
@@ -560,11 +595,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             returnString = parser.getAttributeType(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                OMAttribute attrib = getAttribute((OMElement) lastNode, i);
-                if (attrib != null) {
-                    returnString = attrib.getAttributeType();
-                }
-
+                loadAttributes();
+                returnString = attributes[i].getAttributeType();
             } else {
                 throw new IllegalStateException(
                         "attribute type accessed in illegal event!");
@@ -584,7 +616,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             returnString = parser.getAttributePrefix(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                OMAttribute attrib = getAttribute((OMElement) lastNode, i);
+                loadAttributes();
+                OMAttribute attrib = attributes[i];
                 if (attrib != null) {
                     OMNamespace nameSpace = attrib.getNamespace();
                     if (nameSpace != null) {
@@ -610,10 +643,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             returnString = parser.getAttributeLocalName(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                OMAttribute attrib = getAttribute((OMElement) lastNode, i);
-                if (attrib != null) {
-                    returnString = attrib.getLocalName();
-                }
+                loadAttributes();
+                returnString = attributes[i].getLocalName();
             } else {
                 throw new IllegalStateException(
                         "attribute localName accessed in illegal event!");
@@ -633,7 +664,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             returnString = parser.getAttributeNamespace(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                OMAttribute attrib = getAttribute((OMElement) lastNode, i);
+                loadAttributes();
+                OMAttribute attrib = attributes[i];
                 if (attrib != null) {
                     OMNamespace nameSpace = attrib.getNamespace();
                     if (nameSpace != null) {
@@ -659,7 +691,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             returnQName = parser.getAttributeName(i);
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                returnQName = getAttribute((OMElement) lastNode, i).getQName();
+                loadAttributes();
+                returnQName = attributes[i].getQName();
             } else {
                 throw new IllegalStateException(
                         "attribute count accessed in illegal event!");
@@ -678,8 +711,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             returnCount = parser.getAttributeCount();
         } else {
             if (isStartElement() || (currentEvent == ATTRIBUTE)) {
-                OMElement elt = (OMElement) lastNode;
-                returnCount = getCount(elt.getAllAttributes());
+                loadAttributes();
+                returnCount = attributeCount;
             } else {
                 throw new IllegalStateException(
                         "attribute count accessed in illegal event (" +
@@ -1003,6 +1036,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     private void updateLastNode() throws XMLStreamException {
         lastNode = currentNode;
+        attributeCount = -1;
+        namespaceCount = -1;
         currentNode = nextNode;
         try {
             updateNextNode();
@@ -1388,50 +1423,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
 
     /**
-     * helper method getCount.
-     *
-     * @param it
-     * @return Returns int.
-     */
-    private int getCount(Iterator it) {
-        int count = 0;
-        if (it != null) {
-            while (it.hasNext()) {
-                it.next();
-                count++;
-            }
-        }
-        return count;
-    }
-
-    /**
-     * Helper method getItemFromIterator.
-     *
-     * @param it
-     * @param index
-     * @return Returns Object.
-     */
-    private Object getItemFromIterator(Iterator it, int index) {
-        int count = 0;
-        Object returnObject = null;
-        boolean found = false;
-        if (it != null) {
-            while (it.hasNext()) {
-                returnObject = it.next();
-                if (index == count++) {
-                    found = true;
-                    break;
-                }
-            }
-        }
-        if (found) {
-            return returnObject;
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * Helper method getQName.
      *
      * @param element
@@ -1453,20 +1444,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             returnName = new QName(localPart);
         }
         return returnName;
-    }
-
-    /**
-     * @param elt
-     * @param index
-     * @return Returns OMAttribute.
-     */
-    private OMAttribute getAttribute(OMElement elt, int index) {
-        OMAttribute returnAttrib = null;
-        if (elt != null) {
-            returnAttrib = (OMAttribute) getItemFromIterator(
-                    elt.getAllAttributes(), index);
-        }
-        return returnAttrib;
     }
 
     public void setParser(XMLStreamReader parser) {
