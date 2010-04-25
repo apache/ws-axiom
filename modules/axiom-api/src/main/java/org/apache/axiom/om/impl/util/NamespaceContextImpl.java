@@ -19,58 +19,26 @@
 
 package org.apache.axiom.om.impl.util;
 
-import javax.xml.XMLConstants;
-import javax.xml.namespace.NamespaceContext;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class NamespaceContextImpl
-        implements
-        NamespaceContext {
+import org.apache.axiom.util.namespace.AbstractNamespaceContext;
+
+public class NamespaceContextImpl extends AbstractNamespaceContext {
     protected Map namespaces;
 
     public NamespaceContextImpl(Map map) {
         namespaces = map;
     }
 
-    /**
-     * Get the URI given a prefix
-     *
-     * @param prefix
-     * @return uri string
-     */
-    public String getNamespaceURI(String prefix) {
-        if (prefix == null) {
-            throw new IllegalArgumentException("null prefix argument is invalid");
-        } else if (prefix.equals(XMLConstants.XML_NS_PREFIX)) {
-            return XMLConstants.XML_NS_URI;
-        } else if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
-            return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
-        } else if (namespaces.containsKey(prefix)) {
-            return (String) namespaces.get(prefix);
-        }
-        return null;
+    protected String doGetNamespaceURI(String prefix) {
+        return (String) namespaces.get(prefix);
     }
 
-    /**
-     * Get the prefix for a uri
-     *
-     * @param nsURI
-     * @return prefix string
-     */
-    public String getPrefix(String nsURI) {
-        if (nsURI == null) {
-            throw new IllegalArgumentException("invalid null nsURI");
-        } else if (nsURI.length() == 0) {
-            throw new IllegalArgumentException("invalid empty nsURI");
-        } else if (nsURI.equals(XMLConstants.XML_NS_URI)) {
-            return XMLConstants.XML_NS_PREFIX;
-        } else if (nsURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-            return XMLConstants.XMLNS_ATTRIBUTE;
-        }
+    protected String doGetPrefix(String nsURI) {
         Iterator iter = namespaces.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry entry = (Map.Entry) iter.next();
@@ -85,21 +53,7 @@ public class NamespaceContextImpl
         return null;
     }
 
-    /**
-     * Get list of prefixes
-     *
-     * @param nsURI
-     * @return iterator (of strings)
-     */
-    public Iterator getPrefixes(String nsURI) {
-        if (nsURI == null) {
-            throw new IllegalArgumentException("invalid null nsURI");
-        } else if (nsURI.equals(XMLConstants.XML_NS_URI)) {
-            return Collections.singleton(XMLConstants.XML_NS_PREFIX).iterator();
-        } else if (nsURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-            return Collections.singleton(XMLConstants.XMLNS_ATTRIBUTE)
-                    .iterator();
-        }
+    protected Iterator doGetPrefixes(String nsURI) {
         Set prefixes = null;
         Iterator iter = namespaces.entrySet().iterator();
         while (iter.hasNext()) {

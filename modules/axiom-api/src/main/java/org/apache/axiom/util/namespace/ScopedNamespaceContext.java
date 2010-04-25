@@ -22,7 +22,6 @@ package org.apache.axiom.util.namespace;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 
 /**
@@ -31,7 +30,7 @@ import javax.xml.namespace.NamespaceContext;
  * handling masked namespace bindings. Masking occurs when the same prefix is bound to a different
  * namespace URI in a nested scope.
  */
-public class ScopedNamespaceContext implements NamespaceContext {
+public class ScopedNamespaceContext extends AbstractNamespaceContext {
     /**
      * Array containing the prefixes for the namespace bindings.
      */
@@ -109,48 +108,32 @@ public class ScopedNamespaceContext implements NamespaceContext {
         bindings = scopeIndexes[--scopes];
     }
     
-    public String getNamespaceURI(String prefix) {
-        if (prefix == null) {
-            throw new IllegalArgumentException("prefix can't be null");
-        } else if (prefix.equals(XMLConstants.XML_NS_PREFIX)) {
-            return XMLConstants.XML_NS_URI;
-        } else if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
-            return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
-        } else {
-            for (int i=bindings-1; i>=0; i--) {
-                if (prefix.equals(prefixArray[i])) {
-                    return uriArray[i];
-                }
+    protected String doGetNamespaceURI(String prefix) {
+        for (int i=bindings-1; i>=0; i--) {
+            if (prefix.equals(prefixArray[i])) {
+                return uriArray[i];
             }
-            return null;
         }
+        return null;
     }
 
-    public String getPrefix(String namespaceURI) {
-        if (namespaceURI == null) {
-            throw new IllegalArgumentException("namespaceURI can't be null");
-        } else if (namespaceURI.equals(XMLConstants.XML_NS_URI)) {
-            return XMLConstants.XML_NS_PREFIX;
-        } else if (namespaceURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-            return XMLConstants.XMLNS_ATTRIBUTE;
-        } else {
-            outer: for (int i=bindings-1; i>=0; i--) {
-                if (namespaceURI.equals(uriArray[i])) {
-                    String prefix = prefixArray[i];
-                    // Now check that the prefix is not masked
-                    for (int j=i+1; j<bindings; j++) {
-                        if (prefix.equals(prefixArray[j])) {
-                            continue outer;
-                        }
+    protected String doGetPrefix(String namespaceURI) {
+        outer: for (int i=bindings-1; i>=0; i--) {
+            if (namespaceURI.equals(uriArray[i])) {
+                String prefix = prefixArray[i];
+                // Now check that the prefix is not masked
+                for (int j=i+1; j<bindings; j++) {
+                    if (prefix.equals(prefixArray[j])) {
+                        continue outer;
                     }
-                    return prefix;
                 }
+                return prefix;
             }
-            return null;
         }
+        return null;
     }
 
-    public Iterator getPrefixes(final String namespaceURI) {
+    protected Iterator doGetPrefixes(final String namespaceURI) {
         return new Iterator() {
             private int binding = bindings;
             private String next;
