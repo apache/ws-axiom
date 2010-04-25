@@ -21,12 +21,12 @@ package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
+import org.apache.axiom.soap.SOAP12FaultDetailTestBase;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultDetail;
-import org.apache.axiom.soap.SOAPFaultDetailTestBase;
 
-public class SOAPFaultDetailTest extends SOAPFaultDetailTestBase {
-    public SOAPFaultDetailTest() {
+public class SOAP12FaultDetailTest extends SOAP12FaultDetailTestBase {
+    public SOAP12FaultDetailTest() {
         super(new OMLinkedListMetaFactory());
     }
 
