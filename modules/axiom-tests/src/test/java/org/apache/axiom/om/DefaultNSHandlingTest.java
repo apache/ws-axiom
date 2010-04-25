@@ -27,9 +27,7 @@ import org.jaxen.JaxenException;
 import org.jaxen.SimpleNamespaceContext;
 import org.jaxen.XPath;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayInputStream;
 import java.util.Iterator;
@@ -67,77 +65,6 @@ public class DefaultNSHandlingTest extends XMLTestCase {
     private void checkNS(OMElement element) {
         assertTrue(
                 "http://www.w3.org/TR/REC-html40".equals(element.getNamespace().getNamespaceURI()));
-    }
-
-    public void testMultipleDefaultNS() {
-        OMFactory omFactory = OMAbstractFactory.getOMFactory();
-        OMNamespace defaultNS1 = omFactory.createOMNamespace("http://defaultNS1.org", null);
-        OMNamespace defaultNS2 = omFactory.createOMNamespace("http://defaultNS2.org", null);
-
-        OMElement omElementOne = omFactory.createOMElement("DocumentElement", null);
-        omElementOne.declareDefaultNamespace("http://defaultNS1.org");
-        OMElement omElementOneChild = omFactory.createOMElement("ChildOne", null, omElementOne);
-
-
-        OMElement omElementTwo = omFactory.createOMElement("Foo", defaultNS2, omElementOne);
-        omElementTwo.declareDefaultNamespace("http://defaultNS2.org");
-        OMElement omElementTwoChild = omFactory.createOMElement("ChildOne", null, omElementTwo);
-
-        OMElement omElementThree = omFactory.createOMElement("Bar", defaultNS1, omElementTwo);
-        omElementThree.declareDefaultNamespace("http://defaultNS1.org");
-
-        assertTrue("".equals(omElementOneChild.getNamespace().getNamespaceURI()));
-        assertTrue("".equals(omElementTwoChild.getNamespace().getNamespaceURI()));
-    }
-
-    public void testChildReDeclaringParentsDefaultNSWithPrefix() throws Exception {
-        OMFactory fac = OMAbstractFactory.getOMFactory();
-        OMElement elem = fac.createOMElement("RequestSecurityToken", null);
-        elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
-        fac.createOMElement(new QName("TokenType"), elem).setText("test");
-        fac.createOMElement(new QName("RequestType"), elem).setText("test1");
-
-        fac.createOMElement(
-                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
-                elem);
-        String xml = elem.toString();
-
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(
-                new ByteArrayInputStream(xml.getBytes()));
-
-        StAXOMBuilder builder = new StAXOMBuilder(reader);
-        builder.getDocumentElement().build();
-
-        // The StAX implementation may or may not have a trailing blank in the tag
-        String assertText1 =
-                "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\" />";
-        String assertText2 =
-                "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"/>";
-        String assertText3 =
-                "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"></wst:Entropy>";
-
-        assertTrue((xml.indexOf(assertText1) != -1) ||
-                (xml.indexOf(assertText2) != -1) ||
-                (xml.indexOf(assertText3) != -1));
-    }
-
-    public void testChildReDeclaringGrandParentsDefaultNSWithPrefix() {
-        OMFactory fac = OMAbstractFactory.getOMFactory();
-        OMElement elem = fac.createOMElement("RequestSecurityToken", null);
-        elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
-        fac.createOMElement(new QName("TokenType"), elem).setText("test");
-        fac.createOMElement(new QName("RequestType"), elem).setText("test1");
-
-        OMElement entElem = fac.createOMElement(
-                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
-                elem);
-        OMElement binSecElem = fac.createOMElement(
-                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Binarysecret", "wst"),
-                entElem);
-        binSecElem.setText("secret value");
-        String xml = elem.toString();
-        assertTrue("Binarysecret element should have \'wst\' ns prefix",
-                   xml.indexOf("<wst:Binarysecret") != -1);
     }
 
 //    public void testForIssueWSCOMMONS119() {

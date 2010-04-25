@@ -119,59 +119,6 @@ public class NamespaceTest extends XMLTestCase {
         assertTrue(documentElement.toStringWithConsume().indexOf("ns2:ChildElement") > -1);
     }
 
-    public void testNamespaceProblem2() throws XMLStreamException {
-
-        /**
-         * <RootElement xmlns="http://one.org">
-         *   <ns2:ChildElementOne xmlns:ns2="http://ws.apache.org/axis2" xmlns="http://two.org">
-         *      <ChildElementTwo xmlns="http://one.org" />
-         *   </ns2:ChildElementOne>
-         * </RootElement>
-         */
-
-        OMFactory omFac = OMAbstractFactory.getOMFactory();
-
-        OMElement documentElement = omFac.createOMElement("RootElement", null);
-        documentElement.declareDefaultNamespace("http://one.org");
-
-        OMNamespace ns = omFac.createOMNamespace("http://ws.apache.org/axis2", "ns2");
-        OMElement childOne = omFac.createOMElement("ChildElementOne", ns, documentElement);
-        childOne.declareDefaultNamespace("http://two.org");
-
-        OMElement childTwo = omFac.createOMElement("ChildElementTwo", null, childOne);
-        childTwo.declareDefaultNamespace("http://one.org");
-
-
-        assertEquals(2, getNumberOfOccurrences(documentElement.toStringWithConsume(),
-                "xmlns=\"http://one.org\""));
-    }
-
-    public void testNamespaceProblem3() throws XMLStreamException {
-
-        /**
-         * <RootElement xmlns:ns1="http://one.org" xmlns:ns2="http://one.org">
-         *   <ns2:ChildElementOne xmlns="http://one.org">
-         *      <ns2:ChildElementTwo />
-         *   </ns2:ChildElementOne>
-         * </RootElement>
-         */
-
-        OMFactory omFac = OMAbstractFactory.getOMFactory();
-
-        OMElement documentElement = omFac.createOMElement("RootElement", null);
-        OMNamespace ns1 = documentElement.declareNamespace("http://one.org", "ns1");
-        OMNamespace ns2 = documentElement.declareNamespace("http://one.org", "ns2");
-
-        OMElement childOne = omFac.createOMElement("ChildElementOne", ns2, documentElement);
-        childOne.declareDefaultNamespace("http://one.org");
-
-        OMElement childTwo = omFac.createOMElement("ChildElementTwo", ns1, childOne);
-
-        assertEquals(1, getNumberOfOccurrences(documentElement.toStringWithConsume(),
-                "xmlns:ns2=\"http://one.org\""));
-    }
-
-
     public void testNamespaceProblem4() throws Exception {
         String xml =
                 "<getCreditScoreResponse xmlns=\"http://www.example.org/creditscore/doclitwrapped/\"><score xmlns=\"\">750</score></getCreditScoreResponse>";
@@ -198,16 +145,6 @@ public class NamespaceTest extends XMLTestCase {
             e.printStackTrace();
             fail();
         }
-    }
-
-    private int getNumberOfOccurrences(String xml, String pattern) {
-        int index = -1;
-        int count = 0;
-        while ((index = xml.indexOf(pattern, index + 1)) != -1) {
-            count++;
-        }
-
-        return count;
     }
 
     public void testNamespaceProblem6() {
