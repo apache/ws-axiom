@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.util;
+package org.apache.axiom.util.namespace;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,12 +25,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.axiom.util.namespace.AbstractNamespaceContext;
-
-public class NamespaceContextImpl extends AbstractNamespaceContext {
+public class MapBasedNamespaceContext extends AbstractNamespaceContext {
     protected Map namespaces;
 
-    public NamespaceContextImpl(Map map) {
+    public MapBasedNamespaceContext(Map map) {
         namespaces = map;
     }
 

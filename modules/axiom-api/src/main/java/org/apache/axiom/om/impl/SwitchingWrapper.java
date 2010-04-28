@@ -52,7 +52,7 @@ import org.apache.axiom.om.impl.OMNavigator;
 import org.apache.axiom.om.impl.builder.DataHandlerReaderUtils;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
-import org.apache.axiom.om.impl.util.NamespaceContextImpl;
+import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.AbstractXMLStreamReader;
 import org.apache.axiom.util.stax.DummyLocation;
 import org.apache.commons.logging.Log;
@@ -1127,7 +1127,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (state==SWITCHED){
             return parser.getNamespaceContext();
         }
-        return new NamespaceContextImpl(
+        return new MapBasedNamespaceContext(
                 currentEvent == END_DOCUMENT ? Collections.EMPTY_MAP : getAllNamespaces(lastNode));
     }
 
