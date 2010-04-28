@@ -21,10 +21,12 @@ package org.apache.axiom.om.impl.llom.util;
 
 import java.util.Map;
 
+import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
+
 /**
- * @deprecated Use {@link org.apache.axiom.om.impl.util.NamespaceContextImpl} instead.
+ * @deprecated Use {@link MapBasedNamespaceContext} instead.
  */
-public class NamespaceContextImpl extends org.apache.axiom.om.impl.util.NamespaceContextImpl {
+public class NamespaceContextImpl extends MapBasedNamespaceContext {
     public NamespaceContextImpl(Map map) {
         super(map);
     }
