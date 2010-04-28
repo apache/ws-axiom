@@ -64,8 +64,6 @@ import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
  * "parser" is not coalescing.
  * 
  */
-// TODO: This class has been copied from Synapse (package org.apache.synapse.util).
-//       Once it has been moved to Axis2 or Axiom, remove the duplicate from Synapse.
 public class WrappedTextNodeStreamReader implements XMLStreamReader {
     /**
      * The qualified name of the wrapper element.
