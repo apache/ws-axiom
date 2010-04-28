@@ -17,12 +17,38 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl;
+package org.apache.axiom.util.stax;
 
-import org.apache.axiom.util.stax.DummyLocation;
+import javax.xml.stream.Location;
 
 /**
- * @deprecated use {@link DummyLocation#INSTANCE} instead
+ * Dummy {@link Location} implementation. It always returns -1 for the location
+ * and <code>null</code> for the publicId and systemId. It may be used by
+ * {@link javax.xml.stream.XMLStreamReader} implementations that don't support
+ * the concept of location.
  */
-public class EmptyOMLocation extends DummyLocation {
+public class DummyLocation implements Location {
+    public static final DummyLocation INSTANCE = new DummyLocation();
+
+    protected DummyLocation() {}
+    
+    public int getLineNumber() {
+        return -1;
+    }
+
+    public int getColumnNumber() {
+        return -1;
+    }
+
+    public int getCharacterOffset() {
+        return 0;
+    }
+
+    public String getPublicId() {
+        return null;
+    }
+
+    public String getSystemId() {
+        return null;
+    }
 }

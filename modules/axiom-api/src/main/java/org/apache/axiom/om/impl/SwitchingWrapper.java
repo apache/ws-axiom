@@ -48,13 +48,13 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.EmptyOMLocation;
 import org.apache.axiom.om.impl.OMNavigator;
 import org.apache.axiom.om.impl.builder.DataHandlerReaderUtils;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.om.impl.util.NamespaceContextImpl;
 import org.apache.axiom.util.stax.AbstractXMLStreamReader;
+import org.apache.axiom.util.stax.DummyLocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -1146,7 +1146,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @return Returns Location.
      */
     public Location getLocation() {
-        return new EmptyOMLocation();
+        return DummyLocation.INSTANCE;
     }
 
     /**
