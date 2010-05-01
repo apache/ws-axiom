@@ -25,33 +25,21 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 import org.apache.axiom.om.OMException;
 
 public class UUIDGenerator {
     /** This class will give UUIDs for axis2. */
 
-    private static String baseUUID = null;
-    private static long incrementingValue = 0;
-
-
     private static Random myRand = null;
 
     /**
-     * MD5 a random string with localhost/date etc will return 128 bits construct a string of 18
-     * characters from those bits.
-     *
-     * @return string
+     * uses the java UUID which provides the standard uuids.
+     * @return
      */
-    public static synchronized String getUUID() {
-        if (baseUUID == null) {
-            baseUUID = getInitialUUID();
-            baseUUID = "urn:uuid:" + baseUUID;
-        }
-        if (++incrementingValue >= Long.MAX_VALUE) {
-            incrementingValue = 0;
-        }
-        return baseUUID + (System.currentTimeMillis() + incrementingValue);
+    public static String getUUID() {
+        return "urn:uuid:" + UUID.randomUUID();
     }
 
     protected static String getInitialUUID() {
