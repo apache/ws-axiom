@@ -1338,38 +1338,19 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @return Returns int.
      */
     private int generateEvents(OMNode node) {
-        int returnEvent;
         if (node == null) {
             if (log.isDebugEnabled()) {
                 log.debug("Node is null...returning END_DOCUMENT");
             }
-            returnEvent = END_DOCUMENT;
-            return returnEvent;
+            return END_DOCUMENT;
         }
         int nodeType = node.getType();
-        switch (nodeType) {
-            case OMNode.ELEMENT_NODE:
-                OMElement element = (OMElement) node;
-                returnEvent = generateElementEvents(element);
-                break;
-            case OMNode.TEXT_NODE:
-            case OMNode.SPACE_NODE:
-                returnEvent = generateTextEvents(node);
-                break;
-            case OMNode.COMMENT_NODE:
-                returnEvent = generateCommentEvents();
-                break;
-            case OMNode.CDATA_SECTION_NODE:
-                returnEvent = generateCdataEvents();
-                break;
-            case OMNode.PI_NODE:
-                returnEvent = PROCESSING_INSTRUCTION;
-                break;
-            default :
-                throw new OMStreamingException("Encountered node with unknown node type "
-                        + nodeType);
+        if (nodeType == OMNode.ELEMENT_NODE) {
+            OMElement element = (OMElement) node;
+            return generateElementEvents(element);
+        } else {
+            return nodeType;
         }
-        return returnEvent;
     }
 
     /**
@@ -1390,34 +1371,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             nodeStack.push(elt);
         }
         return returnValue;
-    }
-
-    /**
-     * Method generateTextEvents.
-     *
-     * @return Returns int.
-     */
-    private int generateTextEvents(OMNode node) {
-        return ((OMText)node).getType();
-    }
-
-    /**
-     * Method generateCommentEvents.
-     *
-     * @return Returns int.
-     * @noinspection SameReturnValue
-     */
-    private int generateCommentEvents() {
-        return COMMENT;
-    }
-
-    /**
-     * Method generateCdataEvents.
-     *
-     * @return Returns int.
-     */
-    private int generateCdataEvents() {
-        return CDATA;
     }
 
     /*
