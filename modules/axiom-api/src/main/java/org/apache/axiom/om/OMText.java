@@ -21,11 +21,31 @@ package org.apache.axiom.om;
 
 import javax.xml.namespace.QName;
 
-
 /**
- * Interface OMText.
- * <p/>
- * OMText can contain data as a String, char[] or a DataHandler.
+ * Represents character data in an XML document. A node of this type is used to
+ * represent character data that may appear in element content as well as the
+ * prolog and epilog of a document. Note that this node type is used for normal
+ * character data, CDATA sections and ignorable whitespace. The
+ * {@link OMNode#getType()} method may be used to distinguish between these
+ * different types of character data.
+ * <p>
+ * By default, Axiom uses StAX parsers configured in coalescing mode. As a
+ * consequence, CDATA sections will not result in nodes of type
+ * {@link OMNode#CDATA_SECTION_NODE} nodes, but of type {@link OMNode#TEXT_NODE}
+ * (See the Javadoc of {@link org.apache.axiom.om.util.StAXUtils} for
+ * information about how to change this behavior). In addition, the object model
+ * instance will never contain two adjacent {@link OMText} siblings.
+ * <p>
+ * The same is not necessarily true for Axiom trees that have been built or
+ * updated programmatically or that contain nodes resulting from the expansion
+ * of an {@link OMSourcedElement}. Therefore, code that manipulates character
+ * data MUST NOT assume that text nodes are always coalesced. In particular,
+ * when extracting character data from an element, {@link OMElement#getText()}
+ * should be used instead of {@link OMText#getText()}.
+ * <p>
+ * An {@link OMText} node stores the character data as {@link String},
+ * <code>char[]</code> or a {@link javax.activation.DataHandler}. The latter is
+ * used for base64 encoded binary data.
  */
 public interface OMText extends OMNode {
     /**
