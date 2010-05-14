@@ -158,6 +158,21 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
     </chapter>
     
     <chapter>
+        <title>Release process</title>
+        <section>
+            <title>Release preparation</title>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        Check for the latest Apache parent POM version (artifact <literal>org.apache:apache</literal>)
+                        and if necessary, change the parent of the Axiom root POM.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </section>
+    </chapter>
+    
+    <chapter>
         <title>The StAX specification</title>
         <para>
             The StAX specification comprises two parts: a specification document titled <quote>Streaming API
