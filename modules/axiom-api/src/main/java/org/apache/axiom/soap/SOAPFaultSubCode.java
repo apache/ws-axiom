@@ -19,29 +19,5 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMElement;
-
-public interface SOAPFaultSubCode extends OMElement {
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
-
-    /**
-     * Fault SubCode contain only one mandatory Value child. This value child contains a QName
-     *
-     * @param soapFaultSubCodeValue
-     */
-    void setValue(SOAPFaultValue soapFaultSubCodeValue) throws SOAPProcessingException;
-
-    SOAPFaultValue getValue();
-
-
-    /**
-     * Fault SubCode can contain an optional SubCode
-     *
-     * @param subCode
-     */
-    void setSubCode(SOAPFaultSubCode subCode) throws SOAPProcessingException;
-
-    SOAPFaultSubCode getSubCode();
+public interface SOAPFaultSubCode extends SOAPFaultClassifier {
 }

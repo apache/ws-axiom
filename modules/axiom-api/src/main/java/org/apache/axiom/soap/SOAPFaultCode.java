@@ -19,23 +19,5 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMElement;
-
-public interface SOAPFaultCode extends OMElement {
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
-
-    /** @param value  */
-    void setValue(SOAPFaultValue value) throws SOAPProcessingException;
-
-    /** @return Returns SOAPFaultValue. */
-    SOAPFaultValue getValue();
-
-    /** @param value  */
-    void setSubCode(SOAPFaultSubCode value) throws SOAPProcessingException;
-
-    /** @return Returns SOAPFaultSubCode. */
-    SOAPFaultSubCode getSubCode();
-
+public interface SOAPFaultCode extends SOAPFaultClassifier {
 }
