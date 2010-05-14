@@ -255,8 +255,12 @@ public class ElementHelper {
             }
         }
         // In all other cases, extract the data from the XMLStreamReader
-        return new TextFromElementReader(cache ? element.getXMLStreamReader()
-                : element.getXMLStreamReaderWithoutCaching());
+        try {
+            return new TextFromElementReader(cache ? element.getXMLStreamReader()
+                    : element.getXMLStreamReaderWithoutCaching());
+        } catch (XMLStreamException ex) {
+            throw new OMException(ex);
+        }
     }
     
     /**

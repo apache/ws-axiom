@@ -69,20 +69,21 @@ public class TextFromElementReader extends Reader {
     /**
      * Constructor.
      * 
-     * @param stream the stream to extract the text nodes from
-     * @throws OMException if the stream doesn't start with the expected events
+     * @param stream
+     *            the stream to extract the text nodes from
+     * @throws IllegalStateException
+     *             if the stream doesn't start with the expected events
+     * @throws XMLStreamException
+     *             if there was a parser error when attempting to position the
+     *             stream to the right event
      */
-    public TextFromElementReader(XMLStreamReader stream) {
+    public TextFromElementReader(XMLStreamReader stream) throws XMLStreamException {
         this.stream = stream;
-        try {
-            if (stream.getEventType() != XMLStreamReader.START_DOCUMENT) {
-                throw new OMException("Expected START_DOCUMENT as first event from parser");
-            }
-            if (stream.next() != XMLStreamReader.START_ELEMENT) {
-                throw new OMException("Expected START_ELEMENT event");
-            }
-        } catch (XMLStreamException ex) {
-            throw new OMException(ex);
+        if (stream.getEventType() != XMLStreamReader.START_DOCUMENT) {
+            throw new IllegalStateException("Expected START_DOCUMENT as first event from parser");
+        }
+        if (stream.next() != XMLStreamReader.START_ELEMENT) {
+            throw new IllegalStateException("Expected START_ELEMENT event");
         }
     }
 
