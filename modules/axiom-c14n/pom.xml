@@ -49,18 +49,18 @@
     <build>
         <plugins>
             <plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<extensions>true</extensions>
-				<configuration>
-					<excludeDependencies>true</excludeDependencies>
-					<instructions>
-						<_nouses>true</_nouses>
-						<_removeheaders>Private-Package</_removeheaders>
-						<Export-Package>*;-noimport:=true</Export-Package>
-					</instructions>
-				</configuration>
-			</plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <excludeDependencies>true</excludeDependencies>
+                    <instructions>
+                        <_nouses>true</_nouses>
+                        <_removeheaders>Private-Package</_removeheaders>
+                        <Export-Package>*;-noimport:=true</Export-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
