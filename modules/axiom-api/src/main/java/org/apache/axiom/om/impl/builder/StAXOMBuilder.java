@@ -262,9 +262,7 @@ public class StAXOMBuilder extends StAXBuilder {
                 }
                 return token;
             }
-        } catch (OMException e) {
-            throw e;
-        } catch (Exception e) {
+        } catch (XMLStreamException e) {
             throw new OMException(e);
         }
     }
