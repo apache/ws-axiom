@@ -117,8 +117,7 @@ public class XMLStreamReaderUtils {
     }
     
     /**
-     * getOriginalXMLStreamReader
-     * Searches the wrapper and delegate classes to find the original XMLStreamReader
+     * Searches the wrapper and delegate classes to find the original {@link XMLStreamReader}.
      * This method should only be used when a consumer of Axiom really needs to 
      * access the original stream reader.
      * @param parser XMLStreamReader used by Axiom

@@ -21,16 +21,17 @@ package org.apache.axiom.util.stax.wrapper;
 import javax.xml.stream.XMLStreamReader;
 
 /**
- * Marker interface for Axiom XMLStreamReader classes that
+ * Marker interface for Axiom {@link XMLStreamReader} classes that
  * wrap or delegate to another (parent) XMLStreamReader.
- * 
+ * <p>
  * The marker interface is necessary so that consumers 
  * can access the original parser.
- * @see XMLStreamReaderUtils
+ * <p>
+ * Note that the only the {@link #getParent()} method is applicable.
+ * Please do not add a <code>setParent()</code> method since that would
+ * violate the immutable characteristic of the {@link XMLStreamReaderWrapper}.
  * 
- * Note that the only the getParent() method is applicable.
- * Please do not add a setParent() method since that would
- * violate the immutable characteristic of the XMLStreamReaderWrapper
+ * @see org.apache.axiom.util.stax.XMLStreamReaderUtils
  */
 public interface XMLStreamReaderContainer {
     XMLStreamReader getParent();
