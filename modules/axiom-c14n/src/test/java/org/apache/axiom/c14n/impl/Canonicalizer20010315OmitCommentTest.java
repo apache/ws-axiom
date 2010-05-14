@@ -72,7 +72,7 @@ public class Canonicalizer20010315OmitCommentTest
         // get the canonicalized byte[]
         bytes = c14n.canonicalize(dp.getBytes());
         // check against sample6Result
-        assertEquals(sample6Result, new String(bytes));
+        assertEquals(sample6Result, new String(bytes, "UTF-8"));
     }
 
 
