@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -199,8 +200,8 @@ public class StAXOMBuilder extends StAXBuilder {
     
                         log.debug("WARNING: The current state of the parser is not equal to the " +
                                   "state just received from the parser. The current state in the paser is " +
-                                  StAXUtils.getEventTypeString(currentParserToken) + " the state just received is " +
-                                  StAXUtils.getEventTypeString(token));
+                                  XMLEventUtils.getEventTypeString(currentParserToken) + " the state just received is " +
+                                  XMLEventUtils.getEventTypeString(token));
     
                         /*
                           throw new OMException("The current token " + token + 

@@ -24,7 +24,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import javax.activation.DataHandler;
-import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
@@ -33,8 +32,8 @@ import javax.xml.stream.util.StreamReaderDelegate;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.base64.Base64Utils;
+import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderContainer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -262,7 +261,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
                         break;
                     default:
                         throw new XMLStreamException("Unexpected event " +
-                                StAXUtils.getEventTypeString(event) +
+                                XMLEventUtils.getEventTypeString(event) +
                                 " while reading element text");
                 }
                 event = parent.next();

@@ -35,8 +35,6 @@ import javax.xml.stream.XMLStreamReader;
 
 import junit.framework.Assert;
 
-import org.apache.axiom.om.util.StAXUtils;
-
 /**
  * Helper class that compares the events produced by two {@link XMLStreamReader} objects.
  * Note that this class is not meant to be used to compare two XML documents (the error
@@ -72,7 +70,7 @@ public class XMLStreamReaderComparator extends Assert {
     private String getLocation() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("event type ");
-        buffer.append(StAXUtils.getEventTypeString(expected.getEventType()));
+        buffer.append(XMLEventUtils.getEventTypeString(expected.getEventType()));
         buffer.append("; location ");
         for (Iterator it = path.iterator(); it.hasNext(); ) {
             buffer.append('/');
