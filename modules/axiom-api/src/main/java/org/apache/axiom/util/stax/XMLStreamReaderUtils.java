@@ -81,7 +81,7 @@ public class XMLStreamReaderUtils {
         } else {
             int event = reader.next();
             if (event == XMLStreamConstants.END_ELEMENT) {
-                // This means that the element is actaullay empty -> return empty DataHandler
+                // This means that the element is actually empty -> return empty DataHandler
                 return new DataHandler(new ByteArrayDataSource(new byte[0]));
             } else if (event != XMLStreamConstants.CHARACTERS) {
                 throw new XMLStreamException("Expected a CHARACTER event");
