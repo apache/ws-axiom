@@ -115,7 +115,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         // The streaming parser will not have access to the attachments.  Thus this will
         // return null
         XMLStreamReader attachmentAccessor = 
-            XMLStreamReaderUtils.getOMAttachmentAccessorXMLStreamReader(reader);
+            XMLStreamReaderUtils.getWrappedXMLStreamReader(reader, OMAttachmentAccessor.class);
         
         assertTrue(attachmentAccessor == null);
         
@@ -131,7 +131,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         assertTrue(original instanceof OMStAXWrapper);
         
         XMLStreamReader attachmentAccessor = 
-            XMLStreamReaderUtils.getOMAttachmentAccessorXMLStreamReader(reader);
+            XMLStreamReaderUtils.getWrappedXMLStreamReader(reader, OMAttachmentAccessor.class);
         
         // Thus the attachmentAccessor should also be the OMStaXWrapper
         assertTrue(attachmentAccessor instanceof OMStAXWrapper);

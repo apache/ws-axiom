@@ -26,7 +26,6 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
-import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderContainer;
 import org.apache.commons.logging.Log;
@@ -143,17 +142,22 @@ public class XMLStreamReaderUtils {
     }
     
     /**
-     * Searches the wrapper and delegate classes to find an XMLStreamReader
-     * that implements the OMAttachmentAccessor
+     * Searches the wrapper and delegate classes to find an
+     * {@link XMLStreamReader} of a given type.
+     * 
      * @param parser
-     * @return XMLStreamREader that implements OMAttachmentAccessor or null
+     *            the object to extract the wrapped reader from
+     * @param type
+     *            the type of reader to search for
+     * @return the first {@link XMLStreamReader} of the given type in the chain
+     *         of wrappers, or <code>null</code> if no such reader was found
      */
-    public static XMLStreamReader getOMAttachmentAccessorXMLStreamReader(XMLStreamReader parser) {
+    public static XMLStreamReader getWrappedXMLStreamReader(XMLStreamReader parser, Class type) {
         if (log.isDebugEnabled()) {
             String clsName = (parser != null) ? parser.getClass().toString() : "null";
-            log.debug("Entry getOMAttachmentAccessorXMLStreamReader: " + clsName);
+            log.debug("Entry getWrappedXMLStreamReader: " + clsName);
         }
-        while (!(parser instanceof OMAttachmentAccessor) &&
+        while (!type.isInstance(parser) &&
                 (parser instanceof XMLStreamReaderContainer)) {
             parser = ((XMLStreamReaderContainer) parser).getParent();
             if (log.isDebugEnabled()) {
@@ -161,12 +165,12 @@ public class XMLStreamReaderUtils {
                 log.debug("  parent: " + clsName);
             }
         }
-        if (!(parser instanceof OMAttachmentAccessor)) {
+        if (!type.isInstance(parser)) {
             parser = null;
         }
         if (log.isDebugEnabled()) {
             String clsName = (parser != null) ? parser.getClass().toString() : "null";
-            log.debug("Exit getOMAttachmentAccessorXMLStreamReader: " + clsName);
+            log.debug("Exit getWrappedXMLStreamReader: " + clsName);
         }
         return parser;
     }
