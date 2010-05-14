@@ -19,12 +19,14 @@
 
 package org.apache.axiom.om.util;
 
-import junit.framework.TestCase;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+import junit.framework.TestCase;
+
+import org.apache.axiom.util.base64.Base64Utils;
 
 public class Base64Test extends TestCase {
 
@@ -43,8 +45,8 @@ public class Base64Test extends TestCase {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutStream = new ObjectOutputStream(byteStream);
         objectOutStream.writeObject(expectedObject);
-        expectedBase64 = Base64.encode(byteStream.toByteArray());
-        byte[] tempa = Base64.decode(expectedBase64);
+        expectedBase64 = Base64Utils.encode(byteStream.toByteArray());
+        byte[] tempa = Base64Utils.decode(expectedBase64);
         ObjectInputStream objectInStream = new ObjectInputStream(
                 new ByteArrayInputStream(tempa));
         actualObject = objectInStream.readObject();

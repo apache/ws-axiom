@@ -19,20 +19,21 @@
 
 package org.apache.axiom.om.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.activation.DataHandler;
+import javax.mail.MessagingException;
+
 import org.apache.axiom.attachments.impl.BufferUtils;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
-
-import javax.activation.DataHandler;
-import javax.mail.MessagingException;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.apache.axiom.util.base64.Base64Utils;
 
 public class TextHelper {
     
@@ -84,7 +85,7 @@ public class TextHelper {
                 }
                 len += read;
             } while (len < data.length);
-            Base64.encode(data, 0, len, buffer);
+            Base64Utils.encode(data, 0, len, buffer);
         } while (!eos);
     }
     
@@ -169,7 +170,7 @@ public class TextHelper {
             }
         }
         if (omText == null) {
-            omText = factory.createOMText(Base64.encode(b, off, length));
+            omText = factory.createOMText(Base64Utils.encode(b, off, length));
             omText.setOptimize(isOptimize);
         }
         return omText;

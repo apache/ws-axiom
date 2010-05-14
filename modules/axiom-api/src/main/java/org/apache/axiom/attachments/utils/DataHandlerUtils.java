@@ -20,16 +20,16 @@
 package org.apache.axiom.attachments.utils;
 
 
-import org.apache.axiom.attachments.ByteArrayDataSource;
-import org.apache.axiom.om.util.Base64;
-
 import javax.activation.DataHandler;
+
+import org.apache.axiom.attachments.ByteArrayDataSource;
+import org.apache.axiom.util.base64.Base64Utils;
 
 public class DataHandlerUtils {
 
     public static Object getDataHandlerFromText(String value, String mimeType) {
         ByteArrayDataSource dataSource;
-        byte[] data = Base64.decode(value);
+        byte[] data = Base64Utils.decode(value);
         if (mimeType != null) {
             dataSource = new ByteArrayDataSource(data, mimeType);
         } else {

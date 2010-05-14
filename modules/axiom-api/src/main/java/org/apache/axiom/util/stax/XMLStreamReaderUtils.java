@@ -27,7 +27,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMAttachmentAccessor;
-import org.apache.axiom.om.util.Base64;
+import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderContainer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -113,7 +113,7 @@ public class XMLStreamReaderUtils {
                 base64 = buff.toString();
             }
         }
-        return new DataHandler(new ByteArrayDataSource(Base64.decode(base64)));
+        return new DataHandler(new ByteArrayDataSource(Base64Utils.decode(base64)));
     }
     
     /**
