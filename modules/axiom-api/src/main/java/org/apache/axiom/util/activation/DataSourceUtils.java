@@ -26,7 +26,7 @@ import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.util.ByteArrayDataSource;
 
-import org.apache.axiom.attachments.SizeAwareDataSource;
+import org.apache.axiom.ext.activation.SizeAwareDataSource;
 
 /**
  * Contains utility methods to work with {@link DataSource} objects.

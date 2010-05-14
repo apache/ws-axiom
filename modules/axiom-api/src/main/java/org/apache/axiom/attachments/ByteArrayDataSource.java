@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class ByteArrayDataSource implements SizeAwareDataSource {
+public class ByteArrayDataSource implements org.apache.axiom.ext.activation.SizeAwareDataSource {
 
     private byte[] data;
 

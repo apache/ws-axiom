@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.axiom.attachments.SizeAwareDataSource;
+import org.apache.axiom.ext.activation.SizeAwareDataSource;
 
 /**
  * Data source backed by a {@link Blob}.
