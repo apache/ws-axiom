@@ -25,7 +25,7 @@ import java.io.OutputStream;
 /**
  * {@link OutputStream} implementation that writes base64 encoded data to a {@link StringBuffer}.
  */
-public class Base64StringBufferOutputStream extends AbstractBase64OutputStream {
+public class Base64EncodingStringBufferOutputStream extends AbstractBase64EncodingOutputStream {
     private final StringBuffer buffer;
 
     /**
@@ -33,7 +33,7 @@ public class Base64StringBufferOutputStream extends AbstractBase64OutputStream {
      * 
      * @param buffer the buffer to append the encoded data to
      */
-    public Base64StringBufferOutputStream(StringBuffer buffer) {
+    public Base64EncodingStringBufferOutputStream(StringBuffer buffer) {
         this.buffer = buffer;
     }
 

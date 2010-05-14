@@ -25,7 +25,7 @@ import java.io.OutputStream;
 /**
  * Base class for {@link OutputStream} implementations that encode data in base64.
  */
-public abstract class AbstractBase64OutputStream extends OutputStream {
+public abstract class AbstractBase64EncodingOutputStream extends OutputStream {
     private final byte[] in = new byte[3];
     private final byte[] out = new byte[4];
     private int rest; // Number of bytes remaining in the inBuffer

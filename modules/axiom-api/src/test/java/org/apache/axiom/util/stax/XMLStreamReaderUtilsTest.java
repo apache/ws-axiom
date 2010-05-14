@@ -30,7 +30,7 @@ import javax.xml.stream.XMLStreamReader;
 import junit.framework.TestCase;
 
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.util.base64.Base64StringBufferOutputStream;
+import org.apache.axiom.util.base64.Base64EncodingStringBufferOutputStream;
 import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
 import org.apache.commons.io.IOUtils;
 
@@ -159,7 +159,7 @@ public class XMLStreamReaderUtilsTest extends TestCase {
         // We generate base64 that is sufficiently large to force the parser to generate
         // multiple CHARACTER events
         StringBuffer buffer = new StringBuffer("<test>");
-        Base64StringBufferOutputStream out = new Base64StringBufferOutputStream(buffer);
+        Base64EncodingStringBufferOutputStream out = new Base64EncodingStringBufferOutputStream(buffer);
         byte[] data = new byte[65536];
         new Random().nextBytes(data);
         out.write(data);

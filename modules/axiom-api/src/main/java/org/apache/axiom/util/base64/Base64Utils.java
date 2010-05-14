@@ -73,7 +73,7 @@ public class Base64Utils {
         } else {
             buffer = new StringBuffer(getEncodedSize((int)size));
         }
-        Base64StringBufferOutputStream out = new Base64StringBufferOutputStream(buffer);
+        Base64EncodingStringBufferOutputStream out = new Base64EncodingStringBufferOutputStream(buffer);
         // Always prefer writeTo, because getInputStream will create a thread and a pipe if
         // the DataHandler was constructed using an object instead of a DataSource
         dh.writeTo(out);

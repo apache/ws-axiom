@@ -27,7 +27,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
-import org.apache.axiom.util.base64.Base64WriterOutputStream;
+import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 
 /**
  * Contains utility methods to work with {@link XMLStreamWriter} objects.
@@ -56,7 +56,7 @@ public class XMLStreamWriterUtils {
     public static void writeBase64(XMLStreamWriter writer, DataHandler dh)
             throws IOException, XMLStreamException {
         
-        Base64WriterOutputStream out = new Base64WriterOutputStream(
+        Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(
                 new XMLStreamWriterWriter(writer));
         try {
             dh.writeTo(out);
