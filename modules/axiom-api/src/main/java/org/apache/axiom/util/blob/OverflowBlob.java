@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.axiom.attachments.impl.BufferUtils;
+import org.apache.axiom.ext.io.ReadFromSupport;
 import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -336,18 +336,35 @@ public class OverflowBlob implements WritableBlob {
                 chunkIndex++;
                 chunkOffset = 0;
                 if (chunkIndex == chunks.length) {
+                    FileOutputStream fileOutputStream;
                     try {
-                        FileOutputStream fileOutputStream = switchToTempFile();
-                        // TODO: this will not trigger the FileOutputStream optimization!
-                        // TODO: fix the long -> int conversion
-                        read += BufferUtils.inputStream2OutputStream(in, fileOutputStream, (int)Math.min(toRead, Integer.MAX_VALUE));
-                        fileOutputStream.close();
+                        fileOutputStream = switchToTempFile();
                     } catch (IOException ex) {
-                        if (ex instanceof StreamCopyException) {
-                            throw (StreamCopyException)ex;
-                        } else {
+                        throw new StreamCopyException(StreamCopyException.WRITE, ex);
+                    }
+                    byte[] buf = new byte[4096];
+                    while (true) {
+                        int c2;
+                        try {
+                            c2 = in.read(buf, 0, (int)Math.min(toRead, 4096));
+                        } catch (IOException ex) {
+                            throw new StreamCopyException(StreamCopyException.READ, ex);
+                        }
+                        if (c2 == -1) {
+                            break;
+                        }
+                        try {
+                            fileOutputStream.write(buf, 0, c2);
+                        } catch (IOException ex) {
                             throw new StreamCopyException(StreamCopyException.WRITE, ex);
                         }
+                        read += c2;
+                        toRead -= c2;
+                    }
+                    try {
+                        fileOutputStream.close();
+                    } catch (IOException ex) {
+                        throw new StreamCopyException(StreamCopyException.WRITE, ex);
                     }
                     break;
                 }
@@ -375,7 +392,15 @@ public class OverflowBlob implements WritableBlob {
         if (temporaryFile != null) {
             FileInputStream in = new FileInputStream(temporaryFile);
             try {
-                BufferUtils.inputStream2OutputStream(in, out);
+                if (out instanceof ReadFromSupport) {
+                    ((ReadFromSupport)out).readFrom(in, -1);
+                } else {
+                    byte[] buf = new byte[4096];
+                    int c;
+                    while ((c = in.read(buf)) != -1) {
+                        out.write(buf, 0, c);
+                    }
+                }
             } finally {
                 in.close();
             }

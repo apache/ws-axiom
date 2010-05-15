@@ -27,9 +27,9 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.util.activation.EmptyDataSource;
 import org.apache.axiom.util.base64.Base64DecodingOutputStreamWriter;
 import org.apache.axiom.util.blob.BlobDataSource;
 import org.apache.axiom.util.blob.MemoryBlob;
@@ -81,7 +81,7 @@ public class XMLStreamReaderUtils {
         int event = reader.next();
         if (event == XMLStreamConstants.END_ELEMENT) {
             // This means that the element is actually empty -> return empty DataHandler
-            return new DataHandler(new ByteArrayDataSource(new byte[0]));
+            return new DataHandler(new EmptyDataSource("application/octet-stream"));
         } else if (event != XMLStreamConstants.CHARACTERS) {
             throw new XMLStreamException("Expected a CHARACTER event");
         }

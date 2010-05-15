@@ -25,11 +25,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.axiom.attachments.impl.BufferUtils;
 import org.apache.axiom.ext.io.StreamCopyException;
 
 public class MemoryBlob implements WritableBlob {
-    final static int BUFFER_SIZE = BufferUtils.BUFFER_LEN;
+    // TODO: this should be configurable
+    final static int BUFFER_SIZE = 4096;
     
     class OutputStreamImpl extends BlobOutputStream {
         public WritableBlob getBlob() {
