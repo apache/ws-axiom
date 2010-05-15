@@ -19,26 +19,29 @@
 
 package org.apache.axiom.util.base64;
 
-// For internal use only
-class Base64Constants {
-    static final byte[] S_BASE64CHAR = { 'A', 'B', 'C', 'D', 'E', 'F',
-        'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-        'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
-        'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-        't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5',
-        '6', '7', '8', '9', '+', '/' };
+import java.io.IOException;
+import java.io.OutputStream;
 
-    static final byte S_BASE64PAD = '=';
+/**
+ * {@link java.io.Writer} implementation that decodes base64 data and writes it
+ * to a an {@link OutputStream}.
+ */
+public class Base64DecodingOutputStreamWriter extends AbstractBase64DecodingWriter {
+    private final OutputStream stream;
 
-    static final byte[] S_DECODETABLE = new byte[128];
-    
-    static {
-        for (int i = 0; i < S_DECODETABLE.length; i++) {
-            S_DECODETABLE[i] = Byte.MAX_VALUE; // 127
-        }
-        for (int i = 0; i < S_BASE64CHAR.length; i++) {
-            // 0 to 63
-            S_DECODETABLE[S_BASE64CHAR[i]] = (byte) i;
-        }
+    public Base64DecodingOutputStreamWriter(OutputStream stream) {
+        this.stream = stream;
+    }
+
+    protected void doWrite(byte[] b, int len) throws IOException {
+        stream.write(b, 0, len);
+    }
+
+    public void flush() throws IOException {
+        stream.flush();
+    }
+
+    public void close() throws IOException {
+        stream.close();
     }
 }

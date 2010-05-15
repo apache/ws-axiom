@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -34,6 +36,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMAttribute;
@@ -55,6 +58,7 @@ import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.AbstractXMLStreamReader;
 import org.apache.axiom.util.stax.DummyLocation;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -62,7 +66,7 @@ import org.apache.commons.logging.LogFactory;
  * Class used internally by {@link OMStAXWrapper}.
  */
 class SwitchingWrapper extends AbstractXMLStreamReader
-    implements DataHandlerReader, XMLStreamConstants {
+    implements DataHandlerReader, CharacterDataReader, XMLStreamConstants {
     
     private static final Log log = LogFactory.getLog(SwitchingWrapper.class);
     private static boolean DEBUG_ENABLED = log.isDebugEnabled();
@@ -429,6 +433,31 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 return ((OMComment)lastNode).getValue();
             default:
                 throw new IllegalStateException();
+        }
+    }
+
+    public void writeTextTo(Writer writer) throws XMLStreamException, IOException {
+        if (parser != null) {
+            XMLStreamReaderUtils.writeTextTo(parser, writer);
+        } else {
+            switch (currentEvent) {
+                case CHARACTERS:
+                case CDATA:
+                case SPACE:
+                    OMText text = (OMText)lastNode;
+                    if (text.isCharacters()) {
+                        writer.write(text.getTextCharacters());
+                    } else {
+                        // TODO: we should cover the binary case in an optimized way
+                        writer.write(text.getText());
+                    }
+                    break;
+                case COMMENT:
+                    writer.write(((OMComment)lastNode).getValue());
+                    break;
+                default:
+                    throw new IllegalStateException();
+            }
         }
     }
 
@@ -1009,6 +1038,9 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         Object value = DataHandlerReaderUtils.processGetProperty(this, s);
         if (value != null) {
             return value;
+        }
+        if (CharacterDataReader.PROPERTY.equals(s)) {
+            return this;
         }
         if (parser != null) {
             return parser.getProperty(s);

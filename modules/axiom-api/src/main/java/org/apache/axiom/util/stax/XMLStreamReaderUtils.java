@@ -19,14 +19,21 @@
 
 package org.apache.axiom.util.stax;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.attachments.ByteArrayDataSource;
+import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
-import org.apache.axiom.util.base64.Base64Utils;
+import org.apache.axiom.util.base64.Base64DecodingOutputStreamWriter;
+import org.apache.axiom.util.blob.BlobDataSource;
+import org.apache.axiom.util.blob.MemoryBlob;
+import org.apache.axiom.util.blob.WritableBlob;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderContainer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -71,48 +78,74 @@ public class XMLStreamReaderUtils {
     public static DataHandler getDataHandlerFromElement(XMLStreamReader reader)
             throws XMLStreamException {
         
-        DataHandlerReader dhr = getDataHandlerReader(reader);
-        String base64;
-        if (dhr == null) {
-            // In this case the best way to get the content of the element is using
-            // the getElementText method
-            base64 = reader.getElementText();
-        } else {
-            int event = reader.next();
-            if (event == XMLStreamConstants.END_ELEMENT) {
-                // This means that the element is actually empty -> return empty DataHandler
-                return new DataHandler(new ByteArrayDataSource(new byte[0]));
-            } else if (event != XMLStreamConstants.CHARACTERS) {
-                throw new XMLStreamException("Expected a CHARACTER event");
-            }
-            if (dhr.isBinary()) {
-                DataHandler dh = dhr.getDataHandler();
-                reader.next();
-                return dh;
-            }
-            base64 = reader.getText();
-            StringBuffer buff = null;
-            // Take into account that in non coalescing mode, there may be additional
-            // CHARACTERS events
-            loop: while (true) {
-                switch (reader.next()) {
-                    case XMLStreamConstants.CHARACTERS:
-                        if (buff == null) {
-                            buff = new StringBuffer(base64);
-                        }
-                        buff.append(reader.getText());
-                        break;
-                    case XMLStreamConstants.END_ELEMENT:
-                        break loop;
-                    default:
-                        throw new XMLStreamException("Expected a CHARACTER event");
-                }
-            }
-            if (buff != null) {
-                base64 = buff.toString();
-            }
+        int event = reader.next();
+        if (event == XMLStreamConstants.END_ELEMENT) {
+            // This means that the element is actually empty -> return empty DataHandler
+            return new DataHandler(new ByteArrayDataSource(new byte[0]));
+        } else if (event != XMLStreamConstants.CHARACTERS) {
+            throw new XMLStreamException("Expected a CHARACTER event");
         }
-        return new DataHandler(new ByteArrayDataSource(Base64Utils.decode(base64)));
+        DataHandlerReader dhr = getDataHandlerReader(reader);
+        if (dhr != null && dhr.isBinary()) {
+            DataHandler dh = dhr.getDataHandler();
+            reader.next();
+            return dh;
+        } else {
+            WritableBlob blob = new MemoryBlob();
+            Writer out = new Base64DecodingOutputStreamWriter(blob.getOutputStream());
+            try {
+                writeTextTo(reader, out);
+                // Take into account that in non coalescing mode, there may be additional
+                // CHARACTERS events
+                loop: while (true) {
+                    switch (reader.next()) {
+                        case XMLStreamConstants.CHARACTERS:
+                            writeTextTo(reader, out);
+                            break;
+                        case XMLStreamConstants.END_ELEMENT:
+                            break loop;
+                        default:
+                            throw new XMLStreamException("Expected a CHARACTER event");
+                    }
+                }
+                out.close();
+            } catch (IOException ex) {
+                throw new XMLStreamException("Error during base64 decoding", ex);
+            }
+            return new DataHandler(new BlobDataSource(blob, "application/octet-string"));
+        }
+    }
+    
+    /**
+     * Get the character data for the current event from the given reader and
+     * write it to the given writer. The method will try to figure out the most
+     * efficient way to copy the data without unnecessary buffering or
+     * conversions between strings and character arrays.
+     * 
+     * @param reader
+     *            the reader to get the character data from
+     * @param writer
+     *            the writer to write the character data to
+     * @throws XMLStreamException
+     *             if the underlying XML source is not well-formed
+     * @throws IOException
+     *             if an I/O error occurs when writing the character data
+     * @throws IllegalStateException
+     *             if this state is not a valid text state.
+     * @see CharacterDataReader
+     */
+    public static void writeTextTo(XMLStreamReader reader, Writer writer) throws XMLStreamException, IOException {
+        CharacterDataReader cdataReader;
+        try {
+            cdataReader = (CharacterDataReader)reader.getProperty(CharacterDataReader.PROPERTY);
+        } catch (IllegalArgumentException ex) {
+            cdataReader = null;
+        }
+        if (cdataReader != null) {
+            cdataReader.writeTextTo(writer);
+        } else {
+            writer.write(reader.getText());
+        }
     }
     
     /**

@@ -64,6 +64,7 @@ import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
  * "parser" is not coalescing.
  * 
  */
+// TODO: this is a good candidate to implement the CharacterDataReader interface
 public class WrappedTextNodeStreamReader implements XMLStreamReader {
     /**
      * The qualified name of the wrapper element.
