@@ -168,6 +168,37 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         and if necessary, change the parent of the Axiom root POM.
                     </para>
                 </listitem>
+                <listitem>
+                    <para>
+                        Check the dependencies between Java packages in the <filename>axiom-api</filename> module.
+                        The <package>org.apache.axiom.util</package> package (including its subpackages) is specified
+                        to contain utility classes that don't depend on higher level APIs. More precisely,
+                        <package>org.apache.axiom.util</package> should only have dependencies on
+                        <package>org.apache.axiom.ext</package>, but not e.g. on <package>org.apache.axiom.om</package>.
+                        <ulink url="http://www.hello2morrow.com/products/sonarj">SonarJ</ulink> can be used
+                        to check these dependencies. The following figure shows the expected structure:
+                    </para>
+                    <figure>
+                        <title>Package dependencies for r944680</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="sonarj-944680.png" format="PNG"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                    <para>
+                        In contrast, the following figure shows an earlier trunk version of <filename>axiom-api</filename>
+                        with incorrect layering and cyclic dependencies involving <package>org.apache.axiom.util</package>:
+                    </para>
+                    <figure>
+                        <title>Package dependencies for r939984</title>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata fileref="sonarj-939984.png" format="PNG"/>
+                            </imageobject>
+                        </mediaobject>
+                    </figure>
+                </listitem>
             </itemizedlist>
         </section>
     </chapter>
