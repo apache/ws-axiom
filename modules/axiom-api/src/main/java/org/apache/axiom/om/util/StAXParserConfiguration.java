@@ -99,6 +99,23 @@ public interface StAXParserConfiguration {
     };
     
     /**
+     * Configuration suitable for SOAP messages. This will configure the parser
+     * to throw an exception when it encounters a document type declaration. The
+     * SOAP 1.1 specification indeed prescribes that
+     * "A SOAP message MUST NOT contain a Document Type Declaration." The
+     * difference between the {@link #STANDALONE} configuration and this
+     * configuration is that with {@link #STANDALONE}, the parser silently
+     * ignores references to external entities but doesn't throw any exception.
+     * 
+     * @see StAXDialect#disallowDoctypeDecl(XMLInputFactory)
+     */
+    StAXParserConfiguration SOAP = new StAXParserConfiguration() {
+        public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
+            return dialect.disallowDoctypeDecl(factory);
+        }
+    };
+    
+    /**
      * Apply the configuration to the given factory. The method MAY optionally
      * wrap the factory, e.g. to modify the behavior of the
      * {@link javax.xml.stream.XMLStreamReader} instances created by the
