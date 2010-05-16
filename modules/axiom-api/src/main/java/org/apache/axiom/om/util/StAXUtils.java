@@ -30,13 +30,10 @@ import org.apache.axiom.util.stax.wrapper.ImmutableXMLOutputFactory;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLResolver;
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -106,42 +103,73 @@ public class StAXUtils {
     
     // These static singletons are used when the XML*Factory is created with
     // the StAXUtils classloader.
-    private static XMLInputFactory inputFactory = null;
-    private static XMLInputFactory inputNDFactory = null;
+    private static final Map/*<StAXParserConfiguration,XMLInputFactory>*/ inputFactoryMap
+            = Collections.synchronizedMap(new WeakHashMap());
     private static XMLOutputFactory outputFactory = null;
     
     // These maps are used for the isFactoryPerClassLoader==true case
     // The maps are synchronized and weak.
-    private static Map inputFactoryPerCL = Collections.synchronizedMap(new WeakHashMap());
-    private static Map inputNDFactoryPerCL = Collections.synchronizedMap(new WeakHashMap());
+    private static final Map/*<StAXParserConfiguration,Map<ClassLoader,XMLInputFactory>>*/ inputFactoryPerCLMap
+            = Collections.synchronizedMap(new WeakHashMap());
     private static Map outputFactoryPerCL = Collections.synchronizedMap(new WeakHashMap());
     
     /**
-     * Gets an XMLInputFactory instance from pool.
-     *
-     * @return an XMLInputFactory instance.
+     * Get a cached {@link XMLInputFactory} instance using the default
+     * configuration and cache policy (i.e. one instance per class loader).
+     * 
+     * @return an {@link XMLInputFactory} instance.
      */
     public static XMLInputFactory getXMLInputFactory() {
-        
-        if (isFactoryPerClassLoader) {
-            return getXMLInputFactory_perClassLoader(false);
-        } else {
-            return getXMLInputFactory_singleton(false);
-        }
+        return getXMLInputFactory(null, isFactoryPerClassLoader);
     }
     
     /**
-     * Get XMLInputFactory
-     * @param factoryPerClassLoaderPolicy 
-     * (if true, then factory using current classloader.
-     * if false, then factory using the classloader that loaded StAXUtils)
-     * @return XMLInputFactory
+     * Get a cached {@link XMLInputFactory} instance using the specified
+     * configuration and the default cache policy.
+     * 
+     * @param configuration
+     *            the configuration applied to the requested factory
+     * @return an {@link XMLInputFactory} instance.
+     */
+    public static XMLInputFactory getXMLInputFactory(StAXParserConfiguration configuration) {
+        return getXMLInputFactory(configuration, isFactoryPerClassLoader);
+    }
+    
+    /**
+     * Get a cached {@link XMLInputFactory} instance using the default
+     * configuration and the specified cache policy.
+     * 
+     * @param factoryPerClassLoaderPolicy
+     *            the cache policy; see
+     *            {@link #getXMLInputFactory(StAXParserConfiguration, boolean)}
+     *            for more details
+     * @return an {@link XMLInputFactory} instance.
      */
     public static XMLInputFactory getXMLInputFactory(boolean factoryPerClassLoaderPolicy) {
+        return getXMLInputFactory(null, factoryPerClassLoaderPolicy);
+    }
+    
+    /**
+     * Get a cached {@link XMLInputFactory} instance using the specified
+     * configuration and cache policy.
+     * 
+     * @param configuration
+     *            the configuration applied to the requested factory
+     * @param factoryPerClassLoaderPolicy
+     *            If set to <code>true</code>, the factory cached for the
+     *            current class loader will be returned. If set to
+     *            <code>false</code>, the singleton factory (instantiated using
+     *            the class loader that loaded {@link StAXUtils}) will be
+     *            returned.
+     * @return an {@link XMLInputFactory} instance.
+     */
+    public static XMLInputFactory getXMLInputFactory(StAXParserConfiguration configuration,
+            boolean factoryPerClassLoaderPolicy) {
+        
         if (factoryPerClassLoaderPolicy) {
-            return getXMLInputFactory_perClassLoader(false);
+            return getXMLInputFactory_perClassLoader(configuration);
         } else {
-            return getXMLInputFactory_singleton(false);
+            return getXMLInputFactory_singleton(configuration);
         }
     }
 
@@ -156,7 +184,14 @@ public class StAXUtils {
 
     public static XMLStreamReader createXMLStreamReader(final InputStream in, final String encoding)
             throws XMLStreamException {
-        final XMLInputFactory inputFactory = getXMLInputFactory();
+        
+        return createXMLStreamReader(null, in, encoding);
+    }
+    
+    public static XMLStreamReader createXMLStreamReader(StAXParserConfiguration configuration,
+            final InputStream in, final String encoding) throws XMLStreamException {
+        
+        final XMLInputFactory inputFactory = getXMLInputFactory(configuration);
         try {
             XMLStreamReader reader = 
                 (XMLStreamReader) 
@@ -177,7 +212,14 @@ public class StAXUtils {
 
     public static XMLStreamReader createXMLStreamReader(final InputStream in)
             throws XMLStreamException {
-        final XMLInputFactory inputFactory = getXMLInputFactory();
+        
+        return createXMLStreamReader(null, in);
+    }
+    
+    public static XMLStreamReader createXMLStreamReader(StAXParserConfiguration configuration,
+            final InputStream in) throws XMLStreamException {
+        
+        final XMLInputFactory inputFactory = getXMLInputFactory(configuration);
         try {
             XMLStreamReader reader = 
                 (XMLStreamReader)
@@ -199,7 +241,14 @@ public class StAXUtils {
 
     public static XMLStreamReader createXMLStreamReader(final Reader in)
             throws XMLStreamException {
-        final XMLInputFactory inputFactory = getXMLInputFactory();
+        
+        return createXMLStreamReader(null, in);
+    }
+    
+    public static XMLStreamReader createXMLStreamReader(StAXParserConfiguration configuration,
+            final Reader in) throws XMLStreamException {
+        
+        final XMLInputFactory inputFactory = getXMLInputFactory(configuration);
         try {
             XMLStreamReader reader = 
                 (XMLStreamReader)
@@ -389,7 +438,7 @@ public class StAXUtils {
     }
     
     private static XMLInputFactory newXMLInputFactory(final ClassLoader classLoader,
-            final boolean isNetworkDetached) {
+            final StAXParserConfiguration configuration) {
         
         return (XMLInputFactory)AccessController.doPrivileged(new PrivilegedAction() {
             public Object run() {
@@ -414,21 +463,10 @@ public class StAXUtils {
                             factory.setProperty((String)entry.getKey(), entry.getValue());
                         }
                     }
-                    if (isNetworkDetached) {
-                        factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, 
-                                  Boolean.FALSE);
-                        // Some StAX parser such as Woodstox still try to load the external DTD subset,
-                        // even if IS_SUPPORTING_EXTERNAL_ENTITIES is set to false. To work around this,
-                        // we add a custom XMLResolver that returns empty documents. See WSTX-117 for
-                        // an interesting discussion about this.
-                        factory.setXMLResolver(new XMLResolver() {
-                            public Object resolveEntity(String publicID, String systemID, String baseURI,
-                                    String namespace) throws XMLStreamException {
-                                return new ByteArrayInputStream(new byte[0]);
-                            }
-                        });
-                    }
                     StAXDialect dialect = StAXDialectDetector.getDialect(factory.getClass());
+                    if (configuration != null) {
+                        factory = configuration.configure(factory, dialect);
+                    }
                     return new ImmutableXMLInputFactory(dialect.normalize(
                             dialect.makeThreadSafe(factory)));
                 } finally {
@@ -443,18 +481,24 @@ public class StAXUtils {
     /**
      * @return XMLInputFactory for the current classloader
      */
-    private static XMLInputFactory getXMLInputFactory_perClassLoader(final boolean isNetworkDetached) {
+    private static XMLInputFactory getXMLInputFactory_perClassLoader(StAXParserConfiguration configuration) {
         
         ClassLoader cl = getContextClassLoader();
         XMLInputFactory factory;
         if (cl == null) {
-            factory = getXMLInputFactory_singleton(isNetworkDetached);
+            factory = getXMLInputFactory_singleton(configuration);
         } else {
             // Check the cache
-            if (isNetworkDetached) {
-                factory = (XMLInputFactory) inputNDFactoryPerCL.get(cl);
+            if (configuration == null) {
+                configuration = StAXParserConfiguration.DEFAULT;
+            }
+            Map map = (Map)inputFactoryPerCLMap.get(configuration);
+            if (map == null) {
+                map = Collections.synchronizedMap(new WeakHashMap());
+                inputFactoryPerCLMap.put(configuration, map);
+                factory = null;
             } else {
-                factory = (XMLInputFactory) inputFactoryPerCL.get(cl);
+                factory = (XMLInputFactory)map.get(cl);
             }
             
             // If not found in the cache map, crate a new factory
@@ -468,7 +512,7 @@ public class StAXUtils {
                 }
                 factory = null;
                 try {
-                    factory = newXMLInputFactory(null, isNetworkDetached);
+                    factory = newXMLInputFactory(null, configuration);
                 } catch (ClassCastException cce) {
                     if (log.isDebugEnabled()) {
                         log.debug("Failed creation of XMLInputFactory implementation with " +
@@ -478,25 +522,23 @@ public class StAXUtils {
                                   XMLInputFactory.class.getClassLoader());
                     }
                     factory = newXMLInputFactory(XMLInputFactory.class.getClassLoader(),
-                            isNetworkDetached);
+                            configuration);
                 }
                     
                 if (factory != null) {
                     // Cache the new factory
-                    if (isNetworkDetached) {
-                        inputNDFactoryPerCL.put(cl, factory);
-                    } else {
-                        inputFactoryPerCL.put(cl, factory);
-                    }
+                    map.put(cl, factory);
                     
                     if (log.isDebugEnabled()) {
                         log.debug("Created XMLInputFactory = " + factory.getClass() + 
                                   " with classloader=" + cl);
-                        log.debug("Size of XMLInputFactory map =" + inputFactoryPerCL.size());
-                        log.debug("isNetworkDetached =" + isNetworkDetached);
+                        log.debug("Configuration = " + configuration);
+                        log.debug("Size of XMLInputFactory map for this configuration = " + map.size());
+                        log.debug("Configurations for which factories have been cached = " +
+                                inputFactoryPerCLMap.keySet());
                     }
                 } else {
-                    factory = getXMLInputFactory_singleton(isNetworkDetached);
+                    factory = getXMLInputFactory_singleton(configuration);
                 }
             }
             
@@ -507,27 +549,17 @@ public class StAXUtils {
     /**
      * @return singleton XMLInputFactory loaded with the StAXUtils classloader
      */
-    private static XMLInputFactory getXMLInputFactory_singleton(final boolean isNetworkDetached) {
-        XMLInputFactory f;
-        if (isNetworkDetached) {
-            f = inputNDFactory;
-        } else {
-            f = inputFactory;
+    private static XMLInputFactory getXMLInputFactory_singleton(StAXParserConfiguration configuration) {
+        if (configuration == null) {
+            configuration = StAXParserConfiguration.DEFAULT;
         }
+        XMLInputFactory f = (XMLInputFactory)inputFactoryMap.get(configuration);
         if (f == null) {
-            f = newXMLInputFactory(StAXUtils.class.getClassLoader(), isNetworkDetached);
-            if (isNetworkDetached) {
-                inputNDFactory = f;
-            } else {
-                inputFactory = f;
-            }
+            f = newXMLInputFactory(StAXUtils.class.getClassLoader(), configuration);
+            inputFactoryMap.put(configuration, f);
             if (log.isDebugEnabled()) {
                 if (f != null) {
-                    if (isNetworkDetached) {
-                        log.debug("Created singleton network detached XMLInputFactory = " + f.getClass());
-                    } else {
-                        log.debug("Created singleton XMLInputFactory = " + f.getClass());
-                    }
+                    log.debug("Created singleton XMLInputFactory " + f.getClass() + " with configuration " + configuration);
                 }
             }
         }
@@ -644,110 +676,41 @@ public class StAXUtils {
     }
 
     /**
-     * Create an XMLStreamReader that will operate when detached from a network.
-     * The XMLStreamReader is created from a OMInputFactory that has external
-     * entities disabled.  This kind of XMLStreamReader is useful for reading 
-     * deployment information.
-     * @param in
-     * @param encoding
-     * @return
-     * @throws XMLStreamException
+     * @deprecated use {@link #createXMLStreamReader(StAXParserConfiguration, InputStream, String)}
+     *             with {@link StAXParserConfiguration#STANDALONE}
      */
-    public static XMLStreamReader createNetworkDetachedXMLStreamReader(final InputStream in, final String encoding)
-        throws XMLStreamException {
-        final XMLInputFactory inputFactory = getNetworkDetachedXMLInputFactory();
-        try {
-            XMLStreamReader reader = 
-                (XMLStreamReader) 
-                AccessController.doPrivileged(new PrivilegedExceptionAction() {
-                    public Object run() throws XMLStreamException {
-                        return inputFactory.createXMLStreamReader(in, encoding);
-                    }
-                }
-                );
-            if (isDebugEnabled) {
-                log.debug("XMLStreamReader is " + reader.getClass().getName());
-            }
-            return reader;
-        } catch (PrivilegedActionException pae) {
-            throw (XMLStreamException) pae.getException();
-        }
+    public static XMLStreamReader createNetworkDetachedXMLStreamReader(InputStream in, String encoding)
+            throws XMLStreamException {
+        
+        return createXMLStreamReader(StAXParserConfiguration.STANDALONE, in, encoding);
     }
 
     /**
-     * Gets an XMLInputFactory instance from pool.
-     *
-     * @return an XMLInputFactory instance.
+     * @deprecated use {@link #getXMLInputFactory(StAXParserConfiguration)} with
+     *             {@link StAXParserConfiguration#STANDALONE}
      */
     public static XMLInputFactory getNetworkDetachedXMLInputFactory() {
-        if (isFactoryPerClassLoader) {
-            return getXMLInputFactory_perClassLoader(true);
-        } else {
-            return getXMLInputFactory_singleton(true);
-        }
+        return getXMLInputFactory(StAXParserConfiguration.STANDALONE);
     }
     
     /**
-     * Create an XMLStreamReader that will operate when detached from a network.
-     * The XMLStreamReader is created from a OMInputFactory that has external
-     * entities disabled.  This kind of XMLStreamReader is useful for reading 
-     * deployment information.
-     * 
-     * @param in
-     * @return
-     * @throws XMLStreamException
+     * @deprecated use {@link #createXMLStreamReader(StAXParserConfiguration, InputStream)}
+     *             with {@link StAXParserConfiguration#STANDALONE}
      */
-    public static XMLStreamReader createNetworkDetachedXMLStreamReader(final InputStream in)
-    throws XMLStreamException {
-        final XMLInputFactory inputFactory = getNetworkDetachedXMLInputFactory();
-        try {
-            XMLStreamReader reader = 
-                (XMLStreamReader)
-                AccessController.doPrivileged(new PrivilegedExceptionAction() {
-                    public Object run() throws XMLStreamException {
-                        return inputFactory.createXMLStreamReader(in);
-                    }
-                }
-                );
-
-            if (isDebugEnabled) {
-                log.debug("XMLStreamReader is " + reader.getClass().getName());
-            }
-            return reader;
-        } catch (PrivilegedActionException pae) {
-            throw (XMLStreamException) pae.getException();
-        }
+    public static XMLStreamReader createNetworkDetachedXMLStreamReader(InputStream in)
+            throws XMLStreamException {
+        
+        return createXMLStreamReader(StAXParserConfiguration.STANDALONE, in);
     }
 
     /**
-     * Create an XMLStreamReader that will operate when detached from a network.
-     * The XMLStreamReader is created from a OMInputFactory that has external
-     * entities disabled.  This kind of XMLStreamReader is useful for reading 
-     * deployment information.
-     * 
-     * @param in
-     * @return
-     * @throws XMLStreamException
+     * @deprecated use {@link #createXMLStreamReader(StAXParserConfiguration, Reader)}
+     *             with {@link StAXParserConfiguration#STANDALONE}
      */
-    public static XMLStreamReader createNetworkDetachedXMLStreamReader(final Reader in)
-    throws XMLStreamException {
-        final XMLInputFactory inputFactory = getNetworkDetachedXMLInputFactory();
-        try {
-            XMLStreamReader reader = 
-                (XMLStreamReader)
-                AccessController.doPrivileged(new PrivilegedExceptionAction() {
-                    public Object run() throws XMLStreamException {
-                        return inputFactory.createXMLStreamReader(in);
-                    }
-                }
-                );
-            if (isDebugEnabled) {
-                log.debug("XMLStreamReader is " + reader.getClass().getName());
-            }
-            return reader;
-        } catch (PrivilegedActionException pae) {
-            throw (XMLStreamException) pae.getException();
-        }
+    public static XMLStreamReader createNetworkDetachedXMLStreamReader(Reader in)
+            throws XMLStreamException {
+        
+        return createXMLStreamReader(StAXParserConfiguration.STANDALONE, in);
     }
 
     /**

@@ -23,12 +23,12 @@ import java.util.Arrays;
 import java.util.Random;
 
 import javax.activation.DataHandler;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import junit.framework.TestCase;
 
+import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.base64.Base64EncodingStringBufferOutputStream;
 import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
@@ -165,10 +165,8 @@ public class XMLStreamReaderUtilsTest extends TestCase {
         out.write(data);
         out.complete();
         buffer.append("</test>");
-        // StAXUtils return coalescing parsers, so we need to use XMLInputFactory here
-        XMLInputFactory factory = XMLInputFactory.newInstance();
-        factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
-        XMLStreamReader reader = factory.createXMLStreamReader(new StringReader(buffer.toString()));
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(StAXParserConfiguration.NON_COALESCING,
+                new StringReader(buffer.toString()));
         if (useDHR) {
             reader = new XOPDecodingStreamReader(reader, null);
         }

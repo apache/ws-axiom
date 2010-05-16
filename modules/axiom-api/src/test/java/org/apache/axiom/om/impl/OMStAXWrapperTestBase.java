@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import junit.framework.TestCase;
@@ -36,6 +35,8 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.apache.axiom.om.util.StAXUtils;
 
 public class OMStAXWrapperTestBase extends TestCase {
     protected final OMMetaFactory omMetaFactory;
@@ -46,13 +47,11 @@ public class OMStAXWrapperTestBase extends TestCase {
 
     // Regression test for WSCOMMONS-338 and WSCOMMONS-341
     public void testCDATAEvent_FromParser() throws Exception {
-        // Make sure that the parser is non coalescing (otherwise no CDATA events will be
-        // reported). This is not the default for Woodstox (see WSTX-140).
-        XMLInputFactory factory = XMLInputFactory.newInstance();
-        factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
         // Create an element with a CDATA section.
         InputStream is = new ByteArrayInputStream("<test><![CDATA[hello world]]></test>".getBytes());
-        XMLStreamReader reader = factory.createXMLStreamReader(is);
+        // Make sure that the parser is non coalescing (otherwise no CDATA events will be
+        // reported). This is not the default for Woodstox (see WSTX-140).
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(StAXParserConfiguration.NON_COALESCING, is);
         
         OMFactory omfactory = omMetaFactory.getOMFactory();
         OMElement element = new StAXOMBuilder(omfactory, reader).getDocumentElement();
