@@ -16,16 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.injection;
+package org.apache.axiom.osgi;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
+ * Internal component required for OSGi support. This component is
+ * responsible for injecting the {@link OMMetaFactory} instance loaded
+ * from the implementation bundle into {@link OMAbstractFactory} (using
+ * {@link OMAbstractFactory#setMetaFactory(OMMetaFactory)}). This class
+ * is for internal use only and MUST NOT be used for other purposes.
+ * 
  * @scr.component name="factoryinjection.component" immediate="true"
  * @scr.reference name="metafactory" interface="org.apache.axiom.om.OMMetaFactory" cardinality="0..n" policy="dynamic" bind="setMetaFactory" unbind="unsetMetaFactory"
  */
@@ -41,7 +48,6 @@ public class FactoryInjectionComponent {
 	}
 
 	private static List metaFactories = null;
-	private static OMMetaFactory currentMetaFactory = null;
 	
 	protected void setMetaFactory(OMMetaFactory metafactory) {
 		synchronized (FactoryInjectionComponent.class) {
@@ -54,7 +60,7 @@ public class FactoryInjectionComponent {
 			} else {
 				metaFactories.add(metafactory);
 			}
-			currentMetaFactory = (OMMetaFactory) metaFactories.get(0);
+			OMAbstractFactory.setMetaFactory((OMMetaFactory) metaFactories.get(0));
 		}
 	}
 
@@ -66,12 +72,8 @@ public class FactoryInjectionComponent {
 			if (metaFactories.size() == 0) {
 			    metaFactories = null;
 			} else {
-				currentMetaFactory = (OMMetaFactory) metaFactories.get(0);
+			    OMAbstractFactory.setMetaFactory((OMMetaFactory) metaFactories.get(0));
 			}
 		}
-	}
-
-	public static OMMetaFactory getMetaFactory() {
-		return currentMetaFactory;
 	}
 }

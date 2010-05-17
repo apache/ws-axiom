@@ -19,16 +19,14 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.injection.FactoryInjectionComponent;
 import org.apache.axiom.soap.SOAPFactory;
 
 /**
  * Provides default instances for object model and meta factories.
  * <p>
  * The {@link #getMetaFactory()} method returns the default {@link OMMetaFactory} instance.
- * The implementation class is determined by the <code>org.apache.axiom.om.OMMetaFactory</code>
- * system property. If this property is not set, the meta factory for the LLOM implementation
- * is used.
+ * See the Javadoc of the {@link #getMetaFactory()} method for details about how this
+ * instance is determined.
  * <p>
  * The {@link #getOMFactory()}, {@link #getSOAP11Factory()} and {@link #getSOAP12Factory()}
  * methods return default instances for plain XML, SOAP 1.1 and SOAP 1.2 object model factories.
@@ -46,28 +44,75 @@ public class OMAbstractFactory {
     private static final String DEFAULT_META_FACTORY_CLASS_NAME =
             "org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory";
 
+    /**
+     * The default {@link OMMetaFactory} instance determined by the system
+     * property {@link #META_FACTORY_NAME_PROPERTY}, or if no such system
+     * property is set, by the value of the
+     * {@link #DEFAULT_META_FACTORY_CLASS_NAME} constant.
+     */
     private static OMMetaFactory defaultMetaFactory;
+    
+    /**
+     * The {@link OMMetaFactory} set through
+     * {@link #setMetaFactory(OMMetaFactory)}. If this is <code>null</code>,
+     * then {@link #defaultMetaFactory} will be returned by
+     * {@link #getMetaFactory()}.
+     */
+    private static OMMetaFactory metaFactory;
 
     private OMAbstractFactory() {}
 
     /**
-     * Get the default meta factory instance. The implementation class is determined by the
-     * <code>org.apache.axiom.om.OMMetaFactory</code> system property. If this property is not
-     * set, the meta factory for the LLOM implementation is returned.
+     * Explicitly set a meta factory instance. The new instance will be returned
+     * by all subsequent calls to {@link #getMetaFactory()}. Note that this is
+     * an application wide setting. More precisely, the configured meta factory
+     * will be used by all classes loaded from the class loader where Axiom is
+     * deployed and all its child class loaders. Therefore this method should be
+     * used with care and only be invoked during the initialization of the
+     * application.
      * <p>
-     * This method uses {@link System#getProperty(String)} to determine the value of
-     * the <code>org.apache.axiom.om.OMMetaFactory</code> system property. A
-     * {@link SecurityException} thrown by this method is simply ignored
-     * and the default factory implementation is used.
-     *
+     * When Axiom is deployed as a bundle in an OSGi environment, this method
+     * will be used to inject the meta factory instance from the implementation
+     * bundle.
+     * 
+     * @param newMetaFactory
+     *            the new meta factory instance, or <code>null</code> to revert
+     *            to the default meta factory instance determined by the
+     *            <code>org.apache.axiom.om.OMMetaFactory</code> system property
+     */
+    public static void setMetaFactory(OMMetaFactory newMetaFactory) {
+        metaFactory = newMetaFactory;
+    }
+    
+    /**
+     * Get the default meta factory instance. The default instance is determined
+     * using the following algorithm:
+     * <ol>
+     * <li>If an instance has been set using
+     * {@link #setMetaFactory(OMMetaFactory)}, then that instance is returned.
+     * Note that this will be the case in an OSGi runtime, where
+     * {@link #setMetaFactory(OMMetaFactory)} is invoked by a helper component
+     * that is part of Axiom.
+     * <li>If no instance has been set using
+     * {@link #setMetaFactory(OMMetaFactory)}, then the implementation class is
+     * determined by the <code>org.apache.axiom.om.OMMetaFactory</code> system
+     * property.
+     * <li>If the <code>org.apache.axiom.om.OMMetaFactory</code> system property
+     * is not set, the meta factory for the LLOM implementation is returned.
+     * </ol>
+     * This method uses {@link System#getProperty(String)} to determine the
+     * value of the <code>org.apache.axiom.om.OMMetaFactory</code> system
+     * property. A {@link SecurityException} thrown by this method is simply
+     * ignored and the default factory implementation is used.
+     * 
      * @return the default OM factory instance
-     * @throws OMException if the factory's implementation class can't be found
-     *                     or if the class can't be instantiated
+     * @throws OMException
+     *             if the factory's implementation class can't be found or if
+     *             the class can't be instantiated
      */
     public static OMMetaFactory getMetaFactory() {
-        OMMetaFactory of = FactoryInjectionComponent.getMetaFactory();
-        if(of!=null){
-            return of;
+        if (metaFactory != null) {
+            return metaFactory;
         }
         
         if (defaultMetaFactory != null) {
