@@ -28,13 +28,12 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.util.StreamReaderDelegate;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLEventUtils;
-import org.apache.axiom.util.stax.wrapper.XMLStreamReaderContainer;
+import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -56,8 +55,7 @@ import org.apache.commons.logging.LogFactory;
  * {@link DataHandlerReader#getDataHandlerProvider()}, then the {@link MimePartProvider} will only
  * be invoked when {@link DataHandlerProvider#getDataHandler()} is called.
  */
-public class XOPDecodingStreamReader extends StreamReaderDelegate 
-    implements XMLStreamReader, DataHandlerReader, XMLStreamReaderContainer {
+public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements DataHandlerReader {
     private static final String SOLE_CHILD_MSG =
             "Expected xop:Include as the sole child of an element information item (see section " +
             "3.2 of http://www.w3.org/TR/xop10/)";
@@ -86,7 +84,6 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
     
     private static final Log log = LogFactory.getLog(XOPDecodingStreamReader.class);
     
-    private final XMLStreamReader parent;
     private final MimePartProvider mimePartProvider;
     private DataHandlerProviderImpl dh;
     private String base64;
@@ -104,7 +101,6 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
      */
     public XOPDecodingStreamReader(XMLStreamReader parent, MimePartProvider mimePartProvider) {
         super(parent);
-        this.parent = parent;
         this.mimePartProvider = mimePartProvider;
     }
 
@@ -128,12 +124,12 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
      * @throws XMLStreamException
      */
     private String processXopInclude() throws XMLStreamException {
-        if (parent.getAttributeCount() != 1 ||
-                !parent.getAttributeLocalName(0).equals(XOPConstants.HREF)) {
+        if (super.getAttributeCount() != 1 ||
+                !super.getAttributeLocalName(0).equals(XOPConstants.HREF)) {
             throw new XMLStreamException("Expected xop:Include element information item with " +
                     "a (single) href attribute");
         }
-        String href = parent.getAttributeValue(0);
+        String href = super.getAttributeValue(0);
         if(log.isDebugEnabled()){
              log.debug("processXopInclude - found href : " + href);
         }
@@ -154,7 +150,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
             // We should never get here
             throw new XMLStreamException(ex);
         }
-        if (parent.next() != END_ELEMENT) {
+        if (super.next() != END_ELEMENT) {
             throw new XMLStreamException(
                     "Expected xop:Include element information item to be empty");
         }
@@ -162,7 +158,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
         // two reasons for this:
         //  - It allows us to validate that the message conforms to the XOP specs.
         //  - It makes it easier to implement the getNamespaceContext method.
-        if (parent.next() != END_ELEMENT) {
+        if (super.next() != END_ELEMENT) {
             throw new XMLStreamException(SOLE_CHILD_MSG);
         }
         if (log.isDebugEnabled()) {
@@ -181,12 +177,12 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
             event = END_ELEMENT;
             wasStartElement = false;
         } else {
-            wasStartElement = parent.getEventType() == START_ELEMENT;
-            event = parent.next();
+            wasStartElement = super.getEventType() == START_ELEMENT;
+            event = super.next();
         }
         if (event == START_ELEMENT
-                && parent.getLocalName().equals(XOPConstants.INCLUDE)
-                && parent.getNamespaceURI().equals(XOPConstants.NAMESPACE_URI)) {
+                && super.getLocalName().equals(XOPConstants.INCLUDE)
+                && super.getNamespaceURI().equals(XOPConstants.NAMESPACE_URI)) {
             if (!wasStartElement) {
                 throw new XMLStreamException(SOLE_CHILD_MSG);
             }
@@ -198,7 +194,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
     }
 
     public int getEventType() {
-        return dh == null ? parent.getEventType() : CHARACTERS;
+        return dh == null ? super.getEventType() : CHARACTERS;
     }
 
     public int nextTag() throws XMLStreamException {
@@ -208,7 +204,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
             // of the next() method) and we now that it is an END_ELEMENT event.
             return END_ELEMENT;
         } else {
-            return parent.nextTag();
+            return super.nextTag();
         }
     }
 
@@ -216,19 +212,19 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
         if (DataHandlerReader.PROPERTY.equals(name)) {
             return this;
         } else {
-            return parent.getProperty(name);
+            return super.getProperty(name);
         }
     }
 
     public String getElementText() throws XMLStreamException {
-        if (parent.getEventType() != START_ELEMENT) {
+        if (super.getEventType() != START_ELEMENT) {
             throw new XMLStreamException("The current event is not a START_ELEMENT event");
         }
-        int event = parent.next();
+        int event = super.next();
         // Note that an xop:Include must be the first child of the element
         if (event == START_ELEMENT
-                && parent.getLocalName().equals(XOPConstants.INCLUDE)
-                && parent.getNamespaceURI().equals(XOPConstants.NAMESPACE_URI)) {
+                && super.getLocalName().equals(XOPConstants.INCLUDE)
+                && super.getNamespaceURI().equals(XOPConstants.NAMESPACE_URI)) {
             String contentID = processXopInclude();
             try {
                 return toBase64(mimePartProvider.getMimePart(contentID));
@@ -245,9 +241,9 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
                     case SPACE:
                     case ENTITY_REFERENCE:
                         if (text == null && buffer == null) {
-                            text = parent.getText();
+                            text = super.getText();
                         } else {
-                            String thisText = parent.getText();
+                            String thisText = super.getText();
                             if (buffer == null) {
                                 buffer = new StringBuffer(text.length() + thisText.length());
                                 buffer.append(text);
@@ -264,7 +260,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
                                 XMLEventUtils.getEventTypeString(event) +
                                 " while reading element text");
                 }
-                event = parent.next();
+                event = super.next();
             }
             if (buffer != null) {
                 return buffer.toString();
@@ -280,7 +276,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
         if (dh != null) {
             throw new IllegalStateException();
         } else {
-            return parent.getPrefix();
+            return super.getPrefix();
         }
     }
 
@@ -288,7 +284,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
         if (dh != null) {
             throw new IllegalStateException();
         } else {
-            return parent.getNamespaceURI();
+            return super.getNamespaceURI();
         }
     }
 
@@ -296,7 +292,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
         if (dh != null) {
             throw new IllegalStateException();
         } else {
-            return parent.getLocalName();
+            return super.getLocalName();
         }
     }
 
@@ -304,16 +300,16 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
         if (dh != null) {
             throw new IllegalStateException();
         } else {
-            return parent.getName();
+            return super.getName();
         }
     }
 
     public Location getLocation() {
-        return parent.getLocation();
+        return super.getLocation();
     }
 
     public String getNamespaceURI(String prefix) {
-        String uri = parent.getNamespaceURI(prefix);
+        String uri = super.getNamespaceURI(prefix);
         if ("xop".equals(prefix) && uri != null) {
             System.out.println(prefix + " -> " + uri);
         }
@@ -324,7 +320,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
         if (dh != null) {
             throw new IllegalStateException();
         } else {
-            return parent.getNamespaceCount();
+            return super.getNamespaceCount();
         }
     }
 
@@ -332,7 +328,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
         if (dh != null) {
             throw new IllegalStateException();
         } else {
-            return parent.getNamespacePrefix(index);
+            return super.getNamespacePrefix(index);
         }
     }
 
@@ -340,7 +336,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
         if (dh != null) {
             throw new IllegalStateException();
         } else {
-            return parent.getNamespaceURI(index);
+            return super.getNamespaceURI(index);
         }
     }
 
@@ -371,7 +367,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
                 throw new RuntimeException(ex);
             }
         } else {
-            return parent.getText();
+            return super.getText();
         }
     }
 
@@ -383,7 +379,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
                 throw new RuntimeException(ex);
             }
         } else {
-            return parent.getTextCharacters();
+            return super.getTextCharacters();
         }
     }
 
@@ -395,7 +391,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
             text.getChars(sourceStart, sourceStart + copied, target, targetStart);
             return copied;
         } else {
-            return parent.getTextCharacters(sourceStart, target, targetStart, length);
+            return super.getTextCharacters(sourceStart, target, targetStart, length);
         }
     }
 
@@ -407,7 +403,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
                 throw new RuntimeException(ex);
             }
         } else {
-            return parent.getTextLength();
+            return super.getTextLength();
         }
     }
 
@@ -415,32 +411,32 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
         if (dh != null) {
             return 0;
         } else {
-            return parent.getTextStart();
+            return super.getTextStart();
         }
     }
 
     public boolean hasText() {
-        return dh != null || parent.hasText();
+        return dh != null || super.hasText();
     }
 
     public boolean isCharacters() {
-        return dh != null || parent.isCharacters();
+        return dh != null || super.isCharacters();
     }
 
     public boolean isStartElement() {
-        return dh == null && parent.isStartElement();
+        return dh == null && super.isStartElement();
     }
 
     public boolean isEndElement() {
-        return dh == null && parent.isEndElement();
+        return dh == null && super.isEndElement();
     }
 
     public boolean hasName() {
-        return dh == null && parent.hasName();
+        return dh == null && super.hasName();
     }
 
     public boolean isWhiteSpace() {
-        return dh == null && parent.isWhiteSpace();
+        return dh == null && super.isWhiteSpace();
     }
 
     public void require(int type, String namespaceURI, String localName)
@@ -450,7 +446,7 @@ public class XOPDecodingStreamReader extends StreamReaderDelegate
                 throw new XMLStreamException("Expected CHARACTERS event");
             }
         } else {
-            parent.require(type, namespaceURI, localName);
+            super.require(type, namespaceURI, localName);
         }
     }
 
