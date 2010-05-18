@@ -43,6 +43,20 @@ public interface CustomBuilder {
      * @param namespace
      * @param localPart
      * @param parent
+     *            The stream reader to read the StAX events from. The
+     *            implementation MUST NOT assume that this is the original
+     *            reader returned by the StAX implementation. In general, it
+     *            will be a wrapper around the original reader, e.g. one added
+     *            by the {@link org.apache.axiom.util.stax.dialect.StAXDialect}
+     *            implementation. If the method requires access to the original
+     *            parser (e.g. to pass the {@link XMLStreamReader} object to
+     *            another library that uses some special optimizations for
+     *            particular parser implementations), it SHOULD use
+     *            {@link org.apache.axiom.util.stax.XMLStreamReaderUtils#getOriginalXMLStreamReader(XMLStreamReader)}
+     *            to unwrap the reader. If the method solely relies on the
+     *            conformance of the reader to the StAX specification, it SHOULD
+     *            NOT attempt to unwrap it.
+     * 
      * @param reader
      * @return null or OMElement
      */
