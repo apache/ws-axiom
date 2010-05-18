@@ -43,6 +43,7 @@ public interface CustomBuilder {
      * @param namespace
      * @param localPart
      * @param parent
+     * @param reader
      *            The stream reader to read the StAX events from. The
      *            implementation MUST NOT assume that this is the original
      *            reader returned by the StAX implementation. In general, it
@@ -56,8 +57,6 @@ public interface CustomBuilder {
      *            to unwrap the reader. If the method solely relies on the
      *            conformance of the reader to the StAX specification, it SHOULD
      *            NOT attempt to unwrap it.
-     * 
-     * @param reader
      * @return null or OMElement
      */
     public OMElement create(String namespace, 
