@@ -26,14 +26,13 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.activation.DataHandler;
-import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 
 /**
  * Base class for {@link XOPEncodingStreamReader} and {@link XOPEncodingStreamWriter}.
  */
-public abstract class XOPEncodingStreamWrapper {
+public abstract class XOPEncodingStreamWrapper implements MimePartProvider {
     private final Map dataHandlerObjects = new LinkedHashMap();
     private final ContentIDGenerator contentIDGenerator;
     private final OptimizationPolicy optimizationPolicy;
@@ -82,15 +81,18 @@ public abstract class XOPEncodingStreamWrapper {
         return Collections.unmodifiableSet(dataHandlerObjects.keySet());
     }
 
-    /**
-     * Get the data handler for a given content ID.
-     * 
-     * @param contentID a content ID referenced in an <tt>xop:Include</tt> element
-     *                  produced by this wrapper
-     * @return the corresponding data handler; may not be <code>null</code>
-     * @throws XMLStreamException if the content ID is unknown or an error occurred while loading
-     *         the data handler
-     */
+    public boolean isLoaded(String contentID) {
+        Object dataHandlerObject = dataHandlerObjects.get(contentID);
+        if (dataHandlerObject == null) {
+            // We should never get here, so the return value actually doesn't matter
+            return false;
+        } else if (dataHandlerObject instanceof DataHandler) {
+            return true;
+        } else {
+            return ((DataHandlerProvider)dataHandlerObject).isLoaded();
+        }
+    }
+
     public DataHandler getDataHandler(String contentID) throws IOException {
         Object dataHandlerObject = dataHandlerObjects.get(contentID);
         if (dataHandlerObject == null) {

@@ -78,7 +78,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
         }
 
         public DataHandler getDataHandler() throws IOException {
-            return mimePartProvider.getMimePart(contentID);
+            return mimePartProvider.getDataHandler(contentID);
         }
     }
     
@@ -227,7 +227,7 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
                 && super.getNamespaceURI().equals(XOPConstants.NAMESPACE_URI)) {
             String contentID = processXopInclude();
             try {
-                return toBase64(mimePartProvider.getMimePart(contentID));
+                return toBase64(mimePartProvider.getDataHandler(contentID));
             } catch (IOException ex) {
                 throw new XMLStreamException("Failed to load MIME part '" + contentID + "'", ex);
             }

@@ -41,7 +41,7 @@ public class OMAttachmentAccessorMimePartProvider implements MimePartProvider {
         return false;
     }
 
-    public DataHandler getMimePart(String contentID) throws IOException {
+    public DataHandler getDataHandler(String contentID) throws IOException {
         DataHandler dh = attachments.getDataHandler(contentID);
         if (dh == null) {
             throw new IOException("No attachment found for content ID '" + contentID + "'");

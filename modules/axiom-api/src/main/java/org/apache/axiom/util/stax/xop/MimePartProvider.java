@@ -30,7 +30,7 @@ import javax.activation.DataHandler;
 public interface MimePartProvider {
     /**
      * Check whether the MIME part identified by a given content ID has already been loaded. A
-     * return value of <code>true</code> means that a call to {@link #getMimePart(String)} (for
+     * return value of <code>true</code> means that a call to {@link #getDataHandler(String)} (for
      * the same content ID) will not block or will retrieve the {@link DataHandler} without
      * overhead.
      * 
@@ -42,11 +42,11 @@ public interface MimePartProvider {
     /**
      * Get the {@link DataHandler} for the MIME part identified by a given content ID.
      * 
-     * @param contentID the content ID
+     * @param contentID a content ID referenced in an <tt>xop:Include</tt> element
      * @return the {@link DataHandler} for the MIME part identified by the content ID; may not
      *         be <code>null</code>
      * @throws IOException if the MIME part was not found or if an error occurred while
      *         loading the part
      */
-    DataHandler getMimePart(String contentID) throws IOException;
+    DataHandler getDataHandler(String contentID) throws IOException;
 }
