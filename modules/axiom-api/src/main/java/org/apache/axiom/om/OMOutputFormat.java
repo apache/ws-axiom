@@ -25,6 +25,7 @@ import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -191,20 +192,14 @@ public class OMOutputFormat {
 
     public String getRootContentId() {
         if (rootContentId == null) {
-            rootContentId =
-                    "0."
-                            + UUIDGenerator.getUUID()
-                            + "@apache.org";
+            rootContentId = "0." + UIDGenerator.generateContentId();
         }
         return rootContentId;
     }
 
     public String getNextContentId() {
         nextid++;
-        return nextid
-                + "."
-                + UUIDGenerator.getUUID()
-                + "@apache.org";
+        return nextid + "." + UIDGenerator.generateContentId();
     }
 
     /**

@@ -30,23 +30,9 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.util.activation.TestDataSource;
 
 public class XOPRoundtripTest extends TestCase {
-    // TODO: copy & paste from OMStAXWrapper; needs to be clarified
-    private static final ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
-        public String generateContentID(String existingContentID) {
-            if (existingContentID == null) {
-                // TODO: This is what we do in OMTextImpl#getContentID(); note that this doesn't
-                //       generate a content ID that strictly conforms to the specs
-                return UUIDGenerator.getUUID() + "@apache.org";
-            } else {
-                return existingContentID;
-            }
-        }
-    };
-    
     public void test() {
         OMFactory factory = OMAbstractFactory.getOMFactory();
         DataHandler dh = new DataHandler(new TestDataSource('x', Runtime.getRuntime().maxMemory()));
@@ -54,7 +40,7 @@ public class XOPRoundtripTest extends TestCase {
         element1.addChild(factory.createOMText(dh, true));
         XMLStreamReader originalReader = element1.getXMLStreamReader();
         XOPEncodingStreamReader encodedReader = new XOPEncodingStreamReader(originalReader,
-                contentIDGenerator, OptimizationPolicy.DEFAULT);
+                ContentIDGenerator.DEFAULT, OptimizationPolicy.DEFAULT);
         XMLStreamReader decodedReader = new XOPDecodingStreamReader(encodedReader, encodedReader);
         OMElement element2 = new StAXOMBuilder(decodedReader).getDocumentElement();
         OMText child = (OMText)element2.getFirstOMChild();

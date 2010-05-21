@@ -19,12 +19,27 @@
 
 package org.apache.axiom.util.stax.xop;
 
+import org.apache.axiom.util.UIDGenerator;
+
 /**
  * Content ID generator interface. Implementations of this interface are used by
  * {@link XOPEncodingStreamReader} to generate content IDs for use in <tt>xop:Include</tt>
  * elements.
  */
 public interface ContentIDGenerator {
+    /**
+     * Default content ID generator that preserves any existing content ID.
+     */
+    ContentIDGenerator DEFAULT = new ContentIDGenerator() {
+        public String generateContentID(String existingContentID) {
+            if (existingContentID == null) {
+                return UIDGenerator.generateContentId();
+            } else {
+                return existingContentID;
+            }
+        }
+    };
+    
     /**
      * Generate a content ID.
      * 

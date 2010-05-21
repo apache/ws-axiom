@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl;
 import java.io.IOException;
 
 import javax.activation.DataHandler;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.StreamReaderDelegate;
 
@@ -32,7 +31,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
-import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.axiom.util.stax.xop.XOPEncodingStreamReader;
@@ -46,18 +44,6 @@ import org.apache.commons.logging.LogFactory;
  */
 public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReader {
     private static final Log log = LogFactory.getLog(OMStAXWrapper.class);
-    
-    private static final ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {
-        public String generateContentID(String existingContentID) {
-            if (existingContentID == null) {
-                // TODO: This is what we do in OMTextImpl#getContentID(); note that this doesn't
-                //       generate a content ID that strictly conforms to the specs
-                return UUIDGenerator.getUUID() + "@apache.org";
-            } else {
-                return existingContentID;
-            }
-        }
-    };
     
     private final SwitchingWrapper switchingWrapper;
     private XOPEncodingStreamReader xopEncoder;
@@ -106,7 +92,7 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
                 // Since the intention is to support an efficient way to pass binary content to a
                 // consumer that is not aware of our data handler extension (see WSCOMMONS-344), we
                 // use OptimizationPolicy.ALL, i.e. we ignore OMText#isOptimized().
-                xopEncoder = new XOPEncodingStreamReader(switchingWrapper, contentIDGenerator,
+                xopEncoder = new XOPEncodingStreamReader(switchingWrapper, ContentIDGenerator.DEFAULT,
                         OptimizationPolicy.ALL);
                 setParent(xopEncoder);
             }

@@ -30,7 +30,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
-import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 
@@ -394,8 +394,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
 
     public String getContentID() {
         if (contentID == null) {
-            contentID = UUIDGenerator.getUUID()
-                    + "@apache.org";
+            contentID = UIDGenerator.generateContentId();
         }
         return this.contentID;
     }
