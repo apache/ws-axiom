@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.util.activation;
+package org.apache.axiom.testutils.activation;
 
 import java.io.IOException;
 import java.io.InputStream;

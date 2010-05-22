@@ -718,6 +718,7 @@
         </site>
     </distributionManagement>
     <modules>
+        <module>modules/axiom-testutils</module>
         <module>modules/axiom-api</module>
         <module>modules/axiom-impl</module>
         <module>modules/axiom-dom</module>

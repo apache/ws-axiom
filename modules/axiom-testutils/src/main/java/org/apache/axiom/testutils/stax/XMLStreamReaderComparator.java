@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.util.stax;
+package org.apache.axiom.testutils.stax;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -70,7 +70,7 @@ public class XMLStreamReaderComparator extends Assert {
     private String getLocation() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("event type ");
-        buffer.append(XMLEventUtils.getEventTypeString(expected.getEventType()));
+        buffer.append(expected.getEventType());
         buffer.append("; location ");
         for (Iterator it = path.iterator(); it.hasNext(); ) {
             buffer.append('/');

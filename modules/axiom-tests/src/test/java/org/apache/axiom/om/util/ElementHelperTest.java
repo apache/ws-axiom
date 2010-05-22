@@ -46,6 +46,8 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.om.util.ElementHelper;
+import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.io.CharacterStreamComparator;
 import org.apache.axiom.util.stax.TextFromElementReader;
 import org.apache.commons.io.IOUtils;
 

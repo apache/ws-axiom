@@ -30,7 +30,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.util.activation.TestDataSource;
+import org.apache.axiom.testutils.activation.TestDataSource;
 
 public class XOPRoundtripTest extends TestCase {
     public void test() {

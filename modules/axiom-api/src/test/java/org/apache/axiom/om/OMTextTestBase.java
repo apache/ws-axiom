@@ -23,7 +23,7 @@ import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
-import org.apache.axiom.util.activation.TestDataSource;
+import org.apache.axiom.testutils.activation.TestDataSource;
 import org.apache.commons.io.output.NullOutputStream;
 
 public class OMTextTestBase extends AbstractTestCase {

@@ -26,10 +26,7 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.util.stax.XMLStreamReaderComparator;
-import org.apache.axiom.util.stax.xop.ContentIDGenerator;
-import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
-import org.apache.axiom.util.stax.xop.XOPEncodingStreamReader;
+import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 
 public class XOPEncodingStreamReaderTest extends AbstractTestCase {
     private static ContentIDGenerator contentIDGenerator = new ContentIDGenerator() {

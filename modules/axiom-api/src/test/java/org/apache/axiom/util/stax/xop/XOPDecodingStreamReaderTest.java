@@ -29,8 +29,8 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.util.base64.Base64Utils;
-import org.apache.axiom.util.stax.XMLStreamReaderComparator;
 
 public class XOPDecodingStreamReaderTest extends AbstractTestCase {
     private XMLStreamReader getXOPDecodingStreamReader() throws Exception {

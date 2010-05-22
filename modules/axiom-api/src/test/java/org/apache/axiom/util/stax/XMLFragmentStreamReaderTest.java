@@ -25,7 +25,7 @@ import javax.xml.stream.XMLStreamReader;
 import junit.framework.TestCase;
 
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.util.stax.XMLFragmentStreamReader;
+import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 
 public class XMLFragmentStreamReaderTest extends TestCase {
     /**
