@@ -123,8 +123,7 @@ public class StAXOMBuilderTest extends AbstractTestCase {
         assertTrue(childrenCount == 5);
     }
     
- public void testInvalidXML() throws Exception {
-        
+    public void testInvalidXML() throws Exception {
         StAXOMBuilder stAXOMBuilder =
                 OMXMLBuilderFactory.createStAXOMBuilder(OMAbstractFactory.getSOAP11Factory(),
                                                         XMLInputFactory.newInstance()
