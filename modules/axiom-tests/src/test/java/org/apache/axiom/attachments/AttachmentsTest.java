@@ -30,6 +30,7 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
+import org.apache.axiom.testutils.io.IOTestUtils;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
@@ -38,11 +39,9 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.util.Arrays;
 import java.util.Set;
 
 public class AttachmentsTest extends AbstractTestCase {
@@ -151,11 +150,11 @@ public class AttachmentsTest extends AbstractTestCase {
 
         dataIs = ias.getNextStream();
         expectedDataIs = getTestResource(img1FileName);
-        compareStreams(dataIs, expectedDataIs);
+        IOTestUtils.compareStreams(dataIs, expectedDataIs);
 
         dataIs = ias.getNextStream();
         expectedDataIs = getTestResource(img2FileName);
-        compareStreams(dataIs, expectedDataIs);
+        IOTestUtils.compareStreams(dataIs, expectedDataIs);
 
         // Confirm that no more streams are left
         assertEquals(null, ias.getNextStream());
@@ -254,13 +253,6 @@ public class AttachmentsTest extends AbstractTestCase {
         assertTrue(outBase64ToBase64.indexOf("GBgcGBQgHBwcJCQgKDBQNDAsL") != -1);
     }
     
-
-    private void compareStreams(InputStream data, InputStream expected) throws Exception {
-        byte[] dataArray = this.getStreamAsByteArray(data, -1);
-        byte[] expectedArray = this.getStreamAsByteArray(expected, -1);
-        assertTrue(Arrays.equals(dataArray, expectedArray));
-    }
-    
     public void testSWAWriteWithContentIDOrder() throws Exception {
 
         // Read the stream that has soap xml followed by BAttachment then AAttachment
@@ -343,7 +335,7 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream expectedDataIs = getTestResource(img2FileName);
 
         // Compare data across streams
-        compareStreams(dataIs, expectedDataIs);
+        IOTestUtils.compareStreams(dataIs, expectedDataIs);
     }
 
     public void testNonExistingMIMEPart() throws Exception {
@@ -448,31 +440,6 @@ public class AttachmentsTest extends AbstractTestCase {
             // other tests are affected
             acm.setTimeout(previousTime);
         }
-    }
-
-    /**
-     * Returns the contents of the input stream as byte array.
-     *
-     * @param stream the <code>InputStream</code>
-     * @param length the number of bytes to copy, if length < 0, the number is unlimited
-     * @return the stream content as byte array
-     */
-    private byte[] getStreamAsByteArray(InputStream stream, int length) throws IOException {
-        if (length == 0) return new byte[0];
-        boolean checkLength = true;
-        if (length < 0) {
-            length = Integer.MAX_VALUE;
-            checkLength = false;
-        }
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        int nextValue = stream.read();
-        if (checkLength) length--;
-        while (-1 != nextValue && length >= 0) {
-            byteStream.write(nextValue);
-            nextValue = stream.read();
-            if (checkLength) length--;
-        }
-        return byteStream.toByteArray();
     }
 
     private void testGetSOAPPartContentID(String contentTypeStartParam, String contentId)

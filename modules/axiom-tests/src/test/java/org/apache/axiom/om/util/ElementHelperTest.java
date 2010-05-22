@@ -20,7 +20,6 @@
 package org.apache.axiom.om.util;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.SequenceInputStream;
@@ -48,16 +47,11 @@ import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.CharacterStreamComparator;
+import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.util.stax.TextFromElementReader;
 import org.apache.commons.io.IOUtils;
 
 public class ElementHelperTest extends TestCase {
-    private void compareStreams(Reader s1, Reader s2) throws IOException {
-        Writer comparator = new CharacterStreamComparator(s2);
-        IOUtils.copy(s1, comparator);
-        comparator.close();
-    }
-    
     public void testGetTextAsStreamWithSingleTextNode() throws Exception {
         OMFactory factory = OMAbstractFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("a"));
@@ -82,7 +76,7 @@ public class ElementHelperTest extends TestCase {
                 new WrappedTextNodeOMDataSourceFromDataSource(qname, ds, cs));
         Reader in = ElementHelper.getTextAsStream(element, true);
         assertFalse(in instanceof StringReader);
-        compareStreams(new InputStreamReader(ds.getInputStream(), cs), in);
+        IOTestUtils.compareStreams(new InputStreamReader(ds.getInputStream(), cs), in);
     }
     
     public void testGetTextAsStreamWithoutCaching() throws Exception {
@@ -102,7 +96,7 @@ public class ElementHelperTest extends TestCase {
                 new SequenceInputStream(v.elements()), "ascii");
         OMElement element = new StAXOMBuilder(reader).getDocumentElement();
         Reader in = ElementHelper.getTextAsStream(element, false);
-        compareStreams(new InputStreamReader(ds.getInputStream(), "ascii"), in);
+        IOTestUtils.compareStreams(new InputStreamReader(ds.getInputStream(), "ascii"), in);
     }
     
     public void testWriteTextTo() throws Exception {

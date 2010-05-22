@@ -20,25 +20,25 @@
 package org.apache.axiom.testutils.io;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import junit.framework.Assert;
 
 /**
- * {@link Writer} implementation that compares the data written to it with another character
- * sequence specified by a {@link Reader}.
+ * {@link OutputStream} implementation that compares the data written to it with another character
+ * sequence specified by an {@link InputStream}.
  */
-public class CharacterStreamComparator extends Writer {
-    private final Reader in;
-    private final char[] compareBuffer = new char[1024];
+public class ByteStreamComparator extends OutputStream {
+    private final InputStream in;
+    private final byte[] compareBuffer = new byte[1024];
     private int position;
     
-    public CharacterStreamComparator(Reader in) {
+    public ByteStreamComparator(InputStream in) {
         this.in = in;
     }
 
-    public void write(char[] buffer, int off, int len) throws IOException {
+    public void write(byte[] buffer, int off, int len) throws IOException {
         while (len > 0) {
             int c = in.read(compareBuffer, 0, Math.min(compareBuffer.length, len));
             if (c == -1) {
@@ -46,7 +46,7 @@ public class CharacterStreamComparator extends Writer {
             }
             for (int i=0; i<c; i++) {
                 if (buffer[off] != compareBuffer[i]) {
-                    Assert.fail("Character mismatch at position " + position);
+                    Assert.fail("Byte mismatch at position " + position);
                 }
                 off++;
                 len--;
@@ -62,5 +62,9 @@ public class CharacterStreamComparator extends Writer {
         if (in.read() != -1) {
             Assert.fail("The two streams have different lengths");
         }
+    }
+
+    public void write(int b) throws IOException {
+        write(new byte[] { (byte)b });
     }
 }
