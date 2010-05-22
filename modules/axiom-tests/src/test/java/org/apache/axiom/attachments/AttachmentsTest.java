@@ -258,12 +258,7 @@ public class AttachmentsTest extends AbstractTestCase {
     private void compareStreams(InputStream data, InputStream expected) throws Exception {
         byte[] dataArray = this.getStreamAsByteArray(data, -1);
         byte[] expectedArray = this.getStreamAsByteArray(expected, -1);
-        if (dataArray.length == expectedArray.length) {
-            assertTrue(Arrays.equals(dataArray, expectedArray));
-        } else {
-            System.out.println("Skipping compare because of lossy image i/o [" + dataArray.length +
-                    "][" + expectedArray.length + "]");
-        }
+        assertTrue(Arrays.equals(dataArray, expectedArray));
     }
     
     public void testSWAWriteWithContentIDOrder() throws Exception {
