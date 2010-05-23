@@ -19,8 +19,10 @@
 
 package org.apache.axiom.util;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
@@ -41,5 +43,35 @@ public class UIDGeneratorTest extends TestCase {
     
     public void testGenerateMimeBoundaryLength() {
         assertTrue(UIDGenerator.generateMimeBoundary().length() <= 70);
+    }
+    
+    public void testThreadSafety() {
+        final Set generatedIds = Collections.synchronizedSet(new HashSet());
+        final AtomicInteger errorCount = new AtomicInteger(0);
+        Thread[] threads = new Thread[100];
+        for (int i = 0; i < threads.length; i++) {
+            threads[i] = new Thread(new Runnable() {
+                public void run() {
+                    for (int i=0; i<1000; i++) {
+                        String id = UIDGenerator.generateUID();
+                        if (!generatedIds.add(id)) {
+                            System.out.println("ERROR - Same UID has been generated before. UID: " + id);
+                            errorCount.incrementAndGet();
+                        }
+                    }
+                }
+            });
+            threads[i].start();
+        }
+
+        for (int i = 0; i < threads.length; i++) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        assertEquals(0, errorCount.get());
     }
 }
