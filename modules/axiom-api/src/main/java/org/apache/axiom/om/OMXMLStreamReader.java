@@ -44,7 +44,9 @@ public interface OMXMLStreamReader extends XMLStreamReader, OMAttachmentAccessor
      * throw OMException if not the value is not supported.
      * 
      * @deprecated To return optimized base64 content as <tt>xop:Include</tt> elements, wrap the
-     *             reader using {@link org.apache.axiom.util.stax.xop.XOPEncodingStreamReader}.
+     *             reader using {@link org.apache.axiom.util.stax.xop.XOPEncodingStreamReader} or
+     *             use the more generic {@link org.apache.axiom.util.stax.xop.XOPUtils#getXOPEncodedStream(XMLStreamReader)}
+     *             method.
      *             This method introduces unnecessary complexity in the {@link XMLStreamReader}
      *             implementation used by Axiom and will be removed in a future release.
      */
