@@ -38,6 +38,14 @@ public class RandomDataSource implements DataSource {
         this.rangeEnd = rangeEnd;
         this.length = length;
     }
+    
+    public RandomDataSource(long seed, int length) {
+        this(seed, 0, 256, length);
+    }
+    
+    public RandomDataSource(int length) {
+        this(System.currentTimeMillis(), length);
+    }
 
     public String getName() {
         return null;

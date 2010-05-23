@@ -44,8 +44,32 @@ public interface CustomBuilder {
      * @param localPart
      * @param parent
      * @param reader
-     *            The stream reader to read the StAX events from. The
-     *            implementation MUST NOT assume that this is the original
+     *            The stream reader to read the StAX events from. The data read
+     *            from this reader always represents plain XML, even if the
+     *            original document was XOP encoded. The reader optionally
+     *            implements the {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader}
+     *            extension to give the custom builder access to optimized
+     *            binary data. This is appropriate for custom builders that
+     *            support {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader}
+     *            or in cases where there is no other option than to transfer
+     *            binary data as base64 encoded character data.
+     *            <p>
+     *            However, if the custom builder interacts with a third party
+     *            library that supports XOP, it may want to use that encoding
+     *            to optimize the transfer of binary data. To do so, the
+     *            custom builder MUST use {@link org.apache.axiom.util.stax.xop.XOPUtils#getXOPEncodedStream(XMLStreamReader)}
+     *            to get an XOP encoded stream. This guarantees that the original
+     *            reader is wrapped or unwrapped properly and also that
+     *            the custom builder correctly gets access to the attachments,
+     *            regardless of the type of the original reader. In particular,
+     *            the custom builder MUST NOT attempt to retrieve attachments
+     *            through the {@link org.apache.axiom.om.OMAttachmentAccessor}
+     *            that may be implemented by the builder (because this wouldn't
+     *            work if the builder was created from an {@link XMLStreamReader}
+     *            implementing the {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader}
+     *            extension).
+     *            <p>
+     *            The implementation MUST NOT assume that <code>reader</code> is the original
      *            reader returned by the StAX implementation. In general, it
      *            will be a wrapper around the original reader, e.g. one added
      *            by the {@link org.apache.axiom.util.stax.dialect.StAXDialect}
@@ -57,6 +81,11 @@ public interface CustomBuilder {
      *            to unwrap the reader. If the method solely relies on the
      *            conformance of the reader to the StAX specification, it SHOULD
      *            NOT attempt to unwrap it.
+     *            <p>
+     *            If the implementation requires both an
+     *            XOP encoded stream and wants to get access to the original reader, it should invoke
+     *            {@link org.apache.axiom.util.stax.XMLStreamReaderUtils#getOriginalXMLStreamReader(XMLStreamReader)}
+     *            after {@link org.apache.axiom.util.stax.xop.XOPUtils#getXOPEncodedStream(XMLStreamReader)}.
      * @return null or OMElement
      */
     public OMElement create(String namespace, 

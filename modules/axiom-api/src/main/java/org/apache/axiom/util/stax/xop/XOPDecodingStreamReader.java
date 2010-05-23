@@ -478,4 +478,8 @@ public class XOPDecodingStreamReader extends XMLStreamReaderWrapper implements D
     public DataHandlerProvider getDataHandlerProvider() {
         return dh;
     }
+
+    XOPEncodedStream getXOPEncodedStream() {
+        return new XOPEncodedStream(getParent(), mimePartProvider);
+    }
 }

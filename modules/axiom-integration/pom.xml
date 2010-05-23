@@ -93,6 +93,11 @@
             <classifier>tests</classifier>
             <version>${version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-testutils</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
