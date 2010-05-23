@@ -34,10 +34,8 @@ public interface OMXMLStreamReader extends XMLStreamReader, OMAttachmentAccessor
      * will be rendered as a inlined text event.
      * @return true if inlined as TEXT, false if XOP_INCLUDE is used
      * 
-     * @deprecated To return optimized base64 content as <tt>xop:Include</tt> elements, wrap the
-     *             reader using {@link org.apache.axiom.util.stax.xop.XOPEncodingStreamReader}.
-     *             This method introduces unnecessary complexity in the {@link XMLStreamReader}
-     *             implementation used by Axiom and will be removed in a future release.
+     * @deprecated This method will be removed in a future release of Axiom. See
+     *             {@link #setInlineMTOM(boolean)} for more details.
      */
     public boolean isInlineMTOM();
     
@@ -45,8 +43,10 @@ public interface OMXMLStreamReader extends XMLStreamReader, OMAttachmentAccessor
      * @param value set to true if inlining of text is desired (default)
      * throw OMException if not the value is not supported.
      * 
-     * @deprecated This method will be removed in a future release of Axiom. See
-     *             {@link #setInlineMTOM(boolean)} for more details.
+     * @deprecated To return optimized base64 content as <tt>xop:Include</tt> elements, wrap the
+     *             reader using {@link org.apache.axiom.util.stax.xop.XOPEncodingStreamReader}.
+     *             This method introduces unnecessary complexity in the {@link XMLStreamReader}
+     *             implementation used by Axiom and will be removed in a future release.
      */
     public void setInlineMTOM(boolean value);
     
