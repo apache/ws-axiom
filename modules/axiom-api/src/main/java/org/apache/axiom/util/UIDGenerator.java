@@ -19,6 +19,10 @@
 
 package org.apache.axiom.util;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.UUID;
+
 /**
  * Contains utility methods to generate unique IDs of various kinds.
  */
@@ -111,5 +115,31 @@ public final class UIDGenerator {
         StringBuilder buffer = new StringBuilder(48);
         ((UIDGeneratorImpl)impl.get()).generateHex(buffer);
         return buffer.toString();
+    }
+    
+    /**
+     * Generate a URN with <tt>uuid</tt> NID (namespace identifier). These URNs have the following
+     * form: <tt>urn:uuid:dae6fae1-93df-4824-bc70-884c9edb5973</tt>. The UUID is generated using
+     * a cryptographically strong pseudo random number generator.
+     * 
+     * @return the generated URN
+     */
+    public static String generateURNString() {
+        return "urn:uuid:" + UUID.randomUUID();
+    }
+    
+    /**
+     * Generate a URN with <tt>uuid</tt> NID (namespace identifier). This method does the
+     * same as {@link #generateURNString()}, but returns a {@link URI} object.
+     * 
+     * @return the generated URN
+     */
+    public static URI generateURN() {
+        try {
+            return new URI(generateURNString());
+        } catch (URISyntaxException ex) {
+            // If we ever get here, then if would mean that there is something badly broken...
+            throw new Error(ex);
+        }
     }
 }
