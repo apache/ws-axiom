@@ -29,11 +29,11 @@ import org.apache.axiom.om.impl.builder.DataHandlerReaderUtils;
 public class XOPUtils {
     private static final MimePartProvider nullMimePartProvider = new MimePartProvider() {
         public boolean isLoaded(String contentID) {
-            return false;
+            throw new IllegalArgumentException("There are no MIME parts!");
         }
         
         public DataHandler getDataHandler(String contentID) throws IOException {
-            throw new IOException("There are no MIME parts!");
+            throw new IllegalArgumentException("There are no MIME parts!");
         }
     };
     

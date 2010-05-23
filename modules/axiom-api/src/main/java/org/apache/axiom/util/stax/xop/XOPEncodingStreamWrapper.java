@@ -84,8 +84,8 @@ public abstract class XOPEncodingStreamWrapper implements MimePartProvider {
     public boolean isLoaded(String contentID) {
         Object dataHandlerObject = dataHandlerObjects.get(contentID);
         if (dataHandlerObject == null) {
-            // We should never get here, so the return value actually doesn't matter
-            return false;
+            throw new IllegalArgumentException("No DataHandler object found for content ID '" +
+                    contentID + "'");
         } else if (dataHandlerObject instanceof DataHandler) {
             return true;
         } else {
@@ -96,7 +96,7 @@ public abstract class XOPEncodingStreamWrapper implements MimePartProvider {
     public DataHandler getDataHandler(String contentID) throws IOException {
         Object dataHandlerObject = dataHandlerObjects.get(contentID);
         if (dataHandlerObject == null) {
-            throw new IOException("No DataHandler object found for content ID '" +
+            throw new IllegalArgumentException("No DataHandler object found for content ID '" +
                     contentID + "'");
         } else if (dataHandlerObject instanceof DataHandler) {
             return (DataHandler)dataHandlerObject;

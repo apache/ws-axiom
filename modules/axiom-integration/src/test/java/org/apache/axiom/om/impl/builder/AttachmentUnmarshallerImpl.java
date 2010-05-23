@@ -47,9 +47,7 @@ public class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
             accessed = true;
             return mimePartProvider.getDataHandler(ElementHelper.getContentIDFromHref(cid));
         } catch (IOException ex) {
-            ex.printStackTrace();
-            // TODO: we should distinguish I/O errors from non existing attachments
-            throw new UnsupportedOperationException();
+            throw new RuntimeException(ex);
         }
     }
 

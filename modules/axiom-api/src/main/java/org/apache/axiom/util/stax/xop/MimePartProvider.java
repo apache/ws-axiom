@@ -36,17 +36,24 @@ public interface MimePartProvider {
      * 
      * @return <code>true</code> if the MIME part has already been loaded; <code>false</code>
      *         otherwise
+     * @throws IllegalArgumentException
+     *             Thrown if the MIME part specified by the content ID doesn't exist. Note that the
+     *             implementation may be unable to determine this without loading all the MIME
+     *             parts. In this case, it should return <code>false</code>.
      */
     boolean isLoaded(String contentID);
     
     /**
      * Get the {@link DataHandler} for the MIME part identified by a given content ID.
      * 
-     * @param contentID a content ID referenced in an <tt>xop:Include</tt> element
-     * @return the {@link DataHandler} for the MIME part identified by the content ID; may not
-     *         be <code>null</code>
-     * @throws IOException if the MIME part was not found or if an error occurred while
-     *         loading the part
+     * @param contentID
+     *            a content ID referenced in an <tt>xop:Include</tt> element
+     * @return the {@link DataHandler} for the MIME part identified by the content ID; may not be
+     *         <code>null</code>
+     * @throws IllegalArgumentException
+     *             if the MIME part was not found
+     * @throws IOException
+     *             if an error occurred while loading the part
      */
     DataHandler getDataHandler(String contentID) throws IOException;
 }
