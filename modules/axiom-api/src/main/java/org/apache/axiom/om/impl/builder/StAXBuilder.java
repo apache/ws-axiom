@@ -106,6 +106,12 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected int elementLevel = 0;
     
     /**
+     * Stores exceptions thrown by the parser. Used to avoid accessing the parser
+     * again after is has thrown a parse exception.
+     */
+    protected Exception parserException;
+    
+    /**
      * Constructor StAXBuilder.
      * This constructor is used if the parser is at the beginning (START_DOCUMENT).
      *
@@ -146,7 +152,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             ((BuilderAwareReader) parser).setBuilder(this);
         }
         dataHandlerReader = DataHandlerReaderUtils.getDataHandlerReader(parser);
-        this.parser = new SafeXMLStreamReader(parser);
+        this.parser = parser;
     }
 
     /**
@@ -276,7 +282,16 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             omContainer.addChild(text);
             return text;
         } else {
-            return omfactory.createOMText(omContainer, parser.getText(), textType);
+            // Some parsers (like Woodstox) parse text nodes lazily and may throw a
+            // RuntimeException in getText()
+            String text;
+            try {
+                text = parser.getText();
+            } catch (RuntimeException ex) {
+                parserException = ex;
+                throw ex;
+            }
+            return omfactory.createOMText(omContainer, text, textType);
         }
     }
 

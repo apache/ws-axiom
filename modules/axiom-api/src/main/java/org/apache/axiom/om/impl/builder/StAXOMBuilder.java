@@ -52,6 +52,32 @@ import java.io.InputStream;
  * This class supports the {@link XMLStreamReader} extension defined by
  * {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader} as well as the legacy extension mechanism
  * defined in the documentation of {@link DataHandlerReaderUtils}.
+ * <h3>Error handling</h3>
+ * Usually, code that uses StAX directly just stops processing of an XML document
+ * once the first parsing error has been reported. However, since Axiom
+ * uses deferred parsing, and client code accesses the XML infoset using
+ * an object model, things are more complicated. Indeed, if the XML
+ * document is not well formed, the corresponding error might be reported
+ * as a runtime exception by any call to a method of an OM node.
+ * <p>
+ * Typically the client code will have some error handling that will intercept
+ * runtime exceptions and take appropriate action. Very often this error handling
+ * code might want to access the object model again, for example to log the request that caused the
+ * failure. This causes no problem except if the runtime exception was caused by a
+ * parsing error, in which case Axiom would again try to pull events from the parser.
+ * <p>
+ * This would lead to a situation where Axiom accesses a parser that has reported a parsing
+ * error before. While one would expect that after a first error reported by the parser, all
+ * subsequent invocations of the parser will fail, this is not the case for all parsers
+ * (at least not in all situations). Instead, the parser might be left in an inconsistent
+ * state after the error. E.g. WSCOMMONS-372 describes a case where Woodstox
+ * encounters an error in {@link XMLStreamReader#getText()} but continues to return
+ * (incorrect) events afterwards. The explanation for this behaviour might be that
+ * the situation described here is quite uncommon when StAX is used directly (i.e. not through
+ * Axiom).
+ * <p>
+ * To avoid this, the builder remembers exceptions thrown by the parser and rethrows
+ * them during a call to {@link #next()}.
  */
 public class StAXOMBuilder extends StAXBuilder {
     /** Field document */
@@ -633,7 +659,21 @@ public class StAXOMBuilder extends StAXBuilder {
             lookAheadToken = -1; // Reset
             return token;
         } else {
-            return parser.next();
+            if (parserException != null) {
+                log.warn("Attempt to access a parser that has thrown a parse exception before; " +
+                		"rethrowing the original exception.");
+                if (parserException instanceof XMLStreamException) {
+                    throw (XMLStreamException)parserException;
+                } else {
+                    throw (RuntimeException)parserException;
+                }
+            }
+            try {
+                return parser.next();
+            } catch (XMLStreamException ex) {
+                parserException = ex;
+                throw ex;
+            }
         }
     }
     
