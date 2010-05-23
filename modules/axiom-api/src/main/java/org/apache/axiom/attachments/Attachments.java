@@ -26,7 +26,7 @@ import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.DetachableInputStream;
-import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -633,7 +633,7 @@ public class Attachments implements OMAttachmentAccessor {
                     partContentID = nextPart.getContentID();
 
                     if (partContentID == null & partIndex == 1) {
-                        String id = "firstPart_" + UUIDGenerator.getUUID();
+                        String id = "firstPart_" + UIDGenerator.generateContentId();
                         firstPartId = id;
                         if (size > 0) {
                             dataHandler = nextPart.getDataHandler();

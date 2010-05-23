@@ -38,4 +38,8 @@ public class UIDGeneratorTest extends TestCase {
             assertTrue(values.add(UIDGenerator.generateContentId()));
         }
     }
+    
+    public void testGenerateMimeBoundaryLength() {
+        assertTrue(UIDGenerator.generateMimeBoundary().length() <= 70);
+    }
 }

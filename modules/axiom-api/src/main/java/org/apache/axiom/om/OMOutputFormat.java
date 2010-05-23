@@ -22,7 +22,6 @@ package org.apache.axiom.om;
 import java.util.HashMap;
 
 import org.apache.axiom.om.impl.MTOMConstants;
-import org.apache.axiom.om.util.UUIDGenerator;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.util.UIDGenerator;
@@ -182,10 +181,7 @@ public class OMOutputFormat {
 
     public String getMimeBoundary() {
         if (mimeBoundary == null) {
-            mimeBoundary =
-                    "MIMEBoundary"
-                            + UUIDGenerator.getUUID().replace(':', '_');
-
+            mimeBoundary = UIDGenerator.generateMimeBoundary();
         }
         return mimeBoundary;
     }

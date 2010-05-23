@@ -27,7 +27,7 @@ import java.security.PrivilegedExceptionAction;
 import java.util.Hashtable;
 
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
-import org.apache.axiom.om.util.UUIDGenerator;
+import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -60,12 +60,9 @@ public class LifecycleManagerImpl implements LifecycleManager {
             throw new IllegalArgumentException("Given Axis2 Attachment File Cache Location "
                 + dir + "  should be a directory.");
         }
-        // Generate unique id.  The UUID generator is used so that we can limit
+        // Generate unique id.  The UID generator is used so that we can limit
         // synchronization with the java random number generator.
-        String id = UUIDGenerator.getUUID();
-
-        //Replace colons with underscores
-        id = id.replaceAll(":", "_");
+        String id = UIDGenerator.generateUID();
 
         String fileString = "Axis2" + id + ".att";
         file = new File(dir, fileString);

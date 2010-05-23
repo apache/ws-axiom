@@ -67,16 +67,19 @@ class UIDGeneratorImpl {
         seqXorOperand = rand.nextLong();
     }
     
-    private final long xoredThreadId;
-    private final long xoredStartTime;
+    private final String suffix;
     private long seq;
     
     UIDGeneratorImpl() {
-        xoredThreadId = Thread.currentThread().getId() ^ threadIdXorOperand;
-        xoredStartTime = System.currentTimeMillis() ^ startTimeXorOperand;
+        long xoredThreadId = Thread.currentThread().getId() ^ threadIdXorOperand;
+        long xoredStartTime = System.currentTimeMillis() ^ startTimeXorOperand;
+        StringBuilder buffer = new StringBuilder();
+        writeReverseLongHex(xoredStartTime, buffer);
+        writeReverseLongHex(xoredThreadId, buffer);
+        suffix = buffer.toString();
     }
     
-    private void writeReverseLongHex(long value, StringBuffer buffer) {
+    private void writeReverseLongHex(long value, StringBuilder buffer) {
         for (int i=0; i<16; i++) {
             int n = (int)(value >> (4*i)) & 0xF;
             buffer.append((char)(n < 10 ? '0' + n : 'a' + n - 10));
@@ -91,9 +94,8 @@ class UIDGeneratorImpl {
      * 
      * @param buffer
      */
-    void generateHex(StringBuffer buffer) {
+    void generateHex(StringBuilder buffer) {
         writeReverseLongHex(seq++ ^ seqXorOperand, buffer);
-        writeReverseLongHex(xoredStartTime, buffer);
-        writeReverseLongHex(xoredThreadId, buffer);
+        buffer.append(suffix);
     }
 }
