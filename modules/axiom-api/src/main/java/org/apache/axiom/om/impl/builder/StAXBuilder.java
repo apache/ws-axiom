@@ -518,9 +518,23 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     }
 
     /**
-     * Method getParser.
-     *
-     * @return Returns Object.
+     * Get the underlying {@link XMLStreamReader} used by this builder. Note that for this type of
+     * builder, accessing the underlying parser implies that can no longer be used, and any attempt
+     * to call {@link #next()} will result in an exception.
+     * 
+     * @return The {@link XMLStreamReader} object used by this builder. Note that the constraints
+     *         described in the Javadoc of the <code>reader</code> parameter of the
+     *         {@link CustomBuilder#create(String, String, OMContainer, XMLStreamReader, OMFactory)}
+     *         method also apply to the stream reader returned by this method, i.e.:
+     *         <ul>
+     *         <li>The caller should use
+     *         {@link org.apache.axiom.util.stax.xop.XOPUtils#getXOPEncodedStream(XMLStreamReader)}
+     *         to get an XOP encoded stream from the return value.
+     *         <li>To get access to the bare StAX parser implementation, the caller should use
+     *         {@link org.apache.axiom.util.stax.XMLStreamReaderUtils#getOriginalXMLStreamReader(XMLStreamReader)}.
+     *         </ul>
+     * @throws IllegalStateException
+     *             if the parser has already been accessed
      */
     public Object getParser() {
         if (parserAccessed) {
