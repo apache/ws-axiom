@@ -199,6 +199,12 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         </mediaobject>
                     </figure>
                 </listitem>
+                <listitem>
+                    <para>
+                        Check that the generated Javadoc contains the appropriate set of packages.
+                        In particular, unit test related classes should be excluded.
+                    </para>
+                </listitem>
             </itemizedlist>
         </section>
     </chapter>

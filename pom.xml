@@ -682,6 +682,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
                 <configuration>
                     <links>
                         <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
@@ -689,12 +690,12 @@
                         <link>http://java.sun.com/webservices/docs/1.5/api/</link>
                         <link>http://jaxen.codehaus.org/apidocs/</link>
                     </links>
-                    <aggregate>true</aggregate>
+                    <excludePackageNames>org.apache.axiom.test:org.apache.axiom.testutils</excludePackageNames>
                 </configuration>
                 <reportSets>
                   <reportSet>
                     <reports>
-                      <report>javadoc</report>
+                      <report>aggregate</report>
                     </reports>
                   </reportSet>
                 </reportSets>
