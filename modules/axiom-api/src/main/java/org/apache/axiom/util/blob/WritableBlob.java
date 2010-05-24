@@ -40,8 +40,28 @@ import org.apache.axiom.ext.io.StreamCopyException;
  * </dl>
  * If the blob is in state NEW or UNCOMMITTED, any call to a method defined by the {@link Blob}
  * superinterface will result in an {@link IllegalStateException}.
+ * <p>
+ * Blobs are not thread safe.
  */
 public interface WritableBlob extends Blob {
+    /**
+     * Determine whether the blob supports reading in state NEW or UNCOMMITTED. If this method
+     * returns <code>false</code> and the blob is in state NEW or UNCOMMITTED, any call to a method
+     * defined by the {@link Blob} superinterface will result in an {@link IllegalStateException}.
+     * If this method returns <code>true</code>, then any data written to the blob will be
+     * immediately available for reading. This is also true for an input stream obtained from
+     * {@link Blob#getInputStream()} before the data is written. This implies that it is possible
+     * for the input stream to first report the end of the stream and later allow reading additional
+     * data. Therefore, a pair of streams obtained from {@link #getOutputStream()} and
+     * {@link Blob#getInputStream()} behaves differently than a {@link java.io.PipedOutputStream}
+     * and {@link java.io.PipedInputStream} pair, because in this situation
+     * {@link java.io.PipedInputStream} would block.
+     * 
+     * @return <code>true</code> if the blob allows reading the data in state NEW or UNCOMMITTED;
+     *         <code>false</code> if the blob allows read operations only in state COMMITTED
+     */
+    boolean isSupportingReadUncommitted();
+    
     /**
      * Create an output stream to write data to the blob.
      * <p>
@@ -140,4 +160,9 @@ public interface WritableBlob extends Blob {
      * @throws IllegalStateException if the blob is in state COMMITTED
      */
     long readFrom(InputStream in, long length) throws StreamCopyException;
+    
+    /**
+     * Release all resources held by this blob.
+     */
+    void release();
 }

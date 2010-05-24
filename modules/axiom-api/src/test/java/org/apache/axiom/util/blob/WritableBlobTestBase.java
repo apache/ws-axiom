@@ -177,10 +177,31 @@ public abstract class WritableBlobTestBase extends TestCase {
     public void testGetInputStreamNew() throws Exception {
         WritableBlob blob = createBlob();
         try {
-            blob.getInputStream();
-            fail("Expected IllegalStateException");
-        } catch (IllegalStateException ex) {
-            // Expected
+            if (blob.isSupportingReadUncommitted()) {
+                // The order of instructions is important here: we first get
+                // the input stream (when the blob is still in state NEW) and
+                // only then we request the output stream (which will put the
+                // stream in state UNCOMMITTED).
+                InputStream in = blob.getInputStream();
+                OutputStream out = blob.getOutputStream();
+                assertEquals(-1, in.read());
+                // Check that any data written to the output stream immediately becomes available
+                // on the input stream.
+                byte[] data = new byte[1000];
+                random.nextBytes(data);
+                out.write(data);
+                assertTrue(Arrays.equals(data, IOUtils.toByteArray(in)));
+                random.nextBytes(data);
+                out.write(data);
+                assertTrue(Arrays.equals(data, IOUtils.toByteArray(in)));
+            } else {
+                try {
+                    blob.getInputStream();
+                    fail("Expected IllegalStateException");
+                } catch (IllegalStateException ex) {
+                    // Expected
+                }
+            }
         } finally {
             releaseBlob(blob);
         }
@@ -191,10 +212,24 @@ public abstract class WritableBlobTestBase extends TestCase {
         try {
             OutputStream out = blob.getOutputStream();
             try {
-                blob.getInputStream();
-                fail("Expected IllegalStateException");
-            } catch (IllegalStateException ex) {
-                // Expected
+                byte[] data = new byte[1000];
+                random.nextBytes(data);
+                out.write(data);
+                if (blob.isSupportingReadUncommitted()) {
+                    InputStream in = blob.getInputStream();
+                    try {
+                        assertTrue(Arrays.equals(data, IOUtils.toByteArray(in)));
+                    } finally {
+                        in.close();
+                    }
+                } else {
+                    try {
+                        blob.getInputStream();
+                        fail("Expected IllegalStateException");
+                    } catch (IllegalStateException ex) {
+                        // Expected
+                    }
+                }
             } finally {
                 out.close();
             }

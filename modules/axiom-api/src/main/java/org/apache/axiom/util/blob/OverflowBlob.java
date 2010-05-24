@@ -256,6 +256,11 @@ public class OverflowBlob implements WritableBlob {
         chunks = new byte[numberOfChunks][];
     }
     
+    public boolean isSupportingReadUncommitted() {
+        // This is actually a limitation of the implementation, not an intrinsic limitation
+        return false;
+    }
+
     /**
      * Get the current chunk to write to, allocating it if necessary.
      * 
@@ -388,28 +393,53 @@ public class OverflowBlob implements WritableBlob {
         }
     }
     
-    public void writeTo(OutputStream out) throws IOException {
+    public void writeTo(OutputStream out) throws StreamCopyException {
         if (temporaryFile != null) {
-            FileInputStream in = new FileInputStream(temporaryFile);
+            FileInputStream in;
+            try {
+                in = new FileInputStream(temporaryFile);
+            } catch (IOException ex) {
+                throw new StreamCopyException(StreamCopyException.READ, ex);
+            }
             try {
                 if (out instanceof ReadFromSupport) {
                     ((ReadFromSupport)out).readFrom(in, -1);
                 } else {
                     byte[] buf = new byte[4096];
-                    int c;
-                    while ((c = in.read(buf)) != -1) {
-                        out.write(buf, 0, c);
+                    while (true) {
+                        int c;
+                        try {
+                            c = in.read(buf);
+                        } catch (IOException ex) {
+                            throw new StreamCopyException(StreamCopyException.READ, ex);
+                        }
+                        if (c == -1) {
+                            break;
+                        }
+                        try {
+                            out.write(buf, 0, c);
+                        } catch (IOException ex) {
+                            throw new StreamCopyException(StreamCopyException.WRITE, ex);
+                        }
                     }
                 }
             } finally {
-                in.close();
+                try {
+                    in.close();
+                } catch (IOException ex) {
+                    throw new StreamCopyException(StreamCopyException.READ, ex);
+                }
             }
         } else {
-            for (int i=0; i<chunkIndex; i++) {
-                out.write(chunks[i]);
-            }
-            if (chunkOffset > 0) {
-                out.write(chunks[chunkIndex], 0, chunkOffset);
+            try {
+                for (int i=0; i<chunkIndex; i++) {
+                    out.write(chunks[i]);
+                }
+                if (chunkOffset > 0) {
+                    out.write(chunks[chunkIndex], 0, chunkOffset);
+                }
+            } catch (IOException ex) {
+                throw new StreamCopyException(StreamCopyException.WRITE, ex);
             }
         }
     }

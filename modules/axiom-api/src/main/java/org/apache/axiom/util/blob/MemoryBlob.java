@@ -67,7 +67,6 @@ public class MemoryBlob implements WritableBlob {
     }
 
     class InputStreamImpl extends InputStream {
-        private final int size;
         private int i;
         private int currIndex;
         private int totalIndex;
@@ -76,8 +75,6 @@ public class MemoryBlob implements WritableBlob {
         private byte[] read_byte = new byte[1];
         
         public InputStreamImpl() {
-            size = (int)getLength();
-            currBuffer = (byte[]) data.get(0);
         }
 
         public int read() throws IOException {
@@ -91,7 +88,7 @@ public class MemoryBlob implements WritableBlob {
         }
 
         public int available() throws IOException {
-            return size - totalIndex;
+            return (int)getLength() - totalIndex;
         }
 
 
@@ -104,11 +101,15 @@ public class MemoryBlob implements WritableBlob {
         }
 
         public int read(byte[] b, int off, int len) throws IOException {
+            int size = (int)getLength();
             int total = 0;
             if (totalIndex >= size) {
                 return -1;
             }
             while (total < len && totalIndex < size) {
+                if (currBuffer == null) {
+                    currBuffer = (byte[]) data.get(i);
+                }
                 int copy = Math.min(len - total, BUFFER_SIZE - currIndex);
                 copy = Math.min(copy, size - totalIndex);
                 System.arraycopy(currBuffer, currIndex, b, off, copy);
@@ -118,13 +119,12 @@ public class MemoryBlob implements WritableBlob {
                 off += copy;
                 if (currIndex >= BUFFER_SIZE) {
                     if (i+1 < data.size()) {
-                        currBuffer = (byte[]) data.get(i+1);
                         i++;
                         currIndex = 0;
                     } else {
-                        currBuffer = null;
                         currIndex = BUFFER_SIZE;
                     } 
+                    currBuffer = null;
                 }
             }
             return total;
@@ -159,8 +159,16 @@ public class MemoryBlob implements WritableBlob {
         index = 0;
     }
     
+    public boolean isSupportingReadUncommitted() {
+        return true;
+    }
+
     public long getLength() {
-        return (BUFFER_SIZE * (data.size()-1)) + index;
+        if (data == null) {
+            return 0;
+        } else {
+            return (BUFFER_SIZE * (data.size()-1)) + index;
+        }
     }
 
     public BlobOutputStream getOutputStream() {
@@ -220,24 +228,28 @@ public class MemoryBlob implements WritableBlob {
     }
 
     public InputStream getInputStream() throws IOException {
-        if (!committed) {
-            throw new IllegalStateException();
-        } else {
-            return new InputStreamImpl();
+        return new InputStreamImpl();
+    }
+
+    public void writeTo(OutputStream os) throws StreamCopyException {
+        int size = (int)getLength();
+        if (data != null) {
+            try {
+                int numBuffers = data.size();
+                for (int j = 0; j < numBuffers-1; j ++) {
+                    os.write( (byte[]) data.get(j), 0, BUFFER_SIZE);
+                }
+                if (numBuffers > 0) {
+                    int writeLimit = size - ((numBuffers-1) * BUFFER_SIZE);
+                    os.write( (byte[]) data.get(numBuffers-1), 0, writeLimit);
+                }
+            } catch (IOException ex) {
+                throw new StreamCopyException(StreamCopyException.WRITE, ex);
+            }
         }
     }
 
-    public void writeTo(OutputStream os) throws IOException {
-        int size = (int)getLength();
-        if (data != null) {
-            int numBuffers = data.size();
-            for (int j = 0; j < numBuffers-1; j ++) {
-                os.write( (byte[]) data.get(j), 0, BUFFER_SIZE);
-            }
-            if (numBuffers > 0) {
-                int writeLimit = size - ((numBuffers-1) * BUFFER_SIZE);
-                os.write( (byte[]) data.get(numBuffers-1), 0, writeLimit);
-            }
-        }
+    public void release() {
+        // no-op
     }
 }
