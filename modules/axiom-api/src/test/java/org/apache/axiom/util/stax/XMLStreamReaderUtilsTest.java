@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.util.stax;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Random;
@@ -183,6 +185,33 @@ public class XMLStreamReaderUtilsTest extends TestCase {
             assertTrue(Arrays.equals(data, IOUtils.toByteArray(dh.getInputStream())));
         } finally {
             reader.close();
+        }
+    }
+    
+    public void testGetElementTextAsStream() throws Exception {
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<a>test</a>"));
+        reader.next();
+        Reader in = XMLStreamReaderUtils.getElementTextAsStream(reader, false);
+        assertEquals("test", IOUtils.toString(in));
+        assertEquals(XMLStreamReader.END_ELEMENT, reader.getEventType());
+    }
+    
+    public void testGetElementTextAsStreamWithAllowedNonTextChildren() throws Exception {
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<a>xxx<b>yyy</b>zzz</a>"));
+        reader.next();
+        Reader in = XMLStreamReaderUtils.getElementTextAsStream(reader, true);
+        assertEquals("xxxzzz", IOUtils.toString(in));
+    }
+    
+    public void testGetElementTextAsStreamWithForbiddenNonTextChildren() throws Exception {
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<a>xxx<b>yyy</b>zzz</a>"));
+        reader.next();
+        Reader in = XMLStreamReaderUtils.getElementTextAsStream(reader, false);
+        try {
+            IOUtils.toString(in);
+            fail("Expected exception");
+        } catch (IOException ex) {
+            // Expected
         }
     }
 }

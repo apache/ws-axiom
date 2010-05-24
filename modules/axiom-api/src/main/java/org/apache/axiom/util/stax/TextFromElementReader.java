@@ -25,8 +25,6 @@ import java.io.Reader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.om.OMException;
-
 /**
  * {@link Reader} implementation that extracts the text nodes from an element given by an
  * {@link XMLStreamReader}. The expected input is a document with only a document
@@ -45,8 +43,10 @@ import org.apache.axiom.om.OMException;
  * {@link org.apache.axiom.om.util.ElementHelper#getTextAsStream(org.apache.axiom.om.OMElement)}
  * should be called to get the most efficient stream implementation for a given an element.
  */
-public class TextFromElementReader extends Reader {
+// This class has package access -> use XMLStreamReaderUtils#getElementTextAsStream
+class TextFromElementReader extends Reader {
     private final XMLStreamReader stream;
+    private final boolean allowNonTextChildren;
     
     /**
      * Flag indicating that we have reached the end of the document and that the underlying
@@ -66,25 +66,9 @@ public class TextFromElementReader extends Reader {
      */
     private int sourceStart = -1;
     
-    /**
-     * Constructor.
-     * 
-     * @param stream
-     *            the stream to extract the text nodes from
-     * @throws IllegalStateException
-     *             if the stream doesn't start with the expected events
-     * @throws XMLStreamException
-     *             if there was a parser error when attempting to position the
-     *             stream to the right event
-     */
-    public TextFromElementReader(XMLStreamReader stream) throws XMLStreamException {
+    TextFromElementReader(XMLStreamReader stream, boolean allowNonTextChildren) {
         this.stream = stream;
-        if (stream.getEventType() != XMLStreamReader.START_DOCUMENT) {
-            throw new IllegalStateException("Expected START_DOCUMENT as first event from parser");
-        }
-        if (stream.next() != XMLStreamReader.START_ELEMENT) {
-            throw new IllegalStateException("Expected START_ELEMENT event");
-        }
+        this.allowNonTextChildren = allowNonTextChildren;
     }
 
     public int read(char[] cbuf, int off, int len) throws IOException {
@@ -106,18 +90,16 @@ public class TextFromElementReader extends Reader {
                                 }
                                 break;
                             case XMLStreamReader.START_ELEMENT:
-                                skipDepth++;
+                                if (allowNonTextChildren) {
+                                    skipDepth++;
+                                } else {
+                                    throw new IOException("Unexpected START_ELEMENT event");
+                                }
                                 break;
                             case XMLStreamReader.END_ELEMENT:
                                 if (skipDepth == 0) {
-                                    if (stream.next() == XMLStreamReader.END_DOCUMENT) {
-                                        endOfStream = true;
-                                        stream.close();
-                                        return read == 0 ? -1 : read;
-                                    } else {
-                                        throw new IOException(
-                                                "End of document expected after element");
-                                    }
+                                    endOfStream = true;
+                                    return read == 0 ? -1 : read;
                                 } else {
                                     skipDepth--;
                                 }
@@ -136,22 +118,11 @@ public class TextFromElementReader extends Reader {
                 }
             }
         } catch (XMLStreamException ex) {
-            IOException ex2 = new IOException("Got an exception from the underlying parser " +
-            		"while reading the content of an element");
-            ex2.initCause(ex);
-            throw ex2;
+            throw new XMLStreamIOException(ex);
         }
     }
 
     public void close() throws IOException {
-        if (!endOfStream) {
-            try {
-                stream.close();
-            } catch (XMLStreamException ex) {
-                IOException ex2 = new IOException("Error when trying to close underlying parser");
-                ex2.initCause(ex);
-                throw ex2;
-            }
-        }
+        // Do nothing
     }
 }

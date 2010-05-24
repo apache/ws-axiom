@@ -31,7 +31,7 @@ import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.util.stax.TextFromElementReader;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 
 import javax.xml.namespace.QName;
@@ -243,8 +243,11 @@ public class ElementHelper {
         }
         // In all other cases, extract the data from the XMLStreamReader
         try {
-            return new TextFromElementReader(cache ? element.getXMLStreamReader()
-                    : element.getXMLStreamReaderWithoutCaching());
+            XMLStreamReader reader = element.getXMLStreamReader(cache);
+            if (reader.getEventType() == XMLStreamReader.START_DOCUMENT) {
+                reader.next();
+            }
+            return XMLStreamReaderUtils.getElementTextAsStream(reader, true);
         } catch (XMLStreamException ex) {
             throw new OMException(ex);
         }

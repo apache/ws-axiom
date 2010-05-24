@@ -48,7 +48,6 @@ import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.CharacterStreamComparator;
 import org.apache.axiom.testutils.io.IOTestUtils;
-import org.apache.axiom.util.stax.TextFromElementReader;
 import org.apache.commons.io.IOUtils;
 
 public class ElementHelperTest extends TestCase {
@@ -63,7 +62,7 @@ public class ElementHelperTest extends TestCase {
     
     public void testGetTextAsStreamWithNonTextChildren() throws Exception {
         OMElement element = AXIOMUtil.stringToOM("<a>A<b>B</b>C</a>");
-        Reader in = new TextFromElementReader(element.getXMLStreamReader());
+        Reader in = ElementHelper.getTextAsStream(element, true);
         assertEquals(element.getText(), IOUtils.toString(in));
     }
     

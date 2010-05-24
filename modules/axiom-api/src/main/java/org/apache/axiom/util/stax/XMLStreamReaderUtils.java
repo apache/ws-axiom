@@ -20,6 +20,7 @@
 package org.apache.axiom.util.stax;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.io.Writer;
 
 import javax.activation.DataHandler;
@@ -146,6 +147,34 @@ public class XMLStreamReaderUtils {
         } else {
             writer.write(reader.getText());
         }
+    }
+    
+    /**
+     * Get the text content of the current element as a {@link Reader} object.
+     * 
+     * @param reader
+     *            The XML stream reader to read the element text from. The reader must be positioned
+     *            on a {@link XMLStreamConstants#START_ELEMENT} event.
+     * @param allowNonTextChildren
+     *            If set to <code>true</code>, non text child nodes are allowed and skipped. If set
+     *            to <code>false</code> only text nodes are allowed and the presence of any other
+     *            type of child node will trigger an exception.
+     * @return The reader from which the element text can be read. After the reader has reported the
+     *         end of the stream, the XML stream reader will be positioned on the
+     *         {@link XMLStreamConstants#END_ELEMENT} event corresponding to the initial
+     *         {@link XMLStreamConstants#START_ELEMENT} event. Calling {@link Reader#close()} on the
+     *         returned reader has no effect. Any parser exception will be reported by the reader
+     *         using {@link XMLStreamIOException}.
+     * @throws IllegalStateException
+     *             if the XML stream reader is not positioned on a
+     *             {@link XMLStreamConstants#START_ELEMENT} event
+     */
+    public static Reader getElementTextAsStream(XMLStreamReader reader,
+            boolean allowNonTextChildren) {
+        if (reader.getEventType() != XMLStreamReader.START_ELEMENT) {
+            throw new IllegalStateException("Reader must be on a START_ELEMENT event");
+        }
+        return new TextFromElementReader(reader, allowNonTextChildren);
     }
     
     /**
