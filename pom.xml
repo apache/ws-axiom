@@ -548,6 +548,34 @@
                     </entities>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <version>0.6</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- excludeSubProjects>false</excludeSubProjects -->
+                    <excludes>
+                        <!-- RAT doesn't recognize this one as notes file -->
+                        <exclude>RELEASE-NOTE.txt</exclude>
+                        <!-- SVG files are not edited by hand, so license headers would be lost anyway -->
+                        <exclude>**/*.svg</exclude>
+                        <!-- We can't add license headers to test resources -->
+                        <exclude>src/test/resources/**</exclude>
+                        <!-- TODO: These are indeed copies of classes from Jaxen -->
+                        <exlucde>src/test/java/org/jaxen/test/**</exlucde>
+                        <!-- Files used by various developer tools -->
+                        <exclude>*.sonarj</exclude>
+                    </excludes>
+                </configuration> 
+            </plugin>
         </plugins>
     </build>
     <pluginRepositories>
