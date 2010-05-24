@@ -75,7 +75,7 @@ public class XOPEncodingStreamWriter extends XOPEncodingStreamWrapper
             parent.setPrefix(XOPConstants.DEFAULT_PREFIX, XOPConstants.NAMESPACE_URI);
             parent.writeNamespace(XOPConstants.DEFAULT_PREFIX, XOPConstants.NAMESPACE_URI);
         }
-        parent.writeAttribute(XOPConstants.HREF, "cid:" + contentID); // TODO: wrong; need to URI encode
+        parent.writeAttribute(XOPConstants.HREF, XOPUtils.getURLForContentID(contentID));
         parent.writeEndElement();
     }
     

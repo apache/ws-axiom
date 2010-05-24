@@ -32,6 +32,7 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.util.stax.TextFromElementReader;
+import org.apache.axiom.util.stax.xop.XOPUtils;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -41,9 +42,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.net.URLDecoder;
 import java.util.Iterator;
 
 /**
@@ -167,19 +166,7 @@ public class ElementHelper {
      * @return the corresponding content ID
      */
     public static String getContentIDFromHref(String href) {
-        if (href.startsWith("cid:")) {
-            try {
-                // URIs should always be decoded using UTF-8 (see WSCOMMONS-429). On the
-                // other hand, since non ASCII characters are not allowed in content IDs,
-                // we can simply decode using ASCII (which is a subset of UTF-8)
-                return URLDecoder.decode(href.substring(4), "ascii");
-            } catch (UnsupportedEncodingException ex) {
-                // We should never get here
-                throw new OMException(ex);
-            }
-        } else {
-            throw new OMException("href attribute didn't contain a valid cid: URI");
-        }
+        return XOPUtils.getContentIDFromURL(href);
     }
     
     /**

@@ -24,8 +24,8 @@ import java.io.IOException;
 import javax.activation.DataHandler;
 import javax.xml.bind.attachment.AttachmentUnmarshaller;
 
-import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.util.stax.xop.MimePartProvider;
+import org.apache.axiom.util.stax.xop.XOPUtils;
 
 public class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
     private final MimePartProvider mimePartProvider;
@@ -45,7 +45,7 @@ public class AttachmentUnmarshallerImpl extends AttachmentUnmarshaller {
     public DataHandler getAttachmentAsDataHandler(String cid) {
         try {
             accessed = true;
-            return mimePartProvider.getDataHandler(ElementHelper.getContentIDFromHref(cid));
+            return mimePartProvider.getDataHandler(XOPUtils.getContentIDFromURL(cid));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

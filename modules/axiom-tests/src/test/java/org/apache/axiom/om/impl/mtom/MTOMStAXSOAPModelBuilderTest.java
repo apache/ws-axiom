@@ -35,6 +35,7 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
+import org.apache.axiom.util.stax.xop.XOPUtils;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
@@ -46,7 +47,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -284,13 +284,13 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         String contentTypeString =
                 "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
         String originalCID = "1.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org";
-        String encodedCID = URLEncoder.encode(originalCID, "UTF-8"); // URIs are always encoded using UTF-8 (see WSCOMMONS-429)
+        String cidURL = XOPUtils.getURLForContentID(originalCID);
         String xmlPlusMime1 = "------=_AxIs2_Def_boundary_=42214532\r\n" +
                 "Content-Type: application/xop+xml; charset=UTF-16\r\n" +
                 "Content-Transfer-Encoding: 8bit\r\n" +
                 "Content-ID: SOAPPart\r\n" +
                 "\r\n";
-        String xmlPlusMime2 = "<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\"><soapenv:Body><m:data xmlns:m=\"http://www.example.org/stuff\"><m:name m:contentType=\"text/plain\"><xop:Include xmlns:xop=\"http://www.w3.org/2004/08/xop/include\" href=\"cid:" + encodedCID + "\"></xop:Include></m:name></m:data></soapenv:Body></soapenv:Envelope>\r\n";
+        String xmlPlusMime2 = "<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\"><soapenv:Body><m:data xmlns:m=\"http://www.example.org/stuff\"><m:name m:contentType=\"text/plain\"><xop:Include xmlns:xop=\"http://www.w3.org/2004/08/xop/include\" href=\"" + cidURL + "\"></xop:Include></m:name></m:data></soapenv:Body></soapenv:Envelope>\r\n";
         String xmlPlusMime3 = "\r\n------=_AxIs2_Def_boundary_=42214532\r\n" +
                 "Content-Transfer-Encoding: binary\r\n" +
                 "Content-ID: " + originalCID + "\r\n" +

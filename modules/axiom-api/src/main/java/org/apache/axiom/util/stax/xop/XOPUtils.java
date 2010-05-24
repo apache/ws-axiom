@@ -20,6 +20,9 @@
 package org.apache.axiom.util.stax.xop;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
@@ -38,6 +41,44 @@ public class XOPUtils {
     };
     
     private XOPUtils() {}
+    
+    /**
+     * Extract the content ID from a URL following the cid scheme defined by RFC2392.
+     * 
+     * @param url the URL
+     * @return the corresponding content ID
+     * @throws IllegalArgumentException if the URL doesn't use the cid scheme
+     */
+    public static String getContentIDFromURL(String url) {
+        if (url.startsWith("cid:")) {
+            try {
+                // URIs should always be decoded using UTF-8 (see WSCOMMONS-429). On the
+                // other hand, since non ASCII characters are not allowed in content IDs,
+                // we can simply decode using ASCII (which is a subset of UTF-8)
+                return URLDecoder.decode(url.substring(4), "ascii");
+            } catch (UnsupportedEncodingException ex) {
+                // We should never get here
+                throw new Error(ex);
+            }
+        } else {
+            throw new IllegalArgumentException("The URL doesn't use the cid scheme");
+        }
+    }
+    
+    /**
+     * Build a cid URL from the given content ID as described in RFC2392.
+     * 
+     * @param contentID the content ID (without enclosing angle brackets)
+     * @return the corresponding URL in the cid scheme
+     */
+    public static String getURLForContentID(String contentID) {
+        try {
+            return "cid:" + URLEncoder.encode(contentID, "ascii");
+        } catch (UnsupportedEncodingException ex) {
+            // We should never get here
+            throw new Error(ex);
+        }
+    }
     
     /**
      * Get an XOP encoded stream for a given stream reader. Depending on its
