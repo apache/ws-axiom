@@ -571,6 +571,8 @@
                         <exclude>src/test/resources/**</exclude>
                         <!-- TODO: These are indeed copies of classes from Jaxen -->
                         <exlucde>src/test/java/org/jaxen/test/**</exlucde>
+                        <!-- TODO: This is related to the previous one an needs to be investigated -->
+                        <exclude>legal/jaxen-LICENSE.txt</exclude>
                         <!-- Files used by various developer tools -->
                         <exclude>*.sonarj</exclude>
                     </excludes>
