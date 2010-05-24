@@ -26,9 +26,10 @@ import javax.xml.stream.XMLStreamException;
  * Extension interface for {@link javax.xml.stream.XMLStreamReader} implementations that expose
  * base64 encoded binary content as {@link DataHandler} objects.
  * <p>
- * A consumer MUST use {@link javax.xml.stream.XMLStreamReader#getProperty(String)} with the property
- * name defined by {@link #PROPERTY} to get a reference to this extension interface. See
- * the package Javadoc for additional requirements.
+ * All the requirements specified in {@link org.apache.axiom.ext.stax} apply to
+ * this extension interface. In particular,
+ * a consumer MUST use {@link javax.xml.stream.XMLStreamReader#getProperty(String)} with the property
+ * name defined by {@link #PROPERTY} to get a reference to this extension interface.
  * <p>
  * If the {@link javax.xml.stream.XMLStreamReader} wishes to expose base64 encoded content using
  * this extension interface, it MUST do so using a single

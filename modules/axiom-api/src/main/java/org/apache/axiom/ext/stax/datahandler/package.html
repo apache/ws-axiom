@@ -19,26 +19,7 @@
 <html>
 <body>
 Defines an Axiom specific extension to the StAX API to work with DataHandler objects.
-<p>
-This package defines two extensions, {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader}
-for {@link javax.xml.stream.XMLStreamReader} and {@link org.apache.axiom.ext.stax.datahandler.DataHandlerWriter}
-for {@link javax.xml.stream.XMLStreamWriter}. The reader or writer wishing to support the
-extension MAY implement the corresponding interface directly, but a consumer MUST use
-the property mechanism to get a reference to this extension interface, i.e. it MUST call
-{@link javax.xml.stream.XMLStreamReader#getProperty(String)} or
-{@link javax.xml.stream.XMLStreamWriter#getProperty(String)}. The two extension interfaces
-define constants with for the property names.
-<p>
-The rationale for this requirement is that a property based approach continues to work even if the
-stream implementing the extension is accessed indirectly through a proxy implementing the
-{@link javax.xml.stream.XMLStreamReader} or {@link javax.xml.stream.XMLStreamWriter} interface but unaware
-of the extensions defined in this package. Note that this assumes that the proxy correctly delegates calls to the
-<code>getProperty</code> methods.
-<p>
-The property returning the extension interface MUST be available regardless of the current state of
-the stream. In addition it is assumed to be immutable, i.e. its value MUST NOT not change during the
-lifetime of the {@link javax.xml.stream.XMLStreamReader} or {@link javax.xml.stream.XMLStreamWriter}
-implementation. For a consumer it is therefore sufficient to look up the extension once and to
-continue using the obtained reference during the entire lifetime of the stream.
+
+@see org.apache.axiom.ext.stax
 </body>
 </html>

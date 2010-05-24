@@ -28,6 +28,11 @@ import javax.xml.stream.XMLStreamException;
  * Optional interface implemented by {@link javax.xml.stream.XMLStreamReader}
  * implementations that support writing character data directly to a
  * {@link Writer}.
+ * <p>
+ * All the requirements outlined in {@link org.apache.axiom.ext.stax} apply to
+ * this extension interface. In particular, to get a reference to the extension,
+ * the consumer MUST call {@link javax.xml.stream.XMLStreamReader#getProperty(String)}
+ * with {@link #PROPERTY} as the property name.
  */
 public interface CharacterDataReader {
     /**

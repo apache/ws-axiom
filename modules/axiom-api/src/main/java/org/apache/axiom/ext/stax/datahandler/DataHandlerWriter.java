@@ -30,9 +30,10 @@ import javax.xml.stream.XMLStreamException;
  * implementing this extension may write the binary data as base64 encoded character data
  * or using some optimization such as XOP/MTOM.
  * <p>
- * A consumer MUST use {@link javax.xml.stream.XMLStreamWriter#getProperty(String)} with the property
- * name defined by {@link #PROPERTY} to get a reference to this extension interface. See
- * the package Javadoc for additional requirements.
+ * All the requirements specified in {@link org.apache.axiom.ext.stax} apply to
+ * this extension interface. In particular,
+ * a consumer MUST use {@link javax.xml.stream.XMLStreamWriter#getProperty(String)} with the property
+ * name defined by {@link #PROPERTY} to get a reference to this extension interface.
  * <p>
  * The interface defines two methods to write binary content, one that takes a {@link DataHandler}
  * argument and one with a {@link DataHandlerProvider} argument. The first should be used when
