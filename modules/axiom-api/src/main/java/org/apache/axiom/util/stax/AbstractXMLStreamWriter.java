@@ -44,7 +44,7 @@ public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     }
 
     public final void setNamespaceContext(NamespaceContext context) throws XMLStreamException {
-        // TODO: not sure yet how to implement this method
+        // We currently don't support this method
         throw new UnsupportedOperationException();
     }
 

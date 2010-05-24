@@ -320,9 +320,10 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
     }
 
     public String getNamespaceURI(String prefix) {
-        // TODO: It is not clear whether this method is allowed in all states.
-        //       The XMLStreamReader Javadoc suggest it is, but Woodstox doesn't
-        //       allow it on states other than START_ELEMENT and END_ELEMENT.
+        // It is not clear whether this method is allowed in all states.
+        // The XMLStreamReader Javadoc suggest it is, but Woodstox doesn't
+        // allow it on states other than START_ELEMENT and END_ELEMENT.
+        // We emulate behavior of Woodstox.
         if (state == STATE_START_DOCUMENT || state == STATE_END_DOCUMENT) {
             throw new IllegalStateException();
         } else {

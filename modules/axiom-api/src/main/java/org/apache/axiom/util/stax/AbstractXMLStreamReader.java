@@ -80,19 +80,47 @@ public abstract class AbstractXMLStreamReader implements XMLStreamReader {
 
     public boolean hasName() {
         int event = getEventType();
-        // TODO: need to check the StAX specs if this is correct
         return event == START_ELEMENT || event == END_ELEMENT;
     }
 
-    /**
-     * @param i
-     * @param s
-     * @param s1
-     * @throws XMLStreamException
-     * @see javax.xml.stream.XMLStreamReader#require(int, String, String)
-     */
-    // TODO: this comes from OMStAXWrapper and needs to be implemented properly
-    public void require(int i, String s, String s1) throws XMLStreamException {
-        throw new XMLStreamException();
+    public void require(int type, String uri, String localName) throws XMLStreamException {
+        int actualType = getEventType();
+
+        if (type != actualType) {
+            throw new XMLStreamException("Required type " + XMLEventUtils.getEventTypeString(type)
+                    + ", actual type " + XMLEventUtils.getEventTypeString(actualType));
+        }
+
+        if (localName != null) {
+            if (actualType != START_ELEMENT && actualType != END_ELEMENT
+                && actualType != ENTITY_REFERENCE) {
+                throw new XMLStreamException("Required a non-null local name, but current token " +
+                		"not a START_ELEMENT, END_ELEMENT or ENTITY_REFERENCE (was " +
+                		XMLEventUtils.getEventTypeString(actualType) + ")");
+            }
+            String actualLocalName = getLocalName();
+            if (actualLocalName != localName && !actualLocalName.equals(localName)) {
+                throw new XMLStreamException("Required local name '" + localName +
+                        "'; current local name '" + actualLocalName + "'.");
+            }
+        }
+        
+        if (uri != null) {
+            if (actualType != START_ELEMENT && actualType != END_ELEMENT) {
+                throw new XMLStreamException("Required non-null namespace URI, but current token " +
+                		"not a START_ELEMENT or END_ELEMENT (was " +
+                		XMLEventUtils.getEventTypeString(actualType) + ")");
+            }
+            String actualUri = getNamespaceURI();
+            if (uri.length() == 0) {
+                if (actualUri != null && actualUri.length() > 0) {
+                    throw new XMLStreamException("Required empty namespace, instead have '" + actualUri + "'.");
+                }
+            } else {
+                if (!uri.equals(actualUri)) {
+                    throw new XMLStreamException("Required namespace '" + uri + "'; have '" + actualUri +"'.");
+                }
+            }
+        }
     }
 }
