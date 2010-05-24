@@ -30,19 +30,19 @@ import org.apache.axiom.om.OMException;
 /**
  * {@link Reader} implementation that extracts the text nodes from an element given by an
  * {@link XMLStreamReader}. The expected input is a document with only a document
- * element (as produced by {@link org.apache.axiom.om.OMElement.OMElement#getXMLStreamReader()}).
+ * element (as produced by {@link org.apache.axiom.om.OMElement#getXMLStreamReader()}).
  * The class will extract the text nodes that are direct children of that element, i.e. it uses
- * the same conventions as {@link org.apache.axiom.om.OMElement.OMElement#getText()}.
+ * the same conventions as {@link org.apache.axiom.om.OMElement#getText()}.
  * It will call {@link XMLStreamReader#close()} when the end of the document is reached or when
  * {@link #close()} is called.
  * <p>
  * The main purpose of this class is to provide a convenient and efficient way to get the text
  * content of an element without converting it first to a string, i.e. without using
- * {@link org.apache.axiom.om.OMElement.OMElement#getText()}. This is important for potentially
+ * {@link org.apache.axiom.om.OMElement#getText()}. This is important for potentially
  * large contents, for which this class guarantees constant memory usage.
  * <p>
  * Note that this class should in general not be used directly. Instead, 
- * {@link ElementHelper#getTextAsStream(org.apache.axiom.om.OMElement)}
+ * {@link org.apache.axiom.om.util.ElementHelper#getTextAsStream(org.apache.axiom.om.OMElement)}
  * should be called to get the most efficient stream implementation for a given an element.
  */
 public class TextFromElementReader extends Reader {

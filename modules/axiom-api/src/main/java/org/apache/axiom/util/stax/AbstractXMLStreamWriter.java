@@ -30,8 +30,8 @@ import org.apache.commons.logging.LogFactory;
 /**
  * Partial implementation of the {@link XMLStreamWriter} interface. It handles namespace bindings,
  * i.e. the methods related to the namespace context. Subclasses only need to implement write
- * methods that take a prefix together with the namespace URI argument. All {@link XMLStreamWriter}
- * methods that have a namespace URI argument, but no prefix argument are implemented by this class.
+ * methods that take a prefix together with the namespace URI argument. This class implements all
+ * {@link XMLStreamWriter} methods that have a namespace URI argument, but no prefix argument.
  */
 public abstract class AbstractXMLStreamWriter implements XMLStreamWriter {
     private static final Log log = LogFactory.getLog(AbstractXMLStreamWriter.class);

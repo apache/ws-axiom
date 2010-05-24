@@ -20,6 +20,9 @@ package org.apache.axiom.util.stax;
 
 import javax.xml.stream.XMLStreamConstants;
 
+/**
+ * Contains utility methods related to StAX events.
+ */
 public final class XMLEventUtils {
     private XMLEventUtils() {}
     

@@ -156,7 +156,7 @@ public interface StAXDialect {
     /**
      * Configure the given factory to enable reporting of CDATA sections by stream readers created
      * from it. The example in the documentation of the
-     * {@link java.xml.stream.XMLStreamReader#next()} method suggests that even if the parser is non
+     * {@link javax.xml.stream.XMLStreamReader#next()} method suggests that even if the parser is non
      * coalescing, CDATA sections should be reported as CHARACTERS events. Some implementations
      * strictly follow the example, while for others it is sufficient to make the parser non
      * coalescing.

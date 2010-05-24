@@ -32,16 +32,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Class representing some temporary data in the form of a byte stream.
- * <p>
- * Data is stored by writing to the output stream obtained using
- * {@link #getOutputStream()}. It can then be read back using
- * the input stream obtained from {@link #getInputStream()}.
- * The data is first stored into a fixed size buffer. Once this
- * buffer overflows, it is transferred to a temporary file. The buffer
- * is divided into a given number of fixed size chunks that are allocated
- * on demand. Since a temporary file may be created it is mandatory to
- * call {@link #release()} to discard the temporary data.
+ * Blob implementation that stores data in a temporary file if the size exceeds a configurable
+ * threshold. The data is first stored into a fixed size buffer. Once this buffer overflows, it is
+ * transferred to a temporary file. The buffer is divided into a given number of fixed size chunks
+ * that are allocated on demand. Since a temporary file may be created it is mandatory to call
+ * {@link #release()} to discard the blob.
  */
 public class OverflowBlob implements WritableBlob {
     private static final Log log = LogFactory.getLog(OverflowBlob.class);

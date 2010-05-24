@@ -25,6 +25,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Namespace context implementation that stores namespace bindings in a {@link Map}.
+ */
 public class MapBasedNamespaceContext extends AbstractNamespaceContext {
     protected Map namespaces;
 

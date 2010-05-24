@@ -66,7 +66,7 @@ import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
  * This implies that if the wrapper is used, these methods will never be called on the underlying
  * writer.
  */
-public class NamespaceContextCorrectingXMLStreamWriterWrapper extends AbstractXMLStreamWriter {
+class NamespaceContextCorrectingXMLStreamWriterWrapper extends AbstractXMLStreamWriter {
     private final XMLStreamWriter parent;
     
     public NamespaceContextCorrectingXMLStreamWriterWrapper(XMLStreamWriter parent) {

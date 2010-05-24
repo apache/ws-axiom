@@ -33,7 +33,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 
 /**
- * {@link XMLInputStreamReader} implementation that
+ * {@link XMLStreamReader} implementation that
  * represents a text node wrapped inside an element. The text data is provided by a
  * {@link java.io.Reader Reader}.
  * <p>

@@ -29,6 +29,9 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.impl.builder.DataHandlerReaderUtils;
 
+/**
+ * Contains utility methods related to XOP.
+ */
 public class XOPUtils {
     private static final MimePartProvider nullMimePartProvider = new MimePartProvider() {
         public boolean isLoaded(String contentID) {

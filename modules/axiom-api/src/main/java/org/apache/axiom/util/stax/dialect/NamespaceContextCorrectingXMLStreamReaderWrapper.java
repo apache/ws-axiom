@@ -35,7 +35,7 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
  * {@link XMLStreamReader#getNamespaceContext()} and {@link XMLStreamReader#getNamespaceURI(String)}
  * methods. Invocations of these two methods will therefore never reach the underlying reader.
  */
-public class NamespaceContextCorrectingXMLStreamReaderWrapper extends XMLStreamReaderWrapper {
+class NamespaceContextCorrectingXMLStreamReaderWrapper extends XMLStreamReaderWrapper {
     private final ScopedNamespaceContext namespaceContext = new ScopedNamespaceContext();
 
     /**

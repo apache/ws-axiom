@@ -38,8 +38,8 @@ import org.apache.axiom.ext.io.StreamCopyException;
  *   <dt>COMMITTED
  *   <dd>All data has been written to the blob and the blob will no longer accept any new data.
  * </dl>
- * If the blob is in state NEW or UNCOMMITTED, any call to a method defined by the {@link Blob}
- * superinterface will result in an {@link IllegalStateException}.
+ * Whether or not reading data from the blob if is in state NEW or UNCOMMITTED depends on the
+ * return value of {@link #isSupportingReadUncommitted()}.
  * <p>
  * Blobs are not thread safe.
  */
@@ -127,7 +127,7 @@ public interface WritableBlob extends Blob {
     /**
      * Read data from the given input stream and write it to the blob.
      * <p>
-     * This method is similar to {@link #readFrom(InputStream, boolean)}, except that the state
+     * This method is similar to {@link #readFrom(InputStream, long, boolean)}, except that the state
      * of the blob after the invocation (i.e. the <code>commit</code> argument) is determined
      * automatically:
      * <p>

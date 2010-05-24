@@ -47,7 +47,7 @@ public class WrappingXMLOutputFactory extends XMLOutputFactoryWrapper {
      * which to wrap {@link XMLEventWriter} instances created from the factory. The default
      * implementation simply returns the unwrapped writer.
      * 
-     * @param reader
+     * @param writer
      *            the writer to wrap
      * @return the wrapped writer
      */
@@ -60,7 +60,7 @@ public class WrappingXMLOutputFactory extends XMLOutputFactoryWrapper {
      * which to wrap {@link XMLStreamWriter} instances created from the factory. The default
      * implementation simply returns the unwrapped writer.
      * 
-     * @param reader
+     * @param writer
      *            the writer to wrap
      * @return the wrapped writer
      */

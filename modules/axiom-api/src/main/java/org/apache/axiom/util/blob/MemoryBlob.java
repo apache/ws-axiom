@@ -27,6 +27,9 @@ import java.util.List;
 
 import org.apache.axiom.ext.io.StreamCopyException;
 
+/**
+ * Blob implementation that stores data in memory.
+ */
 public class MemoryBlob implements WritableBlob {
     // TODO: this should be configurable
     final static int BUFFER_SIZE = 4096;
