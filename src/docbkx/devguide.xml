@@ -212,6 +212,12 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         <command>mvn clean install</command> followed by <command>mvn site</command>.
                     </para>
                 </listitem>
+                <listitem>
+                    <para>
+                        Check that the set of license files in the <filename>legal</filename> directory
+                        is complete and accurate.
+                    </para>
+                </listitem>
             </itemizedlist>
         </section>
     </chapter>
