@@ -205,6 +205,13 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         In particular, unit test related classes should be excluded.
                     </para>
                 </listitem>
+                <listitem>
+                    <para>
+                        Check that all dependencies and plugins are available from standard
+                        repositories. To do this, clean the local repository and execute
+                        <command>mvn clean install</command> followed by <command>mvn site</command>.
+                    </para>
+                </listitem>
             </itemizedlist>
         </section>
     </chapter>
