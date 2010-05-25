@@ -49,7 +49,7 @@ public final class UIDGenerator {
      * atext         = ALPHA / DIGIT / "!" / "#" / "$" / "%" / "&amp;"
      *                   / "'" / "*" / "+" / "-" / "/" / "=" / "?"
      *                   / "^" / "_" / "`" / "{" / "|" / "}" / "~"</pre>
-     * In addition, RFC2111 specifies that when used in an URL with scheme
+     * In addition, RFC2392 specifies that when used in an URL with scheme
      * "cid:", the content ID must be URL encoded. Since not all implementations
      * handle this correctly, any characters considered "unsafe" in an URL (and
      * requiring encoding) should be avoided in a content ID.
