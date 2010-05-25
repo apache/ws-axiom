@@ -113,6 +113,10 @@ public interface StAXParserConfiguration {
         public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
             return dialect.disallowDoctypeDecl(factory);
         }
+
+        public String toString() {
+            return "SOAP";
+        }
     };
     
     /**
