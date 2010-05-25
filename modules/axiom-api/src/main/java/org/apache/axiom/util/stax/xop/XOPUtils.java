@@ -22,7 +22,6 @@ package org.apache.axiom.util.stax.xop;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
@@ -70,17 +69,36 @@ public class XOPUtils {
     
     /**
      * Build a cid URL from the given content ID as described in RFC2392.
+     * <p>
+     * Note that this implementation only encodes the percent character (replacing it by "%25"). The
+     * reason is given by the following quotes from RFC3986:
+     * <blockquote>
+     * If a reserved character is
+     * found in a URI component and no delimiting role is known for that character, then it must be
+     * interpreted as representing the data octet corresponding to that character's encoding in
+     * US-ASCII. [...]
+     * <p>
+     * Under normal circumstances, the only time when octets within a URI are percent-encoded is
+     * during the process of producing the URI from its component parts. This is when an
+     * implementation determines which of the reserved characters are to be used as subcomponent
+     * delimiters and which can be safely used as data. [...]
+     * <p>
+     * Because the percent ("%") character serves as the indicator for percent-encoded octets, it
+     * must be percent-encoded as "%25" for that octet to be used as data within a URI.
+     * </blockquote>
+     * <p>
+     * Since RFC2392 doesn't define any subcomponents for the cid scheme and since RFC2045 specifies
+     * that only US-ASCII characters are allowed in content IDs, the percent character (which is
+     * specifically allowed by RFC2045) is the only character that needs URL encoding.
+     * <p>
+     * Another reason to strictly limit the set of characters to be encoded is that some
+     * applications fail to decode cid URLs correctly if they contain percent encoded octets.
      * 
      * @param contentID the content ID (without enclosing angle brackets)
      * @return the corresponding URL in the cid scheme
      */
     public static String getURLForContentID(String contentID) {
-        try {
-            return "cid:" + URLEncoder.encode(contentID, "ascii");
-        } catch (UnsupportedEncodingException ex) {
-            // We should never get here
-            throw new Error(ex);
-        }
+        return "cid:" + contentID.replaceAll("%", "%25");
     }
     
     /**
