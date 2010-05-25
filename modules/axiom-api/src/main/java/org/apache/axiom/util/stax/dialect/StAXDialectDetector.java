@@ -231,7 +231,9 @@ public class StAXDialectDetector {
             return new SJSXPDialect(false);
         } else if ("BEA".equals(vendor)) {
             return BEADialect.INSTANCE;
-        } else if ("IBM".equals(vendor) || "com.ibm.ws.prereq.banshee".equals(symbolicName)) {
+        } else if ("IBM".equals(vendor) ||
+                (vendor != null && vendor.indexOf("IBM") >= 0)
+                || "com.ibm.ws.prereq.banshee".equals(symbolicName)) {
             return XLXP2Dialect.INSTANCE;
         } else {
             return null;
@@ -280,6 +282,10 @@ public class StAXDialectDetector {
                 isSetPrefixBroken = true;
             }
             return new XLXPDialect(isSetPrefixBroken);
+        }
+        cls = loadClass(classLoader, rootUrl, "com.ibm.xml.xlxp2.api.stax.StAXImplConstants");
+        if (cls != null) {
+            return new XLXP2Dialect();
         }
         
         return null;

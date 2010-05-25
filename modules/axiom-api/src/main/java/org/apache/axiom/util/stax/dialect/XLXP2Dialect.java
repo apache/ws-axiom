@@ -37,6 +37,9 @@ class XLXP2Dialect extends AbstractStAXDialect {
     }
 
     public XMLInputFactory disallowDoctypeDecl(XMLInputFactory factory) {
+        // Set an XMLResolver that fails if an attempt is made to resolve a reference
+        // This is an additional safeguard.
+        factory.setXMLResolver(new SecureXMLResolver());
         return StAXDialectUtils.disallowDoctypeDecl(factory);
     }
 
