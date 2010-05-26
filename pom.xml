@@ -552,6 +552,7 @@
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
                 <version>0.6</version>
+                <inherited>false</inherited>
                 <executions>
                     <execution>
                         <phase>verify</phase>
@@ -561,7 +562,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!-- excludeSubProjects>false</excludeSubProjects -->
                     <excludes>
                         <!-- RAT doesn't recognize this one as notes file -->
                         <exclude>RELEASE-NOTE.txt</exclude>
@@ -570,7 +570,8 @@
                         <!-- We can't add license headers to test resources -->
                         <exclude>src/test/resources/**</exclude>
                         <!-- TODO: These are indeed copies of classes from Jaxen -->
-                        <exlucde>src/test/java/org/jaxen/test/**</exlucde>
+                        <exlucde>src/main/resources/xml/**</exlucde>
+                        <exlucde>src/main/java/org/jaxen/test/**</exlucde>
                         <!-- TODO: This is related to the previous one an needs to be investigated -->
                         <exclude>legal/jaxen-LICENSE.txt</exclude>
                         <!-- Files used by various developer tools -->
@@ -755,6 +756,7 @@
     </distributionManagement>
     <modules>
         <module>modules/axiom-testutils</module>
+        <module>modules/axiom-jaxen-testsuite</module>
         <module>modules/axiom-api</module>
         <module>modules/axiom-impl</module>
         <module>modules/axiom-dom</module>

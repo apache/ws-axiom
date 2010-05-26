@@ -217,7 +217,7 @@ public class ElementImplTest extends OMElementTestBase {
         DOMTestUtil.execute(new DOMTestUtil.Test() {
             public void execute(DocumentBuilderFactory dbf) throws Exception {
                 Document doc =
-                        dbf.newDocumentBuilder().parse(getTestResource("jaxen/xml/numbers.xml"));
+                        dbf.newDocumentBuilder().parse(getTestResource("xml/numbers.xml"));
                 Element element = doc.getDocumentElement();
                 NodeList list = element.getElementsByTagName("nr");
                 assertEquals(10, list.getLength());

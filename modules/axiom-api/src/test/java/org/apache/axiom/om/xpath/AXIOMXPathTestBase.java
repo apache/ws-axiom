@@ -19,11 +19,7 @@
 
 package org.apache.axiom.om.xpath;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.io.InputStream;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -33,12 +29,11 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.test.jaxen.JaxenXPathTestBase;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
-import org.jaxen.FunctionCallException;
 import org.jaxen.Navigator;
-import org.jaxen.test.XPathTestBase;
 
-public class AXIOMXPathTestBase extends XPathTestBase {
+public class AXIOMXPathTestBase extends JaxenXPathTestBase {
     static class RootWhitespaceFilter extends XMLStreamReaderWrapper {
         private int depth;
         
@@ -72,56 +67,26 @@ public class AXIOMXPathTestBase extends XPathTestBase {
         }
     }
     
-    static String TESTS_ROOT;
-    
-    static {
-        URL testsXmlUrl = XPathTestBase.class.getClassLoader().getResource("jaxen/xml/test/tests.xml");
-        try {
-            TESTS_ROOT = new URL(testsXmlUrl, "../..").toExternalForm();
-        } catch (MalformedURLException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-    
     final OMMetaFactory omMetaFactory;
-    final List documents = new ArrayList();
     
     public AXIOMXPathTestBase(String name, OMMetaFactory omMetaFactory) {
         super(name);
         this.omMetaFactory = omMetaFactory;
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        for (Iterator it = documents.iterator(); it.hasNext(); ) {
-            ((OMDocument)it.next()).close(false);
-        }
-        documents.clear();
+    protected Navigator createNavigator() {
+        return new DocumentNavigator();
     }
 
-    protected Object getDocument(String url) throws Exception {
-        // This method is actually never used in XPathTestBase; it only uses Navigator#getDocument
-        return null;
+    protected Object loadDocument(InputStream in) throws Exception {
+        // Jaxen's unit tests assume that whitespace in the prolog/epilog is not
+        // represented in the tree (as in DOM), so we need to filter these events.
+        XMLStreamReader reader = new RootWhitespaceFilter(
+                StAXUtils.createXMLStreamReader(in));
+        return new StAXOMBuilder(omMetaFactory.getOMFactory(), reader).getDocument();
     }
 
-    protected Navigator getNavigator() {
-        return new DocumentNavigator() {
-            // We need to tweak the getDocument method a bit to load the document from the right
-            // place. Also, Jaxen's unit tests assume that whitespace in the prolog/epilog is not
-            // represented in the tree (as in DOM), so we need to filter these events.
-            public Object getDocument(String uri) throws FunctionCallException {
-                try {
-                    URL url = new URL(TESTS_ROOT + uri);
-                    XMLStreamReader reader = new RootWhitespaceFilter(
-                            StAXUtils.createXMLStreamReader(url.openStream()));
-                    OMDocument document = new StAXOMBuilder(omMetaFactory.getOMFactory(),
-                            reader).getDocument();
-                    documents.add(document);
-                    return document;
-                } catch (Exception ex) {
-                    throw new FunctionCallException(ex);
-                }
-            }
-        };
+    protected void releaseDocument(Object document) {
+        ((OMDocument)document).close(false);
     }
 }
