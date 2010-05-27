@@ -35,12 +35,12 @@
         <dependency>
             <groupId>org.apache.ws.commons.axiom</groupId>
             <artifactId>axiom-api</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.ws.commons.axiom</groupId>
             <artifactId>axiom-impl</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>${stax.impl.groupid}</groupId>
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>org.apache.ws.commons.axiom</groupId>
             <artifactId>axiom-dom</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>${stax.impl.groupid}</groupId>
@@ -118,25 +118,25 @@
                                     <groupId>org.apache.ws.commons.axiom</groupId>
                                     <artifactId>axiom-api</artifactId>
                                     <classifier>tests</classifier>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.ws.commons.axiom</groupId>
                                     <artifactId>axiom-impl</artifactId>
                                     <classifier>tests</classifier>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.ws.commons.axiom</groupId>
                                     <artifactId>axiom-dom</artifactId>
                                     <classifier>tests</classifier>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.ws.commons.axiom</groupId>
                                     <artifactId>axiom-tests</artifactId>
                                     <classifier>tests</classifier>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/test-jars</outputDirectory>

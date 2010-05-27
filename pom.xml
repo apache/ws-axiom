@@ -543,7 +543,7 @@
                     <entities>
                         <entity>
                             <name>version</name>
-                            <value>${pom.version}</value>
+                            <value>${project.version}</value>
                         </entity>
                     </entities>
                 </configuration>
@@ -766,8 +766,8 @@
         <module>modules/axiom-parser-tests</module>
     </modules>
     <properties>
-        <axiom.version>${pom.version}</axiom.version>
-        <axiom.osgi.version>${pom.version}</axiom.osgi.version>
+        <axiom.version>${project.version}</axiom.version>
+        <axiom.osgi.version>${project.version}</axiom.osgi.version>
         <stax.impl.groupid>org.codehaus.woodstox</stax.impl.groupid>
         <stax.impl.artifact>wstx-asl</stax.impl.artifact>
         <stax.impl.version>3.2.9</stax.impl.version>
