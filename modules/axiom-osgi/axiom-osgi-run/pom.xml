@@ -70,12 +70,6 @@
             <version>1.2.9-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
-            <artifactId>axiom-osgi-build</artifactId>
-            <version>1.2.9-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
          <dependency>
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>stax2-api</artifactId>
