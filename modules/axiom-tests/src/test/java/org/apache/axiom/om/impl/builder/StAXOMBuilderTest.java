@@ -176,9 +176,12 @@ public class StAXOMBuilderTest extends AbstractTestCase {
      * @throws Exception
      */
     public void testIOExceptionInGetText() throws Exception {
-        // Construct a stream that will throw an exception in the middle of a text node
+        // Construct a stream that will throw an exception in the middle of a text node.
+        // We need to create a very large document, because some parsers (such as some
+        // versions of XLXP) have a large input buffer and would throw an exception already
+        // when the XMLStreamReader is created.
         StringBuffer xml = new StringBuffer("<root>");
-        for (int i=0; i<10000; i++) {
+        for (int i=0; i<100000; i++) {
             xml.append('x');
         }
         InputStream in = new ExceptionInputStream(new ByteArrayInputStream(xml.toString().getBytes("ASCII")));
