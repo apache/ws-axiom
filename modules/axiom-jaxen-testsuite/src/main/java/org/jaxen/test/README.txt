@@ -1,1 +1,0 @@
-The files in this package are from Jaxen. Please don't modify them and don't add other files here!

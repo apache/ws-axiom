@@ -568,10 +568,10 @@
                         <exclude>**/*.svg</exclude>
                         <!-- We can't add license headers to test resources -->
                         <exclude>src/test/resources/**</exclude>
-                        <!-- TODO: These are indeed copies of classes from Jaxen -->
+                        <!-- Source code, resources and license files from Jaxen (see LEGAL-74 & WSCOMMONS-545) -->
                         <exclude>src/main/resources/xml/**</exclude>
                         <exclude>src/main/java/org/jaxen/test/**</exclude>
-                        <!-- TODO: This is related to the previous one an needs to be investigated -->
+                        <exclude>src/main/resources/META-INF/LICENSE-JAXEN</exclude>
                         <exclude>legal/jaxen-LICENSE.txt</exclude>
                         <!-- Files used by various developer tools -->
                         <exclude>*.sonarj</exclude>
