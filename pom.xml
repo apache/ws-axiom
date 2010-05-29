@@ -552,7 +552,6 @@
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
                 <version>0.6</version>
-                <inherited>false</inherited>
                 <executions>
                     <execution>
                         <phase>verify</phase>
@@ -570,8 +569,8 @@
                         <!-- We can't add license headers to test resources -->
                         <exclude>src/test/resources/**</exclude>
                         <!-- TODO: These are indeed copies of classes from Jaxen -->
-                        <exlucde>src/main/resources/xml/**</exlucde>
-                        <exlucde>src/main/java/org/jaxen/test/**</exlucde>
+                        <exclude>src/main/resources/xml/**</exclude>
+                        <exclude>src/main/java/org/jaxen/test/**</exclude>
                         <!-- TODO: This is related to the previous one an needs to be investigated -->
                         <exclude>legal/jaxen-LICENSE.txt</exclude>
                         <!-- Files used by various developer tools -->
