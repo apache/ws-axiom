@@ -29,7 +29,7 @@ import org.apache.commons.logging.LogFactory;
  * is needed.  Basically it throws an exception if an attempt
  * is made to read an entity.
  */
-public final class SecureXMLResolver implements XMLResolver {
+final class SecureXMLResolver implements XMLResolver {
 
     private static Log log = LogFactory.getLog(SecureXMLResolver.class);
     public Object resolveEntity(String arg0, String arg1, String arg2,

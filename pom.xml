@@ -720,7 +720,7 @@
                         <link>http://java.sun.com/webservices/docs/1.5/api/</link>
                         <link>http://jaxen.codehaus.org/apidocs/</link>
                     </links>
-                    <excludePackageNames>org.apache.axiom.test:org.apache.axiom.testutils</excludePackageNames>
+                    <excludePackageNames>org.apache.axiom.test:org.apache.axiom.testutils:org.jaxen.test</excludePackageNames>
                 </configuration>
                 <reportSets>
                   <reportSet>
