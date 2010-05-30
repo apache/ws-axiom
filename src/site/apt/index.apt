@@ -21,7 +21,7 @@
 
 Welcome to Apache Axiom
 
-  Apache Axiom is a StAX-based, XML Infoset compliant object model which supports on-demand building
+  Apache Axiom\u2122 is a StAX-based, XML Infoset compliant object model which supports on-demand building
   of the object tree. It supports a novel "pull-through" model which allows one to turn off the tree
   building and directly access the underlying pull event stream. It also has built in support for XML
   Optimized Packaging (XOP) and MTOM, the combination of which allows XML to carry binary data
@@ -31,6 +31,9 @@ Welcome to Apache Axiom
   Developed as part of Apache Axis2, Apache Axiom is the core of Apache Axis2. However, it is a pure
   standalone XML Infoset model with novel features and can be used independently of Apache Axis2.
 
+  Apache Axiom, Axiom, Apache, the Apache feather logo, and the Apache Axiom project logo are
+  trademarks of {{{http://apache.org/}The Apache Software Foundation}}.
+  
 Key Features
 
     * Full XML Infoset compliant XML object model
