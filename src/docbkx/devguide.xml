@@ -218,6 +218,25 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         is complete and accurate.
                     </para>
                 </listitem>
+                <listitem>
+                    <para>
+                        Check that the Maven site conforms to the latest version of the
+                        <ulink url="http://apache.org/foundation/marks/pmcs">Apache Project
+                        Branding Guidelines</ulink>.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </section>
+        
+        <section>
+            <title>Post-release actions</title>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        Update the DOAP file (see <filename>etc/axiom.rdf</filename>) and add a new entry
+                        for the release.
+                    </para>
+                </listitem>
             </itemizedlist>
         </section>
     </chapter>
