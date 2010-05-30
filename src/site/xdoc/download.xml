@@ -20,7 +20,7 @@
   -->
 <document>
     <properties>
-        <title>:: Apache AXIOM Releases ::</title>
+        <title>:: Apache Axiom Releases ::</title>
     </properties>
 
     <head>
@@ -39,12 +39,12 @@
     <section>
             <h2>Releases</h2>
             <div align="left">
-                <p>AXIOM is becoming more and more stable and the latest official version available for download is
-                    AXIOM 1.2.8.  All the releases are available for download as source or binary. For more information,
+                <p>Axiom is becoming more and more stable and the latest official version available for download is
+                    Axiom 1.2.8.  All the releases are available for download as source or binary. For more information,
                     please see
                     <a href="http://www.apache.org/dev/release.html">Apache Release FAQ</a>
                 </p>
-                <p>Please select the AXIOM version you want to download.</p>
+                <p>Please select the Axiom version you want to download.</p>
             </div>
             <div align="center">
 
@@ -407,7 +407,7 @@
                             <td>1.1 Release (Archived)
                                 <br/>
                                 Note : This released was compiled using JDK 1.5 and will not work with JDK 1.4. Please
-                                move to AXIOM 1.1.1.
+                                move to Axiom 1.1.1.
                             </td>
                         </tr>
 

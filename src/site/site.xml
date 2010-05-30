@@ -30,7 +30,7 @@
             <item name="Axiom" href="http://ws.apache.org/commons/axiom/index.html"/>
         </links>
 
-        <menu name="AXIOM">
+        <menu name="Axiom">
             <item name="About" href="index.html"/>
             <item name="Downloads">
                 <item name="Releases" href="download.cgi"/>
