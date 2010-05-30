@@ -50,7 +50,10 @@
                 <item name="Project Team" href="/team-list.html"/>
                 <item name="Issue Tracking" href="issue-tracking.html"/>
             </item>
-            <item name="License" href="/license.html"/>
+            <item name="License" href="http://www.apache.org/licenses/"/>
+            <item name="Sponsorship" href="http://www.apache.org/foundation/sponsorship.html"/>
+            <item name="Thanks" href="http://www.apache.org/foundation/thanks.html"/>
+            <item name="Security" href="http://apache.org/security/"/>
         </menu>
     </body>
 </project>
