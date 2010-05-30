@@ -19,7 +19,7 @@
 <project name="Axiom">
     <bannerLeft>
         <name>Apache Axiom</name>
-        <src>http://ws.apache.org/images/project-logo.jpg</src>
+        <src>images/logo.png</src>
         <href>http://ws.apache.org/</href>
     </bannerLeft>
     <body>
