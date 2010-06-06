@@ -423,6 +423,10 @@
                     <artifactId>maven-source-plugin</artifactId>
                     <version>2.0.4</version>
                 </plugin>
+                <plugin>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>2.1</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -732,6 +736,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>
+                <version>2.0.1</version>
                 <inherited>false</inherited>
             </plugin>
         </plugins>
