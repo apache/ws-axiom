@@ -36,13 +36,19 @@
     <programming-language>Java</programming-language>
     <category rdf:resource="http://projects.apache.org/category/library"/>
     <category rdf:resource="http://projects.apache.org/category/xml"/>
-    <release>
-      <Version>
-        <name>Apache Axiom</name>
-        <created>2009-01-15</created>
-        <revision>1.2.8</revision>
-      </Version>
-    </release>
+    <release><Version><name>Apache Axiom</name><created>2006-03-26</created><revision>0.95</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2006-05-02</created><revision>1.0</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2006-09-15</created><revision>1.1</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2006-09-18</created><revision>1.1.1</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2006-11-13</created><revision>1.2</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2006-11-30</created><revision>1.2.1</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2007-01-09</created><revision>1.2.2</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2007-04-03</created><revision>1.2.3</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2007-04-20</created><revision>1.2.4</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2007-07-05</created><revision>1.2.5</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2008-04-09</created><revision>1.2.6</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2008-04-20</created><revision>1.2.7</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2009-01-15</created><revision>1.2.8</revision></Version></release>
     <repository>
       <SVNRepository>
         <location rdf:resource="http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom"/>
