@@ -106,19 +106,19 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         builder.setCache(false);
         XMLStreamReader reader = (XMLStreamReader) builder.getParser();
         
-        XMLStreamReader original = XMLStreamReaderUtils.getOriginalXMLStreamReader(reader);
+        // For an MTOM message, the reader is actually an XOPDecodingStreamReader. This one
+        // cannot be unwrapped by getOriginalXMLStreamReader
+        assertSame(reader, XMLStreamReaderUtils.getOriginalXMLStreamReader(reader));
         
-        // The streaming parser is wrapped by a SafeXMLStreamReader and dialect readers.
-        // Thus the reader and original readers will not be the same.
-        assertTrue(reader != original);
+        // To get access to the original reader, we first need to unwrap the
+        // XOPDecodingStreamReader using XOPUtils
+        XMLStreamReader encodedReader = XOPUtils.getXOPEncodedStream(reader).getReader();
+        assertTrue(encodedReader != reader);
+
+        // Now we can get to the original parser
+        XMLStreamReader original = XMLStreamReaderUtils.getOriginalXMLStreamReader(encodedReader);
         
-        // The streaming parser will not have access to the attachments.  Thus this will
-        // return null
-        XMLStreamReader attachmentAccessor = 
-            XMLStreamReaderUtils.getWrappedXMLStreamReader(reader, OMAttachmentAccessor.class);
-        
-        assertTrue(attachmentAccessor == null);
-        
+        assertTrue(!original.getClass().getName().startsWith("org.apache.axiom."));
     }
     
     public void testAccessToCachedParser() throws Exception {
@@ -129,13 +129,6 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         
         // The caching parser will be an OMStaXWrapper.
         assertTrue(original instanceof OMStAXWrapper);
-        
-        XMLStreamReader attachmentAccessor = 
-            XMLStreamReaderUtils.getWrappedXMLStreamReader(reader, OMAttachmentAccessor.class);
-        
-        // Thus the attachmentAccessor should also be the OMStaXWrapper
-        assertTrue(attachmentAccessor instanceof OMStAXWrapper);
-        
     }
     
     public void testCreateOMElement() throws Exception {

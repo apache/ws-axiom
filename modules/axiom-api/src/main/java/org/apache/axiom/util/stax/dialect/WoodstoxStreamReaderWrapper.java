@@ -20,9 +20,10 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
-class WoodstoxStreamReaderWrapper extends XMLStreamReaderWrapper {
+class WoodstoxStreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
     public WoodstoxStreamReaderWrapper(XMLStreamReader reader) {
         super(reader);
     }
@@ -73,5 +74,9 @@ class WoodstoxStreamReaderWrapper extends XMLStreamReaderWrapper {
         //       issue has been fixed
         // This addresses WSTX-201:
         return getEventType() == CHARACTERS;
+    }
+
+    public XMLStreamReader getParent() {
+        return super.getParent();
     }
 }

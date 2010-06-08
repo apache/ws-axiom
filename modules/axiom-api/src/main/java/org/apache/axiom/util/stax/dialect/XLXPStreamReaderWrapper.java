@@ -21,9 +21,10 @@ package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
-class XLXPStreamReaderWrapper extends XMLStreamReaderWrapper {
+class XLXPStreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
     public XLXPStreamReaderWrapper(XMLStreamReader parent) {
         super(parent);
     }
@@ -31,5 +32,9 @@ class XLXPStreamReaderWrapper extends XMLStreamReaderWrapper {
     public boolean isCharacters() {
         // XLXP returns true for SPACE events as well; this is not correct
         return getEventType() == CHARACTERS;
+    }
+
+    public XMLStreamReader getParent() {
+        return super.getParent();
     }
 }

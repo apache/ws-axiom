@@ -25,10 +25,11 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.util.namespace.AbstractNamespaceContext;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
-class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
+class BEAStreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
     /**
      * The character set encoding as inferred from the start bytes of the stream.
      */
@@ -157,5 +158,9 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper {
                 return parent.getPrefixes(namespaceURI);
             }
         };
+    }
+
+    public XMLStreamReader getParent() {
+        return super.getParent();
     }
 }

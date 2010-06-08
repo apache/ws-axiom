@@ -24,9 +24,10 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
-class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
+class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
     public SJSXPStreamReaderWrapper(XMLStreamReader parent) {
         super(parent);
     }
@@ -142,5 +143,9 @@ class SJSXPStreamReaderWrapper extends XMLStreamReaderWrapper {
 
     public NamespaceContext getNamespaceContext() {
         return new SJSXPNamespaceContextWrapper(super.getNamespaceContext());
+    }
+
+    public XMLStreamReader getParent() {
+        return super.getParent();
     }
 }

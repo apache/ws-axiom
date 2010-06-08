@@ -31,7 +31,7 @@ import javax.xml.stream.XMLStreamReader;
  * similar to {@link javax.xml.stream.util.StreamReaderDelegate}, with the difference that it is
  * immutable.
  */
-public class XMLStreamReaderWrapper implements XMLStreamReader, XMLStreamReaderContainer {
+public class XMLStreamReaderWrapper implements XMLStreamReader {
     private final XMLStreamReader parent;
 
     /**
@@ -44,11 +44,15 @@ public class XMLStreamReaderWrapper implements XMLStreamReader, XMLStreamReaderC
     }
     
     /**
-     * Get Parent
-     * Note that setParent is intentionally omitted.  XMLStreamReaderWrapper is immutable.
-     * @return XMLStreamReader parent
+     * Get the parent stream reader. This method is declared as protected because it should only be
+     * used by subclasses. However, stream reader wrappers that can safely be unwrapped may
+     * implement the {@link org.apache.axiom.ext.stax.DelegatingXMLStreamReader} interface to make
+     * this a public method. Note that a corresponding <code>setParent</code> method is
+     * intentionally omitted because {@link XMLStreamReaderWrapper} is immutable.
+     * 
+     * @return XMLStreamReader the parent (wrapped) stream reader
      */
-    public XMLStreamReader getParent() {
+    protected XMLStreamReader getParent() {
         return parent;
     }
 

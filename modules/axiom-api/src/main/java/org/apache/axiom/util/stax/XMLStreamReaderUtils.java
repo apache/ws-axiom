@@ -29,13 +29,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.CharacterDataReader;
+import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.util.activation.EmptyDataSource;
 import org.apache.axiom.util.base64.Base64DecodingOutputStreamWriter;
 import org.apache.axiom.util.blob.BlobDataSource;
 import org.apache.axiom.util.blob.MemoryBlob;
 import org.apache.axiom.util.blob.WritableBlob;
-import org.apache.axiom.util.stax.wrapper.XMLStreamReaderContainer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -189,8 +189,8 @@ public class XMLStreamReaderUtils {
             String clsName = (parser != null) ? parser.getClass().toString() : "null";
             log.debug("Entry getOriginalXMLStreamReader: " + clsName);
         }
-        while (parser instanceof XMLStreamReaderContainer) {
-            parser = ((XMLStreamReaderContainer) parser).getParent();
+        while (parser instanceof DelegatingXMLStreamReader) {
+            parser = ((DelegatingXMLStreamReader) parser).getParent();
             if (log.isDebugEnabled()) {
                 String clsName = (parser != null) ? parser.getClass().toString() : "null";
                 log.debug("  parent: " + clsName);
@@ -199,40 +199,6 @@ public class XMLStreamReaderUtils {
         if (log.isDebugEnabled()) {
             String clsName = (parser != null) ? parser.getClass().toString() : "null";
             log.debug("Exit getOriginalXMLStreamReader: " + clsName);
-        }
-        return parser;
-    }
-    
-    /**
-     * Searches the wrapper and delegate classes to find an
-     * {@link XMLStreamReader} of a given type.
-     * 
-     * @param parser
-     *            the object to extract the wrapped reader from
-     * @param type
-     *            the type of reader to search for
-     * @return the first {@link XMLStreamReader} of the given type in the chain
-     *         of wrappers, or <code>null</code> if no such reader was found
-     */
-    public static XMLStreamReader getWrappedXMLStreamReader(XMLStreamReader parser, Class type) {
-        if (log.isDebugEnabled()) {
-            String clsName = (parser != null) ? parser.getClass().toString() : "null";
-            log.debug("Entry getWrappedXMLStreamReader: " + clsName);
-        }
-        while (!type.isInstance(parser) &&
-                (parser instanceof XMLStreamReaderContainer)) {
-            parser = ((XMLStreamReaderContainer) parser).getParent();
-            if (log.isDebugEnabled()) {
-                String clsName = (parser != null) ? parser.getClass().toString() : "null";
-                log.debug("  parent: " + clsName);
-            }
-        }
-        if (!type.isInstance(parser)) {
-            parser = null;
-        }
-        if (log.isDebugEnabled()) {
-            String clsName = (parser != null) ? parser.getClass().toString() : "null";
-            log.debug("Exit getWrappedXMLStreamReader: " + clsName);
         }
         return parser;
     }
