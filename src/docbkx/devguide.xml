@@ -227,7 +227,18 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </listitem>
             </itemizedlist>
         </section>
-        
+        <section>
+            <title>Release</title>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        Add an entry to the <filename>download.xml</filename> file. Change the entries
+                        for previous releases that are no longer available from the mirrors, so that
+                        they point to the archives.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </section>
         <section>
             <title>Post-release actions</title>
             <itemizedlist>
@@ -235,6 +246,34 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     <para>
                         Update the DOAP file (see <filename>etc/axiom.rdf</filename>) and add a new entry
                         for the release.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </section>
+        <section>
+            <title>References</title>
+            <para>
+                The following documents are useful when preparing and executing the release:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <ulink url="http://www.apache.org/legal/src-headers.html">ASF Source Header and Copyright Notice Policy</ulink>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <ulink url="http://apache.org/foundation/marks/pmcs">Apache Project Branding Guidelines</ulink>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <ulink url="http://projects.apache.org/doap.html">DOAP Files</ulink>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <ulink url="http://www.apache.org/dev/release-publishing.html">Publishing Releases</ulink>
                     </para>
                 </listitem>
             </itemizedlist>
