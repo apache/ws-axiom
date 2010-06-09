@@ -222,22 +222,11 @@
             <email>jochen.wiedmann AT gmail.com</email>
         </contributor>
     </contributors>
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
     <scm>
         <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</connection>
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</developerConnection>
         <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/trunk/modules/axiom</url>
     </scm>
-    <organization>
-        <name>The Apache Software Foundation</name>
-        <url>http://www.apache.org/</url>
-    </organization>
     <profiles>
         <profile>
             <id>jdk15</id>
