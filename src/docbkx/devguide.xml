@@ -225,6 +225,13 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         Branding Guidelines</ulink>.
                     </para>
                 </listitem>
+                <listitem>
+                    <para>
+                        Check that the <literal>apache-release</literal> profile can be executed properly.
+                        To do this, issue the following command:
+                    </para>
+                    <screen>mvn clean install -Papache-release -Dmaven.test.skip=true</screen>
+                </listitem>
             </itemizedlist>
         </section>
         <section>
