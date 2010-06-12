@@ -398,7 +398,6 @@
                         <descriptors>
                             <descriptor>src/main/assembly/jar.xml</descriptor>
                             <descriptor>src/main/assembly/bin.xml</descriptor>
-                            <descriptor>src/main/assembly/src.xml</descriptor>
                         </descriptors>
                         <tarLongFileMode>gnu</tarLongFileMode>
                     </configuration>
