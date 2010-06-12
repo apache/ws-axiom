@@ -398,10 +398,6 @@
         </pluginManagement>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>com.agilejava.docbkx</groupId>
                 <artifactId>docbkx-maven-plugin</artifactId>
                 <version>2.0.8</version>
@@ -454,14 +450,10 @@
                         <goals>
                             <goal>generate-pdf</goal>
                         </goals>
-                        <phase>pre-site</phase>
+                        <phase>package</phase>
                         <configuration>
                             <includes>userguide.xml</includes>
                             <foCustomization>src/docbkx/xsl/fo.xsl</foCustomization>
-                            <postProcess>
-                                <copy file="target/docbkx/pdf/userguide.pdf"
-                                      tofile="target/site/userguide.pdf"/>
-                            </postProcess>
                         </configuration>
                     </execution>
                     <execution>
@@ -469,14 +461,10 @@
                         <goals>
                             <goal>generate-pdf</goal>
                         </goals>
-                        <phase>pre-site</phase>
+                        <phase>package</phase>
                         <configuration>
                             <includes>devguide.xml</includes>
                             <foCustomization>src/docbkx/xsl/fo.xsl</foCustomization>
-                            <postProcess>
-                                <copy file="target/docbkx/pdf/devguide.pdf"
-                                      tofile="target/site/devguide.pdf"/>
-                            </postProcess>
                         </configuration>
                     </execution>
                 </executions>
@@ -497,6 +485,34 @@
                         </entity>
                     </entities>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>attach-pdfs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>${project.build.directory}/docbkx/pdf/userguide.pdf</file>
+                                    <type>pdf</type>
+                                    <classifier>userguide</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>${project.build.directory}/docbkx/pdf/devguide.pdf</file>
+                                    <type>pdf</type>
+                                    <classifier>devguide</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.rat</groupId>

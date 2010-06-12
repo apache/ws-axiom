@@ -35,10 +35,10 @@
             <outputDirectory>/</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>target/site</directory>
+            <directory>${project.build.directory}/docbkx/pdf</directory>
             <outputDirectory>docs</outputDirectory>
             <includes>
-                <include>**/*</include>
+                <include>*.pdf</include>
             </includes>
         </fileSet>
         <fileSet>
