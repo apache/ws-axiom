@@ -22,6 +22,12 @@
     <formats>
         <format>jar</format>
     </formats>
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}/maven-shared-archive-resources</directory>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
+    </fileSets>
     <moduleSets>
         <moduleSet>
             <includes>
@@ -33,6 +39,12 @@
             <binaries>
                 <includeDependencies>false</includeDependencies>
                 <unpack>true</unpack>
+                <unpackOptions>
+                    <excludes>
+                        <exclude>OSGI-INF/**</exclude>
+                        <exclude>META-INF/**</exclude>
+                    </excludes>
+                </unpackOptions>
             </binaries>
         </moduleSet>
     </moduleSets>    
