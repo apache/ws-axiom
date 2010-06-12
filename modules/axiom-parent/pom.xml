@@ -290,6 +290,10 @@
                 <artifactId>maven-source-plugin</artifactId>
                 <executions>
                     <execution>
+                        <!-- Use the same ID as in org.apache:apache; otherwise, the goal
+                             will be executed twice when the apache-release profile is
+                             activated -->
+                        <id>attach-sources</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
