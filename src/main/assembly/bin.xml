@@ -60,7 +60,7 @@
             <fileMode>0644</fileMode>
         </file>
         <file>
-            <source>${project.build.directory}/axiom-${project.version}-jar.jar</source>
+            <source>${project.build.directory}/axiom.jar</source>
             <outputDirectory>/</outputDirectory>
             <destName>axiom.jar</destName>
         </file>
