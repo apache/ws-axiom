@@ -453,36 +453,12 @@
             <plugin>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>2.1.1</version>
-                <configuration>
-                    <!-- These features are disabled since they cause "mvn site" to hang -->
-                    <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-                    <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jdepend-maven-plugin</artifactId>
-                <version>2.0-beta-1</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <links>
-                        <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
-                        <link>http://java.sun.com/j2ee/1.4/docs/api/</link>
-                        <link>http://java.sun.com/webservices/docs/1.5/api/</link>
-                        <link>http://jaxen.codehaus.org/apidocs/</link>
-                    </links>
-                    <excludePackageNames>org.apache.axiom.test:org.apache.axiom.testutils:org.jaxen.test</excludePackageNames>
-                </configuration>
+                <!-- We don't need to generate the site in sub-modules;
+                     use an empty reportSet -->
                 <reportSets>
-                  <reportSet>
-                    <reports>
-                      <report>aggregate</report>
-                    </reports>
-                  </reportSet>
+                    <reportSet>
+                        <reports/>
+                    </reportSet>
                 </reportSets>
             </plugin>
             <plugin>
