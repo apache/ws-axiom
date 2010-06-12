@@ -22,9 +22,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <artifactId>axiom</artifactId>
+        <artifactId>axiom-parent</artifactId>
         <version>1.2.9-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../axiom-parent/pom.xml</relativePath>
     </parent>
     <artifactId>axiom-api</artifactId>
     <name>Axiom API</name>

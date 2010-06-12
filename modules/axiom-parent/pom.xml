@@ -25,11 +25,11 @@
         <version>7</version>
     </parent>
     <groupId>org.apache.ws.commons.axiom</groupId>
-    <artifactId>axiom</artifactId>
-    <name>Axiom</name>
+    <artifactId>axiom-parent</artifactId>
+    <name>Axiom Parent POM</name>
     <version>1.2.9-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <description>AXIOM API</description>
+    <description>Axiom Parent POM</description>
     <url>http://ws.apache.org/commons/axiom/</url>
     <issueManagement>
         <system>JIRA</system>
@@ -227,125 +227,6 @@
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</developerConnection>
         <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/trunk/modules/axiom</url>
     </scm>
-    <profiles>
-        <profile>
-            <id>jdk15</id>
-            <activation>
-                <jdk>1.5</jdk>
-            </activation>
-            <modules>
-                <module>modules/axiom-integration</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>jdk16</id>
-            <activation>
-                <jdk>1.6</jdk>
-            </activation>
-            <modules>
-                <module>modules/axiom-integration</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>release</id>
-            <activation>
-                <property>
-                    <name>release</name>
-                    <value />
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-release-plugin</artifactId>
-                        <configuration>
-                            <tagBase>https://svn.apache.org/repos/asf/webservices/commons/tags/axiom</tagBase>
-                            <useReleaseProfiles>false</useReleaseProfiles>
-                            <goals>deploy</goals>
-                            <arguments>-Prelease</arguments>
-                            <preparationGoals>clean install</preparationGoals>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <inherited>true</inherited>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <configuration>
-                            <altDeploymentRepository>${deploy.altRepository}</altDeploymentRepository>
-                            <updateReleaseInfo>true</updateReleaseInfo>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                       <inherited>true</inherited>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-<!--
-                    <plugin>
-                        <inherited>true</inherited>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <encoding>${project.build.sourceEncoding}</encoding>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
--->
-                   <plugin>
-                       <inherited>true</inherited>
-                       <groupId>org.apache.maven.plugins</groupId>
-                       <artifactId>maven-gpg-plugin</artifactId>
-                       <executions>
-                            <execution>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                       </executions>
-                   </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>rc</id>
-            <activation>
-                <property>
-                    <name>rc</name>
-                    <value />
-                </property>
-            </activation>
-            <build>
-                <plugins>
-<!--                    <plugin>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>javadoc</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <attach>true</attach>
-                        </configuration>
-                    </plugin> -->
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
     <build>
         <pluginManagement>
             <plugins>
@@ -391,19 +272,6 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.2-beta-2</version>
-                    <configuration>
-                        <descriptors>
-                            <descriptor>src/main/assembly/jar.xml</descriptor>
-                            <descriptor>src/main/assembly/bin.xml</descriptor>
-                            <descriptor>src/main/assembly/src.xml</descriptor>
-                        </descriptors>
-                        <tarLongFileMode>gnu</tarLongFileMode>
-                    </configuration>
-                </plugin>
-                <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <version>2.1</version>
                 </plugin>
@@ -411,8 +279,12 @@
         </pluginManagement>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <source>1.3</source>
+                    <target>1.3</target>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
@@ -425,103 +297,6 @@
                 </executions>
                 <configuration>
                     <attach>true</attach>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.agilejava.docbkx</groupId>
-                <artifactId>docbkx-maven-plugin</artifactId>
-                <version>2.0.8</version>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>userguide-html</id>
-                        <goals>
-                            <goal>generate-html</goal>
-                        </goals>
-                        <phase>pre-site</phase>
-                        <configuration>
-                            <includes>userguide.xml</includes>
-                            <chunkedOutput>true</chunkedOutput>
-                            <targetDirectory>target/site/userguide</targetDirectory>
-                            <htmlCustomization>src/docbkx/xsl/html.xsl</htmlCustomization>
-                            <postProcess>
-                                <copy todir="target/site/userguide/images">
-                                    <fileset dir="src/docbkx/images">
-                                        <include name="**/*.jpg"/>
-                                        <include name="**/*.png"/>
-                                    </fileset>
-                                </copy>
-                            </postProcess>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>devguide-html</id>
-                        <goals>
-                            <goal>generate-html</goal>
-                        </goals>
-                        <phase>pre-site</phase>
-                        <configuration>
-                            <includes>devguide.xml</includes>
-                            <chunkedOutput>true</chunkedOutput>
-                            <targetDirectory>target/site/devguide</targetDirectory>
-                            <htmlCustomization>src/docbkx/xsl/html.xsl</htmlCustomization>
-                            <postProcess>
-                                <copy todir="target/site/devguide/images">
-                                    <fileset dir="src/docbkx/images">
-                                        <include name="**/*.jpg"/>
-                                        <include name="**/*.png"/>
-                                    </fileset>
-                                </copy>
-                            </postProcess>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>userguide-pdf</id>
-                        <goals>
-                            <goal>generate-pdf</goal>
-                        </goals>
-                        <phase>pre-site</phase>
-                        <configuration>
-                            <includes>userguide.xml</includes>
-                            <foCustomization>src/docbkx/xsl/fo.xsl</foCustomization>
-                            <postProcess>
-                                <copy file="target/docbkx/pdf/userguide.pdf"
-                                      tofile="target/site/userguide.pdf"/>
-                            </postProcess>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>devguide-pdf</id>
-                        <goals>
-                            <goal>generate-pdf</goal>
-                        </goals>
-                        <phase>pre-site</phase>
-                        <configuration>
-                            <includes>devguide.xml</includes>
-                            <foCustomization>src/docbkx/xsl/fo.xsl</foCustomization>
-                            <postProcess>
-                                <copy file="target/docbkx/pdf/devguide.pdf"
-                                      tofile="target/site/devguide.pdf"/>
-                            </postProcess>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.docbook</groupId>
-                        <artifactId>docbook-xml</artifactId>
-                        <version>4.4</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <admonGraphics>true</admonGraphics>
-                    <entities>
-                        <entity>
-                            <name>version</name>
-                            <value>${project.version}</value>
-                        </entity>
-                    </entities>
                 </configuration>
             </plugin>
             <plugin>
@@ -730,18 +505,6 @@
             <url>scpexe://people.apache.org/www/ws.apache.org/commons/axiom</url>
         </site>
     </distributionManagement>
-    <modules>
-        <module>modules/axiom-parent</module>
-        <module>modules/axiom-testutils</module>
-        <module>modules/axiom-jaxen-testsuite</module>
-        <module>modules/axiom-api</module>
-        <module>modules/axiom-impl</module>
-        <module>modules/axiom-dom</module>
-        <module>modules/axiom-c14n</module>
-        <module>modules/axiom-tests</module>
-        <module>modules/axiom-osgi</module>
-        <module>modules/axiom-parser-tests</module>
-    </modules>
     <properties>
         <axiom.version>${project.version}</axiom.version>
         <axiom.osgi.version>${project.version}</axiom.osgi.version>
