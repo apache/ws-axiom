@@ -22,32 +22,18 @@
     <formats>
         <format>jar</format>
     </formats>
-    <fileSets>
-        <fileSet>
-            <directory>..</directory>
-            <includes>
-                <include>LICENSE.txt</include>
-                <include>NOTICE.txt</include>
-            </includes>
-            <outputDirectory>META-INF</outputDirectory>
-        </fileSet>
-    </fileSets>
-    <dependencySets>
-        <dependencySet>
-            <useProjectArtifact>false</useProjectArtifact>
+    <moduleSets>
+        <moduleSet>
             <includes>
                 <include>org.apache.ws.commons.axiom:axiom-api</include>
                 <include>org.apache.ws.commons.axiom:axiom-impl</include>
                 <include>org.apache.ws.commons.axiom:axiom-dom</include>
                 <include>org.apache.ws.commons.axiom:axiom-c14n</include>
             </includes>
-            <unpack>true</unpack>
-            <unpackOptions>
-                <excludes>
-                    <exclude>OSGI-INF/**</exclude>
-                    <exclude>META-INF/**</exclude>
-                </excludes>
-            </unpackOptions>
-        </dependencySet>
-    </dependencySets>
+            <binaries>
+                <includeDependencies>false</includeDependencies>
+                <unpack>true</unpack>
+            </binaries>
+        </moduleSet>
+    </moduleSets>    
 </assembly>

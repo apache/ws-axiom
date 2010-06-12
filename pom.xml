@@ -396,6 +396,19 @@
                     </configuration>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.2-beta-2</version>
+                    <configuration>
+                        <descriptors>
+                            <descriptor>src/main/assembly/jar.xml</descriptor>
+                            <descriptor>src/main/assembly/bin.xml</descriptor>
+                            <descriptor>src/main/assembly/src.xml</descriptor>
+                        </descriptors>
+                        <tarLongFileMode>gnu</tarLongFileMode>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <artifactId>maven-source-plugin</artifactId>
                     <version>2.0.4</version>
                 </plugin>
@@ -744,7 +757,6 @@
         <module>modules/axiom-tests</module>
         <module>modules/axiom-osgi</module>
         <module>modules/axiom-parser-tests</module>
-        <module>distribution</module>
     </modules>
     <properties>
         <axiom.version>${project.version}</axiom.version>
