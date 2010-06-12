@@ -27,9 +27,12 @@
     <fileSets>
         <fileSet>
             <includes>
-                <include>LICENSE.txt</include>
-                <include>NOTICE.txt</include>
+                <include>NOTICE</include>
             </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/maven-shared-archive-resources/META-INF</directory>
+            <outputDirectory>/</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>target/site</directory>
