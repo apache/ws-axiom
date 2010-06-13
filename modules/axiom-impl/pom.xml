@@ -31,7 +31,7 @@
     <description>The Axiom default implementation.</description>
     <dependencies>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -64,7 +64,7 @@
             <artifactId>geronimo-stax-api_1.0_spec</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
             <classifier>tests</classifier>
             <version>${project.version}</version>

@@ -32,12 +32,12 @@
     <description />
     <dependencies>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-impl</artifactId>
             <version>${project.version}</version>
         </dependency>

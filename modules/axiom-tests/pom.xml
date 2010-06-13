@@ -35,17 +35,17 @@
     </description>
     <dependencies>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-dom</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -75,21 +75,21 @@
             <artifactId>${stax.impl.artifact}</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
             <classifier>tests</classifier>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-impl</artifactId>
             <classifier>tests</classifier>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-dom</artifactId>
             <classifier>tests</classifier>
             <version>${project.version}</version>

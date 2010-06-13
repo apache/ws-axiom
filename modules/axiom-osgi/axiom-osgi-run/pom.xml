@@ -46,27 +46,27 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
-            <version>1.2.9-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-impl</artifactId>
-            <version>1.2.9-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-osgi-build</artifactId>
-            <version>1.2.9-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-dom</artifactId>
-            <version>1.2.9-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
          <dependency>

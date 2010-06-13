@@ -33,12 +33,12 @@
     </description>
     <dependencies>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-dom</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -88,7 +88,7 @@
             <version>8.7</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.ws.commons.axiom</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
             <classifier>tests</classifier>
             <version>${project.version}</version>
