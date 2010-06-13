@@ -213,26 +213,33 @@
         <section>
             <title>Obtaining the Axiom Binary</title>
             <para>
-                There are two methods through which the Axiom binary can be obtained:
+                There are several methods through which the Axiom binary can be obtained:
             </para>
             <orderedlist>
                 <listitem>
                     <para>
-                        The easiest way to obtain the Axiom binary is to
-                        <ulink url="http://ws.apache.org/commons/axiom/download.cgi">download</ulink> the
-                        latest release. After the source download, the binary can be built. For
-                        both MS Windows and Linux, move it to the project directory and execute
-                        the command <userinput>maven jar</userinput>. All other necessary jars will be automatically
-                        downloaded. When the build is completed successfully, the
-                        <filename>axiom-api-&version;.jar</filename> and <filename>axiom-impl-&version;.jar</filename> can be
-                        found in the newly created "targets" directory.
+                        If your project uses Maven, then it is sufficient to add Axiom as a dependency,
+                        as described in <xref linkend="using-maven2"/>. Releases are available from
+                        the central repository, and snapshots are available from
+                        <literal>http://repository.apache.org/snapshots/</literal>. 
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        However, more adventurous users can build Axiom from source, which is
-                        described in the next section. Detailed information on getting source
-                        from SVN repository is found <ulink url="svn.html">here</ulink>.
+                        A prebuilt binary distribution can be
+                        <ulink url="http://ws.apache.org/commons/axiom/download.cgi">downloaded</ulink>
+                        from the site. Source distributions are also available. They can be built
+                        using Maven 2, by executing <command>mvn install</command> in the root
+                        directory of the distribution.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        It is also possible to check out the source code for the current development
+                        version (trunk) or previous releases from the Subversion repository and build it
+                        using Maven 2. Detailed information on getting the source code
+                        from the Subversion repository is found
+                        <ulink url="http://ws.apache.org/commons/axiom/source-repository.html">here</ulink>.
                     </para>
                 </listitem>
             </orderedlist>
@@ -820,7 +827,7 @@ while (navigator.isNavigable()) {
 
     <chapter>
         <title>Integrating Axiom into your project</title>
-        <section>
+        <section id="using-maven2">
             <title>Using Axiom in a Maven 2 project</title>
             <section>
                 <title>Adding Axiom as a dependency</title>
