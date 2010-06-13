@@ -41,7 +41,7 @@
                 <item name="Releases" href="download.cgi"/>
                 <item name="Source Code" href="source-repository.html"/>
             </item>
-            <item name="Documentation">
+            <item name="Documentation" href="documentation.html">
                 <item name="User guide" href="userguide/userguide.html"/>
                 <item name="Developer guide" href="devguide/devguide.html"/>
                 <item name="Javadocs" href="/apidocs/index.html"/>
