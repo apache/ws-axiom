@@ -1113,6 +1113,47 @@ with CRLF</root>]]></screen>
                         This feature is described in <xref linkend="factory.properties"/>.
                     </para>
                 </section>
+                <section>
+                    <title>Changes in XOP/MTOM handling</title>
+                    <para>
+                        In Axiom 1.2.8, <classname>XMLStreamReader</classname> instances provided by Axiom could
+                        belong to one of three different categories:
+                    </para>
+                    <orderedlist>
+                        <listitem>
+                            <para>
+                                <classname>XMLStreamReader</classname> instances delivering plain XML.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                <classname>XMLStreamReader</classname> instances delivering plain XML and
+                                implementing a custom extension to retrieve optimized binary data.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                <classname>XMLStreamReader</classname> instances representing XOP
+                                encoded data.
+                            </para>
+                        </listitem>
+                    </orderedlist>
+                    <para>
+                        As explained in <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-485">WSCOMMONS-485</ulink>
+                        and <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-488">WSCOMMONS-488</ulink>,
+                        in Axiom 1.2.8, the type of stream reader provided by the API was not always well defined.
+                        Sometimes the type of the stream reader even depended on the state of the Axiom tree
+                        (i.e. whether some part of it has been accessed or not).
+                    </para>
+                    <para>
+                        In release 1.2.9 the behavior of Axiom was changed such that it never delivers XOP
+                        encoded data unless explicitly requested to do so. By default, any <classname>XMLStreamReader</classname>
+                        provided by Axiom now represents plain XML data and optionally implements the
+                        <classname>DataHandlerReader</classname> extension to retrieve optimized
+                        binary data. An XOP encoded stream can be requested from the <methodname>getXOPEncodedStream</methodname>
+                        method in <classname>XOPUtils</classname>.
+                    </para>
+                </section>
             </section>
         </section>
     </chapter>
