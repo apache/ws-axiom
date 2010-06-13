@@ -162,7 +162,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
         <section>
             <title>Release preparation</title>
             <para>
-                The items should be checked before starting the release process:
+                The following items should be checked before starting the release process:
             </para>
             <itemizedlist>
                 <listitem>
@@ -287,7 +287,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 <listitem>
                     <para>
                         A PGP key that conforms to the <ulink url="http://www.apache.org/dev/release-signing.html">requirement
-                        for Apache release signing</ulink>. The make the release process easier, the passphrase for the
+                        for Apache release signing</ulink>. To make the release process easier, the passphrase for the
                         code signing key should be configured in <filename>${user.home}/.m2/settings.xml</filename>:
                     </para>
 <screen><![CDATA[<settings>
@@ -307,13 +307,42 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
         </section>
         <section>
             <title>Release</title>
-            <itemizedlist>
-                <listitem>
+            <procedure>
+                <step>
                     <para>
                         Add an entry for the release to the <filename>download.xml</filename> file.
                     </para>
-                </listitem>
-            </itemizedlist>
+                </step>
+                <step>
+                    <para>
+                        Start the release process with the following command:
+                    </para>
+                    <screen>mvn release:prepare</screen>
+                    <para>
+                        When asked for the "SCM release tag or label", override the default value
+                        (<literal>axiom-x.y.z</literal>) by entering a tag in the form
+                        <literal>x.y.z</literal>, which is compatible with the tag names used for
+                        previous releases.
+                    </para>
+                    <para>
+                        The above command will create a tag in Subversion and increment the version
+                        number of the trunk to the next development version. It will also create
+                        a <filename>release.properties</filename> file that will be used in the next step.
+                    </para>
+                </step>
+                <step>
+                    <para>
+                        Perform the release using the following command:
+                    </para>
+                    <screen>mvn release:perform</screen>
+                    <para>
+                        This will upload the release artifacts to the Nexus staging repository.
+                    </para>
+                </step>
+            </procedure>
+            <para>
+                To be continued.
+            </para>
         </section>
         <section>
             <title>Post-release actions</title>
