@@ -27,7 +27,7 @@
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom-parent</artifactId>
     <name>Axiom Parent POM</name>
-    <version>1.2.9-SNAPSHOT</version>
+    <version>1.2.9</version>
     <packaging>pom</packaging>
     <description>Axiom Parent POM</description>
     <url>http://ws.apache.org/commons/axiom/</url>
@@ -223,9 +223,9 @@
         </contributor>
     </contributors>
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</developerConnection>
-        <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/trunk/modules/axiom</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/tags/axiom/1.2.9</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/tags/axiom/1.2.9</developerConnection>
+        <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/tags/axiom/1.2.9</url>
     </scm>
     <build>
         <pluginManagement>
