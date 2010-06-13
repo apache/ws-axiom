@@ -227,107 +227,6 @@
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</developerConnection>
         <url>http://svn.apache.org/viewcvs.cgi/webservices/commons/trunk/modules/axiom</url>
     </scm>
-    <profiles>
-        <profile>
-            <id>release</id>
-            <activation>
-                <property>
-                    <name>release</name>
-                    <value />
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-release-plugin</artifactId>
-                        <configuration>
-                            <tagBase>https://svn.apache.org/repos/asf/webservices/commons/tags/axiom</tagBase>
-                            <useReleaseProfiles>false</useReleaseProfiles>
-                            <goals>deploy</goals>
-                            <arguments>-Prelease</arguments>
-                            <preparationGoals>clean install</preparationGoals>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <inherited>true</inherited>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <configuration>
-                            <altDeploymentRepository>${deploy.altRepository}</altDeploymentRepository>
-                            <updateReleaseInfo>true</updateReleaseInfo>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                       <inherited>true</inherited>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-<!--
-                    <plugin>
-                        <inherited>true</inherited>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <encoding>${project.build.sourceEncoding}</encoding>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
--->
-                   <plugin>
-                       <inherited>true</inherited>
-                       <groupId>org.apache.maven.plugins</groupId>
-                       <artifactId>maven-gpg-plugin</artifactId>
-                       <executions>
-                            <execution>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                       </executions>
-                   </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>rc</id>
-            <activation>
-                <property>
-                    <name>rc</name>
-                    <value />
-                </property>
-            </activation>
-            <build>
-                <plugins>
-<!--                    <plugin>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>javadoc</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <attach>true</attach>
-                        </configuration>
-                    </plugin> -->
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
     <build>
         <pluginManagement>
             <plugins>
@@ -340,6 +239,8 @@
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
                     <configuration>
+                        <tagBase>https://svn.apache.org/repos/asf/webservices/commons/tags/axiom</tagBase>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
                         <!-- The default value "clean verify" is not appropriate. If the install
                              phase is not executed, then the current build will pick up artifacts
                              from a previous build. -->
