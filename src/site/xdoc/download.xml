@@ -47,6 +47,27 @@
                             <td align="center" width="200">Description</td>
                         </tr>
 		
+        <tr class="b">
+                            <td align="center" valign="middle">
+                                <a name="1_2_9"></a>
+                                1.2.9
+                            </td>
+                            <td>Source Distribution
+                                <a href="[preferred]/ws/commons/axiom/1_2_9/axiom-1.2.9-source-release.zip">zip</a> |
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_9/axiom-1.2.9-source-release.zip.md5">MD5</a> |
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_9/axiom-1.2.9-source-release.zip.asc">PGP</a>
+                                <br/>
+                                Binary Distribution
+                                <a href="[preferred]/ws/commons/axiom/1_2_9/axiom-1.2.9-bin.zip">zip</a> |
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_9/axiom-1.2.9-bin.zip.md5">MD5</a> |
+                                <a href="http://www.apache.org/dist/ws/commons/axiom/1_2_9/axiom-1.2.9-bin.zip.asc">PGP</a>
+
+                                <br/>
+                            </td>
+                            <td>13 - Jun - 2010</td>
+                            <td>1.2.9 Release (Mirrored)</td>
+                        </tr>
+
 		<tr class="b">
                             <td align="center" valign="middle">
                                 <a name="1_2_8"></a>
