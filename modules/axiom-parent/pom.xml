@@ -317,19 +317,8 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <!-- RAT doesn't recognize this one as notes file -->
-                        <exclude>RELEASE-NOTE.txt</exclude>
-                        <!-- SVG files are not edited by hand, so license headers would be lost anyway -->
-                        <exclude>**/*.svg</exclude>
                         <!-- We can't add license headers to test resources -->
                         <exclude>src/test/resources/**</exclude>
-                        <!-- Source code, resources and license files from Jaxen (see LEGAL-74 & WSCOMMONS-545) -->
-                        <exclude>src/main/resources/xml/**</exclude>
-                        <exclude>src/main/java/org/jaxen/test/**</exclude>
-                        <exclude>src/main/resources/META-INF/LICENSE-JAXEN</exclude>
-                        <exclude>legal/jaxen-LICENSE.txt</exclude>
-                        <!-- Files used by various developer tools -->
-                        <exclude>*.sonarj</exclude>
                     </excludes>
                 </configuration> 
             </plugin>

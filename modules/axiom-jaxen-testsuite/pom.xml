@@ -41,4 +41,20 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <!-- Source code, resources and license files from Jaxen (see LEGAL-74 & WSCOMMONS-545) -->
+                        <exclude>src/main/resources/xml/**</exclude>
+                        <exclude>src/main/java/org/jaxen/test/**</exclude>
+                        <exclude>src/main/resources/META-INF/LICENSE-JAXEN</exclude>
+                    </excludes>
+                </configuration> 
+            </plugin>
+        </plugins>
+    </build>
 </project>
