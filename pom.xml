@@ -257,7 +257,11 @@
                 <executions>
                     <execution>
                         <id>distribution-javadoc</id>
-                        <phase>package</phase>
+                        <!-- Need to execute this before the package phase. Reason: If the
+                             apache-release profile is activated, then the assembly plugin is run
+                             before the javadoc plugin in the package phase. Note that the
+                             prepare-package phase is only available in Maven 2.1. -->
+                        <phase>compile</phase>
                         <goals>
                             <goal>aggregate</goal>
                         </goals>
@@ -354,7 +358,7 @@
                         <goals>
                             <goal>generate-pdf</goal>
                         </goals>
-                        <phase>package</phase>
+                        <phase>compile</phase>
                         <configuration>
                             <includes>userguide.xml</includes>
                             <foCustomization>src/docbkx/xsl/fo.xsl</foCustomization>
@@ -365,7 +369,7 @@
                         <goals>
                             <goal>generate-pdf</goal>
                         </goals>
-                        <phase>package</phase>
+                        <phase>compile</phase>
                         <configuration>
                             <includes>devguide.xml</includes>
                             <foCustomization>src/docbkx/xsl/fo.xsl</foCustomization>
