@@ -566,7 +566,6 @@ public class Attachments implements OMAttachmentAccessor {
      * (Length of the entire message - Length of the Transport Headers)
      * @return length of message content or -1 if Attachments is not
      * backed by an InputStream
-     * @see getMessageLength
      */
     public long getContentLength() throws IOException {
         if (contentLength > 0) {

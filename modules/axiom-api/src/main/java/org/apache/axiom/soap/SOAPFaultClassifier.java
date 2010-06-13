@@ -31,7 +31,7 @@ public interface SOAPFaultClassifier extends OMElement {
     /**
      * Fault SubCode contain only one mandatory Value child. This value child contains a QName
      *
-     * @param soapFaultSubCodeValue
+     * @param value
      */
     void setValue(SOAPFaultValue value) throws SOAPProcessingException;
 
@@ -43,7 +43,7 @@ public interface SOAPFaultClassifier extends OMElement {
      *
      * @param subCode
      */
-    void setSubCode(SOAPFaultSubCode value) throws SOAPProcessingException;
+    void setSubCode(SOAPFaultSubCode subCode) throws SOAPProcessingException;
 
     /** @return Returns SOAPFaultSubCode. */
     SOAPFaultSubCode getSubCode();

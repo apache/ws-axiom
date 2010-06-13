@@ -44,7 +44,7 @@ public class ByteSearch {
      * @param buffer byte[] to search
      * @param start index to start search
      * @param end index to end search (end index is not within the search)
-     * @param skipArray short[256]  A skipArray generated from a call to 
+     * @param skip short[256]  A skipArray generated from a call to 
      * generateSkipArray. 
      * @return index or -1 if not found
      */

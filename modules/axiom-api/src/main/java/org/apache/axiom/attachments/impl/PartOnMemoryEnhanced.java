@@ -41,7 +41,7 @@ import java.util.Hashtable;
  * performance.
  * 
  * The PartOnMemoryEnhanced object is created by the PartFactory
- * @see org.apache.axiom.attachments.impl.PartFactory.
+ * @see PartFactory
  */
 public class PartOnMemoryEnhanced extends AbstractPart {
 

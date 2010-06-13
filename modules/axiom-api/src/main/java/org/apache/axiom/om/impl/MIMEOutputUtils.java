@@ -45,7 +45,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Utility class used to write out XML with Attachments
- * @See MTOMXMLStreamWriter
+ * @see MTOMXMLStreamWriter
  *
  */
 public class MIMEOutputUtils {

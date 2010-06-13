@@ -297,7 +297,7 @@ public class StAXOMBuilder extends StAXBuilder {
     /**
      * Creates a new OMElement using either a CustomBuilder or 
      * the default Builder mechanism.
-     * @return
+     * @return TODO
      */
     protected OMNode createNextOMElement() {
         OMNode newElement = null;

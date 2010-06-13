@@ -46,7 +46,6 @@ public final class MultipartAttachmentStreams extends IncomingAttachmentStreams 
         this._delimitedStream = delimitedStream;
     }
 
-    /** @see org.apache.axis.attachments.IncomingAttachmentStreams#getNextStream() */
     public IncomingAttachmentInputStream getNextStream() throws OMException {
         IncomingAttachmentInputStream stream;
 

@@ -40,7 +40,7 @@ import java.io.Writer;
  * original OMDataSource.
  * 
  * @see OMDataSource
- * @see OMSourceElementImpl
+ * @see OMSourcedElement
  */
 public interface OMDataSourceExt extends OMDataSource {
     
@@ -130,7 +130,7 @@ public interface OMDataSourceExt extends OMDataSource {
      * Returns a byte[] representing the xml data
      * @param encoding String encoding of InputStream
      * @return byte[]
-     * @see getXMLInputStream
+     * @see #getXMLInputStream(String)
      */
     public byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException;
     
@@ -148,7 +148,7 @@ public interface OMDataSourceExt extends OMDataSource {
     /**
      * Returns true if property is set
      * @param key
-     * @return
+     * @return TODO
      */
     public boolean hasProperty(String key);
     

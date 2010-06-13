@@ -40,7 +40,7 @@ import java.util.Hashtable;
  * performance.
  * 
  * The PartOnMemory object is created by the PartFactory
- * @see org.apache.axiom.attachments.impl.PartFactory.
+ * @see PartFactory
  */
 public class PartOnMemory extends AbstractPart {
 

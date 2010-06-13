@@ -35,9 +35,6 @@ public class UnsyncByteArrayOutputStream extends OutputStream {
     int size = 8 * 1024;//buf.length;
     int pos = 0;
 
-    /**
-     * @inheritDoc
-     */
     public UnsyncByteArrayOutputStream() {
         buf = (byte[]) bufCahce.get();
     }

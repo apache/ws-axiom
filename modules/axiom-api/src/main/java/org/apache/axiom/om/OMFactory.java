@@ -130,6 +130,9 @@ public interface OMFactory {
     OMNamespace createOMNamespace(String uri, String prefix);
 
     /**
+     * Creates a new {@link OMText} node with the given value and appends it to the given parent
+     * element.
+     * 
      * @param parent
      * @param text
      * @return Returns OMText.
@@ -140,7 +143,7 @@ public interface OMFactory {
      * Create OMText node that is a copy of the source text node
      * @param parent
      * @param source
-     * @return
+     * @return TODO
      */
     public OMText createOMText(OMContainer parent, OMText source);
     
@@ -195,11 +198,11 @@ public interface OMFactory {
      * @param contentID
      *            the content ID identifying the binary content; may be <code>null</code>
      * @param dataHandlerProvider
-     *            used to load the {@link DataHandler} when requested from the returned
+     *            used to load the {@link javax.activation.DataHandler} when requested from the returned
      *            {@link OMText} node
      * @param optimize
      *            determines whether the binary content should be optimized
-     * @return
+     * @return TODO
      */
     OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
             boolean optimize);

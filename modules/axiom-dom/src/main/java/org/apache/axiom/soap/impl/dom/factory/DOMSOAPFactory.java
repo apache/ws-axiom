@@ -248,7 +248,6 @@ public class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
         throw new UnsupportedOperationException("TODO");
     }
 
-    /** @see SOAP11Factory,SOAP12Factory */
     public SOAPFault createSOAPFault() throws SOAPProcessingException {
         return null;
     }

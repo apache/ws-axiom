@@ -54,7 +54,7 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
     
     /**
      * Constructor
-     * @param bytes 
+     * @param is 
      * @param encoding
      */
     public InputStreamDataSource(InputStream is, String encoding) {

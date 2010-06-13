@@ -37,7 +37,7 @@ public interface LifecycleEventHandler {
      * When a Event occurs in FileAccessor, execute the LifecycleManager Operation
      * For example, if the delete behaviour is readOnce and if the inputstream on attachment is read 
      * and closed the first time, the delete operation in LifecycleManager should be executed. 
-     * @param eventName
+     * @param eventId
      */
     public void handleEvent(int eventId) throws IOException;
 }

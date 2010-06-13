@@ -84,7 +84,7 @@ public class CommonUtils {
      * Get a string containing the stack of the specified exception
      *
      * @param e
-     * @return
+     * @return TODO
      */
     public static String stackToString(Throwable e) {
         java.io.StringWriter sw = new java.io.StringWriter();
@@ -117,7 +117,7 @@ public class CommonUtils {
      * Also calculates the length of the message.
      * @param om OMElement
      * @param log Log
-     * @param int limit of message to write
+     * @param limit limit of message to write
      * @return length of entire message
      */
     public static long logDebug(OMElement om, Log log, int limit) {
@@ -132,7 +132,7 @@ public class CommonUtils {
      * Also calculates the length of the message.
      * @param om OMElement
      * @param log Log
-     * @param int limit of message to write
+     * @param limit limit of message to write
      * @param format OMOutputFormat
      * @return length of entire message
      */

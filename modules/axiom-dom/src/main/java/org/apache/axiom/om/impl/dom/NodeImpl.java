@@ -594,7 +594,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
      * specification may take into account more attributes and implementations conform to this
      * specification are expected to be updated accordingly.
      *
-     * @param arg The node to compare equality with.
+     * @param node The node to compare equality with.
      * @return Returns <code>true</code> if the nodes are equal, <code>false</code> otherwise.
      * @since DOM Level 3
      */

@@ -48,7 +48,7 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * StAX based builder that produces a SOAP infoset model.
  * It builds SOAP specific objects such as {@link SOAPEnvelope}, {@link SOAPHeader},
- * {@link SOAPHeaderBlock} and {@link SOAPBody}.
+ * {@link org.apache.axiom.soap.SOAPHeaderBlock} and {@link SOAPBody}.
  * <p>
  * This builder offers two different ways to handle SOAP versions:
  * <ul>
@@ -206,11 +206,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
         return envelope;
     }
 
-    /**
-     * Creates a new OMElement using either a CustomBuilder or 
-     * the default Builder mechanism.
-     * @return
-     */
     protected OMNode createNextOMElement() {
         OMNode newElement = null;
         

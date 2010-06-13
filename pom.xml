@@ -361,6 +361,24 @@
                         <link>http://jaxen.codehaus.org/apidocs/</link>
                     </links>
                     <excludePackageNames>org.apache.axiom.test:org.apache.axiom.testutils:org.jaxen.test</excludePackageNames>
+                    <tags>
+                        <tag>
+                            <name>scr.component</name>
+                            <placement>X</placement>
+                        </tag>
+                        <tag>
+                            <name>scr.reference</name>
+                            <placement>X</placement>
+                        </tag>
+                        <tag>
+                            <name>scr.service</name>
+                            <placement>X</placement>
+                        </tag>
+                        <tag>
+                            <name>scr.property</name>
+                            <placement>X</placement>
+                        </tag>
+                    </tags>                    
                 </configuration>
             </plugin>
             <plugin>

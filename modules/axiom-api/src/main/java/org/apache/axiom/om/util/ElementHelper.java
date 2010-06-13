@@ -124,9 +124,6 @@ public class ElementHelper {
 
     /**
      * @deprecated please use OMElement.getFirstChildWithName(qname) instead!
-     * @param parent
-     * @param childName
-     * @return
      */
     public static OMElement getChildWithName(OMElement parent,
                                              String childName) {
@@ -197,7 +194,7 @@ public class ElementHelper {
      * 
      * @param omElement
      * @param factory
-     * @return
+     * @return TODO
      * @throws Exception
      */
     public static SOAPHeaderBlock toSOAPHeaderBlock(OMElement omElement, SOAPFactory factory) throws Exception {

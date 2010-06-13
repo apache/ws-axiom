@@ -35,7 +35,7 @@ import java.util.Hashtable;
  * the in-memory footprint.
  * 
  * The PartOnFile object is created by the PartFactory
- * @see org.apache.axiom.attachments.impl.PartFactory.
+ * @see PartFactory
  */
 public class PartOnFile extends AbstractPart {
 

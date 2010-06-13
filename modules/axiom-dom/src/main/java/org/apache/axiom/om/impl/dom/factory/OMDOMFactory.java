@@ -243,12 +243,6 @@ public class OMDOMFactory implements OMFactory {
         return new NamespaceImpl(uri, prefix);
     }
 
-    /**
-     * Creates a new OMDOM Text node with the given value and appends it to the given parent
-     * element.
-     *
-     * @see org.apache.axiom.om.OMFactory#createOMText( org.apache.axiom.om.OMElement,String)
-     */
     public OMText createOMText(OMContainer parent, String text) {
         return createOMText(parent, text, OMNode.TEXT_NODE);
     }
@@ -278,12 +272,6 @@ public class OMDOMFactory implements OMFactory {
     }
     
     
-    /**
-     * Create OMText node that is a copy of the source text node
-     * @param parent
-     * @param source
-     * @return
-     */
     public OMText createOMText(OMContainer parent, OMText source) {
         return new TextImpl(parent, (TextImpl) source, this);
     }

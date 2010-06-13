@@ -42,8 +42,7 @@ public class CharArrayDataSource extends OMDataSourceExtBase {
    
     /**
      * Constructor
-     * @param bytes 
-     * @param encoding
+     * @param chars
      */
     public CharArrayDataSource(char[] chars) {
         this.chars = chars;

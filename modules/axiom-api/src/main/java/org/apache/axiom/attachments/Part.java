@@ -65,7 +65,7 @@ public interface Part {
      * The part may be backed by a file.  If that is the case,
      * this method returns the file name.
      * 
-     * @return 
+     * @return the name of the file
      * @throws MessagingException
      * @deprecated The callers should not no how the part 
      * is implemented.

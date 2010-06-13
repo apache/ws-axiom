@@ -39,21 +39,21 @@ public interface LifecycleManager {
     /**
      * Create a unique file in the designated directory
      * @param attachmentDir
-     * @return
+     * @return TODO
      * @throws IOException
      */    
     public FileAccessor create(String attachmentDir) throws IOException;
     
     /** 
      * Deletes attachment file
-     * @param File
+     * @param file
      * @throws IOException
      */
     public void delete(File file) throws IOException;
     
     /**
      * Mark the file for deletion on application/VM exit 
-     * @param File
+     * @param file
      * @throws IOException
      */
     public void deleteOnExit(File file) throws IOException;
@@ -62,7 +62,7 @@ public interface LifecycleManager {
      * Mark attachment file for deletion when designated time interval in seconds 
      * has elapsed.
      * @param interval
-     * @param File
+     * @param file
      * @throws IOException
      */
     public void deleteOnTimeInterval(int interval, File file) throws IOException;
@@ -70,7 +70,7 @@ public interface LifecycleManager {
     /**
      * This method will return the file accessor associated with this file.
      * @param file
-     * @return
+     * @return TODO
      * @throws IOException
      */
     public FileAccessor getFileAccessor(String file) throws IOException;

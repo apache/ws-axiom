@@ -91,7 +91,7 @@ public class TextHelper {
     
     /**
      * Append data in the omText to the specified buffer
-     * @param inStream InputStream
+     * @param omText the text node to get the character data from
      * @param buffer Buffer
      * @throws IOException
      */
@@ -118,7 +118,9 @@ public class TextHelper {
      * Create an OMText node from a byte array containing binary data
      * If the byte array is large and the optimize flag is set, then 
      * the data is stored in a temp file to reduce in-core memory
-     * @param is
+     * @param b
+     * @param off
+     * @param length
      * @param factory
      * @param isOptimize
      */
@@ -133,9 +135,12 @@ public class TextHelper {
      * Create an OMText node from a byte array containing binary data
      * If the byte array is large and the optimize flag is set, then 
      * the data is stored in a temp file to reduce in-core memory
-     * @param is
+     * @param b
+     * @param off
+     * @param length
      * @param factory
      * @param isOptimize
+     * @param attachmentDir
      */
     public static OMText toOMText(byte[] b, int off, int length, 
                                       OMFactory factory, 

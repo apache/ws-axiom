@@ -690,7 +690,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * without accessing the XMLStreamReader. https://issues.apache.org/jira/browse/WSCOMMONS-155
      *
      * @param name
-     * @return
+     * @return TODO
      */
     public Object getReaderProperty(String name) throws IllegalArgumentException {
         if (!isClosed()) {

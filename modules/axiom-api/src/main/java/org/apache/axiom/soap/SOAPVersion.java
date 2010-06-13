@@ -58,32 +58,37 @@ public interface SOAPVersion {
     QName getSenderFaultCode();
 
     /**
-     * Obtain the QName for the Receiver fault code
+     * Obtain the QName for the Receiver fault code.
+     * 
      * @return Receiver fault code as a QName
      */
     QName getReceiverFaultCode();
 
     /**
-     * Obtain the QName for the fault reason element
-     * @return
+     * Obtain the QName for the fault reason element.
+     * 
+     * @return the QName for the fault reason element
      */
     QName getFaultReasonQName();
 
     /**
-     * Obtain the QName for the fault code element
-     * @return
+     * Obtain the QName for the fault code element.
+     * 
+     * @return the QName for the fault code element
      */
     QName getFaultCodeQName();
 
     /**
-     * Obtain the QName for the fault detail element
-     * @return
+     * Obtain the QName for the fault detail element.
+     * 
+     * @return the QName for the fault detail element
      */
     QName getFaultDetailQName();
 
     /**
-     * Obtain the QName for the fault role/actor element
-     * @return
+     * Obtain the QName for the fault role/actor element.
+     * 
+     * @return the QName for the fault role/actor element
      */
     QName getFaultRoleQName();
 }

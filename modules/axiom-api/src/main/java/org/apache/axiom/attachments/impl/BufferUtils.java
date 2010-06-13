@@ -207,7 +207,7 @@ public class BufferUtils {
      * @param is
      * @param baaos
      * @param limit
-     * @return
+     * @return TODO
      */
     public static long inputStream2BAAOutputStream(InputStream is, 
                                                BAAOutputStream baaos,
@@ -263,11 +263,10 @@ public class BufferUtils {
      * if the Content represented by DataHandler has size less than the 
      * optimize threshold size, the attachment will not be eligible for 
      * optimization, instead it will be inlined.
-     * returns 1 if DataHandler data is bigger than limit.
-     * returns 0 if DataHandler data is smaller.
-     * return -1 if an error occurs or unsupported.
-     * @param in
-     * @return
+     * @param dh
+     * @param limit
+     * @return 1 if DataHandler data is bigger than limit, 0 if DataHandler data is smaller or
+     * -1 if an error occurs or unsupported.
      * @throws IOException
      */
     public static int doesDataHandlerExceedLimit(DataHandler dh, int limit){

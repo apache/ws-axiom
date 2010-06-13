@@ -269,12 +269,6 @@ public class OMLinkedListImplFactory implements OMFactory {
         return new OMTextImpl(contentID, parent, builder, this);
     }
     
-    /**
-     * Create OMText node that is a copy of the source text node
-     * @param parent
-     * @param source
-     * @return
-     */
     public OMText createOMText(OMContainer parent, OMText source) {
         return new OMTextImpl(parent, (OMTextImpl) source, this);
     }

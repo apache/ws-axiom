@@ -27,7 +27,7 @@ import javax.activation.DataHandler;
 public interface OMAttachmentAccessor {
 
     /**
-     * @param blobContentID (without the surrounding angle brackets and "cid:" prefix)
+     * @param blobcid (without the surrounding angle brackets and "cid:" prefix)
      * @return The DataHandler of the mime part referred by the Content-Id or *null* if the mime
      *         part referred by the content-id does not exist
      */
