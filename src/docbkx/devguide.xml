@@ -161,6 +161,9 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
         <title>Release process</title>
         <section>
             <title>Release preparation</title>
+            <para>
+                The items should be checked before starting the release process:
+            </para>
             <itemizedlist>
                 <listitem>
                     <para>
@@ -231,6 +234,14 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         To do this, issue the following command:
                     </para>
                     <screen>mvn clean install -Papache-release -Dmaven.test.skip=true</screen>
+                    <para>
+                        You may also execute a dry run of the release process:
+                    </para>
+                    <screen>mvn release:prepare -DdryRun=true</screen>
+                    <para>
+                        After this, you need to clean up using the following command:
+                    </para>
+                    <screen>mvn release:clean</screen>
                 </listitem>
                 <listitem>
                     <para>
@@ -240,6 +251,58 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         need to be updated.
                     </para>
                 </listitem>
+                <listitem>
+                    <para>
+                        Check the <filename>download.xml</filename> file for releases that are no
+                        longer available from the mirrors and change the corresponding entries so that
+                        they point to the archives.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Preview and validate the changes that will be done by the release plugin
+                        to the POM files. In order to do this, execute the following command:
+                    </para>
+                    <screen>mvn release:prepare -DdryRun=true</screen>
+                    <para>
+                        Next, compare the <filename>pom.xml.tag</filename> files to the corresponding
+                        <filename>pom.xml</filename> files:
+                    </para>
+                    <screen>for pom in $(find . -name "pom.xml"); do diff $pom $pom.tag; done</screen>
+                    <para>
+                        The differences should be limited to <sgmltag class="element">version</sgmltag>
+                        and <sgmltag class="element">scm</sgmltag> tags. If necessary, change the
+                        original POM files to avoid spurious changes. After that, clean up using:
+                    </para>
+                    <screen>mvn release:clean</screen>
+                </listitem>
+            </itemizedlist>
+        </section>
+        <section>
+            <title>Prerequisites</title>
+            <para>
+                The following things are required to perform the actual release:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        A PGP key that conforms to the <ulink url="http://www.apache.org/dev/release-signing.html">requirement
+                        for Apache release signing</ulink>. The make the release process easier, the passphrase for the
+                        code signing key should be configured in <filename>${user.home}/.m2/settings.xml</filename>:
+                    </para>
+<screen><![CDATA[<settings>
+  ...
+  <profiles>
+    <profile>
+      <id>apache-release</id>
+      <properties>
+        <gpg.passphrase> <!-- YOUR KEY PASSPHRASE --> </gpg.passphrase>
+      </properties>
+    </profile>
+  </profiles>
+  ...
+</settings>]]></screen>
+                </listitem>
             </itemizedlist>
         </section>
         <section>
@@ -247,9 +310,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
             <itemizedlist>
                 <listitem>
                     <para>
-                        Add an entry to the <filename>download.xml</filename> file. Change the entries
-                        for previous releases that are no longer available from the mirrors, so that
-                        they point to the archives.
+                        Add an entry for the release to the <filename>download.xml</filename> file.
                     </para>
                 </listitem>
             </itemizedlist>
