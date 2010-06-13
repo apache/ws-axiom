@@ -431,7 +431,7 @@
                      use an empty reportSet -->
                 <reportSets>
                     <reportSet>
-                        <reports/>
+                        <reports />
                     </reportSet>
                 </reportSets>
             </plugin>

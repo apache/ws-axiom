@@ -411,8 +411,8 @@
                             <postProcess>
                                 <copy todir="target/site/userguide/images">
                                     <fileset dir="src/docbkx/images">
-                                        <include name="**/*.jpg"/>
-                                        <include name="**/*.png"/>
+                                        <include name="**/*.jpg" />
+                                        <include name="**/*.png" />
                                     </fileset>
                                 </copy>
                             </postProcess>
@@ -432,8 +432,8 @@
                             <postProcess>
                                 <copy todir="target/site/devguide/images">
                                     <fileset dir="src/docbkx/images">
-                                        <include name="**/*.jpg"/>
-                                        <include name="**/*.png"/>
+                                        <include name="**/*.jpg" />
+                                        <include name="**/*.png" />
                                     </fileset>
                                 </copy>
                             </postProcess>
