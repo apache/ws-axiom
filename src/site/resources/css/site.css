@@ -122,3 +122,8 @@ p, li, td {
   color: #333333;
   line-height: 1.45em;
 }
+
+a.externalLink, a.externalLink:link, a.externalLink:visited, a.externalLink:active, a.externalLink:hover {
+  background: transparent;
+  padding-right: 0
+}
