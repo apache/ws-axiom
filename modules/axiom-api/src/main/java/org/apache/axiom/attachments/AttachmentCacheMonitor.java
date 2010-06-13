@@ -16,7 +16,6 @@
 
 package org.apache.axiom.attachments;
 
-import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Timer;
@@ -24,7 +23,6 @@ import java.util.TimerTask;
 
 import java.io.File;
 
-import java.io.IOException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 

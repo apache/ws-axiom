@@ -38,7 +38,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 
 public class ElementSerializerTest extends AbstractTestCase {
     private XMLStreamReader reader;

@@ -23,7 +23,6 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMSerializer;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMStAXWrapper;
 import org.apache.axiom.om.impl.builder.DataHandlerReaderUtils;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
@@ -38,7 +37,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 
 /** Class StreamingOMSerializer */

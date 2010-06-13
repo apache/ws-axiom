@@ -23,13 +23,9 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.custommonkey.xmlunit.Diff;
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
 import javax.xml.namespace.QName;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.Iterator;
 

@@ -20,7 +20,6 @@
 package org.apache.axiom.om;
 
 import org.apache.axiom.soap.SOAPBody;
-import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

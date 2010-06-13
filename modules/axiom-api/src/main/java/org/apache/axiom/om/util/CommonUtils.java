@@ -23,8 +23,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.commons.logging.Log;
 
-import javax.xml.stream.XMLStreamException;
-
 /**
  * Common Utilities
  */

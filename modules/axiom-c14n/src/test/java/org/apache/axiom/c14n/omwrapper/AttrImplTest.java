@@ -22,14 +22,10 @@ package org.apache.axiom.c14n.omwrapper;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.axiom.c14n.omwrapper.factory.WrapperFactory;
-import org.apache.axiom.c14n.omwrapper.interfaces.Document;
 import org.apache.axiom.c14n.omwrapper.interfaces.Element;
 import org.apache.axiom.c14n.omwrapper.interfaces.NamedNodeMap;
 import org.apache.axiom.c14n.omwrapper.interfaces.Attr;
 import org.apache.axiom.c14n.DataParser;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import junit.framework.TestCase;
 import junit.framework.Test;

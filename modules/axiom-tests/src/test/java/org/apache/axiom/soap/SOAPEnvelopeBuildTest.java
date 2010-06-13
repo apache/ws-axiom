@@ -35,7 +35,6 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /*
 * Licensed to the Apache Software Foundation (ASF) under one or more

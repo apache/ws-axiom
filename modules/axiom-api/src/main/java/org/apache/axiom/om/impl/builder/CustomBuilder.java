@@ -23,8 +23,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-
 import javax.xml.stream.XMLStreamReader;
 
 

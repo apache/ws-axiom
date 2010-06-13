@@ -28,8 +28,6 @@ import org.apache.axiom.om.OMElement;
 
 import java.net.URL;
 import java.io.RandomAccessFile;
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
 
 /**
  * @author Saliya Ekanayake (esaliya@gmail.com)

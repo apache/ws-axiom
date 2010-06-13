@@ -19,8 +19,6 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import junit.framework.TestCase;
-
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMTestUtils;
