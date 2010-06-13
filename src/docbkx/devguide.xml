@@ -232,6 +232,14 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     </para>
                     <screen>mvn clean install -Papache-release -Dmaven.test.skip=true</screen>
                 </listitem>
+                <listitem>
+                    <para>
+                        Prepare the release note. This should include a description of the major
+                        changes in the release as well as a list of resolved JIRA issues. Note that
+                        both <filename>index.apt</filename> and <filename>RELEASE-NOTE.txt</filename>
+                        need to be updated.
+                    </para>
+                </listitem>
             </itemizedlist>
         </section>
         <section>
