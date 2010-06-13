@@ -596,13 +596,13 @@ System.out.println(documentElement.toStringWithConsume());</programlisting>
             </para>
             <caution>
                 <para>
-                    Axiom implicitly assumes that <classname>XMLInputFactory</classname> and
+                    Axiom 1.2.8 implicitly assumed that <classname>XMLInputFactory</classname> and
                     <classname>XMLOutputFactory</classname> instances are thread safe. This is the case
                     for Woodstox (which is the default StAX implementation used by Axiom), but not
                     e.g. for the StAX implementation shipped with Sun's Java 6 runtime environment.
-                    Therefore you should avoid using <classname>StAXUtils</classname>
+                    Therefore, when using Axiom versions prior to 1.2.9, you should avoid using <classname>StAXUtils</classname>
                     together with a StAX implementation other than Woodstox, especially in a highly
-                    concurrent environment. See
+                    concurrent environment. The issue has been fixed in Axiom 1.2.9. See
                     <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-489">WSCOMMONS-489</ulink>
                     for more details.
                 </para>
@@ -855,7 +855,7 @@ while (navigator.isNavigable()) {
 <programlisting><![CDATA[<repository>
     <id>apache.snapshots</id>
     <name>Apache Snapshot Repository</name>
-    <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+    <url>http://repository.apache.org/snapshots/</url>
     <releases>
         <enabled>false</enabled>
     </releases>
