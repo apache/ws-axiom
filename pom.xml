@@ -229,24 +229,6 @@
     </scm>
     <profiles>
         <profile>
-            <id>jdk15</id>
-            <activation>
-                <jdk>1.5</jdk>
-            </activation>
-            <modules>
-                <module>modules/axiom-integration</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>jdk16</id>
-            <activation>
-                <jdk>1.6</jdk>
-            </activation>
-            <modules>
-                <module>modules/axiom-integration</module>
-            </modules>
-        </profile>
-        <profile>
             <id>release</id>
             <activation>
                 <property>
@@ -689,5 +671,6 @@
         <module>modules/axiom-tests</module>
         <module>modules/axiom-osgi</module>
         <module>modules/axiom-parser-tests</module>
+        <module>modules/axiom-integration</module>
     </modules>
 </project>

@@ -58,6 +58,10 @@ Latest Release
 
   \[{{{http://ws.apache.org/commons/axiom/download.cgi}Download Axiom 1.2.9}}\]
 
+  Note: Starting with release 1.2.9, Axiom requires Java 1.5. While the API is
+  still compatible with Java 1.4, Axiom relies on classes from the Java 1.5
+  runtime environment. Some of its dependencies also require Java 1.5.
+
 What's New in This Release
 
     * Improved interoperability with StAX implementations other than Woodstox.
