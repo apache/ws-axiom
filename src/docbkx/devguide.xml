@@ -307,6 +307,9 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
         </section>
         <section>
             <title>Release</title>
+            <para>
+                In order to prepare the release artifacts for vote, execute the following steps:
+            </para>
             <procedure>
                 <step>
                     <para>
@@ -385,7 +388,54 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </step>
             </procedure>
             <para>
-                To be continued.
+                If the vote passes, execute the following steps:
+            </para>
+            <procedure>
+                <step>
+                    <para>
+                        Promote the artifacts in the staging repository. See
+                        <ulink url="http://maven.apache.org/developers/release/apache-release.html"/>
+                        for detailed instructions for this step.
+                    </para>
+                </step>
+                <step>
+                    <para>
+                        Log in to <literal>people.apache.org</literal> and publish the release
+                        distributions to <literal>www.apache.org</literal>. The <filename>etc/dist.py</filename>
+                        script can be used for that:
+                    </para>
+<screen>cd /www/www.apache.org/dist/ws/commons/axiom
+python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</replaceable></screen>
+                    <para>
+                        <replaceable>version</replaceable> is the release version, e.g. <literal>1.2.9</literal>.
+                    </para>
+                </step>
+                <step>
+                    <para>
+                        Check out the release tag from Subversion and generate the Maven site.
+                        Also check out the existing site:
+                    </para>
+<screen>svn co https://svn.apache.org/repos/asf/webservices\
+/commons/site/axiom axiom-site</screen>
+                    <para>
+                        The existing site needs to be overwritten with the site generated for the new
+                        release. This can be done easily using the <filename>etc/syncsite.py</filename> script
+                        (requires Python 2.6). It will copy the files and execute any necessary Subversion
+                        commands to add new files and to delete files that no longer exist. After executing the
+                        script, commit the changes to Subversion.
+                    </para>
+                </step>
+                <step>
+                    <para>
+                        Log in to <literal>people.apache.org</literal> and update the site:
+                    </para>
+<screen>cd /www/ws.apache.org/commons/axiom/
+svn update</screen>
+                </step>
+            </procedure>
+            <para>
+                It may take several hours before all the updates have been synchronized to the relevant
+                ASF systems.
             </para>
         </section>
         <section>
