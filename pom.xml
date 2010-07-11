@@ -361,7 +361,7 @@
                         <phase>compile</phase>
                         <configuration>
                             <includes>userguide.xml</includes>
-                            <foCustomization>src/docbkx/xsl/fo.xsl</foCustomization>
+                            <foCustomization>${basedir}/src/docbkx/xsl/fo.xsl</foCustomization>
                         </configuration>
                     </execution>
                     <execution>
@@ -372,7 +372,7 @@
                         <phase>compile</phase>
                         <configuration>
                             <includes>devguide.xml</includes>
-                            <foCustomization>src/docbkx/xsl/fo.xsl</foCustomization>
+                            <foCustomization>${basedir}/src/docbkx/xsl/fo.xsl</foCustomization>
                         </configuration>
                     </execution>
                 </executions>
