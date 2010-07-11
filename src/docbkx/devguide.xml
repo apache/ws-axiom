@@ -409,6 +409,12 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
                     <para>
                         <replaceable>version</replaceable> is the release version, e.g. <literal>1.2.9</literal>.
                     </para>
+                    <para>
+                        If not yet done, export your public key and append it to the <filename>KEYS</filename>
+                        file located in <filename>/www/www.apache.org/dist/ws/commons/axiom</filename>. The command
+                        to export a public key is as follows:
+                    </para>
+                    <screen>gpg --armor --export <replaceable>key_id</replaceable></screen>
                 </step>
                 <step>
                     <para>
@@ -435,7 +441,29 @@ svn update</screen>
             </procedure>
             <para>
                 It may take several hours before all the updates have been synchronized to the relevant
-                ASF systems.
+                ASF systems. Before proceeding, check that
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        the Maven artifacts for the release are available from the Maven central repository;
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        the Maven site has been synchronized to <ulink url="http://ws.apache.org/commons/axiom/"/>;
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        the binary and source distributions can be downloaded from <ulink url="http://ws.apache.org/commons/axiom/download.cgi"/>.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <para>
+                Once everything is in place, send announcements to <literal>commons-dev@ws.apache.org</literal>
+                and <literal>announce@apache.org</literal>. Since the two lists have different conventions, audiences
+                and moderation policies, to send the announcement separately to the two lists.
             </para>
         </section>
         <section>
@@ -445,6 +473,11 @@ svn update</screen>
                     <para>
                         Update the DOAP file (see <filename>etc/axiom.rdf</filename>) and add a new entry
                         for the release.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Update the status of the release version in the WSCOMMONS project in JIRA.
                     </para>
                 </listitem>
             </itemizedlist>
