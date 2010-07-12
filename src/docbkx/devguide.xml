@@ -522,7 +522,8 @@ svn update</screen>
             <para>
                 For <literal>commons-dev@ws.apache.org</literal>, the subject (<quote>Axiom x.y.z released</quote>) should be
                 prefixed with <quote>[ANN][Axiom]</quote>, while for <literal>announce@apache.org</literal>
-                <quote>[ANN]</quote> is enough.
+                <quote>[ANN]</quote> is enough. Note that mail to <literal>announce@apache.org</literal> must be
+                sent from an <literal>apache.org</literal> address.
             </para>
         </section>
         <section>
