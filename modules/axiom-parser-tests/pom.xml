@@ -31,6 +31,11 @@
         This module executes the existing unit tests of some of the other modules using different
         StAX implementations.
     </description>
+    <scm>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-parser-tests</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-parser-tests</developerConnection>
+        <url>http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/modules/axiom-parser-tests</url>
+    </scm>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

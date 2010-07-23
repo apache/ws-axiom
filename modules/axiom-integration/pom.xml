@@ -31,6 +31,11 @@
         This module contains tests that validate the interoperability of Axiom with
         other libraries.
     </description>
+    <scm>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-integration</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-integration</developerConnection>
+        <url>http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/modules/axiom-integration</url>
+    </scm>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
