@@ -28,6 +28,7 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 public class UnifiedSOAPTestCase extends AbstractTestCase {
     protected static final String MESSAGE = "message.xml";
+    protected static final String MESSAGE_WITHOUT_HEADER = "message_without_header.xml";
     
     protected final OMMetaFactory omMetaFactory;
     protected final String envelopeNamespaceURI;

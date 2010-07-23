@@ -24,4 +24,17 @@ public class SOAP12EnvelopeTestBase extends SOAPEnvelopeTestBase {
     public SOAP12EnvelopeTestBase(OMMetaFactory omMetaFactory) {
         super(omMetaFactory, SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
+    
+    /**
+     * Test that an attempt to add an arbitrary element to the SOAP envelope triggers an exception.
+     */
+    public void testAddElementAfterBody() {
+        SOAPEnvelope env = soapFactory.getDefaultEnvelope();
+        try {
+            env.addChild(soapFactory.createOMElement("test", "urn:test", "p"));
+            fail("Expected SOAPProcessingException");
+        } catch (SOAPProcessingException ex) {
+            // Expected
+        }
+    }
 }

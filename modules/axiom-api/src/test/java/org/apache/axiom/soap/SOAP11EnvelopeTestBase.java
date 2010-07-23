@@ -24,4 +24,13 @@ public class SOAP11EnvelopeTestBase extends SOAPEnvelopeTestBase {
     public SOAP11EnvelopeTestBase(OMMetaFactory omMetaFactory) {
         super(omMetaFactory, SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
+    
+    /**
+     * Test that adding an arbitrary element to the envelope is allowed. SOAP 1.1 indeed allows for
+     * arbitrary elements to appear after the SOAP body.
+     */
+    public void testAddElementAfterBody() {
+        SOAPEnvelope env = soapFactory.getDefaultEnvelope();
+        env.addChild(soapFactory.createOMElement("test", "urn:test", "p"));
+    }
 }

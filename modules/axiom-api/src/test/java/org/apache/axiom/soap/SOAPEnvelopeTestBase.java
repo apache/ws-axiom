@@ -93,4 +93,15 @@ public class SOAPEnvelopeTestBase extends UnifiedSOAPTestCase {
         envelope.getHeader().discard();
         envelope.getBody().toStringWithConsume();
     }
+
+    /**
+     * Test the behavior when adding a header to an envelope that has not yet been built completely.
+     * This is a regression test for WSCOMMONS-552.
+     */
+    public void testAddHeaderToIncompleteEnvelope() {
+        SOAPEnvelope envelope = getTestMessage(MESSAGE_WITHOUT_HEADER);
+        assertNull(envelope.getHeader());
+        SOAPHeader header = soapFactory.createSOAPHeader(envelope);
+        assertSame(header, envelope.getHeader());
+    }
 }
