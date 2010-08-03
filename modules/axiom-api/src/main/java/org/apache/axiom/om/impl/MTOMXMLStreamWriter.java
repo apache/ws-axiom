@@ -36,6 +36,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.util.XMLStreamWriterFilter;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
@@ -66,7 +67,10 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     // State variables
     private boolean isEndDocument = false; // has endElement been called
     private boolean isComplete = false;    // have the attachments been written
-    private int depth = 0;                 // current eleement depth
+    private int depth = 0;                 // current element depth
+    
+    // Set the filter object if provided
+    private XMLStreamWriterFilter xmlStreamWriterFilter  = null;
 
     public MTOMXMLStreamWriter(XMLStreamWriter xmlWriter) {
         this.xmlWriter = xmlWriter;
@@ -88,6 +92,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     public MTOMXMLStreamWriter(OutputStream outStream, OMOutputFormat format)
             throws XMLStreamException, FactoryConfigurationError {
         if (isDebugEnabled) {
+            log.debug("Creating MTOMXMLStreamWriter");
             log.debug("OutputStream =" + outStream.getClass());
             log.debug("OMFormat = " + format.toString());
         }
@@ -121,6 +126,14 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         } else {
             xmlWriter = StAXUtils.createXMLStreamWriter(outStream,
                                                         format.getCharSetEncoding());
+        }
+        xmlStreamWriterFilter = format.getXmlStreamWriterFilter();
+        if (xmlStreamWriterFilter != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Installing XMLStreamWriterFilter " + xmlStreamWriterFilter);
+            }
+            xmlStreamWriterFilter.setDelegate(xmlWriter);
+            xmlWriter = xmlStreamWriterFilter;
         }
     }
 
@@ -453,6 +466,15 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      * @return the underlying byte stream, or <code>null</code> if the stream is not accessible
      */
     public OutputStream getOutputStream() throws XMLStreamException {  
+        
+        if (xmlStreamWriterFilter != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("getOutputStream returning null due to presence of XMLStreamWriterFilter " + 
+                        xmlStreamWriterFilter);
+            }
+            return null;
+        }
+        
         OutputStream os = null;
         if (rootPartOutputStream != null) {
             os = rootPartOutputStream;
@@ -495,5 +517,32 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         } else if (type == OMNode.ENTITY_REFERENCE_NODE) {
             writeEntityRef(textNode.getText());
         }
+    }
+    
+    public void setFilter(XMLStreamWriterFilter filter) {
+        if (filter != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("setting filter " + filter.getClass());
+            }
+            xmlStreamWriterFilter = filter;
+            filter.setDelegate(xmlWriter);
+            xmlWriter = filter;
+        }
+    }
+    
+    public XMLStreamWriterFilter removeFilter() {
+        XMLStreamWriterFilter filter = null;
+        if (xmlStreamWriterFilter != null) {
+            filter = xmlStreamWriterFilter;
+            if (log.isDebugEnabled()) {
+                log.debug("removing filter " + filter.getClass());
+            }
+            xmlWriter = xmlStreamWriterFilter.getDelegate();
+            filter.setDelegate(null);
+            xmlStreamWriterFilter = (xmlWriter instanceof XMLStreamWriterFilter) ? 
+                        (XMLStreamWriterFilter) xmlWriter : 
+                                null;
+        }
+        return filter;
     }
 }

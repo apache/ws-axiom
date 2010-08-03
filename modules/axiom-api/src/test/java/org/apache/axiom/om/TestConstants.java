@@ -25,6 +25,7 @@ public class TestConstants {
     public static final String SOAP_SOAPMESSAGE = "soap/soapmessage.xml";
     public static final String SOAP_SOAPMESSAGE1 = "soap/soapmessage1.xml";
     public static final String SAMPLE1 = "soap/sample1.xml";
+    public static final String TEST = "soap/test.xml";
     public static final String WHITESPACE_MESSAGE = "soap/whitespacedMessage.xml";
     public static final String MINIMAL_MESSAGE = "soap/minimalMessage.xml";
     public static final String REALLY_BIG_MESSAGE = "soap/reallyReallyBigMessage.xml";

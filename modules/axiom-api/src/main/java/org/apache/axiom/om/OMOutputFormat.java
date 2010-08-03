@@ -22,6 +22,7 @@ package org.apache.axiom.om;
 import java.util.HashMap;
 
 import org.apache.axiom.om.impl.MTOMConstants;
+import org.apache.axiom.om.util.XMLStreamWriterFilter;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.util.UIDGenerator;
@@ -58,6 +59,8 @@ public class OMOutputFormat {
     private boolean autoCloseWriter = false;
 
     public static final String ACTION_PROPERTY = "action";
+    
+    private XMLStreamWriterFilter xmlStreamWriterFilter = null;
     
     // The value of this property is a Boolean.  
     // A missing value indicates the default action, which is Boolean.FALSE
@@ -388,4 +391,17 @@ public class OMOutputFormat {
         return optimizedThreshold;
     }
     
+    /**
+     * @return the xmlStreamWriterFilter
+     */
+    public XMLStreamWriterFilter getXmlStreamWriterFilter() {
+        return xmlStreamWriterFilter;
+    }
+
+    /**
+     * @param xmlStreamWriterFilter the xmlStreamWriterFilter to set
+     */
+    public void setXmlStreamWriterFilter(XMLStreamWriterFilter xmlStreamWriterFilter) {
+        this.xmlStreamWriterFilter = xmlStreamWriterFilter;
+    }
 }
