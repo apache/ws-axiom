@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
@@ -39,8 +40,6 @@ import org.apache.axiom.om.util.XMLStreamWriterRemoveIllegalChars;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-
-import com.ibm.jvm.util.ByteArrayOutputStream;
 
 public class XMLStreamWriterFilterTestCase extends AbstractTestCase {
 	
