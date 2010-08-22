@@ -24,8 +24,10 @@ import org.apache.axiom.om.OMElementTestBase;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
@@ -260,6 +262,67 @@ public class ElementImplTest extends OMElementTestBase {
                 assertTrue(firstChild instanceof Text);
                 assertEquals("test", firstChild.getNodeValue());
                 assertNull(firstChild.getNextSibling());
+            }
+        });
+    }
+
+    // TODO: This provides evidence for WSCOMMONS-557 (not yet fixed)
+    public void _testAttributes() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                Document doc = dbf.newDocumentBuilder().parse(getTestResource("attributetest.xml"));
+
+                // Check whether body has attributes
+                Element bodyElement = doc.getDocumentElement();
+                assertTrue(bodyElement.hasAttributes());
+
+                Element directionResponse = (Element)bodyElement.getElementsByTagName("GetDirectionsResponse").item(0);
+                assertTrue(directionResponse.hasAttributes());
+
+                NamedNodeMap attributes = directionResponse.getAttributes();
+                Attr attr = (Attr)attributes.item(0);
+                assertEquals(attr.getName(), "xmlns");
+                assertEquals(attr.getValue(), "http://www.example.org/webservices/");
+
+                Element directionResult = (Element)bodyElement.getElementsByTagName("GetDirectionsResult").item(0);
+                assertFalse(directionResult.hasAttributes());
+
+                Element drivingDirection = (Element)directionResult.getElementsByTagName("drivingdirections").item(0);
+                assertTrue(drivingDirection.hasAttributes());
+
+                attributes = drivingDirection.getAttributes();
+                attr = (Attr)attributes.item(0);
+                assertEquals(attr.getName(), "xmlns");
+                assertEquals(attr.getValue(), "");
+
+
+                Element route = (Element)drivingDirection.getElementsByTagName("route").item(0);
+                assertTrue(route.hasAttributes());
+
+                attributes = route.getAttributes();
+                attr = (Attr)attributes.item(0);
+                assertEquals(attr.getName(), "distanceToTravel");
+                assertEquals(attr.getValue(), "500m");
+
+                attr = (Attr)attributes.item(1);
+                assertEquals(attr.getName(), "finalStep");
+                assertEquals(attr.getValue(), "false");
+
+                attr = (Attr)attributes.item(2);
+                assertEquals(attr.getName(), "id");
+                assertEquals(attr.getValue(), "0");
+
+            }
+        });
+    }
+
+    public void testAttributes2() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(
+                        "<root><child xmlns=\"\"/></root>")));
+                Element element = (Element)doc.getDocumentElement().getFirstChild();
+                assertTrue(element.hasAttributes());
             }
         });
     }
