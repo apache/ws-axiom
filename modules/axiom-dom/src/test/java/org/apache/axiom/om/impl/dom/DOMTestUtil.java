@@ -41,7 +41,9 @@ public class DOMTestUtil {
     
     public static void execute(Test test) throws Exception {
         try {
-            test.execute(new DocumentBuilderFactoryImpl());
+            DocumentBuilderFactory dbf = new DocumentBuilderFactoryImpl();
+            dbf.setNamespaceAware(true);
+            test.execute(dbf);
         } catch (Throwable ex) {
             Assert.fail("Invalid test case; execution failed with standard DOM implementation: "
                     + ex.getMessage());

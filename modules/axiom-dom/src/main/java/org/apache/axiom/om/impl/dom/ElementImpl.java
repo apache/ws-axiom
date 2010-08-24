@@ -609,25 +609,10 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     /** Returns whether this element contains any attribute or not. */
     public boolean hasAttributes() {
-
-        boolean flag;
-
-        // TODO : Review.  This code doesn't make any sense since it always gets overwritten.  WTF?
-//        if (this.attributes != null) {
-//            flag = (this.attributes.getLength() > 0);
-//        }
-
-        //The namespaces
-        flag = this.namespace != null;
-
-        if (!flag) {
-            if (this.namespaces != null) {
-                flag = !this.namespaces.isEmpty();
-            }
-        }
-
-
-        return flag;
+        // DOM represents namespace declarations as attributes; therefore
+        // we need to check both "attributes" and "namespaces"
+        return attributes != null && attributes.getLength() > 0
+                || namespaces != null && !namespaces.isEmpty();
     }
 
     /*
@@ -1310,39 +1295,19 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             Iterator nsDecls = this.namespaces.keySet().iterator();
             while (nsDecls.hasNext()) {
                 String prefix = (String) nsDecls.next();
-                if (prefix != null && !"".equals(prefix)
-                        && !prefix.equals(OMConstants.XMLNS_NS_PREFIX)) {
-                    OMNamespace ns = (OMNamespace) this.namespaces.get(prefix);
-                    AttrImpl attr = new AttrImpl(this.ownerNode, prefix, ns
-                            .getNamespaceURI(), this.factory);
-                    attr.setOMNamespace(new NamespaceImpl(
-                            OMConstants.XMLNS_NS_URI,
-                            OMConstants.XMLNS_NS_PREFIX));
-                    attributeMap.addItem(attr);
-                }
-            }
+                if (prefix != null){
 
-            // Set the default NS attr if any
-            if (this.namespace != null
-                    && (this.namespace.getPrefix() == null || ""
-                    .equals(this.namespace.getPrefix()))
-                    && this.namespace.getNamespaceURI() != null) {
-
-                // check if the parent of this element has the same namespace
-                // as the default and if NOT add the attr
-                boolean parentHasSameDefaultNS = this.parentNode != null &&
-                        this.parentNode.getNamespaceURI() != null &&
-                        this.parentNode.getNamespaceURI().equals(this.getNamespaceURI()) &&
-                        (this.parentNode.getPrefix() == null ||
-                                this.parentNode.getPrefix().equals(""));
-
-                if (!parentHasSameDefaultNS) {
-                    AttrImpl attr = new AttrImpl(this.ownerNode, "xmlns",
-                                                 this.namespace.getNamespaceURI(), this.factory);
-                    attr.setOMNamespace(new NamespaceImpl(
-                            OMConstants.XMLNS_NS_URI,
-                            OMConstants.XMLNS_NS_PREFIX));
-                    attributeMap.addItem(attr);
+                    OMNamespace ns = (OMNamespace)this.namespaces.get(prefix);
+                    
+                    if ("".equals(prefix)) {
+                        AttrImpl attr = new AttrImpl(this.ownerNode, "xmlns", ns.getNamespaceURI(), this.factory);
+                        attr.setOMNamespace(new NamespaceImpl(OMConstants.XMLNS_NS_URI, null));
+                        attributeMap.addItem(attr);
+                    } else {
+                        AttrImpl attr = new AttrImpl(this.ownerNode, prefix, ns.getNamespaceURI(), this.factory);
+                        attr.setOMNamespace(new NamespaceImpl(OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX));
+                        attributeMap.addItem(attr);
+                    }
                 }
             }
         }

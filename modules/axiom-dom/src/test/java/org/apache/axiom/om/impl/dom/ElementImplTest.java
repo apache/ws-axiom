@@ -33,6 +33,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -266,8 +267,7 @@ public class ElementImplTest extends OMElementTestBase {
         });
     }
 
-    // TODO: This provides evidence for WSCOMMONS-557 (not yet fixed)
-    public void _testAttributes() throws Exception {
+    public void testAttributes() throws Exception {
         DOMTestUtil.execute(new DOMTestUtil.Test() {
             public void execute(DocumentBuilderFactory dbf) throws Exception {
                 Document doc = dbf.newDocumentBuilder().parse(getTestResource("attributetest.xml"));
@@ -281,8 +281,8 @@ public class ElementImplTest extends OMElementTestBase {
 
                 NamedNodeMap attributes = directionResponse.getAttributes();
                 Attr attr = (Attr)attributes.item(0);
-                assertEquals(attr.getName(), "xmlns");
-                assertEquals(attr.getValue(), "http://www.example.org/webservices/");
+                assertEquals("xmlns", attr.getName());
+                assertEquals("http://www.example.org/webservices/", attr.getValue());
 
                 Element directionResult = (Element)bodyElement.getElementsByTagName("GetDirectionsResult").item(0);
                 assertFalse(directionResult.hasAttributes());
@@ -292,8 +292,8 @@ public class ElementImplTest extends OMElementTestBase {
 
                 attributes = drivingDirection.getAttributes();
                 attr = (Attr)attributes.item(0);
-                assertEquals(attr.getName(), "xmlns");
-                assertEquals(attr.getValue(), "");
+                assertEquals("xmlns", attr.getName());
+                assertEquals("", attr.getValue());
 
 
                 Element route = (Element)drivingDirection.getElementsByTagName("route").item(0);
@@ -301,17 +301,16 @@ public class ElementImplTest extends OMElementTestBase {
 
                 attributes = route.getAttributes();
                 attr = (Attr)attributes.item(0);
-                assertEquals(attr.getName(), "distanceToTravel");
-                assertEquals(attr.getValue(), "500m");
+                assertEquals("distanceToTravel", attr.getName());
+                assertEquals("500m", attr.getValue());
 
                 attr = (Attr)attributes.item(1);
-                assertEquals(attr.getName(), "finalStep");
-                assertEquals(attr.getValue(), "false");
+                assertEquals("finalStep", attr.getName());
+                assertEquals("false", attr.getValue());
 
                 attr = (Attr)attributes.item(2);
-                assertEquals(attr.getName(), "id");
-                assertEquals(attr.getValue(), "0");
-
+                assertEquals("id", attr.getName());
+                assertEquals("0", attr.getValue());
             }
         });
     }
@@ -323,6 +322,44 @@ public class ElementImplTest extends OMElementTestBase {
                         "<root><child xmlns=\"\"/></root>")));
                 Element element = (Element)doc.getDocumentElement().getFirstChild();
                 assertTrue(element.hasAttributes());
+                NamedNodeMap attributes = element.getAttributes();
+                assertEquals(1, attributes.getLength());
+                Attr attr = (Attr)attributes.item(0);
+                assertEquals("xmlns", attr.getName());
+                assertNull(attr.getPrefix());
+                assertEquals("xmlns", attr.getLocalName());
+                assertEquals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, attr.getNamespaceURI());
+                assertEquals("", attr.getValue());
+            }
+        });
+    }
+
+    public void testAttributes3() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(
+                        "<root><child xmlns:p=\"urn:ns1\"/></root>")));
+                Element element = (Element)doc.getDocumentElement().getFirstChild();
+                assertTrue(element.hasAttributes());
+                NamedNodeMap attributes = element.getAttributes();
+                assertEquals(1, attributes.getLength());
+                Attr attr = (Attr)attributes.item(0);
+                assertEquals("xmlns:p", attr.getName());
+                assertEquals("xmlns", attr.getPrefix());
+                assertEquals("p", attr.getLocalName());
+                assertEquals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, attr.getNamespaceURI());
+                assertEquals("urn:ns1", attr.getValue());
+            }
+        });
+    }
+
+    public void testAttributes4() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                Document doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(
+                        "<root><child/></root>")));
+                Element element = (Element)doc.getDocumentElement().getFirstChild();
+                assertFalse(element.hasAttributes());                  
             }
         });
     }
