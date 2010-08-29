@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Properties;
 
 import junit.framework.Test;
@@ -88,7 +87,8 @@ public class DialectTestSuite extends TestSuite {
             }
         }
         
-        ClassLoader parserClassLoader = new URLClassLoader(new URL[] { parserJar.toURL() }, DialectTestSuite.class.getClassLoader());
+        ClassLoader parserClassLoader = new ParentLastURLClassLoader(
+                new URL[] { parserJar.toURL() }, DialectTestSuite.class.getClassLoader());
         addTest(new DialectTest(parserClassLoader, parserJar.getName(), props));
     }
 }
