@@ -18,28 +18,17 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamWriter;
 
-import junit.framework.TestCase;
-
-public abstract class DialectTestCase extends TestCase {
-    private DialectTest test;
-    
-    void init(DialectTest test) {
-        this.test = test;
-        setName(getClass().getName());
-    }
-    
-    protected XMLInputFactory newNormalizedXMLInputFactory() {
-        return test.newNormalizedXMLInputFactory();
-    }
-    
-    protected XMLOutputFactory newNormalizedXMLOutputFactory() {
-        return test.newNormalizedXMLOutputFactory();
-    }
-    
-    protected StAXDialect getDialect() {
-        return test.getDialect();
+public class WriteStartDocumentWithNullEncodingTestCase extends DialectTestCase {
+    protected void runTest() throws Throwable {
+        XMLStreamWriter writer = newNormalizedXMLOutputFactory().createXMLStreamWriter(System.out, "UTF-8");
+        try {
+            writer.writeStartDocument(null, "1.0");
+        } catch (Throwable ex) {
+            // Expected
+            return;
+        }
+        fail("Expected writeStartDocument to throw an exception");
     }
 }

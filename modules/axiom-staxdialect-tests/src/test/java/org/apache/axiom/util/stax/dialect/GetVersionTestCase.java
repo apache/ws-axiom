@@ -18,28 +18,24 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import java.io.StringReader;
+
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamReader;
 
-import junit.framework.TestCase;
-
-public abstract class DialectTestCase extends TestCase {
-    private DialectTest test;
-    
-    void init(DialectTest test) {
-        this.test = test;
-        setName(getClass().getName());
-    }
-    
-    protected XMLInputFactory newNormalizedXMLInputFactory() {
-        return test.newNormalizedXMLInputFactory();
-    }
-    
-    protected XMLOutputFactory newNormalizedXMLOutputFactory() {
-        return test.newNormalizedXMLOutputFactory();
-    }
-    
-    protected StAXDialect getDialect() {
-        return test.getDialect();
+public class GetVersionTestCase extends DialectTestCase {
+    protected void runTest() throws Throwable {
+        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLStreamReader reader = factory.createXMLStreamReader(
+                new StringReader("<?xml version='1.0'?><root/>"));
+        assertEquals("1.0", reader.getVersion());
+        reader.next();
+        try {
+            reader.getVersion();
+            fail("Expected IllegalStateException");
+        } catch (IllegalStateException ex) {
+            // Expected
+        }
+        reader.close();
     }
 }

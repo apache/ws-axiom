@@ -22,6 +22,7 @@ import java.util.Properties;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
 
 import junit.framework.TestSuite;
 
@@ -34,7 +35,17 @@ public class DialectTest extends TestSuite {
         super(name);
         this.classLoader = classLoader;
         this.props = props;
+        addDialectTest(new CreateXMLStreamWriterWithNullEncodingTestCase());
+        addDialectTest(new DisallowDoctypeDeclWithDenialOfServiceTestCase());
+        addDialectTest(new DisallowDoctypeDeclWithExternalSubsetTestCase());
+        addDialectTest(new DisallowDoctypeDeclWithInternalSubsetTestCase());
+        addDialectTest(new GetCharacterEncodingSchemeTestCase());
+        addDialectTest(new GetEncodingTestCase());
+        addDialectTest(new GetVersionTestCase());
         addDialectTest(new IsCharactersOnCDATASectionTestCase());
+        addDialectTest(new IsStandaloneTestCase());
+        addDialectTest(new StandaloneSetTestCase());
+        addDialectTest(new WriteStartDocumentWithNullEncodingTestCase());
     }
     
     private void addDialectTest(DialectTestCase testCase) {
@@ -71,5 +82,40 @@ public class DialectTest extends TestSuite {
             dialect = StAXDialectDetector.getDialect(factory.getClass());
         }
         return dialect.normalize(factory);
+    }
+
+    XMLOutputFactory newXMLOutputFactory() {
+        String className = props == null ? null : props.getProperty(XMLOutputFactory.class.getName());
+        if (className == null) {
+            ClassLoader savedClassLoader = Thread.currentThread().getContextClassLoader();
+            Thread.currentThread().setContextClassLoader(classLoader);
+            try {
+                XMLOutputFactory factory = XMLOutputFactory.newInstance();
+                if (factory.getClass().getClassLoader() != classLoader) {
+                    throw new FactoryConfigurationError("Wrong factory!");
+                }
+                return factory;
+            } finally {
+                Thread.currentThread().setContextClassLoader(savedClassLoader);
+            }
+        } else {
+            try {
+                return (XMLOutputFactory)classLoader.loadClass(className).newInstance();
+            } catch (Exception ex) {
+                throw new FactoryConfigurationError(ex);
+            }
+        }
+    }
+    
+    XMLOutputFactory newNormalizedXMLOutputFactory() {
+        XMLOutputFactory factory = newXMLOutputFactory();
+        if (dialect == null) {
+            dialect = StAXDialectDetector.getDialect(factory.getClass());
+        }
+        return dialect.normalize(factory);
+    }
+    
+    StAXDialect getDialect() {
+        return dialect;
     }
 }

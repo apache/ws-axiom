@@ -18,28 +18,20 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 
-import junit.framework.TestCase;
-
-public abstract class DialectTestCase extends TestCase {
-    private DialectTest test;
-    
-    void init(DialectTest test) {
-        this.test = test;
-        setName(getClass().getName());
-    }
-    
-    protected XMLInputFactory newNormalizedXMLInputFactory() {
-        return test.newNormalizedXMLInputFactory();
-    }
-    
-    protected XMLOutputFactory newNormalizedXMLOutputFactory() {
-        return test.newNormalizedXMLOutputFactory();
-    }
-    
-    protected StAXDialect getDialect() {
-        return test.getDialect();
+public class CreateXMLStreamWriterWithNullEncodingTestCase extends DialectTestCase {
+    protected void runTest() throws Throwable {
+        XMLOutputFactory factory = newNormalizedXMLOutputFactory();
+        // This should cause an exception
+        try {
+            factory.createXMLStreamWriter(System.out, null);
+        } catch (Throwable ex) {
+            // Expected
+            return;
+        }
+        // Attention here: since the fail method works by throwing an exception and we
+        // catch Throwable, it must be invoked outside of the catch block!
+        fail("Expected createXMLStreamWriter to throw an exception");
     }
 }
