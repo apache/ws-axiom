@@ -35,6 +35,7 @@ public class DialectTest extends TestSuite {
         super(name);
         this.classLoader = classLoader;
         this.props = props;
+        addDialectTest(new CreateXMLEventWriterWithNullEncodingTestCase());
         addDialectTest(new CreateXMLStreamWriterWithNullEncodingTestCase());
         addDialectTest(new DisallowDoctypeDeclWithDenialOfServiceTestCase());
         addDialectTest(new DisallowDoctypeDeclWithExternalSubsetTestCase());
@@ -44,6 +45,7 @@ public class DialectTest extends TestSuite {
         addDialectTest(new GetVersionTestCase());
         addDialectTest(new IsCharactersOnCDATASectionTestCase());
         addDialectTest(new IsStandaloneTestCase());
+        addDialectTest(new MaskedNamespaceTestCase());
         addDialectTest(new StandaloneSetTestCase());
         addDialectTest(new WriteStartDocumentWithNullEncodingTestCase());
     }

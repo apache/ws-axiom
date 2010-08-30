@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding ="UTF-8"?>
+<p:a xmlns:p="urn:ns1">
+    <p:b xmlns:p="urn:ns2"/>
+</p:a>
