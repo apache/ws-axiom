@@ -62,7 +62,8 @@ public class DialectTest extends TestSuite {
             Thread.currentThread().setContextClassLoader(classLoader);
             try {
                 XMLInputFactory factory = XMLInputFactory.newInstance();
-                if (factory.getClass().getClassLoader() != classLoader) {
+                if (classLoader != ClassLoader.getSystemClassLoader()
+                        && factory.getClass().getClassLoader() != classLoader) {
                     throw new FactoryConfigurationError("Wrong factory!");
                 }
                 return factory;
@@ -93,7 +94,8 @@ public class DialectTest extends TestSuite {
             Thread.currentThread().setContextClassLoader(classLoader);
             try {
                 XMLOutputFactory factory = XMLOutputFactory.newInstance();
-                if (factory.getClass().getClassLoader() != classLoader) {
+                if (classLoader != ClassLoader.getSystemClassLoader()
+                        && factory.getClass().getClassLoader() != classLoader) {
                     throw new FactoryConfigurationError("Wrong factory!");
                 }
                 return factory;
