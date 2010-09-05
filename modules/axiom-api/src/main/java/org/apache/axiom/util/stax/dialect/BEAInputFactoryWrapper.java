@@ -74,8 +74,8 @@ class BEAInputFactoryWrapper extends XMLInputFactoryWrapper {
         } catch (IOException ex) {
             throw new XMLStreamException("Unable to read start bytes", ex);
         }
-        int marker = (startBytes[0] & 0xFF) << 24 + (startBytes[1] & 0xFF) << 16
-                + (startBytes[2] & 0xFF) << 8 + (startBytes[3] & 0xFF);
+        int marker = ((startBytes[0] & 0xFF) << 24) + ((startBytes[1] & 0xFF) << 16)
+                + ((startBytes[2] & 0xFF) << 8) + (startBytes[3] & 0xFF);
         String encoding;
         switch (marker) {
             case 0x0000FEFF:

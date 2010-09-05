@@ -28,7 +28,9 @@ public abstract class DialectTestCase extends TestCase {
     
     void init(DialectTest test) {
         this.test = test;
-        setName(getClass().getName());
+        if (getName() == null) {
+            setName(getClass().getName());
+        }
     }
     
     protected XMLInputFactory newNormalizedXMLInputFactory() {

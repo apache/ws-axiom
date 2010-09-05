@@ -41,6 +41,11 @@ public class DialectTest extends TestSuite {
         addDialectTest(new DisallowDoctypeDeclWithExternalSubsetTestCase());
         addDialectTest(new DisallowDoctypeDeclWithInternalSubsetTestCase());
         addDialectTest(new GetCharacterEncodingSchemeTestCase());
+        addDialectTest(new GetEncodingFromDetectionTestCase("UTF-8", "UTF-8"));
+        addDialectTest(new GetEncodingFromDetectionTestCase("UnicodeBig", "UTF-16BE"));
+        addDialectTest(new GetEncodingFromDetectionTestCase("UnicodeLittle", "UTF-16LE"));
+        addDialectTest(new GetEncodingFromDetectionTestCase("UnicodeBigUnmarked", "UTF-16BE"));
+        addDialectTest(new GetEncodingFromDetectionTestCase("UnicodeLittleUnmarked", "UTF-16LE"));
         addDialectTest(new GetEncodingTestCase());
         addDialectTest(new GetVersionTestCase());
         addDialectTest(new IsCharactersOnCDATASectionTestCase());
