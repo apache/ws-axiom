@@ -128,6 +128,60 @@
                 </executions>
             </plugin>
             <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-parsers</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.codehaus.woodstox</groupId>
+                                    <artifactId>wstx-asl</artifactId>
+                                    <version>3.2.7</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.codehaus.woodstox</groupId>
+                                    <artifactId>wstx-asl</artifactId>
+                                    <version>3.2.8</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.codehaus.woodstox</groupId>
+                                    <artifactId>wstx-asl</artifactId>
+                                    <version>3.2.9</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.sun.xml.stream</groupId>
+                                    <artifactId>sjsxp</artifactId>
+                                    <version>1.0.1</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>stax</groupId>
+                                    <artifactId>stax</artifactId>
+                                    <version>1.2.0</version>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/parsers</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>org/apache/axiom/util/stax/dialect/DialectTestSuite.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>org/apache/axiom/util/stax/dialect/*Test.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
@@ -157,6 +211,11 @@
                         <goals>
                             <goal>test-jar</goal>
                         </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>org/apache/axiom/util/stax/dialect/**/*</exclude>
+                            </excludes>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
