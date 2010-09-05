@@ -91,7 +91,6 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper implements Delegatin
 
     public String getEncoding() {
         if (getEventType() == START_DOCUMENT) {
-            // TODO: this needs some more unit testing!
             String encoding = super.getEncoding();
             if (encoding != null) {
                 return encoding;
