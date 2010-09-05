@@ -36,6 +36,8 @@ public class DialectTest extends TestSuite {
         this.classLoader = classLoader;
         this.props = props;
         addDialectTest(new CreateXMLEventWriterWithNullEncodingTestCase());
+        addDialectTest(new CreateXMLStreamReaderThreadSafetyTestCase());
+        addDialectTest(new CreateXMLStreamWriterThreadSafetyTestCase());
         addDialectTest(new CreateXMLStreamWriterWithNullEncodingTestCase());
         addDialectTest(new DisallowDoctypeDeclWithDenialOfServiceTestCase());
         addDialectTest(new DisallowDoctypeDeclWithExternalSubsetTestCase());
