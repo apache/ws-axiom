@@ -116,7 +116,7 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper implements Delegatin
     public String getText() {
         // The reference implementation fails to normalize line endings in the prolog/epilog; we work
         // around this at least for getText since this bug causes a test failure in the Axiom unit
-        // tests on Windowsd.
+        // tests on Windows.
         if (depth == 0) {
             String text = super.getText();
             StringBuffer buffer = null;
