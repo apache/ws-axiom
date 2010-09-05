@@ -75,7 +75,7 @@ public class DialectTestSuite extends TestSuite {
                     break;
                 }
             }
-            InputStream in = DialectTestSuite.class.getResourceAsStream("/" + name.substring(0, delimiterIndex) + ".properties");
+            InputStream in = DialectTestSuite.class.getResourceAsStream(name.substring(0, delimiterIndex) + ".properties");
             if (in != null) {
                 try {
                     props = new Properties();
