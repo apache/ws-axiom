@@ -27,6 +27,8 @@ import java.util.Set;
 
 import javax.xml.namespace.NamespaceContext;
 
+import org.apache.axiom.testutils.namespace.NamespaceContextTestUtils;
+
 import junit.framework.TestCase;
 
 public class ScopedNamespaceContextTest extends TestCase {
@@ -97,5 +99,9 @@ public class ScopedNamespaceContextTest extends TestCase {
         nc.endScope();
         assertEquals("p", nc.getPrefix("urn:ns1"));
         assertEquals(Collections.singleton("p"), getPrefixes(nc, "urn:ns1"));
+    }
+    
+    public void testImplicitNamespaces() {
+        NamespaceContextTestUtils.checkImplicitNamespaces(new ScopedNamespaceContext());
     }
 }

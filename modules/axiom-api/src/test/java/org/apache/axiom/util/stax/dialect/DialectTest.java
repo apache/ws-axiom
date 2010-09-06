@@ -51,6 +51,7 @@ public class DialectTest extends TestSuite {
         addDialectTest(new GetEncodingFromDetectionTestCase("UnicodeLittleUnmarked", "UTF-16LE"));
         addDialectTest(new GetEncodingTestCase());
         addDialectTest(new GetEncodingWithCharacterStreamTestCase());
+        addDialectTest(new GetNamespaceContextImplicitNamespacesTestCase());
         addDialectTest(new GetTextInPrologTestCase());
         addDialectTest(new GetVersionTestCase());
         addDialectTest(new IsCharactersOnCDATASectionTestCase());
