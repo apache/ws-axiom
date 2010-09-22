@@ -94,6 +94,12 @@
             <url>http://www.apache.org/~jaliya</url>
         </developer>
         <developer>
+            <name>Senaka Fernando</name>
+            <id>senaka</id>
+            <email>senaka AT apache.org</email>
+            <organization>WSO2</organization>
+        </developer>
+        <developer>
             <name>Nandana Mihindukulasooriya</name>
             <id>nandana</id>
             <email>nandana AT wso2.com</email>
