@@ -42,6 +42,7 @@ public class DialectTest extends TestSuite {
         addDialectTest(new DisallowDoctypeDeclWithDenialOfServiceTestCase());
         addDialectTest(new DisallowDoctypeDeclWithExternalSubsetTestCase());
         addDialectTest(new DisallowDoctypeDeclWithInternalSubsetTestCase());
+        addDialectTest(new EnableCDataReportingTestCase());
         addDialectTest(new GetCharacterEncodingSchemeTestCase());
         addDialectTest(new GetEncodingExternalTestCase());
         addDialectTest(new GetEncodingFromDetectionTestCase("UTF-8", "UTF-8"));
@@ -51,7 +52,9 @@ public class DialectTest extends TestSuite {
         addDialectTest(new GetEncodingFromDetectionTestCase("UnicodeLittleUnmarked", "UTF-16LE"));
         addDialectTest(new GetEncodingTestCase());
         addDialectTest(new GetEncodingWithCharacterStreamTestCase());
+        addDialectTest(new GetLocalNameOnStartDocumentTestCase());
         addDialectTest(new GetNamespaceContextImplicitNamespacesTestCase());
+        addDialectTest(new GetPrefixWithNoPrefixTestCase());
         addDialectTest(new GetTextInPrologTestCase());
         addDialectTest(new GetVersionTestCase());
         addDialectTest(new IsCharactersOnCDATASectionTestCase());
