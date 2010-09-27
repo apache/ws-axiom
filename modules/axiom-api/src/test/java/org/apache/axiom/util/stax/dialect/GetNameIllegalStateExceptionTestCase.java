@@ -18,20 +18,15 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import java.io.StringReader;
-
-import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-public class GetLocalNameOnStartDocumentTestCase extends DialectTestCase {
-    protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
-        XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root/>"));
-        try {
-            reader.getLocalName();
-            fail("Expected IllegalStateException");
-        } catch (IllegalStateException ex) {
-            // Expected
-        }
+public class GetNameIllegalStateExceptionTestCase extends IllegalStateExceptionTestCase {
+    public GetNameIllegalStateExceptionTestCase(int event, boolean expectException) {
+        super(event, expectException);
+    }
+
+    protected void invoke(XMLStreamReader reader) throws XMLStreamException {
+        reader.getName();
     }
 }
