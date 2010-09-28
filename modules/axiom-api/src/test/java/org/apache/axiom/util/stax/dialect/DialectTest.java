@@ -101,6 +101,32 @@ public class DialectTest extends TestSuite {
         addDialectTest(new GetPrefixWithNoPrefixTestCase());
         addDialectTest(new GetTextInPrologTestCase());
         addDialectTest(new GetVersionTestCase());
+        addDialectTest(new HasNameTestCase(XMLStreamConstants.START_ELEMENT, true));
+        addDialectTest(new HasNameTestCase(XMLStreamConstants.END_ELEMENT, true));
+        addDialectTest(new HasNameTestCase(XMLStreamConstants.PROCESSING_INSTRUCTION, false));
+        addDialectTest(new HasNameTestCase(XMLStreamConstants.CHARACTERS, false));
+        addDialectTest(new HasNameTestCase(XMLStreamConstants.COMMENT, false));
+        addDialectTest(new HasNameTestCase(XMLStreamConstants.SPACE, false));
+        addDialectTest(new HasNameTestCase(XMLStreamConstants.START_DOCUMENT, false));
+        addDialectTest(new HasNameTestCase(XMLStreamConstants.END_DOCUMENT, false));
+        addDialectTest(new HasNameTestCase(XMLStreamConstants.ENTITY_REFERENCE, false));
+        addDialectTest(new HasNameTestCase(XMLStreamConstants.DTD, false));
+        addDialectTest(new HasNameTestCase(XMLStreamConstants.CDATA, false));
+        addDialectTest(new HasTextTestCase(XMLStreamConstants.START_ELEMENT, false));
+        addDialectTest(new HasTextTestCase(XMLStreamConstants.END_ELEMENT, false));
+        addDialectTest(new HasTextTestCase(XMLStreamConstants.PROCESSING_INSTRUCTION, false));
+        addDialectTest(new HasTextTestCase(XMLStreamConstants.CHARACTERS, true));
+        addDialectTest(new HasTextTestCase(XMLStreamConstants.COMMENT, true));
+        addDialectTest(new HasTextTestCase(XMLStreamConstants.SPACE, true));
+        addDialectTest(new HasTextTestCase(XMLStreamConstants.START_DOCUMENT, false));
+        addDialectTest(new HasTextTestCase(XMLStreamConstants.END_DOCUMENT, false));
+        addDialectTest(new HasTextTestCase(XMLStreamConstants.ENTITY_REFERENCE, true));
+        addDialectTest(new HasTextTestCase(XMLStreamConstants.DTD, true));
+        // Note: CDATA events are actually not mentioned in the Javadoc of XMLStreamReader#hasText().
+        //       This is because reporting CDATA sections as CDATA events is an implementation
+        //       specific feature. Nevertheless, for obvious reasons, we expect hasText to
+        //       return true in this case.
+        addDialectTest(new HasTextTestCase(XMLStreamConstants.CDATA, true));
         addDialectTest(new IsCharactersOnCDATASectionTestCase());
         addDialectTest(new IsStandaloneTestCase());
         addDialectTest(new MaskedNamespaceTestCase());

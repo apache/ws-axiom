@@ -18,31 +18,14 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-public abstract class IllegalStateExceptionTestCase extends EventSpecificTestCase {
-    private final boolean expectException;
-    
-    public IllegalStateExceptionTestCase(int event, boolean expectException) {
-        super(event);
-        this.expectException = expectException;
+public class HasNameTestCase extends BooleanPropertyTestCase {
+    public HasNameTestCase(int event, boolean expected) {
+        super(event, expected);
     }
 
-    protected final void runTest(XMLStreamReader reader) throws Throwable {
-        boolean exception;
-        try {
-            invoke(reader);
-            exception = false;
-        } catch (IllegalStateException ex) {
-            exception = true;
-        }
-        if (exception && !expectException) {
-            fail("Didn't expect IllegalStateException");
-        } else if (!exception && expectException) {
-            fail("Expected IllegalStateException");
-        }
+    protected boolean invoke(XMLStreamReader reader) {
+        return reader.hasName();
     }
-    
-    protected abstract void invoke(XMLStreamReader reader) throws XMLStreamException;
 }
