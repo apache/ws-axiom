@@ -18,24 +18,14 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import java.io.StringReader;
-
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
-/**
- * Checks that {@link XMLStreamReader#isCharacters()} returns <code>true</code> if the parser is
- * coalescing and the event is produced by a CDATA section. Note that in this case, the event is of
- * type {@link javax.xml.stream.XMLStreamConstants#CHARACTERS}. Thus this is a different test than
- * {@link IsCharactersTestCase}.
- */
-public class IsCharactersOnCDATASectionTestCase extends DialectTestCase {
-    protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
-        factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-        XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root><![CDATA[X]]></root>"));
-        reader.nextTag();
-        reader.next();
-        assertTrue(reader.isCharacters());
+public class IsCharactersTestCase extends BooleanPropertyTestCase {
+    public IsCharactersTestCase(int event, boolean expected) {
+        super(event, expected);
+    }
+
+    protected boolean invoke(XMLStreamReader reader) {
+        return reader.isCharacters();
     }
 }

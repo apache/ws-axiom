@@ -137,6 +137,17 @@ public class DialectTest extends TestSuite {
         //       return true in this case.
         addDialectTest(new HasTextTestCase(XMLStreamConstants.CDATA, true));
         addDialectTest(new IsCharactersOnCDATASectionTestCase());
+        addDialectTest(new IsCharactersTestCase(XMLStreamConstants.START_ELEMENT, false));
+        addDialectTest(new IsCharactersTestCase(XMLStreamConstants.END_ELEMENT, false));
+        addDialectTest(new IsCharactersTestCase(XMLStreamConstants.PROCESSING_INSTRUCTION, false));
+        addDialectTest(new IsCharactersTestCase(XMLStreamConstants.CHARACTERS, true));
+        addDialectTest(new IsCharactersTestCase(XMLStreamConstants.COMMENT, false));
+        addDialectTest(new IsCharactersTestCase(XMLStreamConstants.SPACE, false));
+        addDialectTest(new IsCharactersTestCase(XMLStreamConstants.START_DOCUMENT, false));
+        addDialectTest(new IsCharactersTestCase(XMLStreamConstants.END_DOCUMENT, false));
+        addDialectTest(new IsCharactersTestCase(XMLStreamConstants.ENTITY_REFERENCE, false));
+        addDialectTest(new IsCharactersTestCase(XMLStreamConstants.DTD, false));
+        addDialectTest(new IsCharactersTestCase(XMLStreamConstants.CDATA, false));
         addDialectTest(new IsStandaloneTestCase());
         addDialectTest(new MaskedNamespaceTestCase());
         addDialectTest(new NextAfterEndDocumentTestCase());
