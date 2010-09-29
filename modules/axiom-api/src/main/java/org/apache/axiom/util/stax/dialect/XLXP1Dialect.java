@@ -24,10 +24,10 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
-class XLXPDialect extends AbstractStAXDialect {
+class XLXP1Dialect extends AbstractStAXDialect {
     private final boolean isSetPrefixBroken;
     
-    public XLXPDialect(boolean isSetPrefixBroken) {
+    public XLXP1Dialect(boolean isSetPrefixBroken) {
         this.isSetPrefixBroken = isSetPrefixBroken;
     }
     
@@ -56,7 +56,7 @@ class XLXPDialect extends AbstractStAXDialect {
     }
 
     public XMLStreamReader normalize(XMLStreamReader reader) {
-        return new XLXPStreamReaderWrapper(reader);
+        return new XLXP1StreamReaderWrapper(reader);
     }
 
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
@@ -70,7 +70,7 @@ class XLXPDialect extends AbstractStAXDialect {
     }
 
     public XMLInputFactory normalize(XMLInputFactory factory) {
-        return new NormalizingXMLInputFactoryWrapper(factory, this);
+        return new XLXPInputFactoryWrapper(factory, this);
     }
 
     public XMLOutputFactory normalize(XMLOutputFactory factory) {

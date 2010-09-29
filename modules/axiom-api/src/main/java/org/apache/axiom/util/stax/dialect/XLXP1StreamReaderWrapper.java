@@ -24,8 +24,8 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
-class XLXPStreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
-    public XLXPStreamReaderWrapper(XMLStreamReader parent) {
+class XLXP1StreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
+    public XLXP1StreamReaderWrapper(XMLStreamReader parent) {
         super(parent);
     }
 

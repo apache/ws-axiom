@@ -281,7 +281,7 @@ public class StAXDialectDetector {
             } catch (NoSuchFieldException ex) {
                 isSetPrefixBroken = true;
             }
-            return new XLXPDialect(isSetPrefixBroken);
+            return new XLXP1Dialect(isSetPrefixBroken);
         }
         cls = loadClass(classLoader, rootUrl, "com.ibm.xml.xlxp2.api.stax.StAXImplConstants");
         if (cls != null) {

@@ -25,8 +25,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-class XLXP2InputFactoryWrapper extends NormalizingXMLInputFactoryWrapper {
-    public XLXP2InputFactoryWrapper(XMLInputFactory parent, AbstractStAXDialect dialect) {
+class XLXPInputFactoryWrapper extends NormalizingXMLInputFactoryWrapper {
+    public XLXPInputFactoryWrapper(XMLInputFactory parent, AbstractStAXDialect dialect) {
         super(parent, dialect);
     }
 
@@ -36,9 +36,12 @@ class XLXP2InputFactoryWrapper extends NormalizingXMLInputFactoryWrapper {
 
     public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream)
             throws XMLStreamException {
-        // XLXP2 fails on documents that use UTF-16 without byte order marker,
-        // although this type of document is explicitly supported by the XML
-        // specification.
+        // Both versions of XLXP have issues with documents using UTF-16 without byte
+        // order markers, although this type of document is explicitly supported by the XML
+        // specification:
+        // * XLXP parses the document, XMLStreamReader#getEncoding incorrectly reports
+        //   UTF-8 as the detected encoding. 
+        // * XLXP2 simply fails on UTF-16 documents without BOM.
         EncodingDetectionHelper helper = new EncodingDetectionHelper(stream);
         stream = helper.getInputStream();
         String encoding = helper.detectEncoding();
