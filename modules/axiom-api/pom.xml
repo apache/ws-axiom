@@ -283,12 +283,17 @@
                                 <configuration>
                                     <outputDirectory>${project.build.directory}/parsers</outputDirectory>
                                     <resources>
+                                        <!-- XLXP 1 -->
+                                        <resource>
+                                            <directory>${was7.root}/java/jre/lib</directory>
+                                            <includes>
+                                                <include>xml.jar</include>
+                                            </includes>
+                                        </resource>
+                                        <!-- XLXP 2 -->
                                         <resource>
                                             <directory>${was7.root}/plugins</directory>
                                             <includes>
-                                                <!-- XLXP 1 -->
-                                                <include>com.ibm.ws.runtime.jar</include>
-                                                <!-- XLXP 2 -->
                                                 <include>com.ibm.ws.prereq.xlxp.jar</include>
                                             </includes>
                                         </resource>

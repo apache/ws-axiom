@@ -164,26 +164,30 @@ public class DialectTest extends TestSuite {
     
     XMLInputFactory newXMLInputFactory() {
         String className = props == null ? null : props.getProperty(XMLInputFactory.class.getName());
+        XMLInputFactory factory;
         if (className == null) {
             ClassLoader savedClassLoader = Thread.currentThread().getContextClassLoader();
             Thread.currentThread().setContextClassLoader(classLoader);
             try {
-                XMLInputFactory factory = XMLInputFactory.newInstance();
-                if (classLoader != ClassLoader.getSystemClassLoader()
-                        && factory.getClass().getClassLoader() != classLoader) {
-                    throw new FactoryConfigurationError("Wrong factory!");
-                }
-                return factory;
+                factory = XMLInputFactory.newInstance();
             } finally {
                 Thread.currentThread().setContextClassLoader(savedClassLoader);
             }
         } else {
             try {
-                return (XMLInputFactory)classLoader.loadClass(className).newInstance();
+                factory = (XMLInputFactory)classLoader.loadClass(className).newInstance();
             } catch (Exception ex) {
                 throw new FactoryConfigurationError(ex);
             }
         }
+        // Check that the parser has actually been loaded from the expected class loader.
+        // If the parser has been loaded from the JRE, then comparing the class loaders
+        // is not reliable (because it may be null). Hence the check on ParentLastURLClassLoader.
+        if (classLoader instanceof ParentLastURLClassLoader
+                && factory.getClass().getClassLoader() != classLoader) {
+            throw new FactoryConfigurationError("Wrong factory!");
+        }
+        return factory;
     }
     
     XMLInputFactory newNormalizedXMLInputFactory() {
@@ -196,26 +200,27 @@ public class DialectTest extends TestSuite {
 
     XMLOutputFactory newXMLOutputFactory() {
         String className = props == null ? null : props.getProperty(XMLOutputFactory.class.getName());
+        XMLOutputFactory factory;
         if (className == null) {
             ClassLoader savedClassLoader = Thread.currentThread().getContextClassLoader();
             Thread.currentThread().setContextClassLoader(classLoader);
             try {
-                XMLOutputFactory factory = XMLOutputFactory.newInstance();
-                if (classLoader != ClassLoader.getSystemClassLoader()
-                        && factory.getClass().getClassLoader() != classLoader) {
-                    throw new FactoryConfigurationError("Wrong factory!");
-                }
-                return factory;
+                factory = XMLOutputFactory.newInstance();
             } finally {
                 Thread.currentThread().setContextClassLoader(savedClassLoader);
             }
         } else {
             try {
-                return (XMLOutputFactory)classLoader.loadClass(className).newInstance();
+                factory = (XMLOutputFactory)classLoader.loadClass(className).newInstance();
             } catch (Exception ex) {
                 throw new FactoryConfigurationError(ex);
             }
         }
+        if (classLoader != ClassLoader.getSystemClassLoader()
+                && factory.getClass().getClassLoader() != classLoader) {
+            throw new FactoryConfigurationError("Wrong factory!");
+        }
+        return factory;
     }
     
     XMLOutputFactory newNormalizedXMLOutputFactory() {
