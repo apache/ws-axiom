@@ -223,9 +223,9 @@
     </build>
     <profiles>
         <profile>
-            <!-- This profile adds IBM's XLXP2 StAX implementation to the dialect test suite
+            <!-- This profile adds IBM's XLXP StAX implementation to the dialect test suite
                  if the was7.root property is set to the root directory of a WAS 7.0 installation -->
-            <id>test-xlxp2</id>
+            <id>test-xlxp</id>
             <activation>
                 <property>
                     <name>was7.root</name>
@@ -237,7 +237,7 @@
                         <artifactId>maven-resources-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>copy-xlxp2</id>
+                                <id>copy-xlxp</id>
                                 <phase>generate-test-resources</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
@@ -248,6 +248,9 @@
                                         <resource>
                                             <directory>${was7.root}/plugins</directory>
                                             <includes>
+                                                <!-- XLXP 1 -->
+                                                <include>com.ibm.ws.runtime.jar</include>
+                                                <!-- XLXP 2 -->
                                                 <include>com.ibm.ws.prereq.xlxp.jar</include>
                                             </includes>
                                         </resource>
