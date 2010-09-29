@@ -19,6 +19,9 @@
 package org.apache.axiom.util.stax.dialect;
 
 import java.io.ByteArrayInputStream;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -31,18 +34,24 @@ import javax.xml.stream.XMLStreamReader;
  */
 public class GetEncodingFromDetectionTestCase extends DialectTestCase {
     private final String javaEncoding;
-    private final String xmlEncoding;
+    private final Set xmlEncodings;
 
-    public GetEncodingFromDetectionTestCase(String javaEncoding, String xmlEncoding) {
+    public GetEncodingFromDetectionTestCase(String javaEncoding, String[] xmlEncodings) {
         this.javaEncoding = javaEncoding;
-        this.xmlEncoding = xmlEncoding;
+        this.xmlEncodings = new HashSet(Arrays.asList(xmlEncodings));
         setName(getClass().getName() + " [" + javaEncoding + "]");
+    }
+    
+    public GetEncodingFromDetectionTestCase(String javaEncoding, String xmlEncoding) {
+        this(javaEncoding, new String[] { xmlEncoding });
     }
 
     protected void runTest() throws Throwable {
         XMLInputFactory factory = newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new ByteArrayInputStream(
                 "<?xml version=\"1.0\"?><root/>".getBytes(javaEncoding)));
-        assertEquals(xmlEncoding, reader.getEncoding());
+        String actualEncoding = reader.getEncoding();
+        assertTrue("Expected one of " + xmlEncodings + ", but got " + actualEncoding,
+                   xmlEncodings.contains(actualEncoding));
     }
 }

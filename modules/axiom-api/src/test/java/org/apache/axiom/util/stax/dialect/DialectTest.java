@@ -47,8 +47,17 @@ public class DialectTest extends TestSuite {
         addDialectTest(new GetCharacterEncodingSchemeTestCase());
         addDialectTest(new GetEncodingExternalTestCase());
         addDialectTest(new GetEncodingFromDetectionTestCase("UTF-8", "UTF-8"));
-        addDialectTest(new GetEncodingFromDetectionTestCase("UnicodeBig", "UTF-16BE"));
-        addDialectTest(new GetEncodingFromDetectionTestCase("UnicodeLittle", "UTF-16LE"));
+        // The case of UTF-16 with a byte order marker is not well defined:
+        // * One may argue that the result should be UTF-16BE or UTF-16LE because
+        //   otherwise the information about the byte order is lost.
+        // * On the other hand, one may argue that the result should be UTF-16
+        //   because UTF-16BE or UTF-16LE may be interpreted as an indication that
+        //   there should be no BOM.
+        // Therefore we accept both results.
+        addDialectTest(new GetEncodingFromDetectionTestCase("UnicodeBig", new String[] { "UTF-16", "UTF-16BE" } ));
+        addDialectTest(new GetEncodingFromDetectionTestCase("UnicodeLittle", new String[] { "UTF-16", "UTF-16LE" }));
+        // Here there is no doubt; if the encoding is UTF-16 without BOM, then the
+        // parser should report the detected byte order.
         addDialectTest(new GetEncodingFromDetectionTestCase("UnicodeBigUnmarked", "UTF-16BE"));
         addDialectTest(new GetEncodingFromDetectionTestCase("UnicodeLittleUnmarked", "UTF-16LE"));
         addDialectTest(new GetEncodingTestCase());

@@ -63,7 +63,7 @@ class XLXP2Dialect extends AbstractStAXDialect {
     }
 
     public XMLInputFactory normalize(XMLInputFactory factory) {
-        return new NormalizingXMLInputFactoryWrapper(factory, this);
+        return new XLXP2InputFactoryWrapper(factory, this);
     }
 
     public XMLOutputFactory normalize(XMLOutputFactory factory) {
