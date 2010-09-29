@@ -224,8 +224,46 @@
     <profiles>
         <profile>
             <!-- This profile adds IBM's XLXP StAX implementation to the dialect test suite
+                 if the was61.root property is set to the root directory of a WAS 6.1
+                 installation that includes the Web Services feature pack -->
+            <id>was61</id>
+            <activation>
+                <property>
+                    <name>was61.root</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-xlxp-from-was61</id>
+                                <phase>generate-test-resources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/parsers</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${was61.root}/plugins</directory>
+                                            <includes>
+                                                <include>com.ibm.ws.runtime_6.1.0.jar</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <!-- This profile adds IBM's XLXP StAX implementation to the dialect test suite
                  if the was7.root property is set to the root directory of a WAS 7.0 installation -->
-            <id>test-xlxp</id>
+            <id>was7</id>
             <activation>
                 <property>
                     <name>was7.root</name>
@@ -237,7 +275,7 @@
                         <artifactId>maven-resources-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>copy-xlxp</id>
+                                <id>copy-xlxp-from-was7</id>
                                 <phase>generate-test-resources</phase>
                                 <goals>
                                     <goal>copy-resources</goal>

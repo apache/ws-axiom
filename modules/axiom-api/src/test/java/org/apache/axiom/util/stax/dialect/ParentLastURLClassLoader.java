@@ -35,17 +35,21 @@ public class ParentLastURLClassLoader extends URLClassLoader {
     }
 
     protected synchronized Class loadClass(String name, boolean resolve) throws ClassNotFoundException {
-        Class c = findLoadedClass(name);
-        if (c == null) {
-            try {
-                c = findClass(name);
-            } catch (ClassNotFoundException e) {
-                c = getParent().loadClass(name);
+        if (name.startsWith("javax.")) {
+            return super.loadClass(name, resolve);
+        } else {
+            Class c = findLoadedClass(name);
+            if (c == null) {
+                try {
+                    c = findClass(name);
+                } catch (ClassNotFoundException e) {
+                    c = getParent().loadClass(name);
+                }
             }
+            if (resolve) {
+                resolveClass(c);
+            }
+            return c;
         }
-        if (resolve) {
-            resolveClass(c);
-        }
-        return c;
     }
 }
