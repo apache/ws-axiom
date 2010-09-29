@@ -114,9 +114,6 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
                 && !"".equals(this.namespace.getPrefix()) &&
                 !(OMConstants.XMLNS_NS_PREFIX.equals(this.attrName)))
         {
-            //String nodeName = this.namespace.getPrefix() + ":" + this.attrName;
-            //return this.namespace.getPrefix().concat(prefixSeparater).concat(this.attrName);
-            //    return nodeName;
  
             return new StringBuilder(20).append(this.namespace.getPrefix())
                     .append(prefixSeparater)
@@ -126,11 +123,6 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
             return this.attrName;
         }
         
-      /*  return (this.namespace != null
-                && !"".equals(this.namespace.getPrefix()) &&
-                !(OMConstants.XMLNS_NS_PREFIX.equals(this.attrName)))
-                ? this.namespace.getPrefix() + ":" + this.attrName
-                : this.attrName;*/
     }
 
     /**
@@ -168,24 +160,20 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
             if ((OMConstants.XMLNS_NS_PREFIX.equals(this.attrName))) {
                 return this.attrName;
             } else if (OMConstants.XMLNS_NS_URI.equals(this.namespace.getNamespaceURI())) {
-                //return OMConstants.XMLNS_NS_PREFIX + ":" + this.attrName;
 
                 return new StringBuilder(20)
                         .append(OMConstants.XMLNS_NS_PREFIX)
                         .append(prefixSeparater)
                         .append(this.attrName).toString(); 
-              //  return OMConstants.XMLNS_NS_PREFIX.concat(prefixSeparater).concat(this.attrName);
             } else if (this.namespace.getPrefix().equals("")) {
                 return this.attrName;
             } else {
-                //return this.namespace.getPrefix() + ":" + this.attrName;
 
                 return new StringBuilder(20)
                         .append(this.namespace.getPrefix())
                         .append(prefixSeparater)
                         .append(this.attrName).toString();
- 
-                //return this.namespace.getPrefix().concat(prefixSeparater).concat(this.attrName); 
+  
             }
         } else {
             return this.attrName;
@@ -388,7 +376,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     public String getLocalName() {
         return (this.namespace == null) ? this.attrName : DOMUtil
                 .getNameAndPrefix(this.attrName)[1];
-               // .getLocalName(this.attrName);
+        
     }
 
     /**

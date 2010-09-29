@@ -29,7 +29,6 @@ import org.w3c.dom.DOMException;
  */
 public abstract class CharacterImpl extends ChildNode implements CharacterData {
 
-   // protected StringBuffer textValue;
     protected String textValue;
 
     protected CharacterImpl(OMFactory factory) {
@@ -91,10 +90,8 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
             int end = Math.min(count + offset, length);
 
             if (data == null) {
-                //this.textValue.delete(offset, end);
                 this.textValue = (new StringBuilder(textValue)).delete(offset, end).toString();
             } else {
-               // this.textValue.replace(offset, end, data);
                 this.textValue = (new StringBuilder(textValue)).replace(offset, end, data).toString();
             }
         }
@@ -125,15 +122,12 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
                                            "INDEX_SIZE_ERR", null));
         }
 
-        //this.textValue.insert(offset, data);
         this.textValue = (new StringBuilder(textValue)).insert(offset, data).toString();
     }
 
     /** Sets the text value of data. */
     public void setData(String data) throws DOMException {
         if (!this.isReadonly()) {
-            //this.textValue.replace(0, this.getLength(), data);
-            //this.textValue = (new StringBuilder(textValue)).replace(0, this.getLength(), data).toString();
             this.textValue = data;
         } else {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,

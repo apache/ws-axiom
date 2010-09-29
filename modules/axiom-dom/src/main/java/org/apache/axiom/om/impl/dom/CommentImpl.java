@@ -54,7 +54,6 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
     }
 
     public void setValue(String text) {
-        //this.textValue.delete(0, this.textValue.length());
         this.textValue = text;
     }
 
