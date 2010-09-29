@@ -111,7 +111,7 @@ public class TextImpl extends TextNodeImpl {
     }
 
     public Node cloneNode(boolean deep) {
-        TextImpl textImpl = new TextImpl(this.textValue.toString(), this.factory);
+        TextImpl textImpl = new TextImpl(this.textValue, this.factory);
         textImpl.setOwnerDocument(this.ownerNode);
         return textImpl;
     }

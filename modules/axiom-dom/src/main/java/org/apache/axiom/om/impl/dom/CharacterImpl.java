@@ -29,7 +29,8 @@ import org.w3c.dom.DOMException;
  */
 public abstract class CharacterImpl extends ChildNode implements CharacterData {
 
-    protected StringBuffer textValue;
+   // protected StringBuffer textValue;
+    protected String textValue;
 
     protected CharacterImpl(OMFactory factory) {
         super(factory);
@@ -42,8 +43,7 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
 
     public CharacterImpl(DocumentImpl ownerNode, String value, OMFactory factory) {
         super(ownerNode, factory);
-        this.textValue = (value != null) ? new StringBuffer(value)
-                : new StringBuffer("");
+        this.textValue = (value != null) ? value : "";
     }
 
     ///
@@ -51,7 +51,7 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
     ///
 
     public void appendData(String value) throws DOMException {
-
+                      
         if (this.isReadonly()) {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    DOMMessageFormatter.formatMessage(
@@ -59,7 +59,7 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
                                            "NO_MODIFICATION_ALLOWED_ERR", null));
         }
 
-        this.textValue.append(value);
+        this.textValue += value;
     }
 
     /**
@@ -91,9 +91,11 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
             int end = Math.min(count + offset, length);
 
             if (data == null) {
-                this.textValue.delete(offset, end);
+                //this.textValue.delete(offset, end);
+                this.textValue = (new StringBuilder(textValue)).delete(offset, end).toString();
             } else {
-                this.textValue.replace(offset, end, data);
+               // this.textValue.replace(offset, end, data);
+                this.textValue = (new StringBuilder(textValue)).replace(offset, end, data).toString();
             }
         }
 
@@ -102,7 +104,7 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
 
     /** Returns the value of the data. */
     public String getData() throws DOMException {
-        return (this.textValue != null) ? this.textValue.toString() : "";
+        return (this.textValue != null) ? this.textValue : "";
     }
 
     /** Inserts a string at the specified offset. */
@@ -123,14 +125,16 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
                                            "INDEX_SIZE_ERR", null));
         }
 
-        this.textValue.insert(offset, data);
-
+        //this.textValue.insert(offset, data);
+        this.textValue = (new StringBuilder(textValue)).insert(offset, data).toString();
     }
 
     /** Sets the text value of data. */
     public void setData(String data) throws DOMException {
         if (!this.isReadonly()) {
-            this.textValue.replace(0, this.getLength(), data);
+            //this.textValue.replace(0, this.getLength(), data);
+            //this.textValue = (new StringBuilder(textValue)).replace(0, this.getLength(), data).toString();
+            this.textValue = data;
         } else {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    DOMMessageFormatter.formatMessage(

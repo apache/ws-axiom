@@ -19,8 +19,13 @@
 
 package org.apache.axiom.om.impl.dom;
 
-/** Utility class for the OM-DOM implementation */
+/**
+ * Utility class for the OM-DOM implementation
+ */
 class DOMUtil {
+
+    private static String separator = ":";
+
 
     public static boolean isQualifiedName(String value) {
         // TODO check for valid characters
@@ -29,9 +34,9 @@ class DOMUtil {
     }
 
     /**
-     * @deprecated please use isQualifiedName
      * @param value
      * @return
+     * @deprecated please use isQualifiedName
      */
     public static boolean isValidChras(String value) {
         // TODO check for valid characters
@@ -55,29 +60,56 @@ class DOMUtil {
     }
 
     /**
+     * Substitute method for getLocalName and getPrefix
+     *
+     * @param qualifiedName
+     * @return qualified name split in to Prefix and localName
+     *         stringArray[0] is the prefix
+     *         stringArray[1] is the localName
+     */
+    public static String[] getNameAndPrefix(String qualifiedName) {
+        if (qualifiedName.indexOf(DOMUtil.separator) > -1) {
+            if (!qualifiedName.trim().endsWith(DOMUtil.separator))
+                return qualifiedName.split(DOMUtil.separator);
+            else {
+                String[] container = new String[2];
+                container[0] = null;
+                container[1] = qualifiedName;
+                return container;
+
+            }
+        } else {
+            String[] container = new String[2];
+            container[0] = null;
+            container[1] = qualifiedName;
+            return container;
+        }
+    }
+
+    /**
      * Get the local name from a qualified name
      *
      * @param qualifiedName
      */
-    public static String getLocalName(String qualifiedName) {
-        if (qualifiedName.indexOf(":") > -1
-                && !qualifiedName.trim().endsWith(":")) {
-            return qualifiedName.split(":")[1];
+    /*public static String getLocalName(String qualifiedName) {
+        if (qualifiedName.indexOf(DOMUtil.separator) > -1
+                && !qualifiedName.trim().endsWith(DOMUtil.separator)) {
+            return qualifiedName.split(DOMUtil.separator)[1];
         } else {
             return qualifiedName;
         }
     }
 
-    /**
+    *//**
      * Get the prefix from a qualified name
      *
      * @param qualifiedName
-     */
+     *//*
     public static String getPrefix(String qualifiedName) {
-        if (qualifiedName.indexOf(":") > -1) {
-            return qualifiedName.split(":")[0];
+        if (qualifiedName.indexOf(DOMUtil.separator) > -1) {
+            return qualifiedName.split(DOMUtil.separator)[0];
         } else {
             return null;
         }
-    }
+    }*/
 }

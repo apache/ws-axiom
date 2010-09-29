@@ -61,6 +61,8 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     /** Flag used to mark an attribute as per the DOM Level 3 specification */
     protected boolean isId;
 
+    private String prefixSeparater = ":";
+
     protected AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
     }
@@ -107,11 +109,28 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /** Returns the name of this attribute. */
     public String getNodeName() {
-        return (this.namespace != null
+        //String prefix = this.namespace.getPrefix();
+        if (this.namespace != null
+                && !"".equals(this.namespace.getPrefix()) &&
+                !(OMConstants.XMLNS_NS_PREFIX.equals(this.attrName)))
+        {
+            //String nodeName = this.namespace.getPrefix() + ":" + this.attrName;
+            //return this.namespace.getPrefix().concat(prefixSeparater).concat(this.attrName);
+            //    return nodeName;
+ 
+            return new StringBuilder(20).append(this.namespace.getPrefix())
+                    .append(prefixSeparater)
+                    .append(this.attrName).toString();
+ 
+        } else {
+            return this.attrName;
+        }
+        
+      /*  return (this.namespace != null
                 && !"".equals(this.namespace.getPrefix()) &&
                 !(OMConstants.XMLNS_NS_PREFIX.equals(this.attrName)))
                 ? this.namespace.getPrefix() + ":" + this.attrName
-                : this.attrName;
+                : this.attrName;*/
     }
 
     /**
@@ -149,11 +168,24 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
             if ((OMConstants.XMLNS_NS_PREFIX.equals(this.attrName))) {
                 return this.attrName;
             } else if (OMConstants.XMLNS_NS_URI.equals(this.namespace.getNamespaceURI())) {
-                return OMConstants.XMLNS_NS_PREFIX + ":" + this.attrName;
+                //return OMConstants.XMLNS_NS_PREFIX + ":" + this.attrName;
+
+                return new StringBuilder(20)
+                        .append(OMConstants.XMLNS_NS_PREFIX)
+                        .append(prefixSeparater)
+                        .append(this.attrName).toString(); 
+              //  return OMConstants.XMLNS_NS_PREFIX.concat(prefixSeparater).concat(this.attrName);
             } else if (this.namespace.getPrefix().equals("")) {
                 return this.attrName;
             } else {
-                return this.namespace.getPrefix() + ":" + this.attrName;
+                //return this.namespace.getPrefix() + ":" + this.attrName;
+
+                return new StringBuilder(20)
+                        .append(this.namespace.getPrefix())
+                        .append(prefixSeparater)
+                        .append(this.attrName).toString();
+ 
+                //return this.namespace.getPrefix().concat(prefixSeparater).concat(this.attrName); 
             }
         } else {
             return this.attrName;
@@ -355,7 +387,8 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      */
     public String getLocalName() {
         return (this.namespace == null) ? this.attrName : DOMUtil
-                .getLocalName(this.attrName);
+                .getNameAndPrefix(this.attrName)[1];
+               // .getLocalName(this.attrName);
     }
 
     /**
@@ -364,10 +397,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      * @see org.w3c.dom.Node#getNamespaceURI()
      */
     public String getNamespaceURI() {
-        if (this.namespace != null) {
-            return namespace.getNamespaceURI();
-        }
-        return null;
+        return (this.namespace != null) ? namespace.getNamespaceURI() : null;
     }
 
     /**

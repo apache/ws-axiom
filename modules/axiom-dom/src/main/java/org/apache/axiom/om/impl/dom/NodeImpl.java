@@ -41,12 +41,11 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Hashtable;
-import java.util.Map;
 
 public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
 
     /** Holds the user data objects */
-    private Map userData = new Hashtable();
+    private Hashtable userData; // Will be initialized in setUserData()
 
     /** Field builder */
     public OMXMLParserWrapper builder;
@@ -78,7 +77,8 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
     //
 
     protected NodeImpl(DocumentImpl ownerDocument, OMFactory factory) {
-        this(factory);
+        //this(factory);
+        this.factory = factory;
         this.ownerNode = ownerDocument;
         // this.isOwned(true);
 
@@ -541,11 +541,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
 
     public boolean isSameNode(Node node) {
         // TODO : check
-        if (this == node) {
-            return true;
-        } else {
-            return false;
-        }
+        return this == node;
     }
 
     public String lookupPrefix(String arg0) {
@@ -729,8 +725,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
                             //i.e. no corresponding node
                             return notEqual;
                         } else {
-                            NodeImpl node1 = thisNode;
-                            if (!(node1.isEqualNode(tmpNode))) {
+                            if (!(thisNode.isEqualNode(tmpNode))) {
                                 return notEqual;
                             }
                         }
@@ -746,12 +741,52 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         throw new UnsupportedOperationException("TODO");
     }
 
+    /* public Object setUserData(String key, Object value, UserDataHandler userDataHandler) {
+     return userData.put(key, value);
+ }
+
+ public Object getUserData(String key) {
+     return userData.get(key);
+ }   */
+
+    /* *
+     * userData storage/hashtable will be called only when the user needs to set user data. Previously, it was done as,
+     * for every node a new Hashtable created making the excution very inefficient. According to profiles, no. of method
+     * invocations to setUserData() method is very low, so this implementation is better.
+     * Another option:
+     * TODO do a profile and check the times for hashtable initialization. If it's still higher, we have to go to second option
+     * Create a separate class(UserData) to store key and value pairs. Then put those objects to a array with a reasonable size.
+     * then grow it accordingly.  @ Kasun Gajasinghe 
+     * @param key userData key
+     * @param value userData value
+     * @param userDataHandler it seems all invocations sends null for this parameter.
+     *          Kept it for the moment just for being on the safe side.
+     * @return previous Object if one is set before.
+     */
+    
     public Object setUserData(String key, Object value, UserDataHandler userDataHandler) {
+        if (userData == null) {
+            userData = new Hashtable();
+        }
         return userData.put(key, value);
     }
 
     public Object getUserData(String key) {
-        return userData.get(key);
+        if (userData != null) {
+            return userData.get(key);
+        }
+        return null;
+    }
+
+    public Document getParentOwnerDocument() {
+        // if we have an owner simply forward the request
+        // otherwise ownerNode is our ownerDocument
+        if (isOwned()) {
+            return ownerNode.getParentOwnerDocument();
+        } else {
+            return ownerNode;
+        }
+
     }
 
     public void serialize(OutputStream output) throws XMLStreamException {

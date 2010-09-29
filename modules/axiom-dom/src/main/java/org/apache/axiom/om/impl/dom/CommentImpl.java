@@ -54,8 +54,8 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
     }
 
     public void setValue(String text) {
-        this.textValue.delete(0, this.textValue.length());
-        this.textValue.append(text);
+        //this.textValue.delete(0, this.textValue.length());
+        this.textValue = text;
     }
 
     public int getType() {
@@ -68,6 +68,6 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        writer.writeComment(this.textValue.toString());
+        writer.writeComment(this.textValue);
     }
 }

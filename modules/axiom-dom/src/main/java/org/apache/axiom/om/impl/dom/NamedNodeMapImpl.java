@@ -43,7 +43,7 @@ public class NamedNodeMapImpl implements NamedNodeMap {
     protected final static short CHANGED = 0x1 << 1;
 
     protected final static short HASDEFAULTS = 0x1 << 2;
-
+                            
     protected NamedNodeMapImpl(ParentNode ownerNode) {
         this.ownerNode = ownerNode;
     }
@@ -177,7 +177,7 @@ public class NamedNodeMapImpl implements NamedNodeMap {
      * @param name         The local name of the node to remove.
      * @return Returns the node removed from the map if a node with such a local name and namespace
      *         URI exists.
-     * @throws NOT_FOUND_ERR: Raised if there is no node named name in the map.
+     * @throws DOMException: Raised if there is no node named name in the map.
      */
     public Node removeNamedItemNS(String namespaceURI, String name)
             throws DOMException {
@@ -331,7 +331,7 @@ public class NamedNodeMapImpl implements NamedNodeMap {
         // so we must linear search thru it.
         // In addition, to get this to work with nodes without any namespace
         // (namespaceURI and localNames are both null) we then use the nodeName
-        // as a seconday key.
+        // as a secondary key.
         for (int i = 0; i < nodes.size(); i++) {
             NodeImpl a = (NodeImpl) nodes.elementAt(i);
             String aNamespaceURI = a.getNamespaceURI();

@@ -167,8 +167,9 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
     public Attr createAttributeNS(String namespaceURI, String qualifiedName)
             throws DOMException {
-        String localName = DOMUtil.getLocalName(qualifiedName);
-        String prefix = DOMUtil.getPrefix(qualifiedName);
+        String[] nameAndPrefix = DOMUtil.getNameAndPrefix(qualifiedName);
+        String localName = nameAndPrefix[1];
+        String prefix = nameAndPrefix[0];
 
         if (!OMConstants.XMLNS_NS_PREFIX.equals(localName)) {
             this.checkQName(prefix, localName);
@@ -202,8 +203,10 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
         if (ns == null) ns = "";
 
-        String localName = DOMUtil.getLocalName(qualifiedName);
-        String prefix = DOMUtil.getPrefix(qualifiedName);
+        String[] nameAndPrefix = DOMUtil.getNameAndPrefix(qualifiedName);
+        String localName = nameAndPrefix[1];
+        String prefix = nameAndPrefix[0];
+
         if(prefix == null) {
             prefix = "";
         }

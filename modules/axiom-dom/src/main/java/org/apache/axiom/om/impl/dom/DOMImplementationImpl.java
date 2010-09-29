@@ -41,9 +41,10 @@ public class DOMImplementationImpl implements DOMImplementation {
         DocumentImpl doc = new DocumentImpl(fac);
         fac.setDocument(doc);
 
-        new ElementImpl(doc, DOMUtil.getLocalName(qualifiedName),
-                        new NamespaceImpl(namespaceURI, DOMUtil
-                                .getPrefix(qualifiedName)), fac);
+        String[] nameAndPrefix = DOMUtil.getNameAndPrefix(qualifiedName);
+
+        new ElementImpl(doc, nameAndPrefix[1],
+                        new NamespaceImpl(namespaceURI, nameAndPrefix[0]), fac);
 
         return doc;
     }

@@ -63,10 +63,14 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      */
     private Object dataHandlerObject = null;
 
-    /** Field nameSpace is used when serializing Binary stuff as MTOM optimized. */
+    /**
+     * Field nameSpace is used when serializing Binary stuff as MTOM optimized.
+     */
     protected OMNamespace ns = null;
 
-    /** Field nameSpace used when serializing Binary stuff as MTOM optimized. */
+    /**
+     * Field nameSpace used when serializing Binary stuff as MTOM optimized.
+     */
     public static final OMNamespace XOP_NS = new OMNamespaceImpl(
             "http://www.w3.org/2004/08/xop/include", "xop");
 
@@ -78,8 +82,9 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      */
     public TextNodeImpl(String text, OMFactory factory) {
         super(factory);
-        this.textValue = (text != null) ? new StringBuffer(text)
-                : new StringBuffer("");
+        //this.textValue = (text != null) ? new StringBuffer(text)
+        //        : new StringBuffer("");
+        this.textValue = (text != null) ? text : "";
         this.done = true;
         this.ns = XOP_NS;
     }
@@ -92,7 +97,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      *                  MIME messages
      */
     public TextNodeImpl(String contentID, OMContainer parent,
-                    OMXMLParserWrapper builder, OMFactory factory) {
+                        OMXMLParserWrapper builder, OMFactory factory) {
         super((DocumentImpl) ((ParentNode) parent).getOwnerDocument(), factory);
         this.contentID = contentID;
         this.optimize = true;
@@ -101,59 +106,59 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         this.builder = builder;
         this.ns = XOP_NS;
     }
-    
+
     /**
      * Construct TextImpl that is a copy of the source OMTextImpl
+     *
      * @param parent
-     * @param source TextImpl
+     * @param source  TextImpl
      * @param factory
      */
     public TextNodeImpl(OMContainer parent, TextNodeImpl source, OMFactory factory) {
         super((DocumentImpl) ((ParentNode) parent).getOwnerDocument(), factory);
         this.done = true;
-        
+
         // Copy the value of the text
         if (source.textValue != null) {
-            this.textValue = new StringBuffer();
-            this.textValue.append(source.textValue.toString());
+            this.textValue = source.textValue;
         }
-        
+
         // Clone the charArray (if it exists)
         if (source.charArray != null) {
             this.charArray = new char[source.charArray.length];
-            for (int i=0; i<source.charArray.length; i++) {
+            for (int i = 0; i < source.charArray.length; i++) {
                 this.charArray[i] = source.charArray[i];
             }
         }
-        
-        
+
+
         // Turn off textNS...the namespace will need to be recalculated
         // in the new tree's context.
         this.textNS = null;
-        
+
         // Copy the optimized related settings.
         this.optimize = source.optimize;
         this.mimeType = source.mimeType;
         this.isBinary = source.isBinary;
-        
+
         // TODO
         // Do we need a deep copy of the data-handler 
         this.contentID = source.contentID;
         this.dataHandlerObject = source.dataHandlerObject;
-        
+
         if (source.ns != null) {
-            this.ns = new OMNamespaceImpl(source.ns.getNamespaceURI(), 
-                                          source.ns.getPrefix());
+            this.ns = new OMNamespaceImpl(source.ns.getNamespaceURI(),
+                    source.ns.getPrefix());
         }
     }
 
     public TextNodeImpl(String text, String mimeType, boolean optimize,
-                    OMFactory factory) {
+                        OMFactory factory) {
         this(text, mimeType, optimize, true, factory);
     }
 
     public TextNodeImpl(String text, String mimeType, boolean optimize,
-                    boolean isBinary, OMFactory factory) {
+                        boolean isBinary, OMFactory factory) {
         this(text, factory);
         this.mimeType = mimeType;
         this.optimize = optimize;
@@ -165,7 +170,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      * @param optimize    To send binary content. Created progrmatically.
      */
     public TextNodeImpl(DocumentImpl ownerNode, Object dataHandler, boolean optimize,
-                    OMFactory factory) {
+                        OMFactory factory) {
         super(ownerNode, factory);
         this.dataHandlerObject = dataHandler;
         this.isBinary = true;
@@ -176,7 +181,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
 
     /**
      * Constructor.
-     * 
+     *
      * @param contentID
      * @param dataHandlerProvider
      * @param optimize
@@ -192,7 +197,9 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         done = true;
     }
 
-    /** @param ownerNode  */
+    /**
+     * @param ownerNode
+     */
     public TextNodeImpl(DocumentImpl ownerNode, OMFactory factory) {
         super(ownerNode, factory);
         this.done = true;
@@ -222,7 +229,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      * @param value
      */
     public TextNodeImpl(DocumentImpl ownerNode, String value, String mimeType,
-                    boolean optimize, OMFactory factory) {
+                        boolean optimize, OMFactory factory) {
         this(ownerNode, value, factory);
         this.mimeType = mimeType;
         this.optimize = optimize;
@@ -236,7 +243,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     }
 
     public TextNodeImpl(OMContainer parent, QName text, int nodeType,
-                    OMFactory factory) {
+                        OMFactory factory) {
         this(((ElementImpl) parent).ownerNode, factory);
         if (text != null) {
             this.textNS =
@@ -244,7 +251,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         } else {
 
         }
-        this.textValue = new StringBuffer((text == null) ? "" : text.getLocalPart());
+        this.textValue = (text == null) ? "" : text.getLocalPart();
         this.done = true;
     }
 
@@ -259,15 +266,15 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     public Text splitText(int offset) throws DOMException {
         if (this.isReadonly()) {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           "NO_MODIFICATION_ALLOWED_ERR", null));
+                    DOMMessageFormatter.formatMessage(
+                            DOMMessageFormatter.DOM_DOMAIN,
+                            "NO_MODIFICATION_ALLOWED_ERR", null));
         }
         if (offset < 0 || offset > this.textValue.length()) {
             throw new DOMException(DOMException.INDEX_SIZE_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN, "INDEX_SIZE_ERR",
-                                           null));
+                    DOMMessageFormatter.formatMessage(
+                            DOMMessageFormatter.DOM_DOMAIN, "INDEX_SIZE_ERR",
+                            null));
         }
         String newValue = this.textValue.substring(offset);
         this.deleteData(offset, this.textValue.length());
@@ -287,6 +294,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     // /
     // /org.w3c.dom.Node methods
     // /
+
     public String getNodeName() {
         return "#text";
     }
@@ -340,7 +348,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
             return getTextFromProperPlace();
         } else {
             try {
-                return Base64Utils.encode((DataHandler)getDataHandler());
+                return Base64Utils.encode((DataHandler) getDataHandler());
             } catch (Exception e) {
                 throw new OMException(e);
             }
@@ -350,10 +358,9 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     public String getData() throws DOMException {
         return this.getText();
     }
-    
+
     public char[] getTextCharacters() {
-        return charArray != null ? charArray : this.textValue.toString()
-                .toCharArray();
+        return charArray != null ? charArray : this.textValue.toCharArray();
     }
 
     public boolean isCharacters() {
@@ -361,7 +368,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     }
 
     private String getTextFromProperPlace() {
-        return charArray != null ? new String(charArray) : textValue.toString();
+        return charArray != null ? new String(charArray) : textValue;
     }
 
     private String getTextString() {
@@ -391,7 +398,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         } else {
             try {
                 // TODO: do we really want to build a QName from base64 encoded data?!?
-                return new QName(Base64Utils.encode((DataHandler)getDataHandler()));
+                return new QName(Base64Utils.encode((DataHandler) getDataHandler()));
             } catch (Exception e) {
                 throw new OMException(e);
             }
@@ -428,7 +435,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
                         .getDataHandler(contentID);
             } else if (dataHandlerObject instanceof DataHandlerProvider) {
                 try {
-                    dataHandlerObject = ((DataHandlerProvider)dataHandlerObject).getDataHandler();
+                    dataHandlerObject = ((DataHandlerProvider) dataHandlerObject).getDataHandler();
                 } catch (IOException ex) {
                     throw new OMException(ex);
                 }
@@ -463,7 +470,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
             writeOutput(writer);
         } else {
             try {
-                XMLStreamWriterUtils.writeDataHandler(writer, (DataHandler)getDataHandler(),
+                XMLStreamWriterUtils.writeDataHandler(writer, (DataHandler) getDataHandler(),
                         contentID, optimize);
             } catch (IOException ex) {
                 throw new OMException("Error reading data handler", ex);
@@ -492,12 +499,13 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     }
 
     public String toString() {
-        return (this.textValue != null) ? textValue.toString() : "";
+        return (this.textValue != null) ? textValue : "";
     }
 
     /* (non-Javadoc)
       * @see org.apache.axiom.om.OMNode#buildAll()
       */
+
     public void buildWithAttachments() {
         this.build();
         if (isOptimized()) {
@@ -522,7 +530,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     public OMNamespace getNamespace() {
         return textNS;
     }
-    
+
     public void setContentID(String cid) {
         this.contentID = cid;
     }
