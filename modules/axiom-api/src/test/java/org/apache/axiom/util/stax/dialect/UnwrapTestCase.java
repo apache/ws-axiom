@@ -18,34 +18,18 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import java.io.StringReader;
+
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamReader;
 
-import junit.framework.TestCase;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
-public abstract class DialectTestCase extends TestCase {
-    private DialectTest test;
-    
-    void init(DialectTest test) {
-        this.test = test;
-        if (getName() == null) {
-            setName(getClass().getName());
-        }
-    }
-    
-    protected XMLInputFactory newNormalizedXMLInputFactory() {
-        return test.newNormalizedXMLInputFactory();
-    }
-    
-    protected XMLOutputFactory newNormalizedXMLOutputFactory() {
-        return test.newNormalizedXMLOutputFactory();
-    }
-    
-    protected StAXDialect getDialect() {
-        return test.getDialect();
-    }
-    
-    protected ClassLoader getImplementationClassLoader() {
-        return test.getClassLoader();
+public class UnwrapTestCase extends DialectTestCase {
+    protected void runTest() throws Throwable {
+        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root/>"));
+        XMLStreamReader originalReader = XMLStreamReaderUtils.getOriginalXMLStreamReader(reader);
+        assertSame(getImplementationClassLoader(), originalReader.getClass().getClassLoader());
     }
 }

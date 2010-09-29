@@ -153,6 +153,7 @@ public class DialectTest extends TestSuite {
         addDialectTest(new NextAfterEndDocumentTestCase());
         addDialectTest(new SetPrefixScopeTestCase());
         addDialectTest(new StandaloneSetTestCase());
+        addDialectTest(new UnwrapTestCase());
         addDialectTest(new WriteStartDocumentWithNullEncodingTestCase());
     }
     
@@ -227,5 +228,9 @@ public class DialectTest extends TestSuite {
     
     StAXDialect getDialect() {
         return dialect;
+    }
+
+    ClassLoader getClassLoader() {
+        return classLoader;
     }
 }
