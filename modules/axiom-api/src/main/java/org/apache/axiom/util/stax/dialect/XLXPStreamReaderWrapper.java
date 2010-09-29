@@ -16,19 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.util.stax.dialect;
 
 import javax.xml.stream.XMLStreamReader;
 
-class XLXP1StreamReaderWrapper extends XLXPStreamReaderWrapper {
-    public XLXP1StreamReaderWrapper(XMLStreamReader parent) {
+import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
+import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
+
+public class XLXPStreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
+    public XLXPStreamReaderWrapper(XMLStreamReader parent) {
         super(parent);
     }
 
-    public String getEncoding() {
-        // Under some circumstances, some versions of XLXP return an empty string instead of null
-        String encoding = super.getEncoding();
-        return encoding == null || encoding.length() == 0 ? null : encoding;
+    public boolean isCharacters() {
+        // XLXP returns true for SPACE events as well; this is not correct
+        return getEventType() == CHARACTERS;
+    }
+
+    public XMLStreamReader getParent() {
+        return super.getParent();
     }
 }

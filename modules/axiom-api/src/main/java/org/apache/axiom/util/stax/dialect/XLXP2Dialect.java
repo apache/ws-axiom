@@ -55,7 +55,8 @@ class XLXP2Dialect extends AbstractStAXDialect {
 
     public XMLStreamReader normalize(XMLStreamReader reader) {
         // XLXP2's getNamespaceContext implementation is broken
-        return new NamespaceContextCorrectingXMLStreamReaderWrapper(reader);
+        return new NamespaceContextCorrectingXMLStreamReaderWrapper(
+                new XLXPStreamReaderWrapper(reader));
     }
 
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
