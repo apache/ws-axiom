@@ -29,6 +29,12 @@ class XLXP1StreamReaderWrapper extends XMLStreamReaderWrapper implements Delegat
         super(parent);
     }
 
+    public String getEncoding() {
+        // Under some circumstances, some versions of XLXP return an empty string instead of null
+        String encoding = super.getEncoding();
+        return encoding == null || encoding.length() == 0 ? null : encoding;
+    }
+    
     public boolean isCharacters() {
         // XLXP returns true for SPACE events as well; this is not correct
         return getEventType() == CHARACTERS;

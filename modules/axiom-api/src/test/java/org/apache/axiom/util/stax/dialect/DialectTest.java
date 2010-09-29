@@ -140,6 +140,7 @@ public class DialectTest extends TestSuite {
         addDialectTest(new IsStandaloneTestCase());
         addDialectTest(new MaskedNamespaceTestCase());
         addDialectTest(new NextAfterEndDocumentTestCase());
+        addDialectTest(new SetPrefixScopeTestCase());
         addDialectTest(new StandaloneSetTestCase());
         addDialectTest(new WriteStartDocumentWithNullEncodingTestCase());
     }
