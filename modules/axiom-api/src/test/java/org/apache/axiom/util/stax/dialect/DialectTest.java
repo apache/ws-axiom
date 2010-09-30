@@ -25,6 +25,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamConstants;
 
+import org.apache.axiom.om.AbstractTestCase;
+
 import junit.framework.TestSuite;
 
 public class DialectTest extends TestSuite {
@@ -36,6 +38,7 @@ public class DialectTest extends TestSuite {
         super(name);
         this.classLoader = classLoader;
         this.props = props;
+        String[] conformanceTestFiles = AbstractTestCase.getConformanceTestFiles();
         addDialectTest(new CreateXMLEventWriterWithNullEncodingTestCase());
         addDialectTest(new CreateXMLStreamReaderThreadSafetyTestCase());
         addDialectTest(new CreateXMLStreamWriterThreadSafetyTestCase());
@@ -85,6 +88,9 @@ public class DialectTest extends TestSuite {
         addDialectTest(new GetNameIllegalStateExceptionTestCase(XMLStreamConstants.DTD, true));
         addDialectTest(new GetNameIllegalStateExceptionTestCase(XMLStreamConstants.CDATA, true));
         addDialectTest(new GetNamespaceContextImplicitNamespacesTestCase());
+        for (int i=0; i<conformanceTestFiles.length; i++) {
+            addDialectTest(new GetNamespaceContextTestCase(conformanceTestFiles[i]));
+        }
         addDialectTest(new GetNamespaceURIIllegalStateExceptionTestCase(XMLStreamConstants.START_ELEMENT, false));
         addDialectTest(new GetNamespaceURIIllegalStateExceptionTestCase(XMLStreamConstants.END_ELEMENT, false));
         addDialectTest(new GetNamespaceURIIllegalStateExceptionTestCase(XMLStreamConstants.PROCESSING_INSTRUCTION, true));
@@ -149,7 +155,6 @@ public class DialectTest extends TestSuite {
         addDialectTest(new IsCharactersTestCase(XMLStreamConstants.DTD, false));
         addDialectTest(new IsCharactersTestCase(XMLStreamConstants.CDATA, false));
         addDialectTest(new IsStandaloneTestCase());
-        addDialectTest(new MaskedNamespaceTestCase());
         addDialectTest(new NextAfterEndDocumentTestCase());
         addDialectTest(new SetPrefixScopeTestCase());
         addDialectTest(new StandaloneSetTestCase());

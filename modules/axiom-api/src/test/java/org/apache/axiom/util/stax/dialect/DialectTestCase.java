@@ -21,9 +21,9 @@ package org.apache.axiom.util.stax.dialect;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 
-import junit.framework.TestCase;
+import org.apache.axiom.om.AbstractTestCase;
 
-public abstract class DialectTestCase extends TestCase {
+public abstract class DialectTestCase extends AbstractTestCase {
     private DialectTest test;
     
     void init(DialectTest test) {
