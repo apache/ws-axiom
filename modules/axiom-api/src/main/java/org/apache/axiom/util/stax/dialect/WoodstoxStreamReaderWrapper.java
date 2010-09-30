@@ -82,6 +82,30 @@ class WoodstoxStreamReaderWrapper extends XMLStreamReaderWrapper implements Dele
         return prefix == null || prefix.length() == 0 ? null : prefix;
     }
 
+    public String getNamespaceURI() {
+        // Woodstox 4.0 may return "" instead of null
+        String uri = super.getNamespaceURI();
+        return uri == null || uri.length() == 0 ? null : uri;
+    }
+
+    public String getNamespaceURI(String prefix) {
+        // Woodstox 4.0 may return "" instead of null
+        String uri = super.getNamespaceURI(prefix);
+        return uri == null || uri.length() == 0 ? null : uri;
+    }
+
+    public String getNamespacePrefix(int index) {
+        // Woodstox 4.0 may return "" instead of null
+        String prefix = super.getNamespacePrefix(index);
+        return prefix == null || prefix.length() == 0 ? null : prefix;
+    }
+
+    public String getAttributeNamespace(int index) {
+        // Woodstox 4.0 may return "" instead of null
+        String uri = super.getAttributeNamespace(index);
+        return uri == null || uri.length() == 0 ? null : uri;
+    }
+
     public XMLStreamReader getParent() {
         return super.getParent();
     }

@@ -47,6 +47,7 @@ public class DialectTest extends TestSuite {
         addDialectTest(new DisallowDoctypeDeclWithExternalSubsetTestCase());
         addDialectTest(new DisallowDoctypeDeclWithInternalSubsetTestCase());
         addDialectTest(new EnableCDataReportingTestCase());
+        addDialectTest(new GetAttributeNamespaceWithNoPrefixTestCase());
         addDialectTest(new GetCharacterEncodingSchemeTestCase());
         addDialectTest(new GetEncodingExternalTestCase());
         addDialectTest(new GetEncodingFromDetectionTestCase("UTF-8", "UTF-8"));
@@ -91,6 +92,7 @@ public class DialectTest extends TestSuite {
         for (int i=0; i<conformanceTestFiles.length; i++) {
             addDialectTest(new GetNamespaceContextTestCase(conformanceTestFiles[i]));
         }
+        addDialectTest(new GetNamespacePrefixDefaultNamespaceTestCase());
         addDialectTest(new GetNamespaceURIIllegalStateExceptionTestCase(XMLStreamConstants.START_ELEMENT, false));
         addDialectTest(new GetNamespaceURIIllegalStateExceptionTestCase(XMLStreamConstants.END_ELEMENT, false));
         addDialectTest(new GetNamespaceURIIllegalStateExceptionTestCase(XMLStreamConstants.PROCESSING_INSTRUCTION, true));
@@ -102,6 +104,7 @@ public class DialectTest extends TestSuite {
         addDialectTest(new GetNamespaceURIIllegalStateExceptionTestCase(XMLStreamConstants.ENTITY_REFERENCE, true));
         addDialectTest(new GetNamespaceURIIllegalStateExceptionTestCase(XMLStreamConstants.DTD, true));
         addDialectTest(new GetNamespaceURIIllegalStateExceptionTestCase(XMLStreamConstants.CDATA, true));
+        addDialectTest(new GetNamespaceURIWithNullNamespaceTestCase());
         addDialectTest(new GetPrefixIllegalStateExceptionTestCase(XMLStreamConstants.START_ELEMENT, false));
         addDialectTest(new GetPrefixIllegalStateExceptionTestCase(XMLStreamConstants.END_ELEMENT, false));
         addDialectTest(new GetPrefixIllegalStateExceptionTestCase(XMLStreamConstants.PROCESSING_INSTRUCTION, true));
