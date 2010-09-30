@@ -38,6 +38,8 @@ import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
  * </ol>
  * These two requirements ensure that instances of this interface may be used as
  * cache keys.
+ * 
+ * @see StAXWriterConfiguration
  */
 public interface StAXParserConfiguration {
     /**
