@@ -23,7 +23,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
-public class XLXPStreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
+class XLXPStreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
     public XLXPStreamReaderWrapper(XMLStreamReader parent) {
         super(parent);
     }
