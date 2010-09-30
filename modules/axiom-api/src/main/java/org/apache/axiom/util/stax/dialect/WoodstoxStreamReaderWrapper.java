@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
@@ -104,6 +105,10 @@ class WoodstoxStreamReaderWrapper extends XMLStreamReaderWrapper implements Dele
         // Woodstox 4.0 may return "" instead of null
         String uri = super.getAttributeNamespace(index);
         return uri == null || uri.length() == 0 ? null : uri;
+    }
+
+    public NamespaceContext getNamespaceContext() {
+        return new NamespaceURICorrectingNamespaceContextWrapper(super.getNamespaceContext());
     }
 
     public XMLStreamReader getParent() {

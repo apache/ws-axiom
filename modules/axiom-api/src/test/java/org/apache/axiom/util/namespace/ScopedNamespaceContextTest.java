@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 
 import org.apache.axiom.testutils.namespace.NamespaceContextTestUtils;
@@ -80,11 +81,11 @@ public class ScopedNamespaceContextTest extends TestCase {
         nc.endScope();
         assertEquals("urn:ns1", nc.getNamespaceURI("ns1"));
         assertEquals("urn:ns2", nc.getNamespaceURI("ns2"));
-        assertNull(nc.getNamespaceURI("ns3"));
+        assertEquals(XMLConstants.NULL_NS_URI, nc.getNamespaceURI("ns3"));
         nc.endScope();
         assertEquals("urn:ns1", nc.getNamespaceURI("ns1"));
-        assertNull(nc.getNamespaceURI("ns2"));
-        assertNull(nc.getNamespaceURI("ns3"));
+        assertEquals(XMLConstants.NULL_NS_URI, nc.getNamespaceURI("ns2"));
+        assertEquals(XMLConstants.NULL_NS_URI, nc.getNamespaceURI("ns3"));
     }
     
     public void testMaskedPrefix() {

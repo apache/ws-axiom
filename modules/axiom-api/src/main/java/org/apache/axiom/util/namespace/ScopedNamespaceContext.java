@@ -22,6 +22,7 @@ package org.apache.axiom.util.namespace;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 
 /**
@@ -114,7 +115,9 @@ public class ScopedNamespaceContext extends AbstractNamespaceContext {
                 return uriArray[i];
             }
         }
-        return null;
+        // The Javadoc of NamespaceContext#getNamespaceURI specifies that XMLConstants.NULL_NS_URI
+        // is returned both for unbound prefixes and the null namespace
+        return XMLConstants.NULL_NS_URI;
     }
 
     protected String doGetPrefix(String namespaceURI) {

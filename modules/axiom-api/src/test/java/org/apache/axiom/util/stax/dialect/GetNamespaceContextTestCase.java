@@ -84,13 +84,6 @@ public class GetNamespaceContextTestCase extends DialectTestCase {
                         String prefix = (String)it.next();
                         String expectedUri = refNc.getNamespaceURI(prefix);
                         String actualUri = nc.getNamespaceURI(prefix);
-                        // TODO: this needs to be clarified
-                        if (expectedUri == null) {
-                            expectedUri = "";
-                        }
-                        if (actualUri == null) {
-                            actualUri = "";
-                        }
                         assertEquals("Namespace URI for prefix '" + prefix + "'", expectedUri, actualUri);
                     }
                     for (Iterator it = namespaceURIs.iterator(); it.hasNext(); ) {

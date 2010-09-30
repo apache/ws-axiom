@@ -16,20 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.util.stax.dialect;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 
-class SJSXPNamespaceContextWrapper implements NamespaceContext {
+/**
+ * Wrapper that fixes the behavior of {@link NamespaceContext#getNamespaceURI(String)}. The Javadoc
+ * of that method clearly specifies that the return value of that method may never be
+ * <code>null</code>. In particular, the expected result for an unbound prefix is
+ * {@link XMLConstants#NULL_NS_URI}. However, many implementations incorrectly return
+ * <code>null</code> in that case.
+ */
+class NamespaceURICorrectingNamespaceContextWrapper implements NamespaceContext {
     private final NamespaceContext parent;
-
-    public SJSXPNamespaceContextWrapper(NamespaceContext parent) {
+    
+    public NamespaceURICorrectingNamespaceContextWrapper(NamespaceContext parent) {
         this.parent = parent;
     }
 
@@ -43,16 +47,6 @@ class SJSXPNamespaceContextWrapper implements NamespaceContext {
     }
 
     public Iterator getPrefixes(String namespaceURI) {
-        // SJSXP doesn't correctly handle masked namespace declarations
-        List prefixes = new ArrayList(5);
-        for (Iterator it = parent.getPrefixes(namespaceURI); it.hasNext(); ) {
-            String prefix = (String)it.next();
-            String actualNamespaceURI = parent.getNamespaceURI(prefix);
-            if (namespaceURI == actualNamespaceURI
-                    || namespaceURI != null && namespaceURI.equals(actualNamespaceURI)) {
-                prefixes.add(prefix);
-            }
-        }
-        return prefixes.iterator();
+        return parent.getPrefixes(namespaceURI);
     }
 }

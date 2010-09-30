@@ -140,7 +140,8 @@ class BEAStreamReaderWrapper extends XMLStreamReaderWrapper implements Delegatin
         // The NamespaceContext returned by the reference doesn't handle the
         // implicit namespace bindings (for the "xml" and "xmlns" prefixes)
         // correctly
-        return new ImplicitNamespaceContextWrapper(super.getNamespaceContext());
+        return new ImplicitNamespaceContextWrapper(
+                new NamespaceURICorrectingNamespaceContextWrapper(super.getNamespaceContext()));
     }
 
     public XMLStreamReader getParent() {

@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.XMLConstants;
+
 /**
  * Namespace context implementation that stores namespace bindings in a {@link Map}.
  */
@@ -36,7 +38,8 @@ public class MapBasedNamespaceContext extends AbstractNamespaceContext {
     }
 
     protected String doGetNamespaceURI(String prefix) {
-        return (String) namespaces.get(prefix);
+        String namespaceURI = (String)namespaces.get(prefix);
+        return namespaceURI == null ? XMLConstants.NULL_NS_URI : namespaceURI;
     }
 
     protected String doGetPrefix(String nsURI) {
