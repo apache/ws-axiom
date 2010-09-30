@@ -76,6 +76,12 @@ class WoodstoxStreamReaderWrapper extends XMLStreamReaderWrapper implements Dele
         return getEventType() == CHARACTERS;
     }
 
+    public String getPrefix() {
+        // Woodstox 4.0 may return "" instead of null
+        String prefix = super.getPrefix();
+        return prefix == null || prefix.length() == 0 ? null : prefix;
+    }
+
     public XMLStreamReader getParent() {
         return super.getParent();
     }
