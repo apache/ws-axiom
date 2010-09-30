@@ -1,1 +1,0 @@
-Use this folder to drop other parsers that are not available from public Maven repositories.
