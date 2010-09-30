@@ -436,7 +436,12 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
                         Log in to <literal>people.apache.org</literal> and update the site:
                     </para>
 <screen>cd /www/ws.apache.org/commons/axiom/
+umask 0002
 svn update</screen>
+                    <para>
+                        The umask setting makes sure that other members of the ws group will be able
+                        to update the site as well.
+                    </para>
                 </step>
             </procedure>
             <para>
