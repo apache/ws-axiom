@@ -73,8 +73,6 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
 
-    private String prefixSeparater = ":";
-
     private static final String INVALID_CHARACTER_ERR = "INVALID_CHARACTER_ERR";
     private static final String NO_MODIFICATION_ALLOWED_ERR = "NO_MODIFICATION_ALLOWED_ERR";
     private static final String NAMESPACE_ERR = "NAMESPACE_ERR";
@@ -181,10 +179,8 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             if (this.namespace.getPrefix() == null
                     || "".equals(this.namespace.getPrefix())) {
                 return this.localName;
-            } else { 
-                return new StringBuilder(20).append(this.namespace.getPrefix())
-                        .append(prefixSeparater)
-                        .append(this.localName).toString(); 
+            } else {
+                return this.namespace.getPrefix() + ":" + this.localName;
             }
         } else {
             return this.localName;

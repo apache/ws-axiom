@@ -61,8 +61,6 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     /** Flag used to mark an attribute as per the DOM Level 3 specification */
     protected boolean isId;
 
-    private String prefixSeparater = ":";
-
     protected AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
     }
@@ -109,20 +107,11 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     /** Returns the name of this attribute. */
     public String getNodeName() {
-        //String prefix = this.namespace.getPrefix();
-        if (this.namespace != null
+        return (this.namespace != null
                 && !"".equals(this.namespace.getPrefix()) &&
                 !(OMConstants.XMLNS_NS_PREFIX.equals(this.attrName)))
-        {
- 
-            return new StringBuilder(20).append(this.namespace.getPrefix())
-                    .append(prefixSeparater)
-                    .append(this.attrName).toString();
- 
-        } else {
-            return this.attrName;
-        }
-        
+                ? this.namespace.getPrefix() + ":" + this.attrName
+                : this.attrName;
     }
 
     /**
@@ -160,20 +149,11 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
             if ((OMConstants.XMLNS_NS_PREFIX.equals(this.attrName))) {
                 return this.attrName;
             } else if (OMConstants.XMLNS_NS_URI.equals(this.namespace.getNamespaceURI())) {
-
-                return new StringBuilder(20)
-                        .append(OMConstants.XMLNS_NS_PREFIX)
-                        .append(prefixSeparater)
-                        .append(this.attrName).toString(); 
+                return OMConstants.XMLNS_NS_PREFIX + ":" + this.attrName;
             } else if (this.namespace.getPrefix().equals("")) {
                 return this.attrName;
             } else {
-
-                return new StringBuilder(20)
-                        .append(this.namespace.getPrefix())
-                        .append(prefixSeparater)
-                        .append(this.attrName).toString();
-  
+                return this.namespace.getPrefix() + ":" + this.attrName;
             }
         } else {
             return this.attrName;
