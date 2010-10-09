@@ -50,7 +50,7 @@ public class XMLStreamReaderWrapper implements XMLStreamReader {
      * this a public method. Note that a corresponding <code>setParent</code> method is
      * intentionally omitted because {@link XMLStreamReaderWrapper} is immutable.
      * 
-     * @return XMLStreamReader the parent (wrapped) stream reader
+     * @return the parent stream reader that is wrapped by this object
      */
     protected XMLStreamReader getParent() {
         return parent;
