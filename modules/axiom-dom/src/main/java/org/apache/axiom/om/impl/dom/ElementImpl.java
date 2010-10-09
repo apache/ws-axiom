@@ -73,6 +73,10 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
 
+    private static final OMNamespace XMLNS_NAMESPACE_WITH_PREFIX = new NamespaceImpl(OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX);
+    
+    private static final OMNamespace XMLNS_NAMESPACE_WITHOUT_PREFIX = new NamespaceImpl(OMConstants.XMLNS_NS_URI, null);
+    
     private static final String INVALID_CHARACTER_ERR = "INVALID_CHARACTER_ERR";
     private static final String NO_MODIFICATION_ALLOWED_ERR = "NO_MODIFICATION_ALLOWED_ERR";
     private static final String NAMESPACE_ERR = "NAMESPACE_ERR";
@@ -1311,11 +1315,11 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     
                     if ("".equals(prefix)) {
                         AttrImpl attr = new AttrImpl(this.ownerNode, "xmlns", ns.getNamespaceURI(), this.factory);
-                        attr.setOMNamespace(new NamespaceImpl(OMConstants.XMLNS_NS_URI, null));
+                        attr.setOMNamespace(XMLNS_NAMESPACE_WITHOUT_PREFIX);
                         attributeMap.addItem(attr);
                     } else {
                         AttrImpl attr = new AttrImpl(this.ownerNode, prefix, ns.getNamespaceURI(), this.factory);
-                        attr.setOMNamespace(new NamespaceImpl(OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX));
+                        attr.setOMNamespace(XMLNS_NAMESPACE_WITH_PREFIX);
                         attributeMap.addItem(attr);
                     }
                 }
