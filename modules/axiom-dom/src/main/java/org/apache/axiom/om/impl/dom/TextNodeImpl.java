@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
@@ -64,17 +63,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     private Object dataHandlerObject = null;
 
     /**
-     * Field nameSpace is used when serializing Binary stuff as MTOM optimized.
-     */
-    protected OMNamespace ns = null;
-
-    /**
-     * Field nameSpace used when serializing Binary stuff as MTOM optimized.
-     */
-    public static final OMNamespace XOP_NS = new OMNamespaceImpl(
-            "http://www.w3.org/2004/08/xop/include", "xop");
-
-    /**
      * Creates a text node with the given text required by the OMDOMFactory. The owner document
      * should be set properly when appending this to a DOM tree.
      *
@@ -86,7 +74,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         //        : new StringBuffer("");
         this.textValue = (text != null) ? text : "";
         this.done = true;
-        this.ns = XOP_NS;
     }
 
     /**
@@ -104,7 +91,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         this.isBinary = true;
         this.done = true;
         this.builder = builder;
-        this.ns = XOP_NS;
     }
 
     /**
@@ -145,11 +131,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         // Do we need a deep copy of the data-handler 
         this.contentID = source.contentID;
         this.dataHandlerObject = source.dataHandlerObject;
-
-        if (source.ns != null) {
-            this.ns = new OMNamespaceImpl(source.ns.getNamespaceURI(),
-                    source.ns.getPrefix());
-        }
     }
 
     public TextNodeImpl(String text, String mimeType, boolean optimize,
@@ -176,7 +157,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         this.isBinary = true;
         this.optimize = optimize;
         done = true;
-        this.ns = XOP_NS;
     }
 
     /**
@@ -203,7 +183,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     public TextNodeImpl(DocumentImpl ownerNode, OMFactory factory) {
         super(ownerNode, factory);
         this.done = true;
-        this.ns = XOP_NS;
     }
 
     /**
@@ -213,7 +192,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     public TextNodeImpl(DocumentImpl ownerNode, String value, OMFactory factory) {
         super(ownerNode, value, factory);
         this.done = true;
-        this.ns = XOP_NS;
     }
 
 
@@ -221,7 +199,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         super(ownerNode, factory);
         this.charArray = value;
         this.done = true;
-        this.ns = XOP_NS;
     }
 
     /**
