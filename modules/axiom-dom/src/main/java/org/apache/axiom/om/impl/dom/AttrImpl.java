@@ -355,7 +355,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      */
     public String getLocalName() {
         return (this.namespace == null) ? this.attrName : DOMUtil
-                .getNameAndPrefix(this.attrName)[1];
+                .getLocalName(this.attrName);
         
     }
 

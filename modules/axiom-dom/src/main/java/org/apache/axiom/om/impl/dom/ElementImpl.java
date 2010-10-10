@@ -255,7 +255,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         }
 
         if (name.startsWith(OMConstants.XMLNS_NS_PREFIX)) {
-            String namespacePrefix = DOMUtil.getNameAndPrefix(name)[1];
+            String namespacePrefix = DOMUtil.getLocalName(name);
             if (this.findNamespaceURI(namespacePrefix) != null) {
                 this.removeNamespace(namespacePrefix);
             }
@@ -285,7 +285,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (OMConstants.XMLNS_NS_URI.equals(namespaceURI)) {
             //look in the ns list
             if (this.namespaces != null) {
-                this.namespaces.remove(DOMUtil.getNameAndPrefix(localName)[1]);
+                this.namespaces.remove(DOMUtil.getLocalName(localName));
             }
 
         } else if (this.attributes != null) {
@@ -431,7 +431,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (attr.getNodeName().startsWith(OMConstants.XMLNS_NS_PREFIX + ":")) {
             // This is a ns declaration
             this.declareNamespace(attr.getNodeValue(), DOMUtil
-                    .getNameAndPrefix(attr.getName())[1]);
+                    .getLocalName(attr.getName()));
 
             //Don't add this to attr list, since its a namespace
             return attr;
@@ -464,7 +464,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         }
         if (name.startsWith(OMConstants.XMLNS_NS_PREFIX + ":")) {
             // This is a ns declaration
-            this.declareNamespace(value, DOMUtil.getNameAndPrefix(name)[1]);
+            this.declareNamespace(value, DOMUtil.getLocalName(name));
         } else if (name.equals(OMConstants.XMLNS_NS_PREFIX)) {
             this.declareDefaultNamespace(value);
         } else {
@@ -540,14 +540,16 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      */
     public void setAttributeNS(String namespaceURI, String qualifiedName,
                                String value) throws DOMException {
-        String[] nameAndPrefix = DOMUtil.getNameAndPrefix(qualifiedName);
 
         if (namespaceURI != null && !"".equals(namespaceURI)) {
             if (namespaceURI.equals(OMConstants.XMLNS_NS_URI)) {
-                this.declareNamespace(value, nameAndPrefix[1]);
+                this.declareNamespace(value, DOMUtil
+                        .getLocalName(qualifiedName));
             } else {
-                AttrImpl attr = new AttrImpl(this.ownerNode, nameAndPrefix[1], value, this.factory);
-                attr.setOMNamespace(new NamespaceImpl(namespaceURI, nameAndPrefix[0]));
+                AttrImpl attr = new AttrImpl(this.ownerNode, DOMUtil
+                        .getLocalName(qualifiedName), value, this.factory);
+                attr.setOMNamespace(new NamespaceImpl(namespaceURI, DOMUtil
+                        .getPrefix(qualifiedName)));
 
                 this.setAttributeNodeNS(attr);
             }
@@ -555,7 +557,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             // When the namespace is null, the attr name given better not be
             // a qualified name
             // But anyway check and set it
-            this.setAttribute(nameAndPrefix[1], value);
+            this.setAttribute(DOMUtil.getLocalName(qualifiedName), value);
         }
 
     }
@@ -588,20 +590,20 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             }
             // Check whether there's an existing Attr with same local name and
             // namespace URI
-            String[] nameAndPrefix = DOMUtil.getNameAndPrefix(qualifiedName);
-            Attr attributeNode = this.getAttributeNodeNS(namespaceURI, nameAndPrefix[1]);
-//            Attr attributeNode = this.getAttributeNodeNS(namespaceURI, DOMUtil
-//                    .getLocalName(qualifiedName));
+            String localName = DOMUtil.getLocalName(qualifiedName);
+            Attr attributeNode = this.getAttributeNodeNS(namespaceURI, localName);
             if (attributeNode != null) {
                 AttrImpl tempAttr = ((AttrImpl) attributeNode);
-                tempAttr.setOMNamespace(new NamespaceImpl(namespaceURI, nameAndPrefix[0]));
+                tempAttr.setOMNamespace(new NamespaceImpl(namespaceURI, DOMUtil
+                        .getPrefix(qualifiedName)));
                 tempAttr.setAttributeValue(value);
                 this.attributes.setNamedItem(tempAttr);
                 return tempAttr;
             } else {
-                NamespaceImpl ns = new NamespaceImpl(namespaceURI, nameAndPrefix[0]);
+                NamespaceImpl ns = new NamespaceImpl(namespaceURI, DOMUtil
+                        .getPrefix(qualifiedName));
                 AttrImpl attr = new AttrImpl((DocumentImpl) this
-                        .getOwnerDocument(), nameAndPrefix[1], ns, value, this.factory);
+                        .getOwnerDocument(), localName, ns, value, this.factory);
                 this.attributes.setNamedItem(attr);
                 return attr;
             }
