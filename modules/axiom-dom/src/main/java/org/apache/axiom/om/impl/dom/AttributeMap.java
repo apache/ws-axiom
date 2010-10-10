@@ -48,18 +48,20 @@ public class AttributeMap extends NamedNodeMapImpl {
         if (isReadOnly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    "NO_MODIFICATION_ALLOWED_ERR", null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
         if (attribute.getOwnerDocument() != ownerNode.getOwnerDocument()) {
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, "WRONG_DOCUMENT_ERR", null);
+                    DOMMessageFormatter.DOM_DOMAIN,
+                    DOMException.WRONG_DOCUMENT_ERR, null);
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
         }
         if (attribute.getNodeType() != Node.ATTRIBUTE_NODE) {
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, "HIERARCHY_REQUEST_ERR",
+                    DOMMessageFormatter.DOM_DOMAIN,
+                    DOMException.HIERARCHY_REQUEST_ERR,
                     null);
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, msg);
         }
@@ -72,7 +74,7 @@ public class AttributeMap extends NamedNodeMapImpl {
                 throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR,
                                        DOMMessageFormatter.formatMessage(
                                                DOMMessageFormatter.DOM_DOMAIN,
-                                               "INUSE_ATTRIBUTE_ERR", null));
+                                               DOMException.INUSE_ATTRIBUTE_ERR, null));
             else
                 return attr; // No point adding the 'same' attr again to the
             // same element
@@ -119,18 +121,18 @@ public class AttributeMap extends NamedNodeMapImpl {
         if (isReadOnly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    "NO_MODIFICATION_ALLOWED_ERR", null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
         if (attribute.getOwnerDocument() != ownerNode.getOwnerDocument()) {
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, "WRONG_DOCUMENT_ERR", null);
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.WRONG_DOCUMENT_ERR, null);
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
         }
         if (attribute.getNodeType() != Node.ATTRIBUTE_NODE) {
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, "HIERARCHY_REQUEST_ERR",
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.HIERARCHY_REQUEST_ERR,
                     null);
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, msg);
         }
@@ -142,7 +144,7 @@ public class AttributeMap extends NamedNodeMapImpl {
                 throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR,
                                        DOMMessageFormatter.formatMessage(
                                                DOMMessageFormatter.DOM_DOMAIN,
-                                               "INUSE_ATTRIBUTE_ERR", null));
+                                               DOMException.INUSE_ATTRIBUTE_ERR, null));
             else
                 return attr; // No point adding the 'same' attr again to the
             // same element

@@ -48,6 +48,27 @@ public class DOMMessageFormatter {
     public static final String NOT_REQUIRED_FOR_XMLSEC_OR_WSS4J =
             "This method is not required by Apache XML-Security Impl or WSS4J";
 
+    private static final String[] exceptionKeys = {
+        // Note: order is determined by the constants defined in DOMException
+        "INDEX_SIZE_ERR",
+        "DOMSTRING_SIZE_ERR",
+        "HIERARCHY_REQUEST_ERR",
+        "WRONG_DOCUMENT_ERR",
+        "INVALID_CHARACTER_ERR",
+        "NO_DATA_ALLOWED_ERR",
+        "NO_MODIFICATION_ALLOWED_ERR",
+        "NOT_FOUND_ERR",
+        "NOT_SUPPORTED_ERR",
+        "INUSE_ATTRIBUTE_ERR",
+        "INVALID_STATE_ERR",
+        "SYNTAX_ERR",
+        "INVALID_MODIFICATION_ERR",
+        "NAMESPACE_ERR",
+        "INVALID_ACCESS_ERR",
+        "VALIDATION_ERR",
+        "TYPE_MISMATCH_ERR",
+    };
+
     DOMMessageFormatter() {
         locale = Locale.getDefault();
     }
@@ -109,6 +130,11 @@ public class DOMMessageFormatter {
         return msg;
     }
 
+    public static String formatMessage(String domain, int exceptionId,
+                                       Object[] arguments) throws MissingResourceException {
+        return formatMessage(domain, exceptionKeys[exceptionId], arguments);
+    }
+    
     static ResourceBundle getResourceBundle(String domain) {
         if (domain == DOM_DOMAIN || domain.equals(DOM_DOMAIN))
             return domResourceBundle;

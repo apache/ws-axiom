@@ -82,14 +82,14 @@ public class NamedNodeMapImpl implements NamedNodeMap {
         if (isReadOnly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    "NO_MODIFICATION_ALLOWED_ERR", null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
         int i = findNamePoint(name, 0);
         if (i < 0) {
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, "NOT_FOUND_ERR", null);
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR, null);
             throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
         }
 
@@ -134,14 +134,14 @@ public class NamedNodeMapImpl implements NamedNodeMap {
         if (isReadOnly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    "NO_MODIFICATION_ALLOWED_ERR", null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
 
         if (arg.getOwnerDocument() != ownerDocument) {
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, "WRONG_DOCUMENT_ERR", null);
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.WRONG_DOCUMENT_ERR, null);
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
         }
 
@@ -185,14 +185,14 @@ public class NamedNodeMapImpl implements NamedNodeMap {
         if (isReadOnly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    "NO_MODIFICATION_ALLOWED_ERR", null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
         int i = findNamePoint(namespaceURI, name);
         if (i < 0) {
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, "NOT_FOUND_ERR", null);
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR, null);
             throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
         }
 
@@ -226,13 +226,13 @@ public class NamedNodeMapImpl implements NamedNodeMap {
         if (isReadOnly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    "NO_MODIFICATION_ALLOWED_ERR", null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
         if (arg.getOwnerDocument() != ownerDocument) {
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, "WRONG_DOCUMENT_ERR", null);
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.WRONG_DOCUMENT_ERR, null);
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
         }
 

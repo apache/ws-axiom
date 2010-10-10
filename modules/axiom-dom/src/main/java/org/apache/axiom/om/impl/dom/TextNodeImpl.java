@@ -245,12 +245,12 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                     DOMMessageFormatter.formatMessage(
                             DOMMessageFormatter.DOM_DOMAIN,
-                            "NO_MODIFICATION_ALLOWED_ERR", null));
+                            DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
         }
         if (offset < 0 || offset > this.textValue.length()) {
             throw new DOMException(DOMException.INDEX_SIZE_ERR,
                     DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN, "INDEX_SIZE_ERR",
+                            DOMMessageFormatter.DOM_DOMAIN, DOMException.INDEX_SIZE_ERR,
                             null));
         }
         String newValue = this.textValue.substring(offset);

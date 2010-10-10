@@ -84,7 +84,7 @@ public class ProcessingInstructionImpl extends ChildNode implements ProcessingIn
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "NO_MODIFICATION_ALLOWED_ERR", null));
+                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
         }
     }
     

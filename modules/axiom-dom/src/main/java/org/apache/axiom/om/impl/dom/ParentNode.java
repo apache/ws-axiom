@@ -198,7 +198,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "HIERARCHY_REQUEST_ERR", null));
+                                           DOMException.HIERARCHY_REQUEST_ERR, null));
         }
 
         if (newDomChild.parentNode != null && newDomChild.ownerNode == this.ownerNode) {
@@ -211,14 +211,14 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "WRONG_DOCUMENT_ERR", null));
+                                           DOMException.WRONG_DOCUMENT_ERR, null));
         }
 
         if (this.isReadonly()) {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "NO_MODIFICATION_ALLOWED_ERR", null));
+                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
         }
 
         if (this instanceof Document) {
@@ -228,7 +228,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                     throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                            DOMMessageFormatter.formatMessage(
                                                    DOMMessageFormatter.DOM_DOMAIN,
-                                                   "HIERARCHY_REQUEST_ERR", null));
+                                                   DOMException.HIERARCHY_REQUEST_ERR, null));
                 }
                 if (newDomChild.parentNode == null) {
                     newDomChild.parentNode = this;
@@ -242,7 +242,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                         DOMMessageFormatter.formatMessage(
                                 DOMMessageFormatter.DOM_DOMAIN,
-                                "HIERARCHY_REQUEST_ERR", null));
+                                DOMException.HIERARCHY_REQUEST_ERR, null));
             }
         }
         boolean compositeChild = newDomChild.nextSibling != null;
@@ -349,7 +349,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 throw new DOMException(DOMException.NOT_FOUND_ERR,
                                        DOMMessageFormatter.formatMessage(
                                                DOMMessageFormatter.DOM_DOMAIN,
-                                               "NOT_FOUND_ERR", null));
+                                               DOMException.NOT_FOUND_ERR, null));
             }
 
             if (newDomChild.parentNode == null) {
@@ -373,7 +373,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "HIERARCHY_REQUEST_ERR", null));
+                                           DOMException.HIERARCHY_REQUEST_ERR, null));
         }
 
         if (newDomChild != null &&
@@ -384,14 +384,14 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "WRONG_DOCUMENT_ERR", null));
+                                           DOMException.WRONG_DOCUMENT_ERR, null));
         }
 
         if (this.isReadonly()) {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "NO_MODIFICATION_ALLOWED_ERR", null));
+                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
         }
 
         Iterator children = this.getChildren();
@@ -458,7 +458,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         if (!found)
             throw new DOMException(DOMException.NOT_FOUND_ERR,
                                    DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN, "NOT_FOUND_ERR",
+                                           DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR,
                                            null));
 
         return oldChild;
@@ -471,7 +471,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "NO_MODIFICATION_ALLOWED_ERR", null));
+                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
         }
 
         // Check if the Child is there
@@ -519,7 +519,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         if (!childFound)
             throw new DOMException(DOMException.NOT_FOUND_ERR,
                                    DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN, "NOT_FOUND_ERR",
+                                           DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR,
                                            null));
 
         return oldChild;

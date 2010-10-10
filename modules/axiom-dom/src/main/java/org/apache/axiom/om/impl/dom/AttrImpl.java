@@ -284,7 +284,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
         if (isReadonly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    "NO_MODIFICATION_ALLOWED_ERR", null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }

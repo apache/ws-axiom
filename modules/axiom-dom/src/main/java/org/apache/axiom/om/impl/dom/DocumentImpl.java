@@ -158,7 +158,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     public Attr createAttribute(String name) throws DOMException {
         if (!DOMUtil.isQualifiedName(name)) {
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, "INVALID_CHARACTER_ERR",
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.INVALID_CHARACTER_ERR,
                     null);
             throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
         }
@@ -363,7 +363,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
             case Node.DOCUMENT_NODE: // Can't import document nodes
             default: { // Unknown node type
                 String msg = DOMMessageFormatter.formatMessage(
-                        DOMMessageFormatter.DOM_DOMAIN, "NOT_SUPPORTED_ERR", null);
+                        DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_SUPPORTED_ERR, null);
                 throw new DOMException(DOMException.NOT_SUPPORTED_ERR, msg);
             }
 
@@ -464,14 +464,14 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         if (!validNCName) {
             // REVISIT: add qname parameter to the message
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, "INVALID_CHARACTER_ERR",
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.INVALID_CHARACTER_ERR,
                     null);
             throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
         }
 
         if (prefix == null || prefix.equals("")) {
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, "NAMESPACE_ERR", null);
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.NAMESPACE_ERR, null);
             throw new DOMException(DOMException.NAMESPACE_ERR, msg);
         }
     }

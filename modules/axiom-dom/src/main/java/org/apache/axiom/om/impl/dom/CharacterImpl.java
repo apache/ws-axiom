@@ -55,7 +55,7 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "NO_MODIFICATION_ALLOWED_ERR", null));
+                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
         }
 
         this.textValue += value;
@@ -76,14 +76,14 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "NO_MODIFICATION_ALLOWED_ERR", null));
+                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
         }
 
         int length = this.textValue.length();
         if (offset < 0 || offset > length - 1 || count < 0) {
             throw new DOMException(DOMException.INDEX_SIZE_ERR,
                                    DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN, "INDEX_SIZE_ERR",
+                                           DOMMessageFormatter.DOM_DOMAIN, DOMException.INDEX_SIZE_ERR,
                                            null));
         } else {
 
@@ -112,14 +112,14 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "NO_MODIFICATION_ALLOWED_ERR", null));
+                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
         }
 
         if (offset < 0 || offset > length - 1) {
             throw new DOMException(DOMException.INDEX_SIZE_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "INDEX_SIZE_ERR", null));
+                                           DOMException.INDEX_SIZE_ERR, null));
         }
 
         this.textValue = (new StringBuilder(textValue)).insert(offset, data).toString();
@@ -133,7 +133,7 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "NO_MODIFICATION_ALLOWED_ERR", null));
+                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
         }
     }
 
@@ -148,7 +148,7 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
             throw new DOMException(DOMException.INDEX_SIZE_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
-                                           "INDEX_SIZE_ERR", null));
+                                           DOMException.INDEX_SIZE_ERR, null));
         }
 
         int end = Math.min(count + offset, textValue.length());

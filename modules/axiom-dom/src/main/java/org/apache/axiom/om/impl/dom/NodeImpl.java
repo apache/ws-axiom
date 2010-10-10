@@ -125,7 +125,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
 
     public void setPrefix(String prefix) throws DOMException {
         throw new DOMException(DOMException.NAMESPACE_ERR, DOMMessageFormatter
-                .formatMessage(DOMMessageFormatter.DOM_DOMAIN, "NAMESPACE_ERR",
+                .formatMessage(DOMMessageFormatter.DOM_DOMAIN, DOMException.NAMESPACE_ERR,
                                null));
     }
 
@@ -247,7 +247,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
      */
     public Node removeChild(Node oldChild) throws DOMException {
         throw new DOMException(DOMException.NOT_FOUND_ERR, DOMMessageFormatter
-                .formatMessage(DOMMessageFormatter.DOM_DOMAIN, "NOT_FOUND_ERR",
+                .formatMessage(DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR,
                                null));
     }
 
@@ -261,7 +261,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                DOMMessageFormatter.formatMessage(
                                        DOMMessageFormatter.DOM_DOMAIN,
-                                       "HIERARCHY_REQUEST_ERR", null));
+                                       DOMException.HIERARCHY_REQUEST_ERR, null));
 
     }
 
@@ -274,7 +274,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                DOMMessageFormatter.formatMessage(
                                        DOMMessageFormatter.DOM_DOMAIN,
-                                       "HIERARCHY_REQUEST_ERR", null));
+                                       DOMException.HIERARCHY_REQUEST_ERR, null));
     }
 
     //
@@ -394,7 +394,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                DOMMessageFormatter.formatMessage(
                                        DOMMessageFormatter.DOM_DOMAIN,
-                                       "HIERARCHY_REQUEST_ERR", null));
+                                       DOMException.HIERARCHY_REQUEST_ERR, null));
 
     }
 
@@ -409,7 +409,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                DOMMessageFormatter.formatMessage(
                                        DOMMessageFormatter.DOM_DOMAIN,
-                                       "HIERARCHY_REQUEST_ERR", null));
+                                       DOMException.HIERARCHY_REQUEST_ERR, null));
 
     }
 
@@ -431,14 +431,14 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                DOMMessageFormatter.formatMessage(
                                        DOMMessageFormatter.DOM_DOMAIN,
-                                       "HIERARCHY_REQUEST_ERR", null));
+                                       DOMException.HIERARCHY_REQUEST_ERR, null));
     }
 
     public void setNextOMSibling(OMNode previousSibling) {
         throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                DOMMessageFormatter.formatMessage(
                                        DOMMessageFormatter.DOM_DOMAIN,
-                                       "HIERARCHY_REQUEST_ERR", null));
+                                       DOMException.HIERARCHY_REQUEST_ERR, null));
     }
 
     /** Builds next element. */
@@ -520,7 +520,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         // and not an UnsupportedOperationException, since this works better with
         // some other libraries (such as Saxon 8.9).
         throw new DOMException(DOMException.NOT_SUPPORTED_ERR, DOMMessageFormatter
-                .formatMessage(DOMMessageFormatter.DOM_DOMAIN, "NOT_SUPPORTED_ERR", null));
+                .formatMessage(DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_SUPPORTED_ERR, null));
     }
 
     public String getTextContent() throws DOMException {

@@ -77,13 +77,6 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     
     private static final OMNamespace XMLNS_NAMESPACE_WITHOUT_PREFIX = new NamespaceImpl(OMConstants.XMLNS_NS_URI, null);
     
-    private static final String INVALID_CHARACTER_ERR = "INVALID_CHARACTER_ERR";
-    private static final String NO_MODIFICATION_ALLOWED_ERR = "NO_MODIFICATION_ALLOWED_ERR";
-    private static final String NAMESPACE_ERR = "NAMESPACE_ERR";
-    private static final String NOT_FOUND_ERR = "NOT_FOUND_ERR";
-    private static final String WRONG_DOCUMENT_ERR = "WRONG_DOCUMENT_ERR";
-    private static final String INUSE_ATTRIBUTE_ERR = "INUSE_ATTRIBUTE_ERR";
-
     /** @param ownerDocument  ownerDocument
      *  @param tagName tagName
      *  @param factory OMFactory
@@ -249,7 +242,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (this.isReadonly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    ElementImpl.NO_MODIFICATION_ALLOWED_ERR, null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
@@ -277,7 +270,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (this.isReadonly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    ElementImpl.NO_MODIFICATION_ALLOWED_ERR, null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
@@ -302,14 +295,14 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (isReadonly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    ElementImpl.NO_MODIFICATION_ALLOWED_ERR, null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
         if (this.attributes == null
                 || this.attributes.getNamedItem(oldAttr.getName()) == null) {
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, ElementImpl.NOT_FOUND_ERR, null);
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR, null);
             throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
         }
         return (AttrImpl) this.attributes.removeNamedItem(oldAttr
@@ -406,7 +399,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (attrImpl.isOwned()) {// check for ownership
             if (!this.getOwnerDocument().equals(attr.getOwnerDocument())) {
                 String msg = DOMMessageFormatter.formatMessage(
-                        DOMMessageFormatter.DOM_DOMAIN, ElementImpl.WRONG_DOCUMENT_ERR,
+                        DOMMessageFormatter.DOM_DOMAIN, DOMException.WRONG_DOCUMENT_ERR,
                         null);
                 throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
             }
@@ -415,7 +408,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (this.isReadonly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    ElementImpl.NO_MODIFICATION_ALLOWED_ERR, null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
@@ -424,7 +417,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (attrImpl.isUsed()) {
             String msg = DOMMessageFormatter
                     .formatMessage(DOMMessageFormatter.DOM_DOMAIN,
-                                   ElementImpl.INUSE_ATTRIBUTE_ERR, null);
+                                   DOMException.INUSE_ATTRIBUTE_ERR, null);
             throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR, msg);
         }
 
@@ -458,7 +451,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         // Check for invalid charaters
         if (!DOMUtil.isQualifiedName(name)) {
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, "INVALID_CHARACTER_ERR",
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.INVALID_CHARACTER_ERR,
                     null);
             throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
         }
@@ -494,7 +487,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                 if (!this.getOwnerDocument().equals(attr.getOwnerDocument())) {
                     String msg = DOMMessageFormatter.formatMessage(
                             DOMMessageFormatter.DOM_DOMAIN,
-                            ElementImpl.WRONG_DOCUMENT_ERR, null);
+                            DOMException.WRONG_DOCUMENT_ERR, null);
                     throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
                 }
             }
@@ -502,7 +495,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             if (this.isReadonly()) {
                 String msg = DOMMessageFormatter.formatMessage(
                         DOMMessageFormatter.DOM_DOMAIN,
-                        ElementImpl.NO_MODIFICATION_ALLOWED_ERR, null);
+                        DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
                 throw new DOMException(
                         DOMException.NO_MODIFICATION_ALLOWED_ERR, msg);
             }
@@ -510,7 +503,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             // check whether the attr is in use
             if (attrImpl.isUsed()) {
                 String msg = DOMMessageFormatter.formatMessage(
-                        DOMMessageFormatter.DOM_DOMAIN, "INUSE_ATTRIBUTE_ERR",
+                        DOMMessageFormatter.DOM_DOMAIN, DOMException.INUSE_ATTRIBUTE_ERR,
                         null);
                 throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR, msg);
             }
@@ -566,7 +559,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                                      String value) throws DOMException {
         if (!DOMUtil.isQualifiedName(qualifiedName)) {
             String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, ElementImpl.INVALID_CHARACTER_ERR ,
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.INVALID_CHARACTER_ERR ,
                     null);
             throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
         }
@@ -574,7 +567,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (this.isReadonly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    ElementImpl.NO_MODIFICATION_ALLOWED_ERR, null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
@@ -585,7 +578,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (namespaceURI != null) {
             if (!DOMUtil.isValidNamespace(namespaceURI, qualifiedName)) {
                 String msg = DOMMessageFormatter.formatMessage(
-                        DOMMessageFormatter.DOM_DOMAIN, ElementImpl.NAMESPACE_ERR, null);
+                        DOMMessageFormatter.DOM_DOMAIN, DOMException.NAMESPACE_ERR, null);
                 throw new DOMException(DOMException.NAMESPACE_ERR, msg);
             }
             // Check whether there's an existing Attr with same local name and
@@ -1071,7 +1064,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (this.isReadonly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    ElementImpl.NO_MODIFICATION_ALLOWED_ERR, null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
@@ -1385,7 +1378,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (this.isReadonly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    ElementImpl.NO_MODIFICATION_ALLOWED_ERR, null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
@@ -1394,7 +1387,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (tempAttr == null) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    ElementImpl.NOT_FOUND_ERR, null);
+                    DOMException.NOT_FOUND_ERR, null);
             throw new DOMException(DOMException.NOT_FOUND_ERR,
                                    msg);
         }
@@ -1407,7 +1400,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (this.isReadonly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    ElementImpl.NO_MODIFICATION_ALLOWED_ERR, null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
@@ -1416,7 +1409,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (tempAttr == null) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    ElementImpl.NOT_FOUND_ERR, null);
+                    DOMException.NOT_FOUND_ERR, null);
             throw new DOMException(DOMException.NOT_FOUND_ERR,
                                    msg);
         }
@@ -1428,7 +1421,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (this.isReadonly()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    ElementImpl.NO_MODIFICATION_ALLOWED_ERR, null);
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
                                    msg);
         }
@@ -1446,7 +1439,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (tempAttr == null) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
-                    ElementImpl.NOT_FOUND_ERR, null);
+                    DOMException.NOT_FOUND_ERR, null);
             throw new DOMException(DOMException.NOT_FOUND_ERR,
                                    msg);
         }
