@@ -741,14 +741,6 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         throw new UnsupportedOperationException("TODO");
     }
 
-    /* public Object setUserData(String key, Object value, UserDataHandler userDataHandler) {
-     return userData.put(key, value);
- }
-
- public Object getUserData(String key) {
-     return userData.get(key);
- }   */
-
     /* *
      * userData storage/hashtable will be called only when the user needs to set user data. Previously, it was done as,
      * for every node a new Hashtable created making the excution very inefficient. According to profiles, no. of method
