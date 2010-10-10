@@ -778,17 +778,6 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         return null;
     }
 
-    public Document getParentOwnerDocument() {
-        // if we have an owner simply forward the request
-        // otherwise ownerNode is our ownerDocument
-        if (isOwned()) {
-            return ownerNode.getParentOwnerDocument();
-        } else {
-            return ownerNode;
-        }
-
-    }
-
     public void serialize(OutputStream output) throws XMLStreamException {
         XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
         try {
