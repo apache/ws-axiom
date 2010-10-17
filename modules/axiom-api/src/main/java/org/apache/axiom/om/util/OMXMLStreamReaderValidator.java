@@ -118,7 +118,7 @@ public class OMXMLStreamReaderValidator implements OMXMLStreamReader {
                 " was encountered, but the START_ELEMENT stack is empty.";
         } else {
             text = "An END_ELEMENT event for " + delegateQName + 
-                " was encountered.  But this does match the corresponding START_ELEMENT " + 
+                " was encountered, but this doesn't match the corresponding START_ELEMENT " + 
                 expectedQName + " event.";
         }
         if (IS_DEBUG_ENABLED) {
