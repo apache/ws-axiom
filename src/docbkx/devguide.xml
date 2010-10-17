@@ -358,7 +358,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </step>
                 <step>
                     <para>
-                        Start the release vote by sending a mail to <literal>commons-dev@ws.apache.org</literal>.
+                        Start the release vote by sending a mail to <literal>dev@ws.apache.org</literal>.
                         The mail should mention the following things:
                     </para>
                     <itemizedlist>
@@ -466,7 +466,7 @@ svn update</screen>
                 </listitem>
             </itemizedlist>
             <para>
-                Once everything is in place, send announcements to <literal>commons-dev@ws.apache.org</literal>
+                Once everything is in place, send announcements to <literal>users@ws.apache.org</literal>
                 and <literal>announce@apache.org</literal>. Since the two lists have different conventions, audiences
                 and moderation policies, to send the announcement separately to the two lists.
             </para>
@@ -525,7 +525,7 @@ svn update</screen>
                 </itemizedlist>
             </blockquote>
             <para>
-                For <literal>commons-dev@ws.apache.org</literal>, the subject (<quote>Axiom x.y.z released</quote>) should be
+                For <literal>users@ws.apache.org</literal>, the subject (<quote>Axiom x.y.z released</quote>) should be
                 prefixed with <quote>[ANN][Axiom]</quote>, while for <literal>announce@apache.org</literal>
                 <quote>[ANN]</quote> is enough. Note that mail to <literal>announce@apache.org</literal> must be
                 sent from an <literal>apache.org</literal> address.

@@ -52,7 +52,21 @@
     </ciManagement>
     <mailingLists>
         <mailingList>
-            <name>WS Commons Developers</name>
+            <name>Users</name>
+            <subscribe>users-subscribe@ws.apache.org</subscribe>
+            <unsubscribe>users-unsubscribe@ws.apache.org</unsubscribe>
+            <post>users@ws.apache.org</post>
+            <archive>http://mail-archives.apache.org/mod_mbox/ws-users/</archive>
+        </mailingList>
+        <mailingList>
+            <name>Developers</name>
+            <subscribe>dev-subscribe@ws.apache.org</subscribe>
+            <unsubscribe>dev-unsubscribe@ws.apache.org</unsubscribe>
+            <post>dev@ws.apache.org</post>
+            <archive>http://mail-archives.apache.org/mod_mbox/ws-dev/</archive>
+        </mailingList>
+        <mailingList>
+            <name>WS Commons Developers (old)</name>
             <subscribe>commons-dev-subscribe@ws.apache.org</subscribe>
             <unsubscribe>commons-dev-unsubscribe@ws.apache.org</unsubscribe>
             <post>commons-dev@ws.apache.org</post>
