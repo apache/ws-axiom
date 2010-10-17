@@ -54,9 +54,26 @@ Key Features
 
 Latest Release
 
-  <<13th June 2010 - Apache Axiom Version 1.2.9 Released!>>
+  <<XXth October 2010 - Apache Axiom Version 1.2.10 Released!>>
+  
+  \[{{{http://ws.apache.org/commons/axiom/download.cgi}Download Axiom 1.2.10}}\]
+  
+  Axiom 1.2.10 is a maintenance release that contains the following improvements:
+  
+    * Improved DOM compatibility and performance for DOOM. Users running Rampart on Axis2 1.5.2
+      may want to upgrade Axiom to 1.2.10 to take advantage of these improvements.
+    
+    * Improved interoperability with various StAX implementation, in particular
+      support for Woodstox 4.0.
+    
+    * It is now possible to specify a configuration when requesting an <<<XMLStreamWriter>>>
+      from <<<StAXUtils>>>, similarly to what is already possible for <<<XMLStreamReader>>>
+      instances. This feature is required to support the next Abdera release
+      (see {{{https://issues.apache.org/jira/browse/ABDERA-267}ABDERA-267}}).
 
-  \[{{{http://ws.apache.org/commons/axiom/download.cgi}Download Axiom 1.2.9}}\]
+Previous Releases
+
+  <<13th June 2010 - Apache Axiom Version 1.2.9 Released!>>
 
   Note: Starting with release 1.2.9, Axiom requires Java 1.5. While the API is
   still compatible with Java 1.4, Axiom relies on classes from the Java 1.5
