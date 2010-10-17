@@ -122,10 +122,11 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
                 }
             };
             xmlWriter = new XOPEncodingStreamWriter(StAXUtils.createXMLStreamWriter(
-                    rootPartOutputStream, encoding), contentIDGenerator, optimizationPolicy);
+                    format.getStAXWriterConfiguration(), rootPartOutputStream, encoding),
+                    contentIDGenerator, optimizationPolicy);
         } else {
-            xmlWriter = StAXUtils.createXMLStreamWriter(outStream,
-                                                        format.getCharSetEncoding());
+            xmlWriter = StAXUtils.createXMLStreamWriter(format.getStAXWriterConfiguration(),
+                    outStream, format.getCharSetEncoding());
         }
         xmlStreamWriterFilter = format.getXmlStreamWriterFilter();
         if (xmlStreamWriterFilter != null) {

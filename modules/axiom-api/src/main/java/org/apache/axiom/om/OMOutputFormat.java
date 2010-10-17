@@ -22,6 +22,7 @@ package org.apache.axiom.om;
 import java.util.HashMap;
 
 import org.apache.axiom.om.impl.MTOMConstants;
+import org.apache.axiom.om.util.StAXWriterConfiguration;
 import org.apache.axiom.om.util.XMLStreamWriterFilter;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -62,6 +63,8 @@ public class OMOutputFormat {
     
     private XMLStreamWriterFilter xmlStreamWriterFilter = null;
     
+    private StAXWriterConfiguration writerConfiguration;
+
     // The value of this property is a Boolean.  
     // A missing value indicates the default action, which is Boolean.FALSE
     // If Boolean.TRUE, attachments that are "non textual" are written out with 
@@ -403,5 +406,26 @@ public class OMOutputFormat {
      */
     public void setXmlStreamWriterFilter(XMLStreamWriterFilter xmlStreamWriterFilter) {
         this.xmlStreamWriterFilter = xmlStreamWriterFilter;
+    }
+
+    /**
+     * Get the currently configured StAX writer configuration.
+     * 
+     * @return the current configuration; {@link StAXWriterConfiguration#DEFAULT} if none has been
+     *         set explicitly
+     */
+    public StAXWriterConfiguration getStAXWriterConfiguration() {
+        return writerConfiguration == null ? StAXWriterConfiguration.DEFAULT : writerConfiguration;
+    }
+     
+    /**
+     * Set the StAX writer configuration that will be used when requesting an
+     * {@link javax.xml.stream.XMLStreamWriter} from {@link org.apache.axiom.om.util.StAXUtils}.
+     * 
+     * @param writerConfiguration
+     *            the configuration
+     */
+    public void setStAXWriterConfiguration(StAXWriterConfiguration writerConfiguration) {
+        this.writerConfiguration = writerConfiguration;
     }
 }
