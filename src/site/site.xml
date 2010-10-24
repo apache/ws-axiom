@@ -20,7 +20,7 @@
     <bannerLeft>
         <name>Apache Axiom</name>
         <src>images/logo.png</src>
-        <href>http://ws.apache.org/commons/axiom/index.html</href>
+        <href>http://ws.apache.org/axiom/index.html</href>
     </bannerLeft>
     <bannerRight>
         <name>Apache Software Foundation</name>
@@ -31,8 +31,7 @@
         <links>
             <item name="Apache" href="http://www.apache.org/"/>
             <item name="WebServices" href="http://ws.apache.org/"/>
-            <item name="Commons" href="http://ws.apache.org/commons/"/>
-            <item name="Axiom" href="http://ws.apache.org/commons/axiom/index.html"/>
+            <item name="Axiom" href="http://ws.apache.org/axiom/index.html"/>
         </links>
 
         <menu name="Axiom">

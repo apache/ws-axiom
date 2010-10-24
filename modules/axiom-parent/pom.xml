@@ -30,7 +30,7 @@
     <version>1.2.10-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>Axiom Parent POM</description>
-    <url>http://ws.apache.org/commons/axiom/</url>
+    <url>http://ws.apache.org/axiom/</url>
     <issueManagement>
         <system>JIRA</system>
         <url>http://issues.apache.org/jira/browse/WSCOMMONS</url>
