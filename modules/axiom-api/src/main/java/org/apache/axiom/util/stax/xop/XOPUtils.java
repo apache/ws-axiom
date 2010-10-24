@@ -26,7 +26,7 @@ import java.net.URLDecoder;
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.om.impl.builder.DataHandlerReaderUtils;
+import org.apache.axiom.util.activation.DataHandlerReaderUtils;
 
 /**
  * Contains utility methods related to XOP.
