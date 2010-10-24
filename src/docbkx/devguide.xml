@@ -318,6 +318,14 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </step>
                 <step>
                     <para>
+                        Temporarily disable the Hudson build(s) for Axiom, in order to avoid accidental
+                        deployment of the release candidate to the local repository of a Hudson executor
+                        if the release process fails somewhere in the middle and/or a Hudson build
+                        starts at the wrong moment.
+                    </para>
+                </step>
+                <step>
+                    <para>
                         Start the release process with the following command:
                     </para>
                     <screen>mvn release:prepare</screen>
@@ -385,6 +393,11 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                             </para>
                         </listitem>
                     </itemizedlist>
+                </step>
+                <step>
+                    <para>
+                        Reenable the Hudson build(s).
+                    </para>
                 </step>
             </procedure>
             <para>
