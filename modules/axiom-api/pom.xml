@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom-parent</artifactId>
-        <version>1.2.10-SNAPSHOT</version>
+        <version>1.2.10</version>
         <relativePath>../axiom-parent/pom.xml</relativePath>
     </parent>
     <artifactId>axiom-api</artifactId>
@@ -30,9 +30,9 @@
     <description>The Axiom API</description>
     <packaging>bundle</packaging>
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-api</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-api</developerConnection>
-        <url>http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/modules/axiom-api</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/tags/axiom/1.2.10/modules/axiom-api</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/tags/axiom/1.2.10/modules/axiom-api</developerConnection>
+        <url>http://svn.apache.org/viewvc/webservices/commons/tags/axiom/1.2.10/modules/axiom-api</url>
     </scm>
     <dependencies>
         <dependency>
