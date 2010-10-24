@@ -35,21 +35,6 @@
         <system>JIRA</system>
         <url>http://issues.apache.org/jira/browse/WSCOMMONS</url>
     </issueManagement>
-    <ciManagement>
-        <system>Continuum</system>
-        <url>unknown</url>
-        <notifiers>
-            <notifier>
-                <sendOnError>false</sendOnError>
-                <sendOnFailure>false</sendOnFailure>
-                <sendOnSuccess>false</sendOnSuccess>
-                <sendOnWarning>false</sendOnWarning>
-                <configuration>
-                    <address>commons-dev@ws.apache.org</address>
-                </configuration>
-            </notifier>
-        </notifiers>
-    </ciManagement>
     <mailingLists>
         <mailingList>
             <name>Users</name>
