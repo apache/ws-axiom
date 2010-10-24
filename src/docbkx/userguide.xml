@@ -227,7 +227,7 @@
                 <listitem>
                     <para>
                         A prebuilt binary distribution can be
-                        <ulink url="http://ws.apache.org/commons/axiom/download.cgi">downloaded</ulink>
+                        <ulink url="http://ws.apache.org/axiom/download.cgi">downloaded</ulink>
                         from the site. Source distributions are also available. They can be built
                         using Maven 2, by executing <command>mvn install</command> in the root
                         directory of the distribution.
@@ -239,7 +239,7 @@
                         version (trunk) or previous releases from the Subversion repository and build it
                         using Maven 2. Detailed information on getting the source code
                         from the Subversion repository is found
-                        <ulink url="http://ws.apache.org/commons/axiom/source-repository.html">here</ulink>.
+                        <ulink url="http://ws.apache.org/axiom/source-repository.html">here</ulink>.
                     </para>
                 </listitem>
             </orderedlist>

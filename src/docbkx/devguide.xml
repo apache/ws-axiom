@@ -435,7 +435,7 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
                     <para>
                         Log in to <literal>people.apache.org</literal> and update the site:
                     </para>
-<screen>cd /www/ws.apache.org/commons/axiom/
+<screen>cd /www/ws.apache.org/axiom/
 umask 0002
 svn update</screen>
                     <para>
@@ -456,12 +456,12 @@ svn update</screen>
                 </listitem>
                 <listitem>
                     <para>
-                        the Maven site has been synchronized to <ulink url="http://ws.apache.org/commons/axiom/"/>;
+                        the Maven site has been synchronized to <ulink url="http://ws.apache.org/axiom/"/>;
                     </para>
                 </listitem>
                 <listitem>
                     <para>
-                        the binary and source distributions can be downloaded from <ulink url="http://ws.apache.org/commons/axiom/download.cgi"/>.
+                        the binary and source distributions can be downloaded from <ulink url="http://ws.apache.org/axiom/download.cgi"/>.
                     </para>
                 </listitem>
             </itemizedlist>
@@ -479,7 +479,7 @@ svn update</screen>
                     for download at:
                 </para>
                 <para>
-                    http://ws.apache.org/commons/axiom/download.cgi
+                    http://ws.apache.org/axiom/download.cgi
                 </para>
                 <para>
                     Apache Axiom is a StAX-based, XML Infoset compliant object model which supports on-demand building
