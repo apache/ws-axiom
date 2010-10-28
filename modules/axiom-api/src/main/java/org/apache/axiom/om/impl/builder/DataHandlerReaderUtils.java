@@ -22,18 +22,19 @@ package org.apache.axiom.om.impl.builder;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 /**
- * @deprecated Use {@link org.apache.axiom.util.activation.DataHandlerReaderUtils} instead.
+ * @deprecated Use the corresponding methods in {@link XMLStreamReaderUtils} instead.
  */
 public class DataHandlerReaderUtils {
     private DataHandlerReaderUtils() {}
     
     public static DataHandlerReader getDataHandlerReader(final XMLStreamReader reader) {
-        return org.apache.axiom.util.activation.DataHandlerReaderUtils.getDataHandlerReader(reader);
+        return XMLStreamReaderUtils.getDataHandlerReader(reader);
     }
     
     public static Object processGetProperty(DataHandlerReader extension, String propertyName) {
-        return org.apache.axiom.util.activation.DataHandlerReaderUtils.processGetProperty(extension, propertyName);
+        return XMLStreamReaderUtils.processGetProperty(extension, propertyName);
     }
 }

@@ -25,7 +25,7 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMSerializer;
 import org.apache.axiom.om.impl.OMStAXWrapper;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.util.activation.DataHandlerReaderUtils;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -84,7 +84,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
     public void serialize(XMLStreamReader reader, XMLStreamWriter writer, boolean startAtNext)
             throws XMLStreamException {
         
-        dataHandlerReader = DataHandlerReaderUtils.getDataHandlerReader(reader);
+        dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(reader);
         dataHandlerWriter = XMLStreamWriterUtils.getDataHandlerWriter(writer);
         
         if (reader instanceof OMStAXWrapper) {

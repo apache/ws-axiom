@@ -26,7 +26,7 @@ import java.net.URLDecoder;
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.util.activation.DataHandlerReaderUtils;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 /**
  * Contains utility methods related to XOP.
@@ -126,7 +126,7 @@ public class XOPUtils {
             return new XOPEncodedStream(reader, (MimePartProvider)reader);
         } else if (reader instanceof XOPDecodingStreamReader) {
             return ((XOPDecodingStreamReader)reader).getXOPEncodedStream();
-        } else if (DataHandlerReaderUtils.getDataHandlerReader(reader) != null) {
+        } else if (XMLStreamReaderUtils.getDataHandlerReader(reader) != null) {
             XOPEncodingStreamReader wrapper = new XOPEncodingStreamReader(reader,
                     ContentIDGenerator.DEFAULT, OptimizationPolicy.ALL);
             return new XOPEncodedStream(wrapper, wrapper);
