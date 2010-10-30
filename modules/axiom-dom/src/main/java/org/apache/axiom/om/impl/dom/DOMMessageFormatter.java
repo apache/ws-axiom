@@ -132,7 +132,7 @@ public class DOMMessageFormatter {
 
     public static String formatMessage(String domain, int exceptionId,
                                        Object[] arguments) throws MissingResourceException {
-        return formatMessage(domain, exceptionKeys[exceptionId], arguments);
+        return formatMessage(domain, exceptionKeys[exceptionId-1], arguments);
     }
     
     static ResourceBundle getResourceBundle(String domain) {
