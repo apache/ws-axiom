@@ -51,7 +51,7 @@ import java.io.InputStream;
  * <p>
  * This class supports the {@link XMLStreamReader} extension defined by
  * {@link org.apache.axiom.ext.stax.datahandler.DataHandlerReader} as well as the legacy extension mechanism
- * defined in the documentation of {@link org.apache.axiom.util.activation.DataHandlerReaderUtils}.
+ * defined in the documentation of {@link org.apache.axiom.util.stax.XMLStreamReaderUtils}.
  * <h3>Error handling</h3>
  * Usually, code that uses StAX directly just stops processing of an XML document
  * once the first parsing error has been reported. However, since Axiom

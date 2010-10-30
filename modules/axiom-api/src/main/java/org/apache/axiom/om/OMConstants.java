@@ -61,21 +61,21 @@ public interface OMConstants {
     /**
      * @deprecated
      * 
-     * @see org.apache.axiom.util.activation.DataHandlerReaderUtils
+     * @see org.apache.axiom.util.stax.XMLStreamReaderUtils
      */
     String IS_BINARY = "Axiom.IsBinary";
     
     /**
      * @deprecated
      * 
-     * @see org.apache.axiom.util.activation.DataHandlerReaderUtils
+     * @see org.apache.axiom.util.stax.XMLStreamReaderUtils
      */
     String DATA_HANDLER = "Axiom.DataHandler";
     
     /**
      * @deprecated
      * 
-     * @see org.apache.axiom.util.activation.DataHandlerReaderUtils
+     * @see org.apache.axiom.util.stax.XMLStreamReaderUtils
      */
     String IS_DATA_HANDLERS_AWARE = "IsDatahandlersAwareParsing"; 
 
