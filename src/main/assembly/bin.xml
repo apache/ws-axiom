@@ -33,6 +33,10 @@
         <fileSet>
             <directory>${project.build.directory}/maven-shared-archive-resources/META-INF</directory>
             <outputDirectory>/</outputDirectory>
+            <excludes>
+                <!-- The root project has no dependencies; no need to include an empty file -->
+                <exclude>DEPENDENCIES</exclude>
+            </excludes>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}/docbkx/pdf</directory>
