@@ -418,6 +418,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         script can be used for that:
                     </para>
 <screen>cd /www/www.apache.org/dist/ws/commons/axiom
+umask 0002
 python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</replaceable></screen>
                     <para>
                         <replaceable>version</replaceable> is the release version, e.g. <literal>1.2.9</literal>.
@@ -435,7 +436,7 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
                         Also check out the existing site:
                     </para>
 <screen>svn co https://svn.apache.org/repos/asf/webservices\
-/commons/site/axiom axiom-site</screen>
+/axiom/site axiom-site</screen>
                     <para>
                         The existing site needs to be overwritten with the site generated for the new
                         release. This can be done easily using the <filename>etc/syncsite.py</filename> script
