@@ -43,6 +43,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.util.activation.DataHandlerWrapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -270,6 +271,9 @@ public class MIMEOutputUtils {
         }
     }
 
+    /**
+     * @deprecated use {@link OMMultipartWriter} instead
+     */
     public static void writeDataHandlerWithAttachmentsMessage(DataHandler rootDataHandler,
             String contentType,
             OutputStream outputStream,
@@ -283,25 +287,28 @@ public class MIMEOutputUtils {
                 null);
                     
     }
+    
+    /**
+     * @deprecated use {@link OMMultipartWriter} instead
+     */
     public static void writeDataHandlerWithAttachmentsMessage(DataHandler rootDataHandler,
-                                                       String contentType,
+                                                       final String contentType,
                                                        OutputStream outputStream,
                                                        Map attachments,
                                                        OMOutputFormat format,
                                                        Collection ids) {
         try {
-            startWritingMime(outputStream, format.getMimeBoundary());
-
-            MimeBodyPart rootMimeBodyPart = new MimeBodyPart();
-            rootMimeBodyPart.setDataHandler(rootDataHandler);
-
-            rootMimeBodyPart.addHeader("Content-Type", contentType);
-            rootMimeBodyPart.addHeader("Content-Transfer-Encoding", "8bit");
-            rootMimeBodyPart.addHeader("Content-ID", "<"
-                    + format.getRootContentId() + ">");
-
-            writeBodyPart(outputStream, rootMimeBodyPart, format
-                    .getMimeBoundary());
+            if (!rootDataHandler.getContentType().equals(contentType)) {
+                rootDataHandler = new DataHandlerWrapper(rootDataHandler) {
+                    public String getContentType() {
+                        return contentType;
+                    }
+                };
+            }
+            
+            OMMultipartWriter mpw = new OMMultipartWriter(outputStream, format);
+            
+            mpw.writePart(rootDataHandler, format.getRootContentId());
 
             Iterator idIterator = null;
             if (ids == null) {
@@ -317,17 +324,12 @@ public class MIMEOutputUtils {
             
             while (idIterator.hasNext()) {
                 String key = (String) idIterator.next();
-                MimeBodyPart part = createMimeBodyPart(key,
-                        (DataHandler) attachments.get(key), format);
-                writeBodyPart(outputStream, part,
-                              format.getMimeBoundary());
+                mpw.writePart((DataHandler) attachments.get(key), key);
             }
-            finishWritingMime(outputStream);
+            mpw.complete();
             outputStream.flush();
         } catch (IOException e) {
             throw new OMException("Error while writing to the OutputStream.", e);
-        } catch (MessagingException e) {
-            throw new OMException("Problem writing Mime Parts.", e);
         }
     }
 

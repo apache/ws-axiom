@@ -76,6 +76,16 @@ public class OMMultipartWriter {
     }
     
     /**
+     * Get the content type of the root part, as determined by the {@link OMOutputFormat} passed
+     * to the constructor of this object.
+     * 
+     * @return the content type of the root part
+     */
+    public String getRootPartContentType() {
+        return rootPartContentType;
+    }
+
+    /**
      * Start writing the root part of the MIME package. This method delegates to
      * {@link MultipartWriter#writePart(String, String, String)}, but computes the content type,
      * content transfer encoding and content ID from the {@link OMOutputFormat}.
