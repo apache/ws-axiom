@@ -53,18 +53,17 @@ public class OMMultipartWriter {
         useCTEBase64 = format != null && Boolean.TRUE.equals(
                 format.getProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS));
         
+        String soapContentType;
+        if (format.isSOAP11()) {
+            soapContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
+        } else {
+            soapContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
+        }
         if (format.isOptimized()) {
-            String soapContentType;
-            if (format.isSOAP11()) {
-                soapContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
-            } else {
-                soapContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
-            }
             rootPartContentType = "application/xop+xml; charset=" + format.getCharSetEncoding()
                     + "; type=\"" + soapContentType + "\"";            
         } else {
-            // TODO: need to support SwA here
-            throw new IllegalArgumentException();
+            rootPartContentType = soapContentType + "; charset=" + format.getCharSetEncoding();
         }
     }
 

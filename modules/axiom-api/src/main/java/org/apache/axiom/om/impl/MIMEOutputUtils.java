@@ -21,7 +21,10 @@ package org.apache.axiom.om.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -231,33 +234,40 @@ public class MIMEOutputUtils {
         outStream.write(new byte[] { 45, 45 });
     }
 
+    /**
+     * @deprecated use {@link OMMultipartWriter} instead
+     */
     public static void writeSOAPWithAttachmentsMessage(StringWriter writer,
                                                        OutputStream outputStream,
                                                        Attachments attachments,
                                                        OMOutputFormat format) {
-        String SOAPContentType;
-        if (format.isSOAP11()) {
-            SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
-        } else {
-            SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
+        try {
+            OMMultipartWriter mpw = new OMMultipartWriter(outputStream, format);
+            
+            Writer rootPartWriter = new OutputStreamWriter(mpw.writeRootPart(), format.getCharSetEncoding());
+            rootPartWriter.write(writer.toString());
+            rootPartWriter.close();
+            
+            // Get the collection of ids associated with the attachments
+            Collection ids;         
+            if (respectSWAAttachmentOrder(format)) {
+                // ContentIDList is the order of the incoming/added attachments
+                ids = Arrays.asList(attachments.getAllContentIDs());
+            } else {
+                // ContentIDSet is an undefined order (the implementation currently
+                // orders the attachments using the natural order of the content ids)
+                ids = attachments.getContentIDSet();
+            }
+            
+            for (Iterator it = ids.iterator(); it.hasNext(); ) {
+                String id = (String)it.next();
+                mpw.writePart(attachments.getDataHandler(id), id);
+            }
+            
+            mpw.complete();
+        } catch (IOException ex) {
+            throw new OMException("Error writing SwA message", ex);
         }
-        String contentType = SOAPContentType + "; charset=" + format.getCharSetEncoding();
-        javax.activation.DataHandler dh = new javax.activation.DataHandler(
-                writer.toString(), "text/xml; charset="
-                + format.getCharSetEncoding());
-        
-        // Get the collection of ids associated with the attachments
-        Collection ids = null;         
-        if (respectSWAAttachmentOrder(format)) {
-            // ContentIDList is the order of the incoming/added attachments
-            ids = attachments.getContentIDList();
-        } else {
-            // ContentIDSet is an undefined order (the implemenentation currently
-            // orders the attachments using the natural order of the content ids)
-            ids = attachments.getContentIDSet();
-        }
-        writeDataHandlerWithAttachmentsMessage(dh, contentType, outputStream, 
-                    attachments.getMap(), format, ids);
     }
 
     public static void writeDataHandlerWithAttachmentsMessage(DataHandler rootDataHandler,
