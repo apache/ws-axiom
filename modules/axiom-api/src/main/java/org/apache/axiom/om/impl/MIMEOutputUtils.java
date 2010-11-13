@@ -46,9 +46,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Utility class used to write out XML with Attachments
- * @see MTOMXMLStreamWriter
- *
+ * @deprecated The features of this class are now implemented by {@link OMMultipartWriter}, which
+ *             has as cleaner API and supports streaming of individual MIME parts, in particular the
+ *             SOAP part.
  */
 public class MIMEOutputUtils {
     
@@ -58,7 +58,7 @@ public class MIMEOutputUtils {
     private static byte[] CRLF = { 13, 10 };
 
     /**
-     * @deprecated use {@link OMMultipartWriter} instead
+     * @deprecated Use {@link OMMultipartWriter} instead.
      */
     public static void complete(OutputStream outStream, 
                                 byte[] xmlData,
@@ -72,7 +72,7 @@ public class MIMEOutputUtils {
     }
     
     /**
-     * @deprecated use {@link OMMultipartWriter} instead
+     * @deprecated Use {@link OMMultipartWriter} instead.
      */
     public static void complete(OutputStream outStream, 
                                 byte[] xmlData,
@@ -86,10 +86,6 @@ public class MIMEOutputUtils {
             if (isDebugEnabled) {
                 log.debug("Start: write the SOAPPart and the attachments");
             }
-            // TODO: Instead of buffering the SOAPPart contents, it makes more
-            // sense to split this method in two.  Write out the SOAPPart headers
-            // and later write out the attachments.  This will avoid the cost and
-            // space of buffering.
             
             // Write out the mime boundary
             startWritingMime(outStream, boundary);
@@ -130,12 +126,20 @@ public class MIMEOutputUtils {
         }
     }
 
+    /**
+     * @deprecated This method is only useful in conjunction with
+     *             {@link #writeBodyPart(OutputStream, MimeBodyPart, String)}, which is deprecated.
+     */
     public static MimeBodyPart createMimeBodyPart(String contentID,
                                                   DataHandler dataHandler) 
             throws MessagingException {
         return createMimeBodyPart(contentID, dataHandler, null);
     }
                                                   
+    /**
+     * @deprecated This method is only useful in conjunction with
+     *             {@link #writeBodyPart(OutputStream, MimeBodyPart, String)}, which is deprecated.
+     */
     public static MimeBodyPart createMimeBodyPart(String contentID,
                                                   DataHandler dataHandler,
                                                   OMOutputFormat omOutputFormat)
@@ -181,7 +185,9 @@ public class MIMEOutputUtils {
         return mimeBodyPart;
     }
 
-    /** @throws IOException This will write the boundary to output Stream */
+    /**
+     * @deprecated Use {@link OMMultipartWriter} instead.
+     */
     public static void writeMimeBoundary(OutputStream outStream,
                                          String boundary) throws IOException {
         // REVIEW: This conversion is hard-coded to UTF-8.
@@ -192,7 +198,9 @@ public class MIMEOutputUtils {
         outStream.write(boundary.getBytes("UTF-8"));
     }
 
-    /** @throws IOException This will write the boundary with CRLF */
+    /**
+     * @deprecated Use {@link OMMultipartWriter} instead.
+     */
     public static void startWritingMime(OutputStream outStream,
                                         String boundary)
             throws IOException {
@@ -201,11 +209,7 @@ public class MIMEOutputUtils {
     }
 
     /**
-     * Writes a CRLF for the earlier boundary then the BodyPart data with headers followed by
-     * boundary. Writes only the boundary. No more CRLF's are written after that.
-     *
-     * @throws IOException
-     * @throws MessagingException
+     * @deprecated Use {@link OMMultipartWriter} instead.
      */
     public static void writeBodyPart(OutputStream outStream,
                                      MimeBodyPart part,
@@ -224,7 +228,9 @@ public class MIMEOutputUtils {
         }
     }
 
-    /** @throws IOException This will write "--" to the end of last boundary */
+    /**
+     * @deprecated Use {@link OMMultipartWriter} instead.
+     */
     public static void finishWritingMime(OutputStream outStream)
             throws IOException {
         if (isDebugEnabled) {
@@ -234,7 +240,7 @@ public class MIMEOutputUtils {
     }
 
     /**
-     * @deprecated use {@link OMMultipartWriter} instead
+     * @deprecated Use {@link OMMultipartWriter} instead.
      */
     public static void writeSOAPWithAttachmentsMessage(StringWriter writer,
                                                        OutputStream outputStream,
@@ -270,7 +276,7 @@ public class MIMEOutputUtils {
     }
 
     /**
-     * @deprecated use {@link OMMultipartWriter} instead
+     * @deprecated Use {@link OMMultipartWriter} instead.
      */
     public static void writeDataHandlerWithAttachmentsMessage(DataHandler rootDataHandler,
             String contentType,
@@ -287,7 +293,7 @@ public class MIMEOutputUtils {
     }
     
     /**
-     * @deprecated use {@link OMMultipartWriter} instead
+     * @deprecated Use {@link OMMultipartWriter} instead.
      */
     public static void writeDataHandlerWithAttachmentsMessage(DataHandler rootDataHandler,
                                                        final String contentType,
