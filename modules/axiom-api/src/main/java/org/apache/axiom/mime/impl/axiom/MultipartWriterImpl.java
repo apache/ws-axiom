@@ -47,7 +47,9 @@ class MultipartWriterImpl implements MultipartWriter {
         }
         
         public void close() throws IOException {
-            parent.flush();
+            if (parent instanceof Base64EncodingOutputStream) {
+                ((Base64EncodingOutputStream)parent).complete();
+            }
             writeAscii("\r\n");
         }
     }
