@@ -44,13 +44,13 @@ public class OMOutputFormat {
     
     private static Log log = LogFactory.getLog(OMOutputFormat.class);
     
-    private String mimeBoundary = null;
-    private String rootContentId = null;
-    private int nextid = 0;
-    private boolean doOptimize = false;
-    private boolean doingSWA = false;
-    private boolean isSoap11 = true;
-    private int optimizedThreshold = 0;
+    private String mimeBoundary;
+    private String rootContentId;
+    private int nextid;
+    private boolean doOptimize;
+    private boolean doingSWA;
+    private boolean isSoap11;
+    private int optimizedThreshold;
     
     /** Field DEFAULT_CHAR_SET_ENCODING. Specifies the default character encoding scheme to be used. */
     public static final String DEFAULT_CHAR_SET_ENCODING = "utf-8";
@@ -58,8 +58,16 @@ public class OMOutputFormat {
     private String charSetEncoding;
     private String xmlVersion;
     private String contentType;
-    private boolean ignoreXMLDeclaration = false;
-    private boolean autoCloseWriter = false;
+    
+    /**
+     * Flag set if {@link #contentType} has been set explicitly through
+     * {@link #setContentType(String)}. If this attribute is <code>false</code> and
+     * {@link #contentType} is non null, then it was calculated by {@link #getContentType()}.
+     */
+    private boolean contentTypeSet;
+    
+    private boolean ignoreXMLDeclaration;
+    private boolean autoCloseWriter;
 
     public static final String ACTION_PROPERTY = "action";
     
@@ -94,10 +102,40 @@ public class OMOutputFormat {
         Boolean.TRUE;
     
     
-    HashMap map = null;  // Map of generic properties
+    private HashMap map;  // Map of generic properties
 
 
     public OMOutputFormat() {
+        isSoap11 = true;
+    }
+    
+    /**
+     * Constructs a new instance by copying the configuration from an existing instance. Note that
+     * this will only copy configuration data, but not information that is subject to
+     * auto-generation, such as the root content ID or the MIME boundary.
+     * 
+     * @param format
+     *            the existing instance
+     */
+    public OMOutputFormat(OMOutputFormat format) {
+        doOptimize = format.doOptimize;
+        doingSWA = format.doingSWA;
+        isSoap11 = format.isSoap11;
+        optimizedThreshold = format.optimizedThreshold;
+        charSetEncoding = format.charSetEncoding;
+        xmlVersion = format.xmlVersion;
+        if (format.contentTypeSet) {
+            contentTypeSet = true;
+            contentType = format.contentType;
+        }
+        ignoreXMLDeclaration = format.ignoreXMLDeclaration;
+        autoCloseWriter = format.autoCloseWriter;
+        xmlStreamWriterFilter = format.xmlStreamWriterFilter;
+        writerConfiguration = format.writerConfiguration;
+        multipartWriterFactory = format.multipartWriterFactory;
+        if (format.map != null) {
+            map = new HashMap(format.map);
+        }
     }
     
     /**
@@ -186,6 +224,7 @@ public class OMOutputFormat {
      * @param c
      */
     public void setContentType(String c) {
+        contentTypeSet = true;
         contentType = c;
     }
 

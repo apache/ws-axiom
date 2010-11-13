@@ -41,8 +41,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.CommonUtils;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.util.activation.DataHandlerWrapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -334,88 +332,46 @@ public class MIMEOutputUtils {
     }
 
     /**
-     * Pack all the attachments in to a multipart/related MIME part and attachs it as the second
-     * MIME Part of MIME message
-     *
-     * @param writer
-     * @param outputStream
-     * @param attachments
-     * @param format
-     * @param innerBoundary
+     * @deprecated Axiom only supports standard SwA messages. However, {@link OMMultipartWriter}
+     *             provides a flexible way to build MIME packages for non standard formats such as
+     *             MM7.
      */
     public static void writeMM7Message(StringWriter writer,
                                        OutputStream outputStream, Attachments attachments,
                                        OMOutputFormat format, String innerPartCID,
                                        String innerBoundary) {
-        String SOAPContentType;
         try {
-            if (format.isSOAP11()) {
-                SOAPContentType = SOAP11Constants.SOAP_11_CONTENT_TYPE;
-            } else {
-                SOAPContentType = SOAP12Constants.SOAP_12_CONTENT_TYPE;
-            }
-            startWritingMime(outputStream, format.getMimeBoundary());
-
-            javax.activation.DataHandler dh = new javax.activation.DataHandler(
-                    writer.toString(), "text/xml; charset="
-                    + format.getCharSetEncoding());
-            MimeBodyPart rootMimeBodyPart = new MimeBodyPart();
-            rootMimeBodyPart.setDataHandler(dh);
-
-            rootMimeBodyPart.addHeader("Content-Type",
-                                       SOAPContentType + "; charset=" +
-                                               format.getCharSetEncoding());
-            rootMimeBodyPart.addHeader("Content-ID", "<"
-                    + format.getRootContentId() + ">");
-
-            writeBodyPart(outputStream, rootMimeBodyPart, format
-                    .getMimeBoundary());
-
+            OMMultipartWriter mpw = new OMMultipartWriter(outputStream, format);
+            
+            Writer rootPartWriter = new OutputStreamWriter(mpw.writeRootPart(), format.getCharSetEncoding());
+            rootPartWriter.write(writer.toString());
+            rootPartWriter.close();
+            
             if (attachments.getContentIDSet().size() != 0) {
-                outputStream.write(CRLF);
-                StringBuffer sb = new StringBuffer();
-                sb.append("Content-Type: multipart/related");
-                sb.append("; ");
-                sb.append("boundary=");
-                sb.append("\"" + innerBoundary + "\"");
-                // REVIEW Should this be getBytes("UTF-8") or getBytes(charset)
-                outputStream.write(sb.toString().getBytes());
-                outputStream.write(CRLF);
-                StringBuffer sb1 = new StringBuffer();
-                sb1.append("Content-ID: ");
-                sb1.append("<");
-                sb1.append(innerPartCID);
-                sb1.append(">");
-                // REVIEW Should this be getBytes("UTF-8") or getBytes(charset)
-                outputStream.write(sb1.toString().getBytes());
-                outputStream.write(CRLF);
-                outputStream.write(CRLF);
-                startWritingMime(outputStream, innerBoundary);
-                Iterator attachmentIDIterator = null;
+                OMOutputFormat innerFormat = new OMOutputFormat(format);
+                innerFormat.setMimeBoundary(innerBoundary);
+                OutputStream innerOutputStream = mpw.writePart("multipart/related; boundary=\"" + innerBoundary + "\"", innerPartCID);
+                OMMultipartWriter innerMpw = new OMMultipartWriter(innerOutputStream, innerFormat);
+                Collection ids;
                 if (respectSWAAttachmentOrder(format)) {
                     // ContentIDList is the order of the incoming/added attachments
-                    attachmentIDIterator = attachments.getContentIDList().iterator();
+                    ids = Arrays.asList(attachments.getAllContentIDs());
                 } else {
-                    // ContentIDSet is an undefined order (the implemenentation currently
+                    // ContentIDSet is an undefined order (the implementation currently
                     // orders the attachments using the natural order of the content ids)
-                    attachmentIDIterator = attachments.getContentIDSet().iterator();
+                    ids = attachments.getContentIDSet();
                 }
-                while (attachmentIDIterator.hasNext()) {
-                    String contentID = (String) attachmentIDIterator.next();
-                    DataHandler dataHandler = attachments.getDataHandler(contentID);
-                    writeBodyPart(outputStream, createMimeBodyPart(contentID,
-                                                                   dataHandler), innerBoundary);
+                for (Iterator it = ids.iterator(); it.hasNext(); ) {
+                    String id = (String)it.next();
+                    innerMpw.writePart(attachments.getDataHandler(id), id);
                 }
-                finishWritingMime(outputStream);
-                outputStream.write(CRLF);
-                writeMimeBoundary(outputStream, format.getMimeBoundary());
+                innerMpw.complete();
+                innerOutputStream.close();
             }
-            finishWritingMime(outputStream);
-            outputStream.flush();
+            
+            mpw.complete();
         } catch (IOException e) {
             throw new OMException("Error while writing to the OutputStream.", e);
-        } catch (MessagingException e) {
-            throw new OMException("Problem writing Mime Parts.", e);
         }
     }
     
