@@ -16,8 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.mime.impl.javamail;
+package org.apache.axiom.mime.impl.axiom;
 
 import java.io.OutputStream;
 
@@ -25,10 +24,10 @@ import org.apache.axiom.mime.MultipartWriter;
 import org.apache.axiom.mime.MultipartWriterFactory;
 
 /**
- * Factory for the JavaMail based {@link MultipartWriter} implementation.
+ * Factory for Axiom's own {@link MultipartWriter} implementation.
  */
-public class JavaMailMultipartWriterFactory implements MultipartWriterFactory {
-    public static MultipartWriterFactory INSTANCE = new JavaMailMultipartWriterFactory();
+public class AxiomMultipartWriterFactory implements MultipartWriterFactory {
+    public static MultipartWriterFactory INSTANCE = new AxiomMultipartWriterFactory();
 
     public MultipartWriter createMultipartWriter(OutputStream out, String boundary) {
         return new MultipartWriterImpl(out, boundary);

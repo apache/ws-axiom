@@ -26,7 +26,6 @@ import javax.activation.DataHandler;
 
 import org.apache.axiom.attachments.ConfigurableDataHandler;
 import org.apache.axiom.mime.MultipartWriter;
-import org.apache.axiom.mime.impl.javamail.JavaMailMultipartWriterFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -46,8 +45,7 @@ public class OMMultipartWriter {
     public OMMultipartWriter(OutputStream out, OMOutputFormat format) {
         this.format = format;
         
-        // TODO: need some config mechanism to look up the factory
-        writer = JavaMailMultipartWriterFactory.INSTANCE.createMultipartWriter(out,
+        writer = format.getMultipartWriterFactory().createMultipartWriter(out,
                 format.getMimeBoundary());
         
         useCTEBase64 = format != null && Boolean.TRUE.equals(
@@ -111,10 +109,11 @@ public class OMMultipartWriter {
      *             if an I/O error occurs when writing the part to the underlying stream
      */
     public void writePart(DataHandler dataHandler, String contentID) throws IOException {
-        String contentTransferEncoding;
+        String contentTransferEncoding = null;
         if (dataHandler instanceof ConfigurableDataHandler) {
             contentTransferEncoding = ((ConfigurableDataHandler)dataHandler).getTransferEncoding();
-        } else {
+        }
+        if (contentTransferEncoding == null) {
             contentTransferEncoding = getContentTransferEncoding(dataHandler.getContentType());
         }
         writer.writePart(dataHandler, contentTransferEncoding, contentID);

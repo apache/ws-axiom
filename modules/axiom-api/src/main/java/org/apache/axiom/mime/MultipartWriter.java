@@ -58,7 +58,8 @@ public interface MultipartWriter {
      * @param contentType
      *            the value of the <tt>Content-Type</tt> header of the MIME part
      * @param contentTransferEncoding
-     *            the content transfer encoding to be used (see above)
+     *            the content transfer encoding to be used (see above); must not be
+     *            <code>null</code>
      * @param contentID
      *            the content ID of the MIME part (see above)
      * @return an output stream to write the content of the MIME part
@@ -75,7 +76,8 @@ public interface MultipartWriter {
      * @param dataHandler
      *            the content of the MIME part to write
      * @param contentTransferEncoding
-     *            the content transfer encoding to be used (see above)
+     *            the content transfer encoding to be used (see above); must not be
+     *            <code>null</code>
      * @param contentID
      *            the content ID of the MIME part (see above)
      * @throws IOException

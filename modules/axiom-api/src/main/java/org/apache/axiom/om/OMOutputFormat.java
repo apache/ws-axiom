@@ -21,6 +21,8 @@ package org.apache.axiom.om;
 
 import java.util.HashMap;
 
+import org.apache.axiom.mime.MultipartWriterFactory;
+import org.apache.axiom.mime.impl.axiom.AxiomMultipartWriterFactory;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.om.util.StAXWriterConfiguration;
 import org.apache.axiom.om.util.XMLStreamWriterFilter;
@@ -64,6 +66,8 @@ public class OMOutputFormat {
     private XMLStreamWriterFilter xmlStreamWriterFilter = null;
     
     private StAXWriterConfiguration writerConfiguration;
+    
+    private MultipartWriterFactory multipartWriterFactory;
 
     // The value of this property is a Boolean.  
     // A missing value indicates the default action, which is Boolean.FALSE
@@ -427,5 +431,28 @@ public class OMOutputFormat {
      */
     public void setStAXWriterConfiguration(StAXWriterConfiguration writerConfiguration) {
         this.writerConfiguration = writerConfiguration;
+    }
+
+    /**
+     * Get the currently configured multipart writer factory.
+     * 
+     * @return the current factory; if none has been set explicitly, an
+     *         {@link AxiomMultipartWriterFactory} instance is returned
+     */
+    public MultipartWriterFactory getMultipartWriterFactory() {
+        return multipartWriterFactory == null
+                ? AxiomMultipartWriterFactory.INSTANCE
+                : multipartWriterFactory;
+    }
+
+    /**
+     * Set the multipart writer factory. This factory is used to create MIME packages when MTOM or
+     * SwA is enabled.
+     * 
+     * @param multipartWriterFactory
+     *            the factory
+     */
+    public void setMultipartWriterFactory(MultipartWriterFactory multipartWriterFactory) {
+        this.multipartWriterFactory = multipartWriterFactory;
     }
 }
