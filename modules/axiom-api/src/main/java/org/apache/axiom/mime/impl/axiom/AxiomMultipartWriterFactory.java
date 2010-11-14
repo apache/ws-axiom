@@ -27,7 +27,7 @@ import org.apache.axiom.mime.MultipartWriterFactory;
  * Factory for Axiom's own {@link MultipartWriter} implementation.
  */
 public class AxiomMultipartWriterFactory implements MultipartWriterFactory {
-    public static MultipartWriterFactory INSTANCE = new AxiomMultipartWriterFactory();
+    public static final MultipartWriterFactory INSTANCE = new AxiomMultipartWriterFactory();
 
     public MultipartWriter createMultipartWriter(OutputStream out, String boundary) {
         return new MultipartWriterImpl(out, boundary);
