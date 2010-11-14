@@ -33,8 +33,8 @@ import org.apache.axiom.util.blob.MemoryBlob;
 import org.apache.axiom.util.blob.WritableBlob;
 
 class MultipartWriterImpl implements MultipartWriter {
-    private static byte[] DASH_DASH = { '-', '-' };
-    private static byte[] CR_LF = { 13, 10 };
+    private static final byte[] DASH_DASH = { '-', '-' };
+    private static final byte[] CR_LF = { 13, 10 };
     
     class PartOutputStream extends OutputStream {
         private final String contentType;
