@@ -43,6 +43,7 @@
             <item name="Documentation" href="documentation.html">
                 <item name="User guide" href="userguide/userguide.html"/>
                 <item name="Developer guide" href="devguide/devguide.html"/>
+                <item name="Articles" href="articles.html"/>
                 <item name="Javadocs" href="/apidocs/index.html"/>
                 <item name="FAQ" href="faq.html"/>
                 <item name="View Source" href="http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/?root=Apache-SVN"/>
