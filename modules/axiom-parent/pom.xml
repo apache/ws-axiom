@@ -51,6 +51,12 @@
             <archive>http://mail-archives.apache.org/mod_mbox/ws-dev/</archive>
         </mailingList>
         <mailingList>
+            <name>Commits</name>
+            <subscribe>commits-subscribe@ws.apache.org</subscribe>
+            <unsubscribe>commits-unsubscribe@ws.apache.org</unsubscribe>
+            <archive>http://mail-archives.apache.org/mod_mbox/ws-commits/</archive>
+        </mailingList>
+        <mailingList>
             <name>WS Commons Developers (old)</name>
             <archive>http://mail-archives.apache.org/mod_mbox/ws-commons-dev/</archive>
         </mailingList>
