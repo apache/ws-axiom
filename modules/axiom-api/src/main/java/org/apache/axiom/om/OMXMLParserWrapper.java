@@ -66,6 +66,13 @@ public interface OMXMLParserWrapper {
     /** @return Returns the complete status. */
     boolean isCompleted();
 
+    /**
+     * Get the document being built by this builder.
+     * 
+     * @return the {@link OMDocument} instance
+     */
+    OMDocument getDocument();
+    
     /** @return Returns the document element. */
     OMElement getDocumentElement();
 

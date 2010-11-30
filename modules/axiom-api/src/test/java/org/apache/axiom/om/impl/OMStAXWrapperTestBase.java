@@ -33,7 +33,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
@@ -53,8 +52,7 @@ public class OMStAXWrapperTestBase extends TestCase {
         // reported). This is not the default for Woodstox (see WSTX-140).
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(StAXParserConfiguration.NON_COALESCING, is);
         
-        OMFactory omfactory = omMetaFactory.getOMFactory();
-        OMElement element = new StAXOMBuilder(omfactory, reader).getDocumentElement();
+        OMElement element = omMetaFactory.createStAXOMBuilder(reader).getDocumentElement();
         
         // Build the element so we have a full StAX tree
         element.build();

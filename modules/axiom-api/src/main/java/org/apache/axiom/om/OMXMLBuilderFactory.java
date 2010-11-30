@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.om;
 
 import java.io.InputStream;
@@ -24,44 +23,13 @@ import java.io.Reader;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.soap.SOAPFactory;
-
 /**
- * Object model meta factory.
- * This interface encapsulates a particular object model and provides instances
- * for plain XML, SOAP 1.1 and SOAP 1.2 object model factories for the
- * given object model implementation. Currently the two OM implementations provided by
- * Axiom are LLOM (linked list) and DOM.
- * <p>
- * The factories returned by {@link #getOMFactory()}, {@link #getSOAP11Factory()} and
- * {@link #getSOAP12Factory()} might be stateless (and thread safe) or not. In the former
- * case the implementation should return the same instance on every invocation, i.e.
- * instantiate the factory for each OM type only once. In the latter case, the implementation
- * must return a new instance on every invocation. In order to work with any OM implementation,
- * code using an implementation of this class must call the relevant method once and only once
- * for every document processed.
+ * Provides static factory methods to create various kinds of object model builders from different
+ * types of input sources. The methods defined by this class are the starting point to parse XML
+ * documents into Axiom trees.
  */
-public interface OMMetaFactory {
-    /**
-     * Get an OM factory instance for the XML infoset model.
-     *
-     * @return the OM factory instance
-     */
-    OMFactory getOMFactory();
-    
-    /**
-     * Get an OM factory instance for the SOAP 1.1 infoset model.
-     *
-     * @return the OM factory instance
-     */
-    SOAPFactory getSOAP11Factory();
-    
-    /**
-     * Get an OM factory instance for the SOAP 1.2 infoset model.
-     *
-     * @return the OM factory instance
-     */
-    SOAPFactory getSOAP12Factory();
+public class OMXMLBuilderFactory {
+    private OMXMLBuilderFactory() {}
     
     /**
      * Create an object model builder for plain XML that pulls events from a StAX stream reader.
@@ -70,7 +38,9 @@ public interface OMMetaFactory {
      *            the stream reader to read the XML data from
      * @return the builder
      */
-    OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser);
+    public static OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser) {
+        return OMAbstractFactory.getMetaFactory().createStAXOMBuilder(parser);
+    }
     
     /**
      * Create an object model builder that reads a plain XML document from the provided input
@@ -80,7 +50,9 @@ public interface OMMetaFactory {
      *            the input stream representing the XML document
      * @return the builder
      */
-    OMXMLParserWrapper createOMBuilder(InputStream in);
+    public static OMXMLParserWrapper createOMBuilder(InputStream in) {
+        return OMAbstractFactory.getMetaFactory().createOMBuilder(in);
+    }
     
     /**
      * Create an object model builder that reads a plain XML document from the provided character
@@ -90,5 +62,7 @@ public interface OMMetaFactory {
      *            the character stream representing the XML document
      * @return the builder
      */
-    OMXMLParserWrapper createOMBuilder(Reader in);
+    public static OMXMLParserWrapper createOMBuilder(Reader in) {
+        return OMAbstractFactory.getMetaFactory().createOMBuilder(in);
+    }
 }

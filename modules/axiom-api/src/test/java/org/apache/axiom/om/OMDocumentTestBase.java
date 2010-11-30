@@ -19,13 +19,9 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.io.input.CountingInputStream;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 import java.util.Iterator;
@@ -102,15 +98,7 @@ public class OMDocumentTestBase extends AbstractTestCase {
     }
 
     private OMDocument getSampleOMDocument(String xml) {
-        try {
-            XMLStreamReader xmlStreamReader =
-                    StAXUtils.createXMLStreamReader(new StringReader(xml));
-            StAXOMBuilder builder =
-                    new StAXOMBuilder(omMetaFactory.getOMFactory(), xmlStreamReader);
-            return builder.getDocument();
-        } catch (XMLStreamException e) {
-            throw new UnsupportedOperationException();
-        }
+        return omMetaFactory.createOMBuilder(new StringReader(xml)).getDocument();
     }
 
 //    private OMDocument getSampleOMDocument() {
@@ -131,8 +119,7 @@ public class OMDocumentTestBase extends AbstractTestCase {
     public void testBuild() throws Exception {
         CountingInputStream in = new CountingInputStream(getTestResource(
                 TestConstants.REALLY_BIG_MESSAGE));
-        OMDocument doc = new StAXOMBuilder(omMetaFactory.getOMFactory(),
-                XMLInputFactory.newInstance().createXMLStreamReader(in)).getDocument();
+        OMDocument doc = omMetaFactory.createOMBuilder(in).getDocument();
         assertFalse(doc.isComplete());
         int countBeforeBuild = in.getCount();
         doc.build();

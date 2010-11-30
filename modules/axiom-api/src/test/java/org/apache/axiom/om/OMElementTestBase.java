@@ -25,11 +25,8 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP11Constants;
 
 public abstract class OMElementTestBase extends AbstractTestCase {
@@ -476,10 +473,9 @@ public abstract class OMElementTestBase extends AbstractTestCase {
                 elem);
         String xml = elem.toString();
 
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(
+        OMXMLParserWrapper builder = omMetaFactory.createOMBuilder(
                 new ByteArrayInputStream(xml.getBytes()));
 
-        StAXOMBuilder builder = new StAXOMBuilder(omMetaFactory.getOMFactory(), reader);
         builder.getDocumentElement().build();
 
         // The StAX implementation may or may not have a trailing blank in the tag

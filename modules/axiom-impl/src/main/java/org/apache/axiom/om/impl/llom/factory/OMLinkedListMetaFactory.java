@@ -20,7 +20,7 @@
 package org.apache.axiom.om.impl.llom.factory;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.impl.AbstractOMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory;
 import org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory;
@@ -36,7 +36,7 @@ import org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory;
  * @scr.service interface="org.apache.axiom.om.OMMetaFactory"
  * @scr.property name="implementationName" type="String" value="llom"
  */
-public class OMLinkedListMetaFactory implements OMMetaFactory {
+public class OMLinkedListMetaFactory extends AbstractOMMetaFactory {
     private final OMFactory omFactory = new OMLinkedListImplFactory();
     private final SOAPFactory soap11Factory = new SOAP11Factory();
     private final SOAPFactory soap12Factory = new SOAP12Factory();
