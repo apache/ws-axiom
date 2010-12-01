@@ -72,15 +72,17 @@ public interface OMFactory {
     OMSourcedElement createOMElement(OMDataSource source, QName qname);
 
     /**
-     * This is almost the same as as createOMElement(localName,OMNamespace) method above. But some
-     * people may, for some reason, need to use the conventional method of putting a namespace. Or
-     * in other words people might not want to use the new OMNamespace. Well, this is for those
-     * people.
-     *
+     * Create an element with the given name.
+     * 
      * @param localName
+     *            the local part of the name; must not be <code>null</code>
      * @param namespaceURI
+     *            the namespace URI, or the empty string if the element has no
+     *            namespace; must not be <code>null</code>
      * @param namespacePrefix
-     * @return Returns the newly created OMElement.
+     * @return the newly created OMElement.
+     * @throws IllegalArgumentException
+     *             if <code>namespaceURI</code> is <code>null</code>
      */
     OMElement createOMElement(String localName,
                                      String namespaceURI,
