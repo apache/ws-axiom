@@ -37,9 +37,9 @@ import org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory;
  * @scr.property name="implementationName" type="String" value="llom"
  */
 public class OMLinkedListMetaFactory extends AbstractOMMetaFactory {
-    private final OMFactory omFactory = new OMLinkedListImplFactory();
-    private final SOAPFactory soap11Factory = new SOAP11Factory();
-    private final SOAPFactory soap12Factory = new SOAP12Factory();
+    private final OMFactory omFactory = new OMLinkedListImplFactory(this);
+    private final SOAPFactory soap11Factory = new SOAP11Factory(this);
+    private final SOAPFactory soap12Factory = new SOAP12Factory(this);
     
     public OMFactory getOMFactory() {
         return omFactory;

@@ -473,7 +473,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
                 elem);
         String xml = elem.toString();
 
-        OMXMLParserWrapper builder = omMetaFactory.createOMBuilder(
+        OMXMLParserWrapper builder = omMetaFactory.createOMBuilder(omMetaFactory.getOMFactory(),
                 new ByteArrayInputStream(xml.getBytes()));
 
         builder.getDocumentElement().build();

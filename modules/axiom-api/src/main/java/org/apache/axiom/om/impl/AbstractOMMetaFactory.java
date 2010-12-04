@@ -25,6 +25,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -35,21 +36,21 @@ import org.apache.axiom.om.util.StAXUtils;
  * ({@link org.apache.axiom.om.impl.builder.StAXOMBuilder} and its subclasses).
  */
 public abstract class AbstractOMMetaFactory implements OMMetaFactory {
-    public OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser) {
-        return new StAXOMBuilder(getOMFactory(), parser);
+    public OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
+        return new StAXOMBuilder(omFactory, parser);
     }
 
-    public OMXMLParserWrapper createOMBuilder(InputStream in) {
+    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, InputStream in) {
         try {
-            return new StAXOMBuilder(getOMFactory(), StAXUtils.createXMLStreamReader(in));
+            return new StAXOMBuilder(omFactory, StAXUtils.createXMLStreamReader(in));
         } catch (XMLStreamException ex) {
             throw new OMException(ex);
         }
     }
 
-    public OMXMLParserWrapper createOMBuilder(Reader in) {
+    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Reader in) {
         try {
-            return new StAXOMBuilder(getOMFactory(), StAXUtils.createXMLStreamReader(in));
+            return new StAXOMBuilder(omFactory, StAXUtils.createXMLStreamReader(in));
         } catch (XMLStreamException ex) {
             throw new OMException(ex);
         }

@@ -25,6 +25,12 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 
 /** Class OMFactory */
 public interface OMFactory {
+    /**
+     * Get the {@link OMMetaFactory} from which this factory was obtained.
+     * 
+     * @return the meta factory
+     */
+    OMMetaFactory getMetaFactory();
 
     /** Creates a new OMDocument. */
     OMDocument createOMDocument();

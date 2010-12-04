@@ -39,7 +39,22 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser) {
-        return OMAbstractFactory.getMetaFactory().createStAXOMBuilder(parser);
+        OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
+        return metaFactory.createStAXOMBuilder(metaFactory.getOMFactory(), parser);
+    }
+    
+    /**
+     * Create an object model builder that pulls events from a StAX stream reader using a specified
+     * object model factory.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param parser
+     *            the stream reader to read the XML data from
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
+        return omFactory.getMetaFactory().createStAXOMBuilder(omFactory, parser);
     }
     
     /**
@@ -51,7 +66,22 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(InputStream in) {
-        return OMAbstractFactory.getMetaFactory().createOMBuilder(in);
+        OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
+        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), in);
+    }
+    
+    /**
+     * Create an object model builder that reads an XML document from the provided input stream
+     * using a specified object model factory.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param in
+     *            the input stream representing the XML document
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, InputStream in) {
+        return omFactory.getMetaFactory().createOMBuilder(omFactory, in);
     }
     
     /**
@@ -63,6 +93,21 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(Reader in) {
-        return OMAbstractFactory.getMetaFactory().createOMBuilder(in);
+        OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
+        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), in);
+    }
+    
+    /**
+     * Create an object model builder that reads an XML document from the provided character stream
+     * using a specified object model factory.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param in
+     *            the character stream representing the XML document
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Reader in) {
+        return omFactory.getMetaFactory().createOMBuilder(omFactory, in);
     }
 }

@@ -64,31 +64,40 @@ public interface OMMetaFactory {
     SOAPFactory getSOAP12Factory();
     
     /**
-     * Create an object model builder for plain XML that pulls events from a StAX stream reader.
+     * Create an object model builder that pulls events from a StAX stream reader.
      * 
+     * @param omFactory
+     *            the object model factory to use; must be obtained from the same
+     *            {@link OMMetaFactory}
      * @param parser
      *            the stream reader to read the XML data from
      * @return the builder
      */
-    OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser);
+    OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser);
     
     /**
-     * Create an object model builder that reads a plain XML document from the provided input
+     * Create an object model builder that reads an XML document from the provided input
      * stream.
      * 
+     * @param omFactory
+     *            the object model factory to use; must be obtained from the same
+     *            {@link OMMetaFactory}
      * @param in
      *            the input stream representing the XML document
      * @return the builder
      */
-    OMXMLParserWrapper createOMBuilder(InputStream in);
+    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, InputStream in);
     
     /**
-     * Create an object model builder that reads a plain XML document from the provided character
+     * Create an object model builder that reads an XML document from the provided character
      * stream.
      * 
+     * @param omFactory
+     *            the object model factory to use; must be obtained from the same
+     *            {@link OMMetaFactory}
      * @param in
      *            the character stream representing the XML document
      * @return the builder
      */
-    OMXMLParserWrapper createOMBuilder(Reader in);
+    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Reader in);
 }

@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -49,7 +50,12 @@ import org.apache.axiom.soap.impl.llom.SOAPMessageImpl;
 /**
  */
 public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactory {
-    /** Eran Chinthaka (chinthaka@apache.org) */
+    public SOAP12Factory(OMLinkedListMetaFactory metaFactory) {
+        super(metaFactory);
+    }
+
+    public SOAP12Factory() {
+    }
 
     public String getSoapVersionURI() {
         return SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI;

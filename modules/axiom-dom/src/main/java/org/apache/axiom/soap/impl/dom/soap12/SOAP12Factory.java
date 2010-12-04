@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.NamespaceImpl;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -46,6 +47,9 @@ import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
 /**
  */
 public class SOAP12Factory extends DOMSOAPFactory {
+    public SOAP12Factory(OMDOMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
 
     public SOAP12Factory() {
     }

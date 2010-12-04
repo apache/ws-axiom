@@ -22,8 +22,7 @@ package org.apache.axiom.om.util;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.StringReader;
@@ -52,8 +51,7 @@ public class AXIOMUtil {
             throws XMLStreamException {
         
         if (xmlFragment != null) {
-            return new StAXOMBuilder(omFactory,
-                    StAXUtils.createXMLStreamReader(new StringReader(xmlFragment)))
+            return OMXMLBuilderFactory.createOMBuilder(omFactory, new StringReader(xmlFragment))
                     .getDocumentElement();
         }
         return null;

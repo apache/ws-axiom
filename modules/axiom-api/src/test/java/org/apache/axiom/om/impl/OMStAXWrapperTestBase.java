@@ -52,7 +52,7 @@ public class OMStAXWrapperTestBase extends TestCase {
         // reported). This is not the default for Woodstox (see WSTX-140).
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(StAXParserConfiguration.NON_COALESCING, is);
         
-        OMElement element = omMetaFactory.createStAXOMBuilder(reader).getDocumentElement();
+        OMElement element = omMetaFactory.createStAXOMBuilder(omMetaFactory.getOMFactory(), reader).getDocumentElement();
         
         // Build the element so we have a full StAX tree
         element.build();

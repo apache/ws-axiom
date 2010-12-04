@@ -38,14 +38,14 @@ import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
  */
 public class OMDOMMetaFactory extends AbstractOMMetaFactory {
     public OMFactory getOMFactory() {
-        return new OMDOMFactory();
+        return new OMDOMFactory(this);
     }
 
     public SOAPFactory getSOAP11Factory() {
-        return new SOAP11Factory();
+        return new SOAP11Factory(this);
     }
 
     public SOAPFactory getSOAP12Factory() {
-        return new SOAP12Factory();
+        return new SOAP12Factory(this);
     }
 }

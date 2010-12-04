@@ -98,7 +98,7 @@ public class OMDocumentTestBase extends AbstractTestCase {
     }
 
     private OMDocument getSampleOMDocument(String xml) {
-        return omMetaFactory.createOMBuilder(new StringReader(xml)).getDocument();
+        return omMetaFactory.createOMBuilder(omMetaFactory.getOMFactory(), new StringReader(xml)).getDocument();
     }
 
 //    private OMDocument getSampleOMDocument() {
@@ -119,7 +119,7 @@ public class OMDocumentTestBase extends AbstractTestCase {
     public void testBuild() throws Exception {
         CountingInputStream in = new CountingInputStream(getTestResource(
                 TestConstants.REALLY_BIG_MESSAGE));
-        OMDocument doc = omMetaFactory.createOMBuilder(in).getDocument();
+        OMDocument doc = omMetaFactory.createOMBuilder(omMetaFactory.getOMFactory(), in).getDocument();
         assertFalse(doc.isComplete());
         int countBeforeBuild = in.getCount();
         doc.build();

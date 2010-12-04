@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMHierarchyException;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -75,14 +76,25 @@ import javax.xml.namespace.QName;
  * </ul>
  */
 public class OMDOMFactory implements OMFactory {
+    private final OMDOMMetaFactory metaFactory;
 
     protected DocumentImpl document;
 
+    public OMDOMFactory(OMDOMMetaFactory metaFactory) {
+        this.metaFactory = metaFactory;
+    }
+
     public OMDOMFactory() {
+        this(new OMDOMMetaFactory());
     }
 
     public OMDOMFactory(DocumentImpl doc) {
+        this(new OMDOMMetaFactory());
         this.document = doc;
+    }
+
+    public OMMetaFactory getMetaFactory() {
+        return metaFactory;
     }
 
     public OMDocument createOMDocument() {

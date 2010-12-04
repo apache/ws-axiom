@@ -29,6 +29,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
@@ -58,6 +59,8 @@ public class OMLinkedListImplFactory implements OMFactory {
     // Pooling of OMNamespace objects is disabled.  See the comment in OMNamespace.
     private static boolean POOL_OMNAMESPACES = false;
     
+    private final OMLinkedListMetaFactory metaFactory;
+    
     /**
      * This is a map of namespaces with the namespace URI as the key and Namespace object itself as
      * the value.
@@ -65,6 +68,17 @@ public class OMLinkedListImplFactory implements OMFactory {
      */
     protected Map namespaceTable = new Hashtable(5);
     
+    public OMLinkedListImplFactory(OMLinkedListMetaFactory metaFactory) {
+        this.metaFactory = metaFactory;
+    }
+    
+    public OMLinkedListImplFactory() {
+        this(new OMLinkedListMetaFactory());
+    }
+
+    public OMMetaFactory getMetaFactory() {
+        return metaFactory;
+    }
 
     /**
      * Method createOMElement.
