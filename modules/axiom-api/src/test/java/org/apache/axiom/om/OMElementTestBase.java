@@ -277,7 +277,7 @@ public abstract class OMElementTestBase extends AbstractTestCase {
      * Test that {@link OMElement#addAttribute(OMAttribute)} behaves correctly when an attribute
      * with the same name and namespace URI already exists.
      */
-    public void testAddAttributeReplace() {
+    public void testAddAttributeReplace1() {
         OMFactory factory = omMetaFactory.getOMFactory();
         // Use same namespace URI but different prefixes
         OMNamespace ns1 = factory.createOMNamespace("urn:ns", "p1");
@@ -293,6 +293,28 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         assertFalse(it.hasNext());
         assertNull(att1.getOwner());
         assertSame(element, att2.getOwner());
+    }
+    
+    /**
+     * Test that {@link OMElement#addAttribute(String, String, OMNamespace)} behaves correctly when
+     * an attribute with the same name and namespace URI already exists.
+     */
+    public void testAddAttributeReplace2() {
+        OMFactory factory = omMetaFactory.getOMFactory();
+        // Use same namespace URI but different prefixes
+        OMNamespace ns1 = factory.createOMNamespace("urn:ns", "p1");
+        OMNamespace ns2 = factory.createOMNamespace("urn:ns", "p2");
+        OMElement element = factory.createOMElement(new QName("test"));
+        OMAttribute att1 = element.addAttribute("test", "value1", ns1);
+        OMAttribute att2 = element.addAttribute("test", "value2", ns2);
+        Iterator it = element.getAllAttributes();
+        assertTrue(it.hasNext());
+        assertSame(att2, it.next());
+        assertFalse(it.hasNext());
+        assertNull(att1.getOwner());
+        assertSame(element, att2.getOwner());
+        assertEquals("value1", att1.getAttributeValue());
+        assertEquals("value2", att2.getAttributeValue());
     }
     
     public void testAddAttributeWithoutExistingNamespaceDeclaration() {

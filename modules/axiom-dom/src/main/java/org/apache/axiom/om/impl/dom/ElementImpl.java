@@ -55,7 +55,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Vector;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
 public class ElementImpl extends ParentNode implements Element, OMElement,
@@ -699,12 +698,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         return attr;
     }
 
-    /**
-     * The behaviour of this is the same as org.w3c.dom.Element#setAttributeNS
-     *
-     * @see org.apache.axiom.om.OMElement#addAttribute(String, String, org.apache.axiom.om.OMNamespace)
-     */
-    public OMAttribute addAttribute(String attributeName, String value,
+    public OMAttribute addAttribute(String localName, String value,
                                     OMNamespace ns) {
         if (ns != null) {
             String uri = ns.getNamespaceURI();
@@ -716,13 +710,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                 }
             }
         }
-        if (ns != null) {
-            return this.addAttribute(ns.getNamespaceURI(), ns.getPrefix() + ":"
-                    + attributeName, value);
-        } else {
-            return this.addAttribute(null, attributeName, value);
-        }
-
+        return addAttribute(new AttrImpl(ownerNode, localName, ns, value, factory));
     }
 
     /**

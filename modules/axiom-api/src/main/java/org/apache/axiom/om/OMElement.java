@@ -232,21 +232,25 @@ public interface OMElement extends OMNode, OMContainer {
     OMAttribute addAttribute(OMAttribute attr);
 
     /**
-     * Adds an attribute to the current element.
-     * <p/>
-     * <p>This function does not check to make sure that the given attribute value can be serialized
-     * directly as an XML value.  The caller may, for example, pass a string with the character
-     * 0x01.
-     *
-     * @param attributeName The "local name" for the attribute.
-     * @param value         The string value of the attribute.
-     * @param ns            The namespace has to be one of the in scope namespace. i.e. the passed
-     *                      namespace must be declared in the parent element of this attribute or
-     *                      ancestors of the parent element of the attribute.
+     * Adds an attribute to this element.
+     * <p>
+     * If the element already has an attribute with the same local name and namespace URI, then this
+     * existing attribute will be removed from the element, i.e. this method will always create a
+     * new {@link OMAttribute} instance and never update an existing one.
+     * 
+     * @param localName
+     *            The local name for the attribute.
+     * @param value
+     *            The string value of the attribute. This function does not check to make sure that
+     *            the given attribute value can be serialized directly as an XML value. The caller
+     *            may, for example, pass a string with the character 0x01.
+     * @param ns
+     *            The namespace has to be one of the in scope namespace. i.e. the passed namespace
+     *            must be declared in the parent element of this attribute or ancestors of the
+     *            parent element of the attribute.
      * @return Returns the added attribute.
      */
-    OMAttribute addAttribute(String attributeName, String value,
-                                    OMNamespace ns);
+    OMAttribute addAttribute(String localName, String value, OMNamespace ns);
 
     /**
      * Method removeAttribute
