@@ -19,13 +19,10 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.custommonkey.xmlunit.Diff;
 import org.w3c.dom.Document;
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
-import java.io.ByteArrayInputStream;
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -47,52 +44,6 @@ public class AttrNsTest extends AbstractOMSerializationTest {
 
         Diff diff = compareXML(document1, document2);
         assertXMLEqual(diff, true);
-    }
-
-
-    /**
-     * Test method to test the XML namespace
-     *
-     * @throws Exception
-     */
-    public void testAttr() throws Exception {
-        String xml = "<wsp:Policy xml:base=\"uri:thisBase\" " +
-                "xmlns:wsp=\"http://schemas.xmlsoap.org/ws/2004/09/policy\">" +
-                "</wsp:Policy>";
-
-        ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes());
-        StAXOMBuilder builder = new StAXOMBuilder(bais);
-        OMElement elem = builder.getDocumentElement();
-        elem.build();
-        assertEquals("Attribute value mismatch", "uri:thisBase",
-                     elem.getAttributeValue(new QName(OMConstants.XMLNS_URI, "base")));
-
-        OMAttribute attr = elem.getAttribute(new QName(OMConstants.XMLNS_URI, "base"));
-
-        assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI,
-                     attr.getNamespace().getNamespaceURI());
-    }
-
-    /**
-     * Test method to test the XML namespace of an attr without any other ns declarations in the
-     * element
-     *
-     * @throws Exception
-     */
-    public void testAttrWithoutElementNS() throws Exception {
-        String xml = "<Policy xml:base=\"uri:thisBase\"></Policy>";
-
-        ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes());
-        StAXOMBuilder builder = new StAXOMBuilder(bais);
-        OMElement elem = builder.getDocumentElement();
-        elem.build();
-        assertEquals("Attribute value mismatch", "uri:thisBase",
-                     elem.getAttributeValue(new QName(OMConstants.XMLNS_URI, "base")));
-
-        OMAttribute attr = elem.getAttribute(new QName(OMConstants.XMLNS_URI, "base"));
-
-        assertEquals("Attribute namespace mismatch", OMConstants.XMLNS_URI,
-                     attr.getNamespace().getNamespaceURI());
     }
 
     public void testAttributesWithProgrammaticalCreation() throws Exception {
