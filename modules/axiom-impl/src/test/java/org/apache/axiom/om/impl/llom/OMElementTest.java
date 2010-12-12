@@ -19,47 +19,18 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import java.util.Iterator;
-
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMElementTestBase;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 
 public class OMElementTest extends OMElementTestBase {
-    private static final String AXIS2_NS_URI = "http://ws.apache.org/axis2";
-    private static final String AXIS2_NS_PREFIX = "axis2";
     private static final String SOME_TEXT = "Some Text";
     
     public OMElementTest() {
         super(new OMLinkedListMetaFactory());
-    }
-
-    public void testTextQNames() {
-        OMFactory factory = omMetaFactory.getOMFactory();
-        OMElement omElement = factory.createOMElement("TestElement", null);
-        omElement.setText(new QName(AXIS2_NS_URI, SOME_TEXT, AXIS2_NS_PREFIX));
-
-        Iterator allDeclaredNamespaces = omElement.getAllDeclaredNamespaces();
-        boolean foundNamespace = false;
-        while (allDeclaredNamespaces.hasNext()) {
-            OMNamespace omNamespace = (OMNamespace) allDeclaredNamespaces.next();
-            if (AXIS2_NS_URI.equals(omNamespace.getNamespaceURI()) &&
-                    AXIS2_NS_PREFIX.equals(omNamespace.getPrefix())) {
-                foundNamespace = true;
-            }
-        }
-        assertTrue("Namespace of the text is not defined in the parent element", foundNamespace);
-
-        String elementString = omElement.toString();
-        assertTrue(elementString.indexOf(AXIS2_NS_PREFIX + ":" + SOME_TEXT) > -1);
-        assertTrue((AXIS2_NS_PREFIX + ":" + SOME_TEXT).equals(omElement.getText()));
-
-        QName textAsQName = omElement.getTextAsQName();
-        assertTrue(textAsQName.equals(new QName(AXIS2_NS_URI, SOME_TEXT, AXIS2_NS_PREFIX)));
     }
 
     public void testTextQNamesWithoutQNames() {

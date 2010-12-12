@@ -411,7 +411,14 @@ public interface OMElement extends OMNode, OMContainer {
     /** @param text  */
     void setText(String text);
 
-    void setText(QName text);
+    /**
+     * Set the content of this element to the given QName. If no matching namespace declaration for
+     * the QName is in scope, then this method will add one.
+     * 
+     * @param qname
+     *            the QName value
+     */
+    void setText(QName qname);
 
     /**
      * Returns the non-empty text children as a string.

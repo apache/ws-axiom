@@ -18,17 +18,39 @@
  */
 package org.apache.axiom.ts;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.axiom.om.OMMetaFactory;
 
 import junit.framework.TestSuite;
 
 public class AxiomTestSuiteBuilder {
-    public static TestSuite suite(OMMetaFactory metaFactory) {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new org.apache.axiom.ts.om.element.TestGetAttributeValueWithXmlPrefix1(metaFactory));
-        suite.addTest(new org.apache.axiom.ts.om.element.TestGetAttributeValueWithXmlPrefix2(metaFactory));
-        suite.addTest(new org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix1(metaFactory));
-        suite.addTest(new org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix2(metaFactory));
+    private final OMMetaFactory metaFactory;
+    private final Set/*<Class>*/ excludedTests = new HashSet();
+    private TestSuite suite;
+    
+    public AxiomTestSuiteBuilder(OMMetaFactory metaFactory) {
+        this.metaFactory = metaFactory;
+    }
+    
+    public void exclude(Class testClass) {
+        excludedTests.add(testClass);
+    }
+    
+    public TestSuite build() {
+        suite = new TestSuite();
+        addTest(new org.apache.axiom.ts.om.element.TestGetAttributeValueWithXmlPrefix1(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetAttributeValueWithXmlPrefix2(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix1(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix2(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
         return suite;
+    }
+    
+    private void addTest(AxiomTestCase test) {
+        if (!excludedTests.contains(test.getClass())) {
+            suite.addTest(test);
+        }
     }
 }

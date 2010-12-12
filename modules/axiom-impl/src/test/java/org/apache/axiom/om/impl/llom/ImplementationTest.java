@@ -26,6 +26,6 @@ import junit.framework.TestSuite;
 
 public class ImplementationTest extends TestCase {
     public static TestSuite suite() {
-        return AxiomTestSuiteBuilder.suite(new OMLinkedListMetaFactory());
+        return new AxiomTestSuiteBuilder(new OMLinkedListMetaFactory()).build();
     }
 }

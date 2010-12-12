@@ -23,9 +23,13 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.AxiomTestSuiteBuilder;
+import org.apache.axiom.ts.om.element.TestSetTextQName;
 
 public class ImplementationTest extends TestCase {
     public static TestSuite suite() {
-        return AxiomTestSuiteBuilder.suite(new OMDOMMetaFactory());
+        AxiomTestSuiteBuilder builder = new AxiomTestSuiteBuilder(new OMDOMMetaFactory());
+        // OMElement#setText(QName) is unsupported
+        builder.exclude(TestSetTextQName.class);
+        return builder.build();
     }
 }
