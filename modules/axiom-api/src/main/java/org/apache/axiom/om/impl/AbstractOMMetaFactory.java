@@ -37,12 +37,18 @@ import org.apache.axiom.om.util.StAXUtils;
  */
 public abstract class AbstractOMMetaFactory implements OMMetaFactory {
     public OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
-        return new StAXOMBuilder(omFactory, parser);
+        StAXOMBuilder builder = new StAXOMBuilder(omFactory, parser);
+        // StAXOMBuilder defaults to the "legacy" behavior, which is to keep a reference to the
+        // parser after the builder has been closed. Since releasing this reference is a good idea
+        // we default to releaseParserOnClose=true for builders created through the OMMetaFactory
+        // API.
+        builder.releaseParserOnClose(true);
+        return builder;
     }
 
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, InputStream in) {
         try {
-            return new StAXOMBuilder(omFactory, StAXUtils.createXMLStreamReader(in));
+            return createStAXOMBuilder(omFactory, StAXUtils.createXMLStreamReader(in));
         } catch (XMLStreamException ex) {
             throw new OMException(ex);
         }
@@ -50,7 +56,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
 
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Reader in) {
         try {
-            return new StAXOMBuilder(omFactory, StAXUtils.createXMLStreamReader(in));
+            return createStAXOMBuilder(omFactory, StAXUtils.createXMLStreamReader(in));
         } catch (XMLStreamException ex) {
             throw new OMException(ex);
         }
