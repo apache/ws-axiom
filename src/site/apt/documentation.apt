@@ -21,13 +21,13 @@
 
   The following documentation for the Axiom framework is available:
   
-    * A {{{userguide/userguide.html}User Guide}} explaining how to use
+    * A {{{./userguide/userguide.html}User Guide}} explaining how to use
       Axiom in your project.
     
-    * A {{{devguide/devguide.html}Developer Guide}} containing information
+    * A {{{./devguide/devguide.html}Developer Guide}} containing information
       for committers and contributors.
     
-    * The {{{apidocs/index.html}Javadoc}} for the Axiom API.
+    * The {{{./apidocs/index.html}Javadoc}} for the Axiom API.
   
   The user and developer guides are also available in PDF format in the
   binary distribution and as individual Maven artifacts that can be downloaded from
