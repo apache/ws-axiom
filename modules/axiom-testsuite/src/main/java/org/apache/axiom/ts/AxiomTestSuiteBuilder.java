@@ -40,6 +40,11 @@ public class AxiomTestSuiteBuilder {
     
     public TestSuite build() {
         suite = new TestSuite();
+        addTest(new org.apache.axiom.ts.om.attribute.TestGetQName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationInScope(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithMaskedNamespaceDeclaration(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutExistingNamespaceDeclaration(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAttributeValueNonExisting(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAttributeValueWithXmlPrefix1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAttributeValueWithXmlPrefix2(metaFactory));
@@ -47,6 +52,14 @@ public class AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingAfter(metaFactory));
+        addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingAfterLastChild(metaFactory));
+        addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnOrphan(metaFactory));
+        addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBefore(metaFactory));
+        addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnOrphan(metaFactory));
+        addTest(new org.apache.axiom.ts.om.text.TestBase64Streaming(metaFactory));
         return suite;
     }
     

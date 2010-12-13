@@ -16,16 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts;
+package org.apache.axiom.ts.om.node;
 
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.custommonkey.xmlunit.XMLTestCase;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.ts.AxiomTestCase;
 
-public abstract class AxiomTestCase extends XMLTestCase {
-    protected final OMMetaFactory metaFactory;
+/**
+ * Tests the behavior of {@link OMNode#insertSiblingAfter(OMNode)}.
+ */
+public class TestInsertSiblingAfter extends AxiomTestCase {
+    public TestInsertSiblingAfter(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
 
-    public AxiomTestCase(OMMetaFactory metaFactory) {
-        this.metaFactory = metaFactory;
-        setName(getClass().getName());
+    protected void runTest() throws Throwable {
+        OMFactory fac = metaFactory.getOMFactory();
+        OMElement parent = fac.createOMElement("test", null);
+        OMText text1 = fac.createOMText("text1");
+        OMText text2 = fac.createOMText("text2");
+        parent.addChild(text1);
+        text1.insertSiblingAfter(text2);
+        assertSame(parent, text2.getParent());
     }
 }
