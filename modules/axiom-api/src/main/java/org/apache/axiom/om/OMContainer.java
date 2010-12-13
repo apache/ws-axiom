@@ -72,17 +72,18 @@ public interface OMContainer extends OMSerializable {
     
 
     /**
-     * Returns the first child in document order that matches the given QName
-     * <p/>
-     * <p>The QName filter is applied as in the function {@link #getChildrenWithName}.</p>
-     *
-     * @param elementQName The QName to use for matching.
-     * @return Returns the first element in document order that matches the <tt>elementQName</tt>
-     *         criteria.
-     * @throws OMException Could indirectly trigger building of child nodes.
-     * @see #getChildrenWithName
+     * Returns the first child in document order that matches the given QName. The QName filter is
+     * applied in the same way as by the {@link #getChildrenWithName(QName)} method.
+     * 
+     * @param qname
+     *            The QName to use for matching.
+     * @return The first child element in document order that matches the <code>qname</code>
+     *         criteria, or <code>null</code> if none is found.
+     * @throws OMException
+     *             If an error occurs during deferred parsing.
+     * @see #getChildrenWithName(QName)
      */
-    OMElement getFirstChildWithName(QName elementQName) throws OMException;
+    OMElement getFirstChildWithName(QName qname) throws OMException;
 
     /**
      * Returns an iterator for the children of the container.

@@ -194,9 +194,10 @@ public interface OMElement extends OMNode, OMContainer {
 
     /**
      * Returns a named attribute's value, if present.
-     *
-     * @param qname the qualified name to search for
-     * @return Returns a String containing the attribute value, or null
+     * 
+     * @param qname
+     *            the qualified name to search for
+     * @return The attribute value, or <code>null</code> if no matching attribute is found.
      */
     String getAttributeValue(QName qname);
 
