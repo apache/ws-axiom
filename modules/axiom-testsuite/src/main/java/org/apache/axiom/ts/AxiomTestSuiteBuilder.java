@@ -51,6 +51,24 @@ public class AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "D", "D",
+                "<person xmlns=\"urn:ns\"><name>John</name><age>34</age><weight>50</weight></person>"));
+        addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "D", "U",
+                "<person xmlns=\"urn:ns\"><name xmlns=\"\">John</name><age xmlns=\"\">34</age><weight xmlns=\"\">50</weight></person>"));
+        addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "D", "Q",
+                "<person xmlns=\"urn:ns\"><p:name xmlns:p=\"urn:ns\">John</p:name><p:age xmlns:p=\"urn:ns\">34</p:age><p:weight xmlns:p=\"urn:ns\">50</p:weight></person>"));
+        addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "Q", "Q",
+                "<p:person xmlns:p=\"urn:ns\"><p:name>John</p:name><p:age>34</p:age><p:weight>50</p:weight></p:person>"));
+        addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "Q", "U",
+                "<p:person xmlns:p=\"urn:ns\"><name>John</name><age>34</age><weight>50</weight></p:person>"));
+        addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "Q", "D",
+                "<p:person xmlns:p=\"urn:ns\"><name xmlns=\"urn:ns\">John</name><age xmlns=\"urn:ns\">34</age><weight xmlns=\"urn:ns\">50</weight></p:person>"));
+        addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "U", "U",
+                "<person><name>John</name><age>34</age><weight>50</weight></person>"));
+        addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "U", "Q",
+                "<person><p:name xmlns:p=\"urn:ns\">John</p:name><p:age xmlns:p=\"urn:ns\">34</p:age><p:weight xmlns:p=\"urn:ns\">50</p:weight></person>"));
+        addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "U", "D",
+                "<person><name xmlns=\"urn:ns\">John</name><age xmlns=\"urn:ns\">34</age><weight xmlns=\"urn:ns\">50</weight></person>"));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, false));
