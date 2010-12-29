@@ -26,6 +26,9 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.ts.AxiomTestCase;
 
+/**
+ * Regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-65">AXIOM-65</a>.
+ */
 public class TestSerializationWithTwoNonBuiltOMElements extends AxiomTestCase {
     public TestSerializationWithTwoNonBuiltOMElements(OMMetaFactory metaFactory) {
         super(metaFactory);
