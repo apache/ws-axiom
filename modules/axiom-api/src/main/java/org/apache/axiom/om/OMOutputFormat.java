@@ -172,6 +172,13 @@ public class OMOutputFormat {
         return map.containsKey(key);
     }
 
+    /**
+     * Indicates whether the document should be serialized using MTOM.
+     * 
+     * @return <code>true</code> if the document should be serialized using MTOM; <code>false</code>
+     *         otherwise; the return value is always <code>false</code> if {@link #isDoingSWA()}
+     *         returns <code>true</code>
+     */
     public boolean isOptimized() {
         return doOptimize && !doingSWA;  // optimize is disabled if SWA
     }
@@ -277,14 +284,36 @@ public class OMOutputFormat {
         this.ignoreXMLDeclaration = ignoreXMLDeclaration;
     }
 
-    public void setDoOptimize(boolean b) {
-        doOptimize = b;
+    /**
+     * Specifies that the document should be serialized using MTOM. Note that this setting is
+     * ignored if SwA is enabled using {@link #setDoingSWA(boolean)}.
+     * 
+     * @param optimize
+     *            <code>true</code> if the document should be serialized using MTOM;
+     *            <code>false</code> otherwise
+     */
+    public void setDoOptimize(boolean optimize) {
+        doOptimize = optimize;
     }
 
+    /**
+     * Indicates whether the document should be serialized using SwA.
+     * 
+     * @return <code>true</code> if the document should be serialized using SwA; <code>false</code>
+     *         otherwise
+     */
     public boolean isDoingSWA() {
         return doingSWA;
     }
 
+    /**
+     * Specifies that the document should be serialized using SwA (SOAP with Attachments). When SwA
+     * is enabled, then any configuration done using {@link #setDoOptimize(boolean)} is ignored.
+     * 
+     * @param doingSWA
+     *            <code>true</code> if the document should be serialized using SwA;
+     *            <code>false</code> otherwise
+     */
     public void setDoingSWA(boolean doingSWA) {
         this.doingSWA = doingSWA;
     }
