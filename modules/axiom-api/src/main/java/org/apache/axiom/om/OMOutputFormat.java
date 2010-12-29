@@ -197,14 +197,7 @@ public class OMOutputFormat {
         // If MTOM or SWA, the returned content-type is an 
         // appropriate multipart/related content type.
         if (isOptimized()) {
-            if (isDoingSWA()) {
-                // If both optimized and SWA, then prefer SWA
-                // for the content type
-                ct = this.getContentTypeForSwA(contentType);
-            } else {
-                // Optimized without SWA is MTOM
-                ct = this.getContentTypeForMTOM(contentType);
-            }
+            ct = this.getContentTypeForMTOM(contentType);
         } else if (isDoingSWA()) {
             ct = this.getContentTypeForSwA(contentType);
         } else {
