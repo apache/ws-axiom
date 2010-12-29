@@ -68,6 +68,9 @@ def scan(arg, directory, files):
 
 walk(srcroot, scan, 0)
 
+# Don't touch the .htaccess file at the root
+svnfiles.remove(".htaccess")
+
 for file in svnfiles:
 	call(["svn", "remove", join(dstroot, file)])
 
