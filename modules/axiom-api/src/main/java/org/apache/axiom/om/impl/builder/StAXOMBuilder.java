@@ -560,7 +560,18 @@ public class StAXOMBuilder extends StAXBuilder {
     }
 
     public OMElement getDocumentElement() {
-        return document.getOMDocumentElement();
+        return getDocumentElement(false);
+    }
+
+    public OMElement getDocumentElement(boolean discardDocument) {
+        OMElement element = document.getOMDocumentElement();
+        if (discardDocument) {
+            OMNodeEx nodeEx = (OMNodeEx)element;
+            nodeEx.setParent(null);
+            nodeEx.setPreviousOMSibling(null);
+            nodeEx.setNextOMSibling(null);
+        }
+        return element;
     }
 
     /**

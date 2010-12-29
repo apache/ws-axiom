@@ -83,6 +83,22 @@ public interface OMXMLParserWrapper {
     OMElement getDocumentElement();
 
     /**
+     * Get the document element, optionally discarding the document. The return value of this method
+     * is the same as {@link #getDocumentElement()}. However, if the <code>discardDocument</code>
+     * parameter is set to <code>true</code>, then the document element is removed from the document
+     * and the document itself is discarded. In contrast to using {@link OMElement#detach()} this
+     * will not build the element. The implementation also ensures that the element is not built
+     * when it is added to another OM tree. This makes it possible to add the content of a document
+     * to an existing OM tree while preserving the deferred parsing feature. It is even possible to
+     * create an OM tree where different subtrees are associated with different builder instances.
+     * 
+     * @param discardDocument
+     *            specifies whether the document should be discarded
+     * @return the document element
+     */
+    OMElement getDocumentElement(boolean discardDocument);
+
+    /**
      * Returns the type of the builder. Can be either {@link OMConstants#PUSH_TYPE_BUILDER}
      * or {@link OMConstants#PULL_TYPE_BUILDER}.
      *

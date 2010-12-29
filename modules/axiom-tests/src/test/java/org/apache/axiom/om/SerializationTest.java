@@ -20,11 +20,6 @@
 package org.apache.axiom.om;
 
 import junit.framework.TestCase;
-import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-
-import javax.xml.stream.XMLStreamException;
-import java.io.ByteArrayInputStream;
 
 public class SerializationTest extends TestCase {
     /**
@@ -48,35 +43,4 @@ public class SerializationTest extends TestCase {
         assertEquals("Incorrect serialization", 2, xml.split("xmlns=\"\"").length);
 
     }
-
-    public void testOMSerializationWithTwoNonBuiltOMElements() {
-        try {
-            String sampleXMLOne = "<ChildOne><Name>ChildName</Name></ChildOne>";
-            String sampleXMLTwo = "<ChildTwo><Name>ChildName</Name></ChildTwo>";
-
-            String expectedXML =
-                    "<Root><ChildOne><Name>ChildName</Name></ChildOne><ChildTwo><Name>ChildName</Name></ChildTwo></Root>";
-            OMFactory omFactory = OMAbstractFactory.getOMFactory();
-
-            OMElement rootElement = omFactory.createOMElement("Root", null);
-            OMElement childOne =
-                    new StAXOMBuilder(new ByteArrayInputStream(sampleXMLOne.getBytes()))
-                            .getDocumentElement();
-            ((OMNodeEx) childOne).setParent(null);
-            rootElement.addChild(childOne);
-            OMElement childTwo =
-                    new StAXOMBuilder(new ByteArrayInputStream(sampleXMLTwo.getBytes()))
-                            .getDocumentElement();
-            ((OMNodeEx) childTwo).setParent(null);
-            rootElement.addChild(childTwo);
-
-            assertTrue(expectedXML.equals(rootElement.toString()));
-            
-            childOne.close(false);
-            childTwo.close(false);
-        } catch (XMLStreamException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-    }
-
 }

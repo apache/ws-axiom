@@ -41,6 +41,7 @@ public class AxiomTestSuiteBuilder {
     public TestSuite build() {
         suite = new TestSuite();
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocument(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationInScope(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(metaFactory));
@@ -70,6 +71,7 @@ public class AxiomTestSuiteBuilder {
                 "<person><p:name xmlns:p=\"urn:ns\">John</p:name><p:age xmlns:p=\"urn:ns\">34</p:age><p:weight xmlns:p=\"urn:ns\">50</p:weight></person>"));
         addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "U", "D",
                 "<person><name xmlns=\"urn:ns\">John</name><age xmlns=\"urn:ns\">34</age><weight xmlns=\"urn:ns\">50</weight></person>"));
+        addTest(new org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, false));

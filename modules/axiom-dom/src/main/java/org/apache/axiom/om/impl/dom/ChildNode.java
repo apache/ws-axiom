@@ -102,7 +102,7 @@ public abstract class ChildNode extends NodeImpl {
     }
 
     public void setParent(OMContainer element) {
-        if (element instanceof ParentNode) {
+        if (element == null || element instanceof ParentNode) {
             this.parentNode = (ParentNode) element;
         } else {
             throw new OMException("The given parent is not of the type "
