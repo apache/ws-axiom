@@ -303,6 +303,23 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
   ...
 </settings>]]></screen>
                 </listitem>
+                <listitem>
+                    <para>
+                        The release process uses a Nexus staging repository. Every committer should have access to the corresponding
+                        staging profile in Nexus. To validate this, login to <literal>repository.apache.org</literal> and check that
+                        you can see the <literal>org.apache.ws</literal> staging profile. The credentials used to deploy to Nexus
+                        should be added to <filename>settings.xml</filename>:                    
+                    </para>
+<screen><![CDATA[<servers>
+  ...
+  <server>
+    <id>apache.releases.https</id>
+    <username><!-- ASF username --></username>
+    <password><!-- ASF LDAP password --></password>
+  </server>
+  ...
+</servers>]]></screen>
+                </listitem>
             </itemizedlist>
         </section>
         <section>
@@ -444,6 +461,12 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
                         commands to add new files and to delete files that no longer exist. After executing the
                         script, commit the changes to Subversion.
                     </para>
+                    <important>
+                        <para>
+                            When generating the site, please use a recent JDK version, because some older versions
+                            generate broken links.
+                        </para>
+                    </important>
                 </step>
                 <step>
                     <para>
