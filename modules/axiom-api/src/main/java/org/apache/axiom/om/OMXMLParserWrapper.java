@@ -73,7 +73,13 @@ public interface OMXMLParserWrapper {
      */
     OMDocument getDocument();
     
-    /** @return Returns the document element. */
+    /**
+     * Get the document element, i.e. the root element of the document. Using this method is
+     * equivalent to using {@link OMDocument#getOMDocumentElement()} on the document returned by
+     * {@link #getDocument()}.
+     * 
+     * @return the document element
+     */
     OMElement getDocumentElement();
 
     /**

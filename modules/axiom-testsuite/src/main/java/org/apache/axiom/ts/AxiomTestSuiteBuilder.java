@@ -40,6 +40,7 @@ public class AxiomTestSuiteBuilder {
     
     public TestSuite build() {
         suite = new TestSuite();
+        addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationInScope(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(metaFactory));

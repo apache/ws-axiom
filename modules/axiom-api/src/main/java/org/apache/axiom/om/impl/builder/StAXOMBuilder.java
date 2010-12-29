@@ -559,11 +559,6 @@ public class StAXOMBuilder extends StAXBuilder {
         //return lastNode;
     }
 
-    /**
-     * Method getDocumentElement.
-     *
-     * @return Returns root element.
-     */
     public OMElement getDocumentElement() {
         return document.getOMDocumentElement();
     }
