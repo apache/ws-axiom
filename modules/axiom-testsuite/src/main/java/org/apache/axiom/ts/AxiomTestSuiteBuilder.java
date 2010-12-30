@@ -48,7 +48,7 @@ public class AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
         String[] files = AbstractTestCase.getConformanceTestFiles();
         for (int i=0; i<files.length; i++) {
-            suite.addTest(new TestGetXMLStreamReader(metaFactory, files[i]));
+            addTest(new TestGetXMLStreamReader(metaFactory, files[i]));
         }
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationInScope(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(metaFactory));
