@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.ts;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.commons.io.output.NullOutputStream;
 import org.custommonkey.xmlunit.XMLTestCase;
 
 public abstract class AxiomTestCase extends XMLTestCase {
@@ -27,5 +29,17 @@ public abstract class AxiomTestCase extends XMLTestCase {
     public AxiomTestCase(OMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
         setName(getClass().getName());
+    }
+    
+    protected void assertConsumed(OMContainer container) {
+        assertFalse(container.isComplete());
+        boolean isConsumed;
+        try {
+            container.serialize(new NullOutputStream());
+            isConsumed = false;
+        } catch (Exception ex) {
+            isConsumed = true;
+        }
+        assertTrue(isConsumed);
     }
 }
