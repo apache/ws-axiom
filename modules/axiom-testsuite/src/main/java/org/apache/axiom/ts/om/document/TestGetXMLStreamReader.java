@@ -16,42 +16,41 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl;
+package org.apache.axiom.ts.om.document;
 
 import java.io.InputStream;
 
 import javax.xml.stream.XMLStreamReader;
 
-import junit.framework.TestSuite;
-
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.impl.OMStAXWrapper;
+import org.apache.axiom.om.impl.RootWhitespaceFilter;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
+import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Test comparing the output of {@link OMStAXWrapper} with that of a native StAX parser.
- * {@link #suite(OMMetaFactory)} can be used to build a complete test suite from the
- * XML files returned by {@link AbstractTestCase#getConformanceTestFiles()}.
  */
-public class OMStAXWrapperConformanceTestCase extends AbstractTestCase {
-    private final OMMetaFactory omMetaFactory;
+public class TestGetXMLStreamReader extends AxiomTestCase {
     private final String file;
     
-    private OMStAXWrapperConformanceTestCase(OMMetaFactory omMetaFactory, String name, String file) {
-        super(name);
-        this.omMetaFactory = omMetaFactory;
+    public TestGetXMLStreamReader(OMMetaFactory metaFactory, String file) {
+        super(metaFactory);
         this.file = file;
+        int idx = file.lastIndexOf('/');
+        setName(getName() + " [file=" + file.substring(idx+1) + "]");
     }
     
-    public void runTest() throws Throwable {
-        InputStream in1 = getTestResource(file);
-        InputStream in2 = getTestResource(file);
+    protected void runTest() throws Throwable {
+        InputStream in1 = AbstractTestCase.getTestResource(file);
+        InputStream in2 = AbstractTestCase.getTestResource(file);
         try {
             XMLStreamReader expected = StAXUtils.createXMLStreamReader(in1);
             try {
-                StAXOMBuilder builder = new StAXOMBuilder(omMetaFactory.getOMFactory(),
+                StAXOMBuilder builder = new StAXOMBuilder(metaFactory.getOMFactory(),
                         StAXUtils.createXMLStreamReader(in2));
                 try {
                     XMLStreamReader actual = builder.getDocument().getXMLStreamReader();
@@ -67,17 +66,5 @@ public class OMStAXWrapperConformanceTestCase extends AbstractTestCase {
             in1.close();
             in2.close();
         }
-    }
-
-    public static TestSuite suite(OMMetaFactory omMetaFactory) throws Exception {
-        TestSuite suite = new TestSuite();
-        String[] files = getConformanceTestFiles();
-        for (int i=0; i<files.length; i++) {
-            String file = files[i];
-            int idx = file.lastIndexOf('/');
-            String name = file.substring(idx+1);
-            suite.addTest(new OMStAXWrapperConformanceTestCase(omMetaFactory, name, file));
-        }
-        return suite;
     }
 }

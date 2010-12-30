@@ -21,7 +21,9 @@ package org.apache.axiom.ts;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.om.document.TestGetXMLStreamReader;
 
 import junit.framework.TestSuite;
 
@@ -44,6 +46,10 @@ public class AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocument(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
+        String[] files = AbstractTestCase.getConformanceTestFiles();
+        for (int i=0; i<files.length; i++) {
+            suite.addTest(new TestGetXMLStreamReader(metaFactory, files[i]));
+        }
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationInScope(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithMaskedNamespaceDeclaration(metaFactory));

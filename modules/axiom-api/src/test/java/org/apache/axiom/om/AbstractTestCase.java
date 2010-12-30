@@ -82,7 +82,7 @@ public abstract class AbstractTestCase
         return new URLDataSource(url);
     }
 
-    public InputStream getTestResource(String relativePath) {
+    public static InputStream getTestResource(String relativePath) {
         InputStream in = AbstractTestCase.class.getClassLoader().getResourceAsStream(relativePath);
         if (in == null) {
             fail("The test resource " + relativePath + " could not be found");
