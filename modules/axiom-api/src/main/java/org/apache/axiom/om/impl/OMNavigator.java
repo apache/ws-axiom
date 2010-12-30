@@ -22,8 +22,8 @@ package org.apache.axiom.om.impl;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMSourcedElement;
 
 /**
@@ -32,19 +32,19 @@ import org.apache.axiom.om.OMSourcedElement;
  */
 public class OMNavigator {
     /** Field node */
-    protected OMNode node;
+    protected OMSerializable node;
 
     /** Field visited */
     private boolean visited;
 
     /** Field next */
-    private OMNode next;
+    private OMSerializable next;
 
     // root is the starting element. Once the navigator comes back to the
     // root, the traversal is terminated
 
     /** Field root */
-    private OMNode root;
+    private OMSerializable root;
 
     /** Field backtracked */
     private boolean backtracked;
@@ -70,7 +70,7 @@ public class OMNavigator {
      *
      * @param node
      */
-    public OMNavigator(OMNode node) {
+    public OMNavigator(OMSerializable node) {
         init(node);
     }
 
@@ -79,7 +79,7 @@ public class OMNavigator {
      *
      * @param node
      */
-    public void init(OMNode node) {
+    public void init(OMSerializable node) {
         next = node;
         root = node;
         backtracked = false;
@@ -96,13 +96,13 @@ public class OMNavigator {
     }
 
     /**
-     * Gets the next node.
-     *
-     * @return Returns OMNode in the sequence of preorder traversal. Note however that an element
-     *         node is treated slightly differently. Once the element is passed it returns the same
-     *         element in the next encounter as well.
+     * Get the next information item.
+     * 
+     * @return the next information item in the sequence of preorder traversal. Note however that a
+     *         container (document or element) is treated slightly differently. Once the container
+     *         is passed it returns the same item in the next encounter as well.
      */
-    public OMNode next() {
+    public OMSerializable getNext() {
         if (next == null) {
             return null;
         }
@@ -121,11 +121,23 @@ public class OMNavigator {
         }
         return node;
     }
+    
+    /**
+     * Get the next node. This method only exists for compatibility with existing code. It may throw
+     * a {@link ClassCastException} if an attempt is made to use it on a navigator that was created
+     * from an {@link OMDocument}.
+     * 
+     * @return the next node
+     * @see #getNext()
+     */
+    public OMNode next() {
+        return (OMNode)getNext();
+    }
 
     /** Private method to encapsulate the searching logic. */
     private void updateNextNode() {
         if (!isLeaf(next) && !visited) {
-            OMNode firstChild = _getFirstChild((OMElement) next);
+            OMNode firstChild = _getFirstChild((OMContainer) next);
             if (firstChild != null) {
                 next = firstChild;
             } else if (next.isComplete()) {
@@ -134,15 +146,20 @@ public class OMNavigator {
                 next = null;
             }
         } else {
-            OMContainer parent = next.getParent();
-            OMNode nextSibling = getNextSibling(next);
-            if (nextSibling != null) {
-                next = nextSibling;
-            } else if ((parent != null) && parent.isComplete() && !(parent instanceof OMDocument)) {
-                next = (OMNode) parent;
-                backtracked = true;
-            } else {
+            if (next instanceof OMDocument) {
                 next = null;
+            } else {
+                OMNode nextNode = (OMNode)next;
+                OMContainer parent = nextNode.getParent();
+                OMNode nextSibling = getNextSibling(nextNode);
+                if (nextSibling != null) {
+                    next = nextSibling;
+                } else if ((parent != null) && parent.isComplete()) {
+                    next = parent;
+                    backtracked = true;
+                } else {
+                    next = null;
+                }
             }
         }
     }
@@ -151,8 +168,8 @@ public class OMNavigator {
      * @param n OMNode
      * @return true if this OMNode should be considered a leaf node
      */
-    private boolean isLeaf(OMNode n) {
-        if (n instanceof OMElement) {
+    private boolean isLeaf(OMSerializable n) {
+        if (n instanceof OMContainer) {
             if (this.isDataSourceALeaf && (n instanceof OMSourcedElement) && n != root) {
                 OMDataSource ds = null;
                 try {
@@ -174,7 +191,7 @@ public class OMNavigator {
      * @param node
      * @return first child or null
      */
-    private OMNode _getFirstChild(OMElement node) {
+    private OMNode _getFirstChild(OMContainer node) {
         if (node instanceof OMSourcedElement) {
             OMNode first = node.getFirstOMChild();
             OMNode sibling = first;

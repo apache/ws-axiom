@@ -43,11 +43,14 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -89,7 +92,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     private boolean _releaseParserOnClose = false;  // Defaults to legacy behavior, which is keep the reference
 
     /** Field rootNode */
-    private OMNode rootNode;
+    private OMContainer rootNode;
 
     /** Field isFirst */
     private boolean isFirst = true;
@@ -133,18 +136,18 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     // returns a null
 
     /** Field nextNode */
-    private OMNode nextNode = null;
+    private OMSerializable nextNode = null;
 
     // holder for the current node. Needs this to generate events from the
     // current node
 
     /** Field currentNode */
-    private OMNode currentNode = null;
+    private OMSerializable currentNode = null;
 
     // needs this to refer to the last known node
 
     /** Field lastNode */
-    private OMNode lastNode = null;
+    private OMSerializable lastNode = null;
 
     /** Track depth to ensure we stop generating events when we are done with the root node. */
     int depth = 0;
@@ -200,15 +203,14 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @param startNode
      * @param cache
      */
-    public SwitchingWrapper(OMXMLParserWrapper builder, OMElement startNode,
+    public SwitchingWrapper(OMXMLParserWrapper builder, OMContainer startNode,
                             boolean cache) {
 
         // create a navigator
         this.navigator = new OMNavigator(startNode);
         this.builder = builder;
         this.rootNode = startNode;
-        if (rootNode != null && rootNode.getParent() != null &&
-                rootNode.getParent() instanceof OMDocument) {
+        if (rootNode instanceof OMElement && ((OMElement)rootNode).getParent() instanceof OMDocument) {
             needToThrowEndDocument = true;
         }
 
@@ -229,12 +231,20 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             }
         } catch(Throwable t) {}
         
-        currentNode = navigator.next();
+        currentNode = navigator.getNext();
         updateNextNode();
         if (resetCache) {
             builder.setCache(cache); 
         }
         switchingAllowed = !cache;
+        
+        if (startNode instanceof OMDocument) {
+            try {
+                next();
+            } catch (XMLStreamException ex) {
+                throw new OMException(ex);
+            }
+        }
     }
 
     /**
@@ -350,6 +360,9 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     public int getTextLength() {
         if (parser != null) {
             return parser.getTextLength();
+        } else if (currentEvent == DTD) {
+            // Not sure if that conforms to the StAX spec, but it is what Woodstox does
+            throw new IllegalStateException();
         } else {
             return getTextFromNode().length();
         }
@@ -363,7 +376,10 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getTextStart();
         } else {
-            if (hasText()) {
+            if (currentEvent == DTD) {
+                // Not sure if that conforms to the StAX spec, but it is what Woodstox does
+                throw new IllegalStateException();
+            } else if (hasText()) {
                 // getTextCharacters always returns a new char array and the start
                 // index is therefore always 0
                 return 0;
@@ -391,10 +407,15 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 throw new OMStreamingException(e);
             }
         } else {
-            String text = getTextFromNode();
-            int copied = Math.min(length, text.length()-sourceStart);
-            text.getChars(sourceStart, sourceStart + copied, target, targetStart);
-            return copied;
+            if (currentEvent == DTD) {
+                // Not sure if that conforms to the StAX spec, but it is what Woodstox does
+                throw new IllegalStateException();
+            } else {
+                String text = getTextFromNode();
+                int copied = Math.min(length, text.length()-sourceStart);
+                text.getChars(sourceStart, sourceStart + copied, target, targetStart);
+                return copied;
+            }
         }
     }
 
@@ -405,6 +426,9 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     public char[] getTextCharacters() {
         if (parser != null) {
             return parser.getTextCharacters();
+        } else if (currentEvent == DTD) {
+            // Not sure if that conforms to the StAX spec, but it is what Woodstox does
+            throw new IllegalStateException();
         } else {
             return getTextFromNode().toCharArray();
         }
@@ -430,6 +454,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 return ((OMText)lastNode).getText();
             case COMMENT:
                 return ((OMComment)lastNode).getValue();
+            case DTD:
+                return ((OMDocType)lastNode).getValue();
             default:
                 throw new IllegalStateException();
         }
@@ -1084,7 +1110,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     /** Method updateNextNode. */
     private void updateNextNode() {
         if (navigator.isNavigable()) {
-            nextNode = navigator.next();
+            nextNode = navigator.getNext();
         } else {
             if (!switchingAllowed) {
                 if (navigator.isCompleted() || builder == null || builder.isCompleted()) {
@@ -1097,7 +1123,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 } else {
                     builder.next();
                     navigator.step();
-                    nextNode = navigator.next();
+                    nextNode = navigator.getNext();
                 }
             } else {
                 //at this point check whether the navigator is done
@@ -1123,6 +1149,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             if (rootNode == currentNode) {
                 if (isFirst) {
                     isFirst = false;
+                } else if (currentEvent == END_DOCUMENT) {
+                    state = DOCUMENT_COMPLETE;
                 } else {
                     state = COMPLETED;
                 }
@@ -1368,40 +1396,36 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @param node
      * @return Returns int.
      */
-    private int generateEvents(OMNode node) {
+    private int generateEvents(OMSerializable node) {
         if (node == null) {
             if (log.isDebugEnabled()) {
                 log.debug("Node is null...returning END_DOCUMENT");
             }
             return END_DOCUMENT;
         }
-        int nodeType = node.getType();
-        if (nodeType == OMNode.ELEMENT_NODE) {
-            OMElement element = (OMElement) node;
-            return generateElementEvents(element);
+        if (node instanceof OMDocument) {
+            return generateContainerEvents((OMDocument)node, true);
         } else {
-            return nodeType;
+            int nodeType = ((OMNode)node).getType();
+            if (nodeType == OMNode.ELEMENT_NODE) {
+                return generateContainerEvents((OMElement)node, false);
+            } else {
+                return nodeType;
+            }
         }
     }
 
-    /**
-     * Method generateElementEvents.
-     *
-     * @param elt
-     * @return Returns int.
-     */
-    private int generateElementEvents(OMElement elt) {
+    private int generateContainerEvents(OMContainer container, boolean isDocument) {
         if (nodeStack == null) {
             nodeStack = new Stack();
         }
-        int returnValue = START_ELEMENT;
-        if (!nodeStack.isEmpty() && nodeStack.peek().equals(elt)) {
-            returnValue = END_ELEMENT;
+        if (!nodeStack.isEmpty() && nodeStack.peek().equals(container)) {
             nodeStack.pop();
+            return isDocument ? END_DOCUMENT : END_ELEMENT;
         } else {
-            nodeStack.push(elt);
+            nodeStack.push(container);
+            return isDocument ? START_DOCUMENT : START_ELEMENT;
         }
-        return returnValue;
     }
 
     /*
@@ -1440,7 +1464,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 parser == null ? null : XMLStreamReaderUtils.getDataHandlerReader(parser);
     }
 
-    private Map getAllNamespaces(OMNode contextNode) {
+    private Map getAllNamespaces(OMSerializable contextNode) {
         if (contextNode == null) {
             return Collections.EMPTY_MAP;
         }
@@ -1448,7 +1472,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (contextNode instanceof OMContainer) {
             context = (OMContainer)contextNode;
         } else {
-            context = contextNode.getParent();
+            context = ((OMNode)contextNode).getParent();
         }
         Map nsMap = new LinkedHashMap();
         while (context != null && !(context instanceof OMDocument)) {

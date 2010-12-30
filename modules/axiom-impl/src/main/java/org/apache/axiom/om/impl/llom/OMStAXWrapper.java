@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 /**
@@ -36,7 +36,7 @@ public class OMStAXWrapper extends org.apache.axiom.om.impl.OMStAXWrapper {
      * @param builder
      * @param startNode
      */
-    public OMStAXWrapper(OMXMLParserWrapper builder, OMElement startNode) {
+    public OMStAXWrapper(OMXMLParserWrapper builder, OMContainer startNode) {
         super(builder, startNode);
     }
 
@@ -47,7 +47,7 @@ public class OMStAXWrapper extends org.apache.axiom.om.impl.OMStAXWrapper {
      * @param startNode
      * @param cache
      */
-    public OMStAXWrapper(OMXMLParserWrapper builder, OMElement startNode,
+    public OMStAXWrapper(OMXMLParserWrapper builder, OMContainer startNode,
                          boolean cache) {
         super(builder, startNode, cache);
     }

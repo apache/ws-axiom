@@ -372,6 +372,7 @@ public class OMDOMFactory implements OMFactory {
 
     public OMDocType createOMDocType(OMContainer parent, String content) {
         DocumentTypeImpl docType = new DocumentTypeImpl(this.getDocument(), this);
+        docType.setValue(content);
         parent.addChild(docType);
         return docType;
     }

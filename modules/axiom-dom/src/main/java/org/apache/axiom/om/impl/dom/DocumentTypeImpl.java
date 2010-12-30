@@ -29,6 +29,8 @@ import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;
 
 public class DocumentTypeImpl extends ChildNode implements DocumentType, OMDocType {
+    private String value;
+    
     public DocumentTypeImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
         done = true;
@@ -80,9 +82,10 @@ public class DocumentTypeImpl extends ChildNode implements DocumentType, OMDocTy
     }
 
     public String getValue() {
-        return null;
+        return value;
     }
 
     public void setValue(String text) {
+        value = text;
     }
 }

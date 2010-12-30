@@ -21,52 +21,17 @@ package org.apache.axiom.om.xpath;
 
 import java.io.InputStream;
 
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.impl.RootWhitespaceFilter;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.test.jaxen.JaxenXPathTestBase;
-import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 import org.jaxen.Navigator;
 
 public class AXIOMXPathTestBase extends JaxenXPathTestBase {
-    static class RootWhitespaceFilter extends XMLStreamReaderWrapper {
-        private int depth;
-        
-        public RootWhitespaceFilter(XMLStreamReader parent) {
-            super(parent);
-        }
-
-        public int next() throws XMLStreamException {
-            int event;
-            loop: while (true) {
-                event = super.next();
-                switch (event) {
-                    case XMLStreamConstants.START_ELEMENT:
-                        depth++;
-                        break loop;
-                    case XMLStreamConstants.END_ELEMENT:
-                        depth--;
-                        break loop;
-                    case XMLStreamConstants.CHARACTERS:
-                    case XMLStreamConstants.SPACE:
-                        if (depth > 0) {
-                            break loop;
-                        } else {
-                            continue loop;
-                        }
-                    default:
-                        break loop;
-                }
-            }
-            return event;
-        }
-    }
-    
     final OMMetaFactory omMetaFactory;
     
     public AXIOMXPathTestBase(String name, OMMetaFactory omMetaFactory) {

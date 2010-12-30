@@ -49,7 +49,6 @@ import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.ElementHelper;
-import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -725,65 +724,16 @@ public class OMElementImpl extends OMNodeImpl
 
     }
 
-    /**
-     * Method getXMLStreamReader.
-     *
-     * @see OMElement#getXMLStreamReader()
-     */
     public XMLStreamReader getXMLStreamReader() {
         return getXMLStreamReader(true);
     }
 
-    /**
-     * Method getXMLStreamReaderWithoutCaching.
-     *
-     * @see OMElement#getXMLStreamReaderWithoutCaching()
-     */
     public XMLStreamReader getXMLStreamReaderWithoutCaching() {
         return getXMLStreamReader(false);
     }
 
-    /**
-     * Method getXMLStreamReader.
-     *
-     * @return Returns reader.
-     */
     public XMLStreamReader getXMLStreamReader(boolean cache) {
-        if (builder != null && this.builder instanceof StAXOMBuilder) {
-            if (!isComplete()) {
-                if (((StAXOMBuilder) builder).isLookahead()) {
-                    this.buildNext();
-                }
-            }
-        }
-        
-        // The om tree was built by hand and is already complete
-        OMXMLStreamReader reader = null;
-        if ((builder == null) && done) {
-            reader =  new OMStAXWrapper(null, this, false);
-        } else {
-            if ((builder == null) && !cache) {
-                throw new UnsupportedOperationException(
-                "This element was not created in a manner to be switched");
-            }
-            if (builder != null && builder.isCompleted() && !cache && !done) {
-                throw new UnsupportedOperationException(
-                "The parser is already consumed!");
-            }
-            reader = new OMStAXWrapper(builder, this, cache);
-        }
-        
-        // If debug is enabled, wrap the OMXMLStreamReader in a validator.
-        // The validator will check for mismatched events to help determine if the OMStAXWrapper
-        // is functioning correctly.  All problems are reported as debug.log messages
-        
-        if (DEBUG_ENABLED) {
-            reader = 
-                new OMXMLStreamReaderValidator(reader, // delegate to actual reader
-                     false); // log problems (true will cause exceptions to be thrown)
-        }
-        
-        return reader;
+        return OMContainerHelper.getXMLStreamReader(this, cache);
     }
 
     /**

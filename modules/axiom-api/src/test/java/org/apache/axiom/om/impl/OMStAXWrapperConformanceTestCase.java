@@ -29,7 +29,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
-import org.apache.axiom.util.stax.XMLFragmentStreamReader;
 
 /**
  * Test comparing the output of {@link OMStAXWrapper} with that of a native StAX parser.
@@ -52,16 +51,12 @@ public class OMStAXWrapperConformanceTestCase extends AbstractTestCase {
         try {
             XMLStreamReader expected = StAXUtils.createXMLStreamReader(in1);
             try {
-                // Skip to document element. Note that nextTag is not appropriate here because
-                // there could be a DTD event.
-                while (expected.next() != XMLStreamReader.START_ELEMENT) {
-                    // just loop
-                }
                 StAXOMBuilder builder = new StAXOMBuilder(omMetaFactory.getOMFactory(),
                         StAXUtils.createXMLStreamReader(in2));
                 try {
-                    XMLStreamReader actual = builder.getDocumentElement().getXMLStreamReader();
-                    new XMLStreamReaderComparator(new XMLFragmentStreamReader(expected), actual).compare();
+                    XMLStreamReader actual = builder.getDocument().getXMLStreamReader();
+                    new XMLStreamReaderComparator(new RootWhitespaceFilter(expected),
+                            new RootWhitespaceFilter(actual)).compare();
                 } finally {
                     builder.close();
                 }

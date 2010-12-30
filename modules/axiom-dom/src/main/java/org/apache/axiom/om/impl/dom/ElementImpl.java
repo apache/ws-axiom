@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.dom;
 
-
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
@@ -49,7 +48,6 @@ import org.w3c.dom.TypeInfo;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -1117,41 +1115,6 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             }
 
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.apache.axiom.om.OMElement#getXMLStreamReaderWithoutCaching()
-     */
-    public XMLStreamReader getXMLStreamReaderWithoutCaching() {
-        return getXMLStreamReader(false);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.apache.axiom.om.OMElement#getXMLStreamReader()
-     */
-    public XMLStreamReader getXMLStreamReader() {
-        return getXMLStreamReader(true);
-    }
-
-    /**
-     * getXMLStreamReader
-     *
-     * @return Returns reader.
-     */
-    public XMLStreamReader getXMLStreamReader(boolean cache) {
-        if ((builder == null) && !cache) {
-            throw new UnsupportedOperationException(
-                    "This element was not created in a manner to be switched");
-        }
-        if (builder != null && builder.isCompleted() && !cache) {
-            throw new UnsupportedOperationException(
-                    "The parser is already consumed!");
-        }
-        return new DOMStAXWrapper(builder, this, cache);
     }
 
     public String toStringWithConsume() throws XMLStreamException {

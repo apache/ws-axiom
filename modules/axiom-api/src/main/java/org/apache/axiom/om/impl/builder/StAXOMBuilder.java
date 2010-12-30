@@ -265,6 +265,9 @@ public class StAXOMBuilder extends StAXBuilder {
                     case XMLStreamConstants.SPACE:
                         try {
                             lastNode = createOMText(XMLStreamConstants.SPACE);
+                            if (lastNode == null) {
+                                continue;
+                            }
                         } catch (OMHierarchyException ex) {
                             // The OM implementation doesn't allow text nodes at the current
                             // position in the tree. Since it is only whitespace, we can safely

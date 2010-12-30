@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMStAXWrapper;
 
@@ -36,7 +36,7 @@ public class DOMStAXWrapper extends OMStAXWrapper {
      * @param builder
      * @param startNode
      */
-    public DOMStAXWrapper(OMXMLParserWrapper builder, OMElement startNode) {
+    public DOMStAXWrapper(OMXMLParserWrapper builder, OMContainer startNode) {
         super(builder, startNode);
     }
 
@@ -47,7 +47,7 @@ public class DOMStAXWrapper extends OMStAXWrapper {
      * @param startNode
      * @param cache
      */
-    public DOMStAXWrapper(OMXMLParserWrapper builder, OMElement startNode,
+    public DOMStAXWrapper(OMXMLParserWrapper builder, OMContainer startNode,
                           boolean cache) {
         super(builder, startNode, cache);
     }

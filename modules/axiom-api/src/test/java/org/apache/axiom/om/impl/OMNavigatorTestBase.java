@@ -22,7 +22,7 @@ package org.apache.axiom.om.impl;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.OMNavigator;
 import org.apache.axiom.om.util.StAXUtils;
@@ -64,7 +64,7 @@ public class OMNavigatorTestBase extends AbstractTestCase {
 
         //now the OM is fully created -> test the navigation
         OMNavigator navigator = new OMNavigator(envelope);
-        OMNode node = null;
+        OMSerializable node = null;
         while (navigator.isNavigable()) {
             node = navigator.next();
             assertNotNull(node);
@@ -75,7 +75,7 @@ public class OMNavigatorTestBase extends AbstractTestCase {
         assertNotNull(envelope);
         //now the OM is not fully created. Try to navigate it
         OMNavigator navigator = new OMNavigator(envelope);
-        OMNode node = null;
+        OMSerializable node = null;
         while (navigator.isNavigable()) {
             node = navigator.next();
             assertNotNull(node);
@@ -87,7 +87,7 @@ public class OMNavigatorTestBase extends AbstractTestCase {
 
         //now the OM is not fully created
         OMNavigator navigator = new OMNavigator(envelope);
-        OMNode node = null;
+        OMSerializable node = null;
         while (!navigator.isCompleted()) {
             if (navigator.isNavigable()) {
                 node = navigator.next();

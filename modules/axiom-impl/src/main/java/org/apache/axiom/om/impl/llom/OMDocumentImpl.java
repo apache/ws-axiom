@@ -36,6 +36,7 @@ import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.util.Iterator;
 
@@ -309,5 +310,17 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
     /** Serializes the document with cache. */
     public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
         internalSerialize(writer, true);
+    }
+    
+    public XMLStreamReader getXMLStreamReader() {
+        return getXMLStreamReader(true);
+    }
+
+    public XMLStreamReader getXMLStreamReaderWithoutCaching() {
+        return getXMLStreamReader(false);
+    }
+
+    public XMLStreamReader getXMLStreamReader(boolean cache) {
+        return OMContainerHelper.getXMLStreamReader(this, cache);
     }
 }
