@@ -132,8 +132,7 @@
                                     filelist.parentFile.mkdirs();
                                     filelist.delete();
                                     new File(project.basedir, "src/test/resources/conformance").eachFile({
-                                        // TODO: SJSXP has a problem with iso-8859-1.xml, so exclude it for now
-                                        if (it.file && it.name != "iso-8859-1.xml") {
+                                        if (it.file) {
                                             filelist.append("$it.name\n");
                                         }
                                     })
