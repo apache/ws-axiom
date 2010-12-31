@@ -23,7 +23,6 @@ import java.util.Set;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.om.document.TestGetXMLStreamReader;
 
 import junit.framework.TestSuite;
 
@@ -41,14 +40,14 @@ public class AxiomTestSuiteBuilder {
     }
     
     public TestSuite build() {
+        String[] conformanceFiles = AbstractTestCase.getConformanceTestFiles();
         suite = new TestSuite();
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQName(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocument(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
-        String[] files = AbstractTestCase.getConformanceTestFiles();
-        for (int i=0; i<files.length; i++) {
-            addTest(new TestGetXMLStreamReader(metaFactory, files[i]));
+        for (int i=0; i<conformanceFiles.length; i++) {
+            addTest(new org.apache.axiom.ts.om.document.TestGetXMLStreamReader(metaFactory, conformanceFiles[i]));
         }
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationInScope(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(metaFactory));
@@ -80,6 +79,9 @@ public class AxiomTestSuiteBuilder {
                 "<person><name xmlns=\"urn:ns\">John</name><age xmlns=\"urn:ns\">34</age><weight xmlns=\"urn:ns\">50</weight></person>"));
         addTest(new org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
+        for (int i=0; i<conformanceFiles.length; i++) {
+            addTest(new org.apache.axiom.ts.om.element.TestSerializeToOutputStream(metaFactory, conformanceFiles[i]));
+        }
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, false));

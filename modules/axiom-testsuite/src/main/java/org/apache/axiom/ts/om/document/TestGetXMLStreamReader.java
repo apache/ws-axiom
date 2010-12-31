@@ -22,31 +22,25 @@ import java.io.InputStream;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.OMStAXWrapper;
 import org.apache.axiom.om.impl.RootWhitespaceFilter;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.ConformanceTestCase;
 
 /**
  * Test comparing the output of {@link OMStAXWrapper} with that of a native StAX parser.
  */
-public class TestGetXMLStreamReader extends AxiomTestCase {
-    private final String file;
-    
+public class TestGetXMLStreamReader extends ConformanceTestCase {
     public TestGetXMLStreamReader(OMMetaFactory metaFactory, String file) {
-        super(metaFactory);
-        this.file = file;
-        int idx = file.lastIndexOf('/');
-        setName(getName() + " [file=" + file.substring(idx+1) + "]");
+        super(metaFactory, file);
     }
     
     protected void runTest() throws Throwable {
-        InputStream in1 = AbstractTestCase.getTestResource(file);
-        InputStream in2 = AbstractTestCase.getTestResource(file);
+        InputStream in1 = getFileAsStream();
+        InputStream in2 = getFileAsStream();
         try {
             XMLStreamReader expected = StAXUtils.createXMLStreamReader(in1);
             try {
