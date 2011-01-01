@@ -23,6 +23,7 @@ import java.io.StringReader;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -43,9 +44,11 @@ public class TestSerializationWithTwoNonBuiltOMElements extends AxiomTestCase {
         OMFactory omFactory = metaFactory.getOMFactory();
 
         OMElement rootElement = omFactory.createOMElement("Root", null);
-        OMElement childOne = metaFactory.createOMBuilder(omFactory, new StringReader(sampleXMLOne)).getDocumentElement(true);
+        OMElement childOne = OMXMLBuilderFactory.createOMBuilder(omFactory,
+                new StringReader(sampleXMLOne)).getDocumentElement(true);
         rootElement.addChild(childOne);
-        OMElement childTwo = metaFactory.createOMBuilder(omFactory, new StringReader(sampleXMLTwo)).getDocumentElement(true);
+        OMElement childTwo = OMXMLBuilderFactory.createOMBuilder(omFactory,
+                new StringReader(sampleXMLTwo)).getDocumentElement(true);
         ((OMNodeEx) childTwo).setParent(null);
         rootElement.addChild(childTwo);
 

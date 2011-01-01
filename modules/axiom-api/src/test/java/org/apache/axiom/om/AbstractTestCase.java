@@ -91,7 +91,7 @@ public abstract class AbstractTestCase
     }
     
     public OMElement getTestResourceAsElement(OMMetaFactory omMetaFactory, String relativePath) {
-        return omMetaFactory.createOMBuilder(omMetaFactory.getOMFactory(), getTestResource(relativePath)).getDocumentElement();
+        return OMXMLBuilderFactory.createOMBuilder(omMetaFactory.getOMFactory(), getTestResource(relativePath)).getDocumentElement();
     }
     
     public static String[] getConformanceTestFiles() {

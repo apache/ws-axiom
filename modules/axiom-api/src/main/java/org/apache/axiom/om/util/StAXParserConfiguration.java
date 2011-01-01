@@ -101,6 +101,20 @@ public interface StAXParserConfiguration {
     };
     
     /**
+     * Configuration that sets up the parser to preserve CDATA sections. This configuration will
+     * also put the parser in non coalescing mode.
+     */
+    StAXParserConfiguration PRESERVE_CDATA_SECTIONS = new StAXParserConfiguration() {
+        public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
+            return dialect.enableCDataReporting(factory);
+        }
+        
+        public String toString() {
+            return "PRESERVE_CDATA_SECTIONS";
+        }
+    };
+    
+    /**
      * Configuration suitable for SOAP messages. This will configure the parser
      * to throw an exception when it encounters a document type declaration. The
      * SOAP 1.1 specification indeed prescribes that

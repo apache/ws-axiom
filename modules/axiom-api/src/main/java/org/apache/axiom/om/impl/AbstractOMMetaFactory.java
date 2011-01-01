@@ -29,6 +29,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 
 /**
@@ -46,17 +47,17 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         return builder;
     }
 
-    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, InputStream in) {
+    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputStream in) {
         try {
-            return createStAXOMBuilder(omFactory, StAXUtils.createXMLStreamReader(in));
+            return createStAXOMBuilder(omFactory, StAXUtils.createXMLStreamReader(configuration, in));
         } catch (XMLStreamException ex) {
             throw new OMException(ex);
         }
     }
 
-    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Reader in) {
+    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, Reader in) {
         try {
-            return createStAXOMBuilder(omFactory, StAXUtils.createXMLStreamReader(in));
+            return createStAXOMBuilder(omFactory, StAXUtils.createXMLStreamReader(configuration, in));
         } catch (XMLStreamException ex) {
             throw new OMException(ex);
         }

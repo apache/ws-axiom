@@ -29,6 +29,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -45,10 +46,6 @@ public class TestSerializeToOutputStream extends ConformanceTestCase {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setNamespaceAware(true);
             Document doc = dbf.newDocumentBuilder().parse(in);
-            // By default Axiom doesn't preserve CDATA sections; replace them by text nodes
-            // in the control document
-            doc.getDomConfig().setParameter("cdata-sections", Boolean.FALSE);
-            doc.normalizeDocument();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             TransformerFactory.newInstance().newTransformer().transform(
                     new DOMSource(doc.getDocumentElement()), new StreamResult(baos));
@@ -58,7 +55,8 @@ public class TestSerializeToOutputStream extends ConformanceTestCase {
         }
         in = getFileAsStream();
         try {
-            OMXMLParserWrapper builder = metaFactory.createOMBuilder(metaFactory.getOMFactory(), in);
+            OMXMLParserWrapper builder = metaFactory.createOMBuilder(metaFactory.getOMFactory(),
+                    StAXParserConfiguration.PRESERVE_CDATA_SECTIONS, in);
             try {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 builder.getDocumentElement().serialize(baos);

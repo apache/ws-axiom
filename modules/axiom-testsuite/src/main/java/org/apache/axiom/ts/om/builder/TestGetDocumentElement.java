@@ -23,6 +23,7 @@ import java.io.StringReader;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -35,7 +36,7 @@ public class TestGetDocumentElement extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = metaFactory.createOMBuilder(metaFactory.getOMFactory(),
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 new StringReader("<!--comment1--><root/><!--comment2-->"));
         OMElement element = builder.getDocumentElement();
         assertEquals("root", element.getLocalName());

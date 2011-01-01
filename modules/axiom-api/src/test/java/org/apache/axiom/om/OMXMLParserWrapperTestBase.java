@@ -38,7 +38,7 @@ public class OMXMLParserWrapperTestBase extends AbstractTestCase {
     public void testCloseWithInputStream() throws Exception {
         CloseSensorInputStream in = new CloseSensorInputStream(getTestResource(TestConstants.TEST));
         try {
-            OMXMLParserWrapper builder = omMetaFactory.createOMBuilder(omMetaFactory.getOMFactory(), in);
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(omMetaFactory.getOMFactory(), in);
             builder.getDocument().build();
             builder.close();
             // OMXMLParserWrapper#close() does _not_ close the underlying input stream
@@ -51,7 +51,7 @@ public class OMXMLParserWrapperTestBase extends AbstractTestCase {
     public void testCloseWithReader() throws Exception {
         CloseSensorReader in = new CloseSensorReader(new StringReader("<root><child/></root>"));
         try {
-            OMXMLParserWrapper builder = omMetaFactory.createOMBuilder(omMetaFactory.getOMFactory(), in);
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(omMetaFactory.getOMFactory(), in);
             builder.getDocument().build();
             builder.close();
             // OMXMLParserWrapper#close() does _not_ close the underlying input stream

@@ -23,6 +23,8 @@ import java.io.Reader;
 
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.util.StAXParserConfiguration;
+
 /**
  * Provides static factory methods to create various kinds of object model builders from different
  * types of input sources. The methods defined by this class are the starting point to parse XML
@@ -58,21 +60,36 @@ public class OMXMLBuilderFactory {
     }
     
     /**
-     * Create an object model builder that reads a plain XML document from the provided input
-     * stream.
+     * Create an object model builder that reads a plain XML document from the provided input stream
+     * with the default parser configuration defined by {@link StAXParserConfiguration#DEFAULT}.
      * 
      * @param in
      *            the input stream representing the XML document
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(InputStream in) {
+        return createOMBuilder(StAXParserConfiguration.DEFAULT, in);
+    }
+    
+    /**
+     * Create an object model builder that reads a plain XML document from the provided input stream
+     * with a given parser configuration.
+     * 
+     * @param configuration
+     *            the parser configuration to use
+     * @param in
+     *            the input stream representing the XML document
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, InputStream in) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
-        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), in);
+        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), configuration, in);
     }
     
     /**
      * Create an object model builder that reads an XML document from the provided input stream
-     * using a specified object model factory.
+     * using a specified object model factory and with the default parser configuration defined by
+     * {@link StAXParserConfiguration#DEFAULT}.
      * 
      * @param omFactory
      *            the object model factory to use
@@ -81,25 +98,57 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, InputStream in) {
-        return omFactory.getMetaFactory().createOMBuilder(omFactory, in);
+        return createOMBuilder(omFactory, StAXParserConfiguration.DEFAULT, in);
+    }
+    
+    /**
+     * Create an object model builder that reads an XML document from the provided input stream
+     * using a specified object model factory and with a given parser configuration.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param configuration
+     *            the parser configuration to use
+     * @param in
+     *            the input stream representing the XML document
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputStream in) {
+        return omFactory.getMetaFactory().createOMBuilder(omFactory, configuration, in);
     }
     
     /**
      * Create an object model builder that reads a plain XML document from the provided character
-     * stream.
+     * stream with the default parser configuration defined by
+     * {@link StAXParserConfiguration#DEFAULT}.
      * 
      * @param in
      *            the character stream representing the XML document
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(Reader in) {
+        return createOMBuilder(StAXParserConfiguration.DEFAULT, in);
+    }
+    
+    /**
+     * Create an object model builder that reads a plain XML document from the provided character
+     * stream with a given parser configuration.
+     * 
+     * @param configuration
+     *            the parser configuration to use
+     * @param in
+     *            the character stream representing the XML document
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, Reader in) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
-        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), in);
+        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), configuration, in);
     }
     
     /**
      * Create an object model builder that reads an XML document from the provided character stream
-     * using a specified object model factory.
+     * using a specified object model factory and with the default parser configuration defined by
+     * {@link StAXParserConfiguration#DEFAULT}.
      * 
      * @param omFactory
      *            the object model factory to use
@@ -108,6 +157,22 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Reader in) {
-        return omFactory.getMetaFactory().createOMBuilder(omFactory, in);
+        return createOMBuilder(omFactory, StAXParserConfiguration.DEFAULT, in);
+    }
+    
+    /**
+     * Create an object model builder that reads an XML document from the provided character stream
+     * using a specified object model factory and with a given parser configuration.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param configuration
+     *            the parser configuration to use
+     * @param in
+     *            the character stream representing the XML document
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, Reader in) {
+        return omFactory.getMetaFactory().createOMBuilder(omFactory, configuration, in);
     }
 }
