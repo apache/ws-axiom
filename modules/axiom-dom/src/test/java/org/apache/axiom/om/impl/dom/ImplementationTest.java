@@ -31,6 +31,10 @@ public class ImplementationTest extends TestCase {
         // OMElement#setText(QName) is unsupported
         builder.exclude(TestSetTextQName.class);
         
+        // TODO: AXIOM-315
+        builder.exclude(org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild.class);
+        builder.exclude(org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild.class);
+        
         // TODO: these need to be investigated; may be related to AXIOM-315
         builder.exclude(org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant.class);
         builder.exclude(org.apache.axiom.ts.om.element.TestSerializeAndConsumeWithIncompleteDescendant.class);

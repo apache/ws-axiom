@@ -45,12 +45,13 @@ public class AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQName(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocument(metaFactory));
-        addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsume(metaFactory));
-        addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
             addTest(new org.apache.axiom.ts.om.document.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], true));
             addTest(new org.apache.axiom.ts.om.document.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], false));
         }
+        addTest(new org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsume(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationInScope(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithMaskedNamespaceDeclaration(metaFactory));
@@ -61,6 +62,7 @@ public class AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "D", "D",
                 "<person xmlns=\"urn:ns\"><name>John</name><age>34</age><weight>50</weight></person>"));
         addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "D", "U",
