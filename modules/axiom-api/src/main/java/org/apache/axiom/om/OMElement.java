@@ -267,13 +267,6 @@ public interface OMElement extends OMNode, OMContainer {
     void setBuilder(OMXMLParserWrapper wrapper);
 
     /**
-     * Returns the builder object.
-     *
-     * @return Returns the builder object used to construct the underlying XML infoset on the fly.
-     */
-    OMXMLParserWrapper getBuilder();
-
-    /**
      * Sets the first child.
      *
      * @param node

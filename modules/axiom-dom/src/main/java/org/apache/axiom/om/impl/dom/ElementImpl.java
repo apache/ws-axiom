@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
 import org.apache.axiom.om.impl.traverse.OMDescendantsIterator;
@@ -892,15 +891,6 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         return (attr == null) ? null : attr.getAttributeValue();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMElement#getBuilder()
-     */
-    public OMXMLParserWrapper getBuilder() {
-        return this.builder;
-    }
-
     /**
      * Returns the first Element node.
      *
@@ -1076,44 +1066,12 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     public void internalSerialize(XMLStreamWriter writer,
                                      boolean cache) throws XMLStreamException {
 
-        if (cache) {
-            // in this case we don't care whether the elements are built or not
-            // we just call the serializeAndConsume methods
+        if (cache || this.done || (this.builder == null)) {
             OMSerializerUtil.serializeStartpart(this, writer);
-            // serilize children
-            Iterator children = this.getChildren();
-            while (children.hasNext()) {
-                ((OMNodeEx) children.next()).internalSerialize(writer, true);
-            }
+            OMSerializerUtil.serializeChildren(this, writer, cache);
             OMSerializerUtil.serializeEndpart(writer);
-
         } else {
-            // Now the caching is supposed to be off. However caching been
-            // switched off
-            // has nothing to do if the element is already built!
-            if (this.done) {
-                OMSerializerUtil.serializeStartpart(this, writer);
-                ChildNode child = this.firstChild;
-                while (child != null
-                        && ((!(child instanceof OMElement)) || child
-                        .isComplete())) {
-                    child.internalSerialize(writer, false);
-                    child = child.nextSibling;
-                }
-                if (child != null) {
-                    OMElement element = (OMElement) child;
-                    element.getBuilder().setCache(false);
-                    OMSerializerUtil.serializeByPullStream(element, writer,
-                                                           cache);
-                }
-                OMSerializerUtil.serializeEndpart(writer);
-            } else {
-                // take the XMLStream reader and feed it to the stream
-                // serilizer.
-                // todo is this right ?????
-                OMSerializerUtil.serializeByPullStream(this, writer, cache);
-            }
-
+            OMSerializerUtil.serializeByPullStream(this, writer, cache);
         }
     }
 

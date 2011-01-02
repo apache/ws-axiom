@@ -20,10 +20,12 @@
 package org.apache.axiom.om.impl.util;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.commons.logging.Log;
@@ -553,6 +555,29 @@ public class OMSerializerUtil {
                     element.getXMLStreamReaderWithoutCaching();
             streamingOMSerializer.serialize(xmlStreamReaderWithoutCaching,
                                             writer);
+        }
+    }
+
+    public static void serializeChildren(OMContainer container, XMLStreamWriter writer,
+            boolean cache) throws XMLStreamException {
+        if (cache) {
+            Iterator children = container.getChildren();
+            while (children.hasNext()) {
+                ((OMNodeEx) children.next()).internalSerialize(writer, true);
+            }
+        } else {
+            OMNodeEx child = (OMNodeEx)container.getFirstOMChild();
+            while (child != null) {
+                if ((!(child instanceof OMElement)) || child.isComplete() ||
+                        ((OMElement)child).getBuilder() == null) {
+                    child.internalSerialize(writer, false);
+                } else {
+                    OMElement element = (OMElement) child;
+                    element.getBuilder().setCache(false);
+                    serializeByPullStream(element, writer, cache);
+                }
+                child = (OMNodeEx)child.getNextOMSiblingIfAvailable();
+            }
         }
     }
 

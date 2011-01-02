@@ -33,6 +33,12 @@ import java.util.Iterator;
  * <p>Exposes the ability to add, find, and iterate over the children of a document or element.</p>
  */
 public interface OMContainer extends OMSerializable {
+    /**
+     * Returns the builder object.
+     *
+     * @return Returns the builder object used to construct the underlying XML infoset on the fly.
+     */
+    OMXMLParserWrapper getBuilder();
 
     /**
      * Adds the given node as the last child. One must preserve the order of children, in this

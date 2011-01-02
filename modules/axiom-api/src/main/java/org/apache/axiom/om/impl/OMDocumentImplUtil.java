@@ -19,12 +19,13 @@
 
 package org.apache.axiom.om.impl;
 
-import java.util.Iterator;
-
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 /**
  * Utility class with default implementations for some of the methods defined by the
@@ -55,11 +56,14 @@ public class OMDocumentImplUtil {
             }
         }
 
-        Iterator children = document.getChildren();
-
-        while (children.hasNext()) {
-            OMNodeEx omNode = (OMNodeEx) children.next();
-            omNode.internalSerialize(writer, cache);
+        if (cache || document.isComplete() || document.getBuilder() == null) {
+            OMSerializerUtil.serializeChildren(document, writer, cache);
+        } else {
+            StreamingOMSerializer streamingOMSerializer = new StreamingOMSerializer();
+            XMLStreamReader reader = document.getXMLStreamReaderWithoutCaching();
+            while (reader.getEventType() != XMLStreamReader.END_DOCUMENT) {
+                streamingOMSerializer.serialize(reader, writer);
+            }
         }
     }
 }

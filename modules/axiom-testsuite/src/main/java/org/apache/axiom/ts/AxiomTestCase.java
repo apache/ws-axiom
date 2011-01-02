@@ -32,7 +32,7 @@ public abstract class AxiomTestCase extends XMLTestCase {
     }
     
     protected void assertConsumed(OMContainer container) {
-        assertFalse(container.isComplete());
+        assertFalse("Expected the node to be incomplete", container.isComplete());
         boolean isConsumed;
         try {
             container.serialize(new NullOutputStream());

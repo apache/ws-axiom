@@ -45,6 +45,7 @@ public class AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQName(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocument(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsume(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
             addTest(new org.apache.axiom.ts.om.document.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], true));

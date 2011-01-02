@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -64,6 +65,10 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
     // /
     // /OMContainer methods
     // /
+
+    public OMXMLParserWrapper getBuilder() {
+        return this.builder;
+    }
 
     public void addChild(OMNode omNode) {
         if (omNode.getOMFactory() instanceof OMDOMFactory) {

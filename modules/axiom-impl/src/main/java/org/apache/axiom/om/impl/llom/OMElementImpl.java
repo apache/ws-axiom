@@ -870,40 +870,12 @@ public class OMElementImpl extends OMNodeImpl
     public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
 
-        if (cache) {
-            //in this case we don't care whether the elements are built or not
-            //we just call the serializeAndConsume methods
+        if (cache || this.done || (this.builder == null)) {
             OMSerializerUtil.serializeStartpart(this, writer);
-            //serialize children
-            Iterator children = this.getChildren();
-            while (children.hasNext()) {
-                ((OMNodeEx) children.next()).internalSerialize(writer, true);
-            }
+            OMSerializerUtil.serializeChildren(this, writer, cache);
             OMSerializerUtil.serializeEndpart(writer);
-
         } else {
-            //Now the caching is supposed to be off. However caching been switched off
-            //has nothing to do if the element is already built!
-            if (this.done || (this.builder == null)) {
-                OMSerializerUtil.serializeStartpart(this, writer);
-                OMNodeImpl child = (OMNodeImpl) firstChild;
-                while (child != null) {
-                    if ((!(child instanceof OMElement)) || child.isComplete() ||
-                            child.builder == null) {
-                        child.internalSerialize(writer, false);
-                    } else {
-                        OMElement element = (OMElement) child;
-                        element.getBuilder().setCache(false);
-                        OMSerializerUtil.serializeByPullStream(element, writer, cache);
-                    }
-                    child = child.nextSibling;
-                }
-                OMSerializerUtil.serializeEndpart(writer);
-            } else {
-                OMSerializerUtil.serializeByPullStream(this, writer, cache);
-            }
-
-
+            OMSerializerUtil.serializeByPullStream(this, writer, cache);
         }
     }
 

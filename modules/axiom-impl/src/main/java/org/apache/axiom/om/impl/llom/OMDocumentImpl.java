@@ -95,6 +95,10 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
         this.builder = parserWrapper;
     }
 
+    public OMXMLParserWrapper getBuilder() {
+        return builder;
+    }
+
     /**
      * Method getDocumentElement.
      *
