@@ -83,6 +83,7 @@ public class AxiomTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.element.TestSerializeToOutputStream(metaFactory, conformanceFiles[i]));
         }
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingAfter(metaFactory));

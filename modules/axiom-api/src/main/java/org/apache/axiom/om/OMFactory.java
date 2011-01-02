@@ -39,8 +39,14 @@ public interface OMFactory {
 
 
     /**
+     * Create an element with the given name. If a namespace is given, a namespace declaration will
+     * be added automatically to the newly created element.
+     * 
      * @param localName
-     * @param ns        - This can be null
+     *            the local part of the name; must not be <code>null</code>
+     * @param ns
+     *            the namespace, or <code>null</code> if the element has no namespace
+     * @return the newly created element
      */
     OMElement createOMElement(String localName, OMNamespace ns);
 
