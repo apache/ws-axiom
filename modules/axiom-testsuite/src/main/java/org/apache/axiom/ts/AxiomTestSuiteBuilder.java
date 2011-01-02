@@ -61,6 +61,14 @@ public class AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetAttributeValueWithXmlPrefix2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix2(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetChildElements(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetChildren(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetChildrenRemove1(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetChildrenRemove2(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetChildrenRemove3(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetChildrenRemove4(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetChildrenWithLocalName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetChildrenWithName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "D", "D",

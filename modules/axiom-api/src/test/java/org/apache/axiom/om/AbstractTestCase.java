@@ -90,7 +90,7 @@ public abstract class AbstractTestCase
         return in;
     }
     
-    public OMElement getTestResourceAsElement(OMMetaFactory omMetaFactory, String relativePath) {
+    public static OMElement getTestResourceAsElement(OMMetaFactory omMetaFactory, String relativePath) {
         return OMXMLBuilderFactory.createOMBuilder(omMetaFactory.getOMFactory(), getTestResource(relativePath)).getDocumentElement();
     }
     
