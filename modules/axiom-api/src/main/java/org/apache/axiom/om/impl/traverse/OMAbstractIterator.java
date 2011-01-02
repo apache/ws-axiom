@@ -27,11 +27,11 @@ import org.apache.axiom.om.OMNode;
 /**
  * Abstract base class for iterators over sets of OM nodes.
  */
-// TODO: We should implement remove and use this as base class for OMChildrenIterator
 public abstract class OMAbstractIterator implements Iterator {
     private OMNode currentNode;
     private OMNode nextNode;
     private boolean noMoreNodes;
+    private boolean nextCalled;
 
     public OMAbstractIterator(OMNode firstNode) {
         if (firstNode == null) {
@@ -65,6 +65,7 @@ public abstract class OMAbstractIterator implements Iterator {
         if (hasNext()) {
             currentNode = nextNode;
             nextNode = null;
+            nextCalled = true;
             return currentNode;
         } else {
             throw new NoSuchElementException();
@@ -72,6 +73,12 @@ public abstract class OMAbstractIterator implements Iterator {
     }
 
     public void remove() {
-        throw new UnsupportedOperationException();
+        if (!nextCalled) {
+            throw new IllegalStateException("next() has not yet been called");
+        }
+        // Make sure that we know the next node before removing the current one
+        hasNext();
+        currentNode.detach();
+        nextCalled = false;
     }
 }

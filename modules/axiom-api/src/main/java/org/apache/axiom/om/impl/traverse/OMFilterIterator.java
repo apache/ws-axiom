@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMNode;
 /**
  * Abstract iterator that returns matching nodes from another iterator.
  */
-// TODO: We should use this as base class for the OMChildrenXxxIterator classes
 public abstract class OMFilterIterator implements Iterator {
     private final Iterator parent;
     private OMNode nextNode;

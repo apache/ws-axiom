@@ -31,15 +31,9 @@ import javax.xml.namespace.QName;
  * This class can be extended to customize the QName equality.
  *
  */
-public class OMChildrenQNameIterator extends OMChildrenIterator {
+public class OMChildrenQNameIterator extends OMFilterIterator {
     /** Field givenQName */
     private final QName givenQName;
-
-    /** Field needToMoveForward */
-    private boolean needToMoveForward = true;
-
-    /** Field isMatchingNodeFound */
-    private boolean isMatchingNodeFound = false;
 
     /**
      * Constructor OMChildrenQNameIterator.
@@ -48,9 +42,8 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
      * @param givenQName
      */
     public OMChildrenQNameIterator(OMNode currentChild, QName givenQName) {
-        super(currentChild);
+        super(new OMChildrenIterator(currentChild));
         this.givenQName = givenQName;
-        findNextElementWithQName();
     }
     
     /**
@@ -65,60 +58,16 @@ public class OMChildrenQNameIterator extends OMChildrenIterator {
         return searchQName.equals(currentQName);
     }
 
-    /**
-     * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns
-     * <tt>true</tt> if <tt>next</tt> would return an element rather than throwing an exception.)
-     *
-     * @return Returns <tt>true</tt> if the iterator has more elements.
-     */
-    public boolean hasNext() {
-        while (needToMoveForward) {
-            findNextElementWithQName();
-        }
-        return isMatchingNodeFound;
-    }
-
-    private void findNextElementWithQName()
-    {
-        if (currentChild != null) {
-            // check the current node for the criteria
-            if (currentChild instanceof OMElement) {
-                QName thisQName = ((OMElement)currentChild).getQName();
-                // A null givenName is an indicator to return all elements
-                if (givenQName == null || isEqual(givenQName, thisQName)) {
-                    isMatchingNodeFound = true;
-                    needToMoveForward = false;
-                    return;
-                }
-            }
-
-            // get the next named node
-            currentChild = currentChild.getNextOMSibling();
-            isMatchingNodeFound = needToMoveForward = !(currentChild == null);
+    protected boolean matches(OMNode node) {
+        if (node instanceof OMElement) {
+            QName thisQName = ((OMElement)node).getQName();
+            // A null givenName is an indicator to return all elements
+            return givenQName == null || isEqual(givenQName, thisQName);
         } else {
-            needToMoveForward = false;
+            return false;
         }
     }
 
-    /**
-     * Returns the next element in the iteration.
-     *
-     * @return Returns the next element in the iteration.
-     * @throws java.util.NoSuchElementException
-     *          iteration has no more elements.
-     */
-    public Object next() {
-
-        // reset the flags
-        needToMoveForward = true;
-        isMatchingNodeFound = false;
-        nextCalled = true;
-        removeCalled = false;
-        lastChild = currentChild;
-        currentChild = currentChild.getNextOMSibling();
-        return lastChild;
-    }
-    
     /**
      * Prior versions of the OMChildrenQNameIterator used the following
      * logic to check equality.  This algorithm is incorrect; however some customers

@@ -26,8 +26,7 @@ import org.apache.axiom.om.OMNode;
 import javax.xml.namespace.QName;
 
 /** Class OMChildrenWithSpecificAttributeIterator */
-public class OMChildrenWithSpecificAttributeIterator
-        extends OMChildrenIterator {
+public class OMChildrenWithSpecificAttributeIterator extends OMFilterIterator {
     /** Field attributeName */
     private QName attributeName;
 
@@ -51,7 +50,7 @@ public class OMChildrenWithSpecificAttributeIterator
                                                    QName attributeName,
                                                    String attributeValue,
                                                    boolean detach) {
-        super(currentChild);
+        super(new OMChildrenIterator(currentChild));
         this.attributeName = attributeName;
         this.attributeValue = attributeValue;
         this.detach = detach;
@@ -61,45 +60,17 @@ public class OMChildrenWithSpecificAttributeIterator
         doCaseSensitiveValueChecks = val;
     }
 
-    /**
-     * Method hasNext.
-     *
-     * @return Returns boolean.
-     */
-    public boolean hasNext() {
-
-        // First check whether we have a child, using the super class
-        if (currentChild == null) {
+    protected boolean matches(OMNode node) {
+        if (node instanceof OMElement) {
+            OMAttribute attr =
+                    ((OMElement) node).getAttribute(
+                            attributeName);
+            return (attr != null) && (doCaseSensitiveValueChecks ?
+                    attr.getAttributeValue().equals(attributeValue) :
+                    attr.getAttributeValue().equalsIgnoreCase(attributeValue));
+        } else {
             return false;
         }
-        boolean isMatchingNodeFound = false;
-        boolean needToMoveForward = true;
-
-        // now we have a child to check. If its an OMElement and matches the criteria, then we are done
-        while (needToMoveForward) {
-
-            // check the current node for the criteria
-            if (currentChild instanceof OMElement) {
-                OMAttribute attr =
-                        ((OMElement) currentChild).getAttribute(
-                                attributeName);
-                if ((attr != null) && (doCaseSensitiveValueChecks ?
-                        attr.getAttributeValue().equals(attributeValue) :
-                        attr.getAttributeValue().equalsIgnoreCase(attributeValue))) {
-                    isMatchingNodeFound = true;
-                    needToMoveForward = false;
-                } else {
-                    currentChild = currentChild.getNextOMSibling();
-                    needToMoveForward = !(currentChild == null);
-                }
-            } else {
-
-                // get the next named node
-                currentChild = currentChild.getNextOMSibling();
-                needToMoveForward = !(currentChild == null);
-            }
-        }
-        return isMatchingNodeFound;
     }
 
     /**
@@ -108,13 +79,10 @@ public class OMChildrenWithSpecificAttributeIterator
      * @return Returns Object.
      */
     public Object next() {
-        nextCalled = true;
-        removeCalled = false;
-        lastChild = currentChild;
-        currentChild = currentChild.getNextOMSibling();
-        if ((lastChild != null) && detach && lastChild.getParent() != null) {
-            lastChild.detach();
+        Object result = super.next();
+        if (detach) {
+            remove();
         }
-        return lastChild;
+        return result;
     }
 }

@@ -150,6 +150,8 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
             while (it.hasNext()) {
                 // TODO: this is extremely inefficient since next() will actually build the node!
                 OMNode omNode = (OMNode) it.next();
+                // TODO: quick fix required because OMChildrenIterator#next() no longer builds the node
+                omNode.getNextOMSibling();
                 omNode.serializeAndConsume(writer);
             }
         } finally {

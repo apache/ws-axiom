@@ -969,6 +969,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         Iterator it = omDocument.getChildren();
         while (it.hasNext()) {
             OMNode omNode = (OMNode) it.next();
+            // TODO: quick fix required because OMChildrenIterator#next() no longer builds the node
+            omNode.getNextOMSibling();
             omNode.serializeAndConsume(xmlwriter);
         }
 
@@ -995,6 +997,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         Iterator it = omDocument.getChildren();
         while (it.hasNext()) {
             OMNode omNode = (OMNode) it.next();
+            // TODO: quick fix required because OMChildrenIterator#next() no longer builds the node
+            omNode.getNextOMSibling();
             omNode.serializeAndConsume(xmlwriter);
         }
         xmlwriter.flush();
