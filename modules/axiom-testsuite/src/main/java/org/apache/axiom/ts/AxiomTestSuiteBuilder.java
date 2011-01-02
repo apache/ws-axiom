@@ -81,7 +81,8 @@ public class AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
-            addTest(new org.apache.axiom.ts.om.element.TestSerializeToOutputStream(metaFactory, conformanceFiles[i]));
+            addTest(new org.apache.axiom.ts.om.element.TestSerializeToOutputStream(metaFactory, conformanceFiles[i], true));
+            addTest(new org.apache.axiom.ts.om.element.TestSerializeToOutputStream(metaFactory, conformanceFiles[i], false));
         }
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElement(metaFactory));

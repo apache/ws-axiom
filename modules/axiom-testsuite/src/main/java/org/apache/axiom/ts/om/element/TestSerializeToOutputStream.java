@@ -27,6 +27,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
@@ -35,8 +36,12 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 public class TestSerializeToOutputStream extends ConformanceTestCase {
-    public TestSerializeToOutputStream(OMMetaFactory metaFactory, String file) {
+    private final boolean cache;
+    
+    public TestSerializeToOutputStream(OMMetaFactory metaFactory, String file, boolean cache) {
         super(metaFactory, file);
+        this.cache = cache;
+        setName(getName() + " [cache=" + cache + "]");
     }
 
     protected void runTest() throws Throwable {
@@ -58,10 +63,22 @@ public class TestSerializeToOutputStream extends ConformanceTestCase {
             OMXMLParserWrapper builder = metaFactory.createOMBuilder(metaFactory.getOMFactory(),
                     StAXParserConfiguration.PRESERVE_CDATA_SECTIONS, in);
             try {
+                OMElement element = builder.getDocumentElement();
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                builder.getDocumentElement().serialize(baos);
+                if (cache) {
+                    element.serialize(baos);
+                } else {
+                    element.serializeAndConsume(baos);
+                }
                 assertXMLIdentical(compareXML(new InputSource(new ByteArrayInputStream(control)),
                         new InputSource(new ByteArrayInputStream(baos.toByteArray()))), true);
+                if (cache) {
+                    assertTrue(element.isComplete());
+                } else {
+                    // TODO: need to investigate why assertConsumed is not working here
+                    assertFalse(element.isComplete());
+//                    assertConsumed(element);
+                }
             } finally {
                 builder.close();
             }

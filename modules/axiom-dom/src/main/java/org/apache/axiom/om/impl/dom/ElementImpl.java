@@ -1076,7 +1076,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     public void internalSerialize(XMLStreamWriter writer,
                                      boolean cache) throws XMLStreamException {
 
-        if (!cache) {
+        if (cache) {
             // in this case we don't care whether the elements are built or not
             // we just call the serializeAndConsume methods
             OMSerializerUtil.serializeStartpart(this, writer);
