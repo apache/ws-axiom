@@ -1156,7 +1156,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 }
             }
         } else {
-            if (state == SWITCHED) {
+            if (state == SWITCHED && rootNode instanceof OMElement) {
                 //this is a potential place for bugs
                 //we have to test if the root node of this parser
                 //has the same name for this test
@@ -1254,7 +1254,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     public String getPITarget() {
         if (parser != null) {
-            return parser.getPIData();
+            return parser.getPITarget();
         } else {
             if (currentEvent == PROCESSING_INSTRUCTION) {
                 return ((OMProcessingInstruction)lastNode).getTarget();

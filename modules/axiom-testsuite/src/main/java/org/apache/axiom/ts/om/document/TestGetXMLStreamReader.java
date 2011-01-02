@@ -34,8 +34,12 @@ import org.apache.axiom.ts.ConformanceTestCase;
  * Test comparing the output of {@link OMStAXWrapper} with that of a native StAX parser.
  */
 public class TestGetXMLStreamReader extends ConformanceTestCase {
-    public TestGetXMLStreamReader(OMMetaFactory metaFactory, String file) {
+    private final boolean cache;
+    
+    public TestGetXMLStreamReader(OMMetaFactory metaFactory, String file, boolean cache) {
         super(metaFactory, file);
+        this.cache = cache;
+        setName(getName() + " [cache=" + cache + "]");
     }
     
     protected void runTest() throws Throwable {
@@ -47,7 +51,7 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
                 StAXOMBuilder builder = new StAXOMBuilder(metaFactory.getOMFactory(),
                         StAXUtils.createXMLStreamReader(in2));
                 try {
-                    XMLStreamReader actual = builder.getDocument().getXMLStreamReader();
+                    XMLStreamReader actual = builder.getDocument().getXMLStreamReader(cache);
                     new XMLStreamReaderComparator(new RootWhitespaceFilter(expected),
                             new RootWhitespaceFilter(actual)).compare();
                 } finally {
