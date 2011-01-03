@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.om.factory.OMElementCreator;
 
 import junit.framework.TestSuite;
 
@@ -97,7 +98,9 @@ public class AxiomTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.element.TestSerializeToOutputStream(metaFactory, conformanceFiles[i], false));
         }
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
-        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElement(metaFactory));
+        for (int i=0; i<OMElementCreator.INSTANCES.length; i++) {
+            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElement(metaFactory, OMElementCreator.INSTANCES[i]));
+        }
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMText(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextFromDataHandlerProvider(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestDetach(metaFactory, true));

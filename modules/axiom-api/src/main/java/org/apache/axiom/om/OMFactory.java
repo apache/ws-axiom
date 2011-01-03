@@ -50,6 +50,17 @@ public interface OMFactory {
      */
     OMElement createOMElement(String localName, OMNamespace ns);
 
+    /**
+     * 
+     * @param localName
+     * @param ns
+     * @param parent
+     *            the parent to which the newly created element will be added; this may be
+     *            <code>null</code>, in which case the behavior of the method is the same as
+     *            {@link #createOMElement(String, OMNamespace)}
+     * @return
+     * @throws OMException
+     */
     OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent)
             throws OMException;
 
@@ -108,7 +119,10 @@ public interface OMFactory {
      * use whatever's already mapped in the parent, or create a generated one.
      *
      * @param qname the QName of the element to create
-     * @param parent the OMContainer in which to place the new element
+     * @param parent
+     *            the parent to which the newly created element will be added; this may be
+     *            <code>null</code>, in which case the behavior of the method is the same as
+     *            {@link #createOMElement(QName)}
      * @return Returns the new OMElement
      * @throws OMException if there's a namespace mapping problem
      */
