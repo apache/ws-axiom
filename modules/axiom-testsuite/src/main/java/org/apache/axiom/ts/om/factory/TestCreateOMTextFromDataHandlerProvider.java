@@ -16,14 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.om;
+package org.apache.axiom.ts.om.factory;
 
 import javax.activation.DataHandler;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.ts.AxiomTestCase;
 
-public class OMTextTestBase extends AbstractTestCase {
+public class TestCreateOMTextFromDataHandlerProvider extends AxiomTestCase {
     static class TestDataHandlerProvider implements DataHandlerProvider {
         private DataHandler dh;
         
@@ -43,47 +46,16 @@ public class OMTextTestBase extends AbstractTestCase {
         }
     }
     
-    protected final OMMetaFactory omMetaFactory;
-
-    public OMTextTestBase(OMMetaFactory omMetaFactory) {
-        this.omMetaFactory = omMetaFactory;
+    public TestCreateOMTextFromDataHandlerProvider(OMMetaFactory metaFactory) {
+        super(metaFactory);
     }
 
-    public void testCreateText() {
-        OMFactory factory = omMetaFactory.getOMFactory();
-        OMNamespace namespace =
-                factory.createOMNamespace("http://www.apache.org/~chinthaka", "myhome");
-        OMElement omElement = factory.createOMElement("chinthaka",
-                                                        namespace);
-        String text = "sampleText";
-        OMText omText = factory.createOMText(omElement, text);
-        assertTrue("Programatically created OMText should have done = true ",
-                   omText.isComplete());
-        assertTrue(
-                "Programatically created OMText should have correct text value ",
-                text.equals(omText.getText()));
-
-    }
-    
-    public void testCreateFromDataHandlerProvider() throws Exception {
+    protected void runTest() throws Throwable {
         TestDataHandlerProvider prov = new TestDataHandlerProvider();
-        OMFactory factory = omMetaFactory.getOMFactory();
+        OMFactory factory = metaFactory.getOMFactory();
         OMText text = factory.createOMText(null, prov, true);
         assertFalse(prov.isDataHandlerCreated());
         assertEquals(((DataHandler)text.getDataHandler()).getContent(), "Data");
         assertTrue(prov.isDataHandlerCreated());
-    }
-
-    public void testSetText() {
-        OMFactory factory = omMetaFactory.getOMFactory();
-        String localName = "TestLocalName";
-        String namespace = "http://ws.apache.org/axis2/ns";
-        String prefix = "axis2";
-        String tempText = "The quick brown fox jumps over the lazy dog";
-
-        OMElement elem = factory.createOMElement(localName, namespace, prefix);
-        OMText textNode = factory.createOMText(elem, tempText);
-
-        assertEquals("Text value mismatch", tempText, textNode.getText());
     }
 }

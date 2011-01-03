@@ -21,20 +21,15 @@ package org.apache.axiom.om.impl.dom;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMTextTestBase;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-public class TextImplTest extends OMTextTestBase {
-    public TextImplTest() {
-        super(new OMDOMMetaFactory());
-    }
-    
+public class TextImplTest extends AbstractTestCase {
     public void testAppendText() {
         OMDOMFactory factory = new OMDOMFactory();
         String localName = "TestLocalName";
