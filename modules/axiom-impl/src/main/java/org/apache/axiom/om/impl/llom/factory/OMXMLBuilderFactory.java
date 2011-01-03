@@ -31,8 +31,7 @@ import javax.xml.stream.XMLStreamReader;
  * 
  * @deprecated This class is deprecated because it is located in the wrong package and JAR
  *             (it is implementation independent but belongs to LLOM). Please use
- *             the constructors of {@link StAXOMBuilder} and {@link StAXSOAPModelBuilder}
- *             directly.
+ *             {@link org.apache.axiom.om.OMXMLBuilderFactory} instead.
  */
 public class OMXMLBuilderFactory {
     /** Field PARSER_XPP */
