@@ -24,7 +24,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
@@ -49,7 +48,6 @@ public class TestSerializationWithTwoNonBuiltOMElements extends AxiomTestCase {
         rootElement.addChild(childOne);
         OMElement childTwo = OMXMLBuilderFactory.createOMBuilder(omFactory,
                 new StringReader(sampleXMLTwo)).getDocumentElement(true);
-        ((OMNodeEx) childTwo).setParent(null);
         rootElement.addChild(childTwo);
 
         assertTrue(expectedXML.equals(rootElement.toString()));
