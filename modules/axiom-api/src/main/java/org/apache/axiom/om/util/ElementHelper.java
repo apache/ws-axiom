@@ -269,8 +269,7 @@ public class ElementHelper {
     public static void writeTextTo(OMElement element, Writer out, boolean cache)
             throws XMLStreamException, IOException {
         
-        XMLStreamReader reader = cache ? element.getXMLStreamReader()
-                : element.getXMLStreamReaderWithoutCaching();
+        XMLStreamReader reader = element.getXMLStreamReader(cache);
         int depth = 0;
         while (reader.hasNext()) {
             switch (reader.next()) {
