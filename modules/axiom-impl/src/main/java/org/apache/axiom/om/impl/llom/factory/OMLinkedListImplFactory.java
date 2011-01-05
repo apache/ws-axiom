@@ -46,27 +46,11 @@ import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.om.impl.llom.OMTextImpl;
 
 import javax.xml.namespace.QName;
-import java.util.Hashtable;
-import java.util.Map;
 
 /** Class OMLinkedListImplFactory
  */
 public class OMLinkedListImplFactory implements OMFactory {
-
-    private static final String uriAndPrefixSeparator = ";";
-    
-    
-    // Pooling of OMNamespace objects is disabled.  See the comment in OMNamespace.
-    private static boolean POOL_OMNAMESPACES = false;
-    
     private final OMLinkedListMetaFactory metaFactory;
-    
-    /**
-     * This is a map of namespaces with the namespace URI as the key and Namespace object itself as
-     * the value.
-     * OMFactories are shared across threads.  The Hashtable is necessary to prevent concurrent modification exceptions.
-     */
-    protected Map namespaceTable = new Hashtable(5);
     
     public OMLinkedListImplFactory(OMLinkedListMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
@@ -186,27 +170,7 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns OMNamespace.
      */
     public OMNamespace createOMNamespace(String uri, String prefix) {
-        // An OMNamespaceImpl consists of only two String objects;
-        // The overhead to create "yet another" key string and pool these
-        // small objects is unnecessary.  In addition,
-        // the objects are never freed from the pool, which means that the
-        // the table will grow very large over time.  For this reason, the
-        // pooling of OMNamespaces is disabbled.
-        
-        if (POOL_OMNAMESPACES) {
-            String key = uri;
-            if (prefix != null && prefix.length() > 0) {
-                key = key + uriAndPrefixSeparator + prefix;
-            }
-            OMNamespace existingNamespaceObject = (OMNamespace) namespaceTable.get(key);
-            if (existingNamespaceObject == null) {
-                existingNamespaceObject = new OMNamespaceImpl(uri, prefix);
-                namespaceTable.put(key, existingNamespaceObject);
-            }
-            return existingNamespaceObject;
-        } else {
-            return new OMNamespaceImpl(uri, prefix);
-        }
+        return new OMNamespaceImpl(uri, prefix);
     }
 
     /**
