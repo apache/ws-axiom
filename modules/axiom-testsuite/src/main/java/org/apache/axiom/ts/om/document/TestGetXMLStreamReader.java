@@ -23,9 +23,10 @@ import java.io.InputStream;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMStAXWrapper;
 import org.apache.axiom.om.impl.RootWhitespaceFilter;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.ts.ConformanceTestCase;
@@ -48,8 +49,7 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
         try {
             XMLStreamReader expected = StAXUtils.createXMLStreamReader(in1);
             try {
-                StAXOMBuilder builder = new StAXOMBuilder(metaFactory.getOMFactory(),
-                        StAXUtils.createXMLStreamReader(in2));
+                OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in2);
                 try {
                     XMLStreamReader actual = builder.getDocument().getXMLStreamReader(cache);
                     new XMLStreamReaderComparator(new RootWhitespaceFilter(expected),
