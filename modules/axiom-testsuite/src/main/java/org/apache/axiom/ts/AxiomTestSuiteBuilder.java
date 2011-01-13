@@ -44,6 +44,7 @@ public class AxiomTestSuiteBuilder {
         String[] conformanceFiles = AbstractTestCase.getConformanceTestFiles();
         suite = new TestSuite();
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.attribute.TestEqualsHashCode(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocument(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
