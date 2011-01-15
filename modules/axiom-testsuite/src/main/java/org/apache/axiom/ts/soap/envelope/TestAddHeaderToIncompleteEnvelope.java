@@ -16,25 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap;
+package org.apache.axiom.ts.soap.envelope;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class SOAP12EnvelopeTestBase extends SOAPEnvelopeTestBase {
-    public SOAP12EnvelopeTestBase(OMMetaFactory omMetaFactory) {
-        super(omMetaFactory, SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+/**
+ * Test the behavior when adding a header to an envelope that has not yet been built completely.
+ * This is a regression test for WSCOMMONS-552.
+ */
+public class TestAddHeaderToIncompleteEnvelope extends SOAPTestCase {
+    public TestAddHeaderToIncompleteEnvelope(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
+        super(metaFactory, envelopeNamespaceURI);
     }
-    
-    /**
-     * Test that an attempt to add an arbitrary element to the SOAP envelope triggers an exception.
-     */
-    public void testAddElementAfterBody() {
-        SOAPEnvelope env = soapFactory.getDefaultEnvelope();
-        try {
-            env.addChild(soapFactory.createOMElement("test", "urn:test", "p"));
-            fail("Expected SOAPProcessingException");
-        } catch (SOAPProcessingException ex) {
-            // Expected
-        }
+
+    protected void runTest() throws Throwable {
+        SOAPEnvelope envelope = getTestMessage(MESSAGE_WITHOUT_HEADER);
+        assertNull(envelope.getHeader());
+        SOAPHeader header = soapFactory.createSOAPHeader(envelope);
+        assertSame(header, envelope.getHeader());
     }
 }

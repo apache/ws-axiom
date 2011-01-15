@@ -16,14 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap.body;
 
-package org.apache.axiom.soap.impl.llom;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAP11EnvelopeTestBase;
+public class TestHasFaultWithParser extends SOAPTestCase {
+    public TestHasFaultWithParser(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
+        super(metaFactory, envelopeNamespaceURI);
+    }
 
-public class SOAP11EnvelopeTest extends SOAP11EnvelopeTestBase {
-    public SOAP11EnvelopeTest() {
-        super(new OMLinkedListMetaFactory());
+    protected void runTest() throws Throwable {
+        SOAPBody body = getTestMessage(MESSAGE).getBody();
+        assertTrue(
+                "Body Test With parser :- hasFault method returns false",
+                body.hasFault());
     }
 }

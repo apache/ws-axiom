@@ -22,12 +22,12 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.apache.axiom.ts.AxiomTestSuiteBuilder;
+import org.apache.axiom.ts.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.element.TestSetTextQName;
 
-public class ImplementationTest extends TestCase {
+public class OMImplementationTest extends TestCase {
     public static TestSuite suite() {
-        AxiomTestSuiteBuilder builder = new AxiomTestSuiteBuilder(new OMDOMMetaFactory());
+        OMTestSuiteBuilder builder = new OMTestSuiteBuilder(new OMDOMMetaFactory());
         // OMElement#setText(QName) is unsupported
         builder.exclude(TestSetTextQName.class);
         

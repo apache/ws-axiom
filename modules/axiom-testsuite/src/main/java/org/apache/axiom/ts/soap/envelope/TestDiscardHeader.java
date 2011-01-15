@@ -16,15 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap.envelope;
 
-package org.apache.axiom.soap.impl.llom;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAPBodyTestBase;
+// Regression test for WSCOMMONS-235 (see r567512)
+public class TestDiscardHeader extends SOAPTestCase {
+    public TestDiscardHeader(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
+        super(metaFactory, envelopeNamespaceURI);
+    }
 
-public class SOAP11BodyTest extends SOAPBodyTestBase {
-    public SOAP11BodyTest() {
-        super(new OMLinkedListMetaFactory(), SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+    protected void runTest() throws Throwable {
+        SOAPEnvelope envelope = getTestMessage(MESSAGE);
+        envelope.getHeader().discard();
+        envelope.getBody().toStringWithConsume();
     }
 }

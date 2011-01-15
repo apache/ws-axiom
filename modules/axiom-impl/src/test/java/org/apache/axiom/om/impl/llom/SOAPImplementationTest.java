@@ -16,14 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.om.impl.llom;
 
-package org.apache.axiom.soap.impl.dom;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.apache.axiom.soap.SOAP12FaultDetailTestBase;
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
+import org.apache.axiom.ts.SOAPTestSuiteBuilder;
 
-public class SOAP12FaultDetailTest extends SOAP12FaultDetailTestBase {
-    public SOAP12FaultDetailTest() {
-        super(new OMDOMMetaFactory());
+public class SOAPImplementationTest extends TestCase {
+    public static TestSuite suite() {
+        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMLinkedListMetaFactory());
+        return builder.build();
     }
 }

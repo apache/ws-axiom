@@ -16,14 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap.envelope;
 
-package org.apache.axiom.soap.impl.llom;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAP12EnvelopeTestBase;
+// Regression test for WSCOMMONS-526
+public class TestGetBodyOnEnvelopeWithHeaderOnly extends SOAPTestCase {
+    public TestGetBodyOnEnvelopeWithHeaderOnly(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
+        super(metaFactory, envelopeNamespaceURI);
+    }
 
-public class SOAP12EnvelopeTest extends SOAP12EnvelopeTestBase {
-    public SOAP12EnvelopeTest() {
-        super(new OMLinkedListMetaFactory());
+    protected void runTest() throws Throwable {
+        SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
+        soapFactory.createSOAPHeader(envelope);
+        assertNull(envelope.getBody());
     }
 }

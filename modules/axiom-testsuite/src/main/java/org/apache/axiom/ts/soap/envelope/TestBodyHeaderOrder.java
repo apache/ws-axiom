@@ -16,21 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.soap;
+package org.apache.axiom.ts.soap.envelope;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class SOAP12FaultDetailTestBase extends SOAPFaultDetailTestBase {
-    public SOAP12FaultDetailTestBase(OMMetaFactory omMetaFactory) {
-        super(omMetaFactory);
+// Make sure order of header/body creation doesn't matter
+public class TestBodyHeaderOrder extends SOAPTestCase {
+    public TestBodyHeaderOrder(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
+        super(metaFactory, envelopeNamespaceURI);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-        omNamespace =
-            omFactory.createOMNamespace("http://www.test.org", "test");
-        soapFaultDetail = soap12Factory.createSOAPFaultDetail(soap12Fault);
-        soapFaultDetailWithParser = soap12FaultWithParser.getDetail();
+    protected void runTest() throws Throwable {
+        SOAPEnvelope env = soapFactory.createSOAPEnvelope();
+        soapFactory.createSOAPBody(env);
+        soapFactory.createSOAPHeader(env);
+        assertTrue("Header isn't the first child!", env.getFirstElement() instanceof SOAPHeader);
     }
 }

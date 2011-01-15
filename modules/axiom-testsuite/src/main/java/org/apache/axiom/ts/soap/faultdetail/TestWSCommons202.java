@@ -16,31 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.soap.impl.llom;
+package org.apache.axiom.ts.soap.faultdetail;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAP12FaultDetailTestBase;
-import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFaultDetail;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class SOAP12FaultDetailTest extends SOAP12FaultDetailTestBase {
-    public SOAP12FaultDetailTest() {
-        super(new OMLinkedListMetaFactory());
+public class TestWSCommons202 extends SOAPTestCase {
+    public TestWSCommons202(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
+        super(metaFactory, envelopeNamespaceURI);
     }
 
-    // TODO: this should also work for DOOM, but the SOAPFactory#createSOAPxxx methods
-    //       are not implemented or don't work correctly
-    public void testWSCommons202() {
-        SOAPFactory factory = omMetaFactory.getSOAP12Factory();
-        SOAPFaultDetail soapFaultDetail = factory.createSOAPFaultDetail();
+    protected void runTest() throws Throwable {
+        SOAPFaultDetail soapFaultDetail = soapFactory.createSOAPFaultDetail();
         soapFaultDetail.setText("a");
 
         assertTrue(soapFaultDetail.getText().trim().equals("a"));
         assertTrue("Text serialization has problems. It had serialized same text twice", soapFaultDetail.toString().indexOf("aa") == -1);
 
-        OMElement omElement = factory.createOMElement("DummyElement", null);
+        OMElement omElement = soapFactory.createOMElement("DummyElement", null);
         soapFaultDetail.addChild(omElement);
         omElement.setText("Some text is here");
 

@@ -18,15 +18,15 @@
  */
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.ts.AxiomTestSuiteBuilder;
-
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-public class ImplementationTest extends TestCase {
+import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
+import org.apache.axiom.ts.OMTestSuiteBuilder;
+
+public class OMImplementationTest extends TestCase {
     public static TestSuite suite() {
-        AxiomTestSuiteBuilder builder = new AxiomTestSuiteBuilder(new OMLinkedListMetaFactory());
+        OMTestSuiteBuilder builder = new OMTestSuiteBuilder(new OMLinkedListMetaFactory());
         // TODO: this looks like a bug
         builder.exclude(org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild.class);
         return builder.build();

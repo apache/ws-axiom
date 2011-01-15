@@ -16,15 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap.body;
 
-package org.apache.axiom.soap.impl.llom;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPBodyTestBase;
+public class TestAddFault2 extends SOAPTestCase {
+    public TestAddFault2(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
+        super(metaFactory, envelopeNamespaceURI);
+    }
 
-public class SOAP12BodyTest extends SOAPBodyTestBase {
-    public SOAP12BodyTest() {
-        super(new OMLinkedListMetaFactory(), SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+    protected void runTest() throws Throwable {
+        SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
+        SOAPBody body = soapFactory.createSOAPBody(envelope);
+        body.addFault(soapFactory.createSOAPFault(body));
+        assertTrue(
+                "Body Test:- After calling addFault method, SOAP body has no fault",
+                body.hasFault());
     }
 }

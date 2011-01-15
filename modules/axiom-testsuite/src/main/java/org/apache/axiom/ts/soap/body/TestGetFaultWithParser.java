@@ -16,39 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import junit.framework.TestSuite;
+package org.apache.axiom.ts.soap.body;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public abstract class AxiomTestSuiteBuilder {
-    protected final OMMetaFactory metaFactory;
-    private final Set/*<Class>*/ excludedTests = new HashSet();
-    private TestSuite suite;
-    
-    public AxiomTestSuiteBuilder(OMMetaFactory metaFactory) {
-        this.metaFactory = metaFactory;
+public class TestGetFaultWithParser extends SOAPTestCase {
+    public TestGetFaultWithParser(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
+        super(metaFactory, envelopeNamespaceURI);
     }
-    
-    public final void exclude(Class testClass) {
-        excludedTests.add(testClass);
-    }
-    
-    protected abstract void addTests();
-    
-    public final TestSuite build() {
-        suite = new TestSuite();
-        addTests();
-        return suite;
-    }
-    
-    protected final void addTest(AxiomTestCase test) {
-        if (!excludedTests.contains(test.getClass())) {
-            suite.addTest(test);
-        }
+
+    protected void runTest() throws Throwable {
+        SOAPBody body = getTestMessage(MESSAGE).getBody();
+        assertFalse(
+                "Body Test With parser :- getFault method returns null",
+                body.getFault() == null);
+        assertTrue(
+                "Body Test With parser : - SOAP fault name mismatch",
+                body.getFault().getLocalName().equals(
+                        SOAPConstants.SOAPFAULT_LOCAL_NAME));
     }
 }

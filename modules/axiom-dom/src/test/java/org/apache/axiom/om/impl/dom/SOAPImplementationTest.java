@@ -16,21 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap;
+package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.OMMetaFactory;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
-public class SOAP11EnvelopeTestBase extends SOAPEnvelopeTestBase {
-    public SOAP11EnvelopeTestBase(OMMetaFactory omMetaFactory) {
-        super(omMetaFactory, SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-    }
-    
-    /**
-     * Test that adding an arbitrary element to the envelope is allowed. SOAP 1.1 indeed allows for
-     * arbitrary elements to appear after the SOAP body.
-     */
-    public void testAddElementAfterBody() {
-        SOAPEnvelope env = soapFactory.getDefaultEnvelope();
-        env.addChild(soapFactory.createOMElement("test", "urn:test", "p"));
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import org.apache.axiom.ts.SOAPTestSuiteBuilder;
+import org.apache.axiom.ts.soap.faultdetail.TestWSCommons202;
+
+public class SOAPImplementationTest extends TestCase {
+    public static TestSuite suite() {
+        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMDOMMetaFactory());
+        builder.exclude(TestWSCommons202.class);
+        return builder.build();
     }
 }

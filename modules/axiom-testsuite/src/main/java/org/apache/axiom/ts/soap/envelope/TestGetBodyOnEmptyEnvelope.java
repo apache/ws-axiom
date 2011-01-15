@@ -16,21 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.soap;
+package org.apache.axiom.ts.soap.envelope;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class SOAP11FaultDetailTestBase extends SOAPFaultDetailTestBase {
-    public SOAP11FaultDetailTestBase(OMMetaFactory omMetaFactory) {
-        super(omMetaFactory);
+public class TestGetBodyOnEmptyEnvelope extends SOAPTestCase {
+    public TestGetBodyOnEmptyEnvelope(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
+        super(metaFactory, envelopeNamespaceURI);
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-        omNamespace =
-            omFactory.createOMNamespace("http://www.test.org", "test");
-        soapFaultDetail = soap11Factory.createSOAPFaultDetail(soap11Fault);
-        soapFaultDetailWithParser = soap11FaultWithParser.getDetail();
+    protected void runTest() throws Throwable {
+        assertNull(soapFactory.createSOAPEnvelope().getBody());
     }
 }
