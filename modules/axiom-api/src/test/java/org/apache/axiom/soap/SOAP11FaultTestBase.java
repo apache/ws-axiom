@@ -23,11 +23,7 @@ import org.apache.axiom.om.OMMetaFactory;
 
 public class SOAP11FaultTestBase extends SOAPFaultTestBase {
     public SOAP11FaultTestBase(OMMetaFactory omMetaFactory) {
-        super(omMetaFactory, SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME,
-                SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME,
-                SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME,
-                SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME);
+        super(omMetaFactory, SOAPSpec.SOAP11);
     }
     
     public void testSetNode() {

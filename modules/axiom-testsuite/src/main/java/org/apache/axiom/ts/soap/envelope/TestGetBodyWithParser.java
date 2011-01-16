@@ -22,11 +22,12 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestGetBodyWithParser extends SOAPTestCase {
-    public TestGetBodyWithParser(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
-        super(metaFactory, envelopeNamespaceURI);
+    public TestGetBodyWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {
@@ -36,6 +37,6 @@ public class TestGetBodyWithParser extends SOAPTestCase {
                    body.getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME));
         assertTrue("Body Test : - Body namespace mismatch",
                    body.getNamespace().getNamespaceURI().equals(
-                           envelopeNamespaceURI));
+                           spec.getEnvelopeNamespaceURI()));
     }
 }

@@ -19,42 +19,41 @@
 package org.apache.axiom.ts;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPSpec;
 
 public class SOAPTestSuiteBuilder extends AxiomTestSuiteBuilder {
     public SOAPTestSuiteBuilder(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
     
-    private void addTests(String envelopeNamespaceURI) {
-        addTest(new org.apache.axiom.ts.soap.body.TestAddFault1(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.body.TestAddFault2(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.body.TestGetFault(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.body.TestGetFaultWithParser(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.body.TestHasFault(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParser(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestAddHeaderToIncompleteEnvelope(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestBodyHeaderOrder(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestDiscardHeader(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestGetBody(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestGetBodyOnEmptyEnvelope(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestGetBodyOnEnvelopeWithHeaderOnly(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestGetBodyWithParser(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestGetHeader(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestGetHeaderWithParser(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestGetSOAPBodyFirstElementLocalNameAndNS(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.faultdetail.TestAddDetailEntry(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.faultdetail.TestGetAllDetailEntries(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.faultdetail.TestGetAllDetailEntriesWithParser(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.faultdetail.TestSerialization(metaFactory, envelopeNamespaceURI));
-        addTest(new org.apache.axiom.ts.soap.faultdetail.TestWSCommons202(metaFactory, envelopeNamespaceURI));
+    private void addTests(SOAPSpec spec) {
+        addTest(new org.apache.axiom.ts.soap.body.TestAddFault1(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.body.TestAddFault2(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.body.TestGetFault(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.body.TestGetFaultWithParser(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.body.TestHasFault(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParser(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestAddHeaderToIncompleteEnvelope(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestBodyHeaderOrder(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestDiscardHeader(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestGetBody(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestGetBodyOnEmptyEnvelope(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestGetBodyOnEnvelopeWithHeaderOnly(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestGetBodyWithParser(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestGetHeader(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestGetHeaderWithParser(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestGetSOAPBodyFirstElementLocalNameAndNS(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.faultdetail.TestAddDetailEntry(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.faultdetail.TestGetAllDetailEntries(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.faultdetail.TestGetAllDetailEntriesWithParser(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.faultdetail.TestSerialization(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.faultdetail.TestWSCommons202(metaFactory, spec));
     }
     
     protected void addTests() {
-        addTests(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        addTests(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        addTests(SOAPSpec.SOAP11);
+        addTests(SOAPSpec.SOAP12);
         addTest(new org.apache.axiom.ts.soap11.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestAddElementAfterBody(metaFactory));
     }

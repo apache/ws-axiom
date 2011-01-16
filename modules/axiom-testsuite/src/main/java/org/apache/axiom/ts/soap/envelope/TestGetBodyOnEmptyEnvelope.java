@@ -19,11 +19,12 @@
 package org.apache.axiom.ts.soap.envelope;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestGetBodyOnEmptyEnvelope extends SOAPTestCase {
-    public TestGetBodyOnEmptyEnvelope(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
-        super(metaFactory, envelopeNamespaceURI);
+    public TestGetBodyOnEmptyEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {

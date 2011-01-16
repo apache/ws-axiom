@@ -20,11 +20,12 @@ package org.apache.axiom.ts.soap.body;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestHasFaultWithParser extends SOAPTestCase {
-    public TestHasFaultWithParser(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
-        super(metaFactory, envelopeNamespaceURI);
+    public TestHasFaultWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {

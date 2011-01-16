@@ -21,11 +21,12 @@ package org.apache.axiom.ts.soap.body;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestGetFaultWithParser extends SOAPTestCase {
-    public TestGetFaultWithParser(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
-        super(metaFactory, envelopeNamespaceURI);
+    public TestGetFaultWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {

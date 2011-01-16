@@ -21,6 +21,7 @@ package org.apache.axiom.ts.soap.envelope;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
@@ -28,8 +29,8 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * This is a regression test for WSCOMMONS-552.
  */
 public class TestAddHeaderToIncompleteEnvelope extends SOAPTestCase {
-    public TestAddHeaderToIncompleteEnvelope(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
-        super(metaFactory, envelopeNamespaceURI);
+    public TestAddHeaderToIncompleteEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {

@@ -22,20 +22,12 @@ package org.apache.axiom.soap;
 import org.apache.axiom.om.OMMetaFactory;
 
 public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
-    protected final String faultCodeLocalName;
-    protected final String faultReasonLocalName;
-    protected final String faultRoleLocalName;
-    protected final String faultDetailLocalName;
+    protected final SOAPSpec spec;
     protected SOAPFactory altSoapFactory;
     
-    public SOAPFaultTestBase(OMMetaFactory omMetaFactory, String envelopeNamespaceURI,
-            String faultCodeLocalName, String faultReasonLocalName, String faultRoleLocalName,
-            String faultDetailLocalName) {
-        super(omMetaFactory, envelopeNamespaceURI);
-        this.faultCodeLocalName = faultCodeLocalName;
-        this.faultReasonLocalName = faultReasonLocalName;
-        this.faultRoleLocalName = faultRoleLocalName;
-        this.faultDetailLocalName = faultDetailLocalName;
+    public SOAPFaultTestBase(OMMetaFactory omMetaFactory, SOAPSpec spec) {
+        super(omMetaFactory, spec.getEnvelopeNamespaceURI());
+        this.spec = spec;
     }
 
     protected void setUp() throws Exception {
@@ -52,7 +44,7 @@ public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
                 soapFault.getCode());
         assertTrue("Fault Test:- Code local name mismatch",
                    soapFault.getCode().getLocalName().equals(
-                           faultCodeLocalName));
+                           spec.getFaultCodeLocalName()));
         try {
             soapFault.setCode(altSoapFactory.createSOAPFaultCode());
             fail("SOAPFaultCode should not be set in to a SOAPFault for a different SOAP version");
@@ -72,7 +64,7 @@ public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
                 soapFault.getCode() == null);
         assertTrue("Fault Test:- Fault code local name mismatch",
                    soapFault.getCode().getLocalName().equals(
-                           faultCodeLocalName));
+                           spec.getFaultCodeLocalName()));
     }
 
     public void testSetReason() {
@@ -83,7 +75,7 @@ public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
                 soapFault.getReason() == null);
         assertTrue("Fault Test:- Fault reason local name mismatch",
                    soapFault.getReason().getLocalName().equals(
-                           faultReasonLocalName));
+                           spec.getFaultReasonLocalName()));
         try {
             soapFault.setReason(altSoapFactory.createSOAPFaultReason());
             fail("SOAPFaultReason should not be set in to a SOAPFault for a different SOAP version");
@@ -104,7 +96,7 @@ public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
                 soapFault.getReason() == null);
         assertTrue("Fault Test:- Fault reason local name mismatch",
                    soapFault.getReason().getLocalName().equals(
-                           faultReasonLocalName));
+                           spec.getFaultReasonLocalName()));
     }
 
     public void testSetRole() {
@@ -115,7 +107,7 @@ public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
                 soapFault.getRole() == null);
         assertTrue("Fault Test:- Fault role local name mismatch",
                    soapFault.getRole().getLocalName().equals(
-                           faultRoleLocalName));
+                           spec.getFaultRoleLocalName()));
         try {
             soapFault.setRole(altSoapFactory.createSOAPFaultRole());
             fail("SOAPFaultRole should not be set in to a SOAPFault for a different SOAP version");
@@ -135,7 +127,7 @@ public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
                 soapFault.getRole() == null);
         assertTrue("Fault Test:- Fault role local name mismatch",
                    soapFault.getRole().getLocalName().equals(
-                           faultRoleLocalName));
+                           spec.getFaultRoleLocalName()));
     }
 
     public void testSetDetail() {
@@ -146,7 +138,7 @@ public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
                 soapFault.getDetail() == null);
         assertTrue("Fault Test:- Fault detail local name mismatch",
                    soapFault.getDetail().getLocalName().equals(
-                           faultDetailLocalName));
+                           spec.getFaultDetailLocalName()));
         try {
             soapFault.setDetail(altSoapFactory.createSOAPFaultDetail());
             fail("SOAPFaultDetail should not be set in to a SOAPFault for a different SOAP version");
@@ -166,7 +158,7 @@ public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
                 soapFault.getDetail() == null);
         assertTrue("Fault Test:- Fault detail local name mismatch",
                    soapFault.getDetail().getLocalName().equals(
-                           faultDetailLocalName));
+                           spec.getFaultDetailLocalName()));
     }
 
     // Fault Test (With parser)
@@ -178,7 +170,7 @@ public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
         assertTrue(
                 "Fault Test with parser: - Fault code local name mismatch",
                 soapFaultWithParser.getCode().getLocalName().equals(
-                        faultCodeLocalName));
+                        spec.getFaultCodeLocalName()));
     }
 
     public void testGetReasonWithParser() {
@@ -189,7 +181,7 @@ public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
         assertTrue(
                 "Fault Test with parser: - Fault reason local name mismatch",
                 soapFaultWithParser.getReason().getLocalName().equals(
-                        faultReasonLocalName));
+                        spec.getFaultReasonLocalName()));
     }
 
     public void testGetRoleWithParser() {
@@ -200,7 +192,7 @@ public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
         assertTrue(
                 "Fault Test with parser: - Fault role local name mismatch",
                 soapFaultWithParser.getRole().getLocalName().equals(
-                        faultRoleLocalName));
+                        spec.getFaultRoleLocalName()));
     }
 
     public void testGetDetailWithParser() {
@@ -211,6 +203,6 @@ public class SOAPFaultTestBase extends UnifiedSOAPTestCase {
         assertTrue(
                 "Fault Test with parser: - Fault detail local name mismatch",
                 soapFaultWithParser.getDetail().getLocalName().equals(
-                        faultDetailLocalName));
+                        spec.getFaultDetailLocalName()));
     }
 }

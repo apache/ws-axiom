@@ -21,12 +21,13 @@ package org.apache.axiom.ts.soap.envelope;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 // Make sure order of header/body creation doesn't matter
 public class TestBodyHeaderOrder extends SOAPTestCase {
-    public TestBodyHeaderOrder(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
-        super(metaFactory, envelopeNamespaceURI);
+    public TestBodyHeaderOrder(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {

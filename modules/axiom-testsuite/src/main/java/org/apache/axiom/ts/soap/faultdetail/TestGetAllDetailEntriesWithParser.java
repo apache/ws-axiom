@@ -24,12 +24,13 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.soap.SOAPFaultDetail;
+import org.apache.axiom.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 //SOAP Fault Detail Test (With Parser)
 public class TestGetAllDetailEntriesWithParser extends SOAPTestCase {
-    public TestGetAllDetailEntriesWithParser(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
-        super(metaFactory, envelopeNamespaceURI);
+    public TestGetAllDetailEntriesWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {

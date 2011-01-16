@@ -24,9 +24,9 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPSpec;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -34,26 +34,22 @@ public class SOAPTestCase extends AxiomTestCase {
     protected static final String MESSAGE = "message.xml";
     protected static final String MESSAGE_WITHOUT_HEADER = "message_without_header.xml";
     
-    protected final String envelopeNamespaceURI;
+    protected final SOAPSpec spec;
     protected SOAPFactory soapFactory;
     
-    public SOAPTestCase(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
+    public SOAPTestCase(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory);
-        this.envelopeNamespaceURI = envelopeNamespaceURI;
-        setName(getName() + " [SOAP " + (isSOAP11() ? "1.1" : "1.2") + "]");
+        this.spec = spec;
+        setName(getName() + " [" + spec.getName() + "]");
     }
 
     protected void setUp() throws Exception {
         super.setUp();
-        soapFactory = isSOAP11() ? metaFactory.getSOAP11Factory() : metaFactory.getSOAP12Factory();
+        soapFactory = spec.getFactory(metaFactory);
     }
 
-    protected boolean isSOAP11() {
-        return envelopeNamespaceURI.equals(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-    }
-    
     protected SOAPEnvelope getTestMessage(String name) {
-        String folder = isSOAP11() ? "soap11" : "soap12";
+        String folder = spec.getName();
         XMLStreamReader parser;
         try {
             parser = StAXUtils.createXMLStreamReader(AbstractTestCase.getTestResource("soap/" + folder + "/" + name));
@@ -61,6 +57,6 @@ public class SOAPTestCase extends AxiomTestCase {
             fail("Failed to get test message " + name + ": " + ex.getMessage());
             return null;
         }
-        return new StAXSOAPModelBuilder(parser, soapFactory, envelopeNamespaceURI).getSOAPEnvelope();
+        return new StAXSOAPModelBuilder(parser, soapFactory, spec.getEnvelopeNamespaceURI()).getSOAPEnvelope();
     }
 }

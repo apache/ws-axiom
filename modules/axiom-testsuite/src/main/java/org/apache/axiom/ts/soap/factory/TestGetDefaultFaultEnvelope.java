@@ -20,14 +20,15 @@ package org.apache.axiom.ts.soap.factory;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
  * Tests the behavior of {@link org.apache.axiom.soap.SOAPFactory#getDefaultFaultEnvelope()}.
  */
 public class TestGetDefaultFaultEnvelope extends SOAPTestCase {
-    public TestGetDefaultFaultEnvelope(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
-        super(metaFactory, envelopeNamespaceURI);
+    public TestGetDefaultFaultEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {
@@ -38,7 +39,7 @@ public class TestGetDefaultFaultEnvelope extends SOAPTestCase {
         assertNotNull(
                 "Default FaultEnvelope must have a SOAPFaultCode in it",
                 envelope.getBody().getFault().getCode());
-        if (!isSOAP11()) {
+        if (spec == SOAPSpec.SOAP12) {
             assertNotNull(
                     "Default FaultEnvelope must have a SOAPFaultCodeValue in it",
                     envelope.getBody().getFault().getCode().getValue());
@@ -46,7 +47,7 @@ public class TestGetDefaultFaultEnvelope extends SOAPTestCase {
         assertNotNull(
                 "Default FaultEnvelope must have a SOAPFaultReason in it",
                 envelope.getBody().getFault().getReason());
-        if (!isSOAP11()) {
+        if (spec == SOAPSpec.SOAP12) {
             assertNotNull(
                     "Default FaultEnvelope must have a SOAPFaultText in it",
                     envelope.getBody().getFault().getReason().getFirstSOAPText());

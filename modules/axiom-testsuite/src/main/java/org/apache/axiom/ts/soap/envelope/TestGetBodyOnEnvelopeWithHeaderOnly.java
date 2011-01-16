@@ -20,12 +20,13 @@ package org.apache.axiom.ts.soap.envelope;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 // Regression test for WSCOMMONS-526
 public class TestGetBodyOnEnvelopeWithHeaderOnly extends SOAPTestCase {
-    public TestGetBodyOnEnvelopeWithHeaderOnly(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
-        super(metaFactory, envelopeNamespaceURI);
+    public TestGetBodyOnEnvelopeWithHeaderOnly(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {

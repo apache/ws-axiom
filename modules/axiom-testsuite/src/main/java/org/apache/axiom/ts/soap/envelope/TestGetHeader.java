@@ -22,11 +22,12 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestGetHeader extends SOAPTestCase {
-    public TestGetHeader(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
-        super(metaFactory, envelopeNamespaceURI);
+    public TestGetHeader(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {
@@ -36,6 +37,6 @@ public class TestGetHeader extends SOAPTestCase {
                    header.getLocalName().equals(SOAPConstants.HEADER_LOCAL_NAME));
         assertTrue("Header Test : - Header namespace mismatch",
                    header.getNamespace().getNamespaceURI().equals(
-                           envelopeNamespaceURI));
+                           spec.getEnvelopeNamespaceURI()));
     }
 }

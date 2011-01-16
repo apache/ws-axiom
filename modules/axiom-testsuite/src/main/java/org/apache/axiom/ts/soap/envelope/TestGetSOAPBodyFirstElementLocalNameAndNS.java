@@ -21,11 +21,12 @@ package org.apache.axiom.ts.soap.envelope;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestGetSOAPBodyFirstElementLocalNameAndNS extends SOAPTestCase {
-    public TestGetSOAPBodyFirstElementLocalNameAndNS(OMMetaFactory metaFactory, String envelopeNamespaceURI) {
-        super(metaFactory, envelopeNamespaceURI);
+    public TestGetSOAPBodyFirstElementLocalNameAndNS(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {
