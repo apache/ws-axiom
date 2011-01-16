@@ -23,12 +23,14 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.SOAPTestSuiteBuilder;
+import org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope;
 import org.apache.axiom.ts.soap.faultdetail.TestWSCommons202;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
         SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMDOMMetaFactory());
         builder.exclude(TestWSCommons202.class);
+        builder.exclude(TestGetDefaultFaultEnvelope.class);
         return builder.build();
     }
 }

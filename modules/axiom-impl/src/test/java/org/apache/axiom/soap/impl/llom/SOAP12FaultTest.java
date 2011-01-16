@@ -35,21 +35,6 @@ public class SOAP12FaultTest extends SOAP12FaultTestBase {
         SOAPFactory soapFactory = omMetaFactory.getSOAP12Factory();
         SOAPEnvelope envelope = soapFactory.getDefaultFaultEnvelope();
 
-        assertNotNull("Default FaultEnvelope must have a SOAPFault in it",
-                      envelope.getBody().getFault());
-        assertNotNull(
-                "Default FaultEnvelope must have a SOAPFaultCode in it",
-                envelope.getBody().getFault().getCode());
-        assertNotNull(
-                "Default FaultEnvelope must have a SOAPFaultCodeValue in it",
-                envelope.getBody().getFault().getCode().getValue());
-        assertNotNull(
-                "Default FaultEnvelope must have a SOAPFaultReason in it",
-                envelope.getBody().getFault().getReason());
-        assertNotNull(
-                "Default FaultEnvelope must have a SOAPFaultText in it",
-                envelope.getBody().getFault().getReason().getFirstSOAPText());
-
         SOAPEnvelope soapEnvelope = soapFactory.getDefaultFaultEnvelope();
         String errorCodeString = "Some Error occurred !!";
         soapEnvelope.getBody().getFault().getCode().getValue().setText(
