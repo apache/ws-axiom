@@ -25,12 +25,17 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.SOAPTestSuiteBuilder;
 import org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope;
 import org.apache.axiom.ts.soap.faultdetail.TestWSCommons202;
+import org.apache.axiom.ts.soap12.fault.TestMoreChildrenAddition;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
         SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMDOMMetaFactory());
         builder.exclude(TestWSCommons202.class);
         builder.exclude(TestGetDefaultFaultEnvelope.class);
+        
+        // TODO: not sure if this is an issue in DOOM or if the test case is wrong
+        builder.exclude(TestMoreChildrenAddition.class);
+        
         return builder.build();
     }
 }

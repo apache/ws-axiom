@@ -16,17 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.soap;
+package org.apache.axiom.ts.soap12.fault;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class SOAP12FaultTestBase extends SOAPFaultTestBase {
-    public SOAP12FaultTestBase(OMMetaFactory omMetaFactory) {
-        super(omMetaFactory, SOAPSpec.SOAP12);
+public class TestSetNode extends SOAPTestCase {
+    public TestSetNode(OMMetaFactory metaFactory) {
+        super(metaFactory, SOAPSpec.SOAP12);
     }
 
-    public void testSetNode() {
+    protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
         soapFault.setNode(soapFactory.createSOAPFaultNode(soapFault));
         assertFalse(
@@ -42,30 +45,5 @@ public class SOAP12FaultTestBase extends SOAPFaultTestBase {
         } catch (Exception e) {
             assertTrue(true);
         }
-    }
-
-    public void testGetNode() {
-        SOAPFault soapFault = soapFactory.createSOAPFault();
-        assertTrue(
-                "SOAP 1.2 Fault Test:- After creating a SOAP12Fault, it has a node",
-                soapFault.getNode() == null);
-        soapFault.setNode(soapFactory.createSOAPFaultNode(soapFault));
-        assertFalse(
-                "SOAP 1.2 Fault Test:- After calling setNode method, Fault has no node",
-                soapFault.getNode() == null);
-        assertTrue("SOAP 1.2 Fault Test:- Fault node local name mismatch",
-                   soapFault.getNode().getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME));
-    }
-
-    public void testGetNodeWithParser() {
-        SOAPFault soapFaultWithParser = getTestMessage(MESSAGE).getBody().getFault();
-        assertFalse(
-                "SOAP 1.2 Fault Test with parser: - getNode method returns null",
-                soapFaultWithParser.getNode() == null);
-        assertTrue(
-                "SOAP 1.2 Fault Test with parser: - Fault node local name mismatch",
-                soapFaultWithParser.getNode().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME));
     }
 }

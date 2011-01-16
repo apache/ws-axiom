@@ -20,7 +20,7 @@ package org.apache.axiom.ts.soap.body;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
-import org.apache.axiom.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestHasFaultWithParser extends SOAPTestCase {

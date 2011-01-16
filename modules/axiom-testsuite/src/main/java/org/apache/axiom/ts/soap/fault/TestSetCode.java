@@ -16,25 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap.body;
+package org.apache.axiom.ts.soap.fault;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAPBody;
-import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestAddFault1 extends SOAPTestCase {
-    public TestAddFault1(OMMetaFactory metaFactory, SOAPSpec spec) {
+public class TestSetCode extends SOAPTestCase {
+    public TestSetCode(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
-        SOAPBody body = soapFactory.createSOAPBody(envelope);
-        body.addFault(new Exception("This an exception for testing"));
-        assertTrue(
-                "Body Test:- After calling addFault method, SOAP body has no fault",
-                body.hasFault());
+        SOAPFault soapFault = soapFactory.createSOAPFault();
+        soapFault.setCode(soapFactory.createSOAPFaultCode(soapFault));
+        assertNotNull(
+                "Fault Test:- After calling setCode method, Fault has no code",
+                soapFault.getCode());
+        assertTrue("Fault Test:- Code local name mismatch",
+                   soapFault.getCode().getLocalName().equals(
+                           spec.getFaultCodeLocalName()));
+        try {
+            soapFault.setCode(altSoapFactory.createSOAPFaultCode());
+            fail("SOAPFaultCode should not be set in to a SOAPFault for a different SOAP version");
+        } catch (Exception e) {
+            // Expected
+        }
     }
 }

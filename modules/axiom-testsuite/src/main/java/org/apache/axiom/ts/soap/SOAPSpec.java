@@ -16,9 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.soap;
+package org.apache.axiom.ts.soap;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAP11Constants;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPVersion;
 
 /**
  * Describes the characteristics of a given SOAP version. This is similar to {@link SOAPVersion},
@@ -32,6 +36,10 @@ public interface SOAPSpec {
         
         public SOAPFactory getFactory(OMMetaFactory metaFactory) {
             return metaFactory.getSOAP11Factory();
+        }
+
+        public SOAPFactory getAltFactory(OMMetaFactory metaFactory) {
+            return metaFactory.getSOAP12Factory();
         }
 
         public String getEnvelopeNamespaceURI() {
@@ -64,6 +72,10 @@ public interface SOAPSpec {
             return metaFactory.getSOAP12Factory();
         }
 
+        public SOAPFactory getAltFactory(OMMetaFactory metaFactory) {
+            return metaFactory.getSOAP11Factory();
+        }
+
         public String getEnvelopeNamespaceURI() {
             return SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI;
         }
@@ -87,6 +99,7 @@ public interface SOAPSpec {
     
     String getName();
     SOAPFactory getFactory(OMMetaFactory metaFactory);
+    SOAPFactory getAltFactory(OMMetaFactory metaFactory);
     String getEnvelopeNamespaceURI();
     String getFaultCodeLocalName();
     String getFaultReasonLocalName();

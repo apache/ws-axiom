@@ -16,23 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap12.fault;
 
-package org.apache.axiom.soap.impl.llom;
-
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAP12FaultTestBase;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultCode;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class SOAP12FaultTest extends SOAP12FaultTestBase {
-    public SOAP12FaultTest() {
-        super(new OMLinkedListMetaFactory());
+public class TestMoreChildrenAddition extends SOAPTestCase {
+    public TestMoreChildrenAddition(OMMetaFactory metaFactory) {
+        super(metaFactory, SOAPSpec.SOAP12);
     }
 
-    // TODO: the same test fails with DOOM; not sure if this is an issue in DOOM or if the test case is wrong
-    public void testMoreChildrenAddition() {
-        SOAPFactory soapFactory = omMetaFactory.getSOAP12Factory();
+    protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultFaultEnvelope();
 
         SOAPEnvelope soapEnvelope = soapFactory.getDefaultFaultEnvelope();

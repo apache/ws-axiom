@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPSpec;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -36,6 +35,7 @@ public class SOAPTestCase extends AxiomTestCase {
     
     protected final SOAPSpec spec;
     protected SOAPFactory soapFactory;
+    protected SOAPFactory altSoapFactory;
     
     public SOAPTestCase(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory);
@@ -46,6 +46,7 @@ public class SOAPTestCase extends AxiomTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         soapFactory = spec.getFactory(metaFactory);
+        altSoapFactory = spec.getAltFactory(metaFactory);
     }
 
     protected SOAPEnvelope getTestMessage(String name) {

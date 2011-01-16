@@ -16,28 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.soap;
+package org.apache.axiom.ts.soap11.fault;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class SOAP11FaultTestBase extends SOAPFaultTestBase {
-    public SOAP11FaultTestBase(OMMetaFactory omMetaFactory) {
-        super(omMetaFactory, SOAPSpec.SOAP11);
-    }
-    
-    public void testSetNode() {
-        SOAPFault soapFault = soapFactory.createSOAPFault();
-        try {
-            soapFault.setNode(soapFactory.createSOAPFaultNode(soapFault));
-        } catch (UnsupportedOperationException e) {
-            // Exactly!
-            return;
-        }
-        fail("Didn't get UnsupportedOperationException");
+public class TestGetNode extends SOAPTestCase {
+    public TestGetNode(OMMetaFactory metaFactory) {
+        super(metaFactory, SOAPSpec.SOAP11);
     }
 
-    public void testGetNode() {
+    protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
         // TODO: LLOM returns null while DOM throws UnsupportedOperationException
         try {
@@ -48,5 +39,4 @@ public class SOAP11FaultTestBase extends SOAPFaultTestBase {
             // This is also fine.
         }
     }
-
 }

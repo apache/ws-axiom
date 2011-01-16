@@ -22,7 +22,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.axiom.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestGetHeaderWithParser extends SOAPTestCase {

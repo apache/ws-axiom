@@ -16,25 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap.body;
+package org.apache.axiom.ts.soap.fault;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAPBody;
-import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestAddFault1 extends SOAPTestCase {
-    public TestAddFault1(OMMetaFactory metaFactory, SOAPSpec spec) {
+public class TestSetDetail extends SOAPTestCase {
+    public TestSetDetail(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
-        SOAPBody body = soapFactory.createSOAPBody(envelope);
-        body.addFault(new Exception("This an exception for testing"));
-        assertTrue(
-                "Body Test:- After calling addFault method, SOAP body has no fault",
-                body.hasFault());
+        SOAPFault soapFault = soapFactory.createSOAPFault();
+        soapFault.setDetail(soapFactory.createSOAPFaultDetail(soapFault));
+        assertFalse(
+                "Fault Test:- After calling setDetail method, Fault has no detail",
+                soapFault.getDetail() == null);
+        assertTrue("Fault Test:- Fault detail local name mismatch",
+                   soapFault.getDetail().getLocalName().equals(
+                           spec.getFaultDetailLocalName()));
+        try {
+            soapFault.setDetail(altSoapFactory.createSOAPFaultDetail());
+            fail("SOAPFaultDetail should not be set in to a SOAPFault for a different SOAP version");
+        } catch (Exception e) {
+            assertTrue(true);
+        }
     }
 }
