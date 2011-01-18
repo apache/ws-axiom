@@ -23,6 +23,8 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.OMTestSuiteBuilder;
+import org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace;
+import org.apache.axiom.ts.om.element.TestResolveQNameWithoutNamespace;
 import org.apache.axiom.ts.om.element.TestSetTextQName;
 
 public class OMImplementationTest extends TestCase {
@@ -38,6 +40,10 @@ public class OMImplementationTest extends TestCase {
         // TODO: these need to be investigated; may be related to AXIOM-315
         builder.exclude(org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant.class);
         builder.exclude(org.apache.axiom.ts.om.element.TestSerializeAndConsumeWithIncompleteDescendant.class);
+        
+        // TODO: resolveQName appears to have issues resolving QNames without prefixes; needs further investigation
+        builder.exclude(TestResolveQNameWithDefaultNamespace.class);
+        builder.exclude(TestResolveQNameWithoutNamespace.class);
         
         return builder.build();
     }

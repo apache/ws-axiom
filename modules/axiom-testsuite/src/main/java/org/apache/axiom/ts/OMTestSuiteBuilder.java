@@ -64,6 +64,9 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithNameOnIncompleteElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithNonDefaultNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "D", "D",
                 "<person xmlns=\"urn:ns\"><name>John</name><age>34</age><weight>50</weight></person>"));
         addTest(new org.apache.axiom.ts.om.element.TestSerialization(metaFactory, "D", "U",
