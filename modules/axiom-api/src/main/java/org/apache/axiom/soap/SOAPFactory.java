@@ -39,7 +39,15 @@ public interface SOAPFactory extends OMFactory {
 
     SOAPMessage createSOAPMessage(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper);
 
-    /** @return Returns SOAPEnvelope. */
+    /**
+     * Create a SOAP envelope. The returned element will have the namespace URI specified by the
+     * SOAP version that this factory represents. It will have the prefix given by
+     * {@link SOAPConstants#SOAP_DEFAULT_NAMESPACE_PREFIX}. It will also have a corresponding
+     * namespace declaration.
+     * 
+     * @return the SOAP envelope
+     */
+    // TODO: when does this thing throw a SOAPProcessingException??
     SOAPEnvelope createSOAPEnvelope() throws SOAPProcessingException;
     
     SOAPEnvelope createSOAPEnvelope(OMNamespace ns); 

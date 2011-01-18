@@ -43,6 +43,7 @@ public class SOAPTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetHeader(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetHeaderWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetSOAPBodyFirstElementLocalNameAndNS(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetCode(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestGetCodeWithParser(metaFactory, spec));
