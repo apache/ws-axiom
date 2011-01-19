@@ -18,9 +18,6 @@
  */
 package org.apache.axiom.om.impl;
 
-import java.io.InputStream;
-import java.io.Reader;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -31,6 +28,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
+import org.xml.sax.InputSource;
 
 /**
  * Base class for {@link OMMetaFactory} implementations that make use of the standard builders
@@ -47,17 +45,22 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         return builder;
     }
 
-    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputStream in) {
+    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputSource is) {
         try {
-            return createStAXOMBuilder(omFactory, StAXUtils.createXMLStreamReader(configuration, in));
-        } catch (XMLStreamException ex) {
-            throw new OMException(ex);
-        }
-    }
-
-    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, Reader in) {
-        try {
-            return createStAXOMBuilder(omFactory, StAXUtils.createXMLStreamReader(configuration, in));
+            XMLStreamReader reader;
+            if (is.getByteStream() != null) {
+                String encoding = is.getEncoding();
+                if (encoding == null) {
+                    reader = StAXUtils.createXMLStreamReader(configuration, is.getByteStream());
+                } else {
+                    reader = StAXUtils.createXMLStreamReader(configuration, is.getByteStream(), encoding);
+                }
+            } else if (is.getCharacterStream() != null) {
+                reader = StAXUtils.createXMLStreamReader(configuration, is.getCharacterStream());
+            } else {
+                throw new IllegalArgumentException();
+            }
+            return createStAXOMBuilder(omFactory, reader);
         } catch (XMLStreamException ex) {
             throw new OMException(ex);
         }

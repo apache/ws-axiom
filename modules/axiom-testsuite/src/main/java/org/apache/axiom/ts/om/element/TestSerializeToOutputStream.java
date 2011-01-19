@@ -29,6 +29,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.ConformanceTestCase;
@@ -60,7 +61,7 @@ public class TestSerializeToOutputStream extends ConformanceTestCase {
         }
         in = getFileAsStream();
         try {
-            OMXMLParserWrapper builder = metaFactory.createOMBuilder(metaFactory.getOMFactory(),
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                     StAXParserConfiguration.PRESERVE_CDATA_SECTIONS, in);
             try {
                 OMElement element = builder.getDocumentElement();

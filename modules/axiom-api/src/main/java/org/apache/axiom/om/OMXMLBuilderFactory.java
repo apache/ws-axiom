@@ -24,6 +24,7 @@ import java.io.Reader;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.xml.sax.InputSource;
 
 /**
  * Provides static factory methods to create various kinds of object model builders from different
@@ -83,7 +84,7 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, InputStream in) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
-        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), configuration, in);
+        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), configuration, new InputSource(in));
     }
     
     /**
@@ -114,7 +115,7 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputStream in) {
-        return omFactory.getMetaFactory().createOMBuilder(omFactory, configuration, in);
+        return omFactory.getMetaFactory().createOMBuilder(omFactory, configuration, new InputSource(in));
     }
     
     /**
@@ -142,7 +143,7 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, Reader in) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
-        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), configuration, in);
+        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), configuration, new InputSource(in));
     }
     
     /**
@@ -173,6 +174,6 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, Reader in) {
-        return omFactory.getMetaFactory().createOMBuilder(omFactory, configuration, in);
+        return omFactory.getMetaFactory().createOMBuilder(omFactory, configuration, new InputSource(in));
     }
 }

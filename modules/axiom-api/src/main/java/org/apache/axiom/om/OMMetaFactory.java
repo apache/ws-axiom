@@ -19,13 +19,11 @@
 
 package org.apache.axiom.om;
 
-import java.io.InputStream;
-import java.io.Reader;
-
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
+import org.xml.sax.InputSource;
 
 /**
  * Object model meta factory.
@@ -78,31 +76,16 @@ public interface OMMetaFactory {
     
     /**
      * Create an object model builder that reads an XML document from the provided input
-     * stream.
+     * source.
      * 
      * @param omFactory
      *            the object model factory to use; must be obtained from the same
      *            {@link OMMetaFactory}
      * @param configuration
      *            the parser configuration to use
-     * @param in
-     *            the input stream representing the XML document
+     * @param is
+     *            the source of the XML document
      * @return the builder
      */
-    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputStream in);
-    
-    /**
-     * Create an object model builder that reads an XML document from the provided character
-     * stream.
-     * 
-     * @param omFactory
-     *            the object model factory to use; must be obtained from the same
-     *            {@link OMMetaFactory}
-     * @param configuration
-     *            the parser configuration to use
-     * @param in
-     *            the character stream representing the XML document
-     * @return the builder
-     */
-    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, Reader in);
+    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputSource is);
 }
