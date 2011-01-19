@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.xml.sax.InputSource;
 
 /**
@@ -35,6 +36,25 @@ import org.xml.sax.InputSource;
  * ({@link org.apache.axiom.om.impl.builder.StAXOMBuilder} and its subclasses).
  */
 public abstract class AbstractOMMetaFactory implements OMMetaFactory {
+    private XMLStreamReader createXMLStreamReader(StAXParserConfiguration configuration, InputSource is) {
+        try {
+            if (is.getByteStream() != null) {
+                String encoding = is.getEncoding();
+                if (encoding == null) {
+                    return StAXUtils.createXMLStreamReader(configuration, is.getByteStream());
+                } else {
+                    return StAXUtils.createXMLStreamReader(configuration, is.getByteStream(), encoding);
+                }
+            } else if (is.getCharacterStream() != null) {
+                return StAXUtils.createXMLStreamReader(configuration, is.getCharacterStream());
+            } else {
+                throw new IllegalArgumentException();
+            }
+        } catch (XMLStreamException ex) {
+            throw new OMException(ex);
+        }
+    }
+    
     public OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
         StAXOMBuilder builder = new StAXOMBuilder(omFactory, parser);
         // StAXOMBuilder defaults to the "legacy" behavior, which is to keep a reference to the
@@ -46,23 +66,16 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
     }
 
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputSource is) {
-        try {
-            XMLStreamReader reader;
-            if (is.getByteStream() != null) {
-                String encoding = is.getEncoding();
-                if (encoding == null) {
-                    reader = StAXUtils.createXMLStreamReader(configuration, is.getByteStream());
-                } else {
-                    reader = StAXUtils.createXMLStreamReader(configuration, is.getByteStream(), encoding);
-                }
-            } else if (is.getCharacterStream() != null) {
-                reader = StAXUtils.createXMLStreamReader(configuration, is.getCharacterStream());
-            } else {
-                throw new IllegalArgumentException();
-            }
-            return createStAXOMBuilder(omFactory, reader);
-        } catch (XMLStreamException ex) {
-            throw new OMException(ex);
-        }
+        return createStAXOMBuilder(omFactory, createXMLStreamReader(configuration, is));
+    }
+
+    public OMXMLParserWrapper createStAXSOAPModelBuilder(XMLStreamReader parser) {
+        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(this, parser);
+        builder.releaseParserOnClose(true);
+        return builder;
+    }
+
+    public OMXMLParserWrapper createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is) {
+        return createStAXSOAPModelBuilder(createXMLStreamReader(configuration, is));
     }
 }

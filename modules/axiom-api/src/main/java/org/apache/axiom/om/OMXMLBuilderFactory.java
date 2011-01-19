@@ -24,6 +24,7 @@ import java.io.Reader;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.apache.axiom.soap.SOAPFactory;
 import org.xml.sax.InputSource;
 
 /**
@@ -175,5 +176,23 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, Reader in) {
         return omFactory.getMetaFactory().createOMBuilder(omFactory, configuration, new InputSource(in));
+    }
+    
+    /**
+     * Create an object model builder for SOAP that reads a message from the provided input stream,
+     * using a given charset encoding. The method will select the appropriate {@link SOAPFactory}
+     * based on the namespace URI of the SOAP envelope. It will configure the underlying parser as
+     * specified by {@link StAXParserConfiguration#SOAP}.
+     * 
+     * @param in
+     *            the input stream containing the SOAP message
+     * @param encoding
+     *            the charset encoding
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createSOAPModelBuilder(InputStream in, String encoding) {
+        InputSource is = new InputSource(in);
+        is.setEncoding(encoding);
+        return OMAbstractFactory.getMetaFactory().createSOAPModelBuilder(StAXParserConfiguration.SOAP, is);
     }
 }

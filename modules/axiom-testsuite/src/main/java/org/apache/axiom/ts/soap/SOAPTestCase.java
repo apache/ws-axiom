@@ -18,16 +18,16 @@
  */
 package org.apache.axiom.ts.soap;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+import java.io.InputStream;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.xml.sax.InputSource;
 
 public class SOAPTestCase extends AxiomTestCase {
     protected static final String MESSAGE = "message.xml";
@@ -50,14 +50,10 @@ public class SOAPTestCase extends AxiomTestCase {
     }
 
     protected SOAPEnvelope getTestMessage(String name) {
-        String folder = spec.getName();
-        XMLStreamReader parser;
-        try {
-            parser = StAXUtils.createXMLStreamReader(AbstractTestCase.getTestResource("soap/" + folder + "/" + name));
-        } catch (XMLStreamException ex) {
-            fail("Failed to get test message " + name + ": " + ex.getMessage());
-            return null;
-        }
-        return new StAXSOAPModelBuilder(parser, soapFactory, spec.getEnvelopeNamespaceURI()).getSOAPEnvelope();
+        InputStream in = AbstractTestCase.getTestResource("soap/" + spec.getName() + "/" + name);
+        SOAPEnvelope envelope = (SOAPEnvelope)metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP,
+                new InputSource(in)).getDocumentElement();
+        assertSame(spec.getEnvelopeNamespaceURI(), ((SOAPFactory)envelope.getOMFactory()).getSoapVersionURI());
+        return envelope;
     }
 }
