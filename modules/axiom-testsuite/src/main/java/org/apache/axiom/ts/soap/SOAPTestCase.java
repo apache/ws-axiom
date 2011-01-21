@@ -22,10 +22,12 @@ import java.io.InputStream;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.InputSource;
 
@@ -55,5 +57,12 @@ public class SOAPTestCase extends AxiomTestCase {
                 new InputSource(in)).getDocumentElement();
         assertSame(spec.getEnvelopeNamespaceURI(), ((SOAPFactory)envelope.getOMFactory()).getSoapVersionURI());
         return envelope;
+    }
+
+    protected SOAPHeaderBlock createSOAPHeaderBlock() {
+        OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");;
+        SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
+        SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
+        return soapFactory.createSOAPHeaderBlock("testHeaderBlock", namespace, soapHeader);
     }
 }

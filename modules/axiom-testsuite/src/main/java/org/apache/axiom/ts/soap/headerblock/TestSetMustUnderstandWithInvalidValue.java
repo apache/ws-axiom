@@ -16,21 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.soap;
+package org.apache.axiom.ts.soap.headerblock;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class SOAPHeaderBlockTestBase extends UnifiedSOAPTestCase {
-    public SOAPHeaderBlockTestBase(OMMetaFactory omMetaFactory, String envelopeNamespaceURI) {
-        super(omMetaFactory, envelopeNamespaceURI);
+public class TestSetMustUnderstandWithInvalidValue extends SOAPTestCase {
+    public TestSetMustUnderstandWithInvalidValue(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
-    
-    protected SOAPHeaderBlock createSOAPHeaderBlock() {
-        OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");;
-        SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
-        SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
-        return soapFactory.createSOAPHeaderBlock("testHeaderBlock", namespace, soapHeader);
+
+    protected void runTest() throws Throwable {
+        SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
+        try {
+            soapHeaderBlock.setMustUnderstand("otherValue");
+            fail(
+                    "SOAP HeaderBlock Test : - MustUnderstand value can not be set to any value rather than 1 , 0 , true , false");
+
+        } catch (Exception e) {
+            assertTrue(true);
+        }
     }
 }

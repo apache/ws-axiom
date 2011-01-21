@@ -20,7 +20,9 @@ package org.apache.axiom.ts.soap;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAP11Constants;
+import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPVersion;
 
@@ -28,8 +30,8 @@ import org.apache.axiom.soap.SOAPVersion;
  * Describes the characteristics of a given SOAP version. This is similar to {@link SOAPVersion},
  * but is designed specifically for the test suite.
  */
-public interface SOAPSpec {
-    SOAPSpec SOAP11 = new SOAPSpec() {
+public abstract class SOAPSpec {
+    public static final SOAPSpec SOAP11 = new SOAPSpec(SOAP11Version.getSingleton()) {
         public String getName() {
             return "soap11";
         }
@@ -63,7 +65,7 @@ public interface SOAPSpec {
         }
     };
 
-    SOAPSpec SOAP12 = new SOAPSpec() {
+    public static final SOAPSpec SOAP12 = new SOAPSpec(SOAP12Version.getSingleton()) {
         public String getName() {
             return "soap12";
         }
@@ -97,12 +99,22 @@ public interface SOAPSpec {
         }
     };
     
-    String getName();
-    SOAPFactory getFactory(OMMetaFactory metaFactory);
-    SOAPFactory getAltFactory(OMMetaFactory metaFactory);
-    String getEnvelopeNamespaceURI();
-    String getFaultCodeLocalName();
-    String getFaultReasonLocalName();
-    String getFaultRoleLocalName();
-    String getFaultDetailLocalName();
+    private final SOAPVersion version;
+    
+    public SOAPSpec(SOAPVersion version) {
+        this.version = version;
+    }
+    
+    public abstract String getName();
+    public abstract SOAPFactory getFactory(OMMetaFactory metaFactory);
+    public abstract SOAPFactory getAltFactory(OMMetaFactory metaFactory);
+    public abstract String getEnvelopeNamespaceURI();
+    public abstract String getFaultCodeLocalName();
+    public abstract String getFaultReasonLocalName();
+    public abstract String getFaultRoleLocalName();
+    public abstract String getFaultDetailLocalName();
+
+    public String getNextRoleURI() {
+        return version.getNextRoleURI();
+    }
 }

@@ -62,6 +62,16 @@ public class SOAPTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.faultdetail.TestGetAllDetailEntriesWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.faultdetail.TestSerialization(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.faultdetail.TestWSCommons202(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.header.TestAddHeaderBlock(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.header.TestExamineAllHeaderBlocks(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.header.TestExamineHeaderBlocks(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.header.TestGetHeaderBlocksWithNSURI(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestGetMustUnderstand(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestGetRole(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstand(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandString01(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandWithInvalidValue(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestSetRole(metaFactory, spec));
     }
     
     protected void addTests() {
