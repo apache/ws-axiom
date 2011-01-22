@@ -33,10 +33,9 @@ public class TestGetBody extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
         SOAPBody body = envelope.getBody();
-        assertTrue("Body Test : - Body local name mismatch",
-                   body.getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME));
-        assertTrue("Body Test : - Body namespace mismatch",
-                   body.getNamespace().getNamespaceURI().equals(
-                           spec.getEnvelopeNamespaceURI()));
+        assertEquals("Body Test : - Body local name mismatch",
+                SOAPConstants.BODY_LOCAL_NAME, body.getLocalName());
+        assertEquals("Body Test : - Body namespace mismatch",
+                spec.getEnvelopeNamespaceURI(), body.getNamespace().getNamespaceURI());
     }
 }

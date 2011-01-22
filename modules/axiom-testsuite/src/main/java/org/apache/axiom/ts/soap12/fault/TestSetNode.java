@@ -32,12 +32,11 @@ public class TestSetNode extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
         soapFault.setNode(soapFactory.createSOAPFaultNode(soapFault));
-        assertFalse(
+        assertNotNull(
                 "SOAP 1.2 Fault Test:- After calling setNode method, Fault has no node",
-                soapFault.getNode() == null);
-        assertTrue("SOAP 1.2 Fault Test:- Fault node local name mismatch",
-                   soapFault.getNode().getLocalName().equals(
-                           SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME));
+                soapFault.getNode());
+        assertEquals("SOAP 1.2 Fault Test:- Fault node local name mismatch",
+                SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, soapFault.getNode().getLocalName());
         try {
             soapFault.setNode(altSoapFactory.createSOAPFaultNode());
             fail("SOAP11FaultNode should nott be set in to a SOAP12Fault");

@@ -31,12 +31,11 @@ public class TestSetReason extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
         soapFault.setReason(soapFactory.createSOAPFaultReason(soapFault));
-        assertFalse(
+        assertNotNull(
                 "Fault Test:- After calling setReason method, Fault has no reason",
-                soapFault.getReason() == null);
-        assertTrue("Fault Test:- Fault reason local name mismatch",
-                   soapFault.getReason().getLocalName().equals(
-                           spec.getFaultReasonLocalName()));
+                soapFault.getReason());
+        assertEquals("Fault Test:- Fault reason local name mismatch",
+                spec.getFaultReasonLocalName(), soapFault.getReason().getLocalName());
         try {
             soapFault.setReason(altSoapFactory.createSOAPFaultReason());
             fail("SOAPFaultReason should not be set in to a SOAPFault for a different SOAP version");

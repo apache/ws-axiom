@@ -32,10 +32,9 @@ public class TestSetRole extends SOAPTestCase {
         SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
         soapHeaderBlock.setRole(
                 "http://example.org/my-role");
-        assertTrue(
+        assertEquals(
                 "SOAP HeaderBlock Test : - After calling setRole method, getRole method returns incorrect role value",
-                soapHeaderBlock.getRole().equals(
-                        "http://example.org/my-role"));
+                "http://example.org/my-role", soapHeaderBlock.getRole());
         try {
             soapHeaderBlock.setRole("Any Value");
         } catch (Exception e) {

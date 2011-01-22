@@ -32,9 +32,9 @@ public class TestGetNode extends SOAPTestCase {
         SOAPFault soapFault = soapFactory.createSOAPFault();
         // TODO: LLOM returns null while DOM throws UnsupportedOperationException
         try {
-            assertTrue(
+            assertNull(
                     "SOAP 1.1 Fault Test:- After creating a SOAP11Fault, it has a node",
-                    soapFault.getNode() == null);
+                    soapFault.getNode());
         } catch (UnsupportedOperationException ex) {
             // This is also fine.
         }

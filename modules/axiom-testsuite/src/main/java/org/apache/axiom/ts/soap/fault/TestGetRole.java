@@ -30,15 +30,14 @@ public class TestGetRole extends SOAPTestCase {
 
     protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
-        assertTrue(
+        assertNull(
                 "Fault Test:- After creating a SOAPFault, it has a role",
-                soapFault.getRole() == null);
+                soapFault.getRole());
         soapFault.setRole(soapFactory.createSOAPFaultRole(soapFault));
-        assertFalse(
+        assertNotNull(
                 "Fault Test:- After calling setRole method, Fault has no role",
-                soapFault.getRole() == null);
-        assertTrue("Fault Test:- Fault role local name mismatch",
-                   soapFault.getRole().getLocalName().equals(
-                           spec.getFaultRoleLocalName()));
+                soapFault.getRole());
+        assertEquals("Fault Test:- Fault role local name mismatch",
+                spec.getFaultRoleLocalName(), soapFault.getRole().getLocalName());
     }
 }

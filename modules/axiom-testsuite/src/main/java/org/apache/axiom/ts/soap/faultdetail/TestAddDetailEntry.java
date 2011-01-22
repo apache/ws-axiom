@@ -48,29 +48,27 @@ public class TestAddDetailEntry extends SOAPTestCase {
                 soapFactory.createOMElement("DetailEntry2", omNamespace));
         Iterator iterator = soapFaultDetail.getAllDetailEntries();
         OMElement detailEntry1 = (OMElement) iterator.next();
-        assertFalse(
+        assertNotNull(
                 "SOAP Fault Detail Test : - After calling addDetailEntry method twice, getAllDetailEntries method returns empty iterator",
-                detailEntry1 == null);
-        assertTrue(
+                detailEntry1);
+        assertEquals(
                 "SOAP Fault Detail Test : - detailEntry1 local name mismatch",
-                detailEntry1.getLocalName().equals("DetailEntry1"));
-        assertTrue(
+                "DetailEntry1", detailEntry1.getLocalName());
+        assertEquals(
                 "SOAP Fault Detail Test : - detailEntry1 namespace uri mismatch",
-                detailEntry1.getNamespace().getNamespaceURI().equals(
-                        "http://www.test.org"));
+                "http://www.test.org", detailEntry1.getNamespace().getNamespaceURI());
         OMElement detailEntry2 = (OMElement) iterator.next();
-        assertFalse(
+        assertNotNull(
                 "SOAP Fault Detail Test : - After calling addDetailEntry method twice, getAllDetailEntries method returns an iterator with only one object",
-                detailEntry2 == null);
-        assertTrue(
+                detailEntry2);
+        assertEquals(
                 "SOAP Fault Detail Test : - detailEntry2 local name mismatch",
-                detailEntry2.getLocalName().equals("DetailEntry2"));
-        assertTrue(
+                "DetailEntry2", detailEntry2.getLocalName());
+        assertEquals(
                 "SOAP Fault Detail Test : - detailEntry2 namespace uri mismatch",
-                detailEntry2.getNamespace().getNamespaceURI().equals(
-                        "http://www.test.org"));
-        assertTrue(
+                "http://www.test.org", detailEntry2.getNamespace().getNamespaceURI());
+        assertFalse(
                 "SOAP Fault Detail Test : - After calling addDetailEntry method twice, getAllDetailEntries method returns an iterator with three objects",
-                !iterator.hasNext());
+                iterator.hasNext());
     }
 }

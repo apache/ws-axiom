@@ -33,10 +33,9 @@ public class TestGetHeaderWithParser extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = getTestMessage(MESSAGE);
         SOAPHeader header = envelope.getHeader();
-        assertTrue("Header Test : - Header local name mismatch",
-                   header.getLocalName().equals(SOAPConstants.HEADER_LOCAL_NAME));
-        assertTrue("Header Test : - Header namespace mismatch",
-                   header.getNamespace().getNamespaceURI().equals(
-                           spec.getEnvelopeNamespaceURI()));
+        assertEquals("Header Test : - Header local name mismatch",
+                SOAPConstants.HEADER_LOCAL_NAME, header.getLocalName());
+        assertEquals("Header Test : - Header namespace mismatch",
+                spec.getEnvelopeNamespaceURI(), header.getNamespace().getNamespaceURI());
     }
 }

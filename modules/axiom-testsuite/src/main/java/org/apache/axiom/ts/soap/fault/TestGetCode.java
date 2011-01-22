@@ -30,15 +30,14 @@ public class TestGetCode extends SOAPTestCase {
 
     protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
-        assertTrue(
+        assertNull(
                 "Fault Test:- After creating a SOAPFault, it has a code",
-                soapFault.getCode() == null);
+                soapFault.getCode());
         soapFault.setCode(soapFactory.createSOAPFaultCode(soapFault));
-        assertFalse(
+        assertNotNull(
                 "Fault Test:- After calling setCode method, Fault has no code",
-                soapFault.getCode() == null);
-        assertTrue("Fault Test:- Fault code local name mismatch",
-                   soapFault.getCode().getLocalName().equals(
-                           spec.getFaultCodeLocalName()));
+                soapFault.getCode());
+        assertEquals("Fault Test:- Fault code local name mismatch",
+                spec.getFaultCodeLocalName(), soapFault.getCode().getLocalName());
     }
 }

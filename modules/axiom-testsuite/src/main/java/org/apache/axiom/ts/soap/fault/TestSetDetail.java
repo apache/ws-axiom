@@ -31,12 +31,11 @@ public class TestSetDetail extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
         soapFault.setDetail(soapFactory.createSOAPFaultDetail(soapFault));
-        assertFalse(
+        assertNotNull(
                 "Fault Test:- After calling setDetail method, Fault has no detail",
-                soapFault.getDetail() == null);
-        assertTrue("Fault Test:- Fault detail local name mismatch",
-                   soapFault.getDetail().getLocalName().equals(
-                           spec.getFaultDetailLocalName()));
+                soapFault.getDetail());
+        assertEquals("Fault Test:- Fault detail local name mismatch",
+                spec.getFaultDetailLocalName(), soapFault.getDetail().getLocalName());
         try {
             soapFault.setDetail(altSoapFactory.createSOAPFaultDetail());
             fail("SOAPFaultDetail should not be set in to a SOAPFault for a different SOAP version");

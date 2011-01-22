@@ -41,29 +41,27 @@ public class TestAddHeaderBlock extends SOAPTestCase {
         soapHeader.addHeaderBlock("echoOk2", namespace);
         Iterator iterator = soapHeader.getChildren();
         SOAPHeaderBlock headerBlock1 = (SOAPHeaderBlock) iterator.next();
-        assertFalse(
+        assertNotNull(
                 "SOAP Header Test : - After calling addHeaderBlock method twice, getChildren method returns empty iterator",
-                headerBlock1 == null);
-        assertTrue("SOAP Header Test : - HeaderBlock1 local name mismatch",
-                   headerBlock1.getLocalName().equals("echoOk1"));
-        assertTrue(
+                headerBlock1);
+        assertEquals("SOAP Header Test : - HeaderBlock1 local name mismatch",
+                "echoOk1", headerBlock1.getLocalName());
+        assertEquals(
                 "SOAP Header Test : - HeaderBlock1 namespace uri mismatch",
-                headerBlock1.getNamespace().getNamespaceURI().equals(
-                        "http://www.example.org"));
+                "http://www.example.org", headerBlock1.getNamespace().getNamespaceURI());
 
         SOAPHeaderBlock headerBlock2 = (SOAPHeaderBlock) iterator.next();
-        assertFalse(
+        assertNotNull(
                 "SOAP Header Test : - After calling addHeaderBlock method twice, getChildren method returns an iterator with only one object",
-                headerBlock2 == null);
-        assertTrue("SOAP Header Test : - HeaderBlock2 local name mismatch",
-                   headerBlock2.getLocalName().equals("echoOk2"));
-        assertTrue(
+                headerBlock2);
+        assertEquals("SOAP Header Test : - HeaderBlock2 local name mismatch",
+                "echoOk2", headerBlock2.getLocalName());
+        assertEquals(
                 "SOAP Header Test : - HeaderBlock2 namespace uri mismatch",
-                headerBlock2.getNamespace().getNamespaceURI().equals(
-                        "http://www.example.org"));
+                "http://www.example.org", headerBlock2.getNamespace().getNamespaceURI());
 
-        assertTrue(
+        assertFalse(
                 "SOAP Header Test : - After calling addHeaderBlock method twice, getChildren method returns an iterator with more than two elements",
-                !iterator.hasNext());
+                iterator.hasNext());
     }
 }

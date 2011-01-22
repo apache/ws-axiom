@@ -30,12 +30,11 @@ public class TestGetReasonWithParser extends SOAPTestCase {
 
     protected void runTest() throws Throwable {
         SOAPFault soapFaultWithParser = getTestMessage(MESSAGE).getBody().getFault();
-        assertFalse(
+        assertNotNull(
                 "Fault Test with parser: - getReason method returns null",
-                soapFaultWithParser.getReason() == null);
-        assertTrue(
+                soapFaultWithParser.getReason());
+        assertEquals(
                 "Fault Test with parser: - Fault reason local name mismatch",
-                soapFaultWithParser.getReason().getLocalName().equals(
-                        spec.getFaultReasonLocalName()));
+                spec.getFaultReasonLocalName(), soapFaultWithParser.getReason().getLocalName());
     }
 }

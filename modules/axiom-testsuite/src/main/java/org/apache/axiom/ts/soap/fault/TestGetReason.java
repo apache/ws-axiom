@@ -30,15 +30,14 @@ public class TestGetReason extends SOAPTestCase {
 
     protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
-        assertTrue(
+        assertNull(
                 "Fault Test:- After creating a SOAPFault, it has a reason",
-                soapFault.getReason() == null);
+                soapFault.getReason());
         soapFault.setReason(soapFactory.createSOAPFaultReason(soapFault));
-        assertFalse(
+        assertNotNull(
                 "Fault Test:- After calling setReason method, Fault has no reason",
-                soapFault.getReason() == null);
-        assertTrue("Fault Test:- Fault reason local name mismatch",
-                   soapFault.getReason().getLocalName().equals(
-                           spec.getFaultReasonLocalName()));
+                soapFault.getReason());
+        assertEquals("Fault Test:- Fault reason local name mismatch",
+                spec.getFaultReasonLocalName(), soapFault.getReason().getLocalName());
     }
 }

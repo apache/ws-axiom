@@ -31,12 +31,11 @@ public class TestGetNodeWithParser extends SOAPTestCase {
 
     protected void runTest() throws Throwable {
         SOAPFault soapFaultWithParser = getTestMessage(MESSAGE).getBody().getFault();
-        assertFalse(
+        assertNotNull(
                 "SOAP 1.2 Fault Test with parser: - getNode method returns null",
-                soapFaultWithParser.getNode() == null);
-        assertTrue(
+                soapFaultWithParser.getNode());
+        assertEquals(
                 "SOAP 1.2 Fault Test with parser: - Fault node local name mismatch",
-                soapFaultWithParser.getNode().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME));
+                SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, soapFaultWithParser.getNode().getLocalName());
     }
 }

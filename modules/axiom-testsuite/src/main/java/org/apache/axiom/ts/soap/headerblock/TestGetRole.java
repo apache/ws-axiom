@@ -30,14 +30,13 @@ public class TestGetRole extends SOAPTestCase {
 
     protected void runTest() throws Throwable {
         SOAPHeaderBlock soapHeaderBlock = createSOAPHeaderBlock();
-        assertTrue(
+        assertNull(
                 "SOAP HeaderBlock Test : - After creating SOAPHeaderBlock, it has a role",
-                soapHeaderBlock.getRole() == null);
+                soapHeaderBlock.getRole());
         soapHeaderBlock.setRole(
                 "http://example.org/my-role");
-        assertTrue(
+        assertEquals(
                 "SOAP HeaderBlock Test : - After calling setRole method, getRole method returns incorrect role value",
-                soapHeaderBlock.getRole().equals(
-                        "http://example.org/my-role"));
+                "http://example.org/my-role", soapHeaderBlock.getRole());
     }
 }

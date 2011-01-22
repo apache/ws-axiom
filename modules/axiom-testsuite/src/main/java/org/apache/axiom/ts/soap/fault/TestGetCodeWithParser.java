@@ -33,9 +33,8 @@ public class TestGetCodeWithParser extends SOAPTestCase {
         assertNotNull(
                 "Fault Test with parser: - getCode method returns null",
                 soapFaultWithParser.getCode());
-        assertTrue(
+        assertEquals(
                 "Fault Test with parser: - Fault code local name mismatch",
-                soapFaultWithParser.getCode().getLocalName().equals(
-                        spec.getFaultCodeLocalName()));
+                spec.getFaultCodeLocalName(), soapFaultWithParser.getCode().getLocalName());
     }
 }

@@ -30,15 +30,14 @@ public class TestGetDetail extends SOAPTestCase {
 
     protected void runTest() throws Throwable {
         SOAPFault soapFault = soapFactory.createSOAPFault();
-        assertTrue(
+        assertNull(
                 "Fault Test:- After creating a SOAPFault, it has a detail",
-                soapFault.getDetail() == null);
+                soapFault.getDetail());
         soapFault.setDetail(soapFactory.createSOAPFaultDetail(soapFault));
-        assertFalse(
+        assertNotNull(
                 "Fault Test:- After calling setDetail method, Fault has no detail",
-                soapFault.getDetail() == null);
-        assertTrue("Fault Test:- Fault detail local name mismatch",
-                   soapFault.getDetail().getLocalName().equals(
-                           spec.getFaultDetailLocalName()));
+                soapFault.getDetail());
+        assertEquals("Fault Test:- Fault detail local name mismatch",
+                spec.getFaultDetailLocalName(), soapFault.getDetail().getLocalName());
     }
 }

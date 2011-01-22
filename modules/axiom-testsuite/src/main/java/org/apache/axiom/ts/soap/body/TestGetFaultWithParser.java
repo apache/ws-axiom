@@ -31,12 +31,11 @@ public class TestGetFaultWithParser extends SOAPTestCase {
 
     protected void runTest() throws Throwable {
         SOAPBody body = getTestMessage(MESSAGE).getBody();
-        assertFalse(
+        assertNotNull(
                 "Body Test With parser :- getFault method returns null",
-                body.getFault() == null);
-        assertTrue(
+                body.getFault());
+        assertEquals(
                 "Body Test With parser : - SOAP fault name mismatch",
-                body.getFault().getLocalName().equals(
-                        SOAPConstants.SOAPFAULT_LOCAL_NAME));
+                SOAPConstants.SOAPFAULT_LOCAL_NAME, body.getFault().getLocalName());
     }
 }
