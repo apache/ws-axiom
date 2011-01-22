@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
@@ -47,22 +49,6 @@ public abstract class SOAPSpec {
         public String getEnvelopeNamespaceURI() {
             return SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI;
         }
-
-        public String getFaultCodeLocalName() {
-            return SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME;
-        }
-
-        public String getFaultReasonLocalName() {
-            return SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME;
-        }
-
-        public String getFaultRoleLocalName() {
-            return SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME;
-        }
-        
-        public String getFaultDetailLocalName() {
-            return SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME;
-        }
     };
 
     public static final SOAPSpec SOAP12 = new SOAPSpec(SOAP12Version.getSingleton()) {
@@ -81,22 +67,6 @@ public abstract class SOAPSpec {
         public String getEnvelopeNamespaceURI() {
             return SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI;
         }
-
-        public String getFaultCodeLocalName() {
-            return SOAP12Constants.SOAP_FAULT_CODE_LOCAL_NAME;
-        }
-
-        public String getFaultReasonLocalName() {
-            return SOAP12Constants.SOAP_FAULT_REASON_LOCAL_NAME;
-        }
-
-        public String getFaultRoleLocalName() {
-            return SOAP12Constants.SOAP_FAULT_ROLE_LOCAL_NAME;
-        }
-        
-        public String getFaultDetailLocalName() {
-            return SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME;
-        }
     };
     
     private final SOAPVersion version;
@@ -109,10 +79,22 @@ public abstract class SOAPSpec {
     public abstract SOAPFactory getFactory(OMMetaFactory metaFactory);
     public abstract SOAPFactory getAltFactory(OMMetaFactory metaFactory);
     public abstract String getEnvelopeNamespaceURI();
-    public abstract String getFaultCodeLocalName();
-    public abstract String getFaultReasonLocalName();
-    public abstract String getFaultRoleLocalName();
-    public abstract String getFaultDetailLocalName();
+    
+    public QName getFaultCodeQName() {
+        return version.getFaultCodeQName();
+    }
+    
+    public QName getFaultReasonQName() {
+        return version.getFaultReasonQName();
+    }
+
+    public QName getFaultRoleQName() {
+        return version.getFaultRoleQName();
+    }
+
+    public QName getFaultDetailQName() {
+        return version.getFaultDetailQName();
+    }
 
     public String getNextRoleURI() {
         return version.getNextRoleURI();

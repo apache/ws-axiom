@@ -38,6 +38,6 @@ public class TestGetReason extends SOAPTestCase {
                 "Fault Test:- After calling setReason method, Fault has no reason",
                 soapFault.getReason());
         assertEquals("Fault Test:- Fault reason local name mismatch",
-                spec.getFaultReasonLocalName(), soapFault.getReason().getLocalName());
+                spec.getFaultReasonQName(), soapFault.getReason().getQName());
     }
 }

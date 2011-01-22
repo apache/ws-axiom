@@ -35,6 +35,6 @@ public class TestGetDetailWithParser extends SOAPTestCase {
                 soapFaultWithParser.getDetail());
         assertEquals(
                 "Fault Test with parser: - Fault detail local name mismatch",
-                spec.getFaultDetailLocalName(), soapFaultWithParser.getDetail().getLocalName());
+                spec.getFaultDetailQName(), soapFaultWithParser.getDetail().getQName());
     }
 }

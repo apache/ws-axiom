@@ -38,6 +38,6 @@ public class TestGetDetail extends SOAPTestCase {
                 "Fault Test:- After calling setDetail method, Fault has no detail",
                 soapFault.getDetail());
         assertEquals("Fault Test:- Fault detail local name mismatch",
-                spec.getFaultDetailLocalName(), soapFault.getDetail().getLocalName());
+                spec.getFaultDetailQName(), soapFault.getDetail().getQName());
     }
 }

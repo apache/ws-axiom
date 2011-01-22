@@ -38,6 +38,6 @@ public class TestGetRole extends SOAPTestCase {
                 "Fault Test:- After calling setRole method, Fault has no role",
                 soapFault.getRole());
         assertEquals("Fault Test:- Fault role local name mismatch",
-                spec.getFaultRoleLocalName(), soapFault.getRole().getLocalName());
+                spec.getFaultRoleQName(), soapFault.getRole().getQName());
     }
 }

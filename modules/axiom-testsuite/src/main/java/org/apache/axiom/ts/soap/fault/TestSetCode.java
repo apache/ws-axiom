@@ -35,7 +35,7 @@ public class TestSetCode extends SOAPTestCase {
                 "Fault Test:- After calling setCode method, Fault has no code",
                 soapFault.getCode());
         assertEquals("Fault Test:- Code local name mismatch",
-                spec.getFaultCodeLocalName(), soapFault.getCode().getLocalName());
+                spec.getFaultCodeQName(), soapFault.getCode().getQName());
         try {
             soapFault.setCode(altSoapFactory.createSOAPFaultCode());
             fail("SOAPFaultCode should not be set in to a SOAPFault for a different SOAP version");

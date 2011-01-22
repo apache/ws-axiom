@@ -35,7 +35,7 @@ public class TestSetReason extends SOAPTestCase {
                 "Fault Test:- After calling setReason method, Fault has no reason",
                 soapFault.getReason());
         assertEquals("Fault Test:- Fault reason local name mismatch",
-                spec.getFaultReasonLocalName(), soapFault.getReason().getLocalName());
+                spec.getFaultReasonQName(), soapFault.getReason().getQName());
         try {
             soapFault.setReason(altSoapFactory.createSOAPFaultReason());
             fail("SOAPFaultReason should not be set in to a SOAPFault for a different SOAP version");

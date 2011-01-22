@@ -38,6 +38,6 @@ public class TestGetCode extends SOAPTestCase {
                 "Fault Test:- After calling setCode method, Fault has no code",
                 soapFault.getCode());
         assertEquals("Fault Test:- Fault code local name mismatch",
-                spec.getFaultCodeLocalName(), soapFault.getCode().getLocalName());
+                spec.getFaultCodeQName(), soapFault.getCode().getQName());
     }
 }

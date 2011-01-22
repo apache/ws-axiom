@@ -35,7 +35,7 @@ public class TestSetRole extends SOAPTestCase {
                 "Fault Test:- After calling setRole method, Fault has no role",
                 soapFault.getRole());
         assertEquals("Fault Test:- Fault role local name mismatch",
-                spec.getFaultRoleLocalName(), soapFault.getRole().getLocalName());
+                spec.getFaultRoleQName(), soapFault.getRole().getQName());
         try {
             soapFault.setRole(altSoapFactory.createSOAPFaultRole());
             fail("SOAPFaultRole should not be set in to a SOAPFault for a different SOAP version");

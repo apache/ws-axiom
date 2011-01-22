@@ -35,6 +35,6 @@ public class TestGetRoleWithParser extends SOAPTestCase {
                 soapFaultWithParser.getRole());
         assertEquals(
                 "Fault Test with parser: - Fault role local name mismatch",
-                spec.getFaultRoleLocalName(), soapFaultWithParser.getRole().getLocalName());
+                spec.getFaultRoleQName(), soapFaultWithParser.getRole().getQName());
     }
 }
