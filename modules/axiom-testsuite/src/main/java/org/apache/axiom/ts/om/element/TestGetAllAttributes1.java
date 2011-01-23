@@ -16,34 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.attribute;
+package org.apache.axiom.ts.om.element;
 
-import javax.xml.namespace.QName;
+import java.util.Iterator;
 
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMAttribute#getQName()} returns the correct value for an attribute (with
- * namespace) created by {@link OMFactory#createOMAttribute(String, OMNamespace, String)}.
+ * Test {@link OMElement#getAllAttributes()} on a programmatically created document.
  */
-public class TestGetQName extends AxiomTestCase {
-    public TestGetQName(OMMetaFactory metaFactory) {
+public class TestGetAllAttributes1 extends AxiomTestCase {
+    public TestGetAllAttributes1(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
-        String localName = "attr";
-        String uri = "http://ns1";
-        OMFactory fac = metaFactory.getOMFactory();
-        OMNamespace ns = fac.createOMNamespace(uri, null);
-        OMAttribute attr = fac.createOMAttribute(localName, ns, "value");
-        QName qname = attr.getQName();
-        assertEquals("Wrong namespace", uri, qname.getNamespaceURI());
-        assertEquals("Wrong localPart", localName, qname.getLocalPart());
-        assertEquals("Wrong prefix", "", qname.getPrefix());
+        OMElement element = metaFactory.getOMFactory().createOMElement("test", null);
+        element.addAttribute("attr1", "value1", null);
+        element.addAttribute("attr2", "value2", null);
+        Iterator it = element.getAllAttributes();
+        assertTrue(it.hasNext());
+        OMAttribute attr = (OMAttribute)it.next();
+        assertEquals("attr1", attr.getLocalName());
+        assertTrue(it.hasNext());
+        attr = (OMAttribute)it.next();
+        assertEquals("attr2", attr.getLocalName());
+        assertFalse(it.hasNext());
     }
 }
