@@ -229,6 +229,14 @@ public class StAXDialectDetector {
             return WoodstoxDialect.INSTANCE;
         } else if (title != null && title.indexOf("SJSXP") != -1) {
             return new SJSXPDialect(false);
+        } else if ("com.bea.core.weblogic.stax".equals(symbolicName)) {
+            // Weblogic's StAX implementation doesn't support CDATA section reporting and there are
+            // a couple of additional test cases (with respect to BEA's reference implementation)
+            // that fail.
+            log.warn("Weblogic's StAX implementation is unsupported and some Axiom features will not work " +
+            		"as expected! Please use Woodstox instead.");
+            // This is the best match we can return in this case.
+            return BEADialect.INSTANCE;
         } else if ("BEA".equals(vendor)) {
             return BEADialect.INSTANCE;
         } else if ("com.ibm.ws.prereq.banshee".equals(symbolicName)) {
