@@ -28,8 +28,9 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.commons.io.output.NullOutputStream;
 
 /**
- * Tests the behavior of {@link OMDocument#serializeAndConsume(java.io.OutputStream))}. This is a
- * regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-24">AXIOM-24</a>.
+ * Tests the behavior of {@link org.apache.axiom.om.OMContainer#serializeAndConsume(java.io.OutputStream)}
+ * when invoked on an {@link OMDocument} instance. This is a regression test for
+ * <a href="https://issues.apache.org/jira/browse/AXIOM-24">AXIOM-24</a>.
  */
 public class TestSerializeAndConsume extends AxiomTestCase {
     public TestSerializeAndConsume(OMMetaFactory metaFactory) {

@@ -58,7 +58,7 @@ public interface OMFactory {
      *            the parent to which the newly created element will be added; this may be
      *            <code>null</code>, in which case the behavior of the method is the same as
      *            {@link #createOMElement(String, OMNamespace)}
-     * @return
+     * @return the newly created element
      * @throws OMException
      */
     OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent)

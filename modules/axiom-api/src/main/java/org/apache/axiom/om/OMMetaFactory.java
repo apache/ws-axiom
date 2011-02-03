@@ -100,14 +100,11 @@ public interface OMMetaFactory {
      * implementation will select the appropriate {@link SOAPFactory} based on the namespace URI of
      * the SOAP envelope.
      * 
-     * @param configuration
-     *            the parser configuration to use; for security reasons, this should in general be
-     *            {@link StAXParserConfiguration#SOAP}
      * @param parser
      *            the stream reader to read the SOAP message from
      * @return the builder
      */
-    OMXMLParserWrapper createStAXSOAPModelBuilder(XMLStreamReader reader);
+    OMXMLParserWrapper createStAXSOAPModelBuilder(XMLStreamReader parser);
     
     /**
      * Create an object model builder for SOAP that reads a message from the provided input source.
