@@ -201,11 +201,23 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                             </imageobject>
                         </mediaobject>
                     </figure>
+                    <para>
+                        The check can also be done using <ulink url="http://mojo.codehaus.org/jdepend-maven-plugin/">jdepend-maven-plugin</ulink>.
+                        To do this, execute the following command in the <filename>axiom-api</filename> module:
+                    </para>
+                    <screen>mvn jdepend:generate</screen>
+                    <para>
+                        Then open <filename>target/site/jdepend-report.html</filename> and go the the "Cycles" section.
+                        The report should not show any package cycles involving <package>org.apache.axiom.mime</package>,
+                        <package>org.apache.axiom.util</package> and <package>org.apache.axiom.ext</package>.
+                    </para>
                 </listitem>
                 <listitem>
                     <para>
                         Check that the generated Javadoc contains the appropriate set of packages.
-                        In particular, unit test related classes should be excluded.
+                        In particular, unit test related classes should be excluded, except for the test suite
+                        classes in <package>org.apache.axiom.ts</package> (we don't need to hide the fact that we have
+                        a reusable test suite...).
                     </para>
                 </listitem>
                 <listitem>
