@@ -54,9 +54,42 @@ Key Features
 
 Latest Release
 
-  <<30th October 2010 - Apache Axiom Version 1.2.10 Released!>>
+  <<XXXth February 2011 - Apache Axiom Version 1.2.11 Released!>>
   
-  \[{{{http://ws.apache.org/axiom/download.cgi}Download Axiom 1.2.10}}\]
+  \[{{{http://ws.apache.org/axiom/download.cgi}Download Axiom 1.2.11}}\]
+  
+  Axiom 1.2.11 is a maintenance release to support the upcoming Axis2 1.6 release.
+  It also introduces a couple of new APIs that make it easier to support alternative
+  Axiom implementations and that eliminate the need to refer to internal Axiom APIs.
+  
+  Resolved JIRA issues:
+  
+    * [AXIOM-12] - OMOutputFormat: doSWA and doOptimize should be mutually exclusive...plus we need doOptimizeThreshold
+    
+    * [AXIOM-24] - OMDocument#serializeAndConsume doesn't consume the document
+    
+    * [AXIOM-172] - OMChildrenQNameIterator doesn't work correctly if hasNext() is not called before next()
+    
+    * [AXIOM-274] - Refactor/deprecate MIMEOutputUtils
+    
+    * [AXIOM-275] - Implement non JavaMail implementation of MultipartWriter
+    
+    * [AXIOM-313] - Add a new getDocumentElement method to StAXOMBuilder that allows to discard the OMDocument
+    
+    * [AXIOM-333] - getFirstChildWithName should not read the next element.
+    
+    * [AXIOM-346] - Enhance OMStAXWrapper/OMNavigator to work with OMDocument objects
+    
+    * [AXIOM-351] - Links in Javadoc JARs are broken
+    
+    * [AXIOM-352] - StAXDialectDetector doesn't recognize com.bea.core.weblogic.stax_1.7.0.0.jar
+  
+  Please refer to the {{{./userguide/ch04.html#changes-1.2.11}user guide}} for additional
+  information about changes in Axiom 1.2.11.
+
+Previous Releases
+
+  <<30th October 2010 - Apache Axiom Version 1.2.10 Released!>>
   
   Axiom 1.2.10 is a maintenance release that contains the following improvements:
   
@@ -70,16 +103,12 @@ Latest Release
       from <<<StAXUtils>>>, similarly to what is already possible for <<<XMLStreamReader>>>
       instances. This feature is required to support the next Abdera release
       (see {{{https://issues.apache.org/jira/browse/ABDERA-267}ABDERA-267}}).
-
-Previous Releases
-
+  
   <<13th June 2010 - Apache Axiom Version 1.2.9 Released!>>
 
   Note: Starting with release 1.2.9, Axiom requires Java 1.5. While the API is
   still compatible with Java 1.4, Axiom relies on classes from the Java 1.5
   runtime environment. Some of its dependencies also require Java 1.5.
-
-* What's New in This Release
 
   Highlights in this release:
   

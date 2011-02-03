@@ -1,20 +1,27 @@
 
 ===========================================
 
-     Apache Axiom 1.2.10 Release Note
+     Apache Axiom 1.2.11 Release Note
 
 ===========================================
 
-  Axiom 1.2.10 is a maintenance release that contains the following improvements:
+  Axiom 1.2.11 is a maintenance release to support the upcoming Axis2 1.6 release.
+  It also introduces a couple of new APIs that make it easier to support alternative
+  Axiom implementations and that eliminate the need to refer to internal Axiom APIs.
   
-    * Improved DOM compatibility and performance for DOOM. Users running Rampart on Axis2 1.5.2
-      may want to upgrade Axiom to 1.2.10 to take advantage of these improvements.
-    
-    * Improved interoperability with various StAX implementation, in particular
-      support for Woodstox 4.0.
-    
-    * It is now possible to specify a configuration when requesting an XMLStreamWriter
-      from StAXUtils, similarly to what is already possible for XMLStreamReader instances.
-      This feature is required to support the next Abdera release (see ABDERA-267).
+  Resolved JIRA issues:
+  
+    * [AXIOM-12] - OMOutputFormat: doSWA and doOptimize should be mutually exclusive...plus we need doOptimizeThreshold
+    * [AXIOM-24] - OMDocument#serializeAndConsume doesn't consume the document
+    * [AXIOM-172] - OMChildrenQNameIterator doesn't work correctly if hasNext() is not called before next()
+    * [AXIOM-274] - Refactor/deprecate MIMEOutputUtils
+    * [AXIOM-275] - Implement non JavaMail implementation of MultipartWriter
+    * [AXIOM-313] - Add a new getDocumentElement method to StAXOMBuilder that allows to discard the OMDocument
+    * [AXIOM-333] - getFirstChildWithName should not read the next element.
+    * [AXIOM-346] - Enhance OMStAXWrapper/OMNavigator to work with OMDocument objects
+    * [AXIOM-351] - Links in Javadoc JARs are broken
+    * [AXIOM-352] - StAXDialectDetector doesn't recognize com.bea.core.weblogic.stax_1.7.0.0.jar
+  
+  Please refer to the user guide for additional information about changes in Axiom 1.2.11.
 
 - The Apache Axiom Team.

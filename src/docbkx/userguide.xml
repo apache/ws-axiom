@@ -1149,7 +1149,7 @@ with CRLF</root>]]></screen>
                     </para>
                 </section>
             </section>
-            <section>
+            <section id="changes-1.2.11">
                 <title>Changes in Axiom 1.2.11</title>
                 <section id="OMXMLBuilderFactory">
                     <title>Resurrection of the <classname>OMXMLBuilderFactory</classname> API</title>
