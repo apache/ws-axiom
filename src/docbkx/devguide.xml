@@ -265,7 +265,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </listitem>
                 <listitem>
                     <para>
-                        Check the <filename>download.xml</filename> file for releases that are no
+                        Check the <filename>download.xml.vm</filename> file for releases that are no
                         longer available from the mirrors and change the corresponding entries so that
                         they point to the archives.
                     </para>
@@ -275,7 +275,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         Preview and validate the changes that will be done by the release plugin
                         to the POM files. In order to do this, execute the following command:
                     </para>
-                    <screen>mvn release:prepare -DdryRun=true</screen>
+                    <screen>mvn release:prepare -DdryRun=true -Dmaven.test.skip=true</screen>
                     <para>
                         Next, compare the <filename>pom.xml.tag</filename> files to the corresponding
                         <filename>pom.xml</filename> files:
@@ -342,7 +342,8 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
             <procedure>
                 <step>
                     <para>
-                        Add an entry for the release to the <filename>download.xml</filename> file.
+                        Add an entry for the release to the <filename>download.xml.vm</filename> file and
+                        update the release date in <filename>index.apt</filename>.
                     </para>
                 </step>
                 <step>
