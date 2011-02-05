@@ -432,12 +432,6 @@
         </plugins>
     </reporting>
     <distributionManagement>
-        <snapshotRepository>
-            <id>apache.snapshots.https</id>
-            <name>${distMgmtSnapshotsName}</name>
-            <url>${distMgmtSnapshotsUrl}</url>
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
         <site>
             <id>website</id>
             <url>scpexe://people.apache.org/www/ws.apache.org/commons/axiom</url>
