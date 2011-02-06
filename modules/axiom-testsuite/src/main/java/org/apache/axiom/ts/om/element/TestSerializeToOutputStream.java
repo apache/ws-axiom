@@ -27,6 +27,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import junit.framework.AssertionFailedError;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -71,8 +73,19 @@ public class TestSerializeToOutputStream extends ConformanceTestCase {
                 } else {
                     element.serializeAndConsume(baos);
                 }
-                assertXMLIdentical(compareXML(new InputSource(new ByteArrayInputStream(control)),
-                        new InputSource(new ByteArrayInputStream(baos.toByteArray()))), true);
+                byte[] actual = baos.toByteArray();
+                try {
+                    assertXMLIdentical(compareXML(new InputSource(new ByteArrayInputStream(control)),
+                            new InputSource(new ByteArrayInputStream(actual))), true);
+                } catch (AssertionFailedError ex) {
+                    System.out.println("Control:");
+                    System.out.write(control);
+                    System.out.println();
+                    System.out.println("Actual:");
+                    System.out.write(actual);
+                    System.out.println();
+                    throw ex;
+                }
                 if (cache) {
                     assertTrue(element.isComplete());
                 } else {
