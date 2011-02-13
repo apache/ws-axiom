@@ -592,7 +592,7 @@ svn update</screen>
                 </listitem>
                 <listitem>
                     <para>
-                        Update the status of the release version in the WSCOMMONS project in JIRA.
+                        Update the status of the release version in the AXIOM project in JIRA.
                     </para>
                 </listitem>
             </itemizedlist>
