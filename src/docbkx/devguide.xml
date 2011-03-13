@@ -343,7 +343,8 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 <step>
                     <para>
                         Add an entry for the release to the <filename>download.xml.vm</filename> file and
-                        update the release date in <filename>index.apt</filename>.
+                        change the links for older releases so that they point to <literal>archive.apache.org</literal>.
+                        Also update the release date in <filename>index.apt</filename>.
                     </para>
                 </step>
                 <step>
@@ -593,6 +594,12 @@ svn update</screen>
                 <listitem>
                     <para>
                         Update the status of the release version in the AXIOM project in JIRA.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Remove archived releases from <filename>/www/www.apache.org/dist/ws/commons/axiom</filename>
+                        on <literal>people.apache.org</literal>.
                     </para>
                 </listitem>
             </itemizedlist>
