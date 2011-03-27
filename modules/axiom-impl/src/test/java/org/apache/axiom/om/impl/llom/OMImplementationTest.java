@@ -23,6 +23,7 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.ts.OMTestSuiteBuilder;
+import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
 import org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace;
 import org.apache.axiom.ts.om.element.TestResolveQNameWithoutNamespace;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
@@ -41,6 +42,9 @@ public class OMImplementationTest extends TestCase {
         // TODO: Axiom should throw an exception if an attempt is made to create a cyclic parent-child relationship
         builder.exclude(TestInsertSiblingAfterOnChild.class);
         builder.exclude(TestInsertSiblingBeforeOnChild.class);
+        
+        // WSCOMMONS-453
+        builder.exclude(TestGetXMLStreamReaderWithOMSourcedElementDescendant.class);
         
         return builder.build();
     }

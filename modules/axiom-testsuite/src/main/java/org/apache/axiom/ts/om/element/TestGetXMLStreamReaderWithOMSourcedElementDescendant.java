@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.llom;
+package org.apache.axiom.ts.om.element;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
@@ -24,19 +24,19 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.CharArrayDataSource;
-import org.apache.axiom.om.impl.OMStAXWrapperTestBase;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
+import org.apache.axiom.ts.AxiomTestCase;
 
-public class OMStAXWrapperTest extends OMStAXWrapperTestBase {
-    public OMStAXWrapperTest() {
-        super(new OMLinkedListMetaFactory());
+// Test for WSCOMMONS-453
+public class TestGetXMLStreamReaderWithOMSourcedElementDescendant extends AxiomTestCase {
+    public TestGetXMLStreamReaderWithOMSourcedElementDescendant(OMMetaFactory metaFactory) {
+        super(metaFactory);
     }
-    
-    // Test for WSCOMMONS-453
-    public void _testOMSourcedElementDescendent() throws Exception {
-        OMFactory omFactory = omMetaFactory.getOMFactory();
+
+    protected void runTest() throws Throwable {
+        OMFactory omFactory = metaFactory.getOMFactory();
         OMDataSource ds = new CharArrayDataSource("<a>test</a>".toCharArray());
         OMElement root = omFactory.createOMElement(new QName("root"));
         OMSourcedElement child = omFactory.createOMElement(ds, "a", null);

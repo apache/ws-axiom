@@ -77,6 +77,16 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], true, true));
             addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], false, true));
         }
+        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromParser(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCommentEvent(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderGetElementText(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderGetNamespaceContext(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderGetNamespaceContext(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderNextTag(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderOnNonRootElement(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderOnNonRootElement(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithNonDefaultNamespace(metaFactory));

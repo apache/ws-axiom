@@ -23,6 +23,8 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.OMTestSuiteBuilder;
+import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement;
+import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
 import org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace;
 import org.apache.axiom.ts.om.element.TestResolveQNameWithoutNamespace;
 import org.apache.axiom.ts.om.element.TestSetTextQName;
@@ -54,6 +56,12 @@ public class OMImplementationTest extends TestCase {
         
         // TODO: DOOM's behavior differs from LLOM's behavior in this case
         builder.exclude(TestCreateOMElementFromQNameWithDefaultNamespace.class);
+        
+        // DOOM doesn't support CDATA sections
+        builder.exclude(TestGetXMLStreamReaderCDATAEventFromElement.class);
+        
+        // WSCOMMONS-453
+        builder.exclude(TestGetXMLStreamReaderWithOMSourcedElementDescendant.class);
         
         return builder.build();
     }
