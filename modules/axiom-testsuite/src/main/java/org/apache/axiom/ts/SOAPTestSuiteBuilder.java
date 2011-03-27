@@ -80,10 +80,12 @@ public class SOAPTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap11.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestGetNode(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestSetNode(metaFactory));
+        addTest(new org.apache.axiom.ts.soap11.header.TestSOAP11Roles(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.fault.TestGetNode(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.fault.TestGetNodeWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.fault.TestMoreChildrenAddition(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.fault.TestSetNode(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.header.TestSOAP12Roles(metaFactory));
     }
 }

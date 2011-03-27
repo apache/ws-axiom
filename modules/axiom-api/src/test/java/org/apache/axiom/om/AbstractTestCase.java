@@ -52,7 +52,7 @@ public abstract class AbstractTestCase
         "sample1.xml",
         "security2-soap.xml",
         "soap12/message.xml",
-        "soap12RoleMessage.xml",
+        "soap12/roleMessage.xml",
         "soapmessage.xml",
         "soapmessage1.xml",
         "whitespacedMessage.xml"

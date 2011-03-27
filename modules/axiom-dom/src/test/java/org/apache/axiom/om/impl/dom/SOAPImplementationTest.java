@@ -25,7 +25,9 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.SOAPTestSuiteBuilder;
 import org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope;
 import org.apache.axiom.ts.soap.faultdetail.TestWSCommons202;
+import org.apache.axiom.ts.soap11.header.TestSOAP11Roles;
 import org.apache.axiom.ts.soap12.fault.TestMoreChildrenAddition;
+import org.apache.axiom.ts.soap12.header.TestSOAP12Roles;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
@@ -35,6 +37,9 @@ public class SOAPImplementationTest extends TestCase {
         
         // TODO: not sure if this is an issue in DOOM or if the test case is wrong
         builder.exclude(TestMoreChildrenAddition.class);
+        
+        builder.exclude(TestSOAP11Roles.class);
+        builder.exclude(TestSOAP12Roles.class);
         
         return builder.build();
     }
