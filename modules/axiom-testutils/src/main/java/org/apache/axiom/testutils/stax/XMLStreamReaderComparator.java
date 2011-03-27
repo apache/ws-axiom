@@ -31,6 +31,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import junit.framework.Assert;
@@ -227,6 +228,13 @@ public class XMLStreamReaderComparator extends Assert {
                 assertSameResult("getAttributeType", paramTypes, args);
                 assertSameResult("getAttributeValue", paramTypes, args);
                 assertSameResult("isAttributeSpecified", paramTypes, args);
+            }
+            if (attributeCount != null) {
+                for (int i=0; i < attributeCount.intValue(); i++) {
+                    QName qname = expected.getAttributeName(i);
+                    assertSameResult("getAttributeValue", new Class[] { String.class, String.class },
+                            new Object[] { qname.getNamespaceURI(), qname.getLocalPart() });
+                }
             }
             assertSameResult("getLocalName");
             assertSameResult("getName");
