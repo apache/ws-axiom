@@ -252,7 +252,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getPrefix()
      */
     public String getPrefix() {
-        if (parser != null) {
+        if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getPrefix();
         } else {
             if ((currentEvent == START_ELEMENT)
@@ -276,7 +276,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     public String getNamespaceURI() {
         String returnStr;
-        if (parser != null) {
+        if (parser != null && currentEvent != END_DOCUMENT) {
             returnStr = parser.getNamespaceURI();
         } else {
             if ((currentEvent == START_ELEMENT)
@@ -310,7 +310,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#hasName()
      */
     public boolean hasName() {
-        if (parser != null) {
+        if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.hasName();
         } else {
             return ((currentEvent == START_ELEMENT)
@@ -323,7 +323,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getLocalName()
      */
     public String getLocalName() {
-        if (parser != null) {
+        if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getLocalName();
         } else {
             if ((currentEvent == START_ELEMENT)
@@ -341,7 +341,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getName()
      */
     public QName getName() {
-        if (parser != null) {
+        if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getName();
         } else {
             if ((currentEvent == START_ELEMENT)
@@ -588,7 +588,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getNamespaceCount()
      */
     public int getNamespaceCount() {
-        if (parser != null) {
+        if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getNamespaceCount();
         } else {
             if (isStartElement() || isEndElement()
@@ -861,7 +861,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     public boolean isEndElement() {
         boolean b;
-        if (parser != null) {
+        if (parser != null && currentEvent != END_DOCUMENT) {
             b = parser.isEndElement();
         } else {
             b = (currentEvent == END_ELEMENT);

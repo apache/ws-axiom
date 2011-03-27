@@ -16,20 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.document;
+package org.apache.axiom.ts.om.element;
 
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.RootWhitespaceFilter;
+import org.apache.axiom.om.impl.DocumentElementExtractor;
 import org.apache.axiom.ts.om.container.GetXMLStreamReaderTestCase;
 
 /**
  * Test comparing the output of {@link OMContainer#getXMLStreamReader(boolean)} (for an
- * {@link OMDocument}) with that of a native StAX parser.
+ * {@link OMElement}) with that of a native StAX parser.
  */
 public class TestGetXMLStreamReader extends GetXMLStreamReaderTestCase {
     public TestGetXMLStreamReader(OMMetaFactory metaFactory, String file, boolean cache) {
@@ -37,10 +37,10 @@ public class TestGetXMLStreamReader extends GetXMLStreamReaderTestCase {
     }
     
     protected OMContainer getContainer(OMXMLParserWrapper builder) {
-        return builder.getDocument();
+        return builder.getDocumentElement();
     }
 
     protected XMLStreamReader filter(XMLStreamReader reader) {
-        return new RootWhitespaceFilter(reader);
+        return new DocumentElementExtractor(reader);
     }
 }
