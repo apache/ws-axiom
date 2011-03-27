@@ -152,8 +152,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     /** Track depth to ensure we stop generating events when we are done with the root node. */
     int depth = 0;
 
-    private boolean needToThrowEndDocument = false;
-
     // Cache attributes and namespaces. This avoids creating a new Iterator for every call
     // to getAttributeXXX and getNamespaceXXX. A value of -1 indicates that the
     // attributes or namespaces for the current element have not been loaded yet. The
@@ -210,9 +208,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         this.navigator = new OMNavigator(startNode);
         this.builder = builder;
         this.rootNode = startNode;
-        if (rootNode instanceof OMElement && ((OMElement)rootNode).getParent() instanceof OMDocument) {
-            needToThrowEndDocument = true;
-        }
 
         // initiate the next and current nodes
         // Note - navigator is written in such a way that it first
@@ -944,11 +939,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @throws XMLStreamException
      */
     public boolean hasNext() throws XMLStreamException {
-        if (needToThrowEndDocument) {
-            return !(state == DOCUMENT_COMPLETE);
-        } else {
-            return (state != COMPLETED && currentEvent != END_DOCUMENT);
-        }
+        return currentEvent != END_DOCUMENT;
     }
 
     /**

@@ -72,7 +72,8 @@ public class OMWrapperTest extends TestCase {
             count ++;
         }
 
-        assertEquals(3, count);
+        // 4 events are produced: START_DOCUMENT, START_ELEMENT, END_ELEMENT and END_DOCUMENT
+        assertEquals(4, count);
         
         
         // Make sure that the wrapper can be closed without failing

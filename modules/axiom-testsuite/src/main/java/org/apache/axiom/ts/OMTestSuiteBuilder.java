@@ -72,8 +72,10 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithNameOnIncompleteElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithoutNamespace(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
-            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], true));
-            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], false));
+            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], true, false));
+            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], false, false));
+            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], true, true));
+            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], false, true));
         }
         addTest(new org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace(metaFactory));

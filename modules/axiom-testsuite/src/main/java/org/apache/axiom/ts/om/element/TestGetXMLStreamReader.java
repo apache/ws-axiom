@@ -32,12 +32,16 @@ import org.apache.axiom.ts.om.container.GetXMLStreamReaderTestCase;
  * {@link OMElement}) with that of a native StAX parser.
  */
 public class TestGetXMLStreamReader extends GetXMLStreamReaderTestCase {
-    public TestGetXMLStreamReader(OMMetaFactory metaFactory, String file, boolean cache) {
+    private final boolean detached;
+    
+    public TestGetXMLStreamReader(OMMetaFactory metaFactory, String file, boolean cache, boolean detached) {
         super(metaFactory, file, cache);
+        this.detached = detached;
+        setName(getName() + " [detached=" + detached + "]");
     }
     
     protected OMContainer getContainer(OMXMLParserWrapper builder) {
-        return builder.getDocumentElement();
+        return builder.getDocumentElement(detached);
     }
 
     protected XMLStreamReader filter(XMLStreamReader reader) {

@@ -297,6 +297,8 @@ public class XMLStreamReaderComparator extends Assert {
                 path.removeLast();
             }
             
+            assertSameResult("hasNext");
+            
             int expectedNextEvent;
             try {
                 expectedNextEvent = expected.next();

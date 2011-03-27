@@ -46,6 +46,9 @@ public class DocumentElementExtractor extends XMLStreamReaderWrapper {
                 case XMLStreamConstants.END_ELEMENT:
                     depth--;
                     break loop;
+                case XMLStreamConstants.START_DOCUMENT:
+                case XMLStreamConstants.END_DOCUMENT:
+                    break loop;
                 default:
                     if (depth > 0) {
                         break loop;
