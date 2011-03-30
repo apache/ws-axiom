@@ -34,7 +34,7 @@ public class TestCreateOMElement extends AxiomTestCase {
     public TestCreateOMElement(OMMetaFactory metaFactory, OMElementCreator variant) {
         super(metaFactory);
         this.variant = variant;
-        setName(getName() + " [variant=" + variant.getName() + "]");
+        addTestProperty("variant", variant.getName());
     }
 
     protected void runTest() throws Throwable {

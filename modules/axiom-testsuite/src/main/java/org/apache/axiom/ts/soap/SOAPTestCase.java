@@ -42,7 +42,7 @@ public class SOAPTestCase extends AxiomTestCase {
     public SOAPTestCase(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory);
         this.spec = spec;
-        setName(getName() + " [" + spec.getName() + "]");
+        addTestProperty("spec", spec.getName());
     }
 
     protected void setUp() throws Exception {

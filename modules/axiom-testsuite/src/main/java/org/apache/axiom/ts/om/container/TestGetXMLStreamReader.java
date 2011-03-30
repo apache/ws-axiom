@@ -34,13 +34,16 @@ import org.apache.axiom.ts.ConformanceTestCase;
  * Test comparing the output of {@link OMContainer#getXMLStreamReader(boolean)} with that of a
  * native StAX parser.
  */
-public abstract class GetXMLStreamReaderTestCase extends ConformanceTestCase {
+public class TestGetXMLStreamReader extends ConformanceTestCase {
+    private final OMContainerFactory containerFactory;
     private final boolean cache;
     
-    public GetXMLStreamReaderTestCase(OMMetaFactory metaFactory, String file, boolean cache) {
+    public TestGetXMLStreamReader(OMMetaFactory metaFactory, String file, OMContainerFactory containerFactory, boolean cache) {
         super(metaFactory, file);
+        this.containerFactory = containerFactory;
         this.cache = cache;
-        setName(getName() + " [cache=" + cache + "]");
+        containerFactory.addTestProperties(this);
+        addTestProperty("cache", Boolean.toString(cache));
     }
     
     protected final void runTest() throws Throwable {
@@ -51,8 +54,8 @@ public abstract class GetXMLStreamReaderTestCase extends ConformanceTestCase {
             try {
                 OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in2);
                 try {
-                    XMLStreamReader actual = getContainer(builder).getXMLStreamReader(cache);
-                    new XMLStreamReaderComparator(filter(expected), filter(actual)).compare();
+                    XMLStreamReader actual = containerFactory.getContainer(builder).getXMLStreamReader(cache);
+                    new XMLStreamReaderComparator(containerFactory.filter(expected), containerFactory.filter(actual)).compare();
                 } finally {
                     builder.close();
                 }
@@ -64,7 +67,4 @@ public abstract class GetXMLStreamReaderTestCase extends ConformanceTestCase {
             in2.close();
         }
     }
-    
-    protected abstract OMContainer getContainer(OMXMLParserWrapper builder);
-    protected abstract XMLStreamReader filter(XMLStreamReader reader);
 }

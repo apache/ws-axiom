@@ -33,7 +33,7 @@ public class TestDetach extends AxiomTestCase {
     public TestDetach(OMMetaFactory metaFactory, boolean build) {
         super(metaFactory);
         this.build = build;
-        setName(getName() + " [build=" + build + "]");
+        addTestProperty("build", Boolean.toString(build));
     }
 
     protected void runTest() throws Throwable {

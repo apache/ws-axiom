@@ -20,9 +20,22 @@ package org.apache.axiom.ts;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.om.container.OMContainerFactory;
+import org.apache.axiom.ts.om.container.OMElementFactory;
+import org.apache.axiom.ts.om.container.SerializationMethod;
+import org.apache.axiom.ts.om.container.SerializeToOutputStream;
 import org.apache.axiom.ts.om.factory.OMElementCreator;
 
 public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
+    private static final OMContainerFactory[] containerFactories = {
+        OMContainerFactory.DOCUMENT,
+        new OMElementFactory(false),
+        new OMElementFactory(true) };
+    
+    private static final SerializationMethod[] serializationMethods = {
+        new SerializeToOutputStream(true),
+        new SerializeToOutputStream(false) };
+    
     public OMTestSuiteBuilder(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
@@ -35,8 +48,13 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocument(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
-            addTest(new org.apache.axiom.ts.om.document.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], true));
-            addTest(new org.apache.axiom.ts.om.document.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], false));
+            for (int j=0; j<containerFactories.length; j++) {
+                addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], containerFactories[j], true));
+                addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], containerFactories[j], false));
+                for (int k=0; k<serializationMethods.length; k++) {
+                    addTest(new org.apache.axiom.ts.om.container.TestSerialize(metaFactory, conformanceFiles[i], containerFactories[j], serializationMethods[k]));
+                }
+            }
         }
         addTest(new org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsume(metaFactory));
@@ -72,12 +90,6 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithNameOnIncompleteElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithoutNamespace(metaFactory));
-        for (int i=0; i<conformanceFiles.length; i++) {
-            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], true, false));
-            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], false, false));
-            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], true, true));
-            addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], false, true));
-        }
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromParser(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCommentEvent(metaFactory));
@@ -112,10 +124,6 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
                 "<person><name xmlns=\"urn:ns\">John</name><age xmlns=\"urn:ns\">34</age><weight xmlns=\"urn:ns\">50</weight></person>"));
         addTest(new org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
-        for (int i=0; i<conformanceFiles.length; i++) {
-            addTest(new org.apache.axiom.ts.om.element.TestSerializeToOutputStream(metaFactory, conformanceFiles[i], true));
-            addTest(new org.apache.axiom.ts.om.element.TestSerializeToOutputStream(metaFactory, conformanceFiles[i], false));
-        }
         addTest(new org.apache.axiom.ts.om.element.TestSetText(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
         for (int i=0; i<OMElementCreator.INSTANCES.length; i++) {

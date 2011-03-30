@@ -16,29 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts;
+package org.apache.axiom.ts.om.container;
 
-import java.io.InputStream;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.ts.AxiomTestCase;
+import org.xml.sax.InputSource;
 
-import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.OMMetaFactory;
-
-/**
- * Base class for test cases that are executed against the files from the conformance test set.
- * 
- * @see org.apache.axiom.om.AbstractTestCase#getConformanceTestFiles()
- */
-public abstract class ConformanceTestCase extends AxiomTestCase {
-    private final String file;
-
-    public ConformanceTestCase(OMMetaFactory metaFactory, String file) {
-        super(metaFactory);
-        this.file = file;
-        int idx = file.lastIndexOf('/');
-        addTestProperty("file", file.substring(idx+1));
-    }
-
-    protected InputStream getFileAsStream() {
-        return AbstractTestCase.getTestResource(file);
-    }
+public interface SerializationMethod {
+    void addTestProperties(AxiomTestCase testCase);
+    InputSource serialize(OMContainer container) throws Exception;
+    boolean isCaching();
 }

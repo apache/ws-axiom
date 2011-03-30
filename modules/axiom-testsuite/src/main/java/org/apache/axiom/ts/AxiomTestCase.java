@@ -18,6 +18,10 @@
  */
 package org.apache.axiom.ts;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.commons.io.output.NullOutputStream;
@@ -25,12 +29,22 @@ import org.custommonkey.xmlunit.XMLTestCase;
 
 public abstract class AxiomTestCase extends XMLTestCase {
     protected final OMMetaFactory metaFactory;
+    private final Map/*<String,String>*/ properties = new HashMap();
 
     public AxiomTestCase(OMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
         setName(getClass().getName());
     }
     
+    public void addTestProperty(String name, String value) {
+        setName(getName() + " [" + name + "=" + value + "]");
+        properties.put(name, value);
+    }
+    
+    public Map getTestProperties() {
+        return Collections.unmodifiableMap(properties);
+    }
+
     protected void assertConsumed(OMContainer container) {
         assertFalse("Expected the node to be incomplete", container.isComplete());
         boolean isConsumed;
