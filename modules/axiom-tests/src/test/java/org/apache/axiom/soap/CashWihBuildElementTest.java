@@ -22,14 +22,13 @@ package org.apache.axiom.soap;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
-import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory;
 
 public class CashWihBuildElementTest extends AbstractTestCase {
 
-    StAXOMBuilder stAXOMBuilder;
+    OMXMLParserWrapper stAXOMBuilder;
     private OMElement rootElement;
 
     /**
@@ -41,10 +40,9 @@ public class CashWihBuildElementTest extends AbstractTestCase {
 
     protected void setUp() throws Exception {
         stAXOMBuilder =
-                OMXMLBuilderFactory.createStAXOMBuilder(
+                OMXMLBuilderFactory.createOMBuilder(
                         OMAbstractFactory.getSOAP11Factory(),
-                        StAXUtils.createXMLStreamReader(
-                                getTestResource("non_soap.xml")));
+                        getTestResource("non_soap.xml"));
         rootElement = stAXOMBuilder.getDocumentElement();
     }
 

@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -35,7 +34,7 @@ public class OMDTDTest extends AbstractTestCase {
 
     protected void setUp() throws Exception {
         try {
-            StAXOMBuilder stAXOMBuilder = new StAXOMBuilder(getTestResource("dtd.xml"));
+            OMXMLParserWrapper stAXOMBuilder = OMXMLBuilderFactory.createOMBuilder(getTestResource("dtd.xml"));
             document = this.document = stAXOMBuilder.getDocument();
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,7 +86,7 @@ public class OMDTDTest extends AbstractTestCase {
         
         InputStream is = getTestResource("web_w_dtd2.xml");
         XMLStreamReader reader = StAXUtils.createNetworkDetachedXMLStreamReader(is);
-        StAXOMBuilder builder = new StAXOMBuilder(reader);
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(reader);
         OMElement root = builder.getDocumentElement();
         assertTrue(root.getLocalName().equals("web-app"));
         OMDocument document = builder.getDocument();

@@ -18,13 +18,6 @@
  */
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.util.StAXUtils;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.FileNotFoundException;
-
 /**
  *Test the discard method
  */
@@ -41,7 +34,7 @@ public class OMDiscardTest extends AbstractTestCase {
         try {
             // first build the OM tree without caching and see whether we can discard
             // an element from it
-            StAXOMBuilder builder = new StAXOMBuilder(getXMLStreamReader());
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
             documentElement = builder.getDocumentElement();
 
             documentElement.getFirstElement().discard();
@@ -52,9 +45,4 @@ public class OMDiscardTest extends AbstractTestCase {
         }
         documentElement.close(false);
     }
-
-    private XMLStreamReader getXMLStreamReader() throws XMLStreamException, FileNotFoundException {
-        return StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
-    }
-
 }

@@ -40,8 +40,8 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromDataSource;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.om.util.ElementHelper;
@@ -93,7 +93,7 @@ public class ElementHelperTest extends TestCase {
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
         XMLStreamReader reader = factory.createXMLStreamReader(
                 new SequenceInputStream(v.elements()), "ascii");
-        OMElement element = new StAXOMBuilder(reader).getDocumentElement();
+        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(reader).getDocumentElement();
         Reader in = ElementHelper.getTextAsStream(element, false);
         IOTestUtils.compareStreams(new InputStreamReader(ds.getInputStream(), "ascii"), in);
     }

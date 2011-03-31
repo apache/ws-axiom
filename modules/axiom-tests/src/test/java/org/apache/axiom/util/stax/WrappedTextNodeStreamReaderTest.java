@@ -27,7 +27,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
@@ -44,7 +44,7 @@ public class WrappedTextNodeStreamReaderTest extends XMLTestCase {
         StringReader reader = new StringReader(testString);
         XMLStreamReader xmlStreamReader
             = new WrappedTextNodeStreamReader(wrapperElementName, reader, chunkSize);
-        OMElement element = new StAXOMBuilder(xmlStreamReader).getDocumentElement();
+        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(xmlStreamReader).getDocumentElement();
         assertEquals(wrapperElementName, element.getQName());
         assertEquals(wrapperElementName.getPrefix(), element.getQName().getPrefix());
         assertEquals(testString, element.getText());
@@ -136,7 +136,7 @@ public class WrappedTextNodeStreamReaderTest extends XMLTestCase {
         StringReader reader = new StringReader(testString);
         XMLStreamReader xmlStreamReader
             = new WrappedTextNodeStreamReader(wrapperElementName, reader, chunkSize);
-        OMElement element = new StAXOMBuilder(xmlStreamReader).getDocumentElement();
+        OMElement element = OMXMLBuilderFactory.createStAXOMBuilder(xmlStreamReader).getDocumentElement();
         StringWriter writer = new StringWriter();
         element.serializeAndConsume(writer);
         assertXMLEqual(expectedXML, writer.toString());

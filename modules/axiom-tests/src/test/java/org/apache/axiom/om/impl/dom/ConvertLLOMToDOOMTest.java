@@ -22,7 +22,8 @@ package org.apache.axiom.om.impl.dom;
 import junit.framework.TestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -102,8 +103,8 @@ public class ConvertLLOMToDOOMTest extends TestCase {
 
         OMElement payload = doomEnv.getBody().getFirstElement();
 
-        StAXOMBuilder llomBuilder =
-                new StAXOMBuilder(payload.getXMLStreamReaderWithoutCaching());
+        OMXMLParserWrapper llomBuilder =
+                OMXMLBuilderFactory.createStAXOMBuilder(payload.getXMLStreamReaderWithoutCaching());
 
         OMElement llomPayload = llomBuilder.getDocumentElement();
 

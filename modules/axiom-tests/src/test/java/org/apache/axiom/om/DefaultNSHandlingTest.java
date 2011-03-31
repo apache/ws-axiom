@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.custommonkey.xmlunit.XMLTestCase;
@@ -29,7 +28,7 @@ import org.jaxen.XPath;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.ByteArrayInputStream;
+import java.io.StringReader;
 import java.util.Iterator;
 
 public class DefaultNSHandlingTest extends XMLTestCase {
@@ -39,18 +38,13 @@ public class DefaultNSHandlingTest extends XMLTestCase {
                 "<head><title>Frobnostication</title></head>" +
                 "<body><p>Moved to <a href='http://frob.com'>here</a>.</p></body>" +
                 "</html>";
-        try {
-            StAXOMBuilder stAXOMBuilder =
-                    new StAXOMBuilder(new ByteArrayInputStream(testXML.getBytes()));
-            OMElement documentElement = stAXOMBuilder.getDocumentElement();
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(new StringReader(testXML));
+        OMElement documentElement = builder.getDocumentElement();
 
-            checkNS(documentElement);
+        checkNS(documentElement);
 
-            checkNSWithChildren(documentElement);
-
-        } catch (XMLStreamException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        checkNSWithChildren(documentElement);
     }
 
     private void checkNSWithChildren(OMElement documentElement) {

@@ -25,11 +25,10 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 
-import javax.xml.stream.XMLStreamReader;
-import java.io.ByteArrayInputStream;
+import java.io.StringReader;
 
 public class OMAttributeTest extends TestCase {
 
@@ -79,10 +78,7 @@ public class OMAttributeTest extends TestCase {
     }
 
     private String addAttributeMethod1(String xmlString) throws Exception {
-        XMLStreamReader parser2;
-
-        parser2 = StAXUtils.createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
-        StAXOMBuilder builder2 = new StAXOMBuilder(parser2);
+        OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createOMBuilder(new StringReader(xmlString));
         OMElement doc = builder2.getDocumentElement();
 
         OMFactory factory = OMAbstractFactory.getOMFactory();
@@ -96,10 +92,7 @@ public class OMAttributeTest extends TestCase {
     }
 
     private String addAttributeMethod2(String xmlString) throws Exception {
-        XMLStreamReader parser2;
-
-        parser2 = StAXUtils.createXMLStreamReader(new ByteArrayInputStream(xmlString.getBytes()));
-        StAXOMBuilder builder2 = new StAXOMBuilder(parser2);
+        OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createOMBuilder(new StringReader(xmlString));
         OMElement doc = builder2.getDocumentElement();
 
         OMFactory factory = OMAbstractFactory.getOMFactory();

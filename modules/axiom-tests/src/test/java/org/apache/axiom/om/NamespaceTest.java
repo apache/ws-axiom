@@ -19,8 +19,6 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.llom.util.AXIOMUtil;
 import org.apache.axiom.om.util.StAXUtils;
 import org.custommonkey.xmlunit.XMLTestCase;
@@ -33,7 +31,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
@@ -136,7 +133,7 @@ public class NamespaceTest extends XMLTestCase {
                 "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"><soapenv:Header /><soapenv:Body><ns1:createAccountRequest xmlns:ns1=\"http://www.wso2.com/types\"><clientinfo xmlns=\"http://www.wso2.com/types\"><name>bob</name><ssn>123456789</ssn></clientinfo><password xmlns=\"\">passwd</password></ns1:createAccountRequest></soapenv:Body></soapenv:Envelope>";
 
         try {
-            OMElement documentElement = new StAXOMBuilder(new ByteArrayInputStream(xml.getBytes()))
+            OMElement documentElement = OMXMLBuilderFactory.createOMBuilder(new StringReader(xml))
                     .getDocumentElement();
             String actualXML = documentElement.toString();
             assertXMLEqual(xml, actualXML);
@@ -247,9 +244,7 @@ public class NamespaceTest extends XMLTestCase {
                         "</foo:foo>";
 
         // read and build XML content
-        Reader reader = new StringReader(content);
-        XMLStreamReader parser = StAXUtils.createXMLStreamReader(reader);
-        StAXOMBuilder builder = new StAXOMBuilder(parser);
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(new StringReader(content));
         OMElement element = builder.getDocumentElement();
 
         int count = 0;
@@ -272,9 +267,7 @@ public class NamespaceTest extends XMLTestCase {
         element.close(false);
 
         // reread and rebuild XML content
-        reader = new StringReader(output);
-        parser = StAXUtils.createXMLStreamReader(reader);
-        builder = new StAXOMBuilder(parser);
+        builder = OMXMLBuilderFactory.createOMBuilder(new StringReader(output));
         element = builder.getDocumentElement();
 
         count = 0;

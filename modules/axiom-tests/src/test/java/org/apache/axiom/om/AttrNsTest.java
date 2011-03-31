@@ -19,11 +19,9 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.util.StAXUtils;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLTestCase;
 
-import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -58,12 +56,9 @@ public class AttrNsTest extends XMLTestCase {
     public void testAttributesWithNamespaceSerialization() throws Exception {
         String xmlString =
                 "<root xmlns='http://custom.com'><node cust:id='123' xmlns:cust='http://custom.com' /></root>";
-        XMLStreamReader xmlStreamReader = StAXUtils.createXMLStreamReader(
-                new StringReader(xmlString));
 
         // copied code from the generated stub class toOM method
-        org.apache.axiom.om.impl.builder.StAXOMBuilder builder =
-                new org.apache.axiom.om.impl.builder.StAXOMBuilder(xmlStreamReader);
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(new StringReader(xmlString));
         org.apache.axiom.om.OMElement documentElement = builder
                 .getDocumentElement();
 

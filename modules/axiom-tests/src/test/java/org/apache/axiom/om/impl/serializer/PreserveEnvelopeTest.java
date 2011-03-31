@@ -20,11 +20,11 @@
 package org.apache.axiom.om.impl.serializer;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.custommonkey.xmlunit.XMLTestCase;
 
-import javax.xml.stream.XMLStreamException;
-import java.io.ByteArrayInputStream;
+import java.io.StringReader;
 
 public class PreserveEnvelopeTest extends XMLTestCase {
 
@@ -90,21 +90,15 @@ public class PreserveEnvelopeTest extends XMLTestCase {
 
 
     public void testOMNS() {
-        try {
-            StAXOMBuilder builder =
-                    new StAXOMBuilder(new ByteArrayInputStream(originalXML.getBytes()));
-            OMElement documentElement = builder.getDocumentElement();
-            //assertXMLEqual(originalXML, documentElement.toString());
-            documentElement.build();
+        OMXMLParserWrapper builder =
+                OMXMLBuilderFactory.createOMBuilder(new StringReader(originalXML));
+        OMElement documentElement = builder.getDocumentElement();
+        //assertXMLEqual(originalXML, documentElement.toString());
+        documentElement.build();
 
-            String outstr = documentElement.toString();
-            assertTrue(outstr.indexOf("xmlns:saml=") > 0);
-            assertTrue(outstr.indexOf("<Assertion") == 0);
-
-        } catch (XMLStreamException e) {
-            e.printStackTrace();
-
-        }
+        String outstr = documentElement.toString();
+        assertTrue(outstr.indexOf("xmlns:saml=") > 0);
+        assertTrue(outstr.indexOf("<Assertion") == 0);
     }
 
 

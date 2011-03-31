@@ -19,8 +19,6 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.custommonkey.xmlunit.Diff;
 import org.w3c.dom.Document;
@@ -50,7 +48,7 @@ public class SpacesTest extends AbstractTestCase {
     }
 
     private void checkOMConformance(InputStream iStream) throws Exception {
-        StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
+        OMXMLParserWrapper staxOMBuilder = OMXMLBuilderFactory.
                 createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
                                     StAXUtils.createXMLStreamReader(
                                             iStream));

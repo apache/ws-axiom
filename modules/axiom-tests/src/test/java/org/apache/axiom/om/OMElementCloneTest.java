@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.w3c.dom.Document;
@@ -41,9 +40,9 @@ public class OMElementCloneTest extends AbstractTestCase {
         SOAPBody body = soapEnvelope.getBody();
 
         OMElement firstClonedBodyElement =
-                new StAXOMBuilder(body.getXMLStreamReader()).getDocumentElement();
+                OMXMLBuilderFactory.createStAXOMBuilder(body.getXMLStreamReader()).getDocumentElement();
         OMElement secondClonedBodyElement =
-                new StAXOMBuilder(body.getXMLStreamReader()).getDocumentElement();
+                OMXMLBuilderFactory.createStAXOMBuilder(body.getXMLStreamReader()).getDocumentElement();
 
         // first check whether both have the same information
         String firstClonedBodyElementText = firstClonedBodyElement.toString();

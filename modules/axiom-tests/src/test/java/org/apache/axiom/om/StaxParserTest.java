@@ -19,8 +19,6 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -81,8 +79,8 @@ public class StaxParserTest extends AbstractTestCase {
 
     protected void tearDown() throws Exception {
         parser1.close();
-        ((StAXOMBuilder)builder2).close();
-        ((StAXOMBuilder)builder3).close();
+        builder2.close();
+        builder3.close();
     }
 
     public void testParserEventsWithCache() throws Exception {

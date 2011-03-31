@@ -24,7 +24,8 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.InvocationCounter;
 import org.apache.axiom.testutils.io.ExceptionInputStream;
@@ -36,7 +37,7 @@ import java.util.Iterator;
 import javax.xml.stream.XMLStreamReader;
 
 public class StAXOMBuilderTest extends AbstractTestCase {
-    StAXOMBuilder stAXOMBuilder;
+    OMXMLParserWrapper stAXOMBuilder;
     private OMElement rootElement;
 
     /** Constructor. */
@@ -131,7 +132,7 @@ public class StAXOMBuilderTest extends AbstractTestCase {
         InvocationCounter invocationCounter = new InvocationCounter();
         XMLStreamReader reader = (XMLStreamReader)invocationCounter.createProxy(originalReader);
         
-        StAXOMBuilder stAXOMBuilder =
+        OMXMLParserWrapper stAXOMBuilder =
                 OMXMLBuilderFactory.createStAXOMBuilder(OMAbstractFactory.getSOAP11Factory(),
                                                         reader);
         
@@ -190,7 +191,7 @@ public class StAXOMBuilderTest extends AbstractTestCase {
         InvocationCounter invocationCounter = new InvocationCounter();
         XMLStreamReader reader = (XMLStreamReader)invocationCounter.createProxy(originalReader);
         
-        StAXOMBuilder builder = new StAXOMBuilder(reader);
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(reader);
         
         try {
             while (true) {

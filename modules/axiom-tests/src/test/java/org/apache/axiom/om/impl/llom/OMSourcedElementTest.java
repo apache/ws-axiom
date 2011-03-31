@@ -28,9 +28,10 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.ds.CharArrayDataSource;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
@@ -964,7 +965,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         StringWriter writer = new StringWriter();
         XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
 
-        StAXOMBuilder builder = new StAXOMBuilder(element.getXMLStreamReader());
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(element.getXMLStreamReader());
         OMDocument omDocument = builder.getDocument();
         Iterator it = omDocument.getChildren();
         while (it.hasNext()) {
@@ -992,7 +993,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         StringWriter writer = new StringWriter();
         XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
 
-        StAXOMBuilder builder = new StAXOMBuilder(root.getXMLStreamReader());
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(root.getXMLStreamReader());
         OMDocument omDocument = builder.getDocument();
         Iterator it = omDocument.getChildren();
         while (it.hasNext()) {

@@ -22,10 +22,8 @@ package org.apache.axiom.om.util;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.dom.DOOMAbstractFactory;
-
-import javax.xml.stream.XMLStreamReader;
 
 public class OMElementHelperTest extends AbstractTestCase {
 
@@ -33,10 +31,8 @@ public class OMElementHelperTest extends AbstractTestCase {
 
 
     public void testImportOMElement() throws Exception {
-        XMLStreamReader xmlStreamReader = StAXUtils.createXMLStreamReader(
-                getTestResource(testXMLFilePath));
         OMElement documentElement =
-                new StAXOMBuilder(OMAbstractFactory.getOMFactory(), xmlStreamReader)
+                OMXMLBuilderFactory.createOMBuilder(OMAbstractFactory.getOMFactory(), getTestResource(testXMLFilePath))
                         .getDocumentElement();
 
         // first lets try to import an element created from llom in to llom factory. This should return the same element

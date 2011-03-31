@@ -29,7 +29,7 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.activation.TestDataSource;
 
 public class XOPRoundtripTest extends TestCase {
@@ -42,7 +42,7 @@ public class XOPRoundtripTest extends TestCase {
         XOPEncodingStreamReader encodedReader = new XOPEncodingStreamReader(originalReader,
                 ContentIDGenerator.DEFAULT, OptimizationPolicy.DEFAULT);
         XMLStreamReader decodedReader = new XOPDecodingStreamReader(encodedReader, encodedReader);
-        OMElement element2 = new StAXOMBuilder(decodedReader).getDocumentElement();
+        OMElement element2 = OMXMLBuilderFactory.createStAXOMBuilder(decodedReader).getDocumentElement();
         OMText child = (OMText)element2.getFirstOMChild();
         assertNotNull(child);
         assertTrue(child.isBinary());

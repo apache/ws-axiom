@@ -28,8 +28,9 @@ import junit.framework.TestCase;
 
 import org.apache.axiom.om.util.CommonUtils;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
@@ -91,8 +92,7 @@ public class SOAPEnvelopeBuildTest extends TestCase {
 	}
 
     public void testBodyPreservedSerializeAndConsumeAsXML() throws Exception{
-		XMLStreamReader parser = StAXUtils.createXMLStreamReader(new StringReader(testMessage));
-		StAXOMBuilder sob = new StAXOMBuilder(parser);
+		OMXMLParserWrapper sob = OMXMLBuilderFactory.createOMBuilder(new StringReader(testMessage));
 		OMElement se = sob.getDocumentElement();
 		OMElement sh = se.getFirstElement();
 		Iterator iter = sh.getChildElements();

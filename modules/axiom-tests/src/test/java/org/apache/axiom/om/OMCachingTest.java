@@ -19,12 +19,8 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.util.StAXUtils;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.FileNotFoundException;
 
 public class OMCachingTest extends AbstractTestCase {
     private XMLStreamReader xmlStreamReader;
@@ -44,12 +40,10 @@ public class OMCachingTest extends AbstractTestCase {
         OMElement documentElement = null;
         try {
             // first build the OM tree without caching and see whether up can cosume it again
-            StAXOMBuilder builder = new StAXOMBuilder(getXMLStreamReader());
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
             documentElement = builder.getDocumentElement();
             String envelopeString = documentElement.toStringWithConsume();
         } catch (XMLStreamException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
@@ -69,21 +63,15 @@ public class OMCachingTest extends AbstractTestCase {
         OMElement documentElement = null;
         try {
             // first build the OM tree without caching and see whether up can cosume it again
-            StAXOMBuilder builder = new StAXOMBuilder(getXMLStreamReader());
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
             documentElement = builder.getDocumentElement();
             String envelopeString = documentElement.toString();
             envelopeString = documentElement.toStringWithConsume();
             assertTrue(true);
         } catch (XMLStreamException e) {
             fail("Parser should not failt as the element was serialized with caching");
-        } catch (FileNotFoundException e) {
-            fail("Parser should not failt as the element was serialized with caching");
         }
 
         documentElement.close(false);
-    }
-
-    private XMLStreamReader getXMLStreamReader() throws XMLStreamException, FileNotFoundException {
-        return StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
     }
 }

@@ -27,7 +27,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.dom.DOOMAbstractFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
@@ -156,7 +156,7 @@ public class OMElementTest extends OMTestCase implements OMConstants {
         doomElement.setText(text);
         llomRoot.addChild(doomElement);
 
-        OMElement newElement = (new StAXOMBuilder(this.factory, llomRoot
+        OMElement newElement = (OMXMLBuilderFactory.createStAXOMBuilder(this.factory, llomRoot
                 .getXMLStreamReader())).getDocumentElement();
         newElement.build();
         OMElement secondElement = newElement.getFirstElement();
@@ -173,7 +173,7 @@ public class OMElementTest extends OMTestCase implements OMConstants {
         OMText doomText = doomFactory.createOMText(text);
         llomRoot.addChild(doomText);
 
-        OMElement newElement = (new StAXOMBuilder(this.factory, llomRoot
+        OMElement newElement = (OMXMLBuilderFactory.createStAXOMBuilder(this.factory, llomRoot
                 .getXMLStreamReader())).getDocumentElement();
         newElement.build();
         assertEquals(newElement.getText(), text);
@@ -189,7 +189,7 @@ public class OMElementTest extends OMTestCase implements OMConstants {
         llomElement.setText(text);
         doomRoot.addChild(llomElement);
 
-        OMElement newElement = (new StAXOMBuilder(this.factory, doomRoot
+        OMElement newElement = (OMXMLBuilderFactory.createStAXOMBuilder(this.factory, doomRoot
                 .getXMLStreamReader())).getDocumentElement();
         newElement.build();
         OMElement secondElement = newElement.getFirstElement();
@@ -208,7 +208,7 @@ public class OMElementTest extends OMTestCase implements OMConstants {
         doomRoot.addChild(llomText);
         doomRoot.addChild(comment);
 
-        OMElement newElement = (new StAXOMBuilder(this.factory, doomRoot
+        OMElement newElement = (OMXMLBuilderFactory.createStAXOMBuilder(this.factory, doomRoot
                 .getXMLStreamReader())).getDocumentElement();
         newElement.build();
         assertEquals(newElement.getText(), text);
