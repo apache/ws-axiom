@@ -21,12 +21,13 @@ package org.apache.axiom.om;
 
 import org.apache.axiom.om.util.StAXUtils;
 import org.custommonkey.xmlunit.Diff;
-import org.w3c.dom.Document;
+import org.custommonkey.xmlunit.XMLTestCase;
+
 import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
 import java.util.Iterator;
 
-public class AttrNsTest extends AbstractOMSerializationTest {
+public class AttrNsTest extends XMLTestCase {
     public void testAttributesWithProgrammaticalCreation() throws Exception {
         String expectedXML =
                 "<AttributeTester xmlns=\"\" xmlns:myAttr2NS=\"http://test-attributes-2.org\" " +
@@ -49,10 +50,7 @@ public class AttrNsTest extends AbstractOMSerializationTest {
         }
         assertTrue(nsCount == 2);
 
-        Document document1 = newDocument(expectedXML);
-        Document document2 = newDocument(omElement.toString());
-
-        Diff diff = compareXML(document1, document2);
+        Diff diff = compareXML(expectedXML, omElement.toString());
         assertXMLEqual(diff, true);
     }
 
@@ -74,9 +72,7 @@ public class AttrNsTest extends AbstractOMSerializationTest {
 
         // now print the object after it has been processed
         System.out.println("after - '" + documentElement.toString() + "'");
-        Document document1 = newDocument(xmlString);
-        Document document2 = newDocument(documentElement.toString());
-        Diff diff = compareXML(document1, document2);
+        Diff diff = compareXML(xmlString, documentElement.toString());
         assertXMLEqual(diff, true);
     }
 }
