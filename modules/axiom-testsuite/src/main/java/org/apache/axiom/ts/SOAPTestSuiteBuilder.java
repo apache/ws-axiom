@@ -22,6 +22,9 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class SOAPTestSuiteBuilder extends AxiomTestSuiteBuilder {
+    private static final String[] badSOAPFiles = { "wrongSoapNs.xml", "twoheaders.xml", "twoBodymessage.xml",
+            "envelopeMissing.xml", "haederBodyWrongOrder.xml" };
+    
     public SOAPTestSuiteBuilder(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
@@ -81,6 +84,9 @@ public class SOAPTestSuiteBuilder extends AxiomTestSuiteBuilder {
     protected void addTests() {
         addTests(SOAPSpec.SOAP11);
         addTests(SOAPSpec.SOAP12);
+        for (int i=0; i<badSOAPFiles.length; i++) {
+            addTest(new org.apache.axiom.ts.soap.builder.BadInputTest(metaFactory, badSOAPFiles[i]));
+        }
         addTest(new org.apache.axiom.ts.soap11.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestGetNode(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestSetNode(metaFactory));

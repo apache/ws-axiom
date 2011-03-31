@@ -30,11 +30,6 @@ public class TestConstants {
     public static final String MINIMAL_MESSAGE = "soap/minimalMessage.xml";
     public static final String REALLY_BIG_MESSAGE = "soap/reallyReallyBigMessage.xml";
     public static final String EMPTY_BODY_MESSAGE = "soap/emtyBodymessage.xml";
-    public static final String BAD_WRONG_SOAP_NS = "badsoap/wrongSoapNs.xml";
-    public static final String BAD_TWO_HEADERS = "badsoap/twoheaders.xml";
-    public static final String BAD_TWO_BODY = "badsoap/twoBodymessage.xml";
-    public static final String BAD_ENVELOPE_MISSING = "badsoap/envelopeMissing.xml";
-    public static final String BAD_HEADER_BODY_WRONG_ORDER = "badsoap/haederBodyWrongOrder.xml";
 
     public static final String MTOM_MESSAGE = "mtom/MTOMAttachmentStream.bin";
     public static final String MTOM_MESSAGE_BOUNDARY = "MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701";
