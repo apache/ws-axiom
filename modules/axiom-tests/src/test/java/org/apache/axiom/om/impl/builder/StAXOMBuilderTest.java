@@ -27,14 +27,8 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.testutils.InvocationCounter;
-import org.apache.axiom.testutils.io.ExceptionInputStream;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.Iterator;
-
-import javax.xml.stream.XMLStreamReader;
 
 public class StAXOMBuilderTest extends AbstractTestCase {
     OMXMLParserWrapper stAXOMBuilder;
@@ -125,96 +119,5 @@ public class StAXOMBuilderTest extends AbstractTestCase {
         }
         
         assertTrue(childrenCount == 5);
-    }
-    
-    public void testInvalidXML() throws Exception {
-        XMLStreamReader originalReader = StAXUtils.createXMLStreamReader(getTestResource("invalid_xml.xml"));
-        InvocationCounter invocationCounter = new InvocationCounter();
-        XMLStreamReader reader = (XMLStreamReader)invocationCounter.createProxy(originalReader);
-        
-        OMXMLParserWrapper stAXOMBuilder =
-                OMXMLBuilderFactory.createStAXOMBuilder(OMAbstractFactory.getSOAP11Factory(),
-                                                        reader);
-        
-        Exception exception = null;
-        while (exception == null || stAXOMBuilder.isCompleted()) {
-            try {
-                stAXOMBuilder.next();
-            } catch (Exception e) {
-                exception =e;
-            }
-        }
-        
-        assertTrue("Expected an exception because invalid_xml.xml is wrong", exception != null);
-        
-        assertTrue(invocationCounter.getInvocationCount() > 0);
-        invocationCounter.reset();
-        
-        // Intentionally call builder again to make sure the same error is returned.
-        Exception exception2 = null;
-        try {
-            stAXOMBuilder.next();
-        } catch (Exception e) {
-            exception2 = e;
-        }
-        
-        assertEquals(0, invocationCounter.getInvocationCount());
-        
-        assertTrue("Expected a second exception because invalid_xml.xml is wrong", exception2 != null);
-        assertTrue("Expected the same exception. first=" + exception + " second=" + exception2, 
-                    exception.getMessage().equals(exception2.getMessage()));
-        
-    }
-    
-    /**
-     * Test the behavior of the builder when an exception is thrown by
-     * {@link XMLStreamReader#getText()}. The test is only effective if the StAX
-     * implementation lazily loads the character data for a
-     * {@link javax.xml.stream.XMLStreamConstants#CHARACTERS} event. This is the
-     * case for Woodstox. It checks that after the exception is thrown by the
-     * parser, the builder no longer attempts to access the parser.
-     * 
-     * @throws Exception
-     */
-    public void testIOExceptionInGetText() throws Exception {
-        // Construct a stream that will throw an exception in the middle of a text node.
-        // We need to create a very large document, because some parsers (such as some
-        // versions of XLXP) have a large input buffer and would throw an exception already
-        // when the XMLStreamReader is created.
-        StringBuffer xml = new StringBuffer("<root>");
-        for (int i=0; i<100000; i++) {
-            xml.append('x');
-        }
-        InputStream in = new ExceptionInputStream(new ByteArrayInputStream(xml.toString().getBytes("ASCII")));
-        
-        XMLStreamReader originalReader = StAXUtils.createXMLStreamReader(in);
-        InvocationCounter invocationCounter = new InvocationCounter();
-        XMLStreamReader reader = (XMLStreamReader)invocationCounter.createProxy(originalReader);
-        
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(reader);
-        
-        try {
-            while (true) {
-                builder.next();
-            }
-        } catch (Exception ex) {
-            // Expected
-        }
-
-        assertTrue(invocationCounter.getInvocationCount() > 0);
-        invocationCounter.reset();
-
-        Exception exception;
-        try {
-            builder.next();
-            exception = null;
-        } catch (Exception ex) {
-            exception = ex;
-        }
-        if (exception == null) {
-            fail("Expected exception");
-        }
-        
-        assertEquals(0, invocationCounter.getInvocationCount());
     }
 }

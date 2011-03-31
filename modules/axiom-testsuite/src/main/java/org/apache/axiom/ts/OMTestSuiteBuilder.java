@@ -47,6 +47,8 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocument(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestInvalidXML(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestIOExceptionInGetText(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
             for (int j=0; j<containerFactories.length; j++) {
                 addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], containerFactories[j], true));
@@ -61,6 +63,7 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByOtherElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeFromOMAttributeMultiple(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeFromOMAttributeWithExistingName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeReplace1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeReplace2(metaFactory));

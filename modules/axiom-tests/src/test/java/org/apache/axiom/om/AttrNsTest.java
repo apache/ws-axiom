@@ -23,36 +23,8 @@ import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLTestCase;
 
 import java.io.StringReader;
-import java.util.Iterator;
 
 public class AttrNsTest extends XMLTestCase {
-    public void testAttributesWithProgrammaticalCreation() throws Exception {
-        String expectedXML =
-                "<AttributeTester xmlns=\"\" xmlns:myAttr2NS=\"http://test-attributes-2.org\" " +
-                        "xmlns:myAttr1NS=\"http://test-attributes-1.org\" myAttr2NS:attrNumber=\"2\" myAttr1NS:attrNumber=\"1\" />";
-
-        OMFactory omFactory = OMAbstractFactory.getOMFactory();
-
-        OMNamespace attrNS1 =
-                omFactory.createOMNamespace("http://test-attributes-1.org", "myAttr1NS");
-        OMNamespace attrNS2 =
-                omFactory.createOMNamespace("http://test-attributes-2.org", "myAttr2NS");
-        OMElement omElement = omFactory.createOMElement("AttributeTester", null);
-        omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS1, "1"));
-        omElement.addAttribute(omFactory.createOMAttribute("attrNumber", attrNS2, "2"));
-
-        int nsCount = 0;
-        for (Iterator iterator = omElement.getAllDeclaredNamespaces(); iterator.hasNext();) {
-            iterator.next();
-            nsCount++;
-        }
-        assertTrue(nsCount == 2);
-
-        Diff diff = compareXML(expectedXML, omElement.toString());
-        assertXMLEqual(diff, true);
-    }
-
-
     public void testAttributesWithNamespaceSerialization() throws Exception {
         String xmlString =
                 "<root xmlns='http://custom.com'><node cust:id='123' xmlns:cust='http://custom.com' /></root>";
