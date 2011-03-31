@@ -27,25 +27,6 @@ import java.io.StringReader;
 import java.util.Iterator;
 
 public class AttrNsTest extends AbstractOMSerializationTest {
-
-    private String attrNamespaceTestXML = "<?xml version='1.0' encoding='UTF-8'?>\n" +
-            "<foo xmlns:e=\"http://opensource.lk\">" +
-            "    <bar1 b:attr=\"test attr value1\" xmlns:b=\"http://opensource.lk/ns1\">test1</bar1>" +
-            "    <bar2 b:attr=\"test attr value2\" xmlns:b=\"http://opensource.lk/ns1\">test2</bar2>" +
-            "</foo>";
-
-    public void testAttributeNamespaces() throws Exception {
-        ignoreXMLDeclaration = true;
-        ignoreDocument = true;
-
-        Document document1 = newDocument(attrNamespaceTestXML);
-        String serializedOM = getSerializedOM(attrNamespaceTestXML);
-        Document document2 = newDocument(serializedOM);
-
-        Diff diff = compareXML(document1, document2);
-        assertXMLEqual(diff, true);
-    }
-
     public void testAttributesWithProgrammaticalCreation() throws Exception {
         String expectedXML =
                 "<AttributeTester xmlns=\"\" xmlns:myAttr2NS=\"http://test-attributes-2.org\" " +

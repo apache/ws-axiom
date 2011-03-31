@@ -65,28 +65,6 @@ public abstract class AbstractOMSerializationTest extends XMLTestCase {
         return getDiffForComparison(new FileInputStream(xmlFile));
     }
 
-    public String getSerializedOM(String xmlString) throws Exception {
-        try {
-            ByteArrayInputStream byteArrayInputStream =
-                    new ByteArrayInputStream(xmlString.getBytes());
-            StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
-                    createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
-                                        StAXUtils.createXMLStreamReader(byteArrayInputStream));
-            OMElement rootElement = staxOMBuilder.getDocumentElement();
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            OMOutputFormat format = new OMOutputFormat();
-            format.setIgnoreXMLDeclaration(ignoreXMLDeclaration);
-
-            ((OMDocument) rootElement.getParent()).serialize(baos, format);
-
-            return new String(baos.toByteArray());
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
     public Diff getDiffForComparison(InputStream inStream) throws Exception {
         StAXOMBuilder staxOMBuilder = OMXMLBuilderFactory.
                 createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
