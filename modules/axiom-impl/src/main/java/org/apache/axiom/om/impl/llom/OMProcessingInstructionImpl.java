@@ -42,8 +42,8 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
     public OMProcessingInstructionImpl(OMContainer parentNode, String target,
                                        String value, OMFactory factory) {
         super(parentNode, factory, true);
-        this.target = (target == null) ? null : target.trim();
-        this.value = (value == null) ? null : value.trim();
+        this.target = target;
+        this.value = value;
         nodeType = OMNode.PI_NODE;
     }
 
