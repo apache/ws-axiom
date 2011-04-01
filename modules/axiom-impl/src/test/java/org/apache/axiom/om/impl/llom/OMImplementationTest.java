@@ -24,8 +24,6 @@ import junit.framework.TestSuite;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.ts.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
-import org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace;
-import org.apache.axiom.ts.om.element.TestResolveQNameWithoutNamespace;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 
@@ -34,10 +32,6 @@ public class OMImplementationTest extends TestCase {
         OMTestSuiteBuilder builder = new OMTestSuiteBuilder(new OMLinkedListMetaFactory());
         // TODO: this looks like a bug
         builder.exclude(org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild.class);
-        
-        // TODO: resolveQName appears to have issues resolving QNames without prefixes; needs further investigation
-        builder.exclude(TestResolveQNameWithDefaultNamespace.class);
-        builder.exclude(TestResolveQNameWithoutNamespace.class);
         
         // TODO: Axiom should throw an exception if an attempt is made to create a cyclic parent-child relationship
         builder.exclude(TestInsertSiblingAfterOnChild.class);

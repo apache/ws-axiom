@@ -48,7 +48,6 @@ import org.apache.axiom.om.impl.traverse.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -1009,16 +1008,16 @@ public class OMElementImpl extends OMNodeImpl
         }
     }
 
-    /**
-     * Converts a prefix:local qname string into a proper QName, evaluating it in the OMElement
-     * context. Unprefixed qnames resolve to the local namespace.
-     *
-     * @param qname prefixed qname string to resolve
-     * @return Returns null for any failure to extract a qname.
-     */
     public QName resolveQName(String qname) {
-        ElementHelper helper = new ElementHelper(this);
-        return helper.resolveQName(qname);
+        int idx = qname.indexOf(':');
+        if (idx == -1) {
+            OMNamespace ns = getDefaultNamespace();
+            return ns == null ? new QName(qname) : new QName(ns.getNamespaceURI(), qname, "");
+        } else {
+            String prefix = qname.substring(0, idx);
+            OMNamespace ns = findNamespace(null, prefix);
+            return ns == null ? null : new QName(ns.getNamespaceURI(), qname.substring(idx+1), prefix);
+        }
     }
 
     public OMElement cloneOMElement() {

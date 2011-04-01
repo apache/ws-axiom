@@ -25,8 +25,6 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
-import org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace;
-import org.apache.axiom.ts.om.element.TestResolveQNameWithoutNamespace;
 import org.apache.axiom.ts.om.element.TestSetTextQName;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementFromQNameWithDefaultNamespace;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
@@ -45,10 +43,6 @@ public class OMImplementationTest extends TestCase {
         // TODO: these need to be investigated; may be related to AXIOM-315
         builder.exclude(org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant.class);
         builder.exclude(org.apache.axiom.ts.om.element.TestSerializeAndConsumeWithIncompleteDescendant.class);
-        
-        // TODO: resolveQName appears to have issues resolving QNames without prefixes; needs further investigation
-        builder.exclude(TestResolveQNameWithDefaultNamespace.class);
-        builder.exclude(TestResolveQNameWithoutNamespace.class);
         
         // TODO: Axiom should throw an exception if an attempt is made to create a cyclic parent-child relationship
         builder.exclude(TestInsertSiblingAfterOnChild.class);

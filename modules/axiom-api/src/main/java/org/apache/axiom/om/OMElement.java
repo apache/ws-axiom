@@ -376,11 +376,16 @@ public interface OMElement extends OMNode, OMContainer {
 
 
     /**
-     * Turns a prefix:local qname string into a proper QName, evaluating it in the OMElement
-     * context. Unprefixed qnames resolve to the local namespace.
-     *
-     * @param qname prefixed qname string to resolve
-     * @return Returns null for any failure to extract a qname.
+     * Resolves a QName literal in the namespace context defined by this element and produces a
+     * corresponding {@link QName} object. The implementation uses the algorithm defined by the XML
+     * Schema specification. In particular, the namespace for an unprefixed QName is the default
+     * namespace (not the null namespace), i.e. QNames are resolved in the same way as element
+     * names.
+     * 
+     * @param qname
+     *            the QName literal to resolve
+     * @return the {@link QName} object, or <code>null</code> if the QName can't be resolved, i.e.
+     *         if the prefix is not bound in the namespace context of this element
      */
     QName resolveQName(String qname);
 

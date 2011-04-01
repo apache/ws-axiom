@@ -64,12 +64,9 @@ public class ElementHelper {
     }
 
     /**
-     * Turns a prefix:local qname string into a proper QName, evaluating it in the OMElement
-     * context.
-     *
-     * @param qname                    qname to resolve
-     * @param defaultToParentNameSpace flag that controls behaviour when there is no namespace.
-     * @return Returns null for any failure to extract a qname.
+     * @deprecated The algorithm used by this method is incorrect. See <a
+     *             href="https://issues.apache.org/jira/browse/AXIOM-356">AXIOM-356</a> for more
+     *             details.
      */
     public QName resolveQName(String qname, boolean defaultToParentNameSpace) {
         int colon = qname.indexOf(':');
@@ -103,11 +100,9 @@ public class ElementHelper {
     }
 
     /**
-     * Turns a prefix:local qname string into a proper QName, evaluating it in the OMElement
-     * context. Unprefixed qnames resolve to the local namespace.
-     *
-     * @param qname prefixed qname string to resolve
-     * @return Returns null for any failure to extract a qname.
+     * @deprecated The algorithm used by this method is incorrect. See <a
+     *             href="https://issues.apache.org/jira/browse/AXIOM-356">AXIOM-356</a> for more
+     *             details.
      */
     public QName resolveQName(String qname) {
         return resolveQName(qname, true);

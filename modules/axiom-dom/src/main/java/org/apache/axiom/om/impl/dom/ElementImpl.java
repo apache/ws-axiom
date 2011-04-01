@@ -35,7 +35,6 @@ import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
 import org.apache.axiom.om.impl.traverse.OMQualifiedNameFilterIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
-import org.apache.axiom.om.util.ElementHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -1159,16 +1158,16 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         }
     }
 
-    /**
-     * Turn a prefix:local qname string into a proper QName, evaluating it in the OMElement context
-     * unprefixed qnames resolve to the local namespace
-     *
-     * @param qname prefixed qname string to resolve
-     * @return Returns null for any failure to extract a qname.
-     */
     public QName resolveQName(String qname) {
-        ElementHelper helper = new ElementHelper(this);
-        return helper.resolveQName(qname);
+        int idx = qname.indexOf(':');
+        if (idx == -1) {
+            OMNamespace ns = getDefaultNamespace();
+            return ns == null ? new QName(qname) : new QName(ns.getNamespaceURI(), qname, "");
+        } else {
+            String prefix = qname.substring(0, idx);
+            OMNamespace ns = findNamespace(null, prefix);
+            return ns == null ? null : new QName(ns.getNamespaceURI(), qname.substring(idx+1), prefix);
+        }
     }
 
     /**
