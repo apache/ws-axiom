@@ -25,44 +25,62 @@ import org.apache.axiom.om.OMFactory;
 
 public abstract class OMElementCreator {
     public static final OMElementCreator[] INSTANCES = new OMElementCreator[] {
-        new OMElementCreator("QName") {
-            public OMElement createOMElement(OMFactory factory, QName qname) {
-                return factory.createOMElement(qname);
+        new OMElementCreator("QName", false) {
+            public OMElement createOMElement(OMFactory factory, String localName,
+                    String namespaceURI, String prefix) {
+                if (prefix == null) {
+                    prefix = "";
+                }
+                return factory.createOMElement(new QName(namespaceURI, localName, prefix));
             }
         },
-        new OMElementCreator("QName,OMContainer") {
-            public OMElement createOMElement(OMFactory factory, QName qname) {
-                return factory.createOMElement(qname, null);
+        new OMElementCreator("QName,OMContainer", false) {
+            public OMElement createOMElement(OMFactory factory, String localName,
+                    String namespaceURI, String prefix) {
+                if (prefix == null) {
+                    prefix = "";
+                }
+                return factory.createOMElement(new QName(namespaceURI, localName, prefix), null);
             }
         },
-        new OMElementCreator("String,OMNamespace") {
-            public OMElement createOMElement(OMFactory factory, QName qname) {
-                return factory.createOMElement(qname.getLocalPart(),
-                        factory.createOMNamespace(qname.getNamespaceURI(), qname.getPrefix()));
+        new OMElementCreator("String,OMNamespace", true) {
+            public OMElement createOMElement(OMFactory factory, String localName,
+                    String namespaceURI, String prefix) {
+                return factory.createOMElement(localName,
+                        namespaceURI.length() == 0 ? null : factory.createOMNamespace(namespaceURI, prefix));
             }
         },
-        new OMElementCreator("String,OMNamespace,OMContainer") {
-            public OMElement createOMElement(OMFactory factory, QName qname) {
-                return factory.createOMElement(qname.getLocalPart(),
-                        factory.createOMNamespace(qname.getNamespaceURI(), qname.getPrefix()), null);
+        new OMElementCreator("String,OMNamespace,OMContainer", true) {
+            public OMElement createOMElement(OMFactory factory, String localName,
+                    String namespaceURI, String prefix) {
+                return factory.createOMElement(localName,
+                        namespaceURI.length() == 0 ? null : factory.createOMNamespace(namespaceURI, prefix), null);
             }
         },
-        new OMElementCreator("String,String,String") {
-            public OMElement createOMElement(OMFactory factory, QName qname) {
-                return factory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
+        new OMElementCreator("String,String,String", true) {
+            public OMElement createOMElement(OMFactory factory, String localName,
+                    String namespaceURI, String prefix) {
+                return factory.createOMElement(localName, namespaceURI, prefix);
             }
         },
     };
     
     private final String name;
+    private final boolean supportsDefaultNamespace;
     
-    public OMElementCreator(String name) {
+    public OMElementCreator(String name, boolean supportsDefaultNamespace) {
         this.name = name;
+        this.supportsDefaultNamespace = supportsDefaultNamespace;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    protected abstract OMElement createOMElement(OMFactory factory, QName qname);
+    public final boolean isSupportsDefaultNamespace() {
+        return supportsDefaultNamespace;
+    }
+
+    public abstract OMElement createOMElement(OMFactory factory, String localName,
+            String namespaceURI, String prefix);
 }

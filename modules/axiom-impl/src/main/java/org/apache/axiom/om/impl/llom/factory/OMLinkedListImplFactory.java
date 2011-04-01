@@ -95,19 +95,14 @@ public class OMLinkedListImplFactory implements OMFactory {
                                  builder, this);
     }
 
-    /**
-     * Method createOMElement.
-     *
-     * @param localName
-     * @param namespaceURI
-     * @param namespacePrefix
-     * @return Returns OMElement.
-     */
-    public OMElement createOMElement(String localName, String namespaceURI,
-                                     String namespacePrefix) {
-        return this.createOMElement(localName,
-                                    this.createOMNamespace(namespaceURI,
-                                                           namespacePrefix));
+    public OMElement createOMElement(String localName, String namespaceURI, String prefix) {
+        if (namespaceURI == null) {
+            throw new IllegalArgumentException("namespaceURI must not be null");
+        } else if (namespaceURI.length() == 0) {
+            return createOMElement(localName, null);
+        } else {
+            return createOMElement(localName, createOMNamespace(namespaceURI, prefix));
+        }
     }
 
     /**

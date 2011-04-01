@@ -131,11 +131,14 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestSetText(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
         for (int i=0; i<OMElementCreator.INSTANCES.length; i++) {
-            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElement(metaFactory, OMElementCreator.INSTANCES[i]));
+            OMElementCreator creator = OMElementCreator.INSTANCES[i];
+            if (creator.isSupportsDefaultNamespace()) {
+                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithDefaultNamespace(metaFactory, creator));
+            }
+            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix(metaFactory, creator));
+            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNonDefaultNamespace(metaFactory, creator));
+            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace(metaFactory, creator));
         }
-        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementFromQNameWithDefaultNamespace(metaFactory));
-        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementFromQNameWithNonDefaultNamespace(metaFactory));
-        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementFromQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMNamespaceWithNullURI(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMText(metaFactory));

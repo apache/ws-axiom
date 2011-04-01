@@ -201,16 +201,14 @@ public class OMDOMFactory implements OMFactory {
         throw new UnsupportedOperationException("Not supported for DOM");
     }
 
-    /**
-     * Creates an OMElement.
-     *
-     * @see org.apache.axiom.om.OMFactory#createOMElement(String, String,
-     *      String)
-     */
-    public OMElement createOMElement(String localName, String namespaceURI,
-                                     String namespacePrefix) {
-        NamespaceImpl ns = new NamespaceImpl(namespaceURI, namespacePrefix);
-        return this.createOMElement(localName, ns);
+    public OMElement createOMElement(String localName, String namespaceURI, String prefix) {
+        if (namespaceURI == null) {
+            throw new IllegalArgumentException("namespaceURI must not be null");
+        } else if (namespaceURI.length() == 0) {
+            return createOMElement(localName, null);
+        } else {
+            return createOMElement(localName, createOMNamespace(namespaceURI, prefix));
+        }
     }
 
     /**

@@ -20,26 +20,28 @@ package org.apache.axiom.ts.om.factory;
 
 import java.util.Iterator;
 
-import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestCreateOMElementFromQNameWithNonDefaultNamespace extends AxiomTestCase {
-    public TestCreateOMElementFromQNameWithNonDefaultNamespace(OMMetaFactory metaFactory) {
+public class TestCreateOMElementWithNonDefaultNamespace extends AxiomTestCase {
+    private final OMElementCreator variant;
+    
+    public TestCreateOMElementWithNonDefaultNamespace(OMMetaFactory metaFactory, OMElementCreator variant) {
         super(metaFactory);
+        this.variant = variant;
+        addTestProperty("variant", variant.getName());
     }
 
     protected void runTest() throws Throwable {
-        QName qname = new QName("urn:test", "test", "t");
-        OMElement element = metaFactory.getOMFactory().createOMElement(qname);
-        assertEquals(qname.getLocalPart(), element.getLocalName());
-        OMNamespace ns = element.getNamespace();
-        assertNotNull(ns);
-        assertEquals(qname.getNamespaceURI(), ns.getNamespaceURI());
-        assertEquals(qname.getPrefix(), ns.getPrefix());
+        OMFactory factory = metaFactory.getOMFactory();
+        OMElement element = variant.createOMElement(factory, "test", "urn:ns", "ns");
+        assertTrue(element.isComplete());
+        assertEquals("test", element.getLocalName());
+        OMNamespace ns = factory.createOMNamespace("urn:ns", "ns");
+        assertEquals(ns, element.getNamespace());
         Iterator it = element.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         assertEquals(ns, it.next());

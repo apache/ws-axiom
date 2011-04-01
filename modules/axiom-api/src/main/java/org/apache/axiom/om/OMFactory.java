@@ -95,21 +95,23 @@ public interface OMFactory {
     OMSourcedElement createOMElement(OMDataSource source, QName qname);
 
     /**
-     * Create an element with the given name.
+     * Create an element with the given name. If a namespace is given, a namespace declaration will
+     * be added automatically to the newly created element.
      * 
      * @param localName
      *            the local part of the name; must not be <code>null</code>
      * @param namespaceURI
-     *            the namespace URI, or the empty string if the element has no
-     *            namespace; must not be <code>null</code>
-     * @param namespacePrefix
+     *            the namespace URI, or the empty string if the element has no namespace; must not
+     *            be <code>null</code>
+     * @param prefix
+     *            the namespace prefix, or <code>null</code> if a prefix should be generated
      * @return the newly created OMElement.
      * @throws IllegalArgumentException
      *             if <code>namespaceURI</code> is <code>null</code>
      */
     OMElement createOMElement(String localName,
                                      String namespaceURI,
-                                     String namespacePrefix);
+                                     String prefix);
 
     /**
      * Create an OMElement with the given QName under the given parent.
