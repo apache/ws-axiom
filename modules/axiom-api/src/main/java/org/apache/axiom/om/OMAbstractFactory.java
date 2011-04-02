@@ -19,6 +19,11 @@
 
 package org.apache.axiom.om;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import org.apache.axiom.soap.SOAPFactory;
 
 /**
@@ -85,30 +90,27 @@ public class OMAbstractFactory {
     }
     
     /**
-     * Get the default meta factory instance. The default instance is determined
-     * using the following algorithm:
+     * Get the default meta factory instance. This method uses the following ordered lookup
+     * procedure to determine the default instance:
      * <ol>
-     * <li>If an instance has been set using
-     * {@link #setMetaFactory(OMMetaFactory)}, then that instance is returned.
-     * Note that this will be the case in an OSGi runtime, where
-     * {@link #setMetaFactory(OMMetaFactory)} is invoked by a helper component
-     * that is part of Axiom.
-     * <li>If no instance has been set using
-     * {@link #setMetaFactory(OMMetaFactory)}, then the implementation class is
-     * determined by the <code>org.apache.axiom.om.OMMetaFactory</code> system
-     * property.
-     * <li>If the <code>org.apache.axiom.om.OMMetaFactory</code> system property
-     * is not set, the meta factory for the LLOM implementation is returned.
+     * <li>If an instance has been set using {@link #setMetaFactory(OMMetaFactory)}, then that
+     * instance is returned. Note that this will be the case in an OSGi runtime, where
+     * {@link #setMetaFactory(OMMetaFactory)} is invoked by a helper component that is part of
+     * Axiom.
+     * <li>Use the <code>org.apache.axiom.om.OMMetaFactory</code> system property. This method uses
+     * {@link System#getProperty(String)} to determine the value of the system property. A
+     * {@link SecurityException} thrown by this method is simply ignored and the lookup procedure
+     * continues.
+     * <li>Use the JDK 1.3 service discovery mechanism to determine the classname of the meta
+     * factory. The method will look for a classname in the file
+     * <code>META-INF/services/org.apache.axiom.om.OMMetaFactory</code> in jars in the class path.
+     * <li>Return the meta factory for the LLOM implementation is returned.
      * </ol>
-     * This method uses {@link System#getProperty(String)} to determine the
-     * value of the <code>org.apache.axiom.om.OMMetaFactory</code> system
-     * property. A {@link SecurityException} thrown by this method is simply
-     * ignored and the default factory implementation is used.
      * 
      * @return the default OM factory instance
      * @throws OMException
-     *             if the factory's implementation class can't be found or if
-     *             the class can't be instantiated
+     *             if the factory's implementation class can't be found or if the class can't be
+     *             instantiated
      */
     public static OMMetaFactory getMetaFactory() {
         if (metaFactory != null) {
@@ -119,18 +121,49 @@ public class OMAbstractFactory {
             return defaultMetaFactory;
         }
         
-        String omFactory;
+        String metaFactoryClassName = null;
+        
+        // First try system property
         try {
-            omFactory = System.getProperty(META_FACTORY_NAME_PROPERTY);
-            if (omFactory == null || "".equals(omFactory)) {
-                omFactory = DEFAULT_META_FACTORY_CLASS_NAME;
+            metaFactoryClassName = System.getProperty(META_FACTORY_NAME_PROPERTY);
+            if ("".equals(metaFactoryClassName)) {
+                metaFactoryClassName = null;
             }
         } catch (SecurityException e) {
-            omFactory = DEFAULT_META_FACTORY_CLASS_NAME;
+            // Ignore and continue
         }
 
+        // Next use JDK 1.3 service discovery
+        if (metaFactoryClassName == null) {
+            try {
+                InputStream in = OMAbstractFactory.class.getResourceAsStream("/META-INF/services/" + OMMetaFactory.class.getName());
+                if (in != null) {
+                    try {
+                        BufferedReader r = new BufferedReader(new InputStreamReader(in));
+                        String line;
+                        while ((line = r.readLine()) != null) {
+                            line = line.trim();
+                            if (line.length() > 0 && !line.startsWith("#")) {
+                                metaFactoryClassName = line;
+                                break;
+                            }
+                        }
+                    } finally {
+                        in.close();
+                    }
+                }
+            } catch (IOException ex) {
+                // Ignore and continue
+            }
+        }
+        
+        // Default to LLOM
+        if (metaFactoryClassName == null) {
+            metaFactoryClassName = DEFAULT_META_FACTORY_CLASS_NAME;
+        }
+        
         try {
-            defaultMetaFactory = (OMMetaFactory) Class.forName(omFactory).newInstance();
+            defaultMetaFactory = (OMMetaFactory) Class.forName(metaFactoryClassName).newInstance();
         } catch (InstantiationException e) {
             throw new OMException(e);
         } catch (IllegalAccessException e) {
