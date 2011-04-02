@@ -25,6 +25,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPModelBuilder;
 import org.xml.sax.InputSource;
 
 /**
@@ -190,7 +191,7 @@ public class OMXMLBuilderFactory {
      *            the charset encoding
      * @return the builder
      */
-    public static OMXMLParserWrapper createSOAPModelBuilder(InputStream in, String encoding) {
+    public static SOAPModelBuilder createSOAPModelBuilder(InputStream in, String encoding) {
         InputSource is = new InputSource(in);
         is.setEncoding(encoding);
         return OMAbstractFactory.getMetaFactory().createSOAPModelBuilder(StAXParserConfiguration.SOAP, is);

@@ -39,6 +39,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPMessage;
+import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -65,7 +66,7 @@ import javax.xml.stream.XMLStreamReader;
  * specified when the builder is constructed, or if none is specified, from the default
  * meta factory returned by {@link OMAbstractFactory#getMetaFactory()}.
  */
-public class StAXSOAPModelBuilder extends StAXOMBuilder {
+public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuilder {
 
     SOAPMessage soapMessage;
     /** Field envelope */
@@ -193,12 +194,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder {
 
     }
 
-    /**
-     * Method getSOAPEnvelope.
-     *
-     * @return Returns SOAPEnvelope.
-     * @throws OMException
-     */
     public SOAPEnvelope getSOAPEnvelope() throws OMException {
         while ((envelope == null) && !done) {
             next();

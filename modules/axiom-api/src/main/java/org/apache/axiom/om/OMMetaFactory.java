@@ -23,6 +23,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPModelBuilder;
 import org.xml.sax.InputSource;
 
 /**
@@ -104,7 +105,7 @@ public interface OMMetaFactory {
      *            the stream reader to read the SOAP message from
      * @return the builder
      */
-    OMXMLParserWrapper createStAXSOAPModelBuilder(XMLStreamReader parser);
+    SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser);
     
     /**
      * Create an object model builder for SOAP that reads a message from the provided input source.
@@ -118,5 +119,5 @@ public interface OMMetaFactory {
      *            the source of the SOAP message
      * @return the builder
      */
-    OMXMLParserWrapper createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is);
+    SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is);
 }
