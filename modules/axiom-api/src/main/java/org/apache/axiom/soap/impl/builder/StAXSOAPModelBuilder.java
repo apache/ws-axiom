@@ -326,6 +326,10 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
             // create a SOAPMessage to hold the SOAP envelope and assign the SOAP envelope in that.
             soapMessage = soapFactory.createSOAPMessage(this);
+            // TODO: this needs to be reviewed; why do we create an OMDocument in StAXOMBuilder and
+            //       then replace it here
+            OMDocument orgDocument = this.document;
+            soapMessage.setXMLEncoding(orgDocument.getXMLEncoding());
             this.document = soapMessage;
             if (charEncoding != null) {
                 document.setCharsetEncoding(charEncoding);

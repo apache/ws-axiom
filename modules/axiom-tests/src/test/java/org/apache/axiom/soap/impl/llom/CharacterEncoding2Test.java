@@ -55,7 +55,7 @@ public class CharacterEncoding2Test extends XMLTestCase {
         SOAPEnvelope envelope = builder.getSOAPEnvelope();
         envelope.build();
 
-        assertEquals("iso-8859-1", envelope.getXMLStreamReader().getCharacterEncodingScheme());
+        assertEquals("iso-8859-1", builder.getDocument().getXMLStreamReader().getCharacterEncodingScheme());
 
         ByteArrayOutputStream byteOutStr = new ByteArrayOutputStream();
         OMOutputFormat outputFormat = new OMOutputFormat();

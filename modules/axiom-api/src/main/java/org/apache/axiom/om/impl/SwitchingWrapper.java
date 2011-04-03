@@ -1187,7 +1187,19 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @return Returns String.
      */
     public String getEncoding() {
-        return null;
+        if (parser != null) {
+            return parser.getEncoding();
+        } else {
+            if (currentEvent == START_DOCUMENT) {
+                if (lastNode instanceof OMDocument) {
+                    return ((OMDocument)lastNode).getCharsetEncoding();
+                } else {
+                    return null;
+                }
+            } else {
+                throw new IllegalStateException();
+            }
+        }
     }
 
     /**
@@ -1232,10 +1244,19 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @return Returns String.
      */
     public String getCharacterEncodingScheme() {
-        if(builder != null) {
-            return builder.getCharacterEncoding();
+        if (parser != null) {
+            return parser.getCharacterEncodingScheme();
+        } else {
+            if (currentEvent == START_DOCUMENT) {
+                if (lastNode instanceof OMDocument) {
+                    return ((OMDocument)lastNode).getXMLEncoding();
+                } else {
+                    return null;
+                }
+            } else {
+                throw new IllegalStateException();
+            }
         }
-        return "utf-8";
     }
 
     /**

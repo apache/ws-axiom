@@ -60,6 +60,8 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
     private String xmlVersion;
 
+    private String xmlEncoding;
+    
     private boolean xmlStandalone = false;
     
     private String charEncoding;
@@ -425,6 +427,14 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         this.xmlVersion = version;
     }
 
+    public String getXMLEncoding() {
+        return xmlEncoding;
+    }
+
+    public void setXMLEncoding(String encoding) {
+        this.xmlEncoding = encoding;
+    }
+    
     /**
      * Returns the document element.
      *

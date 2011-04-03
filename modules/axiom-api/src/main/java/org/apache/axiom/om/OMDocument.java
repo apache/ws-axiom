@@ -46,6 +46,23 @@ public interface OMDocument extends OMContainer {
     void setOMDocumentElement(OMElement rootElement);
 
     /**
+     * Get the character set encoding scheme. This is the encoding that was used used for this
+     * document at the time of the parsing. This is <code>null</code> when it is not known, such as
+     * when the document was created in memory or from a character stream.
+     * 
+     * @return the charset encoding for this document, or <code>null</code> if the encoding is not
+     *         known
+     */
+    String getCharsetEncoding();
+
+    /**
+     * Sets the character set encoding scheme to be used.
+     *
+     * @param charsetEncoding
+     */
+    void setCharsetEncoding(String charsetEncoding);
+
+    /**
      * Returns the XML version.
      *
      * @return Returns String.
@@ -62,19 +79,22 @@ public interface OMDocument extends OMContainer {
     void setXMLVersion(String version);
 
     /**
-     * Returns the character set encoding scheme.
-     *
-     * @return Returns String.
+     * Get the charset encoding of this document as specified in the XML declaration.
+     * 
+     * @return the charset encoding specified in the XML declaration, or <code>null</code> if the
+     *         document didn't have an XML declaration or if the <code>encoding</code> attribute was
+     *         not specified in the XML declaration
      */
-    String getCharsetEncoding();
+    String getXMLEncoding();
 
     /**
-     * Sets the character set encoding scheme to be used.
-     *
-     * @param charsetEncoding
+     * Set the charset encoding for the XML declaration of this document.
+     * 
+     * @param encoding
+     *            the value of the <code>encoding</code> attribute of the XML declaration
      */
-    void setCharsetEncoding(String charsetEncoding);
-
+    void setXMLEncoding(String encoding);
+    
     /**
      * XML standalone value. This will be yes, no or null (if not available)
      *

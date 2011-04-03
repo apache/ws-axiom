@@ -160,11 +160,19 @@ public class XMLFragmentStreamReader implements XMLStreamReader {
     }
 
     public String getCharacterEncodingScheme() {
-        return "UTF-8";
+        if (state == STATE_START_DOCUMENT) {
+            return null;
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     public String getEncoding() {
-        return "UTF-8";
+        if (state == STATE_START_DOCUMENT) {
+            return null;
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     public String getVersion() {

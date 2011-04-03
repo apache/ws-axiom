@@ -121,12 +121,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected StAXBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
         omfactory = ombuilderFactory;
         
-        // The getCharacterEncodingScheme and getEncoding information are 
-        // only available at the START_DOCUMENT event.
-        charEncoding = parser.getCharacterEncodingScheme();
-        if(charEncoding == null){
-            charEncoding = parser.getEncoding();
-        }
+        // The getEncoding information is only available at the START_DOCUMENT event.
+        charEncoding = parser.getEncoding();
 
         initParser(parser);
     }

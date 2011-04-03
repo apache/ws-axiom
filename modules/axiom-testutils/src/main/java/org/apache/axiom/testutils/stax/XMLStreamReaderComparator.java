@@ -214,6 +214,8 @@ public class XMLStreamReaderComparator extends Assert {
             if (eventType == XMLStreamReader.START_ELEMENT) {
                 path.addLast(expected.getName());
             }
+            assertSameResult("getCharacterEncodingScheme");
+            assertSameResult("getEncoding");
             Integer attributeCount = (Integer)assertSameResult("getAttributeCount");
             // Test the behavior of the getAttributeXxx methods for all types of events,
             // to check that an appropriate exception is thrown for events other than

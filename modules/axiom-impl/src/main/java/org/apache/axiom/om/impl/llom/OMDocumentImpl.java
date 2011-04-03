@@ -56,6 +56,8 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
 
     /** Field xmlVersion */
     protected String xmlVersion = "1.0";
+    
+    protected String xmlEncoding;
 
     protected String isStandalone;
 
@@ -261,20 +263,10 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
         this.lastChild = omNode;
     }
 
-    /**
-     * Returns the character set encoding scheme to be used.
-     *
-     * @return Returns charset.
-     */
     public String getCharsetEncoding() {
         return charSetEncoding;
     }
 
-    /**
-     * Sets the character set encoding scheme.
-     *
-     * @param charEncoding
-     */
     public void setCharsetEncoding(String charEncoding) {
         this.charSetEncoding = charEncoding;
     }
@@ -293,6 +285,14 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
 
     public void setXMLVersion(String xmlVersion) {
         this.xmlVersion = xmlVersion;
+    }
+
+    public String getXMLEncoding() {
+        return xmlEncoding;
+    }
+
+    public void setXMLEncoding(String encoding) {
+        this.xmlEncoding = encoding;
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {

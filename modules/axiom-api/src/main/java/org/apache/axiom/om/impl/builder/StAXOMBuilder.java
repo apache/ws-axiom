@@ -187,6 +187,7 @@ public class StAXOMBuilder extends StAXBuilder {
         }
         if (parser.getEventType() == XMLStreamConstants.START_DOCUMENT) {
             document.setXMLVersion(parser.getVersion());
+            document.setXMLEncoding(parser.getCharacterEncodingScheme());
             document.setStandalone(parser.isStandalone() ? "yes" : "no");
         } else {
             // We allow creating a StAXOMWrapper from a parser in state START_ELEMENT. In that

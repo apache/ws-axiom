@@ -29,10 +29,27 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
  * root level information items other than elements.
  */
 public class DocumentElementExtractor extends XMLStreamReaderWrapper {
+    private int event = START_DOCUMENT;
     private int depth;
     
     public DocumentElementExtractor(XMLStreamReader parent) {
         super(parent);
+    }
+
+    public String getCharacterEncodingScheme() {
+        if (event == START_DOCUMENT) {
+            return null;
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public String getEncoding() {
+        if (event == START_DOCUMENT) {
+            return null;
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     public int next() throws XMLStreamException {
