@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ElementImpl;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAPBody;
@@ -129,12 +130,12 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
         sw.flush();
-        getDetail();
-        if (getDetail() == null) {
-            setDetail(getNewSOAPFaultDetail(this));
-
+        SOAPFaultDetail detail = getDetail();
+        if (detail == null) {
+            detail = getNewSOAPFaultDetail(this);
+            setDetail(detail);
         }
-        OMElement faultDetailEnty = new ElementImpl(this,
+        OMElement faultDetailEnty = new ElementImpl((ParentNode)detail,
                                                     SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,
                                                     null, this.factory);
         faultDetailEnty.setText(sw.getBuffer().toString());

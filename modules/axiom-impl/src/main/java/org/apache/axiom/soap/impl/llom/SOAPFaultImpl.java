@@ -132,7 +132,7 @@ public abstract class SOAPFaultImpl extends SOAPElement
         e.printStackTrace(new PrintWriter(sw));
         sw.flush();
         SOAPFaultDetail detail = getDetail();
-        if (getDetail() == null) {
+        if (detail == null) {
             detail = getNewSOAPFaultDetail(this);
             setDetail(detail);
         }
