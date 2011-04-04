@@ -56,12 +56,18 @@ public class SAXOMXMLParserWrapper implements OMXMLParserWrapper {
             XMLReader reader = source.getXMLReader();
             reader.setContentHandler(builder);
             try {
+                reader.setProperty("http://xml.org/sax/properties/lexical-handler", builder);
+            } catch (SAXException ex) {
+                // Ignore
+            }
+            try {
                 reader.parse(source.getInputSource());
             } catch (IOException ex) {
                 throw new OMException(ex);
             } catch (SAXException ex) {
                 throw new OMException(ex);
             }
+            document = builder.getDocument();
         }
         return document;
     }
