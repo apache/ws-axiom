@@ -180,6 +180,19 @@ public class OMXMLBuilderFactory {
     }
     
     /**
+     * Create an object model builder for SOAP that pulls events from a StAX stream reader.
+     * The method will select the appropriate {@link SOAPFactory}
+     * based on the namespace URI of the SOAP envelope.
+     * 
+     * @param parser
+     *            the stream reader to read the XML data from
+     * @return the builder
+     */
+    public static SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
+        return OMAbstractFactory.getMetaFactory().createStAXSOAPModelBuilder(parser);
+    }
+    
+    /**
      * Create an object model builder for SOAP that reads a message from the provided input stream,
      * using a given charset encoding. The method will select the appropriate {@link SOAPFactory}
      * based on the namespace URI of the SOAP envelope. It will configure the underlying parser as
