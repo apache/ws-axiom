@@ -34,17 +34,12 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.util.sax.AbstractXMLReader;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
-import org.xml.sax.DTDHandler;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
-import org.xml.sax.ext.LexicalHandler;
 
 /**
  * SAX {@link XMLReader} implementation that traverses a given OM tree and invokes the
@@ -66,95 +61,12 @@ import org.xml.sax.ext.LexicalHandler;
  * aware of the namespace mapping for the <tt>ns</tt> prefix, even if the serialization starts
  * only at the child element.
  */
-public class OMXMLReader implements XMLReader {
-    private static final String URI_LEXICAL_HANDLER = "http://xml.org/sax/properties/lexical-handler";
-    
+public class OMXMLReader extends AbstractXMLReader {
     private final OMElement element;
     private final AttributesAdapter attributesAdapter = new AttributesAdapter();
     
-    private boolean namespaces = true;
-    private boolean namespacePrefixes = false;
-    
-    private ContentHandler contentHandler;
-    private LexicalHandler lexicalHandler;
-    private DTDHandler dtdHandler;
-    private EntityResolver entityResolver;
-    private ErrorHandler errorHandler;
-    
     public OMXMLReader(OMElement element) {
         this.element = element;
-    }
-
-    public ContentHandler getContentHandler() {
-        return contentHandler;
-    }
-
-    public void setContentHandler(ContentHandler contentHandler) {
-        this.contentHandler = contentHandler;
-    }
-
-    public DTDHandler getDTDHandler() {
-        return dtdHandler;
-    }
-
-    public void setDTDHandler(DTDHandler dtdHandler) {
-        this.dtdHandler = dtdHandler;
-    }
-
-    public EntityResolver getEntityResolver() {
-        return entityResolver;
-    }
-
-    public void setEntityResolver(EntityResolver entityResolver) {
-        this.entityResolver = entityResolver;
-    }
-
-    public ErrorHandler getErrorHandler() {
-        return errorHandler;
-    }
-
-    public void setErrorHandler(ErrorHandler errorHandler) {
-        this.errorHandler = errorHandler;
-    }
-
-    public boolean getFeature(String name)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
-        throw new SAXNotRecognizedException(name);
-    }
-
-    public void setFeature(String name, boolean value)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
-        
-        if ("http://xml.org/sax/features/namespaces".equals(name)) {
-            namespaces = value;
-        } else if ("http://xml.org/sax/features/namespace-prefixes".equals(name)) {
-            namespacePrefixes = value;
-        } else {
-            throw new SAXNotRecognizedException(name);
-        }
-    }
-
-    public Object getProperty(String name)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
-        
-        if ("http://xml.org/sax/features/namespaces".equals(name)) {
-            return Boolean.valueOf(namespaces);
-        } else if ("http://xml.org/sax/features/namespace-prefixes".equals(name)) {
-            return Boolean.valueOf(namespacePrefixes);
-        } else if (URI_LEXICAL_HANDLER.equals(name)) {
-            return lexicalHandler;
-        } else {
-            throw new SAXNotRecognizedException(name);
-        }
-    }
-
-    public void setProperty(String name, Object value)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
-        if (URI_LEXICAL_HANDLER.equals(name)) {
-            lexicalHandler = (LexicalHandler)value;
-        } else {
-            throw new SAXNotRecognizedException(name);
-        }
     }
 
     public void parse(InputSource input) throws IOException, SAXException {
