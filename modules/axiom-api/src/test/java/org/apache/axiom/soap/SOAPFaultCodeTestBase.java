@@ -136,17 +136,6 @@ public class SOAPFaultCodeTestBase extends SOAPFaultCodeTestCase {
         assertNull(soap11FaultCodeWithParser.getValue());
     }
 
-    //SOAP 1.2 Fault Code Test (With Parser)
-    public void testSOAP12GetValueWithParser() {
-        assertFalse(
-                "SOAP 1.2 Fault Code Test with parser : - getValue method returns null",
-                soap12FaultCodeWithParser.getValue() == null);
-        assertTrue(
-                "SOAP 1.2 Fault Code Test with parser : - Value local name mismatch",
-                soap12FaultCodeWithParser.getValue().getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_VALUE_LOCAL_NAME));
-    }
-
     public void testSOAP12GetSubCodeWithParser() {
         assertFalse(
                 "SOAP 1.2 Fault Code Test with parser :- getSubCode method returns null",
