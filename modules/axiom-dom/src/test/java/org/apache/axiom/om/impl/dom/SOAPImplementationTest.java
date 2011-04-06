@@ -25,6 +25,7 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.SOAPTestSuiteBuilder;
 import org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope;
 import org.apache.axiom.ts.soap.faultdetail.TestWSCommons202;
+import org.apache.axiom.ts.soap.faulttext.TestSetLang;
 import org.apache.axiom.ts.soap11.header.TestSOAP11Roles;
 import org.apache.axiom.ts.soap12.fault.TestMoreChildrenAddition;
 import org.apache.axiom.ts.soap12.header.TestSOAP12Roles;
@@ -40,6 +41,9 @@ public class SOAPImplementationTest extends TestCase {
         
         builder.exclude(TestSOAP11Roles.class);
         builder.exclude(TestSOAP12Roles.class);
+        
+        // SOAPFaultText is currently unsupported in DOOM
+        builder.exclude(TestSetLang.class);
         
         return builder.build();
     }

@@ -40,28 +40,6 @@ public class SOAPFaultTextTestBase extends SOAPFaultReasonTestCase {
         soap12FaultTextWithParser = soap12FaultReasonWithParser.getFirstSOAPText();
     }
 
-    //SOAP 1.1 Fault Text Test (Programaticaly Created)
-    public void testSOAP11SetLang() {
-        soap11FaultText.setLang("en");
-        assertTrue(
-                "SOAP 1.1 Fault Text Test : - After calling setLang method, Lang attribute value mismatch",
-                soap11FaultText.getLang().equals("en"));
-        OMAttribute langAttribute = (OMAttribute) soap11FaultText.getAllAttributes()
-                .next();
-        assertTrue(
-                "SOAP 1.1 Fault Text Test : - After calling setLang method, Lang attribute local name mismaatch",
-                langAttribute.getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME));
-        assertTrue(
-                "SOAP 1.1 Fault Text Test : - After calling setLang method, Lang attribute namespace prefix mismatch",
-                langAttribute.getNamespace().getPrefix().equals(
-                        SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
-        assertTrue(
-                "SOAP 1.1 Fault Text Test : - After calling setLang method, Lang attribute namespace uri mismatch",
-                langAttribute.getNamespace().getNamespaceURI().equals(
-                        SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI));
-    }
-
     public void testSOAP11GetLang() {
 
 
@@ -90,28 +68,6 @@ public class SOAPFaultTextTestBase extends SOAPFaultReasonTestCase {
         assertTrue(
                 "SOAP 1.1 Fault Text Test : - After calling setText method, getText method return incorrect string",
                 soap11FaultText.getText().equals("This is only a test"));
-    }
-
-    //SOAP 1.2 Fault Text Test (Programaticaly Created)
-    public void testSOAP12SetLang() {
-        soap12FaultText.setLang("en");
-        assertTrue(
-                "SOAP 1.2 Fault Text Test : - After calling setLang method, Lang attribute value mismatch",
-                soap12FaultText.getLang().equals("en"));
-        OMAttribute langAttribute = (OMAttribute) soap12FaultText.getAllAttributes()
-                .next();
-        assertTrue(
-                "SOAP 1.2 Fault Text Test : - After calling setLang method, Lang attribute local name mismaatch",
-                langAttribute.getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME));
-        assertTrue(
-                "SOAP 1.2 Fault Text Test : - After calling setLang method, Lang attribute namespace prefix mismatch",
-                langAttribute.getNamespace().getPrefix().equals(
-                        SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
-        assertTrue(
-                "SOAP 1.2 Fault Text Test : - After calling setLang method, Lang attribute namespace uri mismatch",
-                langAttribute.getNamespace().getNamespaceURI().equals(
-                        SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI));
     }
 
     public void testSOAP12GetLang() {
