@@ -18,26 +18,55 @@
  */
 package org.apache.axiom.ts;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.om.container.TestSerialize;
+import org.osgi.framework.Filter;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.InvalidSyntaxException;
 
 public abstract class AxiomTestSuiteBuilder {
+    private static class Exclude {
+        private final Class testClass;
+        private final Filter filter;
+        
+        public Exclude(Class testClass, Filter filter) {
+            this.testClass = testClass;
+            this.filter = filter;
+        }
+        
+        public boolean accept(AxiomTestCase test) {
+            return (testClass == null || test.getClass().equals(testClass))
+                    && (filter == null || filter.match(test.getTestProperties()));
+        }
+    }
+    
     protected final OMMetaFactory metaFactory;
-    private final Set/*<Class>*/ excludedTests = new HashSet();
+    private final List/*<Exclude>*/ excludes = new ArrayList();
     private TestSuite suite;
     
     public AxiomTestSuiteBuilder(OMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
     }
     
+    public final void exclude(Class testClass, String filter) {
+        try {
+            excludes.add(new Exclude(testClass, filter == null ? null : FrameworkUtil.createFilter(filter)));
+        } catch (InvalidSyntaxException ex) {
+            throw new IllegalArgumentException("Invalid filter expression", ex);
+        }
+    }
+    
     public final void exclude(Class testClass) {
-        excludedTests.add(testClass);
+        exclude(testClass, null);
+    }
+    
+    public final void exclude(String filter) {
+        exclude(null, filter);
     }
     
     protected abstract void addTests();
@@ -49,21 +78,11 @@ public abstract class AxiomTestSuiteBuilder {
     }
     
     protected final void addTest(AxiomTestCase test) {
-        if (!excludedTests.contains(test.getClass())) {
-            // TODO: quick & dirty hack; need to implement a generic way to exclude tests based on properties
-            if (test instanceof TestSerialize) {
-                Map props = test.getTestProperties();
-                if (props.get("file").equals("iso-8859-1.xml") && props.get("container").equals("document")) {
-                    // TODO: this case is not working because Axiom generates an XML declaration
-                    //       but uses another charset encoding to serialize the document
-                    return;
-                }
-                if (props.get("file").equals("spaces.xml") && props.get("container").equals("document")) {
-                    // TODO: this case is not working because Axiom doesn't serialize the DTD
-                    return;
-                }
+        for (Iterator it = excludes.iterator(); it.hasNext(); ) {
+            if (((Exclude)it.next()).accept(test)) {
+                return;
             }
-            suite.addTest(test);
         }
+        suite.addTest(test);
     }
 }

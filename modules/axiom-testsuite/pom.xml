@@ -61,6 +61,12 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <!-- We use this only for LDAP like filters -->
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
             <classifier>tests</classifier>

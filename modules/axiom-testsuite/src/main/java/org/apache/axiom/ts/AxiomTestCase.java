@@ -18,9 +18,8 @@
  */
 package org.apache.axiom.ts;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
@@ -29,7 +28,7 @@ import org.custommonkey.xmlunit.XMLTestCase;
 
 public abstract class AxiomTestCase extends XMLTestCase {
     protected final OMMetaFactory metaFactory;
-    private final Map/*<String,String>*/ properties = new HashMap();
+    private final Dictionary/*<String,String>*/ properties = new Hashtable();
 
     public AxiomTestCase(OMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
@@ -41,8 +40,8 @@ public abstract class AxiomTestCase extends XMLTestCase {
         properties.put(name, value);
     }
     
-    public Map getTestProperties() {
-        return Collections.unmodifiableMap(properties);
+    public Dictionary getTestProperties() {
+        return properties;
     }
 
     protected void assertConsumed(OMContainer container) {
