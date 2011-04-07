@@ -19,7 +19,6 @@
 
 package org.apache.axiom.soap;
 
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMMetaFactory;
 
 public class SOAPFaultTextTestBase extends SOAPFaultReasonTestCase {
@@ -107,26 +106,6 @@ public class SOAPFaultTextTestBase extends SOAPFaultReasonTestCase {
     }
 
     //SOAP 1.2 Fault Text Test (With Parser)
-    public void testSOAP12GetLangWithParser() {
-        assertTrue(
-                "SOAP 1.2 Fault Text Test With Parser : - getLang method returns incorrect string",
-                soap12FaultTextWithParser.getLang().equals("en"));
-        OMAttribute langAttribute = (OMAttribute) soap12FaultTextWithParser.getAllAttributes()
-                .next();
-        assertTrue(
-                "SOAP 1.2 Fault Text Test With Parser : - Lang attribute local name mismaatch",
-                langAttribute.getLocalName().equals(
-                        SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME));
-        assertTrue(
-                "SOAP 1.2 Fault Text Test With Parser : - Lang attribute namespace prefix mismatch",
-                langAttribute.getNamespace().getPrefix().equals(
-                        SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX));
-        assertTrue(
-                "SOAP 1.2 Fault Text Test With Parser : - Lang attribute namespace uri mismatch",
-                langAttribute.getNamespace().getNamespaceURI().equals(
-                        SOAP12Constants.SOAP_FAULT_TEXT_LANG_ATTR_NS_URI));
-    }
-
     public void testSOAP12GetTextWithParser() {
 
         assertTrue(

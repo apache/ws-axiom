@@ -16,14 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap12.faultreason;
 
-package org.apache.axiom.soap.impl.llom;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFaultReason;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
-import org.apache.axiom.soap.SOAP11HeaderTestBase;
+public class TestGetFirstSOAPTextWithParser extends SOAPTestCase {
+    public TestGetFirstSOAPTextWithParser(OMMetaFactory metaFactory) {
+        super(metaFactory, SOAPSpec.SOAP12);
+    }
 
-public class SOAP11HeaderTest extends SOAP11HeaderTestBase {
-    public SOAP11HeaderTest() {
-        super(new OMLinkedListMetaFactory());
+    protected void runTest() throws Throwable {
+        SOAPFaultReason faultReason = getTestMessage(MESSAGE).getBody().getFault().getReason();
+        assertFalse(
+                "SOAP 1.2 FaultReason Test With Parser : - getFirstSOAPText method returns null",
+                faultReason.getFirstSOAPText() == null);
     }
 }

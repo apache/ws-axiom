@@ -16,16 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.soap;
+package org.apache.axiom.ts.soap11.faultreason;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.SOAPFaultReason;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class SOAPHeaderTestBase extends UnifiedSOAPTestCase {
-    protected final String roleNextURI;
-    
-    public SOAPHeaderTestBase(OMMetaFactory omMetaFactory, String envelopeNamespaceURI, String roleNextURI) {
-        super(omMetaFactory, envelopeNamespaceURI);
-        this.roleNextURI = roleNextURI;
+public class TestGetFirstSOAPText extends SOAPTestCase {
+    public TestGetFirstSOAPText(OMMetaFactory metaFactory) {
+        super(metaFactory, SOAPSpec.SOAP11);
+    }
+
+    protected void runTest() throws Throwable {
+        SOAPFault fault = soapFactory.createSOAPFault();
+        SOAPFaultReason faultReason = soapFactory.createSOAPFaultReason(fault);
+        try {
+            faultReason.getFirstSOAPText();
+        } catch (UnsupportedOperationException e) {
+            // Cool, continue.
+            return;
+        }
+        fail("Didn't get expected Exception for getFirstSOAPText()!");
     }
 }
