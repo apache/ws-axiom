@@ -22,7 +22,7 @@ import java.io.InputStream;
 import java.io.Reader;
 
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.Source;
 
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
@@ -182,19 +182,19 @@ public class OMXMLBuilderFactory {
     
     /**
      * Create an object model builder that reads a plain XML document from the provided
-     * {@link SAXSource}.
+     * {@link Source}.
      * 
      * @param source
      *            the source of the XML document
      * @return the builder
      */
-    public static OMXMLParserWrapper createSAXOMBuilder(SAXSource source) {
+    public static OMXMLParserWrapper createOMBuilder(Source source) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
-        return metaFactory.createSAXOMBuilder(metaFactory.getOMFactory(), source);
+        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), source);
     }
     
     /**
-     * Create an object model builder that reads an XML document from the provided {@link SAXSource}
+     * Create an object model builder that reads an XML document from the provided {@link Source}
      * using a specified object model factory.
      * 
      * @param omFactory
@@ -203,8 +203,8 @@ public class OMXMLBuilderFactory {
      *            the source of the XML document
      * @return the builder
      */
-    public static OMXMLParserWrapper createSAXOMBuilder(OMFactory omFactory, SAXSource source) {
-        return omFactory.getMetaFactory().createSAXOMBuilder(omFactory, source);
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source) {
+        return omFactory.getMetaFactory().createOMBuilder(omFactory, source);
     }
     
     /**

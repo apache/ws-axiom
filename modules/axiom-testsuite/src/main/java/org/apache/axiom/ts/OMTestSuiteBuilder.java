@@ -45,13 +45,14 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.attribute.TestEqualsHashCode(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQNameWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQNameWithoutNamespace(metaFactory));
+        for (int i=0; i<conformanceFiles.length; i++) {
+            addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource(metaFactory, conformanceFiles[i]));
+            addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, conformanceFiles[i]));
+        }
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocument(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestInvalidXML(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestIOExceptionInGetText(metaFactory));
-        for (int i=0; i<conformanceFiles.length; i++) {
-            addTest(new org.apache.axiom.ts.om.builder.TestSAXOMBuilder(metaFactory, conformanceFiles[i]));
-        }
         for (int i=0; i<conformanceFiles.length; i++) {
             for (int j=0; j<containerFactories.length; j++) {
                 addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], containerFactories[j], true));

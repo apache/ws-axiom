@@ -22,31 +22,29 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.sax.SAXSource;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.dom.DOMSource;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.ConformanceTestCase;
-import org.xml.sax.InputSource;
 
-public class TestSAXOMBuilder extends ConformanceTestCase {
-    public TestSAXOMBuilder(OMMetaFactory metaFactory, String file) {
+public class TestCreateOMBuilderFromDOMSource extends ConformanceTestCase {
+    public TestCreateOMBuilderFromDOMSource(OMMetaFactory metaFactory, String file) {
         super(metaFactory, file);
     }
 
     protected void runTest() throws Throwable {
-        SAXParserFactory factory = SAXParserFactory.newInstance();
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
-        factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
-        SAXParser parser = factory.newSAXParser();
+        DocumentBuilder documentBuilder = factory.newDocumentBuilder();
         InputStream in = getFileAsStream();
         try {
-            SAXSource source = new SAXSource(parser.getXMLReader(), new InputSource(in));
-            OMXMLParserWrapper builder = OMXMLBuilderFactory.createSAXOMBuilder(metaFactory.getOMFactory(), source);
+            DOMSource source = new DOMSource(documentBuilder.parse(in));
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             builder.getDocument().serialize(baos);
             assertXMLIdentical(compareXML(

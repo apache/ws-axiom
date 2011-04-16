@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.om.OMException;
@@ -72,8 +73,16 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         return createStAXOMBuilder(omFactory, createXMLStreamReader(configuration, is));
     }
     
-    public OMXMLParserWrapper createSAXOMBuilder(OMFactory omFactory, SAXSource source) {
-        return new SAXOMXMLParserWrapper(omFactory, source);
+    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source) {
+        if (source instanceof SAXSource) {
+            return new SAXOMXMLParserWrapper(omFactory, (SAXSource)source);
+        } else {
+            try {
+                return new StAXOMBuilder(omFactory, StAXUtils.getXMLInputFactory().createXMLStreamReader(source));
+            } catch (XMLStreamException ex) {
+                throw new OMException(ex);
+            }
+        }
     }
 
     public SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {

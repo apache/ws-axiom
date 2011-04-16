@@ -23,6 +23,7 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.OMTestSuiteBuilder;
+import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource;
 import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
@@ -64,6 +65,12 @@ public class OMImplementationTest extends TestCase {
         
         // TODO: this case is not working because Axiom doesn't serialize the DTD
         builder.exclude(TestSerialize.class, "(&(file=spaces.xml)(container=document))");
+        
+        // TODO: CDATA sections are lost when using createOMBuilder with a DOMSource
+        builder.exclude(TestCreateOMBuilderFromDOMSource.class, "(|(file=cdata.xml)(file=test.xml))");
+        
+        // TODO: suspecting Woodstox bug here
+        builder.exclude(TestCreateOMBuilderFromDOMSource.class, "(file=spaces.xml)");
         
         return builder.build();
     }

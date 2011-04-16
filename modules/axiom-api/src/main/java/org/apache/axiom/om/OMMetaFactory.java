@@ -20,7 +20,7 @@
 package org.apache.axiom.om;
 
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.Source;
 
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
@@ -98,7 +98,7 @@ public interface OMMetaFactory {
     OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputSource is);
     
     /**
-     * Create an object model builder for plain XML that gets its input from a {@link SAXSource}.
+     * Create an object model builder for plain XML that gets its input from a {@link Source}.
      * 
      * @param omFactory
      *            The object model factory to use. This factory must be obtained from the same
@@ -110,7 +110,7 @@ public interface OMMetaFactory {
      *            the source of the XML document
      * @return the builder
      */
-    OMXMLParserWrapper createSAXOMBuilder(OMFactory omFactory, SAXSource source);
+    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source);
     
     /**
      * Create an object model builder for SOAP that pulls events from a StAX stream reader. The
