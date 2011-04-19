@@ -327,7 +327,7 @@ public class XMLStreamReaderComparator extends Assert {
                 }
                 fail("Expected reader to throw IllegalStateException or NoSuchElementException");
             } else {
-                assertEquals(expectedNextEvent, actual.next());
+                assertEquals("Event type at " + getLocation(), expectedNextEvent, actual.next());
             }
         };
     }
