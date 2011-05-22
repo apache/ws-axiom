@@ -20,7 +20,6 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.AttachmentCacheMonitor;
-import org.apache.axiom.attachments.utils.IOUtils;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
@@ -32,7 +31,6 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 import org.apache.axiom.testutils.io.IOTestUtils;
 
-import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
 
 import java.io.BufferedReader;
@@ -42,7 +40,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.util.Set;
 
 public class AttachmentsTest extends AbstractTestCase {
 
@@ -56,12 +53,6 @@ public class AttachmentsTest extends AbstractTestCase {
     
     String contentTypeString =
         "multipart/related; boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
-
-    public void testMIMEHelper() {
-    }
-
-    public void testGetAttachmentSpecType() {
-    }
 
     public void testSimultaneousStreamAccess() throws Exception {
         InputStream inStream;
@@ -323,53 +314,6 @@ public class AttachmentsTest extends AbstractTestCase {
         
     }
 
-    public void testGetDataHandler() throws Exception {
-
-        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
-
-        DataHandler dh = attachments
-                .getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
-        InputStream dataIs = dh.getDataSource().getInputStream();
-
-        InputStream expectedDataIs = getTestResource(img2FileName);
-
-        // Compare data across streams
-        IOTestUtils.compareStreams(dataIs, expectedDataIs);
-    }
-
-    public void testNonExistingMIMEPart() throws Exception {
-
-        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
-
-        DataHandler dh = attachments.getDataHandler("ThisShouldReturnNull");
-        assertNull(dh);
-    }
-
-    public void testGetAllContentIDs() throws Exception {
-
-        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
-
-        String[] contentIDs = attachments.getAllContentIDs();
-        assertEquals(contentIDs.length, 3);
-        assertEquals(contentIDs[0], "0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org");
-        assertEquals(contentIDs[1], "1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
-        assertEquals(contentIDs[2], "2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
-
-        Set idSet = attachments.getContentIDSet();
-        assertTrue(idSet.contains("0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org"));
-        assertTrue(idSet.contains("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"));
-        assertTrue(idSet.contains("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));
-        
-        // Make sure the length is correct
-        long length = attachments.getContentLength();
-        long fileSize = IOUtils.getStreamAsByteArray(getTestResource(TestConstants.MTOM_MESSAGE)).length;
-        assertTrue("Expected MessageContent Length of " + fileSize + " but received " + length,
-                   length == fileSize);
-    }
-    
     public void testCachedFilesExpired() throws Exception {
     	
     	// Set file expiration to 10 seconds
@@ -440,47 +384,5 @@ public class AttachmentsTest extends AbstractTestCase {
             // other tests are affected
             acm.setTimeout(previousTime);
         }
-    }
-
-    private void testGetSOAPPartContentID(String contentTypeStartParam, String contentId)
-            throws Exception {
-        // It doesn't actually matter what the stream *is* it just needs to exist
-        String contentType = "multipart/related; boundary=\"" + TestConstants.MTOM_MESSAGE_BOUNDARY +
-                "\"; type=\"text/xml\"; start=\"" + contentTypeStartParam + "\"";
-        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
-        Attachments attachments = new Attachments(inStream, contentType);
-        assertEquals("Did not obtain correct content ID", contentId,
-                attachments.getSOAPPartContentID());
-    }
-    
-    public void testGetSOAPPartContentIDWithoutBrackets() throws Exception {
-        testGetSOAPPartContentID("my-content-id@localhost", "my-content-id@localhost");
-    }
-    
-    public void testGetSOAPPartContentIDWithBrackets() throws Exception {
-        testGetSOAPPartContentID("<my-content-id@localhost>", "my-content-id@localhost");
-    }
-    
-    // Not sure when exactly somebody uses the "cid:" prefix in the start parameter, but
-    // this is how the code currently works.
-    public void testGetSOAPPartContentIDWithCidPrefix() throws Exception {
-        testGetSOAPPartContentID("cid:my-content-id@localhost", "my-content-id@localhost");
-    }
-    
-    // Regression test for WSCOMMONS-329
-    public void testGetSOAPPartContentIDWithCidPrefix2() throws Exception {
-        testGetSOAPPartContentID("<cid-73920@192.168.0.1>", "cid-73920@192.168.0.1");
-    }
-    
-    public void testGetSOAPPartContentIDShort() throws Exception {
-        testGetSOAPPartContentID("bbb", "bbb");
-    }
-    
-    public void testGetSOAPPartContentIDShortWithBrackets() throws Exception {
-        testGetSOAPPartContentID("<b>", "b");
-    }
-    
-    public void testGetSOAPPartContentIDBorderline() throws Exception {
-        testGetSOAPPartContentID("cid:", "cid:");
     }
 }
