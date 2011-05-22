@@ -332,24 +332,27 @@ public class Attachments implements OMAttachmentAccessor {
     }
 
     /**
-     * Checks whether the MIME part is already parsed by checking the attachments HashMap. If it is
-     * not parsed yet then call the getNextPart() till the required part is found.
-     *
-     * @param blobContentID (without the surrounding angle brackets and "cid:" prefix)
-     * @return The DataHandler of the mime part referred by the Content-Id or *null* if the mime
-     *         part referred by the content-id does not exist
+     * Get the {@link DataHandler} object for the MIME part with a given content ID.
+     * 
+     * @param contentID
+     *            the raw content ID (without the surrounding angle brackets and <tt>cid:</tt>
+     *            prefix) of the MIME part
+     * @return the {@link DataHandler} of the MIME part referred by the content ID or
+     *         <code>null</code> if the MIME part referred by the content ID does not exist
      */
-    public DataHandler getDataHandler(String blobContentID) {
+    public DataHandler getDataHandler(String contentID) {
+        // Check whether the MIME part is already parsed by checking the attachments HashMap. If it is
+        // not parsed yet then call the getNextPart() till the required part is found.
         DataHandler dataHandler;
-        if (attachmentsMap.containsKey(blobContentID)) {
-            dataHandler = (DataHandler) attachmentsMap.get(blobContentID);
+        if (attachmentsMap.containsKey(contentID)) {
+            dataHandler = (DataHandler) attachmentsMap.get(contentID);
             return dataHandler;
         } else if (!noStreams) {
             //This loop will be terminated by the Exceptions thrown if the Mime
             // part searching was not found
             while ((dataHandler = this.getNextPartDataHandler()) != null) {
-                if (attachmentsMap.containsKey(blobContentID)) {
-                    dataHandler = (DataHandler) attachmentsMap.get(blobContentID);
+                if (attachmentsMap.containsKey(contentID)) {
+                    dataHandler = (DataHandler) attachmentsMap.get(contentID);
                     return dataHandler;
                 }
             }
@@ -417,9 +420,15 @@ public class Attachments implements OMAttachmentAccessor {
     }
 
     /**
-     * @return the Content-ID of the SOAP part It'll be the value Start Parameter of Content-Type
-     *         header if given in the Content type of the MIME message. Else it'll be the content-id
-     *         of the first MIME part of the MIME message
+     * Get the content ID of the SOAP part or the MIME message. This content ID is determined as
+     * follows:
+     * <ul>
+     * <li>If the content type of the MIME message has a <tt>start</tt> parameter, then the content
+     * ID will be extracted from that parameter.
+     * <li>Otherwise the content ID of the first MIME part of the MIME message is returned.
+     * </ul>
+     * 
+     * @return the content ID of the SOAP part (without the surrounding angle brackets)
      */
     public String getSOAPPartContentID() {
         if(contentType == null) {
@@ -453,6 +462,13 @@ public class Attachments implements OMAttachmentAccessor {
         return rootContentID;
     }
 
+    /**
+     * Get the content type of the SOAP part of the MIME message.
+     * 
+     * @return the content type of the SOAP part
+     * @throws OMException
+     *             if the content type could not be determined
+     */
     public String getSOAPPartContentType() {
         if (!noStreams) {
             DataHandler soapPart = getDataHandler(getSOAPPartContentID());
