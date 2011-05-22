@@ -471,7 +471,14 @@ public class Attachments implements OMAttachmentAccessor {
      */
     public String getSOAPPartContentType() {
         if (!noStreams) {
-            DataHandler soapPart = getDataHandler(getSOAPPartContentID());
+            String soapPartContentID = getSOAPPartContentID();
+            if (soapPartContentID == null) {
+                throw new OMException("Unable to determine the content ID of the SOAP part");
+            }
+            DataHandler soapPart = getDataHandler(soapPartContentID);
+            if (soapPart == null) {
+                throw new OMException("Unable to locate the SOAP part; content ID was " + soapPartContentID);
+            }
             return soapPart.getContentType();
         } else {
             throw new OMException(

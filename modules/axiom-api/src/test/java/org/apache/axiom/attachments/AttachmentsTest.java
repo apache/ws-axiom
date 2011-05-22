@@ -27,6 +27,7 @@ import javax.activation.DataHandler;
 
 import org.apache.axiom.attachments.utils.IOUtils;
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.testutils.io.IOTestUtils;
 
@@ -117,6 +118,24 @@ public class AttachmentsTest extends AbstractTestCase {
     
     public void testGetSOAPPartContentIDBorderline() throws Exception {
         testGetSOAPPartContentID("cid:", "cid:");
+    }
+    
+    /**
+     * Tests that {@link Attachments#getSOAPPartContentType()} throws a meaningful exception if it
+     * is unable to determine the content type.
+     */
+    public void testGetSOAPPartContentTypeWithContentIDMismatch() {
+        String contentType = "multipart/related; boundary=\"" + TestConstants.MTOM_MESSAGE_BOUNDARY +
+                "\"; type=\"text/xml\"; start=\"<wrong-content-id@example.org>\"";
+        Attachments attachments = new Attachments(getTestResource(TestConstants.MTOM_MESSAGE), contentType);
+        try {
+            attachments.getSOAPPartContentType();
+            fail("Expected OMException");
+        } catch (OMException ex) {
+            // OK, expected
+        } catch (Throwable ex) {
+            fail("Unexpected exception: " + ex.getClass().getName());
+        }
     }
     
     public void testGetIncomingAttachmentStreams() throws Exception {
