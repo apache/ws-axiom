@@ -234,7 +234,7 @@ public class Attachments implements OMAttachmentAccessor {
                         pushbackInStream.read();
                         break;
                     }
-                } else if ((byte) value == -1) {
+                } else if (value == -1) {
                     throw new OMException(
                             "Mime parts not found. Stream ended while searching for the boundary");
                 }
