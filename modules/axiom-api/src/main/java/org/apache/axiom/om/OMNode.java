@@ -122,6 +122,8 @@ public interface OMNode extends OMSerializable {
      * handle the namespaces. For example, if there you have used a namespace within the detaching node
      * and which is defined outside the detaching node, user has to handle it manually. </p>
      *
+     * @return The detached node. This is always the instance on which this method is invoked.
+     * 
      * @throws OMException If a node is not complete, the detach can trigger further parsing, which may
      *                     cause an exception.
      */
