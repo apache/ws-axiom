@@ -1019,8 +1019,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             OMDataSource oldDS = this.dataSource;
             Iterator it = getChildren();
             while(it.hasNext()) {
-                OMNode node = (OMNode) it.next();
-                node.detach();
+                it.next();
+                it.remove();
             }
             this.dataSource = dataSource;
             setComplete(false);

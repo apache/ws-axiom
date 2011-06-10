@@ -19,9 +19,11 @@
 
 package org.apache.axiom.om.impl.traverse;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 
 /**
@@ -29,6 +31,12 @@ import org.apache.axiom.om.OMNode;
  */
 public abstract class OMAbstractIterator implements Iterator {
     private OMNode currentNode;
+    
+    /**
+     * The parent of the current node. This is used to detect concurrent modifications.
+     */
+    private OMContainer currentParent;
+    
     private OMNode nextNode;
     private boolean noMoreNodes;
     private boolean nextCalled;
@@ -55,6 +63,9 @@ public abstract class OMAbstractIterator implements Iterator {
         } else if (nextNode != null) {
             return true;
         } else {
+            if (currentNode.getParent() != currentParent) {
+                throw new ConcurrentModificationException("The current node has been removed using a method other than Iterator#remove()");
+            }
             nextNode = getNextNode(currentNode);
             noMoreNodes = nextNode == null;
             return !noMoreNodes;
@@ -64,6 +75,7 @@ public abstract class OMAbstractIterator implements Iterator {
     public Object next() {
         if (hasNext()) {
             currentNode = nextNode;
+            currentParent = currentNode.getParent();
             nextNode = null;
             nextCalled = true;
             return currentNode;

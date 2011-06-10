@@ -484,7 +484,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         // Check if the Child is there
         Iterator children = this.getChildren();
         boolean childFound = false;
-        while (children.hasNext()) {
+        while (!childFound && children.hasNext()) {
             ChildNode tempNode = (ChildNode) children.next();
             if (tempNode.equals(oldChild)) {
 
