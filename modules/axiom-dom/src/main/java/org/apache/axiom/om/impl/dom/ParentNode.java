@@ -403,7 +403,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
         Iterator children = this.getChildren();
         boolean found = false;
-        while (children.hasNext()) {
+        while (!found && children.hasNext()) {
             ChildNode tempNode = (ChildNode) children.next();
             if (tempNode.equals(oldChild)) {
                 if (newChild instanceof DocumentFragmentImpl) {

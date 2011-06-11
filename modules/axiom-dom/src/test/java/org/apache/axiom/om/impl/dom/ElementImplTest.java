@@ -93,6 +93,28 @@ public class ElementImplTest extends OMElementTestBase {
         });
     }
     
+    public void testReplaceChild() throws Exception {
+        DOMTestUtil.execute(new DOMTestUtil.Test() {
+            public void execute(DocumentBuilderFactory dbf) throws Exception {
+                Document doc = dbf.newDocumentBuilder().newDocument();
+                Element parent = doc.createElementNS(null, "parent");
+                Element child1 = doc.createElementNS(null, "child1");
+                Element child2 = doc.createElementNS(null, "child2");
+                Element child3 = doc.createElementNS(null, "child3");
+                parent.appendChild(child1);
+                parent.appendChild(child2);
+                parent.appendChild(child3);
+                Element replacementChild = doc.createElementNS(null, "replacement");
+                parent.replaceChild(replacementChild, child2);
+                NodeList children = parent.getChildNodes();
+                assertEquals(3, children.getLength());
+                assertSame(child1, children.item(0));
+                assertSame(replacementChild, children.item(1));
+                assertSame(child3, children.item(2));
+            }
+        });
+    }
+    
     public void testRemoveSingleChild() throws Exception {
         DOMTestUtil.execute(new DOMTestUtil.Test() {
             public void execute(DocumentBuilderFactory dbf) throws Exception {
