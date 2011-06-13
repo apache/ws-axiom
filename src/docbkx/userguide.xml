@@ -1230,6 +1230,11 @@ while (iterator.hasNext()) {
                         a <classname>ConcurrentModificationException</classname> may be thrown if a thread modifies a
                         collection directly while it is iterating over the collection with an iterator.
                     </para>
+                    <para>
+                        In Axiom 1.2.12, the iterator implementations have been further improved to detect this situation
+                        and to throw a <classname>ConcurrentModificationException</classname>. This enables early detection
+                        of problematic usages of iterators.
+                    </para>
                 </section>
             </section>
         </section>
