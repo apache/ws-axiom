@@ -222,7 +222,9 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     public Iterator extractAllHeaderBlocks() {
         Collection result = new ArrayList();
         for (Iterator iter = getChildrenWithName(null); iter.hasNext();) {
-            result.add(((ElementImpl) iter.next()).detach());
+            ElementImpl headerBlock = (ElementImpl) iter.next();
+            iter.remove();
+            result.add(headerBlock);
         }
         return result.iterator();
     }

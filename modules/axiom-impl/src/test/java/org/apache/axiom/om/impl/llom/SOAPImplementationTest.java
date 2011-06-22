@@ -23,10 +23,15 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.ts.SOAPTestSuiteBuilder;
+import org.apache.axiom.ts.soap.header.TestExtractAllHeaderBlocks;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
         SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMLinkedListMetaFactory());
+        
+        // TODO: unsupported in LLOM
+        builder.exclude(TestExtractAllHeaderBlocks.class);
+        
         return builder.build();
     }
 }
