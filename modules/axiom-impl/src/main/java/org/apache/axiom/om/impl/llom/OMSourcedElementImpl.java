@@ -565,6 +565,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return definedNamespace;
     }
 
+    public String getNamespaceURI() {
+        return super.getNamespaceURI();
+    }
+
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMElement#setNamespace(org.apache.axiom.om.OMNamespace)
      */

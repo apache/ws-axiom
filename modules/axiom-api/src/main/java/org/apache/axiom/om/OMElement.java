@@ -337,6 +337,15 @@ public interface OMElement extends OMNode, OMContainer {
     OMNamespace getNamespace();
 
     /**
+     * Get the namespace URI of the element. Note that the contract of this method is identical to
+     * DOM's {@link org.w3c.dom.Node#getNamespaceURI()} (when called on an
+     * {@link org.w3c.dom.Element}).
+     * 
+     * @return the namespace URI of the element or <code>null</code> if the element has no namespace
+     */
+    String getNamespaceURI();
+    
+    /**
      * Sets the Namespace. This will first search for a namespace in the current scope with the
      * given namespace. If no namespace is found with the given details, then it will declare a new
      * one. Then that namespace will be assigned to this element.
