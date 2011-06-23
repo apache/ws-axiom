@@ -21,19 +21,96 @@ package org.apache.axiom.util;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Random;
 import java.util.UUID;
 
 /**
  * Contains utility methods to generate unique IDs of various kinds.
+ * <p>
+ * Depending on the requested type of ID, this class will either use
+ * {@link UUID#randomUUID()} or its own unique ID generator. This implementation
+ * generates unique IDs based on the assumption that the following triplet is
+ * unique:
+ * <ol>
+ * <li>The thread ID.
+ * <li>The timestamp in milliseconds when the first UID is requested by the
+ * thread.
+ * <li>A per thread sequence number that is incremented each time a UID is
+ * requested by the thread.
+ * </ol>
+ * <p>
+ * Considering that these three numbers are represented as <code>long</code>
+ * values, these assumptions are correct because:
+ * <ul>
+ * <li>The probability that two different threads with the same ID exist in the
+ * same millisecond interval is negligibly small.
+ * <li>One can expect that no thread will ever request more than 2^64 UIDs
+ * during its lifetime.
+ * </ul>
+ * <p>
+ * Before building an ID from this triplet, the implementation will XOR the
+ * three values with random values calculated once when the class is loaded.
+ * This transformation preserves the uniqueness of the calculated triplet and
+ * serves several purposes:
+ * <ul>
+ * <li>It reduces the probability that the same ID is produces by two different
+ * systems, i.e. it increases global uniqueness.
+ * <li>It adds entropy, i.e. it makes an individual ID appear as random. Indeed,
+ * without the XOR transformation, a hexadecimal representation of the triplet
+ * would in general contain several sequences of '0'.
+ * <li>It prevents the implementation from leaking information about the system
+ * state.
+ * </ul>
  */
 public final class UIDGenerator {
-    private static final ThreadLocal impl = new ThreadLocal() {
+    private static final long startTimeXorOperand;
+    private static final long threadIdXorOperand;
+    private static final long seqXorOperand;
+    
+    static {
+        Random rand = new Random();
+        threadIdXorOperand = rand.nextLong();
+        startTimeXorOperand = rand.nextLong();
+        seqXorOperand = rand.nextLong();
+    }
+    
+    /**
+     * Thread local that holds the triplet described in the Javadoc of this
+     * class. Note that we use a simple array here (instead of our own class)
+     * to avoid class loader leaks (see AXIOM-354).
+     */
+    private static final ThreadLocal/*<long[]>*/ triplet = new ThreadLocal() {
         protected Object initialValue() {
-            return new UIDGeneratorImpl();
+            long[] values = new long[3];
+            values[0] = Thread.currentThread().getId() ^ threadIdXorOperand;
+            values[1] = System.currentTimeMillis() ^ startTimeXorOperand;
+            return values;
         }
     };
     
     private UIDGenerator() {}
+    
+    private static void writeReverseLongHex(long value, StringBuilder buffer) {
+        for (int i=0; i<16; i++) {
+            int n = (int)(value >> (4*i)) & 0xF;
+            buffer.append((char)(n < 10 ? '0' + n : 'a' + n - 10));
+        }
+    }
+    
+    /**
+     * Generate a unique ID as hex value and add it to the given buffer. Note
+     * that with respect to the triplet, the order of nibbles is reversed, i.e.
+     * the least significant nibble of the sequence is written first. This makes
+     * comparing two IDs for equality more efficient.
+     * 
+     * @param buffer
+     */
+    private static void generateHex(StringBuilder buffer) {
+        long[] values = (long[])triplet.get();
+        writeReverseLongHex(values[2]++ ^ seqXorOperand, buffer);
+        writeReverseLongHex(values[1], buffer);
+        writeReverseLongHex(values[0], buffer);
+    }
     
     /**
      * Generates a unique ID suitable for usage as a MIME content ID.
@@ -65,7 +142,7 @@ public final class UIDGenerator {
      */
     public static String generateContentId() {
         StringBuilder buffer = new StringBuilder();
-        ((UIDGeneratorImpl)impl.get()).generateHex(buffer);
+        generateHex(buffer);
         buffer.append("@apache.org");
         return buffer.toString();
     }
@@ -99,7 +176,7 @@ public final class UIDGenerator {
      */
     public static String generateMimeBoundary() {
         StringBuilder buffer = new StringBuilder("MIMEBoundary_");
-        ((UIDGeneratorImpl)impl.get()).generateHex(buffer);
+        generateHex(buffer);
         return buffer.toString();
     }
     
@@ -113,7 +190,7 @@ public final class UIDGenerator {
      */
     public static String generateUID() {
         StringBuilder buffer = new StringBuilder(48);
-        ((UIDGeneratorImpl)impl.get()).generateHex(buffer);
+        generateHex(buffer);
         return buffer.toString();
     }
     
