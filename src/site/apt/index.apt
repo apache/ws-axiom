@@ -54,9 +54,31 @@ Key Features
 
 Latest Release
 
-  <<3rd February 2011 - Apache Axiom Version 1.2.11 Released!>>
+  <<XXXX June 2011 - Apache Axiom Version 1.2.12 Released!>>
+
+  \[{{{http://ws.apache.org/axiom/download.cgi}Download Axiom 1.2.12}}\]
   
-  \[{{{http://ws.apache.org/axiom/download.cgi}Download Axiom 1.2.11}}\]
+  Axiom 1.2.12 contains fixes for the following JIRA issues:
+  
+    * [AXIOM-63] - OMXMLStreamReaderValidator incorrectly reports mismatched END_ELEMENT events
+    
+    * [AXIOM-305] - Need OMElement.getNamespaceURI() convenience method
+    
+    * [AXIOM-354] - Potential class loader leak caused by the thread local in org.apache.axiom.util.UIDGenerator
+    
+    * [AXIOM-356] - OMElement#resolveQName implementations use incorrect algorithm to resolve unprefixed QNames
+    
+    * [AXIOM-358] - OMStAXWrapper#hasNext may return incorrect value
+    
+    * [AXIOM-359] - OMProcessingInstructionImpl incorrectly trims the value passed in the constructor
+    
+    * [AXIOM-364] - Unnecessary cast to byte while scanning for first MIME boundary
+    
+    * [AXIOM-365] - Add ConcurrentModificationException support to iterators
+
+Previous Releases
+
+  <<3rd February 2011 - Apache Axiom Version 1.2.11 Released!>>
   
   Axiom 1.2.11 is a maintenance release to support the upcoming Axis2 1.6 release.
   It also introduces a couple of new APIs that make it easier to support alternative
@@ -86,8 +108,6 @@ Latest Release
   
   Please refer to the {{{./userguide/ch04.html#changes-1.2.11}user guide}} for additional
   information about changes in Axiom 1.2.11.
-
-Previous Releases
 
   <<30th October 2010 - Apache Axiom Version 1.2.10 Released!>>
   
