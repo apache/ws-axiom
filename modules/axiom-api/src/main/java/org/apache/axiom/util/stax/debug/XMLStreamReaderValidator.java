@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.util.stax.debug;
 
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -85,7 +84,7 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
         return event;
     }
 
-    private void trackEvent(int event) {
+    private void trackEvent(int event) throws XMLStreamException {
         logParserState();
         
         // Make sure that the start element and end element events match.
@@ -118,8 +117,9 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
      * Report a mismatched end element.
      * @param expectedQName
      * @param delegateQName
+     * @throws XMLStreamException 
      */
-    private void reportMismatchedEndElement(QName expectedQName, QName delegateQName) {
+    private void reportMismatchedEndElement(QName expectedQName, QName delegateQName) throws XMLStreamException {
         String text = null;
         if (expectedQName == null) {
             text = "An END_ELEMENT event for " + delegateQName + 
@@ -133,7 +133,7 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
             log.debug(text);
         }       
         if (throwExceptions) {
-            throw new OMException(text);
+            throw new XMLStreamException(text);
         }
     }
     
