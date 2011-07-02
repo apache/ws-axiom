@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
-        <version>8</version>
+        <version>9</version>
     </parent>
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom</artifactId>
@@ -459,7 +459,6 @@
             <plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
-                <version>0.7</version>
                 <executions>
                     <execution>
                         <phase>verify</phase>
