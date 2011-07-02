@@ -265,9 +265,10 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </listitem>
                 <listitem>
                     <para>
-                        Check the <filename>download.xml.vm</filename> file for releases that are no
-                        longer available from the mirrors and change the corresponding entries so that
-                        they point to the archives.
+                        Add an entry for the release to the <filename>download.xml.vm</filename> file and
+                        change the links for older releases so that they point to <literal>archive.apache.org</literal>
+                        (Since the Axiom project doesn't use branches and produces releases directly from the trunk,
+                        there should only be a single mirrored release).
                     </para>
                 </listitem>
                 <listitem>
@@ -342,16 +343,14 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
             <procedure>
                 <step>
                     <para>
-                        Add an entry for the release to the <filename>download.xml.vm</filename> file and
-                        change the links for older releases so that they point to <literal>archive.apache.org</literal>.
-                        Also update the release date in <filename>index.apt</filename>.
+                        Update the release date in <filename>download.xml.vm</filename> and <filename>index.apt</filename>.
                     </para>
                 </step>
                 <step>
                     <para>
-                        Temporarily disable the Hudson build(s) for Axiom, in order to avoid accidental
-                        deployment of the release candidate to the local repository of a Hudson executor
-                        if the release process fails somewhere in the middle and/or a Hudson build
+                        Temporarily disable the Jenkins build(s) for Axiom, in order to avoid accidental
+                        deployment of the release candidate to the local repository of a Jenkins executor
+                        if the release process fails somewhere in the middle and/or a Jenkins build
                         starts at the wrong moment.
                     </para>
                 </step>
@@ -427,7 +426,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                 </step>
                 <step>
                     <para>
-                        Reenable the Hudson build(s).
+                        Reenable the Jenkins build(s).
                     </para>
                 </step>
             </procedure>
