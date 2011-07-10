@@ -71,6 +71,8 @@ public class SOAPTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.faultdetail.TestWSCommons202(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.faulttext.TestSetLang(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestAddHeaderBlock(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.header.TestAddHeaderBlockWithoutNamespace1(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.header.TestAddHeaderBlockWithoutNamespace2(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestExamineAllHeaderBlocks(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestExamineHeaderBlocks(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestExtractAllHeaderBlocks(metaFactory, spec));

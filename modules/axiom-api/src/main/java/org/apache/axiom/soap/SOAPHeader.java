@@ -33,13 +33,15 @@ public interface SOAPHeader extends OMElement {
      * to this {@link SOAPHeader} object.
      * 
      * @param localName
+     *            the local name of the header block
      * @param ns
+     *            the namespace of the header block; must not be <code>null</code> and must specify
+     *            a non empty namespace URI
      * @return the new {@link SOAPHeaderBlock} object that was inserted into this {@link SOAPHeader}
      *         object
      * @throws OMException
-     *             if a SOAP error occurs
+     *             if an error occurs, e.g. if no namespace was specified
      */
-    // TODO: specify that the element to be added must have a namespace
     SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns) throws OMException;
 
     /**
