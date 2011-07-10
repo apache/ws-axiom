@@ -29,87 +29,92 @@ import java.util.Iterator;
 /** Interface SOAPHeader */
 public interface SOAPHeader extends OMElement {
     /**
-     * Creates a new <CODE>SOAPHeaderBlock</CODE> object initialized with the specified name and
-     * adds it to this <CODE>SOAPHeader</CODE> object.
-     *
+     * Creates a new {@link SOAPHeaderBlock} object initialized with the specified name and adds it
+     * to this {@link SOAPHeader} object.
+     * 
      * @param localName
      * @param ns
-     * @return the new <CODE>SOAPHeaderBlock</CODE> object that was inserted into this
-     *         <CODE>SOAPHeader</CODE> object
-     * @throws org.apache.axiom.om.OMException
-     *          if a SOAP error occurs
+     * @return the new {@link SOAPHeaderBlock} object that was inserted into this {@link SOAPHeader}
+     *         object
+     * @throws OMException
+     *             if a SOAP error occurs
      */
+    // TODO: specify that the element to be added must have a namespace
     SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns) throws OMException;
 
     /**
-     * Get the appropriate set of headers for a RolePlayer.
+     * Get the appropriate set of headers for a {@link RolePlayer}.
+     * <p>
+     * The {@link RolePlayer} indicates whether it is the ultimate destination (in which case
+     * headers with no role or the explicit UltimateDestination role will be included), and any
+     * non-standard roles it supports. Headers targeted to "next" will always be included, and those
+     * targeted to "none" (for SOAP 1.2) will never be included.
      * 
-     * The RolePlayer indicates whether it is the ultimate destination (in which case
-     * headers with no role or the explicit UltimateDestination role will be included),
-     * and any non-standard roles it supports.  Headers targeted to "next" will always
-     * be included, and those targeted to "none" (for SOAP 1.2) will never be included.
-     *
-     * @return an Iterator over all the HeaderBlocks this RolePlayer should process.
+     * @param rolePlayer
+     *            the {@link RolePlayer} object specifying the role configuration
+     * @return an iterator over all the {@link SOAPHeaderBlock} objects the RolePlayer should
+     *         process
      */
     Iterator getHeadersToProcess(RolePlayer rolePlayer);
 
     /**
-     * Returns a list of all the <CODE>SOAPHeaderBlock</CODE> objects in this
-     * <CODE>SOAPHeader</CODE> object that have the the specified role. An role is a global
-     * attribute that indicates the intermediate parties to whom the message should be sent. An role
-     * receives the message and then sends it to the next role. The default role is the ultimate
-     * intended recipient for the message, so if no role attribute is included in a
-     * <CODE>SOAPHeader</CODE> object, the message is sent to its ultimate destination.
-     *
-     * @param role a <CODE>String</CODE> giving the URI of the role for which to search
-     * @return Returns an <CODE>Iterator</CODE> object over all the <CODE> SOAPHeaderBlock</CODE>
-     *         objects that contain the specified role
-     * @see #extractHeaderBlocks(String) extractHeaderBlocks(java.lang.String)
+     * Returns a list of all the {@link SOAPHeaderBlock} objects in this {@link SOAPHeader} object
+     * that have the the specified role. An role is a global attribute that indicates the
+     * intermediate parties to whom the message should be sent. A role receives the message and then
+     * sends it to the next role. The default role is the ultimate intended recipient for the
+     * message, so if no role attribute is included in a {@link SOAPHeaderBlock} object, the message
+     * is sent to its ultimate destination.
+     * 
+     * @param role
+     *            the URI of the role for which to search
+     * @return an iterator over all the {@link SOAPHeaderBlock} objects that contain the specified
+     *         role
+     * @see #extractHeaderBlocks(String)
      */
     Iterator examineHeaderBlocks(String role);
 
     /**
-     * Returns a list of all the <CODE>SOAPHeaderBlock</CODE> objects in this
-     * <CODE>SOAPHeader</CODE> object that have the the specified role and detaches them from this
-     * <CODE>SOAPHeader</CODE> object.
-     * <p/>
-     * This method allows an role to process only the parts of the <CODE> SOAPHeader</CODE> object
-     * that apply to it and to remove them before passing the message on to the next role.
-     *
-     * @param role a <CODE>String</CODE> giving the URI of the role for which to search
-     * @return Returns an <CODE>Iterator</CODE> object over all the <CODE> SOAPHeaderBlock</CODE>
-     *         objects that contain the specified role
-     * @see #examineHeaderBlocks(String) examineHeaderBlocks(java.lang.String)
+     * Returns a list of all the {@link SOAPHeaderBlock} objects in this {@link SOAPHeader} object
+     * that have the the specified role and detaches them from this {@link SOAPHeader} object.
+     * <p>
+     * This method allows an role to process only the parts of the {@link SOAPHeader} object that
+     * apply to it and to remove them before passing the message on to the next role.
+     * 
+     * @param role
+     *            the URI of the role for which to search
+     * @return an iterator over all the {@link SOAPHeaderBlock} objects that contain the specified
+     *         role
+     * @see #examineHeaderBlocks(String)
      */
     Iterator extractHeaderBlocks(String role);
 
     /**
-     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code> objects in this
-     * <code>SOAPHeader</code> object that have the specified role and that have a MustUnderstand
-     * attribute whose value is equivalent to <code>true</code>.
-     *
-     * @param role a <code>String</code> giving the URI of the role for which to search
-     * @return Returns an <code>Iterator</code> object over all the <code>SOAPHeaderBlock</code>
-     *         objects that contain the specified role and are marked as MustUnderstand.
+     * Returns an iterator over all the {@link SOAPHeaderBlock} objects in this {@link SOAPHeader}
+     * object that have the specified role and that have a <tt>MustUnderstand</tt> attribute whose
+     * value is equivalent to <code>true</code>.
+     * 
+     * @param role
+     *            the URI of the role for which to search
+     * @return an iterator over all the {@link SOAPHeaderBlock} objects that contain the specified
+     *         role and are marked as MustUnderstand.
      */
     Iterator examineMustUnderstandHeaderBlocks(String role);
 
     /**
-     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code> objects in this
-     * <code>SOAPHeader</code> object.
-     *
-     * @return an <code>Iterator</code> object over all the <code>SOAPHeaderBlock</code> objects
-     *         contained by this <code>SOAPHeader</code>. If there are no header blocks then an
-     *         empty iterator is returned.
+     * Returns an iterator over all the {@link SOAPHeaderBlock} objects in this {@link SOAPHeader}
+     * object.
+     * 
+     * @return An iterator over all the {@link SOAPHeaderBlock} objects contained by this
+     *         {@link SOAPHeader}. If there are no header blocks then an empty iterator is returned.
      */
     Iterator examineAllHeaderBlocks();
 
     /**
-     * Returns an <code>Iterator</code> over all the <code>SOAPHeaderBlock</code> objects in this
-     * <code>SOAPHeader </code> object and detaches them from this <code>SOAPHeader</code> object.
-     *
-     * @return Returns an <code>Iterator</code> object over all the <code>SOAPHeaderBlock</code>
-     *         objects contained by this <code>SOAPHeader</code>
+     * Returns an iterator over all the {@link SOAPHeaderBlock} objects in this {@link SOAPHeader}
+     * object and detaches them from this {@link SOAPHeader} object.
+     * 
+     * @return an iterator over all the {@link SOAPHeaderBlock} objects contained by this
+     *         {@link SOAPHeader}
      */
     Iterator extractAllHeaderBlocks();
 
@@ -122,19 +127,22 @@ public interface SOAPHeader extends OMElement {
     ArrayList getHeaderBlocksWithNSURI(String nsURI);
 
     /**
-     * Get the appropriate set of headers for a RolePlayer in a particular namespace
-     * <p/>
-     * The RolePlayer indicates whether it is the ultimate destination (in which case headers with
-     * no role or the explicit UltimateDestination role will be included), and any non-standard
-     * roles it supports.  Headers targeted to "next" will always be included, and those targeted to
-     * "none" (for SOAP 1.2) will never be included.
-     * <p/>
-     * This version of the API allows us to iterate only once over the headers searching for
-     * a particular namespace for headers targeted at "us".
-     *
-     * @param rolePlayer a RolePlayer containing our role configuration
-     * @param namespace if specified, we'll only return headers from this namespace
-     * @return an Iterator over all the HeaderBlocks this RolePlayer should process.
+     * Get the appropriate set of headers for a RolePlayer and a particular namespace.
+     * <p>
+     * The {@link RolePlayer} indicates whether it is the ultimate destination (in which case
+     * headers with no role or the explicit UltimateDestination role will be included), and any
+     * non-standard roles it supports. Headers targeted to "next" will always be included, and those
+     * targeted to "none" (for SOAP 1.2) will never be included.
+     * <p>
+     * This version of the API allows us to iterate only once over the headers searching for a
+     * particular namespace for headers targeted at "us".
+     * 
+     * @param rolePlayer
+     *            the {@link RolePlayer} object specifying the role configuration
+     * @param namespace
+     *            if specified, we'll only return headers from this namespace
+     * @return an iterator over all the {@link SOAPHeaderBlock} objects the RolePlayer should
+     *         process
      */
     Iterator getHeadersToProcess(RolePlayer rolePlayer, String namespace);
 }
