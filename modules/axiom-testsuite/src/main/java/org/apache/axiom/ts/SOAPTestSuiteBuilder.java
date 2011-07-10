@@ -102,7 +102,7 @@ public class SOAPTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap11.header.TestExamineHeaderBlocksWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.header.TestExamineMustUnderstandHeaderBlocksWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.header.TestGetHeaderBlocksWithNSURIWithParser(metaFactory));
-        addTest(new org.apache.axiom.ts.soap11.header.TestSOAP11Roles(metaFactory));
+        addTest(new org.apache.axiom.ts.soap11.header.TestGetHeadersToProcessWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.fault.TestGetNode(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.fault.TestGetNodeWithParser(metaFactory));
@@ -121,6 +121,6 @@ public class SOAPTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.header.TestExamineMustUnderstandHeaderBlocks(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.header.TestExamineMustUnderstandHeaderBlocksWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.header.TestGetHeaderBlocksWithNSURIWithParser(metaFactory));
-        addTest(new org.apache.axiom.ts.soap12.header.TestSOAP12Roles(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.header.TestGetHeadersToProcessWithParser(metaFactory));
     }
 }

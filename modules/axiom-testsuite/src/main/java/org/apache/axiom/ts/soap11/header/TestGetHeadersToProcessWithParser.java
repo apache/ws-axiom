@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.ts.soap12.header;
+package org.apache.axiom.ts.soap11.header;
 
 import java.util.Iterator;
 
@@ -29,9 +29,9 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.header.SOAPRoleTest;
 import org.apache.axiom.om.OMMetaFactory;
 
-public class TestSOAP12Roles extends SOAPRoleTest {
-    public TestSOAP12Roles(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+public class TestGetHeadersToProcessWithParser extends SOAPRoleTest {
+    public TestGetHeadersToProcessWithParser(OMMetaFactory metaFactory) {
+        super(metaFactory, SOAPSpec.SOAP11);
     }
 
     protected void runTest() throws Throwable {
@@ -47,10 +47,11 @@ public class TestSOAP12Roles extends SOAPRoleTest {
         int numHeaders = 0;
         while (headers.hasNext()) {
             SOAPHeaderBlock header = (SOAPHeaderBlock)headers.next();
+            assertNotNull(header);
             numHeaders++;
         }
 
-        assertEquals("Didn't get right number of headers (with custom role)", 5, numHeaders);
+        assertEquals("Didn't get right number of headers (with custom role)", 4, numHeaders);
 
         rp = new MyRolePlayer(true);
 
@@ -60,24 +61,11 @@ public class TestSOAP12Roles extends SOAPRoleTest {
         numHeaders = 0;
         while (headers.hasNext()) {
             SOAPHeaderBlock header = (SOAPHeaderBlock)headers.next();
+            assertNotNull(header);
             numHeaders++;
         }
 
-        assertEquals("Didn't get right number of headers (no custom role)", 4, numHeaders);
-
-        // Intermediary test
-        rp = new MyRolePlayer(false);
-
-        headers = soapHeader.getHeadersToProcess(rp);
-        assertTrue(headers.hasNext());
-
-        numHeaders = 0;
-        while (headers.hasNext()) {
-            SOAPHeaderBlock header = (SOAPHeaderBlock)headers.next();
-            numHeaders++;
-        }
-
-        assertEquals("Didn't get right number of headers (no custom role)", 1, numHeaders);
+        assertEquals("Didn't get right number of headers (no custom role)", 3, numHeaders);
         
         env.close(false);
     }
