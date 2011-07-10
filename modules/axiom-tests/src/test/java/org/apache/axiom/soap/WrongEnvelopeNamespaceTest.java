@@ -26,7 +26,7 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLStreamReader;
 
-public class WrongEnvelopeNamespaceTester extends AbstractTestCase {
+public class WrongEnvelopeNamespaceTest extends AbstractTestCase {
     public void testCode() {
         try {
             String filename = "soap/wrongEnvelopeNamespace.xml";
@@ -39,10 +39,5 @@ public class WrongEnvelopeNamespaceTester extends AbstractTestCase {
         } catch (Exception e) {
             fail("Only SOAPProcessingException can be thrown here");
         }
-    }
-
-    public static void main(String[] args) {
-        WrongEnvelopeNamespaceTester tester = new WrongEnvelopeNamespaceTester();
-        tester.testCode();
     }
 }
