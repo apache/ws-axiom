@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAP12Version;
@@ -250,10 +251,31 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         super(envelope, SOAPConstants.HEADER_LOCAL_NAME, builder, factory);
     }
 
-    public abstract SOAPHeaderBlock addHeaderBlock(String localName,
-                                                   OMNamespace ns)
-            throws OMException;
+    public SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns)
+            throws OMException {
+        
+        if (ns == null || ns.getNamespaceURI().length() == 0) {
+            throw new OMException(
+                    "All the SOAP Header blocks should be namespace qualified");
+        }
+        
+        OMNamespace namespace = findNamespace(ns.getNamespaceURI(), ns.getPrefix());
+        if (namespace != null) {
+            ns = namespace;
+        }
+        
+        SOAPHeaderBlock soapHeaderBlock;
+        try {
+            soapHeaderBlock = createHeaderBlock(localName, ns);
+        } catch (SOAPProcessingException e) {
+            throw new OMException(e);
+        }
+        ((OMNodeEx) soapHeaderBlock).setComplete(true);
+        return soapHeaderBlock;
+    }
 
+    protected abstract SOAPHeaderBlock createHeaderBlock(String localname, OMNamespace ns);
+    
     public Iterator getHeadersToProcess(RolePlayer rolePlayer) {
         return new HeaderIterator(new RolePlayerChecker(rolePlayer));
     }

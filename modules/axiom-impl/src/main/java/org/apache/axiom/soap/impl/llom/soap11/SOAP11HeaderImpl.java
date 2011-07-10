@@ -19,10 +19,8 @@
 
 package org.apache.axiom.soap.impl.llom.soap11;
 
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.traverse.OMChildrenWithSpecificAttributeIterator;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -58,28 +56,8 @@ public class SOAP11HeaderImpl extends SOAPHeaderImpl {
         super(envelope, builder, factory);
     }
 
-    public SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns)
-            throws OMException {
-
-        if (ns == null || ns.getNamespaceURI().length() == 0) {
-            throw new OMException(
-                    "All the SOAP Header blocks should be namespace qualified");
-        }
-
-        OMNamespace namespace = findNamespace(ns.getNamespaceURI(), ns.getPrefix());
-        if (namespace != null) {
-            ns = namespace;
-        }
-
-        SOAPHeaderBlock soapHeaderBlock = null;
-        try {
-            soapHeaderBlock = new SOAP11HeaderBlockImpl(localName, ns, this,
-                                                        (SOAPFactory) this.factory);
-        } catch (SOAPProcessingException e) {
-            throw new OMException(e);
-        }
-        ((OMNodeEx) soapHeaderBlock).setComplete(true);
-        return soapHeaderBlock;
+    protected SOAPHeaderBlock createHeaderBlock(String localName, OMNamespace ns) {
+        return new SOAP11HeaderBlockImpl(localName, ns, this, (SOAPFactory)factory);
     }
 
     public Iterator extractHeaderBlocks(String role) {
