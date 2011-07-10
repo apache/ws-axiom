@@ -37,10 +37,11 @@ public class TestAddHeaderBlock extends SOAPTestCase {
         SOAPEnvelope soapEnvelope = soapFactory.createSOAPEnvelope();
         SOAPHeader soapHeader = soapFactory.createSOAPHeader(soapEnvelope);
         OMNamespace namespace = soapFactory.createOMNamespace("http://www.example.org", "test");
-        soapHeader.addHeaderBlock("echoOk1", namespace);
-        soapHeader.addHeaderBlock("echoOk2", namespace);
+        SOAPHeaderBlock headerBlock1 = soapHeader.addHeaderBlock("echoOk1", namespace);
+        SOAPHeaderBlock headerBlock2 = soapHeader.addHeaderBlock("echoOk2", namespace);
         Iterator iterator = soapHeader.getChildren();
-        SOAPHeaderBlock headerBlock1 = (SOAPHeaderBlock) iterator.next();
+        assertSame(headerBlock1, iterator.next());
+        assertSame(soapHeader, headerBlock1.getParent());
         assertNotNull(
                 "SOAP Header Test : - After calling addHeaderBlock method twice, getChildren method returns empty iterator",
                 headerBlock1);
@@ -50,7 +51,8 @@ public class TestAddHeaderBlock extends SOAPTestCase {
                 "SOAP Header Test : - HeaderBlock1 namespace uri mismatch",
                 "http://www.example.org", headerBlock1.getNamespace().getNamespaceURI());
 
-        SOAPHeaderBlock headerBlock2 = (SOAPHeaderBlock) iterator.next();
+        assertSame(headerBlock2, iterator.next());
+        assertSame(soapHeader, headerBlock2.getParent());
         assertNotNull(
                 "SOAP Header Test : - After calling addHeaderBlock method twice, getChildren method returns an iterator with only one object",
                 headerBlock2);
