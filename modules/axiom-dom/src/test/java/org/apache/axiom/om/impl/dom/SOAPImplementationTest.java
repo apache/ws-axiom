@@ -26,6 +26,7 @@ import org.apache.axiom.ts.SOAPTestSuiteBuilder;
 import org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope;
 import org.apache.axiom.ts.soap.faultdetail.TestWSCommons202;
 import org.apache.axiom.ts.soap.faulttext.TestSetLang;
+import org.apache.axiom.ts.soap.header.TestGetHeadersToProcessWithNamespace;
 import org.apache.axiom.ts.soap12.fault.TestMoreChildrenAddition;
 
 public class SOAPImplementationTest extends TestCase {
@@ -37,6 +38,7 @@ public class SOAPImplementationTest extends TestCase {
         // TODO: not sure if this is an issue in DOOM or if the test case is wrong
         builder.exclude(TestMoreChildrenAddition.class);
         
+        builder.exclude(TestGetHeadersToProcessWithNamespace.class);
         builder.exclude(org.apache.axiom.ts.soap11.header.TestGetHeadersToProcessWithParser.class);
         builder.exclude(org.apache.axiom.ts.soap12.header.TestGetHeadersToProcessWithParser.class);
         
