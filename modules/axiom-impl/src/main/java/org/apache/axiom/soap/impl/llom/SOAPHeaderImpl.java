@@ -284,13 +284,13 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         return new HeaderIterator(new RolePlayerChecker(rolePlayer, namespace));
     }
 
-    public Iterator examineHeaderBlocks(final String role) {
+    public Iterator examineHeaderBlocks(String role) {
         return new HeaderIterator(new RoleChecker(role));
     }
 
     public abstract Iterator extractHeaderBlocks(String role);
 
-    public Iterator examineMustUnderstandHeaderBlocks(final String actor) {
+    public Iterator examineMustUnderstandHeaderBlocks(String actor) {
         return new HeaderIterator(new MURoleChecker(actor));
     }
 
@@ -305,7 +305,13 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     }
 
     public Iterator extractAllHeaderBlocks() {
-        throw new UnsupportedOperationException(); // TODO implement this
+        List result = new ArrayList();
+        for (Iterator iter = getChildElements(); iter.hasNext();) {
+            OMElement headerBlock = (OMElement) iter.next();
+            iter.remove();
+            result.add(headerBlock);
+        }
+        return result.iterator();
     }
 
     public ArrayList getHeaderBlocksWithNSURI(String nsURI) {

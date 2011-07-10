@@ -57,6 +57,7 @@ public interface OMContainer extends OMSerializable {
      * @param elementQName The QName specifying namespace and local name to match.
      * @return Returns an iterator of {@link OMElement} items that match the given QName
      */
+    // TODO: specify whether a null elementQName is allowed; LLOM and DOOM seem to have different behavior
     Iterator getChildrenWithName(QName elementQName);
     
     /**
