@@ -16,17 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.om.namespace;
 
-package org.apache.axiom.om.impl;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.ts.AxiomTestCase;
 
-public final class OMNamespaceImplTest extends junit.framework.TestCase {
-    public void testEqualsHashCodeContract() {
-        assertEquals(
-                new OMNamespaceImpl("anyURI", "prefix"),
-                new OMNamespaceImpl("anyURI", "prefix"));
+/**
+ * Tests the behavior of {@link OMNamespace#getPrefix()}.
+ */
+public class TestGetPrefix extends AxiomTestCase {
+    public TestGetPrefix(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
 
-        assertEquals(
-                new OMNamespaceImpl("anyURI", "prefix").hashCode(),
-                new OMNamespaceImpl("anyURI", "prefix").hashCode());
+    protected void runTest() throws Throwable {
+        OMFactory factory = metaFactory.getOMFactory();
+        OMNamespace ns = factory.createOMNamespace("http://www.w3.org/XML/1998/namespace", "xml");
+        assertEquals("xml", ns.getPrefix());
+        ns = factory.createOMNamespace("", null);
+        assertNull(ns.getPrefix());
     }
 }
