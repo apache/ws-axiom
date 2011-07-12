@@ -17,17 +17,22 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.ts.om.element;
 
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.AxiomTestCase;
 
 import javax.xml.namespace.QName;
 
-public class OMDOMFactoryTest extends TestCase {
-    public void testCreateElement() {
-        OMDOMFactory factory = new OMDOMFactory();
+public class TestGetQName extends AxiomTestCase {
+    public TestGetQName(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
+
+    protected void runTest() throws Throwable {
+        OMFactory factory = metaFactory.getOMFactory();
         String localName = "TestLocalName";
         String namespace = "http://ws.apache.org/axis2/ns";
         String prefix = "axis2";
