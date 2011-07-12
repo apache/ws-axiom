@@ -20,6 +20,7 @@ package org.apache.axiom.ts;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
@@ -54,5 +55,15 @@ public abstract class AxiomTestCase extends XMLTestCase {
             isConsumed = true;
         }
         assertTrue(isConsumed);
+    }
+
+    protected static int getChildrenCount(Iterator childrenIter) {
+        int childCount = 0;
+        while (childrenIter.hasNext()) {
+            childrenIter.next();
+            childCount++;
+        }
+
+        return childCount;
     }
 }

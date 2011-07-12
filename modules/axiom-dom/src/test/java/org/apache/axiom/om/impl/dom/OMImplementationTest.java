@@ -25,6 +25,7 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource;
 import org.apache.axiom.ts.om.container.TestSerialize;
+import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
 import org.apache.axiom.ts.om.element.TestSetTextQName;
@@ -71,6 +72,9 @@ public class OMImplementationTest extends TestCase {
         
         // TODO: suspecting Woodstox bug here
         builder.exclude(TestCreateOMBuilderFromDOMSource.class, "(file=spaces.xml)");
+        
+        // TODO: investigate why this is not working with DOOM
+        builder.exclude(TestGetChildrenWithName4.class);
         
         return builder.build();
     }

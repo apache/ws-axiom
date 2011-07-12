@@ -16,68 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.om.impl.traverse;
-
-import junit.framework.TestCase;
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
+package org.apache.axiom.ts.om.element;
 
 import javax.xml.namespace.QName;
-import java.util.Iterator;
 
-public class OMChildrenWithQNameIteratorTest extends TestCase {
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.ts.AxiomTestCase;
 
-    private final String NS_A = "urn://a";
-    private final String NS_B = "urn://b";
-    private final String NS_C = "urn://c";
+public class TestGetChildrenWithName4 extends AxiomTestCase {
+    private static final String NS_A = "urn://a";
+    private static final String NS_B = "urn://b";
+    private static final String NS_C = "urn://c";
     
-    public OMChildrenWithQNameIteratorTest(String testName) {
-        super(testName);
+    public TestGetChildrenWithName4(OMMetaFactory metaFactory) {
+        super(metaFactory);
     }
 
-    public void testChildrenRetrievalWithQName() {
-
-        OMFactory factory = OMAbstractFactory.getOMFactory();
-        OMNamespace testNamespace = factory.createOMNamespace("http://test.ws.org", "test");
-        OMElement documentElement = getSampleDocumentElement(testNamespace);
-
-        Iterator childrenIter = documentElement.getChildrenWithName(new QName("http://test.ws.org", "Employee", "test"));
-
-        int childCount = getChildrenCount(childrenIter);
-        assertEquals("Iterator must return 1 child with the given qname", childCount, 1);
-    }
-
-    public void testChildrenRetrievalWithQName_286() {
-
-        OMFactory factory = OMAbstractFactory.getOMFactory();
-        OMNamespace testNamespace = factory.createOMNamespace("http://test.ws.org", "test");
-        OMElement documentElement = getSampleDocumentElement(testNamespace);
-
-        Iterator childrenIter = documentElement.getChildrenWithName(new QName("http://test.ws.org", "Employee", "test"));
-        OMElement employee = (OMElement) childrenIter.next(); // should walk past OMText
-        assertEquals("Employee test was incorrect", employee.getText(), "Apache Developer");
-    }
-
-    private OMElement getSampleDocumentElement(OMNamespace testNamespace) {
-        OMFactory factory = OMAbstractFactory.getOMFactory();
-
-        OMElement documentElement = factory.createOMElement("Employees", testNamespace);
-        documentElement.declareNamespace(testNamespace);
-        OMText txt = factory.createOMText(documentElement, " ");
-        OMElement e = factory.createOMElement("Employee", testNamespace, documentElement);
-        e.setText("Apache Developer");
-        return documentElement;
-    }
-    
-    public void testGetChildrenWithQName() {
-        
+    protected void runTest() throws Throwable {
         // Create a document with 2 children, each named "sample" but
         // have different namespaces.
-        OMFactory factory = OMAbstractFactory.getOMFactory();
+        OMFactory factory = metaFactory.getOMFactory();
         OMNamespace a = factory.createOMNamespace(NS_A, "a");
         OMNamespace b = factory.createOMNamespace(NS_B, "b");
         
@@ -117,15 +78,5 @@ public class OMChildrenWithQNameIteratorTest extends TestCase {
         // child
         qName = new QName("", "sample");
         assertTrue(getChildrenCount(documentElement.getChildrenWithName(qName)) == 1);
-    }
-
-    private int getChildrenCount(Iterator childrenIter) {
-        int childCount = 0;
-        while (childrenIter.hasNext()) {
-            childrenIter.next();
-            childCount++;
-        }
-
-        return childCount;
     }
 }
