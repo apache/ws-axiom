@@ -81,6 +81,21 @@ public class OMXMLBuilderFactory {
     
     /**
      * Create an object model builder that reads a plain XML document from the provided input stream
+     * with the default parser configuration defined by {@link StAXParserConfiguration#DEFAULT}.
+     * 
+     * @param in
+     *            the input stream representing the XML document
+     * @param encoding
+     *            the charset encoding of the XML document or <code>null</code> if the parser should
+     *            determine the charset encoding
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(InputStream in, String encoding) {
+        return createOMBuilder(StAXParserConfiguration.DEFAULT, in, encoding);
+    }
+    
+    /**
+     * Create an object model builder that reads a plain XML document from the provided input stream
      * with a given parser configuration.
      * 
      * @param configuration
@@ -90,8 +105,27 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, InputStream in) {
+        return createOMBuilder(configuration, in, null);
+    }
+    
+    /**
+     * Create an object model builder that reads a plain XML document from the provided input stream
+     * with a given parser configuration.
+     * 
+     * @param configuration
+     *            the parser configuration to use
+     * @param in
+     *            the input stream representing the XML document
+     * @param encoding
+     *            the charset encoding of the XML document or <code>null</code> if the parser should
+     *            determine the charset encoding
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, InputStream in, String encoding) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
-        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), configuration, new InputSource(in));
+        InputSource is = new InputSource(in);
+        is.setEncoding(encoding);
+        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), configuration, is);
     }
     
     /**
@@ -233,7 +267,8 @@ public class OMXMLBuilderFactory {
      * @param in
      *            the input stream containing the SOAP message
      * @param encoding
-     *            the charset encoding
+     *            the charset encoding of the SOAP message or <code>null</code> if the parser should
+     *            determine the charset encoding
      * @return the builder
      */
     public static SOAPModelBuilder createSOAPModelBuilder(InputStream in, String encoding) {
