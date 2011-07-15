@@ -75,6 +75,7 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithMaskedNamespaceDeclaration(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutExistingNamespaceDeclaration(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChildWithParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareNamespace1(metaFactory));
