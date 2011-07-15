@@ -276,4 +276,17 @@ public class OMXMLBuilderFactory {
         is.setEncoding(encoding);
         return OMAbstractFactory.getMetaFactory().createSOAPModelBuilder(StAXParserConfiguration.SOAP, is);
     }
+    
+    /**
+     * Create an object model builder for SOAP that reads a message from the provided character stream. The method will select the appropriate {@link SOAPFactory}
+     * based on the namespace URI of the SOAP envelope. It will configure the underlying parser as
+     * specified by {@link StAXParserConfiguration#SOAP}.
+     * 
+     * @param in
+     *            the character stream containing the SOAP message
+     * @return the builder
+     */
+    public static SOAPModelBuilder createSOAPModelBuilder(Reader in) {
+        return OMAbstractFactory.getMetaFactory().createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(in));
+    }
 }
