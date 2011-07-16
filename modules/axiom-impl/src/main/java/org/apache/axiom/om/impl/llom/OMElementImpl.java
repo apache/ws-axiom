@@ -366,8 +366,9 @@ public class OMElementImpl extends OMNodeImpl
      * @return Returns namespace.
      */
     public OMNamespace declareNamespace(String uri, String prefix) {
-        if ("".equals(prefix))
+        if ("".equals(prefix)) {
             prefix = OMSerializerUtil.getNextNSPrefix();
+        }
         OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
         return declareNamespace(ns);
     }

@@ -741,7 +741,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      * @see org.apache.axiom.om.OMElement#declareNamespace(String, String)
      */
     public OMNamespace declareNamespace(String uri, String prefix) {
-        if (prefix == null) {
+        if ("".equals(prefix)) {
             prefix = OMSerializerUtil.getNextNSPrefix();
         }
         
