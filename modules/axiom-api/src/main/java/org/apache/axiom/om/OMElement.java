@@ -88,6 +88,9 @@ public interface OMElement extends OMNode, OMContainer {
     
     /**
      * Creates a namespace in the current element scope.
+     * <p>
+     * Note that this method allows to bind a prefix to the empty namespace URI. However, this will
+     * result in an error if the element is serialized as XML 1.0.
      *
      * @param uri    The namespace to declare in the current scope.  The caller is expected to
      *               ensure that the URI is a valid namespace name.
@@ -117,6 +120,9 @@ public interface OMElement extends OMNode, OMContainer {
 
     /**
      * Declares a namespace with the element as its scope.
+     * <p>
+     * Note that this method allows to bind a prefix to the empty namespace URI. However, this will
+     * result in an error if the element is serialized as XML 1.0.
      * 
      * @param namespace
      *            The namespace to declare. If the prefix specified by the {@link OMNamespace}

@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl.util;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMConstants;
@@ -711,11 +712,9 @@ public class OMSerializerUtil {
         } else {
             // UNQUALIFIED NAMESPACE
             
-            // Cannot associate a prefix with an unqualifed name.
-            // However sometimes axiom creates a fake prefix name if xmns="" is not in effect.
-            // So return true
+            // XML 1.0 doesn't allow to associate a prefix with an unqualified name (see also AXIOM-372).
             if (prefix.length() > 0) {
-                return true;  
+                throw new OMException("Invalid namespace declaration: Prefixed namespace bindings may not be empty.");  
             }
             
             // Get the namespace associated with the prefix.
