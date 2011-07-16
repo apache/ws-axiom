@@ -78,6 +78,10 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChildWithParent(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestChildReDeclaringGrandParentsDefaultNSWithPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestChildReDeclaringParentsDefaultNSWithPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestDeclareDefaultNamespace1(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestDeclareDefaultNamespace2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareNamespace1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAllAttributes1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAllAttributes2(metaFactory));
@@ -116,6 +120,7 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderOnNonRootElement(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestMultipleDefaultNS(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithNonDefaultNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithoutNamespace(metaFactory));

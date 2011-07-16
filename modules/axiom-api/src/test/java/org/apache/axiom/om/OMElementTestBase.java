@@ -19,12 +19,10 @@
 
 package org.apache.axiom.om;
 
-import java.io.ByteArrayInputStream;
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.om.util.AXIOMUtil;
 
@@ -96,140 +94,5 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         assertNotNull(ns);
         assertEquals("urn:a", ns.getNamespaceURI());
         root.close(false);
-    }
-    
-    private int getNumberOfOccurrences(String xml, String pattern) {
-        int index = -1;
-        int count = 0;
-        while ((index = xml.indexOf(pattern, index + 1)) != -1) {
-            count++;
-        }
-
-        return count;
-    }
-
-    public void testDeclareDefaultNamespace1() throws XMLStreamException {
-
-        /**
-         * <RootElement xmlns="http://one.org">
-         *   <ns2:ChildElementOne xmlns:ns2="http://ws.apache.org/axis2" xmlns="http://two.org">
-         *      <ChildElementTwo xmlns="http://one.org" />
-         *   </ns2:ChildElementOne>
-         * </RootElement>
-         */
-
-        OMFactory omFac = omMetaFactory.getOMFactory();
-
-        OMElement documentElement = omFac.createOMElement("RootElement", null);
-        documentElement.declareDefaultNamespace("http://one.org");
-
-        OMNamespace ns = omFac.createOMNamespace("http://ws.apache.org/axis2", "ns2");
-        OMElement childOne = omFac.createOMElement("ChildElementOne", ns, documentElement);
-        childOne.declareDefaultNamespace("http://two.org");
-
-        OMElement childTwo = omFac.createOMElement("ChildElementTwo", null, childOne);
-        childTwo.declareDefaultNamespace("http://one.org");
-
-
-        assertEquals(2, getNumberOfOccurrences(documentElement.toStringWithConsume(),
-                "xmlns=\"http://one.org\""));
-    }
-
-    public void testDeclareDefaultNamespace2() throws XMLStreamException {
-
-        /**
-         * <RootElement xmlns:ns1="http://one.org" xmlns:ns2="http://one.org">
-         *   <ns2:ChildElementOne xmlns="http://one.org">
-         *      <ns2:ChildElementTwo />
-         *   </ns2:ChildElementOne>
-         * </RootElement>
-         */
-
-        OMFactory omFac = omMetaFactory.getOMFactory();
-
-        OMElement documentElement = omFac.createOMElement("RootElement", null);
-        OMNamespace ns1 = documentElement.declareNamespace("http://one.org", "ns1");
-        OMNamespace ns2 = documentElement.declareNamespace("http://one.org", "ns2");
-
-        OMElement childOne = omFac.createOMElement("ChildElementOne", ns2, documentElement);
-        childOne.declareDefaultNamespace("http://one.org");
-
-        OMElement childTwo = omFac.createOMElement("ChildElementTwo", ns1, childOne);
-
-        assertEquals(1, getNumberOfOccurrences(documentElement.toStringWithConsume(),
-                "xmlns:ns2=\"http://one.org\""));
-    }
-
-    public void testMultipleDefaultNS() {
-        OMFactory omFactory = omMetaFactory.getOMFactory();
-        OMNamespace defaultNS1 = omFactory.createOMNamespace("http://defaultNS1.org", null);
-        OMNamespace defaultNS2 = omFactory.createOMNamespace("http://defaultNS2.org", null);
-
-        OMElement omElementOne = omFactory.createOMElement("DocumentElement", null);
-        omElementOne.declareDefaultNamespace("http://defaultNS1.org");
-        OMElement omElementOneChild = omFactory.createOMElement("ChildOne", null, omElementOne);
-
-
-        OMElement omElementTwo = omFactory.createOMElement("Foo", defaultNS2, omElementOne);
-        omElementTwo.declareDefaultNamespace("http://defaultNS2.org");
-        OMElement omElementTwoChild = omFactory.createOMElement("ChildOne", null, omElementTwo);
-
-        OMElement omElementThree = omFactory.createOMElement("Bar", defaultNS1, omElementTwo);
-        omElementThree.declareDefaultNamespace("http://defaultNS1.org");
-
-        OMNamespace omElementOneChildNS = omElementOneChild.getNamespace();
-        OMNamespace omElementTwoChildNS = omElementTwoChild.getNamespace();
-        // TODO: LLOM's and DOOM's behaviors are slightly different here; need to check if both are allowed
-        assertTrue(omElementOneChildNS == null || "".equals(omElementOneChildNS.getNamespaceURI()));
-        assertTrue(omElementTwoChildNS == null || "".equals(omElementTwoChildNS.getNamespaceURI()));
-    }
-
-    public void testChildReDeclaringParentsDefaultNSWithPrefix() throws Exception {
-        OMFactory fac = omMetaFactory.getOMFactory();
-        OMElement elem = fac.createOMElement("RequestSecurityToken", null);
-        elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
-        fac.createOMElement(new QName("TokenType"), elem).setText("test");
-        fac.createOMElement(new QName("RequestType"), elem).setText("test1");
-
-        fac.createOMElement(
-                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
-                elem);
-        String xml = elem.toString();
-
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(omMetaFactory.getOMFactory(),
-                new ByteArrayInputStream(xml.getBytes()));
-
-        builder.getDocumentElement().build();
-
-        // The StAX implementation may or may not have a trailing blank in the tag
-        String assertText1 =
-                "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\" />";
-        String assertText2 =
-                "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"/>";
-        String assertText3 =
-                "<wst:Entropy xmlns:wst=\"http://schemas.xmlsoap.org/ws/2005/02/trust\"></wst:Entropy>";
-
-        assertTrue((xml.indexOf(assertText1) != -1) ||
-                (xml.indexOf(assertText2) != -1) ||
-                (xml.indexOf(assertText3) != -1));
-    }
-
-    public void testChildReDeclaringGrandParentsDefaultNSWithPrefix() {
-        OMFactory fac = omMetaFactory.getOMFactory();
-        OMElement elem = fac.createOMElement("RequestSecurityToken", null);
-        elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
-        fac.createOMElement(new QName("TokenType"), elem).setText("test");
-        fac.createOMElement(new QName("RequestType"), elem).setText("test1");
-
-        OMElement entElem = fac.createOMElement(
-                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Entropy", "wst"),
-                elem);
-        OMElement binSecElem = fac.createOMElement(
-                new QName("http://schemas.xmlsoap.org/ws/2005/02/trust", "Binarysecret", "wst"),
-                entElem);
-        binSecElem.setText("secret value");
-        String xml = elem.toString();
-        assertTrue("Binarysecret element should have \'wst\' ns prefix",
-                   xml.indexOf("<wst:Binarysecret") != -1);
     }
 }
