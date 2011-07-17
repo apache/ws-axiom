@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.jaxp;
 
 import javax.xml.transform.sax.SAXSource;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.serialize.OMXMLReader;
 import org.xml.sax.InputSource;
@@ -32,9 +33,16 @@ import org.xml.sax.InputSource;
  * <p>
  * Note that {@link org.apache.axiom.om.OMDocType} nodes are not supported and will be
  * silently skipped.
+ * <p>
+ * <b>NOTE: As of version 1.2.13, application code should use
+ * {@link OMContainer#getSAXSource(boolean)} instead of instantiating this class directly.</b>
  */
 public class OMSource extends SAXSource {
     public OMSource(OMElement element) {
-        super(new OMXMLReader(element), new InputSource());
+        this((OMContainer)element);
+    }
+    
+    public OMSource(OMContainer node) {
+        super(new OMXMLReader(node), new InputSource());
     }
 }

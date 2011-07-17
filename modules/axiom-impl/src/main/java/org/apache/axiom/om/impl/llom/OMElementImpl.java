@@ -39,6 +39,7 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
+import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
@@ -57,6 +58,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.sax.SAXSource;
 
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -1110,6 +1112,10 @@ public class OMElementImpl extends OMNodeImpl
             }
             this.setComplete(true);
         }
+    }
+
+    public SAXSource getSAXSource(boolean cache) {
+        return new OMSource(this);
     }
 }
 

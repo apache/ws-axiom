@@ -29,6 +29,7 @@ import java.util.Set;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -62,11 +63,11 @@ import org.xml.sax.XMLReader;
  * only at the child element.
  */
 public class OMXMLReader extends AbstractXMLReader {
-    private final OMElement element;
+    private final OMContainer root;
     private final AttributesAdapter attributesAdapter = new AttributesAdapter();
     
-    public OMXMLReader(OMElement element) {
-        this.element = element;
+    public OMXMLReader(OMContainer root) {
+        this.root = root;
     }
 
     public void parse(InputSource input) throws IOException, SAXException {
@@ -78,10 +79,21 @@ public class OMXMLReader extends AbstractXMLReader {
     }
     
     private void parse() throws SAXException {
+        if (root instanceof OMDocument) {
+            generateEvents((OMDocument)root);
+        } else {
+            OMElement element = (OMElement)root;
+            contentHandler.startDocument();
+            generateParentPrefixMappingEvents(element, true);
+            generateEvents(element);
+            generateParentPrefixMappingEvents(element, false);
+            contentHandler.endDocument();
+        }
+    }
+    
+    private void generateEvents(OMDocument document) throws SAXException {
         contentHandler.startDocument();
-        generateParentPrefixMappingEvents(element, true);
-        generateEvents(element);
-        generateParentPrefixMappingEvents(element, false);
+        generateEventsForChildren(document);
         contentHandler.endDocument();
     }
     
@@ -156,7 +168,13 @@ public class OMXMLReader extends AbstractXMLReader {
         // This is explicitely allowed by the specification of the startElement method.
         attributesAdapter.setAttributes(omElement);
         contentHandler.startElement(uri, localName, qName, attributesAdapter);
-        for (Iterator it = omElement.getChildren(); it.hasNext(); ) {
+        generateEventsForChildren(omElement);
+        contentHandler.endElement(uri, localName, qName);
+        generatePrefixMappingEvents(omElement, false);
+    }
+    
+    private void generateEventsForChildren(OMContainer parent) throws SAXException {
+        for (Iterator it = parent.getChildren(); it.hasNext(); ) {
             OMNode node = (OMNode)it.next();
             switch (node.getType()) {
                 case OMNode.ELEMENT_NODE:
@@ -188,8 +206,6 @@ public class OMXMLReader extends AbstractXMLReader {
                     contentHandler.processingInstruction(pi.getTarget(), pi.getValue());
             }
         }
-        contentHandler.endElement(uri, localName, qName);
-        generatePrefixMappingEvents(omElement, false);
     }
     
     private void generateEvents(OMText omText, boolean space) throws SAXException {

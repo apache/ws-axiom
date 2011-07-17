@@ -1237,6 +1237,28 @@ while (iterator.hasNext()) {
                     </para>
                 </section>
             </section>
+            <section id="changes-1.2.13">
+                <title>Changes in Axiom 1.2.13</title>
+                <section>
+                    <title>New abstract APIs</title>
+                    <para>
+                        Axiom 1.2.13 introduces a couple of new abstract APIs which give implementations of the Axiom API
+                        the freedom to do additional optimizations. Application code should be migrated to take
+                        advantage of these new APIs:
+                    </para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                Instead of instantiating a <classname>OMSource</classname> object directly,
+                                <methodname>OMContainer#getSAXSource(boolean)</methodname> should be used.
+                            </para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>
+                        Note that some of the superseded APIs may disappear in Axiom 1.3.
+                    </para>
+                </section>
+            </section>
         </section>
     </chapter>
 

@@ -22,6 +22,11 @@ package org.apache.axiom.om;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.sax.SAXSource;
+
+import org.xml.sax.ContentHandler;
+import org.xml.sax.ext.LexicalHandler;
 
 import java.io.OutputStream;
 import java.io.Writer;
@@ -299,4 +304,32 @@ public interface OMContainer extends OMSerializable {
      * @return an {@link XMLStreamReader} representation of this element
      */
     XMLStreamReader getXMLStreamReader(boolean cache);
+    
+    /**
+     * Get a {@link SAXSource} representation for this node. This method can be used to integrate
+     * Axiom with APIs and third party libraries that don't support StAX. In particular it can be
+     * used with the {@link Transformer} API.
+     * <p>
+     * The returned object supports all events defined by {@link ContentHandler} and
+     * {@link LexicalHandler}, with the exception of DTD related events. {@link OMDocType} nodes
+     * will be silently skipped.
+     * <p>
+     * If the node is an element and has a parent which is not a document, care is taken to properly
+     * generate {@link ContentHandler#startPrefixMapping(String, String)} and
+     * {@link ContentHandler#endPrefixMapping(String)} events also for namespace mappings declared
+     * on the ancestors of the element. To understand why this is important, consider the following
+     * example:
+     * <pre>&lt;root xmlns:ns="urn:ns">&lt;element attr="ns:someThing"/>&lt;root></pre>
+     * <p>
+     * In that case, to correctly interpret the attribute value, the SAX content handler must be
+     * aware of the namespace mapping for the <tt>ns</tt> prefix, even if the serialization starts
+     * only at the child element.
+     * 
+     * @param cache
+     *            Indicates if caching should be enabled. If set to <code>false</code>, the returned
+     *            {@link SAXSource} may only be used once, and using it may have the side effect of
+     *            consuming the original content of this node.
+     * @return a {@link SAXSource} representation of this element
+     */
+    SAXSource getSAXSource(boolean cache);
 }

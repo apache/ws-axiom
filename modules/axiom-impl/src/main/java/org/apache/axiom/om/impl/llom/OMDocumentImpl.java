@@ -29,6 +29,7 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMDocumentImplUtil;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.traverse.OMChildrenNamespaceIterator;
@@ -38,6 +39,8 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.sax.SAXSource;
+
 import java.util.Iterator;
 
 /** Class OMDocumentImpl */
@@ -326,5 +329,9 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
 
     public XMLStreamReader getXMLStreamReader(boolean cache) {
         return OMContainerHelper.getXMLStreamReader(this, cache);
+    }
+
+    public SAXSource getSAXSource(boolean cache) {
+        return new OMSource(this);
     }
 }

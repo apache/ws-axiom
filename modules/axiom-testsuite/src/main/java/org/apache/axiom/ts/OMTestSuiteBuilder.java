@@ -55,6 +55,8 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestIOExceptionInGetText(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
             for (int j=0; j<containerFactories.length; j++) {
+                addTest(new org.apache.axiom.ts.om.container.TestGetSAXSource(metaFactory, conformanceFiles[i], containerFactories[j], true));
+                addTest(new org.apache.axiom.ts.om.container.TestGetSAXSource(metaFactory, conformanceFiles[i], containerFactories[j], false));
                 addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], containerFactories[j], true));
                 addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], containerFactories[j], false));
                 for (int k=0; k<serializationMethods.length; k++) {
