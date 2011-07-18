@@ -355,11 +355,13 @@ public interface OMElement extends OMNode, OMContainer {
     String getNamespaceURI();
     
     /**
-     * Sets the Namespace. This will first search for a namespace in the current scope with the
-     * given namespace. If no namespace is found with the given details, then it will declare a new
-     * one. Then that namespace will be assigned to this element.
-     *
+     * Set the namespace for this element. In addition to changing the namespace URI and prefix of
+     * the element information item, this method ensures that a corresponding namespace declaration
+     * exists. If no corresponding namespace declaration is already in scope, then a new one will be
+     * added to this element.
+     * 
      * @param namespace
+     *            the new namespace for this element
      */
     void setNamespace(OMNamespace namespace);
 

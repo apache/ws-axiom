@@ -150,6 +150,8 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
                 "<person><name xmlns=\"urn:ns\">John</name><age xmlns=\"urn:ns\">34</age><weight xmlns=\"urn:ns\">50</weight></person>"));
         addTest(new org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSetNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSetNamespaceWithMatchingBindingInScope(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetText(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
         for (int i=0; i<OMElementCreator.INSTANCES.length; i++) {
