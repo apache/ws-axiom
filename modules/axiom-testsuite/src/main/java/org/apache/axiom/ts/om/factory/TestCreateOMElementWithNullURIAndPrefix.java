@@ -16,18 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om;
+package org.apache.axiom.ts.om.factory;
 
-public class OMFactoryTestBase extends AbstractTestCase {
-    protected final OMMetaFactory omMetaFactory;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.AxiomTestCase;
 
-    public OMFactoryTestBase(OMMetaFactory omMetaFactory) {
-        this.omMetaFactory = omMetaFactory;
+public class TestCreateOMElementWithNullURIAndPrefix extends AxiomTestCase {
+    public TestCreateOMElementWithNullURIAndPrefix(OMMetaFactory metaFactory) {
+        super(metaFactory);
     }
     
-    public void testCreateOMElementWithNullNamespaceURIAndPrefix() {
+    protected void runTest() {
         try {
-            omMetaFactory.getOMFactory().createOMElement("test", (String)null, (String)null);
+            metaFactory.getOMFactory().createOMElement("test", (String)null, (String)null);
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException ex) {
             // Expected

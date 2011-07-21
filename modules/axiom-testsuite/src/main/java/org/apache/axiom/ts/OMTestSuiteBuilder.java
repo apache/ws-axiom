@@ -163,6 +163,7 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNonDefaultNamespace(metaFactory, creator));
             addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace(metaFactory, creator));
         }
+        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullURIAndPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMNamespaceWithNullURI(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMText(metaFactory));
