@@ -742,6 +742,9 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                 prefix = OMSerializerUtil.getNextNSPrefix();
                 namespace = new NamespaceImpl(namespace.getNamespaceURI(), prefix);
             }
+            if (prefix.length() > 0 && namespace.getNamespaceURI().length() == 0) {
+                throw new IllegalArgumentException("Cannot bind a prefix to the empty namespace name");
+            }
 
             if (!namespace.getPrefix().startsWith(OMConstants.XMLNS_NS_PREFIX)) {
                 namespaces.put(namespace.getPrefix(), namespace);

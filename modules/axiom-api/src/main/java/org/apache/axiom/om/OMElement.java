@@ -90,9 +90,6 @@ public interface OMElement extends OMNode, OMContainer {
     
     /**
      * Creates a namespace in the current element scope.
-     * <p>
-     * Note that this method allows to bind a prefix to the empty namespace URI. However, this will
-     * result in an error if the element is serialized as XML 1.0.
      *
      * @param uri    The namespace to declare in the current scope.  The caller is expected to
      *               ensure that the URI is a valid namespace name.
@@ -100,6 +97,8 @@ public interface OMElement extends OMNode, OMContainer {
      *               ensure that this is a valid XML prefix. If "" is given, a prefix will be
      *               auto-generated.
      * @return Returns the created namespace information item.
+     * @throws IllegalArgumentException
+     *             if an attempt is made to bind a prefix to the empty namespace name
      * @see #declareNamespace(OMNamespace)
      * @see #findNamespace(String, String)
      * @see #getAllDeclaredNamespaces()
@@ -122,9 +121,6 @@ public interface OMElement extends OMNode, OMContainer {
 
     /**
      * Declares a namespace with the element as its scope.
-     * <p>
-     * Note that this method allows to bind a prefix to the empty namespace URI. However, this will
-     * result in an error if the element is serialized as XML 1.0.
      * 
      * @param namespace
      *            The namespace to declare. If the prefix specified by the {@link OMNamespace}
@@ -132,6 +128,8 @@ public interface OMElement extends OMNode, OMContainer {
      * @return The declared namespace, which will be equal to the {@link OMNamespace} object passed
      *         as parameter, except if the prefix was <code>null</code>, in which case the return
      *         value contains the generated prefix.
+     * @throws IllegalArgumentException
+     *             if an attempt is made to bind a prefix to the empty namespace name
      * @see #declareNamespace(String, String)
      * @see #findNamespace(String, String)
      * @see #getAllDeclaredNamespaces()
@@ -397,6 +395,8 @@ public interface OMElement extends OMNode, OMContainer {
      * 
      * @param namespace
      *            the new namespace for this element
+     * @throws IllegalArgumentException
+     *             if an attempt is made to bind a prefix to the empty namespace name
      */
     void setNamespace(OMNamespace namespace);
 

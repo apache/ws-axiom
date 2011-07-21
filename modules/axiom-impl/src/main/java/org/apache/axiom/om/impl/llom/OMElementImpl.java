@@ -419,6 +419,9 @@ public class OMElementImpl extends OMNodeImpl
             prefix = OMSerializerUtil.getNextNSPrefix();
             namespace = new OMNamespaceImpl(namespace.getNamespaceURI(), prefix);
         }
+        if (prefix.length() > 0 && namespace.getNamespaceURI().length() == 0) {
+            throw new IllegalArgumentException("Cannot bind a prefix to the empty namespace name");
+        }
         namespaces.put(prefix, namespace);
         return namespace;
     }

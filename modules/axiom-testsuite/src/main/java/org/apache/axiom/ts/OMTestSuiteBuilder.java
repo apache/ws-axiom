@@ -85,7 +85,8 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestDeclareDefaultNamespace1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareDefaultNamespace2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareNamespace1(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestDeclareNamespaceInvalid(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestDeclareNamespaceInvalid1(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestDeclareNamespaceInvalid2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareNamespaceWithGeneratedPrefix1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareNamespaceWithGeneratedPrefix2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestFindNamespaceURIWithPrefixUndeclaring(metaFactory));
@@ -152,6 +153,7 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSetNamespaceInvalid(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetNamespaceWithMatchingBindingInScope(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetText(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));

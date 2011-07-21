@@ -21,28 +21,29 @@ package org.apache.axiom.ts.om.element;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests Axiom's behavior when {@link OMElement#declareNamespace(String, String)} is used to add a
- * namespace declaration that binds a prefix to an empty namespace URI. This is forbidden by XML 1.0
- * and should result in an error when serializing the document.
+ * Tests the behavior of {@link OMElement#setNamespace(OMNamespace)} when the argument
+ * binds a prefix to the empty namespace name.
  */
-public class TestDeclareNamespaceInvalid extends AxiomTestCase {
-    public TestDeclareNamespaceInvalid(OMMetaFactory metaFactory) {
+public class TestSetNamespaceInvalid extends AxiomTestCase {
+    public TestSetNamespaceInvalid(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
-        OMElement element = metaFactory.getOMFactory().createOMElement(new QName("test"));
-        element.declareNamespace("", "ns");
+        OMFactory factory = metaFactory.getOMFactory();
+        OMElement element = factory.createOMElement(new QName("test"));
+        OMNamespace ns = factory.createOMNamespace("", "p");
         try {
-            element.toString();
-            fail("Expected OMException");
-        } catch (OMException ex) {
-            // Expected
+            element.setNamespace(ns);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException ex) {
+            // Expected;
         }
     }
 }
