@@ -183,19 +183,13 @@ public class OMElementImpl extends OMNodeImpl
         return ns;
     }
 
-    /**
-     * Method handleNamespace.
-     *
-     * @return Returns namespace.
-     */
     private OMNamespace handleNamespace(OMNamespace ns) {
         String namespaceURI = ns.getNamespaceURI();
         String prefix = ns.getPrefix();
-        if (ns.getNamespaceURI().length() == 0 && prefix != null && prefix.length() > 0) {
+        if (namespaceURI.length() == 0 && prefix != null && prefix.length() > 0) {
             throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
         }
-        OMNamespace namespace = findNamespace(ns.getNamespaceURI(),
-                                              ns.getPrefix());
+        OMNamespace namespace = findNamespace(namespaceURI, prefix);
         if (namespace == null) {
             namespace = declareNamespace(ns);
         }
@@ -950,13 +944,11 @@ public class OMElementImpl extends OMNodeImpl
         }
     }
 
-    /** Method setNamespace. */
     public void setNamespace(OMNamespace namespace) {
-        OMNamespace nsObject = null;
         if (namespace != null) {
-            nsObject = handleNamespace(namespace);
+            namespace = handleNamespace(namespace);
         }
-        this.ns = nsObject;
+        this.ns = namespace;
         this.qName = null;
     }
 

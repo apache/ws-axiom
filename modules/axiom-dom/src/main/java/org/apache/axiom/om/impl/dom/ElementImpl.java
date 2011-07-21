@@ -97,8 +97,9 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                        NamespaceImpl ns, OMFactory factory) {
         super(ownerDocument, factory);
         this.localName = tagName;
-        this.namespace = ns;
-        this.declareNamespace(ns);
+        if (ns != null) {
+            setNamespace(ns);
+        }
         this.attributes = new AttributeMap(this);
         this.done = true;
     }
@@ -107,9 +108,10 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                        NamespaceImpl ns, OMXMLParserWrapper builder, OMFactory factory) {
         super(ownerDocument, factory);
         this.localName = tagName;
-        this.namespace = ns;
+        if (ns != null) {
+            setNamespace(ns);
+        }
         this.builder = builder;
-        this.declareNamespace(ns);
         this.attributes = new AttributeMap(this);
     }
 
@@ -135,17 +137,29 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                        OMXMLParserWrapper builder, OMFactory factory) {
         this(factory);
         this.localName = tagName;
-        this.namespace = ns;
-        this.builder = builder;
         if (ns != null) {
-            this.declareNamespace(ns);
+            setNamespace(ns);
         }
+        this.builder = builder;
         this.attributes = new AttributeMap(this);
     }
 
     public ElementImpl(OMFactory factory) {
         super(factory);
         this.ownerNode = ((OMDOMFactory) factory).getDocument();
+    }
+
+    private OMNamespace handleNamespace(OMNamespace ns) {
+        String namespaceURI = ns.getNamespaceURI();
+        String prefix = ns.getPrefix();
+        if (namespaceURI.length() == 0 && prefix != null && prefix.length() > 0) {
+            throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
+        }
+        OMNamespace namespace = findNamespace(namespaceURI, prefix);
+        if (namespace == null) {
+            namespace = declareNamespace(ns);
+        }
+        return namespace;
     }
 
     // /
@@ -1017,12 +1031,10 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         this.localName = localName;
     }
 
-    /**
-     * Sets the namespace.
-     *
-     * @see org.apache.axiom.om.OMElement#setNamespace (org.apache.axiom.om.OMNamespace)
-     */
     public void setNamespace(OMNamespace namespace) {
+        if (namespace != null) {
+            namespace = handleNamespace(namespace);
+        }
         this.namespace = namespace;
     }
 
