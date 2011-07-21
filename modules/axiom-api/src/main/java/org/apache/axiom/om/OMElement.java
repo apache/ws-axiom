@@ -22,6 +22,8 @@ package org.apache.axiom.om;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.om.xpath.AXIOMXPath;
+
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Iterator;
@@ -164,17 +166,27 @@ public interface OMElement extends OMNode, OMContainer {
     OMNamespace findNamespaceURI(String prefix);
 
     /**
-     * Returns an iterator for all of the namespaces declared on this element.
-     * <p/>
-     * <p>If you're interested in all namespaces in scope, you need to call this function for all
-     * parent elements as well.  Note that the iterator may be invalidated by any call to either
-     * <tt>declareNamespace</tt> function. </p>
-     *
-     * @return Returns an iterator over the {@link OMNamespace} items declared on the current
-     *         element.
-     * @see #findNamespace(String, String)
-     * @see #declareNamespace(String, String)
-     * @see #declareNamespace(OMNamespace)
+     * Returns an iterator for all of the namespaces declared on this element. Note that this is not
+     * the same as the set of namespace declarations in scope. Since building a namespace context
+     * and resolving namespace prefixes has some subtleties associated with it (such as masked
+     * namespace declarations and prefix undeclaring), it is generally recommended to use one of the
+     * following specialized methods for this purpose:
+     * <ul>
+     * <li>{@link #findNamespace(String, String)} and {@link #findNamespaceURI(String)} to resolve a
+     * namespace prefix or to find a namespace prefix for a given URI.
+     * <li>{@link #resolveQName(String)} to resolve a QName literal.
+     * <li>{@link AXIOMXPath#AXIOMXPath(OMElement, String)} or
+     * {@link AXIOMXPath#AXIOMXPath(OMAttribute)} to create an XPath expression using the namespace
+     * context of a given element.
+     * </ul>
+     * <p>
+     * It is expected that applications only rarely use {@link #getAllDeclaredNamespaces()}
+     * directly.
+     * 
+     * @return An iterator over the {@link OMNamespace} items declared on this element. Note that
+     *         the iterator may be invalidated by a call to {@link #declareNamespace(OMNamespace)},
+     *         {@link #declareNamespace(String, String)}, {@link #declareDefaultNamespace(String)}
+     *         or any other method that modifies the namespace declarations of this element.
      */
     Iterator getAllDeclaredNamespaces() throws OMException;
 
