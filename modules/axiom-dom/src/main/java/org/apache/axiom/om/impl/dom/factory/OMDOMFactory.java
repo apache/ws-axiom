@@ -222,6 +222,9 @@ public class OMDOMFactory implements OMFactory {
             throws OMException {
         NamespaceImpl ns;
         if (qname.getNamespaceURI().length() == 0) {
+            if (qname.getPrefix().length() > 0) {
+                throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
+            }
             ns = null;
         } else if (qname.getPrefix() != null) {
             ns = new NamespaceImpl(qname.getNamespaceURI(), qname.getPrefix());

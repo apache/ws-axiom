@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 
 public abstract class OMElementCreator {
     public static final OMElementCreator[] INSTANCES = new OMElementCreator[] {
@@ -47,14 +48,14 @@ public abstract class OMElementCreator {
             public OMElement createOMElement(OMFactory factory, String localName,
                     String namespaceURI, String prefix) {
                 return factory.createOMElement(localName,
-                        namespaceURI.length() == 0 ? null : factory.createOMNamespace(namespaceURI, prefix));
+                        getOMNamespace(factory, namespaceURI, prefix));
             }
         },
         new OMElementCreator("String,OMNamespace,OMContainer", true) {
             public OMElement createOMElement(OMFactory factory, String localName,
                     String namespaceURI, String prefix) {
                 return factory.createOMElement(localName,
-                        namespaceURI.length() == 0 ? null : factory.createOMNamespace(namespaceURI, prefix), null);
+                        getOMNamespace(factory, namespaceURI, prefix), null);
             }
         },
         new OMElementCreator("String,String,String", true) {
@@ -83,4 +84,14 @@ public abstract class OMElementCreator {
 
     public abstract OMElement createOMElement(OMFactory factory, String localName,
             String namespaceURI, String prefix);
+    
+    static OMNamespace getOMNamespace(OMFactory factory, String namespaceURI, String prefix) {
+        if (prefix == null) {
+            return factory.createOMNamespace(namespaceURI, null);
+        } else if (prefix.length() == 0 && namespaceURI.length() == 0) {
+            return null;
+        } else {
+            return factory.createOMNamespace(namespaceURI, prefix);
+        }
+    }
 }

@@ -177,6 +177,8 @@ public class OMElementImpl extends OMNodeImpl
             if (ns != null) {
                 this.ns = ns;
             }
+        } else if (qname.getPrefix().length() > 0) {
+            throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
         }
         return ns;
     }
@@ -187,6 +189,11 @@ public class OMElementImpl extends OMNodeImpl
      * @return Returns namespace.
      */
     private OMNamespace handleNamespace(OMNamespace ns) {
+        String namespaceURI = ns.getNamespaceURI();
+        String prefix = ns.getPrefix();
+        if (ns.getNamespaceURI().length() == 0 && prefix != null && prefix.length() > 0) {
+            throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
+        }
         OMNamespace namespace = findNamespace(ns.getNamespaceURI(),
                                               ns.getPrefix());
         if (namespace == null) {

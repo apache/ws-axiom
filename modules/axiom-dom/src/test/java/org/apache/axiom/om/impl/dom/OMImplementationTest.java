@@ -31,6 +31,7 @@ import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElement
 import org.apache.axiom.ts.om.element.TestSetNamespace;
 import org.apache.axiom.ts.om.element.TestSetTextQName;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix;
+import org.apache.axiom.ts.om.factory.TestCreateOMElementWithInvalidNamespace;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 
@@ -77,6 +78,9 @@ public class OMImplementationTest extends TestCase {
         // TODO: investigate why this is not working with DOOM
         builder.exclude(TestGetChildrenWithName4.class);
         builder.exclude(TestSetNamespace.class);
+        
+        // TODO: Need to fix AXIOM-373 first
+        builder.exclude(TestCreateOMElementWithInvalidNamespace.class);
         
         return builder.build();
     }

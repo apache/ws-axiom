@@ -47,6 +47,8 @@ public interface OMFactory {
      * @param ns
      *            the namespace, or <code>null</code> if the element has no namespace
      * @return the newly created element
+     * @throws IllegalArgumentException
+     *             if an attempt is made to create a prefixed element with an empty namespace name
      */
     OMElement createOMElement(String localName, OMNamespace ns);
 
@@ -60,6 +62,8 @@ public interface OMFactory {
      *            {@link #createOMElement(String, OMNamespace)}
      * @return the newly created element
      * @throws OMException
+     * @throws IllegalArgumentException
+     *             if an attempt is made to create a prefixed element with an empty namespace name
      */
     OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent)
             throws OMException;
@@ -107,7 +111,8 @@ public interface OMFactory {
      *            the namespace prefix, or <code>null</code> if a prefix should be generated
      * @return the newly created OMElement.
      * @throws IllegalArgumentException
-     *             if <code>namespaceURI</code> is <code>null</code>
+     *             if <code>namespaceURI</code> is <code>null</code> or if an attempt is made to
+     *             create a prefixed element with an empty namespace name
      */
     OMElement createOMElement(String localName,
                                      String namespaceURI,
@@ -127,6 +132,8 @@ public interface OMFactory {
      *            {@link #createOMElement(QName)}
      * @return Returns the new OMElement
      * @throws OMException if there's a namespace mapping problem
+     * @throws IllegalArgumentException
+     *             if an attempt is made to create a prefixed element with an empty namespace name
      */
     OMElement createOMElement(QName qname, OMContainer parent) throws OMException;
 
@@ -142,6 +149,8 @@ public interface OMFactory {
      * @return the new element
      * @throws OMException
      *             TODO: when???
+     * @throws IllegalArgumentException
+     *             if an attempt is made to create a prefixed element with an empty namespace name
      */
     OMElement createOMElement(QName qname) throws OMException;
 
