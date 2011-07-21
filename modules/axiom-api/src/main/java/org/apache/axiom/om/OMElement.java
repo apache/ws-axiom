@@ -139,6 +139,26 @@ public interface OMElement extends OMNode, OMContainer {
     OMNamespace declareNamespace(OMNamespace namespace);
 
     /**
+     * Add a namespace declaration that undeclares a given prefix. Prefix undeclaring is supported
+     * in XML 1.1, but forbidden in XML 1.0. If an object model on which this method has been used
+     * is later serialized to an XML 1.0 document, an error will occur. When serialized to an XML
+     * 1.1 document, a namespace declaration in the form <tt>xmlns:p=""</tt> will be produced.
+     * <p>
+     * A namespace declaration with empty namespace name will be added even if no existing namespace
+     * declaration for the given prefix is in scope in the context of the current element. If a
+     * namespace declaration for the given prefix is already defined on this element, it will be
+     * replaced.
+     * <p>
+     * The namespace declaration created by this method will be returned by
+     * {@link #getAllDeclaredNamespaces()}. It is represented as an {@link OMNamespace} object for
+     * which {@link OMNamespace#getNamespaceURI()} returns an empty string.
+     * 
+     * @param prefix
+     *            the prefix to undeclare
+     */
+    void undeclarePrefix(String prefix);
+    
+    /**
      * Finds a namespace with the given uri and prefix, in the scope of the hierarchy.
      * <p/>
      * <p>Searches from the current element and goes up the hiararchy until a match is found. If no
@@ -163,6 +183,9 @@ public interface OMElement extends OMNode, OMContainer {
      *
      * @param prefix
      */
+    // TODO: specify if null is a valid argument
+    // TODO: specify the return value if prefix is the empty string and there is no default namespace
+    //       (should we return null or an OMNamespace instance with namespaceURI and prefix set to ""?)
     OMNamespace findNamespaceURI(String prefix);
 
     /**

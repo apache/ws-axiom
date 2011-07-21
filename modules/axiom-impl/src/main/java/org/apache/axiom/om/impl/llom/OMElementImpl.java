@@ -423,6 +423,13 @@ public class OMElementImpl extends OMNodeImpl
         return namespace;
     }
 
+    public void undeclarePrefix(String prefix) {
+        if (namespaces == null) {
+            this.namespaces = new HashMap(5);
+        }
+        namespaces.put(prefix, new OMNamespaceImpl("", prefix));
+    }
+
     /**
      * Finds a namespace with the given uri and prefix, in the scope of the document. Starts to find
      * from the current element and goes up in the hiararchy until one is found. If none is found,
@@ -454,11 +461,19 @@ public class OMElementImpl extends OMNodeImpl
                 null :
                 (OMNamespace) this.namespaces.get(prefix);
 
-        if (ns == null && this.parent instanceof OMElement) {
-            // try with the parent
-            ns = ((OMElement) this.parent).findNamespaceURI(prefix);
+        if (ns == null) {
+            if (this.parent instanceof OMElement) {
+                // try with the parent
+                return ((OMElement) this.parent).findNamespaceURI(prefix);
+            } else {
+                return null;
+            }
+        } else if (prefix != null && prefix.length() > 0 && ns.getNamespaceURI().length() == 0) {
+            // Prefix undeclaring case (XML 1.1 only)
+            return null;
+        } else {
+            return ns;
         }
-        return ns;
     }
 
     // Constant

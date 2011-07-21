@@ -118,6 +118,7 @@ public class AXIOMXPath extends BaseXPath {
      * @param element the element to retrieve the namespace context from
      * @throws JaxenException if an error occurred when adding the namespace declarations
      */
+    // TODO: need to take prefix undeclaring into account here; probably we should add a method to OMElement that returns all namespaces in scope
     public void addNamespaces(OMElement element) throws JaxenException {
         OMElement current = element;
         // An element can redeclare a namespace prefix that has already been declared

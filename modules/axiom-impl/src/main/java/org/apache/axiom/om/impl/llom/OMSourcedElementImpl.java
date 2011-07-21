@@ -373,6 +373,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.declareNamespace(namespace);
     }
 
+    public void undeclarePrefix(String prefix) {
+        forceExpand();
+        super.undeclarePrefix(prefix);
+    }
+
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMElement#findNamespace(java.lang.String, java.lang.String)
      */

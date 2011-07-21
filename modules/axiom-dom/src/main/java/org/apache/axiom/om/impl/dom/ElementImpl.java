@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
 import org.apache.axiom.om.impl.traverse.OMDescendantsIterator;
@@ -749,6 +750,13 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         return namespace;
     }
 
+    public void undeclarePrefix(String prefix) {
+        if (namespaces == null) {
+            this.namespaces = new HashMap(5);
+        }
+        namespaces.put(prefix, new OMNamespaceImpl("", prefix));
+    }
+
     /**
      * Allows overriding an existing declaration if the same prefix was used.
      *
@@ -827,11 +835,19 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                 null :
                 (OMNamespace) this.namespaces.get(prefix);
 
-        if (ns == null && this.parentNode instanceof OMElement) {
-            // try with the parent
-            ns = ((OMElement) this.parentNode).findNamespaceURI(prefix);
+        if (ns == null) {
+            if (this.parentNode instanceof OMElement) {
+                // try with the parent
+                return ((OMElement) this.parentNode).findNamespaceURI(prefix);
+            } else {
+                return null;
+            }
+        } else if (prefix != null && prefix.length() > 0 && ns.getNamespaceURI().length() == 0) {
+            // Prefix undeclaring case (XML 1.1 only)
+            return null;
+        } else {
+            return ns;
         }
-        return ns;
     }
 
     /**
