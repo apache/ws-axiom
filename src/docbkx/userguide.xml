@@ -1240,6 +1240,36 @@ while (iterator.hasNext()) {
             <section id="changes-1.2.13">
                 <title>Changes in Axiom 1.2.13</title>
                 <section>
+                    <title>Handling of illegal namespace declarations</title>
+                    <para>
+                        Both XML 1.0 and XML 1.1 forbid binding a namespace prefix to the empty namespace name.
+                        Only the default namespace can have an empty namespace name.
+                        In XML 1.0, prefixed namespace bindings may not be empty, as explained in section 5 of
+                        <xref linkend="bib.xmlns"/>:
+                    </para>
+                    <blockquote>
+                        <para>
+                            In a namespace declaration for a prefix (i.e., where the NSAttName is a PrefixedAttName), the
+                            attribute value MUST NOT be empty.
+                        </para>
+                    </blockquote>
+                    <para>
+                        In XML 1.1, prefixed namespace bindings may be empty, but rather than binding the empty namespace name
+                        to a prefix, such a namespace declaration "unbinds" the prefix, as explained in section 5
+                        of <xref linkend="bib.xmlns11"/>:
+                    </para>
+                    <blockquote>
+                        <para>
+                            The namespace prefix, unless it is <literal>xml</literal> or <literal>xmlns</literal>, must
+                            have been declared in a namespace declaration attribute in either the start-tag of the
+                            element where the prefix is used or in an ancestor element
+                            (i.e. an element in whose content the prefixed markup occurs). Furthermore, the attribute
+                            value in the innermost such declaration must not be an empty string.
+                        </para>
+                    </blockquote>
+                    
+                </section>
+                <section>
                     <title>New abstract APIs</title>
                     <para>
                         Axiom 1.2.13 introduces a couple of new abstract APIs which give implementations of the Axiom API
@@ -1643,6 +1673,18 @@ public class TestOMBuilder {
                 <title><ulink url="http://www.w3.org/TR/2008/REC-xml-20081126/">Extensible Markup Language (XML) 1.0 (Fifth Edition)</ulink></title>
                 <publishername>W3C Recommendation</publishername>
                 <pubdate>26 November 2008</pubdate>
+            </biblioentry>
+            <biblioentry id="bib.xmlns">
+                <abbrev>XMLNS</abbrev>
+                <title><ulink url="http://www.w3.org/TR/2009/REC-xml-names-20091208/">Namespaces in XML 1.0 (Third Edition)</ulink></title>
+                <publishername>W3C Recommendation</publishername>
+                <pubdate>8 December 2009</pubdate>
+            </biblioentry>
+            <biblioentry id="bib.xmlns11">
+                <abbrev>XMLNS11</abbrev>
+                <title><ulink url="http://www.w3.org/TR/2006/REC-xml-names11-20060816/">Namespaces in XML 1.1 (Second Edition)</ulink></title>
+                <publishername>W3C Recommendation</publishername>
+                <pubdate>16 August 2006</pubdate>
             </biblioentry>
         </bibliodiv>
     </bibliography>
