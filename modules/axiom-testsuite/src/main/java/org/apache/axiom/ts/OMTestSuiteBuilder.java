@@ -155,6 +155,8 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestSetNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetNamespaceInvalid(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetNamespaceWithMatchingBindingInScope(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSetNamespaceWithNullOMNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSetNamespaceWithNullPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetText(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestUndeclarePrefix(metaFactory));

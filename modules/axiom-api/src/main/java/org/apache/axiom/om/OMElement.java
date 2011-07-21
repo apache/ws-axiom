@@ -394,7 +394,10 @@ public interface OMElement extends OMNode, OMContainer {
      * added to this element.
      * 
      * @param namespace
-     *            the new namespace for this element
+     *            The new namespace for this element, or <code>null</code> to remove the namespace
+     *            from this element. If an {@link OMNamespace} instance with a <code>null</code>
+     *            prefix is given, then a prefix will be generated automatically. In this case, the
+     *            generated prefix can be determined using {@link #getNamespace()}.
      * @throws IllegalArgumentException
      *             if an attempt is made to bind a prefix to the empty namespace name
      */
