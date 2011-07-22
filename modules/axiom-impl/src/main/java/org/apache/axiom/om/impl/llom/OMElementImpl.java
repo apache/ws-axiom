@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
@@ -771,7 +770,7 @@ public class OMElementImpl extends OMNodeImpl
             child = child.getNextOMSibling();
         }
 
-        OMAbstractFactory.getOMFactory().createOMText(this, text);
+        getOMFactory().createOMText(this, text);
     }
 
     /**
@@ -788,7 +787,7 @@ public class OMElementImpl extends OMNodeImpl
             child = child.getNextOMSibling();
         }
 
-        OMAbstractFactory.getOMFactory().createOMText(this, text);
+        getOMFactory().createOMText(this, text);
     }
 
     /**
