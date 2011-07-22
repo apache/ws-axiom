@@ -30,18 +30,17 @@ import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMElement#declareNamespace(String, String)} generates a new prefix if the
- * specified prefix is empty. Note that this behavior will change in Axiom 1.3 (see
- * <a href="https://issues.apache.org/jira/browse/AXIOM-373">AXIOM-373</a>).
+ * specified prefix is <code>null</code>.
  */
-public class TestDeclareNamespaceWithGeneratedPrefix2 extends AxiomTestCase {
-    public TestDeclareNamespaceWithGeneratedPrefix2(OMMetaFactory metaFactory) {
+public class TestDeclareNamespaceWithGeneratedPrefix3 extends AxiomTestCase {
+    public TestDeclareNamespaceWithGeneratedPrefix3(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("test"));
-        OMNamespace ns = element.declareNamespace("urn:ns", "");
+        OMNamespace ns = element.declareNamespace("urn:ns", null);
         assertEquals("urn:ns", ns.getNamespaceURI());
         assertNotNull(ns.getPrefix());
         assertTrue(ns.getPrefix().length() > 0);

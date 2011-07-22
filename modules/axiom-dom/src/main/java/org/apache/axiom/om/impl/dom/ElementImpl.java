@@ -36,6 +36,8 @@ import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
 import org.apache.axiom.om.impl.traverse.OMQualifiedNameFilterIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -57,6 +59,8 @@ import java.util.Iterator;
 public class ElementImpl extends ParentNode implements Element, OMElement,
         OMConstants {
 
+    private static final Log log = LogFactory.getLog(ElementImpl.class);
+    
     private int lineNumber;
 
     protected OMNamespace namespace;
@@ -767,6 +771,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      */
     public OMNamespace declareNamespace(String uri, String prefix) {
         if ("".equals(prefix)) {
+            log.warn("Deprecated usage of OMElement#declareNamespace(String,String) with empty prefix");
             prefix = OMSerializerUtil.getNextNSPrefix();
         }
         

@@ -206,7 +206,7 @@ public class OMElementImpl extends OMNodeImpl
             OMNamespace namespace = findNamespace(namespaceURI,
                                                   prefix);
             if (namespace == null) {
-                namespace = declareNamespace(namespaceURI, prefix);
+                namespace = declareNamespace(namespaceURI, prefix.length() > 0 ? prefix : null);
             }
             return namespace;
         }
@@ -377,6 +377,7 @@ public class OMElementImpl extends OMNodeImpl
      */
     public OMNamespace declareNamespace(String uri, String prefix) {
         if ("".equals(prefix)) {
+            log.warn("Deprecated usage of OMElement#declareNamespace(String,String) with empty prefix");
             prefix = OMSerializerUtil.getNextNSPrefix();
         }
         OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
