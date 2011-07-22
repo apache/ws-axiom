@@ -205,6 +205,9 @@ public class OMDOMFactory implements OMFactory {
         if (namespaceURI == null) {
             throw new IllegalArgumentException("namespaceURI must not be null");
         } else if (namespaceURI.length() == 0) {
+            if (prefix != null && prefix.length() > 0) {
+                throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
+            }
             return createOMElement(localName, null);
         } else {
             return createOMElement(localName, createOMNamespace(namespaceURI, prefix));
