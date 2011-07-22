@@ -331,8 +331,9 @@ public interface OMElement extends OMNode, OMContainer {
     void setText(String text);
 
     /**
-     * Set the content of this element to the given QName. If no matching namespace declaration for
-     * the QName is in scope, then this method will add one.
+     * Set the content of this element to the given {@link QName}. If no matching namespace
+     * declaration for the {@link QName} is in scope, then this method will add one. If the
+     * {@link QName} specifies a namespace URI but no prefix, then a prefix will be generated.
      * 
      * @param qname
      *            the QName value

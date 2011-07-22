@@ -157,7 +157,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.calcNS = true;
         this.textNS =
                 ((OMElementImpl) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
-        this.value = textNS.getPrefix() + ":" + text.getLocalPart();
+        this.value = textNS == null ? text.getLocalPart() : textNS.getPrefix() + ":" + text.getLocalPart();
         this.nodeType = nodeType;
     }
 

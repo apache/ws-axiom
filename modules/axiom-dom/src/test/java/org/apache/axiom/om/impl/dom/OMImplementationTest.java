@@ -29,6 +29,8 @@ import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
 import org.apache.axiom.ts.om.element.TestSetTextQName;
+import org.apache.axiom.ts.om.element.TestSetTextQNameWithEmptyPrefix;
+import org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithInvalidNamespace;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
@@ -39,6 +41,8 @@ public class OMImplementationTest extends TestCase {
         OMTestSuiteBuilder builder = new OMTestSuiteBuilder(new OMDOMMetaFactory());
         // OMElement#setText(QName) is unsupported
         builder.exclude(TestSetTextQName.class);
+        builder.exclude(TestSetTextQNameWithEmptyPrefix.class);
+        builder.exclude(TestSetTextQNameWithoutNamespace.class);
         
         // TODO: AXIOM-315
         builder.exclude(org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild.class);

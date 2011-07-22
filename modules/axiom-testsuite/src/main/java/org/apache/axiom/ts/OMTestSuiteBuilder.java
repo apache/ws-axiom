@@ -159,6 +159,8 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestSetNamespaceWithNullPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetText(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameWithEmptyPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestUndeclarePrefix(metaFactory));
         for (int i=0; i<OMElementCreator.INSTANCES.length; i++) {
             OMElementCreator creator = OMElementCreator.INSTANCES[i];

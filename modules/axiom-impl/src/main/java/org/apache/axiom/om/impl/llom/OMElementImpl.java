@@ -196,12 +196,20 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     OMNamespace handleNamespace(String namespaceURI, String prefix) {
-        OMNamespace namespace = findNamespace(namespaceURI,
-                                              prefix);
-        if (namespace == null) {
-            namespace = declareNamespace(namespaceURI, prefix);
+        if (prefix.length() == 0 && namespaceURI.length() == 0) {
+            OMNamespace namespace = getDefaultNamespace();
+            if (namespace != null) {
+                declareDefaultNamespace("");
+            }
+            return null;
+        } else {
+            OMNamespace namespace = findNamespace(namespaceURI,
+                                                  prefix);
+            if (namespace == null) {
+                namespace = declareNamespace(namespaceURI, prefix);
+            }
+            return namespace;
         }
-        return namespace;
     }
 
     /**
