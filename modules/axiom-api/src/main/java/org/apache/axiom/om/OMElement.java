@@ -205,6 +205,9 @@ public interface OMElement extends OMNode, OMContainer {
      * <p>
      * It is expected that applications only rarely use {@link #getAllDeclaredNamespaces()}
      * directly.
+     * <p>
+     * The iterator returned by this method supports {@link Iterator#remove()} and that method can
+     * be used to remove a namespace declaration from this element.
      * 
      * @return An iterator over the {@link OMNamespace} items declared on this element. Note that
      *         the iterator may be invalidated by a call to {@link #declareNamespace(OMNamespace)},
