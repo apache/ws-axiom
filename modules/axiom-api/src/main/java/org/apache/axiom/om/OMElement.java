@@ -311,16 +311,6 @@ public interface OMElement extends OMNode, OMContainer {
     void setBuilder(OMXMLParserWrapper wrapper);
 
     /**
-     * Sets the first child.
-     *
-     * @param node
-     * @deprecated This method should not be called, un-intentionally. When some one randomly set
-     *             the first child, all the links handling will not happen inside this method. So we
-     *             have moved this method to the less visible interface, OMContainerEx.
-     */
-    void setFirstChild(OMNode node);
-
-    /**
      * Returns the first child element of the element.
      *
      * @return Returns the first child element of the element, or <tt>null</tt> if none was found.
