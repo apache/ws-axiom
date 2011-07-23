@@ -1254,8 +1254,15 @@ while (iterator.hasNext()) {
                         </para>
                     </blockquote>
                     <para>
+                        In Axiom 1.2.12, the <methodname>declareNamespace</methodname> methods in <classname>OMElement</classname>
+                        didn't enforce this constraint and namespace declarations violating this requirement were silently
+                        dropped during serialization. This behavior is problematic because it may result in subtle issues
+                        such as unbound namespace prefixes. In Axiom 1.2.13 these methods have been changed so that they
+                        throw an exception if an attempt is made to bind the empty namespace name to a prefix.
+                    </para>                     
+                    <para>
                         In XML 1.1, prefixed namespace bindings may be empty, but rather than binding the empty namespace name
-                        to a prefix, such a namespace declaration "unbinds" the prefix, as explained in section 5
+                        to a prefix, such a namespace declaration "undeclares" the prefix, as explained in section 5
                         of <xref linkend="bib.xmlns11"/>:
                     </para>
                     <blockquote>
@@ -1267,7 +1274,21 @@ while (iterator.hasNext()) {
                             value in the innermost such declaration must not be an empty string.
                         </para>
                     </blockquote>
-                    
+                    <para>
+                        Although the same syntax is used in both cases, adding a namespace declaration to bind a prefix
+                        to a (non empty) namespace URI and adding a namespace declaration to undeclare a prefix are two
+                        fundamentally different operations from the point of view of the application. Therefore, to
+                        support prefix undeclaring for XML 1.1 infosets, a new method <methodname>undeclarePrefix</methodname>
+                        has been added to <classname>OMElement</classname> in Axiom 1.2.13.
+                    </para>
+                    <para>
+                        As a corollary of the above, neither XML 1.0 nor XML 1.1 allows creating prefixed elements or
+                        attributes with an empty namespace name. In Axiom 1.2.12, when attempting to create such invalid
+                        information items, the behavior was inconsistent: in some cases,
+                        the prefix was silently dropped, in other cases the invalid information item was actually created,
+                        resulting in problems during serialization. Axiom 1.2.13 consistently throws an exception when
+                        an attempt is made to create such an invalid information item.
+                    </para>
                 </section>
                 <section>
                     <title>New abstract APIs</title>
