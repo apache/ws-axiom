@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<root>
+  <ns:foo xmlns:ns="http://example.com/ns">foo contents</ns:foo>
+  <ns:bar xmlns:ns="http://example.com/ns">bar contents</ns:bar>
+</root>
