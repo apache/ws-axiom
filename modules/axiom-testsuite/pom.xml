@@ -78,4 +78,19 @@
             <version>2.7.1</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <!-- src/main/resources contains test files and they obviously cannot
+                             all contain a valid license header -->
+                        <exclude>src/main/resources/**</exclude>
+                    </excludes>
+                </configuration> 
+            </plugin>
+        </plugins>
+    </build>
 </project>

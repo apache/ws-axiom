@@ -53,6 +53,7 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocument(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestInvalidXML(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestIOExceptionInGetText(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestStandaloneConfiguration(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
             for (int j=0; j<containerFactories.length; j++) {
                 addTest(new org.apache.axiom.ts.om.container.TestGetSAXSource(metaFactory, conformanceFiles[i], containerFactories[j], true));
