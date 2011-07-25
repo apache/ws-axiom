@@ -87,22 +87,6 @@ public class OMTest extends AbstractTestCase {
         assertFalse("Root should not be complete", envelope.isComplete());
     }
 
-    /**
-     * Assumption - The fed XML has at least two children under the root element
-     *
-     * @throws Exception
-     */
-    public void testFirstChildDetach() throws Exception {
-        OMElement root = envelope;
-        assertFalse("Root should not be complete", root.isComplete());
-        OMNode oldFirstChild = root.getFirstOMChild();
-        assertNotNull(oldFirstChild);
-        oldFirstChild.detach();
-        OMNode newFirstChild = root.getFirstOMChild();
-        assertNotNull(newFirstChild);
-        assertNotSame(oldFirstChild, newFirstChild);
-    }
-
     //todo this is wrong correct this
     public void testAdditionOfaCompletelyNewElement() throws Exception {
 
