@@ -64,10 +64,10 @@ public class AttachmentsTest extends AbstractTestCase {
         Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
 
         String[] contentIDs = attachments.getAllContentIDs();
-        assertEquals(contentIDs.length, 3);
-        assertEquals(contentIDs[0], "0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org");
-        assertEquals(contentIDs[1], "1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
-        assertEquals(contentIDs[2], "2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+        assertEquals(3, contentIDs.length);
+        assertEquals("0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org", contentIDs[0]);
+        assertEquals("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org", contentIDs[1]);
+        assertEquals("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org", contentIDs[2]);
     }
     
     public void testGetContentIDSet() {
@@ -87,8 +87,7 @@ public class AttachmentsTest extends AbstractTestCase {
         // Make sure the length is correct
         long length = attachments.getContentLength();
         long fileSize = IOUtils.getStreamAsByteArray(getTestResource(TestConstants.MTOM_MESSAGE)).length;
-        assertTrue("Expected MessageContent Length of " + fileSize + " but received " + length,
-                   length == fileSize);
+        assertEquals("Return value of getContentLength()", fileSize, length);
     }
 
     private void testGetSOAPPartContentID(String contentTypeStartParam, String contentId)
@@ -209,7 +208,7 @@ public class AttachmentsTest extends AbstractTestCase {
         IOTestUtils.compareStreams(dataIs, expectedDataIs);
 
         // Confirm that no more streams are left
-        assertEquals(null, ias.getNextStream());
+        assertNull(ias.getNextStream());
         
         // After all is done, we should *still* be able to access and
         // re-consume the SOAP part stream, as it should be cached.. can we?
