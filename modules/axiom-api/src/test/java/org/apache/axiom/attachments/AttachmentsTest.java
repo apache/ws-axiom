@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.attachments;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
@@ -32,6 +33,7 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.testutils.io.IOTestUtils;
 
 public class AttachmentsTest extends AbstractTestCase {
+    String img1FileName = "mtom/img/test.jpg";
     String img2FileName = "mtom/img/test2.jpg";
     
     public void testGetDataHandler() throws Exception {
@@ -170,6 +172,108 @@ public class AttachmentsTest extends AbstractTestCase {
         assertEquals("test-value", dataIs.getHeader("new-header"));
     }
     
+    public void testGetIncomingAttachmentStreams2() throws Exception {
+
+        IncomingAttachmentInputStream dataIs;
+        InputStream expectedDataIs;
+
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
+
+        // Since SOAP part operated independently of other streams, access it
+        // directly, and then get to the streams. If this sequence throws an
+        // error, something is wrong with the stream handling code.
+        InputStream is = attachments.getSOAPPartInputStream();
+        while (is.read() != -1) ;
+
+        // Get the inputstream container
+        IncomingAttachmentStreams ias = attachments.getIncomingAttachmentStreams();
+
+        dataIs = ias.getNextStream();
+        expectedDataIs = getTestResource(img1FileName);
+        IOTestUtils.compareStreams(dataIs, expectedDataIs);
+
+        dataIs = ias.getNextStream();
+        expectedDataIs = getTestResource(img2FileName);
+        IOTestUtils.compareStreams(dataIs, expectedDataIs);
+
+        // Confirm that no more streams are left
+        assertEquals(null, ias.getNextStream());
+        
+        // After all is done, we should *still* be able to access and
+        // re-consume the SOAP part stream, as it should be cached.. can we?
+        is = attachments.getSOAPPartInputStream();
+        while (is.read() != -1) ;  
+    }
+    
+    public void testSimultaneousStreamAccess() throws Exception {
+        InputStream inStream;
+        Attachments attachments;
+    
+        inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
+    
+        attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+    
+        // This should throw an error
+        try {
+            attachments.getIncomingAttachmentStreams();
+            fail("No exception caught when attempting to access datahandler and stream at the same time");
+        } catch (IllegalStateException ise) {
+            // Nothing
+        }
+    
+        inStream.close();
+    
+        // Try the other way around.
+        inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
+    
+        attachments.getIncomingAttachmentStreams();
+    
+        // These should NOT throw error even though they are using part based access
+        try {
+            String contentType = attachments.getSOAPPartContentType();
+            assertTrue(contentType.indexOf("application/xop+xml;") >=0);
+            assertTrue(contentType.indexOf("charset=UTF-8;") >=0);
+            assertTrue(contentType.indexOf("type=\"application/soap+xml\";") >=0);
+        } catch (IllegalStateException ise) {
+            fail("No exception expected when requesting SOAP part data");
+            ise.printStackTrace();
+        }
+    
+        try {
+            attachments.getSOAPPartInputStream();
+        } catch (IllegalStateException ise) {
+            fail("No exception expected when requesting SOAP part data");
+        }
+    
+        // These should throw an error
+        try {
+            attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+            fail("No exception caught when attempting to access stream and datahandler at the same time");
+        } catch (IllegalStateException ise) {
+            // Nothing
+        }
+    
+        // Additionally, we also need to ensure mutual exclusion if someone
+        // tries to access part data directly
+    
+        try {
+            attachments.getAllContentIDs();
+            fail("No exception caught when attempting to access stream and contentids list at the same time");
+        } catch (IllegalStateException ise) {
+            // Nothing
+        }
+    
+        try {
+            attachments.getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+            fail("No exception caught when attempting to access stream and part at the same time");
+        } catch (IllegalStateException ise) {
+            // Nothing
+        }
+    }
+
     public void testRemoveDataHandlerWithStream() throws Exception {
         InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
         Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
@@ -188,5 +292,77 @@ public class AttachmentsTest extends AbstractTestCase {
 
         assertFalse(list2.contains("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));
         assertTrue(list2.contains("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"));
+    }
+
+    public void testCachedFilesExpired() throws Exception {
+        
+        // Set file expiration to 10 seconds
+        long INTERVAL = 3 * 1000; // 3 seconds for Thread to sleep
+        Thread t = Thread.currentThread();
+
+       
+        // Get the AttachmentCacheMonitor and force it to remove files after
+        // 10 seconds.
+        AttachmentCacheMonitor acm = AttachmentCacheMonitor.getAttachmentCacheMonitor();
+        int previousTime = acm.getTimeout();
+        
+        try {
+            acm.setTimeout(10); 
+
+
+            File aFile = new File("A");
+            aFile.createNewFile();
+            String aFileName = aFile.getCanonicalPath();
+            acm.register(aFileName);
+
+            t.sleep(INTERVAL);
+
+            File bFile = new File("B");
+            bFile.createNewFile();
+            String bFileName = bFile.getCanonicalPath();
+            acm.register(bFileName);
+
+            t.sleep(INTERVAL);
+
+            acm.access(aFileName);
+
+            // time since file A registration <= cached file expiration
+            assertTrue("File A should still exist", aFile.exists());
+
+            t.sleep(INTERVAL);
+
+            acm.access(bFileName);
+
+            // time since file B registration <= cached file expiration
+            assertTrue("File B should still exist", bFile.exists());
+
+            t.sleep(INTERVAL);
+
+            File cFile = new File("C");
+            cFile.createNewFile();
+            String cFileName = cFile.getCanonicalPath();
+            acm.register(cFileName);
+            acm.access(bFileName);
+
+            t.sleep(INTERVAL);
+
+            acm.checkForAgedFiles();
+
+            // time since file C registration <= cached file expiration
+            assertTrue("File C should still exist", cFile.exists());
+
+            t.sleep(10* INTERVAL);  // Give task loop time to delete aged files
+
+
+            // All files should be gone by now
+            assertFalse("File A should no longer exist", aFile.exists());
+            assertFalse("File B should no longer exist", bFile.exists());
+            assertFalse("File C should no longer exist", cFile.exists());
+        } finally {
+       
+            // Reset the timeout to the previous value so that no 
+            // other tests are affected
+            acm.setTimeout(previousTime);
+        }
     }
 }
