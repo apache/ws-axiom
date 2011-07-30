@@ -298,7 +298,6 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // Set file expiration to 10 seconds
         long INTERVAL = 3 * 1000; // 3 seconds for Thread to sleep
-        Thread t = Thread.currentThread();
 
        
         // Get the AttachmentCacheMonitor and force it to remove files after
@@ -315,28 +314,28 @@ public class AttachmentsTest extends AbstractTestCase {
             String aFileName = aFile.getCanonicalPath();
             acm.register(aFileName);
 
-            t.sleep(INTERVAL);
+            Thread.sleep(INTERVAL);
 
             File bFile = new File("B");
             bFile.createNewFile();
             String bFileName = bFile.getCanonicalPath();
             acm.register(bFileName);
 
-            t.sleep(INTERVAL);
+            Thread.sleep(INTERVAL);
 
             acm.access(aFileName);
 
             // time since file A registration <= cached file expiration
             assertTrue("File A should still exist", aFile.exists());
 
-            t.sleep(INTERVAL);
+            Thread.sleep(INTERVAL);
 
             acm.access(bFileName);
 
             // time since file B registration <= cached file expiration
             assertTrue("File B should still exist", bFile.exists());
 
-            t.sleep(INTERVAL);
+            Thread.sleep(INTERVAL);
 
             File cFile = new File("C");
             cFile.createNewFile();
@@ -344,14 +343,14 @@ public class AttachmentsTest extends AbstractTestCase {
             acm.register(cFileName);
             acm.access(bFileName);
 
-            t.sleep(INTERVAL);
+            Thread.sleep(INTERVAL);
 
             acm.checkForAgedFiles();
 
             // time since file C registration <= cached file expiration
             assertTrue("File C should still exist", cFile.exists());
 
-            t.sleep(10* INTERVAL);  // Give task loop time to delete aged files
+            Thread.sleep(10* INTERVAL);  // Give task loop time to delete aged files
 
 
             // All files should be gone by now
