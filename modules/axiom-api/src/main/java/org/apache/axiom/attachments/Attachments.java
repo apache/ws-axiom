@@ -174,22 +174,15 @@ public class Attachments implements OMAttachmentAccessor {
                     "Invalid Content Type Field in the Mime Message"
                     , e);
         }
-        // REVIEW: This conversion is hard-coded to UTF-8.
-        // The complete solution is to respect the charset setting of the message.
-        // However this may cause problems in BoundaryDelimittedStream and other
-        // lower level classes.
 
         // Boundary always have the prefix "--".
         try {
-            String encoding = contentType.getParameter("charset");
-            if(encoding == null || encoding.length()==0){
-                encoding = "UTF-8";
-            }
             String boundaryParam = contentType.getParameter("boundary");
             if (boundaryParam == null) {
                 throw new OMException("Content-type has no 'boundary' parameter");
             }
-            this.boundary = ("--" + boundaryParam).getBytes(encoding);
+            // A MIME boundary only contains ASCII characters (see RFC2046)
+            this.boundary = ("--" + boundaryParam).getBytes("ascii");
             if (log.isDebugEnabled()) {
                 log.debug("boundary=" + new String(this.boundary));
             }
