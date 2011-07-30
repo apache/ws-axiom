@@ -39,9 +39,9 @@ import java.io.InputStream;
 import java.io.PushbackInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.Map;
 import java.util.Collections;
 
@@ -70,16 +70,10 @@ public class Attachments implements OMAttachmentAccessor {
     private final DetachableInputStream filterIS;
 
     /**
-     * <code>attachmentsMap</code> stores the Data Handlers of the already parsed Mime Body Parts.
-     * This ordered Map is keyed using the content-ID's.
+     * Stores the Data Handlers of the already parsed Mime Body Parts in the order that the attachments
+     * occur in the message. This map is keyed using the content-ID's.
      */
-    private final TreeMap attachmentsMap = new TreeMap();
-    
-    /**
-     * <code>cids</code> stores the content ids in the order that the attachments
-     * occur in the message
-     */
-    private final ArrayList cids = new ArrayList(); 
+    private final Map attachmentsMap = new LinkedHashMap();
 
     /** <code>partIndex</code>- Number of Mime parts parsed */
     private int partIndex = 0;
@@ -378,9 +372,6 @@ public class Attachments implements OMAttachmentAccessor {
      */
     public void addDataHandler(String contentID, DataHandler dataHandler) {
         attachmentsMap.put(contentID, dataHandler);
-        if (!cids.contains(contentID)) {
-            cids.add(contentID);
-        }
     }
 
     /**
@@ -400,9 +391,6 @@ public class Attachments implements OMAttachmentAccessor {
                     attachmentsMap.remove(blobContentID);
                 }
             }
-        }
-        if (cids.contains(blobContentID)) {
-            cids.remove(blobContentID);
         }
     }
 
@@ -549,6 +537,7 @@ public class Attachments implements OMAttachmentAccessor {
      */
     public String[] getAllContentIDs() {
         fetchAllParts();
+        Set cids = attachmentsMap.keySet();
         return (String[]) cids.toArray(new String[cids.size()]);
     }
 
@@ -589,7 +578,7 @@ public class Attachments implements OMAttachmentAccessor {
      * @return List of content IDs in order of appearance in message
      */
     public List getContentIDList() {
-        return cids;
+        return new ArrayList(attachmentsMap.keySet());
     }
     
     /**
