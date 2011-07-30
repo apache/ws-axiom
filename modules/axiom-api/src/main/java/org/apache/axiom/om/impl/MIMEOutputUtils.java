@@ -254,15 +254,7 @@ public class MIMEOutputUtils {
             rootPartWriter.close();
             
             // Get the collection of ids associated with the attachments
-            Collection ids;         
-            if (respectSWAAttachmentOrder(format)) {
-                // ContentIDList is the order of the incoming/added attachments
-                ids = Arrays.asList(attachments.getAllContentIDs());
-            } else {
-                // ContentIDSet is an undefined order (the implementation currently
-                // orders the attachments using the natural order of the content ids)
-                ids = attachments.getContentIDSet();
-            }
+            Collection ids = Arrays.asList(attachments.getAllContentIDs());
             
             for (Iterator it = ids.iterator(); it.hasNext(); ) {
                 String id = (String)it.next();
@@ -358,15 +350,7 @@ public class MIMEOutputUtils {
                 innerFormat.setMimeBoundary(innerBoundary);
                 OutputStream innerOutputStream = mpw.writePart("multipart/related; boundary=\"" + innerBoundary + "\"", innerPartCID);
                 OMMultipartWriter innerMpw = new OMMultipartWriter(innerOutputStream, innerFormat);
-                Collection ids;
-                if (respectSWAAttachmentOrder(format)) {
-                    // ContentIDList is the order of the incoming/added attachments
-                    ids = Arrays.asList(attachments.getAllContentIDs());
-                } else {
-                    // ContentIDSet is an undefined order (the implementation currently
-                    // orders the attachments using the natural order of the content ids)
-                    ids = attachments.getContentIDSet();
-                }
+                Collection ids = Arrays.asList(attachments.getAllContentIDs());
                 for (Iterator it = ids.iterator(); it.hasNext(); ) {
                     String id = (String)it.next();
                     innerMpw.writePart(attachments.getDataHandler(id), id);
@@ -379,17 +363,5 @@ public class MIMEOutputUtils {
         } catch (IOException e) {
             throw new OMException("Error while writing to the OutputStream.", e);
         }
-    }
-    
-    /**
-     * @param format
-     * @return true if the incoming attachment order should be respected
-     */
-    private static boolean respectSWAAttachmentOrder(OMOutputFormat format) {
-        Boolean value = (Boolean) format.getProperty(OMOutputFormat.RESPECT_SWA_ATTACHMENT_ORDER);
-        if (value == null) {
-            value = OMOutputFormat.RESPECT_SWA_ATTACHMENT_ORDER_DEFAULT;
-        }
-        return value.booleanValue();
     }
 }

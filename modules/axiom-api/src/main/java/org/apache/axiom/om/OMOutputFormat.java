@@ -90,14 +90,15 @@ public class OMOutputFormat {
     public static final String USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS = 
         "org.apache.axiom.om.OMFormat.use.cteBase64.forNonTextualAttachments";
     
-    // The old default behavior for the swa output attachment order was the 
-    // natural order of the content ids.
-    //
-    // There are some customers who want the output order to match the 
-    // input order for swa attachments.
+    /**
+     * @deprecated As of version 1.2.13, Axiom always respects the order of attachments.
+     */
     public static final String RESPECT_SWA_ATTACHMENT_ORDER =
         "org.apache.axiom.om.OMFormat.respectSWAAttachmentOrder";
     
+    /**
+     * @deprecated As of version 1.2.13, Axiom always respects the order of attachments.
+     */
     public static final Boolean RESPECT_SWA_ATTACHMENT_ORDER_DEFAULT =
         Boolean.TRUE;
     

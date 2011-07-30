@@ -139,41 +139,6 @@ public class AttachmentsTest extends AbstractTestCase {
         assertTrue(outBase64ToBase64.indexOf("GBgcGBQgHBwcJCQgKDBQNDAsL") != -1);
     }
     
-    public void testSWAWriteWithContentIDOrder() throws Exception {
-
-        // Read the stream that has soap xml followed by BAttachment then AAttachment
-        InputStream inStream = getTestResource(inSWAFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
-
-        // Get the contentIDs to force the reading
-        String[] contentIDs = attachments.getAllContentIDs();
-        
-        // Get the root
-        XMLStreamReader reader =
-                StAXUtils.createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments.getSOAPPartInputStream())));
-        MTOMStAXSOAPModelBuilder builder = 
-            new MTOMStAXSOAPModelBuilder(reader, attachments, null);
-        OMElement root = builder.getDocumentElement();
-        StringWriter xmlWriter = new StringWriter();
-        root.serialize(xmlWriter);
-        
-        // Serialize the message using the legacy behavior (order by content id)
-        OMOutputFormat format = new OMOutputFormat();
-        format.setCharSetEncoding("utf-8");
-        format.setDoingSWA(true);
-        format.setProperty(OMOutputFormat.RESPECT_SWA_ATTACHMENT_ORDER, Boolean.FALSE);
-        
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        
-        MIMEOutputUtils.writeSOAPWithAttachmentsMessage(xmlWriter, baos, attachments, format);
-        
-        String text = baos.toString();
-        // Assert that AAttachment occurs before BAttachment since
-        // that is the natural ordering of the content ids.
-        assertTrue(text.indexOf("AAttachment") < text.indexOf("BAttachment"));
-        
-    }
-    
     public void testSWAWriteWithIncomingOrder() throws Exception {
 
         // Read the stream that has soap xml followed by BAttachment then AAttachment
@@ -196,7 +161,6 @@ public class AttachmentsTest extends AbstractTestCase {
         OMOutputFormat format = new OMOutputFormat();
         format.setCharSetEncoding("utf-8");
         format.setDoingSWA(true);
-        format.setProperty(OMOutputFormat.RESPECT_SWA_ATTACHMENT_ORDER, Boolean.TRUE);
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         
