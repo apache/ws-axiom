@@ -48,50 +48,50 @@ import java.util.Collections;
 public class Attachments implements OMAttachmentAccessor {
 
     /** <code>ContentType</code> of the MIME message */
-    ContentType contentType;
+    private final ContentType contentType;
     
-    int contentLength; // Content Length
+    private final int contentLength; // Content Length
 
     /** Mime <code>boundary</code> which separates mime parts */
-    byte[] boundary;
+    private final byte[] boundary;
 
     /**
      * <code>applicationType</code> used to distinguish between MTOM & SWA If the message is MTOM
      * optimised type is application/xop+xml If the message is SWA, type is ??have to find out
      */
-    String applicationType;
+    private String applicationType;
 
     /**
      * <code>pushbackInStream</code> stores the reference to the incoming stream A PushbackStream
      * has the ability to "push back" or "unread" one byte.
      */
-    PushbackInputStream pushbackInStream;
-    int PUSHBACK_SIZE = 4 * 1024;
-    DetachableInputStream filterIS = null;
+    private final PushbackInputStream pushbackInStream;
+    private static final int PUSHBACK_SIZE = 4 * 1024;
+    private final DetachableInputStream filterIS;
 
     /**
      * <code>attachmentsMap</code> stores the Data Handlers of the already parsed Mime Body Parts.
      * This ordered Map is keyed using the content-ID's.
      */
-    TreeMap attachmentsMap;
+    private final TreeMap attachmentsMap = new TreeMap();
     
     /**
      * <code>cids</code> stores the content ids in the order that the attachments
      * occur in the message
      */
-    ArrayList cids = new ArrayList(); 
+    private final ArrayList cids = new ArrayList(); 
 
     /** <code>partIndex</code>- Number of Mime parts parsed */
-    int partIndex = 0;
+    private int partIndex = 0;
 
     /** Container to hold streams for direct access */
-    IncomingAttachmentStreams streams = null;
+    private IncomingAttachmentStreams streams;
 
     /** <code>boolean</code> Indicating if any streams have been directly requested */
-    private boolean streamsRequested = false;
+    private boolean streamsRequested;
 
     /** <code>boolean</code> Indicating if any data handlers have been directly requested */
-    private boolean partsRequested = false;
+    private boolean partsRequested;
 
     /**
      * <code>endOfStreamReached</code> flag which is to be set by MIMEBodyPartStream when MIME
@@ -105,19 +105,19 @@ public class Attachments implements OMAttachmentAccessor {
      * to handle programatic added attachements. An InputStream with attachments is not present at
      * that occation.
      */
-    private boolean noStreams = false;
+    private final boolean noStreams;
 
     private String firstPartId;
 
-    private boolean fileCacheEnable;
+    private final boolean fileCacheEnable;
 
-    private String attachmentRepoDir;
+    private final String attachmentRepoDir;
 
-    private int fileStorageThreshold;
+    private final int fileStorageThreshold;
     
     private LifecycleManager manager;
     
-    protected static Log log = LogFactory.getLog(Attachments.class);
+    private static final Log log = LogFactory.getLog(Attachments.class);
    
     public LifecycleManager getLifecycleManager() {
         if(manager == null) {
@@ -164,6 +164,7 @@ public class Attachments implements OMAttachmentAccessor {
         this.contentLength = contentLength;
         this.attachmentRepoDir = attachmentRepoDir;
         this.fileCacheEnable = fileCacheEnable;
+        noStreams = false;
         if (log.isDebugEnabled()) {
             log.debug("Attachments contentLength=" + contentLength + ", contentTypeString=" + contentTypeString);
         }
@@ -172,7 +173,6 @@ public class Attachments implements OMAttachmentAccessor {
         } else {
             this.fileStorageThreshold = 1;
         }
-        attachmentsMap = new TreeMap();
         try {
             contentType = new ContentType(contentTypeString);
         } catch (ParseException e) {
@@ -209,6 +209,8 @@ public class Attachments implements OMAttachmentAccessor {
         if (contentLength <= 0) {
             filterIS = new DetachableInputStream(inStream);
             is = filterIS;
+        } else {
+            filterIS = null;
         }
         pushbackInStream = new PushbackInputStream(is,
                                                    PUSHBACK_SIZE);
@@ -301,8 +303,15 @@ public class Attachments implements OMAttachmentAccessor {
      * through the SwA API.
      */
     public Attachments() {
-        attachmentsMap = new TreeMap();
         noStreams = true;
+        contentType = null;
+        contentLength = 0;
+        boundary = null;
+        pushbackInStream = null;
+        filterIS = null;
+        fileCacheEnable = false;
+        attachmentRepoDir = null;
+        fileStorageThreshold = 0;
     }
 
     /**
@@ -609,7 +618,7 @@ public class Attachments implements OMAttachmentAccessor {
      *
      * @param value
      */
-    protected void setEndOfStream(boolean value) {
+    void setEndOfStream(boolean value) {
         this.endOfStreamReached = value;
     }
 
