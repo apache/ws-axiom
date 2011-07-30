@@ -19,6 +19,7 @@
 package org.apache.axiom.attachments;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
@@ -67,11 +68,21 @@ public class AttachmentsTest extends AbstractTestCase {
         assertEquals(contentIDs[0], "0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org");
         assertEquals(contentIDs[1], "1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
         assertEquals(contentIDs[2], "2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+    }
+    
+    public void testGetContentIDSet() {
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
 
         Set idSet = attachments.getContentIDSet();
         assertTrue(idSet.contains("0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org"));
         assertTrue(idSet.contains("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"));
         assertTrue(idSet.contains("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));
+    }
+    
+    public void testGetContentLength() throws IOException {
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
         
         // Make sure the length is correct
         long length = attachments.getContentLength();
