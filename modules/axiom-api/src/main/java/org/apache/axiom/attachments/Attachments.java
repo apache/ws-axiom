@@ -518,11 +518,9 @@ public class Attachments implements OMAttachmentAccessor {
      * Force reading of all attachments.
      */
     private void fetchAllParts() {
-        DataHandler dataHandler;
-        while (!noStreams) {
-            dataHandler = this.getNextPartDataHandler();
-            if (dataHandler == null) {
-                break;
+        if (!noStreams) {
+            while (getNextPartDataHandler() != null) {
+                // Just loop until getNextPartDataHandler returns null
             }
         }
     }
@@ -639,12 +637,8 @@ public class Attachments implements OMAttachmentAccessor {
     private DataHandler getNextPartDataHandler() throws OMException {
         if (endOfStreamReached) {
             return null;
-        }
-        Part nextPart;
-        nextPart = getPart();
-        if (nextPart == null) {
-            return null;
-        } else
+        } else {
+            Part nextPart = getPart();
             try {
                 long size = nextPart.getSize();
                 String partContentID;
@@ -698,6 +692,7 @@ public class Attachments implements OMAttachmentAccessor {
             } catch (MessagingException e) {
                 throw new OMException(e);
             }
+        }
     }
 
     /**
