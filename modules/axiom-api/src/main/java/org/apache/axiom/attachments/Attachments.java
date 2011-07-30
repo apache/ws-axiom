@@ -733,24 +733,4 @@ public class Attachments implements OMAttachmentAccessor {
         partIndex++;
         return part;
     }
-    
-    /**
-     * Read bytes into the buffer until full or until the EOS
-     * @param is
-     * @param buffer
-     * @return number of bytes read
-     * @throws IOException
-     */
-    private static int readToBuffer(InputStream is, byte[] buffer) throws IOException {
-        int index = 0;
-        int remainder = buffer.length;
-        do {
-            int bytesRead;
-            while ((bytesRead = is.read(buffer, index, remainder)) > 0) {
-                index += bytesRead;
-                remainder -= bytesRead;
-            }
-        } while (remainder > 0 && is.available() > 0);  // repeat if more bytes are now available
-        return index;
-    }
 }
