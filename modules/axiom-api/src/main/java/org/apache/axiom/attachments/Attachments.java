@@ -344,8 +344,6 @@ public class Attachments implements OMAttachmentAccessor {
             dataHandler = (DataHandler) attachmentsMap.get(contentID);
             return dataHandler;
         } else if (!noStreams) {
-            //This loop will be terminated by the Exceptions thrown if the Mime
-            // part searching was not found
             while ((dataHandler = this.getNextPartDataHandler()) != null) {
                 if (attachmentsMap.containsKey(contentID)) {
                     dataHandler = (DataHandler) attachmentsMap.get(contentID);
