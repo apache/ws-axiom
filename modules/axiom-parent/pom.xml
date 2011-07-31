@@ -407,13 +407,11 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>3.8.2</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>xmlunit</groupId>
                 <artifactId>xmlunit</artifactId>
                 <version>1.1</version>
-                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
