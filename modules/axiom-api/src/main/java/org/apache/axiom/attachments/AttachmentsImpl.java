@@ -43,5 +43,4 @@ abstract class AttachmentsImpl {
     abstract Set getContentIDs(boolean fetchAll);
     abstract Map getMap();
     abstract long getContentLength() throws IOException;
-    abstract InputStream getIncomingAttachmentsAsSingleStream();
 }

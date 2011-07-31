@@ -20,8 +20,6 @@ package org.apache.axiom.attachments;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PushbackInputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -40,6 +38,11 @@ import org.apache.axiom.om.util.DetachableInputStream;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.james.mime4j.MimeException;
+import org.apache.james.mime4j.stream.EntityState;
+import org.apache.james.mime4j.stream.MimeConfig;
+import org.apache.james.mime4j.stream.MimeTokenStream;
+import org.apache.james.mime4j.stream.RecursionMode;
 
 class MIMEMessage extends AttachmentsImpl {
     private static final Log log = LogFactory.getLog(MIMEMessage.class);
@@ -49,17 +52,10 @@ class MIMEMessage extends AttachmentsImpl {
     
     private final int contentLength; // Content Length
 
-    /** Mime <code>boundary</code> which separates mime parts */
-    private final byte[] boundary;
-
-    /**
-     * <code>pushbackInStream</code> stores the reference to the incoming stream A PushbackStream
-     * has the ability to "push back" or "unread" one byte.
-     */
-    private final PushbackInputStream pushbackInStream;
-    private static final int PUSHBACK_SIZE = 4 * 1024;
     private final DetachableInputStream filterIS;
 
+    private final MimeTokenStream parser;
+    
     /**
      * Stores the Data Handlers of the already parsed Mime Body Parts in the order that the attachments
      * occur in the message. This map is keyed using the content-ID's.
@@ -77,12 +73,6 @@ class MIMEMessage extends AttachmentsImpl {
 
     /** <code>boolean</code> Indicating if any data handlers have been directly requested */
     private boolean partsRequested;
-
-    /**
-     * <code>endOfStreamReached</code> flag which is to be set by MIMEBodyPartStream when MIME
-     * message terminator is found.
-     */
-    private boolean endOfStreamReached;
 
     private String firstPartId;
 
@@ -112,21 +102,6 @@ class MIMEMessage extends AttachmentsImpl {
                     , e);
         }
 
-        // Boundary always have the prefix "--".
-        try {
-            String boundaryParam = contentType.getParameter("boundary");
-            if (boundaryParam == null) {
-                throw new OMException("Content-type has no 'boundary' parameter");
-            }
-            // A MIME boundary only contains ASCII characters (see RFC2046)
-            this.boundary = ("--" + boundaryParam).getBytes("ascii");
-            if (log.isDebugEnabled()) {
-                log.debug("boundary=" + new String(this.boundary));
-            }
-        } catch (UnsupportedEncodingException e) {
-            throw new OMException(e);
-        }
-
         // If the length is not known, install a TeeInputStream
         // so that we can retrieve it later.
         InputStream is = inStream;
@@ -136,36 +111,21 @@ class MIMEMessage extends AttachmentsImpl {
         } else {
             filterIS = null;
         }
-        pushbackInStream = new PushbackInputStream(is,
-                                                   PUSHBACK_SIZE);
-
-        // Move the read pointer to the beginning of the first part
-        // read till the end of first boundary
-        while (true) {
-            int value;
+        
+        MimeConfig config = new MimeConfig();
+        config.setStrictParsing(true);
+        parser = new MimeTokenStream(config);
+        parser.setRecursionMode(RecursionMode.M_NO_RECURSE);
+        parser.parseHeadless(is, contentTypeString);
+        
+        // Move the parser to the beginning of the first part
+        while (parser.getState() != EntityState.T_START_BODYPART) {
             try {
-                value = pushbackInStream.read();
-                if ((byte) value == boundary[0]) {
-                    int boundaryIndex = 0;
-                    while ((boundaryIndex < boundary.length)
-                            && ((byte) value == boundary[boundaryIndex])) {
-                        value = pushbackInStream.read();
-                        if (value == -1) {
-                            throw new OMException(
-                                    "Unexpected End of Stream while searching for first Mime Boundary");
-                        }
-                        boundaryIndex++;
-                    }
-                    if (boundaryIndex == boundary.length) { // boundary found
-                        pushbackInStream.read();
-                        break;
-                    }
-                } else if (value == -1) {
-                    throw new OMException(
-                            "Mime parts not found. Stream ended while searching for the boundary");
-                }
-            } catch (IOException e1) {
-                throw new OMException("Stream Error" + e1.toString(), e1);
+                parser.next();
+            } catch (IOException ex) {
+                throw new OMException(ex);
+            } catch (MimeException ex) {
+                throw new OMException(ex);
             }
         }
 
@@ -280,11 +240,7 @@ class MIMEMessage extends AttachmentsImpl {
         streamsRequested = true;
         
         if (this.streams == null) {
-            BoundaryDelimitedStream boundaryDelimitedStream =
-                    new BoundaryDelimitedStream(pushbackInStream,
-                                                boundary, 1024);
-        
-            this.streams = new MultipartAttachmentStreams(boundaryDelimitedStream);
+            this.streams = new MultipartAttachmentStreams(parser);
         }
         
         return this.streams;
@@ -323,34 +279,12 @@ class MIMEMessage extends AttachmentsImpl {
     }
     
     /**
-     * endOfStreamReached will be set to true if the message ended in MIME Style having "--" suffix
-     * with the last mime boundary
-     *
-     * @param value
-     */
-    void setEndOfStream(boolean value) {
-        this.endOfStreamReached = value;
-    }
-    
-    InputStream getIncomingAttachmentsAsSingleStream() {
-        if (partsRequested) {
-            throw new IllegalStateException(
-                    "The attachments stream can only be accessed once; either by using the IncomingAttachmentStreams class or by getting a " +
-                            "collection of AttachmentPart objects. They cannot both be called within the life time of the same service request.");
-        }
-
-        streamsRequested = true;
-
-        return this.pushbackInStream;
-    }
-    
-    /**
      * @return the Next valid MIME part + store the Part in the Parts List
      * @throws OMException throw if content id is null or if two MIME parts contain the same
      *                     content-ID & the exceptions throws by getPart()
      */
     private DataHandler getNextPartDataHandler() throws OMException {
-        if (endOfStreamReached) {
+        if (parser.getState() == EntityState.T_END_MULTIPART) {
             return null;
         } else {
             Part nextPart = getPart();
@@ -425,19 +359,23 @@ class MIMEMessage extends AttachmentsImpl {
         boolean isSOAPPart = (partIndex == 0);
         int threshhold = (fileCacheEnable) ? fileStorageThreshold : 0;
 
-        // Create a MIMEBodyPartInputStream that simulates a single stream for this MIME body part
-        MIMEBodyPartInputStream partStream =
-            new MIMEBodyPartInputStream(pushbackInStream,
-                                        boundary,
-                                        this,
-                                        PUSHBACK_SIZE);
-
         // The PartFactory will determine which Part implementation is most appropriate.
-        Part part = PartFactory.createPart(getLifecycleManager(), partStream, 
+        Part part = PartFactory.createPart(getLifecycleManager(), parser, 
                                       isSOAPPart, 
                                       threshhold, 
                                       attachmentRepoDir, 
                                       contentLength);  // content-length for the whole message
+        try {
+            if (parser.next() == EntityState.T_EPILOGUE) {
+                while (parser.next() != EntityState.T_END_MULTIPART) {
+                    // Just loop
+                }
+            }
+        } catch (IOException ex) {
+            throw new OMException(ex);
+        } catch (MimeException ex) {
+            throw new OMException(ex);
+        }
         partIndex++;
         return part;
     }

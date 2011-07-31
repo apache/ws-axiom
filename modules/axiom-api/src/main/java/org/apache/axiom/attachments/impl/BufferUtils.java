@@ -167,26 +167,21 @@ public class BufferUtils {
 
             // Read directly into the ByteBuffer array
             int bytesRead = is.read(bb.array());
-            // Continue reading until no bytes are read and no
-            // bytes are now available.
-            while (bytesRead > 0 || is.available() > 0) {
-                if (bytesRead > 0) {
-                    int written = 0;
-                    
-                    
-                    if (bytesRead < BUFFER_LEN) {
-                        // If the ByteBuffer is not full, allocate a new one
-                        ByteBuffer temp = ByteBuffer.allocate(bytesRead);
-                        temp.put(bb.array(), 0, bytesRead);
-                        temp.position(0);
-                        written = channel.write(temp);
-                    } else {
-                        // Write to channel
-                        bb.position(0);
-                        written = channel.write(bb);
-                        bb.clear();
-                    }
-                  
+            while (bytesRead != -1) {
+                int written = 0;
+                
+                
+                if (bytesRead < BUFFER_LEN) {
+                    // If the ByteBuffer is not full, allocate a new one
+                    ByteBuffer temp = ByteBuffer.allocate(bytesRead);
+                    temp.put(bb.array(), 0, bytesRead);
+                    temp.position(0);
+                    written = channel.write(temp);
+                } else {
+                    // Write to channel
+                    bb.position(0);
+                    written = channel.write(bb);
+                    bb.clear();
                 }
                 
                 // REVIEW: Do we need to ensure that bytesWritten is 

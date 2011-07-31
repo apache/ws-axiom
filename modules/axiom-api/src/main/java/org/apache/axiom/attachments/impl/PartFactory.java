@@ -19,7 +19,6 @@
 
 package org.apache.axiom.attachments.impl;
 
-import org.apache.axiom.attachments.MIMEBodyPartInputStream;
 import org.apache.axiom.attachments.Part;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.utils.BAAInputStream;
@@ -27,10 +26,13 @@ import org.apache.axiom.attachments.utils.BAAOutputStream;
 import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.james.mime4j.MimeException;
+import org.apache.james.mime4j.stream.EntityState;
+import org.apache.james.mime4j.stream.Field;
+import org.apache.james.mime4j.stream.MimeTokenStream;
 
 import javax.mail.Header;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,7 +75,7 @@ public class PartFactory {
      * @return Part
      * @throws OMException if any exception is encountered while processing.
      */
-    public static Part createPart(LifecycleManager manager, MIMEBodyPartInputStream in,
+    public static Part createPart(LifecycleManager manager, MimeTokenStream parser,
                     boolean isSOAPPart,
                     int thresholdSize,
                     String attachmentDir,
@@ -92,7 +94,7 @@ public class PartFactory {
             // The readHeaders returns some extra bits that were read, but are part
             // of the data section.
             Hashtable headers = new Hashtable();
-            InputStream dross = readHeaders(in, headers);
+            readHeaders(parser, headers);
             
             Part part;
             try {
@@ -132,18 +134,16 @@ public class PartFactory {
                     // of resizing and GC.  The BAAOutputStream 
                     // keeps the data in non-contiguous byte buffers.
                     BAAOutputStream baaos = new BAAOutputStream();
-                    BufferUtils.inputStream2OutputStream(dross, baaos);
-                    BufferUtils.inputStream2OutputStream(in, baaos);
+                    BufferUtils.inputStream2OutputStream(parser.getInputStream(), baaos);
                     part = new PartOnMemoryEnhanced(headers, baaos.buffers(), baaos.length());
                 } else {
                     // We need to read the input stream to determine whether
                     // the size is bigger or smaller than the threshold.
                     BAAOutputStream baaos = new BAAOutputStream();
-                    int t1 = BufferUtils.inputStream2OutputStream(dross, baaos, thresholdSize);
-                    int t2 =  BufferUtils.inputStream2OutputStream(in, baaos, thresholdSize - t1);
-                    int total = t1 + t2;
+                    InputStream in = parser.getInputStream();
+                    int count = BufferUtils.inputStream2OutputStream(in, baaos, thresholdSize);
 
-                    if (total < thresholdSize) {
+                    if (count < thresholdSize) {
                         return new PartOnMemoryEnhanced(headers, baaos.buffers(), baaos.length());
                     } else {
                         // A BAAInputStream is an input stream over a list of non-contiguous 4K buffers.
@@ -157,6 +157,9 @@ public class PartFactory {
                     }
 
                 } 
+                if (parser.next() != EntityState.T_END_BODYPART) {
+                    throw new IllegalStateException();
+                }
             } finally {
                 if (!isSOAPPart) {
                     synchronized(semifore) {
@@ -179,117 +182,33 @@ public class PartFactory {
      * @param is
      * @param headers
      */
-    private static InputStream readHeaders(InputStream in, Map headers) throws IOException {
+    private static void readHeaders(MimeTokenStream parser, Map headers) throws IOException, MimeException {
         if(log.isDebugEnabled()){
             log.debug("initHeaders");
         }
-        boolean done = false;
         
+        if (parser.next() != EntityState.T_START_HEADER) {
+            throw new IllegalStateException();
+        }
         
-        final int BUF_SIZE = 1024;
-        byte[] headerBytes = new byte[BUF_SIZE];
-        
-        int size = in.read(headerBytes);
-        int index = 0;
-        StringBuffer sb = new StringBuffer(50);
-        
-        while (!done && index < size) {
+        while (parser.next() == EntityState.T_FIELD) {
+            Field field = parser.getField();
+            String name = field.getName();
+            String value = field.getBody();
             
-            // Get the next byte
-            int ch = headerBytes[index];
-            index++;
-            if (index == size) {
-                size = in.read(headerBytes);
-                index =0;
+            if (log.isDebugEnabled()){
+                log.debug("addHeader: (" + name + ") value=(" + value +")");
             }
-                
-            if (ch == 13) {
-                
-                // Get the next byte
-                ch = headerBytes[index];
-                index++;
-                if (index == size) {
-                    size = in.read(headerBytes);
-                    index =0;
-                }
-                
-                if (ch == 10) {
-                    // 13, 10 indicates we are starting a new line...thus a new header
-                    // Get the next byte
-                    ch = headerBytes[index];
-                    index++;
-                    if (index == size) {
-                        size = in.read(headerBytes);
-                        index =0;
-                    }
-                    
-                    if (ch == 13) {
-                        
-                        // Get the next byte
-                        ch = headerBytes[index];
-                        index++;
-                        if (index == size) {
-                            size = in.read(headerBytes);
-                            index =0;
-                        }
-                        
-                        if (ch == 10) {
-                            // Blank line indicates we are done.
-                            readHeader(sb, headers);
-                            sb.delete(0, sb.length()); // Clear the buffer for reuse
-                            done = true;
-                        } 
-                    } else {
-                        
-                        // Semicolon is a continuation character
-                        String check = sb.toString().trim();
-                        if (!check.endsWith(";")) {
-                            // now parse and add the header String
-                            readHeader(sb, headers);
-                            sb.delete(0, sb.length()); // Clear the buffer for reuse
-                        }
-                        sb.append((char) ch);
-                    }
-                } else {
-                    sb.append(13);
-                    sb.append((char) ch);
-                }
-            } else {
-                sb.append((char) ch);
-            }
-        }
-        if(log.isDebugEnabled()){
-            log.debug("End initHeaders");
+            Header headerObj = new Header(name, value);
+            
+            // Use the lower case name as the key
+            String key = name.toLowerCase();
+            headers.put(key, headerObj);
         }
         
-        // Return an input stream containing the dross bits
-        if (index >= size) {
-            index = size;
+        if (parser.next() != EntityState.T_BODY) {
+            throw new IllegalStateException();
         }
-        ByteArrayInputStream dross = new ByteArrayInputStream(headerBytes, index, size-index);
-        return dross;
-    }
-    
-    
-    /**
-     * Parse the header into a name and value pair.
-     * Add the name value pair to the map.
-     * @param header StringBuffer
-     * @param headers Map
-     */
-    private static void readHeader(StringBuffer header, Map headers) {
-        int delimiter = header.indexOf(":");
-        String name = header.substring(0, delimiter).trim();
-        String value = header.substring(delimiter + 1, header.length()).trim();
-        
-        if (log.isDebugEnabled()){
-            log.debug("addHeader: (" + name + ") value=(" + value +")");
-        }
-        Header headerObj = new Header(name, value);
-        
-        // Use the lower case name as the key
-        String key = name.toLowerCase();
-        headers.put(key, headerObj);
     }
     
     /**

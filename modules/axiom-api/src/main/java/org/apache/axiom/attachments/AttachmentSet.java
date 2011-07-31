@@ -87,9 +87,4 @@ class AttachmentSet extends AttachmentsImpl {
     long getContentLength() throws IOException {
         return -1;
     }
-
-    InputStream getIncomingAttachmentsAsSingleStream() {
-        throw new IllegalStateException(
-                "The attachments map was created programatically. No streams are available.");
-    }
 }

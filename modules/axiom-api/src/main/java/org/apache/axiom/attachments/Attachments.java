@@ -310,10 +310,9 @@ public class Attachments implements OMAttachmentAccessor {
     }
 
     /**
-     * Returns the rest of mime stream. It will contain all attachments without
-     * soappart (first attachment) with headers and mime boundary. Raw content! 
+     * @deprecated As of Axiom 1.2.13, this method is no longer supported.
      */
     public InputStream getIncomingAttachmentsAsSingleStream() throws IllegalStateException {
-        return impl.getIncomingAttachmentsAsSingleStream();
+        throw new UnsupportedOperationException();
     }
 }

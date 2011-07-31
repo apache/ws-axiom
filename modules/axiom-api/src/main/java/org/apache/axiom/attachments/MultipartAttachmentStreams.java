@@ -20,12 +20,15 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.om.OMException;
+import org.apache.james.mime4j.MimeException;
+import org.apache.james.mime4j.stream.EntityState;
+import org.apache.james.mime4j.stream.Field;
+import org.apache.james.mime4j.stream.MimeTokenStream;
 
-import javax.mail.Header;
-import javax.mail.MessagingException;
-import javax.mail.internet.InternetHeaders;
 import java.io.IOException;
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * The MultipartAttachmentStreams class is used to create IncomingAttachmentInputStream objects when
@@ -38,12 +41,11 @@ import java.util.Enumeration;
  * such guarantee, we must fall back to caching these first parts. Afterwards, we can stream the
  * rest of the attachments that are after the SOAP part of the request message.
  */
-public final class MultipartAttachmentStreams extends IncomingAttachmentStreams {
-    private BoundaryDelimitedStream _delimitedStream = null;
+final class MultipartAttachmentStreams extends IncomingAttachmentStreams {
+    private final MimeTokenStream parser;
 
-    public MultipartAttachmentStreams(BoundaryDelimitedStream delimitedStream)
-            throws OMException {
-        this._delimitedStream = delimitedStream;
+    public MultipartAttachmentStreams(MimeTokenStream parser) throws OMException {
+        this.parser = parser;
     }
 
     public IncomingAttachmentInputStream getNextStream() throws OMException {
@@ -53,40 +55,48 @@ public final class MultipartAttachmentStreams extends IncomingAttachmentStreams 
             throw new IllegalStateException("nextStreamNotReady");
         }
 
-        InternetHeaders headers;
-
         try {
-            _delimitedStream = _delimitedStream.getNextStream();
-            if (_delimitedStream == null) {
+            if (parser.getState() == EntityState.T_BODY) {
+                if (parser.next() != EntityState.T_END_BODYPART) {
+                    throw new IllegalStateException();
+                }
+                parser.next();
+            }
+            
+            if (parser.getState() != EntityState.T_START_BODYPART) {
                 return null;
             }
-
-            headers = new InternetHeaders(_delimitedStream);
-
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            throw new OMException(ioe);
-        } catch (MessagingException me) {
-            me.printStackTrace();
-            throw new OMException(me);
-        }
-
-        stream = new IncomingAttachmentInputStream(_delimitedStream, this);
-
-        Header header;
-        String name;
-        String value;
-        Enumeration e = headers.getAllHeaders();
-        while (e != null && e.hasMoreElements()) {
-            header = (Header) e.nextElement();
-            name = header.getName();
-            value = header.getValue();
-            if (IncomingAttachmentInputStream.HEADER_CONTENT_ID.equals(name)
-                    || IncomingAttachmentInputStream.HEADER_CONTENT_TYPE.equals(name)
-                    || IncomingAttachmentInputStream.HEADER_CONTENT_LOCATION.equals(name)) {
-                value = value.trim();
+            
+            if (parser.next() != EntityState.T_START_HEADER) {
+                throw new IllegalStateException();
             }
-            stream.addHeader(name, value);
+            
+            List fields = new ArrayList();
+            while (parser.next() == EntityState.T_FIELD) {
+                fields.add(parser.getField());
+            }
+            
+            if (parser.next() != EntityState.T_BODY) {
+                throw new IllegalStateException();
+            }
+            
+            stream = new IncomingAttachmentInputStream(parser.getInputStream(), this);
+    
+            for (Iterator it = fields.iterator(); it.hasNext(); ) {
+                Field field = (Field)it.next();
+                String name = field.getName();
+                String value = field.getBody();
+                if (IncomingAttachmentInputStream.HEADER_CONTENT_ID.equals(name)
+                        || IncomingAttachmentInputStream.HEADER_CONTENT_TYPE.equals(name)
+                        || IncomingAttachmentInputStream.HEADER_CONTENT_LOCATION.equals(name)) {
+                    value = value.trim();
+                }
+                stream.addHeader(name, value);
+            }
+        } catch (MimeException ex) {
+            throw new OMException(ex);
+        } catch (IOException ex) {
+            throw new OMException(ex);
         }
 
         setReadyToGetNextStream(false);
