@@ -30,7 +30,7 @@ import java.io.PushbackInputStream;
 public class MIMEBodyPartInputStream extends InputStream {
     BoundaryPushbackInputStream bpis;
     PushbackInputStream inStream;
-    Attachments parent = null;
+    MIMEMessage parent = null;
     boolean done = false;
 
     /**
@@ -46,7 +46,7 @@ public class MIMEBodyPartInputStream extends InputStream {
      * @param boundary
      * @param parent
      */
-    public MIMEBodyPartInputStream(PushbackInputStream inStream, byte[] boundary, Attachments parent) {
+    public MIMEBodyPartInputStream(PushbackInputStream inStream, byte[] boundary, MIMEMessage parent) {
         this (inStream, boundary, parent, boundary.length + 2);
     }
     
@@ -57,7 +57,7 @@ public class MIMEBodyPartInputStream extends InputStream {
      * @param pushbacksize <= size of pushback buffer on inStream
      */
     public MIMEBodyPartInputStream(PushbackInputStream inStream,
-            byte[] boundary, Attachments parent, int pushbacksize) {
+            byte[] boundary, MIMEMessage parent, int pushbacksize) {
         bpis = new BoundaryPushbackInputStream(inStream, boundary, pushbacksize);
         this.inStream = inStream;
         this.parent = parent;
