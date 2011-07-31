@@ -377,11 +377,10 @@ public class Attachments implements OMAttachmentAccessor {
         if (attachmentsMap.containsKey(blobContentID)) {
             attachmentsMap.remove(blobContentID);
         } else if (!noStreams) {
-            //This loop will be terminated by the Exceptions thrown if the Mime
-            // part searching was not found
             while (this.getNextPartDataHandler() != null) {
                 if (attachmentsMap.containsKey(blobContentID)) {
                     attachmentsMap.remove(blobContentID);
+                    break;
                 }
             }
         }
