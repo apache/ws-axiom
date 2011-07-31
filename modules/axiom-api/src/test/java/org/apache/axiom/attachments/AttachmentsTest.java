@@ -32,6 +32,7 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.testutils.io.IOTestUtils;
+import org.apache.axiom.util.UIDGenerator;
 
 public class AttachmentsTest extends AbstractTestCase {
     String img1FileName = "mtom/img/test.jpg";
@@ -59,6 +60,12 @@ public class AttachmentsTest extends AbstractTestCase {
         assertNull(dh);
     }
 
+    public void testGetDataHandlerNonExistingMIMEPartWithoutStream() throws Exception {
+        Attachments attachments = new Attachments();
+        attachments.addDataHandler("id@apache.org", new DataHandler("test", "text/plain"));
+        assertNull(attachments.getDataHandler("non-existing@apache.org"));
+    }
+
     public void testGetAllContentIDs() throws Exception {
         InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
         Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
@@ -68,6 +75,20 @@ public class AttachmentsTest extends AbstractTestCase {
         assertEquals("0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org", contentIDs[0]);
         assertEquals("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org", contentIDs[1]);
         assertEquals("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org", contentIDs[2]);
+    }
+    
+    public void testGetAllContentIDsWithoutStream() {
+        Attachments attachments = new Attachments();
+        // The choice of content IDs here makes sure that we test that the attachments are returned
+        // in the order in which they have been added (instead of sorted by content ID as in
+        // earlier Axiom versions)
+        attachments.addDataHandler("contentB@apache.org", new DataHandler("content1", "text/plain"));
+        attachments.addDataHandler("contentA@apache.org", new DataHandler("content2", "text/plain"));
+        
+        String[] contentIDs = attachments.getAllContentIDs();
+        assertEquals(2, contentIDs.length);
+        assertEquals("contentB@apache.org", contentIDs[0]);
+        assertEquals("contentA@apache.org", contentIDs[1]);
     }
     
     public void testGetContentIDSet() {
@@ -80,6 +101,18 @@ public class AttachmentsTest extends AbstractTestCase {
         assertTrue(idSet.contains("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));
     }
     
+    public void testGetContentIDSetWithoutStream() {
+        Attachments attachments = new Attachments();
+        attachments.addDataHandler("id1@apache.org", new DataHandler("content1", "text/plain"));
+        attachments.addDataHandler("id2@apache.org", new DataHandler("content2", "text/plain"));
+        attachments.addDataHandler("id3@apache.org", new DataHandler("content3", "text/plain"));
+        
+        Set idSet = attachments.getContentIDSet();
+        assertTrue(idSet.contains("id1@apache.org"));
+        assertTrue(idSet.contains("id2@apache.org"));
+        assertTrue(idSet.contains("id3@apache.org"));
+    }
+    
     public void testGetContentLength() throws IOException {
         InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
         Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
@@ -88,6 +121,18 @@ public class AttachmentsTest extends AbstractTestCase {
         long length = attachments.getContentLength();
         long fileSize = IOUtils.getStreamAsByteArray(getTestResource(TestConstants.MTOM_MESSAGE)).length;
         assertEquals("Return value of getContentLength()", fileSize, length);
+    }
+    
+    /**
+     * Tests that {@link Attachments#getContentLength()} returns <code>-1</code> if the object is
+     * not stream backed.
+     * 
+     * @throws IOException
+     */
+    public void testGetContentLengthWithoutStream() throws IOException {
+        Attachments attachments = new Attachments();
+        attachments.addDataHandler(UIDGenerator.generateContentId(), new DataHandler("test", "text/plain"));
+        assertEquals(-1, attachments.getContentLength());
     }
 
     private void testGetSOAPPartContentID(String contentTypeStartParam, String contentId)
@@ -284,7 +329,7 @@ public class AttachmentsTest extends AbstractTestCase {
         }
     }
 
-    public void testRemoveDataHandlerWithStream() throws Exception {
+    public void testRemoveDataHandlerAfterParsing() {
         InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
         Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
 
@@ -302,6 +347,43 @@ public class AttachmentsTest extends AbstractTestCase {
 
         assertFalse(list2.contains("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));
         assertTrue(list2.contains("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"));
+    }
+
+    /**
+     * Tests the behavior of {@link Attachments#removeDataHandler(String)} for a MIME part that has
+     * not yet been processed.
+     */
+    public void testRemoveDataHandlerBeforeParsing() {
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
+        attachments.removeDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
+        Set idSet = attachments.getContentIDSet();
+        assertEquals(2, idSet.size());
+        assertTrue(idSet.contains("0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org"));
+        assertFalse(idSet.contains("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org"));
+        assertTrue(idSet.contains("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org"));
+    }
+    
+    /**
+     * Tests that {@link Attachments#removeDataHandler(String)} returns silently if the message
+     * doesn't contain a MIME part with the specified content ID.
+     */
+    public void testRemoveDataHandlerNonExistingWithStream() {
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
+        attachments.removeDataHandler("non-existing@apache.org");
+        assertEquals(3, attachments.getContentIDSet().size());
+    }
+
+    /**
+     * Tests that {@link Attachments#removeDataHandler(String)} returns silently if no data handler
+     * with the given content ID has been added to the object.
+     */
+    public void testRemoveDataHandlerNonExistingWithoutStream() {
+        Attachments attachments = new Attachments();
+        attachments.addDataHandler("id@apache.org", new DataHandler("test", "text/plain"));
+        attachments.removeDataHandler("non-existing@apache.org");
+        assertEquals(1, attachments.getContentIDSet().size());
     }
 
     public void testCachedFilesExpired() throws Exception {
