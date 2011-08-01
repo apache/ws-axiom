@@ -61,10 +61,10 @@ public class PartFactory {
     // Dynamic Threshold = availMemory / THRESHOLD_FACTOR
     private static final int THRESHOLD_FACTOR = 5;
     
-    private static void checkParserState(EntityState expected, EntityState actual) throws IllegalStateException {
-        if (expected != actual) {
+    private static void checkParserState(EntityState state, EntityState expected) throws IllegalStateException {
+        if (expected != state) {
             throw new IllegalStateException("Internal error: expected parser to be in state "
-                    + expected + ", but got " + actual);
+                    + expected + ", but got " + state);
         }
     }
     
@@ -97,6 +97,8 @@ public class PartFactory {
         }
         
         try {
+            checkParserState(parser.getState(), EntityState.T_START_BODYPART);
+            
             // Read enough of the InputStream to build the headers 
             // The readHeaders returns some extra bits that were read, but are part
             // of the data section.

@@ -366,10 +366,13 @@ class MIMEMessage extends AttachmentsImpl {
                                       attachmentRepoDir, 
                                       contentLength);  // content-length for the whole message
         try {
-            if (parser.next() == EntityState.T_EPILOGUE) {
+            EntityState state = parser.next();
+            if (state == EntityState.T_EPILOGUE) {
                 while (parser.next() != EntityState.T_END_MULTIPART) {
                     // Just loop
                 }
+            } else if (state != EntityState.T_START_BODYPART && state != EntityState.T_END_MULTIPART) {
+                throw new IllegalStateException("Internal error: unexpected parser state " + state);
             }
         } catch (IOException ex) {
             throw new OMException(ex);
