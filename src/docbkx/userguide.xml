@@ -1309,6 +1309,59 @@ while (iterator.hasNext()) {
                         Note that some of the superseded APIs may disappear in Axiom 1.3.
                     </para>
                 </section>
+                <section>
+                    <title>Usage of Apache James Mime4J as MIME parser</title>
+                    <para>
+                        Starting with version 1.2.13, Axiom uses <ulink url="http://james.apache.org/mime4j/">Apache
+                        James Mime4J</ulink> as MIME parser implementation instead of its own custom parser
+                        implementation. The public API as defined by the <classname>Attachments</classname> class
+                        remains unchanged, with the following exceptions:
+                    </para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                The <methodname>getIncomingAttachmentsAsSingleStream</methodname> method is no longer
+                                supported.
+                            </para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>
+                        Several internal classes related to the old MIME parsing code have been removed, are
+                        no longer public or have been changed in an incompatible way:
+                    </para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                <classname>MIMEBodyPartInputStream</classname>
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                <classname>BoundaryDelimitedStream</classname>
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                <classname>BoundaryPushbackInputStream</classname>
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                <classname>MultipartAttachmentStreams</classname>
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                <classname>PartFactory</classname>
+                            </para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>
+                        Although these classes were public, they are not considered part of the public API.
+                        Application code that depends on these classes needs to be rewritten before upgrading
+                        to Axiom 1.2.13.
+                    </para>
+                </section>
             </section>
         </section>
     </chapter>
