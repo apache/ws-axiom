@@ -61,6 +61,13 @@ public class PartFactory {
     // Dynamic Threshold = availMemory / THRESHOLD_FACTOR
     private static final int THRESHOLD_FACTOR = 5;
     
+    private static void checkParserState(EntityState expected, EntityState actual) throws IllegalStateException {
+        if (expected != actual) {
+            throw new IllegalStateException("Internal error: expected parser to be in state "
+                    + expected + ", but got " + actual);
+        }
+    }
+    
     /**
      * Creates a part from the input stream.
      * The remaining parameters are used to determine if the
@@ -157,9 +164,7 @@ public class PartFactory {
                     }
 
                 } 
-                if (parser.next() != EntityState.T_END_BODYPART) {
-                    throw new IllegalStateException();
-                }
+                checkParserState(parser.next(), EntityState.T_END_BODYPART);
             } finally {
                 if (!isSOAPPart) {
                     synchronized(semifore) {
@@ -187,9 +192,7 @@ public class PartFactory {
             log.debug("initHeaders");
         }
         
-        if (parser.next() != EntityState.T_START_HEADER) {
-            throw new IllegalStateException();
-        }
+        checkParserState(parser.next(), EntityState.T_START_HEADER);
         
         while (parser.next() == EntityState.T_FIELD) {
             Field field = parser.getField();
@@ -206,9 +209,7 @@ public class PartFactory {
             headers.put(key, headerObj);
         }
         
-        if (parser.next() != EntityState.T_BODY) {
-            throw new IllegalStateException();
-        }
+        checkParserState(parser.next(), EntityState.T_BODY);
     }
     
     /**
