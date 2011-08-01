@@ -153,7 +153,7 @@ public class PartFactory {
                     int count = BufferUtils.inputStream2OutputStream(in, baaos, thresholdSize);
 
                     if (count < thresholdSize) {
-                        return new PartOnMemoryEnhanced(headers, baaos.buffers(), baaos.length());
+                        part = new PartOnMemoryEnhanced(headers, baaos.buffers(), baaos.length());
                     } else {
                         // A BAAInputStream is an input stream over a list of non-contiguous 4K buffers.
                         BAAInputStream baais = 
