@@ -18,21 +18,30 @@
  */
 package org.apache.axiom.attachments;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import javax.activation.DataHandler;
+import javax.mail.Session;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 
-import org.apache.axiom.attachments.utils.IOUtils;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.util.UIDGenerator;
+import org.apache.commons.io.IOUtils;
 
 public class AttachmentsTest extends AbstractTestCase {
     String img1FileName = "mtom/img/test.jpg";
@@ -119,7 +128,7 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // Make sure the length is correct
         long length = attachments.getContentLength();
-        long fileSize = IOUtils.getStreamAsByteArray(getTestResource(TestConstants.MTOM_MESSAGE)).length;
+        long fileSize = IOUtils.toByteArray(getTestResource(TestConstants.MTOM_MESSAGE)).length;
         assertEquals("Return value of getContentLength()", fileSize, length);
     }
     
@@ -384,6 +393,56 @@ public class AttachmentsTest extends AbstractTestCase {
         attachments.addDataHandler("id@apache.org", new DataHandler("test", "text/plain"));
         attachments.removeDataHandler("non-existing@apache.org");
         assertEquals(1, attachments.getContentIDSet().size());
+    }
+
+    private void testReadBase64EncodedAttachment(boolean useFile) throws Exception {
+        // Note: We are only interested in the MimeMultipart, but we need to create a
+        //       MimeMessage to be able to calculate the correct content type
+        MimeMessage message = new MimeMessage((Session)null);
+        MimeMultipart mp = new MimeMultipart("related");
+        
+        // Prepare the "SOAP" part
+        MimeBodyPart bp1 = new MimeBodyPart();
+        // Obviously this is not SOAP, but this is irrelevant for this test
+        bp1.setText("<root/>", "utf-8", "xml");
+        bp1.addHeader("Content-Transfer-Encoding", "binary");
+        bp1.addHeader("Content-ID", "part1@apache.org");
+        mp.addBodyPart(bp1);
+        
+        // Prepare the attachment
+        MimeBodyPart bp2 = new MimeBodyPart();
+        byte[] content = new byte[8192];
+        new Random().nextBytes(content);
+        bp2.setDataHandler(new DataHandler(new ByteArrayDataSource(content, "application/octet-stream")));
+        bp2.addHeader("Content-Transfer-Encoding", "base64");
+        bp2.addHeader("Content-ID", "part2@apache.org");
+        mp.addBodyPart(bp2);
+        
+        message.setContent(mp);
+        // Compute the correct content type
+        message.saveChanges();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        mp.writeTo(baos);
+        String contentType = message.getContentType();
+        
+        InputStream in = new ByteArrayInputStream(baos.toByteArray());
+        Attachments attachments;
+        if (useFile) {
+            attachments = new Attachments(in, contentType, true, System.getProperty("basedir", ".") + "/target", "1024");
+        } else {
+            attachments = new Attachments(in, contentType);
+        }
+        DataHandler dh = attachments.getDataHandler("part2@apache.org");
+        byte[] content2 = IOUtils.toByteArray(dh.getInputStream());
+        assertTrue(Arrays.equals(content, content2));
+    }
+
+    public void testReadBase64EncodedAttachmentWithPartOnMemory() throws Exception {
+        testReadBase64EncodedAttachment(false);
+    }
+
+    public void testReadBase64EncodedAttachmentWithPartOnFile() throws Exception {
+        testReadBase64EncodedAttachment(true);
     }
 
     public void testCachedFilesExpired() throws Exception {

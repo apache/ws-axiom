@@ -19,14 +19,9 @@
 
 package org.apache.axiom.attachments.impl;
 
-import org.apache.axiom.om.OMException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeUtility;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -44,7 +39,6 @@ import java.util.Hashtable;
  */
 public class PartOnMemory extends AbstractPart {
 
-    private static Log log = LogFactory.getLog(PartOnMemory.class);
     byte[] bytes;
     int length;
     
@@ -102,24 +96,7 @@ public class PartOnMemory extends AbstractPart {
          * @see javax.activation.DataSource#getInputStream()
          */
         public InputStream getInputStream() throws IOException {
-            InputStream is  = new ByteArrayInputStream(bytes, 0, length);
-            String cte = null;
-            try {
-                cte = getContentTransferEncoding();
-                if(cte != null){
-                    if(log.isDebugEnabled()){
-                        log.debug("Start Decoding stream");
-                    }
-                    return MimeUtility.decode(is, cte);
-
-                }
-            } catch (MessagingException e) {
-                if(log.isDebugEnabled()){
-                    log.debug("Stream Failed decoding");
-                }
-                throw new OMException(e);
-            }
-            return is;
+            return new ByteArrayInputStream(bytes, 0, length);
         }
 
         /* (non-Javadoc)

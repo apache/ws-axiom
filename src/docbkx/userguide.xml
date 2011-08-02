@@ -1324,6 +1324,15 @@ while (iterator.hasNext()) {
                                 supported.
                             </para>
                         </listitem>
+                        <listitem>
+                            <para>
+                                The <literal>fileThreshold</literal> specified during the construction of the
+                                <classname>Attachments</classname> object is now interpreted relative to the size of the decoded
+                                content of the attachment instead of the size of the encoded content. Note that
+                                this only makes a difference if the attachment has a content transfer encoding other
+                                than <literal>binary</literal>.
+                            </para>
+                        </listitem>
                     </itemizedlist>
                     <para>
                         Several internal classes related to the old MIME parsing code have been removed, are

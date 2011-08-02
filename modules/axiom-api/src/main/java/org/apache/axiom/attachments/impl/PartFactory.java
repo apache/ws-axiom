@@ -143,13 +143,13 @@ public class PartFactory {
                     // of resizing and GC.  The BAAOutputStream 
                     // keeps the data in non-contiguous byte buffers.
                     BAAOutputStream baaos = new BAAOutputStream();
-                    BufferUtils.inputStream2OutputStream(parser.getInputStream(), baaos);
+                    BufferUtils.inputStream2OutputStream(parser.getDecodedInputStream(), baaos);
                     part = new PartOnMemoryEnhanced(headers, baaos.buffers(), baaos.length());
                 } else {
                     // We need to read the input stream to determine whether
                     // the size is bigger or smaller than the threshold.
                     BAAOutputStream baaos = new BAAOutputStream();
-                    InputStream in = parser.getInputStream();
+                    InputStream in = parser.getDecodedInputStream();
                     int count = BufferUtils.inputStream2OutputStream(in, baaos, thresholdSize);
 
                     if (count < thresholdSize) {
