@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 /**
  * PartOnMemoryEnhanced stores the attachment in memory (in non-contigous byte arrays)
@@ -37,9 +36,9 @@ import java.util.Hashtable;
  * performance.
  * 
  * The PartOnMemoryEnhanced object is created by the PartFactory
- * @see PartFactory
+ * @see ContentStoreFactory
  */
-public class PartOnMemoryEnhanced extends AbstractPart {
+public class ContentOnMemory extends ContentStore {
 
     ArrayList data;  // Arrays of 4K buffers
     int length;      // total length of data
@@ -50,8 +49,8 @@ public class PartOnMemoryEnhanced extends AbstractPart {
      * @param data array list of 4K byte[]
      * @param length (length of data in bytes)
      */
-    PartOnMemoryEnhanced(Hashtable headers, ArrayList data, int length) {
-        super(headers);
+    ContentOnMemory(String contentType, ArrayList data, int length) {
+        super(contentType);
         this.data =  data;
         this.length = length;
     }
@@ -94,7 +93,7 @@ public class PartOnMemoryEnhanced extends AbstractPart {
          * @see javax.activation.DataSource#getContentType()
          */
         public String getContentType() {
-            String ct = getHeader("content-type");
+            String ct = ContentOnMemory.this.getContentType();
             return (ct == null) ?
                     "application/octet-stream" :
                     ct;

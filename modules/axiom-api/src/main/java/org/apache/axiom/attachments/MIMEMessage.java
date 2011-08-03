@@ -21,16 +21,19 @@ package org.apache.axiom.attachments;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 import javax.activation.DataHandler;
+import javax.mail.Header;
 import javax.mail.MessagingException;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.ParseException;
 
-import org.apache.axiom.attachments.impl.PartFactory;
+import org.apache.axiom.attachments.impl.ContentStore;
+import org.apache.axiom.attachments.impl.ContentStoreFactory;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
 import org.apache.axiom.om.OMException;
@@ -40,6 +43,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.stream.EntityState;
+import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
 import org.apache.james.mime4j.stream.MimeTokenStream;
 import org.apache.james.mime4j.stream.RecursionMode;
@@ -359,13 +363,18 @@ class MIMEMessage extends AttachmentsImpl {
         boolean isSOAPPart = (partIndex == 0);
         int threshhold = (fileCacheEnable) ? fileStorageThreshold : 0;
 
-        // The PartFactory will determine which Part implementation is most appropriate.
-        Part part = PartFactory.createPart(getLifecycleManager(), parser, 
-                                      isSOAPPart, 
-                                      threshhold, 
-                                      attachmentRepoDir, 
-                                      contentLength);  // content-length for the whole message
         try {
+            Hashtable headers = readHeaders();
+            
+            Header contentTypeHeader = (Header)headers.get("content-type");
+            // The PartFactory will determine which Part implementation is most appropriate.
+            ContentStore content = ContentStoreFactory.createContentStore(getLifecycleManager(), parser, 
+                                          isSOAPPart, 
+                                          contentTypeHeader == null ? null : contentTypeHeader.getValue(),
+                                          threshhold, 
+                                          attachmentRepoDir, 
+                                          contentLength);  // content-length for the whole message
+            
             EntityState state = parser.next();
             if (state == EntityState.T_EPILOGUE) {
                 while (parser.next() != EntityState.T_END_MULTIPART) {
@@ -374,12 +383,48 @@ class MIMEMessage extends AttachmentsImpl {
             } else if (state != EntityState.T_START_BODYPART && state != EntityState.T_END_MULTIPART) {
                 throw new IllegalStateException("Internal error: unexpected parser state " + state);
             }
+            
+            partIndex++;
+            return new PartImpl(headers, content);
         } catch (IOException ex) {
             throw new OMException(ex);
         } catch (MimeException ex) {
             throw new OMException(ex);
         }
-        partIndex++;
-        return part;
+    }
+
+    private Hashtable readHeaders() throws IOException, MimeException {
+        if(log.isDebugEnabled()){
+            log.debug("initHeaders");
+        }
+        
+        checkParserState(parser.next(), EntityState.T_START_HEADER);
+        
+        Hashtable headers = new Hashtable();
+        while (parser.next() == EntityState.T_FIELD) {
+            Field field = parser.getField();
+            String name = field.getName();
+            String value = field.getBody();
+            
+            if (log.isDebugEnabled()){
+                log.debug("addHeader: (" + name + ") value=(" + value +")");
+            }
+            Header headerObj = new Header(name, value);
+            
+            // Use the lower case name as the key
+            String key = name.toLowerCase();
+            headers.put(key, headerObj);
+        }
+        
+        checkParserState(parser.next(), EntityState.T_BODY);
+        
+        return headers;
+    }
+    
+    private static void checkParserState(EntityState state, EntityState expected) throws IllegalStateException {
+        if (expected != state) {
+            throw new IllegalStateException("Internal error: expected parser to be in state "
+                    + expected + ", but got " + state);
+        }
     }
 }

@@ -27,7 +27,6 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Hashtable;
 
 /**
  * PartOnFile stores that attachment in a file.
@@ -35,9 +34,9 @@ import java.util.Hashtable;
  * the in-memory footprint.
  * 
  * The PartOnFile object is created by the PartFactory
- * @see PartFactory
+ * @see ContentStoreFactory
  */
-public class PartOnFile extends AbstractPart {
+public class ContentOnFile extends ContentStore {
 
     FileAccessor fileAccessor;
     LifecycleManager manager;
@@ -50,8 +49,8 @@ public class PartOnFile extends AbstractPart {
      * @param in2 InputStream containing data
      * @param attachmentDir String 
      */
-    PartOnFile(LifecycleManager manager, Hashtable headers, InputStream is1, InputStream is2, String attachmentDir) throws IOException {
-        super(headers);
+    ContentOnFile(LifecycleManager manager, String contentType, InputStream is1, InputStream is2, String attachmentDir) throws IOException {
+        super(contentType);
         fileAccessor = manager.create(attachmentDir);
         
         // Now write the data to the backing file

@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.apache.axiom.attachments.impl;
+package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.Part;
+import org.apache.axiom.attachments.impl.ContentStore;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -31,29 +32,29 @@ import javax.mail.internet.HeaderTokenizer;
 import java.util.Hashtable;
 
 /**
- * AbstractPart is a base class for the actual 
- * Part implementations.  The primary purpose of AbstractPart is
- * to define some of the common methods to promote code reuse.
+ * Actual implementation of the {@link Part} interface.
  */
-abstract class AbstractPart implements Part {
+final class PartImpl implements Part {
 
-    private static Log log = LogFactory.getLog(AbstractPart.class);
+    private static Log log = LogFactory.getLog(PartImpl.class);
                                                  
     // Key is the lower-case name.
     // Value is a javax.mail.Header object
     private Hashtable headers;
     
+    private final ContentStore content;
     
     /**
      * The actual parts are constructed with the PartFactory.
-     * @see org.apache.axiom.attachments.impl.PartFactory
+     * @see org.apache.axiom.attachments.impl.ContentStoreFactory
      * @param headers
      */
-    AbstractPart(Hashtable in) {
+    PartImpl(Hashtable in, ContentStore content) {
         headers = in;
         if (headers == null) {
             headers = new Hashtable();
         }
+        this.content = content;
     }
     
     public String getHeader(String name) {
@@ -121,9 +122,12 @@ abstract class AbstractPart implements Part {
 
     }
 
-    // The following classes must be implemented by the derived class.
-    public abstract DataHandler getDataHandler() throws MessagingException;
+    public DataHandler getDataHandler() throws MessagingException {
+        return content.getDataHandler();
+    }
 
-    public abstract long getSize() throws MessagingException;
+    public long getSize() throws MessagingException {
+        return content.getSize();
+    }
 
 }

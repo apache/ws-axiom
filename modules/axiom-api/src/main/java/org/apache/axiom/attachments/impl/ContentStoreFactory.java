@@ -19,25 +19,17 @@
 
 package org.apache.axiom.attachments.impl;
 
-import org.apache.axiom.attachments.Part;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.utils.BAAInputStream;
 import org.apache.axiom.attachments.utils.BAAOutputStream;
 import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.stream.EntityState;
-import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeTokenStream;
 
-import javax.mail.Header;
-
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.Hashtable;
-import java.util.Map;
 
 /**
  * The PartFactory creates an object that represents a Part
@@ -47,12 +39,12 @@ import java.util.Map;
  * other layers of the code.  The PartFactory helps maintain this
  * abstraction, and makes it easier to add new implementations.
  */
-public class PartFactory {
+public class ContentStoreFactory {
     
     private static int inflight = 0;  // How many attachments are currently being built.
     private static String semifore = "PartFactory.semifore";
     
-    private static Log log = LogFactory.getLog(PartFactory.class);
+    private static Log log = LogFactory.getLog(ContentStoreFactory.class);
     
     // Maximum number of threads allowed through createPart
     private static int INFLIGHT_MAX = 4;
@@ -82,8 +74,9 @@ public class PartFactory {
      * @return Part
      * @throws OMException if any exception is encountered while processing.
      */
-    public static Part createPart(LifecycleManager manager, MimeTokenStream parser,
+    public static ContentStore createContentStore(LifecycleManager manager, MimeTokenStream parser,
                     boolean isSOAPPart,
+                    String contentType,
                     int thresholdSize,
                     String attachmentDir,
                     int messageContentLength
@@ -97,15 +90,9 @@ public class PartFactory {
         }
         
         try {
-            checkParserState(parser.getState(), EntityState.T_START_BODYPART);
+            checkParserState(parser.getState(), EntityState.T_BODY);
             
-            // Read enough of the InputStream to build the headers 
-            // The readHeaders returns some extra bits that were read, but are part
-            // of the data section.
-            Hashtable headers = new Hashtable();
-            readHeaders(parser, headers);
-            
-            Part part;
+            ContentStore part;
             try {
                 
                 // Message throughput is increased if the number of threads in this
@@ -144,7 +131,7 @@ public class PartFactory {
                     // keeps the data in non-contiguous byte buffers.
                     BAAOutputStream baaos = new BAAOutputStream();
                     BufferUtils.inputStream2OutputStream(parser.getDecodedInputStream(), baaos);
-                    part = new PartOnMemoryEnhanced(headers, baaos.buffers(), baaos.length());
+                    part = new ContentOnMemory(contentType, baaos.buffers(), baaos.length());
                 } else {
                     // We need to read the input stream to determine whether
                     // the size is bigger or smaller than the threshold.
@@ -153,13 +140,13 @@ public class PartFactory {
                     int count = BufferUtils.inputStream2OutputStream(in, baaos, thresholdSize);
 
                     if (count < thresholdSize) {
-                        part = new PartOnMemoryEnhanced(headers, baaos.buffers(), baaos.length());
+                        part = new ContentOnMemory(contentType, baaos.buffers(), baaos.length());
                     } else {
                         // A BAAInputStream is an input stream over a list of non-contiguous 4K buffers.
                         BAAInputStream baais = 
                             new BAAInputStream(baaos.buffers(), baaos.length());
 
-                        part = new PartOnFile(manager, headers, 
+                        part = new ContentOnFile(manager, contentType, 
                                               baais,
                                               in, 
                                               attachmentDir);
@@ -181,37 +168,6 @@ public class PartFactory {
         } catch (Exception e) {
             throw new OMException(e);
         } 
-    }
-    
-    /**
-     * The implementing class must call initHeaders prior to using
-     * any of the Part methods.  
-     * @param is
-     * @param headers
-     */
-    private static void readHeaders(MimeTokenStream parser, Map headers) throws IOException, MimeException {
-        if(log.isDebugEnabled()){
-            log.debug("initHeaders");
-        }
-        
-        checkParserState(parser.next(), EntityState.T_START_HEADER);
-        
-        while (parser.next() == EntityState.T_FIELD) {
-            Field field = parser.getField();
-            String name = field.getName();
-            String value = field.getBody();
-            
-            if (log.isDebugEnabled()){
-                log.debug("addHeader: (" + name + ") value=(" + value +")");
-            }
-            Header headerObj = new Header(name, value);
-            
-            // Use the lower case name as the key
-            String key = name.toLowerCase();
-            headers.put(key, headerObj);
-        }
-        
-        checkParserState(parser.next(), EntityState.T_BODY);
     }
     
     /**
