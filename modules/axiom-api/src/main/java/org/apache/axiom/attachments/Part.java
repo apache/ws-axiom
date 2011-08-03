@@ -21,9 +21,6 @@ package org.apache.axiom.attachments;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Enumeration;
 
 /**
  * Abstract for Part.  A Part can be the SOAP Part or an Attachment Part.
@@ -62,43 +59,11 @@ public interface Part {
     public String getContentID() throws MessagingException;
 
     /**
-     * The part may be backed by a file.  If that is the case,
-     * this method returns the file name.
-     * 
-     * @return the name of the file
-     * @throws MessagingException
-     * @deprecated The callers should not no how the part 
-     * is implemented.
-     */
-    public String getFileName() throws MessagingException;
-
-    /**
-     * @return Get the part data as an input stream
-     * @throws IOException
-     * @throws MessagingException
-     */
-    public InputStream getInputStream() throws IOException, MessagingException;
-
-    /**
-     * Add a Header (name, value) to the part
-     * @param name
-     * @param value
-     * @throws MessagingException
-     */
-    public void addHeader(String name, String value) throws MessagingException;
-
-    /**
      * Get the value of a specific header
      * @param name
      * @return value or null
      * @throws MessagingException
      */
     public String getHeader(String name) throws MessagingException;
-
-    /**
-     * @return Enumeration of javax.mail.Header
-     * @throws MessagingException
-     */
-    public Enumeration getAllHeaders() throws MessagingException;
 
 }

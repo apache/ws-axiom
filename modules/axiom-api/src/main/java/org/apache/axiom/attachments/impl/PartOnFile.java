@@ -69,20 +69,6 @@ public class PartOnFile extends AbstractPart {
     public DataHandler getDataHandler() throws MessagingException {
         return fileAccessor.getDataHandler(getContentType());
     }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.attachments.impl.AbstractPart#getFileName()
-     */
-    public String getFileName() throws MessagingException {
-        return fileAccessor.getFileName();
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.attachments.impl.AbstractPart#getInputStream()
-     */
-    public InputStream getInputStream() throws IOException, MessagingException {
-        return fileAccessor.getInputStream();
-    }
     
     /* (non-Javadoc)
      * @see org.apache.axiom.attachments.impl.AbstractPart#getSize()

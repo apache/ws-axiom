@@ -28,9 +28,6 @@ import javax.mail.Header;
 import javax.mail.MessagingException;
 import javax.mail.internet.HeaderTokenizer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
@@ -57,24 +54,6 @@ abstract class AbstractPart implements Part {
         if (headers == null) {
             headers = new Hashtable();
         }
-    }
-    
-    public void addHeader(String name, String value) {
-        if (log.isDebugEnabled()){
-            log.debug("addHeader: (" + name + ") value=(" + value +")");
-        }
-        Header headerObj = new Header(name, value);
-        
-        // Use the lower case name as the key
-        String key = name.toLowerCase();
-        headers.put(key, headerObj);
-    }
-
-    public Enumeration getAllHeaders() throws MessagingException {
-        if(log.isDebugEnabled()){
-            log.debug("getAllHeaders");
-        }
-        return headers.elements();
     }
     
     public String getHeader(String name) {
@@ -144,10 +123,6 @@ abstract class AbstractPart implements Part {
 
     // The following classes must be implemented by the derived class.
     public abstract DataHandler getDataHandler() throws MessagingException;
-    
-    public abstract String getFileName() throws MessagingException;
-
-    public abstract InputStream getInputStream() throws IOException, MessagingException;
 
     public abstract long getSize() throws MessagingException;
 

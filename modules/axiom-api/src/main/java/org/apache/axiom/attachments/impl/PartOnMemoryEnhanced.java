@@ -60,18 +60,6 @@ public class PartOnMemoryEnhanced extends AbstractPart {
         DataSource ds = new MyByteArrayDataSource();
         return new MyDataHandler(ds);
     }
-
-    /* (non-Javadoc)
-     * @see org.apache.axiom.attachments.impl.AbstractPart#getFileName()
-     */
-    public String getFileName() throws MessagingException {
-        // There is no file name
-        return null;
-    }
-
-    public InputStream getInputStream() throws IOException, MessagingException {
-        return new BAAInputStream(data, length);
-    }
     
     public long getSize() throws MessagingException {
         return length;
