@@ -20,6 +20,7 @@ package org.apache.axiom.attachments;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -35,16 +36,24 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
+import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.NullOutputStream;
 
 public class AttachmentsTest extends AbstractTestCase {
     String img1FileName = "mtom/img/test.jpg";
     String img2FileName = "mtom/img/test2.jpg";
+    
+    private static String getAttachmentsDir() {
+        File attachmentsDir = new File(System.getProperty("basedir", ".") + "/target/attachments");
+        attachmentsDir.mkdirs();
+        return attachmentsDir.getAbsolutePath();
+    }
     
     public void testGetDataHandler() throws Exception {
         InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
@@ -427,7 +436,7 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream in = new ByteArrayInputStream(baos.toByteArray());
         Attachments attachments;
         if (useFile) {
-            attachments = new Attachments(in, contentType, true, System.getProperty("basedir", ".") + "/target", "1024");
+            attachments = new Attachments(in, contentType, true, getAttachmentsDir(), "1024");
         } else {
             attachments = new Attachments(in, contentType);
         }
@@ -442,5 +451,26 @@ public class AttachmentsTest extends AbstractTestCase {
 
     public void testReadBase64EncodedAttachmentWithPartOnFile() throws Exception {
         testReadBase64EncodedAttachment(true);
+    }
+    
+    public void testPurgeDataSource() throws Exception {
+        InputStream in = getTestResource("mtom/msg-soap-wls81.txt");
+        MyLifecycleManager manager = new MyLifecycleManager();
+        Attachments attachments = new Attachments(manager, in,
+                "multipart/related;type=\"text/xml\";boundary=\"----=_Part_0_3437046.1188904239130\";start=__WLS__1188904239161__SOAP__",
+                true, getAttachmentsDir(), "1024");
+        
+        // Read the attachment once to make sure it is buffered
+        DataHandler dh = attachments.getDataHandler("__WLS__1188904239162__SOAP__");
+        assertTrue(dh instanceof DataHandlerExt);
+        InputStream content = dh.getInputStream();
+        IOUtils.copy(content, new NullOutputStream());
+        content.close();
+        
+        assertEquals(1, manager.getFileCount());
+        ((DataHandlerExt)dh).purgeDataSource();
+        assertEquals(0, manager.getFileCount());
+        
+        in.close();
     }
 }
