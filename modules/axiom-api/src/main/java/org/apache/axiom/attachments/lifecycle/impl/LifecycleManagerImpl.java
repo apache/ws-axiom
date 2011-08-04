@@ -57,14 +57,14 @@ public class LifecycleManagerImpl implements LifecycleManager {
             }
         }
         if (!dir.isDirectory()) {
-            throw new IllegalArgumentException("Given Axis2 Attachment File Cache Location "
-                + dir + "  should be a directory.");
+            throw new IllegalArgumentException("Given Attachment File Cache Location "
+                + dir + " should be a directory.");
         }
         // Generate unique id.  The UID generator is used so that we can limit
         // synchronization with the java random number generator.
         String id = UIDGenerator.generateUID();
 
-        String fileString = "Axis2" + id + ".att";
+        String fileString = "axiom" + id + ".att";
         file = new File(dir, fileString);
         FileAccessor fa = new FileAccessor(this, file);
         //add the fileAccesor to table
