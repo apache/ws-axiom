@@ -30,24 +30,14 @@ public abstract class AbstractBase64DecodingWriter extends Writer {
     private final byte[] out = new byte[3];
     private int rest; // Number of characters remaining in the in buffer
 
+    private static boolean isWhitespace(int c) {
+        return c <= 32 && (c == ' ' || c == '\n' || c == '\r' || c == '\t'); 
+    }
+    
     public final void write(char[] cbuf, int off, int len) throws IOException {
-        if (rest > 0) {
-            while (len > 0 && rest < 4) {
-                in[rest++] = cbuf[off++];
-                len--;
-            }
-            if (rest == 4) {
-                decode(in, 0);
-                rest = 0;
-            }
-        }
-        while (len >= 4) {
-            decode(cbuf, off);
-            off += 3;
-            len -= 3;
-        }
         while (len > 0) {
-            in[rest++] = cbuf[off++];
+            write(cbuf[off]);
+            off++;
             len--;
         }
     }
@@ -61,10 +51,12 @@ public abstract class AbstractBase64DecodingWriter extends Writer {
     }
 
     public final void write(int c) throws IOException {
-        in[rest++] = (char)c;
-        if (rest == 4) {
-            decode(in, 0);
-            rest = 0;
+        if (!isWhitespace(c)) {
+            in[rest++] = (char)c;
+            if (rest == 4) {
+                decode(in, 0);
+                rest = 0;
+            }
         }
     }
 

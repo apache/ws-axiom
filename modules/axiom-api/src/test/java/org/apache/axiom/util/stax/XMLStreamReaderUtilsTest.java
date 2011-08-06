@@ -188,6 +188,28 @@ public class XMLStreamReaderUtilsTest extends TestCase {
         }
     }
     
+    /**
+     * Test that {@link XMLStreamReaderUtils#getDataHandlerFromElement(XMLStreamReader)} correctly
+     * decodes base64 encoded content that contains whitespace. This is a regression test for <a
+     * href="https://issues.apache.org/jira/browse/AXIOM-380">AXIOM-380</a>.
+     * 
+     * @throws Exception
+     */
+    public void testGetDataHandlerFromElementWithWhitespace() throws Exception {
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader(
+                "<data>MS4wMToxNDIdMS4wMjowMzAwHTEuMDM6MR8wMx4yHzAwHjQfMDEeNB8wMh0xLjA0OlBOUx0xLjA1\r\n" + 
+                "OjIwMTEwODAyHTEuMDY6Mh0xLjA3OkZMRkRMRUNWWh0xLjA4OkZMMDM3ODhXMB0xLjA5OjExMDgw\r\n" + 
+                "MjAwMDcdMS4xMToxOS42OR0xLjEyOjE5LjY5HDIuMDAxOjE4HTIuMDAyOjAwHAAA</data>"));
+        try {
+            reader.next();
+            DataHandler dh = XMLStreamReaderUtils.getDataHandlerFromElement(reader);
+            assertEquals("1.01:1421.02:03001.03:1032004014021.04:PNS1.05:201108021.06:21.07:FLFDLECVZ1.08:FL03788W01.09:11080200071.11:19.691.12:19.692.001:182.002:00  ",
+                    IOUtils.toString(dh.getInputStream(), "ascii"));
+        } finally {
+            reader.close();
+        }
+    }
+    
     public void testGetElementTextAsStream() throws Exception {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(new StringReader("<a>test</a>"));
         reader.next();
