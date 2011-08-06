@@ -18,11 +18,13 @@
  */
 package org.apache.axiom.attachments;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -470,6 +472,26 @@ public class AttachmentsTest extends AbstractTestCase {
         assertEquals(1, manager.getFileCount());
         ((DataHandlerExt)dh).purgeDataSource();
         assertEquals(0, manager.getFileCount());
+        
+        in.close();
+    }
+    
+    /**
+     * Tests that attachments are correctly buffered on file if the threshold is very low. This is a
+     * regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-61">AXIOM-61</a>.
+     * 
+     * @throws Exception
+     */
+    public void testFileBufferingWithLowThreshold() throws Exception {
+        InputStream in = getTestResource("mtom/msg-soap-wls81.txt");
+        Attachments attachments = new Attachments(in,
+                "multipart/related;type=\"text/xml\";boundary=\"----=_Part_0_3437046.1188904239130\";start=__WLS__1188904239161__SOAP__",
+                true, getAttachmentsDir(), "1");
+        
+        DataHandler dh = attachments.getDataHandler("__WLS__1188904239162__SOAP__");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(dh.getInputStream(), "UTF-8"));
+        assertEquals("%PDF-1.3", reader.readLine());
+        reader.close();
         
         in.close();
     }
