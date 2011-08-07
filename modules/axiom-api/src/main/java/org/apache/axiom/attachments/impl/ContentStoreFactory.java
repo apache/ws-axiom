@@ -76,7 +76,6 @@ public class ContentStoreFactory {
      */
     public static ContentStore createContentStore(LifecycleManager manager, MimeTokenStream parser,
                     boolean isSOAPPart,
-                    String contentType,
                     int thresholdSize,
                     String attachmentDir,
                     int messageContentLength
@@ -131,7 +130,7 @@ public class ContentStoreFactory {
                     // keeps the data in non-contiguous byte buffers.
                     BAAOutputStream baaos = new BAAOutputStream();
                     BufferUtils.inputStream2OutputStream(parser.getDecodedInputStream(), baaos);
-                    part = new ContentOnMemory(contentType, baaos.buffers(), baaos.length());
+                    part = new ContentOnMemory(baaos.buffers(), baaos.length());
                 } else {
                     // We need to read the input stream to determine whether
                     // the size is bigger or smaller than the threshold.
@@ -140,13 +139,13 @@ public class ContentStoreFactory {
                     int count = BufferUtils.inputStream2OutputStream(in, baaos, thresholdSize);
 
                     if (count < thresholdSize) {
-                        part = new ContentOnMemory(contentType, baaos.buffers(), baaos.length());
+                        part = new ContentOnMemory(baaos.buffers(), baaos.length());
                     } else {
                         // A BAAInputStream is an input stream over a list of non-contiguous 4K buffers.
                         BAAInputStream baais = 
                             new BAAInputStream(baaos.buffers(), baaos.length());
 
-                        part = new ContentOnFile(manager, contentType, 
+                        part = new ContentOnFile(manager, 
                                               baais,
                                               in, 
                                               attachmentDir);

@@ -29,6 +29,9 @@ import javax.mail.Header;
 import javax.mail.MessagingException;
 import javax.mail.internet.HeaderTokenizer;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Hashtable;
 
 /**
@@ -43,6 +46,7 @@ final class PartImpl implements Part {
     private Hashtable headers;
     
     private final ContentStore content;
+    private final DataHandler dataHandler;
     
     /**
      * The actual parts are constructed with the PartFactory.
@@ -55,6 +59,7 @@ final class PartImpl implements Part {
             headers = new Hashtable();
         }
         this.content = content;
+        this.dataHandler = new PartDataHandler(this);
     }
     
     public String getHeader(String name) {
@@ -67,11 +72,11 @@ final class PartImpl implements Part {
         return value;
     }
 
-    public String getContentID() throws MessagingException {
+    public String getContentID() {
         return getHeader("content-id");
     }
 
-    public String getContentType() throws MessagingException {
+    public String getContentType() {
         return getHeader("content-type");
     }
     
@@ -122,12 +127,23 @@ final class PartImpl implements Part {
 
     }
 
-    public DataHandler getDataHandler() throws MessagingException {
-        return content.getDataHandler();
+    public DataHandler getDataHandler() {
+        return dataHandler;
     }
 
-    public long getSize() throws MessagingException {
+    public long getSize() {
         return content.getSize();
     }
 
+    InputStream getInputStream() throws IOException {
+        return content.getInputStream();
+    }
+    
+    void writeTo(OutputStream out) throws IOException {
+        content.writeTo(out);
+    }
+
+    void releaseContent() throws IOException {
+        content.destroy();
+    }
 }

@@ -16,22 +16,35 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.attachments.impl;
+package org.apache.axiom.attachments;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * Stores the content of a MIME part.
- */
-public abstract class ContentStore {
-    public abstract InputStream getInputStream() throws IOException;
+import javax.activation.DataSource;
 
-    public abstract void writeTo(OutputStream out) throws IOException;
+class PartDataSource implements DataSource {
+    private final PartImpl part;
 
-    public abstract long getSize();
+    public PartDataSource(PartImpl part) {
+        this.part = part;
+    }
 
-    public abstract void destroy() throws IOException;
+    public String getContentType() {
+        String ct = part.getContentType();
+        return ct == null ? "application/octet-stream" : ct;
+    }
+
+    public InputStream getInputStream() throws IOException {
+        return part.getInputStream();
+    }
+
+    public String getName() {
+        return part.getContentID();
+    }
+
+    public OutputStream getOutputStream() throws IOException {
+        throw new UnsupportedOperationException();
+    }
 }

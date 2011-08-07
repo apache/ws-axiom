@@ -16,22 +16,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.attachments.impl;
+package org.apache.axiom.attachments;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
-/**
- * Stores the content of a MIME part.
- */
-public abstract class ContentStore {
-    public abstract InputStream getInputStream() throws IOException;
+import javax.activation.DataHandler;
 
-    public abstract void writeTo(OutputStream out) throws IOException;
+import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 
-    public abstract long getSize();
+class PartDataHandler extends DataHandler implements DataHandlerExt {
+    private final PartImpl part;
 
-    public abstract void destroy() throws IOException;
+    public PartDataHandler(PartImpl part) {
+        super(new PartDataSource(part));
+        this.part = part;
+    }
+
+    public void purgeDataSource() throws IOException {
+        part.releaseContent();
+    }
+
+    public void deleteWhenReadOnce() throws IOException {
+        // As shown in AXIOM-381, in all released versions of Axiom, deleteWhenReadOnce
+        // always has the same effect as purgeDataSource
+        purgeDataSource();
+    }
 }

@@ -1361,7 +1361,7 @@ while (iterator.hasNext()) {
                         </listitem>
                         <listitem>
                             <para>
-                                <classname>PartFactory</classname>
+                                <classname>PartFactory</classname> and related classes
                             </para>
                         </listitem>
                     </itemizedlist>
@@ -1370,6 +1370,33 @@ while (iterator.hasNext()) {
                         Application code that depends on these classes needs to be rewritten before upgrading
                         to Axiom 1.2.13.
                     </para>
+                </section>
+                <section>
+                    <title>Support for MIME part streaming</title>
+                    <para>
+                        Axiom 1.2.13 has support for MIME part streaming. Pre-existing APIs continue to work
+                        as documented, but there are some minor changes in behavior that may be visible to
+                        code that makes assumptions that are not covered by the API contract:
+                    </para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                The <classname>DataHandler</classname> instances returned by <classname>Attachments</classname>
+                                for MIME parts read from a stream now always implement <classname>DataHandlerExt</classname>, while
+                                in 1.2.12 this was only the case for parts buffered using temporary files. For memory buffered
+                                MIME parts, a call to <methodname>purgeDataSource</methodname> has the effect of releasing the
+                                allocated memory.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                The <classname>DataSource</classname> implementation used for <classname>DataHandler</classname>
+                                instances for MIME parts read from a stream is now always opaque, i.e. the implementation is
+                                an internal class not visible to application code. This implies that application code must not
+                                make the assumption that a MIME part buffered on disk uses a <classname>FileDataSource</classname>.
+                            </para>
+                        </listitem>
+                    </itemizedlist>
                 </section>
             </section>
         </section>

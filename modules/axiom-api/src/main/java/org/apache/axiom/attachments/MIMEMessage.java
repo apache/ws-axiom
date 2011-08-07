@@ -28,7 +28,6 @@ import java.util.Set;
 
 import javax.activation.DataHandler;
 import javax.mail.Header;
-import javax.mail.MessagingException;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.ParseException;
 
@@ -292,59 +291,48 @@ class MIMEMessage extends AttachmentsImpl {
             return null;
         } else {
             Part nextPart = getPart();
-            try {
-                long size = nextPart.getSize();
-                String partContentID;
-                DataHandler dataHandler;
-                try {
-                    partContentID = nextPart.getContentID();
-
-                    if (partContentID == null & partIndex == 1) {
-                        String id = "firstPart_" + UIDGenerator.generateContentId();
-                        firstPartId = id;
-                        if (size > 0) {
-                            dataHandler = nextPart.getDataHandler();
-                        } else {
-                            // Either the mime part is empty or the stream ended without having 
-                            // a MIME message terminator
-                            dataHandler = new DataHandler(new ByteArrayDataSource(new byte[]{}));
-                        }
-                        addDataHandler(id, dataHandler);
-                        return dataHandler;
-                    }
-                    if (partContentID == null) {
-                        throw new OMException(
-                                "Part content ID cannot be blank for non root MIME parts");
-                    }
-                    if ((partContentID.indexOf("<") > -1)
-                            & (partContentID.indexOf(">") > -1)) {
-                        partContentID = partContentID.substring(1, (partContentID
-                                .length() - 1));
-
-                    }
-                    if (partIndex == 1) {
-                        firstPartId = partContentID;
-                    }
-                    if (attachmentsMap.containsKey(partContentID)) {
-                        throw new OMException(
-                                "Two MIME parts with the same Content-ID not allowed.");
-                    }
-                    if (size > 0) {
-                        dataHandler = nextPart.getDataHandler();
-                    } else {
-                        // Either the mime part is empty or the stream ended without having 
-                        // a MIME message terminator
-                        dataHandler = new DataHandler(new ByteArrayDataSource(new byte[]{}));
-                    }
-                    addDataHandler(partContentID, dataHandler);
-                    return dataHandler;
-                } catch (MessagingException e) {
-                    throw new OMException("Error reading Content-ID from the Part."
-                            + e);
+            long size = nextPart.getSize();
+            String partContentID = nextPart.getContentID();
+            DataHandler dataHandler;
+            if (partContentID == null & partIndex == 1) {
+                String id = "firstPart_" + UIDGenerator.generateContentId();
+                firstPartId = id;
+                if (size > 0) {
+                    dataHandler = nextPart.getDataHandler();
+                } else {
+                    // Either the mime part is empty or the stream ended without having 
+                    // a MIME message terminator
+                    dataHandler = new DataHandler(new ByteArrayDataSource(new byte[]{}));
                 }
-            } catch (MessagingException e) {
-                throw new OMException(e);
+                addDataHandler(id, dataHandler);
+                return dataHandler;
             }
+            if (partContentID == null) {
+                throw new OMException(
+                        "Part content ID cannot be blank for non root MIME parts");
+            }
+            if ((partContentID.indexOf("<") > -1)
+                    & (partContentID.indexOf(">") > -1)) {
+                partContentID = partContentID.substring(1, (partContentID
+                        .length() - 1));
+
+            }
+            if (partIndex == 1) {
+                firstPartId = partContentID;
+            }
+            if (attachmentsMap.containsKey(partContentID)) {
+                throw new OMException(
+                        "Two MIME parts with the same Content-ID not allowed.");
+            }
+            if (size > 0) {
+                dataHandler = nextPart.getDataHandler();
+            } else {
+                // Either the mime part is empty or the stream ended without having 
+                // a MIME message terminator
+                dataHandler = new DataHandler(new ByteArrayDataSource(new byte[]{}));
+            }
+            addDataHandler(partContentID, dataHandler);
+            return dataHandler;
         }
     }
 
@@ -366,11 +354,9 @@ class MIMEMessage extends AttachmentsImpl {
         try {
             Hashtable headers = readHeaders();
             
-            Header contentTypeHeader = (Header)headers.get("content-type");
             // The PartFactory will determine which Part implementation is most appropriate.
             ContentStore content = ContentStoreFactory.createContentStore(getLifecycleManager(), parser, 
                                           isSOAPPart, 
-                                          contentTypeHeader == null ? null : contentTypeHeader.getValue(),
                                           threshhold, 
                                           attachmentRepoDir, 
                                           contentLength);  // content-length for the whole message

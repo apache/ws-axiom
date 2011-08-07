@@ -60,9 +60,10 @@ public class PartOnFileTest extends AbstractTestCase {
 
         DataSource ds = dh.getDataSource();
         assertNotNull(ds);
-        if (!(ds instanceof FileDataSource)) {
-            fail("Expected FileDataSource, but got " + ds.getClass().getName());
-        }
+        // TODO: AXIOM-377 implies that we no longer get a FileDataSource; need some other way to test that the attachment is written to file
+//        if (!(ds instanceof FileDataSource)) {
+//            fail("Expected FileDataSource, but got " + ds.getClass().getName());
+//        }
 
         assertEquals("image/jpeg", dh.getContentType());
     }

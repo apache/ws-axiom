@@ -36,27 +36,23 @@ public interface Part {
 
     /**
      * @return DataHandler representing this part
-     * @throws MessagingException
      */
-    public DataHandler getDataHandler() throws MessagingException;
+    public DataHandler getDataHandler();
     
     /**
      * @return size
-     * @throws MessagingException
      */
-    public long getSize() throws MessagingException;
+    public long getSize();
 
     /**
      * @return content type of the part
-     * @throws MessagingException
      */
-    public String getContentType() throws MessagingException;
+    public String getContentType();
 
     /**
      * @return content id of the part
-     * @throws MessagingException
      */
-    public String getContentID() throws MessagingException;
+    public String getContentID();
 
     /**
      * Get the value of a specific header

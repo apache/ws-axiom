@@ -22,7 +22,6 @@ package org.apache.axiom.attachments.impl;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
 
-import javax.activation.DataHandler;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,13 +43,12 @@ public class ContentOnFile extends ContentStore {
     
     /**
      * Create a PartOnFile from the specified InputStream
-     * @param headers Hashtable of javax.mail.Headers
      * @param in1 InputStream containing data
      * @param in2 InputStream containing data
      * @param attachmentDir String 
      */
-    ContentOnFile(LifecycleManager manager, String contentType, InputStream is1, InputStream is2, String attachmentDir) throws IOException {
-        super(contentType);
+    ContentOnFile(LifecycleManager manager, InputStream is1, InputStream is2, String attachmentDir) throws IOException {
+        this.manager = manager;
         fileAccessor = manager.create(attachmentDir);
         
         // Now write the data to the backing file
@@ -62,13 +60,27 @@ public class ContentOnFile extends ContentStore {
         
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.attachments.impl.AbstractPart#getDataHandler()
-     */
-    public DataHandler getDataHandler() throws MessagingException {
-        return fileAccessor.getDataHandler(getContentType());
+    public InputStream getInputStream() throws IOException {
+        try {
+            return fileAccessor.getInputStream();
+        } catch (MessagingException ex) {
+            // The FileAccessor API uses MessagingException, although we no longer use javax.mail.
+            // Convert the exception to an IOException to keep the attachments API clean.
+            IOException ex2 = new IOException(ex.getMessage());
+            ex2.setStackTrace(ex.getStackTrace());
+            throw ex2;
+        }
     }
     
+    public void writeTo(OutputStream out) throws IOException {
+        InputStream in = getInputStream();
+        try {
+            BufferUtils.inputStream2OutputStream(in, out);
+        } finally {
+            in.close();
+        }
+    }
+
     /* (non-Javadoc)
      * @see org.apache.axiom.attachments.impl.AbstractPart#getSize()
      */
@@ -76,4 +88,8 @@ public class ContentOnFile extends ContentStore {
         return fileAccessor.getSize();
     }
 
+    public void destroy() throws IOException {
+        manager.delete(fileAccessor.getFile());
+        // TODO: recover the shutdown hook code from DataHandlerExtImpl
+    }
 }
