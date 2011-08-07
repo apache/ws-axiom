@@ -1388,14 +1388,6 @@ while (iterator.hasNext()) {
                                 allocated memory.
                             </para>
                         </listitem>
-                        <listitem>
-                            <para>
-                                The <classname>DataSource</classname> implementation used for <classname>DataHandler</classname>
-                                instances for MIME parts read from a stream is now always opaque, i.e. the implementation is
-                                an internal class not visible to application code. This implies that application code must not
-                                make the assumption that a MIME part buffered on disk uses a <classname>FileDataSource</classname>.
-                            </para>
-                        </listitem>
                     </itemizedlist>
                 </section>
             </section>

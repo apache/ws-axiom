@@ -23,12 +23,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.activation.DataSource;
+
 /**
  * Stores the content of a MIME part.
  */
 public abstract class ContentStore {
     public abstract InputStream getInputStream() throws IOException;
 
+    /**
+     * Get a {@link DataSource} implementation specific for this buffering strategy.
+     * @param contentType TODO
+     * 
+     * @return the {@link DataSource} implementation or <code>null</code> if a default
+     *         {@link DataSource} implementation should be used
+     */
+    public abstract DataSource getDataSource(String contentType);
+    
     public abstract void writeTo(OutputStream out) throws IOException;
 
     public abstract long getSize();

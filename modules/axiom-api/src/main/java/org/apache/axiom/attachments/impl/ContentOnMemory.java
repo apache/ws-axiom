@@ -26,6 +26,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import javax.activation.DataSource;
+
 /**
  * PartOnMemoryEnhanced stores the attachment in memory (in non-contigous byte arrays)
  * This implementation is used for smaller attachments to enhance 
@@ -53,6 +55,11 @@ public class ContentOnMemory extends ContentStore {
         return new BAAInputStream(data, length);
     }
     
+    public DataSource getDataSource(String contentType) {
+        // Use a default implementation
+        return null;
+    }
+
     public void writeTo(OutputStream os) throws IOException {
         new BAAInputStream(data, length).writeTo(os);
     }

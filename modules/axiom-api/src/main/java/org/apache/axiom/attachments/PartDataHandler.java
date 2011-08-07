@@ -21,15 +21,24 @@ package org.apache.axiom.attachments;
 import java.io.IOException;
 
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 
 class PartDataHandler extends DataHandler implements DataHandlerExt {
     private final PartImpl part;
+    private DataSource dataSource;
 
     public PartDataHandler(PartImpl part) {
         super(new PartDataSource(part));
         this.part = part;
+    }
+
+    public DataSource getDataSource() {
+        if (dataSource == null) {
+            dataSource = part.getDataSource();
+        }
+        return dataSource == null ? super.getDataSource() : dataSource;
     }
 
     public void purgeDataSource() throws IOException {

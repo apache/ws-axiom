@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.Header;
 import javax.mail.MessagingException;
 import javax.mail.internet.HeaderTokenizer;
@@ -139,6 +140,10 @@ final class PartImpl implements Part {
         return content.getInputStream();
     }
     
+    DataSource getDataSource() {
+        return content.getDataSource(getContentType());
+    }
+
     void writeTo(OutputStream out) throws IOException {
         content.writeTo(out);
     }

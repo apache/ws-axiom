@@ -19,9 +19,11 @@
 
 package org.apache.axiom.attachments.impl;
 
+import org.apache.axiom.attachments.CachedFileDataSource;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
 
+import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -72,6 +74,14 @@ public class ContentOnFile extends ContentStore {
         }
     }
     
+    public DataSource getDataSource(String contentType) {
+        // The attachment cleanup code in Axis2 relies on the assumption that we
+        // produce a CachedFileDataSource here.
+        CachedFileDataSource ds = new CachedFileDataSource(fileAccessor.getFile());
+        ds.setContentType(contentType);
+        return ds;
+    }
+
     public void writeTo(OutputStream out) throws IOException {
         InputStream in = getInputStream();
         try {
