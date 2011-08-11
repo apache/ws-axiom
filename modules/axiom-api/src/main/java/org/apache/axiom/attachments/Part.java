@@ -29,7 +29,7 @@ import javax.mail.MessagingException;
  * 
  * A Part is created with the PartFactory.
  * 
- * @see org.apache.axiom.attachments.impl.ContentStoreFactory
+ * @see org.apache.axiom.attachments.ContentStoreFactory
  */
 public interface Part {
 

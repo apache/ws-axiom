@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.attachments.impl;
+package org.apache.axiom.attachments;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,8 +28,8 @@ import javax.activation.DataSource;
 /**
  * Stores the content of a MIME part.
  */
-public abstract class ContentStore {
-    public abstract InputStream getInputStream() throws IOException;
+abstract class ContentStore {
+    abstract InputStream getInputStream() throws IOException;
 
     /**
      * Get a {@link DataSource} implementation specific for this buffering strategy.
@@ -38,11 +38,11 @@ public abstract class ContentStore {
      * @return the {@link DataSource} implementation or <code>null</code> if a default
      *         {@link DataSource} implementation should be used
      */
-    public abstract DataSource getDataSource(String contentType);
+    abstract DataSource getDataSource(String contentType);
     
-    public abstract void writeTo(OutputStream out) throws IOException;
+    abstract void writeTo(OutputStream out) throws IOException;
 
-    public abstract long getSize();
+    abstract long getSize();
 
-    public abstract void destroy() throws IOException;
+    abstract void destroy() throws IOException;
 }

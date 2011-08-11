@@ -20,7 +20,6 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.Part;
-import org.apache.axiom.attachments.impl.ContentStore;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -51,7 +50,7 @@ final class PartImpl implements Part {
     
     /**
      * The actual parts are constructed with the PartFactory.
-     * @see org.apache.axiom.attachments.impl.ContentStoreFactory
+     * @see org.apache.axiom.attachments.ContentStoreFactory
      * @param headers
      */
     PartImpl(Hashtable in, ContentStore content) {

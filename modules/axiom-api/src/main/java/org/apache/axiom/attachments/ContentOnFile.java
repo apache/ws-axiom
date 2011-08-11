@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.apache.axiom.attachments.impl;
+package org.apache.axiom.attachments;
 
-import org.apache.axiom.attachments.CachedFileDataSource;
+import org.apache.axiom.attachments.impl.BufferUtils;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
 
@@ -37,7 +37,7 @@ import java.io.OutputStream;
  * The PartOnFile object is created by the PartFactory
  * @see ContentStoreFactory
  */
-public class ContentOnFile extends ContentStore {
+class ContentOnFile extends ContentStore {
 
     FileAccessor fileAccessor;
     LifecycleManager manager;
@@ -62,7 +62,7 @@ public class ContentOnFile extends ContentStore {
         
     }
 
-    public InputStream getInputStream() throws IOException {
+    InputStream getInputStream() throws IOException {
         try {
             return fileAccessor.getInputStream();
         } catch (MessagingException ex) {
@@ -74,7 +74,7 @@ public class ContentOnFile extends ContentStore {
         }
     }
     
-    public DataSource getDataSource(String contentType) {
+    DataSource getDataSource(String contentType) {
         // The attachment cleanup code in Axis2 relies on the assumption that we
         // produce a CachedFileDataSource here.
         CachedFileDataSource ds = new CachedFileDataSource(fileAccessor.getFile());
@@ -82,7 +82,7 @@ public class ContentOnFile extends ContentStore {
         return ds;
     }
 
-    public void writeTo(OutputStream out) throws IOException {
+    void writeTo(OutputStream out) throws IOException {
         InputStream in = getInputStream();
         try {
             BufferUtils.inputStream2OutputStream(in, out);
@@ -94,11 +94,11 @@ public class ContentOnFile extends ContentStore {
     /* (non-Javadoc)
      * @see org.apache.axiom.attachments.impl.AbstractPart#getSize()
      */
-    public long getSize() {
+    long getSize() {
         return fileAccessor.getSize();
     }
 
-    public void destroy() throws IOException {
+    void destroy() throws IOException {
         manager.delete(fileAccessor.getFile());
         // TODO: recover the shutdown hook code from DataHandlerExtImpl
     }

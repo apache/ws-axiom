@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.attachments.impl;
+package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.utils.BAAInputStream;
 
@@ -36,7 +36,7 @@ import javax.activation.DataSource;
  * The PartOnMemoryEnhanced object is created by the PartFactory
  * @see ContentStoreFactory
  */
-public class ContentOnMemory extends ContentStore {
+class ContentOnMemory extends ContentStore {
 
     ArrayList data;  // Arrays of 4K buffers
     int length;      // total length of data
@@ -51,24 +51,24 @@ public class ContentOnMemory extends ContentStore {
         this.length = length;
     }
 
-    public InputStream getInputStream() {
+    InputStream getInputStream() {
         return new BAAInputStream(data, length);
     }
     
-    public DataSource getDataSource(String contentType) {
+    DataSource getDataSource(String contentType) {
         // Use a default implementation
         return null;
     }
 
-    public void writeTo(OutputStream os) throws IOException {
+    void writeTo(OutputStream os) throws IOException {
         new BAAInputStream(data, length).writeTo(os);
     }
     
-    public long getSize() {
+    long getSize() {
         return length;
     }
     
-    public void destroy() throws IOException {
+    void destroy() throws IOException {
         data.clear();
     }
 }

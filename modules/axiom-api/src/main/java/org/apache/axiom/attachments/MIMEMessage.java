@@ -31,8 +31,6 @@ import javax.mail.Header;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.ParseException;
 
-import org.apache.axiom.attachments.impl.ContentStore;
-import org.apache.axiom.attachments.impl.ContentStoreFactory;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
 import org.apache.axiom.om.OMException;

@@ -17,8 +17,9 @@
  * under the License.
  */
 
-package org.apache.axiom.attachments.impl;
+package org.apache.axiom.attachments;
 
+import org.apache.axiom.attachments.impl.BufferUtils;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.utils.BAAInputStream;
 import org.apache.axiom.attachments.utils.BAAOutputStream;
@@ -39,7 +40,7 @@ import java.io.InputStream;
  * other layers of the code.  The PartFactory helps maintain this
  * abstraction, and makes it easier to add new implementations.
  */
-public class ContentStoreFactory {
+class ContentStoreFactory {
     
     private static int inflight = 0;  // How many attachments are currently being built.
     private static String semifore = "PartFactory.semifore";
@@ -74,7 +75,7 @@ public class ContentStoreFactory {
      * @return Part
      * @throws OMException if any exception is encountered while processing.
      */
-    public static ContentStore createContentStore(LifecycleManager manager, MimeTokenStream parser,
+    static ContentStore createContentStore(LifecycleManager manager, MimeTokenStream parser,
                     boolean isSOAPPart,
                     int thresholdSize,
                     String attachmentDir,
