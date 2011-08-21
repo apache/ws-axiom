@@ -66,6 +66,11 @@ class MIMEMessage extends AttachmentsImpl {
     /** <code>partIndex</code>- Number of Mime parts parsed */
     private int partIndex = 0;
 
+    /**
+     * The MIME part currently being processed.
+     */
+    private PartImpl currentPart;
+    
     /** Container to hold streams for direct access */
     private IncomingAttachmentStreams streams;
 
@@ -285,6 +290,10 @@ class MIMEMessage extends AttachmentsImpl {
      *                     content-ID & the exceptions throws by getPart()
      */
     private DataHandler getNextPartDataHandler() throws OMException {
+        if (currentPart != null) {
+            currentPart.fetch();
+            currentPart = null;
+        }
         if (parser.getState() == EntityState.T_END_MULTIPART) {
             return null;
         } else {
@@ -333,36 +342,32 @@ class MIMEMessage extends AttachmentsImpl {
         partsRequested = true;
 
         boolean isSOAPPart = (partIndex == 0);
-        int threshhold = (fileCacheEnable) ? fileStorageThreshold : 0;
 
         try {
             Hashtable headers = readHeaders();
             
-            // The PartFactory will determine which Part implementation is most appropriate.
-            ContentStore content = ContentStoreFactory.createContentStore(getLifecycleManager(), parser, 
-                                          isSOAPPart, 
-                                          threshhold, 
-                                          attachmentRepoDir, 
-                                          contentLength);  // content-length for the whole message
-            
-            EntityState state = parser.next();
-            if (state == EntityState.T_EPILOGUE) {
-                while (parser.next() != EntityState.T_END_MULTIPART) {
-                    // Just loop
-                }
-            } else if (state != EntityState.T_START_BODYPART && state != EntityState.T_END_MULTIPART) {
-                throw new IllegalStateException("Internal error: unexpected parser state " + state);
-            }
-            
             partIndex++;
-            return new PartImpl(headers, content);
+            currentPart = new PartImpl(this, isSOAPPart, headers, parser);
+            return currentPart;
         } catch (IOException ex) {
             throw new OMException(ex);
         } catch (MimeException ex) {
             throw new OMException(ex);
         }
     }
+    
+    int getThreshold() {
+        return fileCacheEnable ? fileStorageThreshold : 0;
+    }
+    
+    String getAttachmentRepoDir() {
+        return attachmentRepoDir;
+    }
 
+    int getContentLengthIfKnown() {
+        return contentLength;
+    }
+    
     private Hashtable readHeaders() throws IOException, MimeException {
         if(log.isDebugEnabled()){
             log.debug("initHeaders");

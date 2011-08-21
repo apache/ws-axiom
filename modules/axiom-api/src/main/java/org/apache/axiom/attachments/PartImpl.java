@@ -20,8 +20,12 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.Part;
+import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.james.mime4j.MimeException;
+import org.apache.james.mime4j.stream.EntityState;
+import org.apache.james.mime4j.stream.MimeTokenStream;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -40,12 +44,25 @@ import java.util.Hashtable;
 final class PartImpl implements Part {
 
     private static Log log = LogFactory.getLog(PartImpl.class);
-                                                 
+    
+    private final MIMEMessage message;
+    private final boolean isSOAPPart;
+    
     // Key is the lower-case name.
     // Value is a javax.mail.Header object
     private Hashtable headers;
     
-    private final ContentStore content;
+    /**
+     * The MIME parser from which the content of this part is read. This is only set if the content
+     * has not been read yet. In this case the parser is in state {@link EntityState#T_BODY}.
+     */
+    private MimeTokenStream parser;
+    
+    /**
+     * The content of this part. This is only set if the content of the part is buffered.
+     */
+    private ContentStore content;
+    
     private final DataHandler dataHandler;
     
     /**
@@ -53,12 +70,14 @@ final class PartImpl implements Part {
      * @see org.apache.axiom.attachments.ContentStoreFactory
      * @param headers
      */
-    PartImpl(Hashtable in, ContentStore content) {
+    PartImpl(MIMEMessage message, boolean isSOAPPart, Hashtable in, MimeTokenStream parser) {
+        this.message = message;
+        this.isSOAPPart = isSOAPPart;
         headers = in;
         if (headers == null) {
             headers = new Hashtable();
         }
-        this.content = content;
+        this.parser = parser;
         this.dataHandler = new PartDataHandler(this);
     }
     
@@ -132,22 +151,74 @@ final class PartImpl implements Part {
     }
 
     public long getSize() {
-        return content.getSize();
+        return getContent().getSize();
     }
 
+    private ContentStore getContent() {
+        if (content == null) {
+            if (parser == null) {
+                throw new IllegalStateException("The content of the MIME part has already been consumed");
+            } else {
+                fetch();
+            }
+        }
+        return content;
+    }
+    
+    /**
+     * Make sure that the MIME part has been fully read from the parser. If the part has not been
+     * read yet, then it will be buffered. This method prepares the parser for reading the next part
+     * in the stream.
+     */
+    void fetch() {
+        if (content == null && parser != null) {
+            // The PartFactory will determine which Part implementation is most appropriate.
+            content = ContentStoreFactory.createContentStore(message.getLifecycleManager(), parser, 
+                                          isSOAPPart, 
+                                          message.getThreshold(),
+                                          message.getAttachmentRepoDir(),
+                                          message.getContentLengthIfKnown());  // content-length for the whole message
+            try {
+                EntityState state = parser.next();
+                if (state == EntityState.T_EPILOGUE) {
+                    while (parser.next() != EntityState.T_END_MULTIPART) {
+                        // Just loop
+                    }
+                } else if (state != EntityState.T_START_BODYPART && state != EntityState.T_END_MULTIPART) {
+                    throw new IllegalStateException("Internal error: unexpected parser state " + state);
+                }
+            } catch (IOException ex) {
+                throw new OMException(ex);
+            } catch (MimeException ex) {
+                throw new OMException(ex);
+            }
+        }
+    }
+    
     InputStream getInputStream() throws IOException {
-        return content.getInputStream();
+        return getContent().getInputStream();
     }
     
     DataSource getDataSource() {
-        return content.getDataSource(getContentType());
+        return getContent().getDataSource(getContentType());
     }
 
     void writeTo(OutputStream out) throws IOException {
-        content.writeTo(out);
+        getContent().writeTo(out);
     }
 
     void releaseContent() throws IOException {
-        content.destroy();
+        if (content != null) {
+            content.destroy();
+        } else if (parser != null) {
+            try {
+                EntityState state;
+                do {
+                    state = parser.next();
+                } while (state != EntityState.T_START_BODYPART && state != EntityState.T_END_MULTIPART);
+            } catch (MimeException ex) {
+                throw new OMException(ex);
+            }
+        }
     }
 }
