@@ -289,19 +289,11 @@ class MIMEMessage extends AttachmentsImpl {
             return null;
         } else {
             Part nextPart = getPart();
-            long size = nextPart.getSize();
             String partContentID = nextPart.getContentID();
-            DataHandler dataHandler;
             if (partContentID == null & partIndex == 1) {
                 String id = "firstPart_" + UIDGenerator.generateContentId();
                 firstPartId = id;
-                if (size > 0) {
-                    dataHandler = nextPart.getDataHandler();
-                } else {
-                    // Either the mime part is empty or the stream ended without having 
-                    // a MIME message terminator
-                    dataHandler = new DataHandler(new ByteArrayDataSource(new byte[]{}));
-                }
+                DataHandler dataHandler = nextPart.getDataHandler();
                 addDataHandler(id, dataHandler);
                 return dataHandler;
             }
@@ -322,13 +314,7 @@ class MIMEMessage extends AttachmentsImpl {
                 throw new OMException(
                         "Two MIME parts with the same Content-ID not allowed.");
             }
-            if (size > 0) {
-                dataHandler = nextPart.getDataHandler();
-            } else {
-                // Either the mime part is empty or the stream ended without having 
-                // a MIME message terminator
-                dataHandler = new DataHandler(new ByteArrayDataSource(new byte[]{}));
-            }
+            DataHandler dataHandler = nextPart.getDataHandler();
             addDataHandler(partContentID, dataHandler);
             return dataHandler;
         }
