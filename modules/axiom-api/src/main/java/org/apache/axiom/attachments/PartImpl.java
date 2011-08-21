@@ -165,6 +165,13 @@ final class PartImpl implements Part {
         return content;
     }
     
+    private static void checkParserState(EntityState state, EntityState expected) throws IllegalStateException {
+        if (expected != state) {
+            throw new IllegalStateException("Internal error: expected parser to be in state "
+                    + expected + ", but got " + state);
+        }
+    }
+    
     /**
      * Make sure that the MIME part has been fully read from the parser. If the part has not been
      * read yet, then it will be buffered. This method prepares the parser for reading the next part
@@ -172,13 +179,17 @@ final class PartImpl implements Part {
      */
     void fetch() {
         if (content == null && parser != null) {
+            checkParserState(parser.getState(), EntityState.T_BODY);
+            
             // The PartFactory will determine which Part implementation is most appropriate.
-            content = ContentStoreFactory.createContentStore(message.getLifecycleManager(), parser, 
+            content = ContentStoreFactory.createContentStore(message.getLifecycleManager(),
+                                          parser.getDecodedInputStream(), 
                                           isSOAPPart, 
                                           message.getThreshold(),
                                           message.getAttachmentRepoDir(),
                                           message.getContentLengthIfKnown());  // content-length for the whole message
             try {
+                checkParserState(parser.next(), EntityState.T_END_BODYPART);
                 EntityState state = parser.next();
                 if (state == EntityState.T_EPILOGUE) {
                     while (parser.next() != EntityState.T_END_MULTIPART) {

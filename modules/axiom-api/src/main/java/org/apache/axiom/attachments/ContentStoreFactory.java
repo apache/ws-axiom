@@ -26,8 +26,6 @@ import org.apache.axiom.attachments.utils.BAAOutputStream;
 import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.james.mime4j.stream.EntityState;
-import org.apache.james.mime4j.stream.MimeTokenStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -54,13 +52,6 @@ class ContentStoreFactory {
     // Dynamic Threshold = availMemory / THRESHOLD_FACTOR
     private static final int THRESHOLD_FACTOR = 5;
     
-    private static void checkParserState(EntityState state, EntityState expected) throws IllegalStateException {
-        if (expected != state) {
-            throw new IllegalStateException("Internal error: expected parser to be in state "
-                    + expected + ", but got " + state);
-        }
-    }
-    
     /**
      * Creates a part from the input stream.
      * The remaining parameters are used to determine if the
@@ -75,7 +66,7 @@ class ContentStoreFactory {
      * @return Part
      * @throws OMException if any exception is encountered while processing.
      */
-    static ContentStore createContentStore(LifecycleManager manager, MimeTokenStream parser,
+    static ContentStore createContentStore(LifecycleManager manager, InputStream in,
                     boolean isSOAPPart,
                     int thresholdSize,
                     String attachmentDir,
@@ -90,8 +81,6 @@ class ContentStoreFactory {
         }
         
         try {
-            checkParserState(parser.getState(), EntityState.T_BODY);
-            
             ContentStore part;
             try {
                 
@@ -130,13 +119,12 @@ class ContentStoreFactory {
                     // of resizing and GC.  The BAAOutputStream 
                     // keeps the data in non-contiguous byte buffers.
                     BAAOutputStream baaos = new BAAOutputStream();
-                    BufferUtils.inputStream2OutputStream(parser.getDecodedInputStream(), baaos);
+                    BufferUtils.inputStream2OutputStream(in, baaos);
                     part = new ContentOnMemory(baaos.buffers(), baaos.length());
                 } else {
                     // We need to read the input stream to determine whether
                     // the size is bigger or smaller than the threshold.
                     BAAOutputStream baaos = new BAAOutputStream();
-                    InputStream in = parser.getDecodedInputStream();
                     int count = BufferUtils.inputStream2OutputStream(in, baaos, thresholdSize);
 
                     if (count < thresholdSize) {
@@ -153,7 +141,6 @@ class ContentStoreFactory {
                     }
 
                 } 
-                checkParserState(parser.next(), EntityState.T_END_BODYPART);
             } finally {
                 if (!isSOAPPart) {
                     synchronized(semifore) {
