@@ -454,6 +454,30 @@ public class AttachmentsTest extends AbstractTestCase {
     public void testReadBase64EncodedAttachmentWithPartOnFile() throws Exception {
         testReadBase64EncodedAttachment(true);
     }
+
+    /**
+     * Tests that {@link Attachments} can successfully read an attachment with zero length. This is
+     * a regression test for
+     * <a href="https://issues.apache.org/jira/browse/AXIOM-383">AXIOM-383</a>.
+     * 
+     * @throws Exception
+     */
+    public void testZeroLengthAttachment() throws Exception {
+        InputStream in = getTestResource("mtom/zero-length-attachment.bin");
+        try {
+            Attachments attachments = new Attachments(in,
+                    "multipart/related; " +
+                    "boundary=MIMEBoundaryurn_uuid_0549F3F826EC3041861188639371825; " +
+                    "type=\"application/xop+xml\"; " +
+                    "start=\"0.urn:uuid:0549F3F826EC3041861188639371826@apache.org\"; " +
+                    "start-info=\"application/soap+xml\"; action=\"urn:test\"");
+            DataHandler dh = attachments.getDataHandler("1.urn:uuid:0549F3F826EC3041861188639371827@apache.org");
+            InputStream content = dh.getInputStream();
+            assertEquals(-1, content.read());
+        } finally {
+            in.close();
+        }
+    }
     
     public void testPurgeDataSource() throws Exception {
         InputStream in = getTestResource("mtom/msg-soap-wls81.txt");
