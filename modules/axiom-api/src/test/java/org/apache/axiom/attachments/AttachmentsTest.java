@@ -48,9 +48,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.NullOutputStream;
 
 public class AttachmentsTest extends AbstractTestCase {
-    String img1FileName = "mtom/img/test.jpg";
-    String img2FileName = "mtom/img/test2.jpg";
-    
     private static String getAttachmentsDir() {
         File attachmentsDir = new File(System.getProperty("basedir", ".") + "/target/attachments");
         attachmentsDir.mkdirs();
@@ -65,7 +62,7 @@ public class AttachmentsTest extends AbstractTestCase {
                 .getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
         InputStream dataIs = dh.getDataSource().getInputStream();
 
-        InputStream expectedDataIs = getTestResource(img2FileName);
+        InputStream expectedDataIs = getTestResource(TestConstants.MTOM_MESSAGE_IMAGE2);
 
         // Compare data across streams
         IOTestUtils.compareStreams(dataIs, expectedDataIs);
@@ -264,11 +261,11 @@ public class AttachmentsTest extends AbstractTestCase {
         IncomingAttachmentStreams ias = attachments.getIncomingAttachmentStreams();
 
         dataIs = ias.getNextStream();
-        expectedDataIs = getTestResource(img1FileName);
+        expectedDataIs = getTestResource(TestConstants.MTOM_MESSAGE_IMAGE1);
         IOTestUtils.compareStreams(dataIs, expectedDataIs);
 
         dataIs = ias.getNextStream();
-        expectedDataIs = getTestResource(img2FileName);
+        expectedDataIs = getTestResource(TestConstants.MTOM_MESSAGE_IMAGE2);
         IOTestUtils.compareStreams(dataIs, expectedDataIs);
 
         // Confirm that no more streams are left

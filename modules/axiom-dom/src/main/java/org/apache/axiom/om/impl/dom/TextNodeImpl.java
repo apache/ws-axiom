@@ -486,7 +486,8 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     public void buildWithAttachments() {
         this.build();
         if (isOptimized()) {
-            this.getDataHandler();
+            // The call to getDataSource ensures that the MIME part is completely read
+            ((DataHandler)this.getDataHandler()).getDataSource();
         }
     }
 

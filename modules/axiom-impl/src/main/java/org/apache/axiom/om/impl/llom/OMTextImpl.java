@@ -432,7 +432,8 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             this.build();
         }
         if (isOptimized()) {
-            this.getDataHandler();
+            // The call to getDataSource ensures that the MIME part is completely read
+            ((DataHandler)this.getDataHandler()).getDataSource();
         }
     }
     
