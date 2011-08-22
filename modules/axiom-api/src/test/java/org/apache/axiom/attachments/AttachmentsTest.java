@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -32,6 +34,7 @@ import java.util.Random;
 import java.util.Set;
 
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.Session;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -42,6 +45,7 @@ import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.TestConstants;
+import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.io.IOUtils;
@@ -515,5 +519,68 @@ public class AttachmentsTest extends AbstractTestCase {
         reader.close();
         
         in.close();
+    }
+
+    /**
+     * Tests that a call to {@link DataHandlerExt#readOnce()} on a {@link DataHandler} returned by
+     * the {@link Attachments} object streams the content of the MIME part.
+     * 
+     * @throws Exception
+     */
+    public void testDataHandlerStreaming() throws Exception {
+        // Note: We are only interested in the MimeMultipart, but we need to create a
+        //       MimeMessage to be able to calculate the correct content type
+        MimeMessage message = new MimeMessage((Session)null);
+        final MimeMultipart mp = new MimeMultipart("related");
+        
+        // Prepare the "SOAP" part
+        MimeBodyPart bp1 = new MimeBodyPart();
+        // Obviously this is not SOAP, but this is irrelevant for this test
+        bp1.setText("<root/>", "utf-8", "xml");
+        bp1.addHeader("Content-Transfer-Encoding", "binary");
+        bp1.addHeader("Content-ID", "part1@apache.org");
+        mp.addBodyPart(bp1);
+        
+        // Create an attachment that is larger than the maximum heap
+        DataSource dataSource = new RandomDataSource((int)Math.min(Runtime.getRuntime().maxMemory(), Integer.MAX_VALUE));
+        MimeBodyPart bp2 = new MimeBodyPart();
+        bp2.setDataHandler(new DataHandler(dataSource));
+        bp2.addHeader("Content-Transfer-Encoding", "binary");
+        bp2.addHeader("Content-ID", "part2@apache.org");
+        mp.addBodyPart(bp2);
+        
+        message.setContent(mp);
+        // Compute the correct content type
+        message.saveChanges();
+        
+        // We use a pipe (with a producer running in a separate thread) because obviously we can't
+        // store the multipart in memory.
+        final PipedOutputStream pipeOut = new PipedOutputStream();
+        PipedInputStream pipeIn = new PipedInputStream(pipeOut);
+        
+        Thread producerThread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    try {
+                        mp.writeTo(pipeOut);
+                    } finally {
+                        pipeOut.close();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        producerThread.start();
+        
+        try {
+            // We configure Attachments to buffer MIME parts in memory. If the part content is not
+            // streamed, then this will result in an OOM error.
+            Attachments attachments = new Attachments(pipeIn, message.getContentType());
+            DataHandlerExt dh = (DataHandlerExt)attachments.getDataHandler("part2@apache.org");
+            IOTestUtils.compareStreams(dataSource.getInputStream(), dh.readOnce());
+        } finally {
+            pipeIn.close();
+        }
     }
 }

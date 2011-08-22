@@ -19,6 +19,7 @@
 package org.apache.axiom.attachments;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -39,6 +40,10 @@ class PartDataHandler extends DataHandler implements DataHandlerExt {
             dataSource = part.getDataSource();
         }
         return dataSource == null ? super.getDataSource() : dataSource;
+    }
+
+    public InputStream readOnce() throws IOException {
+        return part.getInputStream(false);
     }
 
     public void purgeDataSource() throws IOException {

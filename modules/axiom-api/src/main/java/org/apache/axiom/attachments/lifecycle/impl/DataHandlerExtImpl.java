@@ -21,6 +21,7 @@ package org.apache.axiom.attachments.lifecycle.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -47,7 +48,13 @@ public class DataHandlerExtImpl extends DataHandler implements
 		this.manager = manager;
 	}
 
-	public void deleteWhenReadOnce() throws IOException {
+	public InputStream readOnce() throws IOException {
+	    // Instances of DataHandlerExtImpl are only created by legacy code, so it's OK to
+	    // throw an UnsupportedOperationException here.
+        throw new UnsupportedOperationException();
+    }
+
+    public void deleteWhenReadOnce() throws IOException {
 		deleteOnreadOnce = true;
 		FileAccessor fa =manager.getFileAccessor(getName());
 		if(fa==null){

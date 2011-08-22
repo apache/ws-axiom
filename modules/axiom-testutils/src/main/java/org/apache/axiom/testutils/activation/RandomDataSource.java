@@ -52,7 +52,7 @@ public class RandomDataSource implements DataSource {
     }
     
     public String getContentType() {
-        return null;
+        return "application/octet-stream";
     }
     
     public InputStream getInputStream() throws IOException {

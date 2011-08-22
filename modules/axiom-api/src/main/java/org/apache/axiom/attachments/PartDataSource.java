@@ -37,7 +37,7 @@ class PartDataSource implements DataSource {
     }
 
     public InputStream getInputStream() throws IOException {
-        return part.getInputStream();
+        return part.getInputStream(true);
     }
 
     public String getName() {

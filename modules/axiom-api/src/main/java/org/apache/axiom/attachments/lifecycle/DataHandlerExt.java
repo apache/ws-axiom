@@ -20,8 +20,22 @@
 package org.apache.axiom.attachments.lifecycle;
 
 import java.io.IOException;
+import java.io.InputStream;
+
+import javax.activation.DataHandler;
 
 public interface DataHandlerExt {
+    /**
+     * Get an {@link InputStream} that consumes the content of this data handler. This method is
+     * similar to {@link DataHandler#getInputStream()} except that it can be invoked only once. If
+     * the content has not been buffered yet, then the implementation may choose to enable streaming
+     * of the content.
+     * 
+     * @return the stream representing the content; never <code>null</code>
+     * @throws IOException
+     *             if an error occurs
+     */
+    InputStream readOnce() throws IOException;
 	
 	/**
 	 * This method will give users an option to trigger a purge

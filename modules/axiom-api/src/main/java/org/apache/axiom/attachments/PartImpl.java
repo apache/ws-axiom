@@ -42,6 +42,28 @@ import java.util.Hashtable;
  * Actual implementation of the {@link Part} interface.
  */
 final class PartImpl implements Part {
+    /**
+     * The part has not been read yet. In this case the parser is in state
+     * {@link EntityState#T_BODY}.
+     */
+    private static final int STATE_UNREAD = 0;
+    
+    /**
+     * The part has been read into a memory or file based buffer.
+     */
+    private static final int STATE_BUFFERED = 1;
+    
+    /**
+     * The part content is being streamed, i.a. the application code consumes the part content
+     * without buffering.
+     */
+    private static final int STATE_STREAMING = 2;
+    
+    /**
+     * The part content has been discarded and can no longer be read. This state is reached either
+     * when the content has been streamed or when it is discarded explicitly after being buffered.
+     */
+    private static final int STATE_DISCARDED = 3;
 
     private static Log log = LogFactory.getLog(PartImpl.class);
     
@@ -52,14 +74,16 @@ final class PartImpl implements Part {
     // Value is a javax.mail.Header object
     private Hashtable headers;
     
+    private int state = STATE_UNREAD;
+    
     /**
-     * The MIME parser from which the content of this part is read. This is only set if the content
-     * has not been read yet. In this case the parser is in state {@link EntityState#T_BODY}.
+     * The MIME parser from which the content of this part is read. This is only set if the state is
+     * {@link #STATE_UNREAD} or {@link #STATE_STREAMING}.
      */
     private MimeTokenStream parser;
     
     /**
-     * The content of this part. This is only set if the content of the part is buffered.
+     * The content of this part. This is only set if the state is {@link #STATE_BUFFERED}.
      */
     private ContentStore content;
     
@@ -155,14 +179,15 @@ final class PartImpl implements Part {
     }
 
     private ContentStore getContent() {
-        if (content == null) {
-            if (parser == null) {
-                throw new IllegalStateException("The content of the MIME part has already been consumed");
-            } else {
+        switch (state) {
+            case STATE_UNREAD:
                 fetch();
-            }
+                // Fall through
+            case STATE_BUFFERED:
+                return content;
+            default:
+                throw new IllegalStateException("The content of the MIME part has already been consumed");
         }
-        return content;
     }
     
     private static void checkParserState(EntityState state, EntityState expected) throws IllegalStateException {
@@ -178,36 +203,53 @@ final class PartImpl implements Part {
      * in the stream.
      */
     void fetch() {
-        if (content == null && parser != null) {
-            checkParserState(parser.getState(), EntityState.T_BODY);
-            
-            // The PartFactory will determine which Part implementation is most appropriate.
-            content = ContentStoreFactory.createContentStore(message.getLifecycleManager(),
-                                          parser.getDecodedInputStream(), 
-                                          isSOAPPart, 
-                                          message.getThreshold(),
-                                          message.getAttachmentRepoDir(),
-                                          message.getContentLengthIfKnown());  // content-length for the whole message
-            try {
-                checkParserState(parser.next(), EntityState.T_END_BODYPART);
-                EntityState state = parser.next();
-                if (state == EntityState.T_EPILOGUE) {
-                    while (parser.next() != EntityState.T_END_MULTIPART) {
-                        // Just loop
-                    }
-                } else if (state != EntityState.T_START_BODYPART && state != EntityState.T_END_MULTIPART) {
-                    throw new IllegalStateException("Internal error: unexpected parser state " + state);
-                }
-            } catch (IOException ex) {
-                throw new OMException(ex);
-            } catch (MimeException ex) {
-                throw new OMException(ex);
-            }
+        switch (state) {
+            case STATE_UNREAD:
+                checkParserState(parser.getState(), EntityState.T_BODY);
+                
+                // The PartFactory will determine which Part implementation is most appropriate.
+                content = ContentStoreFactory.createContentStore(message.getLifecycleManager(),
+                                              parser.getDecodedInputStream(), 
+                                              isSOAPPart, 
+                                              message.getThreshold(),
+                                              message.getAttachmentRepoDir(),
+                                              message.getContentLengthIfKnown());  // content-length for the whole message
+                moveToNextPart();
+                state = STATE_BUFFERED;
+                break;
+            case STATE_STREAMING:
+                moveToNextPart();
+                state = STATE_DISCARDED;
         }
     }
     
-    InputStream getInputStream() throws IOException {
-        return getContent().getInputStream();
+    private void moveToNextPart() {
+        try {
+            checkParserState(parser.next(), EntityState.T_END_BODYPART);
+            EntityState state = parser.next();
+            if (state == EntityState.T_EPILOGUE) {
+                while (parser.next() != EntityState.T_END_MULTIPART) {
+                    // Just loop
+                }
+            } else if (state != EntityState.T_START_BODYPART && state != EntityState.T_END_MULTIPART) {
+                throw new IllegalStateException("Internal error: unexpected parser state " + state);
+            }
+        } catch (IOException ex) {
+            throw new OMException(ex);
+        } catch (MimeException ex) {
+            throw new OMException(ex);
+        }
+        parser = null;
+    }
+    
+    InputStream getInputStream(boolean preserve) throws IOException {
+        if (!preserve && state == STATE_UNREAD) {
+            checkParserState(parser.getState(), EntityState.T_BODY);
+            state = STATE_STREAMING;
+            return parser.getDecodedInputStream();
+        } else {
+            return getContent().getInputStream();
+        }
     }
     
     DataSource getDataSource() {
@@ -219,17 +261,20 @@ final class PartImpl implements Part {
     }
 
     void releaseContent() throws IOException {
-        if (content != null) {
-            content.destroy();
-        } else if (parser != null) {
-            try {
-                EntityState state;
-                do {
-                    state = parser.next();
-                } while (state != EntityState.T_START_BODYPART && state != EntityState.T_END_MULTIPART);
-            } catch (MimeException ex) {
-                throw new OMException(ex);
-            }
+        switch (state) {
+            case STATE_UNREAD:
+                try {
+                    EntityState state;
+                    do {
+                        state = parser.next();
+                    } while (state != EntityState.T_START_BODYPART && state != EntityState.T_END_MULTIPART);
+                } catch (MimeException ex) {
+                    throw new OMException(ex);
+                }
+                state = STATE_DISCARDED;
+                break;
+            case STATE_BUFFERED:
+                content.destroy();
         }
     }
 }
