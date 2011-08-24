@@ -81,10 +81,11 @@ class OptimizationPolicyImpl implements OptimizationPolicy {
         
         if (!optimize) {
             return false;
+        } else if (format.getOptimizedThreshold() == 0) {
+            // If no threshold is set, return the result immediately and avoid the call to
+            // DataHandlerProvider#getDataHandler(), which would force loading the data handler.
+            return true;
         } else {
-            // TODO: this is suboptimal because it forces loading of the data handler;
-            //       note that it is strictly the same logic as was applied in the old
-            //       MTOMXMLStreamWriter#isOptimizedThreshold method
             return isOptimized(dataHandlerProvider.getDataHandler(), optimize);
         }
     }
