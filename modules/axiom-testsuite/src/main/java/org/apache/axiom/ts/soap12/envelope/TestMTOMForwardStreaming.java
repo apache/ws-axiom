@@ -48,8 +48,12 @@ import org.apache.axiom.ts.AxiomTestCase;
  * messages very efficiently.
  */
 public class TestMTOMForwardStreaming extends AxiomTestCase {
-    public TestMTOMForwardStreaming(OMMetaFactory metaFactory) {
+    private final boolean buildSOAPPart;
+    
+    public TestMTOMForwardStreaming(OMMetaFactory metaFactory, boolean buildSOAPPart) {
         super(metaFactory);
+        addTestProperty("buildSOAPPart", String.valueOf(buildSOAPPart));
+        this.buildSOAPPart = buildSOAPPart;
     }
 
     protected void runTest() throws Throwable {
@@ -102,6 +106,11 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
                         SOAPEnvelope envelope = new MTOMStAXSOAPModelBuilder(
                                 StAXUtils.createXMLStreamReader(attachments.getSOAPPartInputStream()),
                                         attachments).getSOAPEnvelope();
+                        // The code path executed by serializeAndConsume is significantly different if
+                        // the element is built. Therefore we need two different test executions.
+                        if (buildSOAPPart) {
+                            envelope.build();
+                        }
                         // Usage of serializeAndConsume should enable streaming
                         envelope.serializeAndConsume(pipe2Out, format);
                     } finally {
