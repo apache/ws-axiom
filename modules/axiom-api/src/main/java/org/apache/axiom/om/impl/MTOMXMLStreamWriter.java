@@ -30,6 +30,8 @@ import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.attachments.impl.BufferUtils;
+import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
@@ -63,6 +65,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     private OutputStream rootPartOutputStream;
     private OMOutputFormat format = new OMOutputFormat();
     private final OptimizationPolicy optimizationPolicy;
+    private final boolean preserveAttachments;
     
     // State variables
     private boolean isEndDocument = false; // has endElement been called
@@ -78,29 +81,42 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         optimizationPolicy = new OptimizationPolicyImpl(format);
+        preserveAttachments = true;
     }
 
+    public MTOMXMLStreamWriter(OutputStream outStream, OMOutputFormat format)
+            throws XMLStreamException, FactoryConfigurationError {
+        this(outStream, format, true);
+    }
+    
     /**
      * Creates a new MTOMXMLStreamWriter with specified encoding.
-     *
+     * 
      * @param outStream
      * @param format
+     * @param preserveAttachments
+     *            specifies whether attachments must be preserved or can be consumed (i.e. streamed)
+     *            during serialization; if set to <code>false</code> then
+     *            {@link DataHandlerExt#readOnce()} or an equivalent method may be used to get the
+     *            data for an attachment
      * @throws XMLStreamException
      * @throws FactoryConfigurationError
      * @see OMOutputFormat#DEFAULT_CHAR_SET_ENCODING
      */
-    public MTOMXMLStreamWriter(OutputStream outStream, OMOutputFormat format)
+    public MTOMXMLStreamWriter(OutputStream outStream, OMOutputFormat format, boolean preserveAttachments)
             throws XMLStreamException, FactoryConfigurationError {
         if (isDebugEnabled) {
             log.debug("Creating MTOMXMLStreamWriter");
             log.debug("OutputStream =" + outStream.getClass());
             log.debug("OMFormat = " + format.toString());
+            log.debug("preserveAttachments = " + preserveAttachments);
         }
         if (isTraceEnabled) {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         this.format = format;
         this.outStream = outStream;
+        this.preserveAttachments = preserveAttachments;
 
         String encoding = format.getCharSetEncoding();
         if (encoding == null) { //Default encoding is UTF-8
@@ -210,7 +226,14 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
                 XOPEncodingStreamWriter encoder = (XOPEncodingStreamWriter)xmlWriter;
                 for (Iterator it = encoder.getContentIDs().iterator(); it.hasNext(); ) {
                     String contentID = (String)it.next();
-                    multipartWriter.writePart(encoder.getDataHandler(contentID), contentID);
+                    DataHandler dataHandler = encoder.getDataHandler(contentID);
+                    if (preserveAttachments || !(dataHandler instanceof DataHandlerExt)) {
+                        multipartWriter.writePart(dataHandler, contentID);
+                    } else {
+                        OutputStream out = multipartWriter.writePart(dataHandler.getContentType(), contentID);
+                        BufferUtils.inputStream2OutputStream(((DataHandlerExt)dataHandler).readOnce(), out);
+                        out.close();
+                    }
                 }
                 // This is for compatibility with writeOptimized
                 for (Iterator it = binaryNodeList.iterator(); it.hasNext();) {

@@ -163,7 +163,7 @@ public abstract class OMSerializableImpl implements OMSerializable {
     }
 
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, true);
         try {
             internalSerialize(writer, true);
             // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
@@ -188,7 +188,7 @@ public abstract class OMSerializableImpl implements OMSerializable {
 
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format);
+        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, false);
         try {
             internalSerialize(writer, false);
             // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter

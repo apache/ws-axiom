@@ -405,8 +405,13 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
             writeOutput(writer);
         } else {
             try {
-                XMLStreamWriterUtils.writeDataHandler(writer, (DataHandler)getDataHandler(),
-                        contentID, optimize);
+                if (dataHandlerObject instanceof DataHandlerProvider) {
+                    XMLStreamWriterUtils.writeDataHandler(writer, (DataHandlerProvider)dataHandlerObject,
+                            contentID, optimize);
+                } else {
+                    XMLStreamWriterUtils.writeDataHandler(writer, (DataHandler)getDataHandler(),
+                            contentID, optimize);
+                }
             } catch (IOException ex) {
                 throw new OMException("Error reading data handler", ex);
             }

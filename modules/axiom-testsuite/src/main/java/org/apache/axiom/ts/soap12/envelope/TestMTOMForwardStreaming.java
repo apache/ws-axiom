@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -105,7 +106,8 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
                         Attachments attachments = new Attachments(pipe1In, contentType);
                         SOAPEnvelope envelope = new MTOMStAXSOAPModelBuilder(
                                 StAXUtils.createXMLStreamReader(attachments.getSOAPPartInputStream()),
-                                        attachments).getSOAPEnvelope();
+                                        metaFactory.getSOAP12Factory(), attachments,
+                                        SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI).getSOAPEnvelope();
                         // The code path executed by serializeAndConsume is significantly different if
                         // the element is built. Therefore we need two different test executions.
                         if (buildSOAPPart) {
@@ -127,7 +129,8 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
             Attachments attachments = new Attachments(pipe2In, contentType);
             SOAPEnvelope envelope = new MTOMStAXSOAPModelBuilder(
                     StAXUtils.createXMLStreamReader(attachments.getSOAPPartInputStream()),
-                            attachments).getSOAPEnvelope();
+                        metaFactory.getSOAP12Factory(), attachments,
+                        SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI).getSOAPEnvelope();
             OMElement bodyElement = envelope.getBody().getFirstElement();
             Iterator it = bodyElement.getChildElements();
             OMElement data1 = (OMElement)it.next();
