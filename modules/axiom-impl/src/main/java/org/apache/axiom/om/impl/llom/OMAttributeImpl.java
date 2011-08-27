@@ -165,6 +165,16 @@ public class OMAttributeImpl implements OMAttribute {
         return namespace;
     }
 
+    public String getNamespaceURI() {
+        OMNamespace ns = getNamespace();
+        if (ns == null) {
+            return null;
+        } else {
+            String namespaceURI = ns.getNamespaceURI();
+            return namespaceURI.length() == 0 ? null : namespaceURI;
+        }
+    }
+
     public OMFactory getOMFactory() {
         return this.factory;
     }

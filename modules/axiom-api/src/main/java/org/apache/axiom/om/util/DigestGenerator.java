@@ -23,7 +23,7 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
@@ -239,8 +239,7 @@ public class DigestGenerator {
      * @return Returns the expanded name of OMElement
      */
     public String getExpandedName(OMElement element) {
-        String uri = element.getNamespaceURI();
-        return uri == null ? element.getLocalName() : uri + ":" + element.getLocalName();
+        return internalGetExpandedName(element);
     }
 
     /**
@@ -251,10 +250,12 @@ public class DigestGenerator {
      * @return Returns the expanded name of the OMAttribute
      */
     public String getExpandedName(OMAttribute attribute) {
-        OMNamespace ns = attribute.getNamespace();
-        return ns == null || ns.getNamespaceURI().length() == 0
-                ? attribute.getLocalName()
-                : ns.getNamespaceURI() + ":" + attribute.getLocalName();
+        return internalGetExpandedName(attribute);
+    }
+    
+    private String internalGetExpandedName(OMNamedInformationItem informationItem) {
+        String uri = informationItem.getNamespaceURI();
+        return uri == null ? informationItem.getLocalName() : uri + ":" + informationItem.getLocalName();
     }
 
     /**

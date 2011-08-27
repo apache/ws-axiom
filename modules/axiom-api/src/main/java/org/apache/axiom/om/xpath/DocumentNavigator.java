@@ -752,6 +752,10 @@ public class DocumentNavigator extends DefaultNavigator {
             return attribute.getNamespace();
         }
 
+        public String getNamespaceURI() {
+            return attribute.getNamespaceURI();
+        }
+
         public QName getQName() {
             return attribute.getQName();
         }

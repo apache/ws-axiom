@@ -352,15 +352,6 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
 
     /** OMText can contain its information as a QName as well. This will return the text as a QName */
     QName getTextAsQName();
-
-    /**
-     * Get the namespace URI of the element. Note that the contract of this method is identical to
-     * DOM's {@link org.w3c.dom.Node#getNamespaceURI()} (when called on an
-     * {@link org.w3c.dom.Element}).
-     * 
-     * @return the namespace URI of the element or <code>null</code> if the element has no namespace
-     */
-    String getNamespaceURI();
     
     /**
      * Set the namespace for this element. In addition to changing the namespace URI and prefix of

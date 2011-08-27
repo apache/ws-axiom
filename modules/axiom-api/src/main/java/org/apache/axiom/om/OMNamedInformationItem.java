@@ -53,4 +53,14 @@ public interface OMNamedInformationItem extends OMInformationItem {
      * @return the {@link QName} for the information item
      */
     QName getQName();
+
+    /**
+     * Get the namespace URI of the information item. Note that the contract of this method is
+     * identical to DOM's {@link org.w3c.dom.Node#getNamespaceURI()} (when called on an
+     * {@link org.w3c.dom.Element} or {@link org.w3c.dom.Attr}).
+     * 
+     * @return the namespace URI of the information item or <code>null</code> if the element has no
+     *         namespace
+     */
+    String getNamespaceURI();
 }

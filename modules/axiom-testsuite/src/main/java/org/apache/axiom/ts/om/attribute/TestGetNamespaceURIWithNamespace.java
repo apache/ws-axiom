@@ -16,28 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
+package org.apache.axiom.ts.om.attribute;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMNamedInformationItem#getNamespaceURI()} returns <code>null</code> when
- * invoked on an {@link OMElement} that has no namespace.
+ * Tests that {@link OMNamedInformationItem#getNamespaceURI()} returns the namespace URI when
+ * invoked on an {@link OMAttribute} that has a namespace.
  */
-public class TestGetNamespaceURIWithoutNamespace extends AxiomTestCase {
-    public TestGetNamespaceURIWithoutNamespace(OMMetaFactory metaFactory) {
+public class TestGetNamespaceURIWithNamespace extends AxiomTestCase {
+    public TestGetNamespaceURIWithNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement(new QName("test"));
-        assertNull(element.getNamespaceURI());
+        OMAttribute attr = factory.createOMAttribute("name", factory.createOMNamespace("urn:ns", "p"), "value");
+        assertEquals("urn:ns", attr.getNamespaceURI());
     }
 }

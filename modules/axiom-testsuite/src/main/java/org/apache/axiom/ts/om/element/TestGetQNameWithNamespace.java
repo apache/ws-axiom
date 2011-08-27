@@ -16,28 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
 
-import javax.xml.namespace.QName;
+package org.apache.axiom.ts.om.element;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests that {@link OMNamedInformationItem#getNamespaceURI()} returns <code>null</code> when
- * invoked on an {@link OMElement} that has no namespace.
- */
-public class TestGetNamespaceURIWithoutNamespace extends AxiomTestCase {
-    public TestGetNamespaceURIWithoutNamespace(OMMetaFactory metaFactory) {
+import javax.xml.namespace.QName;
+
+public class TestGetQNameWithNamespace extends AxiomTestCase {
+    public TestGetQNameWithNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement(new QName("test"));
-        assertNull(element.getNamespaceURI());
+        String localName = "TestLocalName";
+        String namespace = "http://ws.apache.org/axis2/ns";
+        String prefix = "axis2";
+        OMElement elem = factory.createOMElement(localName, namespace, prefix);
+        QName qname = elem.getQName();
+
+        assertEquals("Localname mismatch", localName, qname.getLocalPart());
+        assertEquals("Namespace mismatch", namespace, qname.getNamespaceURI());
+        assertEquals("namespace prefix mismatch", prefix, qname.getPrefix());
     }
+
 }

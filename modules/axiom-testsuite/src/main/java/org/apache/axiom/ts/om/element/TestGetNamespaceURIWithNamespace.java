@@ -23,10 +23,15 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestGetNamespaceURI extends AxiomTestCase {
-    public TestGetNamespaceURI(OMMetaFactory metaFactory) {
+/**
+ * Tests that {@link OMNamedInformationItem#getNamespaceURI()} returns the namespace URI when
+ * invoked on an {@link OMElement} that has a namespace.
+ */
+public class TestGetNamespaceURIWithNamespace extends AxiomTestCase {
+    public TestGetNamespaceURIWithNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 

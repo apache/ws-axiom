@@ -43,6 +43,8 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
     protected void addTests() {
         String[] conformanceFiles = AbstractTestCase.getConformanceTestFiles();
         addTest(new org.apache.axiom.ts.om.attribute.TestEqualsHashCode(metaFactory));
+        addTest(new org.apache.axiom.ts.om.attribute.TestGetNamespaceURIWithNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.attribute.TestGetNamespaceURIWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQNameWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQNameWithoutNamespace(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
@@ -119,9 +121,9 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetChildrenWithName4(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithNameOnIncompleteElement(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceURI(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceURIWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceURIWithoutNamespace(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestGetQName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromParser(metaFactory));
