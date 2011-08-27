@@ -248,7 +248,12 @@ final class PartImpl implements Part {
             state = STATE_STREAMING;
             return parser.getDecodedInputStream();
         } else {
-            return getContent().getInputStream();
+            ContentStore content = getContent();
+            InputStream stream = content.getInputStream();
+            if (!preserve) {
+                stream = new ReadOnceInputStreamWrapper(this, stream);
+            }
+            return stream;
         }
     }
     

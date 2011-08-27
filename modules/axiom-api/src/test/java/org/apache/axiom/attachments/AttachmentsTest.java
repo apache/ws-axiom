@@ -502,6 +502,39 @@ public class AttachmentsTest extends AbstractTestCase {
     }
     
     /**
+     * Tests that after consuming the input stream returned by {@link DataHandlerExt#readOnce()} for
+     * an attachment that has been buffered on disk, the temporary file for that attachment is
+     * deleted.
+     * 
+     * @throws Exception
+     */
+    public void testReadOnceOnBufferedPart() throws Exception {
+        InputStream in = getTestResource("mtom/msg-soap-wls81.txt");
+        MyLifecycleManager manager = new MyLifecycleManager();
+        Attachments attachments = new Attachments(manager, in,
+                "multipart/related;type=\"text/xml\";boundary=\"----=_Part_0_3437046.1188904239130\";start=__WLS__1188904239161__SOAP__",
+                true, getAttachmentsDir(), "1024");
+        
+        // Read the attachment once to make sure it is buffered
+        DataHandler dh = attachments.getDataHandler("__WLS__1188904239162__SOAP__");
+        InputStream content = dh.getInputStream();
+        IOUtils.copy(content, new NullOutputStream());
+        content.close();
+        
+        assertEquals(1, manager.getFileCount());
+
+        // Now consume the content of the attachment
+        content = ((DataHandlerExt)dh).readOnce();
+        IOUtils.copy(content, new NullOutputStream());
+        content.close();
+        
+        // The temporary file should have been deleted
+        assertEquals(0, manager.getFileCount());
+        
+        in.close();
+    }
+    
+    /**
      * Tests that attachments are correctly buffered on file if the threshold is very low. This is a
      * regression test for <a href="https://issues.apache.org/jira/browse/AXIOM-61">AXIOM-61</a>.
      * 

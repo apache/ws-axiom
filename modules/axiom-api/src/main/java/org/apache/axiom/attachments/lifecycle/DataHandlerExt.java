@@ -30,6 +30,9 @@ public interface DataHandlerExt {
      * similar to {@link DataHandler#getInputStream()} except that it can be invoked only once. If
      * the content has not been buffered yet, then the implementation may choose to enable streaming
      * of the content.
+     * <p>
+     * The implementation ensures that after the returned input steam is consumed, the data handler
+     * will be in the same state as after a call to {@link #purgeDataSource()}.
      * 
      * @return the stream representing the content; never <code>null</code>
      * @throws IOException

@@ -87,7 +87,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         OMOutputFormat format = new OMOutputFormat();
         format.setDoOptimize(optimize);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        root.serializeAndConsume(baos, format);
+        root.serialize(baos, format);
         String msg = baos.toString();
         if (optimize) {
             // Make sure there is an xop:Include element and an optimized attachment
@@ -194,7 +194,6 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
      * the XOP is preserved when it is serialized.
      * @throws Exception
      */
-    // TODO: because of the serializeAndConsume, this is actually NOT testing MTOMStAXSOAPModelBuilder, but StreamingOMSerializer!!!
     public void testCreateAndSerializeOptimized() throws Exception {
         OMElement root = createTestMTOMMessage();
         checkSerialization(root, true);
