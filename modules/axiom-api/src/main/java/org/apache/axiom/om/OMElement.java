@@ -77,7 +77,7 @@ import java.util.Iterator;
  * WSCOMMONS-517]
  * </ul>
  */
-public interface OMElement extends OMNode, OMContainer {
+public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
 
     /**
      * Returns a filtered list of children - just the elements.
@@ -354,27 +354,6 @@ public interface OMElement extends OMNode, OMContainer {
     QName getTextAsQName();
 
     /**
-     * Returns the local name of the element.
-     *
-     * @return Returns the local name of the element.
-     */
-    String getLocalName();
-
-    /**
-     * Method setLocalName
-     *
-     * @param localName
-     */
-    void setLocalName(String localName);
-
-    /**
-     * Get the namespace this element is part of.
-     * 
-     * @return the namespace of this element, or <code>null</code> if the element has no namespace
-     */
-    OMNamespace getNamespace();
-
-    /**
      * Get the namespace URI of the element. Note that the contract of this method is identical to
      * DOM's {@link org.w3c.dom.Node#getNamespaceURI()} (when called on an
      * {@link org.w3c.dom.Element}).
@@ -406,14 +385,6 @@ public interface OMElement extends OMNode, OMContainer {
      * @param namespace
      */
     void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace);
-
-
-    /**
-     * Gets the QName of this node.
-     *
-     * @return Returns the {@link QName} for the element.
-     */
-    QName getQName();
 
     /**
      * This is a convenience method only. This will basically serialize the given OMElement to a

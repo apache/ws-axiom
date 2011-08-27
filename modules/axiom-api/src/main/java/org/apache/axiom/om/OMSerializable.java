@@ -39,12 +39,7 @@ import javax.xml.stream.XMLStreamWriter;
  *       {@link XMLStreamWriter}.</li>
  * </ul>
  */
-public interface OMSerializable {
-    /**
-     * Returns the OMFactory that created this object
-     */
-    OMFactory getOMFactory();
-
+public interface OMSerializable extends OMInformationItem {
     /**
      * Indicates whether parser has parsed this information item completely or not. If some info are
      * not available in the item, one has to check this attribute to make sure that, this item has been

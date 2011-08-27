@@ -16,29 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.om;
 
-/** Interface OMAttribute */
-public interface OMAttribute extends OMNamedInformationItem {
-    /** @return Returns String. */
-    String getAttributeValue();
-
-    /** @param value  */
-    void setAttributeValue(String value);
-
-    /** @return Returns String. */
-    String getAttributeType();
-
-    /** @param value  */
-    void setAttributeType(String value);
-
-    /** @param omNamespace  */
-    void setOMNamespace(OMNamespace omNamespace);
-
+/**
+ * Represents an information item in an XML document. This is the super-interface for all
+ * information items known by Axiom.
+ */
+public interface OMInformationItem {
     /**
-     * Returns the owner element of this attribute
-     * @return OMElement - The owner element
+     * Get the {@link OMFactory} that created this information item.
      */
-    OMElement getOwner();
+    OMFactory getOMFactory();
 }
