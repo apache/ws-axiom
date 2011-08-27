@@ -36,9 +36,19 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.util.base64.Base64Utils;
 
 public class TextHelper {
-    
+    /**
+     * @deprecated
+     */
     private static int DEFAULT_FILE_THRESHOLD = 100 * 1024;
+    
+    /**
+     * @deprecated
+     */
     private static String DEFAULT_ATTACHMENT_DIR = "axiomTmp";
+    
+    /**
+     * @deprecated
+     */
     private static int DELETE_TIME = 60 * 60; // 1 Hour
     
     /**
@@ -113,16 +123,8 @@ public class TextHelper {
         return;
     }
     
-    
     /**
-     * Create an OMText node from a byte array containing binary data
-     * If the byte array is large and the optimize flag is set, then 
-     * the data is stored in a temp file to reduce in-core memory
-     * @param b
-     * @param off
-     * @param length
-     * @param factory
-     * @param isOptimize
+     * @deprecated The implementation of this method is incomplete. It will be removed in Axiom 1.3.
      */
     public static OMText toOMText(byte[] b, int off, int length, 
                                   OMFactory factory, 
@@ -132,15 +134,7 @@ public class TextHelper {
     }
     
     /**
-     * Create an OMText node from a byte array containing binary data
-     * If the byte array is large and the optimize flag is set, then 
-     * the data is stored in a temp file to reduce in-core memory
-     * @param b
-     * @param off
-     * @param length
-     * @param factory
-     * @param isOptimize
-     * @param attachmentDir
+     * @deprecated The implementation of this method is incomplete. It will be removed in Axiom 1.3.
      */
     public static OMText toOMText(byte[] b, int off, int length, 
                                       OMFactory factory, 
@@ -181,6 +175,9 @@ public class TextHelper {
         return omText;
     }
    
+    /**
+     * @deprecated
+     */
     private static LifecycleManager getLifecycleManager(OMFactory factory) {
         LifecycleManager lm = null;
         
@@ -196,6 +193,9 @@ public class TextHelper {
         
     }
     
+    /**
+     * @deprecated
+     */
     private static int getThreshold(OMFactory factory) {
        
         int threshold = DEFAULT_FILE_THRESHOLD;
@@ -208,6 +208,9 @@ public class TextHelper {
         
     }
     
+    /**
+     * @deprecated
+     */
     private static String getAttachmentDir(OMFactory factory) {
         
         String attachmentDir = DEFAULT_ATTACHMENT_DIR;
