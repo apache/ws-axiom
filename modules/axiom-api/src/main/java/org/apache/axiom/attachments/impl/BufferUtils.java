@@ -80,17 +80,10 @@ public class BufferUtils {
         byte[] buffer = getTempBuffer();
         
         try {
-        int bytesRead = is.read(buffer);
-        
-        
-        // Continue reading until no bytes are read and no
-        // bytes are now available.
-        while (bytesRead > 0 || is.available() > 0) {
-            if (bytesRead > 0) {
+            int bytesRead;
+            while ((bytesRead = is.read(buffer)) != -1) {
                 os.write(buffer, 0, bytesRead);
             }
-            bytesRead = is.read(buffer);
-        }
         } finally {
             releaseTempBuffer(buffer);
         }
