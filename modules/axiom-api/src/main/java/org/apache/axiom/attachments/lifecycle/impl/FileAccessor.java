@@ -54,6 +54,9 @@ public class FileAccessor extends Observable{
         this.file = file;   
     }
 
+    /**
+     * @deprecated This method is no longer used in Axiom 1.2.13 and will be removed in Axiom 1.3.
+     */
     public DataHandler getDataHandler(String contentType) throws MessagingException {
         if(log.isDebugEnabled()){
             log.debug("getDataHandler()");

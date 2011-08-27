@@ -34,6 +34,9 @@ import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * @deprecated This class is no longer used in Axiom 1.2.13 and will be removed in Axiom 1.3.
+ */
 public class DataHandlerExtImpl extends DataHandler implements
 		DataHandlerExt, Observer {
 
