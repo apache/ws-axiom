@@ -53,15 +53,7 @@ public interface DataHandlerExt {
 	public void purgeDataSource() throws IOException;
 	
 	/**
-	 * This method will give users an option to trigger a delete on 
-	 * temporary attachment file when DataHandler associated with the 
-	 * attachment is read once. Temp files are created for
-	 * attachment data that is greater than a threshold limit. 
-	 * On client side These temp attachment files are not deleted untill
-	 * the virtual machine exits. This method gives options to user to 
-	 * trigger a delete on attachment files when they read the dataHandler
-	 * once.
+	 * @deprecated Use {@link #readOnce()} or {@link #purgeDataSource()} instead.
 	 */
-	
 	public void deleteWhenReadOnce() throws IOException;
 }
