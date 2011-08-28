@@ -18,20 +18,20 @@
  */
 package org.apache.axiom.ts.om.factory;
 
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestCreateOMElementWithoutNamespace extends CreateOMElementTestCase {
-    public TestCreateOMElementWithoutNamespace(OMMetaFactory metaFactory, OMElementCreator variant) {
-        super(metaFactory, variant);
-    }
+/**
+ * Base class for the test cases that validate the behavior of the various
+ * <code>createOMElement</code> methods in {@link OMFactory}.
+ */
+public abstract class CreateOMElementTestCase extends AxiomTestCase {
+    protected final OMElementCreator variant;
 
-    protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = variant.createOMElement(factory, "test", "", "");
-        assertEquals("test", element.getLocalName());
-        assertNull(element.getNamespace());
-        assertFalse(element.getAllDeclaredNamespaces().hasNext());
+    public CreateOMElementTestCase(OMMetaFactory metaFactory, OMElementCreator variant) {
+        super(metaFactory);
+        this.variant = variant;
+        addTestProperty("variant", variant.getName());
     }
 }

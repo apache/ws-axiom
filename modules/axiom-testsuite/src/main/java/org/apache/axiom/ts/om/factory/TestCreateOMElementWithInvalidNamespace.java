@@ -20,19 +20,14 @@ package org.apache.axiom.ts.om.factory;
 
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Tests that {@link OMFactory} forbids creating prefixed elements with an empty namespace name.
  * Neither XML 1.0 nor XML 1.1 allow binding a prefix to the empty namespace name.
  */
-public class TestCreateOMElementWithInvalidNamespace extends AxiomTestCase {
-    private final OMElementCreator variant;
-    
+public class TestCreateOMElementWithInvalidNamespace extends CreateOMElementTestCase {
     public TestCreateOMElementWithInvalidNamespace(OMMetaFactory metaFactory, OMElementCreator variant) {
-        super(metaFactory);
-        this.variant = variant;
-        addTestProperty("variant", variant.getName());
+        super(metaFactory, variant);
     }
 
     protected void runTest() throws Throwable {

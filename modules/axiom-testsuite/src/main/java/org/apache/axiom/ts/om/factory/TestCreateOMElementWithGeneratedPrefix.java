@@ -24,15 +24,10 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestCreateOMElementWithGeneratedPrefix extends AxiomTestCase {
-    private final OMElementCreator variant;
-    
+public class TestCreateOMElementWithGeneratedPrefix extends CreateOMElementTestCase {
     public TestCreateOMElementWithGeneratedPrefix(OMMetaFactory metaFactory, OMElementCreator variant) {
-        super(metaFactory);
-        this.variant = variant;
-        addTestProperty("variant", variant.getName());
+        super(metaFactory, variant);
     }
 
     protected void runTest() throws Throwable {
