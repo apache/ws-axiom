@@ -28,22 +28,25 @@ public interface OMDocument extends OMContainer {
     final static String XML_11 = "1.1";
 
     /**
-     * Returns the document element.
-     *
-     * @return Returns OMElement.
+     * Get the document element.
+     * 
+     * @return the document element, or <code>null</code> if the document doesn't have any children
+     *         of type {@link OMElement}
      */
     OMElement getOMDocumentElement();
 
     /**
-     * Sets the document element of the XML document.
-     *
-     * @param rootElement
+     * Set the document element of the XML document. If the document has no document element, then
+     * the new document element will be appended as the last child. If the document already has a
+     * document element, then it will be replaced by the new one and the position of the other
+     * children relative to the document element is preserved.
+     * 
+     * @param documentElement
+     *            the new document element; must not be <code>null</code>
+     * @throws IllegalArgumentException
+     *             if the parameter is <code>null</code>
      */
-    // TODO: this method and its implementations need review:
-    //        - LLOM doesn't add the element as a child (!!!)
-    //        - Neither LLOM nor DOOM updates the parent of the element
-    // Note that OMSourcedElementImpl seems to depend on this behavior
-    void setOMDocumentElement(OMElement rootElement);
+    void setOMDocumentElement(OMElement documentElement);
 
     /**
      * Get the character set encoding scheme. This is the encoding that was used used for this

@@ -54,7 +54,6 @@ public class SOAPMessageImpl extends OMDocumentImpl implements SOAPMessage {
 
     public void setSOAPEnvelope(SOAPEnvelope envelope) throws SOAPProcessingException {
         super.addChild(envelope);
-        this.documentElement = envelope;
     }
 
     public void setOMDocumentElement(OMElement rootElement) {
@@ -69,6 +68,6 @@ public class SOAPMessageImpl extends OMDocumentImpl implements SOAPMessage {
 
     protected void internalSerialize(XMLStreamWriter writer, boolean cache,
                                      boolean includeXMLDeclaration) throws XMLStreamException {
-        ((OMNodeEx) this.documentElement).internalSerialize(writer, cache);
+        ((OMNodeEx)getOMDocumentElement()).internalSerialize(writer, cache);
     }
 }

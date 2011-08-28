@@ -45,9 +45,6 @@ import java.util.Iterator;
 
 /** Class OMDocumentImpl */
 public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OMContainerEx {
-    /** Field documentElement */
-    protected OMElement documentElement;
-
     /** Field firstChild */
     protected OMNode firstChild;
 
@@ -96,33 +93,45 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
     public OMDocumentImpl(OMElement documentElement, OMXMLParserWrapper parserWrapper,
                           OMFactory factory) {
         super(factory);
-        this.documentElement = documentElement;
         this.builder = parserWrapper;
+        setOMDocumentElement(documentElement);
     }
 
     public OMXMLParserWrapper getBuilder() {
         return builder;
     }
 
-    /**
-     * Method getDocumentElement.
-     *
-     * @return Returns OMElement.
-     */
     public OMElement getOMDocumentElement() {
-        while (documentElement == null && builder != null) {
-            builder.next();
-        }
-        return documentElement;
+        return getOMDocumentElement(true);
     }
 
-    /**
-     * Method setDocumentElement.
-     *
-     * @param documentElement
-     */
+    private OMElement getOMDocumentElement(boolean build) {
+        OMNode child = build ? getFirstOMChild() : getFirstOMChildIfAvailable();
+        while (child != null) {
+            if (child instanceof OMElement) {
+                return (OMElement)child;
+            }
+            child = build ? child.getNextOMSibling() : ((OMNodeEx)child).getNextOMSiblingIfAvailable();
+        }
+        return null;
+    }
+
     public void setOMDocumentElement(OMElement documentElement) {
-        this.documentElement = documentElement;
+        if (documentElement == null) {
+            throw new IllegalArgumentException("documentElement must not be null");
+        }
+        OMElement existingDocumentElement = getOMDocumentElement();
+        if (existingDocumentElement == null) {
+            addChild(documentElement);
+        } else {
+            OMNode nextSibling = existingDocumentElement.getNextOMSibling();
+            existingDocumentElement.detach();
+            if (nextSibling == null) {
+                addChild(documentElement);
+            } else {
+                nextSibling.insertSiblingBefore(documentElement);
+            }
+        }
     }
 
     /**
@@ -149,9 +158,8 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
      */
     public void addChild(OMNode child) {
         if (child instanceof OMElement) {
-            if (this.documentElement == null) {
+            if (getOMDocumentElement(false) == null) {
                 addChild((OMNodeImpl) child);
-                this.documentElement = (OMElement) child;
             } else {
                 throw new OMException("Document element already exists");
             }

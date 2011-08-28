@@ -232,7 +232,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
         if (this instanceof Document) {
             if (newDomChild instanceof ElementImpl) {
-                if (((DocumentImpl) this).documentElement != null) {
+                if (((DocumentImpl) this).getOMDocumentElement(false) != null) {
                     // Throw exception since there cannot be two document elements
                     throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                            DOMMessageFormatter.formatMessage(
@@ -242,8 +242,6 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 if (newDomChild.parentNode == null) {
                     newDomChild.parentNode = this;
                 }
-                // set the document element
-                ((DocumentImpl) this).documentElement = (ElementImpl) newDomChild;
             } else if (!(newDomChild instanceof CommentImpl
                     || newDomChild instanceof ProcessingInstructionImpl
                     || newDomChild instanceof DocumentFragmentImpl

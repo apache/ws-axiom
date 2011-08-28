@@ -67,9 +67,15 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
                 }
             }
         }
+        addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementAfterDetach(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsume(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestSetOMDocumentElementNew(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestSetOMDocumentElementNull(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestSetOMDocumentElementReplace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeAlreadyOwnedByOtherElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeFromOMAttributeMultiple(metaFactory));

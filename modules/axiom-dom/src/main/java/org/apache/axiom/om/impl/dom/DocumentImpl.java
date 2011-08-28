@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMDocumentImplUtil;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
@@ -67,8 +68,6 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     private String charEncoding;
 
     private Vector idAttrs;
-
-    protected ElementImpl documentElement;
 
     protected Hashtable identifiers;
 
@@ -402,8 +401,22 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         this.charEncoding = charsetEncoding;
     }
 
-    public void setOMDocumentElement(OMElement rootElement) {
-        this.firstChild = (ElementImpl) rootElement;
+    public void setOMDocumentElement(OMElement documentElement) {
+        if (documentElement == null) {
+            throw new IllegalArgumentException("documentElement must not be null");
+        }
+        OMElement existingDocumentElement = getOMDocumentElement();
+        if (existingDocumentElement == null) {
+            addChild(documentElement);
+        } else {
+            OMNode nextSibling = existingDocumentElement.getNextOMSibling();
+            existingDocumentElement.detach();
+            if (nextSibling == null) {
+                addChild(documentElement);
+            } else {
+                nextSibling.insertSiblingBefore(documentElement);
+            }
+        }
     }
 
     public void setStandalone(String isStandalone) {
@@ -435,17 +448,19 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         this.xmlEncoding = encoding;
     }
     
-    /**
-     * Returns the document element.
-     *
-     * @see org.apache.axiom.om.OMDocument#getOMDocumentElement()
-     */
     public OMElement getOMDocumentElement() {
+        return getOMDocumentElement(true);
+    }
 
-        while (this.documentElement == null && !this.done) {
-            this.builder.next();
+    OMElement getOMDocumentElement(boolean build) {
+        OMNode child = build ? getFirstOMChild() : getFirstOMChildIfAvailable();
+        while (child != null) {
+            if (child instanceof OMElement) {
+                return (OMElement)child;
+            }
+            child = build ? child.getNextOMSibling() : ((OMNodeEx)child).getNextOMSiblingIfAvailable();
         }
-        return this.documentElement;
+        return null;
     }
 
     /**

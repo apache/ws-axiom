@@ -124,7 +124,6 @@ public class StAXOMBuilder extends StAXBuilder {
         lookAheadToken = -1;
         document = createDocument();
         lastNode = element;
-        document.setOMDocumentElement(element);
         populateOMElement(element);
     }
     
