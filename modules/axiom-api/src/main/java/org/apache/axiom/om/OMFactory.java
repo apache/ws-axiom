@@ -53,6 +53,12 @@ public interface OMFactory {
     OMElement createOMElement(String localName, OMNamespace ns);
 
     /**
+     * Create an element with the given name and parent. If the specified {@link OMNamespace} has a
+     * namespace URI but a <code>null</code> prefix, the method will use an appropriate prefix if a
+     * corresponding namespace declaration is in scope on the parent or generate a new prefix if no
+     * corresponding namespace declaration is in scope. If a new prefix is generated or if the
+     * specified prefix and namespace URI are not bound in the scope of the parent element, the
+     * method will add an appropriate namespace declaration to the new element.
      * 
      * @param localName
      * @param ns
@@ -119,23 +125,24 @@ public interface OMFactory {
                                      String prefix);
 
     /**
-     * Create an OMElement with the given QName under the given parent.
-     *
-     * If the QName contains a prefix, we will ensure that an OMNamespace is created
-     * mapping the given namespace to the given prefix.  If no prefix is passed, we'll
-     * use whatever's already mapped in the parent, or create a generated one.
-     *
-     * @param qname the QName of the element to create
+     * Create an element with the given {@link QName} and parent. If a namespace URI is given but no
+     * prefix, the method will use an appropriate prefix if a corresponding namespace declaration is
+     * in scope on the parent or generate a new prefix if no corresponding namespace declaration is
+     * in scope. If a new prefix is generated or if the specified prefix and namespace URI are not
+     * bound in the scope of the parent element, the method will add an appropriate namespace
+     * declaration to the new element.
+     * 
+     * @param qname
+     *            the {@link QName} defining the name of the element to be created
      * @param parent
      *            the parent to which the newly created element will be added; this may be
      *            <code>null</code>, in which case the behavior of the method is the same as
      *            {@link #createOMElement(QName)}
-     * @return Returns the new OMElement
-     * @throws OMException if there's a namespace mapping problem
+     * @return the new element
      * @throws IllegalArgumentException
      *             if an attempt is made to create a prefixed element with an empty namespace name
      */
-    OMElement createOMElement(QName qname, OMContainer parent) throws OMException;
+    OMElement createOMElement(QName qname, OMContainer parent);
 
     /**
      * Create an element with the given {@link QName}. If a namespace URI is given but no prefix,
@@ -147,12 +154,10 @@ public interface OMFactory {
      * @param qname
      *            the {@link QName} defining the name of the element to be created
      * @return the new element
-     * @throws OMException
-     *             TODO: when???
      * @throws IllegalArgumentException
      *             if an attempt is made to create a prefixed element with an empty namespace name
      */
-    OMElement createOMElement(QName qname) throws OMException;
+    OMElement createOMElement(QName qname);
 
     /**
      * Create an {@link OMNamespace} instance or retrieve an existing one if the factory supports

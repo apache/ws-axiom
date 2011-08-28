@@ -32,6 +32,7 @@ import org.apache.axiom.ts.om.element.TestSetTextQName;
 import org.apache.axiom.ts.om.element.TestSetTextQNameWithEmptyPrefix;
 import org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix;
+import org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 
@@ -57,6 +58,8 @@ public class OMImplementationTest extends TestCase {
         
         // TODO: DOOM's behavior differs from LLOM's behavior in this case
         builder.exclude(TestCreateOMElementWithGeneratedPrefix.class, "(variant=QName*)");
+        builder.exclude(TestCreateOMElementWithNamespaceInScope.class, "(variant=QName,OMContainer)");
+        builder.exclude(TestCreateOMElementWithNamespaceInScope.class, "(variant=String,OMNamespace,OMContainer)");
         
         // DOOM doesn't support CDATA sections
         builder.exclude(TestGetXMLStreamReaderCDATAEventFromElement.class);

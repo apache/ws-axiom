@@ -32,7 +32,7 @@ public class TestCreateOMElementWithGeneratedPrefix extends CreateOMElementTestC
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = variant.createOMElement(factory, "test", "urn:test", null);
+        OMElement element = variant.createOMElement(factory, null, "test", "urn:test", null);
         assertEquals("test", element.getLocalName());
         OMNamespace ns = element.getNamespace();
         assertNotNull(ns);

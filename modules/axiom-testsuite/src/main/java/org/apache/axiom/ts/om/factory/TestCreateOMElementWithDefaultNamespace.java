@@ -32,7 +32,7 @@ public class TestCreateOMElementWithDefaultNamespace extends CreateOMElementTest
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = variant.createOMElement(factory, "test", "urn:ns", "");
+        OMElement element = variant.createOMElement(factory, null, "test", "urn:ns", "");
         assertTrue(element.isComplete());
         assertEquals("test", element.getLocalName());
         OMNamespace ns = factory.createOMNamespace("urn:ns", "");

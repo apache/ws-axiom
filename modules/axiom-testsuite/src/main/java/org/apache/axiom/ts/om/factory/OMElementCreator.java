@@ -20,14 +20,15 @@ package org.apache.axiom.ts.om.factory;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 
 public abstract class OMElementCreator {
     public static final OMElementCreator[] INSTANCES = new OMElementCreator[] {
-        new OMElementCreator("QName", false) {
-            public OMElement createOMElement(OMFactory factory, String localName,
+        new OMElementCreator("QName", false, false) {
+            public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 if (prefix == null) {
                     prefix = "";
@@ -35,31 +36,31 @@ public abstract class OMElementCreator {
                 return factory.createOMElement(new QName(namespaceURI, localName, prefix));
             }
         },
-        new OMElementCreator("QName,OMContainer", false) {
-            public OMElement createOMElement(OMFactory factory, String localName,
+        new OMElementCreator("QName,OMContainer", false, true) {
+            public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 if (prefix == null) {
                     prefix = "";
                 }
-                return factory.createOMElement(new QName(namespaceURI, localName, prefix), null);
+                return factory.createOMElement(new QName(namespaceURI, localName, prefix), parent);
             }
         },
-        new OMElementCreator("String,OMNamespace", true) {
-            public OMElement createOMElement(OMFactory factory, String localName,
+        new OMElementCreator("String,OMNamespace", true, false) {
+            public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 return factory.createOMElement(localName,
                         getOMNamespace(factory, namespaceURI, prefix));
             }
         },
-        new OMElementCreator("String,OMNamespace,OMContainer", true) {
-            public OMElement createOMElement(OMFactory factory, String localName,
+        new OMElementCreator("String,OMNamespace,OMContainer", true, true) {
+            public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 return factory.createOMElement(localName,
-                        getOMNamespace(factory, namespaceURI, prefix), null);
+                        getOMNamespace(factory, namespaceURI, prefix), parent);
             }
         },
-        new OMElementCreator("String,String,String", true) {
-            public OMElement createOMElement(OMFactory factory, String localName,
+        new OMElementCreator("String,String,String", true, false) {
+            public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 return factory.createOMElement(localName, namespaceURI, prefix);
             }
@@ -68,22 +69,62 @@ public abstract class OMElementCreator {
     
     private final String name;
     private final boolean supportsDefaultNamespace;
+    private final boolean supportsContainer;
     
-    public OMElementCreator(String name, boolean supportsDefaultNamespace) {
+    public OMElementCreator(String name, boolean supportsDefaultNamespace, boolean supportsContainer) {
         this.name = name;
         this.supportsDefaultNamespace = supportsDefaultNamespace;
+        this.supportsContainer = supportsContainer;
     }
 
     public final String getName() {
         return name;
     }
 
+    /**
+     * Determines whether this strategy can be used to create an {@link OMElement} in the default
+     * namespace, i.e. with an empty prefix.
+     * 
+     * @return <code>true</code> if the strategy supports default namespaces, <code>false</code>
+     *         otherwise
+     */
     public final boolean isSupportsDefaultNamespace() {
         return supportsDefaultNamespace;
     }
 
-    public abstract OMElement createOMElement(OMFactory factory, String localName,
-            String namespaceURI, String prefix);
+    /**
+     * Determines whether this strategy can be used to create an {@link OMElement} as a child of
+     * another container.
+     * 
+     * @return <code>true</code> if a {@link OMContainer} object can be passed to
+     *         {@link #createOMElement(OMFactory, OMContainer, String, String, String)}
+     */
+    public final boolean isSupportsContainer() {
+        return supportsContainer;
+    }
+
+    /**
+     * Create an {@link OMElement}.
+     * 
+     * @param factory
+     *            the factory used to create the element
+     * @param parent
+     *            the parent of the element to be created or <code>null</code> to create an orphaned
+     *            element; this parameter can only be used if {@link #isSupportsContainer()} returns
+     *            <code>true</code>
+     * @param localName
+     *            the local name of the element
+     * @param namespaceURI
+     *            the namespace URI of the element
+     * @param prefix
+     *            the prefix of the element, the empty string if the element is to be created in the
+     *            default namespace (only supported if {@link #isSupportsDefaultNamespace()} returns
+     *            <code>true</code>), or <code>null</code> if a prefix should be generated or chosen
+     *            based on the namespace context of the parent
+     * @return the created element
+     */
+    public abstract OMElement createOMElement(OMFactory factory, OMContainer parent,
+            String localName, String namespaceURI, String prefix);
     
     static OMNamespace getOMNamespace(OMFactory factory, String namespaceURI, String prefix) {
         if (prefix == null) {

@@ -18,20 +18,33 @@
  */
 package org.apache.axiom.ts.om.factory;
 
+import java.util.Iterator;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamespace;
 
-public class TestCreateOMElementWithoutNamespace extends CreateOMElementTestCase {
-    public TestCreateOMElementWithoutNamespace(OMMetaFactory metaFactory, OMElementCreator variant) {
+/**
+ * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} if no
+ * namespace prefix is given and an existing namespace declaration is in scope. In this case,
+ * <code>createOMElement</code> must use the existing prefix. Note that this only applies if a
+ * parent is specified for the {@link OMElement} to be created.
+ */
+public class TestCreateOMElementWithNamespaceInScope extends CreateOMElementTestCase {
+    public TestCreateOMElementWithNamespaceInScope(OMMetaFactory metaFactory, OMElementCreator variant) {
         super(metaFactory, variant);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = variant.createOMElement(factory, null, "test", "", "");
-        assertEquals("test", element.getLocalName());
-        assertNull(element.getNamespace());
-        assertFalse(element.getAllDeclaredNamespaces().hasNext());
+        OMElement parent = factory.createOMElement("parent", "urn:test", "p");
+        OMElement child = variant.createOMElement(factory, parent, "child", "urn:test", null);
+        assertTrue(child.isComplete());
+        assertEquals("child", child.getLocalName());
+        OMNamespace ns = factory.createOMNamespace("urn:test", "p");
+        assertEquals(ns, child.getNamespace());
+        Iterator it = child.getAllDeclaredNamespaces();
+        assertFalse(it.hasNext());
     }
 }

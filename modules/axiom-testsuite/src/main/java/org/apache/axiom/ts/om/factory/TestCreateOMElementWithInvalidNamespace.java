@@ -33,7 +33,7 @@ public class TestCreateOMElementWithInvalidNamespace extends CreateOMElementTest
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         try {
-            variant.createOMElement(factory, "test", "", "p");
+            variant.createOMElement(factory, null, "test", "", "p");
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException ex) {
             // Expected
