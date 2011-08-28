@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl;
+package org.apache.axiom.om.impl.common;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 

@@ -20,7 +20,7 @@
 package org.apache.axiom.om.impl.llom.factory;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.AbstractOMMetaFactory;
+import org.apache.axiom.om.impl.common.factory.AbstractOMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory;
 import org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory;

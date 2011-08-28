@@ -44,6 +44,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-common-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-activation_1.1_spec</artifactId>
         </dependency>
@@ -122,12 +127,44 @@
                     <instructions>
                         <_nouses>true</_nouses>
                         <Private-Package>org.apache.axiom.*</Private-Package>
+                        <Import-Package>
+                            <!-- These classes are included by maven-shade-plugin; don't import them. -->
+                            !org.apache.axiom.om.impl.common*,
+                            <!-- Packages used by axiom-common-impl and not detected by maven-bundle-plugin -->
+                            org.xml.sax,
+                            javax.xml.transform,
+                            *
+                        </Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-scr-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <includes>
+                                    <include>${project.groupId}:axiom-common-impl</include>
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.axiom.om.impl.common</pattern>
+                                    <shadedPattern>org.apache.axiom.om.impl.llom</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <!-- Attach a JAR with the test classes so that we can reuse them in other modules
                  (see http://maven.apache.org/guides/mini/guide-attached-tests.html). -->

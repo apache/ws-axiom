@@ -549,6 +549,7 @@
         <module>modules/axiom-jaxen-testsuite</module>
         <module>modules/axiom-api</module>
         <module>modules/axiom-testsuite</module>
+        <module>modules/axiom-common-impl</module>
         <module>modules/axiom-impl</module>
         <module>modules/axiom-dom</module>
         <module>modules/axiom-c14n</module>
