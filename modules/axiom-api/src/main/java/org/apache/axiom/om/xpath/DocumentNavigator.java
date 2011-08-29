@@ -29,7 +29,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.jaxen.BaseXPath;
@@ -359,9 +358,10 @@ public class DocumentNavigator extends DefaultNavigator {
                 contextNode instanceof OMElement)) {
             return JaxenConstants.EMPTY_ITERATOR;
         }
+        OMContainer omContextNode = (OMContainer) contextNode;
         List nsList = new ArrayList();
         HashSet prefixes = new HashSet();
-        for (OMContainer context = (OMContainer) contextNode;
+        for (OMContainer context = omContextNode;
              context != null && !(context instanceof OMDocument);
              context = ((OMElement) context).getParent()) {
             OMElement element = (OMElement) context;
@@ -393,10 +393,10 @@ public class DocumentNavigator extends DefaultNavigator {
         }
         nsList.add(
                 new OMNamespaceEx(
-                        new OMNamespaceImpl(
+                        omContextNode.getOMFactory().createOMNamespace(
                                 "http://www.w3.org/XML/1998/namespace",
                                 "xml"),
-                        (OMContainer) contextNode));
+                        omContextNode));
         return nsList.iterator();
     }
 

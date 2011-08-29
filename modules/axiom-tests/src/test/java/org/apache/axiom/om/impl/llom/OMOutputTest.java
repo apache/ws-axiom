@@ -25,8 +25,8 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.OMNamespaceImpl;
 
 import javax.activation.DataHandler;
 import java.io.File;
@@ -63,16 +63,16 @@ public class OMOutputTest extends AbstractTestCase {
 
         OMFactory fac = OMAbstractFactory.getOMFactory();
 
-        OMNamespaceImpl soap = new OMNamespaceImpl(
+        OMNamespace soap = fac.createOMNamespace(
                 "http://schemas.xmlsoap.org/soap/envelope/", "soap");
         envelope = new OMElementImpl("Envelope", soap, fac);
         OMElement body = new OMElementImpl("Body", soap, fac);
 
-        OMNamespaceImpl dataName = new OMNamespaceImpl(
+        OMNamespace dataName = fac.createOMNamespace(
                 "http://www.example.org/stuff", "m");
         OMElement data = new OMElementImpl("data", dataName, fac);
 
-        OMNamespaceImpl mime = new OMNamespaceImpl(
+        OMNamespace mime = fac.createOMNamespace(
                 "http://www.w3.org/2003/06/xmlmime", "mime");
 
         OMElement text = new OMElementImpl("name", dataName, fac);

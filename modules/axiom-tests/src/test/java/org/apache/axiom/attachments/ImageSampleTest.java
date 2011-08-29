@@ -23,9 +23,9 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMTextImpl;
 import org.apache.axiom.om.util.StAXUtils;
@@ -91,12 +91,12 @@ public class ImageSampleTest extends AbstractTestCase {
         baseOutputFormat.setDoOptimize(false);
 
         OMFactory fac = OMAbstractFactory.getOMFactory();
-        OMNamespaceImpl soap = new OMNamespaceImpl(
+        OMNamespace soap = fac.createOMNamespace(
                 "http://schemas.xmlsoap.org/soap/envelope/", "soap");
         OMElement envelope = new OMElementImpl("Envelope", soap, fac);
         OMElement body = new OMElementImpl("Body", soap, fac);
 
-        OMNamespaceImpl dataName = new OMNamespaceImpl(
+        OMNamespace dataName = fac.createOMNamespace(
                 "http://www.example.org/stuff", "m");
         OMElement data = new OMElementImpl("data", dataName, fac);
 

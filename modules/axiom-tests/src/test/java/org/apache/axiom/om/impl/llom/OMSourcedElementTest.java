@@ -31,7 +31,6 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.ds.CharArrayDataSource;
-import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
@@ -93,8 +92,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
 
     protected void setUp() throws Exception {
         OMFactory f = new OMLinkedListImplFactory();
-        OMNamespace ns = new OMNamespaceImpl("http://www.sosnoski.com/uwjws/library", "");
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         element = new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument));
         root = f.createOMElement("root", rootNS);
         root.addChild(element);
@@ -108,8 +107,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         
         // Build a root element and child OMSE
         OMFactory f = new OMLinkedListImplFactory();
-        OMNamespace ns = new OMNamespaceImpl("http://www.sosnoski.com/uwjws/library", "");
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMElement child = new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument));
         OMElement root = f.createOMElement("root", rootNS);
         
@@ -310,9 +309,9 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns =
-                new OMNamespaceImpl("http://www.sosnoski.com/uwjws/library", "DUMMYPREFIX");
+                f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "DUMMYPREFIX");
         OMElement element =
                 new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument));
         OMElement root = f.createOMElement("root", rootNS);
@@ -370,9 +369,9 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns =
-                new OMNamespaceImpl("http://www.sosnoski.com/uwjws/library", "DUMMYPREFIX");
+                f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "DUMMYPREFIX");
         OMElement element =
                 new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument));
         OMElement root = f.createOMElement("root", rootNS);
@@ -415,8 +414,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
-        OMNamespace ns = new OMNamespaceImpl("http://DUMMYNS", "DUMMYPREFIX");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
+        OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "DUMMYPREFIX");
         OMElement element =
                 new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument));
         OMElement root = f.createOMElement("root", rootNS);
@@ -484,8 +483,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
-        OMNamespace ns = new OMNamespaceImpl("http://DUMMYNS", "DUMMYPREFIX");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
+        OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "DUMMYPREFIX");
         OMElement element =
                 new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument));
         OMElement root = f.createOMElement("root", rootNS);
@@ -525,8 +524,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
-        OMNamespace ns = new OMNamespaceImpl("http://www.sosnoski.com/uwjws/library", "");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
+        OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "");
         OMElement element =
                 new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument2));
         OMElement root = f.createOMElement("root", rootNS);
@@ -584,8 +583,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
-        OMNamespace ns = new OMNamespaceImpl("http://www.sosnoski.com/uwjws/library", "");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
+        OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "");
         OMElement element =
                 new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument2));
         OMElement root = f.createOMElement("root", rootNS);
@@ -627,8 +626,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
-        OMNamespace ns = new OMNamespaceImpl("http://DUMMYNS", "DUMMYPREFIX");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
+        OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "DUMMYPREFIX");
         OMElement element =
                 new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument2));
         OMElement root = f.createOMElement("root", rootNS);
@@ -696,8 +695,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
-        OMNamespace ns = new OMNamespaceImpl("http://DUMMYNS", "");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
+        OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "");
         OMElement element =
                 new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument2));
         OMElement root = f.createOMElement("root", rootNS);
@@ -739,8 +738,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
-        OMNamespace ns = new OMNamespaceImpl("", "");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
+        OMNamespace ns = f.createOMNamespace("", "");
         OMElement element =
                 new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument3));
         OMElement root = f.createOMElement("root", rootNS);
@@ -797,8 +796,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
-        OMNamespace ns = new OMNamespaceImpl("", "");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
+        OMNamespace ns = f.createOMNamespace("", "");
         OMElement element =
                 new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument3));
         OMElement root = f.createOMElement("root", rootNS);
@@ -838,8 +837,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
-        OMNamespace ns = new OMNamespaceImpl("http://DUMMYNS", "DUMMYPREFIX");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
+        OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "DUMMYPREFIX");
         OMElement element =
                 new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument3));
         OMElement root = f.createOMElement("root", rootNS);
@@ -906,8 +905,8 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
 
         // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
-        OMNamespace rootNS = new OMNamespaceImpl("http://sampleroot", "rootPrefix");
-        OMNamespace ns = new OMNamespaceImpl("http://DUMMYNS", "");
+        OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
+        OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "");
         OMElement element =
                 new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument3));
         OMElement root = f.createOMElement("root", rootNS);
