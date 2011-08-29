@@ -16,12 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.xpath;
+package org.apache.axiom.ts.xpath;
 
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.AxiomTestCase;
 
-public class AXIOMXPathTest extends AXIOMXPathTestBase {
-    public AXIOMXPathTest(String name) {
-        super(name, new OMLinkedListMetaFactory());
+public class TestAXIOMXPath extends AxiomTestCase {
+    private final AXIOMXPathTestCase test;
+    
+    public TestAXIOMXPath(OMMetaFactory metaFactory, String methodName) {
+        super(metaFactory);
+        test = new AXIOMXPathTestCase(methodName, metaFactory);
+        addTestProperty("test", methodName.substring(4));
+    }
+
+    protected void runTest() throws Throwable {
+        test.runBare();
     }
 }

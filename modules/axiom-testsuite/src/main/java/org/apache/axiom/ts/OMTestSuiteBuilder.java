@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts;
 
+import java.lang.reflect.Method;
+
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.om.container.OMContainerFactory;
@@ -25,6 +27,8 @@ import org.apache.axiom.ts.om.container.OMElementFactory;
 import org.apache.axiom.ts.om.container.SerializationMethod;
 import org.apache.axiom.ts.om.container.SerializeToOutputStream;
 import org.apache.axiom.ts.om.factory.OMElementCreator;
+import org.apache.axiom.ts.xpath.AXIOMXPathTestCase;
+import org.apache.axiom.ts.xpath.TestAXIOMXPath;
 
 public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
     private static final OMContainerFactory[] containerFactories = {
@@ -223,5 +227,12 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.pi.TestDigest(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestBase64Streaming(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestDigest(metaFactory));
+        Method[] methods = AXIOMXPathTestCase.class.getMethods();
+        for (int i=0; i<methods.length; i++) {
+            String methodName = methods[i].getName();
+            if (methodName.startsWith("test")) {
+                addTest(new TestAXIOMXPath(metaFactory, methodName));
+            }
+        }
     }
 }

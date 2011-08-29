@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.xpath;
+package org.apache.axiom.ts.xpath;
 
 import java.io.InputStream;
 
@@ -28,13 +28,14 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.impl.RootWhitespaceFilter;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.xpath.DocumentNavigator;
 import org.apache.axiom.test.jaxen.JaxenXPathTestBase;
 import org.jaxen.Navigator;
 
-public class AXIOMXPathTestBase extends JaxenXPathTestBase {
+public class AXIOMXPathTestCase extends JaxenXPathTestBase {
     final OMMetaFactory omMetaFactory;
     
-    public AXIOMXPathTestBase(String name, OMMetaFactory omMetaFactory) {
+    public AXIOMXPathTestCase(String name, OMMetaFactory omMetaFactory) {
         super(name);
         this.omMetaFactory = omMetaFactory;
     }
