@@ -263,13 +263,13 @@ public interface OMContainer extends OMSerializable {
      * valid:
      * <ul>
      * <li>Some code assumes that the returned reader is an instance of
-     * {@link org.apache.axiom.om.impl.OMStAXWrapper}. While it is true that Axiom internally uses
+     * {@link org.apache.axiom.om.impl.common.OMStAXWrapper}. While it is true that Axiom internally uses
      * this class to synthesize StAX events, it may wrap this instance in another reader
      * implementation. E.g. depending on the log level, the reader will be wrapped using
      * {@link org.apache.axiom.om.util.OMXMLStreamReaderValidator}. This was already the case in
      * Axiom versions prior to 1.2.9. It should also be noted that instances of
      * {@link OMSourcedElement} (which extends the present interface) may return a reader that is
-     * not implemented using {@link org.apache.axiom.om.impl.OMStAXWrapper}.</li>
+     * not implemented using {@link org.apache.axiom.om.impl.common.OMStAXWrapper}.</li>
      * <li>Some code uses the {@link OMXMLStreamReader} interface of the returned reader to switch
      * off MTOM inlining using {@link OMXMLStreamReader#setInlineMTOM(boolean)}. This has now been
      * deprecated and it is recommended to use

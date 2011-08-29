@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLStreamReader;
-import org.apache.axiom.om.impl.OMStAXWrapper;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.traverse.OMDescendantsIterator;
 import org.apache.axiom.om.util.StAXUtils;
@@ -128,7 +127,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         XMLStreamReader original = XMLStreamReaderUtils.getOriginalXMLStreamReader(reader);
         
         // The caching parser will be an OMStaXWrapper.
-        assertTrue(original instanceof OMStAXWrapper);
+        assertTrue(original instanceof OMXMLStreamReader);
     }
     
     public void testCreateOMElement() throws Exception {

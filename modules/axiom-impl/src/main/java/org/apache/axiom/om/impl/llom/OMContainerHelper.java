@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.OMStAXWrapper;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

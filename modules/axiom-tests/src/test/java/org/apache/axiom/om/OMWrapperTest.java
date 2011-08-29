@@ -20,8 +20,9 @@
 package org.apache.axiom.om;
 
 import junit.framework.TestCase;
+
+import org.apache.axiom.om.impl.OMXMLStreamReaderEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.llom.OMStAXWrapper;
 import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.stream.XMLStreamReader;
@@ -60,8 +61,8 @@ public class OMWrapperTest extends TestCase {
         XMLStreamReader reader = wrap2Element.getXMLStreamReaderWithoutCaching();
         
         // Make sure the reader is an OMStAXWrapper
-        if (reader instanceof OMStAXWrapper) {
-            OMStAXWrapper wrapper = (OMStAXWrapper) reader;
+        if (reader instanceof OMXMLStreamReaderEx) {
+            OMXMLStreamReaderEx wrapper = (OMXMLStreamReaderEx) reader;
             assertTrue(!wrapper.isClosed());
             wrapper.releaseParserOnClose(true);
         }

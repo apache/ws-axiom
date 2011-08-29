@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl;
+package org.apache.axiom.om.impl.common;
 
 import java.io.IOException;
 import java.io.Writer;

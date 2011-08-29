@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.OMStAXWrapper;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
@@ -692,7 +693,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             throw new UnsupportedOperationException(
                     "The parser is already consumed!");
         }
-        return new DOMStAXWrapper(builder, this, cache);
+        return new OMStAXWrapper(builder, this, cache);
     }
 
     public SAXSource getSAXSource(boolean cache) {

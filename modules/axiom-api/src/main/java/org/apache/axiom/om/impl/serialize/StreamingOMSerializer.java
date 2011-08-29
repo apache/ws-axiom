@@ -23,7 +23,7 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMSerializer;
-import org.apache.axiom.om.impl.OMStAXWrapper;
+import org.apache.axiom.om.impl.OMXMLStreamReaderEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -87,7 +87,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(reader);
         dataHandlerWriter = XMLStreamWriterUtils.getDataHandlerWriter(writer);
         
-        if (reader instanceof OMStAXWrapper) {
+        if (reader instanceof OMXMLStreamReaderEx) {
             int event = reader.getEventType();
             if (event <= 0 ||
                 event == XMLStreamReader.PROCESSING_INSTRUCTION ||
@@ -99,14 +99,14 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                 if (log.isDebugEnabled()) {
                     log.debug("Enable OMDataSource events while serializing this document");
                 }
-                ((OMStAXWrapper) reader).enableDataSourceEvents(true);
+                ((OMXMLStreamReaderEx) reader).enableDataSourceEvents(true);
             }
         }
         try {
             serializeNode(reader, writer, startAtNext);
         } finally {
-            if (reader instanceof OMStAXWrapper) {
-                ((OMStAXWrapper) reader).enableDataSourceEvents(false);
+            if (reader instanceof OMXMLStreamReaderEx) {
+                ((OMXMLStreamReaderEx) reader).enableDataSourceEvents(false);
             }
         }
         
@@ -148,8 +148,8 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             // If the reader is exposing a DataSourc
             // for this event, then simply serialize the
             // DataSource
-            if (reader instanceof OMStAXWrapper) {
-                ds = ((OMStAXWrapper) reader).getDataSource();
+            if (reader instanceof OMXMLStreamReaderEx) {
+                ds = ((OMXMLStreamReaderEx) reader).getDataSource();
             }
             if (ds != null) {
                 ds.serialize(writer);

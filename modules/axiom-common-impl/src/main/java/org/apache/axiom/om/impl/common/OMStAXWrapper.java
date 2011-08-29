@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl;
+package org.apache.axiom.om.impl.common;
 
 import java.io.IOException;
 
@@ -28,10 +28,9 @@ import javax.xml.stream.util.StreamReaderDelegate;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.OMXMLStreamReader;
+import org.apache.axiom.om.impl.OMXMLStreamReaderEx;
 import org.apache.axiom.util.stax.xop.ContentIDGenerator;
 import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.axiom.util.stax.xop.XOPEncodingStreamReader;
@@ -43,7 +42,7 @@ import org.apache.commons.logging.LogFactory;
  * This class does intentionally does not implement XMLStreamReaderContainer because
  * it does not wrap a parser (it wraps an OM graph).
  */
-public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReader {
+public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx {
     private static final Log log = LogFactory.getLog(OMStAXWrapper.class);
     
     private final SwitchingWrapper switchingWrapper;
@@ -162,21 +161,10 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
         switchingWrapper.setNamespaceURIInterning(b);
     }
     
-    
-    /**
-     * @return OMDataSource if available
-     */
     public OMDataSource getDataSource() {
         return switchingWrapper.getDataSource();
     }
     
-    /**
-     * If enabled, treat OMSourcedElements that have
-     * a OMDataSource as leaf nodes.  The caller
-     * should use the getDataSource method to obtain
-     * the OMDataSource for these events.
-     * @param value boolean
-     */
     public void enableDataSourceEvents(boolean value) {
         switchingWrapper.enableDataSourceEvents(value);
     }
