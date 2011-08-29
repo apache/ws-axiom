@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.DigestTestCase;
 
 // Regression test for AXIOM-203
@@ -28,7 +28,7 @@ public class TestDigestWithoutNamespace extends DigestTestCase {
         super(metaFactory, "MD5", "0730b7dda59f628a10b53b5502682ceb");
     }
 
-    protected OMNode createNode() {
+    protected OMInformationItem createInformationItem() {
         return metaFactory.getOMFactory().createOMElement("elementName", null);
     }
 }

@@ -42,6 +42,8 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
     
     protected void addTests() {
         String[] conformanceFiles = AbstractTestCase.getConformanceTestFiles();
+        addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestEqualsHashCode(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetNamespaceURIWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetNamespaceURIWithoutNamespace(metaFactory));
@@ -67,6 +69,10 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
                 }
             }
         }
+        addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest1.xml", "MD5", "3e5d68c6607bc56c9c171560e4f19db9"));
+        addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest2.xml", "SHA1", "3c47a807517d867d42ffacb2d3e9da81895d5aac"));
+        addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest3.xml", "SHA", "41466144c1cab4234fb127cfb8cf92f9"));
+        addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest4.xml", "SHA", "be3b0836cd6f0ceacdf3d40b49a0468d03d2ba2e"));
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementAfterDetach(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementWithParser(metaFactory));
@@ -101,8 +107,6 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestDeclareNamespaceWithGeneratedPrefix3(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDigestWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDigestWithoutNamespace(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestDigestWithQualifiedAttribute(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestDigestWithUnqualifiedAttribute(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestFindNamespaceURIWithPrefixUndeclaring(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAllAttributes1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAllAttributes2(metaFactory));

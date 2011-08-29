@@ -1,0 +1,2 @@
+<?xml version="1.0"?>
+<root p1:attr1="value1" p2:attr2="value2" p3:attr3="value3" xmlns:p1="urn:test" xmlns:p2="http://apache.org" xmlns:p3="urn:common"/>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<?pi1 data1?>
+<root xmlns="urn:test">
+    <?pi2 data2?>
+    <!-- Some comment -->
+    <child1 attr1="value1" attr2="value2"/>
+    <child2 xml:lang="en">
+        Text
+    </child2>
+    <child3 ns1:c="c" ns2:b="b" ns3:a="a" xmlns:ns1="urn:ns1" xmlns:ns2="http://example.org" xmlns:ns3="urn:ns3">
+        More text
+    </child3>
+</root>
+<?pi3 data3?>

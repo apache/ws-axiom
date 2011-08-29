@@ -25,6 +25,7 @@ import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.ts.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource;
 import org.apache.axiom.ts.om.container.TestSerialize;
+import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
@@ -54,6 +55,9 @@ public class OMImplementationTest extends TestCase {
         
         // TODO: suspecting Woodstox bug here
         builder.exclude(TestCreateOMBuilderFromDOMSource.class, "(file=spaces.xml)");
+        
+        // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
+        builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
         
         return builder.build();
     }

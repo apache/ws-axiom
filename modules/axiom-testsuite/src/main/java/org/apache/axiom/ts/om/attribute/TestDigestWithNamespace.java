@@ -16,25 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
+package org.apache.axiom.ts.om.attribute;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.DigestTestCase;
 
-public class TestDigestWithQualifiedAttribute extends DigestTestCase {
-    public TestDigestWithQualifiedAttribute(OMMetaFactory metaFactory) {
-        super(metaFactory, "MD5", "3056d7790d9fd6a2d13e882a558c4218");
+public class TestDigestWithNamespace extends DigestTestCase {
+    public TestDigestWithNamespace(OMMetaFactory metaFactory) {
+        super(metaFactory, "MD5", "0403b2798bee0397c2755c01d560092e");
     }
 
-    protected OMNode createNode() {
+    protected OMInformationItem createInformationItem() {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement(new QName("urn:ns1", "element", "ns1"));
-        element.addAttribute("attr", "value", factory.createOMNamespace("urn:ns2", "ns2"));
-        return element;
+        return factory.createOMAttribute("attr", factory.createOMNamespace("urn:ns1", "ns1"), "value");
     }
 }

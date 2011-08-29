@@ -20,8 +20,8 @@ package org.apache.axiom.ts.om.element;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.DigestTestCase;
 
 public class TestDigestWithNamespace extends DigestTestCase {
@@ -29,7 +29,7 @@ public class TestDigestWithNamespace extends DigestTestCase {
         super(metaFactory, "MD5", "76e696f6b648837de0fa32e2ad8f1250");
     }
 
-    protected OMNode createNode() {
+    protected OMInformationItem createInformationItem() {
         return metaFactory.getOMFactory().createOMElement(new QName("urn:ns", "element", "p"));
     }
 }

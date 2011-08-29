@@ -128,10 +128,12 @@ public class DigestGenerator {
             // there is  no 0-length Text, and
             // comment nodes are removed.
             int length = 0;
-            itr = element.getChildElements();
+            itr = element.getChildren();
             while (itr.hasNext()) {
-                length++;
-                itr.next();
+                OMNode child = (OMNode)itr.next();
+                if (child instanceof OMElement || child instanceof OMText || child instanceof OMProcessingInstruction) {
+                    length++;
+                }
             }
             dos.writeInt(length);
             while (node != null) {

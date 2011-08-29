@@ -16,24 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
+package org.apache.axiom.ts.om.attribute;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.DigestTestCase;
 
 //Regression test for AXIOM-203
-public class TestDigestWithUnqualifiedAttribute extends DigestTestCase {
-    public TestDigestWithUnqualifiedAttribute(OMMetaFactory metaFactory) {
-        super(metaFactory, "MD5", "15222d6ed31d10e5dbb3a44bcbd3eb84");
+public class TestDigestWithoutNamespace extends DigestTestCase {
+    public TestDigestWithoutNamespace(OMMetaFactory metaFactory) {
+        super(metaFactory, "MD5", "78f0b570fedc6e01679f501b7b75d069");
     }
 
-    protected OMNode createNode() {
-        OMElement element = metaFactory.getOMFactory().createOMElement(new QName("urn:ns", "element", "p"));
-        element.addAttribute("attr", "value", null);
-        return element;
+    protected OMInformationItem createInformationItem() {
+        return metaFactory.getOMFactory().createOMAttribute("attr", null, "value");
     }
 }

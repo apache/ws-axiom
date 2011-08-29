@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.ts;
 
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.DigestGenerator;
@@ -41,9 +44,18 @@ public abstract class DigestTestCase extends AxiomTestCase {
     }
 
     protected final void runTest() throws Throwable {
-        byte[] digest = new DigestGenerator().getDigest(createNode(), algorithm);
+        OMInformationItem node = createInformationItem();
+        DigestGenerator digestGenerator = new DigestGenerator();
+        byte[] digest;
+        if (node instanceof OMDocument) {
+            digest = digestGenerator.getDigest((OMDocument)node, algorithm);
+        } else if (node instanceof OMAttribute) {
+            digest = digestGenerator.getDigest((OMAttribute)node, algorithm);
+        } else {
+            digest = digestGenerator.getDigest((OMNode)node, algorithm);
+        }
         assertEquals(expectedDigest, DigestUtils.toHexString(digest));
     }
     
-    protected abstract OMNode createNode();
+    protected abstract OMInformationItem createInformationItem() throws Exception;
 }

@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.ts.om.text;
 
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.ts.DigestTestCase;
 
 public class TestDigest extends DigestTestCase {
@@ -27,7 +27,7 @@ public class TestDigest extends DigestTestCase {
         super(metaFactory, "SHA1", "91b802187b7ae7c2c858f4aa5ae5470fc50d0306");
     }
 
-    protected OMNode createNode() {
+    protected OMInformationItem createInformationItem() {
         return metaFactory.getOMFactory().createOMText("some test data");
     }
 }

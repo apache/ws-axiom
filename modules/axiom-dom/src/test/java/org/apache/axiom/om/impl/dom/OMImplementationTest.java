@@ -25,6 +25,7 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource;
 import org.apache.axiom.ts.om.container.TestSerialize;
+import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
@@ -85,6 +86,9 @@ public class OMImplementationTest extends TestCase {
 
         // TODO: there seems to be an issue with OMFactory in this case
         builder.exclude(org.apache.axiom.ts.om.pi.TestDigest.class);
+        
+        // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
+        builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
         
         return builder.build();
     }

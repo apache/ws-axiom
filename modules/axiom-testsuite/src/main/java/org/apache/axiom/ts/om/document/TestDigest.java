@@ -16,18 +16,35 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.pi;
+package org.apache.axiom.ts.om.document;
 
+import java.io.InputStream;
+
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.DigestTestCase;
 
 public class TestDigest extends DigestTestCase {
-    public TestDigest(OMMetaFactory metaFactory) {
-        super(metaFactory, "MD5", "a7066a04f134fc8b62c1745da10dcd26");
+    private final String file;
+
+    public TestDigest(OMMetaFactory metaFactory, String file,
+            String algorithm, String expectedDigest) {
+        super(metaFactory, algorithm, expectedDigest);
+        this.file=file;
+        addTestProperty("file", file);
     }
 
-    protected OMInformationItem createInformationItem() {
-        return metaFactory.getOMFactory().createOMProcessingInstruction(null, "dbfo", "bgcolor=\"#EEEEEE\"");
+    protected OMInformationItem createInformationItem() throws Exception {
+        InputStream in = TestDigest.class.getResourceAsStream(file);
+        try {
+            OMDocument document = OMXMLBuilderFactory.createOMBuilder(
+                    metaFactory.getOMFactory(), in).getDocument();
+            document.build();
+            return document;
+        } finally {
+            in.close();
+        }
     }
 }
