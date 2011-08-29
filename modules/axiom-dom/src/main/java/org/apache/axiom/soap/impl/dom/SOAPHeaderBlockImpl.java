@@ -24,9 +24,9 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
-import org.apache.axiom.om.impl.dom.NamespaceImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.soap.SOAPConstants;
@@ -49,13 +49,13 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
                                SOAPHeader parent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super((ParentNode) parent, localName, (NamespaceImpl) ns, factory);
+        super((ParentNode) parent, localName, (OMNamespaceImpl) ns, factory);
         this.setNamespace(ns);
     }
 
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
                                SOAPFactory factory) throws SOAPProcessingException {
-        super(((OMDOMFactory) factory).getDocument(), localName, (NamespaceImpl) ns, factory);
+        super(((OMDOMFactory) factory).getDocument(), localName, (OMNamespaceImpl) ns, factory);
         this.setNamespace(ns);
     }
 
@@ -69,7 +69,7 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
      */
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
                                OMElement parent, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super((ParentNode) parent, localName, (NamespaceImpl) ns, builder, factory);
+        super((ParentNode) parent, localName, (OMNamespaceImpl) ns, builder, factory);
         this.setNamespace(ns);
     }
 
@@ -87,7 +87,7 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
             omAttribute.setAttributeValue(attrValue);
         } else {
             OMAttribute attribute = new AttrImpl(this.ownerNode, attributeName,
-                                                 new NamespaceImpl(soapEnvelopeNamespaceURI,
+                                                 new OMNamespaceImpl(soapEnvelopeNamespaceURI,
                                                                    SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
                                                  attrValue, this.factory);
             this.addAttribute(attribute);

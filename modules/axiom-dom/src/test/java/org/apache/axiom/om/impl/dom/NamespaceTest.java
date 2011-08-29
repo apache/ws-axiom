@@ -23,16 +23,17 @@ import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 
 public class NamespaceTest extends TestCase {
     public void testEquals() throws Exception {
         boolean goodResult = false;
-        NamespaceImpl ns1;
-        NamespaceImpl ns2;
+        OMNamespaceImpl ns1;
+        OMNamespaceImpl ns2;
 
         try {
-            new NamespaceImpl(null);
+            new OMNamespaceImpl(null, null);
         } catch (IllegalArgumentException e) {
             // Caught null, good.
             goodResult = true;
@@ -42,8 +43,8 @@ public class NamespaceTest extends TestCase {
 
         String URI1 = "http://testuri1";
         String URI2 = "http://";
-        ns1 = new NamespaceImpl(URI1);
-        ns2 = new NamespaceImpl("http://testuri1");
+        ns1 = new OMNamespaceImpl(URI1, null);
+        ns2 = new OMNamespaceImpl("http://testuri1", null);
         URI2 = URI2 + "testuri1";  // Make sure the strings don't intern to the same place
         assertTrue(ns1.equals(URI2, null));
         assertTrue(ns1.equals(ns2));
@@ -54,7 +55,7 @@ public class NamespaceTest extends TestCase {
         String NSURI_UPPER = "HTTP://TESTNS";
 
         OMFactory fac = new OMDOMFactory();
-        OMNamespace ns = new NamespaceImpl(NSURI);
+        OMNamespace ns = new OMNamespaceImpl(NSURI, null);
         OMElement el = fac.createOMElement("foo", null);
         el.declareNamespace(NSURI, "p");
         assertNull(el.findNamespace(NSURI_UPPER, "p"));

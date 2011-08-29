@@ -22,9 +22,9 @@ package org.apache.axiom.soap.impl.dom;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
-import org.apache.axiom.om.impl.dom.NamespaceImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -64,11 +64,11 @@ public abstract class SOAPElement extends ElementImpl {
 
     protected SOAPElement(DocumentImpl doc, String localName, OMNamespace ns,
                           SOAPFactory factory) {
-        super(doc, localName, (NamespaceImpl) ns, factory);
+        super(doc, localName, (OMNamespaceImpl) ns, factory);
     }
 
     protected SOAPElement(DocumentImpl ownerDocument, String tagName,
-                          NamespaceImpl ns, OMXMLParserWrapper builder, SOAPFactory factory) {
+                          OMNamespaceImpl ns, OMXMLParserWrapper builder, SOAPFactory factory) {
         super(ownerDocument, tagName, ns, builder, factory);
     }
 

@@ -17,72 +17,77 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMNamespace;
 
-public class NamespaceImpl implements OMNamespace {
+/** Class OMNamespaceImpl */
+public class OMNamespaceImpl implements OMNamespace {
+    /** Field prefix */
+    private final String prefix;
 
-    private final String nsUri;
+    /** Field uri */
+    private final String uri;
 
-    private final String nsPrefix;
-
-    public NamespaceImpl(String uri) {
-        this(uri, null);
-    }
-
-    public NamespaceImpl(String uri, String prefix) {
+    /**
+     * @param uri
+     * @param prefix
+     */
+    public OMNamespaceImpl(String uri, String prefix) {
         if (uri == null) {
             throw new IllegalArgumentException("Namespace URI may not be null");
         }
-        this.nsUri = uri;
-        this.nsPrefix = prefix;
+
+        this.uri = uri;
+        this.prefix = prefix;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMNamespace#equals(java.lang.String,
-     *      java.lang.String)
+    /**
+     * Method equals.
+     *
+     * @param uri
+     * @param prefix
+     * @return Returns boolean.
      */
     public boolean equals(String uri, String prefix) {
-        return (nsUri.equals(uri) &&
-                (nsPrefix == null ? prefix == null :
-                        nsPrefix.equals(prefix)));
+        return (this.uri.equals(uri) &&
+                (this.prefix == null ? prefix == null :
+                        this.prefix.equals(prefix)));
+
     }
 
     public boolean equals(Object obj) {
         if (!(obj instanceof OMNamespace)) return false;
         OMNamespace other = (OMNamespace)obj;
         String otherPrefix = other.getPrefix();
-        return (nsUri.equals(other.getNamespaceURI()) &&
-                (nsPrefix == null ? otherPrefix == null :
-                        nsPrefix.equals(otherPrefix)));
+        return (uri.equals(other.getNamespaceURI()) &&
+                (prefix == null ? otherPrefix == null :
+                        prefix.equals(otherPrefix)));
     }
 
-    /*
-    * (non-Javadoc)
-    *
-    * @see org.apache.axiom.om.OMNamespace#getPrefix()
-    */
+    /**
+     * Method getPrefix.
+     *
+     * @return Returns String.
+     */
     public String getPrefix() {
-        return this.nsPrefix;
+        return prefix;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMNamespace#getName()
+    /**
+     * Method getName.
+     *
+     * @return Returns String.
      */
     public String getName() {
-        return this.nsUri;
+        return uri;
     }
 
     public String getNamespaceURI() {
-        return this.nsUri;
+        return uri;
     }
 
     public int hashCode() {
-        return nsUri.hashCode() ^ (nsPrefix != null ? nsPrefix.hashCode() : 0);
+        return uri.hashCode() ^ (prefix != null ? prefix.hashCode() : 0);
     }
 }

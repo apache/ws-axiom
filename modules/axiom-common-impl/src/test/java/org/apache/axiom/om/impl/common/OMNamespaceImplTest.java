@@ -17,10 +17,9 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.llom;
+package org.apache.axiom.om.impl.common;
 
 import junit.framework.TestCase;
-import org.apache.axiom.om.impl.OMNamespaceImpl;
 
 import java.lang.reflect.Field;
 

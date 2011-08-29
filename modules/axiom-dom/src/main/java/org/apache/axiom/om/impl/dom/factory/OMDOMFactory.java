@@ -37,6 +37,7 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
 import org.apache.axiom.om.impl.dom.CommentImpl;
@@ -44,7 +45,6 @@ import org.apache.axiom.om.impl.dom.DocumentFragmentImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.DocumentTypeImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
-import org.apache.axiom.om.impl.dom.NamespaceImpl;
 import org.apache.axiom.om.impl.dom.OMDOMException;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
@@ -115,35 +115,35 @@ public class OMDOMFactory implements OMFactory {
 
     public OMElement createOMElement(String localName, OMNamespace ns) {
         return new ElementImpl((DocumentImpl) this.createOMDocument(),
-                               localName, (NamespaceImpl) ns, this);
+                               localName, (OMNamespaceImpl) ns, this);
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns,
                                      OMContainer parent) throws OMDOMException {
         if (parent == null) {
             return new ElementImpl((DocumentImpl) this.createOMDocument(),
-                               localName, (NamespaceImpl) ns, this);
+                               localName, (OMNamespaceImpl) ns, this);
         }
 
         switch (((ParentNode) parent).getNodeType()) {
             case Node.ELEMENT_NODE: { // We are adding a new child to an elem
                 ElementImpl parentElem = (ElementImpl) parent;
                 ElementImpl elem = new ElementImpl((DocumentImpl) parentElem
-                        .getOwnerDocument(), localName, (NamespaceImpl) ns, this);
+                        .getOwnerDocument(), localName, (OMNamespaceImpl) ns, this);
                 parentElem.appendChild(elem);
                 return elem;
             }
             case Node.DOCUMENT_NODE: {
                 DocumentImpl docImpl = (DocumentImpl) parent;
                 ElementImpl elem = new ElementImpl(docImpl, localName,
-                                       (NamespaceImpl) ns, this);
+                                       (OMNamespaceImpl) ns, this);
                 docImpl.appendChild(elem);
                 return elem;
             }
             case Node.DOCUMENT_FRAGMENT_NODE:
                 DocumentFragmentImpl docFragImpl = (DocumentFragmentImpl) parent;
                 return new ElementImpl((DocumentImpl) docFragImpl
-                        .getOwnerDocument(), localName, (NamespaceImpl) ns, this);
+                        .getOwnerDocument(), localName, (OMNamespaceImpl) ns, this);
             default:
                 throw new OMDOMException(
                         "The parent container can only be an ELEMENT, DOCUMENT " +
@@ -158,21 +158,21 @@ public class OMDOMFactory implements OMFactory {
             case Node.ELEMENT_NODE: // We are adding a new child to an elem
                 ElementImpl parentElem = (ElementImpl) parent;
                 ElementImpl elem = new ElementImpl((DocumentImpl) parentElem
-                        .getOwnerDocument(), localName, (NamespaceImpl) ns,
+                        .getOwnerDocument(), localName, (OMNamespaceImpl) ns,
                                              builder, this);
                 parentElem.appendChild(elem);
                 return elem;
             case Node.DOCUMENT_NODE:
                 DocumentImpl docImpl = (DocumentImpl) parent;
                 ElementImpl elem2 = new ElementImpl(docImpl, localName,
-                                                    (NamespaceImpl) ns, builder, this);
+                                                    (OMNamespaceImpl) ns, builder, this);
                 docImpl.appendChild(elem2);
                 return elem2;
 
             case Node.DOCUMENT_FRAGMENT_NODE:
                 DocumentFragmentImpl docFragImpl = (DocumentFragmentImpl) parent;
                 return new ElementImpl((DocumentImpl) docFragImpl
-                        .getOwnerDocument(), localName, (NamespaceImpl) ns,
+                        .getOwnerDocument(), localName, (OMNamespaceImpl) ns,
                                              builder, this);
             default:
                 throw new OMDOMException(
@@ -225,16 +225,16 @@ public class OMDOMFactory implements OMFactory {
      */
     public OMElement createOMElement(QName qname, OMContainer parent)
             throws OMException {
-        NamespaceImpl ns;
+        OMNamespaceImpl ns;
         if (qname.getNamespaceURI().length() == 0) {
             if (qname.getPrefix().length() > 0) {
                 throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
             }
             ns = null;
         } else if (qname.getPrefix() != null) {
-            ns = new NamespaceImpl(qname.getNamespaceURI(), qname.getPrefix());
+            ns = new OMNamespaceImpl(qname.getNamespaceURI(), qname.getPrefix());
         } else {
-            ns = new NamespaceImpl(qname.getNamespaceURI());
+            ns = new OMNamespaceImpl(qname.getNamespaceURI(), null);
         }
         return createOMElement(qname.getLocalPart(), ns, parent);
     }
@@ -258,7 +258,7 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMNamespace(String, String)
      */
     public OMNamespace createOMNamespace(String uri, String prefix) {
-        return new NamespaceImpl(uri, prefix);
+        return new OMNamespaceImpl(uri, prefix);
     }
 
     public OMText createOMText(OMContainer parent, String text) {

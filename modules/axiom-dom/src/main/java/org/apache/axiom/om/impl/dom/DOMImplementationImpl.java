@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
@@ -42,7 +43,7 @@ public class DOMImplementationImpl implements DOMImplementation {
         fac.setDocument(doc);
 
         new ElementImpl(doc, DOMUtil.getLocalName(qualifiedName),
-                        new NamespaceImpl(namespaceURI, DOMUtil
+                        new OMNamespaceImpl(namespaceURI, DOMUtil
                                 .getPrefix(qualifiedName)), fac);
 
         return doc;

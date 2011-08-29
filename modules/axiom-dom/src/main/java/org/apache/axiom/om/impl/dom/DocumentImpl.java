@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.OMDocumentImplUtil;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
@@ -177,7 +178,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
             return this.createAttribute(localName);
         }
 
-        return new AttrImpl(this, localName, new NamespaceImpl(
+        return new AttrImpl(this, localName, new OMNamespaceImpl(
                 namespaceURI, prefix), this.factory);
     }
 
@@ -214,7 +215,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
             this.checkQName(prefix, localName);
         }
 
-        NamespaceImpl namespace = new NamespaceImpl(ns, prefix);
+        OMNamespaceImpl namespace = new OMNamespaceImpl(ns, prefix);
         return new ElementImpl(this, localName, namespace, this.factory);
     }
 

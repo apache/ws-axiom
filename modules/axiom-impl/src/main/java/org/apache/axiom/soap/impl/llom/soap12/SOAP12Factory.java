@@ -22,7 +22,7 @@ package org.apache.axiom.soap.impl.llom.soap12;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;

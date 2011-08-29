@@ -19,9 +19,14 @@
 
 package org.apache.axiom.om.impl;
 
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 
-/** Class OMNamespaceImpl */
+/**
+ * @deprecated {@link OMNamespace} instances should always be created using
+ *             {@link OMFactory#createOMNamespace(String, String)}. This class will be removed in
+ *             Axiom 1.3.
+ */
 public class OMNamespaceImpl implements OMNamespace {
     /** Field prefix */
     private final String prefix;

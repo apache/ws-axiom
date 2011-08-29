@@ -21,8 +21,8 @@ package org.apache.axiom.soap.impl.dom.soap11;
 
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
-import org.apache.axiom.om.impl.dom.NamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
@@ -69,7 +69,7 @@ public class SOAP11Factory extends DOMSOAPFactory {
 
     public SOAPEnvelope createSOAPEnvelope() {
         return new SOAPEnvelopeImpl(
-                new NamespaceImpl(
+                new OMNamespaceImpl(
                         SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
                         SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX),
                 this);
@@ -242,7 +242,7 @@ public class SOAP11Factory extends DOMSOAPFactory {
 
     public SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
         OMNamespace ns =
-                new NamespaceImpl(
+                new OMNamespaceImpl(
                         SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
                         SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
         SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(ns, this);
@@ -252,7 +252,7 @@ public class SOAP11Factory extends DOMSOAPFactory {
     }
 
     public OMNamespace getNamespace() {
-        return new NamespaceImpl(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
+        return new OMNamespaceImpl(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
                                  SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
     }
 

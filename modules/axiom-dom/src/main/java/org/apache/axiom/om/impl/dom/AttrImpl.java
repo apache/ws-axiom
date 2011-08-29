@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -50,7 +51,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     private String attrType;
 
     /** Attribute namespace */
-    private NamespaceImpl namespace;
+    private OMNamespaceImpl namespace;
 
     /** Flag to indicate whether this attr is used or not */
     private boolean used;
@@ -71,7 +72,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
         this.attrName = localName;
         this.attrValue = new TextImpl(ownerDocument, value, factory);
         this.attrType = OMConstants.XMLATTRTYPE_CDATA;
-        this.namespace = (NamespaceImpl) ns;
+        this.namespace = (OMNamespaceImpl) ns;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String name, String value,
@@ -87,7 +88,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
         this.attrName = name;
         //If this is a default namespace attr
         if (OMConstants.XMLNS_NS_PREFIX.equals(name)) {
-            this.namespace = new NamespaceImpl(
+            this.namespace = new OMNamespaceImpl(
                     OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX);
         }
         this.attrType = OMConstants.XMLATTRTYPE_CDATA;
@@ -97,7 +98,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
                     OMNamespace namespace, OMFactory factory) {
         super(ownerDocument, factory);
         this.attrName = localName;
-        this.namespace = (NamespaceImpl) namespace;
+        this.namespace = (OMNamespaceImpl) namespace;
         this.attrType = OMConstants.XMLATTRTYPE_CDATA;
     }
 
@@ -272,7 +273,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      * @see org.apache.axiom.om.OMAttribute#setOMNamespace (org.apache.axiom.om.OMNamespace)
      */
     public void setOMNamespace(OMNamespace omNamespace) {
-        this.namespace = (NamespaceImpl) omNamespace;
+        this.namespace = (OMNamespaceImpl) omNamespace;
     }
 
     /**

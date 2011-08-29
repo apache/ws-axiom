@@ -28,7 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
 import org.apache.axiom.om.impl.traverse.OMDescendantsIterator;
@@ -73,9 +73,9 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
 
-    private static final OMNamespace XMLNS_NAMESPACE_WITH_PREFIX = new NamespaceImpl(OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX);
+    private static final OMNamespace XMLNS_NAMESPACE_WITH_PREFIX = new OMNamespaceImpl(OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX);
     
-    private static final OMNamespace XMLNS_NAMESPACE_WITHOUT_PREFIX = new NamespaceImpl(OMConstants.XMLNS_NS_URI, null);
+    private static final OMNamespace XMLNS_NAMESPACE_WITHOUT_PREFIX = new OMNamespaceImpl(OMConstants.XMLNS_NS_URI, null);
     
     /** @param ownerDocument  ownerDocument
      *  @param tagName tagName
@@ -99,7 +99,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      * @param factory
      */
     public ElementImpl(DocumentImpl ownerDocument, String tagName,
-                       NamespaceImpl ns, OMFactory factory) {
+                       OMNamespaceImpl ns, OMFactory factory) {
         super(ownerDocument, factory);
         this.localName = tagName;
         if (ns != null) {
@@ -110,7 +110,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
     }
 
     public ElementImpl(DocumentImpl ownerDocument, String tagName,
-                       NamespaceImpl ns, OMXMLParserWrapper builder, OMFactory factory) {
+                       OMNamespaceImpl ns, OMXMLParserWrapper builder, OMFactory factory) {
         super(ownerDocument, factory);
         this.localName = tagName;
         if (ns != null) {
@@ -120,14 +120,14 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         this.attributes = new AttributeMap(this);
     }
 
-    public ElementImpl(ParentNode parentNode, String tagName, NamespaceImpl ns,
+    public ElementImpl(ParentNode parentNode, String tagName, OMNamespaceImpl ns,
                        OMFactory factory) {
         this((DocumentImpl) parentNode.getOwnerDocument(), tagName, ns, factory);
         parentNode.addChild(this);
         this.done = true;
     }
 
-    public ElementImpl(ParentNode parentNode, String tagName, NamespaceImpl ns,
+    public ElementImpl(ParentNode parentNode, String tagName, OMNamespaceImpl ns,
                        OMXMLParserWrapper builder, OMFactory factory) {
         this(tagName, ns, builder, factory);
         if (parentNode != null) {
@@ -138,7 +138,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     }
 
-    public ElementImpl(String tagName, NamespaceImpl ns,
+    public ElementImpl(String tagName, OMNamespaceImpl ns,
                        OMXMLParserWrapper builder, OMFactory factory) {
         this(factory);
         this.localName = tagName;
@@ -392,7 +392,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
             AttrImpl namespaceAttr = new AttrImpl(this.ownerNode,
                                                   localName, nsuri, this.factory);
-            NamespaceImpl xmlNs = new NamespaceImpl(OMConstants.XMLNS_NS_URI);
+            OMNamespaceImpl xmlNs = new OMNamespaceImpl(OMConstants.XMLNS_NS_URI, null);
             namespaceAttr.setOMNamespace(xmlNs);
             return namespaceAttr;
         }
@@ -532,7 +532,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                     == null) {
                 // TODO checkwhether the same ns is declared with a different
                 // prefix and remove it
-                this.declareNamespace(new NamespaceImpl(attr.getNamespaceURI(),
+                this.declareNamespace(new OMNamespaceImpl(attr.getNamespaceURI(),
                                                         attr.getPrefix()));
             }
 
@@ -555,7 +555,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             } else {
                 AttrImpl attr = new AttrImpl(this.ownerNode, DOMUtil
                         .getLocalName(qualifiedName), value, this.factory);
-                attr.setOMNamespace(new NamespaceImpl(namespaceURI, DOMUtil
+                attr.setOMNamespace(new OMNamespaceImpl(namespaceURI, DOMUtil
                         .getPrefix(qualifiedName)));
 
                 this.setAttributeNodeNS(attr);
@@ -601,13 +601,13 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             Attr attributeNode = this.getAttributeNodeNS(namespaceURI, localName);
             if (attributeNode != null) {
                 AttrImpl tempAttr = ((AttrImpl) attributeNode);
-                tempAttr.setOMNamespace(new NamespaceImpl(namespaceURI, DOMUtil
+                tempAttr.setOMNamespace(new OMNamespaceImpl(namespaceURI, DOMUtil
                         .getPrefix(qualifiedName)));
                 tempAttr.setAttributeValue(value);
                 this.attributes.setNamedItem(tempAttr);
                 return tempAttr;
             } else {
-                NamespaceImpl ns = new NamespaceImpl(namespaceURI, DOMUtil
+                OMNamespaceImpl ns = new OMNamespaceImpl(namespaceURI, DOMUtil
                         .getPrefix(qualifiedName));
                 AttrImpl attr = new AttrImpl((DocumentImpl) this
                         .getOwnerDocument(), localName, ns, value, this.factory);
@@ -744,7 +744,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
                 namespace = declareDefaultNamespace(namespace.getNamespaceURI());
             } else if (prefix == null) {
                 prefix = OMSerializerUtil.getNextNSPrefix();
-                namespace = new NamespaceImpl(namespace.getNamespaceURI(), prefix);
+                namespace = new OMNamespaceImpl(namespace.getNamespaceURI(), prefix);
             }
             if (prefix.length() > 0 && namespace.getNamespaceURI().length() == 0) {
                 throw new IllegalArgumentException("Cannot bind a prefix to the empty namespace name");
@@ -775,7 +775,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             prefix = OMSerializerUtil.getNextNSPrefix();
         }
         
-        NamespaceImpl ns = new NamespaceImpl(uri, prefix);
+        OMNamespaceImpl ns = new OMNamespaceImpl(uri, prefix);
         return declareNamespace(ns);
     }
 
@@ -786,7 +786,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
      * @param uri
      */
     public OMNamespace declareDefaultNamespace(String uri) {
-        NamespaceImpl ns = new NamespaceImpl(uri, "");
+        OMNamespaceImpl ns = new OMNamespaceImpl(uri, "");
         if (namespaces == null) {
             this.namespaces = new HashMap(5);
         }
@@ -796,7 +796,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     public OMNamespace getDefaultNamespace() {
         if (namespaces != null) {
-            NamespaceImpl defaultNS = (NamespaceImpl) namespaces.get("");
+            OMNamespaceImpl defaultNS = (OMNamespaceImpl) namespaces.get("");
             if (defaultNS != null) {
                 return defaultNS;
             }
@@ -871,7 +871,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         // namespace
         if (prefix != null && prefix.equals(OMConstants.XMLNS_PREFIX)
                 && uri.equals(OMConstants.XMLNS_URI)) {
-            return new NamespaceImpl(uri, prefix);
+            return new OMNamespaceImpl(uri, prefix);
         }
 
         if (namespaces == null) {
