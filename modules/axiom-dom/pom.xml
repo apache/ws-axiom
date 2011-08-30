@@ -157,6 +157,17 @@
                                 </includes>
                             </artifactSet>
                             <relocations>
+                                <!-- We try to preserve as much as possible the class names from previous releases in
+                                     order to support old code and code that is tightly coupled to the DOOM implementation
+                                     (such as the SAAJ implementation in Axis2). -->
+                                <relocation>
+                                    <pattern>org.apache.axiom.om.impl.common.OMNamespaceImpl</pattern>
+                                    <shadedPattern>org.apache.axiom.om.impl.dom.NamespaceImpl</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.axiom.om.impl.common.OMStAXWrapper</pattern>
+                                    <shadedPattern>org.apache.axiom.om.impl.dom.DOMStAXWrapper</shadedPattern>
+                                </relocation>
                                 <relocation>
                                     <pattern>org.apache.axiom.om.impl.common</pattern>
                                     <shadedPattern>org.apache.axiom.om.impl.dom</shadedPattern>
