@@ -31,6 +31,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
 
 public class TestCreateOMBuilderFromDOMSource extends ConformanceTestCase {
     public TestCreateOMBuilderFromDOMSource(OMMetaFactory metaFactory, String file) {
@@ -47,7 +49,7 @@ public class TestCreateOMBuilderFromDOMSource extends ConformanceTestCase {
             OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             builder.getDocument().serialize(baos);
-            assertXMLIdentical(compareXML(
+            XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
                     AbstractTestCase.toDocumentWithoutDTD(getFileAsStream()),
                     AbstractTestCase.toDocumentWithoutDTD(new ByteArrayInputStream(baos.toByteArray()))), true);
         } finally {

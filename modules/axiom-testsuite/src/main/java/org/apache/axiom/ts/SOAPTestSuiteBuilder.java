@@ -19,14 +19,17 @@
 package org.apache.axiom.ts;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-public class SOAPTestSuiteBuilder extends AxiomTestSuiteBuilder {
+public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
     private static final String[] badSOAPFiles = { "wrongSoapNs.xml", "twoheaders.xml", "twoBodymessage.xml",
             "envelopeMissing.xml", "haederBodyWrongOrder.xml" };
     
+    private final OMMetaFactory metaFactory;
+    
     public SOAPTestSuiteBuilder(OMMetaFactory metaFactory) {
-        super(metaFactory);
+        this.metaFactory = metaFactory;
     }
     
     private void addTests(SOAPSpec spec) {

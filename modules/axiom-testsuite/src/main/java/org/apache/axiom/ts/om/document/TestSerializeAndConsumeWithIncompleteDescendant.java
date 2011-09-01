@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.custommonkey.xmlunit.XMLAssert;
 
 /**
  * Tests that {@link OMDocument#serializeAndConsume(java.io.Writer)} consumes incomplete descendants,
@@ -49,7 +50,7 @@ public class TestSerializeAndConsumeWithIncompleteDescendant extends AxiomTestCa
         root.addChild(incompleteElement);
         StringWriter out = new StringWriter();
         document.serializeAndConsume(out);
-        assertXMLEqual("<root><elem>text</elem></root>", out.toString());
+        XMLAssert.assertXMLEqual("<root><elem>text</elem></root>", out.toString());
         assertConsumed(incompleteElement);
     }
 }

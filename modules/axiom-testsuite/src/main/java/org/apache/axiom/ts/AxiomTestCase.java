@@ -18,33 +18,20 @@
  */
 package org.apache.axiom.ts;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.testutils.suite.TestCaseEx;
 import org.apache.commons.io.output.NullOutputStream;
-import org.custommonkey.xmlunit.XMLTestCase;
 
-public abstract class AxiomTestCase extends XMLTestCase {
+public abstract class AxiomTestCase extends TestCaseEx {
     protected final OMMetaFactory metaFactory;
-    private final Dictionary/*<String,String>*/ properties = new Hashtable();
 
     public AxiomTestCase(OMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
-        setName(getClass().getName());
     }
     
-    public void addTestProperty(String name, String value) {
-        setName(getName() + " [" + name + "=" + value + "]");
-        properties.put(name, value);
-    }
-    
-    public Dictionary getTestProperties() {
-        return properties;
-    }
-
     protected void assertConsumed(OMContainer container) {
         assertFalse("Expected the node to be incomplete", container.isComplete());
         boolean isConsumed;

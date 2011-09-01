@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts;
+package org.apache.axiom.testutils.suite;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,12 +24,11 @@ import java.util.List;
 
 import junit.framework.TestSuite;
 
-import org.apache.axiom.om.OMMetaFactory;
 import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 
-public abstract class AxiomTestSuiteBuilder {
+public abstract class TestSuiteBuilder {
     private static class Exclude {
         private final Class testClass;
         private final Filter filter;
@@ -39,19 +38,14 @@ public abstract class AxiomTestSuiteBuilder {
             this.filter = filter;
         }
         
-        public boolean accept(AxiomTestCase test) {
+        public boolean accept(TestCaseEx test) {
             return (testClass == null || test.getClass().equals(testClass))
                     && (filter == null || filter.match(test.getTestProperties()));
         }
     }
     
-    protected final OMMetaFactory metaFactory;
     private final List/*<Exclude>*/ excludes = new ArrayList();
     private TestSuite suite;
-    
-    public AxiomTestSuiteBuilder(OMMetaFactory metaFactory) {
-        this.metaFactory = metaFactory;
-    }
     
     public final void exclude(Class testClass, String filter) {
         try {
@@ -77,7 +71,7 @@ public abstract class AxiomTestSuiteBuilder {
         return suite;
     }
     
-    protected final void addTest(AxiomTestCase test) {
+    protected final void addTest(TestCaseEx test) {
         for (Iterator it = excludes.iterator(); it.hasNext(); ) {
             if (((Exclude)it.next()).accept(test)) {
                 return;

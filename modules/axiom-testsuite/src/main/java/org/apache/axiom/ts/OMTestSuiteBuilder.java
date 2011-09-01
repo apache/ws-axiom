@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 import org.apache.axiom.ts.om.container.OMContainerFactory;
 import org.apache.axiom.ts.om.container.OMElementFactory;
 import org.apache.axiom.ts.om.container.SerializationMethod;
@@ -30,7 +31,7 @@ import org.apache.axiom.ts.om.factory.OMElementCreator;
 import org.apache.axiom.ts.xpath.AXIOMXPathTestCase;
 import org.apache.axiom.ts.xpath.TestAXIOMXPath;
 
-public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
+public class OMTestSuiteBuilder extends TestSuiteBuilder {
     private static final OMContainerFactory[] containerFactories = {
         OMContainerFactory.DOCUMENT,
         new OMElementFactory(false),
@@ -40,8 +41,10 @@ public class OMTestSuiteBuilder extends AxiomTestSuiteBuilder {
         new SerializeToOutputStream(true),
         new SerializeToOutputStream(false) };
     
+    private final OMMetaFactory metaFactory;
+    
     public OMTestSuiteBuilder(OMMetaFactory metaFactory) {
-        super(metaFactory);
+        this.metaFactory = metaFactory;
     }
     
     protected void addTests() {

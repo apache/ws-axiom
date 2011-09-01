@@ -32,6 +32,8 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.commons.io.IOUtils;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.InputSource;
 
 public class TestSerialize extends ConformanceTestCase {
@@ -59,7 +61,7 @@ public class TestSerialize extends ConformanceTestCase {
                 InputSource control[] = duplicateInputSource(containerFactory.getControl(getFileAsStream()));
                 InputSource actual[] = duplicateInputSource(serializationMethod.serialize(container));
                 try {
-                    assertXMLIdentical(compareXML(control[0], actual[0]), true);
+                    XMLAssert.assertXMLIdentical(XMLUnit.compareXML(control[0], actual[0]), true);
                 } catch (AssertionFailedError ex) {
                     System.out.println("Control:");
                     dumpInputSource(control[1]);

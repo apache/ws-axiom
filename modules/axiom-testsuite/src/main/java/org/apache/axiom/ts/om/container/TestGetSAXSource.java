@@ -42,6 +42,8 @@ import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 import org.apache.xalan.processor.TransformerFactoryImpl;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
 
 public class TestGetSAXSource extends ConformanceTestCase {
     private final OMContainerFactory containerFactory;
@@ -67,7 +69,7 @@ public class TestGetSAXSource extends ConformanceTestCase {
         } finally {
             in.close();
         }
-        assertXMLIdentical(compareXML(
+        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
                 AbstractTestCase.toDocumentWithoutDTD(getFileAsStream()),
                 AbstractTestCase.toDocumentWithoutDTD(new ByteArrayInputStream(out.toByteArray()))), true);
     }

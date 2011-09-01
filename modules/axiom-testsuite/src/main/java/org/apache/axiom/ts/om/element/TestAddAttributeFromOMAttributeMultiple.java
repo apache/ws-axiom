@@ -27,6 +27,8 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
 
 /**
  * Tests that when {@link OMElement#addAttribute(org.apache.axiom.om.OMAttribute)} is called
@@ -60,7 +62,7 @@ public class TestAddAttributeFromOMAttributeMultiple extends AxiomTestCase {
         }
         assertTrue(nsCount == 2);
     
-        Diff diff = compareXML(expectedXML, omElement.toString());
-        assertXMLEqual(diff, true);
+        Diff diff = XMLUnit.compareXML(expectedXML, omElement.toString());
+        XMLAssert.assertXMLEqual(diff, true);
     }
 }
