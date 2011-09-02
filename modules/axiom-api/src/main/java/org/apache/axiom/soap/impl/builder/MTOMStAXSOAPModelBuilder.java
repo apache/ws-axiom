@@ -32,9 +32,7 @@ import javax.xml.stream.XMLStreamReader;
 public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements XOPBuilder {
     
     /** <code>Attachments</code> handles deferred parsing of incoming MIME Messages. */
-    Attachments attachments;
-
-    int partIndex = 0;
+    private final Attachments attachments;
 
     public MTOMStAXSOAPModelBuilder(XMLStreamReader parser,
                                     SOAPFactory factory, Attachments attachments,
