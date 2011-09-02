@@ -42,7 +42,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromDataSource;
-import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.testutils.activation.RandomDataSource;
@@ -71,8 +70,8 @@ public class ElementHelperTest extends TestCase {
         DataSource ds = new RandomDataSource(445566, 32, 128, 20000000);
         QName qname = new QName("a");
         Charset cs = Charset.forName("ascii");
-        OMSourcedElement element = new OMSourcedElementImpl(qname, factory,
-                new WrappedTextNodeOMDataSourceFromDataSource(qname, ds, cs));
+        OMSourcedElement element = factory.createOMElement(
+                new WrappedTextNodeOMDataSourceFromDataSource(qname, ds, cs), qname);
         Reader in = ElementHelper.getTextAsStream(element, true);
         assertFalse(in instanceof StringReader);
         IOTestUtils.compareStreams(new InputStreamReader(ds.getInputStream(), cs), in);
@@ -118,8 +117,8 @@ public class ElementHelperTest extends TestCase {
         OMFactory factory = OMAbstractFactory.getOMFactory();
         DataSource ds = new RandomDataSource(665544, 32, 128, 20000000);
         QName qname = new QName("a");
-        OMSourcedElement element = new OMSourcedElementImpl(qname, factory,
-                new WrappedTextNodeOMDataSourceFromDataSource(qname, ds, Charset.forName("ascii")));
+        OMSourcedElement element = factory.createOMElement(
+                new WrappedTextNodeOMDataSourceFromDataSource(qname, ds, Charset.forName("ascii")), qname);
         Reader in = new InputStreamReader(ds.getInputStream(), "ascii");
         Writer out = new CharacterStreamComparator(in);
         ElementHelper.writeTextTo(element, out, true); // cache doesn't matter here

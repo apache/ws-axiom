@@ -26,8 +26,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.llom.OMElementImpl;
-import org.apache.axiom.om.impl.llom.OMTextImpl;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 
@@ -93,16 +91,16 @@ public class ImageSampleTest extends AbstractTestCase {
         OMFactory fac = OMAbstractFactory.getOMFactory();
         OMNamespace soap = fac.createOMNamespace(
                 "http://schemas.xmlsoap.org/soap/envelope/", "soap");
-        OMElement envelope = new OMElementImpl("Envelope", soap, fac);
-        OMElement body = new OMElementImpl("Body", soap, fac);
+        OMElement envelope = fac.createOMElement("Envelope", soap);
+        OMElement body = fac.createOMElement("Body", soap);
 
         OMNamespace dataName = fac.createOMNamespace(
                 "http://www.example.org/stuff", "m");
-        OMElement data = new OMElementImpl("data", dataName, fac);
+        OMElement data = fac.createOMElement("data", dataName);
 
         DataSource dataSource = getTestResourceDataSource(imageInFileName);
         expectedDH = new DataHandler(dataSource);
-        OMText binaryNode = new OMTextImpl(expectedDH, true, fac);
+        OMText binaryNode = fac.createOMText(expectedDH, true);
 
         envelope.addChild(body);
         body.addChild(data);

@@ -31,7 +31,6 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromReader;
-import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 
 public class WrappedTextNodeOMDataSourceTest extends TestCase {
     public void testFromReader() throws Exception {
@@ -44,7 +43,7 @@ public class WrappedTextNodeOMDataSourceTest extends TestCase {
         QName qname = new QName("data");
         OMDataSource ds = new WrappedTextNodeOMDataSourceFromReader(qname, new StringReader(testData));
         OMFactory factory = OMAbstractFactory.getOMFactory();
-        OMSourcedElement element = new OMSourcedElementImpl(qname, factory, ds);
+        OMSourcedElement element = factory.createOMElement(ds, qname);
         assertEquals(testData, element.getText());
     }
 }

@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.ds.CharArrayDataSource;
@@ -82,7 +83,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
                     "<author>DuCharme, Bob</author><publisher>Manning</publisher>" +
                     "<price>29.95</price></book></library>";
 
-    private OMSourcedElementImpl element;
+    private OMSourcedElement element;
     private OMElement root;
 
     /** @param testName  */
@@ -94,7 +95,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
         OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "");
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
-        element = new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument));
+        element = f.createOMElement(new TestDataSource(testDocument), "library", ns);
         root = f.createOMElement("root", rootNS);
         root.addChild(element);
     }
@@ -109,7 +110,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMFactory f = new OMLinkedListImplFactory();
         OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "");
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
-        OMElement child = new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument));
+        OMElement child = f.createOMElement(new TestDataSource(testDocument), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         
         // Trigger expansion of the child OMSE
@@ -128,7 +129,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         
         // Now repeat the test, but this time trigger the 
         // partial parsing of the child after adding it to the root.
-        child = new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument));
+        child = f.createOMElement(new TestDataSource(testDocument), "library", ns);
         root = f.createOMElement("root", rootNS);
         
         root.addChild(child);
@@ -313,7 +314,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMNamespace ns =
                 f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "DUMMYPREFIX");
         OMElement element =
-                new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument));
+                f.createOMElement(new TestDataSource(testDocument), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
@@ -373,7 +374,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMNamespace ns =
                 f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "DUMMYPREFIX");
         OMElement element =
-                new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument));
+                f.createOMElement(new TestDataSource(testDocument), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
@@ -417,7 +418,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "DUMMYPREFIX");
         OMElement element =
-                new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument));
+                f.createOMElement(new TestDataSource(testDocument), "DUMMYNAME", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
@@ -486,7 +487,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "DUMMYPREFIX");
         OMElement element =
-                new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument));
+                f.createOMElement(new TestDataSource(testDocument), "DUMMYNAME", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
@@ -527,7 +528,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "");
         OMElement element =
-                new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument2));
+                f.createOMElement(new TestDataSource(testDocument2), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
@@ -586,7 +587,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "");
         OMElement element =
-                new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument2));
+                f.createOMElement(new TestDataSource(testDocument2), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
@@ -629,7 +630,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "DUMMYPREFIX");
         OMElement element =
-                new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument2));
+                f.createOMElement(new TestDataSource(testDocument2), "DUMMYNAME", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
@@ -698,7 +699,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "");
         OMElement element =
-                new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument2));
+                f.createOMElement(new TestDataSource(testDocument2), "DUMMYNAME", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
@@ -741,7 +742,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("", "");
         OMElement element =
-                new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument3));
+                f.createOMElement(new TestDataSource(testDocument3), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
@@ -799,7 +800,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("", "");
         OMElement element =
-                new OMSourcedElementImpl("library", ns, f, new TestDataSource(testDocument3));
+                f.createOMElement(new TestDataSource(testDocument3), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
@@ -840,7 +841,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "DUMMYPREFIX");
         OMElement element =
-                new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument3));
+                f.createOMElement(new TestDataSource(testDocument3), "DUMMYNAME", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
@@ -908,7 +909,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns = f.createOMNamespace("http://DUMMYNS", "");
         OMElement element =
-                new OMSourcedElementImpl("DUMMYNAME", ns, f, new TestDataSource(testDocument3));
+                f.createOMElement(new TestDataSource(testDocument3), "DUMMYNAME", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
@@ -1059,7 +1060,7 @@ public class OMSourcedElementTest extends AbstractTestCase {
         assertFalse(ds.isDestructiveWrite());
         
         OMFactory f = new OMLinkedListImplFactory();
-        OMElement element = new OMSourcedElementImpl("element", null, f, ds);
+        OMElement element = f.createOMElement(ds, "element", null);
         
         element.getFirstElement().setText("TEST");
         

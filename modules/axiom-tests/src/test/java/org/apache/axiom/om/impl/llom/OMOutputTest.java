@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMText;
 
 import javax.activation.DataHandler;
 import java.io.File;
@@ -65,24 +66,24 @@ public class OMOutputTest extends AbstractTestCase {
 
         OMNamespace soap = fac.createOMNamespace(
                 "http://schemas.xmlsoap.org/soap/envelope/", "soap");
-        envelope = new OMElementImpl("Envelope", soap, fac);
-        OMElement body = new OMElementImpl("Body", soap, fac);
+        envelope = fac.createOMElement("Envelope", soap);
+        OMElement body = fac.createOMElement("Body", soap);
 
         OMNamespace dataName = fac.createOMNamespace(
                 "http://www.example.org/stuff", "m");
-        OMElement data = new OMElementImpl("data", dataName, fac);
+        OMElement data = fac.createOMElement("data", dataName);
 
         OMNamespace mime = fac.createOMNamespace(
                 "http://www.w3.org/2003/06/xmlmime", "mime");
 
-        OMElement text = new OMElementImpl("name", dataName, fac);
-        OMAttribute cType1 = new OMAttributeImpl("contentType", mime,
-                                                 "text/plain", fac);
+        OMElement text = fac.createOMElement("name", dataName);
+        OMAttribute cType1 = fac.createOMAttribute("contentType", mime,
+                                                 "text/plain");
         text.addAttribute(cType1);
         byte[] byteArray = new byte[] { 13, 56, 65, 32, 12, 12, 7, -3, -2, -1,
                 98 };
         dataHandler = new DataHandler(new ByteArrayDataSource(byteArray));
-        OMTextImpl textData = new OMTextImpl(dataHandler, false, fac);
+        OMText textData = fac.createOMText(dataHandler, false);
 
         envelope.addChild(body);
         body.addChild(data);
