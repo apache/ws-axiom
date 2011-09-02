@@ -16,26 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts;
 
-package org.apache.axiom.om.impl.llom;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.testutils.suite.TestSuiteBuilder;
+import org.apache.axiom.ts.om.navigator.TestFullyBuilt;
+import org.apache.axiom.ts.om.navigator.TestHalfBuilt;
+import org.apache.axiom.ts.om.navigator.TestHalfBuiltStep;
 
-import org.apache.axiom.om.OMNode;
+public class CommonImplTestSuiteBuilder extends TestSuiteBuilder {
+    private final OMMetaFactory metaFactory;
 
-/**
- * Empty subclass of {@link org.apache.axiom.om.impl.OMNavigator} to keep compatibility
- * with existing code.
- */
-public class OMNavigator extends org.apache.axiom.om.impl.OMNavigator {
-    /** Constructor OMNavigator. */
-    public OMNavigator() {
+    public CommonImplTestSuiteBuilder(OMMetaFactory metaFactory) {
+        this.metaFactory = metaFactory;
     }
 
-    /**
-     * Constructor OMNavigator.
-     *
-     * @param node
-     */
-    public OMNavigator(OMNode node) {
-        super(node);
+    protected void addTests() {
+        addTest(new TestFullyBuilt(metaFactory));
+        addTest(new TestHalfBuilt(metaFactory));
+        addTest(new TestHalfBuiltStep(metaFactory));
     }
 }

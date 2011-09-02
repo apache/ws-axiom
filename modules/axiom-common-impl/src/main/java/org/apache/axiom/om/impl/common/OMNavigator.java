@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl;
+package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
@@ -25,6 +25,8 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMNodeEx;
 
 /**
  * Refer to the test, org.apache.axiom.om.OMNavigatorTest, to find out how to use features like

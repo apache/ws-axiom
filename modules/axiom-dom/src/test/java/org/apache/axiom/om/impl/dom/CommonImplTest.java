@@ -16,13 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.om.impl.dom;
 
-package org.apache.axiom.om.impl;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import org.apache.axiom.ts.CommonImplTestSuiteBuilder;
 
-public class OMNavigatorTest extends OMNavigatorTestBase {
-    public OMNavigatorTest() {
-        super(new OMDOMMetaFactory());
+public class CommonImplTest extends TestCase {
+    public static TestSuite suite() {
+        return new CommonImplTestSuiteBuilder(new OMDOMMetaFactory()).build();
     }
 }

@@ -54,7 +54,6 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMNavigator;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;

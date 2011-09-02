@@ -16,26 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts;
 
-package org.apache.axiom.om.impl.dom;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.testutils.suite.TestCaseEx;
 
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.OMNavigator;
+public abstract class CommonImplTestCase extends TestCaseEx {
+    protected final OMMetaFactory metaFactory;
 
-/**
- * Empty subclass of {@link OMNavigator} to keep compatibility with existing code.
- */
-public class DOMNavigator extends OMNavigator {
-    /** Constructor OMNavigator. */
-    public DOMNavigator() {
-    }
-
-    /**
-     * Constructor OMNavigator.
-     *
-     * @param node
-     */
-    public DOMNavigator(OMNode node) {
-        super(node);
+    public CommonImplTestCase(OMMetaFactory metaFactory) {
+        this.metaFactory = metaFactory;
     }
 }
