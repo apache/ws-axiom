@@ -36,9 +36,9 @@ abstract class AttachmentsImpl {
     abstract DataHandler getDataHandler(String contentID);
     abstract void addDataHandler(String contentID, DataHandler dataHandler);
     abstract void removeDataHandler(String blobContentID);
-    abstract InputStream getSOAPPartInputStream() throws OMException;
-    abstract String getSOAPPartContentID();
-    abstract String getSOAPPartContentType();
+    abstract InputStream getRootPartInputStream() throws OMException;
+    abstract String getRootPartContentID();
+    abstract String getRootPartContentType();
     abstract IncomingAttachmentStreams getIncomingAttachmentStreams();
     abstract Set getContentIDs(boolean fetchAll);
     abstract Map getMap();

@@ -105,7 +105,7 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
                     try {
                         Attachments attachments = new Attachments(pipe1In, contentType);
                         SOAPEnvelope envelope = new MTOMStAXSOAPModelBuilder(
-                                StAXUtils.createXMLStreamReader(attachments.getSOAPPartInputStream()),
+                                StAXUtils.createXMLStreamReader(attachments.getRootPartInputStream()),
                                         metaFactory.getSOAP12Factory(), attachments,
                                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI).getSOAPEnvelope();
                         // The code path executed by serializeAndConsume is significantly different if
@@ -128,7 +128,7 @@ public class TestMTOMForwardStreaming extends AxiomTestCase {
         try {
             Attachments attachments = new Attachments(pipe2In, contentType);
             SOAPEnvelope envelope = new MTOMStAXSOAPModelBuilder(
-                    StAXUtils.createXMLStreamReader(attachments.getSOAPPartInputStream()),
+                    StAXUtils.createXMLStreamReader(attachments.getRootPartInputStream()),
                         metaFactory.getSOAP12Factory(), attachments,
                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI).getSOAPEnvelope();
             OMElement bodyElement = envelope.getBody().getFirstElement();

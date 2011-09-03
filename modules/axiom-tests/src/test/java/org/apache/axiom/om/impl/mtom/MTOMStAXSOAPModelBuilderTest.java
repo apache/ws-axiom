@@ -72,7 +72,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         InputStream inStream = getTestResource(inFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(new BufferedReader(
-                new InputStreamReader(attachments.getSOAPPartInputStream())));
+                new InputStreamReader(attachments.getRootPartInputStream())));
         return new MTOMStAXSOAPModelBuilder(reader, attachments,
                                                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
     }
@@ -297,7 +297,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         InputStream inStream = new BufferedInputStream(new ByteArrayInputStream(full));
         Attachments attachments = new Attachments(inStream, contentTypeString);
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(
-                attachments.getSOAPPartInputStream(), "UTF-16");
+                attachments.getRootPartInputStream(), "UTF-16");
         MTOMStAXSOAPModelBuilder builder = new MTOMStAXSOAPModelBuilder(reader, attachments,
                                                SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
         OMElement root = builder.getDocumentElement();

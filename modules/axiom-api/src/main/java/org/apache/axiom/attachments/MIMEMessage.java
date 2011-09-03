@@ -136,7 +136,7 @@ class MIMEMessage extends AttachmentsImpl {
         }
 
         // Read the SOAP part and cache it
-        getDataHandler(getSOAPPartContentID());
+        getDataHandler(getRootPartContentID());
 
         // Now reset partsRequested. SOAP part is a special case which is always 
         // read beforehand, regardless of request.
@@ -180,10 +180,10 @@ class MIMEMessage extends AttachmentsImpl {
         } while (getNextPartDataHandler() != null);
     }
 
-    InputStream getSOAPPartInputStream() throws OMException {
+    InputStream getRootPartInputStream() throws OMException {
         DataHandler dh;
         try {
-            dh = getDataHandler(getSOAPPartContentID());
+            dh = getDataHandler(getRootPartContentID());
             if (dh == null) {
                 throw new OMException(
                         "Mandatory Root MIME part containing the SOAP Envelope is missing");
@@ -195,7 +195,7 @@ class MIMEMessage extends AttachmentsImpl {
         }
     }
 
-    String getSOAPPartContentID() {
+    String getRootPartContentID() {
         String rootContentID = contentType.getParameter("start");
         if (log.isDebugEnabled()) {
             log.debug("getSOAPPartContentID rootContentID=" + rootContentID);
@@ -224,8 +224,8 @@ class MIMEMessage extends AttachmentsImpl {
         return rootContentID;
     }
     
-    String getSOAPPartContentType() {
-        String soapPartContentID = getSOAPPartContentID();
+    String getRootPartContentType() {
+        String soapPartContentID = getRootPartContentID();
         if (soapPartContentID == null) {
             throw new OMException("Unable to determine the content ID of the SOAP part");
         }

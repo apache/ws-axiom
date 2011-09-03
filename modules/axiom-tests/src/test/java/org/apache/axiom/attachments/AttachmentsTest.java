@@ -57,7 +57,7 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
         Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
         
-        attachments.getSOAPPartInputStream();
+        attachments.getRootPartInputStream();
 
         String[] contentIDs = attachments.getAllContentIDs();
         
@@ -71,7 +71,7 @@ public class AttachmentsTest extends AbstractTestCase {
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(baos, oof);
         
         XOPAwareStAXOMBuilder builder = 
-            new XOPAwareStAXOMBuilder(attachments.getSOAPPartInputStream(),
+            new XOPAwareStAXOMBuilder(attachments.getRootPartInputStream(),
                                       attachments);
         OMElement om = builder.getDocumentElement();
         om.serialize(writer);
@@ -87,7 +87,7 @@ public class AttachmentsTest extends AbstractTestCase {
                         Boolean.TRUE);
         writer = new MTOMXMLStreamWriter(baos, oof);
         builder = 
-            new XOPAwareStAXOMBuilder(attachments.getSOAPPartInputStream(),
+            new XOPAwareStAXOMBuilder(attachments.getRootPartInputStream(),
                                       attachments);
         om = builder.getDocumentElement();
         om.serialize(writer);
@@ -110,7 +110,7 @@ public class AttachmentsTest extends AbstractTestCase {
                         Boolean.FALSE);
         writer = new MTOMXMLStreamWriter(baos, oof);
         builder = 
-            new XOPAwareStAXOMBuilder(attachments2.getSOAPPartInputStream(),
+            new XOPAwareStAXOMBuilder(attachments2.getRootPartInputStream(),
                                       attachments2);
         om = builder.getDocumentElement();
         om.serialize(writer);
@@ -126,7 +126,7 @@ public class AttachmentsTest extends AbstractTestCase {
                         Boolean.TRUE);
         writer = new MTOMXMLStreamWriter(baos, oof);
         builder = 
-            new XOPAwareStAXOMBuilder(attachments2.getSOAPPartInputStream(),
+            new XOPAwareStAXOMBuilder(attachments2.getRootPartInputStream(),
                                       attachments2);
         om = builder.getDocumentElement();
         om.serialize(writer);
@@ -150,7 +150,7 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // Get the root
         XMLStreamReader reader =
-                StAXUtils.createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments.getSOAPPartInputStream())));
+                StAXUtils.createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments.getRootPartInputStream())));
         MTOMStAXSOAPModelBuilder builder = 
             new MTOMStAXSOAPModelBuilder(reader, attachments, null);
         OMElement root = builder.getDocumentElement();

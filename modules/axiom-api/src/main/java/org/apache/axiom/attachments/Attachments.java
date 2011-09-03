@@ -203,15 +203,38 @@ public class Attachments implements OMAttachmentAccessor {
     }
 
     /**
-     * @return the InputStream which includes the SOAP Envelope. It assumes that the root mime part
-     *         is always pointed by "start" parameter in content-type.
+     *  @deprecated Use {@link #getRootPartInputStream()} instead.
      */
     public InputStream getSOAPPartInputStream() throws OMException {
-        return impl.getSOAPPartInputStream();
+        return getRootPartInputStream();
+    }
+    
+    /**
+     * @deprecated Use {@link #getRootPartContentID()} instead.
+     */
+    public String getSOAPPartContentID() {
+        return getRootPartContentID();
+    }
+    
+    /**
+     * @deprecated Use {@link #getRootPartContentType()} instead.
+     */
+    public String getSOAPPartContentType() {
+        return getRootPartContentType();
+    }
+    
+    /**
+     * Get an input stream for the root part of the MIME message. The root part is located as
+     * described in the documentation of the {@link #getRootPartContentID()} method.
+     * 
+     * @return the input stream for the root part
+     */
+    public InputStream getRootPartInputStream() throws OMException {
+        return impl.getRootPartInputStream();
     }
 
     /**
-     * Get the content ID of the SOAP part or the MIME message. This content ID is determined as
+     * Get the content ID of the root part of the MIME message. This content ID is determined as
      * follows:
      * <ul>
      * <li>If the content type of the MIME message has a <tt>start</tt> parameter, then the content
@@ -219,21 +242,22 @@ public class Attachments implements OMAttachmentAccessor {
      * <li>Otherwise the content ID of the first MIME part of the MIME message is returned.
      * </ul>
      * 
-     * @return the content ID of the SOAP part (without the surrounding angle brackets)
+     * @return the content ID of the root part (without the surrounding angle brackets)
      */
-    public String getSOAPPartContentID() {
-        return impl.getSOAPPartContentID();
+    public String getRootPartContentID() {
+        return impl.getRootPartContentID();
     }
 
     /**
-     * Get the content type of the SOAP part of the MIME message.
+     * Get the content type of the root part of the MIME message. The root part is located as
+     * described in the documentation of the {@link #getRootPartContentID()} method.
      * 
-     * @return the content type of the SOAP part
+     * @return the content type of the root part
      * @throws OMException
      *             if the content type could not be determined
      */
-    public String getSOAPPartContentType() {
-        return impl.getSOAPPartContentType();
+    public String getRootPartContentType() {
+        return impl.getRootPartContentType();
     }
 
     /**

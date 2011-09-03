@@ -45,7 +45,7 @@ public class TestBuildWithAttachments extends AxiomTestCase {
         InputStream in = AbstractTestCase.getTestResource(TestConstants.MTOM_MESSAGE);
         Attachments attachments = new Attachments(in, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
         SOAPEnvelope envelope = new MTOMStAXSOAPModelBuilder(
-                StAXUtils.createXMLStreamReader(attachments.getSOAPPartInputStream()),
+                StAXUtils.createXMLStreamReader(attachments.getRootPartInputStream()),
                 metaFactory.getSOAP12Factory(), attachments,
                 SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI).getSOAPEnvelope();
         envelope.buildWithAttachments();

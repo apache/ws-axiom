@@ -105,6 +105,6 @@ public class JAXBCustomBuilderTest {
         createTestDocument(dh).serialize(out, format);
         out.close();
         Attachments attachments = new Attachments(blob.getInputStream(), format.getContentType());
-        test(dh, new XOPAwareStAXOMBuilder(attachments.getSOAPPartInputStream(), attachments), false, true, true);
+        test(dh, new XOPAwareStAXOMBuilder(attachments.getRootPartInputStream(), attachments), false, true, true);
     }
 }

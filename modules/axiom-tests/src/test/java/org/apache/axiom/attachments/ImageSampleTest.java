@@ -114,7 +114,7 @@ public class ImageSampleTest extends AbstractTestCase {
         InputStream inStream = getTestResource(inMimeFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(new BufferedReader(
-                new InputStreamReader(attachments.getSOAPPartInputStream())));
+                new InputStreamReader(attachments.getRootPartInputStream())));
         builder = new MTOMStAXSOAPModelBuilder(reader, attachments, null);
         OMElement root = builder.getDocumentElement();
         OMElement body = (OMElement) root.getFirstOMChild();

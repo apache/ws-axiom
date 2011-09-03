@@ -58,15 +58,15 @@ class AttachmentSet extends AttachmentsImpl {
         attachmentsMap.remove(blobContentID);
     }
 
-    InputStream getSOAPPartInputStream() throws OMException {
+    InputStream getRootPartInputStream() throws OMException {
         throw new OMException("Invalid operation. Attachments are created programatically.");
     }
 
-    String getSOAPPartContentID() {
+    String getRootPartContentID() {
         return null;
     }
 
-    String getSOAPPartContentType() {
+    String getRootPartContentType() {
         throw new OMException(
                 "The attachments map was created programatically. Unsupported operation.");
     }

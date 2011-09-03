@@ -155,7 +155,7 @@ public class AttachmentsTest extends AbstractTestCase {
         assertEquals(-1, attachments.getContentLength());
     }
 
-    private void testGetSOAPPartContentID(String contentTypeStartParam, String contentId)
+    private void testGetRootPartContentID(String contentTypeStartParam, String contentId)
             throws Exception {
         // It doesn't actually matter what the stream *is* it just needs to exist
         String contentType = "multipart/related; boundary=\"" + TestConstants.MTOM_MESSAGE_BOUNDARY +
@@ -163,50 +163,50 @@ public class AttachmentsTest extends AbstractTestCase {
         InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
         Attachments attachments = new Attachments(inStream, contentType);
         assertEquals("Did not obtain correct content ID", contentId,
-                attachments.getSOAPPartContentID());
+                attachments.getRootPartContentID());
     }
     
-    public void testGetSOAPPartContentIDWithoutBrackets() throws Exception {
-        testGetSOAPPartContentID("my-content-id@localhost", "my-content-id@localhost");
+    public void testGetRootPartContentIDWithoutBrackets() throws Exception {
+        testGetRootPartContentID("my-content-id@localhost", "my-content-id@localhost");
     }
     
-    public void testGetSOAPPartContentIDWithBrackets() throws Exception {
-        testGetSOAPPartContentID("<my-content-id@localhost>", "my-content-id@localhost");
+    public void testGetRootPartContentIDWithBrackets() throws Exception {
+        testGetRootPartContentID("<my-content-id@localhost>", "my-content-id@localhost");
     }
     
     // Not sure when exactly somebody uses the "cid:" prefix in the start parameter, but
     // this is how the code currently works.
-    public void testGetSOAPPartContentIDWithCidPrefix() throws Exception {
-        testGetSOAPPartContentID("cid:my-content-id@localhost", "my-content-id@localhost");
+    public void testGetRootPartContentIDWithCidPrefix() throws Exception {
+        testGetRootPartContentID("cid:my-content-id@localhost", "my-content-id@localhost");
     }
     
     // Regression test for WSCOMMONS-329
-    public void testGetSOAPPartContentIDWithCidPrefix2() throws Exception {
-        testGetSOAPPartContentID("<cid-73920@192.168.0.1>", "cid-73920@192.168.0.1");
+    public void testGetRootPartContentIDWithCidPrefix2() throws Exception {
+        testGetRootPartContentID("<cid-73920@192.168.0.1>", "cid-73920@192.168.0.1");
     }
     
-    public void testGetSOAPPartContentIDShort() throws Exception {
-        testGetSOAPPartContentID("bbb", "bbb");
+    public void testGetRootPartContentIDShort() throws Exception {
+        testGetRootPartContentID("bbb", "bbb");
     }
     
-    public void testGetSOAPPartContentIDShortWithBrackets() throws Exception {
-        testGetSOAPPartContentID("<b>", "b");
+    public void testGetRootPartContentIDShortWithBrackets() throws Exception {
+        testGetRootPartContentID("<b>", "b");
     }
     
-    public void testGetSOAPPartContentIDBorderline() throws Exception {
-        testGetSOAPPartContentID("cid:", "cid:");
+    public void testGetRootPartContentIDBorderline() throws Exception {
+        testGetRootPartContentID("cid:", "cid:");
     }
     
     /**
-     * Tests that {@link Attachments#getSOAPPartContentType()} throws a meaningful exception if it
+     * Tests that {@link Attachments#getRootPartContentType()} throws a meaningful exception if it
      * is unable to determine the content type.
      */
-    public void testGetSOAPPartContentTypeWithContentIDMismatch() {
+    public void testGetRootPartContentTypeWithContentIDMismatch() {
         String contentType = "multipart/related; boundary=\"" + TestConstants.MTOM_MESSAGE_BOUNDARY +
                 "\"; type=\"text/xml\"; start=\"<wrong-content-id@example.org>\"";
         Attachments attachments = new Attachments(getTestResource(TestConstants.MTOM_MESSAGE), contentType);
         try {
-            attachments.getSOAPPartContentType();
+            attachments.getRootPartContentType();
             fail("Expected OMException");
         } catch (OMException ex) {
             // OK, expected
@@ -258,7 +258,7 @@ public class AttachmentsTest extends AbstractTestCase {
         // Since SOAP part operated independently of other streams, access it
         // directly, and then get to the streams. If this sequence throws an
         // error, something is wrong with the stream handling code.
-        InputStream is = attachments.getSOAPPartInputStream();
+        InputStream is = attachments.getRootPartInputStream();
         while (is.read() != -1) ;
 
         // Get the inputstream container
@@ -277,7 +277,7 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // After all is done, we should *still* be able to access and
         // re-consume the SOAP part stream, as it should be cached.. can we?
-        is = attachments.getSOAPPartInputStream();
+        is = attachments.getRootPartInputStream();
         while (is.read() != -1) ;  
     }
     
@@ -308,7 +308,7 @@ public class AttachmentsTest extends AbstractTestCase {
     
         // These should NOT throw error even though they are using part based access
         try {
-            String contentType = attachments.getSOAPPartContentType();
+            String contentType = attachments.getRootPartContentType();
             assertTrue(contentType.indexOf("application/xop+xml;") >=0);
             assertTrue(contentType.indexOf("charset=UTF-8;") >=0);
             assertTrue(contentType.indexOf("type=\"application/soap+xml\";") >=0);
@@ -318,7 +318,7 @@ public class AttachmentsTest extends AbstractTestCase {
         }
     
         try {
-            attachments.getSOAPPartInputStream();
+            attachments.getRootPartInputStream();
         } catch (IllegalStateException ise) {
             fail("No exception expected when requesting SOAP part data");
         }

@@ -37,7 +37,7 @@ public class XOPDecodingStreamReaderTest extends AbstractTestCase {
         Attachments attachments = new Attachments(getTestResource(TestConstants.MTOM_MESSAGE),
                 TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
         return new XOPDecodingStreamReader(
-                StAXUtils.createXMLStreamReader(attachments.getSOAPPartInputStream()),
+                StAXUtils.createXMLStreamReader(attachments.getRootPartInputStream()),
                 new OMAttachmentAccessorMimePartProvider(attachments));
     }
     
