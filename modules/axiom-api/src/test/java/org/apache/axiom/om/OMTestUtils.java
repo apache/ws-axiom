@@ -21,31 +21,15 @@ package org.apache.axiom.om;
 
 import junit.framework.TestCase;
 
-import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.stream.XMLStreamReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.InputStream;
 import java.util.Iterator;
 
 public class OMTestUtils {
-    public static OMXMLParserWrapper getOMBuilder(File file) throws Exception {
-        XMLStreamReader parser = StAXUtils.createXMLStreamReader(new FileReader(file));
-        return new StAXSOAPModelBuilder(parser, null);
-    }
-
-    public static OMXMLParserWrapper getOMBuilder(InputStream in) throws Exception {
-        XMLStreamReader parser = StAXUtils.createXMLStreamReader(in);
-        return new StAXSOAPModelBuilder(parser, null);
-    }
-
     public static void walkThrough(OMElement omEle) {
         Iterator attibIt = omEle.getAllAttributes();
         if (attibIt != null) {

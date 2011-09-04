@@ -33,10 +33,8 @@ import java.io.IOException;
 public class OMElementCloneTest extends AbstractTestCase {
 
     public void testElementCloningWithoutUsingOMElementMethod() throws Exception {
-        SOAPEnvelope soapEnvelope =
-                (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResource(TestConstants.SOAP_SOAPMESSAGE))
-                        .getDocumentElement();
+        SOAPEnvelope soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource(
+                TestConstants.SOAP_SOAPMESSAGE), null).getSOAPEnvelope();
         SOAPBody body = soapEnvelope.getBody();
 
         OMElement firstClonedBodyElement =
@@ -62,10 +60,8 @@ public class OMElementCloneTest extends AbstractTestCase {
     }
 
     public void testElementCloningUsingOMElementMethod() throws Exception {
-        SOAPEnvelope soapEnvelope =
-                (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResource(TestConstants.SOAP_SOAPMESSAGE))
-                        .getDocumentElement();
+        SOAPEnvelope soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource(
+                TestConstants.SOAP_SOAPMESSAGE), null).getSOAPEnvelope();
         SOAPBody body = soapEnvelope.getBody();
 
         OMElement firstClonedBodyElement = body.cloneOMElement();

@@ -23,6 +23,7 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMTestUtils;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.AxiomTestCase;
 
@@ -38,9 +39,9 @@ public class BadInputTest extends AxiomTestCase {
     protected void runTest() throws Throwable {
         try {
             SOAPEnvelope soapEnvelope =
-                    (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                            AbstractTestCase.getTestResource("badsoap/" + file))
-                            .getDocumentElement();
+                    OMXMLBuilderFactory.createSOAPModelBuilder(
+                            AbstractTestCase.getTestResource("badsoap/" + file), null)
+                            .getSOAPEnvelope();
             OMTestUtils.walkThrough(soapEnvelope);
             fail("this must failed gracefully with OMException");
         } catch (OMException e) {

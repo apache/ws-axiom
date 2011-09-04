@@ -21,7 +21,7 @@ package org.apache.axiom.om;
 
 import org.apache.axiom.soap.SOAPEnvelope;
 
-public class MessagesTest extends OMTestCase {
+public class MessagesTest extends AbstractTestCase {
     SOAPEnvelope soapEnvelope;
 
     public MessagesTest(String testName) {
@@ -30,37 +30,29 @@ public class MessagesTest extends OMTestCase {
 
     public void testMessageWithLotOfWhiteSpaces() throws OMException,
             Exception {
-        soapEnvelope =
-                (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResource(TestConstants.WHITESPACE_MESSAGE))
-                        .getDocumentElement();
+        soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource(
+                TestConstants.WHITESPACE_MESSAGE), null).getSOAPEnvelope();
         OMTestUtils.walkThrough(soapEnvelope);
         soapEnvelope.close(false);
     }
 
     public void testMinimalMessage() throws OMException, Exception {
-        soapEnvelope =
-                (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResource(TestConstants.MINIMAL_MESSAGE))
-                        .getDocumentElement();
+        soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource(
+                TestConstants.MINIMAL_MESSAGE), null).getSOAPEnvelope();
         OMTestUtils.walkThrough(soapEnvelope);
         soapEnvelope.close(false);
     }
 
     public void testReallyBigMessage() throws OMException, Exception {
-        soapEnvelope =
-                (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResource(TestConstants.REALLY_BIG_MESSAGE))
-                        .getDocumentElement();
+        soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource(
+                TestConstants.REALLY_BIG_MESSAGE), null).getSOAPEnvelope();
         OMTestUtils.walkThrough(soapEnvelope);
         soapEnvelope.close(false);
     }
 
     public void testEmptyBodiedMessage() throws OMException, Exception {
-        soapEnvelope =
-                (SOAPEnvelope) OMTestUtils.getOMBuilder(
-                        getTestResource(TestConstants.EMPTY_BODY_MESSAGE))
-                        .getDocumentElement();
+        soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource(
+                TestConstants.EMPTY_BODY_MESSAGE), null).getSOAPEnvelope();
         OMTestUtils.walkThrough(soapEnvelope);
         soapEnvelope.close(false);
     }

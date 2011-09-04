@@ -24,11 +24,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public abstract class OMTestCase extends AbstractTestCase {
     protected StAXSOAPModelBuilder builder;
@@ -61,16 +57,4 @@ public abstract class OMTestCase extends AbstractTestCase {
         builder = new StAXSOAPModelBuilder(parser, null);
         return builder;
     }
-
-    protected StAXSOAPModelBuilder getOMBuilder(InputStream in) throws Exception {
-        XMLStreamReader parser = StAXUtils.createXMLStreamReader(in);
-        builder = new StAXSOAPModelBuilder(parser, null);
-        return builder;
-    }
-
-    protected XMLStreamWriter getStAXStreamWriter(OutputStream out) throws XMLStreamException {
-        return StAXUtils.createXMLStreamWriter(out);
-    }
-
-
 }
