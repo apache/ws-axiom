@@ -279,7 +279,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>1.4</version>
+                    <version>${shade.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -460,5 +460,6 @@
         <stax.impl.artifact>stax</stax.impl.artifact>
         <stax.impl.version>1.2.0</stax.impl.version>
         -->
+        <shade.plugin.version>1.4</shade.plugin.version>
     </properties>
 </project>

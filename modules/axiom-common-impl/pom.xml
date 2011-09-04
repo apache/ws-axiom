@@ -27,8 +27,10 @@
     </parent>
     <artifactId>axiom-common-impl</artifactId>
     <name>Axiom Common Implementation Classes</name>
-    <!-- This is a simple JAR, not a bundle. Classes will be included in axiom-impl and axiom-dom by maven-shade-plugin. -->
-    <packaging>jar</packaging>
+    <!-- Although axiom-common-impl will never be used as a bundle itself, we still need the OSGi metadata
+         so that we can generate a correct manifest when the classes are included in axiom-impl and
+         axiom-dom by maven-shade-plugin. -->
+    <packaging>bundle</packaging>
     <description>Contains implementation classes shared by LLOM and DOOM.</description>
     <!-- This needs to be set explicitly because the project structure implies that the Maven calculated defaults are wrong -->
     <scm>
@@ -50,4 +52,21 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <excludeDependencies>true</excludeDependencies>
+                    <instructions>
+                        <_nouses>true</_nouses>
+                        <Export-Package>*;-noimport:=true</Export-Package>
+                        <Import-Package>*</Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

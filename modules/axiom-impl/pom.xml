@@ -127,15 +127,6 @@
                     <instructions>
                         <_nouses>true</_nouses>
                         <Private-Package>org.apache.axiom.*</Private-Package>
-                        <Import-Package>
-                            <!-- These classes are included by maven-shade-plugin; don't import them. -->
-                            !org.apache.axiom.om.impl.common*,
-                            <!-- Packages used by axiom-common-impl and not detected by maven-bundle-plugin -->
-                            org.xml.sax,
-                            javax.xml.transform,
-                            org.apache.axiom.util.stax.xop,
-                            *
-                        </Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
@@ -163,9 +154,19 @@
                                     <shadedPattern>org.apache.axiom.om.impl.llom</shadedPattern>
                                 </relocation>
                             </relocations>
+                            <transformers>
+                                <transformer implementation="org.apache.axiom.buildutils.OSGiManifestResourceTransformer" />
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>axiom-buildutils</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <!-- Attach a JAR with the test classes so that we can reuse them in other modules
                  (see http://maven.apache.org/guides/mini/guide-attached-tests.html). -->
