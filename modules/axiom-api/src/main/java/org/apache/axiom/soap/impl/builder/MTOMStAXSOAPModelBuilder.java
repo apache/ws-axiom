@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.util.stax.xop.MimePartProvider;
 import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
 
 import javax.activation.DataHandler;
@@ -58,6 +59,12 @@ public class MTOMStAXSOAPModelBuilder extends StAXSOAPModelBuilder implements XO
         super(new XOPDecodingStreamReader(reader, new OMAttachmentAccessorMimePartProvider(
                 attachments)));
         this.attachments = attachments;
+    }
+    
+    public MTOMStAXSOAPModelBuilder(SOAPFactory soapFactory, XMLStreamReader reader,
+            MimePartProvider mimePartProvider) {
+        super(new XOPDecodingStreamReader(reader, mimePartProvider), soapFactory, soapFactory.getSoapVersionURI());
+        attachments = null;
     }
 
     /* (non-Javadoc)

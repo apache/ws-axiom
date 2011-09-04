@@ -25,6 +25,7 @@ import javax.xml.transform.Source;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.apache.axiom.util.stax.xop.MimePartProvider;
 import org.xml.sax.InputSource;
 
 /**
@@ -136,4 +137,23 @@ public interface OMMetaFactory {
      * @return the builder
      */
     SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is);
+    
+    /**
+     * Create an MTOM aware object model builder.
+     * 
+     * @param configuration
+     *            the parser configuration to use; for security reasons, this should in general be
+     *            {@link StAXParserConfiguration#SOAP}
+     * @param soapFactory
+     *            the {@link SOAPFactory} to use, or <code>null</code> if the implementation should
+     *            select the appropriate {@link SOAPFactory} based on the namespace URI of the SOAP
+     *            envelope.
+     * @param rootPart
+     *            the source of the root part of the MTOM message
+     * @param mimePartProvider
+     *            the provider from which MIME parts referenced in the root part will be retrieved
+     * @return the builder
+     */
+    SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
+            SOAPFactory soapFactory, InputSource rootPart, MimePartProvider mimePartProvider);
 }

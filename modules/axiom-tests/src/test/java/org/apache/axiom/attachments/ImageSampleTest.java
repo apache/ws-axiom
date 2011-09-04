@@ -26,8 +26,8 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.soap.SOAPModelBuilder;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -35,14 +35,11 @@ import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
-import javax.xml.stream.XMLStreamReader;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Iterator;
 
@@ -57,7 +54,7 @@ public class ImageSampleTest extends AbstractTestCase {
      */
     Image expectedImage;
 
-    MTOMStAXSOAPModelBuilder builder;
+    SOAPModelBuilder builder;
 
     DataHandler expectedDH;
 
@@ -113,9 +110,7 @@ public class ImageSampleTest extends AbstractTestCase {
     public void testImageSampleDeserialize() throws Exception {
         InputStream inStream = getTestResource(inMimeFileName);
         Attachments attachments = new Attachments(inStream, contentTypeString);
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(new BufferedReader(
-                new InputStreamReader(attachments.getRootPartInputStream())));
-        builder = new MTOMStAXSOAPModelBuilder(reader, attachments, null);
+        builder = OMXMLBuilderFactory.createSOAPModelBuilder(attachments);
         OMElement root = builder.getDocumentElement();
         OMElement body = (OMElement) root.getFirstOMChild();
         OMElement data = (OMElement) body.getFirstOMChild();

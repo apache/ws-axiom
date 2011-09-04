@@ -22,20 +22,16 @@ package org.apache.axiom.attachments;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.MIMEOutputUtils;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
-import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
+import org.apache.axiom.soap.SOAPModelBuilder;
 
-import javax.xml.stream.XMLStreamReader;
-
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringWriter;
 
 public class AttachmentsTest extends AbstractTestCase {
@@ -149,10 +145,7 @@ public class AttachmentsTest extends AbstractTestCase {
         String[] contentIDs = attachments.getAllContentIDs();
         
         // Get the root
-        XMLStreamReader reader =
-                StAXUtils.createXMLStreamReader(new BufferedReader(new InputStreamReader(attachments.getRootPartInputStream())));
-        MTOMStAXSOAPModelBuilder builder = 
-            new MTOMStAXSOAPModelBuilder(reader, attachments, null);
+        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(attachments.getRootPartInputStream(), "UTF-8");
         OMElement root = builder.getDocumentElement();
         StringWriter xmlWriter = new StringWriter();
         root.serialize(xmlWriter);

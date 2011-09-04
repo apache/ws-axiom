@@ -139,6 +139,7 @@
                             <!-- Packages used by axiom-common-impl and not detected by maven-bundle-plugin -->
                             org.xml.sax,
                             javax.xml.transform,
+                            org.apache.axiom.util.stax.xop,
                             *
                         </Import-Package>
                     </instructions>

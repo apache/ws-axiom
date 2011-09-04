@@ -21,9 +21,13 @@ package org.apache.axiom.om;
 import java.io.InputStream;
 import java.io.Reader;
 
+import javax.mail.internet.ContentType;
+import javax.mail.internet.ParseException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 
+import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
@@ -288,5 +292,60 @@ public class OMXMLBuilderFactory {
      */
     public static SOAPModelBuilder createSOAPModelBuilder(Reader in) {
         return OMAbstractFactory.getMetaFactory().createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(in));
+    }
+    
+    /**
+     * Create an MTOM aware model builder from the provided {@link Attachments} object. The method
+     * will determine the SOAP version based on the content type information from the
+     * {@link Attachments} object. It will configure the underlying parser as specified by
+     * {@link StAXParserConfiguration#SOAP}.
+     * 
+     * @param attachments
+     *            an {@link Attachments} object that must have been created from an input stream
+     * @return the builder
+     * @throws OMException
+     *             if an error occurs while processing the content type information from the
+     *             {@link Attachments} object
+     */
+    public static SOAPModelBuilder createSOAPModelBuilder(Attachments attachments) {
+        return createSOAPModelBuilder(OMAbstractFactory.getMetaFactory(), attachments);
+    }
+    
+    /**
+     * Create an MTOM aware model builder from the provided {@link Attachments} object using a
+     * particular Axiom implementation. The method will determine the SOAP version based on the
+     * content type information from the {@link Attachments} object. It will configure the
+     * underlying parser as specified by {@link StAXParserConfiguration#SOAP}.
+     * 
+     * @param metaFactory
+     *            the meta factory for the Axiom implementation to use
+     * @param attachments
+     *            an {@link Attachments} object that must have been created from an input stream
+     * @return the builder
+     * @throws OMException
+     *             if an error occurs while processing the content type information from the
+     *             {@link Attachments} object
+     */
+    public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory,
+            Attachments attachments) {
+        ContentType contentType;
+        try {
+            contentType = new ContentType(attachments.getRootPartContentType());
+        } catch (ParseException ex) {
+            throw new OMException(ex);
+        }
+        String type = contentType.getParameter("type");
+        SOAPFactory soapFactory;
+        if ("text/xml".equalsIgnoreCase(type)) {
+            soapFactory = metaFactory.getSOAP11Factory();
+        } else if ("application/soap+xml".equalsIgnoreCase(type)) {
+            soapFactory = metaFactory.getSOAP12Factory();
+        } else {
+            throw new OMException("Unable to determine SOAP version");
+        }
+        InputSource rootPart = new InputSource(attachments.getRootPartInputStream());
+        rootPart.setEncoding(contentType.getParameter("charset"));
+        return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, soapFactory,
+                rootPart, new OMAttachmentAccessorMimePartProvider(attachments));
     }
 }

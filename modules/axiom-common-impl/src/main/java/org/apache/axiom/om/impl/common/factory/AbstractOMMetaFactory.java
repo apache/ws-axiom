@@ -31,8 +31,11 @@ import org.apache.axiom.om.impl.builder.SAXOMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.util.stax.xop.MimePartProvider;
 import org.xml.sax.InputSource;
 
 /**
@@ -93,5 +96,13 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
 
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is) {
         return createStAXSOAPModelBuilder(createXMLStreamReader(configuration, is));
+    }
+
+    public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,
+            SOAPFactory soapFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
+        MTOMStAXSOAPModelBuilder builder = new MTOMStAXSOAPModelBuilder(soapFactory, createXMLStreamReader(
+                configuration, rootPart), mimePartProvider);
+        builder.releaseParserOnClose(true);
+        return builder;
     }
 }

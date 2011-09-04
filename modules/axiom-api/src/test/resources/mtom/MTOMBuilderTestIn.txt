@@ -1,5 +1,5 @@
 ------=_AxIs2_Def_boundary_=42214532
-Content-Type: application/xop+xml
+Content-Type: application/xop+xml; type="application/soap+xml"
 Content-Transfer-Encoding: 8bit
 Content-ID: SOAPPart
 
