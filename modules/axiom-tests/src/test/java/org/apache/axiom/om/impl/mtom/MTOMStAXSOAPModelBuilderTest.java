@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.mtom;
 
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
@@ -34,6 +33,7 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
+import org.apache.axiom.util.stax.xop.XOPEncodedStream;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 
 import javax.activation.DataHandler;
@@ -311,10 +311,9 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         root.build();
         
         // Use tree as input to XMLStreamReader
-        OMXMLStreamReader xmlStreamReader = (OMXMLStreamReader) root.getXMLStreamReader();
-        
         // Issue XOP:Include events for optimized MTOM text nodes
-        xmlStreamReader.setInlineMTOM(false);
+        XOPEncodedStream xopEncodedStream = XOPUtils.getXOPEncodedStream(root.getXMLStreamReader());
+        XMLStreamReader xmlStreamReader = xopEncodedStream.getReader();
         
         DataHandler dh = null;
         while(xmlStreamReader.hasNext() && dh == null) {
@@ -324,7 +323,8 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
                 if (XOP_INCLUDE.equals(qName)) {
                     String hrefValue = xmlStreamReader.getAttributeValue("", "href");
                     if (hrefValue != null) {
-                        dh =((OMAttachmentAccessor)xmlStreamReader).getDataHandler(hrefValue);
+                        dh = xopEncodedStream.getMimePartProvider().getDataHandler(
+                                XOPUtils.getContentIDFromURL(hrefValue));
                     }
                 }
             }
