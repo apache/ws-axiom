@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.llom;
 
-import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
@@ -31,12 +30,9 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
-import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
@@ -1077,28 +1073,9 @@ public class OMElementImpl extends OMNodeImpl
             log.debug("  reader = " + xmlStreamReader);
         }
         
-        // Get a new builder.  Use an xop aware builder if the original
-        // builder is xop aware
-        StAXOMBuilder newBuilder = null;
-        if (builder instanceof XOPBuilder) {
-            Attachments attachments = ((XOPBuilder)builder).getAttachments();
-            attachments.getAllContentIDs();
-            if (xmlStreamReader instanceof OMXMLStreamReader) {
-                if (log.isDebugEnabled()) {
-                    log.debug("  read optimized xop:include");
-                }
-                ((OMXMLStreamReader)xmlStreamReader).setInlineMTOM(false);
-            }
-            newBuilder = new XOPAwareStAXOMBuilder(xmlStreamReader, attachments);
-        } else {
-            newBuilder = new StAXOMBuilder(xmlStreamReader);
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("  newBuilder = " + newBuilder);
-        }
-        
         // Build the (target) clonedElement from the parser
-        OMElement clonedElement = newBuilder.getDocumentElement();
+        OMElement clonedElement =
+                new StAXOMBuilder(xmlStreamReader).getDocumentElement();
         clonedElement.build();
         return clonedElement;
     }
