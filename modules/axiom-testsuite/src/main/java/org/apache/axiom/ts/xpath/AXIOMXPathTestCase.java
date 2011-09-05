@@ -25,19 +25,19 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.RootWhitespaceFilter;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.om.xpath.DocumentNavigator;
 import org.apache.axiom.test.jaxen.JaxenXPathTestBase;
 import org.jaxen.Navigator;
 
 public class AXIOMXPathTestCase extends JaxenXPathTestBase {
-    final OMMetaFactory omMetaFactory;
+    private final OMMetaFactory metaFactory;
     
-    public AXIOMXPathTestCase(String name, OMMetaFactory omMetaFactory) {
+    public AXIOMXPathTestCase(String name, OMMetaFactory metaFactory) {
         super(name);
-        this.omMetaFactory = omMetaFactory;
+        this.metaFactory = metaFactory;
     }
 
     protected Navigator createNavigator() {
@@ -49,7 +49,7 @@ public class AXIOMXPathTestCase extends JaxenXPathTestBase {
         // represented in the tree (as in DOM), so we need to filter these events.
         XMLStreamReader reader = new RootWhitespaceFilter(
                 StAXUtils.createXMLStreamReader(in));
-        return new StAXOMBuilder(omMetaFactory.getOMFactory(), reader).getDocument();
+        return OMXMLBuilderFactory.createStAXOMBuilder(metaFactory.getOMFactory(), reader).getDocument();
     }
 
     protected void releaseDocument(Object document) {
