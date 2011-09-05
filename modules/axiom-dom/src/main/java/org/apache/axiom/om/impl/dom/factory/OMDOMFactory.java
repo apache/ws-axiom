@@ -387,13 +387,17 @@ public class OMDOMFactory implements OMFactory {
             OMContainer parent, String piTarget, String piData) {
         ProcessingInstructionImpl pi =
             new ProcessingInstructionImpl(getDocumentFromParent(parent), piTarget, piData, this);
-        parent.addChild(pi);
+        if (parent != null) {
+            parent.addChild(pi);
+        }
         return pi;
     }
 
     public OMComment createOMComment(OMContainer parent, String content) {
         CommentImpl comment = new CommentImpl(getDocumentFromParent(parent), content, this);
-        parent.addChild(comment);
+        if (parent != null) {
+            parent.addChild(comment);
+        }
         return comment;
     }
 
@@ -407,7 +411,10 @@ public class OMDOMFactory implements OMFactory {
     }
 
     private DocumentImpl getDocumentFromParent(OMContainer parent) {
-        if (parent instanceof DocumentImpl) {
+        if (parent == null) {
+            // TODO: this is really a hack; we should make OMDOMFactory stateless
+            return (DocumentImpl)createOMDocument();
+        } else if (parent instanceof DocumentImpl) {
             return (DocumentImpl) parent;
         } else {
             return (DocumentImpl) ((ParentNode) parent).getOwnerDocument();

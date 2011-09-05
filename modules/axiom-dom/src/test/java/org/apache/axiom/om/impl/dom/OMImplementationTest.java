@@ -85,9 +85,6 @@ public class OMImplementationTest extends TestCase {
         // TODO: investigate why this is not working with DOOM
         builder.exclude(TestGetChildrenWithName4.class);
 
-        // TODO: there seems to be an issue with OMFactory in this case
-        builder.exclude(org.apache.axiom.ts.om.pi.TestDigest.class);
-        
         // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
         builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
         
