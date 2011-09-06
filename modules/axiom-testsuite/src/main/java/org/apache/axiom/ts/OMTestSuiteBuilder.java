@@ -97,6 +97,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeReplace2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationInScope(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithExistingNamespaceDeclarationOnSameElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithInvalidNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithMaskedNamespaceDeclaration(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutExistingNamespaceDeclaration(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutNamespace(metaFactory));
@@ -188,6 +189,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameWithEmptyPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestUndeclarePrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMCommentWithoutParent(metaFactory));
         for (int i=0; i<OMElementCreator.INSTANCES.length; i++) {
             OMElementCreator creator = OMElementCreator.INSTANCES[i];

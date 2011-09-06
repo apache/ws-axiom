@@ -296,6 +296,8 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      *            must be declared in the parent element of this attribute or ancestors of the
      *            parent element of the attribute.
      * @return Returns the added attribute.
+     * @throws IllegalArgumentException
+     *             if an attempt is made to create a prefixed attribute with an empty namespace name
      */
     OMAttribute addAttribute(String localName, String value, OMNamespace ns);
 

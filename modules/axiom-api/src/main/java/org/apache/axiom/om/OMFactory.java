@@ -254,6 +254,15 @@ public interface OMFactory {
     OMText createOMText(String contentID, OMContainer parent,
                                OMXMLParserWrapper builder);
 
+    /**
+     * 
+     * @param localName
+     * @param ns
+     * @param value
+     * @return
+     * @throws IllegalArgumentException
+     *             if an attempt is made to create a prefixed attribute with an empty namespace name
+     */
     OMAttribute createOMAttribute(String localName,
                                          OMNamespace ns,
                                          String value);
