@@ -712,7 +712,7 @@ public class OMSerializerUtil {
         } else {
             // UNQUALIFIED NAMESPACE
             
-            // XML 1.0 doesn't allow to associate a prefix with an unqualified name (see also AXIOM-372).
+            // Neither XML 1.0 nor XML 1.1 allow to associate a prefix with an unqualified name (see also AXIOM-372).
             if (prefix.length() > 0) {
                 throw new OMException("Invalid namespace declaration: Prefixed namespace bindings may not be empty.");  
             }
