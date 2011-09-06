@@ -50,6 +50,16 @@ public interface SOAPFactory extends OMFactory {
     // TODO: when does this thing throw a SOAPProcessingException??
     SOAPEnvelope createSOAPEnvelope() throws SOAPProcessingException;
     
+    /**
+     * Create a SOAP envelope with the given namespace. This method can be used to create a SOAP
+     * envelope with a custom namespace prefix.
+     * 
+     * @param ns
+     *            the namespace information for the SOAP envelope
+     * @return the SOAP envelope
+     */
+    // TODO: specify what happens if there is a mismatch between the provided namespace URI and the SOAP version of the factory
+    // TODO: specify what happens if the prefix is null
     SOAPEnvelope createSOAPEnvelope(OMNamespace ns); 
 
     SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder);
