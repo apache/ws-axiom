@@ -67,6 +67,9 @@ public interface OMMetaFactory {
     
     /**
      * Create an object model builder for plain XML that pulls events from a StAX stream reader.
+     * <p>
+     * The implementation must perform namespace repairing, i.e. it must add appropriate namespace
+     * declarations if undeclared namespaces appear in the StAX stream.
      * 
      * @param omFactory
      *            The object model factory to use. This factory must be obtained from the same
