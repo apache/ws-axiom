@@ -77,8 +77,15 @@ public interface OMXMLParserWrapper {
      * Get the document element, i.e. the root element of the document. Using this method is
      * equivalent to using {@link OMDocument#getOMDocumentElement()} on the document returned by
      * {@link #getDocument()}.
+     * <p>
+     * Note that this method will never return <code>null</code> (except in the very special case
+     * where the document has been requested before and the document element has been removed
+     * explicitly): if the document being parsed has no document element, then this will result in a
+     * parser error, i.e. an {@link OMException} will be thrown.
      * 
      * @return the document element
+     * @throws OMException
+     *             if a parse error occurs
      */
     OMElement getDocumentElement();
 
@@ -95,6 +102,8 @@ public interface OMXMLParserWrapper {
      * @param discardDocument
      *            specifies whether the document should be discarded
      * @return the document element
+     * @throws OMException
+     *             if a parse error occurs
      */
     OMElement getDocumentElement(boolean discardDocument);
 
