@@ -50,6 +50,8 @@ public class TestDetach extends AxiomTestCase {
         OMNode returnValue = b.detach();
         assertSame(b, returnValue); // Detach is expected to do a "return this"
         assertNull(b.getParent());
+        assertNull(b.getPreviousOMSibling());
+        assertNull(b.getNextOMSibling());
         OMElement c = (OMElement)a.getNextOMSibling();
         assertEquals("c", c.getLocalName());
         assertSame(c, a.getNextOMSibling());

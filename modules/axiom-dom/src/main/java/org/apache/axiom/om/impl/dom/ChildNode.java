@@ -134,11 +134,13 @@ public abstract class ChildNode extends NodeImpl {
             }
             if (this.nextSibling != null) {
                 this.nextSibling.setPreviousOMSibling(this.previousSibling);
+                this.nextSibling = null;
             }
             if (this.parentNode != null && this.parentNode.lastChild == this) {
                 this.parentNode.lastChild = previousSibling;
             }
             this.parentNode = null;
+            this.previousSibling = null;
         }
         return this;
     }
