@@ -27,29 +27,6 @@ import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 
 public class NamespaceTest extends TestCase {
-    public void testEquals() throws Exception {
-        boolean goodResult = false;
-        OMNamespaceImpl ns1;
-        OMNamespaceImpl ns2;
-
-        try {
-            new OMNamespaceImpl(null, null);
-        } catch (IllegalArgumentException e) {
-            // Caught null, good.
-            goodResult = true;
-        }
-        if (!goodResult)
-            fail("Null namespace allowed!");
-
-        String URI1 = "http://testuri1";
-        String URI2 = "http://";
-        ns1 = new OMNamespaceImpl(URI1, null);
-        ns2 = new OMNamespaceImpl("http://testuri1", null);
-        URI2 = URI2 + "testuri1";  // Make sure the strings don't intern to the same place
-        assertTrue(ns1.equals(URI2, null));
-        assertTrue(ns1.equals(ns2));
-    }
-
     public void testSearch() throws Exception {
         String NSURI = "http://testns";
         String NSURI_UPPER = "HTTP://TESTNS";

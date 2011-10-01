@@ -34,8 +34,10 @@ public class TestObjectEquals extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMNamespace ns1 = factory.createOMNamespace("urn:ns", "ns");
-        OMNamespace ns2 = factory.createOMNamespace("urn:ns", "ns");
+        // The implementation must not assume that namespace URI or prefixes are interned.
+        // Therefore we use new String(String).
+        OMNamespace ns1 = factory.createOMNamespace(new String("urn:ns"), new String("ns"));
+        OMNamespace ns2 = factory.createOMNamespace(new String("urn:ns"), new String("ns"));
         assertTrue(ns1.equals(ns2));
     }
 }
