@@ -35,6 +35,6 @@ public class TestHashCode extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns1 = factory.createOMNamespace("urn:ns", "ns");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns", "ns");
-        assertTrue(ns1.equals(ns2));
+        assertEquals(ns1.hashCode(), ns2.hashCode());
     }
 }

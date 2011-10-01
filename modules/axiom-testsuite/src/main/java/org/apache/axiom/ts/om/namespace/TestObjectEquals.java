@@ -36,6 +36,6 @@ public class TestObjectEquals extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMNamespace ns1 = factory.createOMNamespace("urn:ns", "ns");
         OMNamespace ns2 = factory.createOMNamespace("urn:ns", "ns");
-        assertEquals(ns1.hashCode(), ns2.hashCode());
+        assertTrue(ns1.equals(ns2));
     }
 }
