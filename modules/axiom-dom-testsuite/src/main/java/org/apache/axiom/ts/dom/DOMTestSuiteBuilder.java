@@ -53,6 +53,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveSingleChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetTextContent(dbf));
+        addTest(new org.apache.axiom.ts.dom.text.TestAppendData(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSplitText(dbf));
     }
 }

@@ -16,30 +16,35 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.dom.text;
 
-package org.apache.axiom.om.impl.dom;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
+import org.apache.axiom.ts.dom.DOMTestCase;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-public class TextImplTest extends AbstractTestCase {
-    public void testAppendText() {
-        OMDOMFactory factory = new OMDOMFactory();
+public class TestAppendData extends DOMTestCase {
+    public TestAppendData(DocumentBuilderFactory dbf) {
+        super(dbf);
+    }
+
+    protected void runTest() throws Exception {
+        Document document = dbf.newDocumentBuilder().newDocument();
         String localName = "TestLocalName";
         String namespace = "http://ws.apache.org/axis2/ns";
         String prefix = "axis2";
         String tempText = "The quick brown fox jumps over the lazy dog";
         String textToAppend = " followed by another fox";
 
-        OMElement elem = factory.createOMElement(localName, namespace, prefix);
-        OMText textNode = factory.createOMText(elem, tempText);
+        Element elem = document.createElementNS(namespace, prefix + ":" + localName);
+        Text textNode = document.createTextNode(tempText);
+        elem.appendChild(textNode);
 
-        ((Text) textNode).appendData(textToAppend);
+        textNode.appendData(textToAppend);
 
         assertEquals("Text value mismatch", tempText + textToAppend, textNode
-                .getText());
+                .getData());
     }
 }
