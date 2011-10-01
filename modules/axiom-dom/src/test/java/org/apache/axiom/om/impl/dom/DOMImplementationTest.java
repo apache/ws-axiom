@@ -18,11 +18,15 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.OMDocumentTestBase;
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
-public class DocumentImplTest extends OMDocumentTestBase {
-    public DocumentImplTest() {
-        super(new OMDOMMetaFactory());
+import org.apache.axiom.om.impl.dom.jaxp.DOOMDocumentBuilderFactory;
+import org.apache.axiom.ts.dom.DOMTestSuiteBuilder;
+
+public class DOMImplementationTest extends TestCase {
+    public static TestSuite suite() {
+        DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(new DOOMDocumentBuilderFactory());
+        return builder.build();
     }
 }

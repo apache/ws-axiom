@@ -16,13 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.ts.dom.element;
 
-import org.apache.axiom.om.OMDocumentTestBase;
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import java.io.StringReader;
 
-public class DocumentImplTest extends OMDocumentTestBase {
-    public DocumentImplTest() {
-        super(new OMDOMMetaFactory());
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.apache.axiom.ts.dom.DOMTestCase;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+
+public class TestRemoveSingleChild extends DOMTestCase {
+    public TestRemoveSingleChild(DocumentBuilderFactory dbf) {
+        super(dbf);
+    }
+
+    protected void runTest() throws Throwable {
+        DocumentBuilder builder = dbf.newDocumentBuilder();
+        Element element = builder.parse(new InputSource(new StringReader(
+                "<root><a/></root>"))).getDocumentElement();
+        element.removeChild(element.getFirstChild());
+        assertNull(element.getFirstChild());
+        assertNull(element.getLastChild());
     }
 }

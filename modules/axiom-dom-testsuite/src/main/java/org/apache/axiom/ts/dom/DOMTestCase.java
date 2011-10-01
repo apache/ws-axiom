@@ -16,13 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.ts.dom;
 
-import org.apache.axiom.om.OMDocumentTestBase;
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-public class DocumentImplTest extends OMDocumentTestBase {
-    public DocumentImplTest() {
-        super(new OMDOMMetaFactory());
+import org.apache.axiom.testutils.suite.TestCaseEx;
+
+public abstract class DOMTestCase extends TestCaseEx {
+    protected final DocumentBuilderFactory dbf;
+
+    public DOMTestCase(DocumentBuilderFactory dbf) {
+        this.dbf = dbf;
     }
 }

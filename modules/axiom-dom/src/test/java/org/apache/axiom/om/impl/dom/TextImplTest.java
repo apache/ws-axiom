@@ -19,14 +19,10 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 public class TextImplTest extends AbstractTestCase {
@@ -46,32 +42,4 @@ public class TextImplTest extends AbstractTestCase {
         assertEquals("Text value mismatch", tempText + textToAppend, textNode
                 .getText());
     }
-
-    public void testSplitText() throws Exception {
-        DOMTestUtil.execute(new DOMTestUtil.Test() {
-            public void execute(DocumentBuilderFactory dbf) throws Exception {
-                String textValue = "temp text value";
-        
-                Document doc = dbf.newDocumentBuilder().newDocument();
-        
-                Element element = doc.createElement("test");
-                Text txt = doc.createTextNode(textValue);
-                element.appendChild(txt);
-                txt.splitText(3);
-        
-                assertNotNull("Text value missing in the original Text node", txt
-                        .getNodeValue());
-        
-                assertNotNull("Sibling missing after split", txt.getNextSibling());
-                assertNotNull("Text value missing in the new split Text node", txt
-                        .getNextSibling().getNodeValue());
-        
-                assertEquals("Incorrect split point", textValue.substring(0, 3), txt
-                        .getNodeValue());
-                assertEquals("Incorrect split point", textValue.substring(3, textValue
-                        .length()), txt.getNextSibling().getNodeValue());
-            }
-        });
-    }
-
 }

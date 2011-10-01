@@ -16,13 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.ts.dom.document;
 
-import org.apache.axiom.om.OMDocumentTestBase;
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-public class DocumentImplTest extends OMDocumentTestBase {
-    public DocumentImplTest() {
-        super(new OMDOMMetaFactory());
+import org.apache.axiom.ts.dom.DOMTestCase;
+import org.w3c.dom.Document;
+import org.w3c.dom.Text;
+
+public class TestCreateText extends DOMTestCase {
+    public TestCreateText(DocumentBuilderFactory dbf) {
+        super(dbf);
+    }
+
+    protected void runTest() throws Throwable {
+        String textValue = "temp text value";
+        
+        Document doc = dbf.newDocumentBuilder().newDocument();
+        Text txt = doc.createTextNode(textValue);
+
+        assertEquals("Text value mismatch", textValue, txt.getData());
     }
 }

@@ -16,13 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.ts.dom.element;
 
-import org.apache.axiom.om.OMDocumentTestBase;
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-public class DocumentImplTest extends OMDocumentTestBase {
-    public DocumentImplTest() {
-        super(new OMDOMMetaFactory());
+import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.ts.dom.DOMTestCase;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+public class TestGetElementsByTagNameRecursive extends DOMTestCase {
+    public TestGetElementsByTagNameRecursive(DocumentBuilderFactory dbf) {
+        super(dbf);
+    }
+
+    protected void runTest() throws Throwable {
+        Document doc =
+                dbf.newDocumentBuilder().parse(AbstractTestCase.getTestResource("xml/numbers.xml"));
+        Element element = doc.getDocumentElement();
+        NodeList list = element.getElementsByTagName("nr");
+        assertEquals(10, list.getLength());
     }
 }
