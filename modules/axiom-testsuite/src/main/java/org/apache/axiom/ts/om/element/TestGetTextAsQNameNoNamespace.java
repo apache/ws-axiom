@@ -16,14 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.om.element;
 
-package org.apache.axiom.om.impl.llom;
+import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMElementTestBase;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.AxiomTestCase;
 
-public class OMElementTest extends OMElementTestBase {
-    public OMElementTest() {
-        super(new OMLinkedListMetaFactory());
+public class TestGetTextAsQNameNoNamespace extends AxiomTestCase {
+    public TestGetTextAsQNameNoNamespace(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
+
+    protected void runTest() throws Throwable {
+        OMFactory factory = metaFactory.getOMFactory();
+        OMElement omElement = factory.createOMElement("TestElement", null);
+        omElement.setText("value");
+        assertEquals(new QName("value"), omElement.getTextAsQName());
     }
 }
