@@ -18,36 +18,11 @@
  */
 package org.apache.axiom.om.impl.dom;
 
-import java.io.ByteArrayOutputStream;
-
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMElementTestBase;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.w3c.dom.Text;
 
 public class ElementImplTest extends OMElementTestBase {
     public ElementImplTest() {
         super(new OMDOMMetaFactory());
-    }
-
-    public void testSerialize() throws Exception {
-        OMDOMFactory factory = new OMDOMFactory();
-        String localName = "TestLocalName";
-        String namespace = "http://ws.apache.org/axis2/ns";
-        String prefix = "axis2";
-        String tempText = "The quick brown fox jumps over the lazy dog";
-        String textToAppend = " followed by another";
-
-        OMElement elem = factory.createOMElement(localName, namespace, prefix);
-        OMText textNode = factory.createOMText(elem, tempText);
-
-        ((Text) textNode).appendData(textToAppend);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-        elem.serialize(baos);
-        String xml = new String(baos.toByteArray());
-        assertEquals("Incorrect serialized xml", 0, xml.indexOf("<axis2:TestLocalName"));
     }
 }
