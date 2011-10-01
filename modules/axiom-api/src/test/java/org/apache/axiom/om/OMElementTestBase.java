@@ -22,7 +22,6 @@ package org.apache.axiom.om;
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamConstants;
 
 import org.apache.axiom.om.util.AXIOMUtil;
 
@@ -33,35 +32,6 @@ public abstract class OMElementTestBase extends AbstractTestCase {
         this.omMetaFactory = omMetaFactory;
     }
 
-    public void testSetText() {
-        OMFactory factory = omMetaFactory.getOMFactory();
-        String localName = "TestLocalName";
-        String namespace = "http://ws.apache.org/axis2/ns";
-        String prefix = "axis2";
-        OMElement elem = factory.createOMElement(localName, namespace, prefix);
-
-        String text = "The quick brown fox jumps over the lazy dog";
-
-        elem.setText(text);
-
-        assertEquals("Text value mismatch", text, elem.getText());
-    }
-
-    public void testCDATA() throws Exception {
-        OMFactory factory = omMetaFactory.getOMFactory();
-        OMElement omElement = factory.createOMElement("TestElement", null);
-        final String text = "this is <some> text in a CDATA";
-        factory.createOMText(omElement, text, XMLStreamConstants.CDATA);
-        assertEquals(text, omElement.getText());
-
-        // OK, CDATA on its own worked - now confirm that a plain text + a CDATA works
-        omElement = factory.createOMElement("element2", null);
-        final String normalText = "regular text and ";
-        factory.createOMText(omElement, normalText);
-        factory.createOMText(omElement, text, XMLStreamConstants.CDATA);
-        assertEquals(normalText + text, omElement.getText());
-    }
-    
     public void testAddChild() {
         OMFactory factory = omMetaFactory.getOMFactory();
         String localName = "TestLocalName";

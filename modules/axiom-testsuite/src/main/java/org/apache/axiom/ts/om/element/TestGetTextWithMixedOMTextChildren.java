@@ -18,33 +18,29 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import javax.xml.stream.XMLStreamConstants;
+
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests the behavior of {@link OMElement#setText()} when invoked on an empty element.
+ * Tests the behavior of {@link OMElement#getText()} when invoked on an element containing a single
+ * CDATA section.
  */
-public class TestSetText extends AxiomTestCase {
-    public TestSetText(OMMetaFactory metaFactory) {
+public class TestGetTextWithMixedOMTextChildren extends AxiomTestCase {
+    public TestGetTextWithMixedOMTextChildren(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
-        OMElement element = metaFactory.getOMFactory().createOMElement("test", null);
-        String text = "The quick brown fox jumps over the lazy dog";
-        element.setText(text);
-        
-        // Check that OMElement#getText() returns a matching value
-        assertEquals("Text value mismatch", text, element.getText());
-        
-        // Check that OMElement#setText() has created the expected nodes
-        OMNode child = element.getFirstOMChild();
-        assertTrue(child instanceof OMText);
-        assertSame(element, child.getParent());
-        assertEquals(text, ((OMText)child).getText());
-        assertNull(child.getNextOMSibling());
+        OMFactory factory = metaFactory.getOMFactory();
+        OMElement omElement = factory.createOMElement("element2", null);
+        final String normalText = "regular text and ";
+        final String text = "this is <some> text in a CDATA";
+        factory.createOMText(omElement, normalText);
+        factory.createOMText(omElement, text, XMLStreamConstants.CDATA);
+        assertEquals(normalText + text, omElement.getText());
     }
 }
