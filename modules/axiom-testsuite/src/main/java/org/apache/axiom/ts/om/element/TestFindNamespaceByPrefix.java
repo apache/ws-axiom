@@ -16,13 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.ts.om.element;
 
-import org.apache.axiom.om.OMElementTestBase;
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.ts.AxiomTestCase;
 
-public class ElementImplTest extends OMElementTestBase {
-    public ElementImplTest() {
-        super(new OMDOMMetaFactory());
+public class TestFindNamespaceByPrefix extends AxiomTestCase {
+    public TestFindNamespaceByPrefix(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
+
+    protected void runTest() throws Throwable {
+        OMElement root =
+                AXIOMUtil.stringToOM(metaFactory.getOMFactory(), "<a:root xmlns:a='urn:a'><child/></a:root>");
+        OMNamespace ns = root.getFirstElement().findNamespace(null, "a");
+        assertNotNull(ns);
+        assertEquals("urn:a", ns.getNamespaceURI());
+        root.close(false);
     }
 }

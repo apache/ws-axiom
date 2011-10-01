@@ -16,24 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.om;
+package org.apache.axiom.ts.om.element;
 
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.AxiomTestCase;
 
-public abstract class OMElementTestBase extends AbstractTestCase {
-    protected final OMMetaFactory omMetaFactory;
-
-    public OMElementTestBase(OMMetaFactory omMetaFactory) {
-        this.omMetaFactory = omMetaFactory;
+public class TestAddChild2 extends AxiomTestCase {
+    public TestAddChild2(OMMetaFactory metaFactory) {
+        super(metaFactory);
     }
 
-    public void testAddChild() {
-        OMFactory factory = omMetaFactory.getOMFactory();
+    protected void runTest() throws Throwable {
+        OMFactory factory = metaFactory.getOMFactory();
         String localName = "TestLocalName";
         String childLocalName = "TestChildLocalName";
         String namespace = "http://ws.apache.org/axis2/ns";
@@ -55,14 +55,5 @@ public abstract class OMElementTestBase extends AbstractTestCase {
             count ++;
         }
         assertEquals("In correct number of children", 1, count);
-    }
-    
-    public void testFindNamespaceByPrefix() throws Exception {
-        OMElement root =
-                AXIOMUtil.stringToOM(omMetaFactory.getOMFactory(), "<a:root xmlns:a='urn:a'><child/></a:root>");
-        OMNamespace ns = root.getFirstElement().findNamespace(null, "a");
-        assertNotNull(ns);
-        assertEquals("urn:a", ns.getNamespaceURI());
-        root.close(false);
     }
 }

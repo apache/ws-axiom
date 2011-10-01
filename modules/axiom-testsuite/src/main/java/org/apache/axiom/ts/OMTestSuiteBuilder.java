@@ -104,6 +104,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutExistingNamespaceDeclaration(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChild(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestAddChild2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChildWithParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestChildReDeclaringGrandParentsDefaultNSWithPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestChildReDeclaringParentsDefaultNSWithPrefix(metaFactory));
@@ -118,6 +119,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestDigestWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDigestWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestFindNamespaceURIWithPrefixUndeclaring(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestFindNamespaceByPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAllAttributes1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAllAttributes2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAllDeclaredNamespaces(metaFactory));
