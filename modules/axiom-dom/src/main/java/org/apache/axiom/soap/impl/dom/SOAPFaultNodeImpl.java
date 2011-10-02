@@ -44,12 +44,20 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
               factory);
     }
 
-    public void setNodeValue(String uri) {
+    public void setFaultNodeValue(String uri) {
         this.setText(uri);
     }
 
-    public String getNodeValue() {
+    public String getFaultNodeValue() {
         return this.getText();
+    }
+
+    public void setNodeValue(String uri) {
+        setFaultNodeValue(uri);
+    }
+
+    public String getNodeValue() {
+        return getFaultNodeValue();
     }
 
     public void internalSerialize(

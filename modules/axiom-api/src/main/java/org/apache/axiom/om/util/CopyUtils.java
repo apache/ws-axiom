@@ -423,7 +423,7 @@ public class CopyUtils {
                                           SOAPFaultNode sourceNode) {
         SOAPFaultNode targetNode = factory.createSOAPFaultNode(targetFault);
         copyTagData(sourceNode, targetNode);
-        targetNode.setNodeValue(sourceNode.getNodeValue());
+        targetNode.setFaultNodeValue(sourceNode.getFaultNodeValue());
     }
 
     /**
