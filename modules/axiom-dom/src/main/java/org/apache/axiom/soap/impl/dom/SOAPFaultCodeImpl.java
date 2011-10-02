@@ -51,7 +51,6 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
               extractNamespaceFromParent, factory);
     }
 
-    /** Eran Chinthaka (chinthaka@apache.org) */
     public void setValue(SOAPFaultValue value) throws SOAPProcessingException {
         ElementHelper.setNewElement(this, value, value);
     }

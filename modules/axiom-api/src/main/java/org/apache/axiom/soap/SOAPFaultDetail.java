@@ -33,7 +33,6 @@ import java.util.Iterator;
  * [attributes] property. Zero or more child element information items in its [children] property.
  */
 public interface SOAPFaultDetail extends OMElement {
-    /** Eran Chinthaka (chinthaka@apache.org) */
     void addDetailEntry(OMElement detailElement);
 
     Iterator getAllDetailEntries();

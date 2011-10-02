@@ -20,9 +20,6 @@
 package org.apache.axiom.soap;
 
 public interface SOAPConstants {
-    /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
     /** Field SOAP_DEFAULT_NAMESPACE_PREFIX */
     static final String SOAP_DEFAULT_NAMESPACE_PREFIX = "soapenv";
     /** Field SOAPENVELOPE_LOCAL_NAME */

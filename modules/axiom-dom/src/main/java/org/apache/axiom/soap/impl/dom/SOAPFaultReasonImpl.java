@@ -57,7 +57,6 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
               extractNamespaceFromParent, factory);
     }
 
-    /** Eran Chinthaka (chinthaka@apache.org) */
     public void addSOAPText(SOAPFaultText soapFaultText) throws SOAPProcessingException {
         ElementHelper.setNewElement(this, text, soapFaultText);
     }

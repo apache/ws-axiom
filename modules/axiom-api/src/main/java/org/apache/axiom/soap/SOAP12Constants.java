@@ -23,8 +23,6 @@ import javax.xml.namespace.QName;
 
 
 public interface SOAP12Constants extends SOAPConstants {
-    /** Eran Chinthaka (chinthaka@apache.org) */
-
     public String SOAP_ENVELOPE_NAMESPACE_URI =
             "http://www.w3.org/2003/05/soap-envelope";
     public String SOAP_ENCODING_NAMESPACE_URI =

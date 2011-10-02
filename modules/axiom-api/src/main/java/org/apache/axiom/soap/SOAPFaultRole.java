@@ -31,10 +31,6 @@ import org.apache.axiom.om.OMElement;
  */
 public interface SOAPFaultRole extends OMElement {
     /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
-
-    /**
      * The value of the Role element information item MUST be one of the roles assumed by the node
      * during processing of the message
      *

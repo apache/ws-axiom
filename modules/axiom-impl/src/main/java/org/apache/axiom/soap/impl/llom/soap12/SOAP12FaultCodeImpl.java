@@ -32,8 +32,6 @@ import org.apache.axiom.soap.impl.llom.SOAPFaultCodeImpl;
 import javax.xml.namespace.QName;
 
 public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
-    /** Eran Chinthaka (chinthaka@apache.org) */
-
     public SOAP12FaultCodeImpl(SOAPFactory factory) {
         super(factory.getNamespace(), factory);
     }

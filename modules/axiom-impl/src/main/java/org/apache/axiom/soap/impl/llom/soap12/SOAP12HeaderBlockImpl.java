@@ -45,9 +45,6 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12
     }
     
     /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
-    /**
      * @param localName
      * @param ns
      */

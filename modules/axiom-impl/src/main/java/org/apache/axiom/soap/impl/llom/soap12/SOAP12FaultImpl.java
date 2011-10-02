@@ -38,11 +38,6 @@ import javax.xml.stream.XMLStreamWriter;
 
 
 public class SOAP12FaultImpl extends SOAPFaultImpl {
-
-
-    /** Eran Chinthaka (chinthaka@apache.org) */
-
-
     public SOAP12FaultImpl(SOAPFactory factory) {
         super(factory.getNamespace(), factory);
     }

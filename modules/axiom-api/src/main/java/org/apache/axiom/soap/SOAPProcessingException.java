@@ -27,7 +27,6 @@ public class SOAPProcessingException extends OMException {
 
     private String soapFaultCode;
 
-    /** Eran Chinthaka (chinthaka@apache.org) */
     public SOAPProcessingException(String message) {
         super(message);
     }

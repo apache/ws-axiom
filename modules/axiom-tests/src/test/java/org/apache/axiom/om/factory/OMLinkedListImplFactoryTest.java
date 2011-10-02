@@ -38,7 +38,6 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 
 import javax.xml.namespace.QName;
 
-/** User: Eran Chinthaka (eran.chinthaka@gmail.com) Date: Feb 8, 2005 Time: 11:06:09 AM */
 public class OMLinkedListImplFactoryTest extends AbstractTestCase {
     public OMLinkedListImplFactoryTest(String testName) {
         super(testName);

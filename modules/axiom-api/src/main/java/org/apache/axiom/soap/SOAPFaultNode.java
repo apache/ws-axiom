@@ -23,10 +23,6 @@ import org.apache.axiom.om.OMElement;
 
 public interface SOAPFaultNode extends OMElement {
     /**
-     * Eran Chinthaka (chinthaka@apache.org)
-     */
-
-    /**
      * each SOAP node is identified by a URI. The value of the Node element information item is the
      * URI that identifies the SOAP node that generated the fault. SOAP nodes that do not act as the
      * ultimate SOAP receiver MUST include this element information item. An ultimate SOAP receiver

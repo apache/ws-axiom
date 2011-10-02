@@ -33,10 +33,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
-
-
-    /** Eran Chinthaka (chinthaka@apache.org) */
-
     public SOAP11FaultReasonImpl(SOAPFactory factory) {
         super(null, factory);
     }

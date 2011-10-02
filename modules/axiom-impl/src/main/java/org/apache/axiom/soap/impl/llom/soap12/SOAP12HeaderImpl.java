@@ -33,8 +33,6 @@ import javax.xml.namespace.QName;
 import java.util.Iterator;
 
 public class SOAP12HeaderImpl extends SOAPHeaderImpl {
-    /** Eran Chinthaka (chinthaka@apache.org) */
-
     public SOAP12HeaderImpl(SOAPFactory factory) {
         super(factory.getNamespace(), factory);
     }
