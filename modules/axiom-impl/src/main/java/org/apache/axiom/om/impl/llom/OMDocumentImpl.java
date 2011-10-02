@@ -31,6 +31,7 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
+import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMDocumentImplUtil;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
@@ -194,6 +195,10 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
      */
     public Iterator getChildren() {
         return new OMChildrenIterator(getFirstOMChild());
+    }
+
+    public Iterator getDescendants(boolean includeSelf) {
+        return new OMDescendantsIterator(this, includeSelf);
     }
 
     /**

@@ -39,6 +39,7 @@ import org.apache.axiom.om.impl.common.OMChildrenLegacyQNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
+import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
@@ -356,6 +357,10 @@ public class OMElementImpl extends OMNodeImpl
      */
     public Iterator getChildren() {
         return new OMChildrenIterator(getFirstOMChild());
+    }
+
+    public Iterator getDescendants(boolean includeSelf) {
+        return new OMDescendantsIterator(this, includeSelf);
     }
 
     /**

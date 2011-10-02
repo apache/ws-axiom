@@ -29,7 +29,6 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.impl.traverse.OMDescendantsIterator;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.axiom.util.stax.xop.XOPEncodedStream;
@@ -161,7 +160,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         OMDocument doc = builder.getDocument();
         // Find all the binary nodes
         List/*<OMText>*/ binaryNodes = new ArrayList();
-        for (Iterator it = new OMDescendantsIterator(doc.getFirstOMChild()); it.hasNext(); ) {
+        for (Iterator it = doc.getDescendants(false); it.hasNext(); ) {
             OMNode node = (OMNode)it.next();
             if (node instanceof OMText) {
                 OMText text = (OMText)node;

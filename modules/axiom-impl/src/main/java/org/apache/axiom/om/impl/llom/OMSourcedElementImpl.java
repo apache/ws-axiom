@@ -875,6 +875,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getChildren();
     }
 
+    public Iterator getDescendants(boolean includeSelf) {
+        forceExpand();
+        return super.getDescendants(includeSelf);
+    }
+
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMContainer#getFirstOMChild()
      */

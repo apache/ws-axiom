@@ -30,9 +30,9 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
+import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.apache.axiom.om.impl.traverse.OMDescendantsIterator;
 import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
 import org.apache.axiom.om.impl.traverse.OMQualifiedNameFilterIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
@@ -650,8 +650,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         final QName qname = new QName(namespaceURI, localName);
         return new NodeListImpl() {
             protected Iterator getIterator() {
-                return new OMQNameFilterIterator(
-                        new OMDescendantsIterator(getFirstOMChild()), qname);
+                return new OMQNameFilterIterator(getDescendants(false), qname);
             }
         };
     }
@@ -665,14 +664,14 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
         if (name.equals("*")) {
             return new NodeListImpl() {
                 protected Iterator getIterator() {
-                    return new OMDescendantsIterator(getFirstOMChild());
+                    return getDescendants(false);
                 }
             };
         } else {
             return new NodeListImpl() {
                 protected Iterator getIterator() {
                     return new OMQualifiedNameFilterIterator(
-                            new OMDescendantsIterator(getFirstOMChild()), name);
+                            getDescendants(false), name);
                 }
             };
         }

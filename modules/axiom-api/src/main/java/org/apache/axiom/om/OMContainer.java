@@ -106,6 +106,18 @@ public interface OMContainer extends OMSerializable {
      * @see #getChildrenWithName
      */
     Iterator getChildren();
+    
+    /**
+     * Get an iterator over all descendants of the container. The items are returned in document
+     * order. Note that attributes and namespace declarations are not considered descendants.
+     * 
+     * @param includeSelf
+     *            <code>true</code> if the iterator should also return the container itself;
+     *            <code>false</code> if the first item returned by the iterator should be the first
+     *            child of the container
+     * @return an iterator over the descendants of this container
+     */
+    Iterator getDescendants(boolean includeSelf);
 
     /**
      * Gets the first child.

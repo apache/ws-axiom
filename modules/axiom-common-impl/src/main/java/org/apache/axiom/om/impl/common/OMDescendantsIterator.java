@@ -17,24 +17,24 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.traverse;
+package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSerializable;
 
 /**
- * @deprecated This type of iterator should always be created using
- *             {@link OMContainer#getDescendants(boolean)}, and this class should never be
- *             referenced directly. It will be removed in Axiom 1.3.
+ * Iterator that iterates over all descendants in document order.
  */
 public class OMDescendantsIterator extends OMAbstractIterator {
     private int level;
     
-    public OMDescendantsIterator(OMNode firstNode) {
-        super(firstNode);
+    public OMDescendantsIterator(OMContainer container, boolean includeSelf) {
+        super(includeSelf ? (OMSerializable)container : (OMSerializable)container.getFirstOMChild());
+        level = includeSelf ? 0 : 1;
     }
 
-    protected OMNode getNextNode(OMNode currentNode) {
+    protected OMSerializable getNextNode(OMSerializable currentNode) {
         if (currentNode instanceof OMContainer) {
             OMNode firstChild = ((OMContainer)currentNode).getFirstOMChild();
             if (firstChild != null) {
@@ -42,15 +42,16 @@ public class OMDescendantsIterator extends OMAbstractIterator {
                 return firstChild;
             }
         }
-        OMNode node = currentNode;
+        OMSerializable node = currentNode;
         while (true) {
-            OMNode nextSibling = node.getNextOMSibling();
+            if (level == 0) {
+                return null;
+            }
+            OMNode nextSibling = ((OMNode)node).getNextOMSibling();
             if (nextSibling != null) {
                 return nextSibling;
-            } else if (level == 0) {
-                return null;
             } else {
-                node = (OMNode)node.getParent();
+                node = ((OMNode)node).getParent();
                 level--;
             }
         }
