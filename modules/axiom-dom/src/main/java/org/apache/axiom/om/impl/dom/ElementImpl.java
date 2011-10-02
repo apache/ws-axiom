@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.traverse.OMChildElementIterator;
@@ -1147,6 +1148,10 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             return EMPTY_ITERATOR;
         }
         return namespaces.values().iterator();
+    }
+
+    public Iterator getNamespacesInScope() {
+        return new NamespaceIterator(this);
     }
 
     /** @see org.apache.axiom.om.OMElement#getAllAttributes() */

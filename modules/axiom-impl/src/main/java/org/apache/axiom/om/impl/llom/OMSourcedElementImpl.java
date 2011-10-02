@@ -402,6 +402,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getAllDeclaredNamespaces();
     }
 
+    public Iterator getNamespacesInScope() throws OMException {
+        forceExpand();
+        return super.getNamespacesInScope();
+    }
+
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMElement#getAllAttributes()
      */

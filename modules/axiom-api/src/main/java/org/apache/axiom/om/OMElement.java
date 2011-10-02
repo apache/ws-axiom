@@ -195,6 +195,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * namespace declarations and prefix undeclaring), it is generally recommended to use one of the
      * following specialized methods for this purpose:
      * <ul>
+     * <li>{@link #getNamespacesInScope()} to calculate the namespace context for the element.
      * <li>{@link #findNamespace(String, String)} and {@link #findNamespaceURI(String)} to resolve a
      * namespace prefix or to find a namespace prefix for a given URI.
      * <li>{@link #resolveQName(String)} to resolve a QName literal.
@@ -216,6 +217,25 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      */
     Iterator getAllDeclaredNamespaces() throws OMException;
 
+    /**
+     * Get an iterator that returns all namespaces in scope for this element. This method may be
+     * used to determine the namespace context for this element. For any given prefix, the iterator
+     * returns at most one {@link OMNamespace} object with that prefix, and this object specifies
+     * the namespace URI bound to the prefix. The iterator returns an {@link OMNamespace} object
+     * with an empty prefix if and only if there is a default namespace. It will never return an
+     * {@link OMNamespace} object with both the prefix and the namespace URI set to the empty
+     * string, even if the element or one of its ancestors has a namespace declaration of the form
+     * <tt>xmlns=""</tt>.
+     * <p>
+     * The order in which the iterator returns the namespaces is undefined, and invoking the
+     * {@link Iterator#remove()} method on the returned iterator is not supported. The iterator may
+     * be a "live" object, which means that results are undefined if the document is modified (in a
+     * way that would modify the namespace context for the element) while the iterator is in use.
+     * 
+     * @return an iterator over all namespaces in scope for this element
+     */
+    Iterator getNamespacesInScope();
+    
     /**
      * Returns a list of OMAttributes.
      * <p/>

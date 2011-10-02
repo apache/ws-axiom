@@ -143,6 +143,10 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetChildrenWithName4(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithNameOnIncompleteElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetNamespacesInScope(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetNamespacesInScopeWithDefaultNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetNamespacesInScopeWithMaskedDefaultNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetNamespacesInScopeWithMaskedNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceURIWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceURIWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithNamespace(metaFactory));

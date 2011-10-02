@@ -33,6 +33,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
@@ -546,6 +547,10 @@ public class OMElementImpl extends OMNodeImpl
             return EMPTY_ITERATOR;
         }
         return namespaces.values().iterator();
+    }
+
+    public Iterator getNamespacesInScope() {
+        return new NamespaceIterator(this);
     }
 
     /**

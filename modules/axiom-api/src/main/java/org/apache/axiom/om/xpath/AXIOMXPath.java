@@ -20,18 +20,14 @@
 package org.apache.axiom.om.xpath;
 
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.jaxen.BaseXPath;
 import org.jaxen.JaxenException;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 public class AXIOMXPath extends BaseXPath {
 
@@ -118,30 +114,13 @@ public class AXIOMXPath extends BaseXPath {
      * @param element the element to retrieve the namespace context from
      * @throws JaxenException if an error occurred when adding the namespace declarations
      */
-    // TODO: need to take prefix undeclaring into account here; probably we should add a method to OMElement that returns all namespaces in scope
     public void addNamespaces(OMElement element) throws JaxenException {
-        OMElement current = element;
-        // An element can redeclare a namespace prefix that has already been declared
-        // by one of its ancestors. Since we visit the tree from child to parent, we
-        // need to keep track of the prefixes we have already seen in order to avoid
-        // adding namespace declarations that are overridden by a descendant of an element.
-        Set seenPrefixes = new HashSet();
-        while (true) {
-            for (Iterator it = current.getAllDeclaredNamespaces(); it.hasNext(); ) {
-                OMNamespace ns = (OMNamespace) it.next();
-                if (ns != null) {
-                    String prefix = ns.getPrefix();
-                    // Exclude the default namespace as explained in the Javadoc above
-                    if (prefix.length() != 0 && seenPrefixes.add(prefix)) {
-                        addNamespace(ns.getPrefix(), ns.getNamespaceURI());
-                    }
-                }
-            }
-            OMContainer parent = current.getParent();
-            if (parent == null || parent instanceof OMDocument) {
-                break;
-            } else {
-                current = (OMElement)parent;
+        for (Iterator it = element.getNamespacesInScope(); it.hasNext(); ) {
+            OMNamespace ns = (OMNamespace) it.next();
+            String prefix = ns.getPrefix();
+            // Exclude the default namespace as explained in the Javadoc above
+            if (prefix.length() != 0) {
+                addNamespace(prefix, ns.getNamespaceURI());
             }
         }
     }
