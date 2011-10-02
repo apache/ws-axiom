@@ -17,18 +17,21 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.traverse;
+package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
+import org.apache.axiom.om.impl.traverse.OMFilterIterator;
 
 import javax.xml.namespace.QName;
 
-/**
- * @deprecated This type of iterator should always be created using
- *             {@link OMContainer#getChildrenWithName(QName)}, and this class should never be
- *             referenced directly. It will be removed in Axiom 1.3.
+/** 
+ * Class OMChildrenQNameIterator
+ * 
+ * This iterator returns the elements that have a matching QName.
+ * This class can be extended to customize the QName equality.
+ *
  */
 public class OMChildrenQNameIterator extends OMFilterIterator {
     /** Field givenQName */

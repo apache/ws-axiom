@@ -28,12 +28,12 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
+import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
+import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.OMDocumentImplUtil;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
-import org.apache.axiom.om.impl.traverse.OMChildrenLocalNameIterator;
-import org.apache.axiom.om.impl.traverse.OMChildrenNamespaceIterator;
-import org.apache.axiom.om.impl.traverse.OMChildrenQNameIterator;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;

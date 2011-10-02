@@ -19,13 +19,15 @@
 
 package org.apache.axiom.om.impl.traverse;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 
 import javax.xml.namespace.QName;
 
 /**
- * Iterate over elements with the same namespace uri
- *
+ * @deprecated This type of iterator should always be created using
+ *             {@link OMContainer#getChildrenWithNamespaceURI(String)}, and this class should never
+ *             be referenced directly. It will be removed in Axiom 1.3.
  */
 public class OMChildrenNamespaceIterator extends OMChildrenQNameIterator {
 

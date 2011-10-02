@@ -17,17 +17,15 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.traverse;
+package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 
 import javax.xml.namespace.QName;
 
 /**
- * @deprecated This type of iterator should always be created using
- *             {@link OMContainer#getChildrenWithLocalName(String)}, and this class should never be
- *             referenced directly. It will be removed in Axiom 1.3.
+ * Iterate over elements with the same LocalName
+ *
  */
 public class OMChildrenLocalNameIterator extends OMChildrenQNameIterator {
 

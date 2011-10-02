@@ -17,22 +17,22 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.traverse;
+package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 
 import javax.xml.namespace.QName;
 
 /**
- * @deprecated This type of iterator should always be created using
- *             {@link OMContainer#getChildrenWithLocalName(String)}, and this class should never be
- *             referenced directly. It will be removed in Axiom 1.3.
+ * Iterate over elements with the QName that uses the 
+ * legacy algorithm.  This iterator is only retained for migrating
+ * some existing customers that have a dependency on the old algorithm
+ * @deprecated
  */
-public class OMChildrenLocalNameIterator extends OMChildrenQNameIterator {
+public class OMChildrenLegacyQNameIterator extends OMChildrenQNameIterator {
 
-    public OMChildrenLocalNameIterator(OMNode currentChild, String localName) {
-        super(currentChild, new QName("", localName));
+    public OMChildrenLegacyQNameIterator(OMNode currentChild, QName qName) {
+        super(currentChild, qName);
     }
 
     /**
@@ -43,6 +43,15 @@ public class OMChildrenLocalNameIterator extends OMChildrenQNameIterator {
      * @return true if equals
      */
     public boolean isEqual(QName searchQName, QName currentQName) {
-        return searchQName.getLocalPart().equals(currentQName.getLocalPart());
+        // if the given localname is null, whatever value this.qname has, its a match. 
+        // But can one give a QName without a localName ??
+        String localPart = searchQName.getLocalPart();
+        boolean localNameMatch =(localPart == null) || (localPart.equals("")) ||
+            ((currentQName != null) && currentQName.getLocalPart().equals(localPart));
+        
+        String namespaceURI = searchQName.getNamespaceURI();
+        boolean namespaceURIMatch = (namespaceURI == null) || (namespaceURI.equals(""))||
+            ((currentQName != null) && currentQName.getNamespaceURI().equals(namespaceURI));
+        return localNameMatch && namespaceURIMatch;
     }
 }
