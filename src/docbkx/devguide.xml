@@ -158,6 +158,226 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
     </chapter>
     
     <chapter>
+        <title>OSGi integration</title>
+        <section>
+            <title>Requirements</title>
+            <formalpara>
+                <title>Requirement 1</title>
+                <para>
+                    The Axiom artifacts SHOULD be usable both as normal JAR files and as OSGi bundles.
+                </para>
+            </formalpara>
+            <note>
+                <para>
+                    The alternative would be to produce two sets of artifacts during the build. This
+                    should be avoided in order to keep the build process as simple as possible.
+                    It should also be noted that the Geronimo Spec artifacts also meet this requirement.
+                </para>
+            </note>
+            <formalpara id="osgi-req-same-api">
+                <title>Requirement 2</title>
+                <para>
+                    All APIs defined by the <literal>axiom-api</literal> module, and in particular the
+                    <classname>OMAbstractFactory</classname> API MUST continue to work
+                    as expected in an OSGi environment, so that code in downstream projects
+                    doesn't need to be rewritten.
+                </para>
+            </formalpara>
+            <formalpara id="osgi-req-same-impl-selection">
+                <title>Requirement 3</title>
+                <para>
+                    <classname>OMAbstractFactory</classname> MUST select the same implementation
+                    regardless of the type of container (OSGi or non OSGi). The only exception is
+                    related to the usage of system properties to specify the default <classname>OMMetaFactory</classname>
+                    implementation: in an OSGi environment, selecting an implementation class using
+                    a system property is not meaningful.
+                </para>
+            </formalpara>
+            <note>
+                <para>
+                    This is currently not the case. In a non OSGi environment, recent versions of Axiom
+                    use JDK 1.3 service discovery to locate the default implementation and fall back to
+                    LLOM if none is found. DOOM will never be selected as the default implementation.
+                    On the other hand, the current OSGi integration will select any Axiom implementation
+                    as default implementation, but gives priority to LLOM.
+                </para>
+            </note>
+            <formalpara id="osgi-ref-impl-not-exported">
+                <title>Requirement 4</title>
+                <para>
+                    The bundles for the LLOM and DOOM implementations MUST NOT export any packages.
+                    This is required to keep a clean separation between the public API and implementation
+                    specific classes and to make sure that the implementations can be modified without the
+                    risk of breaking existing code.
+                </para>
+                <para>
+                    An exception MAY be made for factory classes related to foreign APIs, such as the
+                    <classname>DocumentBuilderFactory</classname> implementation for an Axiom implementation
+                    supporting DOM.
+                </para>
+            </formalpara>
+            <note>
+                <para>
+                    When the Axiom artifacts are used as normal JAR files in a Maven build, this requirement implies that
+                    they should be used in scope <literal>runtime</literal>.
+                </para>
+                <para>
+                    Although this requirement is easy to implement for the Axiom project, there are
+                    currently a couple of issues in the downstreams project that need to be addressed
+                    to make this work:
+                </para>
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            As explained in <ulink url="https://issues.apache.org/jira/browse/AXIS2-4902">AXIS2-4902</ulink>,
+                            there are many places in Axis2 that still refer directly to Axiom implementation classes.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            The <literal>axis2-saaj</literal> module is tightly coupled to <literal>axiom-dom</literal>.
+                            Making this work will probably require using <literal>maven-shade-plugin</literal> to
+                            include (a relocated copy of) the DOOM classes into <literal>axis2-saaj</literal>.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Abdera extends the LLOM implementation. Probably, some <literal>maven-shade-plugin</literal>
+                            magic will be required here as well to create Abdera OSGi bundles that work properly with
+                            the Axiom bundles.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </note>
+            <formalpara>
+                <title>Requirement 5</title>
+                <para>
+                    It MUST be possible to use a non standard (third party) Axiom implementation as a drop-in replacement
+                    for the standard LLOM and DOOM implementation, i.e. the <literal>axiom-impl</literal>
+                    and <literal>axiom-dom</literal> bundles. It MUST be possible to replace <literal>axiom-impl</literal>
+                    (resp. <literal>axiom-dom</literal>) by any Axiom implementation that supports the full Axiom API
+                    (resp. that supports DOM in addition to the Axiom API), without the need to change any application code.
+                </para>
+            </formalpara>
+            <note>
+                <para>
+                    This requirement has several important implications:
+                </para>
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            It restricts the allowable exceptions to <xref linkend="osgi-ref-impl-not-exported"/>.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            It implies that there must be an API that allows application code to select an Axiom
+                            implementation based on its capabilities (e.g. DOM support) without introducing a
+                            hard dependency on a particular Axiom implementation.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            In accordance with <xref linkend="osgi-req-same-api"/> and <xref linkend="osgi-req-same-impl-selection"/>
+                            this requirement not only applies to an OSGi environment, but extends to non OSGi environments as well.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </note>
+            <formalpara>
+                <title>Requirement 6</title>
+                <para>
+                    The OSGi integration SHOULD remove the necessity for downstreams projects
+                    to produce their own custom OSGi bundles for Axiom. There SHOULD be one
+                    and only one set of OSGi bundles for Axiom, namely the ones released by the Axiom project.
+                </para>
+            </formalpara>
+            <note>
+                <para>
+                    Currently there are at least two projects that create their own modified Axiom bundles:
+                </para>
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            Apache Geronimo has a custom Axiom bundle to support the Axis2 integration.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            ServiceMix also has custom bundles to support Abdera; see
+                            <ulink url="https://issues.apache.org/jira/browse/SMX4-877">SMX4-877</ulink>.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+                <para>
+                    Note that this requirement can't be satisfied directly by Axiom. It requires that
+                    the above mentioned projects (Geronimo, Axis2 and Abdera) use Axiom in a way that is
+                    compatible with its design, and in particular with <xref linkend="osgi-ref-impl-not-exported"/>.
+                    Nevertheless, Axiom must provide the necessary APIs and features to meet the needs
+                    of these projects.
+                </para>
+            </note>
+            <formalpara>
+                <title>Requirement 7</title>
+                <para>
+                    The Axiom OSGi integration SHOULD NOT rely on any particular OSGi framework such
+                    as Felix SCR (Declarative Services). When deployed in an OSGi environment, Axiom should have the same
+                    runtime dependencies as in a non OSGi environment (i.e. StAX, Activation and JavaMail).
+                </para>
+            </formalpara>
+            <note>
+                <para>
+                    Axiom 1.2.12 relies on Felix SCR. Although there is no real issue with that, getting rid
+                    of this extra dependency is seen as a nice to have. One of the reasons for using Felix SCR
+                    was to avoid introducing OSGi specific code into Axiom. However, there is no issue with
+                    having such code, provided that <xref linkend="osgi-req-no-osgi-dep"/> is satisfied.
+                </para>
+            </note>
+            <formalpara id="osgi-req-no-osgi-dep">
+                <title>Requirement 8</title>
+                <para>
+                    In a non OSGi environment, Axiom MUST NOT have any OSGi related dependencies. That means
+                    that the OSGi integration must be written in such a way that no OSGi specific classes are
+                    ever loaded in a non OSGi environment.
+                </para>
+            </formalpara>
+            <formalpara>
+                <title>Requirement 9</title>
+                <para>
+                    The OSGi integration MUST follow established best practices. It SHOULD be inspired by
+                    what has been done to add OSGi integration to APIs that have a similar structure as Axiom.
+                </para>
+            </formalpara>
+            <note>
+                <para>
+                    Axiom is designed around an abstract API and allows for the existence of multiple
+                    independent implementations. A factory (<classname>OMAbstractFactory</classname>) is used to
+                    locate and instantiate the desired implementation. This is similar to APIs such as
+                    JAXP (<classname>DocumentBuilderFactory</classname>, etc.) and JAXB (<classname>JAXBContext</classname>).
+                    These APIs have been successfully "OSGi-fied" e.g. by the Apache Geronimo project.
+                    Instead of reinventing the wheel, we should leverage that work and adapt it to
+                    Axiom's specific requirements.
+                </para>
+                <para>
+                    It should be noted that because of the way the Axiom API is designed and taking into account
+                    <xref linkend="osgi-req-same-api"/>, it is not possible to make Axiom entirely compatible
+                    with OSGi paradigms (the same is true for JAXB). In an OSGi-only world, each Axiom
+                    implementation would simple expose itself as an OSGi service (of type <classname>OMMetaFactory</classname> e.g.)
+                    and code depending on Axiom would bind to one (or more) of these services depending on its needs.
+                    That is not possible because it would conflict with <xref linkend="osgi-req-same-api"/>.
+                </para>
+            </note>
+        </section>
+        <section>
+            <title>New abstract APIs</title>
+            <para>
+                TODO: The existence of DOOMAbstractFactory conflicts with several of the requirements; need a new API that allows
+                to select an Axiom implementation based on capabilities/features requested by the application code
+            </para>
+        </section>
+    </chapter>
+    
+    <chapter>
         <title>Release process</title>
         <section>
             <title>Release preparation</title>
