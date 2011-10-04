@@ -161,7 +161,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
         <title>OSGi integration</title>
         <section>
             <title>Requirements</title>
-            <formalpara>
+            <formalpara id="osgi-req-no-separate-bundles">
                 <title>Requirement 1</title>
                 <para>
                     The Axiom artifacts SHOULD be usable both as normal JAR files and as OSGi bundles.
@@ -367,6 +367,69 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     That is not possible because it would conflict with <xref linkend="osgi-req-same-api"/>.
                 </para>
             </note>
+            <formalpara>
+                <title>Non-Requirement 1</title>
+                <para>
+                    APIs such as JAXP and JAXB have been designed from the start for inclusion into the JRE.
+                    They need to support scenarios where an application bundles its own implementation
+                    (e.g. an application may package a version of Apache Xerces, which would then be
+                    instantiated by the <methodname>newInstance</methodname> method in
+                    <classname>DocumentBuilderFactory</classname>). That implies that the selected implementation
+                    depends on the thread context class loader. It is assumed that there is no such requirement
+                    for Axiom, which means that in a non OSGi environment, the Axiom implementations are always loaded from the same
+                    class loader as the <literal>axiom-api</literal> JAR.
+                </para>
+            </formalpara>
+            <note>
+                <para>
+                    This (non-)requirement is actually not directly relevant for the OSGi support, but it
+                    nevertheless has some importance because of <xref linkend="osgi-req-same-impl-selection"/>
+                    (which implies that the OSGi support needs to be designed in parallel with the implementation
+                    discovery strategy applicable in a non OSGi environment).
+                </para>
+            </note>
+        </section>
+        <section>
+            <title>Analysis of the Geronimo JAXB bundles</title>
+            <para>
+                org.apache.geronimo.bundles:jaxb-impl:2.2.3-1_1
+                org.apache.geronimo.specs:geronimo-jaxb_2.2_spec:1.0.1
+                org.apache.geronimo.specs:geronimo-osgi-locator:1.0
+                org.apache.geronimo.specs:geronimo-osgi-registry:1.0
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        The implementation bundle retains the <filename>META-INF/services/javax.xml.bind.JAXBContext</filename>
+                        resource from the original artifact (<literal>com.sun.xml.bind:jaxb-impl</literal>).
+                        In a non OSGi environment, the <classname>JAXBContext</classname> class of the API bundle
+                        will use that resource to discover the implementation (as required by the JAXB specification).
+                        This is the equivalent of our <xref linkend="osgi-req-no-separate-bundles"/>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        The implementation bundle has an attribute <literal>SPI-Provider: true</literal> that indicates
+                        that it contains provider implementations that are discovered using the JDK 1.3 service discovery.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        The registry bundle creates a <classname>BundleTracker</classname> that looks for
+                        the <literal>SPI-Provider</literal> attribute in active bundles. For each bundle
+                        that has this attribute set to <literal>true</literal>, it will scan the content of
+                        <filename>META-INF/services</filename> and add the discovered services to a registry
+                        (Note that the registry bundle supports other ways to declare SPI providers,
+                        but this is not really relevant).
+                    </para>
+                </listitem>
+                
+                <listitem>
+                    <para>
+                        The API bundle uses <literal>singleton=true</literal> (may be relevant for AXIOM-371)
+                    </para>
+                </listitem>
+            </itemizedlist>
         </section>
         <section>
             <title>New abstract APIs</title>
@@ -471,6 +534,19 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     </para>
                 </listitem>
             </itemizedlist>
+            <para>
+                The second option has the advantage to make it easier for users to debug and tweak
+                the implementation discovery process (e.g. there may be a need to
+                customize the features and priorities declared by the different implementations to ensure
+                that the right implementation is chosen in a particular use case).
+            </para>
+            <para>
+                This leads to the following design decision:
+                the features and priorities (together with the class name of the <classname>OMMetaFactory</classname>
+                implementation) will be defined in an XML descriptor with resource name <filename>META-INF/axiom.xml</filename>.
+                The format of that descriptor must take into account that a single JAR may contain several
+                Axiom implementations (e.g. if the JAR is an uber-JAR repackaged from the standard Axiom JARs).
+            </para>
         </section>
     </chapter>
     
