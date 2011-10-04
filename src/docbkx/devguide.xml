@@ -249,7 +249,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     </listitem>
                 </itemizedlist>
             </note>
-            <formalpara>
+            <formalpara id="osgi-req-dropin">
                 <title>Requirement 5</title>
                 <para>
                     It MUST be possible to use a non standard (third party) Axiom implementation as a drop-in replacement
@@ -362,7 +362,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     It should be noted that because of the way the Axiom API is designed and taking into account
                     <xref linkend="osgi-req-same-api"/>, it is not possible to make Axiom entirely compatible
                     with OSGi paradigms (the same is true for JAXB). In an OSGi-only world, each Axiom
-                    implementation would simple expose itself as an OSGi service (of type <classname>OMMetaFactory</classname> e.g.)
+                    implementation would simply expose itself as an OSGi service (of type <classname>OMMetaFactory</classname> e.g.)
                     and code depending on Axiom would bind to one (or more) of these services depending on its needs.
                     That is not possible because it would conflict with <xref linkend="osgi-req-same-api"/>.
                 </para>
@@ -371,9 +371,106 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
         <section>
             <title>New abstract APIs</title>
             <para>
-                TODO: The existence of DOOMAbstractFactory conflicts with several of the requirements; need a new API that allows
-                to select an Axiom implementation based on capabilities/features requested by the application code
+                Application code rarely uses DOOM as the default Axiom implementation. Several downstream projects
+                (e.g. the Axis2/Rampart combination) use both the default (LLOM) implementation and DOOM. They select
+                the implementation based on the particular context. As of Axiom 1.2.12, the only way to create an object
+                model instance with the DOOM implementation is to use the <classname>DOOMAbstractFactory</classname> API
+                or to instantiate one of the factory classes (<classname>OMDOMMetaFactory</classname>, <classname>OMDOMFactory</classname>
+                or one of the subclasses of <classname>DOMSOAPFactory</classname>). All these classes are part of
+                the <literal>axiom-dom</literal> artifact. This is clearly in contradiction with <xref linkend="osgi-ref-impl-not-exported"/>
+                and <xref linkend="osgi-req-dropin"/>.
             </para>
+            <para>
+                To overcome this problem the Axiom API must be enhanced to make it possible to select an Axiom
+                implementation based on capabilities/features requested by the application code. E.g. in the case
+                of DOOM, the application code would request a factory that implements the DOM API. It is then up
+                to the Axiom API classes to locate an appropriate implementation, which may be DOOM or another
+                drop-in replacement, as per <xref linkend="osgi-req-dropin"/>.
+            </para>
+            <para>
+                If multiple Axiom implementations are available (on the class path in non OSGi environment or
+                deployed as bundles in an OSGi environment), then the Axiom API must also be able to select an
+                appropriate default implementation if no specific feature is requested by the application code.
+                This can be easily implemented by defining a special feature called "default" that would be
+                declared by any Axiom implementation that is suitable as a default implementation.
+            </para>
+            <note>
+                <para>
+                    DOOM is generally not considered suitable as a default implementation because it doesn't
+                    implement the complete Axiom API (e.g. it doesn't support <classname>OMSourcedElement</classname>)
+                    and because the factory classes are not stateless.
+                </para>
+            </note>
+            <para>
+                Finally, to make the selection algorithm deterministic, there should also be a concept
+                of priority: if multiple Axiom implementations are found for the same feature, then the Axiom API
+                would select the one with the highest priority.
+            </para>
+            <para>
+                This leads to the following design:
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        Every Axiom implementation declares a set of features that it supports. A feature is
+                        simply identified by a string. Two features are predefined by the Axiom API:
+                    </para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                <literal>default</literal>: indicates that the implementation is a complete
+                                implementation of the Axiom API and may be used as a default implementation.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                <literal>dom</literal>: indicates that the implementation supports DOM
+                                in addition to the Axiom API.
+                            </para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>
+                        For every feature it declares, the Axiom implementation specifies a priority,
+                        which is a positive integer.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        The relevant Axiom APIs are enhanced so that they take an optional argument
+                        specifying the feature requested by the application code. If no explicit feature
+                        is requested, then Axiom will use the <literal>default</literal> feature.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        To determine the <classname>OMMetaFactory</classname> to be used, Axiom locates
+                        the implementations declaring the requested feature and selects the one that
+                        has the highest priority for that feature.
+                    </para>
+                </listitem>
+            </orderedlist>
+            <para>
+                A remaining question is how the implementation declares the feature/priority information.
+                There are two options:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        Add a method to <classname>OMMetaFactory</classname> that allows the Axiom API
+                        to query the feature/priority information from the implementation (i.e. the
+                        features and priorities are hardcoded in the implementation).
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Let the implementation provide this information declaratively in its metadata
+                        (either in the manifest or in a separate resource with a well defined name).
+                        Note that in a non OSGi environment, such a metadata resource must be used anyway
+                        to enable the Axiom API to locate the <classname>OMMetaFactory</classname> implementations.
+                        Therefore this would be a natural place to declare the features as well.
+                    </para>
+                </listitem>
+            </itemizedlist>
         </section>
     </chapter>
     
