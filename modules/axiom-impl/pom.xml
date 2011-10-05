@@ -135,7 +135,9 @@
                 <artifactId>maven-scr-plugin</artifactId>
             </plugin>
             <plugin>
-                <artifactId>maven-shade-plugin</artifactId>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>shade-plugin-patched</artifactId>
+                <version>${project.version}</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
