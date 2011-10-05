@@ -317,7 +317,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     of these projects.
                 </para>
             </note>
-            <formalpara>
+            <formalpara id="osgi-reg-no-framework">
                 <title>Requirement 7</title>
                 <para>
                     The Axiom OSGi integration SHOULD NOT rely on any particular OSGi framework such
@@ -341,7 +341,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     ever loaded in a non OSGi environment.
                 </para>
             </formalpara>
-            <formalpara>
+            <formalpara id="osgi-req-best-practices">
                 <title>Requirement 9</title>
                 <para>
                     The OSGi integration MUST follow established best practices. It SHOULD be inspired by
@@ -392,10 +392,13 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
         <section>
             <title>Analysis of the Geronimo JAXB bundles</title>
             <para>
-                org.apache.geronimo.bundles:jaxb-impl:2.2.3-1_1
-                org.apache.geronimo.specs:geronimo-jaxb_2.2_spec:1.0.1
-                org.apache.geronimo.specs:geronimo-osgi-locator:1.0
-                org.apache.geronimo.specs:geronimo-osgi-registry:1.0
+                As noted in <xref linkend="osgi-req-best-practices"/> the Apache Geronimo has successfully
+                OSGi-fied the JAXB API which has a similar structure as Axiom. This section briefly describes
+                how this works. The analysis refers to the following Geronimo artifacts: 
+                <literal>org.apache.geronimo.bundles:jaxb-impl:2.2.3-1_1</literal>,
+                <literal>org.apache.geronimo.specs:geronimo-jaxb_2.2_spec:1.0.1</literal>,
+                <literal>org.apache.geronimo.specs:geronimo-osgi-locator:1.0</literal> and
+                <literal>org.apache.geronimo.specs:geronimo-osgi-registry:1.0</literal>:
             </para>
             <itemizedlist>
                 <listitem>
@@ -430,6 +433,16 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     </para>
                 </listitem>
             </itemizedlist>
+            <para>
+                This is an example of a particularly elegant way to satisfy <xref linkend="osgi-req-no-separate-bundles"/>,
+                <xref linkend="osgi-req-same-api"/> and <xref linkend="osgi-req-same-impl-selection"/>, especially because
+                it relies on the same metadata (the <filename>META-INF/services/javax.xml.bind.JAXBContext</filename> resources)
+                in OSGi and non OSGi environments.
+            </para>
+            <para>
+                Obviously, Axiom could reuse the registry and locator bundles developed by Geronimo. This however would
+                contradict <xref linkend="osgi-reg-no-framework"/>.
+            </para>
         </section>
         <section>
             <title>New abstract APIs</title>
