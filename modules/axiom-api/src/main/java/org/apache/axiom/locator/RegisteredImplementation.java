@@ -18,28 +18,30 @@
  */
 package org.apache.axiom.locator;
 
-import org.apache.axiom.om.OMMetaFactory;
+import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 
-final class Implementation {
-    private final String name;
-    private final OMMetaFactory metaFactory;
-    private final Feature[] features;
+class RegisteredImplementation {
+    private final Implementation implementation;
+    private final ServiceRegistration registration;
+    private final ServiceReference reference;
     
-    Implementation(String name, OMMetaFactory metaFactory, Feature[] features) {
-        this.name = name;
-        this.metaFactory = metaFactory;
-        this.features = features;
+    RegisteredImplementation(Implementation implementation,
+            ServiceRegistration registration, ServiceReference reference) {
+        this.implementation = implementation;
+        this.registration = registration;
+        this.reference = reference;
     }
 
-    String getName() {
-        return name;
+    Implementation getImplementation() {
+        return implementation;
     }
 
-    OMMetaFactory getMetaFactory() {
-        return metaFactory;
+    ServiceRegistration getRegistration() {
+        return registration;
     }
 
-    Feature[] getFeatures() {
-        return features;
+    ServiceReference getReference() {
+        return reference;
     }
 }

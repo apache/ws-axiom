@@ -49,7 +49,7 @@ final class ImplementationFactory {
     
     static Implementation createDefaultImplementation(Loader loader, String className) {
         OMMetaFactory metaFactory = load(loader, className);
-        return metaFactory == null ? null : new Implementation(metaFactory,
+        return metaFactory == null ? null : new Implementation(null, metaFactory,
                 new Feature[] { new Feature(OMAbstractFactory.FEATURE_DEFAULT, Integer.MAX_VALUE) });
     }
     
@@ -110,34 +110,38 @@ final class ImplementationFactory {
     }
     
     private static Implementation parseImplementation(Loader loader, Element implementation) {
+        String name = implementation.getAttributeNS(null, "name");
+        if (name.length() == 0) {
+            log.error("Encountered " + QNAME_IMPLEMENTATION + " element without name attribute");
+            return null;
+        }
         String className = implementation.getAttributeNS(null, "metaFactory");
         if (className.length() == 0) {
             log.error("Encountered " + QNAME_IMPLEMENTATION + " element without metaFactory attribute");
             return null;
-        } else {
-            OMMetaFactory metaFactory = load(loader, className);
-            if (metaFactory == null) {
-                return null;
-            }
-            List/*<Feature>*/ features = new ArrayList();
-            Node child = implementation.getFirstChild();
-            while (child != null) {
-                if (child instanceof Element) {
-                    QName childQName = getQName(child);
-                    if (childQName.equals(QNAME_FEATURE)) {
-                        Feature feature = parseFeature((Element)child);
-                        if (feature != null) {
-                            features.add(feature);
-                        }
-                    } else {
-                        log.warn("Skipping unexpected element " + childQName + "; only "
-                                + QNAME_FEATURE + " is expected");
-                    }
-                }
-                child = child.getNextSibling();
-            }
-            return new Implementation(metaFactory, (Feature[])features.toArray(new Feature[features.size()]));
         }
+        OMMetaFactory metaFactory = load(loader, className);
+        if (metaFactory == null) {
+            return null;
+        }
+        List/*<Feature>*/ features = new ArrayList();
+        Node child = implementation.getFirstChild();
+        while (child != null) {
+            if (child instanceof Element) {
+                QName childQName = getQName(child);
+                if (childQName.equals(QNAME_FEATURE)) {
+                    Feature feature = parseFeature((Element)child);
+                    if (feature != null) {
+                        features.add(feature);
+                    }
+                } else {
+                    log.warn("Skipping unexpected element " + childQName + "; only "
+                            + QNAME_FEATURE + " is expected");
+                }
+            }
+            child = child.getNextSibling();
+        }
+        return new Implementation(name, metaFactory, (Feature[])features.toArray(new Feature[features.size()]));
     }
 
     private static Feature parseFeature(Element feature) {

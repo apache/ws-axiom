@@ -28,7 +28,7 @@ public class Activator implements BundleActivator {
     private BundleTracker tracker;
 
     public void start(BundleContext context) throws Exception {
-        OSGiOMMetaFactoryLocator locator = new OSGiOMMetaFactoryLocator();
+        OSGiOMMetaFactoryLocator locator = new OSGiOMMetaFactoryLocator(context);
         OMAbstractFactory.setMetaFactoryLocator(locator);
         tracker = new BundleTracker(context, Bundle.ACTIVE, locator);
         tracker.open();
