@@ -96,12 +96,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.scr</artifactId>
-            <version>1.0.6</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.ops4j.pax.exam</groupId>
             <artifactId>pax-exam</artifactId>
             <version>${exam.version}</version>
