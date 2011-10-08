@@ -28,17 +28,17 @@ import org.ops4j.pax.exam.junit.MavenConfiguredJUnit4TestRunner;
 @RunWith(MavenConfiguredJUnit4TestRunner.class)
 public class OMAbstractFactoryTest {
     @Test
-	public void testgetOMFactory() throws Exception {
-		assertNotNull(OMAbstractFactory.getOMFactory());
-	}
+    public void testgetOMFactory() throws Exception {
+        assertNotNull(OMAbstractFactory.getOMFactory());
+    }
 
     @Test
-	public void testgetSOAP11Factory() throws Exception {
-		assertNotNull(OMAbstractFactory.getSOAP11Factory());
-	}
+    public void testgetSOAP11Factory() throws Exception {
+        assertNotNull(OMAbstractFactory.getSOAP11Factory());
+    }
 
     @Test
-	public void testgetSOAP12Factory() throws Exception {
-		assertNotNull(OMAbstractFactory.getSOAP12Factory());
-	}
+    public void testgetSOAP12Factory() throws Exception {
+        assertNotNull(OMAbstractFactory.getSOAP12Factory());
+    }
 }

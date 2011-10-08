@@ -31,20 +31,20 @@ import org.osgi.framework.ServiceReference;
 @RunWith(MavenConfiguredJUnit4TestRunner.class)
 public class ServiceTest {
     @Inject BundleContext context;
-	
+    
     @Test
-	public void testLLOMMetaFactoryServicePresent() throws Exception {
-		ServiceReference[] omfactRefs = context
-				.getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=llom)");
-		assertNotNull(omfactRefs);
-		assertEquals(1, omfactRefs.length);
-	}
-	
+    public void testLLOMMetaFactoryServicePresent() throws Exception {
+        ServiceReference[] omfactRefs = context
+                .getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=llom)");
+        assertNotNull(omfactRefs);
+        assertEquals(1, omfactRefs.length);
+    }
+    
     @Test
-	public void testDOOMMetaFactoryServicePresent() throws Exception {
-		ServiceReference[] omfactRefs = context
-				.getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=doom)");
-		assertNotNull(omfactRefs);
-		assertEquals(1, omfactRefs.length);
-	}
+    public void testDOOMMetaFactoryServicePresent() throws Exception {
+        ServiceReference[] omfactRefs = context
+                .getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=doom)");
+        assertNotNull(omfactRefs);
+        assertEquals(1, omfactRefs.length);
+    }
 }

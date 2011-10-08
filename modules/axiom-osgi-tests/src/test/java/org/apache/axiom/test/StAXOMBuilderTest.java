@@ -30,15 +30,15 @@ import org.ops4j.pax.exam.junit.MavenConfiguredJUnit4TestRunner;
 
 @RunWith(MavenConfiguredJUnit4TestRunner.class)
 public class StAXOMBuilderTest {
-	
-	private String xmlString = "<a:testElement xmlns:a=\"http://test/namespace\" />";
-	
+    
+    private String xmlString = "<a:testElement xmlns:a=\"http://test/namespace\" />";
+    
     @Test
-	public void testLLOMOMFactoryServicePresent() throws Exception {
-		ByteArrayInputStream bais = new ByteArrayInputStream(xmlString.getBytes());
-		StAXOMBuilder sb = new StAXOMBuilder(bais);
-		OMElement oe = sb.getDocumentElement();
-		assertEquals("testElement",oe.getLocalName());
-		assertEquals("http://test/namespace", oe.getNamespace().getNamespaceURI());
-	}
+    public void testLLOMOMFactoryServicePresent() throws Exception {
+        ByteArrayInputStream bais = new ByteArrayInputStream(xmlString.getBytes());
+        StAXOMBuilder sb = new StAXOMBuilder(bais);
+        OMElement oe = sb.getDocumentElement();
+        assertEquals("testElement",oe.getLocalName());
+        assertEquals("http://test/namespace", oe.getNamespace().getNamespaceURI());
+    }
 }
