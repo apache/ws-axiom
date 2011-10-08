@@ -21,111 +21,153 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
-        <artifactId>axiom-osgi</artifactId>
+        <artifactId>axiom-parent</artifactId>
         <version>1.2.13-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../axiom-parent/pom.xml</relativePath>
     </parent>
-    <artifactId>axiom-osgi-run</artifactId>
-    <name>Axiom OSGI Test Suite - Run</name>
+    <artifactId>axiom-osgi-tests</artifactId>
+    <name>Axiom OSGi Tests</name>
+    <packaging>jar</packaging>
+    <!-- This needs to be set explicitly because the project structure implies that the Maven calculated defaults are wrong -->
+    <scm>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-osgi-tests</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-osgi-tests</developerConnection>
+        <url>http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/modules/axiom-osgi-tests</url>
+    </scm>
+    <!-- This also needs to be set explicitly because the Maven calculated URL would point to nowhere -->
+    <url>http://ws.apache.org/axiom/</url>
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-activation_1.1_spec</artifactId>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-javamail_1.4_spec</artifactId>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <!-- An OSGI aware version of the StAX API -->
             <groupId>org.apache.servicemix.specs</groupId>
             <artifactId>org.apache.servicemix.specs.stax-api-1.0</artifactId>
             <version>1.1.1</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-impl</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-osgi-build</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-dom</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
          <dependency>
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>stax2-api</artifactId>
             <version>3.0.1</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>woodstox-core-asl</artifactId>
             <version>4.0.1</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.james</groupId>
             <artifactId>apache-mime4j-core</artifactId>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
-
-        <!--
-            I'd prefer to use these slf4j bundles rather than the springsource
-            repackaged commons-logging but there seems to be a bug in the version
-            of Apache Felix that the plugin pulls in which means slf4j won't
-            work. <dependency> <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-nop</artifactId> <version>1.5.6</version>
-            <scope>test</scope> </dependency> <dependency>
-            <groupId>org.slf4j</groupId> <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.5.6</version> <scope>test</scope> </dependency>
-            <dependency> <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId> <version>1.5.6</version>
-            <scope>test</scope> </dependency>
-        -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>com.springsource.org.apache.commons.logging</artifactId>
             <version>1.1.1</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.scr</artifactId>
             <version>1.0.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam</artifactId>
+            <version>${exam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-container-default</artifactId>
+            <version>${exam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.exam</groupId>
+            <artifactId>pax-exam-junit</artifactId>
+            <version>${exam.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.5.11</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <properties>
+        <exam.version>1.2.4</exam.version>
+    </properties>
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-junit4osgi-plugin</artifactId>
-                <version>1.0.0</version>
+                <groupId>org.ops4j.pax.exam</groupId>
+                <artifactId>maven-paxexam-plugin</artifactId>
+                <version>${exam.version}</version>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>test</goal>
+                            <goal>generate-config</goal>
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <settings>
+                        <platform>felix</platform>
+                        <profiles>log,url</profiles>
+                    </settings>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <java.util.logging.config.file>${basedir}/etc/logging.properties</java.util.logging.config.file>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
         </plugins>
     </build>
