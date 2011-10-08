@@ -18,19 +18,26 @@
  */
 package org.apache.axiom.test;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.felix.ipojo.junit4osgi.OSGiTestCase;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.junit.MavenConfiguredJUnit4TestRunner;
 
-public class OMAbstractFactoryTest extends OSGiTestCase {
-
+@RunWith(MavenConfiguredJUnit4TestRunner.class)
+public class OMAbstractFactoryTest {
+    @Test
 	public void testgetOMFactory() throws Exception {
 		assertNotNull(OMAbstractFactory.getOMFactory());
 	}
 
+    @Test
 	public void testgetSOAP11Factory() throws Exception {
 		assertNotNull(OMAbstractFactory.getSOAP11Factory());
 	}
 
+    @Test
 	public void testgetSOAP12Factory() throws Exception {
 		assertNotNull(OMAbstractFactory.getSOAP12Factory());
 	}

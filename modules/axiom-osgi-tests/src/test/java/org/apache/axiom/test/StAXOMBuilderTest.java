@@ -18,22 +18,27 @@
  */
 package org.apache.axiom.test;
 
-import org.apache.felix.ipojo.junit4osgi.OSGiTestCase;
-import org.osgi.framework.ServiceReference;
+import static org.junit.Assert.assertEquals;
 
-public class ServiceTest extends OSGiTestCase {
+import java.io.ByteArrayInputStream;
+
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.junit.MavenConfiguredJUnit4TestRunner;
+
+@RunWith(MavenConfiguredJUnit4TestRunner.class)
+public class StAXOMBuilderTest {
 	
-	public void testLLOMMetaFactoryServicePresent() throws Exception {
-		ServiceReference[] omfactRefs = context
-				.getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=llom)");
-		assertNotNull(omfactRefs);
-		assertEquals(1, omfactRefs.length);
-	}
+	private String xmlString = "<a:testElement xmlns:a=\"http://test/namespace\" />";
 	
-	public void testDOOMMetaFactoryServicePresent() throws Exception {
-		ServiceReference[] omfactRefs = context
-				.getServiceReferences("org.apache.axiom.om.OMMetaFactory", "(implementationName=doom)");
-		assertNotNull(omfactRefs);
-		assertEquals(1, omfactRefs.length);
+    @Test
+	public void testLLOMOMFactoryServicePresent() throws Exception {
+		ByteArrayInputStream bais = new ByteArrayInputStream(xmlString.getBytes());
+		StAXOMBuilder sb = new StAXOMBuilder(bais);
+		OMElement oe = sb.getDocumentElement();
+		assertEquals("testElement",oe.getLocalName());
+		assertEquals("http://test/namespace", oe.getNamespace().getNamespaceURI());
 	}
 }
