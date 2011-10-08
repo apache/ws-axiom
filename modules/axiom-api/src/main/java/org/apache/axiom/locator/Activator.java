@@ -16,31 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.locator;
 
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
-import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.BundleTracker;
 
-/**
- * @deprecated Use {@link OMAbstractFactory#getMetaFactory(String)} with
- *             {@link OMAbstractFactory#FEATURE_DOM} to get a meta factory for DOOM.
- */
-public class DOOMAbstractFactory {
+public class Activator implements BundleActivator {
+    private BundleTracker tracker;
 
-    public static OMFactory getOMFactory() {
-        return new OMDOMFactory();
+    public void start(BundleContext context) throws Exception {
+        OSGiOMMetaFactoryLocator locator = new OSGiOMMetaFactoryLocator();
+        OMAbstractFactory.setMetaFactoryLocator(locator);
+        tracker = new BundleTracker(context, Bundle.ACTIVE, locator);
+        tracker.open();
     }
 
-    public static SOAPFactory getSOAP11Factory() {
-        return new SOAP11Factory();
-    }
-
-    public static SOAPFactory getSOAP12Factory() {
-        return new SOAP12Factory();
+    public void stop(BundleContext context) throws Exception {
+        tracker.close();
+        OMAbstractFactory.setMetaFactoryLocator(null);
     }
 }

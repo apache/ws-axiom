@@ -16,31 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.locator;
 
-package org.apache.axiom.om.impl.dom;
-
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
-import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
-
-/**
- * @deprecated Use {@link OMAbstractFactory#getMetaFactory(String)} with
- *             {@link OMAbstractFactory#FEATURE_DOM} to get a meta factory for DOOM.
- */
-public class DOOMAbstractFactory {
-
-    public static OMFactory getOMFactory() {
-        return new OMDOMFactory();
+final class Feature {
+    private final String name;
+    private final int priority;
+    
+    Feature(String name, int priority) {
+        this.name = name;
+        this.priority = priority;
     }
 
-    public static SOAPFactory getSOAP11Factory() {
-        return new SOAP11Factory();
+    String getName() {
+        return name;
     }
 
-    public static SOAPFactory getSOAP12Factory() {
-        return new SOAP12Factory();
+    int getPriority() {
+        return priority;
     }
 }

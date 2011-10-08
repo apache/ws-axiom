@@ -63,6 +63,16 @@
             <artifactId>apache-mime4j-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.compendium</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
@@ -217,12 +227,9 @@
                         <_removeheaders>Private-Package</_removeheaders>
                         <Export-Package>*;-noimport:=true</Export-Package>
                         <Import-Package>org.jaxen.*;resolution:=optional,*</Import-Package>
+                        <Bundle-Activator>org.apache.axiom.locator.Activator</Bundle-Activator>
                     </instructions>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-scr-plugin</artifactId>
             </plugin>
             <!--
                 Attach a JAR with the test classes so that we can reuse them in

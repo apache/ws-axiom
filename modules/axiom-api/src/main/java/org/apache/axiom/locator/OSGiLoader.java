@@ -16,31 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.locator;
 
-package org.apache.axiom.om.impl.dom;
+import org.osgi.framework.Bundle;
 
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
-import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
+final class OSGiLoader extends Loader {
+    private final Bundle bundle;
 
-/**
- * @deprecated Use {@link OMAbstractFactory#getMetaFactory(String)} with
- *             {@link OMAbstractFactory#FEATURE_DOM} to get a meta factory for DOOM.
- */
-public class DOOMAbstractFactory {
-
-    public static OMFactory getOMFactory() {
-        return new OMDOMFactory();
+    OSGiLoader(Bundle bundle) {
+        this.bundle = bundle;
     }
 
-    public static SOAPFactory getSOAP11Factory() {
-        return new SOAP11Factory();
-    }
-
-    public static SOAPFactory getSOAP12Factory() {
-        return new SOAP12Factory();
+    Class load(String className) throws ClassNotFoundException {
+        return bundle.loadClass(className);
     }
 }

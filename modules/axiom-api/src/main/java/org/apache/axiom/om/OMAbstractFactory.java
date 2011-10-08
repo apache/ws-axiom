@@ -19,11 +19,6 @@
 
 package org.apache.axiom.om;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import org.apache.axiom.soap.SOAPFactory;
 
 /**
@@ -46,47 +41,67 @@ import org.apache.axiom.soap.SOAPFactory;
 public class OMAbstractFactory {
     public static final String META_FACTORY_NAME_PROPERTY = "org.apache.axiom.om.OMMetaFactory";
 
-    private static final String DEFAULT_META_FACTORY_CLASS_NAME =
-            "org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory";
-
     /**
-     * The default {@link OMMetaFactory} instance determined by the system
-     * property {@link #META_FACTORY_NAME_PROPERTY}, or if no such system
-     * property is set, by the value of the
-     * {@link #DEFAULT_META_FACTORY_CLASS_NAME} constant.
+     * Feature for Axiom implementations that can be used as default implementations.
      */
-    private static OMMetaFactory defaultMetaFactory;
+    public static final String FEATURE_DEFAULT = "default";
     
     /**
-     * The {@link OMMetaFactory} set through
+     * Feature for Axiom implementations that implement DOM in addition to the Axiom API.
+     */
+    public static final String FEATURE_DOM = "dom";
+    
+    private static final String DEFAULT_LOCATOR_CLASS_NAME =
+            "org.apache.axiom.locator.DefaultOMMetaFactoryLocator";
+
+    /**
+     * The default {@link OMMetaFactoryLocator} that will be used if no locator has been set
+     * explicitly.
+     */
+    private static final OMMetaFactoryLocator defaultLocator;
+    
+    /**
+     * The {@link OMMetaFactoryLocator} set through
      * {@link #setMetaFactory(OMMetaFactory)}. If this is <code>null</code>,
      * then {@link #defaultMetaFactory} will be returned by
      * {@link #getMetaFactory()}.
      */
-    private static OMMetaFactory metaFactory;
+    private static volatile OMMetaFactoryLocator metaFactoryLocator;
 
+    static {
+        // We could actually instantiate the default locator directly, but doing it using
+        // reflection avoids introducing a circular dependency between the org.apache.axiom.om
+        // and org.apache.axiom.locator packages.
+        try {
+            defaultLocator = (OMMetaFactoryLocator)Class.forName(DEFAULT_LOCATOR_CLASS_NAME).newInstance();
+        } catch (InstantiationException ex) {
+            throw new InstantiationError(ex.getMessage());
+        } catch (IllegalAccessException ex) {
+            throw new IllegalAccessError(ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            throw new NoClassDefFoundError(ex.getMessage());
+        }
+    }
+    
     private OMAbstractFactory() {}
 
     /**
-     * Explicitly set a meta factory instance. The new instance will be returned
-     * by all subsequent calls to {@link #getMetaFactory()}. Note that this is
-     * an application wide setting. More precisely, the configured meta factory
-     * will be used by all classes loaded from the class loader where Axiom is
-     * deployed and all its child class loaders. Therefore this method should be
-     * used with care and only be invoked during the initialization of the
-     * application.
+     * Explicitly set a meta factory locator. The new locator will be used by all subsequent calls
+     * to {@link #getMetaFactory()} and {@link #getMetaFactory(String)} to locate the appropriate
+     * meta factory. Note that the meta factory locator is an application wide setting. More
+     * precisely, the configured locator will be used by all classes loaded from the class loader
+     * where Axiom is deployed and all its child class loaders. Therefore this method should be used
+     * with care and only be invoked during the initialization of the application.
      * <p>
-     * When Axiom is deployed as a bundle in an OSGi environment, this method
-     * will be used to inject the meta factory instance from the implementation
-     * bundle.
+     * When Axiom is deployed as a bundle in an OSGi environment, this method will be used to inject
+     * the meta factory instances from the deployed implementation bundles.
      * 
-     * @param newMetaFactory
-     *            the new meta factory instance, or <code>null</code> to revert
-     *            to the default meta factory instance determined by the
-     *            <code>org.apache.axiom.om.OMMetaFactory</code> system property
+     * @param locator
+     *            the new meta factory locator, or <code>null</code> to revert to the default meta
+     *            factory locator
      */
-    public static void setMetaFactory(OMMetaFactory newMetaFactory) {
-        metaFactory = newMetaFactory;
+    public static void setMetaFactoryLocator(OMMetaFactoryLocator locator) {
+        metaFactoryLocator = locator;
     }
     
     /**
@@ -113,65 +128,20 @@ public class OMAbstractFactory {
      *             instantiated
      */
     public static OMMetaFactory getMetaFactory() {
-        if (metaFactory != null) {
+        return getMetaFactory(FEATURE_DEFAULT);
+    }
+    
+    public static OMMetaFactory getMetaFactory(String feature) {
+        OMMetaFactoryLocator locator = metaFactoryLocator;
+        if (locator == null) {
+            locator = defaultLocator;
+        }
+        OMMetaFactory metaFactory = locator.getOMMetaFactory(feature);
+        if (metaFactory == null) {
+            throw new OMException("No meta factory found for feature '" + feature + "'");
+        } else {
             return metaFactory;
         }
-        
-        if (defaultMetaFactory != null) {
-            return defaultMetaFactory;
-        }
-        
-        String metaFactoryClassName = null;
-        
-        // First try system property
-        try {
-            metaFactoryClassName = System.getProperty(META_FACTORY_NAME_PROPERTY);
-            if ("".equals(metaFactoryClassName)) {
-                metaFactoryClassName = null;
-            }
-        } catch (SecurityException e) {
-            // Ignore and continue
-        }
-
-        // Next use JDK 1.3 service discovery
-        if (metaFactoryClassName == null) {
-            try {
-                InputStream in = OMAbstractFactory.class.getResourceAsStream("/META-INF/services/" + OMMetaFactory.class.getName());
-                if (in != null) {
-                    try {
-                        BufferedReader r = new BufferedReader(new InputStreamReader(in));
-                        String line;
-                        while ((line = r.readLine()) != null) {
-                            line = line.trim();
-                            if (line.length() > 0 && !line.startsWith("#")) {
-                                metaFactoryClassName = line;
-                                break;
-                            }
-                        }
-                    } finally {
-                        in.close();
-                    }
-                }
-            } catch (IOException ex) {
-                // Ignore and continue
-            }
-        }
-        
-        // Default to LLOM
-        if (metaFactoryClassName == null) {
-            metaFactoryClassName = DEFAULT_META_FACTORY_CLASS_NAME;
-        }
-        
-        try {
-            defaultMetaFactory = (OMMetaFactory) Class.forName(metaFactoryClassName).newInstance();
-        } catch (InstantiationException e) {
-            throw new OMException(e);
-        } catch (IllegalAccessException e) {
-            throw new OMException(e);
-        } catch (ClassNotFoundException e) {
-            throw new OMException(e);
-        }
-        return defaultMetaFactory;
     }
     
     /**
