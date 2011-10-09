@@ -60,7 +60,6 @@
             <!-- We use this only for LDAP like filters -->
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
-            <version>4.2.0</version>
         </dependency>
     </dependencies>
 </project>

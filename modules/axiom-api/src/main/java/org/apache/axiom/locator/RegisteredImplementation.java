@@ -16,31 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.locator;
 
-package org.apache.axiom.om.impl.dom;
+import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
-import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
-
-/**
- * @deprecated Use {@link OMAbstractFactory#getMetaFactory(String)} with
- *             {@link OMAbstractFactory#FEATURE_DOM} to get a meta factory for DOOM.
- */
-public class DOOMAbstractFactory {
-
-    public static OMFactory getOMFactory() {
-        return new OMDOMFactory();
+class RegisteredImplementation {
+    private final Implementation implementation;
+    private final ServiceRegistration registration;
+    private final ServiceReference reference;
+    
+    RegisteredImplementation(Implementation implementation,
+            ServiceRegistration registration, ServiceReference reference) {
+        this.implementation = implementation;
+        this.registration = registration;
+        this.reference = reference;
     }
 
-    public static SOAPFactory getSOAP11Factory() {
-        return new SOAP11Factory();
+    Implementation getImplementation() {
+        return implementation;
     }
 
-    public static SOAPFactory getSOAP12Factory() {
-        return new SOAP12Factory();
+    ServiceRegistration getRegistration() {
+        return registration;
+    }
+
+    ServiceReference getReference() {
+        return reference;
     }
 }

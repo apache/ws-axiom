@@ -16,31 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.om.impl.dom.factory;
 
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
-import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
+import org.apache.axiom.om.OMMetaFactory;
 
-/**
- * @deprecated Use {@link OMAbstractFactory#getMetaFactory(String)} with
- *             {@link OMAbstractFactory#FEATURE_DOM} to get a meta factory for DOOM.
- */
-public class DOOMAbstractFactory {
+import junit.framework.TestCase;
 
-    public static OMFactory getOMFactory() {
-        return new OMDOMFactory();
-    }
-
-    public static SOAPFactory getSOAP11Factory() {
-        return new SOAP11Factory();
-    }
-
-    public static SOAPFactory getSOAP12Factory() {
-        return new SOAP12Factory();
+public class DOMFeatureTest extends TestCase {
+    public void test() {
+        OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM);
+        assertTrue(metaFactory instanceof OMDOMMetaFactory);
     }
 }

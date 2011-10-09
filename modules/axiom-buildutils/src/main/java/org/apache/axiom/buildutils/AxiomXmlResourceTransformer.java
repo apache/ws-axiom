@@ -26,51 +26,38 @@ import java.util.jar.JarOutputStream;
 
 import org.apache.maven.plugins.shade.resource.ResourceTransformer;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
- * Quick and dirty hack to adjust the groupId/artifactId/version in a shaded Maven plugin.
+ * Merges <tt>META-INF/axiom.xml</tt> files.
  */
-public class PluginXmlResourceTransformer implements ResourceTransformer {
-    private static final String PLUGIN_XML = "META-INF/maven/plugin.xml";
+public class AxiomXmlResourceTransformer implements ResourceTransformer {
+    private static final String AXIOM_XML = "META-INF/axiom.xml";
     
-    String groupId;
-    String artifactId;
-    String version;
-    
-    private Document pluginXml;
+    private Document mergedAxiomXml;
 
     public boolean canTransformResource(String resource) {
-        return resource.equals(PLUGIN_XML);
+        return resource.equals(AXIOM_XML);
     }
 
     public boolean hasTransformedResource() {
-        return pluginXml != null;
+        return mergedAxiomXml != null;
     }
 
     public void processResource(String resource, InputStream is, List relocators) throws IOException {
-        pluginXml = DOMUtils.parse(is);
+        Document axiomXml = DOMUtils.parse(is);
         is.close();
-        Node node = pluginXml.getDocumentElement().getFirstChild();
-        while (node != null) {
-            if (node instanceof Element) {
-                Element element = (Element)node;
-                String name = element.getTagName();
-                if (name.equals("groupId")) {
-                    element.setTextContent(groupId);
-                } else if (name.equals("artifactId")) {
-                    element.setTextContent(artifactId);
-                } else if (name.equals("version")) {
-                    element.setTextContent(version);
-                }
+        if (mergedAxiomXml == null) {
+            mergedAxiomXml = axiomXml;
+        } else {
+            for (Node node = axiomXml.getDocumentElement().getFirstChild(); node != null; node = node.getNextSibling()) {
+                mergedAxiomXml.getDocumentElement().appendChild(mergedAxiomXml.importNode(node, true));
             }
-            node = node.getNextSibling();
         }
     }
 
     public void modifyOutputStream(JarOutputStream os) throws IOException {
-        os.putNextEntry(new JarEntry(PLUGIN_XML));
-        DOMUtils.serialize(pluginXml, os);
+        os.putNextEntry(new JarEntry(AXIOM_XML));
+        DOMUtils.serialize(mergedAxiomXml, os);
     }
 }

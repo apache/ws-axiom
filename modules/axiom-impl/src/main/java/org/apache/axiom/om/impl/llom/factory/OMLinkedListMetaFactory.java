@@ -31,10 +31,6 @@ import org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory;
  * Since all OM factories for LLOM are stateless, {@link #getOMFactory()},
  * {@link #getSOAP11Factory()} and {@link #getSOAP12Factory()} will return the
  * same instance on every invocation.
- * 
- * @scr.component name="metafactory.llom.component" immediate="true"
- * @scr.service interface="org.apache.axiom.om.OMMetaFactory"
- * @scr.property name="implementationName" type="String" value="llom"
  */
 public class OMLinkedListMetaFactory extends AbstractOMMetaFactory {
     private final OMFactory omFactory = new OMLinkedListImplFactory(this);
