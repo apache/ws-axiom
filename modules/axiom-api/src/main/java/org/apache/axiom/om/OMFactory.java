@@ -26,7 +26,13 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 /** Class OMFactory */
 public interface OMFactory {
     /**
-     * Get the {@link OMMetaFactory} from which this factory was obtained.
+     * Get the {@link OMMetaFactory} from which this factory was obtained. More precisely, if the
+     * {@link OMFactory} instance has been obtained from a {@link OMMetaFactory} using
+     * {@link OMMetaFactory#getOMFactory()}, {@link OMMetaFactory#getSOAP11Factory()} or
+     * {@link OMMetaFactory#getSOAP12Factory()}, then the return value is the same as the original
+     * {@link OMMetaFactory}. Since {@link OMAbstractFactory} creates a single {@link OMMetaFactory}
+     * instance per Axiom implementation, this means that this method can be used to check if two
+     * {@link OMFactory} instances belong to the same Axiom implementation.
      * 
      * @return the meta factory
      */
