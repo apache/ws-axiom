@@ -18,7 +18,7 @@
   ~ under the License.
   -->
 <implementations xmlns="http://ws.apache.org/axiom/">
-    <implementation name="doom" metaFactory="org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory">
+    <implementation name="doom" loader="org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactoryLoader">
         <feature name="dom" priority="100"/>
     </implementation>
 </implementations>

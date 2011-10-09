@@ -27,6 +27,7 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.axiom.locator.loader.OMMetaFactoryLoader;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.commons.logging.Log;
@@ -48,12 +49,12 @@ final class ImplementationFactory {
     private ImplementationFactory() {}
     
     static Implementation createDefaultImplementation(Loader loader, String className) {
-        OMMetaFactory metaFactory = load(loader, className);
+        OMMetaFactory metaFactory = (OMMetaFactory)load(loader, className);
         return metaFactory == null ? null : new Implementation(null, metaFactory,
                 new Feature[] { new Feature(OMAbstractFactory.FEATURE_DEFAULT, Integer.MAX_VALUE) });
     }
     
-    static OMMetaFactory load(Loader loader, String className) {
+    private static Object load(Loader loader, String className) {
         Class clazz;
         try {
             clazz = loader.load(className);
@@ -62,7 +63,7 @@ final class ImplementationFactory {
             return null;
         }
         try {
-            return (OMMetaFactory)clazz.newInstance();
+            return clazz.newInstance();
         } catch (Exception ex) {
             log.error("The class " + className + " could not be instantiated", ex);
             return null;
@@ -115,12 +116,12 @@ final class ImplementationFactory {
             log.error("Encountered " + QNAME_IMPLEMENTATION + " element without name attribute");
             return null;
         }
-        String className = implementation.getAttributeNS(null, "metaFactory");
-        if (className.length() == 0) {
-            log.error("Encountered " + QNAME_IMPLEMENTATION + " element without metaFactory attribute");
+        String loaderClassName = implementation.getAttributeNS(null, "loader");
+        if (loaderClassName.length() == 0) {
+            log.error("Encountered " + QNAME_IMPLEMENTATION + " element without loader attribute");
             return null;
         }
-        OMMetaFactory metaFactory = load(loader, className);
+        OMMetaFactory metaFactory = ((OMMetaFactoryLoader)load(loader, loaderClassName)).load(null);
         if (metaFactory == null) {
             return null;
         }

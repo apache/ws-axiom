@@ -18,7 +18,7 @@
   ~ under the License.
   -->
 <implementations xmlns="http://ws.apache.org/axiom/">
-    <implementation name="llom" metaFactory="org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory">
+    <implementation name="llom" loader="org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactoryLoader">
         <feature name="default" priority="100"/>
     </implementation>
 </implementations>
