@@ -39,7 +39,7 @@ public class BadInputTest extends AxiomTestCase {
     protected void runTest() throws Throwable {
         try {
             SOAPEnvelope soapEnvelope =
-                    OMXMLBuilderFactory.createSOAPModelBuilder(
+                    OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
                             AbstractTestCase.getTestResource("badsoap/" + file), null)
                             .getSOAPEnvelope();
             OMTestUtils.walkThrough(soapEnvelope);

@@ -276,22 +276,58 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static SOAPModelBuilder createSOAPModelBuilder(InputStream in, String encoding) {
-        InputSource is = new InputSource(in);
-        is.setEncoding(encoding);
-        return OMAbstractFactory.getMetaFactory().createSOAPModelBuilder(StAXParserConfiguration.SOAP, is);
+        return createSOAPModelBuilder(OMAbstractFactory.getMetaFactory(), in, encoding);
     }
     
     /**
-     * Create an object model builder for SOAP that reads a message from the provided character stream. The method will select the appropriate {@link SOAPFactory}
-     * based on the namespace URI of the SOAP envelope. It will configure the underlying parser as
-     * specified by {@link StAXParserConfiguration#SOAP}.
+     * Create an object model builder for SOAP that reads a message from the provided input stream,
+     * using a particular Axiom implementation and a given charset encoding. The method will select
+     * the appropriate {@link SOAPFactory} based on the namespace URI of the SOAP envelope. It will
+     * configure the underlying parser as specified by {@link StAXParserConfiguration#SOAP}.
+     * 
+     * @param metaFactory
+     *            the meta factory for the Axiom implementation to use
+     * @param in
+     *            the input stream containing the SOAP message
+     * @param encoding
+     *            the charset encoding of the SOAP message or <code>null</code> if the parser should
+     *            determine the charset encoding
+     * @return the builder
+     */
+    public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory, InputStream in, String encoding) {
+        InputSource is = new InputSource(in);
+        is.setEncoding(encoding);
+        return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, is);
+    }
+    
+    /**
+     * Create an object model builder for SOAP that reads a message from the provided character
+     * stream. The method will select the appropriate {@link SOAPFactory} based on the namespace URI
+     * of the SOAP envelope. It will configure the underlying parser as specified by
+     * {@link StAXParserConfiguration#SOAP}.
      * 
      * @param in
      *            the character stream containing the SOAP message
      * @return the builder
      */
     public static SOAPModelBuilder createSOAPModelBuilder(Reader in) {
-        return OMAbstractFactory.getMetaFactory().createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(in));
+        return createSOAPModelBuilder(OMAbstractFactory.getMetaFactory(), in);
+    }
+    
+    /**
+     * Create an object model builder for SOAP that reads a message from the provided character
+     * stream using a particular Axiom implementation. The method will select the appropriate
+     * {@link SOAPFactory} based on the namespace URI of the SOAP envelope. It will configure the
+     * underlying parser as specified by {@link StAXParserConfiguration#SOAP}.
+     * 
+     * @param metaFactory
+     *            the meta factory for the Axiom implementation to use
+     * @param in
+     *            the character stream containing the SOAP message
+     * @return the builder
+     */
+    public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory, Reader in) {
+        return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(in));
     }
     
     /**
