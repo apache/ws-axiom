@@ -22,11 +22,29 @@ package org.apache.axiom.om;
 import org.apache.axiom.soap.SOAPFactory;
 
 /**
- * Provides default instances for object model and meta factories.
+ * Provides instances for object model and meta factories.
  * <p>
- * The {@link #getMetaFactory()} method returns the default {@link OMMetaFactory} instance.
- * See the Javadoc of the {@link #getMetaFactory()} method for details about how this
- * instance is determined.
+ * The {@link #getMetaFactory()} method returns the {@link OMMetaFactory} instance for the default
+ * Axiom implementation. The {@link #getMetaFactory(String)} method locates a {@link OMMetaFactory}
+ * instance for an Axiom implementation with a given feature. The following features are predefined
+ * by the Axiom API:
+ * <dl>
+ * <dt>{@link #FEATURE_DEFAULT}
+ * <dd>Identifies the default Axiom implementation. An implementation with that feature is expected
+ * to provide a full implementation of the Axiom API.
+ * <dt>{@link #FEATURE_DOM}
+ * <dd>Used by Axiom implementations that implement DOM in addition to the Axiom API.
+ * </dl>
+ * Implementations may define other custom features.
+ * <p>
+ * Axiom discovers implementations by looking for <tt>META-INF/axiom.xml</tt> resources. They
+ * specify the {@link OMMetaFactory} implementation as well as the set of features that each
+ * implementation supports. If multiple implementations with the same feature are found, then Axiom
+ * will select the one with the highest priority. The priority for a given feature is also declared
+ * in <tt>META-INF/axiom.xml</tt>. This algorithm is used both in non OSGi and OSGi environments.
+ * <p>
+ * In a non OSGi environment, the default Axiom implementation can be overridden using the system
+ * property specified by {@link #META_FACTORY_NAME_PROPERTY}.
  * <p>
  * The {@link #getOMFactory()}, {@link #getSOAP11Factory()} and {@link #getSOAP12Factory()}
  * methods return default instances for plain XML, SOAP 1.1 and SOAP 1.2 object model factories.
@@ -58,13 +76,12 @@ public class OMAbstractFactory {
      * The default {@link OMMetaFactoryLocator} that will be used if no locator has been set
      * explicitly.
      */
-    private static final OMMetaFactoryLocator defaultLocator;
+    private static final OMMetaFactoryLocator defaultMetaFactoryLocator;
     
     /**
      * The {@link OMMetaFactoryLocator} set through
-     * {@link #setMetaFactory(OMMetaFactory)}. If this is <code>null</code>,
-     * then {@link #defaultMetaFactory} will be returned by
-     * {@link #getMetaFactory()}.
+     * {@link #setMetaFactoryLocator(OMMetaFactoryLocator)}. If this is <code>null</code>, then
+     * {@link #defaultMetaFactoryLocator} will be used.
      */
     private static volatile OMMetaFactoryLocator metaFactoryLocator;
 
@@ -73,7 +90,7 @@ public class OMAbstractFactory {
         // reflection avoids introducing a circular dependency between the org.apache.axiom.om
         // and org.apache.axiom.locator packages.
         try {
-            defaultLocator = (OMMetaFactoryLocator)Class.forName(DEFAULT_LOCATOR_CLASS_NAME).newInstance();
+            defaultMetaFactoryLocator = (OMMetaFactoryLocator)Class.forName(DEFAULT_LOCATOR_CLASS_NAME).newInstance();
         } catch (InstantiationException ex) {
             throw new InstantiationError(ex.getMessage());
         } catch (IllegalAccessException ex) {
@@ -105,36 +122,33 @@ public class OMAbstractFactory {
     }
     
     /**
-     * Get the default meta factory instance. This method uses the following ordered lookup
-     * procedure to determine the default instance:
-     * <ol>
-     * <li>If an instance has been set using {@link #setMetaFactory(OMMetaFactory)}, then that
-     * instance is returned. Note that this will be the case in an OSGi runtime, where
-     * {@link #setMetaFactory(OMMetaFactory)} is invoked by a helper component that is part of
-     * Axiom.
-     * <li>Use the <code>org.apache.axiom.om.OMMetaFactory</code> system property. This method uses
-     * {@link System#getProperty(String)} to determine the value of the system property. A
-     * {@link SecurityException} thrown by this method is simply ignored and the lookup procedure
-     * continues.
-     * <li>Use the JDK 1.3 service discovery mechanism to determine the classname of the meta
-     * factory. The method will look for a classname in the file
-     * <code>META-INF/services/org.apache.axiom.om.OMMetaFactory</code> in jars in the class path.
-     * <li>Return the meta factory for the LLOM implementation is returned.
-     * </ol>
+     * Get the meta factory instance for the default Axiom implementation. This method is equivalent
+     * to {@link #getMetaFactory(String)} with {@link #FEATURE_DEFAULT} as parameter.
      * 
-     * @return the default OM factory instance
+     * @return the meta factory instance for the default Axiom implementation
      * @throws OMException
-     *             if the factory's implementation class can't be found or if the class can't be
-     *             instantiated
+     *             if no Axiom implementation with {@link #FEATURE_DEFAULT} could be located
      */
     public static OMMetaFactory getMetaFactory() {
         return getMetaFactory(FEATURE_DEFAULT);
     }
     
+    /**
+     * Get the meta factory instance for the Axiom implementation with a given feature. If multiple
+     * Axiom implementations declare the same feature, then the method will return the meta factory
+     * for the implementation that declares the highest priority for that feature in its
+     * <tt>META-INF/axiom.xml</tt> descriptor.
+     * 
+     * @param feature
+     *            the requested feature
+     * @return the meta factory instance for the Axiom implementation with the given feature.
+     * @throws OMException
+     *             if no Axiom implementation with the requested feature could be located
+     */
     public static OMMetaFactory getMetaFactory(String feature) {
         OMMetaFactoryLocator locator = metaFactoryLocator;
         if (locator == null) {
-            locator = defaultLocator;
+            locator = defaultMetaFactoryLocator;
         }
         OMMetaFactory metaFactory = locator.getOMMetaFactory(feature);
         if (metaFactory == null) {

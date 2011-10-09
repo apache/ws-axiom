@@ -25,7 +25,11 @@ import java.util.Enumeration;
 import java.util.List;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMMetaFactoryLocator;
 
+/**
+ * The default {@link OMMetaFactoryLocator} implementation used in non OSGi environments.
+ */
 public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator {
     public DefaultOMMetaFactoryLocator() {
         ClassLoader classLoader = DefaultOMMetaFactoryLocator.class.getClassLoader();

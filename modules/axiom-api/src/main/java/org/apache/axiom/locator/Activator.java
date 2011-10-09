@@ -19,11 +19,17 @@
 package org.apache.axiom.locator;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMMetaFactoryLocator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.BundleTracker;
 
+/**
+ * The OSGi bundle activator for the <tt>axiom-api</tt> bundle. This activator sets up an OSGi
+ * specific {@link OMMetaFactoryLocator} and inject it into {@link OMAbstractFactory} using
+ * {@link OMAbstractFactory#setMetaFactoryLocator(OMMetaFactoryLocator)}.
+ */
 public class Activator implements BundleActivator {
     private BundleTracker tracker;
 
