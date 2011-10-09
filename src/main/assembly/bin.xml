@@ -70,11 +70,6 @@
             <filtered>true</filtered>
             <fileMode>0644</fileMode>
         </file>
-        <file>
-            <source>${project.build.directory}/axiom.jar</source>
-            <outputDirectory>/</outputDirectory>
-            <destName>axiom.jar</destName>
-        </file>
     </files>
     <moduleSets>
         <moduleSet>
@@ -112,6 +107,17 @@
                         </includes>
                     </dependencySet>
                 </dependencySets>
+            </binaries>
+        </moduleSet>
+        <moduleSet>
+            <includes>
+                <include>org.apache.ws.commons.axiom:axiom-all</include>
+            </includes>
+            <binaries>
+                <outputDirectory>/</outputDirectory>
+                <unpack>false</unpack>
+                <includeDependencies>false</includeDependencies>
+                <outputFileNameMapping>axiom.jar</outputFileNameMapping>
             </binaries>
         </moduleSet>
     </moduleSets>

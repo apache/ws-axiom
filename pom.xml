@@ -488,21 +488,6 @@
                 <version>2.2-beta-5</version>
                 <executions>
                     <execution>
-                        <id>all-in-one-jar</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/main/assembly/jar.xml</descriptor>
-                            </descriptors>
-                            <attach>false</attach>
-                            <finalName>axiom</finalName>
-                            <appendAssemblyId>false</appendAssemblyId>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>bin</id>
                         <phase>package</phase>
                         <goals>
@@ -560,5 +545,6 @@
         <module>modules/axiom-tests</module>
         <module>modules/axiom-osgi-tests</module>
         <module>modules/axiom-integration</module>
+        <module>modules/axiom-all</module>
     </modules>
 </project>
