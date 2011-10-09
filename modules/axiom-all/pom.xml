@@ -77,9 +77,19 @@
                                     <include>${project.groupId}:*</include>
                                 </includes>
                             </artifactSet>
+                            <transformers>
+                                <transformer implementation="org.apache.axiom.buildutils.AxiomXmlResourceTransformer" />
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>axiom-buildutils</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <!-- If we deploy the uber-JAR to the Maven repositories, then we will end up with
