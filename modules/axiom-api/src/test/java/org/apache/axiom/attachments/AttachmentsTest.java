@@ -30,6 +30,7 @@ import java.io.PipedOutputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
 
@@ -615,5 +616,48 @@ public class AttachmentsTest extends AbstractTestCase {
         } finally {
             pipeIn.close();
         }
+    }
+
+    private void testTurkishLocale(String contentIDHeaderName) throws Exception {
+        Locale locale = Locale.getDefault();
+        Locale.setDefault(new Locale("tr", "TR"));
+        try {
+            MimeMessage message = new MimeMessage((Session)null);
+            MimeMultipart mp = new MimeMultipart("related");
+            
+            MimeBodyPart bp1 = new MimeBodyPart();
+            bp1.setText("<root/>", "utf-8", "xml");
+            bp1.addHeader("Content-Transfer-Encoding", "binary");
+            mp.addBodyPart(bp1);
+            
+            MimeBodyPart bp2 = new MimeBodyPart();
+            byte[] content = new byte[8192];
+            new Random().nextBytes(content);
+            bp2.setDataHandler(new DataHandler("Test", "text/plain"));
+            bp2.addHeader("Content-Transfer-Encoding", "binary");
+            bp2.addHeader(contentIDHeaderName, "part@apache.org");
+            mp.addBodyPart(bp2);
+            
+            message.setContent(mp);
+            message.saveChanges();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            mp.writeTo(baos);
+            String contentType = message.getContentType();
+            
+            InputStream in = new ByteArrayInputStream(baos.toByteArray());
+            Attachments attachments = new Attachments(in, contentType);
+            assertNotNull(attachments.getDataHandler("part@apache.org"));
+        } finally {
+            Locale.setDefault(locale);
+        }
+    }
+
+    // Regression test for AXIOM-389
+    public void _testTurkishLocale1() throws Exception {
+        testTurkishLocale("Content-ID");
+    }
+
+    public void testTurkishLocale2() throws Exception {
+        testTurkishLocale("content-id");
     }
 }
