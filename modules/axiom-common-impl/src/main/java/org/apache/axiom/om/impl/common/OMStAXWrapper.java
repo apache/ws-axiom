@@ -137,20 +137,12 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
         return switchingWrapper.getBuilder();
     }
 
-    public boolean isAllowSwitching() {
-        return switchingWrapper.isAllowSwitching();
-    }
-
     public boolean isClosed() {
         return switchingWrapper.isClosed();
     }
 
     public void releaseParserOnClose(boolean value) {
         switchingWrapper.releaseParserOnClose(value);
-    }
-
-    public void setAllowSwitching(boolean b) {
-        switchingWrapper.setAllowSwitching(b);
     }
 
     public void setParser(XMLStreamReader parser) {

@@ -114,13 +114,11 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     /** Field currentEvent Default set to START_DOCUMENT */
     private int currentEvent = START_DOCUMENT;
 
-    // SwitchingAllowed is set to false by default.
-    // This means that unless the user explicitly states
-    // that he wants things not to be cached, everything will
-    // be cached.
-
-    /** Field switchingAllowed */
-    boolean switchingAllowed = false;
+    /**
+     * Specifies whether the original document content is cached (i.e. whether the object model is
+     * built) or can be consumed.
+     */
+    private final boolean cache;
     
     // namespaceURI interning
     // default is false because most XMLStreamReader implementations don't do interning
@@ -161,24 +159,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     private OMNamespace[] namespaces = new OMNamespace[16];
     
     /**
-     * Method setAllowSwitching.
-     *
-     * @param b
-     */
-    public void setAllowSwitching(boolean b) {
-        this.switchingAllowed = b;
-    }
-
-    /**
-     * Method isAllowSwitching.
-     *
-     * @return Returns boolean.
-     */
-    public boolean isAllowSwitching() {
-        return switchingAllowed;
-    }
-
-    /**
      * Set namespace uri interning
      * @param b
      */
@@ -207,6 +187,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         this.navigator = new OMNavigator(startNode);
         this.builder = builder;
         this.rootNode = startNode;
+        this.cache = cache;
 
         // initiate the next and current nodes
         // Note - navigator is written in such a way that it first
@@ -226,11 +207,10 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } catch(Throwable t) {}
         
         currentNode = navigator.getNext();
-        updateNextNode();
+        updateNextNode(false);
         if (resetCache) {
             builder.setCache(cache); 
         }
-        switchingAllowed = !cache;
         
         if (startNode instanceof OMDocument) {
             try {
@@ -1091,14 +1071,14 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         namespaceCount = -1;
         currentNode = nextNode;
         try {
-            updateNextNode();
+            updateNextNode(!cache);
         } catch (Exception e) {
             throw new XMLStreamException(e);
         }
     }
 
     /** Method updateNextNode. */
-    private void updateNextNode() {
+    private void updateNextNode(boolean switchingAllowed) {
         if (navigator.isNavigable()) {
             nextNode = navigator.getNext();
         } else {
