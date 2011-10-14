@@ -20,14 +20,14 @@ package org.apache.axiom.attachments;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.activation.DataHandler;
-import javax.mail.Header;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.ParseException;
 
@@ -344,7 +344,7 @@ class MIMEMessage extends AttachmentsImpl {
         boolean isSOAPPart = (partIndex == 0);
 
         try {
-            Hashtable headers = readHeaders();
+            List headers = readHeaders();
             
             partIndex++;
             currentPart = new PartImpl(this, isSOAPPart, headers, parser);
@@ -368,14 +368,14 @@ class MIMEMessage extends AttachmentsImpl {
         return contentLength;
     }
     
-    private Hashtable readHeaders() throws IOException, MimeException {
+    private List readHeaders() throws IOException, MimeException {
         if(log.isDebugEnabled()){
-            log.debug("initHeaders");
+            log.debug("readHeaders");
         }
         
         checkParserState(parser.next(), EntityState.T_START_HEADER);
         
-        Hashtable headers = new Hashtable();
+        List headers = new ArrayList();
         while (parser.next() == EntityState.T_FIELD) {
             Field field = parser.getField();
             String name = field.getName();
@@ -384,11 +384,7 @@ class MIMEMessage extends AttachmentsImpl {
             if (log.isDebugEnabled()){
                 log.debug("addHeader: (" + name + ") value=(" + value +")");
             }
-            Header headerObj = new Header(name, value);
-            
-            // Use the lower case name as the key
-            String key = name.toLowerCase();
-            headers.put(key, headerObj);
+            headers.add(new Header(name, value));
         }
         
         checkParserState(parser.next(), EntityState.T_BODY);

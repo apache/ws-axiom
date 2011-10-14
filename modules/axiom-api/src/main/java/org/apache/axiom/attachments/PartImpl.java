@@ -29,14 +29,13 @@ import org.apache.james.mime4j.stream.MimeTokenStream;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.mail.Header;
 import javax.mail.MessagingException;
 import javax.mail.internet.HeaderTokenizer;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Hashtable;
+import java.util.List;
 
 /**
  * Actual implementation of the {@link Part} interface.
@@ -70,9 +69,7 @@ final class PartImpl implements Part {
     private final MIMEMessage message;
     private final boolean isSOAPPart;
     
-    // Key is the lower-case name.
-    // Value is a javax.mail.Header object
-    private Hashtable headers;
+    private List/*<Header>*/ headers;
     
     private int state = STATE_UNREAD;
     
@@ -94,21 +91,23 @@ final class PartImpl implements Part {
      * @see org.apache.axiom.attachments.ContentStoreFactory
      * @param headers
      */
-    PartImpl(MIMEMessage message, boolean isSOAPPart, Hashtable in, MimeTokenStream parser) {
+    PartImpl(MIMEMessage message, boolean isSOAPPart, List headers, MimeTokenStream parser) {
         this.message = message;
         this.isSOAPPart = isSOAPPart;
-        headers = in;
-        if (headers == null) {
-            headers = new Hashtable();
-        }
+        this.headers = headers;
         this.parser = parser;
         this.dataHandler = new PartDataHandler(this);
     }
     
     public String getHeader(String name) {
-        String key = name.toLowerCase();
-        Header header = (Header) headers.get(key);
-        String value = header == null ? null : header.getValue();
+        String value = null;
+        for (int i=0, l=headers.size(); i<l; i++) {
+            Header header = (Header)headers.get(i);
+            if (header.getName().equalsIgnoreCase(name)) {
+                value = header.getValue();
+                break;
+            }
+        }
         if(log.isDebugEnabled()){
             log.debug("getHeader name=(" + name + ") value=(" + value +")");
         }

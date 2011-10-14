@@ -653,7 +653,7 @@ public class AttachmentsTest extends AbstractTestCase {
     }
 
     // Regression test for AXIOM-389
-    public void _testTurkishLocale1() throws Exception {
+    public void testTurkishLocale1() throws Exception {
         testTurkishLocale("Content-ID");
     }
 
