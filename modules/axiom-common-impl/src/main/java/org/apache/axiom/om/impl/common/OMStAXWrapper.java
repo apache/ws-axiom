@@ -25,7 +25,6 @@ import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.util.StreamReaderDelegate;
 
-import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMException;
@@ -105,16 +104,6 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
             		"be a content ID, not an href; see OMAttachmentAccessor.");
             contentID = contentID.substring(4);
         }
-        
-        // Temporary workaround for WSCOMMONS-485:
-        OMXMLParserWrapper builder = switchingWrapper.getBuilder();
-        if (builder != null && 
-                builder instanceof OMAttachmentAccessor) {
-            DataHandler dh = ((OMAttachmentAccessor)builder).getDataHandler(contentID);
-            if (dh != null) {
-                return dh;
-            }
-        } 
         
         if (xopEncoder == null) {
             throw new IllegalStateException("The wrapper is in inlineMTOM=true mode");

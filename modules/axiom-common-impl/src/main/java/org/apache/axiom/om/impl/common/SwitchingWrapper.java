@@ -1492,10 +1492,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    public OMXMLParserWrapper getBuilder() {
-        return builder;
-    }
-    
     /**
      * @return if parser is closed
      */
