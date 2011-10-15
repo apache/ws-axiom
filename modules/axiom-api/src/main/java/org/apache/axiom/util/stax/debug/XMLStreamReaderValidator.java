@@ -49,7 +49,6 @@ import java.util.Stack;
 public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
 
     private static Log log = LogFactory.getLog(XMLStreamReaderValidator.class);
-    private static boolean IS_DEBUG_ENABLED = log.isDebugEnabled();
     private static boolean IS_ADV_DEBUG_ENABLED = false;  // Turn this on to trace every event
     
     private boolean throwExceptions = false;   // Indicates whether OMException should be thrown if errors are disovered
@@ -129,9 +128,7 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
                 " was encountered, but this doesn't match the corresponding START_ELEMENT " + 
                 expectedQName + " event.";
         }
-        if (IS_DEBUG_ENABLED) {
-            log.debug(text);
-        }       
+        log.debug(text);
         if (throwExceptions) {
             throw new XMLStreamException(text);
         }

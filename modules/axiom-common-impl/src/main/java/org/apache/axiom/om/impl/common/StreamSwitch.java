@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.common;
 import javax.xml.stream.util.StreamReaderDelegate;
 
 import org.apache.axiom.om.OMDataSource;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class StreamSwitch extends StreamReaderDelegate {
     // namespaceURI interning
@@ -42,10 +41,6 @@ public class StreamSwitch extends StreamReaderDelegate {
      */
     public boolean isNamespaceURIInterning() {
         return this.namespaceURIInterning;
-    }
-    
-    public OMXMLParserWrapper getBuilder() {
-        return ((SwitchingWrapper)getParent()).getBuilder();
     }
     
     public boolean isClosed() {

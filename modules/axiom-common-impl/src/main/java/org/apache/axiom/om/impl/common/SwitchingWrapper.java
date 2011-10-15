@@ -70,7 +70,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     implements DataHandlerReader, CharacterDataReader, XMLStreamConstants {
     
     private static final Log log = LogFactory.getLog(SwitchingWrapper.class);
-    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
     
     /** Field navigator */
     private OMNavigator navigator;
@@ -1054,7 +1053,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             if (!switchingAllowed) {
                 if (navigator.isCompleted() || builder == null || builder.isCompleted()) {
                     nextNode = null;
-                    if (DEBUG_ENABLED) {
+                    if (log.isDebugEnabled()) {
                         if (builder == null || builder.isCompleted()) {
                             log.debug("Builder is complete.  Next node is set to null.");
                         }
@@ -1462,10 +1461,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         }
     }
 
-    public OMXMLParserWrapper getBuilder() {
-        return builder;
-    }
-    
     /**
      * @return if parser is closed
      */

@@ -31,7 +31,6 @@ import org.apache.commons.logging.LogFactory;
 
 class OMContainerHelper {
     private static final Log log = LogFactory.getLog(OMContainerHelper.class);
-    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
     
     private OMContainerHelper() {}
     
@@ -66,7 +65,7 @@ class OMContainerHelper {
         // The validator will check for mismatched events to help determine if the OMStAXWrapper
         // is functioning correctly.  All problems are reported as debug.log messages
         
-        if (DEBUG_ENABLED) {
+        if (log.isDebugEnabled()) {
             reader = 
                 new OMXMLStreamReaderValidator(reader, // delegate to actual reader
                      false); // log problems (true will cause exceptions to be thrown)

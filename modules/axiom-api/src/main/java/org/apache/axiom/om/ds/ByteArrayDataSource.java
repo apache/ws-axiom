@@ -39,7 +39,6 @@ import java.io.UnsupportedEncodingException;
 public class ByteArrayDataSource extends OMDataSourceExtBase {
 
     private static final Log log = LogFactory.getLog(ByteArrayDataSource.class);
-    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
 	
     ByteArray byteArray = null;
     
@@ -56,7 +55,7 @@ public class ByteArrayDataSource extends OMDataSourceExtBase {
    
  
     public XMLStreamReader getReader() throws XMLStreamException {
-        if (DEBUG_ENABLED) {
+        if (log.isDebugEnabled()) {
             log.debug("getReader");
         }
         return StAXUtils.createXMLStreamReader(new ByteArrayInputStream(byteArray.bytes),
@@ -83,7 +82,7 @@ public class ByteArrayDataSource extends OMDataSourceExtBase {
           encoding = OMOutputFormat.DEFAULT_CHAR_SET_ENCODING;
         }
 
-        if (DEBUG_ENABLED) {
+        if (log.isDebugEnabled()) {
             log.debug("getXMLBytes encoding="+encoding);
         }
 

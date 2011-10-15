@@ -47,7 +47,6 @@ import org.apache.commons.logging.LogFactory;
 public abstract class OMDataSourceExtBase implements OMDataSourceExt {
 
     private static final Log log = LogFactory.getLog(OMDataSourceExtBase.class);
-    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
 	
     HashMap map = null;  // Map of properties
 
@@ -74,14 +73,14 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
    
     public InputStream getXMLInputStream(String encoding)  throws 
         UnsupportedEncodingException{
-        if (DEBUG_ENABLED) {
+        if (log.isDebugEnabled()) {
             log.debug("getXMLInputStream encoding="+encoding);
         }
         return new ByteArrayInputStream(getXMLBytes(encoding));
     }
 
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
-        if (DEBUG_ENABLED) {
+        if (log.isDebugEnabled()) {
             log.debug("serialize output="+output+" format="+format);
         }
         try {
@@ -93,7 +92,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
     }
 
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        if (DEBUG_ENABLED) {
+        if (log.isDebugEnabled()) {
             log.debug("serialize writer="+writer+" format="+format);
         }
         try {
@@ -108,7 +107,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
     }
 
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        if (DEBUG_ENABLED) {
+        if (log.isDebugEnabled()) {
             log.debug("serialize xmlWriter="+xmlWriter);
         }
         // Some XMLStreamWriters (e.g. MTOMXMLStreamWriter) 
@@ -116,7 +115,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
         // This allows faster writing.
         OutputStream os = getOutputStream(xmlWriter);
         if (os != null) {
-        	if (DEBUG_ENABLED) {
+        	if (log.isDebugEnabled()) {
                 log.debug("serialize OutputStream optimisation: true");
             }
             String encoding = getCharacterEncoding(xmlWriter);
@@ -124,7 +123,7 @@ public abstract class OMDataSourceExtBase implements OMDataSourceExt {
             format.setCharSetEncoding(encoding);
             serialize(os, format);
         } else {
-        	if (DEBUG_ENABLED) {
+        	if (log.isDebugEnabled()) {
                 log.debug("serialize OutputStream optimisation: false");
             }
             // Read the bytes into a reader and 
