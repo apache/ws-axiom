@@ -133,20 +133,12 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
     // TODO: need to check which of these delegate methods are really necessary;
     //       some of them should also be defined properly by an interface
     
-    public OMXMLParserWrapper getBuilder() {
-        return switchingWrapper.getBuilder();
-    }
-
     public boolean isClosed() {
         return switchingWrapper.isClosed();
     }
 
     public void releaseParserOnClose(boolean value) {
         switchingWrapper.releaseParserOnClose(value);
-    }
-
-    public void setParser(XMLStreamReader parser) {
-        switchingWrapper.setParser(parser);
     }
 
     public void setNamespaceURIInterning(boolean b) {

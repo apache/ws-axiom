@@ -1449,7 +1449,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         return returnName;
     }
 
-    public void setParser(XMLStreamReader parser) {
+    private void setParser(XMLStreamReader parser) {
         this.parser = parser;
         dataHandlerReader =
                 parser == null ? null : XMLStreamReaderUtils.getDataHandlerReader(parser);
