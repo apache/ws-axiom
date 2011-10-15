@@ -43,7 +43,6 @@ import java.util.ArrayList;
 public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
     
     static Log log = LogFactory.getLog(StreamingOMSerializer.class);
-    private static final boolean DEBUG_ENABLED = log.isDebugEnabled();
     
     private static int namespaceSuffix = 0;
     public static final String NAMESPACE_PREFIX = "ns";
@@ -349,7 +348,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
             if  (XSI_URI.equals(namespace) &&
                 XSI_LOCAL_NAME.equals(localName)) {
                 String value = reader.getAttributeValue(i);
-                if (DEBUG_ENABLED) {
+                if (log.isDebugEnabled()) {
                     log.debug("The value of xsi:type is " + value);
                 }
                 if (value != null) {
@@ -366,7 +365,7 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                             // If the prefix is not associated with a namespace yet, remember it so that we can
                             // write out a namespace declaration
                             if (newPrefix != null) {
-                                if (DEBUG_ENABLED) {
+                                if (log.isDebugEnabled()) {
                                     log.debug("An xmlns:" + newPrefix +"=\"" +  refNamespace +"\" will be written");
                                 }
                                 if (writePrefixList == null) {

@@ -38,7 +38,6 @@ import org.apache.commons.logging.LogFactory;
 
 public abstract class OMSerializableImpl implements OMSerializable {
     private static final Log log = LogFactory.getLog(OMSerializableImpl.class);
-    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
     
     /** Field parserWrapper */
     public OMXMLParserWrapper builder;
@@ -69,17 +68,13 @@ public abstract class OMSerializableImpl implements OMSerializable {
      */
     public void build() throws OMException {
         if (builder != null && builder.isCompleted()) {
-            if (DEBUG_ENABLED) {
-                log.debug("Builder is already complete.");
-            }
+            log.debug("Builder is already complete.");
         }
         while (!done) {
 
             builder.next();    
             if (builder.isCompleted() && !done) {
-                if (DEBUG_ENABLED) {
-                    log.debug("Builder is complete.  Setting OMObject to complete.");
-                }
+                log.debug("Builder is complete.  Setting OMObject to complete.");
                 setComplete(true);
             }
         }

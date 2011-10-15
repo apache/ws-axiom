@@ -40,7 +40,6 @@ import java.util.Iterator;
 
 public class OMSerializerUtil {
     private static Log log = LogFactory.getLog(OMSerializerUtil.class);
-    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
     private static boolean ADV_DEBUG_ENABLED = true;
     
     static long nsCounter = 0;
@@ -344,7 +343,7 @@ public class OMSerializerUtil {
             if (XSI_URI.equals(namespace) &&
                     XSI_LOCAL_NAME.equals(local)) {
                 String value = attr.getAttributeValue();
-                if (DEBUG_ENABLED) {
+                if (log.isDebugEnabled()) {
                     log.debug("The value of xsi:type is " + value);
                 }
                 if (value != null) {
@@ -362,7 +361,7 @@ public class OMSerializerUtil {
                             // If the prefix is not associated with a namespace yet, remember it so that we can
                             // write out a namespace declaration
                             if (newPrefix != null) {
-                                if (DEBUG_ENABLED) {
+                                if (log.isDebugEnabled()) {
                                     log.debug("An xmlns:" + newPrefix +"=\"" +  refNamespace +"\" will be written");
                                 }
                                 if (writePrefixList == null) {
@@ -604,7 +603,7 @@ public class OMSerializerUtil {
          * string.
          * 
          */
-        if (DEBUG_ENABLED) {
+        if (log.isDebugEnabled()) {
             log.debug("Obtained next prefix:" + prefix);
             if (ADV_DEBUG_ENABLED && log.isTraceEnabled()) {
                 log.trace(CommonUtils.callStackToString());
@@ -727,7 +726,7 @@ public class OMSerializerUtil {
                     return true;
                 }
             } catch (Throwable t) {
-                if (DEBUG_ENABLED) {
+                if (log.isDebugEnabled()) {
                     log.debug("Caught exception from getPrefix(\"\"). Processing continues: " + t);
                 }
             }

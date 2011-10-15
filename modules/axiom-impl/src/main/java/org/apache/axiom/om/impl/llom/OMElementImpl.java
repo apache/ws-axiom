@@ -67,7 +67,6 @@ public class OMElementImpl extends OMNodeImpl
         implements OMElement, OMConstants, OMContainerEx {
 
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
-    private static boolean DEBUG_ENABLED = log.isDebugEnabled();
     
     public static final OMNamespace DEFAULT_DEFAULT_NS_OBJECT = new OMNamespaceImpl("", "");
 
@@ -335,9 +334,7 @@ public class OMElementImpl extends OMNodeImpl
     public OMNode getNextOMSibling() throws OMException {
         while (!done && builder != null ) {
             if (builder.isCompleted()) {
-                if (DEBUG_ENABLED) {
-                    log.debug("Builder is complete.  Setting OMElement to complete.");
-                }
+                log.debug("Builder is complete.  Setting OMElement to complete.");
                 setComplete(true);
             } else {
                 int token = builder.next();
@@ -688,9 +685,7 @@ public class OMElementImpl extends OMNodeImpl
                 builder.next();
             } else {
                 this.setComplete(true);
-                if (DEBUG_ENABLED) {
-                    log.debug("Builder is complete.  Setting OMElement to complete.");
-                }
+                log.debug("Builder is complete.  Setting OMElement to complete.");
             }         
         }
     }

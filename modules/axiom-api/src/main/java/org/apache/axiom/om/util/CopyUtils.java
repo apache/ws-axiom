@@ -65,7 +65,6 @@ import java.util.Iterator;
 public class CopyUtils {
 
     private static Log log = LogFactory.getLog(CopyUtils.class);
-    private static final boolean IS_DEBUG_ENABLED = log.isDebugEnabled();
     
     
     /**
@@ -208,19 +207,19 @@ public class CopyUtils {
     private static void copyOMText(SOAPFactory factory, 
                                    OMContainer targetParent, 
                                    OMText sourceText) {
-        if (IS_DEBUG_ENABLED) {
+        if (log.isDebugEnabled()) {
             log.debug("start copyOMText");
         }
         if (sourceText.isBinary()) {
             // This forces a load of the datahandler so that it is saved on the copy.
             Object dh = sourceText.getDataHandler();
-            if (IS_DEBUG_ENABLED) {
+            if (log.isDebugEnabled()) {
                 String dhclass = (dh == null) ? "null" : dh.getClass().toString();
                 log.debug("The source text's binary data handler is " + dhclass);
             }
         }
         factory.createOMText(targetParent, sourceText);
-        if (IS_DEBUG_ENABLED) {
+        if (log.isDebugEnabled()) {
             log.debug("end copyOMText");
         }
     }
