@@ -1114,6 +1114,11 @@ class SwitchingWrapper extends AbstractXMLStreamReader
 
     /** Method updateCompleteStatus. */
     private void updateCompleteStatus() {
+        if (currentEvent == START_ELEMENT) {
+            depth++;
+        } else if (currentEvent == END_ELEMENT) {
+            depth--;
+        }
         if (state == NAVIGABLE) {
             if (rootNode == currentNode) {
                 if (isFirst) {
@@ -1125,20 +1130,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 }
             }
         } else {
-            if (state == SWITCHED && rootNode instanceof OMElement) {
-                //this is a potential place for bugs
-                //we have to test if the root node of this parser
-                //has the same name for this test
-                if (currentEvent == START_ELEMENT &&
-                        (parser.getLocalName().equals(((OMElement)rootNode).getLocalName()))) {
-                    ++depth;
-                } else if (currentEvent == END_ELEMENT   &&
-                       (parser.getLocalName().equals(((OMElement)rootNode).getLocalName())) ) {                                      
-                    --depth;
-                    if (depth < 0) {
-                        state = COMPLETED;
-                    }
-                }
+            if (state == SWITCHED && currentEvent == END_ELEMENT && depth == 0 && rootNode instanceof OMElement) {
+                state = COMPLETED;
             }
             state = (currentEvent == END_DOCUMENT)
                     ? DOCUMENT_COMPLETE
