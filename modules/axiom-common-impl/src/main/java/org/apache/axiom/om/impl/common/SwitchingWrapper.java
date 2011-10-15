@@ -120,11 +120,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     private final boolean cache;
     
-    // namespaceURI interning
-    // default is false because most XMLStreamReader implementations don't do interning
-    // due to performance impacts
-    boolean namespaceURIInterning = false;
-
     /** Field elementStack */
     private Stack nodeStack = null;
 
@@ -157,21 +152,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     private OMAttribute[] attributes = new OMAttribute[16];
     private int namespaceCount = -1;
     private OMNamespace[] namespaces = new OMNamespace[16];
-    
-    /**
-     * Set namespace uri interning
-     * @param b
-     */
-    public void setNamespaceURIInterning(boolean b) {
-        this.namespaceURIInterning = b;
-    }
-    
-    /**
-     * @return if namespace uri interning 
-     */
-    public boolean isNamespaceURIInterning() {
-        return this.namespaceURIInterning;
-    }
     
     /**
      * Constructor.
@@ -249,34 +229,23 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @see javax.xml.stream.XMLStreamReader#getNamespaceURI()
      */
     public String getNamespaceURI() {
-        String returnStr;
         if (parser != null && currentEvent != END_DOCUMENT) {
-            returnStr = parser.getNamespaceURI();
+            return parser.getNamespaceURI();
         } else {
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)
                     || (currentEvent == NAMESPACE)) {
                 OMNamespace ns = ((OMElement) lastNode).getNamespace();
                 if (ns == null) {
-                    returnStr = null;
+                    return null;
                 } else {
                     String namespaceURI = ns.getNamespaceURI();
-                    returnStr = namespaceURI.length() == 0 ? null : namespaceURI;
+                    return namespaceURI.length() == 0 ? null : namespaceURI;
                 }
             } else {
                 throw new IllegalStateException();
             }
         }
-        
-        // By default most parsers don't intern the namespace.
-        // Unfortunately the property to detect interning on the delegate parsers is hard to detect.
-        // Woodstox has a proprietary property on the XMLInputFactory.
-        // IBM has a proprietary property on the XMLStreamReader.
-        // For now only force the interning if requested.
-        if (this.isNamespaceURIInterning()) {
-            returnStr = (returnStr != null) ? returnStr.intern() : null;
-        }
-        return returnStr;
     }
 
     /**

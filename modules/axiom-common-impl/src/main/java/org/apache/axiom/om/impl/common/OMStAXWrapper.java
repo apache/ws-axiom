@@ -45,7 +45,7 @@ import org.apache.commons.logging.LogFactory;
 public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx {
     private static final Log log = LogFactory.getLog(OMStAXWrapper.class);
     
-    private final SwitchingWrapper switchingWrapper;
+    private final StreamSwitch streamSwitch = new StreamSwitch();
     private XOPEncodingStreamReader xopEncoder;
     
     /**
@@ -70,8 +70,8 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
      */
     public OMStAXWrapper(OMXMLParserWrapper builder, OMContainer startNode,
                          boolean cache) {
-        switchingWrapper = new SwitchingWrapper(builder, startNode, cache);
-        setParent(switchingWrapper);
+        streamSwitch.setParent(new SwitchingWrapper(builder, startNode, cache));
+        setParent(streamSwitch);
     }
 
     public boolean isInlineMTOM() {
@@ -85,14 +85,14 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
         if (value) {
             if (xopEncoder != null) {
                 xopEncoder = null;
-                setParent(switchingWrapper);
+                setParent(streamSwitch);
             }
         } else {
             if (xopEncoder == null) {
                 // Since the intention is to support an efficient way to pass binary content to a
                 // consumer that is not aware of our data handler extension (see WSCOMMONS-344), we
                 // use OptimizationPolicy.ALL, i.e. we ignore OMText#isOptimized().
-                xopEncoder = new XOPEncodingStreamReader(switchingWrapper, ContentIDGenerator.DEFAULT,
+                xopEncoder = new XOPEncodingStreamReader(streamSwitch, ContentIDGenerator.DEFAULT,
                         OptimizationPolicy.ALL);
                 setParent(xopEncoder);
             }
@@ -107,7 +107,7 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
         }
         
         // Temporary workaround for WSCOMMONS-485:
-        OMXMLParserWrapper builder = switchingWrapper.getBuilder();
+        OMXMLParserWrapper builder = streamSwitch.getBuilder();
         if (builder != null && 
                 builder instanceof OMAttachmentAccessor) {
             DataHandler dh = ((OMAttachmentAccessor)builder).getDataHandler(contentID);
@@ -134,22 +134,22 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
     //       some of them should also be defined properly by an interface
     
     public boolean isClosed() {
-        return switchingWrapper.isClosed();
+        return streamSwitch.isClosed();
     }
 
     public void releaseParserOnClose(boolean value) {
-        switchingWrapper.releaseParserOnClose(value);
+        streamSwitch.releaseParserOnClose(value);
     }
 
     public void setNamespaceURIInterning(boolean b) {
-        switchingWrapper.setNamespaceURIInterning(b);
+        streamSwitch.setNamespaceURIInterning(b);
     }
     
     public OMDataSource getDataSource() {
-        return switchingWrapper.getDataSource();
+        return streamSwitch.getDataSource();
     }
     
     public void enableDataSourceEvents(boolean value) {
-        switchingWrapper.enableDataSourceEvents(value);
+        streamSwitch.enableDataSourceEvents(value);
     }
 }
