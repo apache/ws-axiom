@@ -304,8 +304,10 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                     </listitem>
                     <listitem>
                         <para>
-                            ServiceMix also has custom bundles to support Abdera; see
-                            <ulink url="https://issues.apache.org/jira/browse/SMX4-877">SMX4-877</ulink>.
+                            ServiceMix also has a custom bundles for Axiom. However, this bundle only seem to exist to
+                            support their own custom Abdera bundle, which is basically an incorrect repackaging of the
+                            original Abdera code. See
+                            <ulink url="https://issues.apache.org/jira/browse/SMX4-877">SMX4-877</ulink> for more details.
                         </para>
                     </listitem>
                 </itemizedlist>
