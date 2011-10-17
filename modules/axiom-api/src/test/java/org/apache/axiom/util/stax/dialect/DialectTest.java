@@ -193,7 +193,8 @@ public class DialectTest extends TestSuite {
         // is not reliable (because it may be null). Hence the check on ParentLastURLClassLoader.
         if (classLoader instanceof ParentLastURLClassLoader
                 && factory.getClass().getClassLoader() != classLoader) {
-            throw new FactoryConfigurationError("Wrong factory!");
+            throw new FactoryConfigurationError("Wrong factory: got " + factory.getClass().getName()
+                    + " loaded from " + factory.getClass().getClassLoader());
         }
         return factory;
     }
@@ -226,7 +227,8 @@ public class DialectTest extends TestSuite {
         }
         if (classLoader != ClassLoader.getSystemClassLoader()
                 && factory.getClass().getClassLoader() != classLoader) {
-            throw new FactoryConfigurationError("Wrong factory!");
+            throw new FactoryConfigurationError("Wrong factory: got " + factory.getClass().getName()
+                    + " loaded from " + factory.getClass().getClassLoader());
         }
         return factory;
     }

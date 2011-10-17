@@ -18,8 +18,11 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Enumeration;
+import java.util.Vector;
 
 public class ParentLastURLClassLoader extends URLClassLoader {
     public ParentLastURLClassLoader(URL[] urls, ClassLoader parent) {
@@ -32,6 +35,22 @@ public class ParentLastURLClassLoader extends URLClassLoader {
             url = getParent().getResource(name);
         }
         return url;
+    }
+    
+    public Enumeration getResources(String name) throws IOException {
+        // Make sure that we return our own resources first. Otherwise, if an API performs
+        // JDK 1.3 service discovery using getResources instead of getResource, we would
+        // have a problem.
+        Vector resources = new Vector();
+        Enumeration e = findResources(name);
+        while (e.hasMoreElements()) {
+            resources.add(e.nextElement());
+        }
+        e = getParent().getResources(name);
+        while (e.hasMoreElements()) {
+            resources.add(e.nextElement());
+        }
+        return resources.elements();
     }
 
     protected synchronized Class loadClass(String name, boolean resolve) throws ClassNotFoundException {
