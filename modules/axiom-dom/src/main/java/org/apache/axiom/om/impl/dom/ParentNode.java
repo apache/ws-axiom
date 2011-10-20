@@ -688,6 +688,10 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
     }
 
     public XMLStreamReader getXMLStreamReader(boolean cache) {
+        return getXMLStreamReader(cache, false);
+    }
+    
+    public XMLStreamReader getXMLStreamReader(boolean cache, boolean preserveNamespaceContext) {
         if ((builder == null) && !cache) {
             throw new UnsupportedOperationException(
                     "This element was not created in a manner to be switched");
@@ -696,7 +700,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             throw new UnsupportedOperationException(
                     "The parser is already consumed!");
         }
-        return new OMStAXWrapper(builder, this, cache);
+        return new OMStAXWrapper(builder, this, cache, preserveNamespaceContext);
     }
 
     public SAXSource getSAXSource(boolean cache) {

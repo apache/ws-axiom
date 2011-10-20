@@ -168,6 +168,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderOnNonRootElement(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithoutCachingPartiallyBuilt(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithPreserveNamespaceContext(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestMultipleDefaultNS(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace(metaFactory));

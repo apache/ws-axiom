@@ -57,7 +57,7 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
      * @param startNode
      */
     public OMStAXWrapper(OMXMLParserWrapper builder, OMContainer startNode) {
-        this(builder, startNode, false);
+        this(builder, startNode, false, false);
     }
 
     /**
@@ -66,10 +66,11 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
      * @param builder
      * @param startNode
      * @param cache
+     * @param preserveNamespaceContext
      */
     public OMStAXWrapper(OMXMLParserWrapper builder, OMContainer startNode,
-                         boolean cache) {
-        switchingWrapper = new SwitchingWrapper(builder, startNode, cache);
+                         boolean cache, boolean preserveNamespaceContext) {
+        switchingWrapper = new SwitchingWrapper(builder, startNode, cache, preserveNamespaceContext);
         setParent(switchingWrapper);
     }
 

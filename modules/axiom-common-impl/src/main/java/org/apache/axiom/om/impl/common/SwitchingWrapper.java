@@ -119,6 +119,13 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     private final boolean cache;
     
+    /**
+     * Specifies whether additional namespace declarations should be generated to preserve the
+     * namespace context. See {@link OMElement#getXMLStreamReader(boolean, boolean)} for more
+     * information about the meaning of this attribute.
+     */
+    private final boolean preserveNamespaceContext;
+    
     // namespaceURI interning
     // default is false because most XMLStreamReader implementations don't do interning
     // due to performance impacts
@@ -178,15 +185,17 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @param builder
      * @param startNode
      * @param cache
+     * @param preserveNamespaceContext
      */
     public SwitchingWrapper(OMXMLParserWrapper builder, OMContainer startNode,
-                            boolean cache) {
+                            boolean cache, boolean preserveNamespaceContext) {
 
         // create a navigator
         this.navigator = new OMNavigator(startNode);
         this.builder = builder;
         this.rootNode = startNode;
         this.cache = cache;
+        this.preserveNamespaceContext = preserveNamespaceContext;
 
         // initiate the next and current nodes
         // Note - navigator is written in such a way that it first
@@ -489,19 +498,44 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (namespaceCount == -1) {
             namespaceCount = 0;
             for (Iterator it = ((OMElement)lastNode).getAllDeclaredNamespaces(); it.hasNext(); ) {
-                OMNamespace ns = (OMNamespace)it.next();
-                // Axiom internally creates an OMNamespace instance for the "xml" prefix, even
-                // if it is not declared explicitly. Filter this instance out.
-                if (!"xml".equals(ns.getPrefix())) {
-                    if (namespaceCount == namespaces.length) {
-                        OMNamespace[] newNamespaces = new OMNamespace[namespaces.length*2];
-                        System.arraycopy(namespaces, 0, newNamespaces, 0, namespaces.length);
-                        namespaces = newNamespaces;
+                addNamespace((OMNamespace)it.next());
+            }
+            if (preserveNamespaceContext && lastNode == rootNode) {
+                OMElement element = (OMElement)lastNode;
+                while (true) {
+                    OMContainer container = element.getParent();
+                    if (container instanceof OMElement) {
+                        element = (OMElement)container;
+                        decl: for (Iterator it = element.getAllDeclaredNamespaces(); it.hasNext(); ) {
+                            OMNamespace ns = (OMNamespace)it.next();
+                            String prefix = ns.getPrefix();
+                            for (int i=0; i<namespaceCount; i++) {
+                                if (namespaces[i].getPrefix().equals(prefix)) {
+                                    continue decl;
+                                }
+                            }
+                            addNamespace(ns);
+                        }
+                    } else {
+                        break;
                     }
-                    namespaces[namespaceCount] = ns;
-                    namespaceCount++;
                 }
             }
+        }
+    }
+    
+    private void addNamespace(OMNamespace ns) {
+        // TODO: verify if this check is actually still necessary
+        // Axiom internally creates an OMNamespace instance for the "xml" prefix, even
+        // if it is not declared explicitly. Filter this instance out.
+        if (!"xml".equals(ns.getPrefix())) {
+            if (namespaceCount == namespaces.length) {
+                OMNamespace[] newNamespaces = new OMNamespace[namespaces.length*2];
+                System.arraycopy(namespaces, 0, newNamespaces, 0, namespaces.length);
+                namespaces = newNamespaces;
+            }
+            namespaces[namespaceCount] = ns;
+            namespaceCount++;
         }
     }
     

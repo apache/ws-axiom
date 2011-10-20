@@ -34,7 +34,7 @@ class OMContainerHelper {
     
     private OMContainerHelper() {}
     
-    public static XMLStreamReader getXMLStreamReader(OMContainer container, boolean cache) {
+    public static XMLStreamReader getXMLStreamReader(OMContainer container, boolean cache, boolean preserveNamespaceContext) {
         OMXMLParserWrapper builder = ((OMSerializableImpl)container).builder;
         if (builder != null && builder instanceof StAXOMBuilder) {
             if (!container.isComplete()) {
@@ -48,7 +48,7 @@ class OMContainerHelper {
         OMXMLStreamReader reader = null;
         boolean done = ((OMSerializableImpl)container).done;
         if ((builder == null) && done) {
-            reader =  new OMStAXWrapper(null, container, false);
+            reader =  new OMStAXWrapper(null, container, false, preserveNamespaceContext);
         } else {
             if ((builder == null) && !cache) {
                 throw new UnsupportedOperationException(
@@ -58,7 +58,7 @@ class OMContainerHelper {
                 throw new UnsupportedOperationException(
                 "The parser is already consumed!");
             }
-            reader = new OMStAXWrapper(builder, container, cache);
+            reader = new OMStAXWrapper(builder, container, cache, preserveNamespaceContext);
         }
         
         // If debug is enabled, wrap the OMXMLStreamReader in a validator.
