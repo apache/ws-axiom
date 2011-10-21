@@ -42,7 +42,7 @@ import org.codehaus.plexus.util.StringUtils;
  * <li><tt>Import-Package</tt> entries satisfied by the included bundle are removed.
  * <li><tt>Import-Package</tt> entries from included bundles are added to the
  * <tt>Import-Package</tt> attribute of the shaded bundle.
- * <ul>
+ * </ul>
  */
 public class OSGiManifestResourceTransformer implements ResourceTransformer {
     private Manifest shadedManifest;
