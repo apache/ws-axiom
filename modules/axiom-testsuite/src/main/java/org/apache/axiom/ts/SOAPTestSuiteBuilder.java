@@ -113,6 +113,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.envelope.TestBuildWithAttachments(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestMTOMForwardStreaming(metaFactory, true));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestMTOMForwardStreaming(metaFactory, false));
+        addTest(new org.apache.axiom.ts.soap12.factory.TestCreateSOAPFaultSubCode(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.fault.TestGetNode(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.fault.TestGetNodeWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.fault.TestMoreChildrenAddition(metaFactory));
