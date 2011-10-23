@@ -787,10 +787,6 @@ public class OMElementImpl extends OMNodeImpl
         getOMFactory().createOMText(this, text);
     }
 
-    /**
-     * Sets the text, as a QName, of the given element. caution - This method will wipe out all the
-     * text elements (and hence any mixed content) before setting the text.
-     */
     public void setText(QName text) {
 
         OMNode child = this.getFirstOMChild();

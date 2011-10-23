@@ -102,6 +102,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap11.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestGetNode(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestSetNode(metaFactory));
+        addTest(new org.apache.axiom.ts.soap11.faultcode.TestSetValueFromQName(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.faultreason.TestAddSOAPText(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.faultreason.TestGetFirstSOAPText(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.header.TestExamineAllHeaderBlocksWithParser(metaFactory));
@@ -121,6 +122,8 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.faultcode.TestGetSubCodeWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultcode.TestGetTextAsQNameWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultcode.TestGetValueWithParser(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQName(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQNameWithExistingValue(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestAddSOAPText(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestAddSOAPTextWithSOAPVersionMismatch(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestGetFirstSOAPText(metaFactory));

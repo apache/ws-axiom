@@ -31,6 +31,7 @@ import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultCodeImpl;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -104,5 +105,9 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
 
     public String getLocalName() {
         return SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME;
+    }
+
+    public void setValue(QName value) {
+        setText(value);
     }
 }

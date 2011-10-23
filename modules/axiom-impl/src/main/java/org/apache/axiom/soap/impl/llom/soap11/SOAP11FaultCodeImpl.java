@@ -30,6 +30,7 @@ import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPFaultCodeImpl;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -96,5 +97,9 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
     public SOAPFaultSubCode getSubCode() {
         return null;
 //        throw new UnsupportedOperationException("getSubCode() not supported for SOAP 1.1 faults");
+    }
+
+    public void setValue(QName value) {
+        setText(value);
     }
 }

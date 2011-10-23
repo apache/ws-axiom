@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMElement;
 
 /**
@@ -38,6 +40,19 @@ public interface SOAPFaultClassifier extends OMElement {
     /** @return Returns SOAPFaultValue. */
     SOAPFaultValue getValue();
 
+    /**
+     * Set the value of this fault code or subcode. The effect of this method depends on the SOAP
+     * version. For SOAP 1.1, the method sets the text content of the {@link SOAPFaultCode} element.
+     * For SOAP 1.2, the method ensures that the {@link SOAPFaultCode} or {@link SOAPFaultSubCode}
+     * element has a child of type {@link SOAPFaultValue} child (creating one if necessary) and sets
+     * the text content of that child. In both cases, the method adds an appropriate namespace
+     * declaration if necessary.
+     * 
+     * @param value
+     *            the QName for the fault code or subcode value
+     */
+    void setValue(QName value);
+    
     /**
      * Fault SubCode can contain an optional SubCode
      *

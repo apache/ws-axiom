@@ -81,4 +81,12 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
                             "the parent. But received some other implementation");
         }
     }
+
+    public void setValue(QName value) {
+        SOAPFaultValue valueElement = getValue();
+        if (valueElement == null) {
+            valueElement = ((SOAPFactory)getOMFactory()).createSOAPFaultValue(this);
+        }
+        valueElement.setText(value);
+    }
 }

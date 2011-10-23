@@ -27,6 +27,7 @@ import org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope;
 import org.apache.axiom.ts.soap.faultdetail.TestWSCommons202;
 import org.apache.axiom.ts.soap.faulttext.TestSetLang;
 import org.apache.axiom.ts.soap12.fault.TestMoreChildrenAddition;
+import org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQNameWithExistingValue;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
@@ -39,6 +40,11 @@ public class SOAPImplementationTest extends TestCase {
         
         // SOAPFaultText is currently unsupported in DOOM
         builder.exclude(TestSetLang.class);
+        
+        // TODO: a couple of prerequisites for these tests are not implemented
+        builder.exclude(org.apache.axiom.ts.soap11.faultcode.TestSetValueFromQName.class);
+        builder.exclude(org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQName.class);
+        builder.exclude(TestSetValueFromQNameWithExistingValue.class);
         
         return builder.build();
     }
