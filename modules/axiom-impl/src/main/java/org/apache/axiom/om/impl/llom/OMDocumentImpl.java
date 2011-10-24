@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
@@ -186,6 +187,10 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
         child.setParent(this);
         lastChild = child;
 
+        if (!child.isComplete() && 
+            !(child instanceof OMSourcedElement)) {
+            this.setComplete(false);
+        }
     }
 
     /**
@@ -344,6 +349,19 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
         return OMContainerHelper.getXMLStreamReader(this, cache, false);
     }
 
+    void notifyChildComplete() {
+        if (!this.done && builder == null) {
+            Iterator iterator = getChildren();
+            while (iterator.hasNext()) {
+                OMNode node = (OMNode) iterator.next();
+                if (!node.isComplete()) {
+                    return;
+                }
+            }
+            this.setComplete(true);
+        }
+    }
+    
     public SAXSource getSAXSource(boolean cache) {
         return new OMSource(this);
     }

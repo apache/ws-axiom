@@ -1008,7 +1008,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.build();
     }
 
-    protected void notifyChildComplete() {
+    void notifyChildComplete() {
         super.notifyChildComplete();
     }
 

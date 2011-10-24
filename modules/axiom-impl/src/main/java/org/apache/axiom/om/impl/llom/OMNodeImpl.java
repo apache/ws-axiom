@@ -154,6 +154,8 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
                 parent.setComplete(false);
             } else if (parent instanceof OMElementImpl) {
                 ((OMElementImpl) parent).notifyChildComplete();
+            } else if (parent instanceof OMDocumentImpl) {
+                ((OMDocumentImpl) parent).notifyChildComplete();
             }
         }
     }

@@ -1108,7 +1108,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     /** This method will be called when one of the children becomes complete. */
-    protected void notifyChildComplete() {
+    void notifyChildComplete() {
         if (!this.done && builder == null) {
             Iterator iterator = getChildren();
             while (iterator.hasNext()) {
