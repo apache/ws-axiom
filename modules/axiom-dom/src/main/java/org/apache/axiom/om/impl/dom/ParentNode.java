@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
@@ -89,8 +90,9 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
     }
 
     public void buildNext() {
-        if (!this.done)
+        if (builder != null) {
             builder.next();
+        }
     }
 
     public Iterator getChildren() {
@@ -275,7 +277,6 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             if (newDomChild.parentNode == null) {
                 newDomChild.parentNode = this;
             }
-            return newChild;
         } else {
             Iterator children = this.getChildren();
             boolean found = false;
@@ -367,8 +368,13 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 newDomChild.parentNode = this;
             }
 
-            return newChild;
         }
+        
+        if (!newDomChild.isComplete() && !(newDomChild instanceof OMSourcedElement)) {
+            setComplete(false);
+        }
+        
+        return newChild;
     }
 
     /** Replaces the oldChild with the newChild. */
@@ -705,5 +711,18 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
     public SAXSource getSAXSource(boolean cache) {
         return new OMSource(this);
+    }
+
+    void notifyChildComplete() {
+        if (!this.done && builder == null) {
+            Iterator iterator = getChildren();
+            while (iterator.hasNext()) {
+                OMNode node = (OMNode) iterator.next();
+                if (!node.isComplete()) {
+                    return;
+                }
+            }
+            this.setComplete(true);
+        }
     }
 }

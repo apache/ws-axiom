@@ -46,13 +46,8 @@ public class OMImplementationTest extends TestCase {
         builder.exclude(TestSetTextQNameWithEmptyPrefix.class);
         builder.exclude(TestSetTextQNameWithoutNamespace.class);
         
-        // TODO: AXIOM-315
-        builder.exclude(org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild.class);
-        builder.exclude(org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild.class);
-        
-        // TODO: these need to be investigated; may be related to AXIOM-315
+        // TODO: doesn't work because the test trigger a call to importNode which will build the descendant
         builder.exclude(org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant.class);
-        builder.exclude(org.apache.axiom.ts.om.element.TestSerializeAndConsumeWithIncompleteDescendant.class);
         
         // TODO: Axiom should throw an exception if an attempt is made to create a cyclic parent-child relationship
         builder.exclude(TestInsertSiblingAfterOnChild.class);

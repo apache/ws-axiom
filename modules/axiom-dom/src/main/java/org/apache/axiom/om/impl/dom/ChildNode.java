@@ -44,7 +44,7 @@ public abstract class ChildNode extends NodeImpl {
     }
 
     public OMNode getNextOMSibling() throws OMException {
-        while (nextSibling == null && this.parentNode != null && !this.parentNode.done) {
+        while (nextSibling == null && this.parentNode != null && !this.parentNode.done && parentNode.builder != null) {
             this.parentNode.buildNext();
         }
         return nextSibling;
@@ -222,4 +222,14 @@ public abstract class ChildNode extends NodeImpl {
         return newnode;
     }
 
+    public void setComplete(boolean state) {
+        super.setComplete(state);
+        if (parentNode != null) {
+            if (!done) {
+                parentNode.setComplete(false);
+            } else {
+                parentNode.notifyChildComplete();
+            }
+        }
+    }
 }

@@ -41,7 +41,8 @@ public class TestIsCompleteAfterAddingIncompleteChild extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement incompleteElement = OMXMLBuilderFactory.createOMBuilder(factory,
                 new StringReader("<elem>text</elem>")).getDocumentElement(true);
-        OMDocument document = factory.createOMDocument();
+        // TODO: need to get the OMFactory again because for DOOM, it is stateful
+        OMDocument document = metaFactory.getOMFactory().createOMDocument();
         assertTrue(document.isComplete());
         document.addChild(incompleteElement);
         assertFalse(document.isComplete());
