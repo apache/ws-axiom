@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -237,6 +238,33 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * @return an iterator over all namespaces in scope for this element
      */
     Iterator getNamespacesInScope();
+    
+    /**
+     * Get the namespace context of this element, as determined by the namespace declarations
+     * present on this element and its ancestors.
+     * <p>
+     * The method supports two different {@link NamespaceContext} implementation variants:
+     * <ul>
+     * <li>A "live" variant that keeps a reference to the element and that performs lookups by
+     * accessing the object model. This means that any change in the object model will automatically
+     * be reflected by the {@link NamespaceContext}.
+     * <li>A "detached" variant that stores a snapshot of the namespace context and that doesn't
+     * have any reference to the object model.
+     * </ul>
+     * <p>
+     * Typically, creating a live {@link NamespaceContext} is cheaper, but the lookup performance of
+     * a detached {@link NamespaceContext} is better. The detached variant should always be used if
+     * the reference to the {@link NamespaceContext} is kept longer than the object model itself,
+     * because in this case a live {@link NamespaceContext} would prevent the object model from
+     * being garbage collected.
+     * 
+     * @param detached
+     *            <code>true</code> if the method should return a detached implementation,
+     *            <code>false</code> if the method should return a live object
+     * @return The namespace context for this element. Note that the caller must not make any
+     *         assumption about the actual implementation class returned by this method.
+     */
+    NamespaceContext getNamespaceContext(boolean detached);
     
     /**
      * Returns a list of OMAttributes.

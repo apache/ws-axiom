@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
+import org.apache.axiom.om.impl.common.OMElementImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
@@ -47,6 +48,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.TypeInfo;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -826,6 +828,10 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
             if (parentNode instanceof OMElement) {
                 namespace = ((ElementImpl) parentNode).findNamespace(uri,
                                                                      prefix);
+                // If the prefix has been redeclared, then ignore the binding found on the ancestors
+                if (prefix == null && namespace != null && findDeclaredNamespace(null, namespace.getPrefix()) != null) {
+                    namespace = null;
+                }
             }
         }
 
@@ -1151,6 +1157,10 @@ public class ElementImpl extends ParentNode implements Element, OMElement,
 
     public Iterator getNamespacesInScope() {
         return new NamespaceIterator(this);
+    }
+
+    public NamespaceContext getNamespaceContext(boolean detached) {
+        return OMElementImplUtil.getNamespaceContext(this, detached);
     }
 
     /** @see org.apache.axiom.om.OMElement#getAllAttributes() */

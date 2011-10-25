@@ -37,6 +37,7 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -405,6 +406,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public Iterator getNamespacesInScope() throws OMException {
         forceExpand();
         return super.getNamespacesInScope();
+    }
+
+    public NamespaceContext getNamespaceContext(boolean detached) {
+        forceExpand();
+        return super.getNamespaceContext(detached);
     }
 
     /* (non-Javadoc)

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<a xmlns:p="urn:test1" xmlns:q="urn:test3">
+    <a xmlns:p="urn:test2" xmlns="urn:test4">
+        <a xmlns:r="urn:test3"/>
+    </a>
+</a>

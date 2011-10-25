@@ -31,8 +31,14 @@ import javax.xml.XMLConstants;
  * Namespace context implementation that stores namespace bindings in a {@link Map}.
  */
 public class MapBasedNamespaceContext extends AbstractNamespaceContext {
-    protected Map namespaces;
+    private final Map namespaces;
 
+    /**
+     * Constructor.
+     * 
+     * @param map
+     *            a map containing the (prefix, namespace URI) entries
+     */
     public MapBasedNamespaceContext(Map map) {
         namespaces = map;
     }

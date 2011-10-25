@@ -119,6 +119,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestDigestWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDigestWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestFindNamespaceURIWithPrefixUndeclaring(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestFindNamespaceByNamespaceURIMasked(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestFindNamespaceByPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAllAttributes1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAllAttributes2(metaFactory));
@@ -145,6 +146,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetDescendants(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithNameOnIncompleteElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceContext(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceContext(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespacesInScope(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespacesInScopeWithDefaultNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespacesInScopeWithMaskedDefaultNamespace(metaFactory));

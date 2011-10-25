@@ -40,6 +40,7 @@ import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
+import org.apache.axiom.om.impl.common.OMElementImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
@@ -50,6 +51,7 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -460,6 +462,10 @@ public class OMElementImpl extends OMNodeImpl
             //element should be enough.
             if (parent instanceof OMElement) {
                 namespace = ((OMElementImpl) parent).findNamespace(uri, prefix);
+                // If the prefix has been redeclared, then ignore the binding found on the ancestors
+                if (prefix == null && namespace != null && findDeclaredNamespace(null, namespace.getPrefix()) != null) {
+                    namespace = null;
+                }
             }
         }
 
@@ -553,6 +559,10 @@ public class OMElementImpl extends OMNodeImpl
 
     public Iterator getNamespacesInScope() {
         return new NamespaceIterator(this);
+    }
+
+    public NamespaceContext getNamespaceContext(boolean detached) {
+        return OMElementImplUtil.getNamespaceContext(this, detached);
     }
 
     /**
