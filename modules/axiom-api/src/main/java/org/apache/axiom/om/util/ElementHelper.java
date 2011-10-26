@@ -20,6 +20,7 @@
 package org.apache.axiom.om.util;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -208,15 +209,26 @@ public class ElementHelper {
     
     /**
      * Returns a stream representing the concatenation of the text nodes that are children of a
-     * given element.
-     * The stream returned by this method produces exactly the same character sequence as the
-     * the stream created by the following expression:
+     * given element. The stream returned by this method produces exactly the same character
+     * sequence as the the stream created by the following expression:
      * <pre>new StringReader(element.getText())</pre>
-     * The difference is that the stream implementation returned by this method is guaranteed
-     * to have constant memory usage and is optimized for performance.
+     * <p>
+     * The difference is that the stream implementation returned by this method is optimized for
+     * performance and is guaranteed to have constant memory usage, provided that:
+     * <ol>
+     * <li>The method is not required to cache the content of the {@link OMElement}, i.e.
+     * <code>cache</code> is <code>false</code> or the element is an {@link OMSourcedElement} that
+     * is backed by a non destructive {@link OMDataSource}.
+     * <li>The underlying parser (or the implementation of the underlying {@link XMLStreamReader} in
+     * the case of an {@link OMSourcedElement}) is non coalescing. Note that this is not the default
+     * in Axiom and it may be necessary to configure the parser with
+     * {@link StAXParserConfiguration#NON_COALESCING}.
+     * </ol>
      * 
-     * @param element the element to read the text nodes from
-     * @param cache whether to enable caching when accessing the element
+     * @param element
+     *            the element to read the text nodes from
+     * @param cache
+     *            whether to enable caching when accessing the element
      * @return a stream representing the concatenation of the text nodes
      * 
      * @see OMElement#getText()
