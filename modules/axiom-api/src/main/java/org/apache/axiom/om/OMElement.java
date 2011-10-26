@@ -198,7 +198,8 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * namespace declarations and prefix undeclaring), it is generally recommended to use one of the
      * following specialized methods for this purpose:
      * <ul>
-     * <li>{@link #getNamespacesInScope()} to calculate the namespace context for the element.
+     * <li>{@link #getNamespacesInScope()} or {@link #getNamespaceContext(boolean)} to calculate the
+     * namespace context for the element.
      * <li>{@link #findNamespace(String, String)} and {@link #findNamespaceURI(String)} to resolve a
      * namespace prefix or to find a namespace prefix for a given URI.
      * <li>{@link #resolveQName(String)} to resolve a QName literal.
