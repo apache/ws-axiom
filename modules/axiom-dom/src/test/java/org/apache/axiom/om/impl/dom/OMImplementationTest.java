@@ -36,7 +36,6 @@ import org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
-import org.apache.axiom.ts.xpath.TestAXIOMXPath;
 
 public class OMImplementationTest extends TestCase {
     public static TestSuite suite() {
@@ -82,9 +81,6 @@ public class OMImplementationTest extends TestCase {
 
         // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
         builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
-        
-        // TODO: investigate this failure
-        builder.exclude(TestAXIOMXPath.class, "(test=id54298)");
         
         return builder.build();
     }

@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
@@ -59,7 +60,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
-public class ElementImpl extends ParentNode implements Element, OMElement,
+public class ElementImpl extends ParentNode implements Element, OMElement, OMNodeEx,
         OMConstants {
 
     private static final Log log = LogFactory.getLog(ElementImpl.class);

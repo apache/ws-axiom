@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.DOMException;
 
@@ -27,7 +28,7 @@ import org.w3c.dom.DOMException;
  * This implements the OMText operations which are to be inherited by TextImpl, CommentImpl,
  * CDATASectionImpl.
  */
-public abstract class CharacterImpl extends ChildNode implements CharacterData {
+public abstract class CharacterImpl extends ChildNode implements CharacterData, OMNodeEx {
 
     protected String textValue;
 

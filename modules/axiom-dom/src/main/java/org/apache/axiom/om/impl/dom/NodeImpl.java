@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.w3c.dom.DOMException;
@@ -42,7 +41,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Hashtable;
 
-public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
+public abstract class NodeImpl implements Node, NodeList, Cloneable {
 
     /** Holds the user data objects */
     private Hashtable userData; // Will be initialized in setUserData()
@@ -871,4 +870,8 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
     public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
         internalSerialize(writer, false);
     }
+    
+    // This method is actually defined by OMNodeEx, but OMNodeEx is only implemented
+    // by certain subclasses (for the reason, see AXIOM-385).
+    public abstract void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException;
 }

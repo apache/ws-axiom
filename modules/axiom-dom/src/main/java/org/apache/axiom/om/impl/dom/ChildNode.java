@@ -47,11 +47,11 @@ public abstract class ChildNode extends NodeImpl {
         while (nextSibling == null && this.parentNode != null && !this.parentNode.done && parentNode.builder != null) {
             this.parentNode.buildNext();
         }
-        return nextSibling;
+        return (OMNode)nextSibling;
     }
 
     public OMNode getNextOMSiblingIfAvailable() {
-        return nextSibling;
+        return (OMNode)nextSibling;
     }
 
     public Node getNextSibling() {
@@ -59,7 +59,7 @@ public abstract class ChildNode extends NodeImpl {
     }
 
     public OMNode getPreviousOMSibling() {
-        return this.previousSibling;
+        return (OMNode)this.previousSibling;
     }
 
     public Node getPreviousSibling() {
@@ -121,19 +121,19 @@ public abstract class ChildNode extends NodeImpl {
             getNextOMSibling(); // Make sure that nextSibling is set correctly
             if (previousSibling == null) { // This is the first child
                 if (nextSibling != null) {
-                    this.parentNode.setFirstChild(nextSibling);
+                    this.parentNode.setFirstChild((OMNode)nextSibling);
                 } else {
                     this.parentNode.firstChild = null;
                     this.parentNode.lastChild = null;
                 }
             } else {
-                this.previousSibling.setNextOMSibling(nextSibling);
+                this.previousSibling.setNextOMSibling((OMNode)nextSibling);
                 if (nextSibling == null) {
                     this.previousSibling.parentNode.done = true;
                 }
             }
             if (this.nextSibling != null) {
-                this.nextSibling.setPreviousOMSibling(this.previousSibling);
+                this.nextSibling.setPreviousOMSibling((OMNode)this.previousSibling);
                 this.nextSibling = null;
             }
             if (this.parentNode != null && this.parentNode.lastChild == this) {
@@ -142,7 +142,7 @@ public abstract class ChildNode extends NodeImpl {
             this.parentNode = null;
             this.previousSibling = null;
         }
-        return this;
+        return (OMNode)this;
     }
 
     public void discard() throws OMException {
@@ -193,12 +193,12 @@ public abstract class ChildNode extends NodeImpl {
             ChildNode siblingImpl = (ChildNode) sibling;
             siblingImpl.nextSibling = this;
             if (previousSibling == null) {
-                this.parentNode.setFirstChild(siblingImpl);
+                this.parentNode.setFirstChild((OMNode)siblingImpl);
                 siblingImpl.previousSibling = null;
             } else {
                 siblingImpl.setParent(this.parentNode);
-                previousSibling.setNextOMSibling(siblingImpl);
-                siblingImpl.setPreviousOMSibling(previousSibling);
+                previousSibling.setNextOMSibling((OMNode)siblingImpl);
+                siblingImpl.setPreviousOMSibling((OMNode)previousSibling);
             }
             previousSibling = siblingImpl;
 

@@ -21,7 +21,6 @@ package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.dom.DOOMAbstractFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
@@ -62,7 +61,7 @@ public class SOAP11DefaultFaultConversionTest extends TestCase {
         StAXSOAPModelBuilder stAXSOAPModelBuilder = new StAXSOAPModelBuilder(
                 envelope.getXMLStreamReader(), factory,SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
         SOAPEnvelope env = stAXSOAPModelBuilder.getSOAPEnvelope();
-        ((OMNode) env.getParent()).build();
+        env.getParent().build();
         
         fault = env.getBody().getFault();
         

@@ -26,11 +26,12 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 
-public class ProcessingInstructionImpl extends ChildNode implements ProcessingInstruction, OMProcessingInstruction {
+public class ProcessingInstructionImpl extends ChildNode implements ProcessingInstruction, OMProcessingInstruction, OMNodeEx {
     private String target;
     private String value;
 

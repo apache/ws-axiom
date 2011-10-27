@@ -211,6 +211,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestUndeclarePrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMCommentWithoutParent(metaFactory));
+        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMDocument(metaFactory));
         for (int i=0; i<OMElementCreator.INSTANCES.length; i++) {
             OMElementCreator creator = OMElementCreator.INSTANCES[i];
             if (creator.isSupportsDefaultNamespace()) {

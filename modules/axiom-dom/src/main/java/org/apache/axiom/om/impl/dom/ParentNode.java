@@ -147,11 +147,11 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         while ((firstChild == null) && !done) {
             buildNext();
         }
-        return firstChild;
+        return (OMNode)firstChild;
     }
 
     public OMNode getFirstOMChildIfAvailable() {
-        return firstChild;
+        return (OMNode)firstChild;
     }
 
     public void setFirstChild(OMNode omNode) {
