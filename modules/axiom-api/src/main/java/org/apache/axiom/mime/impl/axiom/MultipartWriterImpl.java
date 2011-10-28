@@ -82,7 +82,7 @@ class MultipartWriterImpl implements MultipartWriter {
     }
     
     public OutputStream writePart(String contentType, String contentTransferEncoding,
-            String contentID) throws IOException {
+            String contentID, String dispositionType, String dispositionParm) throws IOException {
         OutputStream transferEncoder;
         if (contentTransferEncoding.equals("8bit") || contentTransferEncoding.equals("binary")) {
             transferEncoder = out;
@@ -106,15 +106,32 @@ class MultipartWriterImpl implements MultipartWriter {
             writeAscii(contentID);
             out.write('>');
         }
+        
+        if (dispositionType != null && dispositionParm != null) {
+            writeAscii("\r\nContent-Disposition: ");
+            writeAscii(dispositionType);
+            writeAscii("; ");
+            writeAscii(dispositionParm);
+        }
         writeAscii("\r\n\r\n");
         return new PartOutputStream(transferEncoder);
     }
     
-    public void writePart(DataHandler dataHandler, String contentTransferEncoding, String contentID)
+    public OutputStream writePart(String contentType, String contentTransferEncoding,
+            String contentID) throws IOException {    	
+        return writePart(contentType, contentTransferEncoding, contentID, null, null);
+    }
+    
+    public void writePart(DataHandler dataHandler, String contentTransferEncoding, String contentID,String dispositionType, String dispositionParm)
             throws IOException {
-        OutputStream partOutputStream = writePart(dataHandler.getContentType(), contentTransferEncoding, contentID);
+        OutputStream partOutputStream = writePart(dataHandler.getContentType(), contentTransferEncoding, contentID, dispositionType, dispositionParm);
         dataHandler.writeTo(partOutputStream);
         partOutputStream.close();
+    }
+    
+    public void writePart(DataHandler dataHandler, String contentTransferEncoding,
+            String contentID) throws IOException {
+        writePart(dataHandler, contentTransferEncoding, contentID, null, null);
     }
 
     public void complete() throws IOException {

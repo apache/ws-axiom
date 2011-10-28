@@ -42,14 +42,18 @@ class MultipartWriterImpl implements MultipartWriter {
         private final String contentID;
         private final WritableBlob blob;
         private final OutputStream parent;
+        private final String dispositionType;
+        private final String dispositionParm; 
 
         public PartOutputStream(String contentType, String contentTransferEncoding,
-                String contentID) {
+                String contentID, String dispositionType, String dispositionParm) {
             this.contentType = contentType;
             this.contentTransferEncoding = contentTransferEncoding;
             this.contentID = contentID;
             blob = new MemoryBlob();
             parent = blob.getOutputStream();
+            this.dispositionType = dispositionType;
+            this.dispositionParm = dispositionParm;
         }
 
         public void write(int b) throws IOException {
@@ -67,7 +71,7 @@ class MultipartWriterImpl implements MultipartWriter {
         public void close() throws IOException {
             parent.close();
             writePart(new DataHandler(new BlobDataSource(blob, contentType)),
-                    contentTransferEncoding, contentID);
+                    contentTransferEncoding, contentID, dispositionType, dispositionParm);
         }
     }
     
@@ -86,17 +90,29 @@ class MultipartWriterImpl implements MultipartWriter {
     
     public OutputStream writePart(String contentType, String contentTransferEncoding,
             String contentID) throws IOException {
-        return new PartOutputStream(contentType, contentTransferEncoding, contentID);
+        return new PartOutputStream(contentType, contentTransferEncoding, contentID, null, null);
+    }
+    
+    public OutputStream writePart(String contentType, String contentTransferEncoding,
+            String contentID, String dispositionType, String dispositionParm) throws IOException {
+        return new PartOutputStream(contentType, contentTransferEncoding, contentID,
+                dispositionType, dispositionParm);
     }
 
     public void writePart(DataHandler dataHandler, String contentTransferEncoding,
-            String contentID) throws IOException {
+            String contentID, String dispositionType, String dispositionParm) throws IOException {
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
         try {
             mimeBodyPart.setDataHandler(dataHandler);
             mimeBodyPart.addHeader("Content-ID", "<" + contentID + ">");
             mimeBodyPart.addHeader("Content-Type", dataHandler.getContentType());
             mimeBodyPart.addHeader("Content-Transfer-Encoding", contentTransferEncoding);
+            mimeBodyPart.addHeader("Content-Transfer-Encoding", contentTransferEncoding);
+            if (dispositionType != null && dispositionParm != null) {
+                mimeBodyPart.addHeader("Content-Disposition", dispositionType + "; "
+                        + dispositionParm);
+            }
+            
         } catch (MessagingException ex) {
             IOException ex2 = new IOException("Unable to create MimeBodyPart");
             ex2.initCause(ex);
@@ -113,6 +129,11 @@ class MultipartWriterImpl implements MultipartWriter {
             throw ex2;
         }
         out.write(CR_LF);
+    }
+    
+    public void writePart(DataHandler dataHandler, String contentTransferEncoding, String contentID)
+            throws IOException {
+        writePart(dataHandler, contentTransferEncoding, contentID, null, null);
     }
 
     public void complete() throws IOException {

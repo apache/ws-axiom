@@ -68,6 +68,28 @@ public interface MultipartWriter {
      */
     OutputStream writePart(String contentType, String contentTransferEncoding, String contentID)
             throws IOException;
+    /**
+    * Start writing a MIME part. The methods returns an {@link OutputStream} that the caller can
+    * use to write the content of the MIME part. After writing the content,
+    * {@link OutputStream#close()} must be called to complete the writing of the MIME part.
+    * 
+    * @param contentType
+    *            the value of the <tt>Content-Type</tt> header of the MIME part
+    * @param contentTransferEncoding
+    *            the content transfer encoding to be used (see above); must not be
+    *            <code>null</code>
+    * @param contentID
+    *            the content ID of the MIME part (see above)
+    * @param dispositionType
+    *            the disposition type of the MIME part 
+    * @param dispositionParm
+    *            a disposition parameter of the MIME part
+    * @return an output stream to write the content of the MIME part
+    * @throws IOException
+    *             if an I/O error occurs when writing to the underlying stream
+    */
+    OutputStream writePart(String contentType, String contentTransferEncoding,
+            String contentID, String dispositionType, String dispositionParm) throws IOException;
     
     /**
      * Write a MIME part. The content is provided by a {@link DataHandler} object, which also
@@ -85,6 +107,26 @@ public interface MultipartWriter {
      */
     void writePart(DataHandler dataHandler, String contentTransferEncoding, String contentID)
             throws IOException;
+    /**
+     * Write a MIME part. The content is provided by a {@link DataHandler} object, which also
+     * specifies the content type of the part.
+     * 
+     * @param dataHandler
+     *            the content of the MIME part to write
+     * @param contentTransferEncoding
+     *            the content transfer encoding to be used (see above); must not be
+     *            <code>null</code>
+     * @param contentID
+     *            the content ID of the MIME part (see above)
+     * @param dispositionType
+     *            the disposition type of the MIME part 
+     * @param dispositionParm
+     *            a disposition parameter of the MIME part
+     * @throws IOException
+     *             if an I/O error occurs when writing the part to the underlying stream
+     */
+    void writePart(DataHandler dataHandler, String contentTransferEncoding,
+            String contentID, String dispositionType, String dispositionParm) throws IOException;
     
     /**
      * Complete writing of the MIME multipart package. This method does <b>not</b> close the

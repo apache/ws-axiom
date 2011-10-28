@@ -114,6 +114,27 @@ public class OMMultipartWriter {
     }
     
     /**
+     * Start writing an attachment part of the MIME package. This method delegates to
+     * {@link MultipartWriter#writePart(String, String, String)}, but computes the content transfer
+     * encoding based on the content type and the {@link OMOutputFormat}.
+     * 
+     * @param contentType
+     *            the content type of the MIME part to write
+     * @param contentID
+     *            the content ID of the MIME part
+     * @param dispositionType
+     *            the disposition type of the MIME part 
+     * @param dispositionParm
+     *            a disposition parameter of the MIME part
+     * @return an output stream to write the content of the MIME part
+     * @throws IOException
+     *             if an I/O error occurs when writing to the underlying stream
+     */
+    public OutputStream writePart(String contentType, String contentID, String dispositionType, String dispositionParm) throws IOException {    
+        return writer.writePart(contentType, getContentTransferEncoding(contentType), contentID, dispositionType, dispositionParm);
+    }
+    
+    /**
      * Write a MIME part. This method delegates to
      * {@link MultipartWriter#writePart(DataHandler, String, String)}, but computes the appropriate
      * content transfer encoding from the {@link OMOutputFormat}.
@@ -122,10 +143,14 @@ public class OMMultipartWriter {
      *            the content of the MIME part to write
      * @param contentID
      *            the content ID of the MIME part
+     * @param dispositionType
+     *            the disposition type of the MIME part 
+     * @param dispositionParm
+     *            a disposition parameter of the MIME part             
      * @throws IOException
      *             if an I/O error occurs when writing the part to the underlying stream
      */
-    public void writePart(DataHandler dataHandler, String contentID) throws IOException {
+    public void writePart(DataHandler dataHandler, String contentID, String dispositionType, String dispositionParm) throws IOException {
         String contentTransferEncoding = null;
         if (dataHandler instanceof ConfigurableDataHandler) {
             contentTransferEncoding = ((ConfigurableDataHandler)dataHandler).getTransferEncoding();
@@ -133,7 +158,23 @@ public class OMMultipartWriter {
         if (contentTransferEncoding == null) {
             contentTransferEncoding = getContentTransferEncoding(dataHandler.getContentType());
         }
-        writer.writePart(dataHandler, contentTransferEncoding, contentID);
+        writer.writePart(dataHandler, contentTransferEncoding, contentID, dispositionType, dispositionParm);
+    }
+    
+    /**
+     * Write a MIME part. This method delegates to
+     * {@link MultipartWriter#writePart(DataHandler, String, String)}, but computes the appropriate
+     * content transfer encoding from the {@link OMOutputFormat}.
+     * 
+     * @param dataHandler
+     *            the content of the MIME part to write
+     * @param contentID
+     *            the content ID of the MIME part 
+     * @throws IOException
+     *             if an I/O error occurs when writing the part to the underlying stream
+     */
+    public void writePart(DataHandler dataHandler, String contentID) throws IOException {
+        writePart(dataHandler, contentID, null, null);
     }
 
     /**
