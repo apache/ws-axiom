@@ -34,13 +34,18 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.validation.Schema;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class DOOMDocumentBuilder extends DocumentBuilder {
-    protected DOOMDocumentBuilder() {
+    private final Schema schema;
+    
+    DOOMDocumentBuilder(Schema schema) {
+        this.schema = schema;
     }
 
     /**
@@ -61,6 +66,10 @@ public class DOOMDocumentBuilder extends DocumentBuilder {
      */
     public boolean isValidating() {
         return true;
+    }
+
+    public Schema getSchema() {
+        return schema;
     }
 
     public DOMImplementation getDOMImplementation() {

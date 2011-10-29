@@ -22,14 +22,17 @@ package org.apache.axiom.om.impl.dom.jaxp;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.validation.Schema;
 
 /**
  * Document builder factory that conforms to JAXP.
  */
 public class DOOMDocumentBuilderFactory extends DocumentBuilderFactory {
+    private Schema schema;
+    
     public DocumentBuilder newDocumentBuilder()
             throws ParserConfigurationException {
-        return new DOOMDocumentBuilder();
+        return new DOOMDocumentBuilder(schema);
     }
 
     public Object getAttribute(String arg0) throws IllegalArgumentException {
@@ -51,5 +54,13 @@ public class DOOMDocumentBuilderFactory extends DocumentBuilderFactory {
     public boolean getFeature(String arg0) throws ParserConfigurationException {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
+    }
+
+    public Schema getSchema() {
+        return schema;
+    }
+
+    public void setSchema(Schema schema) {
+        this.schema = schema;
     }
 }
