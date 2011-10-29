@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om;
 
+import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 
 /**
@@ -65,7 +66,8 @@ public class OMAbstractFactory {
     public static final String FEATURE_DEFAULT = "default";
     
     /**
-     * Feature for Axiom implementations that implement DOM in addition to the Axiom API.
+     * Feature for Axiom implementations that implement DOM in addition to the Axiom API. The
+     * {@link OMMetaFactory} for such an Axiom implementation must implement {@link DOMMetaFactory}.
      */
     public static final String FEATURE_DOM = "dom";
     

@@ -19,8 +19,12 @@
 
 package org.apache.axiom.om.impl.dom.factory;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.common.factory.AbstractOMMetaFactory;
+import org.apache.axiom.om.impl.dom.jaxp.DOOMDocumentBuilderFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
 import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
@@ -32,7 +36,7 @@ import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
  * Therefore {@link #getOMFactory()}, {@link #getSOAP11Factory()} and
  * {@link #getSOAP12Factory()} will return a new instance on every invocation.
  */
-public class OMDOMMetaFactory extends AbstractOMMetaFactory {
+public class OMDOMMetaFactory extends AbstractOMMetaFactory implements DOMMetaFactory {
     public OMFactory getOMFactory() {
         return new OMDOMFactory(this);
     }
@@ -43,5 +47,9 @@ public class OMDOMMetaFactory extends AbstractOMMetaFactory {
 
     public SOAPFactory getSOAP12Factory() {
         return new SOAP12Factory(this);
+    }
+
+    public DocumentBuilderFactory newDocumentBuilderFactory() {
+        return new DOOMDocumentBuilderFactory();
     }
 }
