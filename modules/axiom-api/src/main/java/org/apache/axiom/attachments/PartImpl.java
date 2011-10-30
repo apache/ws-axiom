@@ -20,6 +20,7 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.Part;
+import org.apache.axiom.mime.Header;
 import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

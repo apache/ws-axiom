@@ -16,9 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.attachments;
+package org.apache.axiom.mime;
 
-final class Header {
+/**
+ * A MIME header.
+ */
+public final class Header {
     private final String name;
     private final String value;
 

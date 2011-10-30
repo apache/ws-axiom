@@ -22,11 +22,14 @@ package org.apache.axiom.mime.impl.javamail;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 
+import org.apache.axiom.mime.Header;
 import org.apache.axiom.mime.MultipartWriter;
 import org.apache.axiom.util.blob.BlobDataSource;
 import org.apache.axiom.util.blob.MemoryBlob;
@@ -42,18 +45,16 @@ class MultipartWriterImpl implements MultipartWriter {
         private final String contentID;
         private final WritableBlob blob;
         private final OutputStream parent;
-        private final String dispositionType;
-        private final String dispositionParm; 
+        private final List/*<Header>*/ extraHeaders; 
 
         public PartOutputStream(String contentType, String contentTransferEncoding,
-                String contentID, String dispositionType, String dispositionParm) {
+                String contentID, List/*<Header>*/ extraHeaders) {
             this.contentType = contentType;
             this.contentTransferEncoding = contentTransferEncoding;
             this.contentID = contentID;
+            this.extraHeaders = extraHeaders;
             blob = new MemoryBlob();
             parent = blob.getOutputStream();
-            this.dispositionType = dispositionType;
-            this.dispositionParm = dispositionParm;
         }
 
         public void write(int b) throws IOException {
@@ -71,7 +72,7 @@ class MultipartWriterImpl implements MultipartWriter {
         public void close() throws IOException {
             parent.close();
             writePart(new DataHandler(new BlobDataSource(blob, contentType)),
-                    contentTransferEncoding, contentID, dispositionType, dispositionParm);
+                    contentTransferEncoding, contentID, extraHeaders);
         }
     }
     
@@ -90,17 +91,17 @@ class MultipartWriterImpl implements MultipartWriter {
     
     public OutputStream writePart(String contentType, String contentTransferEncoding,
             String contentID) throws IOException {
-        return new PartOutputStream(contentType, contentTransferEncoding, contentID, null, null);
+        return new PartOutputStream(contentType, contentTransferEncoding, contentID, null);
     }
     
     public OutputStream writePart(String contentType, String contentTransferEncoding,
-            String contentID, String dispositionType, String dispositionParm) throws IOException {
+            String contentID, List/*<Header>*/ extraHeaders) throws IOException {
         return new PartOutputStream(contentType, contentTransferEncoding, contentID,
-                dispositionType, dispositionParm);
+                extraHeaders);
     }
 
     public void writePart(DataHandler dataHandler, String contentTransferEncoding,
-            String contentID, String dispositionType, String dispositionParm) throws IOException {
+            String contentID, List/*<Header>*/ extraHeaders) throws IOException {
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
         try {
             mimeBodyPart.setDataHandler(dataHandler);
@@ -108,11 +109,12 @@ class MultipartWriterImpl implements MultipartWriter {
             mimeBodyPart.addHeader("Content-Type", dataHandler.getContentType());
             mimeBodyPart.addHeader("Content-Transfer-Encoding", contentTransferEncoding);
             mimeBodyPart.addHeader("Content-Transfer-Encoding", contentTransferEncoding);
-            if (dispositionType != null && dispositionParm != null) {
-                mimeBodyPart.addHeader("Content-Disposition", dispositionType + "; "
-                        + dispositionParm);
+            if (extraHeaders != null) {
+                for (Iterator it = extraHeaders.iterator(); it.hasNext(); ) {
+                    Header header = (Header)it.next();
+                    mimeBodyPart.addHeader(header.getName(), header.getValue());
+                }
             }
-            
         } catch (MessagingException ex) {
             IOException ex2 = new IOException("Unable to create MimeBodyPart");
             ex2.initCause(ex);
@@ -133,7 +135,7 @@ class MultipartWriterImpl implements MultipartWriter {
     
     public void writePart(DataHandler dataHandler, String contentTransferEncoding, String contentID)
             throws IOException {
-        writePart(dataHandler, contentTransferEncoding, contentID, null, null);
+        writePart(dataHandler, contentTransferEncoding, contentID, null);
     }
 
     public void complete() throws IOException {

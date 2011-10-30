@@ -33,6 +33,7 @@ import javax.mail.internet.ParseException;
 
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
+import org.apache.axiom.mime.Header;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.util.DetachableInputStream;
 import org.apache.axiom.util.UIDGenerator;
