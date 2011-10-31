@@ -149,6 +149,24 @@ public class OMXMLBuilderFactory {
     
     /**
      * Create an object model builder that reads an XML document from the provided input stream
+     * using a specified object model factory and with the default parser configuration defined by
+     * {@link StAXParserConfiguration#DEFAULT}.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param in
+     *            the input stream representing the XML document
+     * @param encoding
+     *            the charset encoding of the XML document or <code>null</code> if the parser should
+     *            determine the charset encoding
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, InputStream in, String encoding) {
+        return createOMBuilder(omFactory, StAXParserConfiguration.DEFAULT, in, encoding);
+    }
+    
+    /**
+     * Create an object model builder that reads an XML document from the provided input stream
      * using a specified object model factory and with a given parser configuration.
      * 
      * @param omFactory
@@ -160,7 +178,28 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputStream in) {
-        return omFactory.getMetaFactory().createOMBuilder(omFactory, configuration, new InputSource(in));
+        return createOMBuilder(omFactory, configuration, in, null);
+    }
+    
+    /**
+     * Create an object model builder that reads an XML document from the provided input stream
+     * using a specified object model factory and with a given parser configuration.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param configuration
+     *            the parser configuration to use
+     * @param in
+     *            the input stream representing the XML document
+     * @param encoding
+     *            the charset encoding of the XML document or <code>null</code> if the parser should
+     *            determine the charset encoding
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputStream in, String encoding) {
+        InputSource is = new InputSource(in);
+        is.setEncoding(encoding);
+        return omFactory.getMetaFactory().createOMBuilder(omFactory, configuration, is);
     }
     
     /**

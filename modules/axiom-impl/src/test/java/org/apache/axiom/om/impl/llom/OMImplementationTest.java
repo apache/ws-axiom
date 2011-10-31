@@ -32,7 +32,7 @@ import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 
 public class OMImplementationTest extends TestCase {
     public static TestSuite suite() {
-        OMTestSuiteBuilder builder = new OMTestSuiteBuilder(new OMLinkedListMetaFactory());
+        OMTestSuiteBuilder builder = new OMTestSuiteBuilder(new OMLinkedListMetaFactory(), true);
         // TODO: Axiom should throw an exception if an attempt is made to create a cyclic parent-child relationship
         builder.exclude(TestInsertSiblingAfterOnChild.class);
         builder.exclude(TestInsertSiblingBeforeOnChild.class);

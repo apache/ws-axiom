@@ -25,9 +25,12 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 
+import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
@@ -402,7 +405,56 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      *         If there are no child text nodes, an empty string is returned.
      */
     String getText();
+    
+    /**
+     * Returns a stream representing the concatenation of the text nodes that are children of a
+     * this element. The stream returned by this method produces exactly the same character
+     * sequence as the the stream created by the following expression:
+     * <pre>new StringReader(element.getText())</pre>
+     * <p>
+     * The difference is that the stream implementation returned by this method is optimized for
+     * performance and is guaranteed to have constant memory usage, provided that:
+     * <ol>
+     * <li>The method is not required to cache the content of the {@link OMElement}, i.e.
+     * <code>cache</code> is <code>false</code> or the element is an {@link OMSourcedElement} that
+     * is backed by a non destructive {@link OMDataSource}.
+     * <li>The underlying parser (or the implementation of the underlying {@link XMLStreamReader} in
+     * the case of an {@link OMSourcedElement}) is non coalescing. Note that this is not the default
+     * in Axiom and it may be necessary to configure the parser with
+     * {@link StAXParserConfiguration#NON_COALESCING}.
+     * </ol>
+     * 
+     * @param cache
+     *            whether to enable caching when accessing the element
+     * @return a stream representing the concatenation of the text nodes
+     * 
+     * @see #getText()
+     */
+    Reader getTextAsStream(boolean cache);
 
+    /**
+     * Write the content of the text nodes that are children of a given element to a {@link Writer}.
+     * If <code>cache</code> is true, this method has the same effect as the following instruction:
+     * <pre>out.write(element.getText())</pre>
+     * <p>
+     * The difference is that this method is guaranteed to have constant memory usage and is
+     * optimized for performance.
+     * 
+     * @param element
+     *            the element to read the text nodes from
+     * @param out
+     *            the stream to write the content to
+     * @param cache
+     *            whether to enable caching when accessing the element
+     * @throws OMException
+     *             if an error occurs when reading from the element
+     * @throws IOException
+     *             if an error occurs when writing to the stream
+     * 
+     * @see #getText()
+     */
+    void writeTextTo(Writer out, boolean cache) throws IOException;
+    
     /** OMText can contain its information as a QName as well. This will return the text as a QName */
     QName getTextAsQName();
     

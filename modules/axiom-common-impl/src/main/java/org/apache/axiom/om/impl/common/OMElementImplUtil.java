@@ -18,15 +18,26 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.om.OMText;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 /**
  * Utility class with default implementations for some of the methods defined by the
@@ -45,6 +56,53 @@ public class OMElementImplUtil {
             return new MapBasedNamespaceContext(namespaces);
         } else {
             return new LiveNamespaceContext(element);
+        }
+    }
+
+    public static Reader getTextAsStream(OMElement element, boolean cache) {
+        // If the element is not an OMSourcedElement and has not more than one child, then the most
+        // efficient way to get the Reader is to build a StringReader
+        if (!(element instanceof OMSourcedElement) && (!cache || element.isComplete())) {
+            OMNode child = element.getFirstOMChild();
+            if (child == null) {
+                return new StringReader("");
+            } else if (child.getNextOMSibling() == null) {
+                return new StringReader(child instanceof OMText ? ((OMText)child).getText() : "");
+            }
+        }
+        // In all other cases, extract the data from the XMLStreamReader
+        try {
+            XMLStreamReader reader = element.getXMLStreamReader(cache);
+            if (reader.getEventType() == XMLStreamReader.START_DOCUMENT) {
+                reader.next();
+            }
+            return XMLStreamReaderUtils.getElementTextAsStream(reader, true);
+        } catch (XMLStreamException ex) {
+            throw new OMException(ex);
+        }
+    }
+    
+    public static void writeTextTo(OMElement element, Writer out, boolean cache) throws IOException {
+        try {
+            XMLStreamReader reader = element.getXMLStreamReader(cache);
+            int depth = 0;
+            while (reader.hasNext()) {
+                switch (reader.next()) {
+                    case XMLStreamReader.CHARACTERS:
+                    case XMLStreamReader.CDATA:
+                        if (depth == 1) {
+                            out.write(reader.getText());
+                        }
+                        break;
+                    case XMLStreamReader.START_ELEMENT:
+                        depth++;
+                        break;
+                    case XMLStreamReader.END_ELEMENT:
+                        depth--;
+                }
+            }
+        } catch (XMLStreamException ex) {
+            throw new OMException(ex);
         }
     }
 }

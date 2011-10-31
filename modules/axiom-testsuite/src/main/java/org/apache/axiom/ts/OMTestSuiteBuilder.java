@@ -42,9 +42,11 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         new SerializeToOutputStream(false) };
     
     private final OMMetaFactory metaFactory;
+    private final boolean supportsOMSourcedElement;
     
-    public OMTestSuiteBuilder(OMMetaFactory metaFactory) {
+    public OMTestSuiteBuilder(OMMetaFactory metaFactory, boolean supportsOMSourcedElement) {
         this.metaFactory = metaFactory;
+        this.supportsOMSourcedElement = supportsOMSourcedElement;
     }
     
     protected void addTests() {
@@ -158,6 +160,9 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetText(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsQNameNoNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetTextAsStreamWithNonTextChildren(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetTextAsStreamWithoutCaching(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetTextAsStreamWithSingleTextNode(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextWithCDATASectionChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextWithMixedOMTextChildren(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement(metaFactory));
@@ -209,6 +214,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameWithEmptyPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestUndeclarePrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestWriteTextTo(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestWriteTextToWithNonTextNodes(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMCommentWithoutParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMDocument(metaFactory));
@@ -253,6 +260,10 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnOrphan(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnSelf(metaFactory));
+        if (supportsOMSourcedElement) {
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetTextAsStreamWithNonDestructiveOMDataSource(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestWriteTextToWithNonDestructiveOMDataSource(metaFactory));
+        }
         addTest(new org.apache.axiom.ts.om.pi.TestDigest(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestBase64Streaming(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestDigest(metaFactory));

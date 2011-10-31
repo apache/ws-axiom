@@ -39,7 +39,7 @@ import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 
 public class OMImplementationTest extends TestCase {
     public static TestSuite suite() {
-        OMTestSuiteBuilder builder = new OMTestSuiteBuilder(new OMDOMMetaFactory());
+        OMTestSuiteBuilder builder = new OMTestSuiteBuilder(new OMDOMMetaFactory(), false);
         // OMElement#setText(QName) is unsupported
         builder.exclude(TestSetTextQName.class);
         builder.exclude(TestSetTextQNameWithEmptyPrefix.class);

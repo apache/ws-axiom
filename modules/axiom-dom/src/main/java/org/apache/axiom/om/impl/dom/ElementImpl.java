@@ -55,6 +55,9 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1006,12 +1009,20 @@ public class ElementImpl extends ParentNode implements Element, OMElement, OMNod
         return childText;
     }
 
+    public Reader getTextAsStream(boolean cache) {
+        return OMElementImplUtil.getTextAsStream(this, cache);
+    }
+
     public QName getTextAsQName() {
         String childText = getTrimmedText();
         if (childText != null) {
             return resolveQName(childText);
         }
         return null;
+    }
+
+    public void writeTextTo(Writer out, boolean cache) throws IOException {
+        OMElementImplUtil.writeTextTo(this, out, cache);
     }
 
     public String getTrimmedText() {

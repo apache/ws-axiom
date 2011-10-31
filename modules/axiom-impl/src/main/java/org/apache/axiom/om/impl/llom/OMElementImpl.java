@@ -59,7 +59,10 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.sax.SAXSource;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -854,12 +857,20 @@ public class OMElementImpl extends OMNodeImpl
         }
     }
 
+    public Reader getTextAsStream(boolean cache) {
+        return OMElementImplUtil.getTextAsStream(this, cache);
+    }
+
     public QName getTextAsQName() {
         String childText = getTrimmedText();
         if (childText != null) {
             return resolveQName(childText);
         }
         return null;
+    }
+
+    public void writeTextTo(Writer out, boolean cache) throws IOException {
+        OMElementImplUtil.writeTextTo(this, out, cache);
     }
 
     /**

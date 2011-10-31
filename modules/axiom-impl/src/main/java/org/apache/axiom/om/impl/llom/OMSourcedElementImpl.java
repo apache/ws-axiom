@@ -47,6 +47,7 @@ import javax.xml.transform.sax.SAXSource;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
@@ -552,12 +553,20 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getText();
     }
 
+    public Reader getTextAsStream(boolean cache) {
+        return super.getTextAsStream(cache);
+    }
+
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMElement#getTextAsQName()
      */
     public QName getTextAsQName() {
         forceExpand();
         return super.getTextAsQName();
+    }
+
+    public void writeTextTo(Writer out, boolean cache) throws IOException {
+        super.writeTextTo(out, cache);
     }
 
     /* (non-Javadoc)
