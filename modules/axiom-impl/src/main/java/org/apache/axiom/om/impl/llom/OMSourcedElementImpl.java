@@ -335,41 +335,26 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return isExpanded;
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getChildElements()
-     */
     public Iterator getChildElements() {
         forceExpand();
         return super.getChildElements();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#declareNamespace(java.lang.String, java.lang.String)
-     */
     public OMNamespace declareNamespace(String uri, String prefix) {
         forceExpand();
         return super.declareNamespace(uri, prefix);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#declareDefaultNamespace(java.lang.String)
-     */
     public OMNamespace declareDefaultNamespace(String uri) {
         forceExpand();
         return super.declareDefaultNamespace(uri);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getDefaultNamespace()
-     */
     public OMNamespace getDefaultNamespace() {
         forceExpand();
         return super.getDefaultNamespace();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#declareNamespace(org.apache.axiom.om.OMNamespace)
-     */
     public OMNamespace declareNamespace(OMNamespace namespace) {
         forceExpand();
         return super.declareNamespace(namespace);
@@ -380,25 +365,16 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.undeclarePrefix(prefix);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#findNamespace(java.lang.String, java.lang.String)
-     */
     public OMNamespace findNamespace(String uri, String prefix) {
         forceExpand();
         return super.findNamespace(uri, prefix);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#findNamespaceURI(java.lang.String)
-     */
     public OMNamespace findNamespaceURI(String prefix) {
         forceExpand();
         return super.findNamespaceURI(prefix);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getAllDeclaredNamespaces()
-     */
     public Iterator getAllDeclaredNamespaces() throws OMException {
         forceExpand();
         return super.getAllDeclaredNamespaces();
@@ -414,88 +390,56 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getNamespaceContext(detached);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getAllAttributes()
-     */
     public Iterator getAllAttributes() {
         forceExpand();
         return super.getAllAttributes();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getAttribute(javax.xml.namespace.QName)
-     */
     public OMAttribute getAttribute(QName qname) {
         forceExpand();
         return super.getAttribute(qname);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getAttributeValue(javax.xml.namespace.QName)
-     */
     public String getAttributeValue(QName qname) {
         forceExpand();
         return super.getAttributeValue(qname);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#addAttribute(org.apache.axiom.om.OMAttribute)
-     */
     public OMAttribute addAttribute(OMAttribute attr) {
         forceExpand();
         return super.addAttribute(attr);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#addAttribute(java.lang.String, 
-     * java.lang.String, org.apache.axiom.om.OMNamespace)
-     */
     public OMAttribute addAttribute(String attributeName, String value, OMNamespace namespace) {
         forceExpand();
         return super.addAttribute(attributeName, value, namespace);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#removeAttribute(org.apache.axiom.om.OMAttribute)
-     */
     public void removeAttribute(OMAttribute attr) {
         forceExpand();
         super.removeAttribute(attr);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#setBuilder(org.apache.axiom.om.OMXMLParserWrapper)
-     */
     public void setBuilder(OMXMLParserWrapper wrapper) {
         throw new UnsupportedOperationException(
                 "Builder cannot be set for element backed by data source");
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getBuilder()
-     */
     public OMXMLParserWrapper getBuilder() {
         forceExpand();
         return super.getBuilder();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#setFirstChild(org.apache.axiom.om.OMNode)
-     */
     public void setFirstChild(OMNode node) {
         forceExpand();
         super.setFirstChild(node);
     }
-
 
     public void setLastChild(OMNode omNode) {
         forceExpand();
         super.setLastChild(omNode);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getFirstElement()
-     */
     public OMElement getFirstElement() {
         forceExpand();
         return super.getFirstElement();
@@ -529,25 +473,16 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return getXMLStreamReader(false);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#setText(java.lang.String)
-     */
     public void setText(String text) {
         forceExpand();
         super.setText(text);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#setText(javax.xml.namespace.QName)
-     */
     public void setText(QName text) {
         forceExpand();
         super.setText(text);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getText()
-     */
     public String getText() {
         forceExpand();
         return super.getText();
@@ -557,9 +492,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getTextAsStream(cache);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getTextAsQName()
-     */
     public QName getTextAsQName() {
         forceExpand();
         return super.getTextAsQName();
@@ -569,25 +501,16 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.writeTextTo(out, cache);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getLocalName()
-     */
     public String getLocalName() {
         // no need to set the parser, just call base method directly
         return super.getLocalName();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#setLocalName(java.lang.String)
-     */
     public void setLocalName(String localName) {
         // no need to expand the tree, just call base method directly
         super.setLocalName(localName);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getNamespace()
-     */
     public OMNamespace getNamespace() throws OMException {
         if (isExpanded()) {
             return super.getNamespace();
@@ -599,26 +522,16 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getNamespaceURI();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#setNamespace(org.apache.axiom.om.OMNamespace)
-     */
     public void setNamespace(OMNamespace namespace) {
         forceExpand();
         super.setNamespace(namespace);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#
-     * setNamespaceWithNoFindInCurrentScope(org.apache.axiom.om.OMNamespace)
-     */
     public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
         forceExpand();
         super.setNamespaceWithNoFindInCurrentScope(namespace);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getQName()
-     */
     public QName getQName() {
         if (isExpanded()) {
             return super.getQName();
@@ -630,9 +543,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#toStringWithConsume()
-     */
     public String toStringWithConsume() throws XMLStreamException {
         if (isExpanded()) {
             return super.toStringWithConsume();
@@ -661,50 +571,32 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#resolveQName(java.lang.String)
-     */
     public QName resolveQName(String qname) {
         forceExpand();
         return super.resolveQName(qname);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#cloneOMElement()
-     */
     public OMElement cloneOMElement() {
         forceExpand();
         return super.cloneOMElement();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#setLineNumber(int)
-     */
     public void setLineNumber(int lineNumber) {
         // no need to expand the tree, just call base method directly
         super.setLineNumber(lineNumber);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMElement#getLineNumber()
-     */
     public int getLineNumber() {
         // no need to expand the tree, just call base method directly
         return super.getLineNumber();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#discard()
-     */
     public void discard() throws OMException {
         // discard without expanding the tree
         setComplete(true);
         super.detach();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#getType()
-     */
     public int getType() {
         // no need to expand the tree, just call base method directly
         return super.getType();
@@ -726,34 +618,21 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#serialize(javax.xml.stream.XMLStreamWriter)
-     */
     public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
         // The contract is to serialize with caching
         internalSerialize(xmlWriter, true);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#serialize(java.io.OutputStream)
-     */
     public void serialize(OutputStream output) throws XMLStreamException {
         OMOutputFormat format = new OMOutputFormat();
         serialize(output, format);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#serialize(java.io.Writer)
-     */
     public void serialize(Writer writer) throws XMLStreamException {
         OMOutputFormat format = new OMOutputFormat();
         serialize(writer, format);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#
-     * serialize(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
-     */
     public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException {
         if (isExpanded) {
             super.serialize(output, format);
@@ -765,10 +644,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#
-     * serialize(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
-     */
     public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
         if (isExpanded) {
             super.serialize(writer, format);
@@ -780,17 +655,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#serializeAndConsume(javax.xml.stream.XMLStreamWriter)
-     */
     public void serializeAndConsume(javax.xml.stream.XMLStreamWriter xmlWriter)
             throws XMLStreamException {
         internalSerialize(xmlWriter, false);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.OutputStream)
-     */
     public void serializeAndConsume(OutputStream output) throws XMLStreamException {
         if (isDebugEnabled) {
             log.debug("serialize " + getPrintableName() + " to output stream");
@@ -803,9 +672,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#serializeAndConsume(java.io.Writer)
-     */
     public void serializeAndConsume(Writer writer) throws XMLStreamException {
         if (isDebugEnabled) {
             log.debug("serialize " + getPrintableName() + " to writer");
@@ -818,10 +684,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#
-     * serializeAndConsume(java.io.OutputStream, org.apache.axiom.om.OMOutputFormat)
-     */
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
         if (isDebugEnabled) {
@@ -835,10 +697,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMNode#
-     * serializeAndConsume(java.io.Writer, org.apache.axiom.om.OMOutputFormat)
-     */
     public void serializeAndConsume(Writer writer, OMOutputFormat format)
             throws XMLStreamException {
         if (isDebugEnabled) {
@@ -852,17 +710,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMContainer#addChild(org.apache.axiom.om.OMNode)
-     */
     public void addChild(OMNode omNode) {
         forceExpand();
         super.addChild(omNode);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMContainer#getChildrenWithName(javax.xml.namespace.QName)
-     */
     public Iterator getChildrenWithName(QName elementQName) {
         forceExpand();
         return super.getChildrenWithName(elementQName);
@@ -878,17 +730,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getChildrenWithNamespaceURI(uri);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMContainer#getFirstChildWithName(javax.xml.namespace.QName)
-     */
     public OMElement getFirstChildWithName(QName elementQName) throws OMException {
         forceExpand();
         return super.getFirstChildWithName(elementQName);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMContainer#getChildren()
-     */
     public Iterator getChildren() {
         forceExpand();
         return super.getChildren();
@@ -899,9 +745,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getDescendants(includeSelf);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMContainer#getFirstOMChild()
-     */
     public OMNode getFirstOMChild() {
         forceExpand();
         return super.getFirstOMChild();
@@ -911,17 +754,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getFirstOMChildIfAvailable();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.OMContainer#buildNext()
-     */
     public void buildNext() {
         forceExpand();
         super.buildNext();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.impl.llom.OMElementImpl#detach()
-     */
     public OMNode detach() throws OMException {
         // detach without expanding the tree
         boolean complete = isComplete();
@@ -931,9 +768,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.impl.llom.OMElementImpl#getNextOMSibling()
-     */
     public OMNode getNextOMSibling() throws OMException {
         // no need to expand the tree, just call base method directly
         return super.getNextOMSibling();
@@ -943,25 +777,16 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getNextOMSiblingIfAvailable();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.impl.llom.OMElementImpl#getTrimmedText()
-     */
     public String getTrimmedText() {
         forceExpand();
         return super.getTrimmedText();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.impl.llom.OMElementImpl#handleNamespace(javax.xml.namespace.QName)
-     */
     OMNamespace handleNamespace(QName qname) {
         forceExpand();
         return super.handleNamespace(qname);
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.impl.llom.OMElementImpl#isComplete()
-     */
     public boolean isComplete() {
         if (isExpanded) {
             return super.isComplete();
@@ -970,9 +795,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.om.impl.llom.OMElementImpl#toString()
-     */
     public String toString() {
         if (isExpanded) {
             return super.toString();
@@ -995,9 +817,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    /* (non-Javadoc)
-      * @see org.apache.axiom.om.OMNode#buildAll()
-      */
     public void buildWithAttachments() {
         
         // If not done, force the parser to build the elements
