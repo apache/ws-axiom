@@ -31,7 +31,7 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.InputSource;
 
-public class SOAPTestCase extends AxiomTestCase {
+public abstract class SOAPTestCase extends AxiomTestCase {
     protected static final String MESSAGE = "message.xml";
     protected static final String MESSAGE_WITHOUT_HEADER = "message_without_header.xml";
     

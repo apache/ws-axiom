@@ -38,4 +38,7 @@ public abstract class TestCaseEx extends TestCase {
     public final Dictionary getTestProperties() {
         return properties;
     }
+
+    // Force subclasses to override the runTest method:
+    protected abstract void runTest() throws Throwable;
 }

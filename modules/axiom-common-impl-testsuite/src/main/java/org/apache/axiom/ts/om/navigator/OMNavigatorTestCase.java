@@ -28,7 +28,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.ts.CommonImplTestCase;
 
-public class OMNavigatorTestCase extends CommonImplTestCase {
+public abstract class OMNavigatorTestCase extends CommonImplTestCase {
     protected SOAPEnvelope envelope;
     protected StAXSOAPModelBuilder builder;
 
