@@ -49,9 +49,9 @@ public class PartOnFileTest extends AbstractTestCase {
 
     public void testHeaderGetSet() throws Exception {
 
-        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE.getName());
         Attachments attachments =
-                new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE, true, temp.getPath(), "1");
+                new Attachments(inStream, TestConstants.MTOM_MESSAGE.getContentType(), true, temp.getPath(), "1");
 
         DataHandler dh = attachments
                 .getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");

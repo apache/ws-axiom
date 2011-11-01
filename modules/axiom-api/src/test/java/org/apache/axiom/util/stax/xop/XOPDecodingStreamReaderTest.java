@@ -34,8 +34,8 @@ import org.apache.axiom.util.base64.Base64Utils;
 
 public class XOPDecodingStreamReaderTest extends AbstractTestCase {
     private XMLStreamReader getXOPDecodingStreamReader() throws Exception {
-        Attachments attachments = new Attachments(getTestResource(TestConstants.MTOM_MESSAGE),
-                TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
+        Attachments attachments = new Attachments(getTestResource(TestConstants.MTOM_MESSAGE.getName()),
+                TestConstants.MTOM_MESSAGE.getContentType());
         return new XOPDecodingStreamReader(
                 StAXUtils.createXMLStreamReader(attachments.getRootPartInputStream()),
                 new OMAttachmentAccessorMimePartProvider(attachments));

@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLStreamReader;
+import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -62,11 +63,8 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
     }
 
     private Attachments createAttachmentsForTestMTOMMessage() throws Exception {
-        String contentTypeString =
-                "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"";
-        String inFileName = "mtom/MTOMBuilderTestIn.txt";
-        InputStream inStream = getTestResource(inFileName);
-        return new Attachments(inStream, contentTypeString);
+        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE_2.getName());
+        return new Attachments(inStream, TestConstants.MTOM_MESSAGE_2.getContentType());
     }
 
     private OMElement createTestMTOMMessage() throws Exception {

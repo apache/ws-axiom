@@ -40,8 +40,8 @@ public class TestBuildWithAttachments extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        InputStream in = AbstractTestCase.getTestResource(TestConstants.MTOM_MESSAGE);
-        Attachments attachments = new Attachments(in, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
+        InputStream in = AbstractTestCase.getTestResource(TestConstants.MTOM_MESSAGE.getName());
+        Attachments attachments = new Attachments(in, TestConstants.MTOM_MESSAGE.getContentType());
         SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, attachments).getSOAPEnvelope();
         envelope.buildWithAttachments();
         in.close();

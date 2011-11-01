@@ -31,21 +31,21 @@ public class TestConstants {
     public static final String REALLY_BIG_MESSAGE = "soap/reallyReallyBigMessage.xml";
     public static final String EMPTY_BODY_MESSAGE = "soap/emtyBodymessage.xml";
 
-    public static final String MTOM_MESSAGE = "mtom/MTOMAttachmentStream.bin";
-    public static final String MTOM_MESSAGE_BOUNDARY = "MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701";
-    public static final String MTOM_MESSAGE_START = "0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org";
-    public static final String MTOM_MESSAGE_CONTENT_TYPE =
-                        "multipart/related; " +
-                        "boundary=\"" + MTOM_MESSAGE_BOUNDARY + "\"; " +
-                        "type=\"application/xop+xml\"; " +
-                        "start=\"<" + MTOM_MESSAGE_START +">\"; " +
-                        "start-info=\"application/soap+xml\"; " +
-                        "charset=UTF-8;" +
-                        "action=\"mtomSample\"";
+    public static final MIMEResource MTOM_MESSAGE = new MIMEResource("mtom/MTOMAttachmentStream.bin",
+            "multipart/related; " +
+            "boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; " +
+            "type=\"application/xop+xml\"; " +
+            "start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; " +
+            "start-info=\"application/soap+xml\"; " +
+            "charset=UTF-8;" +
+            "action=\"mtomSample\"");
     public static final String MTOM_MESSAGE_INLINED = "mtom/MTOMAttachmentStream_inlined.xml";
     public static final String MTOM_MESSAGE_IMAGE1 = "mtom/img/test.jpg";
     public static final String MTOM_MESSAGE_IMAGE2 = "mtom/img/test2.jpg";
     
+    public static final MIMEResource MTOM_MESSAGE_2 = new MIMEResource("mtom/MTOMBuilderTestIn.txt",
+            "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; " +
+            "boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"");
     
     private TestConstants() {
     }

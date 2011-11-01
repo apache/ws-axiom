@@ -20,6 +20,7 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.MIMEResource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -40,18 +41,17 @@ public class AttachmentsTest extends AbstractTestCase {
         super(testName);
     }
 
-    String img1FileName = "mtom/img/test.jpg";
-    String img2FileName = "mtom/img/test2.jpg";
     String inSWAFileName = "soap/soap11/SWAAttachmentStream.txt";
     
     String contentTypeString =
         "multipart/related; boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
 
     public void testWritingBinaryAttachments() throws Exception {
+        MIMEResource testMessage = TestConstants.MTOM_MESSAGE;
 
         // Read in message: SOAPPart and 2 image attachments
-        InputStream inStream = getTestResource(TestConstants.MTOM_MESSAGE);
-        Attachments attachments = new Attachments(inStream, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
+        InputStream inStream = getTestResource(testMessage.getName());
+        Attachments attachments = new Attachments(inStream, testMessage.getContentType());
         
         attachments.getRootPartInputStream();
 
@@ -59,8 +59,8 @@ public class AttachmentsTest extends AbstractTestCase {
         
         OMOutputFormat oof = new OMOutputFormat();
         oof.setDoOptimize(true);
-        oof.setMimeBoundary(TestConstants.MTOM_MESSAGE_BOUNDARY);
-        oof.setRootContentId(TestConstants.MTOM_MESSAGE_START);
+        oof.setMimeBoundary(testMessage.getBoundary());
+        oof.setRootContentId(testMessage.getStart());
         
         // Write out the message
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -98,7 +98,7 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // Now read the data back in
         InputStream is = new ByteArrayInputStream(outBase64.getBytes());
-        Attachments attachments2 = new Attachments(is, TestConstants.MTOM_MESSAGE_CONTENT_TYPE);
+        Attachments attachments2 = new Attachments(is, testMessage.getContentType());
         
         // Now write it back out with binary...
         baos = new ByteArrayOutputStream();
