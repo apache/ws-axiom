@@ -117,6 +117,23 @@ public interface OMMetaFactory {
     OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source);
     
     /**
+     * Create an XOP aware object model builder.
+     * 
+     * @param configuration
+     *            the parser configuration to use
+     * @param omFactory
+     *            The object model factory to use. This factory must be obtained from the same
+     *            {@link OMMetaFactory} instance as the one used to invoke this method.
+     * @param rootPart
+     *            the source of the root part of the XOP message
+     * @param mimePartProvider
+     *            the provider from which MIME parts referenced in the root part will be retrieved
+     * @return the builder
+     */
+    OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
+            OMFactory omFactory, InputSource rootPart, MimePartProvider mimePartProvider);
+    
+    /**
      * Create an object model builder for SOAP that pulls events from a StAX stream reader. The
      * implementation will select the appropriate {@link SOAPFactory} based on the namespace URI of
      * the SOAP envelope.

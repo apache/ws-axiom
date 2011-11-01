@@ -24,10 +24,11 @@ import org.apache.axiom.om.MIMEResource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.MIMEOutputUtils;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
+import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPModelBuilder;
 
 import java.io.ByteArrayInputStream;
@@ -66,9 +67,8 @@ public class AttachmentsTest extends AbstractTestCase {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(baos, oof);
         
-        XOPAwareStAXOMBuilder builder = 
-            new XOPAwareStAXOMBuilder(attachments.getRootPartInputStream(),
-                                      attachments);
+        OMXMLParserWrapper builder =
+            OMXMLBuilderFactory.createOMBuilder(StAXParserConfiguration.DEFAULT, attachments);
         OMElement om = builder.getDocumentElement();
         om.serialize(writer);
         om.close(false);
@@ -83,8 +83,7 @@ public class AttachmentsTest extends AbstractTestCase {
                         Boolean.TRUE);
         writer = new MTOMXMLStreamWriter(baos, oof);
         builder = 
-            new XOPAwareStAXOMBuilder(attachments.getRootPartInputStream(),
-                                      attachments);
+            OMXMLBuilderFactory.createOMBuilder(StAXParserConfiguration.DEFAULT, attachments);
         om = builder.getDocumentElement();
         om.serialize(writer);
         om.close(false);
@@ -106,8 +105,7 @@ public class AttachmentsTest extends AbstractTestCase {
                         Boolean.FALSE);
         writer = new MTOMXMLStreamWriter(baos, oof);
         builder = 
-            new XOPAwareStAXOMBuilder(attachments2.getRootPartInputStream(),
-                                      attachments2);
+            OMXMLBuilderFactory.createOMBuilder(StAXParserConfiguration.DEFAULT, attachments2);
         om = builder.getDocumentElement();
         om.serialize(writer);
         om.close(false);
@@ -122,8 +120,7 @@ public class AttachmentsTest extends AbstractTestCase {
                         Boolean.TRUE);
         writer = new MTOMXMLStreamWriter(baos, oof);
         builder = 
-            new XOPAwareStAXOMBuilder(attachments2.getRootPartInputStream(),
-                                      attachments2);
+            OMXMLBuilderFactory.createOMBuilder(StAXParserConfiguration.DEFAULT, attachments2);
         om = builder.getDocumentElement();
         om.serialize(writer);
         om.close(false);

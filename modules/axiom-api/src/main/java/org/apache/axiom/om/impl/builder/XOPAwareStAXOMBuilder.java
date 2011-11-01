@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.util.stax.xop.MimePartProvider;
 import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
 
 import javax.activation.DataHandler;
@@ -100,6 +101,12 @@ public class XOPAwareStAXOMBuilder
         super(new XOPDecodingStreamReader(parser, new OMAttachmentAccessorMimePartProvider(
                 attachments)));
         this.attachments = attachments;
+    }
+
+    public XOPAwareStAXOMBuilder(OMFactory omFactory, XMLStreamReader reader,
+            MimePartProvider mimePartProvider) {
+        super(omFactory, new XOPDecodingStreamReader(reader, mimePartProvider));
+        attachments = null;
     }
 
     public DataHandler getDataHandler(String blobContentID) throws OMException {

@@ -289,6 +289,52 @@ public class OMXMLBuilderFactory {
     }
     
     /**
+     * Create an XOP aware model builder from the provided {@link Attachments} object and with a
+     * given parser configuration.
+     * 
+     * @param configuration
+     *            the parser configuration to use
+     * @param attachments
+     *            an {@link Attachments} object that must have been created from an input stream
+     * @return the builder
+     * @throws OMException
+     *             if an error occurs while processing the content type information from the
+     *             {@link Attachments} object
+     */
+    public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, Attachments attachments) {
+        return createOMBuilder(OMAbstractFactory.getMetaFactory().getOMFactory(), configuration, attachments);
+    }
+    
+    /**
+     * Create an XOP aware model builder from the provided {@link Attachments} object using a
+     * specified object model factory and with a given parser configuration.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param configuration
+     *            the parser configuration to use
+     * @param attachments
+     *            an {@link Attachments} object that must have been created from an input stream
+     * @return the builder
+     * @throws OMException
+     *             if an error occurs while processing the content type information from the
+     *             {@link Attachments} object
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory,
+            StAXParserConfiguration configuration, Attachments attachments) {
+        ContentType contentType;
+        try {
+            contentType = new ContentType(attachments.getRootPartContentType());
+        } catch (ParseException ex) {
+            throw new OMException(ex);
+        }
+        InputSource rootPart = new InputSource(attachments.getRootPartInputStream());
+        rootPart.setEncoding(contentType.getParameter("charset"));
+        return omFactory.getMetaFactory().createOMBuilder(configuration, omFactory,
+                rootPart, new OMAttachmentAccessorMimePartProvider(attachments));
+    }
+    
+    /**
      * Create an object model builder for SOAP that pulls events from a StAX stream reader.
      * The method will select the appropriate {@link SOAPFactory}
      * based on the namespace URI of the SOAP envelope.
