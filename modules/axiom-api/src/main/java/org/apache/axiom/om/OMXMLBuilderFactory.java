@@ -37,10 +37,6 @@ import org.xml.sax.InputSource;
  * Provides static factory methods to create various kinds of object model builders from different
  * types of input sources. The methods defined by this class are the starting point to parse XML
  * documents into Axiom trees.
- * <p>
- * <b>WARNING: This API is still under construction (see <a
- * href="https://issues.apache.org/jira/browse/AXIOM-353">AXIOM-353</a>) and may slightly change in
- * subsequent releases!</b>
  */
 public class OMXMLBuilderFactory {
     private OMXMLBuilderFactory() {}
