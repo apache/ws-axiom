@@ -1,0 +1,7 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:q="http://example.org/quote">
+   <soapenv:Body>
+      <q:getQuote>
+         <q:symbol>MSFT</q:symbol>
+      </q:getQuote>
+   </soapenv:Body>
+</soapenv:Envelope>

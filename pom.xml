@@ -528,5 +528,6 @@
         <module>modules/axiom-osgi-tests</module>
         <module>modules/axiom-integration</module>
         <module>modules/axiom-all</module>
+        <module>modules/axiom-samples</module>
     </modules>
 </project>
