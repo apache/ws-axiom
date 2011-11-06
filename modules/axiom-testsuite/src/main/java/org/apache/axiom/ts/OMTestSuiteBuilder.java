@@ -264,7 +264,33 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnOrphan(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnSelf(metaFactory));
         if (supportsOMSourcedElement) {
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestComplete(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestExpand(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetTextAsStreamWithNonDestructiveOMDataSource(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1DefaultPrefix(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1QualifiedPrefix(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1Unqualified(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName2DefaultPrefix(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName2QualifiedPrefix(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName2Unqualified(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName3DefaultPrefix(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName3QualifiedPrefix(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName3Unqualified(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4DefaultPrefix(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4QualifiedPrefix(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4Unqualified(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToStream(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToWriter(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToXMLWriter(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToXMLWriterEmbedded(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeModifiedOMSEWithNonDestructiveDataSource(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToStream(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToWriter(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriter(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterEmbedded(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReader(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReaderEmbedded(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSourceOnAlreadyExpandedElement(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestWriteTextToWithNonDestructiveOMDataSource(metaFactory));
         }
         addTest(new org.apache.axiom.ts.om.pi.TestDigest(metaFactory));
