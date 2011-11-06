@@ -23,6 +23,7 @@ import java.io.Reader;
 
 import javax.mail.internet.ContentType;
 import javax.mail.internet.ParseException;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 
@@ -43,10 +44,28 @@ public class OMXMLBuilderFactory {
     
     /**
      * Create an object model builder for plain XML that pulls events from a StAX stream reader.
+     * <p>
+     * The reader must be positioned on a {@link XMLStreamConstants#START_DOCUMENT} or
+     * {@link XMLStreamConstants#START_ELEMENT} event. If the current event is
+     * {@link XMLStreamConstants#START_DOCUMENT} then the builder will consume events up to the
+     * {@link XMLStreamConstants#END_DOCUMENT} event. If the current event is
+     * {@link XMLStreamConstants#START_ELEMENT}, then the builder will consume events up to the
+     * corresponding {@link XMLStreamConstants#END_ELEMENT}. After the object model is completely
+     * built, the stream reader will be positioned on the event immediately following this
+     * {@link XMLStreamConstants#END_ELEMENT} event. This means that this method can be used in a
+     * well defined way to build an object model from a fragment (corresponding to a single element)
+     * of the document represented by the stream reader.
+     * <p>
+     * The returned builder also performs namespace repairing, i.e. it adds appropriate namespace
+     * declarations if undeclared namespaces appear in the StAX stream.
      * 
      * @param parser
      *            the stream reader to read the XML data from
      * @return the builder
+     * @throws OMException
+     *             if the stream reader is positioned on an event other than
+     *             {@link XMLStreamConstants#START_DOCUMENT} or
+     *             {@link XMLStreamConstants#START_ELEMENT}
      */
     public static OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
@@ -56,6 +75,9 @@ public class OMXMLBuilderFactory {
     /**
      * Create an object model builder that pulls events from a StAX stream reader using a specified
      * object model factory.
+     * <p>
+     * See {@link #createStAXOMBuilder(XMLStreamReader)} for more information about the behavior of
+     * the returned builder.
      * 
      * @param omFactory
      *            the object model factory to use
@@ -334,6 +356,9 @@ public class OMXMLBuilderFactory {
      * Create an object model builder for SOAP that pulls events from a StAX stream reader.
      * The method will select the appropriate {@link SOAPFactory}
      * based on the namespace URI of the SOAP envelope.
+     * <p>
+     * See {@link #createStAXOMBuilder(XMLStreamReader)} for more information about the behavior of
+     * the returned builder.
      * 
      * @param parser
      *            the stream reader to read the XML data from
