@@ -27,9 +27,7 @@ import org.xml.sax.SAXException;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -114,18 +112,6 @@ public class NamespaceTest extends XMLTestCase {
         omFac.createOMElement("ChildElement", ns, documentElement);
 
         assertTrue(documentElement.toStringWithConsume().indexOf("ns2:ChildElement") > -1);
-    }
-
-    public void testNamespaceProblem4() throws Exception {
-        String xml =
-                "<getCreditScoreResponse xmlns=\"http://www.example.org/creditscore/doclitwrapped/\"><score xmlns=\"\">750</score></getCreditScoreResponse>";
-        XMLStreamReader parser = StAXUtils.createXMLStreamReader(
-                new ByteArrayInputStream(xml.getBytes()));
-        OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createStAXOMBuilder(OMAbstractFactory.getOMFactory(), parser);
-        OMElement root = builder.getDocumentElement();
-        String actualXML = root.toString();
-        assertTrue(actualXML.indexOf("xmlns=\"\"") != -1);
     }
 
     public void testNamespaceProblem5() {
