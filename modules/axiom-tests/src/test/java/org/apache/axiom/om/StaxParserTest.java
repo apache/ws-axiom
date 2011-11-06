@@ -55,18 +55,16 @@ public class StaxParserTest extends AbstractTestCase {
 
         //parser 2 is one of our parsers taken with cache. i.e. when the parser
         //proceeds the object model will be built
-        builder2 = OMXMLBuilderFactory.createStAXOMBuilder(
+        builder2 = OMXMLBuilderFactory.createOMBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
-                StAXUtils.createXMLStreamReader(
-                        new ByteArrayInputStream(xmlDocument.getBytes())));
+                new ByteArrayInputStream(xmlDocument.getBytes()));
         parser2 = builder2.getDocumentElement().getXMLStreamReader();
 
         //same as parser2 but this time the parser is not a caching parser. Once the
         //parser proceeds, it's gone forever.
-        builder3 = OMXMLBuilderFactory.createStAXOMBuilder(
+        builder3 = OMXMLBuilderFactory.createOMBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
-                StAXUtils.createXMLStreamReader(
-                        new ByteArrayInputStream(xmlDocument.getBytes())));
+                new ByteArrayInputStream(xmlDocument.getBytes()));
         parser3 =
                 builder3.getDocumentElement().getXMLStreamReaderWithoutCaching();
 
@@ -128,10 +126,9 @@ public class StaxParserTest extends AbstractTestCase {
 
     public void testParserBehaviornonCaching() throws Exception {
 
-        OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createStAXOMBuilder(
+        OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createOMBuilder(
                 OMAbstractFactory.getOMFactory(),
-                StAXUtils.createXMLStreamReader(
-                        new ByteArrayInputStream(xmlDocument.getBytes())));
+                new ByteArrayInputStream(xmlDocument.getBytes()));
 
         OMElement documentElement = builder2.getDocumentElement();
         XMLStreamReader originalParser =
@@ -161,10 +158,9 @@ public class StaxParserTest extends AbstractTestCase {
 
     public void testParserBehaviorCaching() throws Exception {
 
-        OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createStAXOMBuilder(
+        OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createOMBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
-                StAXUtils.createXMLStreamReader(
-                        new ByteArrayInputStream(xmlDocument.getBytes())));
+                new ByteArrayInputStream(xmlDocument.getBytes()));
 
         OMElement documentElement = builder2.getDocumentElement();
         XMLStreamReader originalParser =
@@ -197,10 +193,9 @@ public class StaxParserTest extends AbstractTestCase {
 
     public void testParserBehaviorNonCaching2() throws Exception {
 
-        OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createStAXOMBuilder(
+        OMXMLParserWrapper builder2 = OMXMLBuilderFactory.createOMBuilder(
                 OMAbstractFactory.getSOAP11Factory(),
-                StAXUtils.createXMLStreamReader(
-                        new ByteArrayInputStream(xmlDocument.getBytes())));
+                new ByteArrayInputStream(xmlDocument.getBytes()));
 
         OMElement documentElement = builder2.getDocumentElement();
 
