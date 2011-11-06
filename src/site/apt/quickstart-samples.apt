@@ -28,3 +28,25 @@ Schema validation using javax.xml.validation
 
   It leverages the fact that Axiom is capable of constructing a <<<SAXSource>>> from an <<<OMDocument>>>
   or <<<OMElement>>>.
+
+Loading local chunks from a large XML document
+
+  Here the goal is to process a large XML document "by chunks", i.e.
+  
+    [[1]] Parse the file and find a relevant element (e.g. by name)
+    
+    [[2]] Load this element into memory as an <<<OMElement>>>.
+    
+    [[3]] Process the <<<OMElement>>> (the "chunk").
+  
+  The process is repeated until the end of the document is reached.
+  
+  This can be achieved without loading the entire document into memory (and without loading all the
+  chunks in memory) by scanning the document using the StAX API and switching to Axiom when a
+  matching element is found:
+
+%{snippet|id=main|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/FragmentsSample.java}
+
+  The code leverages the fact that <<<createStAXOMBuilder>>> can be used to build a fragment
+  (corresponding to a given element) from a StAX stream reader, simply by passing an
+  <<<XMLStreamReader>>> that is positioned on a <<<START_ELEMENT>>> event.
