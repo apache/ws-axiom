@@ -20,20 +20,15 @@
 package org.apache.axiom.om.impl.streamwrapper;
 
 import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.TestConstants;
-import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
 
-import javax.xml.stream.XMLStreamReader;
 import java.io.File;
 import java.io.FileOutputStream;
 
 public class OmStAXBuilderTest extends AbstractTestCase {
-    private SOAPFactory factory = null;
     private OMXMLParserWrapper builder;
     private File tempFile;
 
@@ -42,12 +37,8 @@ public class OmStAXBuilderTest extends AbstractTestCase {
     }
 
     protected void setUp() throws Exception {
-        factory = OMAbstractFactory.getSOAP11Factory();
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(
-                getTestResource(TestConstants.SOAP_SOAPMESSAGE));
-        builder =
-                OMXMLBuilderFactory.createStAXSOAPModelBuilder(factory,
-                                                               reader);
+        builder = OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource(
+                TestConstants.SOAP_SOAPMESSAGE), null);
         tempFile = File.createTempFile("temp", "xml");
     }
 

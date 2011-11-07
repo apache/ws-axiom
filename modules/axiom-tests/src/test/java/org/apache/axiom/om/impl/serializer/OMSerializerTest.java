@@ -20,15 +20,14 @@
 package org.apache.axiom.om.impl.serializer;
 
 import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
@@ -77,7 +76,6 @@ public class OMSerializerTest extends AbstractTestCase {
 
     public void testElementPullStream1() throws Exception {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                OMAbstractFactory.getSOAP11Factory(),
                 reader);
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
         StreamingOMSerializer serializer = new StreamingOMSerializer();
@@ -127,7 +125,6 @@ public class OMSerializerTest extends AbstractTestCase {
 
     public void testElementPullStream2() throws Exception {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                OMAbstractFactory.getSOAP11Factory(),
                 reader);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
@@ -158,8 +155,7 @@ public class OMSerializerTest extends AbstractTestCase {
         reader = StAXUtils.createXMLStreamReader(getTestResource("soap/OMElementTest.xml"));
         
         // Create a builder connected to the reader
-        StAXBuilder builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                OMAbstractFactory.getSOAP11Factory(),
+        StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createStAXSOAPModelBuilder(
                 reader);
         
         // Create a custom builder to store the sub trees as a byte array instead of a full tree
@@ -214,8 +210,7 @@ public class OMSerializerTest extends AbstractTestCase {
         reader = StAXUtils.createXMLStreamReader(getTestResource("soap/soapmessageWithXSI.xml"));
         
         // Create a builder connected to the reader
-        StAXBuilder builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                OMAbstractFactory.getSOAP11Factory(),
+        StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createStAXSOAPModelBuilder(
                 reader);
         
         // Create a custom builder to store the sub trees as a byte array instead of a full tree
@@ -266,8 +261,7 @@ public class OMSerializerTest extends AbstractTestCase {
         reader = StAXUtils.createXMLStreamReader(getTestResource("soap/noprettyprint.xml"));
         
         // Create a builder connected to the reader
-        StAXBuilder builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                OMAbstractFactory.getSOAP11Factory(),
+        StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createStAXSOAPModelBuilder(
                 reader);
         
         // Create a custom builder to store the sub trees as a byte array instead of a full tree
@@ -324,8 +318,7 @@ public class OMSerializerTest extends AbstractTestCase {
             XMLInputFactory.newInstance()
                            .createXMLStreamReader(getTestResource("soap/soapmessageWithXSI.xml"));
         OMXMLParserWrapper builder =
-            OMXMLBuilderFactory.createStAXSOAPModelBuilder(OMAbstractFactory.getSOAP11Factory(),
-                                                           reader);
+            OMXMLBuilderFactory.createStAXSOAPModelBuilder(reader);
         
         // Get the envelope and then get the body
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
@@ -357,8 +350,7 @@ public class OMSerializerTest extends AbstractTestCase {
             XMLInputFactory.newInstance()
                            .createXMLStreamReader(getTestResource("soap/soapmessageWithXSI.xml"));
         OMXMLParserWrapper builder =
-            OMXMLBuilderFactory.createStAXSOAPModelBuilder(OMAbstractFactory.getSOAP11Factory(),
-                                                           reader);
+            OMXMLBuilderFactory.createStAXSOAPModelBuilder(reader);
         
         // Get and build the whole tree...this will cause no streaming when doing the write
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();

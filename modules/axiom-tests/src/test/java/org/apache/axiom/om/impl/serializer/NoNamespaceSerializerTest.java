@@ -22,9 +22,9 @@ package org.apache.axiom.om.impl.serializer;
 import junit.framework.TestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.impl.llom.factory.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -83,11 +83,9 @@ public class NoNamespaceSerializerTest extends TestCase {
         writer = StAXUtils.createXMLStreamWriter(new ByteArrayOutputStream(),
                 OMConstants.DEFAULT_CHAR_SET_ENCODING);
         builderOne =
-                OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                        OMAbstractFactory.getSOAP11Factory(), readerOne);
+                OMXMLBuilderFactory.createStAXSOAPModelBuilder(readerOne);
         builderTwo =
-                OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                        OMAbstractFactory.getSOAP11Factory(), readerTwo);
+                OMXMLBuilderFactory.createStAXSOAPModelBuilder(readerTwo);
     }
 
     protected void tearDown() throws Exception {
@@ -116,11 +114,9 @@ public class NoNamespaceSerializerTest extends TestCase {
             throws Exception {
         SOAPFactory omFactory = OMAbstractFactory.getSOAP11Factory();
         SOAPEnvelope env = omFactory.getDefaultEnvelope();
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(
-                omFactory,
-                StAXUtils.createXMLStreamReader(
-                        new InputStreamReader(
-                                new ByteArrayInputStream(xmlText2.getBytes()))));
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(
+                omFactory, new InputStreamReader(
+                                new ByteArrayInputStream(xmlText2.getBytes())));
         env.getBody().addChild(builder.getDocumentElement());
 
         // not sure why this test was created. Just checking whether serialization has worked or not. Someone
