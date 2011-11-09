@@ -59,7 +59,6 @@ div#breadcrumbs a:hover {
 div#leftColumn {
   background-color: #DCE3EB;
   border: none;
-  overflow: visible;
 }
 
 div#navcolumn > ul > li.expanded,
@@ -87,6 +86,10 @@ div#navcolumn a:hover {
 
 div#navcolumn li.expanded > a {
   border-bottom: 1px solid #999999;
+}
+
+div#contentBox {
+  float: left;
 }
 
 div#contentBox > div.section {
