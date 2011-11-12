@@ -42,7 +42,8 @@ public class TestSerializeToXMLWriterFromReader extends OMSourcedElementTest {
         StringWriter writer = new StringWriter();
         XMLStreamWriter xmlwriter = StAXUtils.createXMLStreamWriter(writer);
 
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(element.getXMLStreamReader());
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXOMBuilder(
+                metaFactory.getOMFactory(), element.getXMLStreamReader());
         OMDocument omDocument = builder.getDocument();
         Iterator it = omDocument.getChildren();
         while (it.hasNext()) {
