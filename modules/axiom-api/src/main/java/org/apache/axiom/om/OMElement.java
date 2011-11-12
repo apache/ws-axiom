@@ -438,10 +438,11 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * <pre>out.write(element.getText())</pre>
      * <p>
      * The difference is that this method is guaranteed to have constant memory usage and is
-     * optimized for performance.
+     * optimized for performance (with the same restrictions that apply to
+     * {@link #getTextAsStream(boolean)}).
+     * <p>
+     * The method does <b>not</b> call {@link Writer#close()}.
      * 
-     * @param element
-     *            the element to read the text nodes from
      * @param out
      *            the stream to write the content to
      * @param cache

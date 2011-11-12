@@ -19,14 +19,22 @@
 package org.apache.axiom.ts.om.element;
 
 import java.io.StringWriter;
+import java.io.Writer;
 
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.testutils.io.CloseSensorWriter;
 import org.apache.axiom.ts.AxiomTestCase;
 
+/**
+ * Tests the behavior of {@link OMElement#writeTextTo(Writer, boolean)} in the simple case with a
+ * single {@link OMText} child. The test case also checks that the method doesn't call
+ * {@link Writer#close()}.
+ */
 public class TestWriteTextTo extends AxiomTestCase {
     public TestWriteTextTo(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -36,8 +44,10 @@ public class TestWriteTextTo extends AxiomTestCase {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement(new QName("a"));
         factory.createOMText(element, "test");
-        StringWriter out = new StringWriter();
+        StringWriter sw = new StringWriter();
+        CloseSensorWriter out = new CloseSensorWriter(sw);
         element.writeTextTo(out, true);
-        assertEquals(element.getText(), out.toString());
+        assertEquals(element.getText(), sw.toString());
+        assertFalse(out.isClosed());
     }
 }
