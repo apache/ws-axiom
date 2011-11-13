@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
@@ -69,7 +70,7 @@ import java.util.LinkedHashMap;
 
 /** Class OMElementImpl */
 public class OMElementImpl extends OMNodeImpl
-        implements OMElement, OMConstants, OMContainerEx {
+        implements OMElementEx, OMConstants, OMContainerEx {
 
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
@@ -384,6 +385,11 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public OMNamespace declareDefaultNamespace(String uri) {
+        if (ns == null && uri.length() > 0
+                || ns != null && ns.getPrefix().length() == 0 && !ns.getNamespaceURI().equals(uri)) {
+            throw new OMException("Attempt to add a namespace declaration that conflicts with " +
+            		"the namespace information of the element");
+        }
 
         OMNamespaceImpl namespace = new OMNamespaceImpl(uri == null ? "" : uri, "");
 
@@ -391,10 +397,6 @@ public class OMElementImpl extends OMNodeImpl
             this.namespaces = new HashMap(5);
         }
         namespaces.put("", namespace);
-        if (ns == null || "".equals(ns.getPrefix())) {
-            ns = namespace;
-            this.qName = null;
-        }
         return namespace;
     }
 
@@ -408,6 +410,15 @@ public class OMElementImpl extends OMNodeImpl
 
         }
         return null;
+    }
+
+    public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
+        if (namespaces == null) {
+            this.namespaces = new HashMap(5);
+        }
+        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
+        namespaces.put(prefix, ns);
+        return ns;
     }
 
     /** @return Returns namespace. */

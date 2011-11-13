@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
@@ -63,7 +64,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
-public class ElementImpl extends ParentNode implements Element, OMElement, OMNodeEx,
+public class ElementImpl extends ParentNode implements Element, OMElementEx, OMNodeEx,
         OMConstants {
 
     private static final Log log = LogFactory.getLog(ElementImpl.class);
@@ -734,6 +735,15 @@ public class ElementImpl extends ParentNode implements Element, OMElement, OMNod
         return addAttribute(new AttrImpl(ownerNode, localName, ns, value, factory));
     }
 
+    public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
+        if (namespaces == null) {
+            this.namespaces = new HashMap(5);
+        }
+        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
+        namespaces.put(prefix, ns);
+        return ns;
+    }
+
     /**
      * Allows overriding an existing declaration if the same prefix was used.
      *
@@ -746,9 +756,7 @@ public class ElementImpl extends ParentNode implements Element, OMElement, OMNod
 
         if (namespace != null) {
             String prefix = namespace.getPrefix();
-            if ("".equals(prefix)) {
-                namespace = declareDefaultNamespace(namespace.getNamespaceURI());
-            } else if (prefix == null) {
+            if (prefix == null) {
                 prefix = OMSerializerUtil.getNextNSPrefix();
                 namespace = new OMNamespaceImpl(namespace.getNamespaceURI(), prefix);
             }
@@ -781,6 +789,12 @@ public class ElementImpl extends ParentNode implements Element, OMElement, OMNod
     }
 
     public OMNamespace declareDefaultNamespace(String uri) {
+        if (namespace == null && uri.length() > 0
+                || namespace != null && namespace.getPrefix().length() == 0 && !namespace.getNamespaceURI().equals(uri)) {
+            throw new OMException("Attempt to add a namespace declaration that conflicts with " +
+                    "the namespace information of the element");
+        }
+
         OMNamespaceImpl ns = new OMNamespaceImpl(uri, "");
         if (namespaces == null) {
             this.namespaces = new HashMap(5);

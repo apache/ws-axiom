@@ -29,6 +29,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
@@ -126,11 +127,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
         if (nextElem == null) {
             nextElem = createNextElement(null);
         }
-        if (prefix.length() == 0) {
-            nextElem.declareDefaultNamespace(uri);
-        } else {
-            nextElem.declareNamespace(uri, prefix);
-        }
+        ((OMElementEx)nextElem).addNamespaceDeclaration(uri, prefix);
     }
 
     public void endPrefixMapping(String arg0) throws SAXException {

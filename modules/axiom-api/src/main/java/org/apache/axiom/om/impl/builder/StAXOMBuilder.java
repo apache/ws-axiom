@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.XMLEventUtils;
@@ -583,34 +584,34 @@ public class StAXOMBuilder extends StAXBuilder {
      * @param node
      */
     protected void processNamespaceData(OMElement node) {
-        // set the own namespace
-        String namespaceURI = parser.getNamespaceURI();
-        String prefix = parser.getPrefix();
-
-
         int namespaceCount = parser.getNamespaceCount();
         for (int i = 0; i < namespaceCount; i++) {
-            String nsprefix = parser.getNamespacePrefix(i);
+            String prefix = parser.getNamespacePrefix(i);
 
             //if the namespace is not defined already when we write the start tag declare it
             // check whether this is the default namespace and make sure we have not declared that earlier
-            String namespaceURIFromParser = parser.getNamespaceURI(i);
-            if (nsprefix == null || "".equals(nsprefix)) {
-                String nsuri = parser.getNamespaceURI(i);
-                node.declareDefaultNamespace(nsuri == null ? "" : nsuri);
-            } else {
-                // NOTE_A:
-                // By default most parsers don't intern the namespace.
-                // Unfortunately the property to detect interning on the delegate parsers is hard to detect.
-                // Woodstox has a proprietary property on the XMLInputFactory.
-                // IBM has a proprietary property on the XMLStreamReader.
-                // For now only force the interning if requested.
-                if (isNamespaceURIInterning()) {
-                    namespaceURIFromParser = namespaceURIFromParser.intern();
-                }
-                node.declareNamespace(namespaceURIFromParser, nsprefix);
+            String namespaceURI = parser.getNamespaceURI(i);
+            
+            // NOTE_A:
+            // By default most parsers don't intern the namespace.
+            // Unfortunately the property to detect interning on the delegate parsers is hard to detect.
+            // Woodstox has a proprietary property on the XMLInputFactory.
+            // IBM has a proprietary property on the XMLStreamReader.
+            // For now only force the interning if requested.
+            if (isNamespaceURIInterning()) {
+                namespaceURI = namespaceURI.intern();
             }
+            
+            if (prefix == null) {
+                prefix = "";
+            }
+            
+            ((OMElementEx)node).addNamespaceDeclaration(namespaceURI, prefix);
         }
+
+        // set the own namespace
+        String namespaceURI = parser.getNamespaceURI();
+        String prefix = parser.getPrefix();
 
         if (namespaceURI != null && namespaceURI.length() > 0) {
             OMNamespace namespace = node.findNamespaceURI(prefix == null ? "" : prefix);
@@ -619,11 +620,10 @@ public class StAXOMBuilder extends StAXBuilder {
                 if (isNamespaceURIInterning()) {
                     namespaceURI = namespaceURI.intern();
                 }
-                if (prefix == null || "".equals(prefix)) {
-                    namespace = node.declareDefaultNamespace(namespaceURI);
-                } else {
-                    namespace = node.declareNamespace(namespaceURI, prefix);
+                if (prefix == null) {
+                    prefix = "";
                 }
+                namespace = ((OMElementEx)node).addNamespaceDeclaration(namespaceURI, prefix);
             }
             node.setNamespaceWithNoFindInCurrentScope(namespace);
         }

@@ -120,11 +120,17 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
 
     /**
      * Add a namespace declaration for the default namespace to this element.
+     * <p>
+     * Note that this method will never change the namespace of the element itself. If an attempt is
+     * made to add a namespace declaration that conflicts with the namespace information of the
+     * element, an exception is thrown.
      * 
      * @param uri
      *            The default namespace to declare in the current scope. The caller is expected to
      *            ensure that the URI is a valid namespace name.
      * @return the created namespace information item
+     * @throws OMException
+     *             if an attempt is made to add a conflicting namespace declaration
      */
     OMNamespace declareDefaultNamespace(String uri);
 

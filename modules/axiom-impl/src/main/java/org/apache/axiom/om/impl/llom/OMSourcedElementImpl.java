@@ -360,6 +360,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.declareNamespace(namespace);
     }
 
+    public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
+        return super.addNamespaceDeclaration(uri, prefix);
+    }
+
     public void undeclarePrefix(String prefix) {
         forceExpand();
         super.undeclarePrefix(prefix);

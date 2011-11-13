@@ -21,6 +21,7 @@ package org.apache.axiom.soap.impl.builder;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.exception.OMBuilderException;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -43,12 +44,7 @@ public abstract class SOAPBuilderHelper {
     protected void processNamespaceData(OMElement node, boolean checkSOAPNamespace) {
         int namespaceCount = parser.getNamespaceCount();
         for (int i = 0; i < namespaceCount; i++) {
-            String prefix = parser.getNamespacePrefix(i);
-            if (prefix == null || prefix.length() == 0) {
-                node.declareDefaultNamespace(parser.getNamespaceURI());
-            } else {
-                node.declareNamespace(parser.getNamespaceURI(i), prefix);
-            }
+            ((OMElementEx)node).addNamespaceDeclaration(parser.getNamespaceURI(i), parser.getNamespacePrefix(i));
         }
 
         // set the own namespace
