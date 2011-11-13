@@ -27,6 +27,8 @@ import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource;
 import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
+import org.apache.axiom.ts.om.element.TestGetNamespaceNormalizedWithParser;
+import org.apache.axiom.ts.om.element.TestGetNamespaceNormalizedWithSAXSource;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
 import org.apache.axiom.ts.om.element.TestSetTextQName;
@@ -81,6 +83,10 @@ public class OMImplementationTest extends TestCase {
 
         // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
         builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
+        
+        // TODO: AXIOM-398
+        builder.exclude(TestGetNamespaceNormalizedWithParser.class);
+        builder.exclude(TestGetNamespaceNormalizedWithSAXSource.class);
         
         return builder.build();
     }
