@@ -770,11 +770,6 @@ public class ElementImpl extends ParentNode implements Element, OMElement, OMNod
         namespaces.put(prefix, new OMNamespaceImpl("", prefix));
     }
 
-    /**
-     * Allows overriding an existing declaration if the same prefix was used.
-     *
-     * @see org.apache.axiom.om.OMElement#declareNamespace(String, String)
-     */
     public OMNamespace declareNamespace(String uri, String prefix) {
         if ("".equals(prefix)) {
             log.warn("Deprecated usage of OMElement#declareNamespace(String,String) with empty prefix");
@@ -785,12 +780,6 @@ public class ElementImpl extends ParentNode implements Element, OMElement, OMNod
         return declareNamespace(ns);
     }
 
-    /**
-     * We use "" to store the default namespace of this element. As one can see user can not give ""
-     * as the prefix, when he declare a usual namespace.
-     *
-     * @param uri
-     */
     public OMNamespace declareDefaultNamespace(String uri) {
         OMNamespaceImpl ns = new OMNamespaceImpl(uri, "");
         if (namespaces == null) {

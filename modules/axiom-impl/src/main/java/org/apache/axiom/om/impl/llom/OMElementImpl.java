@@ -374,11 +374,6 @@ public class OMElementImpl extends OMNodeImpl
         return new OMChildElementIterator(getFirstElement());
     }
 
-    /**
-     * Creates a namespace in the current element scope.
-     *
-     * @return Returns namespace.
-     */
     public OMNamespace declareNamespace(String uri, String prefix) {
         if ("".equals(prefix)) {
             log.warn("Deprecated usage of OMElement#declareNamespace(String,String) with empty prefix");
@@ -388,12 +383,6 @@ public class OMElementImpl extends OMNodeImpl
         return declareNamespace(ns);
     }
 
-    /**
-     * We use "" to store the default namespace of this element. As one can see user can not give ""
-     * as the prefix, when he declare a usual namespace.
-     *
-     * @param uri
-     */
     public OMNamespace declareDefaultNamespace(String uri) {
 
         OMNamespaceImpl namespace = new OMNamespaceImpl(uri == null ? "" : uri, "");

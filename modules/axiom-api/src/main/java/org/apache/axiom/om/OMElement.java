@@ -95,16 +95,21 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     Iterator getChildElements();
     
     /**
-     * Creates a namespace in the current element scope.
-     *
-     * @param uri    The namespace to declare in the current scope.  The caller is expected to
-     *               ensure that the URI is a valid namespace name.
-     * @param prefix The prefix to associate with the given namespace. The caller is expected to
-     *               ensure that this is a valid XML prefix. If <code>null</code> or the empty
-     *               string is given, a prefix will be auto-generated. <b>Please note that using the
-     *               empty string for this purpose is deprecated and will no longer be supported in
-     *               Axiom 1.3.</b>
-     * @return Returns the created namespace information item.
+     * Add a namespace declaration for the given namespace URI to this element, optionally
+     * generating a prefix for that namespace.
+     * <p>
+     * Note that this method can't be used to declare a default namespace. For that purpose use
+     * {@link #declareDefaultNamespace(String)} or {@link #declareNamespace(OMNamespace)}.
+     * 
+     * @param uri
+     *            The namespace to declare in the current scope. The caller is expected to ensure
+     *            that the URI is a valid namespace name.
+     * @param prefix
+     *            The prefix to associate with the given namespace. The caller is expected to ensure
+     *            that this is a valid XML prefix. If <code>null</code> or the empty string is
+     *            given, a prefix will be auto-generated. <b>Please note that using the empty string
+     *            for this purpose is deprecated and will no longer be supported in Axiom 1.3.</b>
+     * @return the created namespace information item
      * @throws IllegalArgumentException
      *             if an attempt is made to bind a prefix to the empty namespace name
      * @see #declareNamespace(OMNamespace)
@@ -113,11 +118,13 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      */
     OMNamespace declareNamespace(String uri, String prefix);
 
-
     /**
-     * This will declare a default namespace for this element explicitly
-     *
+     * Add a namespace declaration for the default namespace to this element.
+     * 
      * @param uri
+     *            The default namespace to declare in the current scope. The caller is expected to
+     *            ensure that the URI is a valid namespace name.
+     * @return the created namespace information item
      */
     OMNamespace declareDefaultNamespace(String uri);
 
