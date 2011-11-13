@@ -85,8 +85,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @return Returns the name of the element node.
      */
     public String getElementName(Object object) {
-        OMElement attr = (OMElement) object;
-        return attr.getQName().getLocalPart();
+        return ((OMElement) object).getLocalName();
     }
 
     /**
@@ -103,7 +102,7 @@ public class DocumentNavigator extends DefaultNavigator {
             prefix = namespace.getPrefix();
         }
         if (prefix == null || "".equals(prefix)) {
-            return attr.getQName().getLocalPart();
+            return attr.getLocalName();
         }
         return prefix + ":" + namespace.getNamespaceURI();
     }
@@ -126,8 +125,7 @@ public class DocumentNavigator extends DefaultNavigator {
      * @return Returns the name of the attribute node.
      */
     public String getAttributeName(Object object) {
-        OMAttribute attr = (OMAttribute) object;
-        return attr.getQName().getLocalPart();
+        return ((OMAttribute) object).getLocalName();
     }
 
     /**
@@ -140,7 +138,7 @@ public class DocumentNavigator extends DefaultNavigator {
         OMAttribute attr = (OMAttribute) object;
         String prefix = attr.getNamespace().getPrefix();
         if (prefix == null || "".equals(prefix)) {
-            return attr.getQName().getLocalPart();
+            return attr.getLocalName();
         }
         return prefix + ":" + attr.getNamespace().getNamespaceURI();
     }
