@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMHierarchyException;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMContainerEx;
@@ -613,20 +612,8 @@ public class StAXOMBuilder extends StAXBuilder {
         String namespaceURI = parser.getNamespaceURI();
         String prefix = parser.getPrefix();
 
-        if (namespaceURI != null && namespaceURI.length() > 0) {
-            OMNamespace namespace = node.findNamespaceURI(prefix == null ? "" : prefix);
-            if (namespace == null || !namespace.getNamespaceURI().equals(namespaceURI)) {
-                // See NOTE_A above
-                if (isNamespaceURIInterning()) {
-                    namespaceURI = namespaceURI.intern();
-                }
-                if (prefix == null) {
-                    prefix = "";
-                }
-                namespace = ((OMElementEx)node).addNamespaceDeclaration(namespaceURI, prefix);
-            }
-            node.setNamespaceWithNoFindInCurrentScope(namespace);
-        }
+        // See NOTE_A above
+        BuilderUtil.setNamespace(node, namespaceURI, prefix, isNamespaceURIInterning());
     }
 
     /**

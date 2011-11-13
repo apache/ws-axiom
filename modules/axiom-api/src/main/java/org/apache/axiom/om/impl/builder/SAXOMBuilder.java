@@ -147,8 +147,10 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
             nextElem = createNextElement(localName);
         else
             nextElem.setLocalName(localName);
-        
-        nextElem.setNamespace(nextElem.findNamespace(namespaceURI, null));
+
+        int idx = qName.indexOf(':');
+        String prefix = idx == -1 ? "" : qName.substring(0, idx);
+        BuilderUtil.setNamespace(nextElem, namespaceURI, prefix, false);
         
         int j = atts.getLength();
         for (int i = 0; i < j; i++) {
