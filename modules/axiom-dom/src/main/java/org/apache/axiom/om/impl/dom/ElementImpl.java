@@ -813,7 +813,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
         if (parentNode instanceof ElementImpl) {
             ElementImpl element = (ElementImpl) parentNode;
-            element.getDefaultNamespace();
+            return element.getDefaultNamespace();
         }
         return null;
     }

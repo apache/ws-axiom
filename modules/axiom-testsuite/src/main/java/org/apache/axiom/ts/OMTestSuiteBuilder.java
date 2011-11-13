@@ -150,6 +150,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetChildrenWithName4(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetChildrenWithNameNextWithoutHasNext(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetChildrenWithNamespaceURI(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetDefaultNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetDescendants(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.TestGetDescendants(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithName(metaFactory));
