@@ -26,7 +26,6 @@ import org.apache.axiom.ts.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource;
 import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestDigest;
-import org.apache.axiom.ts.om.element.TestGetNamespaceNormalizedWithParser;
 import org.apache.axiom.ts.om.element.TestGetNamespaceNormalizedWithSAXSource;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
@@ -59,7 +58,6 @@ public class OMImplementationTest extends TestCase {
         builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
         
         // TODO: AXIOM-398
-        builder.exclude(TestGetNamespaceNormalizedWithParser.class);
         builder.exclude(TestGetNamespaceNormalizedWithSAXSource.class);
         
         return builder.build();
