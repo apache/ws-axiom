@@ -50,3 +50,39 @@ Loading local chunks from a large XML document
   The code leverages the fact that <<<createStAXOMBuilder>>> can be used to build a fragment
   (corresponding to a given element) from a StAX stream reader, simply by passing an
   <<<XMLStreamReader>>> that is positioned on a <<<START_ELEMENT>>> event.
+
+Logging MTOM messages without inlining optimized binary data
+
+  A common way to log a SOAP message is to invoke the <<<toString>>> method on the corresponding <<<SOAPEnvelope>>>
+  object and send the result to the logger. However, this is problematic for MTOM messages because the
+  <<<toString>>> method will always serialize the message as plain XML and therefore inline optimized
+  binary data using base64 encoding.
+  
+  Except for this particular use case, serializing a message using MTOM without actually producing
+  the MIME parts for the binary data is not meaningful and is therefore not directly supported by
+  the Axiom API. However the following simple trick can be used to implement this:
+
+%{snippet|id=variant1|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMLogSample.java}
+  
+  It relies on the <<<XOPEncodingStreamWriter>>> class which is used by Axiom internally to perform the
+  XOP/MTOM encoding. This class is implemented as an <<<XMLStreamWriter>>> wrapper and is responsible for
+  generating the <<<xop:Include>>> elements. It also builds a map of the MIME parts that need to be generated.
+  Since <<<XOPEncodingStreamWriter>>> is an <<<XMLStreamWriter>>> proxy, it can easily be used in conjunction with the
+  <<<serialize(XMLStreamWriter)>>> method and an <<<XMLStreamWriter>>> that writes the result to
+  a <<<StringWriter>>>. The trick here is to only store the SOAP part and to disregard the MIME parts
+  for the attachments. Since <<<XOPEncodingStreamWriter>>> only stores references to the <<<DataHandler>>>
+  objects for these attachements, there is no overhead associated with that.
+  
+  One may wonder how <<<XOPEncodingStreamWriter>>> can receive <<<DataHandler>>> objects considering that
+  it is an <<<XMLStreamWriter>>> implementation and that the StAX API doesn't know anything about XOP/MTOM or
+  <<<DataHandler>>> objects. The answer is that <<<XOPEncodingStreamWriter>>> actually implements an Axiom
+  specific extension defined by the <<<DataHandlerWriter>>> interface. An alternative solution for the logging
+  problem is therefore to use a custom <<<XMLStreamWriter>>> implementation that supports that extension and
+  that bypasses the serialization of the <<<DataHandler>>> objects, e.g. by replacing them by some
+  placeholder text:
+
+%{snippet|id=main|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/LogWriter.java}
+
+  The following code shows how this class would be used to log the MTOM message:
+
+%{snippet|id=variant2|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMLogSample.java}
