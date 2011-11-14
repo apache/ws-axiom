@@ -497,15 +497,30 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace);
 
     /**
-     * This is a convenience method only. This will basically serialize the given OMElement to a
-     * String but will build the OMTree in the memory
+     * Convenience method to serialize the element to a string with caching enabled. Caching means
+     * that the object model tree for the element will be fully built in memory and can be accessed
+     * after invoking this method.
+     * <p>
+     * This method produces the same result as {@link OMContainer#serialize(Writer)}. In particular,
+     * the element is always serialized as plain XML and {@link OMText} nodes containing optimized
+     * binary data are always inlined using base64 encoding. Since the output is accumulated into a
+     * single string object, this may result in high memory consumption. Therefore this method
+     * should be used with care.
+     * 
+     * @return the serialized object model
      */
     String toString();
 
     /**
-     * This is a convenience method only. This basically serializes the given OMElement to a String
-     * but will NOT build the OMTree in the memory. So you are at your own risk of losing
-     * information.
+     * Convenience method to serialize the element to a string without caching. This method will not
+     * built the object model tree in memory. This means that an attempt to access the object model
+     * after invoking this method may result in an error (unless the object model was already fully
+     * built before, e.g. because it was created programmatically).
+     * <p>
+     * As for {@link #toString()}, this method may cause high memory consumption for object model
+     * trees containing optimized binary data and should therefore be used with care.
+     * 
+     * @return the serialized object model
      */
     String toStringWithConsume() throws XMLStreamException;
 
@@ -537,9 +552,13 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     int getLineNumber();
 
     /**
-     * Serializes the node with caching.
-     *
+     * Serialize the node with caching enabled.
+     * <p>
+     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
+     * containing optimized binary will be inlined using base64 encoding.
+     * 
      * @param output
+     *            the byte stream to write the serialized infoset to
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -548,9 +567,13 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     void serialize(OutputStream output) throws XMLStreamException;
 
     /**
-     * Serializes the node with caching.
-     *
+     * Serialize the node with caching enabled.
+     * <p>
+     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
+     * containing optimized binary will be inlined using base64 encoding.
+     * 
      * @param writer
+     *            the character stream to write the serialized infoset to
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -559,10 +582,16 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     void serialize(Writer writer) throws XMLStreamException;
 
     /**
-     * Serializes the node with caching.
-     *
+     * Serialize the node with caching enabled.
+     * <p>
+     * The format of the output is controlled by the provided {@link OMOutputFormat} object. In
+     * particular, {@link OMOutputFormat#setDoOptimize(boolean)} can be used to instruct this method
+     * to produce an XOP/MTOM encoded MIME message.
+     * 
      * @param output
+     *            the byte stream to write the serialized infoset to
      * @param format
+     *            the output format to use
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -572,10 +601,12 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
             throws XMLStreamException;
 
     /**
-     * Serializes the node with caching.
+     * Serialize the node with caching enabled.
      *
      * @param writer
+     *            the character stream to write the serialized infoset to
      * @param format
+     *            the output format to use
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -585,9 +616,13 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
             throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
+     * Serialize the node without caching.
+     * <p>
+     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
+     * containing optimized binary will be inlined using base64 encoding.
      *
      * @param output
+     *            the byte stream to write the serialized infoset to
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -597,9 +632,13 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
             throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
+     * Serialize the node without caching.
+     * <p>
+     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
+     * containing optimized binary will be inlined using base64 encoding.
      *
      * @param writer
+     *            the character stream to write the serialized infoset to
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -608,10 +647,16 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     void serializeAndConsume(Writer writer) throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
+     * Serialize the node without caching.
+     * <p>
+     * The format of the output is controlled by the provided {@link OMOutputFormat} object. In
+     * particular, {@link OMOutputFormat#setDoOptimize(boolean)} can be used to instruct this method
+     * to produce an XOP/MTOM encoded MIME message.
      *
      * @param output
+     *            the byte stream to write the serialized infoset to
      * @param format
+     *            the output format to use
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -621,10 +666,12 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
             throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
+     * Serialize the node without caching.
      *
      * @param writer
+     *            the character stream to write the serialized infoset to
      * @param format
+     *            the output format to use
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
