@@ -310,5 +310,6 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
                 addTest(new TestAXIOMXPath(metaFactory, methodName));
             }
         }
+        addTest(new org.apache.axiom.ts.xpath.TestGetAttributeQName(metaFactory));
     }
 }

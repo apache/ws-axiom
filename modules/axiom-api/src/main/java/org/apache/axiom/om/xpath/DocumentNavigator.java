@@ -140,7 +140,7 @@ public class DocumentNavigator extends DefaultNavigator {
         if (prefix == null || "".equals(prefix)) {
             return attr.getLocalName();
         }
-        return prefix + ":" + attr.getNamespace().getNamespaceURI();
+        return prefix + ":" + attr.getLocalName();
     }
 
     /**
