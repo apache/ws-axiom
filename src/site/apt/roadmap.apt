@@ -56,3 +56,18 @@ API inconsistencies to be eliminated
    * <<<OMText#getDataHandler()>>>
    
    * <<<OMFactory#createOMText(Object, boolean)>>>
+
+* Methods declared by the wrong interface in the node type hierarchy
+
+  Some methods are declared at the wrong level in the node type hierarchy so that they may
+  be called on nodes for which they are not meaningful:
+  
+   * The <<<serialize>>> and <<<serializeAndConsume>>> methods that take an <<<OutputStream>>>
+     or <<<Writer>>> object are only meaningful for <<<OMContainer>>> objects. However, they
+     are declared by <<<OMNode>>>. Note that already in 1.2.x, these methods are deprecated.
+   
+   * <<<OMContainer>>> declares several methods that return child elements by name: <<<getChildrenWithLocalName>>>,
+     <<<getChildrenWithName>>>, <<<getChildrenWithNamespaceURI>>> and <<<getFirstChildWithName>>>.
+     Since the document element is unique, these methods are not meaningful for <<<OMDocument>>>
+     and they should be declared by <<<OMElement>>> instead.
+     
