@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.ts.xpath;
 
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -36,7 +35,7 @@ public class TestGetAttributeQName extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMFactory factory = OMAbstractFactory.getOMFactory();
+        OMFactory factory = metaFactory.getOMFactory();
         OMElement element = factory.createOMElement("test", null);
         element.addAttribute("att", "value", factory.createOMNamespace("urn:test", "p"));
         assertEquals("p:att", new AXIOMXPath("name(@*)").stringValueOf(element));
