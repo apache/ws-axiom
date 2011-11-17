@@ -1,0 +1,93 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+package org.apache.axiom.samples;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
+import javax.activation.DataHandler;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Endpoint;
+
+import junit.framework.TestCase;
+
+import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.cxf.helpers.IOUtils;
+
+public class MTOMSample extends TestCase {
+    // START SNIPPET: retrieveContent
+    public void retrieveContent(URL serviceURL, String id, OutputStream result) throws Exception {
+        // Build the SOAP request
+        SOAPFactory soapFactory = OMAbstractFactory.getSOAP11Factory();
+        SOAPEnvelope request = soapFactory.getDefaultEnvelope();
+        OMElement retrieveContent = soapFactory.createOMElement(
+                new QName("urn:test", "retrieveContent"), request.getBody());
+        OMElement fileId = soapFactory.createOMElement(new QName("fileId"), retrieveContent);
+        fileId.setText(id);
+        
+        // Use the java.net.URL API to connect to the service
+        URLConnection connection = serviceURL.openConnection();
+        connection.setDoOutput(true);
+        connection.addRequestProperty("Content-Type", "text/xml; charset=UTF-8");
+        OutputStream out = connection.getOutputStream();
+        // Send the request
+        OMOutputFormat format = new OMOutputFormat();
+        format.setCharSetEncoding("UTF-8");
+        request.serialize(out, format);
+        out.close();
+        
+        // Get the SOAP response
+        InputStream in = connection.getInputStream();
+        Attachments attachments = new Attachments(in, connection.getContentType());
+        SOAPEnvelope response = OMXMLBuilderFactory.createSOAPModelBuilder(attachments).getSOAPEnvelope();
+        OMElement retrieveContentResponse = response.getBody().getFirstElement();
+        OMElement content = retrieveContentResponse.getFirstElement();
+        // Extract the DataHandler representing the optimized binary data
+        DataHandler dh = (DataHandler)((OMText)content.getFirstOMChild()).getDataHandler();
+        InputStream contentStream;
+        // If possible, stream the content of the MIME part (feature available in Axiom 1.2.13)
+        if (dh instanceof DataHandlerExt) {
+            contentStream = ((DataHandlerExt)dh).readOnce();
+        } else {
+            contentStream = dh.getInputStream();
+        }
+        // Write the content to the result stream
+        IOUtils.copy(contentStream, result);
+        contentStream.close();
+        
+        in.close();
+    }
+    // END SNIPPET: retrieveContent
+    
+    public void test() throws Exception {
+        Endpoint endpoint = Endpoint.publish("http://localhost:8080/mtom", new MTOMServiceImpl());
+        retrieveContent(new URL("http://localhost:8080/mtom"), "G87ZX20047", System.out);
+        endpoint.stop();
+    }
+}

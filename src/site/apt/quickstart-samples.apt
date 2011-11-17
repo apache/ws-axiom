@@ -51,6 +51,29 @@ Loading local chunks from a large XML document
   (corresponding to a given element) from a StAX stream reader, simply by passing an
   <<<XMLStreamReader>>> that is positioned on a <<<START_ELEMENT>>> event.
 
+Processing MTOM messages
+
+  This sample shows how to process MTOM messages with Axiom. The code actually sends a request to a Web service
+  with the following JAX-WS service endpoint interface:
+
+%{snippet|id=iface|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMService.java}
+
+  It then extracts the binary content from the response and writes it to a given <<<OutputStream>>>:
+
+%{snippet|id=retrieveContent|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMSample.java}
+
+  The sample code shows that in order to parse an MTOM message one first needs to construct an
+  <<<Attachments>>> object that is then passed to the relevant method in <<<OMXMLBuilderFactory>>>.
+  In the object model, an XOP/MTOM attachment is represented as an <<<OMText>>> node for which <<<isBinary()>>> returns
+  <<<true>>>. Such a node is created for each <<<xop:Include>>> element in the original message.
+  The binary data is stored in a <<<DataHandler>>> object that can be obtained by a call to the
+  <<<getDataHandler()>>> method of the <<<OMText>>> node.
+  
+  By default attachments are loaded into memory, but the constructors of the <<<Attachments>>> class
+  allow to configure caching on disk. The sample actually shows an alternative method to reduce the
+  memory footprint of the MTOM processing, which is to enable streaming. This is supported starting
+  with Axiom 1.2.13.
+
 Logging MTOM messages without inlining optimized binary data
 
   A common way to log a SOAP message is to invoke the <<<toString>>> method on the corresponding <<<SOAPEnvelope>>>
