@@ -19,15 +19,66 @@
       Quick Start Samples
      ---------------------
 
+  Content:
+
+%{toc}
+
+Adding Axiom as a Maven dependency
+
+  To use Axiom in a project built using Maven, add the following dependencies:
+
++------------------------------------------------+
+<dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-api</artifactId>
+    <version>${axiom_version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-impl</artifactId>
+    <version>${axiom_version}</version>
+    <scope>runtime</scope>
+</dependency>
++------------------------------------------------+
+
+  Note that the <<<axiom-impl>>> dependency is added in scope <<<runtime>>>
+  because application code should not refer to implementation classes directly.
+  All Axiom features are accessible through the public API which is provided
+  by <<<axiom-api>>>.
+  
+  If the application code requires a DOM compliant Axiom implementation,
+  then the following dependency needs to be added too:
+
++------------------------------------------------+
+<dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-dom</artifactId>
+    <version>${axiom_version}</version>
+    <scope>runtime</scope>
+</dependency>
++------------------------------------------------+
+
+Parsing and processing an XML document
+
+  The following sample shows how to parse and process an XML document using Axiom.
+  It is pretty much self-explaining:
+
+%{snippet|id=main|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/ParseSample.java}
+
 Schema validation using javax.xml.validation
 
   This sample demonstrates how to validate a part of an Axiom tree (actually the body of a SOAP message)
   using the <<<javax.xml.validation>>> API:
 
-%{snippet|id=main|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/ValidateSample.java}
+%{snippet|id=sax|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/ValidateSample.java}
 
   It leverages the fact that Axiom is capable of constructing a <<<SAXSource>>> from an <<<OMDocument>>>
   or <<<OMElement>>>.
+
+  Alternatively, one can use a DOM compliant Axiom implementation and use a
+  <<<DOMSource>>> to pass the XML fragment to the validator:
+
+%{snippet|id=dom|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/ValidateSample.java}
 
 Loading local chunks from a large XML document
 

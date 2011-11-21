@@ -22,19 +22,23 @@ import java.io.InputStream;
 import java.net.URL;
 
 import javax.xml.XMLConstants;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import junit.framework.TestCase;
 
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.w3c.dom.Element;
 
 public class ValidateSample extends TestCase {
-    // START SNIPPET: main
+    // START SNIPPET: sax
     public void validate(InputStream in, URL schemaUrl) throws Exception {
         SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(in, "UTF-8");
         SOAPEnvelope envelope = builder.getSOAPEnvelope();
@@ -44,9 +48,26 @@ public class ValidateSample extends TestCase {
         Validator validator = schema.newValidator();
         validator.validate(bodyContent.getSAXSource(true));
     }
-    // END SNIPPET: main
+    // END SNIPPET: sax
     
-    public void test() throws Exception {
+    public void testSAX() throws Exception {
+        validate(getClass().getResourceAsStream("soap-request.xml"), getClass().getResource("schema.xsd"));
+    }
+
+    // START SNIPPET: dom
+    public void validateUsingDOM(InputStream in, URL schemaUrl) throws Exception {
+        OMMetaFactory mf = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM);
+        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(mf, in, "UTF-8");
+        SOAPEnvelope envelope = builder.getSOAPEnvelope();
+        OMElement bodyContent = envelope.getBody().getFirstElement();
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        Schema schema = schemaFactory.newSchema(schemaUrl);
+        Validator validator = schema.newValidator();
+        validator.validate(new DOMSource((Element)bodyContent));
+    }
+    // END SNIPPET: dom
+    
+    public void testDOM() throws Exception {
         validate(getClass().getResourceAsStream("soap-request.xml"), getClass().getResource("schema.xsd"));
     }
 }

@@ -41,6 +41,7 @@
                 <item name="Source Code" href="source-repository.html"/>
             </item>
             <item name="Documentation" href="documentation.html">
+                <item name="Quick start samples" href="quickstart-samples.html"/>
                 <item name="User guide" href="userguide/userguide.html"/>
                 <item name="Developer guide" href="devguide/devguide.html"/>
                 <item name="Articles" href="articles.html"/>
