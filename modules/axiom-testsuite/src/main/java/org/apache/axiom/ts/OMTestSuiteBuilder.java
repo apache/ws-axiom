@@ -151,6 +151,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetChildrenWithNameNextWithoutHasNext(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetChildrenWithNamespaceURI(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetDefaultNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetDefaultNamespace2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetDescendants(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.TestGetDescendants(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithName(metaFactory));
@@ -241,6 +242,9 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             }
             addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNonDefaultNamespace(metaFactory, creator));
             addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace(metaFactory, creator));
+            if (creator.isSupportsContainer() && creator.isSupportsDefaultNamespace()) {
+                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace2(metaFactory, creator));
+            }
         }
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullURIAndPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMNamespace(metaFactory));

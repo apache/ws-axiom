@@ -135,9 +135,7 @@ public class OMElementImpl extends OMNodeImpl
             throw new OMException("localname can not be null or empty");
         }
         this.localName = localName;
-        if (ns != null) {
-            setNamespace(ns);
-        }
+        setNamespace(ns);
     }
 
     /**
@@ -148,7 +146,8 @@ public class OMElementImpl extends OMNodeImpl
      */
     public OMElementImpl(QName qname, OMContainer parent, OMFactory factory)
             throws OMException {
-        this(qname.getLocalPart(), null, parent, factory);
+        super(parent, factory, true);
+        localName = qname.getLocalPart();
         this.ns = handleNamespace(qname);
     }
 
@@ -184,16 +183,27 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     private OMNamespace handleNamespace(OMNamespace ns) {
-        String namespaceURI = ns.getNamespaceURI();
-        String prefix = ns.getPrefix();
+        String namespaceURI = ns == null ? "" : ns.getNamespaceURI();
+        String prefix = ns == null ? "" : ns.getPrefix();
         if (namespaceURI.length() == 0 && prefix != null && prefix.length() > 0) {
             throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
         }
-        OMNamespace namespace = findNamespace(namespaceURI, prefix);
-        if (namespace == null) {
-            namespace = declareNamespace(ns);
+        if (namespaceURI.length() == 0) {
+            // Special case: no namespace; we need to generate a namespace declaration only if
+            // there is a conflicting namespace declaration (i.e. a declaration for the default
+            // namespace with a non empty URI) is in scope
+            OMNamespace defaultNamespace = getDefaultNamespace();
+            if (defaultNamespace != null && defaultNamespace.getNamespaceURI().length() > 0) {
+                declareDefaultNamespace("");
+            }
+            return ns; // TODO: actually this should be null if we want to normalize the OMNamespace (see AXIOM-398)
+        } else {
+            OMNamespace namespace = findNamespace(namespaceURI, prefix);
+            if (namespace == null) {
+                namespace = declareNamespace(ns);
+            }
+            return namespace;
         }
-        return namespace;
     }
 
     OMNamespace handleNamespace(String namespaceURI, String prefix) {
@@ -978,10 +988,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public void setNamespace(OMNamespace namespace) {
-        if (namespace != null) {
-            namespace = handleNamespace(namespace);
-        }
-        this.ns = namespace;
+        this.ns = handleNamespace(namespace);
         this.qName = null;
     }
 

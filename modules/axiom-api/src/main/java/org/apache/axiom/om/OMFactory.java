@@ -60,11 +60,16 @@ public interface OMFactory {
 
     /**
      * Create an element with the given name and parent. If the specified {@link OMNamespace} has a
-     * namespace URI but a <code>null</code> prefix, the method will use an appropriate prefix if a
-     * corresponding namespace declaration is in scope on the parent or generate a new prefix if no
-     * corresponding namespace declaration is in scope. If a new prefix is generated or if the
-     * specified prefix and namespace URI are not bound in the scope of the parent element, the
-     * method will add an appropriate namespace declaration to the new element.
+     * namespace URI but a <code>null</code> prefix, the method will reuse an existing prefix if a
+     * namespace declaration with a matching namespace URI is in scope on the parent or generate a
+     * new prefix if no such namespace declaration exists.
+     * <p>
+     * If a new prefix is generated or if the specified prefix and namespace URI are not bound in
+     * the scope of the parent element, the method will add an appropriate namespace declaration to
+     * the new element. Note that this may also occur if <code>null</code> is passed as
+     * {@link OMNamespace} parameter. In that case, if there is a default namespace declaration with
+     * a non empty namespace URI in the scope of the parent element, a namespace declaration needs
+     * to be added to the newly created element to override the default namespace.
      * 
      * @param localName
      * @param ns

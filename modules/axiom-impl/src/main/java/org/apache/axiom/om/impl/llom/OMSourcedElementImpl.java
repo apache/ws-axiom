@@ -240,7 +240,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * tree on demand, this first creates a builder
      */
     private void forceExpand() {
-        if (!isExpanded) {
+        // The dataSource != null is required because this method may be called indirectly
+        // by the constructor before the data source is set. After the constructor has completed,
+        // isExpanded is always true if dataSource is null.
+        if (!isExpanded && dataSource != null) {
 
             if (isDebugEnabled) {
                 log.debug("forceExpand: expanding element " +

@@ -18,26 +18,33 @@
  */
 package org.apache.axiom.ts.om.element;
 
-import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestGetDefaultNamespace extends AxiomTestCase {
-    public TestGetDefaultNamespace(OMMetaFactory metaFactory) {
+/**
+ * Tests the behavior of {@link OMElement#getDefaultNamespace()} in the special case where the
+ * element has no namespace and was created as a child element of an element having a default
+ * namespace with a non empty namespace URI. In this case the element must have a namespace
+ * declaration that overrides the default namespace. Therefore
+ * {@link OMElement#getDefaultNamespace()} must return null.
+ * <p>
+ * This is a regression test for
+ * <a href="https://issues.apache.org/jira/browse/AXIOM-400">AXIOM-400</a>.
+ */
+public class TestGetDefaultNamespace2 extends AxiomTestCase {
+    public TestGetDefaultNamespace2(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement parent = factory.createOMElement("parent", "urn:ns1", "");
-        OMElement child = factory.createOMElement(new QName("urn:ns2", "child", "p"), parent);
+        OMElement parent = factory.createOMElement("parent", "urn:test", "");
+        OMElement child = factory.createOMElement("child", null, parent);
         OMNamespace ns = child.getDefaultNamespace();
-        assertNotNull(ns);
-        assertEquals("", ns.getPrefix());
-        assertEquals("urn:ns1", ns.getNamespaceURI());
+        // TODO: need to specify if getDefaultNamespace should return null or ("","")
+        assertTrue(ns == null || ns.equals("", ""));
     }
 }

@@ -127,11 +127,7 @@ public class OMDOMFactory implements OMFactory {
 
         switch (((ParentNode) parent).getNodeType()) {
             case Node.ELEMENT_NODE: { // We are adding a new child to an elem
-                ElementImpl parentElem = (ElementImpl) parent;
-                ElementImpl elem = new ElementImpl((DocumentImpl) parentElem
-                        .getOwnerDocument(), localName, (OMNamespaceImpl) ns, this);
-                parentElem.appendChild(elem);
-                return elem;
+                return new ElementImpl((ElementImpl) parent, localName, (OMNamespaceImpl) ns, this);
             }
             case Node.DOCUMENT_NODE: {
                 DocumentImpl docImpl = (DocumentImpl) parent;

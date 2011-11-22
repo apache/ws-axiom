@@ -130,9 +130,10 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     public ElementImpl(ParentNode parentNode, String tagName, OMNamespaceImpl ns,
                        OMFactory factory) {
-        this((DocumentImpl) parentNode.getOwnerDocument(), tagName, ns, factory);
+        this((DocumentImpl) parentNode.getOwnerDocument(), tagName, null, factory);
         parentNode.addChild(this);
         this.done = true;
+        namespace = handleNamespace(ns);
     }
 
     public ElementImpl(ParentNode parentNode, String tagName, OMNamespaceImpl ns,
@@ -163,16 +164,27 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     }
 
     private OMNamespace handleNamespace(OMNamespace ns) {
-        String namespaceURI = ns.getNamespaceURI();
-        String prefix = ns.getPrefix();
+        String namespaceURI = ns == null ? "" : ns.getNamespaceURI();
+        String prefix = ns == null ? "" : ns.getPrefix();
         if (namespaceURI.length() == 0 && prefix != null && prefix.length() > 0) {
             throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
         }
-        OMNamespace namespace = findNamespace(namespaceURI, prefix);
-        if (namespace == null) {
-            namespace = declareNamespace(ns);
+        if (namespaceURI.length() == 0) {
+            // Special case: no namespace; we need to generate a namespace declaration only if
+            // there is a conflicting namespace declaration (i.e. a declaration for the default
+            // namespace with a non empty URI) is in scope
+            OMNamespace defaultNamespace = getDefaultNamespace();
+            if (defaultNamespace != null && defaultNamespace.getNamespaceURI().length() > 0) {
+                declareDefaultNamespace("");
+            }
+            return ns; // TODO: actually this should be null if we want to normalize the OMNamespace (see AXIOM-398)
+        } else {
+            OMNamespace namespace = findNamespace(namespaceURI, prefix);
+            if (namespace == null) {
+                namespace = declareNamespace(ns);
+            }
+            return namespace;
         }
-        return namespace;
     }
 
     // /
@@ -1077,10 +1089,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     }
 
     public void setNamespace(OMNamespace namespace) {
-        if (namespace != null) {
-            namespace = handleNamespace(namespace);
-        }
-        this.namespace = namespace;
+        this.namespace = handleNamespace(namespace);
     }
 
     public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
