@@ -91,8 +91,6 @@ public class OMElementImpl extends OMNodeImpl
     /** Field attributes */
     protected HashMap attributes = null;
 
-    /** Field noPrefixNamespaceCounter */
-    protected int noPrefixNamespaceCounter = 0;
     protected OMNode lastChild;
     private int lineNumber;
     private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
