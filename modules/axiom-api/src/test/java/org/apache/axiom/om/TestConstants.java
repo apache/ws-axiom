@@ -47,6 +47,13 @@ public class TestConstants {
             "multipart/Related; charset=\"UTF-8\"; type=\"application/xop+xml\"; " +
             "boundary=\"----=_AxIs2_Def_boundary_=42214532\"; start=\"SOAPPart\"");
     
+    public static final MIMEResource SWA_MESSAGE = new MIMEResource(
+            "soap/soap11/SWAAttachmentStream.txt",
+            "multipart/related; " +
+            "boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; " +
+            "type=\"text/xml\"; " +
+            "start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"");
+    
     private TestConstants() {
     }
 

@@ -42,11 +42,6 @@ public class AttachmentsTest extends AbstractTestCase {
         super(testName);
     }
 
-    String inSWAFileName = "soap/soap11/SWAAttachmentStream.txt";
-    
-    String contentTypeString =
-        "multipart/related; boundary=\"MIMEBoundaryurn:uuid:A3ADBAEE51A1A87B2A11443668160701\"; type=\"application/xop+xml\"; start=\"<0.urn:uuid:A3ADBAEE51A1A87B2A11443668160702@apache.org>\"; start-info=\"application/soap+xml\"; charset=UTF-8;action=\"mtomSample\"";
-
     public void testWritingBinaryAttachments() throws Exception {
         MIMEResource testMessage = TestConstants.MTOM_MESSAGE;
 
@@ -135,8 +130,8 @@ public class AttachmentsTest extends AbstractTestCase {
     public void testSWAWriteWithIncomingOrder() throws Exception {
 
         // Read the stream that has soap xml followed by BAttachment then AAttachment
-        InputStream inStream = getTestResource(inSWAFileName);
-        Attachments attachments = new Attachments(inStream, contentTypeString);
+        InputStream inStream = getTestResource(TestConstants.SWA_MESSAGE.getName());
+        Attachments attachments = new Attachments(inStream, TestConstants.SWA_MESSAGE.getContentType());
 
         // Get the contentIDs to force the reading
         String[] contentIDs = attachments.getAllContentIDs();

@@ -25,6 +25,8 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 
 import javax.activation.DataHandler;
+import javax.mail.internet.ContentType;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -143,17 +145,23 @@ public class Attachments implements OMAttachmentAccessor {
     }
 
     /**
-     * Identify the type of message (MTOM or SOAP with attachments) represented by this
-     * object.
+     * Identify the type of message (MTOM or SOAP with attachments) represented by this object. Note
+     * that this method is only meaningful if the instance was created from a stream.
      * 
-     * @return One of the {@link MTOMConstants#MTOM_TYPE}, {@link MTOMConstants#SWA_TYPE}
-     *         or {@link MTOMConstants#SWA_TYPE_12} constants.
-     * @throws OMException if the message doesn't have one of the supported types, i.e. is
-     *         neither MTOM nor SOAP with attachments
+     * @return One of the {@link MTOMConstants#MTOM_TYPE}, {@link MTOMConstants#SWA_TYPE} or
+     *         {@link MTOMConstants#SWA_TYPE_12} constants.
+     * @throws OMException
+     *             if the message doesn't have one of the supported types (i.e. is neither MTOM nor
+     *             SOAP with attachments) or if the instance was not created from a stream
      */
     public String getAttachmentSpecType() {
         if (this.applicationType == null) {
-            applicationType = impl.getContentType().getParameter("type");
+            ContentType contentType = impl.getContentType();
+            if (contentType == null) {
+                throw new OMException("Unable to determine the attachment spec type because the " +
+                		"Attachments object doesn't have a known content type");
+            }
+            applicationType = contentType.getParameter("type");
             if ((MTOMConstants.MTOM_TYPE).equalsIgnoreCase(applicationType)) {
                 this.applicationType = MTOMConstants.MTOM_TYPE;
             } else if ((MTOMConstants.SWA_TYPE).equalsIgnoreCase(applicationType)) {

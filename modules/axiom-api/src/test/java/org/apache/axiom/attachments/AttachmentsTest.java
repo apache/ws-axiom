@@ -44,8 +44,10 @@ import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.MIMEResource;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.TestConstants;
+import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.testutils.activation.RandomDataSource;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.util.UIDGenerator;
@@ -659,5 +661,32 @@ public class AttachmentsTest extends AbstractTestCase {
 
     public void testTurkishLocale2() throws Exception {
         testTurkishLocale("content-id");
+    }
+    
+    private void testGetAttachmentSpecType(MIMEResource resource, String expectedResult) throws Exception {
+        InputStream in = getTestResource(resource.getName());
+        try {
+            Attachments attachments = new Attachments(in, resource.getContentType());
+            assertEquals(expectedResult, attachments.getAttachmentSpecType());
+        } finally {
+            in.close();
+        }
+    }
+    
+    public void testGetAttachmentSpecTypeMTOM() throws Exception {
+        testGetAttachmentSpecType(TestConstants.MTOM_MESSAGE, MTOMConstants.MTOM_TYPE);
+    }
+    
+    public void testGetAttachmentSpecTypeSWA() throws Exception {
+        testGetAttachmentSpecType(TestConstants.SWA_MESSAGE, MTOMConstants.SWA_TYPE);
+    }
+    
+    public void testGetAttachmentSpecTypeWithoutStream() {
+        try {
+            new Attachments().getAttachmentSpecType();
+            fail("Expected OMException");
+        } catch (OMException ex) {
+            // Expected
+        }
     }
 }
