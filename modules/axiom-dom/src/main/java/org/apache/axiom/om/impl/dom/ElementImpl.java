@@ -177,7 +177,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             if (defaultNamespace != null && defaultNamespace.getNamespaceURI().length() > 0) {
                 declareDefaultNamespace("");
             }
-            return ns; // TODO: actually this should be null if we want to normalize the OMNamespace (see AXIOM-398)
+            return null;
         } else {
             OMNamespace namespace = findNamespace(namespaceURI, prefix);
             if (namespace == null) {

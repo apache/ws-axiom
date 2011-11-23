@@ -82,6 +82,16 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     
     private XMLStreamReader readerFromDS = null;  // Reader from DataSource
 
+    private static OMNamespace normalize(OMNamespace ns) {
+        // TODO: the ns.getPrefix() == null case actually doesn't make sense for a sourced element!
+        return ns == null || (ns.getPrefix() == null || ns.getPrefix().length() == 0) && ns.getNamespaceURI().length() == 0 ? null : ns;
+    }
+    
+    private static OMNamespace getOMNamespace(QName qName) {
+        return qName.getNamespaceURI().length() == 0 ? null
+                : new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
+    }
+    
     /**
      * Constructor.
      *
@@ -98,13 +108,13 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         if (!isExpanded) {
             if (!isLossyPrefix(dataSource)) {
                 // Believe the prefix and create a normal OMNamespace
-                definedNamespace = ns;
+                definedNamespace = normalize(ns);
             } else {
                 // Create a deferred namespace that forces an expand to get the prefix
                 definedNamespace = new DeferredNamespace(ns.getNamespaceURI());
             }
         } else {
-            definedNamespace = ns;
+            definedNamespace = normalize(ns);
         }
     }
 
@@ -123,13 +133,13 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         if (!isExpanded) {
             if (!isLossyPrefix(dataSource)) {
                 // Believe the prefix and create a normal OMNamespace
-                definedNamespace = new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
+                definedNamespace = getOMNamespace(qName);
             } else {
                 // Create a deferred namespace that forces an expand to get the prefix
                 definedNamespace = new DeferredNamespace(qName.getNamespaceURI());
             }
         } else {
-            definedNamespace = new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
+            definedNamespace = getOMNamespace(qName);
         }
     }
 

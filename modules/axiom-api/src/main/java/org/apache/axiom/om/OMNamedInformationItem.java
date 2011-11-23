@@ -43,7 +43,9 @@ public interface OMNamedInformationItem extends OMInformationItem {
      * Get the namespace this information item is part of.
      * 
      * @return the namespace of this information item, or <code>null</code> if the information item
-     *         has no namespace
+     *         has no namespace (note that this implies that the method never returns an
+     *         {@link OMNamespace} object with both prefix and namespace URI set to the empty
+     *         string)
      */
     OMNamespace getNamespace();
 

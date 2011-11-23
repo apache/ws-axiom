@@ -158,7 +158,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithNameOnIncompleteElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceContext(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceContext(metaFactory, true));
-        addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceNormalized(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceNormalized(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceNormalized(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceNormalizedWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceNormalizedWithSAXSource(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespacesInScope(metaFactory));
@@ -277,6 +278,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestComplete(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestExpand(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized2(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetTextAsStreamWithNonDestructiveOMDataSource(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1DefaultPrefix(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1QualifiedPrefix(metaFactory));

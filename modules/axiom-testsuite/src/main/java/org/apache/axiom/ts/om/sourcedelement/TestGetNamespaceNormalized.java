@@ -16,44 +16,40 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.element;
+package org.apache.axiom.ts.om.sourcedelement;
 
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.om.ds.CharArrayDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMNamedInformationItem#getNamespace()} returns <code>null</code> for an element
- * with no namespace. The case considered in this test is a programmatically created element without
- * namespace that is added as a child to another element that has a default namespace. Earlier
- * versions of Axiom returned a non null value in this case to work around an issue in the
- * serialization code.
- * <p>
- * The test is executed twice: once with a <code>null</code> {@link OMNamespace} and once with an
- * {@link OMNamespace} object with prefix and namespace URI set to the empty string. The expected
- * result is the same in both cases.
+ * Tests that {@link OMElement#getNamespace()} returns <code>null</code> even if an
+ * {@link OMNamespace} object with empty prefix and namespace URI was passed to
+ * {@link OMFactory#createOMElement(OMDataSource, String, OMNamespace)}.
  * <p>
  * This is a regression test for <a
  * href="https://issues.apache.org/jira/browse/AXIOM-398">AXIOM-398</a>.
  */
 public class TestGetNamespaceNormalized extends AxiomTestCase {
-    private final boolean useNull;
-    
-    public TestGetNamespaceNormalized(OMMetaFactory metaFactory, boolean useNull) {
+    public TestGetNamespaceNormalized(OMMetaFactory metaFactory) {
         super(metaFactory);
-        this.useNull = useNull;
-        addTestProperty("useNull", String.valueOf(useNull));
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement parent = factory.createOMElement("parent", "urn:test", "");
-        OMNamespace ns = useNull ? null : factory.createOMNamespace("", "");
-        OMElement child = factory.createOMElement("child", ns);
-        parent.addChild(child);
-        assertNull(child.getNamespace());
+        OMNamespace ns = factory.createOMNamespace("", "");
+        OMSourcedElement element = factory.createOMElement(new CharArrayDataSource(
+                "<element>content</element>".toCharArray()), "element", ns);
+        // This actually returns the "declared" namespace because the sourced element is not
+        // expanded yet. Nevertheless the value should have been normalized to null.
+        assertNull(element.getNamespace());
+        // Now expand the element and check getNamespace() again
+        element.getFirstOMChild();
+        assertNull(element.getNamespace());
     }
 }

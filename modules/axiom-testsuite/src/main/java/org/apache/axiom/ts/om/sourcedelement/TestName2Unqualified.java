@@ -51,8 +51,7 @@ public class TestName2Unqualified extends OMSourcedElementTest {
 
         // Test getting the namespace, localpart and prefix.  This should used not result in expansion
         assertTrue(element.getLocalName().equals("library"));
-        assertTrue(element.getNamespace().getNamespaceURI().equals(""));
-        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertNull(element.getNamespace());
 
         // Serialize and consume.  This should not cause expansion and currently won't update
         // the name of the element.
@@ -63,8 +62,7 @@ public class TestName2Unqualified extends OMSourcedElementTest {
         String result = writer.toString();
 
         assertTrue(element.getLocalName().equals("library"));
-        assertTrue(element.getNamespace().getNamespaceURI().equals(""));
-        assertTrue(element.getNamespace().getPrefix().equals(""));
+        assertNull(element.getNamespace());
         assertTrue(result.indexOf("xmlns=") <
                 0);// Make sure that the serialized string does not contain default prefix declaration
 
