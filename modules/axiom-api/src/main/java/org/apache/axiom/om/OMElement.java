@@ -79,8 +79,7 @@ import java.util.Iterator;
  * <li>More precisely, Axiom will always make sure that any {@link OMElement} or {@link OMAttribute}
  * node will keep the namespace URI that has been assigned to the node at creation time, unless the
  * namespace is explicitly changed using {@link #setNamespace(OMNamespace)} or
- * {@link OMAttribute#setOMNamespace(OMNamespace)}. [TODO: this is currently not entirely true; see
- * WSCOMMONS-517]
+ * {@link OMAttribute#setOMNamespace(OMNamespace)}.
  * </ul>
  */
 public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
