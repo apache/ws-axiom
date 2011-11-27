@@ -70,4 +70,19 @@ API inconsistencies to be eliminated
      <<<getChildrenWithName>>>, <<<getChildrenWithNamespaceURI>>> and <<<getFirstChildWithName>>>.
      Since the document element is unique, these methods are not meaningful for <<<OMDocument>>>
      and they should be declared by <<<OMElement>>> instead.
-     
+
+APIs that need to be overhauled
+
+* Attachment lifecycle manager
+
+  The <<<LifecycleManager>>> API has a couple of issues that can't be fixed without breaking
+  backward compatibility:
+  
+   * There is some overlap with the <<<AttachmentCacheMonitor>>> class. There should be a single API to
+     manage the lifecycle of buffered attachments.
+   
+   * <<<LifecycleManager>>> is an abstract API (interface), but refers to <<<FileAccessor>>> which
+     is placed in an <<<impl>>> package.
+   
+   * <<<FileAccessor>>> uses the <<<MessagingException>>> class from JavaMail, although Axiom no
+     longer relies on this API to parse or create MIME messages.
