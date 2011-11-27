@@ -37,7 +37,7 @@ public class OMImplementationTest extends TestCase {
         builder.exclude(TestInsertSiblingAfterOnChild.class);
         builder.exclude(TestInsertSiblingBeforeOnChild.class);
         
-        // WSCOMMONS-453
+        // AXIOM-201
         builder.exclude(TestGetXMLStreamReaderWithOMSourcedElementDescendant.class);
         
         // TODO: this case is not working because Axiom generates an XML declaration

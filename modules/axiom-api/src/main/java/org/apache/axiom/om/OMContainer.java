@@ -329,7 +329,7 @@ public interface OMContainer extends OMSerializable {
      * {@link OMAttachmentAccessor#getDataHandler(String)} must be used to retrieve the binary
      * content. The fact that this method is deprecated removes the need for this.</li>
      * <li>In Axiom versions prior to 1.2.9, the sequence of events was inconsistent if the
-     * underlying stream is XOP encoded and caching is disabled (see WSCOMMONS-485). This made it
+     * underlying stream is XOP encoded and caching is disabled (see AXIOM-255). This made it
      * necessary for the caller to (partially) handle the XOP processing and to use
      * {@link OMAttachmentAccessor#getDataHandler(String)} to retrieve the binary content. Starting
      * with 1.2.9 this is no longer be the case: as specified above, the sequence of events is

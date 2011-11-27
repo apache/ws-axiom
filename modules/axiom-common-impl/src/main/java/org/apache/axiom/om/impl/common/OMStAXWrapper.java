@@ -90,7 +90,7 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
         } else {
             if (xopEncoder == null) {
                 // Since the intention is to support an efficient way to pass binary content to a
-                // consumer that is not aware of our data handler extension (see WSCOMMONS-344), we
+                // consumer that is not aware of our data handler extension (see AXIOM-202), we
                 // use OptimizationPolicy.ALL, i.e. we ignore OMText#isOptimized().
                 xopEncoder = new XOPEncodingStreamReader(switchingWrapper, ContentIDGenerator.DEFAULT,
                         OptimizationPolicy.ALL);

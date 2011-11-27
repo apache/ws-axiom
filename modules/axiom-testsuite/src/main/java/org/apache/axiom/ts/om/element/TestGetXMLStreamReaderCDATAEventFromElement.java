@@ -51,8 +51,8 @@ public class TestGetXMLStreamReaderCDATAEventFromElement extends AxiomTestCase {
         }
         
         assertEquals(XMLStreamReader.CDATA, event);
-        assertEquals("hello world", reader2.getText()); // WSCOMMONS-341
-        assertTrue(Arrays.equals("hello world".toCharArray(), reader2.getTextCharacters())); // WSCOMMONS-338
+        assertEquals("hello world", reader2.getText()); // AXIOM-146
+        assertTrue(Arrays.equals("hello world".toCharArray(), reader2.getTextCharacters())); // AXIOM-144
         assertEquals(XMLStreamReader.END_ELEMENT, reader2.next());
     }
 }

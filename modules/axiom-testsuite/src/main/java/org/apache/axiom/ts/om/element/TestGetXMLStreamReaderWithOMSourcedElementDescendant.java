@@ -29,7 +29,7 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.CharArrayDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
-// Test for WSCOMMONS-453
+// Test for AXIOM-201
 public class TestGetXMLStreamReaderWithOMSourcedElementDescendant extends AxiomTestCase {
     public TestGetXMLStreamReaderWithOMSourcedElementDescendant(OMMetaFactory metaFactory) {
         super(metaFactory);

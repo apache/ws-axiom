@@ -675,7 +675,7 @@ public class OMSerializerUtil {
         throws XMLStreamException {
         
         // The "xml" prefix is always (implicitly) associated. Returning true here makes sure that
-        // we never write a declaration for the xml namespace. See WSCOMMONS-281 for a discussion
+        // we never write a declaration for the xml namespace. See AXIOM-37 for a discussion
         // of this issue.
         if ("xml".equals(prefix)) {
             return true;

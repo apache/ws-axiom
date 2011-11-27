@@ -158,7 +158,7 @@ public class NamespaceTest extends XMLTestCase {
     }
 
     /**
-     * This is re-producing and testing the bug mentioned in http://issues.apache.org/jira/browse/WSCOMMONS-74
+     * This is re-producing and testing the bug mentioned in http://issues.apache.org/jira/browse/AXIOM-35
      */
     public void testNamespaceProblem7() throws Exception {
 
@@ -193,7 +193,7 @@ public class NamespaceTest extends XMLTestCase {
     }
 
     /**
-     * This is re-producing and testing the bug mentioned in http://issues.apache.org/jira/browse/WSCOMMONS-74
+     * This is re-producing and testing the bug mentioned in http://issues.apache.org/jira/browse/AXIOM-35
      */
     public void testNamespaceProblem8() throws Exception {
 

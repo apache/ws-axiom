@@ -235,7 +235,7 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
      * Serialize the tree (with caching).
      * Then ensure that the XOP is preserved when it is serialized again.
      * <p>
-     * Regression test for WSCOMMONS-446.
+     * Regression test for AXIOM-264.
      * 
      * @throws Exception
      */

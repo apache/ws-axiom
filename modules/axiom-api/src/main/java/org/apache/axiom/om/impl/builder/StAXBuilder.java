@@ -683,7 +683,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
     /**
      * Get the value of a feature/property from the underlying XMLStreamReader implementation
-     * without accessing the XMLStreamReader. https://issues.apache.org/jira/browse/WSCOMMONS-155
+     * without accessing the XMLStreamReader. https://issues.apache.org/jira/browse/AXIOM-348
      *
      * @param name
      * @return TODO

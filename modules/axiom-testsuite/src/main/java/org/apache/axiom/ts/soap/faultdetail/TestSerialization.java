@@ -29,7 +29,7 @@ import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-// Regression test for WSCOMMONS-530
+// Regression test for AXIOM-196
 public class TestSerialization extends SOAPTestCase {
     public TestSerialization(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

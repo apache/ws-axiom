@@ -60,7 +60,7 @@ public class OMImplementationTest extends TestCase {
         // DOOM doesn't support CDATA sections
         builder.exclude(TestGetXMLStreamReaderCDATAEventFromElement.class);
         
-        // WSCOMMONS-453
+        // AXIOM-201
         builder.exclude(TestGetXMLStreamReaderWithOMSourcedElementDescendant.class);
         
         // TODO: this case is not working because Axiom generates an XML declaration

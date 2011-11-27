@@ -88,7 +88,7 @@ public class TextHelperTest extends AbstractTestCase {
     }
     
     /**
-     * Regression test for WSCOMMONS-101.
+     * Regression test for AXIOM-101.
      * 
      * @throws Exception
      */

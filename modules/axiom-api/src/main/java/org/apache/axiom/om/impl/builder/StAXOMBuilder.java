@@ -70,7 +70,7 @@ import java.io.InputStream;
  * error before. While one would expect that after a first error reported by the parser, all
  * subsequent invocations of the parser will fail, this is not the case for all parsers
  * (at least not in all situations). Instead, the parser might be left in an inconsistent
- * state after the error. E.g. WSCOMMONS-372 describes a case where Woodstox
+ * state after the error. E.g. AXIOM-34 describes a case where Woodstox
  * encounters an error in {@link XMLStreamReader#getText()} but continues to return
  * (incorrect) events afterwards. The explanation for this behaviour might be that
  * the situation described here is quite uncommon when StAX is used directly (i.e. not through

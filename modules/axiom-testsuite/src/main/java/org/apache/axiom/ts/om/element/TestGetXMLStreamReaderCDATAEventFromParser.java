@@ -30,7 +30,7 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.ts.AxiomTestCase;
 
-// Regression test for WSCOMMONS-338 and WSCOMMONS-341
+// Regression test for AXIOM-144 and AXIOM-146
 public class TestGetXMLStreamReaderCDATAEventFromParser extends AxiomTestCase {
     public TestGetXMLStreamReaderCDATAEventFromParser(OMMetaFactory metaFactory) {
         super(metaFactory);
@@ -61,8 +61,8 @@ public class TestGetXMLStreamReaderCDATAEventFromParser extends AxiomTestCase {
         // Only woodstox is guaranteed to generate CDATA events if javax.xml.stream.isCoalescing=false
         if (reader.toString().indexOf("wstx")!=-1) {
             assertEquals(XMLStreamReader.CDATA, event);
-            assertEquals("hello world", reader2.getText()); // WSCOMMONS-341
-            assertTrue(Arrays.equals("hello world".toCharArray(), reader2.getTextCharacters())); // WSCOMMONS-338
+            assertEquals("hello world", reader2.getText()); // AXIOM-146
+            assertTrue(Arrays.equals("hello world".toCharArray(), reader2.getTextCharacters())); // AXIOM-144
             assertEquals(XMLStreamReader.END_ELEMENT, reader2.next());
         }
     }

@@ -183,7 +183,7 @@ public class AttachmentsTest extends AbstractTestCase {
         testGetRootPartContentID("cid:my-content-id@localhost", "my-content-id@localhost");
     }
     
-    // Regression test for WSCOMMONS-329
+    // Regression test for AXIOM-195
     public void testGetRootPartContentIDWithCidPrefix2() throws Exception {
         testGetRootPartContentID("<cid-73920@192.168.0.1>", "cid-73920@192.168.0.1");
     }

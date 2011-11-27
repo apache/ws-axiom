@@ -129,7 +129,7 @@ public class ElementHelper {
     }
 
     /**
-     * @deprecated use {@link #getContentID(XMLStreamReader)} instead (see WSCOMMONS-429)
+     * @deprecated use {@link #getContentID(XMLStreamReader)} instead (see AXIOM-129)
      */
     public static String getContentID(XMLStreamReader parser, String charsetEncoding) {
         return getContentID(parser);

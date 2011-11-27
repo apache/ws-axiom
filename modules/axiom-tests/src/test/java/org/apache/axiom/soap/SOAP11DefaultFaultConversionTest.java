@@ -29,7 +29,7 @@ import junit.framework.TestCase;
 
 /**
  * Test case to check conversion of the default fault envelope generated
- * http://issues.apache.org/jira/browse/WSCOMMONS-343
+ * http://issues.apache.org/jira/browse/AXIOM-113
  */
 public class SOAP11DefaultFaultConversionTest extends TestCase {
     
