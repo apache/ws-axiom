@@ -71,6 +71,41 @@ API inconsistencies to be eliminated
      Since the document element is unique, these methods are not meaningful for <<<OMDocument>>>
      and they should be declared by <<<OMElement>>> instead.
 
+Removal of unnecessary or irrelevant APIs
+
+  This section identifies APIs that have become unnecessary or irrelevant. Note that APIs that
+  have already been deprecated in 1.2.x (and will be removed in 1.3 anyway) are not listed here.
+
+* <<<OMAttachmentAccessor>>>
+
+  In Axiom versions prior to 1.2.9, the sequence of events produced by the <<<XMLStreamReader>>>
+  returned by <<<getXMLStreamReaderWithoutCaching>>> was inconsistent if the underlying stream is
+  XOP encoded (see AXIOM-255). This made it necessary for application code to (partially) handle the
+  XOP processing itself. That is the reason why the <<<XMLStreamReader>>> instance (which is
+  an <<<OMStAXWrapper>>>) implements <<<OMAttachmentAccessor>>>: it allowed the application code
+  to retrieve the binary content for undecoded <<<xop:Include>>> elements.
+  
+  Starting with Axiom 1.2.9 the sequence of events produced by the
+  <<<XMLStreamReader>>> is always the same (i.e. XOP is always completely decoded) and all binary
+  content is reported through the <<<DataHandlerReader>>> extension, making the <<<OMAttachmentAccessor>>>
+  API unnecessary in that context.
+  
+  The interface is used in several other contexts as well, but it is actually unnecessary in each of them:
+  
+   * The <<<Attachments>>> class implements <<<OMAttachmentAccessor>>>. However, it is not possible to
+     substitute an <<<Attachments>>> object by an arbitrary <<<OMAttachmentAccessor>>> instance (e.g. when
+     parsing an XOP/MTOM message). This would actually be a useful feature, but in that particular context,
+     there is an overlap with the <<<MimePartProvider>>> interface and that API would be better suited.
+   
+   * The <<<OMAttachmentAccessor>>> API is required in conjunction with the <<<setInlineMTOM>>> method
+     defined by <<<OMXMLStreamReader>>>. However, that method is deprecated.
+   
+   * The <<<XOPBuilder>>> interface extends <<<OMAttachmentAccessor>>>. However, <<<XOPBuilder>>> (as well
+     as its implementing classes <<<XOPAwareStAXOMBuilder>>> and <<<MTOMStAXSOAPModelBuilder>>>) is part
+     of an <<<impl>>> package and is not expected to be referenced directly by application code. Starting
+     with r1164997, <<<XOPBuilder>>> is also no longer used internally by Axiom. [TODO: not entirely true,
+     there is still a reference in <<<OMTextImpl>>>/<<<TextNodeImpl>>>]
+
 APIs that need to be overhauled
 
 * Attachment lifecycle manager
