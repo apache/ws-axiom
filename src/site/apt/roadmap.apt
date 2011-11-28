@@ -76,7 +76,7 @@ Removal of unnecessary or irrelevant APIs
   This section identifies APIs that have become unnecessary or irrelevant. Note that APIs that
   have already been deprecated in 1.2.x (and will be removed in 1.3 anyway) are not listed here.
 
-* <<<OMAttachmentAccessor>>>
+* <<<org.apache.axiom.om.OMAttachmentAccessor>>>
 
   In Axiom versions prior to 1.2.9, the sequence of events produced by the <<<XMLStreamReader>>>
   returned by <<<getXMLStreamReaderWithoutCaching>>> was inconsistent if the underlying stream is
@@ -105,6 +105,87 @@ Removal of unnecessary or irrelevant APIs
      of an <<<impl>>> package and is not expected to be referenced directly by application code. Starting
      with r1164997, <<<XOPBuilder>>> is also no longer used internally by Axiom. [TODO: not entirely true,
      there is still a reference in <<<OMTextImpl>>>/<<<TextNodeImpl>>>]
+
+* <<<org.apache.axiom.om.impl.builder.BuilderAwareReader>>>
+
+  This API can't be preserved as is in Axiom 1.3. There are two reasons for this:
+  
+   * The only method defined by the <<<BuilderAwareReader>>> interface has a
+     parameter of type <<<StAXBuilder>>>, but that class will be removed from
+     <<<axiom-api>>> (see below). The parameter type would have to be changed to
+     <<<OMXMLParserWrapper>>>.
+   
+   * It the interface is considered a public API, then it is placed in the
+     wrong package.
+  
+  TODO: analyze the use cases for this API to see if we still need it 
+
+Classes to be moved from <<<axiom-api>>> to <<<axiom-common-impl>>>
+
+  Up to version 1.2.12, the core Axiom code was organized in three modules,
+  namely <<<axiom-api>>>, <<<axiom-impl>>> and <<<axiom-dom>>>, where <<<axiom-api>>>
+  contains both the public API as well as implementation classes shared by LLOM and DOOM.
+  Unfortunately the distinction between the public API and these shared implementation
+  classes has become somewhat blurred over time. In Axiom 1.2.13 a new module
+  <<<axiom-common-impl>>> was introduced with the specific goal of separating the
+  shared implementation classes from the public API. However, in Axiom 1.2.x this only
+  applies to new code because in most cases it is not possible to move classes from
+  <<<axiom-api>>> to <<<axiom-common-impl>>> without the risk of breaking existing code.
+  
+  A new major release gives us the opportunity to move the existing shared classes to
+  <<<axiom-common-impl>>> as well, so that in Axiom 1.3, <<<axiom-api>>> will only
+  contain Axiom's public API. This is one of the important goals for Axiom 1.3
+  because it has multiple benefits:
+  
+   * The more compact the public API is, the easier it is for users to understand the
+     API and to locate the features they are looking for.
+   
+   * By definition, anything that is not part of the public API can be modified
+     without the risk of breaking application code. Clarifying the distinction between
+     the public API and internal implementation classes therefore gives the project
+     more flexibility to implement changes.
+   
+   * Having a well defined abstract API allows to create alternative implementations
+     of that API.
+  
+  This section identifies the classes and internal APIs that will be removed
+  from <<<axiom-api>>>.
+
+* Builder implementations
+
+  In Axiom 1.2.13, the <<<OMXMLBuilderFactory>>> API allows to create any type of
+  object model builder (plain XML, SOAP, XOP and MTOM). The API also defines two
+  interfaces representing a builder: <<<OMXMLParserWrapper>>> and <<<SOAPModelBuilder>>>.
+  This means that application code should no longer reference the builder implementation
+  classes directly, but only <<<OMXMLBuilderFactory>>>, <<<OMXMLParserWrapper>>> and
+  <<<SOAPModelBuilder>>>. In Axiom 1.3 the implementation classes can therefore be moved
+  to <<<axiom-common-impl>>>. They are:
+  
+   * <<<org.apache.axiom.om.impl.builder.StAXBuilder>>>
+   
+   * <<<org.apache.axiom.om.impl.builder.StAXOMBuilder>>>
+   
+   * <<<org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder>>>
+   
+   * <<<org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder>>>
+   
+   * <<<org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder>>>
+  
+  TODO: there is one API that still references <<<StAXBuilder>>>, namely <<<BuilderAwareReader>>>;
+        it needs to be changed (or removed)
+  
+  Together with these classes, the following interfaces and helper classes should also
+  be moved to <<<axiom-common-impl>>>:
+  
+   * <<<org.apache.axiom.om.impl.builder.XOPBuilder>>> (TODO: probably no longer required)
+
+Public APIs that need to be moved to another package
+
+  Some interfaces are part of the public API although they are placed in an
+  <<<impl>>> package. These interfaces need to be moved to another package to make it
+  clear that they are not internal or implementation specific interfaces:
+  
+   * <<<org.apache.axiom.om.impl.builder.CustomBuilder>>>
 
 APIs that need to be overhauled
 
