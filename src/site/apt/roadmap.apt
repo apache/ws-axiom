@@ -102,9 +102,8 @@ Removal of unnecessary or irrelevant APIs
    
    * The <<<XOPBuilder>>> interface extends <<<OMAttachmentAccessor>>>. However, <<<XOPBuilder>>> (as well
      as its implementing classes <<<XOPAwareStAXOMBuilder>>> and <<<MTOMStAXSOAPModelBuilder>>>) is part
-     of an <<<impl>>> package and is not expected to be referenced directly by application code. Starting
-     with r1164997, <<<XOPBuilder>>> is also no longer used internally by Axiom. [TODO: not entirely true,
-     there is still a reference in <<<OMTextImpl>>>/<<<TextNodeImpl>>>]
+     of an <<<impl>>> package and is not expected to be referenced directly by application code. With the changes in
+     r1164997 and r1207662, <<<XOPBuilder>>> is also no longer used internally by Axiom.
 
 * <<<org.apache.axiom.om.impl.builder.BuilderAwareReader>>>
 
