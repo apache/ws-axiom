@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 /**
@@ -212,24 +211,5 @@ class ContentStoreFactory {
             }
         }
         return dynamicThreshold;
-    }
-    
-    /**
-     * A normal ByteArrayOutputStream, except that it returns the buffer
-     * directly instead of returning a copy of the buffer.
-     */
-    static class BAOS extends ByteArrayOutputStream {
-
-        /**
-         * Create a BAOS with a decent sized buffer
-         */
-        public BAOS() {
-            super(16 * 1024);
-        }
-
-        public byte[] toByteArray() {
-            return buf;
-        }
-        
     }
 }
