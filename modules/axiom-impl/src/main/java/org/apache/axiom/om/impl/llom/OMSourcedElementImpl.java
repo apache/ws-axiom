@@ -78,7 +78,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     private static Log log = LogFactory.getLog(OMSourcedElementImpl.class);
     private static final boolean isDebugEnabled = log.isDebugEnabled();
     
-    private static Log forceExpandLog = LogFactory.getLog(OMSourcedElementImpl.class.toString()+".forceExpand");
+    private static Log forceExpandLog = LogFactory.getLog(OMSourcedElementImpl.class.getName() + ".forceExpand");
     
     private XMLStreamReader readerFromDS = null;  // Reader from DataSource
 
