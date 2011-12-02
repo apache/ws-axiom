@@ -19,7 +19,6 @@
 package org.apache.axiom.attachments;
 
 import javax.activation.DataHandler;
-import javax.mail.MessagingException;
 
 /**
  * Interface representing a MIME part. A part can be the SOAP part (or more generally the root part
@@ -50,7 +49,6 @@ public interface Part {
      * Get the value of a specific header
      * @param name
      * @return value or null
-     * @throws MessagingException
      */
-    public String getHeader(String name) throws MessagingException;
+    public String getHeader(String name);
 }
