@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.impl.BufferUtils;
@@ -30,42 +29,41 @@ import org.apache.commons.logging.LogFactory;
 import java.io.InputStream;
 
 /**
- * The PartFactory creates an object that represents a Part
- * (implements the Part interface).  There are different ways
- * to represent a part (backing file or backing array etc.).
- * These different implementations should not be exposed to the 
- * other layers of the code.  The PartFactory helps maintain this
- * abstraction, and makes it easier to add new implementations.
+ * Factory for {@link PartContent} objects. There are different ways to store the content of a part
+ * (backing file or backing array etc.). These different implementations should not be exposed to
+ * the other layers of the code. The {@link PartContentFactory} helps maintain this abstraction, and
+ * makes it easier to add new implementations.
  */
-class ContentStoreFactory {
+class PartContentFactory {
     
     private static int inflight = 0;  // How many attachments are currently being built.
-    private static String semifore = "PartFactory.semifore";
+    private static final String semifore = "PartFactory.semifore";
     
-    private static Log log = LogFactory.getLog(ContentStoreFactory.class);
+    private static final Log log = LogFactory.getLog(PartContentFactory.class);
     
     // Maximum number of threads allowed through createPart
-    private static int INFLIGHT_MAX = 4;
+    private static final int INFLIGHT_MAX = 4;
     
     // Constants for dynamic threshold 
     // Dynamic Threshold = availMemory / THRESHOLD_FACTOR
     private static final int THRESHOLD_FACTOR = 5;
     
     /**
-     * Creates a part from the input stream.
-     * The remaining parameters are used to determine if the
-     * part should be represented in memory (byte buffers) or
-     * backed by a file.
+     * Creates a {@link PartContent} object from a given input stream. The remaining parameters are
+     * used to determine if the content should be stored in memory (byte buffers) or backed by a
+     * file.
      * 
-     * @param in MIMEBodyPartInputStream
+     * @param manager
+     * @param in
      * @param isSOAPPart
      * @param thresholdSize
      * @param attachmentDir
      * @param messageContentLength
      * @return Part
-     * @throws OMException if any exception is encountered while processing.
+     * @throws OMException
+     *             if any exception is encountered while processing.
      */
-    static ContentStore createContentStore(LifecycleManager manager, InputStream in,
+    static PartContent createPartContent(LifecycleManager manager, InputStream in,
                     boolean isSOAPPart,
                     int thresholdSize,
                     String attachmentDir,
@@ -80,7 +78,7 @@ class ContentStoreFactory {
         }
         
         try {
-            ContentStore part;
+            PartContent partContent;
             try {
                 
                 // Message throughput is increased if the number of threads in this
@@ -119,7 +117,7 @@ class ContentStoreFactory {
                     // keeps the data in non-contiguous byte buffers.
                     BAAOutputStream baaos = new BAAOutputStream();
                     BufferUtils.inputStream2OutputStream(in, baaos);
-                    part = new ContentOnMemory(baaos.buffers(), baaos.length());
+                    partContent = new PartContentOnMemory(baaos.buffers(), baaos.length());
                 } else {
                     // We need to read the input stream to determine whether
                     // the size is bigger or smaller than the threshold.
@@ -127,13 +125,13 @@ class ContentStoreFactory {
                     int count = BufferUtils.inputStream2OutputStream(in, baaos, thresholdSize);
 
                     if (count < thresholdSize) {
-                        part = new ContentOnMemory(baaos.buffers(), baaos.length());
+                        partContent = new PartContentOnMemory(baaos.buffers(), baaos.length());
                     } else {
                         // A BAAInputStream is an input stream over a list of non-contiguous 4K buffers.
                         BAAInputStream baais = 
                             new BAAInputStream(baaos.buffers(), baaos.length());
 
-                        part = new ContentOnFile(manager, 
+                        partContent = new PartContentOnFile(manager, 
                                               baais,
                                               in, 
                                               attachmentDir);
@@ -149,7 +147,7 @@ class ContentStoreFactory {
                 }
             }
 
-            return part;
+            return partContent;
             
         } catch (Exception e) {
             throw new OMException(e);

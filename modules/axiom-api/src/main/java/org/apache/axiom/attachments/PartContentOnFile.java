@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.impl.BufferUtils;
@@ -30,26 +29,24 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * PartOnFile stores that attachment in a file.
- * This implementation is used for very large attachments to reduce
- * the in-memory footprint.
+ * Stores the content of a MIME part in a file. This implementation is used for very large
+ * attachments to reduce the in-memory footprint.
  * 
- * The PartOnFile object is created by the PartFactory
- * @see ContentStoreFactory
+ * @see PartContentFactory
  */
-class ContentOnFile extends ContentStore {
-
-    FileAccessor fileAccessor;
-    LifecycleManager manager;
-    
+class PartContentOnFile extends PartContent {
+    private final FileAccessor fileAccessor;
+    private final LifecycleManager manager;
     
     /**
-     * Create a PartOnFile from the specified InputStream
+     * Constructor.
+     * 
+     * @param manager TODO
      * @param in1 InputStream containing data
      * @param in2 InputStream containing data
      * @param attachmentDir String 
      */
-    ContentOnFile(LifecycleManager manager, InputStream is1, InputStream is2, String attachmentDir) throws IOException {
+    PartContentOnFile(LifecycleManager manager, InputStream is1, InputStream is2, String attachmentDir) throws IOException {
         this.manager = manager;
         fileAccessor = manager.create(attachmentDir);
         
@@ -91,9 +88,6 @@ class ContentOnFile extends ContentStore {
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.axiom.attachments.impl.AbstractPart#getSize()
-     */
     long getSize() {
         return fileAccessor.getSize();
     }

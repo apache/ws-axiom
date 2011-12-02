@@ -83,13 +83,13 @@ final class PartImpl implements Part {
     /**
      * The content of this part. This is only set if the state is {@link #STATE_BUFFERED}.
      */
-    private ContentStore content;
+    private PartContent content;
     
     private final DataHandler dataHandler;
     
     /**
      * The actual parts are constructed with the PartFactory.
-     * @see org.apache.axiom.attachments.ContentStoreFactory
+     * @see org.apache.axiom.attachments.PartContentFactory
      * @param headers
      */
     PartImpl(MIMEMessage message, boolean isSOAPPart, List headers, MimeTokenStream parser) {
@@ -178,7 +178,7 @@ final class PartImpl implements Part {
         return getContent().getSize();
     }
 
-    private ContentStore getContent() {
+    private PartContent getContent() {
         switch (state) {
             case STATE_UNREAD:
                 fetch();
@@ -208,7 +208,7 @@ final class PartImpl implements Part {
                 checkParserState(parser.getState(), EntityState.T_BODY);
                 
                 // The PartFactory will determine which Part implementation is most appropriate.
-                content = ContentStoreFactory.createContentStore(message.getLifecycleManager(),
+                content = PartContentFactory.createPartContent(message.getLifecycleManager(),
                                               parser.getDecodedInputStream(), 
                                               isSOAPPart, 
                                               message.getThreshold(),
@@ -248,7 +248,7 @@ final class PartImpl implements Part {
             state = STATE_STREAMING;
             return parser.getDecodedInputStream();
         } else {
-            ContentStore content = getContent();
+            PartContent content = getContent();
             InputStream stream = content.getInputStream();
             if (!preserve) {
                 stream = new ReadOnceInputStreamWrapper(this, stream);

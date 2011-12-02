@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.utils.BAAInputStream;
@@ -29,24 +28,24 @@ import java.util.ArrayList;
 import javax.activation.DataSource;
 
 /**
- * PartOnMemoryEnhanced stores the attachment in memory (in non-contigous byte arrays)
- * This implementation is used for smaller attachments to enhance 
- * performance.
+ * Stores the content of a MIME part in memory (in non-contiguous byte arrays). This implementation
+ * is used for smaller attachments to enhance performance.
  * 
- * The PartOnMemoryEnhanced object is created by the PartFactory
- * @see ContentStoreFactory
+ * @see PartContentFactory
  */
-class ContentOnMemory extends ContentStore {
-
-    ArrayList data;  // Arrays of 4K buffers
-    int length;      // total length of data
+class PartContentOnMemory extends PartContent {
+    private final ArrayList data;  // Arrays of 4K buffers
+    private final int length;      // total length of data
     
     /**
-     * Construct a PartOnMemory
-     * @param data array list of 4K byte[]
-     * @param length (length of data in bytes)
+     * Constructor.
+     * 
+     * @param data
+     *            a list of 4K byte arrays
+     * @param length
+     *            the total length of the data in bytes
      */
-    ContentOnMemory(ArrayList data, int length) {
+    PartContentOnMemory(ArrayList data, int length) {
         this.data =  data;
         this.length = length;
     }

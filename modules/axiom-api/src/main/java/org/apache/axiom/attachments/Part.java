@@ -16,24 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.attachments;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;
 
 /**
- * Abstract for Part.  A Part can be the SOAP Part or an Attachment Part.
- * There are several implementations for part, which are optimized for 
- * space and time.
- * 
- * A Part is created with the PartFactory.
- * 
- * @see org.apache.axiom.attachments.ContentStoreFactory
+ * Interface representing a MIME part. A part can be the SOAP part (or more generally the root part
+ * for non-MTOM XOP encoded messages) or an attachment part.
  */
 public interface Part {
-
-
     /**
      * @return DataHandler representing this part
      */
@@ -61,5 +53,4 @@ public interface Part {
      * @throws MessagingException
      */
     public String getHeader(String name) throws MessagingException;
-
 }

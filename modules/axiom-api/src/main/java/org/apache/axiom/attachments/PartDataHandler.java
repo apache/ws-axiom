@@ -26,6 +26,7 @@ import javax.activation.DataSource;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 
+// TODO: we should override writeTo and delegate to PartImpl#writeTo
 class PartDataHandler extends DataHandler implements DataHandlerExt {
     private final PartImpl part;
     private DataSource dataSource;
