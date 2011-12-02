@@ -76,7 +76,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     private boolean isExpanded = false;
 
     private static Log log = LogFactory.getLog(OMSourcedElementImpl.class);
-    private static final boolean isDebugEnabled = log.isDebugEnabled();
     
     private static Log forceExpandLog = LogFactory.getLog(OMSourcedElementImpl.class.getName() + ".forceExpand");
     
@@ -255,7 +254,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         // isExpanded is always true if dataSource is null.
         if (!isExpanded && dataSource != null) {
 
-            if (isDebugEnabled) {
+            if (log.isDebugEnabled()) {
                 log.debug("forceExpand: expanding element " +
                         getPrintableName());
                 if(forceExpandLog.isDebugEnabled()){
@@ -467,7 +466,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
     
     public XMLStreamReader getXMLStreamReader(boolean cache, boolean preserveNamespaceContext) {
-        if (isDebugEnabled) {
+        if (log.isDebugEnabled()) {
             log.debug("getting XMLStreamReader for " + getPrintableName()
                     + " with cache=" + cache);
         }
@@ -678,7 +677,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public void serializeAndConsume(OutputStream output) throws XMLStreamException {
-        if (isDebugEnabled) {
+        if (log.isDebugEnabled()) {
             log.debug("serialize " + getPrintableName() + " to output stream");
         }
         OMOutputFormat format = new OMOutputFormat();
@@ -690,7 +689,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public void serializeAndConsume(Writer writer) throws XMLStreamException {
-        if (isDebugEnabled) {
+        if (log.isDebugEnabled()) {
             log.debug("serialize " + getPrintableName() + " to writer");
         }
         if (isExpanded()) {
@@ -703,7 +702,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     public void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException {
-        if (isDebugEnabled) {
+        if (log.isDebugEnabled()) {
             log.debug("serialize formatted " + getPrintableName() +
                     " to output stream");
         }
@@ -716,7 +715,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     public void serializeAndConsume(Writer writer, OMOutputFormat format)
             throws XMLStreamException {
-        if (isDebugEnabled) {
+        if (log.isDebugEnabled()) {
             log.debug("serialize formatted " + getPrintableName() +
                     " to writer");
         }
