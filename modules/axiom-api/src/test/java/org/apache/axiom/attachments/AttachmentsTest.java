@@ -43,6 +43,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
+import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.MIMEResource;
 import org.apache.axiom.om.OMException;
@@ -688,5 +689,33 @@ public class AttachmentsTest extends AbstractTestCase {
         } catch (OMException ex) {
             // Expected
         }
+    }
+
+    private void testGetSizeOnDataSource(boolean useFiles) throws Exception {
+        InputStream in = getTestResource(TestConstants.MTOM_MESSAGE.getName());
+        try {
+            Attachments attachments;
+            if (useFiles) {
+                attachments = new Attachments(in, TestConstants.MTOM_MESSAGE.getContentType(),
+                        true, getAttachmentsDir(), "4096");
+            } else {
+                attachments = new Attachments(in, TestConstants.MTOM_MESSAGE.getContentType());
+            }
+            DataHandler dh = attachments
+                    .getDataHandler("2.urn:uuid:A3ADBAEE51A1A87B2A11443668160994@apache.org");
+            DataSource ds = dh.getDataSource();
+            assertTrue(ds instanceof SizeAwareDataSource);
+            assertEquals(13887, ((SizeAwareDataSource)ds).getSize());
+        } finally {
+            in.close();
+        }
+    }
+    
+    public void testGetSizeOnDataSourceOnMemory() throws Exception {
+        testGetSizeOnDataSource(false);
+    }
+    
+    public void testGetSizeOnDataSourceOnFile() throws Exception {
+        testGetSizeOnDataSource(true);
     }
 }

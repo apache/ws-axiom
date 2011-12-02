@@ -22,9 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.activation.DataSource;
+import org.apache.axiom.ext.activation.SizeAwareDataSource;
 
-class PartDataSource implements DataSource {
+class PartDataSource implements SizeAwareDataSource {
     private final PartImpl part;
 
     public PartDataSource(PartImpl part) {
@@ -46,5 +46,9 @@ class PartDataSource implements DataSource {
 
     public OutputStream getOutputStream() throws IOException {
         throw new UnsupportedOperationException();
+    }
+
+    public long getSize() {
+        return part.getSize();
     }
 }

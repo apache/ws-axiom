@@ -19,12 +19,15 @@
 
 package org.apache.axiom.attachments;
 
+import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
+import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.internet.ContentType;
 
 import java.io.IOException;
@@ -177,7 +180,11 @@ public class Attachments implements OMAttachmentAccessor {
     }
 
     /**
-     * Get the {@link DataHandler} object for the MIME part with a given content ID.
+     * Get the {@link DataHandler} object for the MIME part with a given content ID. The returned
+     * instance MAY implement {@link DataHandlerExt} in which case the caller can use that API to
+     * stream the content of the part. In addition, the {@link DataSource} linked to the returned
+     * {@link DataHandler} MAY be of type {@link SizeAwareDataSource} in which case the caller can
+     * use that interface to determine the size of the MIME part.
      * 
      * @param contentID
      *            the raw content ID (without the surrounding angle brackets and <tt>cid:</tt>

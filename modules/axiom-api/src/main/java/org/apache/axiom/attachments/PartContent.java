@@ -24,6 +24,8 @@ import java.io.OutputStream;
 
 import javax.activation.DataSource;
 
+import org.apache.axiom.ext.activation.SizeAwareDataSource;
+
 /**
  * Stores the content of a MIME part using a particular buffering strategy.
  */
@@ -41,6 +43,8 @@ abstract class PartContent {
 
     /**
      * Get a {@link DataSource} implementation specific for this buffering strategy, if supported.
+     * If no {@link DataSource} is returned, then a default implementation will be used. If a
+     * {@link DataSource} is returned, it should implement {@link SizeAwareDataSource}.
      * 
      * @param contentType
      *            the content type for the {@link DataSource}, which must be returned by
@@ -63,7 +67,6 @@ abstract class PartContent {
      */
     abstract void writeTo(OutputStream out) throws IOException;
 
-    // TODO: currently not used; all our DataSources should implement SizeAwareDataSource!
     abstract long getSize();
 
     abstract void destroy() throws IOException;
