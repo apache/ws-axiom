@@ -66,7 +66,7 @@ final class PartImpl implements Part {
     private static Log log = LogFactory.getLog(PartImpl.class);
     
     private final MIMEMessage message;
-    private final boolean isSOAPPart;
+    private final boolean isRootPart;
     
     private List/*<Header>*/ headers;
     
@@ -90,9 +90,9 @@ final class PartImpl implements Part {
      * @see org.apache.axiom.attachments.PartContentFactory
      * @param headers
      */
-    PartImpl(MIMEMessage message, boolean isSOAPPart, List headers, MimeTokenStream parser) {
+    PartImpl(MIMEMessage message, boolean isRootPart, List headers, MimeTokenStream parser) {
         this.message = message;
-        this.isSOAPPart = isSOAPPart;
+        this.isRootPart = isRootPart;
         this.headers = headers;
         this.parser = parser;
         this.dataHandler = new PartDataHandler(this);
@@ -172,7 +172,7 @@ final class PartImpl implements Part {
                 // The PartFactory will determine which Part implementation is most appropriate.
                 content = PartContentFactory.createPartContent(message.getLifecycleManager(),
                                               parser.getDecodedInputStream(), 
-                                              isSOAPPart, 
+                                              isRootPart, 
                                               message.getThreshold(),
                                               message.getAttachmentRepoDir(),
                                               message.getContentLengthIfKnown());  // content-length for the whole message

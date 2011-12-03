@@ -24,6 +24,11 @@ import java.io.OutputStream;
 
 import org.apache.axiom.ext.activation.SizeAwareDataSource;
 
+/**
+ * Default {@link DataSource} implementation for MIME parts. This implementation will be used if
+ * there is no {@link DataSource} implementation specific to the buffering strategy being used, i.e.
+ * if {@link PartContent#getDataSource(String)} returns <code>null</code>.
+ */
 class PartDataSource implements SizeAwareDataSource {
     private final PartImpl part;
 

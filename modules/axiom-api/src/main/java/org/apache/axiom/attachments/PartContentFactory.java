@@ -55,7 +55,7 @@ class PartContentFactory {
      * 
      * @param manager
      * @param in
-     * @param isSOAPPart
+     * @param isRootPart
      * @param thresholdSize
      * @param attachmentDir
      * @param messageContentLength
@@ -64,14 +64,14 @@ class PartContentFactory {
      *             if any exception is encountered while processing.
      */
     static PartContent createPartContent(LifecycleManager manager, InputStream in,
-                    boolean isSOAPPart,
+                    boolean isRootPart,
                     int thresholdSize,
                     String attachmentDir,
                     int messageContentLength
                     ) throws OMException {
         if(log.isDebugEnabled()){
             log.debug("Start createPart()");
-            log.debug("  isSOAPPart=" + isSOAPPart);
+            log.debug("  isRootPart=" + isRootPart);
             log.debug("  thresholdSize= " + thresholdSize);
             log.debug("  attachmentDir=" + attachmentDir);
             log.debug("  messageContentLength " + messageContentLength);
@@ -87,9 +87,9 @@ class PartContentFactory {
                 // Allowing fewer threads reduces the thrashing.  And when the remaining threads
                 // are notified their input (chunked) data is available.
                 // 
-                // Note: SOAPParts are at the beginning of the message and much smaller than attachments,
-                // so don't wait on soap parts.
-                if (!isSOAPPart) {
+                // Note: the root part is at the beginning of the message and much smaller than attachments,
+                // so don't wait on root parts.
+                if (!isRootPart) {
                     synchronized(semaphore) {
                         if (inflight >= INFLIGHT_MAX) {
                             semaphore.wait();
@@ -98,19 +98,19 @@ class PartContentFactory {
                     }
                 }
                 // Get new threshold based on the current available memory in the runtime.
-                // We only use the thresholds for non-soap parts.
-                if (!isSOAPPart && thresholdSize > 0) {     
+                // We only use the thresholds for non-root parts.
+                if (!isRootPart && thresholdSize > 0) {     
                     thresholdSize = getRuntimeThreshold(thresholdSize, inflight);
                 }
 
                 
-                if (isSOAPPart ||
+                if (isRootPart ||
                         thresholdSize <= 0 ||  
                         (messageContentLength > 0 && 
                                 messageContentLength < thresholdSize)) {
                     // If the entire message is less than the threshold size, 
                     // keep it in memory.
-                    // If this is a SOAPPart, keep it in memory.
+                    // If this is the root part, keep it in memory.
 
                     // Get the bytes of the data without a lot 
                     // of resizing and GC.  The BAAOutputStream 
@@ -139,7 +139,7 @@ class PartContentFactory {
 
                 } 
             } finally {
-                if (!isSOAPPart) {
+                if (!isRootPart) {
                     synchronized(semaphore) {
                         semaphore.notify();
                         inflight--;

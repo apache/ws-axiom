@@ -27,6 +27,9 @@ import javax.activation.DataSource;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 
+/**
+ * {@link DataHandler} implementation for MIME parts read from a stream.
+ */
 class PartDataHandler extends DataHandler implements DataHandlerExt {
     private final PartImpl part;
     private DataSource dataSource;

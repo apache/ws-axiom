@@ -67,7 +67,20 @@ abstract class PartContent {
      */
     abstract void writeTo(OutputStream out) throws IOException;
 
+    /**
+     * Get the size of the MIME part, more precisely the number of bytes in the decoded content of
+     * the MIME part.
+     * 
+     * @return the size of the MIME part
+     */
     abstract long getSize();
 
+    /**
+     * Release all resources used to store the content of the MIME part. The content will no longer
+     * be accessible after this method is called.
+     * 
+     * @throws IOException
+     *             if an I/O error occurs
+     */
     abstract void destroy() throws IOException;
 }
