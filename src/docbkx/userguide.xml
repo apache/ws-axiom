@@ -124,9 +124,8 @@
         <section>
             <title>Features of Axiom</title>
             <para>
-                Axiom is a lightweight, deferred built XML infoset representation based on
-                StAX (<ulink url="http://www.jcp.org/en/jsr/detail?id=173">JSR 173</ulink>), which
-                is the standard streaming pull parser API. The object model can be
+                Axiom is a lightweight XML infoset representation that supports deferred building
+                That means that the object model can be
                 manipulated as flexibly as any other object model (Such as
                 <ulink url="http://www.jdom.org/">JDOM</ulink>), but underneath, the objects will be
                 created only when they are absolutely required. This leads to much less
@@ -152,19 +151,10 @@
                 <listitem>
                     <para>
                         <emphasis role="bold">Pull based</emphasis>: For a deferred building mechanism a pull
-                        based parser is required. Axiom is based on
-                        <ulink url="http://today.java.net/pub/a/today/2006/07/20/introduction-to-stax.html">StAX</ulink>,
-                        the standard pull parser API.
+                        based parser is required.
                     </para>
                 </listitem>
             </itemizedlist>
-            <important>
-                <para>
-                    Axiom is tightly bound to StAX API. To work with Axiom
-                    a StAX compliant parser and the API <emphasis>must</emphasis> be present in the
-                    classpath.
-                </para>
-            </important>
             <para>
                 The Following image shows how Axiom API is viewed by the user
             </para>
@@ -176,10 +166,17 @@
                     </imageobject>
                 </mediaobject>
             </figure>
+        </section>
+        <section>
+            <title>Relation with StAX</title>
             <para>
-                OM Builder wraps the raw xml character stream through the StAX reader API.
-                Hence, the complexities of the pull event stream is transparent to the
-                user.
+                <ulink url="http://today.java.net/pub/a/today/2006/07/20/introduction-to-stax.html">StAX</ulink>
+                (<ulink url="http://www.jcp.org/en/jsr/detail?id=173">JSR 173</ulink>) is the standard pull parser API for Java.            
+                Axiom makes use of the StAX API to allow application code to access the object model in streaming mode, which means
+                that application code can request an <classname>XMLStreamReader</classname> for any document or element information item.
+                In addition, support for deferred building relies on the usage of a pull parser. The two standard implementations
+                of the Axiom API (LLOM and DOOM) both use the StAX API for that. To work with these implementations, a StAX compliant
+                parser <emphasis>must</emphasis> be present in the classpath.
             </para>
         </section>
         <section>
