@@ -32,8 +32,7 @@ class PartDataSource implements SizeAwareDataSource {
     }
 
     public String getContentType() {
-        String ct = part.getContentType();
-        return ct == null ? "application/octet-stream" : ct;
+        return part.getDataSourceContentType();
     }
 
     public InputStream getInputStream() throws IOException {

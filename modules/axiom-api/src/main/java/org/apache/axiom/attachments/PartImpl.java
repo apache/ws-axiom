@@ -124,6 +124,17 @@ final class PartImpl implements Part {
     }
     
     /**
+     * Get the content type that should be reported by {@link DataSource} instances created for this
+     * part.
+     * 
+     * @return the content type
+     */
+    String getDataSourceContentType() {
+        String ct = getContentType();
+        return ct == null ? "application/octet-stream" : ct;
+    }
+    
+    /**
      * @return contentTransferEncoding
      * @throws MessagingException
      */
@@ -258,7 +269,7 @@ final class PartImpl implements Part {
     }
     
     DataSource getDataSource() {
-        return getContent().getDataSource(getContentType());
+        return getContent().getDataSource(getDataSourceContentType());
     }
 
     void writeTo(OutputStream out) throws IOException {
