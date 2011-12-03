@@ -20,13 +20,13 @@ package org.apache.axiom.attachments;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 
-// TODO: we should override writeTo and delegate to PartImpl#writeTo
 class PartDataHandler extends DataHandler implements DataHandlerExt {
     private final PartImpl part;
     private DataSource dataSource;
@@ -53,6 +53,13 @@ class PartDataHandler extends DataHandler implements DataHandlerExt {
             }
         }
         return dataSource;
+    }
+
+    public void writeTo(OutputStream os) throws IOException {
+        // The PartContent may have an implementation of writeTo that is more efficient than the default
+        // DataHandler#writeTo method (which requests an input stream and then copies it to the output
+        // stream).
+        part.writeTo(os);
     }
 
     public InputStream readOnce() throws IOException {
