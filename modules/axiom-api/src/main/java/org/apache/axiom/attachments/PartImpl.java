@@ -30,8 +30,6 @@ import org.apache.james.mime4j.stream.MimeTokenStream;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.mail.MessagingException;
-import javax.mail.internet.HeaderTokenizer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -134,53 +132,6 @@ final class PartImpl implements Part {
         return ct == null ? "application/octet-stream" : ct;
     }
     
-    /**
-     * @return contentTransferEncoding
-     * @throws MessagingException
-     */
-    public String getContentTransferEncoding() throws MessagingException {
-        if(log.isDebugEnabled()){
-            log.debug("getContentTransferEncoding()");
-        }
-        String cte = getHeader("content-transfer-encoding");
-       
-        if(log.isDebugEnabled()){
-            log.debug(" CTE =" + cte);
-        }
-
-        if(cte!=null){
-            cte = cte.trim();
-            
-            if(cte.equalsIgnoreCase("7bit") || 
-                cte.equalsIgnoreCase("8bit") ||
-                cte.equalsIgnoreCase("quoted-printable") ||
-                cte.equalsIgnoreCase("base64")){
-
-                return cte;
-            }
-            
-            HeaderTokenizer ht = new HeaderTokenizer(cte, HeaderTokenizer.MIME);
-            boolean done = false;
-            while(!done){
-                HeaderTokenizer.Token token = ht.next();
-                switch(token.getType()){
-                case HeaderTokenizer.Token.EOF:
-                    if(log.isDebugEnabled()){
-                        log.debug("HeaderTokenizer EOF");
-                    }
-                    done = true;
-                    break;
-                case HeaderTokenizer.Token.ATOM:                    
-                    return token.getValue();
-                }
-            }
-            return cte;
-        }
-        return null;
-
-
-    }
-
     public DataHandler getDataHandler() {
         return dataHandler;
     }
