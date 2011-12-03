@@ -37,7 +37,7 @@ import java.io.InputStream;
 class PartContentFactory {
     
     private static int inflight = 0;  // How many attachments are currently being built.
-    private static final String semifore = "PartFactory.semifore";
+    private static final String semaphore = "PartContentFactory.semaphore";
     
     private static final Log log = LogFactory.getLog(PartContentFactory.class);
     
@@ -90,9 +90,9 @@ class PartContentFactory {
                 // Note: SOAPParts are at the beginning of the message and much smaller than attachments,
                 // so don't wait on soap parts.
                 if (!isSOAPPart) {
-                    synchronized(semifore) {
+                    synchronized(semaphore) {
                         if (inflight >= INFLIGHT_MAX) {
-                            semifore.wait();
+                            semaphore.wait();
                         }
                         inflight++;
                     }
@@ -140,8 +140,8 @@ class PartContentFactory {
                 } 
             } finally {
                 if (!isSOAPPart) {
-                    synchronized(semifore) {
-                        semifore.notify();
+                    synchronized(semaphore) {
+                        semaphore.notify();
                         inflight--;
                     }
                 }
