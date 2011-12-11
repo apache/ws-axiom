@@ -67,7 +67,7 @@
                     was the intention to split the <filename>axiom-tests</filename> project into several parts
                     and make them part of <filename>axiom-api</filename>, <filename>axiom-impl</filename> and
                     <filename>axiom-dom</filename>. This reorganization is not complete
-                    yet<footnote><para>See <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-419">WSCOMMONS-419</ulink>.</para></footnote>.
+                    yet<footnote><para>See <ulink url="https://issues.apache.org/jira/browse/AXIOM-311">AXIOM-311</ulink>.</para></footnote>.
                     For new test cases (or when refactoring existing tests), the following guidelines should be applied:
                 </para>
                 <orderedlist>

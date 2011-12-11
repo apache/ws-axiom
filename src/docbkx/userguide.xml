@@ -620,7 +620,7 @@ System.out.println(documentElement.toStringWithConsume());</programlisting>
                     Therefore, when using Axiom versions prior to 1.2.9, you should avoid using <classname>StAXUtils</classname>
                     together with a StAX implementation other than Woodstox, especially in a highly
                     concurrent environment. The issue has been fixed in Axiom 1.2.9. See
-                    <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-489">WSCOMMONS-489</ulink>
+                    <ulink url="https://issues.apache.org/jira/browse/AXIOM-74">AXIOM-74</ulink>
                     for more details.
                 </para>
             </caution>
@@ -762,7 +762,7 @@ try {
                     sequence of events. Starting with Axiom 1.2.8, the object model builder
                     will never attempt to read new events from a parser that has previously reported
                     an I/O or parsing error. These versions of Axiom are therefore safe; see
-                    <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-372">WSCOMMONS-372</ulink>
+                    <ulink url="https://issues.apache.org/jira/browse/AXIOM-34">AXIOM-34</ulink>
                     for more details.
                 </para>
             </caution>
@@ -866,7 +866,7 @@ try {
                     commonly used incarnations of these libraries: one is Sun's reference implementation, the other
                     is part of the <ulink url="http://geronimo.apache.org/">Geronimo</ulink> project. Axiom declares
                     dependencies on the Geronimo versions (though that might
-                    <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-417">change</ulink> in the future).
+                    <ulink url="https://issues.apache.org/jira/browse/AXIOM-319">change</ulink> in the future).
                     If your project uses another library that depends on JAF and/or JavaMail, but that refers
                     to Sun's implementation, your project will end up with dependencies on two different
                     artifacts implementing the same API.
@@ -1130,8 +1130,8 @@ with CRLF</root>]]></screen>
                         </listitem>
                     </orderedlist>
                     <para>
-                        As explained in <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-485">WSCOMMONS-485</ulink>
-                        and <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-488">WSCOMMONS-488</ulink>,
+                        As explained in <ulink url="https://issues.apache.org/jira/browse/AXIOM-255">AXIOM-255</ulink>
+                        and <ulink url="https://issues.apache.org/jira/browse/AXIOM-122">AXIOM-122</ulink>,
                         in Axiom 1.2.8, the type of stream reader provided by the API was not always well defined.
                         Sometimes the type of the stream reader even depended on the state of the Axiom tree
                         (i.e. whether some part of it has been accessed or not).
