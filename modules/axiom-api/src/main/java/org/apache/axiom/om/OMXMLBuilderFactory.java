@@ -499,12 +499,11 @@ public class OMXMLBuilderFactory {
         }
         InputStream in;
         try {
-            // TODO: AXIOM-403
-//            if (dh instanceof DataHandlerExt) {
-//                in = ((DataHandlerExt)dh).readOnce();
-//            } else {
+            if (dh instanceof DataHandlerExt) {
+                in = ((DataHandlerExt)dh).readOnce();
+            } else {
                 in = dh.getInputStream();
-//            }
+            }
         } catch (IOException ex) {
             throw new OMException("Unable to get input stream from root MIME part", ex);
         }

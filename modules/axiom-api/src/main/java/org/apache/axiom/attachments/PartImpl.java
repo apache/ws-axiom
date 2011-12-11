@@ -22,6 +22,7 @@ package org.apache.axiom.attachments;
 import org.apache.axiom.attachments.Part;
 import org.apache.axiom.mime.Header;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.util.DetachableInputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.james.mime4j.MimeException;
@@ -84,6 +85,8 @@ final class PartImpl implements Part {
     private PartContent content;
     
     private final DataHandler dataHandler;
+    
+    private DetachableInputStream detachableInputStream;
     
     /**
      * The actual parts are constructed with the PartFactory.
@@ -180,6 +183,13 @@ final class PartImpl implements Part {
                 state = STATE_BUFFERED;
                 break;
             case STATE_STREAMING:
+                // If the stream is still open, buffer the remaining content
+                try {
+                    detachableInputStream.detach();
+                } catch (IOException ex) {
+                    throw new OMException(ex);
+                }
+                detachableInputStream = null;
                 moveToNextPart();
                 state = STATE_DISCARDED;
         }
@@ -208,7 +218,8 @@ final class PartImpl implements Part {
         if (!preserve && state == STATE_UNREAD) {
             checkParserState(parser.getState(), EntityState.T_BODY);
             state = STATE_STREAMING;
-            return parser.getDecodedInputStream();
+            detachableInputStream = new DetachableInputStream(parser.getDecodedInputStream());
+            return detachableInputStream;
         } else {
             PartContent content = getContent();
             InputStream stream = content.getInputStream();

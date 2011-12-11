@@ -110,6 +110,8 @@ public class AttachmentsTest extends AbstractTestCase {
         
         // Now do it again but use base64 content-type-encoding for 
         // binary attachments
+        is = new ByteArrayInputStream(outBase64.getBytes());
+        attachments2 = new Attachments(is, testMessage.getContentType());
         baos = new ByteArrayOutputStream();
         oof.setProperty(OMOutputFormat.USE_CTE_BASE64_FOR_NON_TEXTUAL_ATTACHMENTS, 
                         Boolean.TRUE);
