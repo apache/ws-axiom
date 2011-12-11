@@ -45,115 +45,126 @@
     <toc/>
 
     <chapter>
-        <title>Testing</title>
+        <title>Working with the Axiom source code</title>
         <section>
-            <title>Unit test organization</title>
+            <title>Importing the Axiom source code into Eclipse</title>
             <para>
-                Historically, all unit tests were placed in the <filename>axiom-tests</filename> project.
-                One specific problem with this is that since all tests are in a common Maven module
-                which depends on both <filename>axiom-impl</filename> and <filename>axiom-dom</filename>,
-                it is not rare to see DOOM tests that accidentally use the LLOM implementation (which is the default).
-                The project description in <filename>axiom-tests/pom.xml</filename> indicates that it
-                was the intention to split the <filename>axiom-tests</filename> project into several parts
-                and make them part of <filename>axiom-api</filename>, <filename>axiom-impl</filename> and
-                <filename>axiom-dom</filename>. This reorganization is not complete
-                yet<footnote><para>See <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-419">WSCOMMONS-419</ulink>.</para></footnote>.
-                For new test cases (or when refactoring existing tests), the following guidelines should be applied:
+                In order to import the Axiom source code into Eclipse with the Maven Eclipse plugin, use the following
+                command: 
             </para>
-            <orderedlist>
-                <listitem>
-                    <para>
-                        Tests that validate the code in <filename>axiom-api</filename> and that do not require
-                        an Axiom implementation to execute should be placed in <filename>axiom-api</filename>.
-                        This primarily applies to tests that validate utility classes in <filename>axiom-api</filename>.
-                    </para>
-                </listitem>
-                <listitem id="test.category.api">
-                    <para>
-                        The code of unit tests that apply to all Axiom implementations and that check conformance
-                        to the specifications of the Axiom API should be added
-                        to <filename>axiom-api</filename> and executed in <filename>axiom-impl</filename> and
-                        <filename>axiom-dom</filename>. Currently, the recommended way is to create a
-                        base class in <filename>axiom-api</filename> (with suffix <classname>TestBase</classname>) and
-                        to create subclasses in <filename>axiom-impl</filename> and <filename>axiom-dom</filename>.
-                        This makes sure that the DOOM tests never accidentally use LLOM (because
-                        <filename>axiom-impl</filename> is not a dependency of <filename>axiom-dom</filename>).
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        Tests that check integration with other libraries should be placed in
-                        <filename>axiom-integration</filename>. Note that this is the only module that requires
-                        Java 1.5 (so that e.g. integration with JAXB2 can be tested).
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        Tests related to code in <filename>axiom-api</filename> and requiring an Axiom
-                        implementation to execute, but that don't fall into category <xref linkend="test.category.api"/>
-                        should stay in <filename>axiom-tests</filename>.
-                    </para>
-                </listitem>
-            </orderedlist>
+            <screen>mvn -DskipTests=true -DdownloadSources=true install eclipse:eclipse</screen>
         </section>
         <section>
-            <title>Testing Axiom with different StAX implementations</title>
-            <para>
-                The following StAX implementations are available to test compatibility with Axiom:
-            </para>
-            <variablelist>
-                <varlistentry>
-                    <term>Woodstox</term>
+            <title>Testing</title>
+            <section>
+                <title>Unit test organization</title>
+                <para>
+                    Historically, all unit tests were placed in the <filename>axiom-tests</filename> project.
+                    One specific problem with this is that since all tests are in a common Maven module
+                    which depends on both <filename>axiom-impl</filename> and <filename>axiom-dom</filename>,
+                    it is not rare to see DOOM tests that accidentally use the LLOM implementation (which is the default).
+                    The project description in <filename>axiom-tests/pom.xml</filename> indicates that it
+                    was the intention to split the <filename>axiom-tests</filename> project into several parts
+                    and make them part of <filename>axiom-api</filename>, <filename>axiom-impl</filename> and
+                    <filename>axiom-dom</filename>. This reorganization is not complete
+                    yet<footnote><para>See <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-419">WSCOMMONS-419</ulink>.</para></footnote>.
+                    For new test cases (or when refactoring existing tests), the following guidelines should be applied:
+                </para>
+                <orderedlist>
                     <listitem>
                         <para>
-                            This is the StAX implementation that Axiom uses by default.
+                            Tests that validate the code in <filename>axiom-api</filename> and that do not require
+                            an Axiom implementation to execute should be placed in <filename>axiom-api</filename>.
+                            This primarily applies to tests that validate utility classes in <filename>axiom-api</filename>.
                         </para>
                     </listitem>
-                </varlistentry>
-                <varlistentry>
-                    <term>Sun Java Streaming XML Parser (SJSXP)</term>
-                    <listitem>
+                    <listitem id="test.category.api">
                         <para>
-                            This implementation is available as Maven artifact <literal>com.sun.xml.stream:sjsxp:1.0.1</literal>.
+                            The code of unit tests that apply to all Axiom implementations and that check conformance
+                            to the specifications of the Axiom API should be added
+                            to <filename>axiom-api</filename> and executed in <filename>axiom-impl</filename> and
+                            <filename>axiom-dom</filename>. Currently, the recommended way is to create a
+                            base class in <filename>axiom-api</filename> (with suffix <classname>TestBase</classname>) and
+                            to create subclasses in <filename>axiom-impl</filename> and <filename>axiom-dom</filename>.
+                            This makes sure that the DOOM tests never accidentally use LLOM (because
+                            <filename>axiom-impl</filename> is not a dependency of <filename>axiom-dom</filename>).
                         </para>
                     </listitem>
-                </varlistentry>
-                <varlistentry>
-                    <term>StAX Reference Implementation</term>
                     <listitem>
                         <para>
-                            The reference implementation was written by BEA and is available as Maven artifact
-                            <literal>stax:stax:1.2.0</literal>. The homepage is <ulink url="http://stax.codehaus.org/Home"/>.
-                            Note that the JAR doesn't contain the necessary files to enable service discovery.
-                            Geronimo's implementation of the StAX API library will not be able to locate
-                            the reference implementation unless the following system properties are set:
+                            Tests that check integration with other libraries should be placed in
+                            <filename>axiom-integration</filename>. Note that this is the only module that requires
+                            Java 1.5 (so that e.g. integration with JAXB2 can be tested).
                         </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Tests related to code in <filename>axiom-api</filename> and requiring an Axiom
+                            implementation to execute, but that don't fall into category <xref linkend="test.category.api"/>
+                            should stay in <filename>axiom-tests</filename>.
+                        </para>
+                    </listitem>
+                </orderedlist>
+            </section>
+            <section>
+                <title>Testing Axiom with different StAX implementations</title>
+                <para>
+                    The following StAX implementations are available to test compatibility with Axiom:
+                </para>
+                <variablelist>
+                    <varlistentry>
+                        <term>Woodstox</term>
+                        <listitem>
+                            <para>
+                                This is the StAX implementation that Axiom uses by default.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term>Sun Java Streaming XML Parser (SJSXP)</term>
+                        <listitem>
+                            <para>
+                                This implementation is available as Maven artifact <literal>com.sun.xml.stream:sjsxp:1.0.1</literal>.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term>StAX Reference Implementation</term>
+                        <listitem>
+                            <para>
+                                The reference implementation was written by BEA and is available as Maven artifact
+                                <literal>stax:stax:1.2.0</literal>. The homepage is <ulink url="http://stax.codehaus.org/Home"/>.
+                                Note that the JAR doesn't contain the necessary files to enable service discovery.
+                                Geronimo's implementation of the StAX API library will not be able to locate
+                                the reference implementation unless the following system properties are set:
+                            </para>
 <programlisting>javax.xml.stream.XMLInputFactory=com.bea.xml.stream.MXParserFactory
 javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</programlisting>
-                    </listitem>
-                </varlistentry>
-                <varlistentry>
-                    <term>XL XP-J</term>
-                    <listitem>
-                        <para>
-                            <quote>XL XML Processor for Java</quote> is IBM's implementation of StAX 1.0
-                            and is part of IBM's JRE/JDK v6. Note that due
-                            to an agreement between IBM and Sun, IBM's Java implementation for the Windows
-                            platform is not available as a separate download, but only bundled with another
-                            IBM product, e.g. <ulink url="http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/">WebSphere
-                            Application Server for Developers</ulink>.
-                        </para>
-                        <para>    
-                            On the other hand, the JDK for Linux can be downloaded as a separate package from the
-                            <link url="https://www.ibm.com/developerworks/java/jdk/linux/download.html">developerWorks
-                            site</link>. There are versions for 32-bit x86 (<quote>xSeries</quote>) and 64-bit AMD.
-                            They are available as RPMs and tarballs. To install the JDK properly on a Debian
-                            based system (including Ubuntu), follow the instructions given in
-                            <xref linkend="install.ibm.jdk"/>.
-                        </para>
-                    </listitem>
-                </varlistentry>
-            </variablelist>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term>XL XP-J</term>
+                        <listitem>
+                            <para>
+                                <quote>XL XML Processor for Java</quote> is IBM's implementation of StAX 1.0
+                                and is part of IBM's JRE/JDK v6. Note that due
+                                to an agreement between IBM and Sun, IBM's Java implementation for the Windows
+                                platform is not available as a separate download, but only bundled with another
+                                IBM product, e.g. <ulink url="http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/">WebSphere
+                                Application Server for Developers</ulink>.
+                            </para>
+                            <para>    
+                                On the other hand, the JDK for Linux can be downloaded as a separate package from the
+                                <link url="https://www.ibm.com/developerworks/java/jdk/linux/download.html">developerWorks
+                                site</link>. There are versions for 32-bit x86 (<quote>xSeries</quote>) and 64-bit AMD.
+                                They are available as RPMs and tarballs. To install the JDK properly on a Debian
+                                based system (including Ubuntu), follow the instructions given in
+                                <xref linkend="install.ibm.jdk"/>.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+                </variablelist>
+            </section>
         </section>
     </chapter>
     
