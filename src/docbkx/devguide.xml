@@ -605,6 +605,181 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
     </chapter>
     
     <chapter>
+        <title><classname>LifecycleManager</classname> design (Axiom 1.3)</title>
+        <para>
+            The <classname>LifecycleManager</classname> API is used by the MIME handling code in Axiom
+            to manage the temporary files that are used to buffer the content of attachment parts.
+            The <classname>LifecycleManager</classname> implementation is responsible to track the temorary
+            files that have been created and to ensure that they are deleted when they are no longer used.
+            In Axiom 1.2.x, this API has multiple issues and a redesign is required for Axiom 1.3.
+        </para>
+        <section>
+            <title>Issues with the <classname>LifecycleManager</classname> API in Axiom 1.2.x</title>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        Temporary files that are not cleaned up explicitly by application code will only be removed
+                        when the JVM stops (<classname>LifecycleManagerImpl</classname> registers a shutdown hook
+                        and maintains a list of files that need to be deleted when the JVM exits). This means that
+                        temporary files may pile up, causing the file system to fill.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <classname>LifecycleManager</classname> also has a method <methodname>deleteOnTimeInterval</methodname>
+                        that deletes a file after some specified time interval. However, the implementation creates a new
+                        thread for each invocation of that method, which is generally not acceptable in high performance
+                        use cases.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        One of the stated design goals (see <ulink url="https://issues.apache.org/jira/browse/AXIOM-192">AXIOM-192</ulink>)
+                        of the <classname>LifecycleManager</classname> API was to wrap the files in <classname>FileAccessor</classname> objects to
+                        <quote>keep track of activity that occurs on the files</quote>. However, as pointed out in
+                        <ulink url="https://issues.apache.org/jira/browse/AXIOM-185">AXIOM-185</ulink>, since
+                        <classname>FileAccessor</classname> has a method that returns the corresponding <classname>File</classname>
+                        object, this goal has not been reached.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        As noted in <ulink url="https://issues.apache.org/jira/browse/AXIOM-382">AXIOM-382</ulink>, the fact
+                        that <classname>LifecycleManagerImpl</classname> registers a shutdown hook which is never unregistered
+                        causes a class loader leak in J2EE environments.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        In an attempt to work around the issues related to <classname>LifecycleManager</classname> (in particular
+                        the first item above), <ulink url="https://issues.apache.org/jira/browse/AXIOM-185">AXIOM-185</ulink>
+                        introduced another class called <classname>AttachmentCacheMonitor</classname> that implements a timer
+                        based mechanism to clean up temporary files. However, this change causes other issues:
+                    </para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                The existence of this API has a negative impact on Axiom's architectural integrity because it
+                                has functionality that overlaps with <classname>LifecycleManager</classname>. This means that
+                                we now have two completely separate APIs that are expected to serve the same purpose, but
+                                none of them addresses the problem properly.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                <classname>AttachmentCacheMonitor</classname> automatically creates a timer, but there is no
+                                way to stop that timer. This means that this API can only be used if Axiom is integrated
+                                into the container, but not when it is deployed with an application.
+                            </para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>
+                        Fortunately, that change was only meant as a workaround to solve a particular issue in WebSphere
+                        (see APAR <ulink url="http://www-01.ibm.com/support/docview.wss?rs=180&amp;uid=swg1PK91497">PK91497</ulink>),
+                        and once the <classname>LifecycleManager</classname> API is redesigned to solve that issue,
+                        <classname>AttachmentCacheMonitor</classname> no longer has a reason to exist.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <classname>LifecycleManager</classname> is an abstract API (interface), but refers to
+                        <classname>FileAccessor</classname> which is placed in an <literal>impl</literal> package.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <classname>FileAccessor</classname> uses the <classname>MessagingException</classname> class
+                        from JavaMail, although Axiom no longer relies on this API to parse or create MIME messages.
+                    </para>
+                </listitem>
+            </orderedlist>
+        </section>
+        <section>
+            <title>Cleanup strategy for temporary files</title>
+            <para>
+                As pointed out in the previous section, one of the primary problems with the
+                <classname>LifecycleManager</classname> API in Axiom 1.2.x is that temporary files that are
+                not cleaned up explicitly by application code (e.g. using the <methodname>purgeDataSource</methodname> method
+                defined by <classname>DataHandlerExt</classname>) are only removed when the JVM exits.
+                A timer based strategy that deletes temporary file after a given time interval (as proposed
+                by <classname>AttachmentCacheMonitor</classname>) is not reliable
+                because in some use cases, application code may keep a reference to the attachment part for
+                a long time before accessing it again.
+            </para>
+            <para>
+                The only reliable strategy is to take advantage of finalization, i.e. to rely on the garbage
+                collector to trigger the deletion of temporary files that are no longer used. For this to work
+                the design of the API (and its default implementation) must satisfy the following two conditions:
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        All access to the underlying file must be strictly encapsulated, so that the file
+                        is only accessible as long as there is a strong reference to the object that
+                        encapsulates the file access. This is necessary to ensure that the file can
+                        be safely deleted once there is no longer a strong reference and the
+                        object is garbage collected.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Java guarantees that the finalizer is invoked before the instance is garbage
+                        collected. However, instances are not necessarily garbage collected before the
+                        JVM exits, and in that case the finalizer is never invoked. Therefore, the
+                        implementation must delete all existing temporary files when the JVM exits.
+                        The API design should also take into account that some implementations of
+                        the <classname>LifecycleManager</classname> API may want to trigger this
+                        cleanup before the JVM exits, e.g. when the J2EE application in which
+                        Axiom is deployed is stopped.
+                    </para>
+                </listitem>
+            </orderedlist>
+            <para>
+                The first condition can be satisfied by redesigning the <classname>FileAccessor</classname>
+                such that it never leaks the name of the file it represents (neither as a <classname>String</classname>
+                nor a <classname>File</classname> object). This in turn means that the
+                <classname>CachedFileDataSource</classname> class must be removed from the Axiom API.
+                In addition, the <methodname>getInputStream</methodname> method defined by
+                <classname>FileAccessor</classname> must no longer return a simple <classname>FileInputStream</classname>
+                instance, but must use a wrapper that keeps a strong reference to the <classname>FileAccessor</classname>,
+                so that the <classname>FileAccessor</classname> can't be garbage collected while the
+                input stream is still in use.
+            </para>
+            <para>
+                To satisfy the second condition, one may want to use <methodname>File#deleteOnExit</methodname>.
+                However, this method causes a native memory leak, especially when used with temporary files,
+                which are expected to have unique names (see
+                <ulink url="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4513817">bug 4513817</ulink>).
+                Therefore this can only be implemented using a shutdown hook. However, a shutdown hook will
+                cause a class loader leak if it is used improperly, e.g. if it is registered by an application deployed
+                into a J2EE container and not unregistered when that application is stopped. For this
+                particular case, it is possible to create a special <classname>LifecycleManager</classname>
+                implementation, but for this to work, the lifecycle of this type of <classname>LifecycleManager</classname>
+                must be bound to the lifecycle of the application, e.g. using a
+                <classname>ServletContextListener</classname>. This is not always possible and this approach
+                is therefore not suitable for the default <classname>LifecycleManager</classname> implementation.
+            </para>
+            <para>
+                To avoid the class loader leak, the default <classname>LifecycleManager</classname> implementation
+                should register the shutdown hook when the first temporary file is registered and
+                automatically unregister the shutdown hook again when there are no more temporary files.
+                This implies that the shutdown hook is repeatedly registered and unregistered. However, since
+                these are relatively cheap operations<footnote><para>Since the JRE typically uses an
+                <classname>IdentityHashMap</classname> to store shutdown hooks, the only overhead is caused
+                by Java 2 security checks and synchronization.</para></footnote>, this should not be a concern.
+            </para>
+            <para>
+                An additional complication is that when the shutdown hook is executed, the temporary files
+                may still be in use. This contrasts with the finalizer case where encapsulation guarantees
+                that the file is no longer in use. This situation doesn't cause an issue on Unix platforms (where it is possible
+                to delete a file while it is still open), but needs to be handled properly on Windows.
+                This can only be achieved if the <classname>FileAccessor</classname> keeps track of
+                created streams, so that it can forcibly close the underlying <classname>FileInputStream</classname> objects.
+            </para>
+        </section>
+    </chapter>
+    
+    <chapter>
         <title>Release process</title>
         <section>
             <title>Release preparation</title>
