@@ -47,26 +47,26 @@ public class SOAPFaultTextTestBase extends SOAPFaultReasonTestCase {
                 soap11FaultText.getLang());
 
         soap11FaultText.setLang("en");
-        assertTrue(
+        assertEquals(
                 "SOAP 1.1 Fault Text Test : - After calling setLang method, Lang attribute value mismatch",
-                soap11FaultText.getLang().equals("en"));
+                "en", soap11FaultText.getLang());
     }
 
     public void testSOAP11SetText() {
         soap11FaultText.setText("This is only a test");
-        assertTrue(
+        assertEquals(
                 "SOAP 1.1 Fault Text Test : - After calling setText method, getText method return incorrect string",
-                soap11FaultText.getText().equals("This is only a test"));
+                "This is only a test", soap11FaultText.getText());
     }
 
     public void testSOAP11GetText() {
-        assertTrue(
+        assertEquals(
                 "SOAP 1.1 Fault Text Test : - After creating SOAPFaultText, it has a text",
-                soap11FaultText.getText().equals(""));
+                "", soap11FaultText.getText());
         soap11FaultText.setText("This is only a test");
-        assertTrue(
+        assertEquals(
                 "SOAP 1.1 Fault Text Test : - After calling setText method, getText method return incorrect string",
-                soap11FaultText.getText().equals("This is only a test"));
+                "This is only a test", soap11FaultText.getText());
     }
 
     public void testSOAP12GetLang() {
@@ -76,41 +76,41 @@ public class SOAPFaultTextTestBase extends SOAPFaultReasonTestCase {
                 soap12FaultText.getLang());
 
         soap12FaultText.setLang("en");
-        assertTrue(
+        assertEquals(
                 "SOAP 1.2 Fault Text Test : - After calling setLang method, Lang attribute value mismatch",
-                soap12FaultText.getLang().equals("en"));
+                "en", soap12FaultText.getLang());
     }
 
     public void testSOAP12SetText() {
         soap12FaultText.setText("This is only a test");
-        assertTrue(
+        assertEquals(
                 "SOAP 1.2 Fault Text Test : - After calling setText method, getText method return incorrect string",
-                soap12FaultText.getText().equals("This is only a test"));
+                "This is only a test", soap12FaultText.getText());
     }
 
     public void testSOAP12GetText() {
-        assertTrue(
+        assertEquals(
                 "SOAP 1.2 Fault Text Test : - After creating SOAPFaultText, it has a text",
-                soap12FaultText.getText().equals(""));
+                "", soap12FaultText.getText());
         soap12FaultText.setText("This is only a test");
-        assertTrue(
+        assertEquals(
                 "SOAP 1.2 Fault Text Test : - After calling setText method, getText method return incorrect string",
-                soap12FaultText.getText().equals("This is only a test"));
+                "This is only a test", soap12FaultText.getText());
     }
 
     //SOAP 1.1 Fault Text Test (With Parser)
     public void testSOAP11GetTextWithParser() {
-        assertTrue(
+        assertEquals(
                 "SOAP 1.1 Fault Text Test With Parser : - getText method returns incorrect string",
-                soap11FaultTextWithParser.trim().equals("Sender Timeout"));
+                "Sender Timeout", soap11FaultTextWithParser.trim());
     }
 
     //SOAP 1.2 Fault Text Test (With Parser)
     public void testSOAP12GetTextWithParser() {
 
-        assertTrue(
+        assertEquals(
                 "SOAP 1.2 Fault Text Test With Parser : - getText method returns incorrect string",
-                soap12FaultTextWithParser.getText().equals("Sender Timeout"));
+                "Sender Timeout", soap12FaultTextWithParser.getText());
 
     }
 }

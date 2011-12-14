@@ -36,88 +36,74 @@ public class SOAPFaultValueTestBase extends SOAPFaultSubCodeTestCase {
     //SOAP 1.1 Fault Value Test (Programaticaly Created)
     public void testSOAP11setText() {
         soap11FaultValue.setText("This is only Test");
-        assertTrue("SOAP 1.1 Fault Value Test : - value text mismatch",
-                   soap11FaultValue.getText().equals("This is only Test"));
+        assertEquals("SOAP 1.1 Fault Value Test : - value text mismatch",
+                "This is only Test", soap11FaultValue.getText());
     }
 
     public void testSOAP11GetText() {
-        assertTrue(
+        assertEquals(
                 "SOAP 1.1 Fault Value Test : - After creating Fault Value, it has a text",
-                soap11FaultValue.getText().equals(""));
+                "", soap11FaultValue.getText());
         soap11FaultValue.setText("This is only Test");
-        assertFalse(
-                "SOAP 1.1 Fault Value Test : - After calling setText method, getText method returns null",
-                soap11FaultValue.getText().equals(""));
-        assertTrue("SOAP 1.1 Fault Value Test : - value text mismatch",
-                   soap11FaultValue.getText().equals("This is only Test"));
+        assertEquals("SOAP 1.1 Fault Value Test : - value text mismatch",
+                "This is only Test", soap11FaultValue.getText());
     }
 
     //SOAP 1.2 Fault Value(In Fault Code) Test (Programaticaly Created)
     public void testSOAP12setTextInFaultCode() {
         soap12FaultValueInFaultCode.setText("This is only Test");
-        assertTrue(
+        assertEquals(
                 "SOAP 1.2 Fault Value Test in Fault Code : - value text mismatch",
-                soap12FaultValueInFaultCode.getText().equals(
-                        "This is only Test"));
+                "This is only Test", soap12FaultValueInFaultCode.getText());
     }
 
     public void testSOAP12GetTextInFaultCode() {
-        assertTrue(
+        assertEquals(
                 "SOAP 1.2 Fault Value Test in Fault Code : - After creating Fault Value, it has a text",
-                soap12FaultValueInFaultCode.getText().equals(""));
+                "", soap12FaultValueInFaultCode.getText());
         soap12FaultValueInFaultCode.setText("This is only Test");
-        assertFalse(
-                "SOAP 1.2 Fault Value Test in Fault Code : - After calling setText method, getText method returns null",
-                soap12FaultValueInFaultCode.getText().equals(""));
-        assertTrue(
+        assertEquals(
                 "SOAP 1.2 Fault Value Test in Fault Code : - value text mismatch",
-                soap12FaultValueInFaultCode.getText().equals(
-                        "This is only Test"));
+                "This is only Test", soap12FaultValueInFaultCode.getText());
     }
 
     //SOAP 1.2 Fault Value(In Fault SubCode) Test (Programaticaly Created)
     public void testSOAP12setTextInFaultSubCode() {
         soap12FaultValueInFaultSubCode.setText("This is only Test");
-        assertTrue(
+        assertEquals(
                 "SOAP 1.2 Fault Value Test in Fault SubCode : - value text mismatch",
-                soap12FaultValueInFaultSubCode.getText().equals(
-                        "This is only Test"));
+                "This is only Test", soap12FaultValueInFaultSubCode.getText());
     }
 
     public void testSOAP12GetTextInFaultSubCode() {
-        assertTrue(
+        assertEquals(
                 "SOAP 1.2 Fault Value Test in Fault SubCode : - After creating Fault Value, it has a text",
-                soap12FaultValueInFaultSubCode.getText().equals(""));
+                "", soap12FaultValueInFaultSubCode.getText());
         soap12FaultValueInFaultSubCode.setText("This is only Test");
-        assertFalse(
-                "SOAP 1.2 Fault Value Test in Fault SubCode : - After calling setText method, getText method returns null",
-                soap12FaultValueInFaultSubCode.getText().equals(""));
-        assertTrue(
+        assertEquals(
                 "SOAP 1.2 Fault Value Test in Fault SubCode : - value text mismatch",
-                soap12FaultValueInFaultSubCode.getText().equals(
-                        "This is only Test"));
+                "This is only Test", soap12FaultValueInFaultSubCode.getText());
     }
 
     //SOAP 1.1 Fault Value Test (With Parser)
     public void testSOAP11GetTextWithParser() {
-        assertTrue(
+        assertEquals(
                 "SOAP 1.1 Fault Value Test with parser : - value text mismatch",
-                soap11FaultValueWithParser.trim().equals("env:Sender"));
+                "env:Sender", soap11FaultValueWithParser.trim());
     }
 
     //SOAP 1.2 Fault Value(In Fault Code) Test (With Parser)
     public void testSOAP12setTextWithParserInFaultCode() {
-        assertTrue(
+        assertEquals(
                 "SOAP 1.2 Fault Value Test with parser in Fault Code : - value text mismatch",
-                soap12FaultValueInFaultCodeWithParser.getText().equals(
-                        "env:Sender"));
+                "env:Sender", soap12FaultValueInFaultCodeWithParser.getText());
     }
 
     //SOAP 1.2 Fault Value(In Fault SubCode) Test (With Parser)
     public void testSOAP12setTextWithParserInFaultSubCode() {
-        assertTrue(
+        assertEquals(
                 "SOAP 1.2 Fault Value Test with parser in Fault SubCode : - value text mismatch",
-                soap12FaultValueInFaultSubCodeWithParser.getText().equals(
-                        "m:MessageTimeout In First Subcode"));
+                "m:MessageTimeout In First Subcode",
+                soap12FaultValueInFaultSubCodeWithParser.getText());
     }
 }
