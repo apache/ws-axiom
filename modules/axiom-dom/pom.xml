@@ -168,6 +168,10 @@
                                     <pattern>org.apache.axiom.om.impl.common</pattern>
                                     <shadedPattern>org.apache.axiom.om.impl.dom</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>org.apache.axiom.soap.impl.common</pattern>
+                                    <shadedPattern>org.apache.axiom.soap.impl.dom</shadedPattern>
+                                </relocation>
                             </relocations>
                             <transformers>
                                 <transformer implementation="org.apache.axiom.buildutils.OSGiManifestResourceTransformer" />

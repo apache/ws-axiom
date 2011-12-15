@@ -152,6 +152,12 @@
                                     <shadedPattern>org.apache.axiom.om.impl.llom</shadedPattern>
                                 </relocation>
                             </relocations>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.axiom.soap.impl.common</pattern>
+                                    <shadedPattern>org.apache.axiom.soap.impl.llom</shadedPattern>
+                                </relocation>
+                            </relocations>
                             <transformers>
                                 <transformer implementation="org.apache.axiom.buildutils.OSGiManifestResourceTransformer" />
                             </transformers>
