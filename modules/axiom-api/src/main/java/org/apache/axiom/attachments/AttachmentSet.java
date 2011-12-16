@@ -31,7 +31,11 @@ import javax.mail.internet.ContentType;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.om.OMException;
 
-class AttachmentSet extends AttachmentsImpl {
+/**
+ * {@link AttachmentsDelegate} implementation that represents a programmatically created set of
+ * attachment parts.
+ */
+class AttachmentSet extends AttachmentsDelegate {
     private final Map attachmentsMap = new LinkedHashMap();
 
     ContentType getContentType() {

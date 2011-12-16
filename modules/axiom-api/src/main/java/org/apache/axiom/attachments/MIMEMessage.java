@@ -46,7 +46,11 @@ import org.apache.james.mime4j.stream.MimeConfig;
 import org.apache.james.mime4j.stream.MimeTokenStream;
 import org.apache.james.mime4j.stream.RecursionMode;
 
-class MIMEMessage extends AttachmentsImpl {
+/**
+ * {@link AttachmentsDelegate} implementation that represents a MIME multipart message read from a
+ * stream.
+ */
+class MIMEMessage extends AttachmentsDelegate {
     private static final Log log = LogFactory.getLog(MIMEMessage.class);
 
     /** <code>ContentType</code> of the MIME message */
