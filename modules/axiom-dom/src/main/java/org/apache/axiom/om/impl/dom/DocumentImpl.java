@@ -182,7 +182,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
                 namespaceURI, prefix), this.factory);
     }
 
-    public CDATASection createCDATASection(String arg0) throws DOMException {
+    public CDATASection createCDATASection(String data) throws DOMException {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
@@ -219,7 +219,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         return new ElementImpl(this, localName, namespace, this.factory);
     }
 
-    public EntityReference createEntityReference(String arg0)
+    public EntityReference createEntityReference(String name)
             throws DOMException {
         // TODO
         throw new UnsupportedOperationException("TODO");
@@ -267,12 +267,12 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         return null;
     }
 
-    public NodeList getElementsByTagName(String arg0) {
+    public NodeList getElementsByTagName(String tagname) {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    public NodeList getElementsByTagNameNS(String arg0, String arg1) {
+    public NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
@@ -570,18 +570,18 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         throw new UnsupportedOperationException("TODO");
     }
 
-    public Node renameNode(Node arg0, String arg1, String arg2)
+    public Node renameNode(Node node, String namespaceURI, String qualifiedName)
             throws DOMException {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    public void setDocumentURI(String arg0) {
+    public void setDocumentURI(String documentURI) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    public void setStrictErrorChecking(boolean arg0) {
+    public void setStrictErrorChecking(boolean strictErrorChecking) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }

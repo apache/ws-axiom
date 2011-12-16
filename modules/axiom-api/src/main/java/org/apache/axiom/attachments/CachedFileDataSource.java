@@ -39,14 +39,14 @@ public class CachedFileDataSource extends FileDataSource implements SizeAwareDat
     // Represents the absolute pathname of cached attachment file
     private String cachedFileName = null;
 
-    public CachedFileDataSource(File arg0) {
-        super(arg0);
+    public CachedFileDataSource(File file) {
+        super(file);
         if (log.isDebugEnabled()) {
         	log.debug("Enter CachedFileDataSource ctor");
         }
-        if (arg0 != null) {
+        if (file != null) {
         	try {
-        		cachedFileName = arg0.getCanonicalPath();
+        		cachedFileName = file.getCanonicalPath();
         	} catch (java.io.IOException e) {
         		log.error("IOException caught: " + e);
         	}

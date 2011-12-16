@@ -470,7 +470,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         throw new UnsupportedOperationException("TODO");
     }
 
-    public Text replaceWholeText(String arg0) throws DOMException {
+    public Text replaceWholeText(String content) throws DOMException {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }

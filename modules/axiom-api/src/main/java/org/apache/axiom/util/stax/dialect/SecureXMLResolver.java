@@ -32,13 +32,13 @@ import org.apache.commons.logging.LogFactory;
 final class SecureXMLResolver implements XMLResolver {
 
     private static final Log log = LogFactory.getLog(SecureXMLResolver.class);
-    public Object resolveEntity(String arg0, String arg1, String arg2,
-            String arg3) throws XMLStreamException {
+    public Object resolveEntity(String publicID, String systemID, String baseURI,
+            String namespace) throws XMLStreamException {
         // Do not expose the name of the entity that was attempted to be 
         // read as this will reveal secure information to the client.
         if (log.isDebugEnabled()) {
             log.debug("resolveEntity is disabled because this is a secure XMLStreamReader(" + 
-                    arg0 + ") (" + arg1 + ") (" + arg2   + ") (" + arg3 + ")");
+                    publicID + ") (" + systemID + ") (" + baseURI + ") (" + namespace + ")");
         }
         throw new XMLStreamException("Reading external entities is disabled");
     }

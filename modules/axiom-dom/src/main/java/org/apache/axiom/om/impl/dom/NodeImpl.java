@@ -118,7 +118,7 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
         return null;
     }
 
-    public void setNodeValue(String arg0) throws DOMException {
+    public void setNodeValue(String nodeValue) throws DOMException {
         // Don't do anything, to be overridden in SOME Child classes
     }
 
@@ -543,17 +543,17 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
         return this == node;
     }
 
-    public String lookupPrefix(String arg0) {
+    public String lookupPrefix(String namespaceURI) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    public boolean isDefaultNamespace(String arg0) {
+    public boolean isDefaultNamespace(String namespaceURI) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    public String lookupNamespaceURI(String arg0) {
+    public String lookupNamespaceURI(String prefix) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
@@ -735,7 +735,7 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
         return equal;
     }
 
-    public Object getFeature(String arg0, String arg1) {
+    public Object getFeature(String feature, String version) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }

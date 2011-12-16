@@ -92,7 +92,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
         lastNode = node;
     }
     
-    public void setDocumentLocator(Locator arg0) {
+    public void setDocumentLocator(Locator locator) {
     }
 
     public void startDocument() throws SAXException {
@@ -130,7 +130,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
         ((OMElementEx)nextElem).addNamespaceDeclaration(uri, prefix);
     }
 
-    public void endPrefixMapping(String arg0) throws SAXException {
+    public void endPrefixMapping(String prefix) throws SAXException {
     }
 
     /*
@@ -192,7 +192,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
      * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
      *      java.lang.String, java.lang.String)
      */
-    public void endElement(String arg0, String arg1, String arg2)
+    public void endElement(String uri, String localName, String qName)
             throws SAXException {
         if (lastNode.isComplete()) {
             OMContainer parent = lastNode.getParent();
@@ -240,7 +240,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
         addNode(factory.createOMComment(getContainer(), new String(ch, start, length)));
     }
 
-    public void skippedEntity(String arg0) throws SAXException {
+    public void skippedEntity(String name) throws SAXException {
     }
 
     public void startEntity(String name) throws SAXException {

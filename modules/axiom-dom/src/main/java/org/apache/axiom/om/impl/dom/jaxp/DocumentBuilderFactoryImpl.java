@@ -95,12 +95,12 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
                 : originalDocumentBuilderFactory.newDocumentBuilder();
     }
 
-    public Object getAttribute(String arg0) throws IllegalArgumentException {
+    public Object getAttribute(String name) throws IllegalArgumentException {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    public void setAttribute(String arg0, Object arg1)
+    public void setAttribute(String name, Object value)
             throws IllegalArgumentException {
         // // TODO
         // throw new UnsupportedOperationException("TODO");
@@ -115,7 +115,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
         // TODO TODO OS
     }
 
-    public boolean getFeature(String arg0) throws ParserConfigurationException {
+    public boolean getFeature(String name) throws ParserConfigurationException {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }

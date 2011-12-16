@@ -90,11 +90,11 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         return documentImpl;
     }
 
-    public void setEntityResolver(EntityResolver arg0) {
+    public void setEntityResolver(EntityResolver er) {
         // TODO
     }
 
-    public void setErrorHandler(ErrorHandler arg0) {
+    public void setErrorHandler(ErrorHandler eh) {
         // TODO 
     }
 

@@ -59,7 +59,7 @@ public class DOMImplementationImpl implements DOMImplementation {
      * DOM-Level 3 methods
      */
 
-    public Object getFeature(String arg0, String arg1) {
+    public Object getFeature(String feature, String version) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }

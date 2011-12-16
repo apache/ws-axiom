@@ -37,10 +37,6 @@ public class BAATest extends TestCase {
     byte[] input;
     ByteArrayInputStream inputBAIS;
     
-    public BAATest(String arg0) {
-        super(arg0);
-    }
-
     protected void setUp() throws Exception {
         super.setUp();
         input = new byte[INPUT_SIZE];
