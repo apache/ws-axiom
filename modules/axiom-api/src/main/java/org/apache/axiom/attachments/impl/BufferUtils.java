@@ -195,7 +195,7 @@ public class BufferUtils {
      * @param is
      * @param baaos
      * @param limit
-     * @return TODO
+     * @return the number of bytes copied
      */
     public static long inputStream2BAAOutputStream(InputStream is, 
                                                BAAOutputStream baaos,

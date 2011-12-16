@@ -69,7 +69,7 @@ public final class AttachmentCacheMonitor {
 
     /**
      * Get or Create an AttachmentCacheMonitor singleton
-     * @return TODO
+     * @return the singleton instance
      */
     public static synchronized AttachmentCacheMonitor getAttachmentCacheMonitor() {
         if (_singleton == null) {

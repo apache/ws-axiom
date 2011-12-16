@@ -41,10 +41,16 @@ class PartContentOnFile extends PartContent {
     /**
      * Constructor.
      * 
-     * @param manager TODO
-     * @param in1 InputStream containing data
-     * @param in2 InputStream containing data
-     * @param attachmentDir String 
+     * @param manager
+     *            the lifecycle manager that will be used for managing temporary files created by
+     *            this instance
+     * @param in1
+     *            InputStream containing data
+     * @param in2
+     *            InputStream containing data
+     * @param attachmentDir
+     *            the file system location where temporary files are created; this value will be
+     *            used in calls to {@link LifecycleManager#create(String)}
      */
     PartContentOnFile(LifecycleManager manager, InputStream is1, InputStream is2, String attachmentDir) throws IOException {
         this.manager = manager;

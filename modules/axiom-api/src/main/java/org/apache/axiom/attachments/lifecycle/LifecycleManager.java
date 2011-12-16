@@ -39,7 +39,7 @@ public interface LifecycleManager {
     /**
      * Create a unique file in the designated directory
      * @param attachmentDir
-     * @return TODO
+     * @return the {@link FileAccessor} for the file created by this method
      * @throws IOException
      */    
     public FileAccessor create(String attachmentDir) throws IOException;
@@ -70,7 +70,7 @@ public interface LifecycleManager {
     /**
      * This method will return the file accessor associated with this file.
      * @param file
-     * @return TODO
+     * @return the {@link FileAccessor} object for the given file
      * @throws IOException
      */
     public FileAccessor getFileAccessor(String file) throws IOException;
