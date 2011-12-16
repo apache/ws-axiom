@@ -42,7 +42,7 @@ import java.util.ArrayList;
 /** Class StreamingOMSerializer */
 public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
     
-    static Log log = LogFactory.getLog(StreamingOMSerializer.class);
+    private static final Log log = LogFactory.getLog(StreamingOMSerializer.class);
     
     private static int namespaceSuffix = 0;
     public static final String NAMESPACE_PREFIX = "ns";

@@ -52,7 +52,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class MIMEOutputUtils {
     
-    private static Log log = LogFactory.getLog(MIMEOutputUtils.class);
+    private static final Log log = LogFactory.getLog(MIMEOutputUtils.class);
     private static boolean isDebugEnabled = log.isDebugEnabled();
 
     private static byte[] CRLF = { 13, 10 };

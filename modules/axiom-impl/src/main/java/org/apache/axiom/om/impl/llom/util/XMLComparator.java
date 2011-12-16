@@ -33,7 +33,7 @@ import java.util.Vector;
 
 /** @deprecated This class is outdated. Please use XmlUnit to compate two xml files. */
 public class XMLComparator {
-    private static Log log = LogFactory.getLog(XMLComparator.class);
+    private static final Log log = LogFactory.getLog(XMLComparator.class);
 
     private Vector ignorableNamespaceList = new Vector();
 

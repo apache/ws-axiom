@@ -55,7 +55,7 @@ import java.util.Map;
  */
 public abstract class StAXBuilder implements OMXMLParserWrapper {
 
-    private static Log log = LogFactory.getLog(StAXBuilder.class);
+    private static final Log log = LogFactory.getLog(StAXBuilder.class);
     
     /** Field parser */
     protected XMLStreamReader parser;

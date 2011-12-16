@@ -31,7 +31,7 @@ import org.apache.commons.logging.LogFactory;
  */
 final class SecureXMLResolver implements XMLResolver {
 
-    private static Log log = LogFactory.getLog(SecureXMLResolver.class);
+    private static final Log log = LogFactory.getLog(SecureXMLResolver.class);
     public Object resolveEntity(String arg0, String arg1, String arg2,
             String arg3) throws XMLStreamException {
         // Do not expose the name of the entity that was attempted to be 

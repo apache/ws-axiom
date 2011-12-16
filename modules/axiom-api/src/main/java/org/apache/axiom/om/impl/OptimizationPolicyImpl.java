@@ -37,7 +37,7 @@ import org.apache.commons.logging.LogFactory;
  * For internal use only.
  */
 class OptimizationPolicyImpl implements OptimizationPolicy {
-    private static Log log = LogFactory.getLog(OptimizationPolicyImpl.class);
+    private static final Log log = LogFactory.getLog(OptimizationPolicyImpl.class);
     private static boolean isDebugEnabled = log.isDebugEnabled();
     
     private final OMOutputFormat format;

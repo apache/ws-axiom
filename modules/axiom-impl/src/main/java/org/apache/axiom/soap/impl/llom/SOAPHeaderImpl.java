@@ -47,7 +47,7 @@ import java.util.List;
 /** A class representing the SOAP Header, primarily allowing access to the contained HeaderBlocks. */
 public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     
-    static Log log = LogFactory.getLog(SOAPHeaderImpl.class);
+    private static final Log log = LogFactory.getLog(SOAPHeaderImpl.class);
     protected SOAPHeaderImpl(OMNamespace ns, SOAPFactory factory) {
         super(SOAPConstants.HEADER_LOCAL_NAME, ns, factory);
     }

@@ -79,7 +79,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
         }
     }
     
-    private static Log log = LogFactory.getLog(MTOMXMLStreamWriter.class);
+    private static final Log log = LogFactory.getLog(MTOMXMLStreamWriter.class);
     private static boolean isDebugEnabled = log.isDebugEnabled();
     private static boolean isTraceEnabled = log.isTraceEnabled();
     private XMLStreamWriter xmlWriter;

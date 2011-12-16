@@ -40,7 +40,7 @@ import org.apache.commons.logging.LogFactory;
  * excessive GarbageCollection
  */
 public class BufferUtils {
-    private static Log log = LogFactory.getLog(BufferUtils.class);
+    private static final Log log = LogFactory.getLog(BufferUtils.class);
     // Performance testing indicates that 4K is the best size for medium
     // and small payloads.  And there is a neglible effect on large payloads.
     public final static int BUFFER_LEN = 4 * 1024;   // Copy Buffer size

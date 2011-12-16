@@ -28,11 +28,10 @@ import org.apache.commons.logging.LogFactory;
 
 
 public class CachedFileDataSource extends FileDataSource implements SizeAwareDataSource {
+    private static final Log log = LogFactory.getLog(CachedFileDataSource.class);
 
     String contentType = null;
     
-    protected static Log log = LogFactory.getLog(CachedFileDataSource.class);
-
     // The AttachmentCacheMonitor is used to delete expired copies of attachment files.
     private static AttachmentCacheMonitor acm = 
         AttachmentCacheMonitor.getAttachmentCacheMonitor();

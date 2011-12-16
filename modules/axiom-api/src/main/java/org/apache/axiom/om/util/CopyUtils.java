@@ -64,7 +64,7 @@ import java.util.Iterator;
  */
 public class CopyUtils {
 
-    private static Log log = LogFactory.getLog(CopyUtils.class);
+    private static final Log log = LogFactory.getLog(CopyUtils.class);
     
     
     /**

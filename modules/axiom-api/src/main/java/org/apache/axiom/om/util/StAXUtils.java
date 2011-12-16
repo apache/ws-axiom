@@ -88,7 +88,7 @@ import java.util.WeakHashMap;
  * </dl>
  */
 public class StAXUtils {
-    private static Log log = LogFactory.getLog(StAXUtils.class);
+    private static final Log log = LogFactory.getLog(StAXUtils.class);
     private static boolean isDebugEnabled = log.isDebugEnabled();
     
     // If isFactoryPerClassLoader is true (default), then 

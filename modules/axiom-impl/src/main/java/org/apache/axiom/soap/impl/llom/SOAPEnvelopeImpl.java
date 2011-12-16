@@ -50,7 +50,7 @@ import javax.xml.stream.XMLStreamWriter;
 /** Class SOAPEnvelopeImpl */
 public class SOAPEnvelopeImpl extends SOAPElement
         implements SOAPEnvelope, OMConstants {
-    private static Log log = LogFactory.getLog(SOAPEnvelopeImpl.class);
+    private static final Log log = LogFactory.getLog(SOAPEnvelopeImpl.class);
     private static final boolean isDebugEnabled = log.isDebugEnabled();
 
     /**

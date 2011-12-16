@@ -75,9 +75,9 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     /** Flag for parser provided to base element class. */
     private boolean isExpanded = false;
 
-    private static Log log = LogFactory.getLog(OMSourcedElementImpl.class);
+    private static final Log log = LogFactory.getLog(OMSourcedElementImpl.class);
     
-    private static Log forceExpandLog = LogFactory.getLog(OMSourcedElementImpl.class.getName() + ".forceExpand");
+    private static final Log forceExpandLog = LogFactory.getLog(OMSourcedElementImpl.class.getName() + ".forceExpand");
     
     private XMLStreamReader readerFromDS = null;  // Reader from DataSource
 

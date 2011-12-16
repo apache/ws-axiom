@@ -64,7 +64,7 @@ final class PartImpl implements Part {
      */
     private static final int STATE_DISCARDED = 3;
 
-    private static Log log = LogFactory.getLog(PartImpl.class);
+    private static final Log log = LogFactory.getLog(PartImpl.class);
     
     private final MIMEMessage message;
     private final boolean isRootPart;
