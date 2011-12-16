@@ -80,8 +80,6 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     }
     
     private static final Log log = LogFactory.getLog(MTOMXMLStreamWriter.class);
-    private static boolean isDebugEnabled = log.isDebugEnabled();
-    private static boolean isTraceEnabled = log.isTraceEnabled();
     private XMLStreamWriter xmlWriter;
     private OutputStream outStream;
     private List/*<Part>*/ otherParts = new LinkedList();
@@ -101,7 +99,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
 
     public MTOMXMLStreamWriter(XMLStreamWriter xmlWriter) {
         this.xmlWriter = xmlWriter;
-        if (isTraceEnabled) {
+        if (log.isTraceEnabled()) {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         optimizationPolicy = new OptimizationPolicyImpl(format);
@@ -129,13 +127,13 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      */
     public MTOMXMLStreamWriter(OutputStream outStream, OMOutputFormat format, boolean preserveAttachments)
             throws XMLStreamException, FactoryConfigurationError {
-        if (isDebugEnabled) {
+        if (log.isDebugEnabled()) {
             log.debug("Creating MTOMXMLStreamWriter");
             log.debug("OutputStream =" + outStream.getClass());
             log.debug("OMFormat = " + format.toString());
             log.debug("preserveAttachments = " + preserveAttachments);
         }
-        if (isTraceEnabled) {
+        if (log.isTraceEnabled()) {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         this.format = format;
@@ -213,18 +211,14 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     }
 
     public void writeEndDocument() throws XMLStreamException {
-        if (isDebugEnabled) {
-            log.debug("writeEndDocument");
-        }
+        log.debug("writeEndDocument");
         xmlWriter.writeEndDocument();
         isEndDocument = true; 
     }
 
     public void close() throws XMLStreamException {
         // TODO: we should probably call flush if the attachments have not been written yet
-        if (isDebugEnabled) {
-            log.debug("close");
-        }
+        log.debug("close");
         xmlWriter.close();
     }
 
@@ -232,17 +226,13 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      * Flush is overridden to trigger the attachment serialization
      */
     public void flush() throws XMLStreamException {
-        if (isDebugEnabled) {
-            log.debug("Calling MTOMXMLStreamWriter.flush");
-        }
+        log.debug("Calling MTOMXMLStreamWriter.flush");
         xmlWriter.flush();
         // flush() triggers the optimized attachment writing.
         // If the optimized attachments are specified, and the xml
         // document is completed, then write out the attachments.
         if (format.isOptimized() && !isComplete & (isEndDocument || depth == 0)) {
-            if (isDebugEnabled) {
-                log.debug("The XML writing is completed.  Now the attachments are written");
-            }
+            log.debug("The XML writing is completed.  Now the attachments are written");
             isComplete = true;
             try {
                 rootPartOutputStream.close();
@@ -391,13 +381,9 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      * possible, then {@link #prepareDataHandler(DataHandler)} should be used.
      */
     public void writeOptimized(OMText node) {
-        if(isDebugEnabled){
-            log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
-        }
+        log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
         otherParts.add(new Part(node.getContentID(), (DataHandler)node.getDataHandler()));    
-        if(isDebugEnabled){
-            log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
-        }
+        log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
     }
 
     /**
@@ -571,7 +557,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             os = outStream;
         }
         
-        if (isDebugEnabled) {
+        if (log.isDebugEnabled()) {
             if (os == null) {
                 log.debug("Direct access to the output stream is not available.");
             } else if (rootPartOutputStream != null) {

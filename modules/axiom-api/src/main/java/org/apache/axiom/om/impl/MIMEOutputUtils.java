@@ -53,7 +53,6 @@ import org.apache.commons.logging.LogFactory;
 public class MIMEOutputUtils {
     
     private static final Log log = LogFactory.getLog(MIMEOutputUtils.class);
-    private static boolean isDebugEnabled = log.isDebugEnabled();
 
     private static byte[] CRLF = { 13, 10 };
 
@@ -83,9 +82,7 @@ public class MIMEOutputUtils {
                                 String SOAPContentType, 
                                 OMOutputFormat omOutputFormat) {
         try {
-            if (isDebugEnabled) {
-                log.debug("Start: write the SOAPPart and the attachments");
-            }
+            log.debug("Start: write the SOAPPart and the attachments");
             
             // Write out the mime boundary
             startWritingMime(outStream, boundary);
@@ -116,9 +113,7 @@ public class MIMEOutputUtils {
             }
             finishWritingMime(outStream);
             outStream.flush();
-            if (isDebugEnabled) {
-                log.debug("End: write the SOAPPart and the attachments");
-            }
+            log.debug("End: write the SOAPPart and the attachments");
         } catch (IOException e) {
             throw new OMException("Error while writing to the OutputStream.", e);
         } catch (MessagingException e) {
@@ -153,7 +148,7 @@ public class MIMEOutputUtils {
             contentTransferEncoding = configurableDataHandler.getTransferEncoding();
         }
         
-        if (isDebugEnabled) {
+        if (log.isDebugEnabled()) {
             log.debug("Create MimeBodyPart");
             log.debug("  Content-ID = " + contentID);
             log.debug("  Content-Type = " + contentType);
@@ -167,7 +162,7 @@ public class MIMEOutputUtils {
         if (useCTEBase64) {
             if (!CommonUtils.isTextualPart(contentType) && 
                 "binary".equals(contentTransferEncoding)) {
-                if (isDebugEnabled) {
+                if (log.isDebugEnabled()) {
                     log.debug(" changing Content-Transfer-Encoding from " + 
                               contentTransferEncoding + " to base-64");
                 }
@@ -215,7 +210,7 @@ public class MIMEOutputUtils {
                                      MimeBodyPart part,
                                      String boundary) throws IOException,
             MessagingException {
-        if (isDebugEnabled) {
+        if (log.isDebugEnabled()) {
             log.debug("Start writeMimeBodyPart for " + part.getContentID());
         }
         outStream.write(CRLF);
@@ -223,9 +218,7 @@ public class MIMEOutputUtils {
         outStream.write(CRLF);
         writeMimeBoundary(outStream, boundary);
         outStream.flush();
-        if (isDebugEnabled) {
-            log.debug("End writeMimeBodyPart");
-        }
+        log.debug("End writeMimeBodyPart");
     }
 
     /**
@@ -233,9 +226,7 @@ public class MIMEOutputUtils {
      */
     public static void finishWritingMime(OutputStream outStream)
             throws IOException {
-        if (isDebugEnabled) {
-            log.debug("Write --, which indicates the end of the last boundary");
-        }
+        log.debug("Write --, which indicates the end of the last boundary");
         outStream.write(new byte[] { 45, 45 });
     }
 

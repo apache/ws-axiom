@@ -89,7 +89,6 @@ import java.util.WeakHashMap;
  */
 public class StAXUtils {
     private static final Log log = LogFactory.getLog(StAXUtils.class);
-    private static boolean isDebugEnabled = log.isDebugEnabled();
     
     // If isFactoryPerClassLoader is true (default), then 
     // a separate singleton XMLInputFactory and XMLOutputFactory is maintained
@@ -203,7 +202,7 @@ public class StAXUtils {
                     }
                 }
                 );
-            if (isDebugEnabled) {
+            if (log.isDebugEnabled()) {
                 log.debug("XMLStreamReader is " + reader.getClass().getName());
             }
             return reader;
@@ -232,7 +231,7 @@ public class StAXUtils {
                 }
                 );
             
-            if (isDebugEnabled) {
+            if (log.isDebugEnabled()) {
                 log.debug("XMLStreamReader is " + reader.getClass().getName());
             }
             return reader;
@@ -260,7 +259,7 @@ public class StAXUtils {
                     }
                 }
                 );
-            if (isDebugEnabled) {
+            if (log.isDebugEnabled()) {
                 log.debug("XMLStreamReader is " + reader.getClass().getName());
             }
             return reader;
@@ -366,7 +365,7 @@ public class StAXUtils {
                 }
                 );
                 
-            if (isDebugEnabled) {
+            if (log.isDebugEnabled()) {
                 log.debug("XMLStreamWriter is " + writer.getClass().getName());
             }
             return writer;
@@ -394,7 +393,7 @@ public class StAXUtils {
                 }
                 );
             
-            if (isDebugEnabled) {
+            if (log.isDebugEnabled()) {
                 log.debug("XMLStreamWriter is " + writer.getClass().getName());
             }
             return writer;
@@ -421,7 +420,7 @@ public class StAXUtils {
                     }
                 }
                 );
-            if (isDebugEnabled) {
+            if (log.isDebugEnabled()) {
                 log.debug("XMLStreamWriter is " + writer.getClass().getName());
             }
             return writer;

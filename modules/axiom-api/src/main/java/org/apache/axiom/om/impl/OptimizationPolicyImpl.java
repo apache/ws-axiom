@@ -38,7 +38,6 @@ import org.apache.commons.logging.LogFactory;
  */
 class OptimizationPolicyImpl implements OptimizationPolicy {
     private static final Log log = LogFactory.getLog(OptimizationPolicyImpl.class);
-    private static boolean isDebugEnabled = log.isDebugEnabled();
     
     private final OMOutputFormat format;
 
@@ -56,20 +55,14 @@ class OptimizationPolicyImpl implements OptimizationPolicy {
         
         // TODO: this needs review and cleanup
         // ** START **  code from MTOMXMLStreamWriter#isOptimizedThreshold
-        if(isDebugEnabled){
-            log.debug("Start MTOMXMLStreamWriter.isOptimizedThreshold()");
-        }
+        log.debug("Start MTOMXMLStreamWriter.isOptimizedThreshold()");
         int optimized = UNSUPPORTED;
         if(dataHandler!=null){
-            if(isDebugEnabled){
-                log.debug("DataHandler fetched, starting optimized Threshold processing");
-            }
+            log.debug("DataHandler fetched, starting optimized Threshold processing");
             optimized= BufferUtils.doesDataHandlerExceedLimit(dataHandler, format.getOptimizedThreshold());
         }
         if(optimized == UNSUPPORTED || optimized == EXCEED_LIMIT){
-            if(log.isDebugEnabled()){
-                log.debug("node should be added to binart NodeList for optimization");
-            }
+            log.debug("node should be added to binart NodeList for optimization");
             return true;
         }
         return false;

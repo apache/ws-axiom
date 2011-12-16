@@ -51,7 +51,6 @@ import javax.xml.stream.XMLStreamWriter;
 public class SOAPEnvelopeImpl extends SOAPElement
         implements SOAPEnvelope, OMConstants {
     private static final Log log = LogFactory.getLog(SOAPEnvelopeImpl.class);
-    private static final boolean isDebugEnabled = log.isDebugEnabled();
 
     /**
      * Constructor
@@ -253,18 +252,18 @@ public class SOAPEnvelopeImpl extends SOAPElement
             // TODO: should use 'instance of OMXMLParserWrapper' instead?  StAXBuilder is more generic
             if ((builder != null) && (builder instanceof StAXBuilder)) {
                 try {
-                    if (isDebugEnabled) {
+                    if (log.isDebugEnabled()) {
                         log.debug("closing builder: " + builder);
                     }
                     StAXBuilder staxBuilder = (StAXBuilder) builder;
                     staxBuilder.close();
                 } catch (Exception e) {
-                    if (isDebugEnabled) {
+                    if (log.isDebugEnabled()) {
                         log.error("Could not close builder or parser due to: ", e);
                     }
                 }
             } else {
-                if (isDebugEnabled) {
+                if (log.isDebugEnabled()) {
                     log.debug("Could not close builder or parser due to:");
                     if (builder == null) {
                         log.debug("builder is null");

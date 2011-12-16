@@ -102,7 +102,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     private SOAPBuilderHelper builderHelper;
 
     private String parserVersion = null;
-    private static final boolean isDebugEnabled = log.isDebugEnabled();
     
     /**
      * Constructor.
@@ -269,7 +268,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             e.setFirstChild(node);
         }
 
-        if (isDebugEnabled) {
+        if (log.isDebugEnabled()) {
             log.debug("Build the OMElement " + node.getLocalName() +
                     " by the StaxSOAPModelBuilder");
         }
@@ -307,14 +306,10 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                 namespaceURI = this.parser.getNamespaceURI();
                 if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
                     soapFactory = metaFactory.getSOAP12Factory();
-                    if (isDebugEnabled) {
-                        log.debug("Starting to process SOAP 1.2 message");
-                    }
+                    log.debug("Starting to process SOAP 1.2 message");
                 } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
                     soapFactory = metaFactory.getSOAP11Factory();
-                    if (isDebugEnabled) {
-                        log.debug("Starting to process SOAP 1.1 message");
-                    }
+                    log.debug("Starting to process SOAP 1.1 message");
                 } else {
                     throw new SOAPProcessingException(
                             "Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
