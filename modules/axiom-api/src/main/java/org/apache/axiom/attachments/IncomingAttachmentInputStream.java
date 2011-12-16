@@ -35,7 +35,6 @@ public class IncomingAttachmentInputStream extends InputStream {
     public static final String HEADER_CONTENT_DESCRIPTION = "content-description";
     public static final String HEADER_CONTENT_TYPE = "content-type";
     public static final String HEADER_CONTENT_TRANSFER_ENCODING = "content-transfer-encoding";
-    public static final String HEADER_CONTENT_TYPE_JMS = "contentType";
     public static final String HEADER_CONTENT_LENGTH = "content-length";
     public static final String HEADER_CONTENT_LOCATION = "content-location";
     public static final String HEADER_CONTENT_ID = "content-id";
