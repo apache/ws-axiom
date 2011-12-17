@@ -173,8 +173,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             // Special case: no namespace; we need to generate a namespace declaration only if
             // there is a conflicting namespace declaration (i.e. a declaration for the default
             // namespace with a non empty URI) is in scope
-            OMNamespace defaultNamespace = getDefaultNamespace();
-            if (defaultNamespace != null && defaultNamespace.getNamespaceURI().length() > 0) {
+            if (getDefaultNamespace() != null) {
                 declareDefaultNamespace("");
             }
             return null;
@@ -819,7 +818,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         if (namespaces != null) {
             OMNamespaceImpl defaultNS = (OMNamespaceImpl) namespaces.get("");
             if (defaultNS != null) {
-                return defaultNS;
+                return defaultNS.getNamespaceURI().length() == 0 ? null : defaultNS;
             }
         }
 

@@ -134,8 +134,13 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     OMNamespace declareDefaultNamespace(String uri);
 
     /**
-     * This will retrieve the default namespace of this element, if available. null returned if none
-     * is found.
+     * Get the default namespace in scope on this element.
+     * 
+     * @return The default namespace or <code>null</code> if no default namespace is in scope. This
+     *         method never returns an {@link OMNamespace} object with an empty namespace URI; if
+     *         the element or one of its ancestors has a <tt>xmlns=""</tt> declaration, then
+     *         <code>null</code> is returned. Note that if the method returns an {@link OMNamespace}
+     *         object, then its prefix will obviously be the empty string.
      */
     OMNamespace getDefaultNamespace();
 

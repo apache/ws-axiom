@@ -62,8 +62,7 @@ public class TestName1Unqualified extends OMSourcedElementTest {
 
         assertTrue(element.getLocalName().equals("library"));
         assertNull(element.getNamespace());
-        assertTrue(element.getDefaultNamespace() == null ||
-                element.getDefaultNamespace().getNamespaceURI().length() == 0);
+        assertNull(element.getDefaultNamespace());
         assertTrue(result.indexOf("xmlns=") <
                 0); // Make sure that the serialized string does not contain default prefix declaration
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);

@@ -44,7 +44,6 @@ public class TestGetDefaultNamespace2 extends AxiomTestCase {
         OMElement parent = factory.createOMElement("parent", "urn:test", "");
         OMElement child = factory.createOMElement("child", null, parent);
         OMNamespace ns = child.getDefaultNamespace();
-        // TODO: need to specify if getDefaultNamespace should return null or ("","")
-        assertTrue(ns == null || ns.equals("", ""));
+        assertNull(ns);
     }
 }
