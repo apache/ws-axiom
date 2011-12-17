@@ -293,9 +293,8 @@ public class SOAPEnvelopeImpl extends SOAPElement
         if (payloadQName != null) {
             if (SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(payloadQName.getLocalPart())) {
                 String ns = payloadQName.getNamespaceURI();
-                return (ns != null &&
-                    (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns) ||
-                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns)));                                                         
+                return SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns) ||
+                       SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns);                                                         
             } 
         }
         

@@ -932,8 +932,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             return null;
         }
 
-        if (qname.getNamespaceURI() == null
-                || qname.getNamespaceURI().equals("")) {
+        if (qname.getNamespaceURI().equals("")) {
             return (AttrImpl) this.getAttributeNode(qname.getLocalPart());
         } else {
             return (AttrImpl) this.getAttributeNodeNS(qname.getNamespaceURI(),
