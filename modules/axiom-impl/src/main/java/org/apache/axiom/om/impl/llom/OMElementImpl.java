@@ -170,9 +170,6 @@ public class OMElementImpl extends OMNodeImpl
                 }
                 ns = declareNamespace(namespaceURI, prefix);
             }
-            if (ns != null) {
-                this.ns = ns;
-            }
         } else if (qname.getPrefix().length() > 0) {
             throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
         }
