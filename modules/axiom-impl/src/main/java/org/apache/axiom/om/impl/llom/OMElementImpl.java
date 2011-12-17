@@ -190,8 +190,7 @@ public class OMElementImpl extends OMNodeImpl
             // Special case: no namespace; we need to generate a namespace declaration only if
             // there is a conflicting namespace declaration (i.e. a declaration for the default
             // namespace with a non empty URI) is in scope
-            OMNamespace defaultNamespace = getDefaultNamespace();
-            if (defaultNamespace != null && defaultNamespace.getNamespaceURI().length() > 0) {
+            if (getDefaultNamespace() != null) {
                 declareDefaultNamespace("");
             }
             return null;
@@ -409,7 +408,7 @@ public class OMElementImpl extends OMNodeImpl
     public OMNamespace getDefaultNamespace() {
         OMNamespace defaultNS;
         if (namespaces != null && (defaultNS = (OMNamespace) namespaces.get("")) != null) {
-            return defaultNS;
+            return defaultNS.getNamespaceURI().length() == 0 ? null : defaultNS;
         }
         if (parent instanceof OMElementImpl) {
             return ((OMElementImpl) parent).getDefaultNamespace();
