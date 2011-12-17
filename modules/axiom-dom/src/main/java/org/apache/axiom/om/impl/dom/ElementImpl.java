@@ -71,6 +71,18 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     
     private int lineNumber;
 
+    /**
+     * The namespace of this element. Possible values:
+     * <ul>
+     * <li><code>null</code> (if the element has no namespace)
+     * <li>any {@link OMNamespace} instance, with the following exceptions:
+     * <ul>
+     * <li>an {@link OMNamespace} instance with a <code>null</code> prefix
+     * <li>an {@link OMNamespace} instance with both prefix and namespace URI set to the empty
+     * string
+     * </ul>
+     * </ul>
+     */
     protected OMNamespace namespace;
 
     protected String localName;
@@ -985,12 +997,8 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     public QName getQName() {
         QName qName;
         if (namespace != null) {
-            if (namespace.getPrefix() != null) {
-                qName = new QName(namespace.getNamespaceURI(), this.localName,
-                                  namespace.getPrefix());
-            } else {
-                qName = new QName(namespace.getNamespaceURI(), this.localName);
-            }
+            qName = new QName(namespace.getNamespaceURI(), this.localName,
+                              namespace.getPrefix());
         } else {
             qName = new QName(this.localName);
         }

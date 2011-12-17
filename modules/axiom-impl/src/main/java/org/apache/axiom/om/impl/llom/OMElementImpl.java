@@ -74,7 +74,18 @@ public class OMElementImpl extends OMNodeImpl
 
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
-    /** Field ns */
+    /**
+     * The namespace of this element. Possible values:
+     * <ul>
+     * <li><code>null</code> (if the element has no namespace)
+     * <li>any {@link OMNamespace} instance, with the following exceptions:
+     * <ul>
+     * <li>an {@link OMNamespace} instance with a <code>null</code> prefix
+     * <li>an {@link OMNamespace} instance with both prefix and namespace URI set to the empty
+     * string
+     * </ul>
+     * </ul>
+     */
     protected OMNamespace ns;
 
     /** Field localName */
@@ -1001,11 +1012,7 @@ public class OMElementImpl extends OMNodeImpl
         }
 
         if (ns != null) {
-            if (ns.getPrefix() != null) {
-                qName = new QName(ns.getNamespaceURI(), localName, ns.getPrefix());
-            } else {
-                qName = new QName(ns.getNamespaceURI(), localName);
-            }
+            qName = new QName(ns.getNamespaceURI(), localName, ns.getPrefix());
         } else {
             qName = new QName(localName);
         }

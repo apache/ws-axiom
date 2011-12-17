@@ -42,10 +42,13 @@ public interface OMNamedInformationItem extends OMInformationItem {
     /**
      * Get the namespace this information item is part of.
      * 
-     * @return the namespace of this information item, or <code>null</code> if the information item
-     *         has no namespace (note that this implies that the method never returns an
+     * @return The namespace of this information item, or <code>null</code> if the information item
+     *         has no namespace. Note that this implies that the method never returns an
      *         {@link OMNamespace} object with both prefix and namespace URI set to the empty
-     *         string)
+     *         string. In addition, the prefix of the returned {@link OMNamespace} object (if any)
+     *         is never <code>null</code>: if a <code>null</code> prefix was specified when creating
+     *         this information item, then a prefix has been automatically assigned and the assigned
+     *         prefix is returned.
      */
     OMNamespace getNamespace();
 
