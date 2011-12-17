@@ -100,6 +100,5 @@ class PartContentOnFile extends PartContent {
 
     void destroy() throws IOException {
         manager.delete(fileAccessor.getFile());
-        // TODO: recover the shutdown hook code from DataHandlerExtImpl
     }
 }
