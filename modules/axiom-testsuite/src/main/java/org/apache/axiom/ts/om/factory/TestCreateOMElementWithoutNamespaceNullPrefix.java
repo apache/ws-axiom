@@ -23,30 +23,25 @@ import java.util.Iterator;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamespace;
 
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
- * requested to create an element with a namespace but no namespace prefix is given and no parent is
- * specified. In this case, <code>createOMElement</code> is expected to generate a prefix.
+ * requested to create an element without namespace and the specified namespace prefix is
+ * <code>null</code>. Normally, a <code>null</code> prefix indicates that Axiom should generate a
+ * prefix, but for an element without namespace this is not possible and an empty prefix must be
+ * used instead.
  */
-public class TestCreateOMElementWithGeneratedPrefix extends CreateOMElementTestCase {
-    public TestCreateOMElementWithGeneratedPrefix(OMMetaFactory metaFactory, OMElementCreator variant) {
+public class TestCreateOMElementWithoutNamespaceNullPrefix extends CreateOMElementTestCase {
+    public TestCreateOMElementWithoutNamespaceNullPrefix(OMMetaFactory metaFactory, OMElementCreator variant) {
         super(metaFactory, variant);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = variant.createOMElement(factory, null, "test", "urn:test", null);
+        OMElement element = variant.createOMElement(factory, null, "test", "", null);
         assertEquals("test", element.getLocalName());
-        OMNamespace ns = element.getNamespace();
-        assertNotNull(ns);
-        assertEquals("urn:test", ns.getNamespaceURI());
-        // Axiom auto-generates a prefix here
-        assertTrue(ns.getPrefix().length() != 0);
+        assertNull(element.getNamespace());
         Iterator it = element.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
-        assertEquals(ns, it.next());
         assertFalse(it.hasNext());
     }
 }
