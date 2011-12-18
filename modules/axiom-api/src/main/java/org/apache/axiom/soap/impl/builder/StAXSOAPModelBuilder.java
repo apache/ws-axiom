@@ -469,6 +469,11 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         return envelope != null ? envelope : getSOAPEnvelope();
     }
 
+    // Necessary to allow SOAPBuilderHelper to access this method
+    protected void processNamespaceData(OMElement node) {
+        super.processNamespaceData(node);
+    }
+
     /**
      * Method processNamespaceData.
      *
