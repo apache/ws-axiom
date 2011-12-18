@@ -230,6 +230,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestUndeclarePrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextTo(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextToWithNonTextNodes(metaFactory));
+        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMAttributeGeneratedPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMAttributeNullPrefixNoNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMCommentWithoutParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMDocument(metaFactory));

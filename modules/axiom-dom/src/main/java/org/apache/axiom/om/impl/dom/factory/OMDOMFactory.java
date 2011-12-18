@@ -50,6 +50,7 @@ import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
 import org.apache.axiom.om.impl.dom.TextImpl;
 import org.apache.axiom.om.impl.dom.TextNodeImpl;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.w3c.dom.Node;
 
 import javax.xml.namespace.QName;
@@ -369,6 +370,14 @@ public class OMDOMFactory implements OMFactory {
 
     public OMAttribute createOMAttribute(String localName, OMNamespace ns,
                                          String value) {
+        if (ns != null && ns.getPrefix() == null) {
+            String namespaceURI = ns.getNamespaceURI();
+            if (namespaceURI.length() == 0) {
+                ns = null;
+            } else {
+                ns = new OMNamespaceImpl(namespaceURI, OMSerializerUtil.getNextNSPrefix());
+            }
+        }
         return new AttrImpl(this.getDocument(), localName, ns, value, this);
     }
 

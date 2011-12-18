@@ -266,6 +266,10 @@ public interface OMFactory {
                                OMXMLParserWrapper builder);
 
     /**
+     * Create an attribute with the given name and value. If the provided {@link OMNamespace} object
+     * has a <code>null</code> prefix, then a prefix will be generated, except if the namespace URI
+     * is the empty string, in which case the result is the same as if a <code>null</code>
+     * {@link OMNamespace} was given.
      * 
      * @param localName
      * @param ns

@@ -16,9 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.attribute;
-
-import javax.xml.namespace.QName;
+package org.apache.axiom.ts.om.factory;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
@@ -27,23 +25,20 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link OMAttribute#getQName()} returns the correct value for an attribute (with
- * namespace) created by {@link OMFactory#createOMAttribute(String, OMNamespace, String)}.
+ * Tests the behavior of {@link OMFactory#createOMAttribute(String, OMNamespace, String)} if an
+ * {@link OMNamespace} object with a null prefix and an empty namespace URI is given. Since it is
+ * not allowed to bind a prefix to the empty namespace URI and an unprefixed attribute has no
+ * namespace, this should give the same result as specifying an empty prefix.
  */
-public class TestGetQNameWithNamespace extends AxiomTestCase {
-    public TestGetQNameWithNamespace(OMMetaFactory metaFactory) {
+public class TestCreateOMAttributeNullPrefixNoNamespace extends AxiomTestCase {
+    public TestCreateOMAttributeNullPrefixNoNamespace(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
-        String localName = "attr";
-        String uri = "http://ns1";
-        OMFactory fac = metaFactory.getOMFactory();
-        OMNamespace ns = fac.createOMNamespace(uri, "p");
-        OMAttribute attr = fac.createOMAttribute(localName, ns, "value");
-        QName qname = attr.getQName();
-        assertEquals("Wrong namespace", uri, qname.getNamespaceURI());
-        assertEquals("Wrong localPart", localName, qname.getLocalPart());
-        assertEquals("Wrong prefix", "p", qname.getPrefix());
+        OMFactory factory = metaFactory.getOMFactory();
+        OMNamespace ns = factory.createOMNamespace("", null);
+        OMAttribute attr = factory.createOMAttribute("attr", ns, "value");
+        assertNull(attr.getNamespace());
     }
 }
