@@ -24,7 +24,6 @@ import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -40,7 +39,6 @@ import org.jaxen.XPath;
 import org.jaxen.saxpath.SAXPathException;
 import org.jaxen.util.SingleObjectIterator;
 
-import javax.xml.namespace.QName;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -330,17 +328,10 @@ public class DocumentNavigator extends DefaultNavigator {
      */
     public Iterator getAttributeAxisIterator(Object contextNode) throws UnsupportedAxisException {
         if (isElement(contextNode)) {
-            ArrayList attributes = new ArrayList();
-            Iterator i = ((OMElement) contextNode).getAllAttributes();
-            while (i != null && i.hasNext()) {
-                attributes.add(new OMAttributeEx((OMAttribute) i.next(),
-                                                 (OMContainer) contextNode,
-                                                 ((OMElement) contextNode)
-                                                         .getOMFactory()));
-            }
-            return attributes.iterator();
+            return ((OMElement) contextNode).getAllAttributes();
+        } else {
+            return JaxenConstants.EMPTY_ITERATOR;
         }
-        return JaxenConstants.EMPTY_ITERATOR;
     }
 
     /**
@@ -453,9 +444,9 @@ public class DocumentNavigator extends DefaultNavigator {
         } else if (contextNode instanceof OMNamespaceEx) {
             return new SingleObjectIterator(
                     ((OMNamespaceEx) contextNode).getParent());
-        } else if (contextNode instanceof OMAttributeEx) {
+        } else if (contextNode instanceof OMAttribute) {
             return new SingleObjectIterator(
-                    ((OMAttributeEx) contextNode).getParent());
+                    ((OMAttribute) contextNode).getOwner());
         }
         return JaxenConstants.EMPTY_ITERATOR;
     }
@@ -669,8 +660,8 @@ public class DocumentNavigator extends DefaultNavigator {
         if (contextNode == null ||
                 contextNode instanceof OMDocument) {
             return null;
-        } else if (contextNode instanceof OMAttributeEx) {
-            return ((OMAttributeEx) contextNode).getParent();
+        } else if (contextNode instanceof OMAttribute) {
+            return ((OMAttribute) contextNode).getOwner();
         } else if (contextNode instanceof OMNamespaceEx) {
             return ((OMNamespaceEx) contextNode).getParent();
         }
@@ -704,78 +695,6 @@ public class DocumentNavigator extends DefaultNavigator {
 
         public OMContainer getParent() {
             return parent;
-        }
-    }
-
-    class OMAttributeEx implements OMAttribute {
-        OMAttribute attribute = null;
-        OMContainer parent = null;
-        OMFactory factory;
-
-        OMAttributeEx(OMAttribute attribute, OMContainer parent,
-                      OMFactory factory) {
-            this.attribute = attribute;
-            this.parent = parent;
-        }
-
-        public String getLocalName() {
-            return attribute.getLocalName();
-        }
-
-        public void setLocalName(String localName) {
-            attribute.setLocalName(localName);
-        }
-
-        public String getAttributeValue() {
-            return attribute.getAttributeValue();
-        }
-
-        public String getAttributeType() {
-            return attribute.getAttributeType();
-        }
-
-        public void setAttributeValue(String value) {
-            attribute.setAttributeValue(value);
-        }
-
-        public void setAttributeType(String type) {
-            attribute.setAttributeType(type);
-        }
-
-        public void setOMNamespace(OMNamespace omNamespace) {
-            attribute.setOMNamespace(omNamespace);
-        }
-
-        public OMNamespace getNamespace() {
-            return attribute.getNamespace();
-        }
-
-        public String getNamespaceURI() {
-            return attribute.getNamespaceURI();
-        }
-
-        public QName getQName() {
-            return attribute.getQName();
-        }
-
-        public OMContainer getParent() {
-            return parent;
-        }
-
-        public OMFactory getOMFactory() {
-            return this.factory;
-        }
-
-        /**
-         * Returns the owner element of this attribute
-         * 
-         * @return OMElement If the parent <code>OMContainer</code> is an
-         * instanceof <code>OMElement</code> we return that element else
-         * we return null. To get the <code>OMContainer</code> itself use
-         * the <code>getParent()</code> method.
-         */
-        public OMElement getOwner() {
-            return (parent instanceof OMElement) ? (OMElement)parent : null;
         }
     }
 }
