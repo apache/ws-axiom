@@ -50,7 +50,18 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     /** Attribute type */
     private String attrType;
 
-    /** Attribute namespace */
+    /**
+     * The namespace of this attribute. Possible values:
+     * <ul>
+     * <li><code>null</code> (if the attribute has no namespace)
+     * <li>any {@link OMNamespace} instance, with the following exceptions:
+     * <ul>
+     * <li>an {@link OMNamespace} instance with a <code>null</code> prefix
+     * <li>an {@link OMNamespace} instance with an empty prefix (because an unprefixed attribute
+     * never has a namespace)
+     * </ul>
+     * </ul>
+     */
     private OMNamespaceImpl namespace;
 
     /** Flag to indicate whether this attr is used or not */
@@ -232,14 +243,9 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     public QName getQName() {
         return (namespace == null) ?
                 new QName(this.attrName) :
-                // This next bit is because QName is kind of stupid, and throws an
-                // IllegalArgumentException on null prefix instead of treating it exactly
-                // as if no prefix had been passed.  Grr.
-                (namespace.getPrefix() == null ?
-                        new QName(namespace.getNamespaceURI(), attrName) :
                         new QName(namespace.getNamespaceURI(),
                                   attrName,
-                                  namespace.getPrefix()));
+                                  namespace.getPrefix());
 
     }
 

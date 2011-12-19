@@ -38,7 +38,18 @@ public class OMAttributeImpl implements OMAttribute {
     /** Field type */
     private String type;
 
-    /** Field namespace */
+    /**
+     * The namespace of this attribute. Possible values:
+     * <ul>
+     * <li><code>null</code> (if the attribute has no namespace)
+     * <li>any {@link OMNamespace} instance, with the following exceptions:
+     * <ul>
+     * <li>an {@link OMNamespace} instance with a <code>null</code> prefix
+     * <li>an {@link OMNamespace} instance with an empty prefix (because an unprefixed attribute
+     * never has a namespace)
+     * </ul>
+     * </ul>
+     */
     private OMNamespace namespace;
     
     private QName qName;
@@ -79,12 +90,7 @@ public class OMAttributeImpl implements OMAttribute {
         }
 
         if (namespace != null) {
-            // Guard against QName implementation sillyness.
-            if (namespace.getPrefix() == null) {
-                this.qName = new QName(namespace.getNamespaceURI(), localName);
-            } else {
-                this.qName =  new QName(namespace.getNamespaceURI(), localName, namespace.getPrefix());
-            }
+            this.qName =  new QName(namespace.getNamespaceURI(), localName, namespace.getPrefix());
         } else {
             this.qName =  new QName(localName);
         }
