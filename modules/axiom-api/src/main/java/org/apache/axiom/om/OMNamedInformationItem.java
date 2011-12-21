@@ -33,9 +33,10 @@ public interface OMNamedInformationItem extends OMInformationItem {
     String getLocalName();
 
     /**
-     * Method setLocalName
-     *
+     * Set the local name of this information item.
+     * 
      * @param localName
+     *            the new local name of the information item
      */
     void setLocalName(String localName);
 
