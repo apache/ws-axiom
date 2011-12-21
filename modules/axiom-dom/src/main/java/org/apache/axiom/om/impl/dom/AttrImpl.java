@@ -80,8 +80,12 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     public AttrImpl(DocumentImpl ownerDocument, String localName,
                     OMNamespace ns, String value, OMFactory factory) {
         super(ownerDocument, factory);
-        if (ns != null && ns.getNamespaceURI().length() == 0 && ns.getPrefix().length() > 0) {
-            throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
+        if (ns != null && ns.getNamespaceURI().length() == 0) {
+            if (ns.getPrefix().length() > 0) {
+                throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
+            } else {
+                ns = null;
+            }
         }
         this.attrName = localName;
         this.attrValue = new TextImpl(ownerDocument, value, factory);
