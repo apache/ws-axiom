@@ -56,6 +56,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.attribute.TestEqualsHashCode(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetNamespaceURIWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetNamespaceURIWithoutNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.attribute.TestGetPrefixWithNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.attribute.TestGetPrefixWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQNameWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQNameWithoutNamespace(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
@@ -170,6 +172,9 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespacesInScopeWithMaskedNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceURIWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceURIWithoutNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetPrefixWithDefaultNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetPrefixWithNamespace(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetPrefixWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetText(metaFactory));

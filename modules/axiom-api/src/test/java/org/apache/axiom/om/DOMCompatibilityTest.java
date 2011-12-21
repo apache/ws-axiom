@@ -46,7 +46,8 @@ public class DOMCompatibilityTest extends TestCase {
         // Note: All exceptions are methods that are known to have the same behavior in Axiom
         //       and DOM. In these cases, method collisions are allowed.
         suite.addTest(new MethodCollisionTestCase(OMAttribute.class, Attr.class,
-                new MethodSignature[] { new MethodSignature("getNamespaceURI", new Class[0]),
+                new MethodSignature[] { new MethodSignature("getPrefix", new Class[0]),
+                                        new MethodSignature("getNamespaceURI", new Class[0]),
                                         new MethodSignature("getLocalName", new Class[0]) }));
         suite.addTest(new MethodCollisionTestCase(OMComment.class, Comment.class));
         suite.addTest(new MethodCollisionTestCase(OMDocType.class, DocumentType.class));
@@ -54,10 +55,12 @@ public class DOMCompatibilityTest extends TestCase {
         suite.addTest(new MethodCollisionTestCase(OMProcessingInstruction.class, ProcessingInstruction.class,
                 new MethodSignature[] { new MethodSignature("getTarget", new Class[0]) }));
         suite.addTest(new MethodCollisionTestCase(OMElement.class, Element.class,
-                new MethodSignature[] { new MethodSignature("getNamespaceURI", new Class[0]),
+                new MethodSignature[] { new MethodSignature("getPrefix", new Class[0]),
+                                        new MethodSignature("getNamespaceURI", new Class[0]),
                                         new MethodSignature("getLocalName", new Class[0]) }));
         suite.addTest(new MethodCollisionTestCase(OMSourcedElement.class, Element.class,
-                new MethodSignature[] { new MethodSignature("getNamespaceURI", new Class[0]),
+                new MethodSignature[] { new MethodSignature("getPrefix", new Class[0]),
+                                        new MethodSignature("getNamespaceURI", new Class[0]),
                                         new MethodSignature("getLocalName", new Class[0]) }));
         suite.addTest(new MethodCollisionTestCase(OMText.class, Text.class));
         suite.addTest(new MethodCollisionTestCase(OMText.class, CDATASection.class));

@@ -534,6 +534,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return definedNamespace;
     }
 
+    public String getPrefix() {
+        return super.getPrefix();
+    }
+
     public String getNamespaceURI() {
         return super.getNamespaceURI();
     }

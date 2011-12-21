@@ -1226,7 +1226,13 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
      * @see org.w3c.dom.Node#getPrefix()
      */
     public String getPrefix() {
-        return (this.namespace == null) ? null : this.namespace.getPrefix();
+        OMNamespace ns = getNamespace();
+        if (ns == null) {
+            return null;
+        } else {
+            String prefix = ns.getPrefix();
+            return prefix.length() == 0 ? null : prefix;
+        }
     }
 
     /** @see NodeImpl#setOwnerDocument (org.apache.axiom.om.impl.dom.DocumentImpl) */

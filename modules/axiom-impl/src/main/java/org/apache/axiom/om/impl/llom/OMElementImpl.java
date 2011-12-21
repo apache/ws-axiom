@@ -981,6 +981,16 @@ public class OMElementImpl extends OMNodeImpl
         return ns;
     }
 
+    public String getPrefix() {
+        OMNamespace ns = getNamespace();
+        if (ns == null) {
+            return null;
+        } else {
+            String prefix = ns.getPrefix();
+            return prefix.length() == 0 ? null : prefix;
+        }
+    }
+
     public String getNamespaceURI() {
         OMNamespace ns = getNamespace();
         if (ns == null) {
