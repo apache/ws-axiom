@@ -38,7 +38,7 @@ public class OhlohMacro extends AbstractMacro {
         if (widget == null) {
             throw new MacroExecutionException("'widget' macro parameter is required");
         }
-        sink.rawText("<div style=\"float: left; border: 1px dotted #777777; background-color: white\"><script type=\"text/javascript\" src=\"http://www.ohloh.net/p/"
+        sink.rawText("<div style=\"float: left\"><script type=\"text/javascript\" src=\"http://www.ohloh.net/p/"
                 + project + "/widgets/project_" + widget + ".js\"></script></div><div style=\"clear: both\"/>");
     }
 }

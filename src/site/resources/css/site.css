@@ -130,3 +130,9 @@ a.externalLink, a.externalLink:link, a.externalLink:visited, a.externalLink:acti
   background: transparent;
   padding-right: 0
 }
+
+/* Styles for Ohloh widgets */
+
+div.gadget {
+  background-color: white
+}
