@@ -297,29 +297,38 @@
                     <attach>true</attach>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.rat</groupId>
-                <artifactId>apache-rat-plugin</artifactId>
-                <version>0.8</version>
-                <executions>
-                    <execution>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludes>
-                        <!-- We can't add license headers to test resources -->
-                        <exclude>src/test/resources/**</exclude>
-                        <!-- Temporary file created by maven-shade-plugin -->
-                        <exclude>dependency-reduced-pom.xml</exclude>
-                    </excludes>
-                </configuration> 
-            </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>apache-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.rat</groupId>
+                        <artifactId>apache-rat-plugin</artifactId>
+                        <version>0.8</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <excludes>
+                                <!-- We can't add license headers to test resources -->
+                                <exclude>src/test/resources/**</exclude>
+                                <!-- Temporary file created by maven-shade-plugin -->
+                                <exclude>dependency-reduced-pom.xml</exclude>
+                            </excludes>
+                        </configuration> 
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <dependencyManagement>
         <dependencies>
             <!-- We use the 1.0 version of the StAX API as Maven dependency (because
