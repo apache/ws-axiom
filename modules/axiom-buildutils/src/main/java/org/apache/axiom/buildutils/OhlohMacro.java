@@ -34,11 +34,14 @@ public class OhlohMacro extends AbstractMacro {
         if (project == null) {
             throw new MacroExecutionException("'project' macro parameter is required");
         }
-        String widget = (String)request.getParameter("widget");
-        if (widget == null) {
-            throw new MacroExecutionException("'widget' macro parameter is required");
+        String widgets = (String)request.getParameter("widgets");
+        if (widgets == null) {
+            throw new MacroExecutionException("'widgets' macro parameter is required");
         }
-        sink.rawText("<div style=\"float: left\"><script type=\"text/javascript\" src=\"http://www.ohloh.net/p/"
-                + project + "/widgets/project_" + widget + ".js\"></script></div><div style=\"clear: both\"/>");
+        for (String widget : widgets.split(",")) {
+            sink.rawText("<div class=\"gadgetContainer\" style=\"float: left\"><script type=\"text/javascript\" src=\"http://www.ohloh.net/p/"
+                    + project + "/widgets/project_" + widget + ".js\"></script></div>");
+        }
+        sink.rawText("<div style=\"clear: both\"/>");
     }
 }
