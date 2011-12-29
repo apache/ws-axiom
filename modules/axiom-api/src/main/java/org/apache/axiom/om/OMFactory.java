@@ -274,7 +274,7 @@ public interface OMFactory {
      * @param localName
      * @param ns
      * @param value
-     * @return
+     * @return the newly created attribute
      * @throws IllegalArgumentException
      *             if an attempt is made to create a prefixed attribute with an empty namespace name
      */

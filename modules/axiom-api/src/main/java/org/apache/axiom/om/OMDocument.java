@@ -76,8 +76,8 @@ public interface OMDocument extends OMContainer {
      * Sets the XML version.
      *
      * @param version
-     * @see org.apache.axiom.om.impl.llom.OMDocumentImpl#XML_10 XML 1.0
-     * @see org.apache.axiom.om.impl.llom.OMDocumentImpl#XML_11 XML 1.1
+     * @see #XML_10
+     * @see #XML_11
      */
     void setXMLVersion(String version);
 
