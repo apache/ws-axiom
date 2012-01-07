@@ -26,22 +26,26 @@ class BuilderUtil {
     private BuilderUtil() {}
     
     static void setNamespace(OMElement element, String namespaceURI, String prefix, boolean namespaceURIInterning) {
-        if (namespaceURI != null && namespaceURI.length() > 0) {
-            // Check if there is an existing namespace declaration. This has two purposes:
-            //  * Avoid creating a new OMNamespace instance for each OMElement
-            //  * Perform namespace repairing
-            OMNamespace namespace = element.findNamespaceURI(prefix == null ? "" : prefix);
-            if (namespace == null || !namespace.getNamespaceURI().equals(namespaceURI)) {
-                if (namespaceURIInterning) {
-                    namespaceURI = namespaceURI.intern();
-                }
-                if (prefix == null) {
-                    prefix = "";
-                }
-                // This is actually the place where we perform namespace repairing as specified
-                // in the contract of OMXMLBuilderFactory#createStAXOMBuilder:
-                namespace = ((OMElementEx)element).addNamespaceDeclaration(namespaceURI, prefix);
+        if (prefix == null) {
+            prefix = "";
+        }
+        if (namespaceURI == null) {
+            namespaceURI = "";
+        }
+        // Check if there is an existing namespace declaration. This has two purposes:
+        //  * Avoid creating a new OMNamespace instance for each OMElement
+        //  * Perform namespace repairing
+        OMNamespace namespace = element.findNamespaceURI(prefix);
+        if (namespace == null && namespaceURI.length() > 0
+                || namespace != null && !namespace.getNamespaceURI().equals(namespaceURI)) {
+            if (namespaceURIInterning) {
+                namespaceURI = namespaceURI.intern();
             }
+            // This is actually the place where we perform namespace repairing as specified
+            // in the contract of OMXMLBuilderFactory#createStAXOMBuilder:
+            namespace = ((OMElementEx)element).addNamespaceDeclaration(namespaceURI, prefix);
+        }
+        if (namespace != null && namespaceURI.length() > 0) {
             element.setNamespaceWithNoFindInCurrentScope(namespace);
         }
     }
