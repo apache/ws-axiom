@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -178,8 +179,13 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
             return this.createAttribute(localName);
         }
 
-        return new AttrImpl(this, localName, new OMNamespaceImpl(
-                namespaceURI, prefix), this.factory);
+        OMNamespace namespace;
+        if (namespaceURI == null) {
+            namespace = null;
+        } else {
+            namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
+        }
+        return new AttrImpl(this, localName, namespace, this.factory);
     }
 
     public CDATASection createCDATASection(String data) throws DOMException {
