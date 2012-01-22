@@ -36,5 +36,7 @@ public class TestCreateElementNS extends DOMTestCase {
         Element elem = doc.createElementNS(namespace, "axis2:" + tagName);
         assertEquals("Local name misnatch", tagName, elem.getLocalName());
         assertEquals("Namespace misnatch", namespace, elem.getNamespaceURI());
+        // In contrast to Axiom, DOM doesn't generate namespace declarations automatically
+        assertEquals(0, elem.getAttributes().getLength());
     }
 }
