@@ -206,13 +206,10 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
         String localName = DOMUtil.getLocalName(qualifiedName);
         String prefix = DOMUtil.getPrefix(qualifiedName);
+        checkQName(prefix, localName);
+        
         if(prefix == null) {
             prefix = "";
-        }
-
-        //When the namespace is a default namespace
-        if (prefix != null && !"".equals(prefix)) {
-            this.checkQName(prefix, localName);
         }
 
         OMNamespaceImpl namespace = new OMNamespaceImpl(ns, prefix);
@@ -486,23 +483,14 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
      * @param local  local part of qualified name
      */
     protected final void checkQName(String prefix, String local) {
-
         // check that both prefix and local part match NCName
-        boolean validNCName = (prefix == null || XMLChar.isValidNCName(prefix))
-                && XMLChar.isValidNCName(local);
-
-        if (!validNCName) {
+        if ((prefix != null && !XMLChar.isValidNCName(prefix))
+                || !XMLChar.isValidNCName(local)) {
             // REVISIT: add qname parameter to the message
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN, DOMException.INVALID_CHARACTER_ERR,
                     null);
             throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
-        }
-
-        if (prefix == null || prefix.equals("")) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.NAMESPACE_ERR, null);
-            throw new DOMException(DOMException.NAMESPACE_ERR, msg);
         }
     }
 
