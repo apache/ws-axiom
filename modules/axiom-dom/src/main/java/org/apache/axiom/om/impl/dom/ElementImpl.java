@@ -64,7 +64,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
-public class ElementImpl extends ParentNode implements Element, OMElementEx, OMNodeEx,
+public class ElementImpl extends ParentNode implements Element, OMElementEx, OMNodeEx, NamedNode,
         OMConstants {
 
     private static final Log log = LogFactory.getLog(ElementImpl.class);
@@ -1094,12 +1094,16 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         this.localName = localName;
     }
 
+    public void internalSetNamespace(OMNamespace namespace) {
+        this.namespace = namespace;
+    }
+
     public void setNamespace(OMNamespace namespace) {
-        this.namespace = handleNamespace(namespace);
+        internalSetNamespace(handleNamespace(namespace));
     }
 
     public void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace) {
-        this.namespace = namespace;
+        internalSetNamespace(namespace);
     }
 
     /**
@@ -1233,6 +1237,10 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             String prefix = ns.getPrefix();
             return prefix.length() == 0 ? null : prefix;
         }
+    }
+
+    public void setPrefix(String prefix) throws DOMException {
+        NamedNodeHelper.setPrefix(this, prefix);
     }
 
     /** @see NodeImpl#setOwnerDocument (org.apache.axiom.om.impl.dom.DocumentImpl) */

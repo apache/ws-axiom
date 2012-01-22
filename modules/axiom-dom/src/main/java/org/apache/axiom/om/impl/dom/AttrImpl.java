@@ -39,7 +39,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
-public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
+public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
 
     /** Name of the attribute */
     private String attrName;
@@ -280,13 +280,17 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
         this.attrName = localName;
     }
 
+    public void internalSetNamespace(OMNamespace namespace) {
+        this.namespace = (OMNamespaceImpl)namespace;
+    }
+
     /**
      * Sets the namespace of this attribute node.
      *
      * @see org.apache.axiom.om.OMAttribute#setOMNamespace (org.apache.axiom.om.OMNamespace)
      */
     public void setOMNamespace(OMNamespace omNamespace) {
-        this.namespace = (OMNamespaceImpl) omNamespace;
+        internalSetNamespace(omNamespace);
     }
 
     /**
@@ -390,6 +394,10 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     public String getPrefix() {
         // TODO Error checking
         return (this.namespace == null) ? null : this.namespace.getPrefix();
+    }
+
+    public void setPrefix(String prefix) throws DOMException {
+        NamedNodeHelper.setPrefix(this, prefix);
     }
 
     public Node cloneNode(boolean deep) {

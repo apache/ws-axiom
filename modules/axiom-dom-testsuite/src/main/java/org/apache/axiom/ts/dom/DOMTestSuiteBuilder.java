@@ -32,6 +32,8 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
     }
     
     protected void addTests() {
+        addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithNamespace(dbf));
+        addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.builder.TestWhitespaceAroundDocumentElement(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAllowedChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttribute(dbf));
@@ -62,8 +64,12 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveLastChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveSingleChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChild(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithNamespace(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithoutNamespace(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNull(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetTextContent(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestAppendData(dbf));
+        addTest(new org.apache.axiom.ts.dom.text.TestSetPrefix(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSplitText(dbf));
     }
 }
