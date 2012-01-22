@@ -218,7 +218,12 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
             prefix = "";
         }
 
-        OMNamespaceImpl namespace = new OMNamespaceImpl(ns, prefix);
+        OMNamespaceImpl namespace;
+        if (ns.length() == 0) {
+            namespace = null;
+        } else {
+            namespace = new OMNamespaceImpl(ns, prefix);
+        }
         // DOM doesn't create namespace declarations automatically. Therefore we set the
         // namespace afterwards with setNamespaceWithNoFindInCurrentScope.
         ElementImpl element = new ElementImpl(this, localName, null, this.factory);
