@@ -24,18 +24,25 @@ import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
-public class TestCreateAttribute extends DOMTestCase {
-    public TestCreateAttribute(DocumentBuilderFactory dbf) {
+public class TestCreateAttributeNS extends DOMTestCase {
+    public TestCreateAttributeNS(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
     protected void runTest() throws Throwable {
         String attrName = "attrIdentifier";
+        String attrValue = "attrValue";
+        String attrNs = "http://ws.apache.org/axis2/ns";
+        String attrNsPrefix = "axis2";
 
         Document doc = dbf.newDocumentBuilder().newDocument();
-        Attr attr = doc.createAttribute(attrName);
 
-        assertEquals("Attr name mismatch", attrName, attr.getName());
-        assertNull("Namespace value should be null", attr.getNamespaceURI());
+        Attr attr = doc.createAttributeNS(attrNs, attrNsPrefix + ":" + attrName);
+        assertEquals("Attr name mismatch", attrName, attr.getLocalName());
+        assertNotNull("Namespace value should not be null", attr.getNamespaceURI());
+        assertEquals("NamsspaceURI mismatch", attrNs, attr.getNamespaceURI());
+        assertEquals("namespace prefix mismatch", attrNsPrefix, attr.getPrefix());
+
+        attr.setValue(attrValue);
     }
 }
