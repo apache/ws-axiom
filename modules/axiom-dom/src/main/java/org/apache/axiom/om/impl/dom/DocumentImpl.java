@@ -72,6 +72,8 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     private Vector idAttrs;
 
     protected Hashtable identifiers;
+    
+    private final DOMConfigurationImpl domConfig = new DOMConfigurationImpl();
 
     /** @param ownerDocument  */
     public DocumentImpl(DocumentImpl ownerDocument, OMFactory factory) {
@@ -542,8 +544,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public DOMConfiguration getDomConfig() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+        return domConfig;
     }
 
     public String getInputEncoding() {
@@ -569,8 +570,12 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public void normalizeDocument() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+        if (domConfig.isEnabled(DOMConfigurationImpl.SPLIT_CDATA_SECTIONS)
+                || domConfig.isEnabled(DOMConfigurationImpl.WELLFORMED)) {
+            throw new UnsupportedOperationException("TODO");
+        } else {
+            normalize(domConfig);
+        }
     }
 
     public Node renameNode(Node node, String namespaceURI, String qualifiedName)

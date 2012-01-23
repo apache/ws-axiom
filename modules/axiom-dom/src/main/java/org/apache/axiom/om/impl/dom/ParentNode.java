@@ -725,4 +725,12 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             this.setComplete(true);
         }
     }
+
+    void normalize(DOMConfigurationImpl config) {
+        OMNode child = getFirstOMChild();
+        while (child != null) {
+            ((NodeImpl)child).normalize(config);
+            child = child.getNextOMSibling();
+        }
+    }
 }
