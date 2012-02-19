@@ -38,6 +38,7 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.testutils.PortAllocator;
 import org.apache.cxf.helpers.IOUtils;
 
 public class MTOMSample extends TestCase {
@@ -86,8 +87,9 @@ public class MTOMSample extends TestCase {
     // END SNIPPET: retrieveContent
     
     public void test() throws Exception {
-        Endpoint endpoint = Endpoint.publish("http://localhost:8080/mtom", new MTOMServiceImpl());
-        retrieveContent(new URL("http://localhost:8080/mtom"), "G87ZX20047", System.out);
+        int port = PortAllocator.allocatePort();
+        Endpoint endpoint = Endpoint.publish("http://localhost:" + port + "/mtom", new MTOMServiceImpl());
+        retrieveContent(new URL("http://localhost:" + port + "/mtom"), "G87ZX20047", System.out);
         endpoint.stop();
     }
 }
