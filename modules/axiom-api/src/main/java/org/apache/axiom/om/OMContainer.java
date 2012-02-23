@@ -255,7 +255,7 @@ public interface OMContainer extends OMSerializable {
     XMLStreamReader getXMLStreamReaderWithoutCaching();
 
     /**
-     * Get a pull parser representation of this element. This methods creates an
+     * Get a pull parser representation of this information item. This methods creates an
      * {@link XMLStreamReader} instance that produces a sequence of StAX events for this element and
      * its content. The sequence of events is independent of the state of this element and the value
      * of the <code>cache</code> parameter, but the side effects of calling this method and
@@ -348,9 +348,25 @@ public interface OMContainer extends OMSerializable {
      * 
      * @param cache
      *            indicates if caching should be enabled
-     * @return an {@link XMLStreamReader} representation of this element
+     * @return an {@link XMLStreamReader} representation of this information item
      */
     XMLStreamReader getXMLStreamReader(boolean cache);
+    
+    /**
+     * Get a pull parser representation of this information item. This method is similar to
+     * {@link #getXMLStreamReader(boolean)}, but accepts an {@link OMXMLStreamReaderConfiguration}
+     * object that allows to specify additional options and to customize the behavior of the
+     * returned reader.
+     * 
+     * @param cache
+     *            indicates if caching should be enabled
+     * @param configuration
+     *            additional configuration options; see the Javadoc of
+     *            {@link OMXMLStreamReaderConfiguration} for more information about the available
+     *            options
+     * @return an {@link XMLStreamReader} representation of this information item
+     */
+    XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration);
     
     /**
      * Get a {@link SAXSource} representation for this node. This method can be used to integrate

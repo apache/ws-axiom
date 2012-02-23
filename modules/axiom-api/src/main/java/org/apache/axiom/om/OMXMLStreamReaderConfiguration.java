@@ -1,0 +1,91 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+package org.apache.axiom.om;
+
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamReader;
+
+/**
+ * Defines additional configuration options for
+ * {@link OMContainer#getXMLStreamReader(boolean, OMXMLStreamReaderConfiguration)}.
+ */
+public class OMXMLStreamReaderConfiguration {
+    private boolean preserveNamespaceContext;
+
+    /**
+     * Determines whether strict namespace preservation is enabled. See
+     * {@link #setPreserveNamespaceContext(boolean)} for more information about this option.
+     * 
+     * @return the current value of this option
+     */
+    public boolean isPreserveNamespaceContext() {
+        return preserveNamespaceContext;
+    }
+
+    /**
+     * Specify whether the namespace context determined by the ancestors of the element should be
+     * preserved. This option only applies to {@link OMElement} instances and is disabled by
+     * default.
+     * <p>
+     * When this option is enabled, the {@link XMLStreamReader#getNamespaceCount()},
+     * {@link XMLStreamReader#getNamespacePrefix(int)} and
+     * {@link XMLStreamReader#getNamespaceURI(int)} will report additional namespace declarations
+     * for the {@link XMLStreamConstants#START_ELEMENT} event corresponding to the element on which
+     * this method is called, i.e. the root element of the resulting stream. These namespace
+     * declarations correspond to namespaces declared by the ancestors of the element and that are
+     * visible in the context of the element.
+     * <p>
+     * More precisely, if this option is enabled, then the namespace declarations reported for the
+     * first {@link XMLStreamConstants#START_ELEMENT} event in the returned stream will be the same
+     * as the declarations that would be returned by {@link #getNamespacesInScope()}, with the
+     * exception that a <tt>xmlns=""</tt> declaration present on the element will be preserved.
+     * <p>
+     * This feature is useful for code that relies on the namespace declarations reported by the
+     * {@link XMLStreamReader} to reconstruct the namespace context (instead of using the namespace
+     * context provided by {@link XMLStreamReader#getNamespaceContext()}). An example helps to
+     * illustrate how this works. Consider the following XML message:
+     * 
+     * <pre>
+     * &lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+     *                   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     *                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+     *   &lt;soapenv:Body>
+     *     &lt;ns:echo xmlns:ns="urn:test">
+     *       &lt;in xsi:type="xsd:string">test&lt;/in>
+     *     &lt;/ns:echo>
+     *   &lt;/soapenv:Body>
+     * &lt;/soapenv:Envelope>
+     * </pre>
+     * <p>
+     * When {@link OMContainer#getXMLStreamReader(boolean)} is invoked on the {@link OMElement}
+     * corresponding to <tt>ns:echo</tt>, only the namespace declaration for the <tt>ns</tt> prefix
+     * will be reported. This may cause a problem when the caller attempts to resolve the QName
+     * value <tt>xsd:string</tt> of the <tt>xsi:type</tt> attribute. If namespace context
+     * preservation is enabled, then the {@link XMLStreamReader} returned by this method will
+     * generate additional namespace declarations for the <tt>soapenv</tt>, <tt>xsd</tt> and
+     * <tt>xsi</tt> prefixes. They are reported for the {@link XMLStreamConstants#START_ELEMENT}
+     * event representing the <tt>ns:echo</tt> element.
+     * 
+     * @param preserveNamespaceContext
+     *            the value to set for this option
+     */
+    public void setPreserveNamespaceContext(boolean preserveNamespaceContext) {
+        this.preserveNamespaceContext = preserveNamespaceContext;
+    }
+}

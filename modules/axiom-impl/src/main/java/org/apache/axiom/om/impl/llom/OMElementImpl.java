@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -788,11 +789,11 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public XMLStreamReader getXMLStreamReader(boolean cache) {
-        return OMContainerHelper.getXMLStreamReader(this, cache, false);
+        return OMContainerHelper.getXMLStreamReader(this, cache);
     }
 
-    public XMLStreamReader getXMLStreamReader(boolean cache, boolean preserveNamespaceContext) {
-        return OMContainerHelper.getXMLStreamReader(this, cache, preserveNamespaceContext);
+    public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
+        return OMContainerHelper.getXMLStreamReader(this, cache, configuration);
     }
 
     /**

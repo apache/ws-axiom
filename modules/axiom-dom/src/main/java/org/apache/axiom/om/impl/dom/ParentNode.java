@@ -29,6 +29,7 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -694,10 +695,10 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
     }
 
     public XMLStreamReader getXMLStreamReader(boolean cache) {
-        return getXMLStreamReader(cache, false);
+        return getXMLStreamReader(cache, new OMXMLStreamReaderConfiguration());
     }
     
-    public XMLStreamReader getXMLStreamReader(boolean cache, boolean preserveNamespaceContext) {
+    public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
         if ((builder == null) && !cache) {
             throw new UnsupportedOperationException(
                     "This element was not created in a manner to be switched");
@@ -706,7 +707,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             throw new UnsupportedOperationException(
                     "The parser is already consumed!");
         }
-        return new OMStAXWrapper(builder, this, cache, preserveNamespaceContext);
+        return new OMStAXWrapper(builder, this, cache, configuration.isPreserveNamespaceContext());
     }
 
     public SAXSource getSAXSource(boolean cache) {

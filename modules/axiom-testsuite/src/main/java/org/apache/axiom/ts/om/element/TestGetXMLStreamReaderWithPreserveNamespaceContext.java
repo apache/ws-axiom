@@ -28,11 +28,13 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests the behavior of {@link OMElement#getXMLStreamReader(boolean, boolean)}
- * with <code>preserveNamespaceContext</code> set to <code>true</code>.
+ * Tests the behavior of
+ * {@link OMElement#getXMLStreamReader(boolean, OMXMLStreamReaderConfiguration)} with
+ * {@link OMXMLStreamReaderConfiguration#isPreserveNamespaceContext()} set to <code>true</code>.
  */
 public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTestCase {
     public TestGetXMLStreamReaderWithPreserveNamespaceContext(OMMetaFactory metaFactory) {
@@ -42,7 +44,9 @@ public class TestGetXMLStreamReaderWithPreserveNamespaceContext extends AxiomTes
     protected void runTest() throws Throwable {
         InputStream in = TestGetXMLStreamReaderWithPreserveNamespaceContext.class.getResourceAsStream("AXIOM-114.xml");
         OMElement root = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in).getDocumentElement();
-        XMLStreamReader reader = root.getFirstElement().getFirstElement().getXMLStreamReader(true, true);
+        OMXMLStreamReaderConfiguration configuration = new OMXMLStreamReaderConfiguration();
+        configuration.setPreserveNamespaceContext(true);
+        XMLStreamReader reader = root.getFirstElement().getFirstElement().getXMLStreamReader(true, configuration);
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals(4, reader.getNamespaceCount());
         Set prefixes = new HashSet();

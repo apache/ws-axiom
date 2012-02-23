@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.util.StAXUtils;
@@ -462,20 +463,20 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public XMLStreamReader getXMLStreamReader(boolean cache) {
-        return getXMLStreamReader(cache, false);
+        return getXMLStreamReader(cache, new OMXMLStreamReaderConfiguration());
     }
     
-    public XMLStreamReader getXMLStreamReader(boolean cache, boolean preserveNamespaceContext) {
+    public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
         if (log.isDebugEnabled()) {
             log.debug("getting XMLStreamReader for " + getPrintableName()
                     + " with cache=" + cache);
         }
         if (isExpanded) {
-            return super.getXMLStreamReader(cache, preserveNamespaceContext);
+            return super.getXMLStreamReader(cache, configuration);
         } else {
             if (cache && isDestructiveRead()) {
                 forceExpand();
-                return super.getXMLStreamReader(true, preserveNamespaceContext);
+                return super.getXMLStreamReader(true, configuration);
             }
             return getDirectReader();
         }

@@ -23,6 +23,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
+import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMStAXWrapper;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
@@ -32,9 +33,15 @@ import org.apache.commons.logging.LogFactory;
 class OMContainerHelper {
     private static final Log log = LogFactory.getLog(OMContainerHelper.class);
     
+    private static final OMXMLStreamReaderConfiguration defaultReaderConfiguration = new OMXMLStreamReaderConfiguration();
+    
     private OMContainerHelper() {}
     
-    public static XMLStreamReader getXMLStreamReader(OMContainer container, boolean cache, boolean preserveNamespaceContext) {
+    public static XMLStreamReader getXMLStreamReader(OMContainer container, boolean cache) {
+        return getXMLStreamReader(container, cache, defaultReaderConfiguration);
+    }
+    
+    public static XMLStreamReader getXMLStreamReader(OMContainer container, boolean cache, OMXMLStreamReaderConfiguration configuration) {
         OMXMLParserWrapper builder = ((OMSerializableImpl)container).builder;
         if (builder != null && builder instanceof StAXOMBuilder) {
             if (!container.isComplete()) {
@@ -48,7 +55,7 @@ class OMContainerHelper {
         OMXMLStreamReader reader = null;
         boolean done = ((OMSerializableImpl)container).done;
         if ((builder == null) && done) {
-            reader =  new OMStAXWrapper(null, container, false, preserveNamespaceContext);
+            reader = new OMStAXWrapper(null, container, false, configuration.isPreserveNamespaceContext());
         } else {
             if ((builder == null) && !cache) {
                 throw new UnsupportedOperationException(
@@ -58,7 +65,7 @@ class OMContainerHelper {
                 throw new UnsupportedOperationException(
                 "The parser is already consumed!");
             }
-            reader = new OMStAXWrapper(builder, container, cache, preserveNamespaceContext);
+            reader = new OMStAXWrapper(builder, container, cache, configuration.isPreserveNamespaceContext());
         }
         
         // If debug is enabled, wrap the OMXMLStreamReader in a validator.
