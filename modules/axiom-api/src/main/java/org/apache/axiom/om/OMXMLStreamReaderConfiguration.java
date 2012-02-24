@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 
@@ -27,9 +28,10 @@ import javax.xml.stream.XMLStreamReader;
  */
 public class OMXMLStreamReaderConfiguration {
     private boolean preserveNamespaceContext;
+    private boolean namespaceURIInterning;
 
     /**
-     * Determines whether strict namespace preservation is enabled. See
+     * Determine whether strict namespace preservation is enabled. See
      * {@link #setPreserveNamespaceContext(boolean)} for more information about this option.
      * 
      * @return the current value of this option
@@ -87,5 +89,34 @@ public class OMXMLStreamReaderConfiguration {
      */
     public void setPreserveNamespaceContext(boolean preserveNamespaceContext) {
         this.preserveNamespaceContext = preserveNamespaceContext;
+    }
+
+    /**
+     * Determine whether namespace URIs returned by the {@link XMLStreamReader} should be interned.
+     * 
+     * @return the current value of this option
+     */
+    public boolean isNamespaceURIInterning() {
+        return namespaceURIInterning;
+    }
+
+    /**
+     * Specify whether namespace URIs returned by the {@link XMLStreamReader} should be interned.
+     * This applies to the return values of the following methods:
+     * <ul>
+     * <li>{@link XMLStreamReader#getAttributeNamespace(int)}
+     * <li>{@link XMLStreamReader#getNamespaceURI()}
+     * <li>{@link XMLStreamReader#getNamespaceURI(int)}
+     * <li>{@link XMLStreamReader#getNamespaceURI(String)}
+     * <li>{@link NamespaceContext#getNamespaceURI(String)} of the {@link NamespaceContext} instance
+     * returned by {@link XMLStreamReader#getNamespaceContext()}
+     * </ul>
+     * 
+     * @param namespaceURIInterning
+     *            the value to set for this option
+     * @see String#intern()
+     */
+    public void setNamespaceURIInterning(boolean namespaceURIInterning) {
+        this.namespaceURIInterning = namespaceURIInterning;
     }
 }
