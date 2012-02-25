@@ -51,7 +51,7 @@ public final class OMContainerHelper {
         }
         
         // The om tree was built by hand and is already complete
-        OMXMLStreamReader reader = null;
+        OMXMLStreamReader reader;
         boolean done = container.isComplete();
         if ((builder == null) && done) {
             reader = new OMStAXWrapper(null, container, false, configuration.isPreserveNamespaceContext());
@@ -65,6 +65,10 @@ public final class OMContainerHelper {
                 "The parser is already consumed!");
             }
             reader = new OMStAXWrapper(builder, container, cache, configuration.isPreserveNamespaceContext());
+        }
+        
+        if (configuration.isNamespaceURIInterning()) {
+            reader = new NamespaceURIInterningXMLStreamReaderWrapper(reader);
         }
         
         // If debug is enabled, wrap the OMXMLStreamReader in a validator.
