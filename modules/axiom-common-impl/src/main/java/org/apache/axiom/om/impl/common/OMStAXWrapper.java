@@ -41,7 +41,7 @@ import org.apache.commons.logging.LogFactory;
  * This class does intentionally does not implement XMLStreamReaderContainer because
  * it does not wrap a parser (it wraps an OM graph).
  */
-public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx {
+class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx {
     private static final Log log = LogFactory.getLog(OMStAXWrapper.class);
     
     private final SwitchingWrapper switchingWrapper;
