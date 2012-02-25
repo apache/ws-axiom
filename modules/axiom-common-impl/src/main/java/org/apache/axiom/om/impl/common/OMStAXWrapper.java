@@ -131,10 +131,6 @@ class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx 
         switchingWrapper.releaseParserOnClose(value);
     }
 
-    public void setNamespaceURIInterning(boolean b) {
-        switchingWrapper.setNamespaceURIInterning(b);
-    }
-    
     public OMDataSource getDataSource() {
         return switchingWrapper.getDataSource();
     }
