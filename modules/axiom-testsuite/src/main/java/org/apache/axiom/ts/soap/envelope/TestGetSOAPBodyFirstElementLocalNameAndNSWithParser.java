@@ -57,8 +57,10 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTes
         
         // Also request an XMLStreamReader. The LLOM implementation triggers some special processing
         // in this case (because the getSOAPBodyFirstElementXXX calls put the builder in lookahead
-        // mode).
-        XMLStreamReader reader = envelope.getBody().getXMLStreamReader();
+        // mode). This is a regression test for r631687 (AXIOM-282).
+        XMLStreamReader reader = envelope.getXMLStreamReader(false);
+        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
+        assertEquals("Envelope", reader.getLocalName());
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals("Body", reader.getLocalName());
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());

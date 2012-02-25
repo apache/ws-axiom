@@ -46,8 +46,6 @@ class OMContainerHelper {
         if (builder != null && builder instanceof StAXOMBuilder) {
             if (!container.isComplete()) {
                 if (((StAXOMBuilder) builder).isLookahead()) {
-                    // TODO: not sure if this is actually still relevant;
-                    //       there is no test case that fails when this is removed
                     container.buildNext();
                 }
             }
