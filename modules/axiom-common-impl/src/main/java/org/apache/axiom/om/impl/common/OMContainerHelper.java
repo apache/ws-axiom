@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.llom;
+package org.apache.axiom.om.impl.common;
 
 import javax.xml.stream.XMLStreamReader;
 
@@ -25,12 +25,11 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.common.OMStAXWrapper;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-class OMContainerHelper {
+public final class OMContainerHelper {
     private static final Log log = LogFactory.getLog(OMContainerHelper.class);
     
     private static final OMXMLStreamReaderConfiguration defaultReaderConfiguration = new OMXMLStreamReaderConfiguration();
@@ -42,7 +41,7 @@ class OMContainerHelper {
     }
     
     public static XMLStreamReader getXMLStreamReader(OMContainer container, boolean cache, OMXMLStreamReaderConfiguration configuration) {
-        OMXMLParserWrapper builder = ((OMSerializableImpl)container).builder;
+        OMXMLParserWrapper builder = container.getBuilder();
         if (builder != null && builder instanceof StAXOMBuilder) {
             if (!container.isComplete()) {
                 if (((StAXOMBuilder) builder).isLookahead()) {
@@ -53,7 +52,7 @@ class OMContainerHelper {
         
         // The om tree was built by hand and is already complete
         OMXMLStreamReader reader = null;
-        boolean done = ((OMSerializableImpl)container).done;
+        boolean done = container.isComplete();
         if ((builder == null) && done) {
             reader = new OMStAXWrapper(null, container, false, configuration.isPreserveNamespaceContext());
         } else {

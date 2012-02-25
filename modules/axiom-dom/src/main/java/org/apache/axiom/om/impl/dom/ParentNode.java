@@ -36,8 +36,8 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
+import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
-import org.apache.axiom.om.impl.common.OMStAXWrapper;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
@@ -695,19 +695,11 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
     }
 
     public XMLStreamReader getXMLStreamReader(boolean cache) {
-        return getXMLStreamReader(cache, new OMXMLStreamReaderConfiguration());
+        return OMContainerHelper.getXMLStreamReader(this, cache);
     }
     
     public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
-        if ((builder == null) && !cache) {
-            throw new UnsupportedOperationException(
-                    "This element was not created in a manner to be switched");
-        }
-        if (builder != null && builder.isCompleted() && !cache) {
-            throw new UnsupportedOperationException(
-                    "The parser is already consumed!");
-        }
-        return new OMStAXWrapper(builder, this, cache, configuration.isPreserveNamespaceContext());
+        return OMContainerHelper.getXMLStreamReader(this, cache, configuration);
     }
 
     public SAXSource getSAXSource(boolean cache) {
