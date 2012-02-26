@@ -1035,36 +1035,12 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     }
 
     public QName getTextAsQName() {
-        String childText = getTrimmedText();
-        if (childText != null) {
-            return resolveQName(childText);
-        }
-        return null;
+        String childText = getText().trim();
+        return childText.length() == 0 ? null : resolveQName(childText);
     }
 
     public void writeTextTo(Writer out, boolean cache) throws IOException {
         OMElementImplUtil.writeTextTo(this, out, cache);
-    }
-
-    public String getTrimmedText() {
-        String childText = null;
-        OMNode child = this.getFirstOMChild();
-        OMText textNode;
-
-        while (child != null) {
-            if (child.getType() == OMNode.TEXT_NODE) {
-                textNode = (OMText) child;
-                String textValue = textNode.getText();
-                if (textValue != null &&
-                        !"".equals(textValue.trim())) {
-                    if (childText == null) childText = "";
-                    childText += textValue.trim();
-                }
-            }
-            child = child.getNextOMSibling();
-        }
-
-        return childText;
     }
 
     /**

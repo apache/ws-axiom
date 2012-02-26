@@ -876,56 +876,12 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public QName getTextAsQName() {
-        String childText = getTrimmedText();
-        if (childText != null) {
-            return resolveQName(childText);
-        }
-        return null;
+        String childText = getText().trim();
+        return childText.length() == 0 ? null : resolveQName(childText);
     }
 
     public void writeTextTo(Writer out, boolean cache) throws IOException {
         OMElementImplUtil.writeTextTo(this, out, cache);
-    }
-
-    /**
-     * Returns the concatination string of TRIMMED values of all OMText  child nodes of this
-     * element. This is included purely to improve usability.
-     */
-    public String getTrimmedText() {
-        String childText = null;
-        StringBuffer buffer = null;
-        OMNode child = this.getFirstOMChild();
-
-        while (child != null) {
-            if (child.getType() == OMNode.TEXT_NODE) {
-                OMText textNode = (OMText) child;
-                String textValue = textNode.getText();
-                if (textValue != null && textValue.length() != 0) {
-                    if (childText == null) {
-                        // This is the first non empty text node. Just save the string.
-                        childText = textValue.trim();
-                    } else {
-                        // We've already seen a non empty text node before. Concatenate using
-                        // a StringBuffer.
-                        if (buffer == null) {
-                            // This is the first text node we need to append. Initialize the
-                            // StringBuffer.
-                            buffer = new StringBuffer(childText);
-                        }
-                        buffer.append(textValue.trim());
-                    }
-                }
-            }
-            child = child.getNextOMSibling();
-        }
-
-        if (childText == null) {
-            return null;
-        } else if (buffer != null) {
-            return buffer.toString();
-        } else {
-            return childText;
-        }
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

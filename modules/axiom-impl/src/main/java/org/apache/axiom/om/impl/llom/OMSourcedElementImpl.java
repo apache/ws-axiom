@@ -798,11 +798,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getNextOMSiblingIfAvailable();
     }
 
-    public String getTrimmedText() {
-        forceExpand();
-        return super.getTrimmedText();
-    }
-
     OMNamespace handleNamespace(QName qname) {
         forceExpand();
         return super.handleNamespace(qname);
