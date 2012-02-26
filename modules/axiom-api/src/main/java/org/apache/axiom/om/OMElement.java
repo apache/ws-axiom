@@ -477,7 +477,8 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * that is compatible with the XML schema specification. In particular, surrounding whitespace
      * is ignored.
      * 
-     * @return the resolved QName
+     * @return the resolved QName, or <code>null</code> if the element is empty or the QName could
+     *         not be resolved
      */
     QName getTextAsQName();
     

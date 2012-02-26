@@ -920,8 +920,7 @@ public class OMElementImpl extends OMNodeImpl
         }
 
         if (childText == null) {
-            // We didn't see any text nodes. Return an empty string.
-            return "";
+            return null;
         } else if (buffer != null) {
             return buffer.toString();
         } else {

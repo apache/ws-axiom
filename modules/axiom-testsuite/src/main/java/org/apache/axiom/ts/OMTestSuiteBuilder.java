@@ -182,6 +182,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetText(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsQName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetTextAsQNameEmpty(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsQNameNoNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsQNameWithExtraWhitespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetTextAsStreamWithNonTextChildren(metaFactory));
