@@ -472,7 +472,13 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      */
     void writeTextTo(Writer out, boolean cache) throws IOException;
     
-    /** OMText can contain its information as a QName as well. This will return the text as a QName */
+    /**
+     * Resolve the content of this element to a {@link QName}. The QName is interpreted in a way
+     * that is compatible with the XML schema specification. In particular, surrounding whitespace
+     * is ignored.
+     * 
+     * @return the resolved QName
+     */
     QName getTextAsQName();
     
     /**
