@@ -307,19 +307,17 @@ public class OMElementImpl extends OMNodeImpl
 
     /** Method addChild. */
     private void addChild(OMNodeImpl child) {
-        if (child.parent == this &&
-            child == lastChild) {
+        if (child.parent == this && child == lastChild && done) {
             // The child is already the last node. 
             // We don't need to detach and re-add it.
         } else {
             // Normal Case
             
-            // The order of these statements is VERY important
-            // Since setting the parent has a detach method inside
-            // it strips down all the rerefences to siblings.
-            // setting the siblings should take place AFTER setting the parent
-
-            child.setParent(this);
+            if (child.parent != null) {
+                child.detach();
+            }
+            
+            child.parent = this;
 
             if (firstChild == null) {
                 firstChild = child;

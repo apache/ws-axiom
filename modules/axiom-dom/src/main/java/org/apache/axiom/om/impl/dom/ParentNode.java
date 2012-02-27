@@ -492,55 +492,15 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                            DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
         }
 
-        // Check if the Child is there
-        Iterator children = this.getChildren();
-        boolean childFound = false;
-        while (!childFound && children.hasNext()) {
-            ChildNode tempNode = (ChildNode) children.next();
-            if (tempNode.equals(oldChild)) {
-
-                if (this.firstChild == tempNode) {
-                    // If this is the first child
-                    ChildNode nextSib = tempNode.nextSibling;
-                    this.firstChild = nextSib;
-                    if (nextSib == null) {
-                        this.lastChild = null;
-                    } else {
-                        nextSib.previousSibling = null;
-                    }
-                    tempNode.parentNode = null;
-                    tempNode.nextSibling = null;
-                } else if (this.lastChild == tempNode) {
-                    // not the first child, but the last child
-                    ChildNode prevSib = tempNode.previousSibling;
-                    this.lastChild = prevSib;
-                    prevSib.nextSibling = null;
-                    tempNode.parentNode = null;
-                    tempNode.previousSibling = null;
-                } else {
-
-                    ChildNode oldDomChild = (ChildNode) oldChild;
-                    ChildNode privChild = oldDomChild.previousSibling;
-
-                    privChild.nextSibling = oldDomChild.nextSibling;
-                    oldDomChild.nextSibling.previousSibling = privChild;
-
-                    // Remove old child's references to this tree
-                    oldDomChild.nextSibling = null;
-                    oldDomChild.previousSibling = null;
-                }
-                // Child found
-                childFound = true;
-            }
-        }
-
-        if (!childFound)
+        if (oldChild.getParentNode() == this) {
+            ((ChildNode)oldChild).detach();
+            return oldChild;
+        } else {
             throw new DOMException(DOMException.NOT_FOUND_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR,
                                            null));
-
-        return oldChild;
+        }
     }
 
     private boolean isAncestor(Node newNode) {

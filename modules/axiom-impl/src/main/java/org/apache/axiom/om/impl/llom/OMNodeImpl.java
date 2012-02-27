@@ -70,7 +70,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
         super(factory);
         this.done = done;
         if ((parent != null)) {
-            this.parent = (OMContainerEx) parent;
             parent.addChild(this);
         }
 
