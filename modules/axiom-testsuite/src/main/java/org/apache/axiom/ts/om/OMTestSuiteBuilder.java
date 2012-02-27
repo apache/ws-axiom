@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts;
+package org.apache.axiom.ts.om;
 
 import java.lang.reflect.Method;
 
@@ -28,8 +28,8 @@ import org.apache.axiom.ts.om.container.OMElementFactory;
 import org.apache.axiom.ts.om.container.SerializationMethod;
 import org.apache.axiom.ts.om.container.SerializeToOutputStream;
 import org.apache.axiom.ts.om.factory.OMElementCreator;
-import org.apache.axiom.ts.xpath.AXIOMXPathTestCase;
-import org.apache.axiom.ts.xpath.TestAXIOMXPath;
+import org.apache.axiom.ts.om.xpath.AXIOMXPathTestCase;
+import org.apache.axiom.ts.om.xpath.TestAXIOMXPath;
 
 public class OMTestSuiteBuilder extends TestSuiteBuilder {
     private static final OMContainerFactory[] containerFactories = {
@@ -337,6 +337,6 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
                 addTest(new TestAXIOMXPath(metaFactory, methodName));
             }
         }
-        addTest(new org.apache.axiom.ts.xpath.TestGetAttributeQName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.xpath.TestGetAttributeQName(metaFactory));
     }
 }

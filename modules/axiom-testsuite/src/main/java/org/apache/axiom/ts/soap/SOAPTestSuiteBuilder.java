@@ -16,11 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts;
+package org.apache.axiom.ts.soap;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
-import org.apache.axiom.ts.soap.SOAPSpec;
 
 public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
     private static final String[] badSOAPFiles = { "wrongSoapNs.xml", "twoheaders.xml", "twoBodymessage.xml",

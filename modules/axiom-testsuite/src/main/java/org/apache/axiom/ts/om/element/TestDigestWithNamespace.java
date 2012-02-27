@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.DigestTestCase;
+import org.apache.axiom.ts.om.DigestTestCase;
 
 public class TestDigestWithNamespace extends DigestTestCase {
     public TestDigestWithNamespace(OMMetaFactory metaFactory) {

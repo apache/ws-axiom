@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.apache.axiom.ts.OMDOMTestSuiteBuilder;
+import org.apache.axiom.ts.omdom.OMDOMTestSuiteBuilder;
 
 public class OMDOMImplementationTest extends TestCase {
     public static TestSuite suite() {

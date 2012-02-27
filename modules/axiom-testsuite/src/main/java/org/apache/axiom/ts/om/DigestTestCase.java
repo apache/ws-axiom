@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts;
+package org.apache.axiom.ts.om;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMDocument;
@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.util.DigestGenerator;
 import org.apache.axiom.testutils.DigestUtils;
+import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  * Base class for unit tests validating the DOMHASH implementation.

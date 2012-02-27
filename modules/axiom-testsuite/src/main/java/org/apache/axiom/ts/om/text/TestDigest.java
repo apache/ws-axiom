@@ -20,7 +20,7 @@ package org.apache.axiom.ts.om.text;
 
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.DigestTestCase;
+import org.apache.axiom.ts.om.DigestTestCase;
 
 public class TestDigest extends DigestTestCase {
     public TestDigest(OMMetaFactory metaFactory) {

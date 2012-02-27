@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts;
+package org.apache.axiom.ts.omdom;
 
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
@@ -35,6 +35,6 @@ public class OMDOMTestSuiteBuilder extends TestSuiteBuilder {
     }
 
     protected void addTests() {
-        addTest(new org.apache.axiom.ts.om.dom.TestRemoveChildIncomplete(metaFactory));
+        addTest(new org.apache.axiom.ts.omdom.TestRemoveChildIncomplete(metaFactory));
     }
 }

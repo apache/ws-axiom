@@ -16,28 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.xpath;
+package org.apache.axiom.ts.om.xpath;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.xpath.AXIOMXPath;
-import org.apache.axiom.om.xpath.DocumentNavigator;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests that {@link DocumentNavigator#getAttributeQName(Object)} returns the correct result for an
- * attribute with namespace.
- */
-public class TestGetAttributeQName extends AxiomTestCase {
-    public TestGetAttributeQName(OMMetaFactory metaFactory) {
+public class TestAXIOMXPath extends AxiomTestCase {
+    private final AXIOMXPathTestCase test;
+    
+    public TestAXIOMXPath(OMMetaFactory metaFactory, String methodName) {
         super(metaFactory);
+        test = new AXIOMXPathTestCase(methodName, metaFactory);
+        addTestProperty("test", methodName.substring(4));
     }
 
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = factory.createOMElement("test", null);
-        element.addAttribute("att", "value", factory.createOMNamespace("urn:test", "p"));
-        assertEquals("p:att", new AXIOMXPath("name(@*)").stringValueOf(element));
+        test.runBare();
     }
 }

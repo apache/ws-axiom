@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.ts.xpath;
+package org.apache.axiom.ts.om.xpath;
 
 import java.io.InputStream;
 
