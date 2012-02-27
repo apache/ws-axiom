@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -1005,29 +1004,8 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         return qName;
     }
 
-    /**
-     * Gets all the text children and concatinates them to a single string.
-     *
-     * @see org.apache.axiom.om.OMElement#getText()
-     */
     public String getText() {
-        String childText = "";
-        OMNode child = this.getFirstOMChild();
-        OMText textNode;
-
-        while (child != null) {
-            final int type = child.getType();
-            if (type == OMNode.TEXT_NODE || type == OMNode.CDATA_SECTION_NODE) {
-                textNode = (OMText) child;
-                if (textNode.getText() != null
-                        && !"".equals(textNode.getText())) {
-                    childText += textNode.getText();
-                }
-            }
-            child = child.getNextOMSibling();
-        }
-
-        return childText;
+        return OMElementImplUtil.getText(this);
     }
 
     public Reader getTextAsStream(boolean cache) {

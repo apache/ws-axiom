@@ -58,7 +58,46 @@ public class OMElementImplUtil {
             return new LiveNamespaceContext(element);
         }
     }
+    
+    public static String getText(OMElement element) {
+        String childText = null;
+        StringBuffer buffer = null;
+        OMNode child = element.getFirstOMChild();
 
+        while (child != null) {
+            final int type = child.getType();
+            if (type == OMNode.TEXT_NODE || type == OMNode.CDATA_SECTION_NODE) {
+                OMText textNode = (OMText) child;
+                String textValue = textNode.getText();
+                if (textValue != null && textValue.length() != 0) {
+                    if (childText == null) {
+                        // This is the first non empty text node. Just save the string.
+                        childText = textValue;
+                    } else {
+                        // We've already seen a non empty text node before. Concatenate using
+                        // a StringBuffer.
+                        if (buffer == null) {
+                            // This is the first text node we need to append. Initialize the
+                            // StringBuffer.
+                            buffer = new StringBuffer(childText);
+                        }
+                        buffer.append(textValue);
+                    }
+                }
+            }
+            child = child.getNextOMSibling();
+        }
+
+        if (childText == null) {
+            // We didn't see any text nodes. Return an empty string.
+            return "";
+        } else if (buffer != null) {
+            return buffer.toString();
+        } else {
+            return childText;
+        }
+    }
+    
     public static Reader getTextAsStream(OMElement element, boolean cache) {
         // If the element is not an OMSourcedElement and has not more than one child, then the most
         // efficient way to get the Reader is to build a StringReader
