@@ -504,11 +504,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
         writer.flush();
     }
 
-    public OMNode detach() {
-        throw new OMException(
-                "Elements that doesn't have a parent can not be detached");
-    }
-
     /*
      * DOM-Level 3 methods
      */
