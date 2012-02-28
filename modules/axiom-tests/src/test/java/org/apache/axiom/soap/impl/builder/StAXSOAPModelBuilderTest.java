@@ -671,31 +671,4 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
         this.assertTrue(!parser.isReadBody());
         parser.close();
     }
-    
-    public void testFaultWithCDATA() throws Exception {
-        String soap11Fault = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
-                    "<SOAP-ENV:Body>" +
-                    "<SOAP-ENV:Fault>" +
-                        "<faultcode>SOAP-ENV:Server</faultcode>" +
-                        "<faultstring xml:lang=\"en\"><![CDATA[handleMessage throws SOAPFaultException for ThrowsSOAPFaultToClientHandlersTest]]></faultstring>" +
-                        "<detail>" +
-                            "<somefaultentry/>" +
-                        "</detail>" +
-                        "<faultactor>faultActor</faultactor>" +
-                        "</SOAP-ENV:Fault>" +
-                    "</SOAP-ENV:Body>" +
-                "</SOAP-ENV:Envelope>";
-        XMLStreamReader soap11Parser = StAXUtils.createXMLStreamReader(
-                new StringReader(soap11Fault));
-        StAXSOAPModelBuilder soap11Builder = new StAXSOAPModelBuilder(soap11Parser, null);
-        OMElement element = soap11Builder.getDocumentElement();
-        element.build();
-        assertTrue(element instanceof SOAPEnvelope);
-        SOAPEnvelope se =  (SOAPEnvelope) element;
-        SOAPFault fault = se.getBody().getFault();
-        SOAPFaultReason reason = fault.getReason();
-        assertTrue(reason.getText().equals("handleMessage throws SOAPFaultException for ThrowsSOAPFaultToClientHandlersTest"));
-        soap11Parser.close();
-    }
 }
