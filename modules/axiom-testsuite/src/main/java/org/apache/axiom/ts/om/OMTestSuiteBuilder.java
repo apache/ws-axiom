@@ -337,6 +337,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
                 addTest(new TestAXIOMXPath(metaFactory, methodName));
             }
         }
+        addTest(new org.apache.axiom.ts.om.xpath.TestAddNamespaces(metaFactory));
+        addTest(new org.apache.axiom.ts.om.xpath.TestAddNamespaces2(metaFactory));
         addTest(new org.apache.axiom.ts.om.xpath.TestGetAttributeQName(metaFactory));
     }
 }

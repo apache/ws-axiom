@@ -17,33 +17,25 @@
  * under the License.
  */
 
-package org.apache.axiom.xpath;
-
-import junit.framework.TestCase;
+package org.apache.axiom.ts.om.xpath;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.llom.util.AXIOMUtil;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.om.xpath.AXIOMXPath;
+import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * This class contains Axiom specific tests, while AXIOMXPathTest is
- * used for the Jaxen test harness.
- */
-public class AXIOMXPathTest2 extends TestCase {
-    public void testAddNamespaces() throws Exception {
-        OMElement root1 = AXIOMUtil.stringToOM(
-                "<ns1:root xmlns:ns1='urn:ns1'><ns1:child xmlns:ns2='urn:ns2'/></root>");
-        OMElement root2 = AXIOMUtil.stringToOM(
-                "<root xmlns='urn:ns1'><child xmlns='urn:ns2'>text</child></root>");
-        AXIOMXPath xpath = new AXIOMXPath("/ns1:root/ns2:child");
-        xpath.addNamespaces(root1.getFirstElement());
-        assertEquals("text", xpath.stringValueOf(root2.getParent()));
+public class TestAddNamespaces2 extends AxiomTestCase {
+    public TestAddNamespaces2(OMMetaFactory metaFactory) {
+        super(metaFactory);
     }
 
-    public void testAddNamespaces2() throws Exception {
-        OMElement root1 = AXIOMUtil.stringToOM(
+    protected void runTest() throws Throwable {
+        OMFactory factory = metaFactory.getOMFactory();
+        OMElement root1 = AXIOMUtil.stringToOM(factory,
                 "<ns:root xmlns:ns='urn:ns1'><ns:child xmlns:ns='urn:ns2'/></root>");
-        OMElement root2 = AXIOMUtil.stringToOM(
+        OMElement root2 = AXIOMUtil.stringToOM(factory,
                 "<root xmlns='urn:ns1'><child xmlns='urn:ns2'>text</child></root>");
         AXIOMXPath xpath = new AXIOMXPath("//ns:child");
         xpath.addNamespaces(root1.getFirstElement());
