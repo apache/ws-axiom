@@ -355,6 +355,24 @@ public class OMXMLBuilderFactory {
     }
     
     /**
+     * Create an object model builder for SOAP that pulls events from a StAX stream reader and that
+     * uses a particular Axiom implementation. The method will select the appropriate
+     * {@link SOAPFactory} based on the namespace URI of the SOAP envelope.
+     * <p>
+     * See {@link #createStAXOMBuilder(XMLStreamReader)} for more information about the behavior of
+     * the returned builder.
+     * 
+     * @param metaFactory
+     *            the meta factory for the Axiom implementation to use
+     * @param parser
+     *            the stream reader to read the XML data from
+     * @return the builder
+     */
+    public static SOAPModelBuilder createStAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser) {
+        return metaFactory.createStAXSOAPModelBuilder(parser);
+    }
+    
+    /**
      * Create an object model builder for SOAP that pulls events from a StAX stream reader.
      * The method will select the appropriate {@link SOAPFactory}
      * based on the namespace URI of the SOAP envelope.
