@@ -662,13 +662,13 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
         StAXSOAPModelBuilder soap11Builder = new StAXSOAPModelBuilder(parser, null);
         SOAPEnvelope env = soap11Builder.getSOAPEnvelope();
         boolean isFault = env.hasFault();
-        this.assertTrue(isFault);
-        this.assertTrue(!parser.isReadBody());
+        assertTrue(isFault);
+        assertTrue(!parser.isReadBody());
         
         // Get the name of the first element in the body
         String localName = env.getSOAPBodyFirstElementLocalName();
-        this.assertTrue(localName.equals("Fault"));
-        this.assertTrue(!parser.isReadBody());
+        assertTrue(localName.equals("Fault"));
+        assertTrue(!parser.isReadBody());
         parser.close();
     }
 }

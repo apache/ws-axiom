@@ -94,7 +94,7 @@ public class ConvertLLOMToDOOMTest extends TestCase {
         env.build();
 
         StAXSOAPModelBuilder doomBuilder = new StAXSOAPModelBuilder(env.getXMLStreamReader(),
-                                                                    DOOMAbstractFactory.getSOAP11Factory(),
+                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getSOAP11Factory(),
                                                                     SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
 
         SOAPEnvelope doomEnv = doomBuilder.getSOAPEnvelope();
@@ -122,7 +122,7 @@ public class ConvertLLOMToDOOMTest extends TestCase {
         env.build();
 
         StAXSOAPModelBuilder doomBuilder = new StAXSOAPModelBuilder(env.getXMLStreamReader(),
-                                                                    DOOMAbstractFactory.getSOAP11Factory(),
+                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getSOAP11Factory(),
                                                                     SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
 
         SOAPEnvelope doomEnv = doomBuilder.getSOAPEnvelope();
@@ -131,12 +131,12 @@ public class ConvertLLOMToDOOMTest extends TestCase {
     }
 
     public void testAddChild() {
-        SOAPFactory fac = DOOMAbstractFactory.getSOAP11Factory();
+        SOAPFactory fac = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getSOAP11Factory();
         SOAPEnvelope env = fac.getDefaultEnvelope();
         fac.createOMElement(new QName("http://test.org", "Test"), env.getBody());
         env.build();
 
-        SOAPFactory llomFac = DOOMAbstractFactory.getSOAP11Factory();
+        SOAPFactory llomFac = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getSOAP11Factory();
         OMElement elem = llomFac.createOMElement("newDomElement", null);
 
         OMElement firstElement = env.getBody().getFirstElement();

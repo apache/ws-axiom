@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.impl.dom.DOOMAbstractFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.commons.logging.Log;
@@ -147,7 +146,7 @@ public class OMElementTest extends OMTestCase implements OMConstants {
     }
 
     public void testAddDOOMElementAsChild() throws XMLStreamException {
-        OMFactory doomFactory = DOOMAbstractFactory.getOMFactory();
+        OMFactory doomFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
         OMFactory llomFactory = OMAbstractFactory.getOMFactory();
         String text = "This was a DOOM Text";
 
@@ -165,7 +164,7 @@ public class OMElementTest extends OMTestCase implements OMConstants {
     }
 
     public void testAddDOOMTextAsChild() throws XMLStreamException {
-        OMFactory doomFactory = DOOMAbstractFactory.getOMFactory();
+        OMFactory doomFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
         OMFactory llomFactory = OMAbstractFactory.getOMFactory();
         String text = "This was a DOOM Text";
 
@@ -180,7 +179,7 @@ public class OMElementTest extends OMTestCase implements OMConstants {
     }
 
     public void testAddLLOMElementChildToDOOM() throws XMLStreamException {
-        OMFactory doomFactory = DOOMAbstractFactory.getOMFactory();
+        OMFactory doomFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
         OMFactory llomFactory = OMAbstractFactory.getOMFactory();
         String text = "This was a LLOM Text";
 
@@ -198,7 +197,7 @@ public class OMElementTest extends OMTestCase implements OMConstants {
     }
 
     public void testAddLLOMTextChildToDOOM() throws XMLStreamException {
-        OMFactory doomFactory = DOOMAbstractFactory.getOMFactory();
+        OMFactory doomFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
         OMFactory llomFactory = OMAbstractFactory.getOMFactory();
         String text = "This was a DOOM Text";
 

@@ -20,11 +20,7 @@
 package org.apache.axiom.om;
 
 import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.custommonkey.xmlunit.XMLTestCase;
-import org.jaxen.JaxenException;
-import org.jaxen.SimpleNamespaceContext;
-import org.jaxen.XPath;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -90,21 +86,21 @@ public class DefaultNSHandlingTest extends XMLTestCase {
 //            e.printStackTrace();
 //        }
 //    }
-
-
-    private OMElement getOMElement(String xpathString,
-                                   OMElement parentElement) throws JaxenException {
-        XPath xpath = getXPath(xpathString);
-        return (OMElement) xpath.selectSingleNode(parentElement);
-    }
-
-    private XPath getXPath(String xpathString) throws JaxenException {
-        SimpleNamespaceContext nsCtx = new SimpleNamespaceContext();
-        nsCtx.addNamespace("ns", "http://geronimo.apache.org/xml/ns/j2ee/connector-1.1");
-        XPath xpath = new AXIOMXPath(xpathString);
-        xpath.setNamespaceContext(nsCtx);
-        return xpath;
-    }
+//
+//
+//    private OMElement getOMElement(String xpathString,
+//                                   OMElement parentElement) throws JaxenException {
+//        XPath xpath = getXPath(xpathString);
+//        return (OMElement) xpath.selectSingleNode(parentElement);
+//    }
+//
+//    private XPath getXPath(String xpathString) throws JaxenException {
+//        SimpleNamespaceContext nsCtx = new SimpleNamespaceContext();
+//        nsCtx.addNamespace("ns", "http://geronimo.apache.org/xml/ns/j2ee/connector-1.1");
+//        XPath xpath = new AXIOMXPath(xpathString);
+//        xpath.setNamespaceContext(nsCtx);
+//        return xpath;
+//    }
 
     public static void main(String[] args) {
         try {

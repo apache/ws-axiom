@@ -67,16 +67,14 @@ public class OMBodyTest extends OMTestCase implements OMConstants {
         soapBody.addChild(om1);  // NOOP..Expected behavior: child removed and then added
         soapBody.addChild(om2);
         
-        OMElement node = (OMElement) soapBody.
-          getFirstChildWithName(new QName("http://myChild", "child1"));
+        OMElement node = soapBody.getFirstChildWithName(new QName("http://myChild", "child1"));
         node = (OMElement) node.detach();
         
         assertTrue("Node is missing", node != null);
         assertTrue("Node has the wrong name " + node.getLocalName(), 
                    node.getLocalName().equals("child1"));
         
-        node = (OMElement) soapBody.
-          getFirstChildWithName(new QName("http://myChild", "child2"));
+        node = soapBody.getFirstChildWithName(new QName("http://myChild", "child2"));
         assertTrue("Node is missing", node != null);
         assertTrue("Node has the wrong name " + node.getLocalName(), 
                    node.getLocalName().equals("child2"));

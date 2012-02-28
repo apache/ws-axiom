@@ -19,7 +19,7 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.impl.llom.util.AXIOMUtil;
+import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.om.util.StAXUtils;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.xml.sax.SAXException;
