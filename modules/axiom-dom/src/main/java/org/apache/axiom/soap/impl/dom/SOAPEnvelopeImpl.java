@@ -204,15 +204,6 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         return null;
     }
 
-    /**
-     * Method detach
-     *
-     * @throws OMException
-     */
-    public OMNode detach() throws OMException {
-        throw new OMException("Root Element can not be detached");
-    }
-
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         // here do nothing as SOAPEnvelope doesn't have a parent !!!
     }

@@ -40,6 +40,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestAddHeaderToIncompleteEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestBodyHeaderOrder(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestDetach(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestDiscardHeader(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetBody(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetBodyOnEmptyEnvelope(metaFactory, spec));
