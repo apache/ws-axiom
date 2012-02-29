@@ -19,15 +19,8 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.util.StAXUtils;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -35,10 +28,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.UserDataHandler;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-import java.io.OutputStream;
-import java.io.Writer;
 import java.util.Hashtable;
 
 public abstract class NodeImpl implements Node, NodeList, Cloneable {
@@ -358,126 +347,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
         flags = (short) (value ? flags | NORMALIZED : flags & ~NORMALIZED);
     }
 
-    // /
-    // /OM Methods
-    // /
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axis2.om.OMNode#getParent()
-     */
-    public OMContainer getParent() throws OMException {
-        return null; // overriden by ChildNode
-        // Document, DocumentFragment, and Attribute will never have parents.
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axis2.om.OMNode#isComplete()
-     */
-    public boolean isComplete() {
-        return this.done;
-    }
-
-    public void setComplete(boolean state) {
-        this.done = state;
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axis2.om.OMNode#insertSiblingAfter
-     * (org.apache.axis2.om.OMNode)
-     */
-    public void insertSiblingAfter(OMNode sibling) throws OMException {
-        // Overridden in ChildNode
-        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                               DOMMessageFormatter.formatMessage(
-                                       DOMMessageFormatter.DOM_DOMAIN,
-                                       DOMException.HIERARCHY_REQUEST_ERR, null));
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axis2.om.OMNode#insertSiblingBefore
-     * (org.apache.axis2.om.OMNode)
-     */
-    public void insertSiblingBefore(OMNode sibling) throws OMException {
-        // Overridden in ChildNode
-        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                               DOMMessageFormatter.formatMessage(
-                                       DOMMessageFormatter.DOM_DOMAIN,
-                                       DOMException.HIERARCHY_REQUEST_ERR, null));
-
-    }
-
-    /** Default behavior returns null, overriden in ChildNode. */
-    public OMNode getPreviousOMSibling() {
-        return null;
-    }
-
-    /** Default behavior returns null, overriden in ChildNode. */
-    public OMNode getNextOMSibling() {
-        return null;
-    }
-
-    public OMNode getNextOMSiblingIfAvailable() {
-        return null;
-    }
-
-    public void setPreviousOMSibling(OMNode previousSibling) {
-        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                               DOMMessageFormatter.formatMessage(
-                                       DOMMessageFormatter.DOM_DOMAIN,
-                                       DOMException.HIERARCHY_REQUEST_ERR, null));
-    }
-
-    public void setNextOMSibling(OMNode previousSibling) {
-        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                               DOMMessageFormatter.formatMessage(
-                                       DOMMessageFormatter.DOM_DOMAIN,
-                                       DOMException.HIERARCHY_REQUEST_ERR, null));
-    }
-
-    /** Builds next element. */
-    public void build() {
-        while (!done)
-            this.builder.next();
-    }
-
-    /**
-     * Parses this node and builds the object structure in memory. AXIOM supports two levels of
-     * deffered building. First is deffered building of AXIOM using StAX. Second level is the deffered
-     * building of attachments. AXIOM reads in the attachements from the stream only when user asks by
-     * calling getDataHandler(). build() method builds the OM without the attachments. buildAll()
-     * builds the OM together with attachement data. This becomes handy when user wants to free the
-     * input stream.
-     */
-    public void buildWithAttachments() {
-        if (!this.done) {
-            this.build();
-        }
-    }
-
-    public void close(boolean build) {
-        if (build) {
-            this.build();
-        }
-        this.done = true;
-        
-        // If this is a StAXBuilder, close it.
-        if (builder instanceof StAXBuilder &&
-            !((StAXBuilder) builder).isClosed()) {
-            ((StAXBuilder) builder).releaseParserOnClose(true);
-            ((StAXBuilder) builder).close();
-        }
-    }
-    
     /**
      * Sets the owner document.
      *
@@ -486,22 +355,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
     protected void setOwnerDocument(DocumentImpl document) {
         this.ownerNode = document;
         this.isOwned(true);
-    }
-
-    public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        serialize(xmlWriter, true);
-    }
-
-    public void serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        serialize(xmlWriter, false);
-    }
-
-    public void serialize(XMLStreamWriter xmlWriter, boolean cache) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
-                (MTOMXMLStreamWriter) xmlWriter : 
-                    new MTOMXMLStreamWriter(xmlWriter);
-        internalSerialize(writer, cache);
-        writer.flush();
     }
 
     /*
@@ -768,109 +621,8 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
         return null;
     }
 
-    public void serialize(OutputStream output) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serialize(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serialize(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serialize(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serializeAndConsume(OutputStream output)
-            throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serializeAndConsume(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serialize(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, true);
-        try {
-            internalSerialize(writer, true);
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
-    public void serialize(Writer writer2, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(StAXUtils
-                .createXMLStreamWriter(writer2));
-        writer.setOutputFormat(format);
-        try {
-            internalSerialize(writer, true);
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
-    public void serializeAndConsume(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, false);
-        try {
-            internalSerialize(writer, false);
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
-    public void serializeAndConsume(Writer writer2, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(StAXUtils
-                .createXMLStreamWriter(writer2));
-        try {
-            writer.setOutputFormat(format);
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            internalSerialize(writer, false);
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
     /** Returns the <code>OMFactory</code> that created this node */
     public OMFactory getOMFactory() {
         return this.factory;
     }
-
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, true);
-    }
-
-    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, false);
-    }
-    
-    // This method is actually defined by OMNodeEx, but OMNodeEx is only implemented
-    // by certain subclasses (for the reason, see AXIOM-385).
-    public abstract void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException;
 }
