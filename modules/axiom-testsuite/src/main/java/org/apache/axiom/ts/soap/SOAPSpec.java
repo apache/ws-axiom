@@ -99,4 +99,8 @@ public abstract class SOAPSpec {
     public String getNextRoleURI() {
         return version.getNextRoleURI();
     }
+
+    public SOAPVersion getVersion() {
+        return version;
+    }
 }

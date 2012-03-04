@@ -88,6 +88,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeadersToProcessWithNamespace(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetMustUnderstand(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetRole(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestGetVersion(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandBoolean(metaFactory, spec, true, spec == SOAPSpec.SOAP11 ? "1" : "true"));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandBoolean(metaFactory, spec, false, spec == SOAPSpec.SOAP11 ? "0" : "false"));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandString01(metaFactory, spec));
