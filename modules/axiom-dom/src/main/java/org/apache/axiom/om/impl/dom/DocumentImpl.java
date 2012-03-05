@@ -191,8 +191,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public CDATASection createCDATASection(String data) throws DOMException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        return new CDATASectionImpl(this, data, factory);
     }
 
     public Comment createComment(String data) {

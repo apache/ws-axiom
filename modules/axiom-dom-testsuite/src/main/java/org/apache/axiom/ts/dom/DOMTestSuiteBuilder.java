@@ -39,6 +39,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttribute(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNS(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNSWithoutNamespace(dbf, isAxiomImpl));
+        addTest(new org.apache.axiom.ts.dom.document.TestCreateCDATASection(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateElement(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateElementNS(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateElementNSWithInvalidName(dbf));
@@ -71,6 +72,9 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNull(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetTextContent(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestAppendData(dbf));
+        addTest(new org.apache.axiom.ts.dom.text.TestGetWholeText(dbf));
+        addTest(new org.apache.axiom.ts.dom.text.TestGetWholeTextWithCDATASection(dbf));
+        addTest(new org.apache.axiom.ts.dom.text.TestGetWholeTextWithComment(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSetPrefix(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSplitText(dbf));
     }

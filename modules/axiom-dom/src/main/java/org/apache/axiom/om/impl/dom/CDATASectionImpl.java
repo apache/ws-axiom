@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Node;
 
@@ -31,7 +30,7 @@ public class CDATASectionImpl extends TextNodeImpl implements CDATASection {
         super(text, factory);
     }
 
-    public CDATASectionImpl(DocumentImpl ownerDocument, String text, OMDOMFactory factory) {
+    public CDATASectionImpl(DocumentImpl ownerDocument, String text, OMFactory factory) {
         super(ownerDocument, text, factory);
     }
 
