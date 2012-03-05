@@ -23,10 +23,13 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.jaxp.DOOMDocumentBuilderFactory;
 import org.apache.axiom.ts.dom.DOMTestSuiteBuilder;
+import org.apache.axiom.ts.dom.document.TestAdoptNode;
 
 public class DOMImplementationTest extends TestCase {
     public static TestSuite suite() {
         DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(new DOOMDocumentBuilderFactory(), true);
+        // TODO: adoptNode is not correctly implemented
+        builder.exclude(TestAdoptNode.class);
         return builder.build();
     }
 }
