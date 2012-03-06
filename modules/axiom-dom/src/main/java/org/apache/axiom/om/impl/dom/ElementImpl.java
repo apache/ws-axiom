@@ -1200,15 +1200,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         NamedNodeHelper.setPrefix(this, prefix);
     }
 
-    /** @see NodeImpl#setOwnerDocument (org.apache.axiom.om.impl.dom.DocumentImpl) */
-    protected void setOwnerDocument(DocumentImpl document) {
-        this.ownerNode = document;
-        this.isOwned(true);
-        if (document.firstChild == null) {
-            document.firstChild = this;
-        }
-    }
-
     public QName resolveQName(String qname) {
         int idx = qname.indexOf(':');
         if (idx == -1) {
