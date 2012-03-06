@@ -833,6 +833,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             }
         }
 
+        ParentNode parentNode = parentNode();
         if (parentNode instanceof ElementImpl) {
             ElementImpl element = (ElementImpl) parentNode;
             return element.getDefaultNamespace();
@@ -850,7 +851,8 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         }
 
         // go up to check with ancestors
-        if (this.parentNode != null) {
+        ParentNode parentNode = parentNode();
+        if (parentNode != null) {
             // For the OMDocumentImpl there won't be any explicit namespace
             // declarations, so going up the parent chain till the document
             // element should be enough.
@@ -879,9 +881,10 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
                 (OMNamespace) this.namespaces.get(prefix);
 
         if (ns == null) {
-            if (this.parentNode instanceof OMElement) {
+            ParentNode parentNode = parentNode();
+            if (parentNode instanceof OMElement) {
                 // try with the parent
-                return ((OMElement) this.parentNode).findNamespaceURI(prefix);
+                return ((OMElement)parentNode).findNamespaceURI(prefix);
             } else {
                 return null;
             }

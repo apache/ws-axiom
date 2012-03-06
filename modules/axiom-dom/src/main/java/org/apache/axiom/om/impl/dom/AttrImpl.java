@@ -366,6 +366,11 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
         return this.parent;
     }
 
+    public Node getParentNode() {
+        // For DOM, the owner element is not the parent
+        return null;
+    }
+
     /**
      * Returns the attribute name.
      *

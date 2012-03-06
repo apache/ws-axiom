@@ -21,6 +21,7 @@ package org.apache.axiom.soap.impl.dom.soap11;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -70,6 +71,7 @@ public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
 
     public void setSubCode(SOAPFaultSubCode subCode)
             throws SOAPProcessingException {
+        OMContainer parentNode = getParent();
         if (!((parentNode instanceof SOAP11FaultSubCodeImpl) ||
                 (parentNode instanceof SOAP11FaultCodeImpl))) {
             throw new SOAPProcessingException(

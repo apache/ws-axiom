@@ -219,9 +219,9 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                            DOMException.HIERARCHY_REQUEST_ERR, null));
         }
 
-        if (newDomChild.parentNode != null && newDomChild.ownerNode == this.ownerNode) {
+        if (newDomChild.parentNode() != null && newDomChild.ownerNode == this.ownerNode) {
             //If the newChild is already in the tree remove it
-            newDomChild.parentNode.removeChild(newDomChild);
+            newDomChild.parentNode().removeChild(newDomChild);
         }
 
         if (!(this instanceof Document)
@@ -248,8 +248,8 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                                    DOMMessageFormatter.DOM_DOMAIN,
                                                    DOMException.HIERARCHY_REQUEST_ERR, null));
                 }
-                if (newDomChild.parentNode == null) {
-                    newDomChild.parentNode = this;
+                if (newDomChild.parentNode() == null) {
+                    newDomChild.setParent(this);
                 }
             } else if (!(newDomChild instanceof CommentImpl
                     || newDomChild instanceof ProcessingInstructionImpl
@@ -275,8 +275,8 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 this.lastChild = newDomChild;
                 this.lastChild.nextSibling = null;
             }
-            if (newDomChild.parentNode == null) {
-                newDomChild.parentNode = this;
+            if (newDomChild.parentNode() == null) {
+                newDomChild.setParent(this);
             }
         } else {
             Iterator children = this.getChildren();
@@ -296,7 +296,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                             
                             ChildNode child = docFrag.firstChild;
                             while (child != null) {
-                                child.parentNode = this;
+                                child.setParent(this);
                                 child = child.nextSibling;
                             }
                             
@@ -331,7 +331,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
                             ChildNode child = docFrag.firstChild;
                             while (child != null) {
-                                child.parentNode = this;
+                                child.setParent(this);
                                 child = child.nextSibling;
                             }
                             
@@ -365,8 +365,8 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                                DOMException.NOT_FOUND_ERR, null));
             }
 
-            if (newDomChild.parentNode == null) {
-                newDomChild.parentNode = this;
+            if (newDomChild.parentNode() == null) {
+                newDomChild.setParent(this);
             }
 
         }
@@ -425,7 +425,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                     
                     //set the parent of all kids to me
                     while(child != null) {
-                        child.parentNode = this;
+                        child.setParent(this);
                         child = child.nextSibling;
                     }
 
@@ -440,7 +440,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                         }
 
                         //Cleanup the current first child
-                        this.firstChild.parentNode = null;
+                        this.firstChild.setParent(null);
                         this.firstChild.nextSibling = null;
 
                         //Set the new first child
@@ -462,14 +462,14 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
                     }
 
-                    newDomChild.parentNode = this;
+                    newDomChild.setParent(this);
                 }
                 found = true;
 
                 // remove the old child's references to this tree
                 oldDomChild.nextSibling = null;
                 oldDomChild.previousSibling = null;
-                oldDomChild.parentNode = null;
+                oldDomChild.setParent(null);
             }
         }
 

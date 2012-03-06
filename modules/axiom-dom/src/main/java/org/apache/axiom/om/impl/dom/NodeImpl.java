@@ -166,18 +166,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
         return null; // default behavior, overriden in ChildNode
     }
 
-    public Node getParentNode() {
-        return null; // overriden by ChildNode
-        // Document, DocumentFragment, and Attribute will never have parents.
-    }
-
-    /*
-     * Same as getParentNode but returns internal type NodeImpl.
-     */
-    NodeImpl parentNode() {
-        return null;
-    }
-
     /** Returns the previous child of this node's parent, or null if none. */
     public Node getPreviousSibling() {
         return null; // default behavior, overriden in ChildNode
