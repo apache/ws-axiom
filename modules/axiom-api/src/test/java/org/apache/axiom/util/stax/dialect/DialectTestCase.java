@@ -31,6 +31,7 @@ public abstract class DialectTestCase extends AbstractTestCase {
         if (getName() == null) {
             setName(getClass().getName());
         }
+        setName(getName() + " [" + test.getName() + "]");
     }
     
     protected XMLInputFactory newNormalizedXMLInputFactory() {
