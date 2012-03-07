@@ -21,12 +21,9 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
@@ -35,8 +32,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.TypeInfo;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
 public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
@@ -196,41 +191,6 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
     }
 
     /**
-     * Not supported: Cannot detach attributes. Use the operations available in the owner node.
-     *
-     * @see org.apache.axiom.om.OMNode#detach()
-     */
-    public OMNode detach() throws OMException {
-        throw new UnsupportedOperationException("Not supported");
-    }
-
-    /**
-     * Not supported: Cannot discard attributes. Use the operations available in the owner node.
-     *
-     * @see org.apache.axiom.om.OMNode#discard()
-     */
-    public void discard() throws OMException {
-        throw new UnsupportedOperationException("Not supported");
-    }
-
-    /**
-     * Returns the type of this attribute node.
-     *
-     * @see org.apache.axiom.om.OMNode#getType()
-     */
-    public int getType() {
-        return -1;
-    }
-
-    /**
-     * This is not supported since attributes serialization is handled by the serialization of the
-     * owner nodes.
-     */
-    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        throw new UnsupportedOperationException("Not supported");
-    }
-
-    /**
      * Returns the namespace of the attribute as an <code>OMNamespace</code>.
      *
      * @see org.apache.axiom.om.OMAttribute#getNamespace()
@@ -319,24 +279,6 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
     	this.attrType = attrType;
     }
 
-    /**
-     * Sets the parent element to the given OMContainer.
-     *
-     * @see org.apache.axiom.om.impl.OMNodeEx#setParent (org.apache.axiom.om.OMContainer)
-     */
-    public void setParent(OMContainer element) {
-        this.parent = (ParentNode) element;
-    }
-
-    /**
-     * Sets the type. NOT IMPLEMENTED: Unnecessary.
-     *
-     * @see org.apache.axiom.om.impl.OMNodeEx#setType(int)
-     */
-    public void setType(int nodeType) throws OMException {
-        // not necessary ???
-    }
-
     /** @return Returns boolean. */
     protected boolean isUsed() {
         return used;
@@ -355,15 +297,6 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
     public void setValue(String value) throws DOMException {
         this.attrValue = (TextImpl) this.getOwnerDocument().createTextNode(
                 value);
-    }
-
-    /**
-     * Returns the parent node of this attribute.
-     *
-     * @see org.apache.axiom.om.OMNode#getParent()
-     */
-    public OMContainer getParent() {
-        return this.parent;
     }
 
     public Node getParentNode() {
@@ -419,7 +352,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
             }
         }
         clone.isSpecified(true);
-        clone.setParent(null);
+        clone.parent = null;
         clone.setUsed(false);
         return clone;
     }
