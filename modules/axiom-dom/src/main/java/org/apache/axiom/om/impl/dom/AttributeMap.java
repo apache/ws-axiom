@@ -107,11 +107,6 @@ public class AttributeMap extends NamedNodeMapImpl {
         // // notify document
         // ownerNode.getOwnerDocument().setAttrNode(attr, previous);
 
-        // If the new attribute is not normalized,
-        // the owning element is inherently not normalized.
-        if (!attr.isNormalized()) {
-            ownerNode.isNormalized(false);
-        }
         return previous;
 
     }
@@ -181,11 +176,6 @@ public class AttributeMap extends NamedNodeMapImpl {
             }
         }
 
-        // If the new attribute is not normalized,
-        // the owning element is inherently not normalized.
-        if (!attr.isNormalized()) {
-            ownerNode.isNormalized(false);
-        }
         return previous;
     }
 

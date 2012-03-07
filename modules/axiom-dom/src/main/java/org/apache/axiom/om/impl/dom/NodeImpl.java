@@ -58,8 +58,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
 
     protected final static short SPECIFIED = 0x1 << 4;
 
-    protected final static short NORMALIZED = 0x1 << 5;
-
     //
     // Constructors
     //
@@ -321,18 +319,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
 
     final void isSpecified(boolean value) {
         flags = (short) (value ? flags | SPECIFIED : flags & ~SPECIFIED);
-    }
-
-    final boolean isNormalized() {
-        return (flags & NORMALIZED) != 0;
-    }
-
-    final void isNormalized(boolean value) {
-        // See if flag should propagate to parent.
-        if (!value && isNormalized() && ownerDocument() != null) {
-            ownerDocument().isNormalized(false);
-        }
-        flags = (short) (value ? flags | NORMALIZED : flags & ~NORMALIZED);
     }
 
     DocumentImpl ownerDocument() {
