@@ -270,8 +270,9 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
     }
 
     public OMNode getNextOMSibling() throws OMException {
-        if (this.ownerNode != null && !this.ownerNode.isComplete()) {
-            this.ownerNode.setComplete(true);
+        DocumentImpl ownerDocument = (DocumentImpl)getOwnerDocument();
+        if (ownerDocument != null && !ownerDocument.isComplete()) {
+            ownerDocument.setComplete(true);
         }
         return null;
     }

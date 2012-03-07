@@ -150,7 +150,7 @@ public class AttributeMap extends NamedNodeMapImpl {
             // same element
         }
         //Set the owner node
-        attr.ownerNode = (DocumentImpl) this.ownerNode.getOwnerDocument();
+        attr.setOwnerDocument(ownerNode.ownerDocument());
         attr.parent = this.ownerNode;
         attr.isOwned(true); // To indicate that this attr belong to an element
 
@@ -160,8 +160,7 @@ public class AttributeMap extends NamedNodeMapImpl {
         if (i >= 0) {
             previous = (AttrImpl) nodes.elementAt(i);
             nodes.setElementAt(attr, i);
-            previous.ownerNode = (DocumentImpl) this.ownerNode
-                    .getOwnerDocument();
+            previous.setOwnerDocument(ownerNode.ownerDocument());
             previous.parent = null;
             previous.isOwned(false);
             // make sure it won't be mistaken with defaults in case it's reused
@@ -217,8 +216,7 @@ public class AttributeMap extends NamedNodeMapImpl {
                     NodeImpl clone = (NodeImpl) n.cloneNode(true);
                     clone.isSpecified(n.isSpecified());
                     nodes.setElementAt(clone, i);
-                    clone.ownerNode = this.ownerNode.ownerNode;
-                    clone.isOwned(true);
+                    clone.setOwnerDocument(ownerNode.ownerDocument());
                 }
             }
         }

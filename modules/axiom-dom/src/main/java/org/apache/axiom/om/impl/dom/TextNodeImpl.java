@@ -220,7 +220,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
 
     public TextNodeImpl(OMContainer parent, QName text, int nodeType,
                         OMFactory factory) {
-        this(((ElementImpl) parent).ownerNode, factory);
+        this(((ElementImpl) parent).ownerDocument(), factory);
         if (text != null) {
             this.textNS =
                     ((ElementImpl) parent).findNamespace(text.getNamespaceURI(), text.getPrefix());

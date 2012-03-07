@@ -79,8 +79,8 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
     public void addChild(OMNode omNode) {
         if (omNode.getOMFactory() instanceof OMDOMFactory) {
             Node domNode = (Node) omNode;
-            if (this.ownerNode != null && !domNode.getOwnerDocument().equals(this.ownerNode)) {
-                this.appendChild(this.ownerNode.importNode(domNode, true));
+            if (ownerDocument() != null && !domNode.getOwnerDocument().equals(ownerDocument())) {
+                this.appendChild(ownerDocument().importNode(domNode, true));
             } else {
                 this.appendChild(domNode);
             }
@@ -219,13 +219,13 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                            DOMException.HIERARCHY_REQUEST_ERR, null));
         }
 
-        if (newDomChild.parentNode() != null && newDomChild.ownerNode == this.ownerNode) {
+        if (newDomChild.parentNode() != null && newDomChild.ownerDocument() == ownerDocument()) {
             //If the newChild is already in the tree remove it
             newDomChild.parentNode().removeChild(newDomChild);
         }
 
         if (!(this instanceof Document)
-                && !(this.ownerNode == newDomChild.getOwnerDocument())) {
+                && !(ownerDocument() == newDomChild.getOwnerDocument())) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
@@ -396,9 +396,9 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
         if (newDomChild != null &&
                 //This is the case where this is an Element in the document
-                (this.ownerNode != null && !this.ownerNode.equals(newDomChild.ownerNode)) ||
+                (ownerDocument() != null && !ownerDocument().equals(newDomChild.ownerDocument())) ||
                 //This is the case where this is the Document itself
-                (this.ownerNode == null && !this.equals(newDomChild.ownerNode))) {
+                (ownerDocument() == null && !this.equals(ownerDocument()))) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
@@ -514,7 +514,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         ParentNode newnode = (ParentNode) super.cloneNode(deep);
 
         // set owner document
-        newnode.ownerNode = ownerNode;
+        newnode.setOwnerDocument(ownerDocument());
 
         // Need to break the association w/ original kids
         newnode.firstChild = null;
@@ -545,7 +545,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                                           childElement.getXMLStreamReader()))
                         .getDocumentElement();
                 newElement.build();
-                return (OMNode) this.ownerNode.importNode((Element) newElement,
+                return (OMNode)ownerDocument().importNode((Element) newElement,
                                                           true);
             }
             case (OMNode.TEXT_NODE): {

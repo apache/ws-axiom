@@ -41,7 +41,7 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
     /** Field done */
     protected boolean done = false;
 
-    protected DocumentImpl ownerNode;
+    private DocumentImpl ownerNode;
 
     /** Factory that created this node */
     protected final OMFactory factory;
@@ -67,7 +67,7 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
     protected NodeImpl(DocumentImpl ownerDocument, OMFactory factory) {
         //this(factory);
         this.factory = factory;
-        this.ownerNode = ownerDocument;
+        setOwnerDocument(ownerDocument);
         // this.isOwned(true);
 
     }
@@ -126,7 +126,7 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
      * created). The Node may or may not
      */
     public Document getOwnerDocument() {
-        return this.ownerNode;
+        return ownerDocument();
     }
 
     /**
@@ -189,7 +189,7 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException("**Internal Error**" + e);
         }
-        newnode.ownerNode = this.ownerNode;
+        newnode.setOwnerDocument(ownerDocument());
         newnode.isOwned(false);
 
         newnode.isReadonly(false);
@@ -329,20 +329,23 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
 
     final void isNormalized(boolean value) {
         // See if flag should propagate to parent.
-        if (!value && isNormalized() && ownerNode != null) {
-            ownerNode.isNormalized(false);
+        if (!value && isNormalized() && ownerDocument() != null) {
+            ownerDocument().isNormalized(false);
         }
         flags = (short) (value ? flags | NORMALIZED : flags & ~NORMALIZED);
     }
 
+    DocumentImpl ownerDocument() {
+        return ownerNode;
+    }
+    
     /**
      * Sets the owner document.
      *
      * @param document
      */
-    protected void setOwnerDocument(DocumentImpl document) {
+    void setOwnerDocument(DocumentImpl document) {
         this.ownerNode = document;
-        this.isOwned(true);
     }
 
     /*
