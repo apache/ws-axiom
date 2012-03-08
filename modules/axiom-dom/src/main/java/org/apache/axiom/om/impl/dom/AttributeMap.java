@@ -67,7 +67,7 @@ public class AttributeMap extends NamedNodeMapImpl {
         }
 
         AttrImpl attr = (AttrImpl) attribute;
-        if (attr.isOwned()) { // If the attribute is owned then:
+        if (attr.getOwnerElement() != null) { // If the attribute is owned then:
             if (attr.getOwnerElement() != this.ownerNode) // the owner must be
                 // the owner of this
                 // list
@@ -80,8 +80,7 @@ public class AttributeMap extends NamedNodeMapImpl {
             // same element
         }
 
-        attr.parent = this.ownerNode; // Set the owner node
-        attr.isOwned(true); // To indicate that this attr belong to an element
+        attr.setOwnerElement((ElementImpl)this.ownerNode); // Set the owner node
         attr.setUsed(true); // Setting used to true
 
         int i = findNamePoint(attr.getNodeName(), 0);
@@ -90,8 +89,7 @@ public class AttributeMap extends NamedNodeMapImpl {
         if (i >= 0) { // There's an attribute already with this attr's name
             previous = (AttrImpl) nodes.elementAt(i);
             nodes.setElementAt(attr, i);
-            previous.parent = null;
-            previous.isOwned(false);
+            previous.setOwnerElement(null);
 
             // make sure it won't be mistaken with defaults in case it's reused
             previous.isSpecified(true);
@@ -133,7 +131,7 @@ public class AttributeMap extends NamedNodeMapImpl {
         }
 
         AttrImpl attr = (AttrImpl) attribute;
-        if (attr.isOwned()) { // If the attribute is owned then:
+        if (attr.getOwnerElement() != null) { // If the attribute is owned then:
             //the owner must be the owner of this list
             if (attr.getOwnerElement() != this.ownerNode)
                 throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR,
@@ -145,9 +143,7 @@ public class AttributeMap extends NamedNodeMapImpl {
             // same element
         }
         //Set the owner node
-        attr.setOwnerDocument(ownerNode.ownerDocument());
-        attr.parent = this.ownerNode;
-        attr.isOwned(true); // To indicate that this attr belong to an element
+        attr.setOwnerElement((ElementImpl)this.ownerNode);
 
         int i = findNamePoint(attr.getNamespaceURI(), attr.getLocalName());
         AttrImpl previous = null;
@@ -155,9 +151,7 @@ public class AttributeMap extends NamedNodeMapImpl {
         if (i >= 0) {
             previous = (AttrImpl) nodes.elementAt(i);
             nodes.setElementAt(attr, i);
-            previous.setOwnerDocument(ownerNode.ownerDocument());
-            previous.parent = null;
-            previous.isOwned(false);
+            previous.setOwnerElement(null);
             // make sure it won't be mistaken with defaults in case it's reused
             previous.isSpecified(true);
         } else {
@@ -206,7 +200,6 @@ public class AttributeMap extends NamedNodeMapImpl {
                     NodeImpl clone = (NodeImpl) n.cloneNode(true);
                     clone.isSpecified(n.isSpecified());
                     nodes.setElementAt(clone, i);
-                    clone.setOwnerDocument(ownerNode.ownerDocument());
                 }
             }
         }

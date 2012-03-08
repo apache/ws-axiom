@@ -439,7 +439,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     public Attr setAttributeNode(Attr attr) throws DOMException {
         AttrImpl attrImpl = (AttrImpl) attr;
 
-        if (attrImpl.isOwned()) {// check for ownership
+        if (attrImpl.getOwnerElement() != null) {// check for ownership
             if (!this.getOwnerDocument().equals(attr.getOwnerDocument())) {
                 String msg = DOMMessageFormatter.formatMessage(
                         DOMMessageFormatter.DOM_DOMAIN, DOMException.WRONG_DOCUMENT_ERR,
@@ -526,7 +526,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         } else {
             AttrImpl attrImpl = (AttrImpl) attr;
 
-            if (attrImpl.isOwned()) {// check for ownership
+            if (attrImpl.getOwnerElement() != null) {// check for ownership
                 if (!this.getOwnerDocument().equals(attr.getOwnerDocument())) {
                     String msg = DOMMessageFormatter.formatMessage(
                             DOMMessageFormatter.DOM_DOMAIN,

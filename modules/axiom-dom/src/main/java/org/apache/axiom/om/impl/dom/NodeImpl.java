@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -41,16 +40,12 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
     /** Field done */
     protected boolean done = false;
 
-    private DocumentImpl ownerNode;
-
     /** Factory that created this node */
     protected final OMFactory factory;
 
     // data
 
     protected short flags;
-
-    protected final static short OWNED = 0x1 << 1;
 
     protected final static short FIRSTCHILD = 0x1 << 2;
 
@@ -61,14 +56,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
     //
     // Constructors
     //
-
-    protected NodeImpl(DocumentImpl ownerDocument, OMFactory factory) {
-        //this(factory);
-        this.factory = factory;
-        setOwnerDocument(ownerDocument);
-        // this.isOwned(true);
-
-    }
 
     protected NodeImpl(OMFactory factory) {
         this.factory = factory;
@@ -117,14 +104,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
         throw new DOMException(DOMException.NAMESPACE_ERR, DOMMessageFormatter
                 .formatMessage(DOMMessageFormatter.DOM_DOMAIN, DOMException.NAMESPACE_ERR,
                                null));
-    }
-
-    /**
-     * Finds the document that this Node belongs to (the document in whose context the Node was
-     * created). The Node may or may not
-     */
-    public Document getOwnerDocument() {
-        return ownerDocument();
     }
 
     /**
@@ -187,8 +166,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException("**Internal Error**" + e);
         }
-        newnode.setOwnerDocument(ownerDocument());
-        newnode.isOwned(false);
 
         newnode.isReadonly(false);
 
@@ -289,14 +266,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
      * Flags setters and getters
      */
 
-    final boolean isOwned() {
-        return (flags & OWNED) != 0;
-    }
-
-    final void isOwned(boolean value) {
-        flags = (short) (value ? flags | OWNED : flags & ~OWNED);
-    }
-
     final boolean isFirstChild() {
         return (flags & FIRSTCHILD) != 0;
     }
@@ -319,19 +288,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
 
     final void isSpecified(boolean value) {
         flags = (short) (value ? flags | SPECIFIED : flags & ~SPECIFIED);
-    }
-
-    DocumentImpl ownerDocument() {
-        return ownerNode;
-    }
-    
-    /**
-     * Sets the owner document.
-     *
-     * @param document
-     */
-    void setOwnerDocument(DocumentImpl document) {
-        this.ownerNode = document;
     }
 
     /*

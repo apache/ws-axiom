@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.TypeInfo;
@@ -62,19 +63,23 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
     /** Flag to indicate whether this attr is used or not */
     private boolean used;
 
-    /** Owner of this attribute */
-    protected ParentNode parent;
+    /**
+     * Owner of this attribute. This is either the owner element or the owner document (if the
+     * attribute doesn't have an owner element).
+     */
+    private ParentNode owner;
 
     /** Flag used to mark an attribute as per the DOM Level 3 specification */
     protected boolean isId;
 
     protected AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
-        super(ownerDocument, factory);
+        super(factory);
+        owner = ownerDocument;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String localName,
                     OMNamespace ns, String value, OMFactory factory) {
-        super(ownerDocument, factory);
+        this(ownerDocument, factory);
         if (ns != null && ns.getNamespaceURI().length() == 0) {
             if (ns.getPrefix().length() > 0) {
                 throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
@@ -90,14 +95,14 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
 
     public AttrImpl(DocumentImpl ownerDocument, String name, String value,
                     OMFactory factory) {
-        super(ownerDocument, factory);
+        this(ownerDocument, factory);
         this.attrName = name;
         this.attrValue = new TextImpl(ownerDocument, value, factory);
         this.attrType = OMConstants.XMLATTRTYPE_CDATA;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String name, OMFactory factory) {
-        super(ownerDocument, factory);
+        this(ownerDocument, factory);
         this.attrName = name;
         //If this is a default namespace attr
         if (OMConstants.XMLNS_NS_PREFIX.equals(name)) {
@@ -109,7 +114,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
 
     public AttrImpl(DocumentImpl ownerDocument, String localName,
                     OMNamespace namespace, OMFactory factory) {
-        super(ownerDocument, factory);
+        this(ownerDocument, factory);
         this.attrName = localName;
         this.namespace = (OMNamespaceImpl) namespace;
         this.attrType = OMConstants.XMLATTRTYPE_CDATA;
@@ -180,11 +185,19 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
      * @see org.w3c.dom.Attr#getOwnerElement()
      */
     public Element getOwnerElement() {
-        // Owned is set to an element instance when the attribute is added to an
-        // element
-        return (Element) (isOwned() ? parent : null);
+        return owner instanceof ElementImpl ? (Element)owner : null;
     }
 
+    void setOwnerElement(ElementImpl element) {
+        if (element == null) {
+            if (owner instanceof ElementImpl) {
+                owner = ((ElementImpl)owner).ownerDocument();
+            }
+        } else {
+            owner = element;
+        }
+    }
+    
     public boolean getSpecified() {
         // Since we don't support DTD or schema, we always return true
         return true;
@@ -352,7 +365,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
             }
         }
         clone.isSpecified(true);
-        clone.parent = null;
+        clone.owner = (DocumentImpl)getOwnerDocument();
         clone.setUsed(false);
         return clone;
     }
@@ -375,6 +388,10 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
                 + ":" + this.attrName;
     }
 
+    public Document getOwnerDocument() {
+        return owner instanceof ElementImpl ? ((ElementImpl)owner).getOwnerDocument() : (DocumentImpl)owner;
+    }
+
     /**
      * Returns the owner element of this attribute
      * @return OMElement - if the parent OMContainer is an instanceof OMElement
@@ -382,7 +399,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
      * getParent() method.
      */
     public OMElement getOwner() {
-        return (parent instanceof OMElement) ? (OMElement)parent : null;
+        return owner instanceof ElementImpl ? (OMElement)owner : null;
     }
 
     /**

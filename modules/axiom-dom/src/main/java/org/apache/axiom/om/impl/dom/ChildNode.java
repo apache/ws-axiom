@@ -34,6 +34,7 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.util.StAXUtils;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 public abstract class ChildNode extends NodeImpl {
@@ -42,15 +43,35 @@ public abstract class ChildNode extends NodeImpl {
 
     protected ChildNode nextSibling;
 
+    private DocumentImpl ownerNode;
+
     private ParentNode parentNode;
 
     /** @param ownerDocument  */
     protected ChildNode(DocumentImpl ownerDocument, OMFactory factory) {
-        super(ownerDocument, factory);
+        super(factory);
+        setOwnerDocument(ownerDocument);
     }
 
     protected ChildNode(OMFactory factory) {
         super(factory);
+    }
+
+    DocumentImpl ownerDocument() {
+        return ownerNode;
+    }
+    
+    /**
+     * Sets the owner document.
+     *
+     * @param document
+     */
+    void setOwnerDocument(DocumentImpl document) {
+        this.ownerNode = document;
+    }
+
+    public Document getOwnerDocument() {
+        return ownerDocument();
     }
 
     ParentNode parentNode() {
@@ -235,6 +256,7 @@ public abstract class ChildNode extends NodeImpl {
         newnode.previousSibling = null;
         newnode.nextSibling = null;
         newnode.isFirstChild(false);
+        newnode.setOwnerDocument(ownerDocument());
         newnode.parentNode = null;
 
         return newnode;
