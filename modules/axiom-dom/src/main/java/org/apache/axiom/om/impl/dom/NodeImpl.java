@@ -47,6 +47,14 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
 
     protected short flags;
 
+    /**
+     * Used by {@link ChildNode} to determine the meaning of the <code>ownerNode</code> attribute.
+     * If the flag is set, then the attribute contains the reference to the parent node. If the flag
+     * is not set, then the node has no parent and the attribute stores a reference to the owner
+     * document (which may be <code>null</code> if the owner document has not been created yet).
+     */
+    protected final static short HAS_PARENT = 0x1 << 1;
+    
     protected final static short FIRSTCHILD = 0x1 << 2;
 
     protected final static short READONLY = 0x1 << 3;
@@ -265,6 +273,14 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
     /*
      * Flags setters and getters
      */
+
+    final boolean hasParent() {
+        return (flags & HAS_PARENT) != 0;
+    }
+
+    final void hasParent(boolean value) {
+        flags = (short) (value ? flags | HAS_PARENT : flags & ~HAS_PARENT);
+    }
 
     final boolean isFirstChild() {
         return (flags & FIRSTCHILD) != 0;

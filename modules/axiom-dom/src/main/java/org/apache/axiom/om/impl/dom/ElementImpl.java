@@ -151,7 +151,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
                        OMXMLParserWrapper builder, OMFactory factory) {
         this(tagName, ns, builder, factory);
         if (parentNode != null) {
-            setOwnerDocument(parentNode.ownerDocument());
             parentNode.addChild(this);
         }
 

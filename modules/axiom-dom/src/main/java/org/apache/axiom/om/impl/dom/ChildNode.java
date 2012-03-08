@@ -43,9 +43,11 @@ public abstract class ChildNode extends NodeImpl {
 
     protected ChildNode nextSibling;
 
-    private DocumentImpl ownerNode;
-
-    private ParentNode parentNode;
+    /**
+     * The parent or the owner document of the node. The meaning of this attribute depends on the
+     * {@link NodeImpl#HAS_PARENT} flag.
+     */
+    private ParentNode ownerNode;
 
     /** @param ownerDocument  */
     protected ChildNode(DocumentImpl ownerDocument, OMFactory factory) {
@@ -58,7 +60,15 @@ public abstract class ChildNode extends NodeImpl {
     }
 
     DocumentImpl ownerDocument() {
-        return ownerNode;
+        if (ownerNode == null) {
+            return null;
+        } else if (ownerNode instanceof DocumentImpl) {
+            // Note: the value of the HAS_PARENT flag doesn't matter here. If the ownerNode is of
+            // type Document, it must be the owner document.
+            return (DocumentImpl)ownerNode;
+        } else {
+            return ownerNode.ownerDocument();
+        }
     }
     
     /**
@@ -67,6 +77,9 @@ public abstract class ChildNode extends NodeImpl {
      * @param document
      */
     void setOwnerDocument(DocumentImpl document) {
+        if (ownerNode != null) {
+            throw new IllegalStateException();
+        }
         this.ownerNode = document;
     }
 
@@ -75,7 +88,7 @@ public abstract class ChildNode extends NodeImpl {
     }
 
     ParentNode parentNode() {
-        return parentNode;
+        return hasParent() ? ownerNode : null;
     }
 
     public OMNode getNextOMSibling() throws OMException {
@@ -138,8 +151,12 @@ public abstract class ChildNode extends NodeImpl {
     }
 
     public void setParent(OMContainer element) {
-        if (element == null || element instanceof ParentNode) {
-            this.parentNode = (ParentNode) element;
+        if (element == null) {
+            ownerNode = ownerDocument();
+            hasParent(false);
+        } else if (element instanceof ParentNode) {
+            ownerNode = (ParentNode) element;
+            hasParent(true);
         } else {
             throw new OMException("The given parent is not of the type "
                     + ParentNode.class);
@@ -256,8 +273,8 @@ public abstract class ChildNode extends NodeImpl {
         newnode.previousSibling = null;
         newnode.nextSibling = null;
         newnode.isFirstChild(false);
-        newnode.setOwnerDocument(ownerDocument());
-        newnode.parentNode = null;
+        newnode.ownerNode = ownerDocument();
+        newnode.hasParent(false);
 
         return newnode;
     }
