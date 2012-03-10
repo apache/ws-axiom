@@ -28,10 +28,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 /**
- * Tests the behavior of {@link Document#adoptNode(Node)}.
+ * Tests the behavior of {@link Document#adoptNode(Node)} if the node to adopt has a parent. In this
+ * case, the method must detach the node from its parent first.
  */
-public class TestAdoptNode extends DOMTestCase {
-    public TestAdoptNode(DocumentBuilderFactory dbf) {
+public class TestAdoptNodeWithParent extends DOMTestCase {
+    public TestAdoptNodeWithParent(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
@@ -39,12 +40,12 @@ public class TestAdoptNode extends DOMTestCase {
         DocumentBuilder builder = dbf.newDocumentBuilder();
         Document document1 = builder.newDocument();
         Document document2 = builder.newDocument();
-        Element element = document1.createElementNS(null, "test");
-        Text child = document1.createTextNode("test");
-        element.appendChild(child);
-        assertSame(element, document2.adoptNode(element));
-        assertSame(document2, element.getOwnerDocument());
-        assertSame(child, element.getFirstChild());
-        assertSame(document2, element.getFirstChild().getOwnerDocument());
+        Element parent = document1.createElementNS(null, "test");
+        Text node = document1.createTextNode("test");
+        parent.appendChild(node);
+        assertSame(node, document2.adoptNode(node));
+        assertSame(document2, node.getOwnerDocument());
+        assertNull(node.getParentNode());
+        assertNull(parent.getFirstChild());
     }
 }

@@ -533,8 +533,16 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public Node adoptNode(Node node) throws DOMException {
-        //OK... I'm cheating here,  a BIG TODO
-        return this.importNode(node, true);
+        if (node instanceof ChildNode) {
+            ChildNode childNode = (ChildNode)node;
+            if (childNode.hasParent()) {
+                childNode.detach();
+            }
+            childNode.setOwnerDocument(this);
+            return childNode;
+        } else {
+            return null;
+        }
     }
 
     public String getDocumentURI() {

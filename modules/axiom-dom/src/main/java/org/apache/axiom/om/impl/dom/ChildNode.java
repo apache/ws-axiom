@@ -77,7 +77,7 @@ public abstract class ChildNode extends NodeImpl {
      * @param document
      */
     void setOwnerDocument(DocumentImpl document) {
-        if (ownerNode != null) {
+        if (hasParent()) {
             throw new IllegalStateException();
         }
         this.ownerNode = document;

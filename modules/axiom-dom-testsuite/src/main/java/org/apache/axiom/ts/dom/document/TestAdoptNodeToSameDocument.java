@@ -28,23 +28,24 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 /**
- * Tests the behavior of {@link Document#adoptNode(Node)}.
+ * Tests the behavior of {@link Document#adoptNode(Node)} if the node is
+ * already owned by the document. In this case, the method is still expected
+ * to detach the node from its parent.
  */
-public class TestAdoptNode extends DOMTestCase {
-    public TestAdoptNode(DocumentBuilderFactory dbf) {
+public class TestAdoptNodeToSameDocument extends DOMTestCase {
+    public TestAdoptNodeToSameDocument(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
-        Document document1 = builder.newDocument();
-        Document document2 = builder.newDocument();
-        Element element = document1.createElementNS(null, "test");
-        Text child = document1.createTextNode("test");
-        element.appendChild(child);
-        assertSame(element, document2.adoptNode(element));
-        assertSame(document2, element.getOwnerDocument());
-        assertSame(child, element.getFirstChild());
-        assertSame(document2, element.getFirstChild().getOwnerDocument());
+        Document document = builder.newDocument();
+        Element parent = document.createElementNS(null, "test");
+        Text node = document.createTextNode("test");
+        parent.appendChild(node);
+        assertSame(node, document.adoptNode(node));
+        assertSame(document, node.getOwnerDocument());
+        assertNull(node.getParentNode());
+        assertNull(parent.getFirstChild());
     }
 }
