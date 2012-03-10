@@ -54,6 +54,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestAttributes2(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAttributes3(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAttributes4(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestCloneNode(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestGetElementsByTagName(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestGetElementsByTagNameNS(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestGetElementsByTagNameRecursive(dbf));

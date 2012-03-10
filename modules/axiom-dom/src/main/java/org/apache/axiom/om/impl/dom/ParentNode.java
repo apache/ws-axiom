@@ -513,8 +513,8 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
         ParentNode newnode = (ParentNode) super.cloneNode(deep);
 
-        // set owner document
-        newnode.setOwnerDocument(ownerDocument());
+        // set parent and owner document
+        newnode.setParent(null);
 
         // Need to break the association w/ original kids
         newnode.firstChild = null;
