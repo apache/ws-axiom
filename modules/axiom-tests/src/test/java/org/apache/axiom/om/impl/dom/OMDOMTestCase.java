@@ -26,13 +26,11 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 public abstract class OMDOMTestCase extends AbstractTestCase {
@@ -60,13 +58,6 @@ public abstract class OMDOMTestCase extends AbstractTestCase {
         }
         XMLStreamReader parser = StAXUtils.createXMLStreamReader(getTestResource(fileName));
         builder = new StAXSOAPModelBuilder(parser, new SOAP11Factory(), null);
-        return builder;
-    }
-
-
-    protected StAXSOAPModelBuilder getOMBuilder(InputStream in) throws Exception {
-        XMLStreamReader parser = StAXUtils.createXMLStreamReader(in);
-        builder = new StAXSOAPModelBuilder(parser, new DOMSOAPFactory(), null);
         return builder;
     }
 
