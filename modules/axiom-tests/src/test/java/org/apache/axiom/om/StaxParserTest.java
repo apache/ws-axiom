@@ -146,8 +146,8 @@ public class StaxParserTest extends AbstractTestCase {
         try {
             while (childElements.hasNext()) {
                 childElements.next();
-                fail("The stream should've been consumed by now!");
             }
+            fail("The stream should've been consumed by now!");
         } catch (Exception e) {
             //if we are here without failing, then we are successful
         }

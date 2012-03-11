@@ -146,6 +146,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetAttributeWithXmlPrefix2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetChildElements(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetChildElementsConcurrentModification(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetChildren(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetChildrenConcurrentModification(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetChildrenRemove1(metaFactory));
