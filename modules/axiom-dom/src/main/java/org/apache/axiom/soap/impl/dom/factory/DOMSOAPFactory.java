@@ -22,9 +22,11 @@ package org.apache.axiom.soap.impl.dom.factory;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
@@ -76,6 +78,13 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
 
     public SOAPFault createSOAPFault(SOAPBody parent) throws SOAPProcessingException {
         return new SOAP12FaultImpl(parent, this);
+    }
+
+    public final SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
+        SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(getNamespace(), this);
+        createSOAPHeader(env);
+        createSOAPBody(env);
+        return env;
     }
 
     public SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException {
@@ -137,10 +146,6 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
 
     public SOAPFaultDetail createSOAPFaultDetail() throws SOAPProcessingException {
         return new SOAP11FaultDetailImpl(this);
-    }
-
-    public OMNamespace getNamespace() {
-        throw new UnsupportedOperationException();
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, OMDataSource ds) throws SOAPProcessingException {

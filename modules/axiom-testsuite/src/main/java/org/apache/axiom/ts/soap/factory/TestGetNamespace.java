@@ -18,38 +18,20 @@
  */
 package org.apache.axiom.ts.soap.factory;
 
-import java.util.Iterator;
-
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestCreateSOAPEnvelope extends SOAPTestCase {
-    public TestCreateSOAPEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
+public class TestGetNamespace extends SOAPTestCase {
+    public TestGetNamespace(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope env = soapFactory.createSOAPEnvelope();
-        
-        // Check name
-        assertEquals(SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX, env.getNamespace().getPrefix());
-        assertEquals(spec.getEnvelopeNamespaceURI(), env.getNamespace().getNamespaceURI());
-        assertEquals(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, env.getLocalName());
-        
-        // Check declared namespaces
-        Iterator it = env.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
-        OMNamespace ns = (OMNamespace)it.next();
+        OMNamespace ns = soapFactory.getNamespace();
         assertEquals(SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX, ns.getPrefix());
         assertEquals(spec.getEnvelopeNamespaceURI(), ns.getNamespaceURI());
-        assertFalse(it.hasNext());
-        
-        // Check parent/children
-        assertNull(env.getParent());
-        assertNull(env.getFirstOMChild());
     }
 }

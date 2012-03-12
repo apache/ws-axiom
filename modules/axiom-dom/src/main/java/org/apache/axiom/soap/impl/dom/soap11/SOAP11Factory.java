@@ -240,17 +240,6 @@ public class SOAP11Factory extends DOMSOAPFactory {
         return new SOAP11FaultDetailImpl(parent, builder, this);
     }
 
-    public SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
-        OMNamespace ns =
-                new OMNamespaceImpl(
-                        SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                        SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
-        SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(ns, this);
-        createSOAPHeader(env);
-        createSOAPBody(env);
-        return env;
-    }
-
     public OMNamespace getNamespace() {
         return new OMNamespaceImpl(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
                                  SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);

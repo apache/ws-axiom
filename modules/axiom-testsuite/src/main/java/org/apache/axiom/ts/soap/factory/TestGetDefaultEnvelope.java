@@ -21,35 +21,40 @@ package org.apache.axiom.ts.soap.factory;
 import java.util.Iterator;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.soap.SOAPConstants;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestCreateSOAPEnvelope extends SOAPTestCase {
-    public TestCreateSOAPEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
+/**
+ * Checks the content of the SOAP envelope returned by {@link SOAPFactory#getDefaultEnvelope()}.
+ */
+public class TestGetDefaultEnvelope extends SOAPTestCase {
+    public TestGetDefaultEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope env = soapFactory.createSOAPEnvelope();
+        SOAPEnvelope env = soapFactory.getDefaultEnvelope();
         
-        // Check name
-        assertEquals(SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX, env.getNamespace().getPrefix());
-        assertEquals(spec.getEnvelopeNamespaceURI(), env.getNamespace().getNamespaceURI());
-        assertEquals(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, env.getLocalName());
+        // Check correct SOAP version
+        assertEquals(spec.getEnvelopeNamespaceURI(), env.getNamespaceURI());
         
-        // Check declared namespaces
-        Iterator it = env.getAllDeclaredNamespaces();
-        assertTrue(it.hasNext());
-        OMNamespace ns = (OMNamespace)it.next();
-        assertEquals(SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX, ns.getPrefix());
-        assertEquals(spec.getEnvelopeNamespaceURI(), ns.getNamespaceURI());
-        assertFalse(it.hasNext());
-        
-        // Check parent/children
+        // getDefaultEnvelope doesn't create a SOAPMessage/OMDocument
         assertNull(env.getParent());
-        assertNull(env.getFirstOMChild());
+        
+        // Check the children
+        Iterator it = env.getChildren();
+        assertTrue(it.hasNext());
+        OMNode child = (OMNode)it.next();
+        assertTrue(child instanceof SOAPHeader);
+        assertNull(((SOAPHeader)child).getFirstOMChild());
+        child = (OMNode)it.next();
+        assertTrue(child instanceof SOAPBody);
+        assertNull(((SOAPBody)child).getFirstOMChild());
+        assertFalse(it.hasNext());
     }
 }

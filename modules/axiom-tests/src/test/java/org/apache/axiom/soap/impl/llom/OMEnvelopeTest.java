@@ -19,7 +19,6 @@
 
 package org.apache.axiom.soap.impl.llom;
 
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.TestConstants;
@@ -71,11 +70,5 @@ public class OMEnvelopeTest extends OMTestCase {
         assertTrue("Header information retrieved not correct",
                    (body != null && body.getLocalName().equalsIgnoreCase("Body")));
         body.close(false);
-    }
-
-    public void testDefaultEnveleope() {
-        SOAPEnvelope env = OMAbstractFactory.getSOAP11Factory().getDefaultEnvelope();
-        assertNotNull(env);
-        assertNotNull("Body should not be null", env.getBody());
     }
 }
