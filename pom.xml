@@ -530,7 +530,6 @@
     <modules>
         <module>modules/axiom-parent</module>
         <module>modules/axiom-buildutils</module>
-        <module>modules/shade-plugin-patched</module>
         <module>modules/axiom-testutils</module>
         <module>modules/axiom-jaxen-testsuite</module>
         <module>modules/axiom-dom-testsuite</module>

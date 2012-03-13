@@ -489,6 +489,6 @@
         <stax.impl.artifact>stax</stax.impl.artifact>
         <stax.impl.version>1.2.0</stax.impl.version>
         -->
-        <shade.plugin.version>1.4</shade.plugin.version>
+        <shade.plugin.version>1.6-SNAPSHOT</shade.plugin.version>
     </properties>
 </project>

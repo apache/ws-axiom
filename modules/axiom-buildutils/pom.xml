@@ -43,7 +43,6 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
             <version>${shade.plugin.version}</version>
-            <!-- This avoids conflicts with our patched version of the plugin -->
             <scope>provided</scope>
         </dependency>
         <dependency>
