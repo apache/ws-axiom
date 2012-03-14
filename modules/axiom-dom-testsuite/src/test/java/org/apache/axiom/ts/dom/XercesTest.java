@@ -29,7 +29,7 @@ public class XercesTest extends TestCase {
     public static TestSuite suite() {
         DocumentBuilderFactory dbf = new DocumentBuilderFactoryImpl();
         dbf.setNamespaceAware(true);
-        DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(dbf, false);
+        DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(dbf);
         return builder.build();
     }
 }

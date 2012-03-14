@@ -24,11 +24,9 @@ import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 
 public class DOMTestSuiteBuilder extends TestSuiteBuilder {
     private final DocumentBuilderFactory dbf;
-    private final boolean isAxiomImpl;
     
-    public DOMTestSuiteBuilder(DocumentBuilderFactory dbf, boolean isAxiomImpl) {
+    public DOMTestSuiteBuilder(DocumentBuilderFactory dbf) {
         this.dbf = dbf;
-        this.isAxiomImpl = isAxiomImpl;
     }
     
     protected void addTests() {
@@ -41,12 +39,12 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestAllowedChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttribute(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNS(dbf));
-        addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNSWithoutNamespace(dbf, isAxiomImpl));
+        addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNSWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateCDATASection(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateElement(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateElementNS(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateElementNSWithInvalidName(dbf));
-        addTest(new org.apache.axiom.ts.dom.document.TestCreateElementNSWithoutNamespace(dbf, isAxiomImpl));
+        addTest(new org.apache.axiom.ts.dom.document.TestCreateElementNSWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateText(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestDocumentSiblings(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestGetDomConfigDefaults(dbf));

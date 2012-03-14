@@ -16,32 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.omdom;
+package org.apache.axiom.ts.omdom.element;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.om.OMNamedInformationItem;
+import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
- * Tests the behavior of {@link Node#removeChild(Node)} on an element that has not been built
- * completely.
+ * Tests that the return value of {@link OMNamedInformationItem#getNamespace()} is correctly
+ * normalized for elements created using {@link Document#createElementNS(String, String)}.
  */
-public class TestRemoveChildIncomplete extends AxiomTestCase {
-    public TestRemoveChildIncomplete(OMMetaFactory metaFactory) {
+public class TestGetNamespaceNormalized extends AxiomTestCase {
+    public TestGetNamespaceNormalized(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
-        Element element = (Element)AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
-                "<parent><a/><b/><c/></parent>");
-        Node b = element.getFirstChild().getNextSibling();
-        element.removeChild(b);
-        Node child = element.getFirstChild();
-        assertEquals("a", child.getLocalName());
-        child = child.getNextSibling();
-        assertEquals("c", child.getLocalName());
-        assertNull(child.getNextSibling());
+        Document doc = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        Element element = doc.createElementNS(null, "test");
+        assertNull(((OMElement)element).getNamespace());
     }
 }

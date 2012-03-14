@@ -20,17 +20,13 @@ package org.apache.axiom.ts.dom.document;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
 public class TestCreateAttributeNSWithoutNamespace extends DOMTestCase {
-    private final boolean isAxiomImpl;
-    
-    public TestCreateAttributeNSWithoutNamespace(DocumentBuilderFactory dbf, boolean isAxiomImpl) {
+    public TestCreateAttributeNSWithoutNamespace(DocumentBuilderFactory dbf) {
         super(dbf);
-        this.isAxiomImpl = isAxiomImpl;
     }
 
     protected void runTest() throws Throwable {
@@ -39,8 +35,5 @@ public class TestCreateAttributeNSWithoutNamespace extends DOMTestCase {
         assertNull(attr.getPrefix());
         assertNull(attr.getNamespaceURI());
         assertEquals("attr", attr.getName());
-        if (isAxiomImpl) {
-            assertNull(((OMAttribute)attr).getNamespace());
-        }
     }
 }

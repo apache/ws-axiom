@@ -20,7 +20,6 @@ package org.apache.axiom.ts.dom.element;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -33,7 +32,8 @@ public class TestAttributes extends DOMTestCase {
     }
 
     protected void runTest() throws Throwable {
-        Document doc = dbf.newDocumentBuilder().parse(AbstractTestCase.getTestResource("attributetest.xml"));
+        Document doc = dbf.newDocumentBuilder().parse(
+                TestAttributes.class.getResourceAsStream("attributetest.xml"));
 
         // Check whether body has attributes
         Element bodyElement = doc.getDocumentElement();

@@ -40,33 +40,12 @@
     <url>http://ws.apache.org/axiom/</url>
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>xmlunit</groupId>
-            <artifactId>xmlunit</artifactId>
-        </dependency>
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-testutils</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-api</artifactId>
-            <classifier>tests</classifier>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <!-- TODO: only used to get a test file; eliminate this -->
-            <groupId>${project.groupId}</groupId>
-            <artifactId>axiom-jaxen-testsuite</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

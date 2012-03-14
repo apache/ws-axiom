@@ -16,25 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.dom.element;
+package org.apache.axiom.ts.omdom.attr;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.apache.axiom.ts.dom.DOMTestCase;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamedInformationItem;
+import org.apache.axiom.om.dom.DOMMetaFactory;
+import org.apache.axiom.ts.AxiomTestCase;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
-public class TestGetElementsByTagNameRecursive extends DOMTestCase {
-    public TestGetElementsByTagNameRecursive(DocumentBuilderFactory dbf) {
-        super(dbf);
+/**
+ * Tests that the return value of {@link OMNamedInformationItem#getNamespace()} is correctly
+ * normalized for attributes created using {@link Document#createAttributeNS(String, String)}.
+ */
+public class TestGetNamespaceNormalized extends AxiomTestCase {
+    public TestGetNamespaceNormalized(OMMetaFactory metaFactory) {
+        super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
-        Document doc = dbf.newDocumentBuilder().parse(
-                TestGetElementsByTagNameRecursive.class.getResourceAsStream("numbers.xml"));
-        Element element = doc.getDocumentElement();
-        NodeList list = element.getElementsByTagName("nr");
-        assertEquals(10, list.getLength());
+        Document doc = ((DOMMetaFactory)metaFactory).newDocumentBuilderFactory().newDocumentBuilder().newDocument();
+        Attr attr = doc.createAttributeNS(null, "attr");
+        assertNull(((OMAttribute)attr).getNamespace());
     }
 }
