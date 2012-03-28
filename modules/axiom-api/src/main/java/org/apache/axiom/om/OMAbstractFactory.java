@@ -154,7 +154,20 @@ public class OMAbstractFactory {
         }
         OMMetaFactory metaFactory = locator.getOMMetaFactory(feature);
         if (metaFactory == null) {
-            throw new OMException("No meta factory found for feature '" + feature + "'");
+            String jarHint;
+            if (feature.equals(FEATURE_DEFAULT)) {
+                jarHint = "axiom-impl.jar";
+            } else if (feature.equals(FEATURE_DOM)) {
+                jarHint = "axiom-dom.jar";
+            } else {
+                jarHint = null;
+            }
+            StringBuilder buffer = new StringBuilder();
+            buffer.append("No meta factory found for feature '").append(feature).append("'");
+            if (jarHint != null) {
+                buffer.append("; this usually means that ").append(jarHint).append(" is not in the classpath");
+            }
+            throw new OMException(buffer.toString());
         } else {
             return metaFactory;
         }
