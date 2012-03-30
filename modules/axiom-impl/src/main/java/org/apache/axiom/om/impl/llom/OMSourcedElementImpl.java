@@ -241,7 +241,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             log.error("Could not get parser from data source for element " +
                     getPrintableName(), e);
             throw new RuntimeException("Error obtaining parser from data source:" +
-                    e.getMessage());
+                    e.getMessage(), e);
         }
     }
 
@@ -283,7 +283,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 log.error("forceExpand: error parsing data soruce document for element " +
                         getLocalName(), e);
                 throw new RuntimeException("Error parsing data source document:" +
-                        e.getMessage());
+                        e.getMessage(), e);
             }
 
             // Make sure element local name and namespace matches what was expected
