@@ -281,14 +281,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
      * @see org.w3c.dom.Element#removeAttribute(String)
      */
     public void removeAttribute(String name) throws DOMException {
-        if (this.isReadonly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
-
         if (name.startsWith(OMConstants.XMLNS_NS_PREFIX)) {
             String namespacePrefix = DOMUtil.getLocalName(name);
             if (this.findNamespaceURI(namespacePrefix) != null) {
@@ -309,14 +301,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
      */
     public void removeAttributeNS(String namespaceURI, String localName)
             throws DOMException {
-        if (this.isReadonly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
-
         if (OMConstants.XMLNS_NS_URI.equals(namespaceURI)) {
             //look in the ns list
             if (this.namespaces != null) {
@@ -334,13 +318,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
      * @see org.w3c.dom.Element#removeAttributeNode(org.w3c.dom.Attr)
      */
     public Attr removeAttributeNode(Attr oldAttr) throws DOMException {
-        if (isReadonly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
         if (this.attributes == null
                 || this.attributes.getNamedItem(oldAttr.getName()) == null) {
             String msg = DOMMessageFormatter.formatMessage(
@@ -447,14 +424,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             }
         }
 
-        if (this.isReadonly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
-
         // check whether the attr is in use
         if (attrImpl.isUsed()) {
             String msg = DOMMessageFormatter
@@ -534,14 +503,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
                 }
             }
 
-            if (this.isReadonly()) {
-                String msg = DOMMessageFormatter.formatMessage(
-                        DOMMessageFormatter.DOM_DOMAIN,
-                        DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-                throw new DOMException(
-                        DOMException.NO_MODIFICATION_ALLOWED_ERR, msg);
-            }
-
             // check whether the attr is in use
             if (attrImpl.isUsed()) {
                 String msg = DOMMessageFormatter.formatMessage(
@@ -604,14 +565,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
                     DOMMessageFormatter.DOM_DOMAIN, DOMException.INVALID_CHARACTER_ERR ,
                     null);
             throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
-        }
-
-        if (this.isReadonly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
         }
 
         if (this.attributes == null) {
@@ -1067,14 +1020,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
      * @see org.apache.axiom.om.OMElement#setText(String)
      */
     public void setText(String text) {
-        if (this.isReadonly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
-
         // if we already have other text nodes remove them
         OMNode child = this.getFirstOMChild();
         while (child != null) {
@@ -1323,13 +1268,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
      */
 
     public void setIdAttribute(String name, boolean isId) throws DOMException {
-        if (this.isReadonly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
         //find the attr
         AttrImpl tempAttr = (AttrImpl) this.getAttributeNode(name);
         if (tempAttr == null) {
@@ -1345,13 +1283,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     public void setIdAttributeNS(String namespaceURI, String localName, boolean isId)
             throws DOMException {
-        if (this.isReadonly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
         //find the attr
         AttrImpl tempAttr = (AttrImpl) this.getAttributeNodeNS(namespaceURI, localName);
         if (tempAttr == null) {
@@ -1366,13 +1297,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     }
 
     public void setIdAttributeNode(Attr idAttr, boolean isId) throws DOMException {
-        if (this.isReadonly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
         //find the attr
         Iterator attrIter = this.getAllAttributes();
         AttrImpl tempAttr = null;

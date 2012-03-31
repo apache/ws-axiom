@@ -240,12 +240,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      * node has no data.
      */
     public Text splitText(int offset) throws DOMException {
-        if (this.isReadonly()) {
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN,
-                            DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
-        }
         if (offset < 0 || offset > this.textValue.length()) {
             throw new DOMException(DOMException.INDEX_SIZE_ERR,
                     DOMMessageFormatter.formatMessage(

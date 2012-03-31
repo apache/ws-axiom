@@ -232,13 +232,6 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                            DOMException.WRONG_DOCUMENT_ERR, null));
         }
 
-        if (this.isReadonly()) {
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
-        }
-
         if (this instanceof Document) {
             if (newDomChild instanceof ElementImpl) {
                 if (((DocumentImpl) this).getOMDocumentElement(false) != null) {
@@ -405,13 +398,6 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                            DOMException.WRONG_DOCUMENT_ERR, null));
         }
 
-        if (this.isReadonly()) {
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
-        }
-
         Iterator children = this.getChildren();
         boolean found = false;
         while (!found && children.hasNext()) {
@@ -484,14 +470,6 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
     /** Removes the given child from the DOM Tree. */
     public Node removeChild(Node oldChild) throws DOMException {
-        // Check if this node is readonly
-        if (this.isReadonly()) {
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
-        }
-
         if (oldChild.getParentNode() == this) {
             ((ChildNode)oldChild).detach();
             return oldChild;

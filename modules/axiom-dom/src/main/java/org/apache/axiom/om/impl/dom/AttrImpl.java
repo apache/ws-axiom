@@ -272,13 +272,6 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
      * @see org.apache.axiom.om.OMAttribute#setAttributeValue(String)
      */
     public void setAttributeValue(String value) {
-        if (isReadonly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
         this.attrValue = (TextImpl) this.getOwnerDocument().createTextNode(
                 value);
     }

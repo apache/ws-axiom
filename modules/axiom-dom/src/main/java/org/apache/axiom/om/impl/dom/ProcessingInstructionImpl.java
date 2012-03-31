@@ -79,14 +79,7 @@ public class ProcessingInstructionImpl extends ChildNode implements ProcessingIn
     }
     
     public void setData(String data) throws DOMException {
-        if (!isReadonly()) {
-            value = data;
-        } else {
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
-        }
+        value = data;
     }
     
     public String getNodeName() {

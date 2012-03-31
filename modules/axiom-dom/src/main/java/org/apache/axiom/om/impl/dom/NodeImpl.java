@@ -57,8 +57,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
     
     protected final static short FIRSTCHILD = 0x1 << 2;
 
-    protected final static short READONLY = 0x1 << 3;
-
     protected final static short SPECIFIED = 0x1 << 4;
 
     //
@@ -175,8 +173,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
             throw new RuntimeException("**Internal Error**" + e);
         }
 
-        newnode.isReadonly(false);
-
         return newnode;
     }
 
@@ -288,14 +284,6 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
 
     final void isFirstChild(boolean value) {
         flags = (short) (value ? flags | FIRSTCHILD : flags & ~FIRSTCHILD);
-    }
-
-    final boolean isReadonly() {
-        return (flags & READONLY) != 0;
-    }
-
-    final void isReadonly(boolean value) {
-        flags = (short) (value ? flags | READONLY : flags & ~READONLY);
     }
 
     final boolean isSpecified() {
