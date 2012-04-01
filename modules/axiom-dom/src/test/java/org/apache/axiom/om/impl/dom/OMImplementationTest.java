@@ -27,8 +27,6 @@ import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource;
 import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
-import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement;
-import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
@@ -46,12 +44,6 @@ public class OMImplementationTest extends TestCase {
         builder.exclude(TestCreateOMElementWithGeneratedPrefix.class, "(variant=QName*)");
         builder.exclude(TestCreateOMElementWithNamespaceInScope.class, "(variant=QName,OMContainer)");
         builder.exclude(TestCreateOMElementWithNamespaceInScope.class, "(variant=String,OMNamespace,OMContainer)");
-        
-        // DOOM doesn't support CDATA sections
-        builder.exclude(TestGetXMLStreamReaderCDATAEventFromElement.class);
-        
-        // AXIOM-201
-        builder.exclude(TestGetXMLStreamReaderWithOMSourcedElementDescendant.class);
         
         // TODO: this case is not working because Axiom generates an XML declaration
         //       but uses another charset encoding to serialize the document
