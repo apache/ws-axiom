@@ -31,6 +31,7 @@ import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElemen
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
 import org.apache.axiom.ts.om.element.TestSetTextQName;
 import org.apache.axiom.ts.om.element.TestSetTextQNameWithEmptyPrefix;
+import org.apache.axiom.ts.om.element.TestSetTextQNameWithExistingChildren;
 import org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope;
@@ -43,6 +44,7 @@ public class OMImplementationTest extends TestCase {
         // OMElement#setText(QName) is unsupported
         builder.exclude(TestSetTextQName.class);
         builder.exclude(TestSetTextQNameWithEmptyPrefix.class);
+        builder.exclude(TestSetTextQNameWithExistingChildren.class);
         builder.exclude(TestSetTextQNameWithoutNamespace.class);
         
         // TODO: doesn't work because the test trigger a call to importNode which will build the descendant

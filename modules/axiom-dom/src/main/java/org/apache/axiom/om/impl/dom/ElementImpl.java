@@ -1020,22 +1020,27 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
      * @see org.apache.axiom.om.OMElement#setText(String)
      */
     public void setText(String text) {
-        // if we already have other text nodes remove them
-        OMNode child = this.getFirstOMChild();
-        while (child != null) {
-            if (child.getType() == OMNode.TEXT_NODE) {
-                child.detach();
-            }
-            child = child.getNextOMSibling();
+        // Remove all existing children
+        OMNode child;
+        while ((child = getFirstOMChild()) != null) {
+            child.detach();
         }
-
-        TextImpl textNode = (TextImpl)ownerDocument()
-                .createTextNode(text);
-        this.addChild(textNode);
+        // Add a new text node
+        if (text != null && text.length() > 0) {
+            getOMFactory().createOMText(this, text);
+        }
     }
 
-    public void setText(QName text) {
-        throw new UnsupportedOperationException();
+    public void setText(QName qname) {
+        // Remove all existing children
+        OMNode child;
+        while ((child = getFirstOMChild()) != null) {
+            child.detach();
+        }
+        // Add a new text node
+        if (qname != null) {
+            getOMFactory().createOMText(this, qname);
+        }
     }
 
     public void internalSerialize(XMLStreamWriter writer,

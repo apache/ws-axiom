@@ -127,7 +127,7 @@ public class OMElementTest extends OMTestCase implements OMConstants {
                                                testNamespace2.getPrefix()));
 
         firstElement.addChild(secondElement);
-        firstElement.setText("Some Sample Text");
+        factory.createOMText(firstElement, "Some Sample Text");
 
         assertTrue("First added child must be the first child",
                    secondElement.equals(firstElement.getFirstOMChild()));

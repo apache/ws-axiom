@@ -393,14 +393,26 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
 
     OMElement getFirstElement();
 
-
-    /** @param text  */
+    /**
+     * Set the content of this element to the given text. If the element has children, then all
+     * these children are detached before the content is set. If the parameter is a non empty
+     * string, then the element will have a single child of type {@link OMText} after the method
+     * returns. If the parameter is <code>null</code> or an empty string, then the element will have
+     * no children.
+     * 
+     * @param text
+     *            the new text content for the element
+     */
     void setText(String text);
 
     /**
      * Set the content of this element to the given {@link QName}. If no matching namespace
      * declaration for the {@link QName} is in scope, then this method will add one. If the
-     * {@link QName} specifies a namespace URI but no prefix, then a prefix will be generated.
+     * {@link QName} specifies a namespace URI but no prefix, then a prefix will be generated. If
+     * the element has children, then all these children are detached before the content is set. If
+     * the parameter is not <code>null</code>, then the element will have a single child of type
+     * {@link OMText} after the method returns. If the parameter is <code>null</code>, then the
+     * element will have no children.
      * 
      * @param qname
      *            the QName value

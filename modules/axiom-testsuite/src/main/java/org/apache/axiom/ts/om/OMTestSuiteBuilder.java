@@ -239,8 +239,13 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestSetNamespaceWithNullOMNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetNamespaceWithNullPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetText(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSetTextEmptyString(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSetTextNull(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSetTextWithExistingChildren(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameNull(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameWithEmptyPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameWithExistingChildren(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestUndeclarePrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestWriteTextTo(metaFactory));

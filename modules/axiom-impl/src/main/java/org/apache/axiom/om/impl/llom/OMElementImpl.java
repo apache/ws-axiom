@@ -794,34 +794,28 @@ public class OMElementImpl extends OMNodeImpl
         return OMContainerHelper.getXMLStreamReader(this, cache, configuration);
     }
 
-    /**
-     * Sets the text of the given element. caution - This method will wipe out all the text elements
-     * (and hence any mixed content) before setting the text.
-     */
     public void setText(String text) {
-
-        OMNode child = this.getFirstOMChild();
-        while (child != null) {
-            if (child.getType() == OMNode.TEXT_NODE) {
-                child.detach();
-            }
-            child = child.getNextOMSibling();
+        // Remove all existing children
+        OMNode child;
+        while ((child = getFirstOMChild()) != null) {
+            child.detach();
         }
-
-        getOMFactory().createOMText(this, text);
+        // Add a new text node
+        if (text != null && text.length() > 0) {
+            getOMFactory().createOMText(this, text);
+        }
     }
 
-    public void setText(QName text) {
-
-        OMNode child = this.getFirstOMChild();
-        while (child != null) {
-            if (child.getType() == OMNode.TEXT_NODE) {
-                child.detach();
-            }
-            child = child.getNextOMSibling();
+    public void setText(QName qname) {
+        // Remove all existing children
+        OMNode child;
+        while ((child = getFirstOMChild()) != null) {
+            child.detach();
         }
-
-        getOMFactory().createOMText(this, text);
+        // Add a new text node
+        if (qname != null) {
+            getOMFactory().createOMText(this, qname);
+        }
     }
 
     public String getText() {
