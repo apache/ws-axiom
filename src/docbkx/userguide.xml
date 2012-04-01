@@ -1323,7 +1323,30 @@ while (iterator.hasNext()) {
                                 <methodname>OMContainer#getSAXSource(boolean)</methodname> should be used.
                             </para>
                         </listitem>
+                        <listitem>
+                            <para>
+                                <classname>org.apache.axiom.om.impl.dom.DOOMAbstractFactory</classname> has been deprecated
+                                because it ties application code that requires an object model factory supporting DOM to
+                                a particular Axiom implementation (DOOM). Instead use <methodname>OMAbstractFactory.getMetaFactory(String)</methodname>
+                                with <literal>OMAbstractFactory.FEATURE_DOM</literal> as parameter value to get a meta factory
+                                for an Axiom implementation that supports DOM.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                The <classname>DocumentBuilderFactory</classname> implementation provided by DOOM should no
+                                longer be instantiated directly. Instead, application code should request a meta factory for
+                                DOM (see previous item), cast it to <classname>DOMMetaFactory</classname> and invoke
+                                <methodname>newDocumentBuilderFactory</methodname> via that interface.
+                            </para>
+                        </listitem>
                     </itemizedlist>
+                    <tip>
+                        <para>
+                            The last two changes imply that <literal>axiom-dom</literal> should no longer be used as a
+                            compile time dependency, but only as a runtime dependency.
+                        </para>
+                    </tip>
                     <para>
                         Note that some of the superseded APIs may disappear in Axiom 1.3.
                     </para>
