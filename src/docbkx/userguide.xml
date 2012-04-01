@@ -420,7 +420,7 @@ OMElement documentElement = builder.getDocumentElement();</programlisting>
             </para>
 <programlisting>public OMNamespace declareNamespace(String uri, String prefix);
 public OMNamespace declareNamespace(OMNamespace namespace);
-public OMNamespace findNamespace(String uri, String prefix) throws OMException;</programlisting>
+public OMNamespace findNamespace(String uri, String prefix);</programlisting>
             <para>
                 The <methodname>declareNamespaceXX</methodname> methods are fairly straightforward. Add a namespace
                 to namespace declarations section. Note that a namespace declaration that has
@@ -455,7 +455,7 @@ root.addChild(elt1);</programlisting>
             <para>
                 Serialization of the root element produces the following XML:
             </para>
-<screen>&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</screen>
+<programlisting><?db-font-size 80%?>&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</programlisting>
         </section>
         <section>
             <title>Traversing</title>
@@ -542,7 +542,8 @@ while(children.hasNext()){
                 reference to the earlier code sample- <xref linkend="list1"/>
                 that created a SOAP envelope.
             </para>
-<programlisting>XMLStreamWriter writer = XMLOutputFactory.newInstance().createXMLStreamWriter(System.out);
+<programlisting>XMLStreamWriter writer =
+    XMLOutputFactory.newInstance().createXMLStreamWriter(System.out);
 //dump the output to console with caching
 envelope.serialize(writer); 
 writer.flush();</programlisting>
@@ -558,11 +559,11 @@ writer.flush();</programlisting>
                 which creates a small object model programmatically.
                 Serialization of the root element produces the following:
             </para>
-<screen>&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</screen>
+<programlisting><?db-font-size 80%?>&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</programlisting>
             <para>
                 However, serialization of only the foo element produces the following:
             </para>
-<screen>&lt;x:foo xmlns:x="bar"&gt;&lt;y:yuck xmlns:y="bar1"&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;</screen>
+<programlisting><?db-font-size 80%?>&lt;x:foo xmlns:x="bar"&gt;&lt;y:yuck xmlns:y="bar1"&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;</programlisting>
             <para>
                 Note how the serializer puts the relevant namespace declarations in place.
             </para>
@@ -1082,11 +1083,11 @@ with CRLF</root>]]></screen>
                         supported in 1.2.9 and the default Axiom implementation is chosen using the new
                         <varname>org.apache.axiom.om.OMMetaFactory</varname> system property. For LLOM, you should set:
                     </para>
-<programlisting>org.apache.axiom.om.OMMetaFactory=org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory</programlisting>
+<programlisting><?db-font-size 70%?>org.apache.axiom.om.OMMetaFactory=org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory</programlisting>
                     <para>
                         This is the default and is equivalent to the defaults in 1.2.8. For DOOM, you should set:
                     </para>
-<programlisting>org.apache.axiom.om.OMMetaFactory=org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory</programlisting>
+<programlisting><?db-font-size 70%?>org.apache.axiom.om.OMMetaFactory=org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory</programlisting>
                 </section>
                 <section>
                     <title>Factories returned by <classname>StAXUtils</classname></title>
@@ -1633,7 +1634,8 @@ public InputStream getInputStream() throws IOException;</programlisting>
                         </para>
                         <example id="OMDataSource-serialize">
                             <title>Proper implementation of the <methodname>OMDataSource#serialize</methodname> method</title>
-<programlisting>public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
+<programlisting>public void serialize(XMLStreamWriter xmlWriter)
+        throws XMLStreamException {
     StreamingOMSerializer serializer = new StreamingOMSerializer();
     serializer.serialize(getReader(), xmlWriter);
 }</programlisting>
@@ -1693,7 +1695,7 @@ public InputStream getInputStream() throws IOException;</programlisting>
         <title>Appendix</title>
         <section>
             <title>Program Listing for Build and Serialize</title>
-<programlisting>import org.apache.axiom.om.OMElement;
+<programlisting><?db-font-size 80%?>import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 

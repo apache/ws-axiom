@@ -112,6 +112,7 @@
                     The following StAX implementations are available to test compatibility with Axiom:
                 </para>
                 <variablelist>
+                    <?dbfo list-presentation="blocks"?>
                     <varlistentry>
                         <term>Woodstox</term>
                         <listitem>
@@ -138,7 +139,7 @@
                                 Geronimo's implementation of the StAX API library will not be able to locate
                                 the reference implementation unless the following system properties are set:
                             </para>
-<programlisting>javax.xml.stream.XMLInputFactory=com.bea.xml.stream.MXParserFactory
+<programlisting><?db-font-size 80%?>javax.xml.stream.XMLInputFactory=com.bea.xml.stream.MXParserFactory
 javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</programlisting>
                         </listitem>
                     </varlistentry>
@@ -931,7 +932,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
     <profile>
       <id>apache-release</id>
       <properties>
-        <gpg.passphrase> <!-- YOUR KEY PASSPHRASE --> </gpg.passphrase>
+        <gpg.passphrase><!-- KEY PASSPHRASE --></gpg.passphrase>
       </properties>
     </profile>
   </profiles>
