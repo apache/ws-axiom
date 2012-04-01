@@ -78,16 +78,10 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
     public void addChild(OMNode omNode) {
         if (omNode.getOMFactory() instanceof OMDOMFactory) {
-            Node domNode = (Node) omNode;
-            if (ownerDocument() != null && !domNode.getOwnerDocument().equals(ownerDocument())) {
-                this.appendChild(ownerDocument().importNode(domNode, true));
-            } else {
-                this.appendChild(domNode);
-            }
+            insertBefore((Node)omNode, null, false);
         } else {
             addChild(importNode(omNode));
         }
-
     }
 
     public void buildNext() {
@@ -208,11 +202,14 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
      * last child.
      */
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-
+        return insertBefore(newChild, refChild, true);
+    }
+    
+    private Node insertBefore(Node newChild, Node refChild, boolean useDomSemantics) {
         ChildNode newDomChild = (ChildNode) newChild;
         ChildNode refDomChild = (ChildNode) refChild;
 
-        if (ownerDocument() != newDomChild.ownerDocument()) {
+        if (useDomSemantics && ownerDocument() != newDomChild.ownerDocument()) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
