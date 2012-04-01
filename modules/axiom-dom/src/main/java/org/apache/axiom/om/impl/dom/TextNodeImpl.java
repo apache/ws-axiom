@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -221,13 +222,9 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     public TextNodeImpl(OMContainer parent, QName text, int nodeType,
                         OMFactory factory) {
         this(((ElementImpl) parent).ownerDocument(), factory);
-        if (text != null) {
-            this.textNS =
-                    ((ElementImpl) parent).findNamespace(text.getNamespaceURI(), text.getPrefix());
-        } else {
-
-        }
-        this.textValue = (text == null) ? "" : text.getLocalPart();
+        this.textNS =
+                ((ElementImpl) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
+        this.textValue = textNS == null ? text.getLocalPart() : textNS.getPrefix() + ":" + text.getLocalPart();
         this.done = true;
     }
 
@@ -313,9 +310,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     }
 
     public String getText() {
-        if (this.textNS != null) {
-            return getTextString();
-        } else if (this.charArray != null || this.textValue != null) {
+        if (this.charArray != null || this.textValue != null) {
             return getTextFromProperPlace();
         } else {
             try {

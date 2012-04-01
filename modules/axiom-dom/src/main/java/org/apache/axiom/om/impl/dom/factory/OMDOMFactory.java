@@ -263,11 +263,13 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMText createOMText(OMContainer parent, QName text) {
-        return new TextImpl(parent, text, this);
+        return createOMText(parent, text, OMNode.TEXT_NODE);
     }
 
     public OMText createOMText(OMContainer parent, QName text, int type) {
-        return new TextImpl(parent, text, type, this);
+        TextImpl txt = new TextImpl(parent, text, type, this);
+        parent.addChild(txt);
+        return txt;
     }
 
     public OMText createOMText(OMContainer parent, String text, int type) {

@@ -29,10 +29,6 @@ import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
-import org.apache.axiom.ts.om.element.TestSetTextQName;
-import org.apache.axiom.ts.om.element.TestSetTextQNameWithEmptyPrefix;
-import org.apache.axiom.ts.om.element.TestSetTextQNameWithExistingChildren;
-import org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
@@ -41,11 +37,6 @@ import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 public class OMImplementationTest extends TestCase {
     public static TestSuite suite() {
         OMTestSuiteBuilder builder = new OMTestSuiteBuilder(new OMDOMMetaFactory(), false);
-        // OMElement#setText(QName) is unsupported
-        builder.exclude(TestSetTextQName.class);
-        builder.exclude(TestSetTextQNameWithEmptyPrefix.class);
-        builder.exclude(TestSetTextQNameWithExistingChildren.class);
-        builder.exclude(TestSetTextQNameWithoutNamespace.class);
         
         // TODO: doesn't work because the test trigger a call to importNode which will build the descendant
         builder.exclude(org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant.class);
