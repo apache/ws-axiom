@@ -22,17 +22,14 @@ package org.apache.axiom.soap.impl.dom.factory;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.soap.SOAPFaultDetail;
 import org.apache.axiom.soap.SOAPFaultNode;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultRole;
@@ -45,7 +42,6 @@ import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.SOAPMessageImpl;
-import org.apache.axiom.soap.impl.dom.soap11.SOAP11FaultDetailImpl;
 import org.apache.axiom.soap.impl.dom.soap12.SOAP12FaultImpl;
 
 public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
@@ -142,10 +138,6 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
 
     public SOAPFaultRole createSOAPFaultRole() throws SOAPProcessingException {
         throw new UnsupportedOperationException("TODO");
-    }
-
-    public SOAPFaultDetail createSOAPFaultDetail() throws SOAPProcessingException {
-        return new SOAP11FaultDetailImpl(this);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, OMDataSource ds) throws SOAPProcessingException {

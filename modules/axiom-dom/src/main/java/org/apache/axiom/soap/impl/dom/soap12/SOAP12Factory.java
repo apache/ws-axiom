@@ -228,6 +228,10 @@ public class SOAP12Factory extends DOMSOAPFactory {
         return new SOAP12FaultDetailImpl(parent, builder, this);
     }
 
+    public SOAPFaultDetail createSOAPFaultDetail() throws SOAPProcessingException {
+        return new SOAP12FaultDetailImpl(this);
+    }
+
     public OMNamespace getNamespace() {
         return new OMNamespaceImpl(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI,
                                  SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);

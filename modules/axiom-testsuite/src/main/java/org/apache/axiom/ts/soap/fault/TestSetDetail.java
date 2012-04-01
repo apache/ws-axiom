@@ -20,6 +20,7 @@ package org.apache.axiom.ts.soap.fault;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFault;
+import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
@@ -39,7 +40,7 @@ public class TestSetDetail extends SOAPTestCase {
         try {
             soapFault.setDetail(altSoapFactory.createSOAPFaultDetail());
             fail("SOAPFaultDetail should not be set in to a SOAPFault for a different SOAP version");
-        } catch (Exception e) {
+        } catch (SOAPProcessingException e) {
             assertTrue(true);
         }
     }
