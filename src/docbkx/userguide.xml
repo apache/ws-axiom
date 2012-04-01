@@ -1289,6 +1289,27 @@ while (iterator.hasNext()) {
                     </para>
                 </section>
                 <section>
+                    <title><classname>OMNamespace</classname> normalization</title>
+                    <para>
+                        Methods that return an <classname>OMNamespace</classname> object may in principle use two different
+                        ways to represent the absence of a namespace: as a <literal>null</literal> value or as an
+                        <classname>OMNamespace</classname> instance that has both prefix and namespaceURI properties set to
+                        the empty string. This applies in particular to <methodname>OMElement#getNamespace()</methodname>,
+                        <methodname>OMElement#getDefaultNamespace()</methodname> and <methodname>OMAttriute#getNamespace()</methodname>.
+                        The API of Axiom 1.2.12 didn't clearly specify which representation was used,
+                        although in most cases a <literal>null</literal> value was used. As a consequence application code
+                        had to take into account the possibility that such methods returned <classname>OMNamespace</classname>
+                        instances with an empty prefix and namespace URI.
+                    </para>
+                    <para>
+                        In Axiom 1.2.13 the situation has been clarified and the aforementioned APIs now always return
+                        <literal>null</literal> to indicate the absence of a namespace. Note that this
+                        may have an impact on flawed application code that doesn't handle <literal>null</literal> in the same
+                        way as an <classname>OMNamespace</classname> instance with an empty prefix and namespace URI.
+                        Such application code needs to be fixed to work correctly with Axiom 1.2.13.
+                    </para>
+                </section>
+                <section>
                     <title>New abstract APIs</title>
                     <para>
                         Axiom 1.2.13 introduces a couple of new abstract APIs which give implementations of the Axiom API
