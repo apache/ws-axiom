@@ -1389,6 +1389,13 @@ while (iterator.hasNext()) {
                         Application code that depends on these classes needs to be rewritten before upgrading
                         to Axiom 1.2.13.
                     </para>
+                    <para>
+                        When upgrading to 1.2.13, projects that use Axiom's XOP/MTOM features must make sure
+                        that Apache James Mime4J is added to the dependencies. For projects that use Maven
+                        (or tools that support Maven repositories and metadata) this happens automatically.
+                        Projects that use other build tools must explicity add the <filename>apache-mime4j-core</filename>
+                        library to the list of dependencies.
+                    </para>
                 </section>
                 <section>
                     <title>Support for MIME part streaming</title>

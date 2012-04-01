@@ -57,10 +57,27 @@ Key Features
 
 Latest Release
 
+  <<XXX April 2012 - Apache Axiom Version 1.2.13 Released!>>
+
+  \[{{{http://ws.apache.org/axiom/download.cgi}Download Axiom 1.2.13}}\]
+  
+  Axiom 1.2.13 contains fixes for over thirty {{{https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311190&version=12316677}JIRA issues}}
+  as well as lots of other improvements, mainly related to XOP/MTOM processing, namespace handling, DOM support, documentation
+  and code quality.
+  
+  The most prominent change in 1.2.13 is that Axiom no longer uses its own MIME parser, but instead relies
+  on {{{http://james.apache.org/mime4j/}Apache James Mime4J}} for XOP/MTOM processing. This was done in order to
+  support streaming of the content of MIME parts in XOP/MTOM messages: they can now be processed without writing
+  them to memory or disk first. This also applies to the root/SOAP part, which in previous versions was always read
+  into memory before parsing could start.
+  
+  For more information about the possible impact on existing application code of the changes included in Axiom 1.2.13,
+  please refer to the {{{./userguide/ch04.html#changes-1.2.13}user guide}}.
+  
+Previous Releases
+
   <<2nd July 2011 - Apache Axiom Version 1.2.12 Released!>>
 
-  \[{{{http://ws.apache.org/axiom/download.cgi}Download Axiom 1.2.12}}\]
-  
   Axiom 1.2.12 contains fixes for the following JIRA issues:
   
     * [AXIOM-63] - OMXMLStreamReaderValidator incorrectly reports mismatched END_ELEMENT events
@@ -78,8 +95,6 @@ Latest Release
     * [AXIOM-364] - Unnecessary cast to byte while scanning for first MIME boundary
     
     * [AXIOM-365] - Add ConcurrentModificationException support to iterators
-
-Previous Releases
 
   <<3rd February 2011 - Apache Axiom Version 1.2.11 Released!>>
   
