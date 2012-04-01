@@ -34,8 +34,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * this feature.
  * <p>
  * This class is thread safe.
- * 
- * @author Andreas Veithen
  */
 public class InvocationCounter {
     private class InvocationHandlerImpl implements InvocationHandler {

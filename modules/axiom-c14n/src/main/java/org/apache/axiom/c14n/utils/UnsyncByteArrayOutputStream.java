@@ -22,8 +22,6 @@ import java.io.OutputStream;
 
 /**
  * A simple Unsynced ByteArryOutputStream
- *
- * @author raul
  */
 public class UnsyncByteArrayOutputStream extends OutputStream {
     private static ThreadLocal bufCahce = new ThreadLocal() {

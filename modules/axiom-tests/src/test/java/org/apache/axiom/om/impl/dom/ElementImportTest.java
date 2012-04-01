@@ -28,7 +28,6 @@ import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-/** @author Ruchith Fernando (ruchith.fernando@gmail.com) */
 public class ElementImportTest extends AbstractTestCase {
 
     public void testImport() throws Exception {

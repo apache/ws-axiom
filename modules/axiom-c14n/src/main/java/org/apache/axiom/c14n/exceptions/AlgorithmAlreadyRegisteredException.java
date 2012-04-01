@@ -21,8 +21,6 @@ package org.apache.axiom.c14n.exceptions;
 
 /**
  * class AlgorithmAlreadyRegisteredException
- *
- * @author Saliya Ekanayake (esaliya@gmail.com)
  */
 public class AlgorithmAlreadyRegisteredException extends C14NException{
     public AlgorithmAlreadyRegisteredException() {

@@ -24,9 +24,6 @@ import org.apache.axiom.c14n.omwrapper.interfaces.Doctype;
 import org.apache.axiom.c14n.omwrapper.interfaces.Node;
 import org.apache.axiom.om.OMDocType;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class DoctypeImpl extends NodeImpl implements Doctype {
     private OMDocType dt = null;
 

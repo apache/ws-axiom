@@ -38,10 +38,6 @@ import java.util.Comparator;
  * namespace URI as the primary key and local name as the secondary
  * key (an empty namespace URI is lexicographically least).
  * </UL>
- *
- * @author Christian Geuer-Pollmann <geuerp@apache.org>
- *
- * modified to work with Axiom wrapper by Saliya Ekanayake (esaliya@gmail.com)
  */
 public class AttrCompare implements Comparator, Serializable {
 

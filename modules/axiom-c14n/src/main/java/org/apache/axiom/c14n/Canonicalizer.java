@@ -30,9 +30,6 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class Canonicalizer {
 
     /**

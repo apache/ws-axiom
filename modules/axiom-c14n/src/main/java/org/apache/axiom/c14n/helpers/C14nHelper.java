@@ -24,11 +24,6 @@ import org.apache.axiom.c14n.omwrapper.interfaces.Attr;
 import org.apache.axiom.c14n.omwrapper.interfaces.Element;
 import org.apache.axiom.c14n.omwrapper.interfaces.NamedNodeMap;
 
-/**
- * @author Christian Geuer-Pollmann <geuerp@apache.org>
- *
- * modified to work with Axiom wrapper by Saliya Ekanayake (esaliya@gmail.com)
- */
 public class C14nHelper {
 
     /**

@@ -21,8 +21,6 @@ package org.apache.axiom.c14n.exceptions;
 
 /**
  * class CanonicalizationException
- *
- * @author Saliya Ekanayake (esaliya@gmail.com)
  */
 public class CanonicalizationException extends C14NException{
     public CanonicalizationException() {

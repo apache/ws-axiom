@@ -19,9 +19,6 @@
 
 package org.apache.axiom.c14n.omwrapper.interfaces;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public interface NamedNodeMap {
     public Node item(int index);
 

@@ -26,9 +26,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class NodeListImplTest extends TestCase {
     private DataParser dp = null;
     private NodeList nl = null;

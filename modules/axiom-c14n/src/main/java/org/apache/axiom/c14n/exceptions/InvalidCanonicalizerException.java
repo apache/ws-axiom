@@ -21,8 +21,6 @@ package org.apache.axiom.c14n.exceptions;
 
 /**
  * class InvalidCanonicalizerException
- *
- * @author Saliya Ekanayake (esaliya@gmail.com)
  */
 public class InvalidCanonicalizerException extends C14NException {
     public InvalidCanonicalizerException() {

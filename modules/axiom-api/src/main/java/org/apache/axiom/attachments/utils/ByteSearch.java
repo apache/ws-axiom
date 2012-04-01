@@ -26,9 +26,6 @@ package org.apache.axiom.attachments.utils;
  * This includes a "skip search", which is a 
  * an optimized search for finding a byte pattern in 
  * a large byte array.
- *
- * @author Richard Scheuerle (scheu@us.ibm.com)
- *
  */
 public class ByteSearch {
 

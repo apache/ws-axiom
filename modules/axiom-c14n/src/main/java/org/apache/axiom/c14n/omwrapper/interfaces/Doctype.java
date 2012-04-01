@@ -19,9 +19,6 @@
 
 package org.apache.axiom.c14n.omwrapper.interfaces;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public interface Doctype extends Node{
 // All I want is getNodeType() so nothing new here   
 }

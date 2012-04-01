@@ -32,9 +32,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class DocumentImpl extends NodeImpl implements Document {
     private OMDocument doc = null;
     private List list = null;

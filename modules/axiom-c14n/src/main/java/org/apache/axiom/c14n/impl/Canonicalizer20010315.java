@@ -29,11 +29,6 @@ import org.apache.axiom.c14n.utils.Constants;
 
 import java.util.*;
 
-/**
- * @author Christian Geuer-Pollmann <geuerp@apache.org>
- *
- * modified to work with Axiom wrapper by Saliya Ekanayake (esaliya@gmail.com)
- */
 public abstract class Canonicalizer20010315 extends CanonicalizerBase {
     boolean firstCall = true;
     final SortedSet result = new TreeSet(COMPARE);

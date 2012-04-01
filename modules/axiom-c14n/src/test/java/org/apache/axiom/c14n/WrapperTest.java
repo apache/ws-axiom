@@ -25,9 +25,6 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 import org.apache.axiom.c14n.omwrapper.*;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class WrapperTest extends TestCase {
     public WrapperTest(String name){
         super(name);

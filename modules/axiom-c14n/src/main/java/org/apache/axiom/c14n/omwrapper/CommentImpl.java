@@ -24,9 +24,6 @@ import org.apache.axiom.c14n.omwrapper.interfaces.Comment;
 import org.apache.axiom.c14n.omwrapper.interfaces.Node;
 import org.apache.axiom.om.OMComment;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class CommentImpl extends NodeImpl implements Comment {
     private OMComment comment = null;
 

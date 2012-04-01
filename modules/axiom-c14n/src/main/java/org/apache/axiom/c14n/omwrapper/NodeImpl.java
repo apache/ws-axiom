@@ -26,9 +26,6 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class NodeImpl implements Node {
     protected WrapperFactory fac = null;
     protected OMNode node = null;

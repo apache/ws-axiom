@@ -263,10 +263,6 @@ public class ParserInputStreamDataSource extends OMDataSourceExtBase {
         
     }
 
-    /**
-     * @author scheu
-     *
-     */
     public class Data{
         
         // The InputStream containing the byte data

@@ -24,9 +24,6 @@ import org.apache.axiom.c14n.omwrapper.interfaces.Node;
 import org.apache.axiom.c14n.omwrapper.interfaces.Text;
 import org.apache.axiom.om.OMText;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class TextImpl extends NodeImpl implements Text {
     private OMText txt = null;
 
