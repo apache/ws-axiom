@@ -94,6 +94,19 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         this.done = true;
     }
 
+    DocumentImpl ownerDocument() {
+        return this;
+    }
+
+    public Document getOwnerDocument() {
+        return null;
+    }
+
+    protected Object clone() throws CloneNotSupportedException {
+        // TODO Auto-generated method stub
+        return super.clone();
+    }
+
     // /
     // /OMNode methods
     // //

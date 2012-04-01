@@ -212,24 +212,23 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         ChildNode newDomChild = (ChildNode) newChild;
         ChildNode refDomChild = (ChildNode) refChild;
 
-        if (this == newChild || !isAncestor(newChild)) {
+        if (ownerDocument() != newDomChild.ownerDocument()) {
+            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
+                                   DOMMessageFormatter.formatMessage(
+                                           DOMMessageFormatter.DOM_DOMAIN,
+                                           DOMException.WRONG_DOCUMENT_ERR, null));
+        }
+
+        if (isAncestorOrSelf(newChild)) {
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
                                            DOMException.HIERARCHY_REQUEST_ERR, null));
         }
 
-        if (newDomChild.parentNode() != null && newDomChild.ownerDocument() == ownerDocument()) {
+        if (newDomChild.parentNode() != null) {
             //If the newChild is already in the tree remove it
             newDomChild.parentNode().removeChild(newDomChild);
-        }
-
-        if (!(this instanceof Document)
-                && !(ownerDocument() == newDomChild.getOwnerDocument())) {
-            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.WRONG_DOCUMENT_ERR, null));
         }
 
         if (this instanceof Document) {
@@ -380,7 +379,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             return this.removeChild(oldChild);
         }
 
-        if (this == newChild || !isAncestor(newChild)) {
+        if (isAncestorOrSelf(newChild)) {
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
@@ -481,10 +480,22 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         }
     }
 
-    private boolean isAncestor(Node newNode) {
-
-        // TODO isAncestor
-        return true;
+    /**
+     * Checks if the given node is an ancestor (or identical) to this node.
+     * 
+     * @param node
+     *            the node to check
+     * @return <code>true</code> if the node is an ancestor or indentical to this node
+     */
+    private boolean isAncestorOrSelf(Node node) {
+        Node currentNode = this;
+        do {
+            if (currentNode == node) {
+                return true;
+            }
+            currentNode = currentNode.getParentNode();
+        } while (currentNode != null);
+        return false;
     }
 
     public Node cloneNode(boolean deep) {

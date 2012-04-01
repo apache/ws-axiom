@@ -37,6 +37,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestAdoptNodeToSameDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAdoptNodeWithParent(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAllowedChildren(dbf));
+        addTest(new org.apache.axiom.ts.dom.document.TestAppendChildWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttribute(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNS(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNSWithoutNamespace(dbf));
@@ -48,8 +49,12 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestCreateText(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestDocumentSiblings(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestGetDomConfigDefaults(dbf));
+        addTest(new org.apache.axiom.ts.dom.document.TestGetOwnerDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestNormalizeDocumentNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAppendChild(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestAppendChildCyclic(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestAppendChildSelf(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestAppendChildWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAttributes(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAttributes2(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAttributes3(dbf));

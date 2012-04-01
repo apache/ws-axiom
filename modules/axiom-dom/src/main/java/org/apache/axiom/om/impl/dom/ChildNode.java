@@ -59,6 +59,12 @@ public abstract class ChildNode extends NodeImpl {
         super(factory);
     }
 
+    /**
+     * Get the owner document of this node. In contrast to {@link Node#getOwnerDocument()}, this
+     * method returns a non null value when invoked on a {@link Document} instance.
+     * 
+     * @return the owner document
+     */
     DocumentImpl ownerDocument() {
         if (ownerNode == null) {
             return null;
