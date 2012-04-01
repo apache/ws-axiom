@@ -189,6 +189,9 @@ public interface OMFactory {
      * element.
      * 
      * @param parent
+     *            the parent to which the newly created text node will be added; this may be
+     *            <code>null</code>, in which case the behavior of the method is the same as
+     *            {@link #createOMText(String)}
      * @param text
      * @return Returns OMText.
      */

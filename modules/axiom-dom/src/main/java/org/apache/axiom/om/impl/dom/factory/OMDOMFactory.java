@@ -273,19 +273,22 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMText createOMText(OMContainer parent, String text, int type) {
-        if (parent instanceof DocumentImpl) {
+        if (parent == null) {
+            return createOMText(text, type);
+        } else if (parent instanceof DocumentImpl) {
             throw new OMHierarchyException(
                     "DOM doesn't support text nodes as children of a document");
-        }
-        DocumentImpl ownerDocument = (DocumentImpl)((ElementImpl)parent).getOwnerDocument(); 
-        TextNodeImpl txt;
-        if (type == OMNode.CDATA_SECTION_NODE) {
-            txt = new CDATASectionImpl(ownerDocument, text, this);
         } else {
-            txt = new TextImpl(ownerDocument, text, type, this);
+            DocumentImpl ownerDocument = (DocumentImpl)((ElementImpl)parent).getOwnerDocument(); 
+            TextNodeImpl txt;
+            if (type == OMNode.CDATA_SECTION_NODE) {
+                txt = new CDATASectionImpl(ownerDocument, text, this);
+            } else {
+                txt = new TextImpl(ownerDocument, text, type, this);
+            }
+            parent.addChild(txt);
+            return txt;
         }
-        parent.addChild(txt);
-        return txt;
     }
     
     
@@ -316,11 +319,10 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText(String, int)
      */
     public OMText createOMText(String text, int type) {
-        switch (type) {
-            case OMNode.TEXT_NODE:
-                return new TextImpl(this.document, text, this);
-            default:
-                throw new OMDOMException("Only Text nodes are supported right now");
+        if (type == OMNode.CDATA_SECTION_NODE) {
+            return new CDATASectionImpl(document, text, this);
+        } else {
+            return new TextImpl(document, text, this);
         }
     }
 
