@@ -30,7 +30,7 @@
     <section name="Releases">
             <div align="left">
                 <p>Axiom is becoming more and more stable and the latest official version available for download is
-                    Axiom ${axiom_version}.  All the releases are available for download as source or binary. For more information,
+                    Axiom ${project.version}.  All the releases are available for download as source or binary. For more information,
                     please see
                     <a href="http://www.apache.org/dev/release.html">Apache Release FAQ</a>
                 </p>

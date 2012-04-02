@@ -31,12 +31,12 @@ Adding Axiom as a Maven dependency
 <dependency>
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom-api</artifactId>
-    <version>${axiom_version}</version>
+    <version>${project.version}</version>
 </dependency>
 <dependency>
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom-impl</artifactId>
-    <version>${axiom_version}</version>
+    <version>${project.version}</version>
     <scope>runtime</scope>
 </dependency>
 +------------------------------------------------+
@@ -53,7 +53,7 @@ Adding Axiom as a Maven dependency
 <dependency>
     <groupId>org.apache.ws.commons.axiom</groupId>
     <artifactId>axiom-dom</artifactId>
-    <version>${axiom_version}</version>
+    <version>${project.version}</version>
     <scope>runtime</scope>
 </dependency>
 +------------------------------------------------+

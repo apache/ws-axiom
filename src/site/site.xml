@@ -33,27 +33,27 @@
             <item name="WebServices" href="http://ws.apache.org/"/>
             <item name="Axiom" href="http://ws.apache.org/axiom/index.html"/>
         </links>
-
-        <menu name="Axiom">
-            <item name="About" href="index.html"/>
-            <item name="Downloads">
-                <item name="Releases" href="download.cgi"/>
-                <item name="Source Code" href="source-repository.html"/>
-            </item>
-            <item name="Documentation" href="documentation.html">
-                <item name="Quick start samples" href="quickstart-samples.html"/>
-                <item name="User guide" href="userguide/userguide.html"/>
-                <item name="Developer guide" href="devguide/devguide.html"/>
-                <item name="Articles" href="articles.html"/>
-                <item name="Javadocs" href="/apidocs/index.html"/>
-                <item name="FAQ" href="faq.html"/>
-                <item name="View Source" href="http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/?root=Apache-SVN"/>
-            </item>
-            <item name="Project Information">
-                <item name="Mailing Lists" href="/mail-lists.html"/>
-                <item name="Project Team" href="/team-list.html"/>
-                <item name="Issue Tracking" href="issue-tracking.html"/>
-            </item>
+        <menu name="About">
+            <item name="Introduction" href="index.html"/>
+            <item name="Mailing Lists" href="/mail-lists.html"/>
+            <item name="Project Team" href="/team-list.html"/>
+            <item name="Issue Tracking" href="issue-tracking.html"/>
+        </menu>
+        <menu name="Downloads">
+            <item name="Releases" href="download.cgi"/>
+            <item name="Source Code" href="source-repository.html"/>
+        </menu>
+        <menu name="Documentation">
+            <item name="Overview" href="documentation.html"/>
+            <item name="Quick start samples" href="quickstart-samples.html"/>
+            <item name="User guide" href="userguide/userguide.html"/>
+            <item name="Developer guide" href="devguide/devguide.html"/>
+            <item name="Articles" href="articles.html"/>
+            <item name="Javadocs" href="/apidocs/index.html"/>
+            <item name="FAQ" href="faq.html"/>
+            <item name="View Source" href="http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/?root=Apache-SVN"/>
+        </menu>
+        <menu name="Apache">
             <item name="License" href="http://www.apache.org/licenses/"/>
             <item name="Sponsorship" href="http://www.apache.org/foundation/sponsorship.html"/>
             <item name="Thanks" href="http://www.apache.org/foundation/thanks.html"/>

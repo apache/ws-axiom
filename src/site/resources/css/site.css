@@ -61,18 +61,23 @@ div#leftColumn {
   border: none;
 }
 
-div#navcolumn > ul > li.expanded,
-div#navcolumn > ul > li.none {
-  background-image: none;
-  padding: 0.5em 0;
+div#navcolumn > h5 {
+  padding: 0.3em 0;
+  display: block;
+  color: black;
+  font-size: 1.1em;
 }
 
 div#navcolumn a,
 div#navcolumn strong {
-  padding: 0.3em 0;
+  padding: 0.5em 0;
   display: block;
-  background-image: none;
   color: black;
+  font-size: 1.1em;
+}
+
+div#navcolumn > ul > li.expanded,
+div#navcolumn > ul > li.none {
 }
 
 div#navcolumn > ul > li.expanded > ul > li.none > a,
