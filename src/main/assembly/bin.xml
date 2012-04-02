@@ -74,21 +74,10 @@
     <moduleSets>
         <moduleSet>
             <includes>
-                <include>org.apache.ws.commons.axiom:axiom-dom</include>
                 <include>org.apache.ws.commons.axiom:axiom-api</include>
-                <include>org.apache.ws.commons.axiom:axiom-c14n</include>
-            </includes>
-            <binaries>
-                <outputDirectory>lib</outputDirectory>
-                <unpack>false</unpack>
-                <includeDependencies>false</includeDependencies>
-            </binaries>
-        </moduleSet>
-        <moduleSet>
-            <includes>
-                <!--<include>org.apache.ws.commons.axiom:axiom-dom</include>-->
                 <include>org.apache.ws.commons.axiom:axiom-impl</include>
-                <!--<include>org.apache.ws.commons.axiom:axiom-api</include>-->
+                <include>org.apache.ws.commons.axiom:axiom-dom</include>
+                <include>org.apache.ws.commons.axiom:axiom-c14n</include>
             </includes>
             <binaries>
                 <outputDirectory>lib</outputDirectory>
@@ -97,14 +86,6 @@
                 <dependencySets>
                     <dependencySet>
                         <outputDirectory>lib</outputDirectory>
-                        <includes>
-                            <include>org.codehaus.woodstox:wstx-asl</include>
-                            <include>commons-logging:commons-logging</include>
-                            <include>jaxen:jaxen</include>
-                            <include>org.apache.geronimo.specs:geronimo-activation_1.1_spec</include>
-                            <include>org.apache.geronimo.specs:geronimo-javamail_1.4_spec</include>
-                            <include>org.apache.geronimo.specs:geronimo-stax-api_1.0_spec</include>
-                        </includes>
                     </dependencySet>
                 </dependencySets>
             </binaries>
