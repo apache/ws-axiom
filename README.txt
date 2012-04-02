@@ -1,5 +1,5 @@
 ======================================================
-Apache Axiom ${axiom_version} (${build_date})
+Apache Axiom ${project.version} (${build_date})
 
 http://ws.apache.org/axiom/
 ------------------------------------------------------
