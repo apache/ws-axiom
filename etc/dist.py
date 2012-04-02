@@ -23,8 +23,7 @@ from os.path import *
 from urllib import *
 
 release = argv[1]
-dir = release.replace(".", "_")
-mkdir(dir)
+mkdir(release)
 
 for classifier in [ "bin", "source-release" ]:
 	for suffix in [ "zip", "zip.asc", "zip.md5"]:
