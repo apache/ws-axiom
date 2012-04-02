@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom-parent</artifactId>
-        <version>1.2.13</version>
+        <version>1.2.14-SNAPSHOT</version>
         <relativePath>../axiom-parent/pom.xml</relativePath>
     </parent>
     <artifactId>axiom-impl</artifactId>
@@ -31,9 +31,9 @@
     <description>The Axiom default implementation.</description>
     <!-- This needs to be set explicitly because the project structure implies that the Maven calculated defaults are wrong -->
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/tags/axiom/1.2.13/modules/axiom-impl</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/tags/axiom/1.2.13/modules/axiom-impl</developerConnection>
-        <url>http://svn.apache.org/viewvc/webservices/commons/tags/axiom/1.2.13/modules/axiom-impl</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-impl</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-impl</developerConnection>
+        <url>http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/modules/axiom-impl</url>
     </scm>
     <!-- This also needs to be set explicitly because the Maven calculated URL would point to nowhere -->
     <url>http://ws.apache.org/axiom/</url>
