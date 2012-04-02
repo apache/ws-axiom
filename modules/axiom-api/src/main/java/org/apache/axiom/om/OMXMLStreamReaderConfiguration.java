@@ -55,8 +55,8 @@ public class OMXMLStreamReaderConfiguration {
      * <p>
      * More precisely, if this option is enabled, then the namespace declarations reported for the
      * first {@link XMLStreamConstants#START_ELEMENT} event in the returned stream will be the same
-     * as the declarations that would be returned by {@link #getNamespacesInScope()}, with the
-     * exception that a <tt>xmlns=""</tt> declaration present on the element will be preserved.
+     * as the declarations that would be returned by {@link OMElement#getNamespacesInScope()}, with
+     * the exception that a <tt>xmlns=""</tt> declaration present on the element will be preserved.
      * <p>
      * This feature is useful for code that relies on the namespace declarations reported by the
      * {@link XMLStreamReader} to reconstruct the namespace context (instead of using the namespace
