@@ -337,10 +337,10 @@
                         <configuration>
                             <includes>userguide.xml</includes>
                             <chunkedOutput>true</chunkedOutput>
-                            <targetDirectory>target/site/userguide</targetDirectory>
+                            <targetDirectory>${project.reporting.outputDirectory}</targetDirectory>
                             <htmlCustomization>src/docbkx/xsl/html.xsl</htmlCustomization>
                             <postProcess>
-                                <copy todir="target/site/userguide/images">
+                                <copy todir="${project.reporting.outputDirectory}/userguide/images">
                                     <fileset dir="src/docbkx/images">
                                         <include name="**/*.jpg" />
                                         <include name="**/*.png" />
@@ -358,10 +358,10 @@
                         <configuration>
                             <includes>devguide.xml</includes>
                             <chunkedOutput>true</chunkedOutput>
-                            <targetDirectory>target/site/devguide</targetDirectory>
+                            <targetDirectory>${project.reporting.outputDirectory}</targetDirectory>
                             <htmlCustomization>src/docbkx/xsl/html.xsl</htmlCustomization>
                             <postProcess>
-                                <copy todir="target/site/devguide/images">
+                                <copy todir="${project.reporting.outputDirectory}/devguide/images">
                                     <fileset dir="src/docbkx/images">
                                         <include name="**/*.jpg" />
                                         <include name="**/*.png" />
