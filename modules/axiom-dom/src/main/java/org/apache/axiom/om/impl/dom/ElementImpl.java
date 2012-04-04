@@ -1199,7 +1199,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         ElementImpl newnode = (ElementImpl) super.cloneNode(deep);
         // Replicate NamedNodeMap rather than sharing it.
         if (attributes != null) {
-            newnode.attributes = (AttributeMap) attributes.cloneMap(newnode);
+            newnode.attributes = attributes.cloneMap(newnode);
         }
         return newnode;
 
