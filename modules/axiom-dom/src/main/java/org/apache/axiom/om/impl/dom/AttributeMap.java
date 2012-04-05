@@ -37,8 +37,6 @@ public class AttributeMap implements NamedNodeMap {
 
     private short flags;
 
-    private final static short READONLY = 0x1 << 0;
-
     private final static short CHANGED = 0x1 << 1;
 
     private final static short HASDEFAULTS = 0x1 << 2;
@@ -87,13 +85,6 @@ public class AttributeMap implements NamedNodeMap {
     public Node removeNamedItem(String name) throws DOMException {
         // TODO Set used to false
 
-        if (isReadOnly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
         int i = findNamePoint(name, 0);
         if (i < 0) {
             String msg = DOMMessageFormatter.formatMessage(
@@ -110,13 +101,6 @@ public class AttributeMap implements NamedNodeMap {
     public Node removeNamedItemNS(String namespaceURI, String name)
             throws DOMException {
 
-        if (isReadOnly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
         int i = findNamePoint(namespaceURI, name);
         if (i < 0) {
             String msg = DOMMessageFormatter.formatMessage(
@@ -133,13 +117,6 @@ public class AttributeMap implements NamedNodeMap {
     /** Almost a copy of the Xerces impl. */
     public Node setNamedItem(Node attribute) throws DOMException {
 
-        if (isReadOnly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
         if (attribute.getOwnerDocument() != ownerNode.getOwnerDocument()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
@@ -199,13 +176,6 @@ public class AttributeMap implements NamedNodeMap {
 
     /** Almost a copy of the Xerces impl. */
     public Node setNamedItemNS(Node attribute) throws DOMException {
-        if (isReadOnly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
         if (attribute.getOwnerDocument() != ownerNode.getOwnerDocument()) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN, DOMException.WRONG_DOCUMENT_ERR, null);
@@ -293,14 +263,6 @@ public class AttributeMap implements NamedNodeMap {
         }
     } // cloneContent():AttributeMap
 
-
-    final boolean isReadOnly() {
-        return (flags & READONLY) != 0;
-    }
-
-    final void isReadOnly(boolean value) {
-        flags = (short) (value ? flags | READONLY : flags & ~READONLY);
-    }
 
     final boolean changed() {
         return (flags & CHANGED) != 0;
