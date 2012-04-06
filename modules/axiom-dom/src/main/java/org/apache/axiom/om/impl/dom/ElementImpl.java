@@ -432,13 +432,11 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     public Attr setAttributeNode(Attr attr) throws DOMException {
         AttrImpl attrImpl = (AttrImpl) attr;
 
-        if (attrImpl.getOwnerElement() != null) {// check for ownership
-            if (!this.getOwnerDocument().equals(attr.getOwnerDocument())) {
-                String msg = DOMMessageFormatter.formatMessage(
-                        DOMMessageFormatter.DOM_DOMAIN, DOMException.WRONG_DOCUMENT_ERR,
-                        null);
-                throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
-            }
+        if (!this.getOwnerDocument().equals(attr.getOwnerDocument())) {
+            String msg = DOMMessageFormatter.formatMessage(
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.WRONG_DOCUMENT_ERR,
+                    null);
+            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
         }
 
         // check whether the attr is in use
@@ -511,13 +509,11 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         } else {
             AttrImpl attrImpl = (AttrImpl) attr;
 
-            if (attrImpl.getOwnerElement() != null) {// check for ownership
-                if (!this.getOwnerDocument().equals(attr.getOwnerDocument())) {
-                    String msg = DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN,
-                            DOMException.WRONG_DOCUMENT_ERR, null);
-                    throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
-                }
+            if (!this.getOwnerDocument().equals(attr.getOwnerDocument())) {
+                String msg = DOMMessageFormatter.formatMessage(
+                        DOMMessageFormatter.DOM_DOMAIN,
+                        DOMException.WRONG_DOCUMENT_ERR, null);
+                throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
             }
 
             // check whether the attr is in use

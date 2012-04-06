@@ -74,10 +74,15 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveLastChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveSingleChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChild(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildWrongDocument(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSWrongDocument(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNull(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetTextContent(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.attributes.TestSetNamedItemNSWrongDocument(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.attributes.TestSetNamedItemWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestAppendData(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeText(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeTextWithCDATASection(dbf));
