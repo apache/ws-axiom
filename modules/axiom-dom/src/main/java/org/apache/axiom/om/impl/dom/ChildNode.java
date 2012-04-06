@@ -66,9 +66,7 @@ public abstract class ChildNode extends NodeImpl {
      * @return the owner document
      */
     DocumentImpl ownerDocument() {
-        if (ownerNode == null) {
-            return null;
-        } else if (ownerNode instanceof DocumentImpl) {
+        if (ownerNode instanceof DocumentImpl) {
             // Note: the value of the HAS_PARENT flag doesn't matter here. If the ownerNode is of
             // type Document, it must be the owner document.
             return (DocumentImpl)ownerNode;

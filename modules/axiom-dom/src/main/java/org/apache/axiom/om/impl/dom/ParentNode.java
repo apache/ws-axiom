@@ -383,10 +383,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                            DOMException.HIERARCHY_REQUEST_ERR, null));
         }
 
-        if (//This is the case where this is an Element in the document
-                (ownerDocument() != null && !ownerDocument().equals(newDomChild.ownerDocument())) ||
-                //This is the case where this is the Document itself
-                (ownerDocument() == null && !this.equals(ownerDocument()))) {
+        if (ownerDocument() != newDomChild.ownerDocument()) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
