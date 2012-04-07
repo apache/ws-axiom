@@ -34,6 +34,7 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.util.StAXUtils;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -72,6 +73,17 @@ public abstract class ChildNode extends NodeImpl {
             return (DocumentImpl)ownerNode;
         } else {
             return ownerNode.ownerDocument();
+        }
+    }
+    
+    void checkSameOwnerDocument(Node otherNode) {
+        if (ownerDocument() != (otherNode instanceof AttrImpl
+                ? ((AttrImpl)otherNode).getOwnerDocument()
+                : ((ChildNode)otherNode).ownerDocument())) {
+            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
+                                   DOMMessageFormatter.formatMessage(
+                                           DOMMessageFormatter.DOM_DOMAIN,
+                                           DOMException.WRONG_DOCUMENT_ERR, null));
         }
     }
     

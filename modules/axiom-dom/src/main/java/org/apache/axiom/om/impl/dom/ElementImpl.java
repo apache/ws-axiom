@@ -432,12 +432,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     public Attr setAttributeNode(Attr attr) throws DOMException {
         AttrImpl attrImpl = (AttrImpl) attr;
 
-        if (!this.getOwnerDocument().equals(attr.getOwnerDocument())) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.WRONG_DOCUMENT_ERR,
-                    null);
-            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
-        }
+        checkSameOwnerDocument(attr);
 
         // check whether the attr is in use
         if (attrImpl.isUsed()) {
@@ -509,12 +504,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         } else {
             AttrImpl attrImpl = (AttrImpl) attr;
 
-            if (!this.getOwnerDocument().equals(attr.getOwnerDocument())) {
-                String msg = DOMMessageFormatter.formatMessage(
-                        DOMMessageFormatter.DOM_DOMAIN,
-                        DOMException.WRONG_DOCUMENT_ERR, null);
-                throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
-            }
+            checkSameOwnerDocument(attr);
 
             // check whether the attr is in use
             if (attrImpl.isUsed()) {

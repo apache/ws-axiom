@@ -209,11 +209,8 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         ChildNode newDomChild = (ChildNode) newChild;
         ChildNode refDomChild = (ChildNode) refChild;
 
-        if (useDomSemantics && ownerDocument() != newDomChild.ownerDocument()) {
-            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.WRONG_DOCUMENT_ERR, null));
+        if (useDomSemantics) {
+            checkSameOwnerDocument(newDomChild);
         }
 
         if (isAncestorOrSelf(newChild)) {
@@ -383,12 +380,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                            DOMException.HIERARCHY_REQUEST_ERR, null));
         }
 
-        if (ownerDocument() != newDomChild.ownerDocument()) {
-            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.WRONG_DOCUMENT_ERR, null));
-        }
+        checkSameOwnerDocument(newDomChild);
 
         Iterator children = this.getChildren();
         boolean found = false;

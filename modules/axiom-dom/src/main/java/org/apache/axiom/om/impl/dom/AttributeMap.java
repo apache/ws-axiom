@@ -117,12 +117,7 @@ public class AttributeMap implements NamedNodeMap {
     /** Almost a copy of the Xerces impl. */
     public Node setNamedItem(Node attribute) throws DOMException {
 
-        if (attribute.getOwnerDocument() != ownerNode.getOwnerDocument()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.WRONG_DOCUMENT_ERR, null);
-            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
-        }
+        ownerNode.checkSameOwnerDocument(attribute);
         if (attribute.getNodeType() != Node.ATTRIBUTE_NODE) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
@@ -176,11 +171,7 @@ public class AttributeMap implements NamedNodeMap {
 
     /** Almost a copy of the Xerces impl. */
     public Node setNamedItemNS(Node attribute) throws DOMException {
-        if (attribute.getOwnerDocument() != ownerNode.getOwnerDocument()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.WRONG_DOCUMENT_ERR, null);
-            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
-        }
+        ownerNode.checkSameOwnerDocument(attribute);
         if (attribute.getNodeType() != Node.ATTRIBUTE_NODE) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN, DOMException.HIERARCHY_REQUEST_ERR,
