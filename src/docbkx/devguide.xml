@@ -1070,7 +1070,7 @@ javax.xml.stream.XMLOutputFactory=com.bea.xml.stream.XMLOutputFactoryBase</progr
                         distributions to <literal>www.apache.org</literal>. The <filename>etc/dist.py</filename>
                         script can be used for that:
                     </para>
-<screen>cd /www/www.apache.org/dist/ws/commons/axiom
+<screen>cd /www/www.apache.org/dist/ws/axiom
 umask 0002
 python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</replaceable></screen>
                     <para>
@@ -1078,7 +1078,7 @@ python <replaceable>path_to_etc</replaceable>/dist.py <replaceable>version</repl
                     </para>
                     <para>
                         If not yet done, export your public key and append it to the <filename>KEYS</filename>
-                        file located in <filename>/www/www.apache.org/dist/ws/commons/axiom</filename>. The command
+                        file located in <filename>/www/www.apache.org/dist/ws/axiom</filename>. The command
                         to export a public key is as follows:
                     </para>
                     <screen>gpg --armor --export <replaceable>key_id</replaceable></screen>
