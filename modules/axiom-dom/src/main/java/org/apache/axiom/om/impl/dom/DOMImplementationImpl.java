@@ -40,7 +40,6 @@ public class DOMImplementationImpl implements DOMImplementation {
         // TODO Handle docType stuff
         OMDOMFactory fac = new OMDOMFactory();
         DocumentImpl doc = new DocumentImpl(fac);
-        fac.setDocument(doc);
 
         new ElementImpl(doc, DOMUtil.getLocalName(qualifiedName),
                         new OMNamespaceImpl(namespaceURI, DOMUtil

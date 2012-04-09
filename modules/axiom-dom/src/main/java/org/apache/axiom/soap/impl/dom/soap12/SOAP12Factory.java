@@ -22,7 +22,6 @@ package org.apache.axiom.soap.impl.dom.soap12;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
@@ -52,10 +51,6 @@ public class SOAP12Factory extends DOMSOAPFactory {
     }
 
     public SOAP12Factory() {
-    }
-
-    public SOAP12Factory(DocumentImpl doc) {
-        super(doc);
     }
 
     public String getSoapVersionURI() {
