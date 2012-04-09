@@ -32,8 +32,8 @@ import org.apache.axiom.om.OMNamespace;
  * parent is specified for the {@link OMElement} to be created.
  */
 public class TestCreateOMElementWithNamespaceInScope extends CreateOMElementTestCase {
-    public TestCreateOMElementWithNamespaceInScope(OMMetaFactory metaFactory, OMElementCreator variant) {
-        super(metaFactory, variant);
+    public TestCreateOMElementWithNamespaceInScope(OMMetaFactory metaFactory, CreateOMElementVariant variant) {
+        super(metaFactory, variant, null);
     }
 
     protected void runTest() throws Throwable {

@@ -27,7 +27,8 @@ import org.apache.axiom.ts.om.container.OMContainerFactory;
 import org.apache.axiom.ts.om.container.OMElementFactory;
 import org.apache.axiom.ts.om.container.SerializationMethod;
 import org.apache.axiom.ts.om.container.SerializeToOutputStream;
-import org.apache.axiom.ts.om.factory.OMElementCreator;
+import org.apache.axiom.ts.om.factory.CreateOMElementParentSupplier;
+import org.apache.axiom.ts.om.factory.CreateOMElementVariant;
 import org.apache.axiom.ts.om.xpath.AXIOMXPathTestCase;
 import org.apache.axiom.ts.om.xpath.TestAXIOMXPath;
 
@@ -257,22 +258,27 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMAttributeWithInvalidNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMCommentWithoutParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMDocument(metaFactory));
-        for (int i=0; i<OMElementCreator.INSTANCES.length; i++) {
-            OMElementCreator creator = OMElementCreator.INSTANCES[i];
-            if (creator.isSupportsDefaultNamespace()) {
-                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithDefaultNamespace(metaFactory, creator));
+        for (int i=0; i<CreateOMElementVariant.INSTANCES.length; i++) {
+            CreateOMElementVariant variant = CreateOMElementVariant.INSTANCES[i];
+            for (int j=0; j<CreateOMElementParentSupplier.INSTANCES.length; j++) {
+                CreateOMElementParentSupplier parentSupplier = CreateOMElementParentSupplier.INSTANCES[j];
+                if (parentSupplier.isSupported(variant)) {
+                    if (variant.isSupportsDefaultNamespace()) {
+                        addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithDefaultNamespace(metaFactory, variant, parentSupplier));
+                    }
+                    addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix(metaFactory, variant, parentSupplier));
+                    addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespaceNullPrefix(metaFactory, variant, parentSupplier));
+                    addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithInvalidNamespace(metaFactory, variant, parentSupplier));
+                    addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNonDefaultNamespace(metaFactory, variant, parentSupplier));
+                    addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace(metaFactory, variant, parentSupplier));
+                }
             }
-            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix(metaFactory, creator));
-            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespaceNullPrefix(metaFactory, creator));
-            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithInvalidNamespace(metaFactory, creator));
-            if (creator.isSupportsContainer()) {
-                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope(metaFactory, creator));
+            if (variant.isSupportsContainer()) {
+                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope(metaFactory, variant));
             }
-            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNonDefaultNamespace(metaFactory, creator));
-            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace(metaFactory, creator));
-            if (creator.isSupportsContainer() && creator.isSupportsDefaultNamespace()) {
-                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace2(metaFactory, creator));
-                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace3(metaFactory, creator));
+            if (variant.isSupportsContainer() && variant.isSupportsDefaultNamespace()) {
+                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace2(metaFactory, variant));
+                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace3(metaFactory, variant));
             }
         }
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullURIAndPrefix(metaFactory));

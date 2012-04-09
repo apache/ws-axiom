@@ -25,9 +25,9 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 
-public abstract class OMElementCreator {
-    public static final OMElementCreator[] INSTANCES = new OMElementCreator[] {
-        new OMElementCreator("QName", false, false) {
+public abstract class CreateOMElementVariant {
+    public static final CreateOMElementVariant[] INSTANCES = {
+        new CreateOMElementVariant("QName", false, false) {
             public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 if (prefix == null) {
@@ -36,7 +36,7 @@ public abstract class OMElementCreator {
                 return factory.createOMElement(new QName(namespaceURI, localName, prefix));
             }
         },
-        new OMElementCreator("QName,OMContainer", false, true) {
+        new CreateOMElementVariant("QName,OMContainer", false, true) {
             public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 if (prefix == null) {
@@ -45,21 +45,21 @@ public abstract class OMElementCreator {
                 return factory.createOMElement(new QName(namespaceURI, localName, prefix), parent);
             }
         },
-        new OMElementCreator("String,OMNamespace", true, false) {
+        new CreateOMElementVariant("String,OMNamespace", true, false) {
             public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 return factory.createOMElement(localName,
                         getOMNamespace(factory, namespaceURI, prefix));
             }
         },
-        new OMElementCreator("String,OMNamespace,OMContainer", true, true) {
+        new CreateOMElementVariant("String,OMNamespace,OMContainer", true, true) {
             public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 return factory.createOMElement(localName,
                         getOMNamespace(factory, namespaceURI, prefix), parent);
             }
         },
-        new OMElementCreator("String,String,String", true, false) {
+        new CreateOMElementVariant("String,String,String", true, false) {
             public OMElement createOMElement(OMFactory factory, OMContainer parent, String localName,
                     String namespaceURI, String prefix) {
                 return factory.createOMElement(localName, namespaceURI, prefix);
@@ -71,7 +71,7 @@ public abstract class OMElementCreator {
     private final boolean supportsDefaultNamespace;
     private final boolean supportsContainer;
     
-    public OMElementCreator(String name, boolean supportsDefaultNamespace, boolean supportsContainer) {
+    public CreateOMElementVariant(String name, boolean supportsDefaultNamespace, boolean supportsContainer) {
         this.name = name;
         this.supportsDefaultNamespace = supportsDefaultNamespace;
         this.supportsContainer = supportsContainer;
