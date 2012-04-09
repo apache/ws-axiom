@@ -485,7 +485,7 @@
                     compatible signature from the main Apache site. These can be downloaded by
                     following the links above. This
                     <a
-                            href="http://www.apache.org/dist/ws/commons/axiom/KEYS">KEYS</a>
+                            href="http://www.apache.org/dist/ws/axiom/KEYS">KEYS</a>
                     file contains the
                     public keys used for signing release. It is recommended that (when possible)
                     a
