@@ -32,13 +32,13 @@ import org.apache.axiom.om.OMMetaFactory;
  * used instead.
  */
 public class TestCreateOMElementWithoutNamespaceNullPrefix extends CreateOMElementTestCase {
-    public TestCreateOMElementWithoutNamespaceNullPrefix(OMMetaFactory metaFactory, OMElementCreator variant) {
-        super(metaFactory, variant);
+    public TestCreateOMElementWithoutNamespaceNullPrefix(OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
+        super(metaFactory, variant, parentSupplier);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = variant.createOMElement(factory, null, "test", "", null);
+        OMElement element = variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "", null);
         assertEquals("test", element.getLocalName());
         assertNull(element.getNamespace());
         Iterator it = element.getAllDeclaredNamespaces();

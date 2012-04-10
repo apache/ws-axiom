@@ -27,17 +27,18 @@ import org.apache.axiom.om.OMNamespace;
 
 /**
  * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
- * requested to create an element with a namespace but no namespace prefix is given and no parent is
- * specified. In this case, <code>createOMElement</code> is expected to generate a prefix.
+ * requested to create an element with a namespace but no namespace prefix is given and no matching
+ * namespace declaration is in scope. In this case, <code>createOMElement</code> is expected to
+ * generate a prefix.
  */
 public class TestCreateOMElementWithGeneratedPrefix extends CreateOMElementTestCase {
-    public TestCreateOMElementWithGeneratedPrefix(OMMetaFactory metaFactory, OMElementCreator variant) {
-        super(metaFactory, variant);
+    public TestCreateOMElementWithGeneratedPrefix(OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
+        super(metaFactory, variant, parentSupplier);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = variant.createOMElement(factory, null, "test", "urn:test", null);
+        OMElement element = variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "urn:test", null);
         assertEquals("test", element.getLocalName());
         OMNamespace ns = element.getNamespace();
         assertNotNull(ns);

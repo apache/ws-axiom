@@ -31,8 +31,8 @@ import org.apache.axiom.om.OMMetaFactory;
  * element.
  */
 public class TestCreateOMElementWithoutNamespace3 extends CreateOMElementTestCase {
-    public TestCreateOMElementWithoutNamespace3(OMMetaFactory metaFactory, OMElementCreator variant) {
-        super(metaFactory, variant);
+    public TestCreateOMElementWithoutNamespace3(OMMetaFactory metaFactory, CreateOMElementVariant variant) {
+        super(metaFactory, variant, null);
     }
 
     protected void runTest() throws Throwable {

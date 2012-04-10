@@ -35,8 +35,8 @@ import org.apache.axiom.om.OMNamespace;
  * <a href="https://issues.apache.org/jira/browse/AXIOM-400">AXIOM-400</a>.
  */
 public class TestCreateOMElementWithoutNamespace2 extends CreateOMElementTestCase {
-    public TestCreateOMElementWithoutNamespace2(OMMetaFactory metaFactory, OMElementCreator variant) {
-        super(metaFactory, variant);
+    public TestCreateOMElementWithoutNamespace2(OMMetaFactory metaFactory, CreateOMElementVariant variant) {
+        super(metaFactory, variant, null);
     }
 
     protected void runTest() throws Throwable {
