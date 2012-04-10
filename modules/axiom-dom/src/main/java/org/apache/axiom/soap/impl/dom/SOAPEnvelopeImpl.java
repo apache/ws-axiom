@@ -41,7 +41,6 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 
@@ -69,8 +68,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
 
     /** @param ns  */
     public SOAPEnvelopeImpl(OMNamespace ns, SOAPFactory factory) {
-        super(((DOMSOAPFactory) factory).getDocument(),
-              SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
+        super(null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
     }
 
     public SOAPVersion getVersion() {

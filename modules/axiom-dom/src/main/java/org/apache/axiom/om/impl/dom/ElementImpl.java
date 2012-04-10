@@ -34,7 +34,6 @@ import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMElementImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
 import org.apache.axiom.om.impl.traverse.OMQualifiedNameFilterIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
@@ -141,7 +140,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     public ElementImpl(ParentNode parentNode, String tagName, OMNamespaceImpl ns,
                        OMFactory factory) {
-        this((DocumentImpl) parentNode.getOwnerDocument(), tagName, null, factory);
+        this(null, tagName, null, factory);
         parentNode.addChild(this);
         this.done = true;
         namespace = handleNamespace(ns);
@@ -169,7 +168,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     public ElementImpl(OMFactory factory) {
         super(factory);
-        setOwnerDocument(((OMDOMFactory) factory).getDocument());
     }
 
     private OMNamespace handleNamespace(OMNamespace ns) {
@@ -708,7 +706,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
                 }
             }
         }
-        return addAttribute(new AttrImpl(ownerDocument(), localName, ns, value, factory));
+        return addAttribute(new AttrImpl(null, localName, ns, value, factory));
     }
 
     public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
