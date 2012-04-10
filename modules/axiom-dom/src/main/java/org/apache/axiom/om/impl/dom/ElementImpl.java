@@ -688,11 +688,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             }
         }
 
-        if (attr.getNamespace() != null) { // If the attr has a namespace
-            this.setAttributeNodeNS((Attr) attr);
-        } else {
-            this.setAttributeNode((Attr) attr);
-        }
+        this.setAttributeNodeNS((Attr) attr);
         return attr;
     }
 
