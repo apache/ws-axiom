@@ -486,12 +486,11 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Element#setAttributeNodeNS(org.w3c.dom.Attr)
-     */
     public Attr setAttributeNodeNS(Attr attr) throws DOMException {
+        return setAttributeNodeNS(attr, true);
+    }
+    
+    private Attr setAttributeNodeNS(Attr attr, boolean useDomSemantics) throws DOMException {
 
         // Check whether the attr is a namespace declaration
         // if so add a namespace NOT an attribute
@@ -502,7 +501,9 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         } else {
             AttrImpl attrImpl = (AttrImpl) attr;
 
-            checkSameOwnerDocument(attr);
+            if (useDomSemantics) {
+                checkSameOwnerDocument(attr);
+            }
 
             // check whether the attr is in use
             if (attrImpl.isUsed()) {
@@ -526,7 +527,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
                                                         attr.getPrefix()));
             }
 
-            return (Attr) this.attributes.setNamedItemNS(attr);
+            return (Attr) this.attributes.setAttribute(attr);
         }
     }
 
@@ -671,7 +672,8 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             if (owner == this) {
                 return attr;
             }
-            attr = (OMAttribute)((AttrImpl)attr).cloneNode(false);
+            attr = new AttrImpl(null, attr.getLocalName(), attr.getNamespace(),
+                    attr.getAttributeValue(), attr.getOMFactory());
         }
         
         OMNamespace namespace = attr.getNamespace();
@@ -686,7 +688,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             }
         }
 
-        this.setAttributeNodeNS((Attr) attr);
+        this.setAttributeNodeNS((Attr) attr, false);
         return attr;
     }
 

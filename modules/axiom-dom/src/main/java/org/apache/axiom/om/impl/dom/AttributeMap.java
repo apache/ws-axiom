@@ -169,9 +169,13 @@ public class AttributeMap implements NamedNodeMap {
 
     }
 
-    /** Almost a copy of the Xerces impl. */
     public Node setNamedItemNS(Node attribute) throws DOMException {
         ownerNode.checkSameOwnerDocument(attribute);
+        return setAttribute(attribute);
+    }
+    
+    /** Almost a copy of the Xerces impl. */
+    Node setAttribute(Node attribute) throws DOMException {
         if (attribute.getNodeType() != Node.ATTRIBUTE_NODE) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN, DOMException.HIERARCHY_REQUEST_ERR,
