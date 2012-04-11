@@ -318,7 +318,7 @@
                         <link>http://download.oracle.com/docs/cd/E17802_01/webservices/webservices/docs/1.5/api/</link>
                         <link>http://jaxen.codehaus.org/apidocs/</link>
                     </links>
-                    <excludePackageNames>org.apache.axiom.test:org.apache.axiom.testutils:org.jaxen.test:org.apache.axiom.om.impl.common*,org.apache.axiom.om.impl.llom*:org.apache.axiom.soap.impl.llom*:org.apache.axiom.om.impl.dom*:org.apache.axiom.soap.impl.dom*</excludePackageNames>
+                    <excludePackageNames>org.apache.axiom.test:org.apache.axiom.testutils:org.jaxen.test:org.apache.axiom.om.impl.common*:org.apache.axiom.soap.impl.common*:org.apache.axiom.om.impl.llom*:org.apache.axiom.soap.impl.llom*:org.apache.axiom.om.impl.dom*:org.apache.axiom.soap.impl.dom*</excludePackageNames>
                     <breakiterator>true</breakiterator>
                 </configuration>
             </plugin>
