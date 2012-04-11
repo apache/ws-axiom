@@ -31,7 +31,6 @@ import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
-import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMElementImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
