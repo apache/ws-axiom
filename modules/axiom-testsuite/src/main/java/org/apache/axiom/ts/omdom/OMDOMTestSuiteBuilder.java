@@ -36,6 +36,7 @@ public class OMDOMTestSuiteBuilder extends TestSuiteBuilder {
 
     protected void addTests() {
         addTest(new org.apache.axiom.ts.omdom.attr.TestGetNamespaceNormalized(metaFactory));
+        addTest(new org.apache.axiom.ts.omdom.document.TestImportNode(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestAddChildFromForeignDocument(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestGetNamespaceNormalized(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestRemoveChildIncomplete(metaFactory));
