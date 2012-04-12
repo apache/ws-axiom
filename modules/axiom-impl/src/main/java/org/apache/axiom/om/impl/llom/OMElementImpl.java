@@ -665,13 +665,13 @@ public class OMElementImpl extends OMNodeImpl
         return attr;
     }
 
-    /** Method removeAttribute. */
     public void removeAttribute(OMAttribute attr) {
-        if (attributes != null) {
-            // Remove the owner from this attribute
-            ((OMAttributeImpl)attr).owner = null;
-            attributes.remove(attr.getQName());
+        if (attr.getOwner() != this) {
+            throw new OMException("The attribute is not owned by this element");
         }
+        // Remove the owner from this attribute
+        ((OMAttributeImpl)attr).owner = null;
+        attributes.remove(attr.getQName());
     }
 
     public OMAttribute addAttribute(String attributeName, String value,

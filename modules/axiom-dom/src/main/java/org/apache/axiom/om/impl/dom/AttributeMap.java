@@ -430,4 +430,10 @@ public class AttributeMap implements NamedNodeMap {
             nodes.removeAllElements();
         }
     }
+    
+    void remove(AttrImpl attr) {
+        if (nodes.remove(attr)) {
+            attr.setOwnerElement(null);
+        }
+    }
 }

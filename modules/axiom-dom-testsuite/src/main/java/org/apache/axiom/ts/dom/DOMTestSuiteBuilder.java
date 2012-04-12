@@ -70,6 +70,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestGetTextContent(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestInsertBefore(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestInsertBeforeWithDocumentFragment(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestRemoveAttributeNotOwner(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveFirstChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveLastChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveSingleChild(dbf));

@@ -211,6 +211,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithPreserveNamespaceContext(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestMultipleDefaultNS(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestRemoveAttribute(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestRemoveAttributeNotOwner(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithNonDefaultNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithoutNamespace(metaFactory));

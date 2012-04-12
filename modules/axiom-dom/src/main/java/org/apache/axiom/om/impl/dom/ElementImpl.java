@@ -31,7 +31,6 @@ import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
-import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMElementImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
@@ -333,14 +332,13 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
      * @see org.w3c.dom.Element#removeAttributeNode(org.w3c.dom.Attr)
      */
     public Attr removeAttributeNode(Attr oldAttr) throws DOMException {
-        if (this.attributes == null
-                || this.attributes.getNamedItem(oldAttr.getName()) == null) {
+        if (oldAttr.getOwnerElement() != this) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR, null);
             throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
         }
-        return (AttrImpl) this.attributes.removeNamedItem(oldAttr
-                .getName());
+        attributes.remove((AttrImpl)oldAttr);
+        return oldAttr;
     }
 
     /*
@@ -974,13 +972,11 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         OMElementImplUtil.writeTextTo(this, out, cache);
     }
 
-    /**
-     * Removes an attribute from the element.
-     *
-     * @see org.apache.axiom.om.OMElement#removeAttribute (org.apache.axiom.om.OMAttribute)
-     */
     public void removeAttribute(OMAttribute attr) {
-        this.removeAttributeNode((AttrImpl) attr);
+        if (attr.getOwner() != this) {
+            throw new OMException("The attribute is not owned by this element");
+        }
+        attributes.remove((AttrImpl)attr);
     }
 
     /**
