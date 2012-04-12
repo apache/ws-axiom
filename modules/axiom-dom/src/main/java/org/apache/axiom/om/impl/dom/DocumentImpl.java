@@ -33,7 +33,6 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.OMDocumentImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
@@ -78,19 +77,16 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     /** @param ownerDocument  */
     public DocumentImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
-        ((OMDOMFactory) factory).setDocument(this);
         this.done = true;
     }
 
     public DocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
         super(factory);
         this.builder = parserWrapper;
-        ((OMDOMFactory) factory).setDocument(this);
     }
 
     public DocumentImpl(OMFactory factory) {
         super(factory);
-        ((OMDOMFactory) factory).setDocument(this);
         this.done = true;
     }
 

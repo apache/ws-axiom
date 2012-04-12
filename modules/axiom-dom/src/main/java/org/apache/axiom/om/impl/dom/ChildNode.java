@@ -67,7 +67,12 @@ public abstract class ChildNode extends NodeImpl {
      * @return the owner document
      */
     DocumentImpl ownerDocument() {
-        if (ownerNode instanceof DocumentImpl) {
+        if (ownerNode == null) {
+            // TODO: it is currently unspecified/untested if the factory should be inherited from the root node or if it should always be a plain OMFactory
+            DocumentImpl document = new DocumentImpl(factory);
+            ownerNode = document;
+            return document;
+        } else if (ownerNode instanceof DocumentImpl) {
             // Note: the value of the HAS_PARENT flag doesn't matter here. If the ownerNode is of
             // type Document, it must be the owner document.
             return (DocumentImpl)ownerNode;

@@ -188,10 +188,14 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
         return owner instanceof ElementImpl ? (Element)owner : null;
     }
 
-    void setOwnerElement(ElementImpl element) {
+    void setOwnerElement(ElementImpl element, boolean useDomSemantics) {
         if (element == null) {
             if (owner instanceof ElementImpl) {
-                owner = ((ElementImpl)owner).ownerDocument();
+                if (useDomSemantics) {
+                    owner = ((ElementImpl)owner).ownerDocument();
+                } else {
+                    owner = null;
+                }
             }
         } else {
             owner = element;

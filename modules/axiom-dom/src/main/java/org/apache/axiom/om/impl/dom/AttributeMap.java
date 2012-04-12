@@ -140,7 +140,7 @@ public class AttributeMap implements NamedNodeMap {
             // same element
         }
 
-        attr.setOwnerElement((ElementImpl)this.ownerNode); // Set the owner node
+        attr.setOwnerElement((ElementImpl)this.ownerNode, true); // Set the owner node
         attr.setUsed(true); // Setting used to true
 
         int i = findNamePoint(attr.getNodeName(), 0);
@@ -149,7 +149,7 @@ public class AttributeMap implements NamedNodeMap {
         if (i >= 0) { // There's an attribute already with this attr's name
             previous = (AttrImpl) nodes.elementAt(i);
             nodes.setElementAt(attr, i);
-            previous.setOwnerElement(null);
+            previous.setOwnerElement(null, true);
 
             // make sure it won't be mistaken with defaults in case it's reused
             previous.isSpecified(true);
@@ -169,9 +169,13 @@ public class AttributeMap implements NamedNodeMap {
 
     }
 
-    /** Almost a copy of the Xerces impl. */
     public Node setNamedItemNS(Node attribute) throws DOMException {
         ownerNode.checkSameOwnerDocument(attribute);
+        return setAttribute(attribute, true);
+    }
+    
+    /** Almost a copy of the Xerces impl. */
+    Node setAttribute(Node attribute, boolean useDomSemantics) throws DOMException {
         if (attribute.getNodeType() != Node.ATTRIBUTE_NODE) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN, DOMException.HIERARCHY_REQUEST_ERR,
@@ -192,7 +196,7 @@ public class AttributeMap implements NamedNodeMap {
             // same element
         }
         //Set the owner node
-        attr.setOwnerElement((ElementImpl)this.ownerNode);
+        attr.setOwnerElement((ElementImpl)this.ownerNode, useDomSemantics);
 
         int i = findNamePoint(attr.getNamespaceURI(), attr.getLocalName());
         AttrImpl previous = null;
@@ -200,7 +204,7 @@ public class AttributeMap implements NamedNodeMap {
         if (i >= 0) {
             previous = (AttrImpl) nodes.elementAt(i);
             nodes.setElementAt(attr, i);
-            previous.setOwnerElement(null);
+            previous.setOwnerElement(null, useDomSemantics);
             // make sure it won't be mistaken with defaults in case it's reused
             previous.isSpecified(true);
         } else {
@@ -249,7 +253,7 @@ public class AttributeMap implements NamedNodeMap {
                     AttrImpl clone = (AttrImpl) n.cloneNode(true);
                     clone.isSpecified(n.isSpecified());
                     nodes.setElementAt(clone, i);
-                    clone.setOwnerElement(ownerNode);
+                    clone.setOwnerElement(ownerNode, true);
                 }
             }
         }
@@ -428,9 +432,9 @@ public class AttributeMap implements NamedNodeMap {
         }
     }
     
-    void remove(AttrImpl attr) {
+    void remove(AttrImpl attr, boolean useDomSemantics) {
         if (nodes.remove(attr)) {
-            attr.setOwnerElement(null);
+            attr.setOwnerElement(null, useDomSemantics);
         }
     }
 }

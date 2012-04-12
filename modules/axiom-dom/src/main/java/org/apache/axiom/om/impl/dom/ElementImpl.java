@@ -33,7 +33,6 @@ import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMElementImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
 import org.apache.axiom.om.impl.traverse.OMQualifiedNameFilterIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
@@ -140,7 +139,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     public ElementImpl(ParentNode parentNode, String tagName, OMNamespaceImpl ns,
                        OMFactory factory) {
-        this((DocumentImpl) parentNode.getOwnerDocument(), tagName, null, factory);
+        this(null, tagName, null, factory);
         parentNode.addChild(this);
         this.done = true;
         namespace = handleNamespace(ns);
@@ -168,7 +167,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     public ElementImpl(OMFactory factory) {
         super(factory);
-        setOwnerDocument(((OMDOMFactory) factory).getDocument());
     }
 
     private OMNamespace handleNamespace(OMNamespace ns) {
@@ -339,7 +337,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
                     DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR, null);
             throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
         }
-        attributes.remove((AttrImpl)oldAttr);
+        attributes.remove((AttrImpl)oldAttr, true);
         return oldAttr;
     }
 
@@ -486,12 +484,11 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Element#setAttributeNodeNS(org.w3c.dom.Attr)
-     */
     public Attr setAttributeNodeNS(Attr attr) throws DOMException {
+        return setAttributeNodeNS(attr, true);
+    }
+    
+    private Attr setAttributeNodeNS(Attr attr, boolean useDomSemantics) throws DOMException {
 
         // Check whether the attr is a namespace declaration
         // if so add a namespace NOT an attribute
@@ -502,7 +499,9 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         } else {
             AttrImpl attrImpl = (AttrImpl) attr;
 
-            checkSameOwnerDocument(attr);
+            if (useDomSemantics) {
+                checkSameOwnerDocument(attr);
+            }
 
             // check whether the attr is in use
             if (attrImpl.isUsed()) {
@@ -526,7 +525,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
                                                         attr.getPrefix()));
             }
 
-            return (Attr) this.attributes.setNamedItemNS(attr);
+            return (Attr) this.attributes.setAttribute(attr, useDomSemantics);
         }
     }
 
@@ -671,7 +670,8 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             if (owner == this) {
                 return attr;
             }
-            attr = (OMAttribute)((AttrImpl)attr).cloneNode(false);
+            attr = new AttrImpl(null, attr.getLocalName(), attr.getNamespace(),
+                    attr.getAttributeValue(), attr.getOMFactory());
         }
         
         OMNamespace namespace = attr.getNamespace();
@@ -686,7 +686,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             }
         }
 
-        this.setAttributeNodeNS((Attr) attr);
+        this.setAttributeNodeNS((Attr) attr, false);
         return attr;
     }
 
@@ -702,7 +702,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
                 }
             }
         }
-        return addAttribute(new AttrImpl(ownerDocument(), localName, ns, value, factory));
+        return addAttribute(new AttrImpl(null, localName, ns, value, factory));
     }
 
     public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
@@ -976,7 +976,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         if (attr.getOwner() != this) {
             throw new OMException("The attribute is not owned by this element");
         }
-        attributes.remove((AttrImpl)attr);
+        attributes.remove((AttrImpl)attr, false);
     }
 
     /**

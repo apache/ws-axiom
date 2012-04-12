@@ -56,28 +56,9 @@ import javax.xml.namespace.QName;
 /**
  * OM factory implementation for DOOM. It creates nodes that implement
  * DOM as defined by the interfaces in {@link org.w3c.dom}.
- * <p>
- * Since DOM requires every node to have an owner document even if it has not yet
- * been added to a tree, this factory internally maintains a reference to a
- * {@link DocumentImpl} instance. The document can be set explicitly using the
- * {@link #OMDOMFactory(DocumentImpl)} constructor or the {@link #setDocument(DocumentImpl)}
- * method. If none is set, it will be implicitly created when the first node is created.
- * All nodes created by this factory will have this {@link DocumentImpl} instance as owner
- * document.
- * <p>
- * This has several important consequences:
- * <ul>
- *   <li>The same instance of this class should not be used to parse or construct
- *       multiple documents unless {@link #setDocument(DocumentImpl)} is used
- *       to reset the {@link DocumentImpl} instance before processing the next document.</li>
- *   <li>Instances of this class are not thread safe and using a single instance concurrently
- *       will lead to undefined results.</li>
- * </ul>
  */
 public class OMDOMFactory implements OMFactory {
     private final OMDOMMetaFactory metaFactory;
-
-    protected DocumentImpl document;
 
     public OMDOMFactory(OMDOMMetaFactory metaFactory) {
         this.metaFactory = metaFactory;
@@ -87,41 +68,23 @@ public class OMDOMFactory implements OMFactory {
         this(new OMDOMMetaFactory());
     }
 
-    public OMDOMFactory(DocumentImpl doc) {
-        this(new OMDOMMetaFactory());
-        this.document = doc;
-    }
-
     public OMMetaFactory getMetaFactory() {
         return metaFactory;
     }
 
     public OMDocument createOMDocument() {
-        if (this.document == null)
-            this.document = new DocumentImpl(this);
-
-        return this.document;
-    }
-
-    /**
-     * Configure this factory to use the given document. Use with care.
-     *
-     * @param document
-     */
-    public void setDocument(DocumentImpl document) {
-        this.document = document;
+        return new DocumentImpl(this);
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns) {
-        return new ElementImpl((DocumentImpl) this.createOMDocument(),
+        return new ElementImpl(null,
                                localName, (OMNamespaceImpl) ns, this);
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns,
                                      OMContainer parent) throws OMDOMException {
         if (parent == null) {
-            return new ElementImpl((DocumentImpl) this.createOMDocument(),
-                               localName, (OMNamespaceImpl) ns, this);
+            return createOMElement(localName, ns);
         } else {
             return new ElementImpl((ParentNode) parent, localName, (OMNamespaceImpl) ns, this);
         }
@@ -234,12 +197,11 @@ public class OMDOMFactory implements OMFactory {
             throw new OMHierarchyException(
                     "DOM doesn't support text nodes as children of a document");
         } else {
-            DocumentImpl ownerDocument = (DocumentImpl)((ElementImpl)parent).getOwnerDocument(); 
             TextNodeImpl txt;
             if (type == OMNode.CDATA_SECTION_NODE) {
-                txt = new CDATASectionImpl(ownerDocument, text, this);
+                txt = new CDATASectionImpl(null, text, this);
             } else {
-                txt = new TextImpl(ownerDocument, text, type, this);
+                txt = new TextImpl(null, text, type, this);
             }
             parent.addChild(txt);
             return txt;
@@ -252,10 +214,8 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMText createOMText(OMContainer parent, char[] charArary, int type) {
-        ElementImpl parentElem = (ElementImpl) parent;
-        TextImpl txt = new TextImpl((DocumentImpl) parentElem
-                .getOwnerDocument(), charArary, this);
-        parentElem.addChild(txt);
+        TextImpl txt = new TextImpl(null, charArary, this);
+        parent.addChild(txt);
         return txt;
     }
 
@@ -265,7 +225,7 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText(String)
      */
     public OMText createOMText(String s) {
-        return new TextImpl(this.document, s, this);
+        return new TextImpl(null, s, this);
     }
 
     /**
@@ -275,9 +235,9 @@ public class OMDOMFactory implements OMFactory {
      */
     public OMText createOMText(String text, int type) {
         if (type == OMNode.CDATA_SECTION_NODE) {
-            return new CDATASectionImpl(document, text, this);
+            return new CDATASectionImpl(null, text, this);
         } else {
-            return new TextImpl(document, text, this);
+            return new TextImpl(null, text, this);
         }
     }
 
@@ -288,7 +248,7 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText(String, String, boolean)
      */
     public OMText createOMText(String text, String mimeType, boolean optimize) {
-        return new TextImpl(this.document, text, mimeType, optimize, this);
+        return new TextImpl(null, text, mimeType, optimize, this);
     }
 
     /**
@@ -298,12 +258,12 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText(Object, boolean)
      */
     public OMText createOMText(Object dataHandler, boolean optimize) {
-        return new TextImpl(this.document, dataHandler, optimize, this);
+        return new TextImpl(null, dataHandler, optimize, this);
     }
 
     public OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
             boolean optimize) {
-        return new TextImpl(this.document, contentID, dataHandlerProvider, optimize, this);
+        return new TextImpl(null, contentID, dataHandlerProvider, optimize, this);
     }
 
     /**
@@ -314,8 +274,7 @@ public class OMDOMFactory implements OMFactory {
      */
     public OMText createOMText(OMContainer parent, String s, String mimeType,
                                boolean optimize) {
-        TextImpl text = new TextImpl((DocumentImpl) ((ElementImpl) parent)
-                .getOwnerDocument(), s, mimeType, optimize, this);
+        TextImpl text = new TextImpl(null, s, mimeType, optimize, this);
         parent.addChild(text);
         return text;
     }
@@ -337,11 +296,11 @@ public class OMDOMFactory implements OMFactory {
                 ns = new OMNamespaceImpl(namespaceURI, OMSerializerUtil.getNextNSPrefix());
             }
         }
-        return new AttrImpl(this.getDocument(), localName, ns, value, this);
+        return new AttrImpl(null, localName, ns, value, this);
     }
 
     public OMDocType createOMDocType(OMContainer parent, String content) {
-        DocumentTypeImpl docType = new DocumentTypeImpl(this.getDocument(), this);
+        DocumentTypeImpl docType = new DocumentTypeImpl(null, this);
         docType.setValue(content);
         parent.addChild(docType);
         return docType;
@@ -350,7 +309,7 @@ public class OMDOMFactory implements OMFactory {
     public OMProcessingInstruction createOMProcessingInstruction(
             OMContainer parent, String piTarget, String piData) {
         ProcessingInstructionImpl pi =
-            new ProcessingInstructionImpl(getDocumentFromParent(parent), piTarget, piData, this);
+            new ProcessingInstructionImpl(null, piTarget, piData, this);
         if (parent != null) {
             parent.addChild(pi);
         }
@@ -358,30 +317,14 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMComment createOMComment(OMContainer parent, String content) {
-        CommentImpl comment = new CommentImpl(getDocumentFromParent(parent), content, this);
+        CommentImpl comment = new CommentImpl(null, content, this);
         if (parent != null) {
             parent.addChild(comment);
         }
         return comment;
     }
 
-    public DocumentImpl getDocument() {
-        return (DocumentImpl) this.createOMDocument();
-    }
-
     public OMDocument createOMDocument(OMXMLParserWrapper builder) {
-        this.document = new DocumentImpl(builder, this);
-        return this.document;
-    }
-
-    private DocumentImpl getDocumentFromParent(OMContainer parent) {
-        if (parent == null) {
-            // TODO: this is really a hack; we should make OMDOMFactory stateless
-            return (DocumentImpl)createOMDocument();
-        } else if (parent instanceof DocumentImpl) {
-            return (DocumentImpl) parent;
-        } else {
-            return (DocumentImpl) ((ParentNode) parent).getOwnerDocument();
-        }
+        return new DocumentImpl(builder, this);
     }
 }
