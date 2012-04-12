@@ -337,7 +337,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
                     DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR, null);
             throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
         }
-        attributes.remove((AttrImpl)oldAttr);
+        attributes.remove((AttrImpl)oldAttr, true);
         return oldAttr;
     }
 
@@ -525,7 +525,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
                                                         attr.getPrefix()));
             }
 
-            return (Attr) this.attributes.setAttribute(attr);
+            return (Attr) this.attributes.setAttribute(attr, useDomSemantics);
         }
     }
 
@@ -976,7 +976,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         if (attr.getOwner() != this) {
             throw new OMException("The attribute is not owned by this element");
         }
-        attributes.remove((AttrImpl)attr);
+        attributes.remove((AttrImpl)attr, false);
     }
 
     /**
