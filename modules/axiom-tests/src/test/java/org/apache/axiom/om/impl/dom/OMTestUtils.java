@@ -20,18 +20,11 @@
 package org.apache.axiom.om.impl.dom;
 
 import junit.framework.TestCase;
-import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import java.io.InputStream;
 import java.util.Iterator;
@@ -62,59 +55,6 @@ public class OMTestUtils {
                     walkThrough((OMElement) ele);
                 }
             }
-        }
-    }
-
-    public static void compare(Element ele, OMElement omele) throws Exception {
-        if (ele == null && omele == null) {
-            return;
-        } else if (ele != null && omele != null) {
-            TestCase.assertEquals("Element name not correct",
-                                  ele.getLocalName(),
-                                  omele.getLocalName());
-            if (omele.getNamespace() != null) {
-                TestCase.assertEquals("Namespace URI not correct",
-                                      ele.getNamespaceURI(),
-                                      omele.getNamespace().getNamespaceURI());
-
-            }
-
-            //go through the attributes
-            NamedNodeMap map = ele.getAttributes();
-            Iterator attIterator = omele.getAllAttributes();
-            OMAttribute omattribute;
-            while (attIterator != null && attIterator.hasNext() && map == null) {
-                omattribute = (OMAttribute) attIterator.next();
-                Node node = map.getNamedItemNS(
-                        omattribute.getNamespace().getNamespaceURI(),
-                        omattribute.getLocalName());
-                if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
-                    Attr attr = (Attr) node;
-                    TestCase.assertEquals(attr.getValue(),
-                                          omattribute.getAttributeValue());
-                } else {
-                    throw new OMException("return type is not a Attribute");
-                }
-
-            }
-            Iterator it = omele.getChildren();
-            NodeList list = ele.getChildNodes();
-            for (int i = 0; i < list.getLength(); i++) {
-                Node node = list.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    TestCase.assertTrue(it.hasNext());
-                    OMNode tempOmNode = (OMNode) it.next();
-                    while (tempOmNode.getType() != OMNode.ELEMENT_NODE) {
-                        TestCase.assertTrue(it.hasNext());
-                        tempOmNode = (OMNode) it.next();
-                    }
-                    compare((Element) node, (OMElement) tempOmNode);
-                }
-            }
-
-
-        } else {
-            throw new Exception("One is null");
         }
     }
 }
