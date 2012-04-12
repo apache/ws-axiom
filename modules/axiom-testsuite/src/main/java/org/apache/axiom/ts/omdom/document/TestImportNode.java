@@ -71,10 +71,10 @@ public class TestImportNode extends AxiomTestCase {
             NamedNodeMap map = ele.getAttributes();
             Iterator attIterator = omele.getAllAttributes();
             OMAttribute omattribute;
-            while (attIterator != null && attIterator.hasNext() && map == null) {
+            while (attIterator.hasNext()) {
                 omattribute = (OMAttribute) attIterator.next();
                 Node node = map.getNamedItemNS(
-                        omattribute.getNamespace().getNamespaceURI(),
+                        omattribute.getNamespaceURI(),
                         omattribute.getLocalName());
                 if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
                     Attr attr = (Attr) node;
