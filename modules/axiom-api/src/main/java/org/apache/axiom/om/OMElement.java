@@ -372,9 +372,12 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     OMAttribute addAttribute(String localName, String value, OMNamespace ns);
 
     /**
-     * Method removeAttribute
-     *
+     * Removes the given attribute from this element.
+     * 
      * @param attr
+     *            the attribute to remove
+     * @throws OMException
+     *             if the attribute is not owned by this element
      */
     void removeAttribute(OMAttribute attr);
 
