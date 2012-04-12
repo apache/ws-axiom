@@ -29,7 +29,7 @@ import java.util.Vector;
 public class AttributeMap implements NamedNodeMap {
     private Vector nodes;
 
-    private ParentNode ownerNode;
+    private ElementImpl ownerNode;
 
     //
     // Data
@@ -41,7 +41,7 @@ public class AttributeMap implements NamedNodeMap {
 
     private final static short HASDEFAULTS = 0x1 << 2;
                             
-    AttributeMap(ParentNode ownerNode) {
+    AttributeMap(ElementImpl ownerNode) {
         this.ownerNode = ownerNode;
     }
 
@@ -227,8 +227,8 @@ public class AttributeMap implements NamedNodeMap {
      * the nodes contained in the map.
      */
 
-    public AttributeMap cloneMap(NodeImpl ownerNode) {
-        AttributeMap newmap = new AttributeMap((ParentNode) ownerNode);
+    public AttributeMap cloneMap(ElementImpl ownerNode) {
+        AttributeMap newmap = new AttributeMap(ownerNode);
         newmap.hasDefaults(hasDefaults());
         newmap.cloneContent(this);
         return newmap;
@@ -245,10 +245,11 @@ public class AttributeMap implements NamedNodeMap {
                 }
                 nodes.setSize(size);
                 for (int i = 0; i < size; ++i) {
-                    NodeImpl n = (NodeImpl) srcnodes.elementAt(i);
-                    NodeImpl clone = (NodeImpl) n.cloneNode(true);
+                    AttrImpl n = (AttrImpl) srcnodes.elementAt(i);
+                    AttrImpl clone = (AttrImpl) n.cloneNode(true);
                     clone.isSpecified(n.isSpecified());
                     nodes.setElementAt(clone, i);
+                    clone.setOwnerElement(ownerNode);
                 }
             }
         }
