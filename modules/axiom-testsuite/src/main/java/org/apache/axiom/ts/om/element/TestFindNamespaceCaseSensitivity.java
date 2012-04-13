@@ -17,22 +17,23 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.ts.om.element;
 
-import junit.framework.TestCase;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
+import org.apache.axiom.ts.AxiomTestCase;
 
-public class NamespaceTest extends TestCase {
-    public void testSearch() throws Exception {
+public class TestFindNamespaceCaseSensitivity extends AxiomTestCase {
+    public TestFindNamespaceCaseSensitivity(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
+
+    protected void runTest() throws Throwable {
         String NSURI = "http://testns";
         String NSURI_UPPER = "HTTP://TESTNS";
 
-        OMFactory fac = new OMDOMFactory();
-        OMNamespace ns = new OMNamespaceImpl(NSURI, null);
+        OMFactory fac = metaFactory.getOMFactory();
         OMElement el = fac.createOMElement("foo", null);
         el.declareNamespace(NSURI, "p");
         assertNull(el.findNamespace(NSURI_UPPER, "p"));
