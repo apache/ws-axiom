@@ -53,7 +53,6 @@ public class TestTransformerWithIdentityStylesheet extends TransformerTestCase {
         Document output = builder.newDocument();
         Transformer transformer = ((TransformerFactory)transformerFactoryClass.newInstance()).newTransformer(new DOMSource(stylesheet));
         transformer.transform(new DOMSource(document), new DOMResult(output));
-        XMLUnit.setIgnoreWhitespace(false);
-        XMLAssert.assertXMLEqual(document, output);
+        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(document, output), true);
     }
 }

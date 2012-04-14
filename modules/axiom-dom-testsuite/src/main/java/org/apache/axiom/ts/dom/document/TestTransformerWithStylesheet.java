@@ -43,7 +43,12 @@ public class TestTransformerWithStylesheet extends TransformerTestCase {
         Document actual = builder.newDocument();
         Transformer transformer = ((TransformerFactory)transformerFactoryClass.newInstance()).newTransformer(new DOMSource(stylesheet));
         transformer.transform(new DOMSource(input), new DOMResult(actual));
+        boolean oldIgnoreWhitespace = XMLUnit.getIgnoreWhitespace();
         XMLUnit.setIgnoreWhitespace(true);
-        XMLAssert.assertXMLEqual(expected, actual);
+        try {
+            XMLAssert.assertXMLEqual(expected, actual);
+        } finally {
+            XMLUnit.setIgnoreWhitespace(oldIgnoreWhitespace);
+        }
     }
 }

@@ -24,7 +24,6 @@ import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
@@ -32,6 +31,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.DocumentElementExtractor;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.xalan.processor.TransformerFactoryImpl;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -53,7 +53,8 @@ public class OMElementFactory implements OMContainerFactory {
             dbf.setNamespaceAware(true);
             Document doc = dbf.newDocumentBuilder().parse(testFileContent);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            TransformerFactory.newInstance().newTransformer().transform(
+            // Use Xalan's factory directly to avoid issues if Saxon is selected as default
+            new TransformerFactoryImpl().newTransformer().transform(
                     new DOMSource(doc.getDocumentElement()), new StreamResult(baos));
             return new InputSource(new ByteArrayInputStream(baos.toByteArray()));
         } finally {
