@@ -26,7 +26,6 @@ import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
 import org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope;
 import org.apache.axiom.ts.soap.faultdetail.TestWSCommons202;
 import org.apache.axiom.ts.soap.faulttext.TestSetLang;
-import org.apache.axiom.ts.soap.xpath.TestXPathAppliedToSOAPEnvelope;
 import org.apache.axiom.ts.soap12.fault.TestMoreChildrenAddition;
 import org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQNameWithExistingValue;
 
@@ -46,10 +45,6 @@ public class SOAPImplementationTest extends TestCase {
         builder.exclude(org.apache.axiom.ts.soap11.faultcode.TestSetValueFromQName.class);
         builder.exclude(org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQName.class);
         builder.exclude(TestSetValueFromQNameWithExistingValue.class);
-        
-        // TODO: fails because DOOM's factories are not stateless
-        //       (and createOMDocument doesn't create a new document in this case)
-        builder.exclude(TestXPathAppliedToSOAPEnvelope.class, "(createDocument=true)");
         
         return builder.build();
     }
