@@ -17,17 +17,17 @@
  * under the License.
  */
 
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.om.impl.dom.jaxp;
 
 import junit.framework.TestCase;
-import org.apache.axiom.om.impl.dom.jaxp.DocumentBuilderFactoryImpl;
-import org.apache.axiom.om.impl.dom.jaxp.DocumentBuilderImpl;
+
+import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-public class DOMImplementationTest extends TestCase {
+public class DocumentBuilderFactoryImplTest extends TestCase {
     public void testDOMImpl() throws Exception {
         try {
 //			System.setProperty("javax.xml.parsers.DocumentBuilderFactory",DocumentBuilderFactoryImpl.class.getName());
