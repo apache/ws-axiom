@@ -53,6 +53,7 @@
     <release><Version><name>Apache Axiom</name><created>2010-10-30</created><revision>1.2.10</revision></Version></release>
     <release><Version><name>Apache Axiom</name><created>2011-02-03</created><revision>1.2.11</revision></Version></release>
     <release><Version><name>Apache Axiom</name><created>2011-07-02</created><revision>1.2.12</revision></Version></release>
+    <release><Version><name>Apache Axiom</name><created>2012-04-02</created><revision>1.2.13</revision></Version></release>
     <repository>
       <SVNRepository>
         <location rdf:resource="http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom"/>
