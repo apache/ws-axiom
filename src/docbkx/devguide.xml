@@ -1220,7 +1220,7 @@ svn update</screen>
                 </listitem>
                 <listitem>
                     <para>
-                        Remove archived releases from <filename>/www/www.apache.org/dist/ws/commons/axiom</filename>
+                        Remove archived releases from <filename>/www/www.apache.org/dist/ws/axiom</filename>
                         on <literal>people.apache.org</literal>.
                     </para>
                 </listitem>
