@@ -173,8 +173,12 @@ public abstract class ChildNode extends NodeImpl {
     }
 
     public void setParent(OMContainer element) {
+        setParent(element, false);
+    }
+    
+    void setParent(OMContainer element, boolean useDomSemantics) {
         if (element == null) {
-            ownerNode = ownerDocument();
+            ownerNode = useDomSemantics ? ownerDocument() : null;
             hasParent(false);
         } else if (element instanceof ParentNode) {
             ownerNode = (ParentNode) element;
@@ -215,7 +219,7 @@ public abstract class ChildNode extends NodeImpl {
             if (parentNode != null && parentNode.lastChild == this) {
                 parentNode.lastChild = previousSibling;
             }
-            setParent(null);
+            setParent(null, false);
             this.previousSibling = null;
         }
         return (OMNode)this;
@@ -274,7 +278,7 @@ public abstract class ChildNode extends NodeImpl {
                 parentNode.setFirstChild((OMNode)siblingImpl);
                 siblingImpl.previousSibling = null;
             } else {
-                siblingImpl.setParent(parentNode);
+                siblingImpl.setParent(parentNode, false);
                 previousSibling.setNextOMSibling((OMNode)siblingImpl);
                 siblingImpl.setPreviousOMSibling((OMNode)previousSibling);
             }
