@@ -68,6 +68,8 @@ public class OMAbstractFactory {
     /**
      * Feature for Axiom implementations that implement DOM in addition to the Axiom API. The
      * {@link OMMetaFactory} for such an Axiom implementation must implement {@link DOMMetaFactory}.
+     * See the documentation of {@link DOMMetaFactory} for more information about the requirements
+     * and constraints that apply to Axiom implementations that support this feature.
      */
     public static final String FEATURE_DOM = "dom";
     

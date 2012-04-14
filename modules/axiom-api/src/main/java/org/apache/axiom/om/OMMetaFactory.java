@@ -29,37 +29,32 @@ import org.apache.axiom.util.stax.xop.MimePartProvider;
 import org.xml.sax.InputSource;
 
 /**
- * Object model meta factory.
- * This interface encapsulates a particular object model and provides instances
- * for plain XML, SOAP 1.1 and SOAP 1.2 object model factories for the
- * given object model implementation. Currently the two OM implementations provided by
- * Axiom are LLOM (linked list) and DOM.
+ * Object model meta factory. This interface encapsulates a particular Axiom implementation and
+ * provides instances for plain XML, SOAP 1.1 and SOAP 1.2 object model factories for that
+ * implementation. Currently the two OM implementations provided by Axiom are LLOM (linked list) and
+ * DOOM (DOM compatible).
  * <p>
  * The factories returned by {@link #getOMFactory()}, {@link #getSOAP11Factory()} and
- * {@link #getSOAP12Factory()} might be stateless (and thread safe) or not. In the former
- * case the implementation should return the same instance on every invocation, i.e.
- * instantiate the factory for each OM type only once. In the latter case, the implementation
- * must return a new instance on every invocation. In order to work with any OM implementation,
- * code using an implementation of this class must call the relevant method once and only once
- * for every document processed.
+ * {@link #getSOAP12Factory()} MUST be stateless (and thread safe). The implementation MUST return
+ * the same instance on every invocation, i.e. instantiate the factory for each OM type only once.
  */
 public interface OMMetaFactory {
     /**
-     * Get an OM factory instance for the XML infoset model.
+     * Get the OM factory instance for the XML infoset model.
      *
      * @return the OM factory instance
      */
     OMFactory getOMFactory();
     
     /**
-     * Get an OM factory instance for the SOAP 1.1 infoset model.
+     * Get the OM factory instance for the SOAP 1.1 infoset model.
      *
      * @return the OM factory instance
      */
     SOAPFactory getSOAP11Factory();
     
     /**
-     * Get an OM factory instance for the SOAP 1.2 infoset model.
+     * Get the OM factory instance for the SOAP 1.2 infoset model.
      *
      * @return the OM factory instance
      */

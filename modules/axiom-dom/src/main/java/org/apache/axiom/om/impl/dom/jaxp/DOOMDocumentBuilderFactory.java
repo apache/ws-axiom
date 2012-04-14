@@ -24,15 +24,33 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.dom.DOMMetaFactory;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
+
 /**
  * Document builder factory that conforms to JAXP.
  */
 public class DOOMDocumentBuilderFactory extends DocumentBuilderFactory {
+    private final OMFactory factory;
     private Schema schema;
+    
+    /**
+     * @deprecated Application code should not instantiate this class directly, but use
+     *             {@link DOMMetaFactory#newDocumentBuilderFactory()} to get an Axiom compatible
+     *             {@link DocumentBuilderFactory}.
+     */
+    public DOOMDocumentBuilderFactory() {
+        this(OMDOMMetaFactory.INSTANCE.getOMFactory());
+    }
+    
+    public DOOMDocumentBuilderFactory(OMFactory factory) {
+        this.factory = factory;
+    }
     
     public DocumentBuilder newDocumentBuilder()
             throws ParserConfigurationException {
-        return new DOOMDocumentBuilder(schema);
+        return new DOOMDocumentBuilder(factory, schema);
     }
 
     public Object getAttribute(String name) throws IllegalArgumentException {

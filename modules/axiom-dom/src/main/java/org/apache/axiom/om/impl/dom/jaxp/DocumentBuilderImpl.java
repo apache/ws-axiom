@@ -20,10 +20,10 @@
 package org.apache.axiom.om.impl.dom.jaxp;
 
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.dom.DOMImplementationImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -75,7 +75,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
     }
 
     public DOMImplementation getDOMImplementation() {
-        return new DOMImplementationImpl();
+        return OMDOMMetaFactory.INSTANCE.getDOMImplementation();
     }
 
     /**

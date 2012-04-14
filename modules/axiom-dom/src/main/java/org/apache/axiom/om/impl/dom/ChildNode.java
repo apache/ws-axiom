@@ -68,8 +68,9 @@ public abstract class ChildNode extends NodeImpl {
      */
     DocumentImpl ownerDocument() {
         if (ownerNode == null) {
-            // TODO: it is currently unspecified/untested if the factory should be inherited from the root node or if it should always be a plain OMFactory
-            DocumentImpl document = new DocumentImpl(factory);
+            // As specified by DOMMetaFactory, the OMFactory for an implicitly created owner
+            // document is always the OMFactory for plain XML.
+            DocumentImpl document = new DocumentImpl(factory.getMetaFactory().getOMFactory());
             ownerNode = document;
             return document;
         } else if (ownerNode instanceof DocumentImpl) {

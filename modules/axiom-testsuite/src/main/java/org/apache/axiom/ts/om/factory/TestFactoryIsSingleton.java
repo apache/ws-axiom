@@ -16,32 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.om.impl.llom.factory;
+package org.apache.axiom.ts.om.factory;
 
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.common.factory.AbstractOMMetaFactory;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.llom.soap11.SOAP11Factory;
-import org.apache.axiom.soap.impl.llom.soap12.SOAP12Factory;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Meta factory for the linked list OM implementation.
+ * Tests that the {@link OMFactory} returned by {@link OMMetaFactory} is a singleton. More precisely
+ * this unit test checks that subsequent calls to {@link OMMetaFactory#getOMFactory()} return the
+ * same instance.
  */
-public class OMLinkedListMetaFactory extends AbstractOMMetaFactory {
-    private final OMFactory omFactory = new OMLinkedListImplFactory(this);
-    private final SOAPFactory soap11Factory = new SOAP11Factory(this);
-    private final SOAPFactory soap12Factory = new SOAP12Factory(this);
-    
-    public OMFactory getOMFactory() {
-        return omFactory;
+public class TestFactoryIsSingleton extends AxiomTestCase {
+    public TestFactoryIsSingleton(OMMetaFactory metaFactory) {
+        super(metaFactory);
     }
-    
-    public SOAPFactory getSOAP11Factory() {
-        return soap11Factory;
-    }
-    
-    public SOAPFactory getSOAP12Factory() {
-        return soap12Factory;
+
+    protected void runTest() throws Throwable {
+        assertSame(metaFactory.getOMFactory(), metaFactory.getOMFactory());
+        assertSame(metaFactory.getSOAP11Factory(), metaFactory.getSOAP11Factory());
+        assertSame(metaFactory.getSOAP12Factory(), metaFactory.getSOAP12Factory());
     }
 }

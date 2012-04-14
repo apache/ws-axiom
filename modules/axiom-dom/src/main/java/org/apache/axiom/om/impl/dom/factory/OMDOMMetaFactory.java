@@ -24,32 +24,43 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.common.factory.AbstractOMMetaFactory;
+import org.apache.axiom.om.impl.dom.DOMImplementationImpl;
 import org.apache.axiom.om.impl.dom.jaxp.DOOMDocumentBuilderFactory;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
 import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
+import org.w3c.dom.DOMImplementation;
 
 /**
  * Meta factory for the DOOM implementation.
- * <p>
- * As explained in {@link OMDOMFactory}, OM factories for DOOM are not stateless.
- * Therefore {@link #getOMFactory()}, {@link #getSOAP11Factory()} and
- * {@link #getSOAP12Factory()} will return a new instance on every invocation.
  */
 public class OMDOMMetaFactory extends AbstractOMMetaFactory implements DOMMetaFactory {
+    // This singleton is necessary to support the no-arg constructor in DOOMDocumentBuilderFactory.
+    // Since that method is deprecated, this singleton should disappear in Axiom 1.3.
+    public static final OMDOMMetaFactory INSTANCE = new OMDOMMetaFactory();
+    
+    private final OMFactory omFactory = new OMDOMFactory(this);
+    private final SOAPFactory soap11Factory = new SOAP11Factory(this);
+    private final SOAPFactory soap12Factory = new SOAP12Factory(this);
+    private final DOMImplementation domImplementation = new DOMImplementationImpl(omFactory);
+    
     public OMFactory getOMFactory() {
-        return new OMDOMFactory(this);
+        return omFactory;
     }
 
     public SOAPFactory getSOAP11Factory() {
-        return new SOAP11Factory(this);
+        return soap11Factory;
     }
 
     public SOAPFactory getSOAP12Factory() {
-        return new SOAP12Factory(this);
+        return soap12Factory;
     }
 
     public DocumentBuilderFactory newDocumentBuilderFactory() {
-        return new DOOMDocumentBuilderFactory();
+        return new DOOMDocumentBuilderFactory(omFactory);
+    }
+
+    public DOMImplementation getDOMImplementation() {
+        return domImplementation;
     }
 }

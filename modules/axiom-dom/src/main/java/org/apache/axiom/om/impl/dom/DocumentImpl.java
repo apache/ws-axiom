@@ -29,6 +29,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.OMDocumentImplUtil;
@@ -300,7 +301,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public DOMImplementation getImplementation() {
-        return new DOMImplementationImpl();
+        return ((DOMMetaFactory)factory.getMetaFactory()).getDOMImplementation();
     }
 
     public Node importNode(Node importedNode, boolean deep) throws DOMException {

@@ -16,15 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom.factory;
+package org.apache.axiom.ts.soap.factory;
 
-import java.util.Map;
-
-import org.apache.axiom.locator.loader.OMMetaFactoryLoader;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class OMDOMMetaFactoryLoader implements OMMetaFactoryLoader {
-    public OMMetaFactory load(Map properties) {
-        return OMDOMMetaFactory.INSTANCE;
+/**
+ * Tests that the SOAP factories returned by {@link OMMetaFactory} are singletons. More precisely
+ * this unit test checks that subsequent calls to {@link OMMetaFactory#getSOAP11Factory()} and
+ * {@link OMMetaFactory#getSOAP12Factory()} return the same instances.
+ */
+public class TestFactoryIsSingleton extends SOAPTestCase {
+    public TestFactoryIsSingleton(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
+    }
+
+    protected void runTest() throws Throwable {
+        assertSame(spec.getFactory(metaFactory), spec.getFactory(metaFactory));
     }
 }
