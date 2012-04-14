@@ -455,7 +455,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
     /** Removes the given child from the DOM Tree. */
     public Node removeChild(Node oldChild) throws DOMException {
         if (oldChild.getParentNode() == this) {
-            ((ChildNode)oldChild).detach();
+            ((ChildNode)oldChild).detach(true);
             return oldChild;
         } else {
             throw new DOMException(DOMException.NOT_FOUND_ERR,

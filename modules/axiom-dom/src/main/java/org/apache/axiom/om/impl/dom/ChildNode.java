@@ -191,6 +191,10 @@ public abstract class ChildNode extends NodeImpl {
     }
 
     public OMNode detach() throws OMException {
+        return detach(false);
+    }
+    
+    OMNode detach(boolean useDomSemantics) {
         ParentNode parentNode = parentNode();
         if (parentNode == null) {
             throw new OMException("Parent level elements cannot be detached");
@@ -219,7 +223,7 @@ public abstract class ChildNode extends NodeImpl {
             if (parentNode != null && parentNode.lastChild == this) {
                 parentNode.lastChild = previousSibling;
             }
-            setParent(null, false);
+            setParent(null, useDomSemantics);
             this.previousSibling = null;
         }
         return (OMNode)this;

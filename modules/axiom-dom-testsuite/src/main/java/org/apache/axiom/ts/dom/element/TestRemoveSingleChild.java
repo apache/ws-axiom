@@ -24,7 +24,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 public class TestRemoveSingleChild extends DOMTestCase {
@@ -34,10 +36,16 @@ public class TestRemoveSingleChild extends DOMTestCase {
 
     protected void runTest() throws Throwable {
         DocumentBuilder builder = dbf.newDocumentBuilder();
-        Element element = builder.parse(new InputSource(new StringReader(
-                "<root><a/></root>"))).getDocumentElement();
-        element.removeChild(element.getFirstChild());
+        Document document = builder.parse(new InputSource(new StringReader(
+                "<root><a/></root>")));
+        Element element = document.getDocumentElement();
+        Node child = element.getFirstChild();
+        element.removeChild(child);
         assertNull(element.getFirstChild());
         assertNull(element.getLastChild());
+        assertNull(child.getPreviousSibling());
+        assertNull(child.getNextSibling());
+        assertNull(child.getParentNode());
+        assertSame(document, child.getOwnerDocument());
     }
 }
