@@ -17,11 +17,14 @@
  * under the License.
  */
 
-package org.apache.axiom.om;
+package org.apache.axiom.ts.soap.builder;
 
 import junit.framework.TestCase;
 
 import java.util.Iterator;
+
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNode;
 
 public class OMTestUtils {
     public static void walkThrough(OMElement omEle) {

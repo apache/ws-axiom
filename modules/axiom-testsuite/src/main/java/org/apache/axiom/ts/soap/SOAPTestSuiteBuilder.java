@@ -19,11 +19,16 @@
 package org.apache.axiom.ts.soap;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 
 public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
     private static final String[] badSOAPFiles = { "wrongSoapNs.xml", "twoheaders.xml", "twoBodymessage.xml",
             "envelopeMissing.xml", "haederBodyWrongOrder.xml" };
+    
+    private static final String[] goodSOAPFiles = { TestConstants.WHITESPACE_MESSAGE,
+        TestConstants.MINIMAL_MESSAGE, TestConstants.REALLY_BIG_MESSAGE,
+        TestConstants.EMPTY_BODY_MESSAGE };
     
     private final OMMetaFactory metaFactory;
     
@@ -106,6 +111,9 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTests(SOAPSpec.SOAP12);
         for (int i=0; i<badSOAPFiles.length; i++) {
             addTest(new org.apache.axiom.ts.soap.builder.BadInputTest(metaFactory, badSOAPFiles[i]));
+        }
+        for (int i=0; i<goodSOAPFiles.length; i++) {
+            addTest(new org.apache.axiom.ts.soap.builder.MessageTest(metaFactory, goodSOAPFiles[i]));
         }
         addTest(new org.apache.axiom.ts.soap11.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestGetNode(metaFactory));
