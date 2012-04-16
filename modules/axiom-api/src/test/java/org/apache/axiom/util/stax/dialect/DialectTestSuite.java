@@ -88,7 +88,7 @@ public class DialectTestSuite extends TestSuite {
         }
         
         ClassLoader parserClassLoader = new ParentLastURLClassLoader(
-                new URL[] { parserJar.toURL() }, DialectTestSuite.class.getClassLoader());
+                new URL[] { parserJar.toURI().toURL() }, DialectTestSuite.class.getClassLoader());
         addTest(new DialectTest(parserClassLoader, parserJar.getName(), props));
     }
 }
