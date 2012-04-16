@@ -63,6 +63,9 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQNameWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestGetQNameWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestSetLocalName(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestCloseWithInputStream(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestCloseWithReader(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestCloseWithXMLStreamReader(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
             addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource(metaFactory, conformanceFiles[i]));
             addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, conformanceFiles[i]));
