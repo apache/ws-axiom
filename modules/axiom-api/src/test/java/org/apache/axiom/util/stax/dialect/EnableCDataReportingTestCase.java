@@ -24,8 +24,12 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public class EnableCDataReportingTestCase extends DialectTestCase {
+    public EnableCDataReportingTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = getDialect().enableCDataReporting(newNormalizedXMLInputFactory());
+        XMLInputFactory factory = staxImpl.getDialect().enableCDataReporting(staxImpl.newNormalizedXMLInputFactory());
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<a><![CDATA[test]]></a>"));
         reader.nextTag();
         assertEquals(XMLStreamReader.CDATA, reader.next());

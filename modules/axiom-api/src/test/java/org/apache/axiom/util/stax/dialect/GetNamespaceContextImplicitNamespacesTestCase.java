@@ -26,8 +26,12 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.testutils.namespace.NamespaceContextTestUtils;
 
 public class GetNamespaceContextImplicitNamespacesTestCase extends DialectTestCase {
+    public GetNamespaceContextImplicitNamespacesTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root/>"));
         reader.nextTag();
         NamespaceContextTestUtils.checkImplicitNamespaces(reader.getNamespaceContext());

@@ -21,8 +21,8 @@ package org.apache.axiom.util.stax.dialect;
 import javax.xml.stream.XMLStreamReader;
 
 public class HasTextTestCase extends BooleanPropertyTestCase {
-    public HasTextTestCase(int event, boolean expected) {
-        super(event, expected);
+    public HasTextTestCase(StAXImplementation staxImpl, int event, boolean expected) {
+        super(staxImpl, event, expected);
     }
 
     protected boolean invoke(XMLStreamReader reader) {

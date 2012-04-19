@@ -24,8 +24,12 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public class GetAttributeNamespaceWithNoPrefixTestCase extends DialectTestCase {
+    public GetAttributeNamespaceWithNoPrefixTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader( 
                 "<root attr=\"test\"><child xmlns=\"urn:ns\" attr=\"test\"/></root>"));
         int eventType;

@@ -24,8 +24,12 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public class StandaloneSetTestCase extends DialectTestCase {
+    public StandaloneSetTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(
                 new StringReader("<?xml version='1.0'?><root/>"));
         assertEquals(false, reader.standaloneSet());

@@ -36,18 +36,19 @@ public class GetEncodingFromDetectionTestCase extends DialectTestCase {
     private final String javaEncoding;
     private final Set xmlEncodings;
 
-    public GetEncodingFromDetectionTestCase(String javaEncoding, String[] xmlEncodings) {
+    public GetEncodingFromDetectionTestCase(StAXImplementation staxImpl, String javaEncoding, String[] xmlEncodings) {
+        super(staxImpl);
         this.javaEncoding = javaEncoding;
         this.xmlEncodings = new HashSet(Arrays.asList(xmlEncodings));
-        setName(getClass().getName() + " [" + javaEncoding + "]");
+        addTestProperty("javaEncoding", javaEncoding);
     }
     
-    public GetEncodingFromDetectionTestCase(String javaEncoding, String xmlEncoding) {
-        this(javaEncoding, new String[] { xmlEncoding });
+    public GetEncodingFromDetectionTestCase(StAXImplementation staxImpl, String javaEncoding, String xmlEncoding) {
+        this(staxImpl, javaEncoding, new String[] { xmlEncoding });
     }
 
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new ByteArrayInputStream(
                 "<?xml version=\"1.0\"?><root/>".getBytes(javaEncoding)));
         String actualEncoding = reader.getEncoding();

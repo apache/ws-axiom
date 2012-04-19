@@ -24,12 +24,16 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public class GetTextInPrologTestCase extends DialectTestCase {
+    public GetTextInPrologTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(
                 new StringReader("<?xml version=\"1.0\"?>\r\n<root/>"));
         if (reader.next() == XMLStreamReader.START_ELEMENT) {
-            System.out.println("Warning: " + getDialect().getName()
+            System.out.println("Warning: " + staxImpl.getDialect().getName()
                     + " doesn't report character data in prolog");
         } else {
             assertEquals("\n", reader.getText());

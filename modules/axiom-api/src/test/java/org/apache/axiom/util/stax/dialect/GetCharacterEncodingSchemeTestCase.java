@@ -24,8 +24,12 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 public class GetCharacterEncodingSchemeTestCase extends DialectTestCase {
+    public GetCharacterEncodingSchemeTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new ByteArrayInputStream(
                 "<?xml version='1.0' encoding='iso-8859-15'?><root/>".getBytes("iso-8859-15")));
         assertEquals("iso-8859-15", reader.getCharacterEncodingScheme());

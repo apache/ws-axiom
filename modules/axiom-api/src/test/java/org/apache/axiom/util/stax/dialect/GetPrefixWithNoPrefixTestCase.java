@@ -28,8 +28,12 @@ import javax.xml.stream.XMLStreamReader;
  * <code>""</code>) if an element has no prefix.
  */
 public class GetPrefixWithNoPrefixTestCase extends DialectTestCase {
+    public GetPrefixWithNoPrefixTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader( 
                 "<root><child xmlns=\"urn:ns\"/></root>"));
         reader.next();

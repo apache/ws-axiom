@@ -26,9 +26,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class DisallowDoctypeDeclWithDenialOfServiceTestCase extends DialectTestCase {
+    public DisallowDoctypeDeclWithDenialOfServiceTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
-        factory = getDialect().disallowDoctypeDecl(factory);
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
+        factory = staxImpl.getDialect().disallowDoctypeDecl(factory);
         InputStream in = DisallowDoctypeDeclWithDenialOfServiceTestCase.class.getResourceAsStream("doctype_dos.xml");
         try {
             boolean gotException = false;

@@ -30,8 +30,12 @@ import javax.xml.stream.XMLStreamReader;
  * has already been reached.
  */
 public class NextAfterEndDocumentTestCase extends DialectTestCase {
+    public NextAfterEndDocumentTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root/>"));
         while (reader.next() != XMLStreamReader.END_DOCUMENT) {
             // Just loop

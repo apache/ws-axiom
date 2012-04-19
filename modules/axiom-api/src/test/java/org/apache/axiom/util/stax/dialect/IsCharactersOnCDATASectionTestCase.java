@@ -30,8 +30,12 @@ import javax.xml.stream.XMLStreamReader;
  * {@link IsCharactersTestCase}.
  */
 public class IsCharactersOnCDATASectionTestCase extends DialectTestCase {
+    public IsCharactersOnCDATASectionTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         factory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root><![CDATA[X]]></root>"));
         reader.nextTag();

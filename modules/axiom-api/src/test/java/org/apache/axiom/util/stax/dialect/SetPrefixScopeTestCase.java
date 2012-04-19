@@ -24,8 +24,12 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
 
 public class SetPrefixScopeTestCase extends DialectTestCase {
+    public SetPrefixScopeTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLOutputFactory factory = newNormalizedXMLOutputFactory();
+        XMLOutputFactory factory = staxImpl.newNormalizedXMLOutputFactory();
         XMLStreamWriter writer = factory.createXMLStreamWriter(new ByteArrayOutputStream());
         writer.writeStartDocument();
         writer.writeStartElement("root");

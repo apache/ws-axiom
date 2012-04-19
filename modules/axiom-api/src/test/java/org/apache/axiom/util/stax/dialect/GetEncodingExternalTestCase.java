@@ -28,8 +28,12 @@ import javax.xml.stream.XMLStreamReader;
  * {@link XMLInputFactory#createXMLStreamReader(java.io.InputStream, String)}.
  */
 public class GetEncodingExternalTestCase extends DialectTestCase {
+    public GetEncodingExternalTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new ByteArrayInputStream(
                 "<root/>".getBytes("ISO-8859-1")), "ISO-8859-1");
         assertEquals("ISO-8859-1", reader.getEncoding());

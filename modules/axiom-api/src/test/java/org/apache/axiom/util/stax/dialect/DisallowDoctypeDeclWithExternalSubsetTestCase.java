@@ -26,9 +26,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class DisallowDoctypeDeclWithExternalSubsetTestCase extends DialectTestCase {
+    public DisallowDoctypeDeclWithExternalSubsetTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
-        factory = getDialect().disallowDoctypeDecl(factory);
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
+        factory = staxImpl.getDialect().disallowDoctypeDecl(factory);
         DummyHTTPServer server = new DummyHTTPServer();
         server.start();
         try {

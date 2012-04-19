@@ -35,32 +35,32 @@ public class DialectTestSuite extends TestSuite {
     };
     
     public static Test suite() throws Exception {
-        DialectTestSuite suite = new DialectTestSuite();
+        DialectTestSuiteBuilder builder = new DialectTestSuiteBuilder();
         
         File targetDir = new File("target");
         
         // On Java 1.6, also add the StAX implementation from the JRE
         // The check is not very clean but it should be enough for a unit test...
         if (System.getProperty("java.version").startsWith("1.6")) {
-            suite.addTest(new DialectTest(ClassLoader.getSystemClassLoader(), "JRE", null));
+            builder.addImplementation(new StAXImplementation("JRE", ClassLoader.getSystemClassLoader(), null));
         }
         
-        suite.addParsersFromDirectory(new File("parsers"));
-        suite.addParsersFromDirectory(new File(targetDir, "parsers"));
+        addParsersFromDirectory(builder, new File("parsers"));
+        addParsersFromDirectory(builder, new File(targetDir, "parsers"));
         
-        return suite;
+        return builder.build();
     }
 
-    private void addParsersFromDirectory(File dir) throws Exception {
+    private static void addParsersFromDirectory(DialectTestSuiteBuilder builder, File dir) throws Exception {
         if (dir.exists()) {
             File[] parserJars = dir.listFiles(jarFilter);
             for (int i=0; i<parserJars.length; i++) {
-                addParserJar(parserJars[i]);
+                addParserJar(builder, parserJars[i]);
             }
         }
     }
     
-    private void addParserJar(File parserJar) throws Exception {
+    private static void addParserJar(DialectTestSuiteBuilder builder, File parserJar) throws Exception {
         Properties props = null;
         
         String name = parserJar.getName();
@@ -89,6 +89,6 @@ public class DialectTestSuite extends TestSuite {
         
         ClassLoader parserClassLoader = new ParentLastURLClassLoader(
                 new URL[] { parserJar.toURI().toURL() }, DialectTestSuite.class.getClassLoader());
-        addTest(new DialectTest(parserClassLoader, parserJar.getName(), props));
+        builder.addImplementation(new StAXImplementation(parserJar.getName(), parserClassLoader, props));
     }
 }

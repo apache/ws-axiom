@@ -22,8 +22,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class GetLocalNameIllegalStateExceptionTestCase extends IllegalStateExceptionTestCase {
-    public GetLocalNameIllegalStateExceptionTestCase(int event, boolean expectException) {
-        super(event, expectException);
+    public GetLocalNameIllegalStateExceptionTestCase(StAXImplementation staxImpl, int event, boolean expectException) {
+        super(staxImpl, event, expectException);
     }
 
     protected void invoke(XMLStreamReader reader) throws XMLStreamException {

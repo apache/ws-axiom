@@ -18,35 +18,13 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
+import org.apache.axiom.testutils.suite.TestCaseEx;
 
-import org.apache.axiom.om.AbstractTestCase;
-
-public abstract class DialectTestCase extends AbstractTestCase {
-    private DialectTest test;
+public abstract class DialectTestCase extends TestCaseEx {
+    protected final StAXImplementation staxImpl;
     
-    void init(DialectTest test) {
-        this.test = test;
-        if (getName() == null) {
-            setName(getClass().getName());
-        }
-        setName(getName() + " [" + test.getName() + "]");
-    }
-    
-    protected XMLInputFactory newNormalizedXMLInputFactory() {
-        return test.newNormalizedXMLInputFactory();
-    }
-    
-    protected XMLOutputFactory newNormalizedXMLOutputFactory() {
-        return test.newNormalizedXMLOutputFactory();
-    }
-    
-    protected StAXDialect getDialect() {
-        return test.getDialect();
-    }
-    
-    protected ClassLoader getImplementationClassLoader() {
-        return test.getClassLoader();
+    public DialectTestCase(StAXImplementation staxImpl) {
+        this.staxImpl = staxImpl;
+        addTestProperty("implementation", staxImpl.getName());
     }
 }

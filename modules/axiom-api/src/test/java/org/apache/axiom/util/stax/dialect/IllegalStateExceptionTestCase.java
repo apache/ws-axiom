@@ -24,8 +24,8 @@ import javax.xml.stream.XMLStreamReader;
 public abstract class IllegalStateExceptionTestCase extends EventSpecificTestCase {
     private final boolean expectException;
     
-    public IllegalStateExceptionTestCase(int event, boolean expectException) {
-        super(event);
+    public IllegalStateExceptionTestCase(StAXImplementation staxImpl, int event, boolean expectException) {
+        super(staxImpl, event);
         this.expectException = expectException;
     }
 

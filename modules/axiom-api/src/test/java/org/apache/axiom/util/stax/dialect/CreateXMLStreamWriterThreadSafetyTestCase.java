@@ -27,8 +27,12 @@ import org.apache.axiom.testutils.concurrent.Action;
 import org.apache.axiom.testutils.concurrent.ConcurrentTestUtils;
 
 public class CreateXMLStreamWriterThreadSafetyTestCase extends DialectTestCase {
+    public CreateXMLStreamWriterThreadSafetyTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        final XMLOutputFactory factory = getDialect().makeThreadSafe(newNormalizedXMLOutputFactory());
+        final XMLOutputFactory factory = staxImpl.getDialect().makeThreadSafe(staxImpl.newNormalizedXMLOutputFactory());
         ConcurrentTestUtils.testThreadSafety(new Action() {
             public void execute() throws Exception {
                 String text = String.valueOf((int)(Math.random() * 10000));

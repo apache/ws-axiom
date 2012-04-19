@@ -21,8 +21,12 @@ package org.apache.axiom.util.stax.dialect;
 import javax.xml.stream.XMLStreamWriter;
 
 public class WriteStartDocumentWithNullEncodingTestCase extends DialectTestCase {
+    public WriteStartDocumentWithNullEncodingTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLStreamWriter writer = newNormalizedXMLOutputFactory().createXMLStreamWriter(System.out, "UTF-8");
+        XMLStreamWriter writer = staxImpl.newNormalizedXMLOutputFactory().createXMLStreamWriter(System.out, "UTF-8");
         try {
             writer.writeStartDocument(null, "1.0");
         } catch (Throwable ex) {

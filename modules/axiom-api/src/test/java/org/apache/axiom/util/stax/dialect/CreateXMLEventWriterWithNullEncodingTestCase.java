@@ -21,8 +21,12 @@ package org.apache.axiom.util.stax.dialect;
 import javax.xml.stream.XMLOutputFactory;
 
 public class CreateXMLEventWriterWithNullEncodingTestCase extends DialectTestCase {
+    public CreateXMLEventWriterWithNullEncodingTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLOutputFactory factory = newNormalizedXMLOutputFactory();
+        XMLOutputFactory factory = staxImpl.newNormalizedXMLOutputFactory();
         // This should cause an exception
         try {
             factory.createXMLEventWriter(System.out, null);

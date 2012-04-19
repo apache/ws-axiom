@@ -23,8 +23,8 @@ import javax.xml.stream.XMLStreamReader;
 public abstract class BooleanPropertyTestCase extends EventSpecificTestCase {
     private final boolean expected;
 
-    public BooleanPropertyTestCase(int event, boolean expected) {
-        super(event);
+    public BooleanPropertyTestCase(StAXImplementation staxImpl, int event, boolean expected) {
+        super(staxImpl, event);
         this.expected = expected;
     }
 

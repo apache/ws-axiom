@@ -26,10 +26,14 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
 public class UnwrapTestCase extends DialectTestCase {
+    public UnwrapTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root/>"));
         XMLStreamReader originalReader = XMLStreamReaderUtils.getOriginalXMLStreamReader(reader);
-        assertSame(getImplementationClassLoader(), originalReader.getClass().getClassLoader());
+        assertSame(staxImpl.getClassLoader(), originalReader.getClass().getClassLoader());
     }
 }

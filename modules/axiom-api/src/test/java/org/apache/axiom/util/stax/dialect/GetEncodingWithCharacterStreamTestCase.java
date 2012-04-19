@@ -28,8 +28,12 @@ import javax.xml.stream.XMLStreamReader;
  * created from a character stream.
  */
 public class GetEncodingWithCharacterStreamTestCase extends DialectTestCase {
+    public GetEncodingWithCharacterStreamTestCase(StAXImplementation staxImpl) {
+        super(staxImpl);
+    }
+
     protected void runTest() throws Throwable {
-        XMLInputFactory factory = newNormalizedXMLInputFactory();
+        XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
         XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root/>"));
         assertNull(reader.getEncoding());
     }
