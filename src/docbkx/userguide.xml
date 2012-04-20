@@ -1440,6 +1440,19 @@ while (iterator.hasNext()) {
                     </itemizedlist>
                 </section>
             </section>
+            <section id="changes-1.2.14">
+                <title>Changes in Axiom 1.2.14</title>
+                <section>
+                    <title>Upgrade of Woodstox</title>
+                    <para>
+                        Woodstox 3.2.x is no longer maintained. Starting with version 1.2.14, Axiom depends on Woodstox 4.1.x,
+                        although using 3.2.x (and 4.0.x) is still supported. This may have an impact on projects that use
+                        Maven, because the artifact ID used by Woodstox changed from <literal>wstx-asl</literal> to
+                        <literal>woodstox-core-asl</literal>. These projects may need to update their dependencies
+                        to avoid depending on two different versions of Woodstox.
+                    </para>
+                </section>
+            </section>
         </section>
     </chapter>
 
