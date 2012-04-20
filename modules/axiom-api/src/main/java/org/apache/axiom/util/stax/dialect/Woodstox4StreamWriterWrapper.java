@@ -19,33 +19,21 @@
 
 package org.apache.axiom.util.stax.dialect;
 
-import java.io.OutputStream;
-
-import javax.xml.stream.XMLEventWriter;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-class WoodstoxOutputFactoryWrapper extends NormalizingXMLOutputFactoryWrapper {
-    public WoodstoxOutputFactoryWrapper(XMLOutputFactory parent, AbstractStAXDialect dialect) {
-        super(parent, dialect);
+import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
+
+class Woodstox4StreamWriterWrapper extends XMLStreamWriterWrapper {
+    public Woodstox4StreamWriterWrapper(XMLStreamWriter parent) {
+        super(parent);
     }
 
-    public XMLEventWriter createXMLEventWriter(OutputStream stream, String encoding)
-            throws XMLStreamException {
+    public void writeStartDocument(String encoding, String version) throws XMLStreamException {
         if (encoding == null) {
             throw new IllegalArgumentException();
         } else {
-            return super.createXMLEventWriter(stream, encoding);
-        }
-    }
-
-    public XMLStreamWriter createXMLStreamWriter(OutputStream stream, String encoding)
-            throws XMLStreamException {
-        if (encoding == null) {
-            throw new IllegalArgumentException();
-        } else {
-            return super.createXMLStreamWriter(stream, encoding);
+            super.writeStartDocument(encoding, version);
         }
     }
 }

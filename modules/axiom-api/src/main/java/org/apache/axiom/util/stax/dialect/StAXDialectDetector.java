@@ -226,7 +226,13 @@ public class StAXDialectDetector {
         // For the moment, the dialect detection is quite simple, but in the future we will probably
         // have to differentiate by version number
         if (vendor != null && vendor.toLowerCase().indexOf("woodstox") != -1) {
-            return WoodstoxDialect.INSTANCE;
+            if (version.startsWith("3.")) {
+                return Woodstox3Dialect.INSTANCE;
+            } else if (version.startsWith("4.")) {
+                return Woodstox4Dialect.INSTANCE;
+            } else {
+                return null;
+            }
         } else if (title != null && title.indexOf("SJSXP") != -1) {
             return new SJSXPDialect(false);
         } else if ("com.bea.core.weblogic.stax".equals(symbolicName)) {

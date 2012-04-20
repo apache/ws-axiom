@@ -24,11 +24,11 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
-class WoodstoxDialect extends AbstractStAXDialect {
-    public static final WoodstoxDialect INSTANCE = new WoodstoxDialect();
+class Woodstox3Dialect extends AbstractStAXDialect {
+    public static final Woodstox3Dialect INSTANCE = new Woodstox3Dialect();
 
     public String getName() {
-        return "Woodstox";
+        return "Woodstox 3.x";
     }
 
     public XMLInputFactory enableCDataReporting(XMLInputFactory factory) {
@@ -52,11 +52,11 @@ class WoodstoxDialect extends AbstractStAXDialect {
     }
 
     public XMLStreamReader normalize(XMLStreamReader reader) {
-        return new WoodstoxStreamReaderWrapper(reader);
+        return new Woodstox3StreamReaderWrapper(reader);
     }
 
     public XMLStreamWriter normalize(XMLStreamWriter writer) {
-        return new WoodstoxStreamWriterWrapper(writer);
+        return new Woodstox3StreamWriterWrapper(writer);
     }
 
     public XMLInputFactory normalize(XMLInputFactory factory) {
@@ -64,6 +64,6 @@ class WoodstoxDialect extends AbstractStAXDialect {
     }
 
     public XMLOutputFactory normalize(XMLOutputFactory factory) {
-        return new WoodstoxOutputFactoryWrapper(factory, this);
+        return new Woodstox3OutputFactoryWrapper(factory, this);
     }
 }

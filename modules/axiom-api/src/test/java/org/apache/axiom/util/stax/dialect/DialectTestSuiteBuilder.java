@@ -42,6 +42,8 @@ public class DialectTestSuiteBuilder extends TestSuiteBuilder {
 
     private void addTests(StAXImplementation staxImpl) {
         String[] conformanceTestFiles = AbstractTestCase.getConformanceTestFiles();
+        addTest(new TestCloseInputStream(staxImpl));
+        addTest(new TestCloseReader(staxImpl));
         addTest(new TestCreateXMLEventWriterWithNullEncoding(staxImpl));
         addTest(new TestCreateXMLStreamReaderThreadSafety(staxImpl));
         addTest(new TestCreateXMLStreamWriterThreadSafety(staxImpl));
