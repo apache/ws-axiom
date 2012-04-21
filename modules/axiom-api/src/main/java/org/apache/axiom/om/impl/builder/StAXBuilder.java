@@ -36,6 +36,7 @@ import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -147,7 +148,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         if (parser instanceof BuilderAwareReader) {
             ((BuilderAwareReader) parser).setBuilder(this);
         }
-        dataHandlerReader = DataHandlerReaderUtils.getDataHandlerReader(parser);
+        dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
         this.parser = parser;
     }
 

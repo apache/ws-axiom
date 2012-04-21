@@ -58,6 +58,12 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <!-- TODO: eliminate this dependency -->
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-compat</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>jaxen</groupId>
             <artifactId>jaxen</artifactId>
         </dependency>
