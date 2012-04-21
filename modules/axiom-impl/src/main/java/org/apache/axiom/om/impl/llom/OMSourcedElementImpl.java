@@ -74,7 +74,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     private OMNamespace definedNamespace = null;
 
     /** Flag for parser provided to base element class. */
-    private boolean isExpanded = false;
+    private boolean isExpanded;
 
     private static final Log log = LogFactory.getLog(OMSourcedElementImpl.class);
     
@@ -103,18 +103,17 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public OMSourcedElementImpl(String localName, OMNamespace ns, OMFactory factory,
                                 OMDataSource source) {
         super(localName, null, factory);
+        if (source == null) {
+            throw new IllegalArgumentException("OMDataSource can't be null");
+        }
         dataSource = source;
-        isExpanded = (dataSource == null);
-        if (!isExpanded) {
-            if (!isLossyPrefix(dataSource)) {
-                // Believe the prefix and create a normal OMNamespace
-                definedNamespace = normalize(ns);
-            } else {
-                // Create a deferred namespace that forces an expand to get the prefix
-                definedNamespace = new DeferredNamespace(ns.getNamespaceURI());
-            }
-        } else {
+        isExpanded = false;
+        if (!isLossyPrefix(dataSource)) {
+            // Believe the prefix and create a normal OMNamespace
             definedNamespace = normalize(ns);
+        } else {
+            // Create a deferred namespace that forces an expand to get the prefix
+            definedNamespace = new DeferredNamespace(ns.getNamespaceURI());
         }
     }
 
@@ -128,18 +127,17 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public OMSourcedElementImpl(QName qName, OMFactory factory, OMDataSource source) {
         //create a namespace
         super(qName.getLocalPart(), null, factory);
+        if (source == null) {
+            throw new IllegalArgumentException("OMDataSource can't be null");
+        }
         dataSource = source;
-        isExpanded = (dataSource == null);
-        if (!isExpanded) {
-            if (!isLossyPrefix(dataSource)) {
-                // Believe the prefix and create a normal OMNamespace
-                definedNamespace = getOMNamespace(qName);
-            } else {
-                // Create a deferred namespace that forces an expand to get the prefix
-                definedNamespace = new DeferredNamespace(qName.getNamespaceURI());
-            }
-        } else {
+        isExpanded = false;
+        if (!isLossyPrefix(dataSource)) {
+            // Believe the prefix and create a normal OMNamespace
             definedNamespace = getOMNamespace(qName);
+        } else {
+            // Create a deferred namespace that forces an expand to get the prefix
+            definedNamespace = new DeferredNamespace(qName.getNamespaceURI());
         }
     }
 

@@ -287,6 +287,10 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
                 addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace3(metaFactory, variant));
             }
         }
+        if (supportsOMSourcedElement) {
+            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullOMDataSource1(metaFactory));
+            addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullOMDataSource2(metaFactory));
+        }
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNullURIAndPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMNamespaceWithNullURI(metaFactory));

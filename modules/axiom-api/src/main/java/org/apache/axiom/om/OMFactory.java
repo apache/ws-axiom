@@ -101,7 +101,7 @@ public interface OMFactory {
      * This is an optional operation which may not be supported by all factories.
      * 
      * @param source
-     *            the data source
+     *            the data source; must not be <code>null</code>
      * @param localName
      *            the local part of the name of the element produced by the data source; must not be
      *            <code>null</code>
@@ -109,6 +109,8 @@ public interface OMFactory {
      *            the namespace of the element produced by the data source, or <code>null</code> if
      *            the element has no namespace
      * @return the newly created element
+     * @throws IllegalArgumentException
+     *             if <code>source</code> is <code>null</code>
      */
     OMSourcedElement createOMElement(OMDataSource source, String localName,
                                      OMNamespace ns);
@@ -119,10 +121,12 @@ public interface OMFactory {
      * This is an optional operation which may not be supported by all factories.
      * 
      * @param source
-     *            the data source
+     *            the data source; must not be <code>null</code>
      * @param qname
      *            the name of the element produced by the data source; must not be <code>null</code>
      * @return the newly created element
+     * @throws IllegalArgumentException
+     *             if <code>source</code> is <code>null</code>
      */
     OMSourcedElement createOMElement(OMDataSource source, QName qname);
 
