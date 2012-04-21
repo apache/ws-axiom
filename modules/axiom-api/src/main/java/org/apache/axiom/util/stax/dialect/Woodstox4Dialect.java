@@ -64,6 +64,10 @@ class Woodstox4Dialect extends AbstractStAXDialect {
     }
 
     public XMLOutputFactory normalize(XMLOutputFactory factory) {
+        
+        // TODO: quick fix for AXIOM-415; need a proper solution
+        factory.setProperty("com.ctc.wstx.outputFixContent", Boolean.TRUE);
+        
         return new Woodstox4OutputFactoryWrapper(factory, this);
     }
 }
