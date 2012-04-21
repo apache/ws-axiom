@@ -96,22 +96,33 @@ public interface OMFactory {
                                      OMXMLParserWrapper builder);
 
     /**
-     * Construct element with arbitrary data source. This is an optional operation which may not be
-     * supported by all factories.
-     *
+     * Create a sourced element with a known local name, namespace URI and namespace prefix.
+     * <p>
+     * This is an optional operation which may not be supported by all factories.
+     * 
      * @param source
+     *            the data source
      * @param localName
+     *            the local part of the name of the element produced by the data source; must not be
+     *            <code>null</code>
      * @param ns
+     *            the namespace of the element produced by the data source, or <code>null</code> if
+     *            the element has no namespace
+     * @return the newly created element
      */
     OMSourcedElement createOMElement(OMDataSource source, String localName,
                                      OMNamespace ns);
 
     /**
-     * Construct element with arbitrary data source. This is an optional operation which may not be
-     * supported by all factories.
-     *
-     * @param source the data source
-     * @param qname the name of the element produced by the data source
+     * Create a sourced element with a known local name, namespace URI and namespace prefix.
+     * <p>
+     * This is an optional operation which may not be supported by all factories.
+     * 
+     * @param source
+     *            the data source
+     * @param qname
+     *            the name of the element produced by the data source; must not be <code>null</code>
+     * @return the newly created element
      */
     OMSourcedElement createOMElement(OMDataSource source, QName qname);
 
