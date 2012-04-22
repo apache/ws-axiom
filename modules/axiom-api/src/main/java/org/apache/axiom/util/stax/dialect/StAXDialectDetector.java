@@ -211,27 +211,30 @@ public class StAXDialectDetector {
         if (vendor == null) {
             vendor = attrs.getValue(BUNDLE_VENDOR);
         }
-        String version = attrs.getValue(IMPLEMENTATION_VERSION);
-        if (version == null) {
-            version = attrs.getValue(BUNDLE_VERSION);
+        String versionString = attrs.getValue(IMPLEMENTATION_VERSION);
+        if (versionString == null) {
+            versionString = attrs.getValue(BUNDLE_VERSION);
         }
         if (log.isDebugEnabled()) {
             log.debug("StAX implementation at " + rootUrl + " is:\n" +
                     "  Title:         " + title + "\n" +
                     "  Symbolic name: " + symbolicName + "\n" +
                     "  Vendor:        " + vendor + "\n" +
-                    "  Version:       " + version);
+                    "  Version:       " + versionString);
         }
         
         // For the moment, the dialect detection is quite simple, but in the future we will probably
         // have to differentiate by version number
         if (vendor != null && vendor.toLowerCase().indexOf("woodstox") != -1) {
-            if (version.startsWith("3.")) {
-                return Woodstox3Dialect.INSTANCE;
-            } else if (version.startsWith("4.")) {
-                return Woodstox4Dialect.INSTANCE;
-            } else {
-                return null;
+            Version version = new Version(versionString);
+            switch (version.getComponent(0)) {
+                case 3:
+                    return Woodstox3Dialect.INSTANCE;
+                case 4:
+                    return new Woodstox4Dialect(version.getComponent(1) == 0 && version.getComponent(2) < 11
+                            || version.getComponent(1) == 1 && version.getComponent(2) < 3);
+                default:
+                    return null;
             }
         } else if (title != null && title.indexOf("SJSXP") != -1) {
             return new SJSXPDialect(false);

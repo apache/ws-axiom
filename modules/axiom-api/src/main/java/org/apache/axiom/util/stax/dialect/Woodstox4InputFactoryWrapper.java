@@ -26,27 +26,30 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class Woodstox4InputFactoryWrapper extends NormalizingXMLInputFactoryWrapper {
-    public Woodstox4InputFactoryWrapper(XMLInputFactory parent, AbstractStAXDialect dialect) {
+    private final boolean wstx276;
+    
+    public Woodstox4InputFactoryWrapper(XMLInputFactory parent, AbstractStAXDialect dialect, boolean wstx276) {
         super(parent, dialect);
+        this.wstx276 = wstx276;
     }
 
     public XMLStreamReader createXMLStreamReader(InputStream stream, String encoding) throws XMLStreamException {
-        return super.createXMLStreamReader(new CloseShieldInputStream(stream), encoding);
+        return super.createXMLStreamReader(wstx276 ? new CloseShieldInputStream(stream) : stream, encoding);
     }
 
     public XMLStreamReader createXMLStreamReader(InputStream stream) throws XMLStreamException {
-        return super.createXMLStreamReader(new CloseShieldInputStream(stream));
+        return super.createXMLStreamReader(wstx276 ? new CloseShieldInputStream(stream) : stream);
     }
 
     public XMLStreamReader createXMLStreamReader(Reader reader) throws XMLStreamException {
-        return super.createXMLStreamReader(new CloseShieldReader(reader));
+        return super.createXMLStreamReader(wstx276 ? new CloseShieldReader(reader) : reader);
     }
 
     public XMLStreamReader createXMLStreamReader(String systemId, InputStream stream) throws XMLStreamException {
-        return super.createXMLStreamReader(systemId, new CloseShieldInputStream(stream));
+        return super.createXMLStreamReader(systemId, wstx276 ? new CloseShieldInputStream(stream) : stream);
     }
 
     public XMLStreamReader createXMLStreamReader(String systemId, Reader reader) throws XMLStreamException {
-        return super.createXMLStreamReader(systemId, new CloseShieldReader(reader));
+        return super.createXMLStreamReader(systemId, wstx276 ? new CloseShieldReader(reader) : reader);
     }
 }
