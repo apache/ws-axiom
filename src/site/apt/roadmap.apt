@@ -205,6 +205,42 @@ Public APIs that need to be moved to another package
 
 APIs that need to be overhauled
 
+* <<<OMDataSource>>>
+
+  The <<<OMDataSource>>> API has evolved over time and there have been several additions, not all of which
+  are well designed. Here is a [partial] list of issues with the design of this API:
+  
+   * The <<<OMDataSource#serialize(OutputStream, OMOutputFormat)>>> and <<<OMDataSource#serialize(Writer, OMOutputFormat)>>>
+     are currently only used when a corresponding <<<serialize>>> method is invoked directly on the <<<OMSourcedElement>>>
+     instance. This however is a rare event because a <<<OMSourcedElement>>> is usually serialized as part of a larger tree,
+     in which case <<<OMDataSource#serialize(XMLStreamWriter)>>> will be used. In addition, these methods are rarely invoked
+     directly by application code, and code doing this could be easily rewritten to construct a <<<OMSourcedElement>>>
+     first and to use the <<<serialize>>> methods on that element.
+     
+     The two methods could nevertheless be useful if they were used by <<<OMSourcedElement>>> to optimize the serialization
+     process for <<<OMDataSource>>> instances backed by objects that can be serialized to a byte or character stream in a
+     way that is more efficient than using an <<<XMLStreamWriter>>>. This would require <<<OMSourcedElement>>> to bypass
+     the <<<XMLStreamWriter>>> and let the <<<OMDataSource>>> directly write to the underlying stream. However, the current
+     API is not correctly designed for this purpose:
+     
+      * Since the two methods are defined by <<<OMDataSource>>> (and not by an optional interface), <<<OMSourcedElement>>>
+        has no way of knowing whether the data source implements an optimized serialization mechanism. In fact, most data sources
+        will have a trivial implementation based on <<<XMLStreamWriter>>> and in that case, using these methods would
+        actually be less efficient than using <<<OMDataSource#serialize(XMLStreamWriter)>>>.
+      
+      * To ensure that the optimization always produces well formed XML, the contract of the two methods would have to clearly
+        specify that the implementation must not write an XML declaration and also must not write a byte order marker
+        (a byte order marker may only appear at the beginning of the document). In fact, the <<<OMOutputFormat>>> argument
+        is not appropriate because only the charset encoding parameter would be relevant (for the method that writes
+        to an <<<OutputStream>>>).
+      
+      * To correctly serialize the content of the <<<OMDataSource>>> as a fragment of a larger document, the implementation
+        would need information about the current namespace context. However, that information is not passed to these methods.
+        Without that information, the implementation will likely generate redundant namespace declarations. It may also
+        generate incorrect XML if there is a default namespace.
+      
+      * The two methods are not XOP aware.
+
 * Attachment lifecycle manager
 
   The <<<LifecycleManager>>> API has a couple of issues that can't be fixed without breaking
