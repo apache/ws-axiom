@@ -34,6 +34,7 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.soap.SOAPFactory;
 import org.w3c.dom.Attr;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
@@ -74,8 +75,12 @@ import org.w3c.dom.Text;
  * <td>{@link Attr} [2]</td>
  * </tr>
  * <tr>
- * <td>{@link OMText}</td>
+ * <td>{@link OMText} with type {@link OMNode#TEXT_NODE} or {@link OMNode#SPACE_NODE}</td>
  * <td>{@link Text}</td>
+ * </tr>
+ * <tr>
+ * <td>{@link OMText} with type {@link OMNode#CDATA_SECTION_NODE}</td>
+ * <td>{@link CDATASection}</td>
  * </tr>
  * <tr>
  * <td>{@link OMComment}</td>
@@ -130,10 +135,12 @@ import org.w3c.dom.Text;
  * {@link OMElement#addAttribute(String, String, OMNamespace)} (in the case where the new attribute
  * replaces an existing one, which will be removed from its owner)
  * </ul>
- * <li>Any node created using the DOM API as well as the {@link Document} instance implicitly
- * created for the owner document (when the Axiom API is used) will have as its {@link OMFactory}
- * (as reported by {@link OMInformationItem#getOMFactory()}) the instance returned by
- * {@link OMMetaFactory#getOMFactory()}.
+ * <li>{@link Document} instances created using the {@link DocumentBuilderFactory} and
+ * {@link DOMImplementation} APIs as well as the {@link Document} instances implicitly created (as
+ * owner documents) by the Axiom API will have as their {@link OMFactory} (as reported by
+ * {@link OMInformationItem#getOMFactory()}) the instance returned by
+ * {@link OMMetaFactory#getOMFactory()}. Any additional nodes created using the DOM API will inherit
+ * the {@link OMFactory} of the owner document.
  * </ol>
  * <p>
  * The implementation SHOULD instantiate the implicitly created owner documents lazily (typically
