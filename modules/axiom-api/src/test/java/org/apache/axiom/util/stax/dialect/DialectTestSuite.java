@@ -48,6 +48,9 @@ public class DialectTestSuite extends TestSuite {
         addParsersFromDirectory(builder, new File("parsers"));
         addParsersFromDirectory(builder, new File(targetDir, "parsers"));
         
+        // SJSXP doesn't report whitespace in prolog
+        builder.exclude(TestGetTextInProlog.class, "(implementation=sjsxp-1.0.1.jar)");
+        
         return builder.build();
     }
 
