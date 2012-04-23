@@ -23,26 +23,6 @@ import javax.xml.stream.util.StreamReaderDelegate;
 import org.apache.axiom.om.OMDataSource;
 
 public class StreamSwitch extends StreamReaderDelegate {
-    // namespaceURI interning
-    // default is false because most XMLStreamReader implementations don't do interning
-    // due to performance impacts
-    private boolean namespaceURIInterning = false;
-
-    /**
-     * Set namespace uri interning
-     * @param b
-     */
-    public void setNamespaceURIInterning(boolean b) {
-        this.namespaceURIInterning = b;
-    }
-    
-    /**
-     * @return if namespace uri interning 
-     */
-    public boolean isNamespaceURIInterning() {
-        return this.namespaceURIInterning;
-    }
-    
     public boolean isClosed() {
         return ((SwitchingWrapper)getParent()).isClosed();
     }
@@ -57,20 +37,5 @@ public class StreamSwitch extends StreamReaderDelegate {
     
     public void enableDataSourceEvents(boolean value) {
         ((SwitchingWrapper)getParent()).enableDataSourceEvents(value);
-    }
-
-    // TODO: one would expect that the same is applied to other methods returning namespace URIs, but this was not the case in the original OMStAXWrapper code
-    public String getNamespaceURI() {
-        String namespaceURI = super.getNamespaceURI();
-        
-        // By default most parsers don't intern the namespace.
-        // Unfortunately the property to detect interning on the delegate parsers is hard to detect.
-        // Woodstox has a proprietary property on the XMLInputFactory.
-        // IBM has a proprietary property on the XMLStreamReader.
-        // For now only force the interning if requested.
-        if (this.isNamespaceURIInterning()) {
-            namespaceURI = (namespaceURI != null) ? namespaceURI.intern() : null;
-        }
-        return namespaceURI;
     }
 }
