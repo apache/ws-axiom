@@ -26,9 +26,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.AttrImpl;
+import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -55,7 +55,7 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
 
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
                                SOAPFactory factory) throws SOAPProcessingException {
-        super(((OMDOMFactory) factory).getDocument(), localName, (OMNamespaceImpl) ns, factory);
+        super(null, localName, (OMNamespaceImpl) ns, factory);
         this.setNamespace(ns);
     }
 
@@ -86,7 +86,7 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
         if (omAttribute != null) {
             omAttribute.setAttributeValue(attrValue);
         } else {
-            OMAttribute attribute = new AttrImpl(this.ownerNode, attributeName,
+            OMAttribute attribute = new AttrImpl((DocumentImpl)getOwnerDocument(), attributeName,
                                                  new OMNamespaceImpl(soapEnvelopeNamespaceURI,
                                                                    SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
                                                  attrValue, this.factory);

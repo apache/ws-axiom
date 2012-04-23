@@ -20,44 +20,104 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.w3c.dom.DOMException;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import java.util.Vector;
 
-public class AttributeMap extends NamedNodeMapImpl {
+/** Most of the implementation is taken from org.apache.xerces.dom.NamedNodeMapImpl */
+public class AttributeMap implements NamedNodeMap {
+    private Vector nodes;
 
-    /** @param ownerNode  */
-    protected AttributeMap(ParentNode ownerNode) {
-        super(ownerNode);
+    private ElementImpl ownerNode;
+
+    //
+    // Data
+    //
+
+    private short flags;
+
+    private final static short CHANGED = 0x1 << 1;
+
+    private final static short HASDEFAULTS = 0x1 << 2;
+                            
+    AttributeMap(ElementImpl ownerNode) {
+        this.ownerNode = ownerNode;
     }
+
+
+    /**
+     * 
+     */
+    public Node getNamedItem(String name) {
+        int i = findNamePoint(name, 0);
+        return (i < 0) ? null : (Node) (nodes.elementAt(i));
+
+    }
+
+    /** From org.apache.xerces.dom.NamedNodeMapImpl */
+    public Node item(int index) {
+        return (nodes != null && index < nodes.size()) ? (Node) (nodes
+                .elementAt(index)) : null;
+    }
+
+    /** From org.apache.xerces.dom.NamedNodeMapImpl */
+    public int getLength() {
+        return (nodes != null) ? nodes.size() : 0;
+    }
+
+    /**
+     * Introduced in DOM Level 2. Retrieves a node specified by local name and namespace URI.
+     *
+     * @param namespaceURI The namespace URI of the node to retrieve. When it is null or an empty
+     *                     string, this method behaves like getNamedItem.
+     * @param localName    The local name of the node to retrieve.
+     * @return Returns s Node (of any type) with the specified name, or null if the specified name
+     *         did not identify any node in the map.
+     */
+    public Node getNamedItemNS(String namespaceURI, String localName) {
+
+        int i = findNamePoint(namespaceURI, localName);
+        return (i < 0) ? null : (Node) (nodes.elementAt(i));
+
+    } // getNamedItemNS(String,String):Node
 
     public Node removeNamedItem(String name) throws DOMException {
         // TODO Set used to false
-        return super.removeNamedItem(name);
+
+        int i = findNamePoint(name, 0);
+        if (i < 0) {
+            String msg = DOMMessageFormatter.formatMessage(
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR, null);
+            throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
+        }
+
+        NodeImpl n = (NodeImpl) nodes.elementAt(i);
+        nodes.removeElementAt(i);
+
+        return n;
     }
 
     public Node removeNamedItemNS(String namespaceURI, String name)
             throws DOMException {
-        // TODO
-        return super.removeNamedItemNS(namespaceURI, name);
+
+        int i = findNamePoint(namespaceURI, name);
+        if (i < 0) {
+            String msg = DOMMessageFormatter.formatMessage(
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR, null);
+            throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
+        }
+
+        NodeImpl n = (NodeImpl) nodes.elementAt(i);
+        nodes.removeElementAt(i);
+
+        return n;
     }
 
     /** Almost a copy of the Xerces impl. */
     public Node setNamedItem(Node attribute) throws DOMException {
 
-        if (isReadOnly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
-        if (attribute.getOwnerDocument() != ownerNode.getOwnerDocument()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.WRONG_DOCUMENT_ERR, null);
-            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
-        }
+        ownerNode.checkSameOwnerDocument(attribute);
         if (attribute.getNodeType() != Node.ATTRIBUTE_NODE) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN,
@@ -67,7 +127,7 @@ public class AttributeMap extends NamedNodeMapImpl {
         }
 
         AttrImpl attr = (AttrImpl) attribute;
-        if (attr.isOwned()) { // If the attribute is owned then:
+        if (attr.getOwnerElement() != null) { // If the attribute is owned then:
             if (attr.getOwnerElement() != this.ownerNode) // the owner must be
                 // the owner of this
                 // list
@@ -80,8 +140,7 @@ public class AttributeMap extends NamedNodeMapImpl {
             // same element
         }
 
-        attr.parent = this.ownerNode; // Set the owner node
-        attr.isOwned(true); // To indicate that this attr belong to an element
+        attr.setOwnerElement((ElementImpl)this.ownerNode, true); // Set the owner node
         attr.setUsed(true); // Setting used to true
 
         int i = findNamePoint(attr.getNodeName(), 0);
@@ -90,8 +149,7 @@ public class AttributeMap extends NamedNodeMapImpl {
         if (i >= 0) { // There's an attribute already with this attr's name
             previous = (AttrImpl) nodes.elementAt(i);
             nodes.setElementAt(attr, i);
-            previous.parent = null;
-            previous.isOwned(false);
+            previous.setOwnerElement(null, true);
 
             // make sure it won't be mistaken with defaults in case it's reused
             previous.isSpecified(true);
@@ -107,29 +165,17 @@ public class AttributeMap extends NamedNodeMapImpl {
         // // notify document
         // ownerNode.getOwnerDocument().setAttrNode(attr, previous);
 
-        // If the new attribute is not normalized,
-        // the owning element is inherently not normalized.
-        if (!attr.isNormalized()) {
-            ownerNode.isNormalized(false);
-        }
         return previous;
 
     }
 
-    /** Almost a copy of the Xerces impl. */
     public Node setNamedItemNS(Node attribute) throws DOMException {
-        if (isReadOnly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
-        if (attribute.getOwnerDocument() != ownerNode.getOwnerDocument()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.WRONG_DOCUMENT_ERR, null);
-            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, msg);
-        }
+        ownerNode.checkSameOwnerDocument(attribute);
+        return setAttribute(attribute, true);
+    }
+    
+    /** Almost a copy of the Xerces impl. */
+    Node setAttribute(Node attribute, boolean useDomSemantics) throws DOMException {
         if (attribute.getNodeType() != Node.ATTRIBUTE_NODE) {
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN, DOMException.HIERARCHY_REQUEST_ERR,
@@ -138,7 +184,7 @@ public class AttributeMap extends NamedNodeMapImpl {
         }
 
         AttrImpl attr = (AttrImpl) attribute;
-        if (attr.isOwned()) { // If the attribute is owned then:
+        if (attr.getOwnerElement() != null) { // If the attribute is owned then:
             //the owner must be the owner of this list
             if (attr.getOwnerElement() != this.ownerNode)
                 throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR,
@@ -150,9 +196,7 @@ public class AttributeMap extends NamedNodeMapImpl {
             // same element
         }
         //Set the owner node
-        attr.ownerNode = (DocumentImpl) this.ownerNode.getOwnerDocument();
-        attr.parent = this.ownerNode;
-        attr.isOwned(true); // To indicate that this attr belong to an element
+        attr.setOwnerElement((ElementImpl)this.ownerNode, useDomSemantics);
 
         int i = findNamePoint(attr.getNamespaceURI(), attr.getLocalName());
         AttrImpl previous = null;
@@ -160,10 +204,7 @@ public class AttributeMap extends NamedNodeMapImpl {
         if (i >= 0) {
             previous = (AttrImpl) nodes.elementAt(i);
             nodes.setElementAt(attr, i);
-            previous.ownerNode = (DocumentImpl) this.ownerNode
-                    .getOwnerDocument();
-            previous.parent = null;
-            previous.isOwned(false);
+            previous.setOwnerElement(null, useDomSemantics);
             // make sure it won't be mistaken with defaults in case it's reused
             previous.isSpecified(true);
         } else {
@@ -182,11 +223,6 @@ public class AttributeMap extends NamedNodeMapImpl {
             }
         }
 
-        // If the new attribute is not normalized,
-        // the owning element is inherently not normalized.
-        if (!attr.isNormalized()) {
-            ownerNode.isNormalized(false);
-        }
         return previous;
     }
 
@@ -195,15 +231,15 @@ public class AttributeMap extends NamedNodeMapImpl {
      * the nodes contained in the map.
      */
 
-    public NamedNodeMapImpl cloneMap(NodeImpl ownerNode) {
-        AttributeMap newmap = new AttributeMap((ParentNode) ownerNode);
+    public AttributeMap cloneMap(ElementImpl ownerNode) {
+        AttributeMap newmap = new AttributeMap(ownerNode);
         newmap.hasDefaults(hasDefaults());
         newmap.cloneContent(this);
         return newmap;
     } // cloneMap():AttributeMap
 
     /** BORROWED from Xerces impl. */
-    protected void cloneContent(NamedNodeMapImpl srcmap) {
+    protected void cloneContent(AttributeMap srcmap) {
         Vector srcnodes = srcmap.nodes;
         if (srcnodes != null) {
             int size = srcnodes.size();
@@ -213,15 +249,192 @@ public class AttributeMap extends NamedNodeMapImpl {
                 }
                 nodes.setSize(size);
                 for (int i = 0; i < size; ++i) {
-                    NodeImpl n = (NodeImpl) srcnodes.elementAt(i);
-                    NodeImpl clone = (NodeImpl) n.cloneNode(true);
+                    AttrImpl n = (AttrImpl) srcnodes.elementAt(i);
+                    AttrImpl clone = (AttrImpl) n.cloneNode(true);
                     clone.isSpecified(n.isSpecified());
                     nodes.setElementAt(clone, i);
-                    clone.ownerNode = this.ownerNode.ownerNode;
-                    clone.isOwned(true);
+                    clone.setOwnerElement(ownerNode, true);
                 }
             }
         }
     } // cloneContent():AttributeMap
 
+
+    final boolean changed() {
+        return (flags & CHANGED) != 0;
+    }
+
+    final void changed(boolean value) {
+        flags = (short) (value ? flags | CHANGED : flags & ~CHANGED);
+    }
+
+    final boolean hasDefaults() {
+        return (flags & HASDEFAULTS) != 0;
+    }
+
+    final void hasDefaults(boolean value) {
+        flags = (short) (value ? flags | HASDEFAULTS : flags & ~HASDEFAULTS);
+    }
+
+    /**
+     * From org.apache.xerces.dom.NamedNodeMapImpl
+     * <p/>
+     * Subroutine: Locates the named item, or the point at which said item should be added.
+     *
+     * @param name Name of a node to look up.
+     * @return If positive or zero, the index of the found item. If negative, index of the
+     *         appropriate point at which to insert the item, encoded as -1-index and hence
+     *         reconvertable by subtracting it from -1. (Encoding because I don't want to recompare
+     *         the strings but don't want to burn bytes on a datatype to hold a flagged value.)
+     */
+    protected int findNamePoint(String name, int start) {
+
+        // Binary search
+        int i = 0;
+        if (nodes != null) {
+            int first = start;
+            int last = nodes.size() - 1;
+
+            while (first <= last) {
+                i = (first + last) / 2;
+                int test = name.compareTo(((Node) (nodes.elementAt(i)))
+                        .getNodeName());
+                if (test == 0) {
+                    return i; // Name found
+                } else if (test < 0) {
+                    last = i - 1;
+                } else {
+                    first = i + 1;
+                }
+            }
+
+            if (first > i) {
+                i = first;
+            }
+        }
+
+        return -1 - i; // not-found has to be encoded.
+
+    } // findNamePoint(String):int
+
+    /** This findNamePoint is for DOM Level 2 Namespaces. */
+    protected int findNamePoint(String namespaceURI, String name) {
+
+        if (nodes == null)
+            return -1;
+        if (name == null)
+            return -1;
+
+        // This is a linear search through the same nodes Vector.
+        // The Vector is sorted on the DOM Level 1 nodename.
+        // The DOM Level 2 NS keys are namespaceURI and Localname,
+        // so we must linear search thru it.
+        // In addition, to get this to work with nodes without any namespace
+        // (namespaceURI and localNames are both null) we then use the nodeName
+        // as a secondary key.
+        for (int i = 0; i < nodes.size(); i++) {
+            NodeImpl a = (NodeImpl) nodes.elementAt(i);
+            String aNamespaceURI = a.getNamespaceURI();
+            String aLocalName = a.getLocalName();
+            if (namespaceURI == null) {
+                if (aNamespaceURI == null && (name.equals(aLocalName) ||
+                        (aLocalName == null && name.equals(a.getNodeName()))))
+                    return i;
+            } else {
+                if (namespaceURI.equals(aNamespaceURI)
+                        && name.equals(aLocalName))
+                    return i;
+            }
+        }
+        return -1;
+    }
+
+    // Compare 2 nodes in the map. If a precedes b, return true, otherwise
+    // return false
+    protected boolean precedes(Node a, Node b) {
+
+        if (nodes != null) {
+            for (int i = 0; i < nodes.size(); i++) {
+                Node n = (Node) nodes.elementAt(i);
+                if (n == a)
+                    return true;
+                if (n == b)
+                    return false;
+            }
+        }
+
+        return false;
+    }
+
+    /** NON-DOM: Remove attribute at specified index. */
+    protected void removeItem(int index) {
+        if (nodes != null && index < nodes.size()) {
+            nodes.removeElementAt(index);
+        }
+    }
+
+    protected Object getItem(int index) {
+        if (nodes != null) {
+            return nodes.elementAt(index);
+        }
+        return null;
+    }
+
+    protected int addItem(Node arg) {
+        int i = findNamePoint(arg.getNamespaceURI(), arg.getLocalName());
+        if (i >= 0) {
+            nodes.setElementAt(arg, i);
+        } else {
+            // If we can't find by namespaceURI, localName, then we find by
+            // nodeName so we know where to insert.
+            i = findNamePoint(arg.getNodeName(), 0);
+            if (i >= 0) {
+                nodes.insertElementAt(arg, i);
+            } else {
+                i = -1 - i; // Insert point (may be end of list)
+                if (null == nodes) {
+                    nodes = new Vector(5, 10);
+                }
+                nodes.insertElementAt(arg, i);
+            }
+        }
+        return i;
+    }
+
+    /**
+     * NON-DOM: copy content of this map into the specified vector
+     *
+     * @param list Vector to copy information into.
+     * @return Returns a copy of this node named map.
+     */
+    protected Vector cloneMap(Vector list) {
+        if (list == null) {
+            list = new Vector(5, 10);
+        }
+        list.setSize(0);
+        if (nodes != null) {
+            for (int i = 0; i < nodes.size(); i++) {
+                list.insertElementAt(nodes.elementAt(i), i);
+            }
+        }
+
+        return list;
+    }
+
+    protected int getNamedItemIndex(String namespaceURI, String localName) {
+        return findNamePoint(namespaceURI, localName);
+    }
+
+    /** NON-DOM remove all elements from this map. */
+    public void removeAll() {
+        if (nodes != null) {
+            nodes.removeAllElements();
+        }
+    }
+    
+    void remove(AttrImpl attr, boolean useDomSemantics) {
+        if (nodes.remove(attr)) {
+            attr.setOwnerElement(null, useDomSemantics);
+        }
+    }
 }

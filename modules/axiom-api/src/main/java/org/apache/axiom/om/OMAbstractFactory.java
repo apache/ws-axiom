@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om;
 
+import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
 
 /**
@@ -65,7 +66,10 @@ public class OMAbstractFactory {
     public static final String FEATURE_DEFAULT = "default";
     
     /**
-     * Feature for Axiom implementations that implement DOM in addition to the Axiom API.
+     * Feature for Axiom implementations that implement DOM in addition to the Axiom API. The
+     * {@link OMMetaFactory} for such an Axiom implementation must implement {@link DOMMetaFactory}.
+     * See the documentation of {@link DOMMetaFactory} for more information about the requirements
+     * and constraints that apply to Axiom implementations that support this feature.
      */
     public static final String FEATURE_DOM = "dom";
     
@@ -152,7 +156,20 @@ public class OMAbstractFactory {
         }
         OMMetaFactory metaFactory = locator.getOMMetaFactory(feature);
         if (metaFactory == null) {
-            throw new OMException("No meta factory found for feature '" + feature + "'");
+            String jarHint;
+            if (feature.equals(FEATURE_DEFAULT)) {
+                jarHint = "axiom-impl.jar";
+            } else if (feature.equals(FEATURE_DOM)) {
+                jarHint = "axiom-dom.jar";
+            } else {
+                jarHint = null;
+            }
+            StringBuilder buffer = new StringBuilder();
+            buffer.append("No meta factory found for feature '").append(feature).append("'");
+            if (jarHint != null) {
+                buffer.append("; this usually means that ").append(jarHint).append(" is not in the classpath");
+            }
+            throw new OMException(buffer.toString());
         } else {
             return metaFactory;
         }

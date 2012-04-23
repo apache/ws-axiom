@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap.impl.llom.soap11;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -87,5 +89,10 @@ public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
                     "Expecting SOAP11FaultValueImpl, got " + soapFaultSubCodeValue.getClass());
         }
         super.setValue(soapFaultSubCodeValue);
+    }
+
+    public void setValue(QName value) {
+        // TODO: AXIOM-394: SOAPFaultSubCode should not exist for SOAP 1.1
+        throw new UnsupportedOperationException();
     }
 }

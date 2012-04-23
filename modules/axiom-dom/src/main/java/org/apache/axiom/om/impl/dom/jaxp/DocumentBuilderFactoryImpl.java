@@ -30,7 +30,7 @@ import javax.xml.validation.Schema;
  *    DOM implementation as returned by JAXP. This was a hack introduced for Rampart.
  *    Recent versions of Rampart no longer rely on this hack. On the other hand
  *    usage of {@link #setDOOMRequired(boolean)} in a concurrent environment can
- *    lead to unexpected behavior and severe bugs, as shown in WSCOMMONS-210 and AXIS2-1570.
+ *    lead to unexpected behavior and severe bugs, as shown in AXIOM-3 and AXIS2-1570.
  *    Due to the way {@link #newDocumentBuilder()} is implemented, it is not possible
  *    to get rid of the setDOOMRequired hack without the risk of breaking existing code.
  *    Therefore this class has been deprecated in favor of {@link DOOMDocumentBuilderFactory}. 
@@ -95,12 +95,12 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
                 : originalDocumentBuilderFactory.newDocumentBuilder();
     }
 
-    public Object getAttribute(String arg0) throws IllegalArgumentException {
+    public Object getAttribute(String name) throws IllegalArgumentException {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    public void setAttribute(String arg0, Object arg1)
+    public void setAttribute(String name, Object value)
             throws IllegalArgumentException {
         // // TODO
         // throw new UnsupportedOperationException("TODO");
@@ -115,7 +115,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
         // TODO TODO OS
     }
 
-    public boolean getFeature(String arg0) throws ParserConfigurationException {
+    public boolean getFeature(String name) throws ParserConfigurationException {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }

@@ -20,7 +20,9 @@
 package org.apache.axiom.attachments;
 
 import org.apache.axiom.attachments.Part;
+import org.apache.axiom.mime.Header;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.util.DetachableInputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.james.mime4j.MimeException;
@@ -29,8 +31,6 @@ import org.apache.james.mime4j.stream.MimeTokenStream;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.mail.MessagingException;
-import javax.mail.internet.HeaderTokenizer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,10 +64,10 @@ final class PartImpl implements Part {
      */
     private static final int STATE_DISCARDED = 3;
 
-    private static Log log = LogFactory.getLog(PartImpl.class);
+    private static final Log log = LogFactory.getLog(PartImpl.class);
     
     private final MIMEMessage message;
-    private final boolean isSOAPPart;
+    private final boolean isRootPart;
     
     private List/*<Header>*/ headers;
     
@@ -82,18 +82,20 @@ final class PartImpl implements Part {
     /**
      * The content of this part. This is only set if the state is {@link #STATE_BUFFERED}.
      */
-    private ContentStore content;
+    private PartContent content;
     
     private final DataHandler dataHandler;
     
+    private DetachableInputStream detachableInputStream;
+    
     /**
      * The actual parts are constructed with the PartFactory.
-     * @see org.apache.axiom.attachments.ContentStoreFactory
+     * @see org.apache.axiom.attachments.PartContentFactory
      * @param headers
      */
-    PartImpl(MIMEMessage message, boolean isSOAPPart, List headers, MimeTokenStream parser) {
+    PartImpl(MIMEMessage message, boolean isRootPart, List headers, MimeTokenStream parser) {
         this.message = message;
-        this.isSOAPPart = isSOAPPart;
+        this.isRootPart = isRootPart;
         this.headers = headers;
         this.parser = parser;
         this.dataHandler = new PartDataHandler(this);
@@ -123,52 +125,16 @@ final class PartImpl implements Part {
     }
     
     /**
-     * @return contentTransferEncoding
-     * @throws MessagingException
+     * Get the content type that should be reported by {@link DataSource} instances created for this
+     * part.
+     * 
+     * @return the content type
      */
-    public String getContentTransferEncoding() throws MessagingException {
-        if(log.isDebugEnabled()){
-            log.debug("getContentTransferEncoding()");
-        }
-        String cte = getHeader("content-transfer-encoding");
-       
-        if(log.isDebugEnabled()){
-            log.debug(" CTE =" + cte);
-        }
-
-        if(cte!=null){
-            cte = cte.trim();
-            
-            if(cte.equalsIgnoreCase("7bit") || 
-                cte.equalsIgnoreCase("8bit") ||
-                cte.equalsIgnoreCase("quoted-printable") ||
-                cte.equalsIgnoreCase("base64")){
-
-                return cte;
-            }
-            
-            HeaderTokenizer ht = new HeaderTokenizer(cte, HeaderTokenizer.MIME);
-            boolean done = false;
-            while(!done){
-                HeaderTokenizer.Token token = ht.next();
-                switch(token.getType()){
-                case HeaderTokenizer.Token.EOF:
-                    if(log.isDebugEnabled()){
-                        log.debug("HeaderTokenizer EOF");
-                    }
-                    done = true;
-                    break;
-                case HeaderTokenizer.Token.ATOM:                    
-                    return token.getValue();
-                }
-            }
-            return cte;
-        }
-        return null;
-
-
+    String getDataSourceContentType() {
+        String ct = getContentType();
+        return ct == null ? "application/octet-stream" : ct;
     }
-
+    
     public DataHandler getDataHandler() {
         return dataHandler;
     }
@@ -177,7 +143,7 @@ final class PartImpl implements Part {
         return getContent().getSize();
     }
 
-    private ContentStore getContent() {
+    private PartContent getContent() {
         switch (state) {
             case STATE_UNREAD:
                 fetch();
@@ -207,9 +173,9 @@ final class PartImpl implements Part {
                 checkParserState(parser.getState(), EntityState.T_BODY);
                 
                 // The PartFactory will determine which Part implementation is most appropriate.
-                content = ContentStoreFactory.createContentStore(message.getLifecycleManager(),
+                content = PartContentFactory.createPartContent(message.getLifecycleManager(),
                                               parser.getDecodedInputStream(), 
-                                              isSOAPPart, 
+                                              isRootPart, 
                                               message.getThreshold(),
                                               message.getAttachmentRepoDir(),
                                               message.getContentLengthIfKnown());  // content-length for the whole message
@@ -217,6 +183,13 @@ final class PartImpl implements Part {
                 state = STATE_BUFFERED;
                 break;
             case STATE_STREAMING:
+                // If the stream is still open, buffer the remaining content
+                try {
+                    detachableInputStream.detach();
+                } catch (IOException ex) {
+                    throw new OMException(ex);
+                }
+                detachableInputStream = null;
                 moveToNextPart();
                 state = STATE_DISCARDED;
         }
@@ -245,9 +218,10 @@ final class PartImpl implements Part {
         if (!preserve && state == STATE_UNREAD) {
             checkParserState(parser.getState(), EntityState.T_BODY);
             state = STATE_STREAMING;
-            return parser.getDecodedInputStream();
+            detachableInputStream = new DetachableInputStream(parser.getDecodedInputStream());
+            return detachableInputStream;
         } else {
-            ContentStore content = getContent();
+            PartContent content = getContent();
             InputStream stream = content.getInputStream();
             if (!preserve) {
                 stream = new ReadOnceInputStreamWrapper(this, stream);
@@ -257,7 +231,7 @@ final class PartImpl implements Part {
     }
     
     DataSource getDataSource() {
-        return getContent().getDataSource(getContentType());
+        return getContent().getDataSource(getDataSourceContentType());
     }
 
     void writeTo(OutputStream out) throws IOException {

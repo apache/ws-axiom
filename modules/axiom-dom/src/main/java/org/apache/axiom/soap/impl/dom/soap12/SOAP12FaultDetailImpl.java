@@ -38,6 +38,10 @@ public class SOAP12FaultDetailImpl extends SOAPFaultDetailImpl {
         super(parent, builder, factory);
     }
 
+    public SOAP12FaultDetailImpl(SOAPFactory factory) {
+        super(factory);
+    }
+
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP12FaultImpl)) {
             throw new SOAPProcessingException(

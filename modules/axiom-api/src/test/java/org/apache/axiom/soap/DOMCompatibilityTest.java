@@ -37,6 +37,7 @@ public class DOMCompatibilityTest extends TestCase {
         
         // These methods are known to have the same behavior in Axiom and DOM:
         MethodSignature[] elementExceptions = new MethodSignature[] {
+                new MethodSignature("getPrefix", new Class[0]),
                 new MethodSignature("getNamespaceURI", new Class[0]),
                 new MethodSignature("getLocalName", new Class[0]) };
         
@@ -48,6 +49,7 @@ public class DOMCompatibilityTest extends TestCase {
         
         // The getNodeValue and setNodeValue methods are real collisions that will be fixed in Axiom 1.3; see AXIOM-363
         suite.addTest(new MethodCollisionTestCase(SOAPFaultNode.class, Element.class, new MethodSignature[] {
+                new MethodSignature("getPrefix", new Class[0]),
                 new MethodSignature("getNamespaceURI", new Class[0]),
                 new MethodSignature("getLocalName", new Class[0]),
                 new MethodSignature("getNodeValue", new Class[0]),

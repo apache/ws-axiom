@@ -54,7 +54,7 @@ public class XOPUtils {
     public static String getContentIDFromURL(String url) {
         if (url.startsWith("cid:")) {
             try {
-                // URIs should always be decoded using UTF-8 (see WSCOMMONS-429). On the
+                // URIs should always be decoded using UTF-8 (see AXIOM-129). On the
                 // other hand, since non ASCII characters are not allowed in content IDs,
                 // we can simply decode using ASCII (which is a subset of UTF-8)
                 return URLDecoder.decode(url.substring(4), "ascii");

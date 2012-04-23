@@ -23,10 +23,6 @@ import javax.xml.stream.XMLStreamReader;
 /**
  * Objects returned by OMElement.getXMLStreamReader may implement this interface
  */
-/**
- * @author scheu
- *
- */
 public interface OMXMLStreamReader extends XMLStreamReader, OMAttachmentAccessor {
     
     /**

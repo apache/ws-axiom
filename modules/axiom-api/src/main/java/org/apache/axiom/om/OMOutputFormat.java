@@ -42,7 +42,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class OMOutputFormat {
     
-    private static Log log = LogFactory.getLog(OMOutputFormat.class);
+    private static final Log log = LogFactory.getLog(OMOutputFormat.class);
     
     private String mimeBoundary;
     private String rootContentId;

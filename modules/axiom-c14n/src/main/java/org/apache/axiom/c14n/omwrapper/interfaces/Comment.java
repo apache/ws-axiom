@@ -19,9 +19,6 @@
 
 package org.apache.axiom.c14n.omwrapper.interfaces;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public interface Comment extends Node{
     public String getData();
 }

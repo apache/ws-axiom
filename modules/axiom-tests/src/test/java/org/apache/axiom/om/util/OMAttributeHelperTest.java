@@ -25,7 +25,6 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.impl.dom.DOOMAbstractFactory;
 
 import javax.xml.namespace.QName;
 
@@ -37,7 +36,7 @@ public class OMAttributeHelperTest extends TestCase {
         OMNamespace ns1 = omf.createOMNamespace("http://nsurl", "prefix");
         OMAttribute attr1 = omf.createOMAttribute("attr1", ns1, "attr1value");
 
-        OMFactory doomf = DOOMAbstractFactory.getOMFactory();
+        OMFactory doomf = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory();
         OMElement ome1 = doomf.createOMElement("element", ns1.getNamespaceURI(), ns1.getPrefix());
         AttributeHelper.importOMAttribute(attr1, ome1);
         assertNotSame(attr1, ome1.getAttribute(attr1.getQName()));
@@ -72,10 +71,10 @@ public class OMAttributeHelperTest extends TestCase {
     }
 
     public void testDetachedElement() {
-        OMNamespace top = DOOMAbstractFactory.getOMFactory().createOMNamespace("urn:test1", "t1");
-        OMElement ome = DOOMAbstractFactory.getOMFactory().createOMElement("test", top);
+        OMNamespace top = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory().createOMNamespace("urn:test1", "t1");
+        OMElement ome = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory().createOMElement("test", top);
         OMElement child =
-                DOOMAbstractFactory.getOMFactory().createOMElement(new QName("test"), ome);
+                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory().createOMElement(new QName("test"), ome);
         OMAttribute oma = child.addAttribute("attr", "value", top);
 
         OMElement target =

@@ -31,10 +31,6 @@ import java.util.List;
  * A stack based Symble Table.
  * <br>For speed reasons all the symbols are introduced in the same map,
  * and at the same time in a list so it can be removed when the frame is pop back.
- *
- * @author Raul Benito
- *
- * modified to work with Axiom wrapper by Saliya Ekanayake (esaliya@gmail.com)
  */
 public class NameSpaceSymbTable {
 

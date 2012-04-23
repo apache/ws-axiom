@@ -20,7 +20,6 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.llom.OMDocumentImpl;
@@ -57,11 +56,6 @@ public class SOAPMessageImpl extends OMDocumentImpl implements SOAPMessage {
     }
 
     public void setOMDocumentElement(OMElement rootElement) {
-        throw new UnsupportedOperationException(
-                "This is not allowed. Use set SOAPEnvelope instead");
-    }
-
-    public void setFirstChild(OMNode firstChild) {
         throw new UnsupportedOperationException(
                 "This is not allowed. Use set SOAPEnvelope instead");
     }

@@ -31,14 +31,9 @@ public class TestCreateElement extends DOMTestCase {
 
     protected void runTest() throws Throwable {
         String tagName = "LocalName";
-        String namespace = "http://ws.apache.org/axis2/ns";
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element elem = doc.createElement(tagName);
 
         assertEquals("Local name misnatch", tagName, elem.getNodeName());
-
-        elem = doc.createElementNS(namespace, "axis2:" + tagName);
-        assertEquals("Local name misnatch", tagName, elem.getLocalName());
-        assertEquals("Namespace misnatch", namespace, elem.getNamespaceURI());
     }
 }

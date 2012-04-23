@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
@@ -32,6 +33,8 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.attachments.impl.BufferUtils;
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
@@ -55,12 +58,31 @@ import org.apache.commons.logging.LogFactory;
  * optimizable content.
  */
 public class MTOMXMLStreamWriter implements XMLStreamWriter {
-    private static Log log = LogFactory.getLog(MTOMXMLStreamWriter.class);
-    private static boolean isDebugEnabled = log.isDebugEnabled();
-    private static boolean isTraceEnabled = log.isTraceEnabled();
+    /**
+     * Stores a part that has been added without using the {@link DataHandlerWriter} API.
+     */
+    private static class Part {
+        private final String contentID;
+        private final DataHandler dataHandler;
+        
+        public Part(String contentID, DataHandler dataHandler) {
+            this.contentID = contentID;
+            this.dataHandler = dataHandler;
+        }
+
+        public String getContentID() {
+            return contentID;
+        }
+
+        public DataHandler getDataHandler() {
+            return dataHandler;
+        }
+    }
+    
+    private static final Log log = LogFactory.getLog(MTOMXMLStreamWriter.class);
     private XMLStreamWriter xmlWriter;
     private OutputStream outStream;
-    private LinkedList binaryNodeList = new LinkedList();
+    private List/*<Part>*/ otherParts = new LinkedList();
     private OMMultipartWriter multipartWriter;
     private OutputStream rootPartOutputStream;
     private OMOutputFormat format = new OMOutputFormat();
@@ -77,7 +99,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
 
     public MTOMXMLStreamWriter(XMLStreamWriter xmlWriter) {
         this.xmlWriter = xmlWriter;
-        if (isTraceEnabled) {
+        if (log.isTraceEnabled()) {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         optimizationPolicy = new OptimizationPolicyImpl(format);
@@ -105,13 +127,13 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      */
     public MTOMXMLStreamWriter(OutputStream outStream, OMOutputFormat format, boolean preserveAttachments)
             throws XMLStreamException, FactoryConfigurationError {
-        if (isDebugEnabled) {
+        if (log.isDebugEnabled()) {
             log.debug("Creating MTOMXMLStreamWriter");
             log.debug("OutputStream =" + outStream.getClass());
             log.debug("OMFormat = " + format.toString());
             log.debug("preserveAttachments = " + preserveAttachments);
         }
-        if (isTraceEnabled) {
+        if (log.isTraceEnabled()) {
             log.trace("Call Stack =" + CommonUtils.callStackToString());
         }
         this.format = format;
@@ -189,18 +211,14 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     }
 
     public void writeEndDocument() throws XMLStreamException {
-        if (isDebugEnabled) {
-            log.debug("writeEndDocument");
-        }
+        log.debug("writeEndDocument");
         xmlWriter.writeEndDocument();
         isEndDocument = true; 
     }
 
     public void close() throws XMLStreamException {
         // TODO: we should probably call flush if the attachments have not been written yet
-        if (isDebugEnabled) {
-            log.debug("close");
-        }
+        log.debug("close");
         xmlWriter.close();
     }
 
@@ -208,17 +226,13 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      * Flush is overridden to trigger the attachment serialization
      */
     public void flush() throws XMLStreamException {
-        if (isDebugEnabled) {
-            log.debug("Calling MTOMXMLStreamWriter.flush");
-        }
+        log.debug("Calling MTOMXMLStreamWriter.flush");
         xmlWriter.flush();
         // flush() triggers the optimized attachment writing.
         // If the optimized attachments are specified, and the xml
         // document is completed, then write out the attachments.
         if (format.isOptimized() && !isComplete & (isEndDocument || depth == 0)) {
-            if (isDebugEnabled) {
-                log.debug("The XML writing is completed.  Now the attachments are written");
-            }
+            log.debug("The XML writing is completed.  Now the attachments are written");
             isComplete = true;
             try {
                 rootPartOutputStream.close();
@@ -235,11 +249,10 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
                         out.close();
                     }
                 }
-                // This is for compatibility with writeOptimized
-                for (Iterator it = binaryNodeList.iterator(); it.hasNext();) {
-                    OMText text = (OMText) it.next();
-                    multipartWriter.writePart((DataHandler) text.getDataHandler(),
-                            text.getContentID());
+                // Now write parts that have been added by prepareDataHandler
+                for (Iterator it = otherParts.iterator(); it.hasNext();) {
+                    Part part = (Part)it.next();
+                    multipartWriter.writePart(part.getDataHandler(), part.getContentID());
                 }
                 multipartWriter.complete();
             } catch (IOException e) {
@@ -362,29 +375,28 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
      * @deprecated
      * Serialization code should use
      * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
-     * or {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, org.apache.axiom.ext.stax.datahandler.DataHandlerProvider, String, boolean)}
+     * or {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
      * to submit any binary content and let this writer decide whether the content should be
-     * written as base64 encoded character data or using <tt>xop:Include</tt>.
+     * written as base64 encoded character data or using <tt>xop:Include</tt>. If this is not
+     * possible, then {@link #prepareDataHandler(DataHandler)} should be used.
      */
     public void writeOptimized(OMText node) {
-        if(isDebugEnabled){
-            log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
-        }
-        binaryNodeList.add(node);    
-        if(isDebugEnabled){
-            log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
-        }
+        log.debug("Start MTOMXMLStreamWriter.writeOptimized()");
+        otherParts.add(new Part(node.getContentID(), (DataHandler)node.getDataHandler()));    
+        log.debug("Exit MTOMXMLStreamWriter.writeOptimized()");
     }
 
     /**
      * @deprecated
      * Serialization code should use
      * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
-     * or {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, org.apache.axiom.ext.stax.datahandler.DataHandlerProvider, String, boolean)}
+     * or {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
      * to submit any binary content and let this writer decide whether the content should be
-     * written as base64 encoded character data or using <tt>xop:Include</tt>.
-     * Since the writer applies the settings defined in {@link OMOutputFormat} (including MTOM
-     * thresholds), there is not need for this method anymore.
+     * written as base64 encoded character data or using <tt>xop:Include</tt>. If this is not
+     * possible, then {@link #prepareDataHandler(DataHandler)} should be used.
+     * All the aforementioned methods take into account the settings defined in
+     * {@link OMOutputFormat} to determine whether the binary data should be optimized or not.
+     * Therefore, there is not need for this method anymore.
      */
     public boolean isOptimizedThreshold(OMText node){
         // The optimize argument is set to true for compatibility. Indeed, older versions
@@ -393,6 +405,45 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             return optimizationPolicy.isOptimized((DataHandler)node.getDataHandler(), true);
         } catch (IOException ex) {
             return true;
+        }
+    }
+    
+    /**
+     * Prepare a {@link DataHandler} for serialization without using the {@link DataHandlerWriter}
+     * API. The method first determines whether the binary data represented by the
+     * {@link DataHandler} should be optimized or inlined. If the data should not be optimized, then
+     * the method returns <code>null</code> and the caller is expected to use
+     * {@link #writeCharacters(String)} or {@link #writeCharacters(char[], int, int)} to write the
+     * base64 encoded data to the stream. If the data should be optimized, then the method returns a
+     * content ID and the caller is expected to generate an <tt>xop:Include</tt> element referring
+     * to that content ID.
+     * <p>
+     * This method should only be used to integrate Axiom with third party libraries that support
+     * XOP. In all other cases,
+     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
+     * or
+     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
+     * should be used to write base64Binary values and the application code should never generate
+     * <tt>xop:Include</tt> elements itself.
+     * 
+     * @param dataHandler
+     *            the {@link DataHandler} that the caller intends to write to the stream
+     * @return the content ID that the caller must use in the <tt>xop:Include</tt> element or
+     *         <code>null</code> if the base64 encoded data should not be optimized
+     */
+    public String prepareDataHandler(DataHandler dataHandler) {
+        boolean doOptimize;
+        try {
+            doOptimize = optimizationPolicy.isOptimized(dataHandler, true);
+        } catch (IOException ex) {
+            doOptimize = true;
+        }
+        if (doOptimize) {
+            String contentID = getNextContentId();
+            otherParts.add(new Part(contentID, dataHandler));
+            return contentID;
+        } else {
+            return null;
         }
     }
     
@@ -506,7 +557,7 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             os = outStream;
         }
         
-        if (isDebugEnabled) {
+        if (log.isDebugEnabled()) {
             if (os == null) {
                 log.debug("Direct access to the output stream is not available.");
             } else if (rootPartOutputStream != null) {

@@ -1,0 +1,18 @@
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+    <soapenv:Body>
+        <soapenv:Fault>
+            <soapenv:Code>
+                <soapenv:Value>soapenv:Server</soapenv:Value>
+            </soapenv:Code>
+            <soapenv:Reason>
+                <soapenv:Text xml:lang="en">overflow</soapenv:Text>
+            </soapenv:Reason>
+            <soapenv:Detail>
+                <AddNumbersHandlerFault xmlns="http://www.example.org/addnumbershandler">
+                    <faultInfo>overflow</faultInfo>
+                    <message>overflow</message>
+                </AddNumbersHandlerFault>
+            </soapenv:Detail>
+        </soapenv:Fault>
+    </soapenv:Body>
+</soapenv:Envelope>

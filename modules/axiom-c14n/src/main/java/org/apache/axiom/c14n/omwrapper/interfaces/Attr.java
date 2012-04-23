@@ -19,9 +19,6 @@
 
 package org.apache.axiom.c14n.omwrapper.interfaces;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public interface Attr extends Node{
     public String getName();
 

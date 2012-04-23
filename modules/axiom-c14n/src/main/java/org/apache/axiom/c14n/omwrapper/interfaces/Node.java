@@ -19,9 +19,6 @@
 
 package org.apache.axiom.c14n.omwrapper.interfaces;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public interface Node {
 // some of these may not be actually necessary for the wrappers
 // but I kept them for the sake of future modifications

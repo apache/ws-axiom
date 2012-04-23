@@ -25,9 +25,6 @@ import org.apache.axiom.c14n.omwrapper.interfaces.NodeList;
 
 import java.util.List;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class NodeListImpl implements NodeList {
     private WrapperFactory fac = null;
     private List nodes = null;

@@ -21,12 +21,12 @@ package org.apache.axiom.om.impl.dom;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.axiom.om.impl.dom.jaxp.DOOMDocumentBuilderFactory;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.dom.DOMTestSuiteBuilder;
 
 public class DOMImplementationTest extends TestCase {
     public static TestSuite suite() {
-        DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(new DOOMDocumentBuilderFactory());
+        DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(new OMDOMMetaFactory().newDocumentBuilderFactory());
         return builder.build();
     }
 }

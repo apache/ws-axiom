@@ -21,11 +21,6 @@ package org.apache.axiom.c14n.impl;
 
 import org.apache.axiom.c14n.Canonicalizer;
 
-/**
- * @author Christian Geuer-Pollmann <geuerp@apache.org>
- *
- * modified to work with Axiom wrapper by Saliya Ekanayake (esaliya@gmail.com)
- */
 public class Canonicalizer20010315WithComments extends Canonicalizer20010315 {
 
     /**

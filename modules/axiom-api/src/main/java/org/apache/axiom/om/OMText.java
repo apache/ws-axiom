@@ -59,6 +59,11 @@ public interface OMText extends OMNode {
 
     boolean isCharacters();
 
+    /**
+     * @deprecated If the underlying parser is non coalescing, then this method may unexpectedly
+     *             fail or return an incorrect result. Always use {@link OMElement#getTextAsQName()}
+     *             to get the QName value of an element.
+     */
     QName getTextAsQName();
 
     /**

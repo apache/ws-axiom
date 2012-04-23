@@ -41,32 +41,7 @@ public abstract class SOAPBuilderHelper {
                                           int elementLevel) throws SOAPProcessingException;
 
     protected void processNamespaceData(OMElement node, boolean checkSOAPNamespace) {
-        int namespaceCount = parser.getNamespaceCount();
-        for (int i = 0; i < namespaceCount; i++) {
-            String prefix = parser.getNamespacePrefix(i);
-            if (prefix == null || prefix.length() == 0) {
-                node.declareDefaultNamespace(parser.getNamespaceURI());
-            } else {
-                node.declareNamespace(parser.getNamespaceURI(i), prefix);
-            }
-        }
-
-        // set the own namespace
-        String namespaceURI = parser.getNamespaceURI();
-        String prefix = parser.getPrefix();
-        OMNamespace namespace = null;
-        if (namespaceURI != null && namespaceURI.length() > 0) {
-            if (prefix == null) {
-                // this means, this elements has a default namespace or it has inherited a default namespace from its parent
-                namespace = node.findNamespace(namespaceURI, "");
-                if (namespace == null) {
-                    namespace = node.declareNamespace(namespaceURI, "");
-                }
-            } else {
-                namespace = node.findNamespace(namespaceURI, prefix);
-            }
-            node.setNamespace(namespace);
-        }
+        builder.processNamespaceData(node);
 
         // TODO we got to have this to make sure OM reject mesagess that are not name space qualified
         // But got to comment this to interop with Axis.1.x

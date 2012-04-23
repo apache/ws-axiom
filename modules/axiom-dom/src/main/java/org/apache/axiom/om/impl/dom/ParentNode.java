@@ -26,16 +26,18 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
+import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
-import org.apache.axiom.om.impl.common.OMStAXWrapper;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
@@ -76,21 +78,16 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
     public void addChild(OMNode omNode) {
         if (omNode.getOMFactory() instanceof OMDOMFactory) {
-            Node domNode = (Node) omNode;
-            if (this.ownerNode != null && !domNode.getOwnerDocument().equals(this.ownerNode)) {
-                this.appendChild(this.ownerNode.importNode(domNode, true));
-            } else {
-                this.appendChild(domNode);
-            }
+            insertBefore((Node)omNode, null, false);
         } else {
             addChild(importNode(omNode));
         }
-
     }
 
     public void buildNext() {
-        if (!this.done)
+        if (builder != null) {
             builder.next();
+        }
     }
 
     public Iterator getChildren() {
@@ -145,11 +142,11 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         while ((firstChild == null) && !done) {
             buildNext();
         }
-        return firstChild;
+        return (OMNode)firstChild;
     }
 
     public OMNode getFirstOMChildIfAvailable() {
-        return firstChild;
+        return (OMNode)firstChild;
     }
 
     public void setFirstChild(OMNode omNode) {
@@ -205,35 +202,27 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
      * last child.
      */
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-
+        return insertBefore(newChild, refChild, true);
+    }
+    
+    private Node insertBefore(Node newChild, Node refChild, boolean useDomSemantics) {
         ChildNode newDomChild = (ChildNode) newChild;
         ChildNode refDomChild = (ChildNode) refChild;
 
-        if (this == newChild || !isAncestor(newChild)) {
+        if (useDomSemantics) {
+            checkSameOwnerDocument(newDomChild);
+        }
+
+        if (isAncestorOrSelf(newChild)) {
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
                                            DOMException.HIERARCHY_REQUEST_ERR, null));
         }
 
-        if (newDomChild.parentNode != null && newDomChild.ownerNode == this.ownerNode) {
+        if (newDomChild.parentNode() != null) {
             //If the newChild is already in the tree remove it
-            newDomChild.parentNode.removeChild(newDomChild);
-        }
-
-        if (!(this instanceof Document)
-                && !(this.ownerNode == newDomChild.getOwnerDocument())) {
-            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.WRONG_DOCUMENT_ERR, null));
-        }
-
-        if (this.isReadonly()) {
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
+            newDomChild.parentNode().removeChild(newDomChild);
         }
 
         if (this instanceof Document) {
@@ -245,8 +234,8 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                                    DOMMessageFormatter.DOM_DOMAIN,
                                                    DOMException.HIERARCHY_REQUEST_ERR, null));
                 }
-                if (newDomChild.parentNode == null) {
-                    newDomChild.parentNode = this;
+                if (newDomChild.parentNode() == null) {
+                    newDomChild.setParent(this, useDomSemantics);
                 }
             } else if (!(newDomChild instanceof CommentImpl
                     || newDomChild instanceof ProcessingInstructionImpl
@@ -265,17 +254,16 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 this.lastChild = newDomChild;
                 this.firstChild = newDomChild;
                 this.firstChild.isFirstChild(true);
-                newDomChild.setParent(this);
+                newDomChild.setParent(this, useDomSemantics);
             } else {
                 this.lastChild.nextSibling = newDomChild;
                 newDomChild.previousSibling = this.lastChild;
                 this.lastChild = newDomChild;
                 this.lastChild.nextSibling = null;
             }
-            if (newDomChild.parentNode == null) {
-                newDomChild.parentNode = this;
+            if (newDomChild.parentNode() == null) {
+                newDomChild.setParent(this, useDomSemantics);
             }
-            return newChild;
         } else {
             Iterator children = this.getChildren();
             boolean found = false;
@@ -294,7 +282,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                             
                             ChildNode child = docFrag.firstChild;
                             while (child != null) {
-                                child.parentNode = this;
+                                child.setParent(this, useDomSemantics);
                                 child = child.nextSibling;
                             }
                             
@@ -329,7 +317,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
                             ChildNode child = docFrag.firstChild;
                             while (child != null) {
-                                child.parentNode = this;
+                                child.setParent(this, useDomSemantics);
                                 child = child.nextSibling;
                             }
                             
@@ -363,12 +351,17 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                                DOMException.NOT_FOUND_ERR, null));
             }
 
-            if (newDomChild.parentNode == null) {
-                newDomChild.parentNode = this;
+            if (newDomChild.parentNode() == null) {
+                newDomChild.setParent(this, useDomSemantics);
             }
 
-            return newChild;
         }
+        
+        if (!newDomChild.isComplete() && !(newDomChild instanceof OMSourcedElement)) {
+            setComplete(false);
+        }
+        
+        return newChild;
     }
 
     /** Replaces the oldChild with the newChild. */
@@ -380,30 +373,14 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             return this.removeChild(oldChild);
         }
 
-        if (this == newChild || !isAncestor(newChild)) {
+        if (isAncestorOrSelf(newChild)) {
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN,
                                            DOMException.HIERARCHY_REQUEST_ERR, null));
         }
 
-        if (newDomChild != null &&
-                //This is the case where this is an Element in the document
-                (this.ownerNode != null && !this.ownerNode.equals(newDomChild.ownerNode)) ||
-                //This is the case where this is the Document itself
-                (this.ownerNode == null && !this.equals(newDomChild.ownerNode))) {
-            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.WRONG_DOCUMENT_ERR, null));
-        }
-
-        if (this.isReadonly()) {
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
-        }
+        checkSameOwnerDocument(newDomChild);
 
         Iterator children = this.getChildren();
         boolean found = false;
@@ -418,7 +395,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                     
                     //set the parent of all kids to me
                     while(child != null) {
-                        child.parentNode = this;
+                        child.setParent(this, true);
                         child = child.nextSibling;
                     }
 
@@ -433,7 +410,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                         }
 
                         //Cleanup the current first child
-                        this.firstChild.parentNode = null;
+                        this.firstChild.setParent(null, true);
                         this.firstChild.nextSibling = null;
 
                         //Set the new first child
@@ -455,14 +432,14 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
                     }
 
-                    newDomChild.parentNode = this;
+                    newDomChild.setParent(this, true);
                 }
                 found = true;
 
                 // remove the old child's references to this tree
                 oldDomChild.nextSibling = null;
                 oldDomChild.previousSibling = null;
-                oldDomChild.parentNode = null;
+                oldDomChild.setParent(null, true);
             }
         }
 
@@ -477,77 +454,41 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
     /** Removes the given child from the DOM Tree. */
     public Node removeChild(Node oldChild) throws DOMException {
-        // Check if this node is readonly
-        if (this.isReadonly()) {
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
-        }
-
-        // Check if the Child is there
-        Iterator children = this.getChildren();
-        boolean childFound = false;
-        while (!childFound && children.hasNext()) {
-            ChildNode tempNode = (ChildNode) children.next();
-            if (tempNode.equals(oldChild)) {
-
-                if (this.firstChild == tempNode) {
-                    // If this is the first child
-                    ChildNode nextSib = tempNode.nextSibling;
-                    this.firstChild = nextSib;
-                    if (nextSib == null) {
-                        this.lastChild = null;
-                    } else {
-                        nextSib.previousSibling = null;
-                    }
-                    tempNode.parentNode = null;
-                    tempNode.nextSibling = null;
-                } else if (this.lastChild == tempNode) {
-                    // not the first child, but the last child
-                    ChildNode prevSib = tempNode.previousSibling;
-                    this.lastChild = prevSib;
-                    prevSib.nextSibling = null;
-                    tempNode.parentNode = null;
-                    tempNode.previousSibling = null;
-                } else {
-
-                    ChildNode oldDomChild = (ChildNode) oldChild;
-                    ChildNode privChild = oldDomChild.previousSibling;
-
-                    privChild.nextSibling = oldDomChild.nextSibling;
-                    oldDomChild.nextSibling.previousSibling = privChild;
-
-                    // Remove old child's references to this tree
-                    oldDomChild.nextSibling = null;
-                    oldDomChild.previousSibling = null;
-                }
-                // Child found
-                childFound = true;
-            }
-        }
-
-        if (!childFound)
+        if (oldChild.getParentNode() == this) {
+            ((ChildNode)oldChild).detach(true);
+            return oldChild;
+        } else {
             throw new DOMException(DOMException.NOT_FOUND_ERR,
                                    DOMMessageFormatter.formatMessage(
                                            DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR,
                                            null));
-
-        return oldChild;
+        }
     }
 
-    private boolean isAncestor(Node newNode) {
-
-        // TODO isAncestor
-        return true;
+    /**
+     * Checks if the given node is an ancestor (or identical) to this node.
+     * 
+     * @param node
+     *            the node to check
+     * @return <code>true</code> if the node is an ancestor or indentical to this node
+     */
+    private boolean isAncestorOrSelf(Node node) {
+        Node currentNode = this;
+        do {
+            if (currentNode == node) {
+                return true;
+            }
+            currentNode = currentNode.getParentNode();
+        } while (currentNode != null);
+        return false;
     }
 
     public Node cloneNode(boolean deep) {
 
         ParentNode newnode = (ParentNode) super.cloneNode(deep);
 
-        // set owner document
-        newnode.ownerNode = ownerNode;
+        // set parent and owner document
+        newnode.setParent(null, true);
 
         // Need to break the association w/ original kids
         newnode.firstChild = null;
@@ -578,7 +519,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                                                           childElement.getXMLStreamReader()))
                         .getDocumentElement();
                 newElement.build();
-                return (OMNode) this.ownerNode.importNode((Element) newElement,
+                return (OMNode)ownerDocument().importNode((Element) newElement,
                                                           true);
             }
             case (OMNode.TEXT_NODE): {
@@ -688,18 +629,35 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
     }
 
     public XMLStreamReader getXMLStreamReader(boolean cache) {
-        if ((builder == null) && !cache) {
-            throw new UnsupportedOperationException(
-                    "This element was not created in a manner to be switched");
-        }
-        if (builder != null && builder.isCompleted() && !cache) {
-            throw new UnsupportedOperationException(
-                    "The parser is already consumed!");
-        }
-        return new OMStAXWrapper(builder, this, cache);
+        return OMContainerHelper.getXMLStreamReader(this, cache);
+    }
+    
+    public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
+        return OMContainerHelper.getXMLStreamReader(this, cache, configuration);
     }
 
     public SAXSource getSAXSource(boolean cache) {
         return new OMSource(this);
+    }
+
+    void notifyChildComplete() {
+        if (!this.done && builder == null) {
+            Iterator iterator = getChildren();
+            while (iterator.hasNext()) {
+                OMNode node = (OMNode) iterator.next();
+                if (!node.isComplete()) {
+                    return;
+                }
+            }
+            this.setComplete(true);
+        }
+    }
+
+    void normalize(DOMConfigurationImpl config) {
+        OMNode child = getFirstOMChild();
+        while (child != null) {
+            ((NodeImpl)child).normalize(config);
+            child = child.getNextOMSibling();
+        }
     }
 }

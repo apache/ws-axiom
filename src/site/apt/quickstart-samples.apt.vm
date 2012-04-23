@@ -1,0 +1,162 @@
+~~ Licensed to the Apache Software Foundation (ASF) under one
+~~ or more contributor license agreements. See the NOTICE file
+~~ distributed with this work for additional information
+~~ regarding copyright ownership. The ASF licenses this file
+~~ to you under the Apache License, Version 2.0 (the
+~~ "License"); you may not use this file except in compliance
+~~ with the License. You may obtain a copy of the License at
+~~
+~~ http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing,
+~~ software distributed under the License is distributed on an
+~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~~ KIND, either express or implied. See the License for the
+~~ specific language governing permissions and limitations
+~~ under the License.
+
+     ---------------------
+      Quick Start Samples
+     ---------------------
+
+  Content:
+
+%{toc}
+
+Adding Axiom as a Maven dependency
+
+  To use Axiom in a project built using Maven, add the following dependencies:
+
++------------------------------------------------+
+<dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-api</artifactId>
+    <version>${project.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-impl</artifactId>
+    <version>${project.version}</version>
+    <scope>runtime</scope>
+</dependency>
++------------------------------------------------+
+
+  Note that the <<<axiom-impl>>> dependency is added in scope <<<runtime>>>
+  because application code should not refer to implementation classes directly.
+  All Axiom features are accessible through the public API which is provided
+  by <<<axiom-api>>>.
+  
+  If the application code requires a DOM compliant Axiom implementation,
+  then the following dependency needs to be added too:
+
++------------------------------------------------+
+<dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-dom</artifactId>
+    <version>${project.version}</version>
+    <scope>runtime</scope>
+</dependency>
++------------------------------------------------+
+
+Parsing and processing an XML document
+
+  The following sample shows how to parse and process an XML document using Axiom.
+  It is pretty much self-explaining:
+
+%{snippet|id=main|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/ParseSample.java}
+
+Schema validation using javax.xml.validation
+
+  This sample demonstrates how to validate a part of an Axiom tree (actually the body of a SOAP message)
+  using the <<<javax.xml.validation>>> API:
+
+%{snippet|id=sax|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/ValidateSample.java}
+
+  It leverages the fact that Axiom is capable of constructing a <<<SAXSource>>> from an <<<OMDocument>>>
+  or <<<OMElement>>>.
+
+  Alternatively, one can use a DOM compliant Axiom implementation and use a
+  <<<DOMSource>>> to pass the XML fragment to the validator:
+
+%{snippet|id=dom|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/ValidateSample.java}
+
+Loading local chunks from a large XML document
+
+  Here the goal is to process a large XML document "by chunks", i.e.
+  
+    [[1]] Parse the file and find a relevant element (e.g. by name)
+    
+    [[2]] Load this element into memory as an <<<OMElement>>>.
+    
+    [[3]] Process the <<<OMElement>>> (the "chunk").
+  
+  The process is repeated until the end of the document is reached.
+  
+  This can be achieved without loading the entire document into memory (and without loading all the
+  chunks in memory) by scanning the document using the StAX API and switching to Axiom when a
+  matching element is found:
+
+%{snippet|id=main|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/FragmentsSample.java}
+
+  The code leverages the fact that <<<createStAXOMBuilder>>> can be used to build a fragment
+  (corresponding to a given element) from a StAX stream reader, simply by passing an
+  <<<XMLStreamReader>>> that is positioned on a <<<START_ELEMENT>>> event.
+
+Processing MTOM messages
+
+  This sample shows how to process MTOM messages with Axiom. The code actually sends a request to a Web service
+  with the following JAX-WS service endpoint interface:
+
+%{snippet|id=iface|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMService.java}
+
+  It then extracts the binary content from the response and writes it to a given <<<OutputStream>>>:
+
+%{snippet|id=retrieveContent|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMSample.java}
+
+  The sample code shows that in order to parse an MTOM message one first needs to construct an
+  <<<Attachments>>> object that is then passed to the relevant method in <<<OMXMLBuilderFactory>>>.
+  In the object model, an XOP/MTOM attachment is represented as an <<<OMText>>> node for which <<<isBinary()>>> returns
+  <<<true>>>. Such a node is created for each <<<xop:Include>>> element in the original message.
+  The binary data is stored in a <<<DataHandler>>> object that can be obtained by a call to the
+  <<<getDataHandler()>>> method of the <<<OMText>>> node.
+  
+  By default attachments are loaded into memory, but the constructors of the <<<Attachments>>> class
+  allow to configure caching on disk. The sample actually shows an alternative method to reduce the
+  memory footprint of the MTOM processing, which is to enable streaming. This is supported starting
+  with Axiom 1.2.13.
+
+Logging MTOM messages without inlining optimized binary data
+
+  A common way to log a SOAP message is to invoke the <<<toString>>> method on the corresponding <<<SOAPEnvelope>>>
+  object and send the result to the logger. However, this is problematic for MTOM messages because the
+  <<<toString>>> method will always serialize the message as plain XML and therefore inline optimized
+  binary data using base64 encoding.
+  
+  Except for this particular use case, serializing a message using MTOM without actually producing
+  the MIME parts for the binary data is not meaningful and is therefore not directly supported by
+  the Axiom API. However the following simple trick can be used to implement this:
+
+%{snippet|id=variant1|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMLogSample.java}
+  
+  It relies on the <<<XOPEncodingStreamWriter>>> class which is used by Axiom internally to perform the
+  XOP/MTOM encoding. This class is implemented as an <<<XMLStreamWriter>>> wrapper and is responsible for
+  generating the <<<xop:Include>>> elements. It also builds a map of the MIME parts that need to be generated.
+  Since <<<XOPEncodingStreamWriter>>> is an <<<XMLStreamWriter>>> proxy, it can easily be used in conjunction with the
+  <<<serialize(XMLStreamWriter)>>> method and an <<<XMLStreamWriter>>> that writes the result to
+  a <<<StringWriter>>>. The trick here is to only store the SOAP part and to disregard the MIME parts
+  for the attachments. Since <<<XOPEncodingStreamWriter>>> only stores references to the <<<DataHandler>>>
+  objects for these attachements, there is no overhead associated with that.
+  
+  One may wonder how <<<XOPEncodingStreamWriter>>> can receive <<<DataHandler>>> objects considering that
+  it is an <<<XMLStreamWriter>>> implementation and that the StAX API doesn't know anything about XOP/MTOM or
+  <<<DataHandler>>> objects. The answer is that <<<XOPEncodingStreamWriter>>> actually implements an Axiom
+  specific extension defined by the <<<DataHandlerWriter>>> interface. An alternative solution for the logging
+  problem is therefore to use a custom <<<XMLStreamWriter>>> implementation that supports that extension and
+  that bypasses the serialization of the <<<DataHandler>>> objects, e.g. by replacing them by some
+  placeholder text:
+
+%{snippet|id=main|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/LogWriter.java}
+
+  The following code shows how this class would be used to log the MTOM message:
+
+%{snippet|id=variant2|file=modules/axiom-samples/src/test/java/org/apache/axiom/samples/MTOMLogSample.java}

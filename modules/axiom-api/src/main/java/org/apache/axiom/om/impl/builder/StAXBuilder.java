@@ -36,6 +36,7 @@ import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -55,7 +56,7 @@ import java.util.Map;
  */
 public abstract class StAXBuilder implements OMXMLParserWrapper {
 
-    private static Log log = LogFactory.getLog(StAXBuilder.class);
+    private static final Log log = LogFactory.getLog(StAXBuilder.class);
     
     /** Field parser */
     protected XMLStreamReader parser;
@@ -147,7 +148,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         if (parser instanceof BuilderAwareReader) {
             ((BuilderAwareReader) parser).setBuilder(this);
         }
-        dataHandlerReader = DataHandlerReaderUtils.getDataHandlerReader(parser);
+        dataHandlerReader = XMLStreamReaderUtils.getDataHandlerReader(parser);
         this.parser = parser;
     }
 
@@ -683,7 +684,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
     /**
      * Get the value of a feature/property from the underlying XMLStreamReader implementation
-     * without accessing the XMLStreamReader. https://issues.apache.org/jira/browse/WSCOMMONS-155
+     * without accessing the XMLStreamReader. https://issues.apache.org/jira/browse/AXIOM-348
      *
      * @param name
      * @return TODO

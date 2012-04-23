@@ -29,8 +29,6 @@ import java.util.Map;
 
 /**
  * class WrapperFactory
- *
- * @author Saliya Ekanayake (esaliya@gmail.com)
  */
 public class WrapperFactory {
     private Map map = null;

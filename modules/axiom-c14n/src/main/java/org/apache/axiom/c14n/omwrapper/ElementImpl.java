@@ -32,9 +32,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class ElementImpl extends NodeImpl implements Element {
     private OMElement e = null;
     private NamedNodeMap nnm = null;

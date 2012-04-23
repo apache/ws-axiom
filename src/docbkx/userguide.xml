@@ -124,9 +124,8 @@
         <section>
             <title>Features of Axiom</title>
             <para>
-                Axiom is a lightweight, deferred built XML infoset representation based on
-                StAX (<ulink url="http://www.jcp.org/en/jsr/detail?id=173">JSR 173</ulink>), which
-                is the standard streaming pull parser API. The object model can be
+                Axiom is a lightweight XML infoset representation that supports deferred building
+                That means that the object model can be
                 manipulated as flexibly as any other object model (Such as
                 <ulink url="http://www.jdom.org/">JDOM</ulink>), but underneath, the objects will be
                 created only when they are absolutely required. This leads to much less
@@ -152,19 +151,10 @@
                 <listitem>
                     <para>
                         <emphasis role="bold">Pull based</emphasis>: For a deferred building mechanism a pull
-                        based parser is required. Axiom is based on
-                        <ulink url="http://today.java.net/pub/a/today/2006/07/20/introduction-to-stax.html">StAX</ulink>,
-                        the standard pull parser API.
+                        based parser is required.
                     </para>
                 </listitem>
             </itemizedlist>
-            <important>
-                <para>
-                    Axiom is tightly bound to StAX API. To work with Axiom
-                    a StAX compliant parser and the API <emphasis>must</emphasis> be present in the
-                    classpath.
-                </para>
-            </important>
             <para>
                 The Following image shows how Axiom API is viewed by the user
             </para>
@@ -176,10 +166,17 @@
                     </imageobject>
                 </mediaobject>
             </figure>
+        </section>
+        <section>
+            <title>Relation with StAX</title>
             <para>
-                OM Builder wraps the raw xml character stream through the StAX reader API.
-                Hence, the complexities of the pull event stream is transparent to the
-                user.
+                <ulink url="http://today.java.net/pub/a/today/2006/07/20/introduction-to-stax.html">StAX</ulink>
+                (<ulink url="http://www.jcp.org/en/jsr/detail?id=173">JSR 173</ulink>) is the standard pull parser API for Java.            
+                Axiom makes use of the StAX API to allow application code to access the object model in streaming mode, which means
+                that application code can request an <classname>XMLStreamReader</classname> for any document or element information item.
+                In addition, support for deferred building relies on the usage of a pull parser. The two standard implementations
+                of the Axiom API (LLOM and DOOM) both use the StAX API for that. To work with these implementations, a StAX compliant
+                parser <emphasis>must</emphasis> be present in the classpath.
             </para>
         </section>
         <section>
@@ -423,7 +420,7 @@ OMElement documentElement = builder.getDocumentElement();</programlisting>
             </para>
 <programlisting>public OMNamespace declareNamespace(String uri, String prefix);
 public OMNamespace declareNamespace(OMNamespace namespace);
-public OMNamespace findNamespace(String uri, String prefix) throws OMException;</programlisting>
+public OMNamespace findNamespace(String uri, String prefix);</programlisting>
             <para>
                 The <methodname>declareNamespaceXX</methodname> methods are fairly straightforward. Add a namespace
                 to namespace declarations section. Note that a namespace declaration that has
@@ -458,7 +455,7 @@ root.addChild(elt1);</programlisting>
             <para>
                 Serialization of the root element produces the following XML:
             </para>
-<screen>&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</screen>
+<programlisting><?db-font-size 80%?>&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</programlisting>
         </section>
         <section>
             <title>Traversing</title>
@@ -545,7 +542,8 @@ while(children.hasNext()){
                 reference to the earlier code sample- <xref linkend="list1"/>
                 that created a SOAP envelope.
             </para>
-<programlisting>XMLStreamWriter writer = XMLOutputFactory.newInstance().createXMLStreamWriter(System.out);
+<programlisting>XMLStreamWriter writer =
+    XMLOutputFactory.newInstance().createXMLStreamWriter(System.out);
 //dump the output to console with caching
 envelope.serialize(writer); 
 writer.flush();</programlisting>
@@ -561,11 +559,11 @@ writer.flush();</programlisting>
                 which creates a small object model programmatically.
                 Serialization of the root element produces the following:
             </para>
-<screen>&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</screen>
+<programlisting><?db-font-size 80%?>&lt;x:root xmlns:x="bar" xmlns:y="bar1"&gt;&lt;x:foo&gt;&lt;y:yuck&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;&lt;/x:root&gt;</programlisting>
             <para>
                 However, serialization of only the foo element produces the following:
             </para>
-<screen>&lt;x:foo xmlns:x="bar"&gt;&lt;y:yuck xmlns:y="bar1"&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;</screen>
+<programlisting><?db-font-size 80%?>&lt;x:foo xmlns:x="bar"&gt;&lt;y:yuck xmlns:y="bar1"&gt;blah&lt;/y:yuck&gt;&lt;/x:foo&gt;</programlisting>
             <para>
                 Note how the serializer puts the relevant namespace declarations in place.
             </para>
@@ -623,7 +621,7 @@ System.out.println(documentElement.toStringWithConsume());</programlisting>
                     Therefore, when using Axiom versions prior to 1.2.9, you should avoid using <classname>StAXUtils</classname>
                     together with a StAX implementation other than Woodstox, especially in a highly
                     concurrent environment. The issue has been fixed in Axiom 1.2.9. See
-                    <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-489">WSCOMMONS-489</ulink>
+                    <ulink url="https://issues.apache.org/jira/browse/AXIOM-74">AXIOM-74</ulink>
                     for more details.
                 </para>
             </caution>
@@ -765,7 +763,7 @@ try {
                     sequence of events. Starting with Axiom 1.2.8, the object model builder
                     will never attempt to read new events from a parser that has previously reported
                     an I/O or parsing error. These versions of Axiom are therefore safe; see
-                    <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-372">WSCOMMONS-372</ulink>
+                    <ulink url="https://issues.apache.org/jira/browse/AXIOM-34">AXIOM-34</ulink>
                     for more details.
                 </para>
             </caution>
@@ -869,7 +867,7 @@ try {
                     commonly used incarnations of these libraries: one is Sun's reference implementation, the other
                     is part of the <ulink url="http://geronimo.apache.org/">Geronimo</ulink> project. Axiom declares
                     dependencies on the Geronimo versions (though that might
-                    <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-417">change</ulink> in the future).
+                    <ulink url="https://issues.apache.org/jira/browse/AXIOM-319">change</ulink> in the future).
                     If your project uses another library that depends on JAF and/or JavaMail, but that refers
                     to Sun's implementation, your project will end up with dependencies on two different
                     artifacts implementing the same API.
@@ -1085,11 +1083,11 @@ with CRLF</root>]]></screen>
                         supported in 1.2.9 and the default Axiom implementation is chosen using the new
                         <varname>org.apache.axiom.om.OMMetaFactory</varname> system property. For LLOM, you should set:
                     </para>
-<programlisting>org.apache.axiom.om.OMMetaFactory=org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory</programlisting>
+<programlisting><?db-font-size 70%?>org.apache.axiom.om.OMMetaFactory=org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory</programlisting>
                     <para>
                         This is the default and is equivalent to the defaults in 1.2.8. For DOOM, you should set:
                     </para>
-<programlisting>org.apache.axiom.om.OMMetaFactory=org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory</programlisting>
+<programlisting><?db-font-size 70%?>org.apache.axiom.om.OMMetaFactory=org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory</programlisting>
                 </section>
                 <section>
                     <title>Factories returned by <classname>StAXUtils</classname></title>
@@ -1133,8 +1131,8 @@ with CRLF</root>]]></screen>
                         </listitem>
                     </orderedlist>
                     <para>
-                        As explained in <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-485">WSCOMMONS-485</ulink>
-                        and <ulink url="https://issues.apache.org/jira/browse/WSCOMMONS-488">WSCOMMONS-488</ulink>,
+                        As explained in <ulink url="https://issues.apache.org/jira/browse/AXIOM-255">AXIOM-255</ulink>
+                        and <ulink url="https://issues.apache.org/jira/browse/AXIOM-122">AXIOM-122</ulink>,
                         in Axiom 1.2.8, the type of stream reader provided by the API was not always well defined.
                         Sometimes the type of the stream reader even depended on the state of the Axiom tree
                         (i.e. whether some part of it has been accessed or not).
@@ -1291,6 +1289,27 @@ while (iterator.hasNext()) {
                     </para>
                 </section>
                 <section>
+                    <title><classname>OMNamespace</classname> normalization</title>
+                    <para>
+                        Methods that return an <classname>OMNamespace</classname> object may in principle use two different
+                        ways to represent the absence of a namespace: as a <literal>null</literal> value or as an
+                        <classname>OMNamespace</classname> instance that has both prefix and namespaceURI properties set to
+                        the empty string. This applies in particular to <methodname>OMElement#getNamespace()</methodname>,
+                        <methodname>OMElement#getDefaultNamespace()</methodname> and <methodname>OMAttriute#getNamespace()</methodname>.
+                        The API of Axiom 1.2.12 didn't clearly specify which representation was used,
+                        although in most cases a <literal>null</literal> value was used. As a consequence application code
+                        had to take into account the possibility that such methods returned <classname>OMNamespace</classname>
+                        instances with an empty prefix and namespace URI.
+                    </para>
+                    <para>
+                        In Axiom 1.2.13 the situation has been clarified and the aforementioned APIs now always return
+                        <literal>null</literal> to indicate the absence of a namespace. Note that this
+                        may have an impact on flawed application code that doesn't handle <literal>null</literal> in the same
+                        way as an <classname>OMNamespace</classname> instance with an empty prefix and namespace URI.
+                        Such application code needs to be fixed to work correctly with Axiom 1.2.13.
+                    </para>
+                </section>
+                <section>
                     <title>New abstract APIs</title>
                     <para>
                         Axiom 1.2.13 introduces a couple of new abstract APIs which give implementations of the Axiom API
@@ -1304,7 +1323,30 @@ while (iterator.hasNext()) {
                                 <methodname>OMContainer#getSAXSource(boolean)</methodname> should be used.
                             </para>
                         </listitem>
+                        <listitem>
+                            <para>
+                                <classname>org.apache.axiom.om.impl.dom.DOOMAbstractFactory</classname> has been deprecated
+                                because it ties application code that requires an object model factory supporting DOM to
+                                a particular Axiom implementation (DOOM). Instead use <methodname>OMAbstractFactory.getMetaFactory(String)</methodname>
+                                with <literal>OMAbstractFactory.FEATURE_DOM</literal> as parameter value to get a meta factory
+                                for an Axiom implementation that supports DOM.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                The <classname>DocumentBuilderFactory</classname> implementation provided by DOOM should no
+                                longer be instantiated directly. Instead, application code should request a meta factory for
+                                DOM (see previous item), cast it to <classname>DOMMetaFactory</classname> and invoke
+                                <methodname>newDocumentBuilderFactory</methodname> via that interface.
+                            </para>
+                        </listitem>
                     </itemizedlist>
+                    <tip>
+                        <para>
+                            The last two changes imply that <literal>axiom-dom</literal> should no longer be used as a
+                            compile time dependency, but only as a runtime dependency.
+                        </para>
+                    </tip>
                     <para>
                         Note that some of the superseded APIs may disappear in Axiom 1.3.
                     </para>
@@ -1370,6 +1412,13 @@ while (iterator.hasNext()) {
                         Application code that depends on these classes needs to be rewritten before upgrading
                         to Axiom 1.2.13.
                     </para>
+                    <para>
+                        When upgrading to 1.2.13, projects that use Axiom's XOP/MTOM features must make sure
+                        that Apache James Mime4J is added to the dependencies. For projects that use Maven
+                        (or tools that support Maven repositories and metadata) this happens automatically.
+                        Projects that use other build tools must explicity add the <filename>apache-mime4j-core</filename>
+                        library to the list of dependencies.
+                    </para>
                 </section>
                 <section>
                     <title>Support for MIME part streaming</title>
@@ -1389,6 +1438,19 @@ while (iterator.hasNext()) {
                             </para>
                         </listitem>
                     </itemizedlist>
+                </section>
+            </section>
+            <section id="changes-1.2.14">
+                <title>Changes in Axiom 1.2.14</title>
+                <section>
+                    <title>Upgrade of Woodstox</title>
+                    <para>
+                        Woodstox 3.2.x is no longer maintained. Starting with version 1.2.14, Axiom depends on Woodstox 4.1.x,
+                        although using 3.2.x (and 4.0.x) is still supported. This may have an impact on projects that use
+                        Maven, because the artifact ID used by Woodstox changed from <literal>wstx-asl</literal> to
+                        <literal>woodstox-core-asl</literal>. These projects may need to update their dependencies
+                        to avoid depending on two different versions of Woodstox.
+                    </para>
                 </section>
             </section>
         </section>
@@ -1636,7 +1698,8 @@ public InputStream getInputStream() throws IOException;</programlisting>
                         </para>
                         <example id="OMDataSource-serialize">
                             <title>Proper implementation of the <methodname>OMDataSource#serialize</methodname> method</title>
-<programlisting>public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
+<programlisting>public void serialize(XMLStreamWriter xmlWriter)
+        throws XMLStreamException {
     StreamingOMSerializer serializer = new StreamingOMSerializer();
     serializer.serialize(getReader(), xmlWriter);
 }</programlisting>
@@ -1696,7 +1759,7 @@ public InputStream getInputStream() throws IOException;</programlisting>
         <title>Appendix</title>
         <section>
             <title>Program Listing for Build and Serialize</title>
-<programlisting>import org.apache.axiom.om.OMElement;
+<programlisting><?db-font-size 80%?>import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 

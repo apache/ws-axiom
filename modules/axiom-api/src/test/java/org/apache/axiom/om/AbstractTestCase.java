@@ -32,6 +32,7 @@ import javax.activation.DataSource;
 import javax.activation.URLDataSource;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.axiom.attachments.Attachments;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;

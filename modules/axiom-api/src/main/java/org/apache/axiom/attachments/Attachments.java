@@ -19,12 +19,17 @@
 
 package org.apache.axiom.attachments;
 
+import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
+import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.axiom.om.OMAttachmentAccessor;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.impl.MTOMConstants;
 
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.internet.ContentType;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -33,7 +38,7 @@ import java.util.Set;
 import java.util.Map;
 
 public class Attachments implements OMAttachmentAccessor {
-    private final AttachmentsImpl impl;
+    private final AttachmentsDelegate delegate;
    
     /**
      * <code>applicationType</code> used to distinguish between MTOM & SWA If the message is MTOM
@@ -42,11 +47,11 @@ public class Attachments implements OMAttachmentAccessor {
     private String applicationType;
 
     public LifecycleManager getLifecycleManager() {
-        return impl.getLifecycleManager();
+        return delegate.getLifecycleManager();
     }
 
     public void setLifecycleManager(LifecycleManager manager) {
-        impl.setLifecycleManager(manager);
+        delegate.setLifecycleManager(manager);
     }
 
     /**
@@ -85,7 +90,7 @@ public class Attachments implements OMAttachmentAccessor {
         } else {
             fileStorageThreshold = 1;
         }
-        impl = new MIMEMessage(manager, inStream, contentTypeString, fileCacheEnable,
+        delegate = new MIMEMessage(manager, inStream, contentTypeString, fileCacheEnable,
                 attachmentRepoDir, fileStorageThreshold, contentLength);
     }
 
@@ -139,21 +144,27 @@ public class Attachments implements OMAttachmentAccessor {
      * through the SwA API.
      */
     public Attachments() {
-        impl = new AttachmentSet();
+        delegate = new AttachmentSet();
     }
 
     /**
-     * Identify the type of message (MTOM or SOAP with attachments) represented by this
-     * object.
+     * Identify the type of message (MTOM or SOAP with attachments) represented by this object. Note
+     * that this method is only meaningful if the instance was created from a stream.
      * 
-     * @return One of the {@link MTOMConstants#MTOM_TYPE}, {@link MTOMConstants#SWA_TYPE}
-     *         or {@link MTOMConstants#SWA_TYPE_12} constants.
-     * @throws OMException if the message doesn't have one of the supported types, i.e. is
-     *         neither MTOM nor SOAP with attachments
+     * @return One of the {@link MTOMConstants#MTOM_TYPE}, {@link MTOMConstants#SWA_TYPE} or
+     *         {@link MTOMConstants#SWA_TYPE_12} constants.
+     * @throws OMException
+     *             if the message doesn't have one of the supported types (i.e. is neither MTOM nor
+     *             SOAP with attachments) or if the instance was not created from a stream
      */
     public String getAttachmentSpecType() {
         if (this.applicationType == null) {
-            applicationType = impl.getContentType().getParameter("type");
+            ContentType contentType = delegate.getContentType();
+            if (contentType == null) {
+                throw new OMException("Unable to determine the attachment spec type because the " +
+                		"Attachments object doesn't have a known content type");
+            }
+            applicationType = contentType.getParameter("type");
             if ((MTOMConstants.MTOM_TYPE).equalsIgnoreCase(applicationType)) {
                 this.applicationType = MTOMConstants.MTOM_TYPE;
             } else if ((MTOMConstants.SWA_TYPE).equalsIgnoreCase(applicationType)) {
@@ -169,7 +180,11 @@ public class Attachments implements OMAttachmentAccessor {
     }
 
     /**
-     * Get the {@link DataHandler} object for the MIME part with a given content ID.
+     * Get the {@link DataHandler} object for the MIME part with a given content ID. The returned
+     * instance MAY implement {@link DataHandlerExt} in which case the caller can use that API to
+     * stream the content of the part. In addition, the {@link DataSource} linked to the returned
+     * {@link DataHandler} MAY be of type {@link SizeAwareDataSource} in which case the caller can
+     * use that interface to determine the size of the MIME part.
      * 
      * @param contentID
      *            the raw content ID (without the surrounding angle brackets and <tt>cid:</tt>
@@ -178,7 +193,7 @@ public class Attachments implements OMAttachmentAccessor {
      *         <code>null</code> if the MIME part referred by the content ID does not exist
      */
     public DataHandler getDataHandler(String contentID) {
-        return impl.getDataHandler(contentID);
+        return delegate.getDataHandler(contentID);
     }
 
     /**
@@ -189,7 +204,7 @@ public class Attachments implements OMAttachmentAccessor {
      * @param dataHandler
      */
     public void addDataHandler(String contentID, DataHandler dataHandler) {
-        impl.addDataHandler(contentID, dataHandler);
+        delegate.addDataHandler(contentID, dataHandler);
     }
 
     /**
@@ -199,7 +214,7 @@ public class Attachments implements OMAttachmentAccessor {
      * @param blobContentID
      */
     public void removeDataHandler(String blobContentID) {
-        impl.removeDataHandler(blobContentID);
+        delegate.removeDataHandler(blobContentID);
     }
 
     /**
@@ -230,7 +245,7 @@ public class Attachments implements OMAttachmentAccessor {
      * @return the input stream for the root part
      */
     public InputStream getRootPartInputStream() throws OMException {
-        return impl.getRootPartInputStream();
+        return delegate.getRootPartInputStream();
     }
 
     /**
@@ -245,7 +260,7 @@ public class Attachments implements OMAttachmentAccessor {
      * @return the content ID of the root part (without the surrounding angle brackets)
      */
     public String getRootPartContentID() {
-        return impl.getRootPartContentID();
+        return delegate.getRootPartContentID();
     }
 
     /**
@@ -257,7 +272,7 @@ public class Attachments implements OMAttachmentAccessor {
      *             if the content type could not be determined
      */
     public String getRootPartContentType() {
-        return impl.getRootPartContentType();
+        return delegate.getRootPartContentType();
     }
 
     /**
@@ -268,7 +283,7 @@ public class Attachments implements OMAttachmentAccessor {
      */
     public IncomingAttachmentStreams getIncomingAttachmentStreams()
             throws IllegalStateException {
-        return impl.getIncomingAttachmentStreams();
+        return delegate.getIncomingAttachmentStreams();
     }
 
     /**
@@ -280,7 +295,7 @@ public class Attachments implements OMAttachmentAccessor {
      * @return an array with the content IDs in order of appearance in the message
      */
     public String[] getAllContentIDs() {
-        Set cids = impl.getContentIDs(true);
+        Set cids = delegate.getContentIDs(true);
         return (String[]) cids.toArray(new String[cids.size()]);
     }
 
@@ -293,7 +308,7 @@ public class Attachments implements OMAttachmentAccessor {
      * @return the set of content IDs
      */
     public Set getContentIDSet() {
-        return impl.getContentIDs(true);
+        return delegate.getContentIDs(true);
     }
     
     /**
@@ -305,7 +320,7 @@ public class Attachments implements OMAttachmentAccessor {
      *         {@link DataHandler} objects as values.
      */
     public Map getMap() {
-        return impl.getMap();
+        return delegate.getMap();
     }
 
     /**
@@ -319,7 +334,7 @@ public class Attachments implements OMAttachmentAccessor {
      * @return List of content IDs in order of appearance in message
      */
     public List getContentIDList() {
-        return new ArrayList(impl.getContentIDs(false));
+        return new ArrayList(delegate.getContentIDs(false));
     }
     
     /**
@@ -330,7 +345,7 @@ public class Attachments implements OMAttachmentAccessor {
      * backed by an InputStream
      */
     public long getContentLength() throws IOException {
-        return impl.getContentLength();
+        return delegate.getContentLength();
     }
 
     /**

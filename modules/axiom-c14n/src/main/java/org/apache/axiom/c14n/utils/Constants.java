@@ -19,9 +19,6 @@
 
 package org.apache.axiom.c14n.utils;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class Constants {
     /**
      * The URI for XML spec

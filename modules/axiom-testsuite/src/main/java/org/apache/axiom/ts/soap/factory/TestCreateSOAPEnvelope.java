@@ -34,14 +34,22 @@ public class TestCreateSOAPEnvelope extends SOAPTestCase {
 
     protected void runTest() throws Throwable {
         SOAPEnvelope env = soapFactory.createSOAPEnvelope();
+        
+        // Check name
         assertEquals(SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX, env.getNamespace().getPrefix());
         assertEquals(spec.getEnvelopeNamespaceURI(), env.getNamespace().getNamespaceURI());
         assertEquals(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, env.getLocalName());
+        
+        // Check declared namespaces
         Iterator it = env.getAllDeclaredNamespaces();
         assertTrue(it.hasNext());
         OMNamespace ns = (OMNamespace)it.next();
         assertEquals(SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX, ns.getPrefix());
         assertEquals(spec.getEnvelopeNamespaceURI(), ns.getNamespaceURI());
         assertFalse(it.hasNext());
+        
+        // Check parent/children
+        assertNull(env.getParent());
+        assertNull(env.getFirstOMChild());
     }
 }

@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.util.StAXUtils;
 
 import java.util.Iterator;
 
@@ -41,10 +40,9 @@ public class StAXOMBuilderTest extends AbstractTestCase {
 
     protected void setUp() throws Exception {
         stAXOMBuilder =
-                OMXMLBuilderFactory.createStAXOMBuilder(
+                OMXMLBuilderFactory.createOMBuilder(
                         OMAbstractFactory.getSOAP11Factory(),
-                        StAXUtils.createXMLStreamReader(
-                                getTestResource("non_soap.xml")));
+                        getTestResource("non_soap.xml"));
     }
 
     protected void tearDown() throws Exception {
@@ -53,9 +51,6 @@ public class StAXOMBuilderTest extends AbstractTestCase {
 
     public void testGetRootElement() throws Exception {
         rootElement = stAXOMBuilder.getDocumentElement();
-        assertTrue("Root element can not be null", rootElement != null);
-        assertTrue(" Name of the root element is wrong",
-                   rootElement.getLocalName().equalsIgnoreCase("Root"));
         // get the first OMElement child
         OMNode omnode = rootElement.getFirstOMChild();
         while (omnode instanceof OMText) {
@@ -73,9 +68,6 @@ public class StAXOMBuilderTest extends AbstractTestCase {
     
     public void testClose1() throws Exception {
         rootElement = stAXOMBuilder.getDocumentElement();
-        assertTrue("Root element can not be null", rootElement != null);
-        assertTrue(" Name of the root element is wrong",
-                   rootElement.getLocalName().equalsIgnoreCase("Root"));
         // get the first OMElement child
         OMNode omnode = rootElement.getFirstOMChild();
         while (omnode instanceof OMText) {
@@ -98,9 +90,6 @@ public class StAXOMBuilderTest extends AbstractTestCase {
     
     public void testClose2() throws Exception {
         rootElement = stAXOMBuilder.getDocumentElement();
-        assertTrue("Root element can not be null", rootElement != null);
-        assertTrue(" Name of the root element is wrong",
-                   rootElement.getLocalName().equalsIgnoreCase("Root"));
         // get the first OMElement child
         OMNode omnode = rootElement.getFirstOMChild();
         while (omnode instanceof OMText) {

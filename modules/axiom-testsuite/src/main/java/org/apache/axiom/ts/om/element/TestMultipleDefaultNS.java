@@ -34,8 +34,8 @@ public class TestMultipleDefaultNS extends AxiomTestCase {
         OMNamespace defaultNS1 = omFactory.createOMNamespace("http://defaultNS1.org", null);
         OMNamespace defaultNS2 = omFactory.createOMNamespace("http://defaultNS2.org", null);
 
-        OMElement omElementOne = omFactory.createOMElement("DocumentElement", null);
-        omElementOne.declareDefaultNamespace("http://defaultNS1.org");
+        OMElement omElementOne = omFactory.createOMElement("DocumentElement",
+                omFactory.createOMNamespace("http://defaultNS1.org", ""));
         OMElement omElementOneChild = omFactory.createOMElement("ChildOne", null, omElementOne);
 
 

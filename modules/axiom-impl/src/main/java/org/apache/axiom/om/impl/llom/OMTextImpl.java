@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.XOPBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
@@ -356,11 +355,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         } else {
 
             if (dataHandlerObject == null) {
-                if (contentID == null) {
-                    throw new RuntimeException("ContentID is null");
-                }
-                dataHandlerObject = ((XOPBuilder) builder)
-                        .getDataHandler(contentID);
+                throw new OMException("No DataHandler available");
             } else if (dataHandlerObject instanceof DataHandlerProvider) {
                 try {
                     dataHandlerObject = ((DataHandlerProvider)dataHandlerObject).getDataHandler();

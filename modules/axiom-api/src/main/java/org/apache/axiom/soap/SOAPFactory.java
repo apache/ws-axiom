@@ -20,6 +20,7 @@
 package org.apache.axiom.soap;
 
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -375,15 +376,26 @@ public interface SOAPFactory extends OMFactory {
 
 
     /**
-     * Method getDefaultEnvelope. This returns a SOAP envelope consisting with an empty Header and a
-     * Body. This is just a util method which can be used everywhere.
-     *
-     * @return Returns SOAPEnvelope.
+     * Create a default SOAP envelope with an empty header and an empty body. Note that the method
+     * will not create an associated {@link SOAPMessage} or {@link OMDocument} instance and the
+     * parent of the returned {@link SOAPEnvelope} is <code>null</code>.
+     * 
+     * @return the default SOAP envelope
      */
     SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException;
 
     SOAPEnvelope getDefaultFaultEnvelope() throws SOAPProcessingException;
 
+    /**
+     * Get the envelope namespace for the SOAP version used by this factory. The returned
+     * {@link OMNamespace} instance has the following properties:
+     * <ul>
+     * <li>The prefix is set to {@link SOAPConstants#SOAP_DEFAULT_NAMESPACE_PREFIX} (which is the
+     * same as the prefix used by methods such as {@link #createSOAPEnvelope()}).
+     * <li>The namespace URI is the same as returned by {@link #getSoapVersionURI()}.
+     * </ul>
+     * 
+     * @return the envelope namespace for the SOAP version used by this factory
+     */
     OMNamespace getNamespace();
-
 }

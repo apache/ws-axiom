@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom-parent</artifactId>
-        <version>1.2.13-SNAPSHOT</version>
+        <version>1.2.14-SNAPSHOT</version>
         <relativePath>../axiom-parent/pom.xml</relativePath>
     </parent>
     <artifactId>axiom-impl</artifactId>
@@ -100,7 +100,6 @@
         <dependency>
             <groupId>xalan</groupId>
             <artifactId>xalan</artifactId>
-            <version>2.7.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -131,9 +130,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>shade-plugin-patched</artifactId>
-                <version>${project.version}</version>
+                <artifactId>maven-shade-plugin</artifactId>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -150,6 +147,10 @@
                                 <relocation>
                                     <pattern>org.apache.axiom.om.impl.common</pattern>
                                     <shadedPattern>org.apache.axiom.om.impl.llom</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.axiom.soap.impl.common</pattern>
+                                    <shadedPattern>org.apache.axiom.soap.impl.llom</shadedPattern>
                                 </relocation>
                             </relocations>
                             <transformers>

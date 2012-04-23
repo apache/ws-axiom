@@ -28,7 +28,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-// Regression test for WSCOMMONS-435
+// Regression test for AXIOM-169
 public class TestRemoveFirstChild extends DOMTestCase {
     public TestRemoveFirstChild(DocumentBuilderFactory dbf) {
         super(dbf);

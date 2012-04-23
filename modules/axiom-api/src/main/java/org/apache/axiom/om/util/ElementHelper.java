@@ -25,13 +25,9 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 
 import javax.xml.namespace.QName;
@@ -41,7 +37,6 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 import java.io.Writer;
 import java.util.Iterator;
 
@@ -134,7 +129,7 @@ public class ElementHelper {
     }
 
     /**
-     * @deprecated use {@link #getContentID(XMLStreamReader)} instead (see WSCOMMONS-429)
+     * @deprecated use {@link #getContentID(XMLStreamReader)} instead (see AXIOM-129)
      */
     public static String getContentID(XMLStreamReader parser, String charsetEncoding) {
         return getContentID(parser);
@@ -208,78 +203,17 @@ public class ElementHelper {
     }
     
     /**
-     * Returns a stream representing the concatenation of the text nodes that are children of a
-     * given element.
-     * The stream returned by this method produces exactly the same character sequence as the
-     * the stream created by the following expression:
-     * <pre>new StringReader(element.getText())</pre>
-     * The difference is that the stream implementation returned by this method is guaranteed
-     * to have constant memory usage and is optimized for performance.
-     * 
-     * @param element the element to read the text nodes from
-     * @param cache whether to enable caching when accessing the element
-     * @return a stream representing the concatenation of the text nodes
-     * 
-     * @see OMElement#getText()
+     * @deprecated Use {@link OMElement#getTextAsStream(boolean)} instead.
      */
     public static Reader getTextAsStream(OMElement element, boolean cache) {
-        // If the element is not an OMSourcedElement and has not more than one child, then the most
-        // efficient way to get the Reader is to build a StringReader
-        if (!(element instanceof OMSourcedElement) && (!cache || element.isComplete())) {
-            OMNode child = element.getFirstOMChild();
-            if (child == null) {
-                return new StringReader("");
-            } else if (child.getNextOMSibling() == null) {
-                return new StringReader(child instanceof OMText ? ((OMText)child).getText() : "");
-            }
-        }
-        // In all other cases, extract the data from the XMLStreamReader
-        try {
-            XMLStreamReader reader = element.getXMLStreamReader(cache);
-            if (reader.getEventType() == XMLStreamReader.START_DOCUMENT) {
-                reader.next();
-            }
-            return XMLStreamReaderUtils.getElementTextAsStream(reader, true);
-        } catch (XMLStreamException ex) {
-            throw new OMException(ex);
-        }
+        return element.getTextAsStream(cache);
     }
     
     /**
-     * Write the content of the text nodes that are children of a given element to a
-     * {@link Writer}.
-     * If <code>cache</code> is true, this method has the same effect as the following instruction:
-     * <pre>out.write(element.getText())</pre>
-     * The difference is that this method is guaranteed to have constant memory usage and is
-     * optimized for performance.
-     * 
-     * @param element the element to read the text nodes from
-     * @param out the stream to write the content to
-     * @param cache whether to enable caching when accessing the element
-     * @throws XMLStreamException if an error occurs when reading from the element
-     * @throws IOException if an error occurs when writing to the stream
-     * 
-     * @see OMElement#getText()
+     * @deprecated Use {@link OMElement#writeTextTo(Writer, boolean)} instead.
      */
     public static void writeTextTo(OMElement element, Writer out, boolean cache)
             throws XMLStreamException, IOException {
-        
-        XMLStreamReader reader = element.getXMLStreamReader(cache);
-        int depth = 0;
-        while (reader.hasNext()) {
-            switch (reader.next()) {
-                case XMLStreamReader.CHARACTERS:
-                case XMLStreamReader.CDATA:
-                    if (depth == 1) {
-                        out.write(reader.getText());
-                    }
-                    break;
-                case XMLStreamReader.START_ELEMENT:
-                    depth++;
-                    break;
-                case XMLStreamReader.END_ELEMENT:
-                    depth--;
-            }
-        }
+        element.writeTextTo(out, cache);
     }
 }

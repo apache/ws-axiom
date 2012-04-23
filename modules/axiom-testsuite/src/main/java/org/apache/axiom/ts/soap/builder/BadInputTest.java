@@ -22,7 +22,6 @@ package org.apache.axiom.ts.soap.builder;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMTestUtils;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.AxiomTestCase;

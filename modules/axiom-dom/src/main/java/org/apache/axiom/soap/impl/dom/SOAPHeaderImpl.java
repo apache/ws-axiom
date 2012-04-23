@@ -26,206 +26,22 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.soap.RolePlayer;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.soap.SOAPVersion;
+import org.apache.axiom.soap.impl.common.HeaderIterator;
+import org.apache.axiom.soap.impl.common.MURoleChecker;
+import org.apache.axiom.soap.impl.common.RoleChecker;
+import org.apache.axiom.soap.impl.common.RolePlayerChecker;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * A local interface we can use to make "header checker" objects which can be used by
- * HeaderIterators to filter results.  This really SHOULD be done with anonymous classes:
- * <p/>
- * public void getHeadersByRole(final String role) {
- *     return new HeaderIterator() {
- *         public boolean checkHeader(SOAPHeaderBlock header) {
- *             ...
- *             if (role.equals(headerRole)) return true;
- *             return false;
- *         }
- *     }
- * }
- * <p/>
- * ...but there appears to be some kind of weird problem with the JVM not correctly scoping the
- * passed "role" value in a situation like the above.  As such, we have to make Checker objects
- * instead (sigh).
- */
-interface Checker {
-    boolean checkHeader(SOAPHeaderBlock header);
-}
-
-/**
- * A Checker to make sure headers match a given role.  If the role we're looking for is null, then
- * everything matches.
- */
-class RoleChecker implements Checker {
-    String role;
-
-    public RoleChecker(String role) {
-        this.role = role;
-    }
-
-    public boolean checkHeader(SOAPHeaderBlock header) {
-        if (role == null) {
-            return true;
-        }
-        String thisRole = header.getRole();
-        return (role.equals(thisRole));
-    }
-}
-
-/**
- * This Checker uses a RolePlayer to return the appropriate headers for that RolePlayer to process.
- * Ignore "none", always "next", etc.
- */
-class RolePlayerChecker implements Checker {
-    RolePlayer rolePlayer;
-
-    /** Optional namespace - if non-null we'll only return headers that match */
-    String namespace;
-
-    /**
-     * Constructor.
-     *
-     * @param rolePlayer the RolePlayer to check against.  This can be null, in which
-     *                   case we assume we're the ultimate destination.
-     */
-    public RolePlayerChecker(RolePlayer rolePlayer) {
-        this.rolePlayer = rolePlayer;
-    }
-
-    public RolePlayerChecker(RolePlayer rolePlayer, String namespace) {
-        this.rolePlayer = rolePlayer;
-        this.namespace = namespace;
-    }
-
-    public boolean checkHeader(SOAPHeaderBlock header) {
-        // If we're filtering on namespace, check that first since the compare is simpler.
-        if (namespace != null) {
-            OMNamespace headerNamespace = header.getNamespace();
-            if (headerNamespace == null || !namespace.equals(headerNamespace.getNamespaceURI())) {
-                return false;
-            }
-        }
-
-        String role = header.getRole();
-        SOAPVersion version = header.getVersion();
-
-        // 1. If role is ultimatedest, go by what the rolePlayer says
-        if (role == null || role.equals("") ||
-                (version instanceof SOAP12Version &&
-                        role.equals(SOAP12Constants.SOAP_ROLE_ULTIMATE_RECEIVER))) {
-            return (rolePlayer == null || rolePlayer.isUltimateDestination());
-        }
-
-        // 2. If role is next, always return true
-        if (role.equals(version.getNextRoleURI())) return true;
-
-        // 3. If role is none, always return false
-        if (version instanceof SOAP12Version &&
-                role.equals(SOAP12Constants.SOAP_ROLE_NONE)) {
-            return false;
-        }
-
-        // 4. Return t/f depending on match
-        List roles = (rolePlayer == null) ? null : rolePlayer.getRoles();
-        if (roles != null) {
-            for (Iterator i = roles.iterator(); i.hasNext();) {
-                String thisRole = (String) i.next();
-                if (thisRole.equals(role)) return true;
-            }
-        }
-
-        return false;
-    }
-}
-
-/** A Checker to see that we both match a given role AND are mustUnderstand=true */
-class MURoleChecker extends RoleChecker {
-    public MURoleChecker(String role) {
-        super(role);
-    }
-
-    public boolean checkHeader(SOAPHeaderBlock header) {
-        if (header.getMustUnderstand())
-            return super.checkHeader(header);
-        return false;
-    }
-}
-
 public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
-    
-    /** An Iterator which walks the header list as needed, potentially filtering as we traverse. */
-    class HeaderIterator implements Iterator {
-        SOAPHeaderBlock current;
-        boolean advance = false;
-        Checker checker;
-
-        public HeaderIterator() {
-            this(null);
-        }
-
-        public HeaderIterator(Checker checker) {
-            this.checker = checker;
-            current = (SOAPHeaderBlock) getFirstElement();
-            if (current != null) {
-                if (!checkHeader(current)) {
-                    advance = true;
-                    hasNext();
-                }
-            }
-        }
-
-        public void remove() {
-        }
-
-        public boolean checkHeader(SOAPHeaderBlock header) {
-            if (checker == null) return true;
-            return checker.checkHeader(header);
-        }
-
-        public boolean hasNext() {
-            if (!advance) {
-                return current != null;
-            }
-
-            advance = false;
-            OMNode sibling = current.getNextOMSibling();
-
-            while (sibling != null) {
-                if (sibling instanceof SOAPHeaderBlock) {
-                    SOAPHeaderBlock possible = (SOAPHeaderBlock) sibling;
-                    if (checkHeader(possible)) {
-                        current = (SOAPHeaderBlock) sibling;
-                        return true;
-                    }
-                }
-                sibling = sibling.getNextOMSibling();
-            }
-
-            current = null;
-            return false;
-        }
-
-        public Object next() {
-            SOAPHeaderBlock ret = current;
-            if (ret != null) {
-                advance = true;
-                hasNext();
-            }
-            return ret;
-        }
-    }
-
-
     /** @param envelope  */
     public SOAPHeaderImpl(SOAPEnvelope envelope, SOAPFactory factory)
             throws SOAPProcessingException {
@@ -270,21 +86,21 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     protected abstract SOAPHeaderBlock createHeaderBlock(String localname, OMNamespace ns);
     
     public Iterator getHeadersToProcess(RolePlayer rolePlayer) {
-        return new HeaderIterator(new RolePlayerChecker(rolePlayer));
+        return new HeaderIterator(this, new RolePlayerChecker(rolePlayer));
     }
 
     public Iterator getHeadersToProcess(RolePlayer rolePlayer, String namespace) {
-        return new HeaderIterator(new RolePlayerChecker(rolePlayer, namespace));
+        return new HeaderIterator(this, new RolePlayerChecker(rolePlayer, namespace));
     }
 
     public Iterator examineHeaderBlocks(String role) {
-        return new HeaderIterator(new RoleChecker(role));
+        return new HeaderIterator(this, new RoleChecker(role));
     }
 
     public abstract Iterator extractHeaderBlocks(String role);
 
     public Iterator examineMustUnderstandHeaderBlocks(String actor) {
-        return new HeaderIterator(new MURoleChecker(actor));
+        return new HeaderIterator(this, new MURoleChecker(actor));
     }
 
     public Iterator examineAllHeaderBlocks() {

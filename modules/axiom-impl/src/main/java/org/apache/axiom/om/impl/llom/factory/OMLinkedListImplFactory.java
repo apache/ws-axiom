@@ -44,6 +44,7 @@ import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.om.impl.llom.OMTextImpl;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
 import javax.xml.namespace.QName;
 
@@ -276,6 +277,14 @@ public class OMLinkedListImplFactory implements OMFactory {
     public OMAttribute createOMAttribute(String localName,
                                          OMNamespace ns,
                                          String value) {
+        if (ns != null && ns.getPrefix() == null) {
+            String namespaceURI = ns.getNamespaceURI();
+            if (namespaceURI.length() == 0) {
+                ns = null;
+            } else {
+                ns = new OMNamespaceImpl(namespaceURI, OMSerializerUtil.getNextNSPrefix());
+            }
+        }
         return new OMAttributeImpl(localName, ns, value, this);
     }
 

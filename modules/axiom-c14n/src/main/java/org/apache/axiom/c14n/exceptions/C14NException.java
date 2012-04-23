@@ -29,8 +29,6 @@ import java.text.MessageFormat;
 /**
  * class C14NException is the base class of all the exception classes
  * used in org.apache.axiom.c14n
- *
- * @author Saliya Ekanayake (esaliya@gmail.com)
  */
 public class C14NException extends Exception {
     public static final String baseName = "exceptions";

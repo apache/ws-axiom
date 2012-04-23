@@ -26,9 +26,6 @@ import org.apache.axiom.om.OMElement;
 
 import java.util.List;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class NamedNodeMapImpl implements NamedNodeMap {
     private WrapperFactory fac = null;
     private List list = null;

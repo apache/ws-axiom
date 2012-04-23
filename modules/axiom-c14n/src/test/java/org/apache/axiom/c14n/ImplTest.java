@@ -26,9 +26,6 @@ import junit.textui.TestRunner;
 import org.apache.axiom.c14n.impl.Canonicalizer20010315OmitCommentTest;
 import org.apache.axiom.c14n.impl.Canonicalizer20010315WithCommentTest;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class ImplTest extends TestCase {
     public ImplTest(String name){
         super(name);

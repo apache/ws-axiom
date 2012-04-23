@@ -40,16 +40,15 @@ public class TestDeclareDefaultNamespace1 extends AxiomTestCase {
 
         OMFactory omFac = metaFactory.getOMFactory();
 
-        OMElement documentElement = omFac.createOMElement("RootElement", null);
-        documentElement.declareDefaultNamespace("http://one.org");
+        OMElement documentElement = omFac.createOMElement("RootElement",
+                omFac.createOMNamespace("http://one.org", ""));
 
         OMNamespace ns = omFac.createOMNamespace("http://ws.apache.org/axis2", "ns2");
         OMElement childOne = omFac.createOMElement("ChildElementOne", ns, documentElement);
         childOne.declareDefaultNamespace("http://two.org");
 
-        OMElement childTwo = omFac.createOMElement("ChildElementTwo", null, childOne);
-        childTwo.declareDefaultNamespace("http://one.org");
-
+        OMElement childTwo = omFac.createOMElement("ChildElementTwo",
+                omFac.createOMNamespace("http://one.org", ""), childOne);
 
         assertEquals(2, getNumberOfOccurrences(documentElement.toStringWithConsume(),
                 "xmlns=\"http://one.org\""));

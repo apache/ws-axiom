@@ -33,6 +33,7 @@ import javax.mail.internet.ParseException;
 
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
+import org.apache.axiom.mime.Header;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.util.DetachableInputStream;
 import org.apache.axiom.util.UIDGenerator;
@@ -45,7 +46,11 @@ import org.apache.james.mime4j.stream.MimeConfig;
 import org.apache.james.mime4j.stream.MimeTokenStream;
 import org.apache.james.mime4j.stream.RecursionMode;
 
-class MIMEMessage extends AttachmentsImpl {
+/**
+ * {@link AttachmentsDelegate} implementation that represents a MIME multipart message read from a
+ * stream.
+ */
+class MIMEMessage extends AttachmentsDelegate {
     private static final Log log = LogFactory.getLog(MIMEMessage.class);
 
     /** <code>ContentType</code> of the MIME message */
@@ -135,10 +140,10 @@ class MIMEMessage extends AttachmentsImpl {
             }
         }
 
-        // Read the SOAP part and cache it
+        // Read the root part and cache it
         getDataHandler(getRootPartContentID());
 
-        // Now reset partsRequested. SOAP part is a special case which is always 
+        // Now reset partsRequested. The root part is a special case which is always 
         // read beforehand, regardless of request.
         partsRequested = false;
     }
@@ -186,7 +191,7 @@ class MIMEMessage extends AttachmentsImpl {
             dh = getDataHandler(getRootPartContentID());
             if (dh == null) {
                 throw new OMException(
-                        "Mandatory Root MIME part containing the SOAP Envelope is missing");
+                        "Mandatory root MIME part is missing");
             }
             return dh.getInputStream();
         } catch (IOException e) {
@@ -198,7 +203,7 @@ class MIMEMessage extends AttachmentsImpl {
     String getRootPartContentID() {
         String rootContentID = contentType.getParameter("start");
         if (log.isDebugEnabled()) {
-            log.debug("getSOAPPartContentID rootContentID=" + rootContentID);
+            log.debug("getRootPartContentID rootContentID=" + rootContentID);
         }
 
         // to handle the Start parameter not mentioned situation
@@ -225,15 +230,15 @@ class MIMEMessage extends AttachmentsImpl {
     }
     
     String getRootPartContentType() {
-        String soapPartContentID = getRootPartContentID();
-        if (soapPartContentID == null) {
-            throw new OMException("Unable to determine the content ID of the SOAP part");
+        String rootPartContentID = getRootPartContentID();
+        if (rootPartContentID == null) {
+            throw new OMException("Unable to determine the content ID of the root part");
         }
-        DataHandler soapPart = getDataHandler(soapPartContentID);
-        if (soapPart == null) {
-            throw new OMException("Unable to locate the SOAP part; content ID was " + soapPartContentID);
+        DataHandler rootPart = getDataHandler(rootPartContentID);
+        if (rootPart == null) {
+            throw new OMException("Unable to locate the root part; content ID was " + rootPartContentID);
         }
-        return soapPart.getContentType();
+        return rootPart.getContentType();
     }
     
     IncomingAttachmentStreams getIncomingAttachmentStreams() {
@@ -341,13 +346,13 @@ class MIMEMessage extends AttachmentsImpl {
 
         partsRequested = true;
 
-        boolean isSOAPPart = (partIndex == 0);
+        boolean isRootPart = (partIndex == 0);
 
         try {
             List headers = readHeaders();
             
             partIndex++;
-            currentPart = new PartImpl(this, isSOAPPart, headers, parser);
+            currentPart = new PartImpl(this, isRootPart, headers, parser);
             return currentPart;
         } catch (IOException ex) {
             throw new OMException(ex);

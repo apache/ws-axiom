@@ -25,6 +25,6 @@ import org.apache.axiom.om.OMMetaFactory;
 
 public class OMDOMMetaFactoryLoader implements OMMetaFactoryLoader {
     public OMMetaFactory load(Map properties) {
-        return new OMDOMMetaFactory();
+        return OMDOMMetaFactory.INSTANCE;
     }
 }

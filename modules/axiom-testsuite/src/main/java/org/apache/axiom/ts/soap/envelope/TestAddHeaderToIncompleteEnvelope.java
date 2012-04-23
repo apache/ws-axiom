@@ -26,7 +26,7 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
  * Test the behavior when adding a header to an envelope that has not yet been built completely.
- * This is a regression test for WSCOMMONS-552.
+ * This is a regression test for AXIOM-127.
  */
 public class TestAddHeaderToIncompleteEnvelope extends SOAPTestCase {
     public TestAddHeaderToIncompleteEnvelope(OMMetaFactory metaFactory, SOAPSpec spec) {

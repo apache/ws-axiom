@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.util.StAXUtils;
 import org.custommonkey.xmlunit.Diff;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -35,7 +34,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 
-
 public class SpacesTest extends AbstractTestCase {
     private static final String filePath = "spaces.xml";
     private static final String filePath2 = "spaces2.xml";
@@ -49,9 +47,7 @@ public class SpacesTest extends AbstractTestCase {
 
     private void checkOMConformance(InputStream iStream) throws Exception {
         OMXMLParserWrapper staxOMBuilder = OMXMLBuilderFactory.
-                createStAXOMBuilder(OMAbstractFactory.getOMFactory(),
-                                    StAXUtils.createXMLStreamReader(
-                                            iStream));
+                createOMBuilder(OMAbstractFactory.getOMFactory(), iStream);
         rootElement = staxOMBuilder.getDocumentElement();
         boolean hasCDataNode = hasCDataNode(rootElement);
         String file = hasCDataNode ? filePath : filePath2;

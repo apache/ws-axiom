@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -83,5 +85,13 @@ public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
                             "But received some other implementation");
         }
         super.setValue(soapFaultSubCodeValue);
+    }
+
+    public void setValue(QName value) {
+        SOAPFaultValue valueElement = getValue();
+        if (valueElement == null) {
+            valueElement = ((SOAPFactory)getOMFactory()).createSOAPFaultValue(this);
+        }
+        valueElement.setText(value);
     }
 }

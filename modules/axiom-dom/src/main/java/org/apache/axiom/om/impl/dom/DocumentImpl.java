@@ -25,14 +25,15 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.OMDocumentImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
@@ -71,24 +72,36 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     private Vector idAttrs;
 
     protected Hashtable identifiers;
+    
+    private final DOMConfigurationImpl domConfig = new DOMConfigurationImpl();
 
     /** @param ownerDocument  */
     public DocumentImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
-        ((OMDOMFactory) factory).setDocument(this);
         this.done = true;
     }
 
     public DocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
         super(factory);
         this.builder = parserWrapper;
-        ((OMDOMFactory) factory).setDocument(this);
     }
 
     public DocumentImpl(OMFactory factory) {
         super(factory);
-        ((OMDOMFactory) factory).setDocument(this);
         this.done = true;
+    }
+
+    DocumentImpl ownerDocument() {
+        return this;
+    }
+
+    public Document getOwnerDocument() {
+        return null;
+    }
+
+    protected Object clone() throws CloneNotSupportedException {
+        // TODO Auto-generated method stub
+        return super.clone();
     }
 
     // /
@@ -178,13 +191,17 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
             return this.createAttribute(localName);
         }
 
-        return new AttrImpl(this, localName, new OMNamespaceImpl(
-                namespaceURI, prefix), this.factory);
+        OMNamespace namespace;
+        if (namespaceURI == null) {
+            namespace = null;
+        } else {
+            namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
+        }
+        return new AttrImpl(this, localName, namespace, this.factory);
     }
 
-    public CDATASection createCDATASection(String arg0) throws DOMException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+    public CDATASection createCDATASection(String data) throws DOMException {
+        return new CDATASectionImpl(this, data, factory);
     }
 
     public Comment createComment(String data) {
@@ -206,20 +223,26 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
         String localName = DOMUtil.getLocalName(qualifiedName);
         String prefix = DOMUtil.getPrefix(qualifiedName);
+        checkQName(prefix, localName);
+        
         if(prefix == null) {
             prefix = "";
         }
 
-        //When the namespace is a default namespace
-        if (prefix != null && !"".equals(prefix)) {
-            this.checkQName(prefix, localName);
+        OMNamespaceImpl namespace;
+        if (ns.length() == 0) {
+            namespace = null;
+        } else {
+            namespace = new OMNamespaceImpl(ns, prefix);
         }
-
-        OMNamespaceImpl namespace = new OMNamespaceImpl(ns, prefix);
-        return new ElementImpl(this, localName, namespace, this.factory);
+        // DOM doesn't create namespace declarations automatically. Therefore we set the
+        // namespace afterwards with setNamespaceWithNoFindInCurrentScope.
+        ElementImpl element = new ElementImpl(this, localName, null, this.factory);
+        element.setNamespaceWithNoFindInCurrentScope(namespace);
+        return element;
     }
 
-    public EntityReference createEntityReference(String arg0)
+    public EntityReference createEntityReference(String name)
             throws DOMException {
         // TODO
         throw new UnsupportedOperationException("TODO");
@@ -267,18 +290,18 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         return null;
     }
 
-    public NodeList getElementsByTagName(String arg0) {
+    public NodeList getElementsByTagName(String tagname) {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    public NodeList getElementsByTagNameNS(String arg0, String arg1) {
+    public NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
 
     public DOMImplementation getImplementation() {
-        return new DOMImplementationImpl();
+        return ((DOMMetaFactory)factory.getMetaFactory()).getDOMImplementation();
     }
 
     public Node importNode(Node importedNode, boolean deep) throws DOMException {
@@ -482,23 +505,14 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
      * @param local  local part of qualified name
      */
     protected final void checkQName(String prefix, String local) {
-
         // check that both prefix and local part match NCName
-        boolean validNCName = (prefix == null || XMLChar.isValidNCName(prefix))
-                && XMLChar.isValidNCName(local);
-
-        if (!validNCName) {
+        if ((prefix != null && !XMLChar.isValidNCName(prefix))
+                || !XMLChar.isValidNCName(local)) {
             // REVISIT: add qname parameter to the message
             String msg = DOMMessageFormatter.formatMessage(
                     DOMMessageFormatter.DOM_DOMAIN, DOMException.INVALID_CHARACTER_ERR,
                     null);
             throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
-        }
-
-        if (prefix == null || prefix.equals("")) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.NAMESPACE_ERR, null);
-            throw new DOMException(DOMException.NAMESPACE_ERR, msg);
         }
     }
 
@@ -529,8 +543,16 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public Node adoptNode(Node node) throws DOMException {
-        //OK... I'm cheating here,  a BIG TODO
-        return this.importNode(node, true);
+        if (node instanceof ChildNode) {
+            ChildNode childNode = (ChildNode)node;
+            if (childNode.hasParent()) {
+                childNode.detach();
+            }
+            childNode.setOwnerDocument(this);
+            return childNode;
+        } else {
+            return null;
+        }
     }
 
     public String getDocumentURI() {
@@ -539,8 +561,7 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public DOMConfiguration getDomConfig() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+        return domConfig;
     }
 
     public String getInputEncoding() {
@@ -566,22 +587,26 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public void normalizeDocument() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+        if (domConfig.isEnabled(DOMConfigurationImpl.SPLIT_CDATA_SECTIONS)
+                || domConfig.isEnabled(DOMConfigurationImpl.WELLFORMED)) {
+            throw new UnsupportedOperationException("TODO");
+        } else {
+            normalize(domConfig);
+        }
     }
 
-    public Node renameNode(Node arg0, String arg1, String arg2)
+    public Node renameNode(Node node, String namespaceURI, String qualifiedName)
             throws DOMException {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    public void setDocumentURI(String arg0) {
+    public void setDocumentURI(String documentURI) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    public void setStrictErrorChecking(boolean arg0) {
+    public void setStrictErrorChecking(boolean strictErrorChecking) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }

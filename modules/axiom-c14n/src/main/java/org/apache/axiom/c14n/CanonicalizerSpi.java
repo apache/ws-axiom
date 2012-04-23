@@ -29,9 +29,6 @@ import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public abstract class CanonicalizerSpi {
     protected boolean reset = false;
 

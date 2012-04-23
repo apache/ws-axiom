@@ -29,9 +29,6 @@ import org.apache.axiom.om.OMElement;
 import java.net.URL;
 import java.io.RandomAccessFile;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class DataParser {
     private String fileName = null;
     private StAXOMBuilder builder = null;

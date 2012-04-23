@@ -50,8 +50,7 @@ import javax.xml.stream.XMLStreamWriter;
 /** Class SOAPEnvelopeImpl */
 public class SOAPEnvelopeImpl extends SOAPElement
         implements SOAPEnvelope, OMConstants {
-    private static Log log = LogFactory.getLog(SOAPEnvelopeImpl.class);
-    private static final boolean isDebugEnabled = log.isDebugEnabled();
+    private static final Log log = LogFactory.getLog(SOAPEnvelopeImpl.class);
 
     /**
      * Constructor
@@ -185,21 +184,6 @@ public class SOAPEnvelopeImpl extends SOAPElement
         return null;
     }
 
-    /**
-     * Method detach
-     *
-     * @throws OMException
-     */
-    public OMNode detach() throws OMException {
-//        throw new OMException("Root Element can not be detached");
-        // I'm confused why this threw an exception as above. One should be able to create
-        // a SOAP envelope and be able to detach from the its parent document.
-        // The example is if I want to send a SOAPEnvelope inside another SOAP message, then this will
-        // not allow to do that.
-        // Must be an idea of a DOM guy ;)
-        return this;
-    }
-
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         // here do nothing as SOAPEnvelope doesn't have a parent !!!
     }
@@ -253,18 +237,18 @@ public class SOAPEnvelopeImpl extends SOAPElement
             // TODO: should use 'instance of OMXMLParserWrapper' instead?  StAXBuilder is more generic
             if ((builder != null) && (builder instanceof StAXBuilder)) {
                 try {
-                    if (isDebugEnabled) {
+                    if (log.isDebugEnabled()) {
                         log.debug("closing builder: " + builder);
                     }
                     StAXBuilder staxBuilder = (StAXBuilder) builder;
                     staxBuilder.close();
                 } catch (Exception e) {
-                    if (isDebugEnabled) {
+                    if (log.isDebugEnabled()) {
                         log.error("Could not close builder or parser due to: ", e);
                     }
                 }
             } else {
-                if (isDebugEnabled) {
+                if (log.isDebugEnabled()) {
                     log.debug("Could not close builder or parser due to:");
                     if (builder == null) {
                         log.debug("builder is null");
@@ -294,9 +278,8 @@ public class SOAPEnvelopeImpl extends SOAPElement
         if (payloadQName != null) {
             if (SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(payloadQName.getLocalPart())) {
                 String ns = payloadQName.getNamespaceURI();
-                return (ns != null &&
-                    (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns) ||
-                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns)));                                                         
+                return SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns) ||
+                       SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns);                                                         
             } 
         }
         

@@ -19,12 +19,17 @@
 
 package org.apache.axiom.om;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 
+import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
@@ -73,8 +78,7 @@ import java.util.Iterator;
  * <li>More precisely, Axiom will always make sure that any {@link OMElement} or {@link OMAttribute}
  * node will keep the namespace URI that has been assigned to the node at creation time, unless the
  * namespace is explicitly changed using {@link #setNamespace(OMNamespace)} or
- * {@link OMAttribute#setOMNamespace(OMNamespace)}. [TODO: this is currently not entirely true; see
- * WSCOMMONS-517]
+ * {@link OMAttribute#setOMNamespace(OMNamespace)}.
  * </ul>
  */
 public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
@@ -89,16 +93,21 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     Iterator getChildElements();
     
     /**
-     * Creates a namespace in the current element scope.
-     *
-     * @param uri    The namespace to declare in the current scope.  The caller is expected to
-     *               ensure that the URI is a valid namespace name.
-     * @param prefix The prefix to associate with the given namespace. The caller is expected to
-     *               ensure that this is a valid XML prefix. If <code>null</code> or the empty
-     *               string is given, a prefix will be auto-generated. <b>Please note that using the
-     *               empty string for this purpose is deprecated and will no longer be supported in
-     *               Axiom 1.3.</b>
-     * @return Returns the created namespace information item.
+     * Add a namespace declaration for the given namespace URI to this element, optionally
+     * generating a prefix for that namespace.
+     * <p>
+     * Note that this method can't be used to declare a default namespace. For that purpose use
+     * {@link #declareDefaultNamespace(String)} or {@link #declareNamespace(OMNamespace)}.
+     * 
+     * @param uri
+     *            The namespace to declare in the current scope. The caller is expected to ensure
+     *            that the URI is a valid namespace name.
+     * @param prefix
+     *            The prefix to associate with the given namespace. The caller is expected to ensure
+     *            that this is a valid XML prefix. If <code>null</code> or the empty string is
+     *            given, a prefix will be auto-generated. <b>Please note that using the empty string
+     *            for this purpose is deprecated and will no longer be supported in Axiom 1.3.</b>
+     * @return the created namespace information item
      * @throws IllegalArgumentException
      *             if an attempt is made to bind a prefix to the empty namespace name
      * @see #declareNamespace(OMNamespace)
@@ -107,17 +116,30 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      */
     OMNamespace declareNamespace(String uri, String prefix);
 
-
     /**
-     * This will declare a default namespace for this element explicitly
-     *
+     * Add a namespace declaration for the default namespace to this element.
+     * <p>
+     * Note that this method will never change the namespace of the element itself. If an attempt is
+     * made to add a namespace declaration that conflicts with the namespace information of the
+     * element, an exception is thrown.
+     * 
      * @param uri
+     *            The default namespace to declare in the current scope. The caller is expected to
+     *            ensure that the URI is a valid namespace name.
+     * @return the created namespace information item
+     * @throws OMException
+     *             if an attempt is made to add a conflicting namespace declaration
      */
     OMNamespace declareDefaultNamespace(String uri);
 
     /**
-     * This will retrieve the default namespace of this element, if available. null returned if none
-     * is found.
+     * Get the default namespace in scope on this element.
+     * 
+     * @return The default namespace or <code>null</code> if no default namespace is in scope. This
+     *         method never returns an {@link OMNamespace} object with an empty namespace URI; if
+     *         the element or one of its ancestors has a <tt>xmlns=""</tt> declaration, then
+     *         <code>null</code> is returned. Note that if the method returns an {@link OMNamespace}
+     *         object, then its prefix will obviously be the empty string.
      */
     OMNamespace getDefaultNamespace();
 
@@ -195,7 +217,8 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * namespace declarations and prefix undeclaring), it is generally recommended to use one of the
      * following specialized methods for this purpose:
      * <ul>
-     * <li>{@link #getNamespacesInScope()} to calculate the namespace context for the element.
+     * <li>{@link #getNamespacesInScope()} or {@link #getNamespaceContext(boolean)} to calculate the
+     * namespace context for the element.
      * <li>{@link #findNamespace(String, String)} and {@link #findNamespaceURI(String)} to resolve a
      * namespace prefix or to find a namespace prefix for a given URI.
      * <li>{@link #resolveQName(String)} to resolve a QName literal.
@@ -235,6 +258,33 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      * @return an iterator over all namespaces in scope for this element
      */
     Iterator getNamespacesInScope();
+    
+    /**
+     * Get the namespace context of this element, as determined by the namespace declarations
+     * present on this element and its ancestors.
+     * <p>
+     * The method supports two different {@link NamespaceContext} implementation variants:
+     * <ul>
+     * <li>A "live" variant that keeps a reference to the element and that performs lookups by
+     * accessing the object model. This means that any change in the object model will automatically
+     * be reflected by the {@link NamespaceContext}.
+     * <li>A "detached" variant that stores a snapshot of the namespace context and that doesn't
+     * have any reference to the object model.
+     * </ul>
+     * <p>
+     * Typically, creating a live {@link NamespaceContext} is cheaper, but the lookup performance of
+     * a detached {@link NamespaceContext} is better. The detached variant should always be used if
+     * the reference to the {@link NamespaceContext} is kept longer than the object model itself,
+     * because in this case a live {@link NamespaceContext} would prevent the object model from
+     * being garbage collected.
+     * 
+     * @param detached
+     *            <code>true</code> if the method should return a detached implementation,
+     *            <code>false</code> if the method should return a live object
+     * @return The namespace context for this element. Note that the caller must not make any
+     *         assumption about the actual implementation class returned by this method.
+     */
+    NamespaceContext getNamespaceContext(boolean detached);
     
     /**
      * Returns a list of OMAttributes.
@@ -322,9 +372,12 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     OMAttribute addAttribute(String localName, String value, OMNamespace ns);
 
     /**
-     * Method removeAttribute
-     *
+     * Removes the given attribute from this element.
+     * 
      * @param attr
+     *            the attribute to remove
+     * @throws OMException
+     *             if the attribute is not owned by this element
      */
     void removeAttribute(OMAttribute attr);
 
@@ -343,14 +396,26 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
 
     OMElement getFirstElement();
 
-
-    /** @param text  */
+    /**
+     * Set the content of this element to the given text. If the element has children, then all
+     * these children are detached before the content is set. If the parameter is a non empty
+     * string, then the element will have a single child of type {@link OMText} after the method
+     * returns. If the parameter is <code>null</code> or an empty string, then the element will have
+     * no children.
+     * 
+     * @param text
+     *            the new text content for the element
+     */
     void setText(String text);
 
     /**
      * Set the content of this element to the given {@link QName}. If no matching namespace
      * declaration for the {@link QName} is in scope, then this method will add one. If the
-     * {@link QName} specifies a namespace URI but no prefix, then a prefix will be generated.
+     * {@link QName} specifies a namespace URI but no prefix, then a prefix will be generated. If
+     * the element has children, then all these children are detached before the content is set. If
+     * the parameter is not <code>null</code>, then the element will have a single child of type
+     * {@link OMText} after the method returns. If the parameter is <code>null</code>, then the
+     * element will have no children.
      * 
      * @param qname
      *            the QName value
@@ -371,8 +436,65 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
      *         If there are no child text nodes, an empty string is returned.
      */
     String getText();
+    
+    /**
+     * Returns a stream representing the concatenation of the text nodes that are children of a
+     * this element. The stream returned by this method produces exactly the same character
+     * sequence as the the stream created by the following expression:
+     * <pre>new StringReader(element.getText())</pre>
+     * <p>
+     * The difference is that the stream implementation returned by this method is optimized for
+     * performance and is guaranteed to have constant memory usage, provided that:
+     * <ol>
+     * <li>The method is not required to cache the content of the {@link OMElement}, i.e.
+     * <code>cache</code> is <code>false</code> or the element is an {@link OMSourcedElement} that
+     * is backed by a non destructive {@link OMDataSource}.
+     * <li>The underlying parser (or the implementation of the underlying {@link XMLStreamReader} in
+     * the case of an {@link OMSourcedElement}) is non coalescing. Note that this is not the default
+     * in Axiom and it may be necessary to configure the parser with
+     * {@link StAXParserConfiguration#NON_COALESCING}.
+     * </ol>
+     * 
+     * @param cache
+     *            whether to enable caching when accessing the element
+     * @return a stream representing the concatenation of the text nodes
+     * 
+     * @see #getText()
+     */
+    Reader getTextAsStream(boolean cache);
 
-    /** OMText can contain its information as a QName as well. This will return the text as a QName */
+    /**
+     * Write the content of the text nodes that are children of a given element to a {@link Writer}.
+     * If <code>cache</code> is true, this method has the same effect as the following instruction:
+     * <pre>out.write(element.getText())</pre>
+     * <p>
+     * The difference is that this method is guaranteed to have constant memory usage and is
+     * optimized for performance (with the same restrictions that apply to
+     * {@link #getTextAsStream(boolean)}).
+     * <p>
+     * The method does <b>not</b> call {@link Writer#close()}.
+     * 
+     * @param out
+     *            the stream to write the content to
+     * @param cache
+     *            whether to enable caching when accessing the element
+     * @throws OMException
+     *             if an error occurs when reading from the element
+     * @throws IOException
+     *             if an error occurs when writing to the stream
+     * 
+     * @see #getText()
+     */
+    void writeTextTo(Writer out, boolean cache) throws IOException;
+    
+    /**
+     * Resolve the content of this element to a {@link QName}. The QName is interpreted in a way
+     * that is compatible with the XML schema specification. In particular, surrounding whitespace
+     * is ignored.
+     * 
+     * @return the resolved QName, or <code>null</code> if the element is empty or the QName could
+     *         not be resolved
+     */
     QName getTextAsQName();
     
     /**
@@ -400,15 +522,30 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     void setNamespaceWithNoFindInCurrentScope(OMNamespace namespace);
 
     /**
-     * This is a convenience method only. This will basically serialize the given OMElement to a
-     * String but will build the OMTree in the memory
+     * Convenience method to serialize the element to a string with caching enabled. Caching means
+     * that the object model tree for the element will be fully built in memory and can be accessed
+     * after invoking this method.
+     * <p>
+     * This method produces the same result as {@link OMContainer#serialize(Writer)}. In particular,
+     * the element is always serialized as plain XML and {@link OMText} nodes containing optimized
+     * binary data are always inlined using base64 encoding. Since the output is accumulated into a
+     * single string object, this may result in high memory consumption. Therefore this method
+     * should be used with care.
+     * 
+     * @return the serialized object model
      */
     String toString();
 
     /**
-     * This is a convenience method only. This basically serializes the given OMElement to a String
-     * but will NOT build the OMTree in the memory. So you are at your own risk of losing
-     * information.
+     * Convenience method to serialize the element to a string without caching. This method will not
+     * built the object model tree in memory. This means that an attempt to access the object model
+     * after invoking this method may result in an error (unless the object model was already fully
+     * built before, e.g. because it was created programmatically).
+     * <p>
+     * As for {@link #toString()}, this method may cause high memory consumption for object model
+     * trees containing optimized binary data and should therefore be used with care.
+     * 
+     * @return the serialized object model
      */
     String toStringWithConsume() throws XMLStreamException;
 
@@ -440,9 +577,13 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     int getLineNumber();
 
     /**
-     * Serializes the node with caching.
-     *
+     * Serialize the node with caching enabled.
+     * <p>
+     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
+     * containing optimized binary will be inlined using base64 encoding.
+     * 
      * @param output
+     *            the byte stream to write the serialized infoset to
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -451,9 +592,13 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     void serialize(OutputStream output) throws XMLStreamException;
 
     /**
-     * Serializes the node with caching.
-     *
+     * Serialize the node with caching enabled.
+     * <p>
+     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
+     * containing optimized binary will be inlined using base64 encoding.
+     * 
      * @param writer
+     *            the character stream to write the serialized infoset to
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -462,10 +607,16 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     void serialize(Writer writer) throws XMLStreamException;
 
     /**
-     * Serializes the node with caching.
-     *
+     * Serialize the node with caching enabled.
+     * <p>
+     * The format of the output is controlled by the provided {@link OMOutputFormat} object. In
+     * particular, {@link OMOutputFormat#setDoOptimize(boolean)} can be used to instruct this method
+     * to produce an XOP/MTOM encoded MIME message.
+     * 
      * @param output
+     *            the byte stream to write the serialized infoset to
      * @param format
+     *            the output format to use
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -475,10 +626,12 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
             throws XMLStreamException;
 
     /**
-     * Serializes the node with caching.
+     * Serialize the node with caching enabled.
      *
      * @param writer
+     *            the character stream to write the serialized infoset to
      * @param format
+     *            the output format to use
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -488,9 +641,13 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
             throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
+     * Serialize the node without caching.
+     * <p>
+     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
+     * containing optimized binary will be inlined using base64 encoding.
      *
      * @param output
+     *            the byte stream to write the serialized infoset to
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -500,9 +657,13 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
             throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
+     * Serialize the node without caching.
+     * <p>
+     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
+     * containing optimized binary will be inlined using base64 encoding.
      *
      * @param writer
+     *            the character stream to write the serialized infoset to
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -511,10 +672,16 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     void serializeAndConsume(Writer writer) throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
+     * Serialize the node without caching.
+     * <p>
+     * The format of the output is controlled by the provided {@link OMOutputFormat} object. In
+     * particular, {@link OMOutputFormat#setDoOptimize(boolean)} can be used to instruct this method
+     * to produce an XOP/MTOM encoded MIME message.
      *
      * @param output
+     *            the byte stream to write the serialized infoset to
      * @param format
+     *            the output format to use
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in
@@ -524,10 +691,12 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
             throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
+     * Serialize the node without caching.
      *
      * @param writer
+     *            the character stream to write the serialized infoset to
      * @param format
+     *            the output format to use
      * @throws XMLStreamException
      */
     // Note: This method is inherited from both OMNode and OMContainer, but it is deprecated in

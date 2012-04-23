@@ -20,7 +20,6 @@ package org.apache.axiom.ts.dom.element;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -32,8 +31,8 @@ public class TestGetElementsByTagNameRecursive extends DOMTestCase {
     }
 
     protected void runTest() throws Throwable {
-        Document doc =
-                dbf.newDocumentBuilder().parse(AbstractTestCase.getTestResource("xml/numbers.xml"));
+        Document doc = dbf.newDocumentBuilder().parse(
+                TestGetElementsByTagNameRecursive.class.getResourceAsStream("numbers.xml"));
         Element element = doc.getDocumentElement();
         NodeList list = element.getElementsByTagName("nr");
         assertEquals(10, list.getLength());

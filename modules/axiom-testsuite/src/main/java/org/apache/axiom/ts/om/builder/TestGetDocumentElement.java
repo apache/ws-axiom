@@ -39,7 +39,8 @@ public class TestGetDocumentElement extends AxiomTestCase {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
                 new StringReader("<!--comment1--><root/><!--comment2-->"));
         OMElement element = builder.getDocumentElement();
-        assertEquals("root", element.getLocalName());
+        assertNotNull("Document element can not be null", element);
+        assertEquals("Name of the document element is wrong", "root", element.getLocalName());
         // The getDocumentElement doesn't detach the document element from the document:
         assertSame(builder.getDocument(), element.getParent());
         assertSame(builder.getDocument().getOMDocumentElement(), element);

@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom-parent</artifactId>
-        <version>1.2.13-SNAPSHOT</version>
+        <version>1.2.14-SNAPSHOT</version>
         <relativePath>../axiom-parent/pom.xml</relativePath>
     </parent>
     <artifactId>axiom-testsuite</artifactId>
@@ -67,7 +67,6 @@
         <dependency>
             <groupId>xalan</groupId>
             <artifactId>xalan</artifactId>
-            <version>2.7.1</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -75,19 +74,24 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.rat</groupId>
-                <artifactId>apache-rat-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <!-- src/main/resources contains test files and they obviously cannot
-                             all contain a valid license header -->
-                        <exclude>src/main/resources/**</exclude>
-                    </excludes>
-                </configuration> 
-            </plugin>
-        </plugins>
-    </build>
+    <profiles>
+        <profile>
+            <id>apache-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.rat</groupId>
+                        <artifactId>apache-rat-plugin</artifactId>
+                        <configuration>
+                            <excludes>
+                                <!-- src/main/resources contains test files and they obviously cannot
+                                     all contain a valid license header -->
+                                <exclude>src/main/resources/**</exclude>
+                            </excludes>
+                        </configuration> 
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

@@ -22,7 +22,6 @@ package org.apache.axiom.soap.impl.dom.soap11;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
@@ -53,10 +52,6 @@ public class SOAP11Factory extends DOMSOAPFactory {
     }
     
     public SOAP11Factory() {
-    }
-
-    public SOAP11Factory(DocumentImpl doc) {
-        super(doc);
     }
 
     public String getSoapVersionURI() {
@@ -240,15 +235,8 @@ public class SOAP11Factory extends DOMSOAPFactory {
         return new SOAP11FaultDetailImpl(parent, builder, this);
     }
 
-    public SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
-        OMNamespace ns =
-                new OMNamespaceImpl(
-                        SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                        SOAP11Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
-        SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(ns, this);
-        createSOAPHeader(env);
-        createSOAPBody(env);
-        return env;
+    public SOAPFaultDetail createSOAPFaultDetail() throws SOAPProcessingException {
+        return new SOAP11FaultDetailImpl(this);
     }
 
     public OMNamespace getNamespace() {

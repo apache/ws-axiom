@@ -39,11 +39,11 @@ public class TestGetQNameWithNamespace extends AxiomTestCase {
         String localName = "attr";
         String uri = "http://ns1";
         OMFactory fac = metaFactory.getOMFactory();
-        OMNamespace ns = fac.createOMNamespace(uri, null);
+        OMNamespace ns = fac.createOMNamespace(uri, "p");
         OMAttribute attr = fac.createOMAttribute(localName, ns, "value");
         QName qname = attr.getQName();
         assertEquals("Wrong namespace", uri, qname.getNamespaceURI());
         assertEquals("Wrong localPart", localName, qname.getLocalPart());
-        assertEquals("Wrong prefix", "", qname.getPrefix());
+        assertEquals("Wrong prefix", "p", qname.getPrefix());
     }
 }

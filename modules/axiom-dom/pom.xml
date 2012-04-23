@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom-parent</artifactId>
-        <version>1.2.13-SNAPSHOT</version>
+        <version>1.2.14-SNAPSHOT</version>
         <relativePath>../axiom-parent/pom.xml</relativePath>
     </parent>
     <artifactId>axiom-dom</artifactId>
@@ -75,10 +75,6 @@
             <artifactId>commons-logging</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-stax-api_1.0_spec</artifactId>
-        </dependency>
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-api</artifactId>
             <classifier>tests</classifier>
@@ -106,7 +102,6 @@
         <dependency>
             <groupId>xalan</groupId>
             <artifactId>xalan</artifactId>
-            <version>2.7.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -137,9 +132,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>shade-plugin-patched</artifactId>
-                <version>${project.version}</version>
+                <artifactId>maven-shade-plugin</artifactId>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -171,6 +164,10 @@
                                 <relocation>
                                     <pattern>org.apache.axiom.om.impl.common</pattern>
                                     <shadedPattern>org.apache.axiom.om.impl.dom</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.axiom.soap.impl.common</pattern>
+                                    <shadedPattern>org.apache.axiom.soap.impl.dom</shadedPattern>
                                 </relocation>
                             </relocations>
                             <transformers>

@@ -24,9 +24,6 @@ import org.apache.axiom.c14n.omwrapper.interfaces.Node;
 import org.apache.axiom.c14n.omwrapper.interfaces.ProcessingInstruction;
 import org.apache.axiom.om.OMProcessingInstruction;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class ProcessingInstructionImpl extends NodeImpl implements ProcessingInstruction {
     private OMProcessingInstruction pi = null;
 

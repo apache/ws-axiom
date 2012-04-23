@@ -26,8 +26,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.dom.ChildNode;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
-import org.apache.axiom.om.impl.dom.NodeImpl;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
@@ -41,7 +41,6 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-import org.apache.axiom.soap.impl.dom.factory.DOMSOAPFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 
@@ -69,9 +68,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
 
     /** @param ns  */
     public SOAPEnvelopeImpl(OMNamespace ns, SOAPFactory factory) {
-        super(((DOMSOAPFactory) factory).getDocument(),
-              SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
-        this.getOwnerDocument().appendChild(this);
+        super(null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
     }
 
     public SOAPVersion getVersion() {
@@ -140,7 +137,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
                 // body and insert the header.  If the body is not found,
                 // this indicates that it has not been parsed yet...and
                 // the code will fall through to the super.addChild.
-                OMNode node = this.lastChild;
+                OMNode node = (OMNode)this.lastChild;
                 while (node != null) {
                     if (node instanceof SOAPBody) {
                         node.insertSiblingBefore(child);
@@ -204,15 +201,6 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         return null;
     }
 
-    /**
-     * Method detach
-     *
-     * @throws OMException
-     */
-    public OMNode detach() throws OMException {
-        throw new OMException("Root Element can not be detached");
-    }
-
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         // here do nothing as SOAPEnvelope doesn't have a parent !!!
     }
@@ -253,11 +241,11 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
                 OMSerializerUtil.serializeStartpart(this, writer);
                 OMElement header = getHeader();
                 if ((header != null) && (header.getFirstOMChild() != null)) {
-                    serializeInternally((NodeImpl) header, writer);
+                    serializeInternally((ChildNode) header, writer);
                 }
                 SOAPBody body = getBody();
                 if (body != null) {
-                    serializeInternally((NodeImpl) body, writer);
+                    serializeInternally((ChildNode) body, writer);
                 }
                 OMSerializerUtil.serializeEndpart(writer);
             } else {
@@ -266,7 +254,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         }
     }
 
-    private void serializeInternally(NodeImpl child, MTOMXMLStreamWriter writer)
+    private void serializeInternally(ChildNode child, MTOMXMLStreamWriter writer)
             throws XMLStreamException {
         if ((!(child instanceof OMElement)) || child.isComplete() || child.builder == null) {
             child.internalSerialize(writer, false);
@@ -279,8 +267,9 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
     }
 
     public OMNode getNextOMSibling() throws OMException {
-        if (this.ownerNode != null && !this.ownerNode.isComplete()) {
-            this.ownerNode.setComplete(true);
+        DocumentImpl ownerDocument = (DocumentImpl)getOwnerDocument();
+        if (ownerDocument != null && !ownerDocument.isComplete()) {
+            ownerDocument.setComplete(true);
         }
         return null;
     }
@@ -290,9 +279,8 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         if (payloadQName != null) {
             if (SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(payloadQName.getLocalPart())) {
                 String ns = payloadQName.getNamespaceURI();
-                return (ns != null &&
-                    (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns) ||
-                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns)));                                                         
+                return SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns) ||
+                       SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns);                                                         
             } 
         }
         

@@ -28,7 +28,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.XOPBuilder;
+import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -221,14 +221,10 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
 
     public TextNodeImpl(OMContainer parent, QName text, int nodeType,
                         OMFactory factory) {
-        this(((ElementImpl) parent).ownerNode, factory);
-        if (text != null) {
-            this.textNS =
-                    ((ElementImpl) parent).findNamespace(text.getNamespaceURI(), text.getPrefix());
-        } else {
-
-        }
-        this.textValue = (text == null) ? "" : text.getLocalPart();
+        this(((ElementImpl) parent).ownerDocument(), factory);
+        this.textNS =
+                ((ElementImpl) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
+        this.textValue = textNS == null ? text.getLocalPart() : textNS.getPrefix() + ":" + text.getLocalPart();
         this.done = true;
     }
 
@@ -241,12 +237,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      * node has no data.
      */
     public Text splitText(int offset) throws DOMException {
-        if (this.isReadonly()) {
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN,
-                            DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
-        }
         if (offset < 0 || offset > this.textValue.length()) {
             throw new DOMException(DOMException.INDEX_SIZE_ERR,
                     DOMMessageFormatter.formatMessage(
@@ -259,8 +249,9 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         TextImpl newText = (TextImpl) this.getOwnerDocument().createTextNode(
                 newValue);
 
-        if (this.parentNode != null) {
-            newText.setParent(this.parentNode);
+        ParentNode parentNode = parentNode();
+        if (parentNode != null) {
+            newText.setParent(parentNode);
         }
 
         this.insertSiblingAfter(newText);
@@ -319,9 +310,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     }
 
     public String getText() {
-        if (this.textNS != null) {
-            return getTextString();
-        } else if (this.charArray != null || this.textValue != null) {
+        if (this.charArray != null || this.textValue != null) {
             return getTextFromProperPlace();
         } else {
             try {
@@ -405,11 +394,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         } else {
 
             if (dataHandlerObject == null) {
-                if (contentID == null) {
-                    throw new RuntimeException("ContentID is null");
-                }
-                dataHandlerObject = ((XOPBuilder) builder)
-                        .getDataHandler(contentID);
+                throw new OMException("No DataHandler available");
             } else if (dataHandlerObject instanceof DataHandlerProvider) {
                 try {
                     dataHandlerObject = ((DataHandlerProvider) dataHandlerObject).getDataHandler();
@@ -464,10 +449,28 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     * DOM-Level 3 methods
     */
 
-
     public String getWholeText() {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+        // Locate the first sibling that we need to include in the concatenation
+        OMNode sibling = this;
+        OMNode previousSibling;
+        while ((previousSibling = sibling.getPreviousOMSibling()) instanceof OMText) {
+            sibling = previousSibling;
+        }
+        
+        String text = ((OMText)sibling).getText();
+        StringBuffer buffer = null;
+        while ((sibling = sibling.getNextOMSibling()) instanceof OMText) {
+            if (buffer == null) {
+                buffer = new StringBuffer(text);
+            }
+            buffer.append(((OMText)sibling).getText());
+        }
+
+        if (buffer != null) {
+            return buffer.toString();
+        } else {
+            return text;
+        }
     }
 
     public boolean isElementContentWhitespace() {
@@ -475,7 +478,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         throw new UnsupportedOperationException("TODO");
     }
 
-    public Text replaceWholeText(String arg0) throws DOMException {
+    public Text replaceWholeText(String content) throws DOMException {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }

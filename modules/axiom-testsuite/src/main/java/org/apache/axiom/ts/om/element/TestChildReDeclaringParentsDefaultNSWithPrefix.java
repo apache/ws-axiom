@@ -36,8 +36,8 @@ public class TestChildReDeclaringParentsDefaultNSWithPrefix extends AxiomTestCas
 
     protected void runTest() throws Throwable {
         OMFactory fac = metaFactory.getOMFactory();
-        OMElement elem = fac.createOMElement("RequestSecurityToken", null);
-        elem.declareDefaultNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust");
+        OMElement elem = fac.createOMElement("RequestSecurityToken",
+                fac.createOMNamespace("http://schemas.xmlsoap.org/ws/2005/02/trust", ""));
         fac.createOMElement(new QName("TokenType"), elem).setText("test");
         fac.createOMElement(new QName("RequestType"), elem).setText("test1");
 

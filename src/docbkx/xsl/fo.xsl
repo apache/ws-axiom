@@ -27,4 +27,14 @@
     
     <xsl:param name="admon.graphics.extension">.svg</xsl:param>
     <xsl:param name="admon.graphics.path"><xsl:value-of select="$img.src.path"/></xsl:param>
+
+    <xsl:attribute-set name="monospace.verbatim.properties">
+        <xsl:attribute name="font-size">
+            <xsl:choose>
+                <xsl:when test="processing-instruction('db-font-size')"><xsl:value-of
+                          select="processing-instruction('db-font-size')"/></xsl:when>
+                <xsl:otherwise>inherit</xsl:otherwise>
+            </xsl:choose>
+        </xsl:attribute>
+    </xsl:attribute-set>
 </xsl:stylesheet>

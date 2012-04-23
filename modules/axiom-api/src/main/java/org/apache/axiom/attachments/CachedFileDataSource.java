@@ -22,16 +22,16 @@ package org.apache.axiom.attachments;
 import javax.activation.FileDataSource;
 import java.io.File;
 
+import org.apache.axiom.ext.activation.SizeAwareDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
-public class CachedFileDataSource extends FileDataSource {
+public class CachedFileDataSource extends FileDataSource implements SizeAwareDataSource {
+    private static final Log log = LogFactory.getLog(CachedFileDataSource.class);
 
     String contentType = null;
     
-    protected static Log log = LogFactory.getLog(CachedFileDataSource.class);
-
     // The AttachmentCacheMonitor is used to delete expired copies of attachment files.
     private static AttachmentCacheMonitor acm = 
         AttachmentCacheMonitor.getAttachmentCacheMonitor();
@@ -39,14 +39,14 @@ public class CachedFileDataSource extends FileDataSource {
     // Represents the absolute pathname of cached attachment file
     private String cachedFileName = null;
 
-    public CachedFileDataSource(File arg0) {
-        super(arg0);
+    public CachedFileDataSource(File file) {
+        super(file);
         if (log.isDebugEnabled()) {
         	log.debug("Enter CachedFileDataSource ctor");
         }
-        if (arg0 != null) {
+        if (file != null) {
         	try {
-        		cachedFileName = arg0.getCanonicalPath();
+        		cachedFileName = file.getCanonicalPath();
         	} catch (java.io.IOException e) {
         		log.error("IOException caught: " + e);
         	}
@@ -73,5 +73,9 @@ public class CachedFileDataSource extends FileDataSource {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
+    }
+
+    public long getSize() {
+        return getFile().length();
     }
 }

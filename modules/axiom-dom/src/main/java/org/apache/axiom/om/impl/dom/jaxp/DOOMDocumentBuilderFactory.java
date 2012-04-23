@@ -22,22 +22,43 @@ package org.apache.axiom.om.impl.dom.jaxp;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.validation.Schema;
+
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.dom.DOMMetaFactory;
+import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 
 /**
  * Document builder factory that conforms to JAXP.
  */
 public class DOOMDocumentBuilderFactory extends DocumentBuilderFactory {
+    private final OMFactory factory;
+    private Schema schema;
+    
+    /**
+     * @deprecated Application code should not instantiate this class directly, but use
+     *             {@link DOMMetaFactory#newDocumentBuilderFactory()} to get an Axiom compatible
+     *             {@link DocumentBuilderFactory}.
+     */
+    public DOOMDocumentBuilderFactory() {
+        this(OMDOMMetaFactory.INSTANCE.getOMFactory());
+    }
+    
+    public DOOMDocumentBuilderFactory(OMFactory factory) {
+        this.factory = factory;
+    }
+    
     public DocumentBuilder newDocumentBuilder()
             throws ParserConfigurationException {
-        return new DOOMDocumentBuilder();
+        return new DOOMDocumentBuilder(factory, schema);
     }
 
-    public Object getAttribute(String arg0) throws IllegalArgumentException {
+    public Object getAttribute(String name) throws IllegalArgumentException {
         // TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    public void setAttribute(String arg0, Object arg1)
+    public void setAttribute(String name, Object value)
             throws IllegalArgumentException {
         // // TODO
         // throw new UnsupportedOperationException("TODO");
@@ -48,8 +69,16 @@ public class DOOMDocumentBuilderFactory extends DocumentBuilderFactory {
         // TODO TODO OS
     }
 
-    public boolean getFeature(String arg0) throws ParserConfigurationException {
+    public boolean getFeature(String name) throws ParserConfigurationException {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
+    }
+
+    public Schema getSchema() {
+        return schema;
+    }
+
+    public void setSchema(Schema schema) {
+        this.schema = schema;
     }
 }

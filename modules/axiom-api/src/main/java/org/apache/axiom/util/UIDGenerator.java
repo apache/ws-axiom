@@ -185,6 +185,14 @@ public final class UIDGenerator {
      * a 192 bit value, i.e. it is 48 characters long. The implementation guarantees a high level of
      * uniqueness, but makes no provisions to guarantee randomness. It is thread safe, but doesn't
      * use synchronization.
+     * <p>
+     * The fact that this method doesn't guarantee randomness implies that the generated IDs are
+     * predictable and must not be used in contexts where this would cause a security vulnerability.
+     * In particular, this method should <b>not</b> be used to generate the following kind of IDs:
+     * <ul>
+     * <li>Session IDs.
+     * <li>Message IDs used in WS-Addressing.
+     * </ul>
      * 
      * @return the generated unique ID
      */

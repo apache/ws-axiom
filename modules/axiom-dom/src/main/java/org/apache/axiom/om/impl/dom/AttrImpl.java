@@ -21,25 +21,21 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.TypeInfo;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
-public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
+public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
 
     /** Name of the attribute */
     private String attrName;
@@ -50,27 +46,46 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     /** Attribute type */
     private String attrType;
 
-    /** Attribute namespace */
+    /**
+     * The namespace of this attribute. Possible values:
+     * <ul>
+     * <li><code>null</code> (if the attribute has no namespace)
+     * <li>any {@link OMNamespace} instance, with the following exceptions:
+     * <ul>
+     * <li>an {@link OMNamespace} instance with a <code>null</code> prefix
+     * <li>an {@link OMNamespace} instance with an empty prefix (because an unprefixed attribute
+     * never has a namespace)
+     * </ul>
+     * </ul>
+     */
     private OMNamespaceImpl namespace;
 
     /** Flag to indicate whether this attr is used or not */
     private boolean used;
 
-    /** Owner of this attribute */
-    protected ParentNode parent;
+    /**
+     * Owner of this attribute. This is either the owner element or the owner document (if the
+     * attribute doesn't have an owner element).
+     */
+    private ParentNode owner;
 
     /** Flag used to mark an attribute as per the DOM Level 3 specification */
     protected boolean isId;
 
     protected AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
-        super(ownerDocument, factory);
+        super(factory);
+        owner = ownerDocument;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String localName,
                     OMNamespace ns, String value, OMFactory factory) {
-        super(ownerDocument, factory);
-        if (ns != null && ns.getNamespaceURI().length() == 0 && ns.getPrefix().length() > 0) {
-            throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
+        this(ownerDocument, factory);
+        if (ns != null && ns.getNamespaceURI().length() == 0) {
+            if (ns.getPrefix().length() > 0) {
+                throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
+            } else {
+                ns = null;
+            }
         }
         this.attrName = localName;
         this.attrValue = new TextImpl(ownerDocument, value, factory);
@@ -80,14 +95,14 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     public AttrImpl(DocumentImpl ownerDocument, String name, String value,
                     OMFactory factory) {
-        super(ownerDocument, factory);
+        this(ownerDocument, factory);
         this.attrName = name;
         this.attrValue = new TextImpl(ownerDocument, value, factory);
         this.attrType = OMConstants.XMLATTRTYPE_CDATA;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String name, OMFactory factory) {
-        super(ownerDocument, factory);
+        this(ownerDocument, factory);
         this.attrName = name;
         //If this is a default namespace attr
         if (OMConstants.XMLNS_NS_PREFIX.equals(name)) {
@@ -99,7 +114,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
 
     public AttrImpl(DocumentImpl ownerDocument, String localName,
                     OMNamespace namespace, OMFactory factory) {
-        super(ownerDocument, factory);
+        this(ownerDocument, factory);
         this.attrName = localName;
         this.namespace = (OMNamespaceImpl) namespace;
         this.attrType = OMConstants.XMLATTRTYPE_CDATA;
@@ -170,49 +185,26 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      * @see org.w3c.dom.Attr#getOwnerElement()
      */
     public Element getOwnerElement() {
-        // Owned is set to an element instance when the attribute is added to an
-        // element
-        return (Element) (isOwned() ? parent : null);
+        return owner instanceof ElementImpl ? (Element)owner : null;
     }
 
+    void setOwnerElement(ElementImpl element, boolean useDomSemantics) {
+        if (element == null) {
+            if (owner instanceof ElementImpl) {
+                if (useDomSemantics) {
+                    owner = ((ElementImpl)owner).ownerDocument();
+                } else {
+                    owner = null;
+                }
+            }
+        } else {
+            owner = element;
+        }
+    }
+    
     public boolean getSpecified() {
         // Since we don't support DTD or schema, we always return true
         return true;
-    }
-
-    /**
-     * Not supported: Cannot detach attributes. Use the operations available in the owner node.
-     *
-     * @see org.apache.axiom.om.OMNode#detach()
-     */
-    public OMNode detach() throws OMException {
-        throw new UnsupportedOperationException("Not supported");
-    }
-
-    /**
-     * Not supported: Cannot discard attributes. Use the operations available in the owner node.
-     *
-     * @see org.apache.axiom.om.OMNode#discard()
-     */
-    public void discard() throws OMException {
-        throw new UnsupportedOperationException("Not supported");
-    }
-
-    /**
-     * Returns the type of this attribute node.
-     *
-     * @see org.apache.axiom.om.OMNode#getType()
-     */
-    public int getType() {
-        return -1;
-    }
-
-    /**
-     * This is not supported since attributes serialization is handled by the serialization of the
-     * owner nodes.
-     */
-    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        throw new UnsupportedOperationException("Not supported");
     }
 
     /**
@@ -232,14 +224,9 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
     public QName getQName() {
         return (namespace == null) ?
                 new QName(this.attrName) :
-                // This next bit is because QName is kind of stupid, and throws an
-                // IllegalArgumentException on null prefix instead of treating it exactly
-                // as if no prefix had been passed.  Grr.
-                (namespace.getPrefix() == null ?
-                        new QName(namespace.getNamespaceURI(), attrName) :
                         new QName(namespace.getNamespaceURI(),
                                   attrName,
-                                  namespace.getPrefix()));
+                                  namespace.getPrefix());
 
     }
 
@@ -270,13 +257,17 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
         this.attrName = localName;
     }
 
+    public void internalSetNamespace(OMNamespace namespace) {
+        this.namespace = (OMNamespaceImpl)namespace;
+    }
+
     /**
      * Sets the namespace of this attribute node.
      *
      * @see org.apache.axiom.om.OMAttribute#setOMNamespace (org.apache.axiom.om.OMNamespace)
      */
     public void setOMNamespace(OMNamespace omNamespace) {
-        this.namespace = (OMNamespaceImpl) omNamespace;
+        internalSetNamespace(omNamespace);
     }
 
     /**
@@ -285,13 +276,6 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      * @see org.apache.axiom.om.OMAttribute#setAttributeValue(String)
      */
     public void setAttributeValue(String value) {
-        if (isReadonly()) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NO_MODIFICATION_ALLOWED_ERR, null);
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   msg);
-        }
         this.attrValue = (TextImpl) this.getOwnerDocument().createTextNode(
                 value);
     }
@@ -303,24 +287,6 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      */
     public void setAttributeType(String attrType) {    
     	this.attrType = attrType;
-    }
-
-    /**
-     * Sets the parent element to the given OMContainer.
-     *
-     * @see org.apache.axiom.om.impl.OMNodeEx#setParent (org.apache.axiom.om.OMContainer)
-     */
-    public void setParent(OMContainer element) {
-        this.parent = (ParentNode) element;
-    }
-
-    /**
-     * Sets the type. NOT IMPLEMENTED: Unnecessary.
-     *
-     * @see org.apache.axiom.om.impl.OMNodeEx#setType(int)
-     */
-    public void setType(int nodeType) throws OMException {
-        // not necessary ???
     }
 
     /** @return Returns boolean. */
@@ -343,13 +309,9 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
                 value);
     }
 
-    /**
-     * Returns the parent node of this attribute.
-     *
-     * @see org.apache.axiom.om.OMNode#getParent()
-     */
-    public OMContainer getParent() {
-        return this.parent;
+    public Node getParentNode() {
+        // For DOM, the owner element is not the parent
+        return null;
     }
 
     /**
@@ -382,6 +344,10 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
         return (this.namespace == null) ? null : this.namespace.getPrefix();
     }
 
+    public void setPrefix(String prefix) throws DOMException {
+        NamedNodeHelper.setPrefix(this, prefix);
+    }
+
     public Node cloneNode(boolean deep) {
 
         AttrImpl clone = (AttrImpl) super.cloneNode(deep);
@@ -396,7 +362,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
             }
         }
         clone.isSpecified(true);
-        clone.setParent(null);
+        clone.owner = (DocumentImpl)getOwnerDocument();
         clone.setUsed(false);
         return clone;
     }
@@ -419,6 +385,10 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
                 + ":" + this.attrName;
     }
 
+    public Document getOwnerDocument() {
+        return owner instanceof ElementImpl ? ((ElementImpl)owner).getOwnerDocument() : (DocumentImpl)owner;
+    }
+
     /**
      * Returns the owner element of this attribute
      * @return OMElement - if the parent OMContainer is an instanceof OMElement
@@ -426,7 +396,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr {
      * getParent() method.
      */
     public OMElement getOwner() {
-        return (parent instanceof OMElement) ? (OMElement)parent : null;
+        return owner instanceof ElementImpl ? (OMElement)owner : null;
     }
 
     /**

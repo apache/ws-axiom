@@ -38,7 +38,18 @@ public class OMAttributeImpl implements OMAttribute {
     /** Field type */
     private String type;
 
-    /** Field namespace */
+    /**
+     * The namespace of this attribute. Possible values:
+     * <ul>
+     * <li><code>null</code> (if the attribute has no namespace)
+     * <li>any {@link OMNamespace} instance, with the following exceptions:
+     * <ul>
+     * <li>an {@link OMNamespace} instance with a <code>null</code> prefix
+     * <li>an {@link OMNamespace} instance with an empty prefix (because an unprefixed attribute
+     * never has a namespace)
+     * </ul>
+     * </ul>
+     */
     private OMNamespace namespace;
     
     private QName qName;
@@ -61,8 +72,12 @@ public class OMAttributeImpl implements OMAttribute {
         if (localName == null || localName.trim().length() == 0)
             throw new IllegalArgumentException("Local name may not be null or empty");
         
-        if (ns != null && ns.getNamespaceURI().length() == 0 && ns.getPrefix().length() > 0) {
-            throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
+        if (ns != null && ns.getNamespaceURI().length() == 0) {
+            if (ns.getPrefix().length() > 0) {
+                throw new IllegalArgumentException("Cannot create a prefixed attribute with an empty namespace name");
+            } else {
+                ns = null;
+            }
         }
 
         this.localName = localName;
@@ -79,12 +94,7 @@ public class OMAttributeImpl implements OMAttribute {
         }
 
         if (namespace != null) {
-            // Guard against QName implementation sillyness.
-            if (namespace.getPrefix() == null) {
-                this.qName = new QName(namespace.getNamespaceURI(), localName);
-            } else {
-                this.qName =  new QName(namespace.getNamespaceURI(), localName, namespace.getPrefix());
-            }
+            this.qName =  new QName(namespace.getNamespaceURI(), localName, namespace.getPrefix());
         } else {
             this.qName =  new QName(localName);
         }
@@ -167,6 +177,16 @@ public class OMAttributeImpl implements OMAttribute {
      */
     public OMNamespace getNamespace() {
         return namespace;
+    }
+
+    public String getPrefix() {
+        OMNamespace ns = getNamespace();
+        if (ns == null) {
+            return null;
+        } else {
+            String prefix = ns.getPrefix();
+            return prefix.length() == 0 ? null : prefix;
+        }
     }
 
     public String getNamespaceURI() {

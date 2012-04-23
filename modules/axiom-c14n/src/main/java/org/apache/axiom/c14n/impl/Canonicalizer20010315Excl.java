@@ -32,11 +32,6 @@ import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-/**
- * @author Christian Geuer-Pollmann <geuerp@apache.org>
- *
- * modified to work with Axiom wrapper by Saliya Ekanayake (esaliya@gmail.com)
- */
 public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
     /**
      * This Set contains the names (Strings like "xmlns" or "xmlns:foo") of

@@ -20,7 +20,7 @@ package org.apache.axiom.ts.om.element;
 
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.DigestTestCase;
+import org.apache.axiom.ts.om.DigestTestCase;
 
 // Regression test for AXIOM-203
 public class TestDigestWithoutNamespace extends DigestTestCase {

@@ -22,9 +22,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.activation.DataSource;
+import org.apache.axiom.ext.activation.SizeAwareDataSource;
 
-class PartDataSource implements DataSource {
+/**
+ * Default {@link DataSource} implementation for MIME parts. This implementation will be used if
+ * there is no {@link DataSource} implementation specific to the buffering strategy being used, i.e.
+ * if {@link PartContent#getDataSource(String)} returns <code>null</code>.
+ */
+class PartDataSource implements SizeAwareDataSource {
     private final PartImpl part;
 
     public PartDataSource(PartImpl part) {
@@ -32,8 +37,7 @@ class PartDataSource implements DataSource {
     }
 
     public String getContentType() {
-        String ct = part.getContentType();
-        return ct == null ? "application/octet-stream" : ct;
+        return part.getDataSourceContentType();
     }
 
     public InputStream getInputStream() throws IOException {
@@ -46,5 +50,9 @@ class PartDataSource implements DataSource {
 
     public OutputStream getOutputStream() throws IOException {
         throw new UnsupportedOperationException();
+    }
+
+    public long getSize() {
+        return part.getSize();
     }
 }

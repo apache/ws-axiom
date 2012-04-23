@@ -88,4 +88,12 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
     public SOAPFaultSubCode getSubCode() {
         return (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
     }
+
+    public void setValue(QName value) {
+        SOAPFaultValue valueElement = getValue();
+        if (valueElement == null) {
+            valueElement = ((SOAPFactory)getOMFactory()).createSOAPFaultValue(this);
+        }
+        valueElement.setText(value);
+    }
 }

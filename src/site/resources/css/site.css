@@ -59,21 +59,25 @@ div#breadcrumbs a:hover {
 div#leftColumn {
   background-color: #DCE3EB;
   border: none;
-  overflow: visible;
 }
 
-div#navcolumn > ul > li.expanded,
-div#navcolumn > ul > li.none {
-  background-image: none;
-  padding: 0.5em 0;
+div#navcolumn > h5 {
+  padding: 0.3em 0;
+  display: block;
+  color: black;
+  font-size: 1.1em;
 }
 
 div#navcolumn a,
 div#navcolumn strong {
-  padding: 0.3em 0;
+  padding: 0.5em 0;
   display: block;
-  background-image: none;
   color: black;
+  font-size: 1.1em;
+}
+
+div#navcolumn > ul > li.expanded,
+div#navcolumn > ul > li.none {
 }
 
 div#navcolumn > ul > li.expanded > ul > li.none > a,
@@ -89,9 +93,17 @@ div#navcolumn li.expanded > a {
   border-bottom: 1px solid #999999;
 }
 
-div#contentBox > div.section {
+div#contentBox {
+  float: left;
+}
+
+div#contentBox > div.section > h2 {
   border-top: 1px solid #999999;
-  margin-top: 1.5em;
+  margin-left: -4pt;
+  margin-right: -4pt;
+  padding-left: 4pt;
+  padding-right: 4pt;
+  padding-top: 4pt
 }
 
 h2 {
@@ -101,7 +113,6 @@ h2 {
   padding: 0;
   color: black;
   background-color: transparent;
-  margin: 0;
 }
 
 div#contentBox > div.section > div.section {
@@ -126,4 +137,14 @@ p, li, td {
 a.externalLink, a.externalLink:link, a.externalLink:visited, a.externalLink:active, a.externalLink:hover {
   background: transparent;
   padding-right: 0
+}
+
+/* Styles for Ohloh widgets */
+
+div.gadgetContainer {
+  margin-left: 10pt
+}
+
+div.gadget {
+  background-color: white
 }

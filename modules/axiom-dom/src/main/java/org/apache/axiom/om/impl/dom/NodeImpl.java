@@ -19,30 +19,17 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.util.StAXUtils;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.UserDataHandler;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-import java.io.OutputStream;
-import java.io.Writer;
 import java.util.Hashtable;
 
-public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
+public abstract class NodeImpl implements Node, NodeList, Cloneable {
 
     /** Holds the user data objects */
     private Hashtable userData; // Will be initialized in setUserData()
@@ -53,8 +40,6 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
     /** Field done */
     protected boolean done = false;
 
-    protected DocumentImpl ownerNode;
-
     /** Factory that created this node */
     protected final OMFactory factory;
 
@@ -62,32 +47,30 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
 
     protected short flags;
 
-    protected final static short OWNED = 0x1 << 1;
-
+    /**
+     * Used by {@link ChildNode} to determine the meaning of the <code>ownerNode</code> attribute.
+     * If the flag is set, then the attribute contains the reference to the parent node. If the flag
+     * is not set, then the node has no parent and the attribute stores a reference to the owner
+     * document (which may be <code>null</code> if the owner document has not been created yet).
+     */
+    protected final static short HAS_PARENT = 0x1 << 1;
+    
     protected final static short FIRSTCHILD = 0x1 << 2;
 
-    protected final static short READONLY = 0x1 << 3;
-
     protected final static short SPECIFIED = 0x1 << 4;
-
-    protected final static short NORMALIZED = 0x1 << 5;
 
     //
     // Constructors
     //
 
-    protected NodeImpl(DocumentImpl ownerDocument, OMFactory factory) {
-        //this(factory);
-        this.factory = factory;
-        this.ownerNode = ownerDocument;
-        // this.isOwned(true);
-
-    }
-
     protected NodeImpl(OMFactory factory) {
         this.factory = factory;
     }
 
+    void normalize(DOMConfigurationImpl config) {
+        // Default: do nothing
+    }
+    
     public void normalize() {
         //Parent node should override this 
     }
@@ -119,7 +102,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         return null;
     }
 
-    public void setNodeValue(String arg0) throws DOMException {
+    public void setNodeValue(String nodeValue) throws DOMException {
         // Don't do anything, to be overridden in SOME Child classes
     }
 
@@ -127,14 +110,6 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         throw new DOMException(DOMException.NAMESPACE_ERR, DOMMessageFormatter
                 .formatMessage(DOMMessageFormatter.DOM_DOMAIN, DOMException.NAMESPACE_ERR,
                                null));
-    }
-
-    /**
-     * Finds the document that this Node belongs to (the document in whose context the Node was
-     * created). The Node may or may not
-     */
-    public Document getOwnerDocument() {
-        return this.ownerNode;
     }
 
     /**
@@ -174,18 +149,6 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         return null; // default behavior, overriden in ChildNode
     }
 
-    public Node getParentNode() {
-        return null; // overriden by ChildNode
-        // Document, DocumentFragment, and Attribute will never have parents.
-    }
-
-    /*
-     * Same as getParentNode but returns internal type NodeImpl.
-     */
-    NodeImpl parentNode() {
-        return null;
-    }
-
     /** Returns the previous child of this node's parent, or null if none. */
     public Node getPreviousSibling() {
         return null; // default behavior, overriden in ChildNode
@@ -209,10 +172,6 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException("**Internal Error**" + e);
         }
-        newnode.ownerNode = this.ownerNode;
-        newnode.isOwned(false);
-
-        newnode.isReadonly(false);
 
         return newnode;
     }
@@ -311,12 +270,12 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
      * Flags setters and getters
      */
 
-    final boolean isOwned() {
-        return (flags & OWNED) != 0;
+    final boolean hasParent() {
+        return (flags & HAS_PARENT) != 0;
     }
 
-    final void isOwned(boolean value) {
-        flags = (short) (value ? flags | OWNED : flags & ~OWNED);
+    final void hasParent(boolean value) {
+        flags = (short) (value ? flags | HAS_PARENT : flags & ~HAS_PARENT);
     }
 
     final boolean isFirstChild() {
@@ -327,183 +286,12 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         flags = (short) (value ? flags | FIRSTCHILD : flags & ~FIRSTCHILD);
     }
 
-    final boolean isReadonly() {
-        return (flags & READONLY) != 0;
-    }
-
-    final void isReadonly(boolean value) {
-        flags = (short) (value ? flags | READONLY : flags & ~READONLY);
-    }
-
     final boolean isSpecified() {
         return (flags & SPECIFIED) != 0;
     }
 
     final void isSpecified(boolean value) {
         flags = (short) (value ? flags | SPECIFIED : flags & ~SPECIFIED);
-    }
-
-    final boolean isNormalized() {
-        return (flags & NORMALIZED) != 0;
-    }
-
-    final void isNormalized(boolean value) {
-        // See if flag should propagate to parent.
-        if (!value && isNormalized() && ownerNode != null) {
-            ownerNode.isNormalized(false);
-        }
-        flags = (short) (value ? flags | NORMALIZED : flags & ~NORMALIZED);
-    }
-
-    // /
-    // /OM Methods
-    // /
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axis2.om.OMNode#getParent()
-     */
-    public OMContainer getParent() throws OMException {
-        return null; // overriden by ChildNode
-        // Document, DocumentFragment, and Attribute will never have parents.
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axis2.om.OMNode#isComplete()
-     */
-    public boolean isComplete() {
-        return this.done;
-    }
-
-    public void setComplete(boolean state) {
-        this.done = state;
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axis2.om.OMNode#insertSiblingAfter
-     * (org.apache.axis2.om.OMNode)
-     */
-    public void insertSiblingAfter(OMNode sibling) throws OMException {
-        // Overridden in ChildNode
-        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                               DOMMessageFormatter.formatMessage(
-                                       DOMMessageFormatter.DOM_DOMAIN,
-                                       DOMException.HIERARCHY_REQUEST_ERR, null));
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axis2.om.OMNode#insertSiblingBefore
-     * (org.apache.axis2.om.OMNode)
-     */
-    public void insertSiblingBefore(OMNode sibling) throws OMException {
-        // Overridden in ChildNode
-        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                               DOMMessageFormatter.formatMessage(
-                                       DOMMessageFormatter.DOM_DOMAIN,
-                                       DOMException.HIERARCHY_REQUEST_ERR, null));
-
-    }
-
-    /** Default behavior returns null, overriden in ChildNode. */
-    public OMNode getPreviousOMSibling() {
-        return null;
-    }
-
-    /** Default behavior returns null, overriden in ChildNode. */
-    public OMNode getNextOMSibling() {
-        return null;
-    }
-
-    public OMNode getNextOMSiblingIfAvailable() {
-        return null;
-    }
-
-    public void setPreviousOMSibling(OMNode previousSibling) {
-        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                               DOMMessageFormatter.formatMessage(
-                                       DOMMessageFormatter.DOM_DOMAIN,
-                                       DOMException.HIERARCHY_REQUEST_ERR, null));
-    }
-
-    public void setNextOMSibling(OMNode previousSibling) {
-        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                               DOMMessageFormatter.formatMessage(
-                                       DOMMessageFormatter.DOM_DOMAIN,
-                                       DOMException.HIERARCHY_REQUEST_ERR, null));
-    }
-
-    /** Builds next element. */
-    public void build() {
-        while (!done)
-            this.builder.next();
-    }
-
-    /**
-     * Parses this node and builds the object structure in memory. AXIOM supports two levels of
-     * deffered building. First is deffered building of AXIOM using StAX. Second level is the deffered
-     * building of attachments. AXIOM reads in the attachements from the stream only when user asks by
-     * calling getDataHandler(). build() method builds the OM without the attachments. buildAll()
-     * builds the OM together with attachement data. This becomes handy when user wants to free the
-     * input stream.
-     */
-    public void buildWithAttachments() {
-        if (!this.done) {
-            this.build();
-        }
-    }
-
-    public void close(boolean build) {
-        if (build) {
-            this.build();
-        }
-        this.done = true;
-        
-        // If this is a StAXBuilder, close it.
-        if (builder instanceof StAXBuilder &&
-            !((StAXBuilder) builder).isClosed()) {
-            ((StAXBuilder) builder).releaseParserOnClose(true);
-            ((StAXBuilder) builder).close();
-        }
-    }
-    
-    /**
-     * Sets the owner document.
-     *
-     * @param document
-     */
-    protected void setOwnerDocument(DocumentImpl document) {
-        this.ownerNode = document;
-        this.isOwned(true);
-    }
-
-    public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        serialize(xmlWriter, true);
-    }
-
-    public void serializeAndConsume(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        serialize(xmlWriter, false);
-    }
-
-    public void serialize(XMLStreamWriter xmlWriter, boolean cache) throws XMLStreamException {
-        MTOMXMLStreamWriter writer = xmlWriter instanceof MTOMXMLStreamWriter ?
-                (MTOMXMLStreamWriter) xmlWriter : 
-                    new MTOMXMLStreamWriter(xmlWriter);
-        internalSerialize(writer, cache);
-        writer.flush();
-    }
-
-    public OMNode detach() {
-        throw new OMException(
-                "Elements that doesn't have a parent can not be detached");
     }
 
     /*
@@ -544,17 +332,17 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         return this == node;
     }
 
-    public String lookupPrefix(String arg0) {
+    public String lookupPrefix(String namespaceURI) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    public boolean isDefaultNamespace(String arg0) {
+    public boolean isDefaultNamespace(String namespaceURI) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
 
-    public String lookupNamespaceURI(String arg0) {
+    public String lookupNamespaceURI(String prefix) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
@@ -736,7 +524,7 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         return equal;
     }
 
-    public Object getFeature(String arg0, String arg1) {
+    public Object getFeature(String feature, String version) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
@@ -770,105 +558,8 @@ public abstract class NodeImpl implements Node, NodeList, OMNodeEx, Cloneable {
         return null;
     }
 
-    public void serialize(OutputStream output) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serialize(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serialize(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serialize(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serializeAndConsume(OutputStream output)
-            throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(output);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serializeAndConsume(Writer writer) throws XMLStreamException {
-        XMLStreamWriter xmlStreamWriter = StAXUtils.createXMLStreamWriter(writer);
-        try {
-            serializeAndConsume(xmlStreamWriter);
-        } finally {
-            xmlStreamWriter.close();
-        }
-    }
-
-    public void serialize(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, true);
-        try {
-            internalSerialize(writer, true);
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
-    public void serialize(Writer writer2, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(StAXUtils
-                .createXMLStreamWriter(writer2));
-        writer.setOutputFormat(format);
-        try {
-            internalSerialize(writer, true);
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
-    public void serializeAndConsume(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(output, format, false);
-        try {
-            internalSerialize(writer, false);
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
-    public void serializeAndConsume(Writer writer2, OMOutputFormat format)
-            throws XMLStreamException {
-        MTOMXMLStreamWriter writer = new MTOMXMLStreamWriter(StAXUtils
-                .createXMLStreamWriter(writer2));
-        try {
-            writer.setOutputFormat(format);
-            // TODO: the flush is necessary because of an issue with the lifecycle of MTOMXMLStreamWriter
-            internalSerialize(writer, false);
-            writer.flush();
-        } finally {
-            writer.close();
-        }
-    }
-
     /** Returns the <code>OMFactory</code> that created this node */
     public OMFactory getOMFactory() {
         return this.factory;
-    }
-
-    public void internalSerialize(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, true);
-    }
-
-    public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
-        internalSerialize(writer, false);
     }
 }

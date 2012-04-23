@@ -41,6 +41,6 @@ public class OMChildrenNamespaceIterator extends OMChildrenQNameIterator {
      * @return true if equals
      */
     public boolean isEqual(QName searchQName, QName currentQName) {
-        return searchQName.getNamespaceURI().equals(searchQName.getNamespaceURI());
+        return searchQName.getNamespaceURI().equals(currentQName.getNamespaceURI());
     }
 }

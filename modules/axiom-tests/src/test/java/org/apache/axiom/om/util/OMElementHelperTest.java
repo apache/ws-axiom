@@ -23,7 +23,6 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.impl.dom.DOOMAbstractFactory;
 
 public class OMElementHelperTest extends AbstractTestCase {
 
@@ -42,10 +41,10 @@ public class OMElementHelperTest extends AbstractTestCase {
 
         // then lets pass in an OMElement created using llom and pass DOOMFactory
         OMElement importedElement = ElementHelper
-                .importOMElement(documentElement, DOOMAbstractFactory.getOMFactory());
+                .importOMElement(documentElement, OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory());
         assertTrue(importedElement != documentElement);
         assertTrue(importedElement.getOMFactory().getClass().isInstance(
-                DOOMAbstractFactory.getOMFactory()));
+                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getOMFactory()));
         
         documentElement.close(false);
     }

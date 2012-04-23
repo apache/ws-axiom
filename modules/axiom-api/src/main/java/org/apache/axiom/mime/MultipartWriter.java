@@ -21,6 +21,7 @@ package org.apache.axiom.mime;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 import javax.activation.DataHandler;
 
@@ -70,6 +71,27 @@ public interface MultipartWriter {
             throws IOException;
     
     /**
+     * Start writing a MIME part. The method is similar to
+     * {@link #writePart(String, String, String)} but accepts a list of additional headers for the
+     * MIME part.
+     * 
+     * @param contentType
+     *            the value of the <tt>Content-Type</tt> header of the MIME part
+     * @param contentTransferEncoding
+     *            the content transfer encoding to be used (see above); must not be
+     *            <code>null</code>
+     * @param contentID
+     *            the content ID of the MIME part (see above)
+     * @param extraHeaders
+     *            a list of {@link Header} objects with additional headers to write to the MIME part
+     * @return an output stream to write the content of the MIME part
+     * @throws IOException
+     *             if an I/O error occurs when writing to the underlying stream
+     */
+    OutputStream writePart(String contentType, String contentTransferEncoding,
+            String contentID, List/*<Header>*/ extraHeaders) throws IOException;
+    
+    /**
      * Write a MIME part. The content is provided by a {@link DataHandler} object, which also
      * specifies the content type of the part.
      * 
@@ -85,6 +107,27 @@ public interface MultipartWriter {
      */
     void writePart(DataHandler dataHandler, String contentTransferEncoding, String contentID)
             throws IOException;
+    
+    /**
+     * Write a MIME part. The content is provided by a {@link DataHandler} object, which also
+     * specifies the content type of the part. The method is similar to
+     * {@link #writePart(DataHandler, String, String)} but accepts a list of additional headers for
+     * the MIME part.
+     * 
+     * @param dataHandler
+     *            the content of the MIME part to write
+     * @param contentTransferEncoding
+     *            the content transfer encoding to be used (see above); must not be
+     *            <code>null</code>
+     * @param contentID
+     *            the content ID of the MIME part (see above)
+     * @param extraHeaders
+     *            a list of {@link Header} objects with additional headers to write to the MIME part
+     * @throws IOException
+     *             if an I/O error occurs when writing the part to the underlying stream
+     */
+    void writePart(DataHandler dataHandler, String contentTransferEncoding,
+            String contentID, List/*<Header>*/ extraHeaders) throws IOException;
     
     /**
      * Complete writing of the MIME multipart package. This method does <b>not</b> close the

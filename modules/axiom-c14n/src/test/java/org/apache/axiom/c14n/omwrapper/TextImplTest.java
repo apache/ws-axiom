@@ -27,9 +27,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class TextImplTest extends TestCase {
     private DataParser dp = null;
     private Node n = null;

@@ -26,14 +26,14 @@ import org.apache.axiom.om.OMMetaFactory;
  * Neither XML 1.0 nor XML 1.1 allow binding a prefix to the empty namespace name.
  */
 public class TestCreateOMElementWithInvalidNamespace extends CreateOMElementTestCase {
-    public TestCreateOMElementWithInvalidNamespace(OMMetaFactory metaFactory, OMElementCreator variant) {
-        super(metaFactory, variant);
+    public TestCreateOMElementWithInvalidNamespace(OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
+        super(metaFactory, variant, parentSupplier);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         try {
-            variant.createOMElement(factory, null, "test", "", "p");
+            variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "", "p");
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException ex) {
             // Expected

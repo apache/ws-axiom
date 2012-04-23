@@ -43,16 +43,16 @@ public class ConfigurableDataHandler extends DataHandler {
 
     private String contentID;
 
-    public ConfigurableDataHandler(DataSource arg0) {
-        super(arg0);
+    public ConfigurableDataHandler(DataSource ds) {
+        super(ds);
     }
 
-    public ConfigurableDataHandler(Object arg0, String arg1) {
-        super(arg0, arg1);
+    public ConfigurableDataHandler(Object data, String type) {
+        super(data, type);
     }
 
-    public ConfigurableDataHandler(URL arg0) {
-        super(arg0);
+    public ConfigurableDataHandler(URL url) {
+        super(url);
     }
 
 //	public String getContentID() {

@@ -70,7 +70,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
         super(factory);
         this.done = done;
         if ((parent != null)) {
-            this.parent = (OMContainerEx) parent;
             parent.addChild(this);
         }
 
@@ -154,6 +153,8 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
                 parent.setComplete(false);
             } else if (parent instanceof OMElementImpl) {
                 ((OMElementImpl) parent).notifyChildComplete();
+            } else if (parent instanceof OMDocumentImpl) {
+                ((OMDocumentImpl) parent).notifyChildComplete();
             }
         }
     }

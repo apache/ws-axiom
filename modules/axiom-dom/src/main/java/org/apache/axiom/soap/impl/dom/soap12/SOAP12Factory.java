@@ -22,7 +22,6 @@ package org.apache.axiom.soap.impl.dom.soap12;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
@@ -52,10 +51,6 @@ public class SOAP12Factory extends DOMSOAPFactory {
     }
 
     public SOAP12Factory() {
-    }
-
-    public SOAP12Factory(DocumentImpl doc) {
-        super(doc);
     }
 
     public String getSoapVersionURI() {
@@ -228,16 +223,13 @@ public class SOAP12Factory extends DOMSOAPFactory {
         return new SOAP12FaultDetailImpl(parent, builder, this);
     }
 
-    public SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
-        OMNamespace ns =
-                new OMNamespaceImpl(
-                        SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI,
-                        SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
-        SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(ns, this);
-        createSOAPHeader(env);
-        createSOAPBody(env);
+    public SOAPFaultDetail createSOAPFaultDetail() throws SOAPProcessingException {
+        return new SOAP12FaultDetailImpl(this);
+    }
 
-        return env;
+    public OMNamespace getNamespace() {
+        return new OMNamespaceImpl(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI,
+                                 SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX);
     }
 
     public SOAPFault createSOAPFault() throws SOAPProcessingException {

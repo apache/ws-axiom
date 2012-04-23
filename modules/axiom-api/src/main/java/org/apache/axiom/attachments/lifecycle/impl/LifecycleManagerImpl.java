@@ -95,6 +95,15 @@ public class LifecycleManagerImpl implements LifecycleManager {
                 if(log.isDebugEnabled()){
                     log.debug("delete() successful");
                 }
+                //If file was registered with VMShutdown hook
+                //lets remove it from the list to be deleted on VMExit.
+                VMShutdownHook hook =VMShutdownHook.hook();
+                if(hook.isRegistered()){
+                    hook.remove(file);
+                }
+                if(log.isDebugEnabled()){
+                    log.debug("File Purged and removed from Shutdown Hook Collection");
+                }
             }else{
                 if(log.isDebugEnabled()){
                     log.debug("Cannot delete file, set to delete on VM shutdown");

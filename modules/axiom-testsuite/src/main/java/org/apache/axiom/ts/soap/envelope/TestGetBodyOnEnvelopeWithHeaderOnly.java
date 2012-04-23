@@ -23,7 +23,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-// Regression test for WSCOMMONS-526
+// Regression test for AXIOM-218
 public class TestGetBodyOnEnvelopeWithHeaderOnly extends SOAPTestCase {
     public TestGetBodyOnEnvelopeWithHeaderOnly(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);

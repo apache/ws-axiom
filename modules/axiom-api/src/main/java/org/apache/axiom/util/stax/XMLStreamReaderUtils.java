@@ -102,7 +102,7 @@ public class XMLStreamReaderUtils {
     private static final String DATA_HANDLER = "Axiom.DataHandler";
     private static final String IS_DATA_HANDLERS_AWARE = "IsDatahandlersAwareParsing"; 
     
-    private static Log log = LogFactory.getLog(XMLStreamReaderUtils.class);
+    private static final Log log = LogFactory.getLog(XMLStreamReaderUtils.class);
     
     private XMLStreamReaderUtils() {}
     

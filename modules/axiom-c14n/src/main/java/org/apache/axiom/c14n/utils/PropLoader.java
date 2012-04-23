@@ -22,9 +22,6 @@ package org.apache.axiom.c14n.utils;
 import java.io.File;
 import java.util.ResourceBundle;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class PropLoader {
     public static final String C14N_EXCEPTION_PROP = "META-INF" + File.separator;
 

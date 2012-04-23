@@ -29,9 +29,6 @@ import org.apache.axiom.om.OMNamespace;
 
 import javax.xml.namespace.QName;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class AttrImpl extends NodeImpl implements Attr {
     public static final String XMLNS = "xmlns";
     public static final String XMLNS_URI = "http://www.w3.org/2000/xmlns/";

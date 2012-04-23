@@ -54,11 +54,11 @@ public class XMLStreamReaderWithQName extends StreamReaderDelegate {
         return readBody;
     }
 
-    public Object getProperty(String arg0) throws IllegalArgumentException {
+    public Object getProperty(String name) throws IllegalArgumentException {
         // Return the qname
-        if (arg0.equals(SOAPConstants.SOAPBODY_FIRST_CHILD_ELEMENT_QNAME)) {
+        if (name.equals(SOAPConstants.SOAPBODY_FIRST_CHILD_ELEMENT_QNAME)) {
             return this.soapBodyFirstChildElementQName;
         }
-        return super.getProperty(arg0);
+        return super.getProperty(name);
     }
 }

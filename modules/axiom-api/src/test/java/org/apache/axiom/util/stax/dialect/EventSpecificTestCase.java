@@ -33,13 +33,14 @@ import org.apache.axiom.util.stax.XMLEventUtils;
 public abstract class EventSpecificTestCase extends DialectTestCase {
     private final int event;
     
-    public EventSpecificTestCase(int event) {
+    public EventSpecificTestCase(StAXImplementation staxImpl, int event) {
+        super(staxImpl);
         this.event = event;
-        setName(getClass().getName() + " [" + XMLEventUtils.getEventTypeString(event) + "]");
+        addTestProperty("event", XMLEventUtils.getEventTypeString(event));
     }
 
     protected final void runTest() throws Throwable {
-        XMLInputFactory factory = getDialect().enableCDataReporting(newNormalizedXMLInputFactory());
+        XMLInputFactory factory = staxImpl.getDialect().enableCDataReporting(staxImpl.newNormalizedXMLInputFactory());
         factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
         InputStream in = IllegalStateExceptionTestCase.class.getResourceAsStream("alleventtypes.xml");
         try {

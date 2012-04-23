@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom-parent</artifactId>
-        <version>1.2.13-SNAPSHOT</version>
+        <version>1.2.14-SNAPSHOT</version>
         <relativePath>../axiom-parent/pom.xml</relativePath>
     </parent>
     <artifactId>axiom-tests</artifactId>
@@ -55,6 +55,12 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-dom</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <!-- TODO: eliminate this dependency -->
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-compat</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

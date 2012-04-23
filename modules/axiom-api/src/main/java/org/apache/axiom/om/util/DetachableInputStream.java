@@ -46,7 +46,7 @@ import java.io.InputStream;
  */
 public class DetachableInputStream extends FilterInputStream {
 
-    private static Log log = LogFactory.getLog(DetachableInputStream.class);
+    private static final Log log = LogFactory.getLog(DetachableInputStream.class);
     
 
     private long count = 0;

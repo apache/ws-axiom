@@ -26,10 +26,10 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMHierarchyException;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.XMLEventUtils;
@@ -70,7 +70,7 @@ import java.io.InputStream;
  * error before. While one would expect that after a first error reported by the parser, all
  * subsequent invocations of the parser will fail, this is not the case for all parsers
  * (at least not in all situations). Instead, the parser might be left in an inconsistent
- * state after the error. E.g. WSCOMMONS-372 describes a case where Woodstox
+ * state after the error. E.g. AXIOM-34 describes a case where Woodstox
  * encounters an error in {@link XMLStreamReader#getText()} but continues to return
  * (incorrect) events afterwards. The explanation for this behaviour might be that
  * the situation described here is quite uncommon when StAX is used directly (i.e. not through
@@ -583,50 +583,37 @@ public class StAXOMBuilder extends StAXBuilder {
      * @param node
      */
     protected void processNamespaceData(OMElement node) {
+        int namespaceCount = parser.getNamespaceCount();
+        for (int i = 0; i < namespaceCount; i++) {
+            String prefix = parser.getNamespacePrefix(i);
+
+            //if the namespace is not defined already when we write the start tag declare it
+            // check whether this is the default namespace and make sure we have not declared that earlier
+            String namespaceURI = parser.getNamespaceURI(i);
+            
+            // NOTE_A:
+            // By default most parsers don't intern the namespace.
+            // Unfortunately the property to detect interning on the delegate parsers is hard to detect.
+            // Woodstox has a proprietary property on the XMLInputFactory.
+            // IBM has a proprietary property on the XMLStreamReader.
+            // For now only force the interning if requested.
+            if (isNamespaceURIInterning()) {
+                namespaceURI = namespaceURI.intern();
+            }
+            
+            if (prefix == null) {
+                prefix = "";
+            }
+            
+            ((OMElementEx)node).addNamespaceDeclaration(namespaceURI, prefix);
+        }
+
         // set the own namespace
         String namespaceURI = parser.getNamespaceURI();
         String prefix = parser.getPrefix();
 
-
-        int namespaceCount = parser.getNamespaceCount();
-        for (int i = 0; i < namespaceCount; i++) {
-            String nsprefix = parser.getNamespacePrefix(i);
-
-            //if the namespace is not defined already when we write the start tag declare it
-            // check whether this is the default namespace and make sure we have not declared that earlier
-            String namespaceURIFromParser = parser.getNamespaceURI(i);
-            if (nsprefix == null || "".equals(nsprefix)) {
-                String nsuri = parser.getNamespaceURI(i);
-                node.declareDefaultNamespace(nsuri == null ? "" : nsuri);
-            } else {
-                // NOTE_A:
-                // By default most parsers don't intern the namespace.
-                // Unfortunately the property to detect interning on the delegate parsers is hard to detect.
-                // Woodstox has a proprietary property on the XMLInputFactory.
-                // IBM has a proprietary property on the XMLStreamReader.
-                // For now only force the interning if requested.
-                if (isNamespaceURIInterning()) {
-                    namespaceURIFromParser = namespaceURIFromParser.intern();
-                }
-                node.declareNamespace(namespaceURIFromParser, nsprefix);
-            }
-        }
-
-        if (namespaceURI != null && namespaceURI.length() > 0) {
-            OMNamespace namespace = node.findNamespaceURI(prefix == null ? "" : prefix);
-            if (namespace == null || !namespace.getNamespaceURI().equals(namespaceURI)) {
-                // See NOTE_A above
-                if (isNamespaceURIInterning()) {
-                    namespaceURI = namespaceURI.intern();
-                }
-                if (prefix == null || "".equals(prefix)) {
-                    namespace = node.declareDefaultNamespace(namespaceURI);
-                } else {
-                    namespace = node.declareNamespace(namespaceURI, prefix);
-                }
-            }
-            node.setNamespaceWithNoFindInCurrentScope(namespace);
-        }
+        // See NOTE_A above
+        BuilderUtil.setNamespace(node, namespaceURI, prefix, isNamespaceURIInterning());
     }
 
     /**

@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom-parent</artifactId>
-        <version>1.2.13-SNAPSHOT</version>
+        <version>1.2.14-SNAPSHOT</version>
         <relativePath>../axiom-parent/pom.xml</relativePath>
     </parent>
     <artifactId>axiom-jaxen-testsuite</artifactId>
@@ -48,20 +48,25 @@
             <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.rat</groupId>
-                <artifactId>apache-rat-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <!-- Source code, resources and license files from Jaxen (see LEGAL-74 & WSCOMMONS-545) -->
-                        <exclude>src/main/resources/xml/**</exclude>
-                        <exclude>src/main/java/org/jaxen/test/**</exclude>
-                        <exclude>src/main/resources/META-INF/LICENSE-JAXEN</exclude>
-                    </excludes>
-                </configuration> 
-            </plugin>
-        </plugins>
-    </build>
+    <profiles>
+        <profile>
+            <id>apache-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.rat</groupId>
+                        <artifactId>apache-rat-plugin</artifactId>
+                        <configuration>
+                            <excludes>
+                                <!-- Source code, resources and license files from Jaxen (see LEGAL-74 & WSCOMMONS-545) -->
+                                <exclude>src/main/resources/xml/**</exclude>
+                                <exclude>src/main/java/org/jaxen/test/**</exclude>
+                                <exclude>src/main/resources/META-INF/LICENSE-JAXEN</exclude>
+                            </excludes>
+                        </configuration> 
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

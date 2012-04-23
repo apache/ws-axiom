@@ -24,9 +24,6 @@ import org.apache.axiom.c14n.DataParser;
 import org.apache.axiom.c14n.Canonicalizer;
 import org.apache.axiom.c14n.exceptions.AlgorithmAlreadyRegisteredException;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public abstract class AbstractCanonicalizerTest extends TestCase {
     protected DataParser dp = null;
     protected Canonicalizer c14n = null;

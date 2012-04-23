@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class OMSerializerUtil {
-    private static Log log = LogFactory.getLog(OMSerializerUtil.class);
+    private static final Log log = LogFactory.getLog(OMSerializerUtil.class);
     private static boolean ADV_DEBUG_ENABLED = true;
     
     static long nsCounter = 0;
@@ -675,7 +675,7 @@ public class OMSerializerUtil {
         throws XMLStreamException {
         
         // The "xml" prefix is always (implicitly) associated. Returning true here makes sure that
-        // we never write a declaration for the xml namespace. See WSCOMMONS-281 for a discussion
+        // we never write a declaration for the xml namespace. See AXIOM-37 for a discussion
         // of this issue.
         if ("xml".equals(prefix)) {
             return true;

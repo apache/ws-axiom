@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.w3c.dom.DOMException;
@@ -27,6 +28,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 
 public class DOMImplementationImpl implements DOMImplementation {
+    private final OMFactory factory;
+    
+    public DOMImplementationImpl(OMFactory factory) {
+        this.factory = factory;
+    }
 
     public boolean hasFeature(String feature, String version) {
         boolean anyVersion = version == null || version.length() == 0;
@@ -38,13 +44,11 @@ public class DOMImplementationImpl implements DOMImplementation {
                                    DocumentType doctype) throws DOMException {
 
         // TODO Handle docType stuff
-        OMDOMFactory fac = new OMDOMFactory();
-        DocumentImpl doc = new DocumentImpl(fac);
-        fac.setDocument(doc);
+        DocumentImpl doc = new DocumentImpl(factory);
 
         new ElementImpl(doc, DOMUtil.getLocalName(qualifiedName),
                         new OMNamespaceImpl(namespaceURI, DOMUtil
-                                .getPrefix(qualifiedName)), fac);
+                                .getPrefix(qualifiedName)), factory);
 
         return doc;
     }
@@ -59,7 +63,7 @@ public class DOMImplementationImpl implements DOMImplementation {
      * DOM-Level 3 methods
      */
 
-    public Object getFeature(String arg0, String arg1) {
+    public Object getFeature(String feature, String version) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }

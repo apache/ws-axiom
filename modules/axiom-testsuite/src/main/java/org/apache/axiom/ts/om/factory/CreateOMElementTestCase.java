@@ -27,11 +27,16 @@ import org.apache.axiom.ts.AxiomTestCase;
  * <code>createOMElement</code> methods in {@link OMFactory}.
  */
 public abstract class CreateOMElementTestCase extends AxiomTestCase {
-    protected final OMElementCreator variant;
+    protected final CreateOMElementVariant variant;
+    protected final CreateOMElementParentSupplier parentSupplier;
 
-    public CreateOMElementTestCase(OMMetaFactory metaFactory, OMElementCreator variant) {
+    public CreateOMElementTestCase(OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
         super(metaFactory);
         this.variant = variant;
+        this.parentSupplier = parentSupplier;
         addTestProperty("variant", variant.getName());
+        if (parentSupplier != null) {
+            addTestProperty("parent", parentSupplier.getName());
+        }
     }
 }

@@ -79,7 +79,9 @@ public interface OMConstants {
      */
     String IS_DATA_HANDLERS_AWARE = "IsDatahandlersAwareParsing"; 
 
-    /** No its not a mistake. This is the default nsURI of the default namespace of a node */
+    /**
+     * @deprecated
+     */
     static final String DEFAULT_DEFAULT_NAMESPACE = "\"\"";
     
 	static final String XMLATTRTYPE_CDATA = "CDATA";

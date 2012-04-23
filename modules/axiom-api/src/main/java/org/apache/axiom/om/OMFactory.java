@@ -60,11 +60,16 @@ public interface OMFactory {
 
     /**
      * Create an element with the given name and parent. If the specified {@link OMNamespace} has a
-     * namespace URI but a <code>null</code> prefix, the method will use an appropriate prefix if a
-     * corresponding namespace declaration is in scope on the parent or generate a new prefix if no
-     * corresponding namespace declaration is in scope. If a new prefix is generated or if the
-     * specified prefix and namespace URI are not bound in the scope of the parent element, the
-     * method will add an appropriate namespace declaration to the new element.
+     * namespace URI but a <code>null</code> prefix, the method will reuse an existing prefix if a
+     * namespace declaration with a matching namespace URI is in scope on the parent or generate a
+     * new prefix if no such namespace declaration exists.
+     * <p>
+     * If a new prefix is generated or if the specified prefix and namespace URI are not bound in
+     * the scope of the parent element, the method will add an appropriate namespace declaration to
+     * the new element. Note that this may also occur if <code>null</code> is passed as
+     * {@link OMNamespace} parameter. In that case, if there is a default namespace declaration with
+     * a non empty namespace URI in the scope of the parent element, a namespace declaration needs
+     * to be added to the newly created element to override the default namespace.
      * 
      * @param localName
      * @param ns
@@ -91,22 +96,37 @@ public interface OMFactory {
                                      OMXMLParserWrapper builder);
 
     /**
-     * Construct element with arbitrary data source. This is an optional operation which may not be
-     * supported by all factories.
-     *
+     * Create a sourced element with a known local name, namespace URI and namespace prefix.
+     * <p>
+     * This is an optional operation which may not be supported by all factories.
+     * 
      * @param source
+     *            the data source; must not be <code>null</code>
      * @param localName
+     *            the local part of the name of the element produced by the data source; must not be
+     *            <code>null</code>
      * @param ns
+     *            the namespace of the element produced by the data source, or <code>null</code> if
+     *            the element has no namespace
+     * @return the newly created element
+     * @throws IllegalArgumentException
+     *             if <code>source</code> is <code>null</code>
      */
     OMSourcedElement createOMElement(OMDataSource source, String localName,
                                      OMNamespace ns);
 
     /**
-     * Construct element with arbitrary data source. This is an optional operation which may not be
-     * supported by all factories.
-     *
-     * @param source the data source
-     * @param qname the name of the element produced by the data source
+     * Create a sourced element with a known local name, namespace URI and namespace prefix.
+     * <p>
+     * This is an optional operation which may not be supported by all factories.
+     * 
+     * @param source
+     *            the data source; must not be <code>null</code>
+     * @param qname
+     *            the name of the element produced by the data source; must not be <code>null</code>
+     * @return the newly created element
+     * @throws IllegalArgumentException
+     *             if <code>source</code> is <code>null</code>
      */
     OMSourcedElement createOMElement(OMDataSource source, QName qname);
 
@@ -184,6 +204,9 @@ public interface OMFactory {
      * element.
      * 
      * @param parent
+     *            the parent to which the newly created text node will be added; this may be
+     *            <code>null</code>, in which case the behavior of the method is the same as
+     *            {@link #createOMText(String)}
      * @param text
      * @return Returns OMText.
      */
@@ -261,11 +284,15 @@ public interface OMFactory {
                                OMXMLParserWrapper builder);
 
     /**
+     * Create an attribute with the given name and value. If the provided {@link OMNamespace} object
+     * has a <code>null</code> prefix, then a prefix will be generated, except if the namespace URI
+     * is the empty string, in which case the result is the same as if a <code>null</code>
+     * {@link OMNamespace} was given.
      * 
      * @param localName
      * @param ns
      * @param value
-     * @return
+     * @return the newly created attribute
      * @throws IllegalArgumentException
      *             if an attempt is made to create a prefixed attribute with an empty namespace name
      */

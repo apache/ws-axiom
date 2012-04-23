@@ -28,9 +28,10 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
@@ -39,7 +40,9 @@ import org.apache.axiom.om.impl.common.OMChildrenLegacyQNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
+import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
+import org.apache.axiom.om.impl.common.OMElementImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
@@ -50,6 +53,7 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -57,20 +61,32 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.sax.SAXSource;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 /** Class OMElementImpl */
 public class OMElementImpl extends OMNodeImpl
-        implements OMElement, OMConstants, OMContainerEx {
+        implements OMElementEx, OMConstants, OMContainerEx {
 
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
-    public static final OMNamespace DEFAULT_DEFAULT_NS_OBJECT = new OMNamespaceImpl("", "");
-
-    /** Field ns */
+    /**
+     * The namespace of this element. Possible values:
+     * <ul>
+     * <li><code>null</code> (if the element has no namespace)
+     * <li>any {@link OMNamespace} instance, with the following exceptions:
+     * <ul>
+     * <li>an {@link OMNamespace} instance with a <code>null</code> prefix
+     * <li>an {@link OMNamespace} instance with both prefix and namespace URI set to the empty
+     * string
+     * </ul>
+     * </ul>
+     */
     protected OMNamespace ns;
 
     /** Field localName */
@@ -87,8 +103,6 @@ public class OMElementImpl extends OMNodeImpl
     /** Field attributes */
     protected HashMap attributes = null;
 
-    /** Field noPrefixNamespaceCounter */
-    protected int noPrefixNamespaceCounter = 0;
     protected OMNode lastChild;
     private int lineNumber;
     private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
@@ -131,9 +145,7 @@ public class OMElementImpl extends OMNodeImpl
             throw new OMException("localname can not be null or empty");
         }
         this.localName = localName;
-        if (ns != null) {
-            setNamespace(ns);
-        }
+        setNamespace(ns);
     }
 
     /**
@@ -144,7 +156,8 @@ public class OMElementImpl extends OMNodeImpl
      */
     public OMElementImpl(QName qname, OMContainer parent, OMFactory factory)
             throws OMException {
-        this(qname.getLocalPart(), null, parent, factory);
+        super(parent, factory, true);
+        localName = qname.getLocalPart();
         this.ns = handleNamespace(qname);
     }
 
@@ -154,10 +167,9 @@ public class OMElementImpl extends OMNodeImpl
 
         // first try to find a namespace from the scope
         String namespaceURI = qname.getNamespaceURI();
-        if (namespaceURI != null && namespaceURI.length() > 0) {
+        if (namespaceURI.length() > 0) {
             String prefix = qname.getPrefix();
-            ns = findNamespace(qname.getNamespaceURI(),
-                               prefix);
+            ns = findNamespace(namespaceURI, prefix);
 
             /**
              * What is left now is
@@ -170,9 +182,6 @@ public class OMElementImpl extends OMNodeImpl
                 }
                 ns = declareNamespace(namespaceURI, prefix);
             }
-            if (ns != null) {
-                this.ns = ns;
-            }
         } else if (qname.getPrefix().length() > 0) {
             throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
         }
@@ -180,16 +189,26 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     private OMNamespace handleNamespace(OMNamespace ns) {
-        String namespaceURI = ns.getNamespaceURI();
-        String prefix = ns.getPrefix();
+        String namespaceURI = ns == null ? "" : ns.getNamespaceURI();
+        String prefix = ns == null ? "" : ns.getPrefix();
         if (namespaceURI.length() == 0 && prefix != null && prefix.length() > 0) {
             throw new IllegalArgumentException("Cannot create a prefixed element with an empty namespace name");
         }
-        OMNamespace namespace = findNamespace(namespaceURI, prefix);
-        if (namespace == null) {
-            namespace = declareNamespace(ns);
+        if (namespaceURI.length() == 0) {
+            // Special case: no namespace; we need to generate a namespace declaration only if
+            // there is a conflicting namespace declaration (i.e. a declaration for the default
+            // namespace with a non empty URI) is in scope
+            if (getDefaultNamespace() != null) {
+                declareDefaultNamespace("");
+            }
+            return null;
+        } else {
+            OMNamespace namespace = findNamespace(namespaceURI, prefix);
+            if (namespace == null) {
+                namespace = declareNamespace(ns);
+            }
+            return namespace;
         }
-        return namespace;
     }
 
     OMNamespace handleNamespace(String namespaceURI, String prefix) {
@@ -287,19 +306,17 @@ public class OMElementImpl extends OMNodeImpl
 
     /** Method addChild. */
     private void addChild(OMNodeImpl child) {
-        if (child.parent == this &&
-            child == lastChild) {
+        if (child.parent == this && child == lastChild && done) {
             // The child is already the last node. 
             // We don't need to detach and re-add it.
         } else {
             // Normal Case
             
-            // The order of these statements is VERY important
-            // Since setting the parent has a detach method inside
-            // it strips down all the rerefences to siblings.
-            // setting the siblings should take place AFTER setting the parent
-
-            child.setParent(this);
+            if (child.parent != null) {
+                child.detach();
+            }
+            
+            child.parent = this;
 
             if (firstChild == null) {
                 firstChild = child;
@@ -369,11 +386,6 @@ public class OMElementImpl extends OMNodeImpl
         return new OMChildElementIterator(getFirstElement());
     }
 
-    /**
-     * Creates a namespace in the current element scope.
-     *
-     * @return Returns namespace.
-     */
     public OMNamespace declareNamespace(String uri, String prefix) {
         if ("".equals(prefix)) {
             log.warn("Deprecated usage of OMElement#declareNamespace(String,String) with empty prefix");
@@ -383,13 +395,12 @@ public class OMElementImpl extends OMNodeImpl
         return declareNamespace(ns);
     }
 
-    /**
-     * We use "" to store the default namespace of this element. As one can see user can not give ""
-     * as the prefix, when he declare a usual namespace.
-     *
-     * @param uri
-     */
     public OMNamespace declareDefaultNamespace(String uri) {
+        if (ns == null && uri.length() > 0
+                || ns != null && ns.getPrefix().length() == 0 && !ns.getNamespaceURI().equals(uri)) {
+            throw new OMException("Attempt to add a namespace declaration that conflicts with " +
+            		"the namespace information of the element");
+        }
 
         OMNamespaceImpl namespace = new OMNamespaceImpl(uri == null ? "" : uri, "");
 
@@ -397,23 +408,28 @@ public class OMElementImpl extends OMNodeImpl
             this.namespaces = new HashMap(5);
         }
         namespaces.put("", namespace);
-        if (ns == null || "".equals(ns.getPrefix())) {
-            ns = namespace;
-            this.qName = null;
-        }
         return namespace;
     }
 
     public OMNamespace getDefaultNamespace() {
         OMNamespace defaultNS;
         if (namespaces != null && (defaultNS = (OMNamespace) namespaces.get("")) != null) {
-            return defaultNS;
+            return defaultNS.getNamespaceURI().length() == 0 ? null : defaultNS;
         }
         if (parent instanceof OMElementImpl) {
             return ((OMElementImpl) parent).getDefaultNamespace();
 
         }
         return null;
+    }
+
+    public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
+        if (namespaces == null) {
+            this.namespaces = new HashMap(5);
+        }
+        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
+        namespaces.put(prefix, ns);
+        return ns;
     }
 
     /** @return Returns namespace. */
@@ -460,6 +476,10 @@ public class OMElementImpl extends OMNodeImpl
             //element should be enough.
             if (parent instanceof OMElement) {
                 namespace = ((OMElementImpl) parent).findNamespace(uri, prefix);
+                // If the prefix has been redeclared, then ignore the binding found on the ancestors
+                if (prefix == null && namespace != null && findDeclaredNamespace(null, namespace.getPrefix()) != null) {
+                    namespace = null;
+                }
             }
         }
 
@@ -555,6 +575,10 @@ public class OMElementImpl extends OMNodeImpl
         return new NamespaceIterator(this);
     }
 
+    public NamespaceContext getNamespaceContext(boolean detached) {
+        return OMElementImplUtil.getNamespaceContext(this, detached);
+    }
+
     /**
      * Returns a List of OMAttributes.
      *
@@ -641,13 +665,13 @@ public class OMElementImpl extends OMNodeImpl
         return attr;
     }
 
-    /** Method removeAttribute. */
     public void removeAttribute(OMAttribute attr) {
-        if (attributes != null) {
-            // Remove the owner from this attribute
-            ((OMAttributeImpl)attr).owner = null;
-            attributes.remove(attr.getQName());
+        if (attr.getOwner() != this) {
+            throw new OMException("The attribute is not owned by this element");
         }
+        // Remove the owner from this attribute
+        ((OMAttributeImpl)attr).owner = null;
+        attributes.remove(attr.getQName());
     }
 
     public OMAttribute addAttribute(String attributeName, String value,
@@ -766,132 +790,49 @@ public class OMElementImpl extends OMNodeImpl
         return OMContainerHelper.getXMLStreamReader(this, cache);
     }
 
-    /**
-     * Sets the text of the given element. caution - This method will wipe out all the text elements
-     * (and hence any mixed content) before setting the text.
-     */
+    public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
+        return OMContainerHelper.getXMLStreamReader(this, cache, configuration);
+    }
+
     public void setText(String text) {
-
-        OMNode child = this.getFirstOMChild();
-        while (child != null) {
-            if (child.getType() == OMNode.TEXT_NODE) {
-                child.detach();
-            }
-            child = child.getNextOMSibling();
+        // Remove all existing children
+        OMNode child;
+        while ((child = getFirstOMChild()) != null) {
+            child.detach();
         }
-
-        getOMFactory().createOMText(this, text);
+        // Add a new text node
+        if (text != null && text.length() > 0) {
+            getOMFactory().createOMText(this, text);
+        }
     }
 
-    /**
-     * Sets the text, as a QName, of the given element. caution - This method will wipe out all the
-     * text elements (and hence any mixed content) before setting the text.
-     */
-    public void setText(QName text) {
-
-        OMNode child = this.getFirstOMChild();
-        while (child != null) {
-            if (child.getType() == OMNode.TEXT_NODE) {
-                child.detach();
-            }
-            child = child.getNextOMSibling();
+    public void setText(QName qname) {
+        // Remove all existing children
+        OMNode child;
+        while ((child = getFirstOMChild()) != null) {
+            child.detach();
         }
-
-        getOMFactory().createOMText(this, text);
+        // Add a new text node
+        if (qname != null) {
+            getOMFactory().createOMText(this, qname);
+        }
     }
 
-    /**
-     * Selects all the text children and concatenates them to a single string.
-     *
-     * @return Returns String.
-     */
     public String getText() {
-        String childText = null;
-        StringBuffer buffer = null;
-        OMNode child = this.getFirstOMChild();
+        return OMElementImplUtil.getText(this);
+    }
 
-        while (child != null) {
-            final int type = child.getType();
-            if (type == OMNode.TEXT_NODE || type == OMNode.CDATA_SECTION_NODE) {
-                OMText textNode = (OMText) child;
-                String textValue = textNode.getText();
-                if (textValue != null && textValue.length() != 0) {
-                    if (childText == null) {
-                        // This is the first non empty text node. Just save the string.
-                        childText = textValue;
-                    } else {
-                        // We've already seen a non empty text node before. Concatenate using
-                        // a StringBuffer.
-                        if (buffer == null) {
-                            // This is the first text node we need to append. Initialize the
-                            // StringBuffer.
-                            buffer = new StringBuffer(childText);
-                        }
-                        buffer.append(textValue);
-                    }
-                }
-            }
-            child = child.getNextOMSibling();
-        }
-
-        if (childText == null) {
-            // We didn't see any text nodes. Return an empty string.
-            return "";
-        } else if (buffer != null) {
-            return buffer.toString();
-        } else {
-            return childText;
-        }
+    public Reader getTextAsStream(boolean cache) {
+        return OMElementImplUtil.getTextAsStream(this, cache);
     }
 
     public QName getTextAsQName() {
-        String childText = getTrimmedText();
-        if (childText != null) {
-            return resolveQName(childText);
-        }
-        return null;
+        String childText = getText().trim();
+        return childText.length() == 0 ? null : resolveQName(childText);
     }
 
-    /**
-     * Returns the concatination string of TRIMMED values of all OMText  child nodes of this
-     * element. This is included purely to improve usability.
-     */
-    public String getTrimmedText() {
-        String childText = null;
-        StringBuffer buffer = null;
-        OMNode child = this.getFirstOMChild();
-
-        while (child != null) {
-            if (child.getType() == OMNode.TEXT_NODE) {
-                OMText textNode = (OMText) child;
-                String textValue = textNode.getText();
-                if (textValue != null && textValue.length() != 0) {
-                    if (childText == null) {
-                        // This is the first non empty text node. Just save the string.
-                        childText = textValue.trim();
-                    } else {
-                        // We've already seen a non empty text node before. Concatenate using
-                        // a StringBuffer.
-                        if (buffer == null) {
-                            // This is the first text node we need to append. Initialize the
-                            // StringBuffer.
-                            buffer = new StringBuffer(childText);
-                        }
-                        buffer.append(textValue.trim());
-                    }
-                }
-            }
-            child = child.getNextOMSibling();
-        }
-
-        if (childText == null) {
-            // We didn't see any text nodes. Return an empty string.
-            return "";
-        } else if (buffer != null) {
-            return buffer.toString();
-        } else {
-            return childText;
-        }
+    public void writeTextTo(Writer out, boolean cache) throws IOException {
+        OMElementImplUtil.writeTextTo(this, out, cache);
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -945,20 +886,17 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public OMNamespace getNamespace() {
-//        return ns != null ? ns : DEFAULT_DEFAULT_NS_OBJECT;
-        if (ns == null) {
-            // User wants to keep this element in the default default namespace. Let's try to see the default namespace
-            // is overriden by some one up in the tree
-            OMNamespace parentDefaultNS = this.findNamespaceURI("");
-
-            if (parentDefaultNS != null && !"".equals(parentDefaultNS.getNamespaceURI())) {
-                // if it was overriden, then we must explicitly declare default default namespace as the namespace
-                // of this element
-                ns = DEFAULT_DEFAULT_NS_OBJECT;
-                this.qName = null;
-            }
-        }
         return ns;
+    }
+
+    public String getPrefix() {
+        OMNamespace ns = getNamespace();
+        if (ns == null) {
+            return null;
+        } else {
+            String prefix = ns.getPrefix();
+            return prefix.length() == 0 ? null : prefix;
+        }
     }
 
     public String getNamespaceURI() {
@@ -972,10 +910,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public void setNamespace(OMNamespace namespace) {
-        if (namespace != null) {
-            namespace = handleNamespace(namespace);
-        }
-        this.ns = namespace;
+        this.ns = handleNamespace(namespace);
         this.qName = null;
     }
 
@@ -995,11 +930,7 @@ public class OMElementImpl extends OMNodeImpl
         }
 
         if (ns != null) {
-            if (ns.getPrefix() != null) {
-                qName = new QName(ns.getNamespaceURI(), localName, ns.getPrefix());
-            } else {
-                qName = new QName(ns.getNamespaceURI(), localName);
-            }
+            qName = new QName(ns.getNamespaceURI(), localName, ns.getPrefix());
         } else {
             qName = new QName(localName);
         }
@@ -1108,7 +1039,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     /** This method will be called when one of the children becomes complete. */
-    protected void notifyChildComplete() {
+    void notifyChildComplete() {
         if (!this.done && builder == null) {
             Iterator iterator = getChildren();
             while (iterator.hasNext()) {

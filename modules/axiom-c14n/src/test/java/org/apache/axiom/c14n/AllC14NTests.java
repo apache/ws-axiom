@@ -24,9 +24,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class AllC14NTests extends TestCase {
     public AllC14NTests(String name){
         super(name);

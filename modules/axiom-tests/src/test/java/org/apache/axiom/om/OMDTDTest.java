@@ -30,7 +30,7 @@ public class OMDTDTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         try {
             OMXMLParserWrapper stAXOMBuilder = OMXMLBuilderFactory.createOMBuilder(getTestResource("dtd.xml"));
-            document = this.document = stAXOMBuilder.getDocument();
+            document = stAXOMBuilder.getDocument();
         } catch (Exception e) {
             e.printStackTrace();
         }

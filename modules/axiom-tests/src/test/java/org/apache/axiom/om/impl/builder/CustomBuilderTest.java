@@ -45,10 +45,6 @@ import java.util.Iterator;
 /**
  * Validates CopyUtils utility
  */
-/**
- * @author scheu
- *
- */
 // TODO: This class seems to be a copy and paste of CopyUtilsTest. Clean this up.
 public class CustomBuilderTest extends AbstractTestCase {
 

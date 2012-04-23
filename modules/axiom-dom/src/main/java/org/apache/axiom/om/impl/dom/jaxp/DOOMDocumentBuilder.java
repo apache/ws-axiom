@@ -19,10 +19,10 @@
 
 package org.apache.axiom.om.impl.dom.jaxp;
 
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.dom.DOMImplementationImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -34,13 +34,20 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.validation.Schema;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class DOOMDocumentBuilder extends DocumentBuilder {
-    protected DOOMDocumentBuilder() {
+    private final OMFactory factory;
+    private final Schema schema;
+    
+    DOOMDocumentBuilder(OMFactory factory, Schema schema) {
+        this.factory = factory;
+        this.schema = schema;
     }
 
     /**
@@ -63,8 +70,12 @@ public class DOOMDocumentBuilder extends DocumentBuilder {
         return true;
     }
 
+    public Schema getSchema() {
+        return schema;
+    }
+
     public DOMImplementation getDOMImplementation() {
-        return new DOMImplementationImpl();
+        return ((DOMMetaFactory)factory.getMetaFactory()).getDOMImplementation();
     }
 
     /**
@@ -73,24 +84,22 @@ public class DOOMDocumentBuilder extends DocumentBuilder {
      * @see javax.xml.parsers.DocumentBuilder#newDocument()
      */
     public Document newDocument() {
-        OMDOMFactory factory = new OMDOMFactory();
         DocumentImpl documentImpl = new DocumentImpl(factory);
         documentImpl.setComplete(true);
         return documentImpl;
     }
 
-    public void setEntityResolver(EntityResolver arg0) {
+    public void setEntityResolver(EntityResolver er) {
         // TODO
     }
 
-    public void setErrorHandler(ErrorHandler arg0) {
+    public void setErrorHandler(ErrorHandler eh) {
         // TODO 
     }
 
     public Document parse(InputSource inputSource) throws SAXException,
             IOException {
         try {
-            OMDOMFactory factory = new OMDOMFactory();
             // Not really sure whether this will work :-?
             XMLStreamReader reader = StAXUtils
                     .createXMLStreamReader(inputSource.getCharacterStream());
@@ -106,7 +115,6 @@ public class DOOMDocumentBuilder extends DocumentBuilder {
     /** @see javax.xml.parsers.DocumentBuilder#parse(java.io.InputStream) */
     public Document parse(InputStream is) throws SAXException, IOException {
         try {
-            OMDOMFactory factory = new OMDOMFactory();
             XMLStreamReader reader = StAXUtils
                     .createXMLStreamReader(is);
             StAXOMBuilder builder = new StAXOMBuilder(factory, reader);

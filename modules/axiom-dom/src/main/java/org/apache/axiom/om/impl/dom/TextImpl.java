@@ -112,7 +112,7 @@ public class TextImpl extends TextNodeImpl {
 
     public Node cloneNode(boolean deep) {
         TextImpl textImpl = new TextImpl(this.textValue, this.factory);
-        textImpl.setOwnerDocument(this.ownerNode);
+        textImpl.setOwnerDocument(ownerDocument());
         return textImpl;
     }
 }

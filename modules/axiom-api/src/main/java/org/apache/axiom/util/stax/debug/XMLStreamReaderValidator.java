@@ -48,7 +48,7 @@ import java.util.Stack;
  */
 public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
 
-    private static Log log = LogFactory.getLog(XMLStreamReaderValidator.class);
+    private static final Log log = LogFactory.getLog(XMLStreamReaderValidator.class);
     private static boolean IS_ADV_DEBUG_ENABLED = false;  // Turn this on to trace every event
     
     private boolean throwExceptions = false;   // Indicates whether OMException should be thrown if errors are disovered

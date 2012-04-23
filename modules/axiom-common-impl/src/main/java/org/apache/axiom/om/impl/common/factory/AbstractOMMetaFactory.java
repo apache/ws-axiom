@@ -27,14 +27,16 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.SAXOMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.util.stax.XMLEventUtils;
+import org.apache.axiom.util.stax.XMLFragmentStreamReader;
 import org.apache.axiom.util.stax.xop.MimePartProvider;
 import org.xml.sax.InputSource;
 
@@ -43,7 +45,7 @@ import org.xml.sax.InputSource;
  * ({@link org.apache.axiom.om.impl.builder.StAXOMBuilder} and its subclasses).
  */
 public abstract class AbstractOMMetaFactory implements OMMetaFactory {
-    private XMLStreamReader createXMLStreamReader(StAXParserConfiguration configuration, InputSource is) {
+    private static XMLStreamReader createXMLStreamReader(StAXParserConfiguration configuration, InputSource is) {
         try {
             if (is.getByteStream() != null) {
                 String encoding = is.getEncoding();
@@ -62,7 +64,20 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         }
     }
     
-    public OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
+    private static XMLStreamReader getXMLStreamReader(XMLStreamReader originalReader) {
+        int eventType = originalReader.getEventType();
+        switch (eventType) {
+            case XMLStreamReader.START_DOCUMENT:
+                return originalReader;
+            case XMLStreamReader.START_ELEMENT:
+                return new XMLFragmentStreamReader(originalReader);
+            default:
+                throw new OMException("The supplied XMLStreamReader is in an unexpected state ("
+                        + XMLEventUtils.getEventTypeString(eventType) + ")");
+        }
+    }
+    
+    private static OMXMLParserWrapper internalCreateStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
         StAXOMBuilder builder = new StAXOMBuilder(omFactory, parser);
         // StAXOMBuilder defaults to the "legacy" behavior, which is to keep a reference to the
         // parser after the builder has been closed. Since releasing this reference is a good idea
@@ -72,8 +87,12 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         return builder;
     }
 
+    public OMXMLParserWrapper createStAXOMBuilder(OMFactory omFactory, XMLStreamReader parser) {
+        return internalCreateStAXOMBuilder(omFactory, getXMLStreamReader(parser));
+    }
+
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputSource is) {
-        return createStAXOMBuilder(omFactory, createXMLStreamReader(configuration, is));
+        return internalCreateStAXOMBuilder(omFactory, createXMLStreamReader(configuration, is));
     }
     
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source) {
@@ -88,14 +107,26 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactory {
         }
     }
 
-    public SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
+    public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
+            OMFactory omFactory, InputSource rootPart, MimePartProvider mimePartProvider) {
+        XOPAwareStAXOMBuilder builder = new XOPAwareStAXOMBuilder(omFactory, createXMLStreamReader(
+                configuration, rootPart), mimePartProvider);
+        builder.releaseParserOnClose(true);
+        return builder;
+    }
+
+    private SOAPModelBuilder internalCreateStAXSOAPModelBuilder(XMLStreamReader parser) {
         StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(this, parser);
         builder.releaseParserOnClose(true);
         return builder;
     }
 
+    public SOAPModelBuilder createStAXSOAPModelBuilder(XMLStreamReader parser) {
+        return internalCreateStAXSOAPModelBuilder(getXMLStreamReader(parser));
+    }
+
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration, InputSource is) {
-        return createStAXSOAPModelBuilder(createXMLStreamReader(configuration, is));
+        return internalCreateStAXSOAPModelBuilder(createXMLStreamReader(configuration, is));
     }
 
     public SOAPModelBuilder createSOAPModelBuilder(StAXParserConfiguration configuration,

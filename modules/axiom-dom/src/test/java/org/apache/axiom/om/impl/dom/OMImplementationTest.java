@@ -22,37 +22,19 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.apache.axiom.ts.OMTestSuiteBuilder;
+import org.apache.axiom.ts.om.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource;
 import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
-import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderCDATAEventFromElement;
-import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
-import org.apache.axiom.ts.om.element.TestSetTextQName;
-import org.apache.axiom.ts.om.element.TestSetTextQNameWithEmptyPrefix;
-import org.apache.axiom.ts.om.element.TestSetTextQNameWithoutNamespace;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
-import org.apache.axiom.ts.xpath.TestAXIOMXPath;
 
 public class OMImplementationTest extends TestCase {
     public static TestSuite suite() {
-        OMTestSuiteBuilder builder = new OMTestSuiteBuilder(new OMDOMMetaFactory());
-        // OMElement#setText(QName) is unsupported
-        builder.exclude(TestSetTextQName.class);
-        builder.exclude(TestSetTextQNameWithEmptyPrefix.class);
-        builder.exclude(TestSetTextQNameWithoutNamespace.class);
-        
-        // TODO: AXIOM-315
-        builder.exclude(org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild.class);
-        builder.exclude(org.apache.axiom.ts.om.element.TestIsCompleteAfterAddingIncompleteChild.class);
-        
-        // TODO: these need to be investigated; may be related to AXIOM-315
-        builder.exclude(org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant.class);
-        builder.exclude(org.apache.axiom.ts.om.element.TestSerializeAndConsumeWithIncompleteDescendant.class);
+        OMTestSuiteBuilder builder = new OMTestSuiteBuilder(new OMDOMMetaFactory(), false);
         
         // TODO: Axiom should throw an exception if an attempt is made to create a cyclic parent-child relationship
         builder.exclude(TestInsertSiblingAfterOnChild.class);
@@ -62,12 +44,6 @@ public class OMImplementationTest extends TestCase {
         builder.exclude(TestCreateOMElementWithGeneratedPrefix.class, "(variant=QName*)");
         builder.exclude(TestCreateOMElementWithNamespaceInScope.class, "(variant=QName,OMContainer)");
         builder.exclude(TestCreateOMElementWithNamespaceInScope.class, "(variant=String,OMNamespace,OMContainer)");
-        
-        // DOOM doesn't support CDATA sections
-        builder.exclude(TestGetXMLStreamReaderCDATAEventFromElement.class);
-        
-        // WSCOMMONS-453
-        builder.exclude(TestGetXMLStreamReaderWithOMSourcedElementDescendant.class);
         
         // TODO: this case is not working because Axiom generates an XML declaration
         //       but uses another charset encoding to serialize the document
@@ -87,9 +63,6 @@ public class OMImplementationTest extends TestCase {
 
         // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
         builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
-        
-        // TODO: investigate this failure
-        builder.exclude(TestAXIOMXPath.class, "(test=id54298)");
         
         return builder.build();
     }

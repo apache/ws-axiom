@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.DOMException;
 
@@ -27,7 +28,7 @@ import org.w3c.dom.DOMException;
  * This implements the OMText operations which are to be inherited by TextImpl, CommentImpl,
  * CDATASectionImpl.
  */
-public abstract class CharacterImpl extends ChildNode implements CharacterData {
+public abstract class CharacterImpl extends ChildNode implements CharacterData, OMNodeEx {
 
     protected String textValue;
 
@@ -50,14 +51,6 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
     ///
 
     public void appendData(String value) throws DOMException {
-                      
-        if (this.isReadonly()) {
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
-        }
-
         this.textValue += value;
     }
 
@@ -71,13 +64,6 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
     /** If the given data is null the content will be deleted. */
     public void replaceData(int offset, int count, String data) throws
             DOMException {
-
-        if (this.isReadonly()) {
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
-        }
 
         int length = this.textValue.length();
         if (offset < 0 || offset > length - 1 || count < 0) {
@@ -108,13 +94,6 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
     public void insertData(int offset, String data) throws DOMException {
         int length = this.getLength();
 
-        if (this.isReadonly()) {
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
-        }
-
         if (offset < 0 || offset > length - 1) {
             throw new DOMException(DOMException.INDEX_SIZE_ERR,
                                    DOMMessageFormatter.formatMessage(
@@ -127,14 +106,7 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData {
 
     /** Sets the text value of data. */
     public void setData(String data) throws DOMException {
-        if (!this.isReadonly()) {
-            this.textValue = data;
-        } else {
-            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.NO_MODIFICATION_ALLOWED_ERR, null));
-        }
+        this.textValue = data;
     }
 
     /**

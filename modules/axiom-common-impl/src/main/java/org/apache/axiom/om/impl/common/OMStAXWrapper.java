@@ -41,7 +41,7 @@ import org.apache.commons.logging.LogFactory;
  * This class does intentionally does not implement XMLStreamReaderContainer because
  * it does not wrap a parser (it wraps an OM graph).
  */
-public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx {
+class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamReaderEx {
     private static final Log log = LogFactory.getLog(OMStAXWrapper.class);
     
     private final StreamSwitch streamSwitch = new StreamSwitch();
@@ -57,7 +57,7 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
      * @param startNode
      */
     public OMStAXWrapper(OMXMLParserWrapper builder, OMContainer startNode) {
-        this(builder, startNode, false);
+        this(builder, startNode, false, false);
     }
 
     /**
@@ -66,10 +66,11 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
      * @param builder
      * @param startNode
      * @param cache
+     * @param preserveNamespaceContext
      */
     public OMStAXWrapper(OMXMLParserWrapper builder, OMContainer startNode,
-                         boolean cache) {
-        streamSwitch.setParent(new SwitchingWrapper(builder, startNode, cache));
+                         boolean cache, boolean preserveNamespaceContext) {
+        streamSwitch.setParent(new SwitchingWrapper(builder, startNode, cache, preserveNamespaceContext));
         setParent(streamSwitch);
     }
 
@@ -89,7 +90,7 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
         } else {
             if (xopEncoder == null) {
                 // Since the intention is to support an efficient way to pass binary content to a
-                // consumer that is not aware of our data handler extension (see WSCOMMONS-344), we
+                // consumer that is not aware of our data handler extension (see AXIOM-202), we
                 // use OptimizationPolicy.ALL, i.e. we ignore OMText#isOptimized().
                 xopEncoder = new XOPEncodingStreamReader(streamSwitch, ContentIDGenerator.DEFAULT,
                         OptimizationPolicy.ALL);
@@ -130,10 +131,6 @@ public class OMStAXWrapper extends StreamReaderDelegate implements OMXMLStreamRe
         streamSwitch.releaseParserOnClose(value);
     }
 
-    public void setNamespaceURIInterning(boolean b) {
-        streamSwitch.setNamespaceURIInterning(b);
-    }
-    
     public OMDataSource getDataSource() {
         return streamSwitch.getDataSource();
     }

@@ -127,75 +127,110 @@ public interface OMContainer extends OMSerializable {
     OMNode getFirstOMChild();
 
     /**
-     * Serializes the node with caching.
-     *
+     * Serialize the node with caching enabled.
+     * <p>
+     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
+     * containing optimized binary will be inlined using base64 encoding.
+     * 
      * @param output
+     *            the byte stream to write the serialized infoset to
      * @throws XMLStreamException
      */
+    // TODO: need to specify which charset encoding the method will use, in particular for OMDocument nodes
     void serialize(OutputStream output) throws XMLStreamException;
 
     /**
-     * Serializes the node with caching.
-     *
+     * Serialize the node with caching enabled.
+     * <p>
+     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
+     * containing optimized binary will be inlined using base64 encoding.
+     * 
      * @param writer
+     *            the character stream to write the serialized infoset to
      * @throws XMLStreamException
      */
     void serialize(Writer writer) throws XMLStreamException;
 
     /**
-     * Serializes the node with caching.
-     *
+     * Serialize the node with caching enabled.
+     * <p>
+     * The format of the output is controlled by the provided {@link OMOutputFormat} object. In
+     * particular, {@link OMOutputFormat#setDoOptimize(boolean)} can be used to instruct this method
+     * to produce an XOP/MTOM encoded MIME message.
+     * 
      * @param output
+     *            the byte stream to write the serialized infoset to
      * @param format
+     *            the output format to use
      * @throws XMLStreamException
      */
     void serialize(OutputStream output, OMOutputFormat format)
             throws XMLStreamException;
 
     /**
-     * Serializes the node with caching.
+     * Serialize the node with caching enabled.
      *
      * @param writer
+     *            the character stream to write the serialized infoset to
      * @param format
+     *            the output format to use
      * @throws XMLStreamException
      */
     void serialize(Writer writer, OMOutputFormat format)
             throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
+     * Serialize the node without caching.
+     * <p>
+     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
+     * containing optimized binary will be inlined using base64 encoding.
      *
      * @param output
+     *            the byte stream to write the serialized infoset to
      * @throws XMLStreamException
      */
     void serializeAndConsume(OutputStream output)
             throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
+     * Serialize the node without caching.
+     * <p>
+     * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}
+     * containing optimized binary will be inlined using base64 encoding.
      *
      * @param writer
+     *            the character stream to write the serialized infoset to
      * @throws XMLStreamException
      */
     void serializeAndConsume(Writer writer) throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
+     * Serialize the node without caching.
+     * <p>
+     * The format of the output is controlled by the provided {@link OMOutputFormat} object. In
+     * particular, {@link OMOutputFormat#setDoOptimize(boolean)} can be used to instruct this method
+     * to produce an XOP/MTOM encoded MIME message.
      *
      * @param output
+     *            the byte stream to write the serialized infoset to
      * @param format
+     *            the output format to use
      * @throws XMLStreamException
      */
     void serializeAndConsume(OutputStream output, OMOutputFormat format)
             throws XMLStreamException;
 
     /**
-     * Serializes the node without caching.
+     * Serialize the node without caching.
      *
      * @param writer
+     *            the character stream to write the serialized infoset to
      * @param format
+     *            the output format to use
      * @throws XMLStreamException
      */
+    // TODO: need to clarify what OMOutputFormat settings are actually taken into account
+    //       (obviously the method can't produce XOP/MTOM and the charset encoding is ignored)
     void serializeAndConsume(Writer writer, OMOutputFormat format)
             throws XMLStreamException;
 
@@ -220,7 +255,7 @@ public interface OMContainer extends OMSerializable {
     XMLStreamReader getXMLStreamReaderWithoutCaching();
 
     /**
-     * Get a pull parser representation of this element. This methods creates an
+     * Get a pull parser representation of this information item. This methods creates an
      * {@link XMLStreamReader} instance that produces a sequence of StAX events for this element and
      * its content. The sequence of events is independent of the state of this element and the value
      * of the <code>cache</code> parameter, but the side effects of calling this method and
@@ -294,7 +329,7 @@ public interface OMContainer extends OMSerializable {
      * {@link OMAttachmentAccessor#getDataHandler(String)} must be used to retrieve the binary
      * content. The fact that this method is deprecated removes the need for this.</li>
      * <li>In Axiom versions prior to 1.2.9, the sequence of events was inconsistent if the
-     * underlying stream is XOP encoded and caching is disabled (see WSCOMMONS-485). This made it
+     * underlying stream is XOP encoded and caching is disabled (see AXIOM-255). This made it
      * necessary for the caller to (partially) handle the XOP processing and to use
      * {@link OMAttachmentAccessor#getDataHandler(String)} to retrieve the binary content. Starting
      * with 1.2.9 this is no longer be the case: as specified above, the sequence of events is
@@ -313,9 +348,25 @@ public interface OMContainer extends OMSerializable {
      * 
      * @param cache
      *            indicates if caching should be enabled
-     * @return an {@link XMLStreamReader} representation of this element
+     * @return an {@link XMLStreamReader} representation of this information item
      */
     XMLStreamReader getXMLStreamReader(boolean cache);
+    
+    /**
+     * Get a pull parser representation of this information item. This method is similar to
+     * {@link #getXMLStreamReader(boolean)}, but accepts an {@link OMXMLStreamReaderConfiguration}
+     * object that allows to specify additional options and to customize the behavior of the
+     * returned reader.
+     * 
+     * @param cache
+     *            indicates if caching should be enabled
+     * @param configuration
+     *            additional configuration options; see the Javadoc of
+     *            {@link OMXMLStreamReaderConfiguration} for more information about the available
+     *            options
+     * @return an {@link XMLStreamReader} representation of this information item
+     */
+    XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration);
     
     /**
      * Get a {@link SAXSource} representation for this node. This method can be used to integrate

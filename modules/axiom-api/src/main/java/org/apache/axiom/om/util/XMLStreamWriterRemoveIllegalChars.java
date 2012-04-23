@@ -32,7 +32,7 @@ import org.apache.commons.logging.LogFactory;
 public class XMLStreamWriterRemoveIllegalChars extends
 		XMLStreamWriterFilterBase {
 
-    private static Log log = LogFactory.getLog(XMLStreamWriterRemoveIllegalChars.class);
+    private static final Log log = LogFactory.getLog(XMLStreamWriterRemoveIllegalChars.class);
     
     public XMLStreamWriterRemoveIllegalChars() {
         super();

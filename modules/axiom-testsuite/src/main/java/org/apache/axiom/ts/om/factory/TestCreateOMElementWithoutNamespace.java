@@ -22,14 +22,19 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 
+/**
+ * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} when
+ * requested to create an element without namespace. In this case, no namespace declaration is added
+ * to the created element.
+ */
 public class TestCreateOMElementWithoutNamespace extends CreateOMElementTestCase {
-    public TestCreateOMElementWithoutNamespace(OMMetaFactory metaFactory, OMElementCreator variant) {
-        super(metaFactory, variant);
+    public TestCreateOMElementWithoutNamespace(OMMetaFactory metaFactory, CreateOMElementVariant variant, CreateOMElementParentSupplier parentSupplier) {
+        super(metaFactory, variant, parentSupplier);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMElement element = variant.createOMElement(factory, null, "test", "", "");
+        OMElement element = variant.createOMElement(factory, parentSupplier.createParent(factory), "test", "", "");
         assertEquals("test", element.getLocalName());
         assertNull(element.getNamespace());
         assertFalse(element.getAllDeclaredNamespaces().hasNext());

@@ -34,9 +34,6 @@ import junit.textui.TestRunner;
 
 import javax.xml.namespace.QName;
 
-/**
- * @author Saliya Ekanayake (esaliya@gmail.com)
- */
 public class AttrImplTest extends TestCase {
     private DataParser dp;
     private NamedNodeMap nnm;

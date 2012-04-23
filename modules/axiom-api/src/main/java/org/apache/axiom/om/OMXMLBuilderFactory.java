@@ -18,15 +18,19 @@
  */
 package org.apache.axiom.om;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
+import javax.activation.DataHandler;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.ParseException;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 
 import org.apache.axiom.attachments.Attachments;
+import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
@@ -37,20 +41,34 @@ import org.xml.sax.InputSource;
  * Provides static factory methods to create various kinds of object model builders from different
  * types of input sources. The methods defined by this class are the starting point to parse XML
  * documents into Axiom trees.
- * <p>
- * <b>WARNING: This API is still under construction (see <a
- * href="https://issues.apache.org/jira/browse/AXIOM-353">AXIOM-353</a>) and may slightly change in
- * subsequent releases!</b>
  */
 public class OMXMLBuilderFactory {
     private OMXMLBuilderFactory() {}
     
     /**
      * Create an object model builder for plain XML that pulls events from a StAX stream reader.
+     * <p>
+     * The reader must be positioned on a {@link XMLStreamConstants#START_DOCUMENT} or
+     * {@link XMLStreamConstants#START_ELEMENT} event. If the current event is
+     * {@link XMLStreamConstants#START_DOCUMENT} then the builder will consume events up to the
+     * {@link XMLStreamConstants#END_DOCUMENT} event. If the current event is
+     * {@link XMLStreamConstants#START_ELEMENT}, then the builder will consume events up to the
+     * corresponding {@link XMLStreamConstants#END_ELEMENT}. After the object model is completely
+     * built, the stream reader will be positioned on the event immediately following this
+     * {@link XMLStreamConstants#END_ELEMENT} event. This means that this method can be used in a
+     * well defined way to build an object model from a fragment (corresponding to a single element)
+     * of the document represented by the stream reader.
+     * <p>
+     * The returned builder also performs namespace repairing, i.e. it adds appropriate namespace
+     * declarations if undeclared namespaces appear in the StAX stream.
      * 
      * @param parser
      *            the stream reader to read the XML data from
      * @return the builder
+     * @throws OMException
+     *             if the stream reader is positioned on an event other than
+     *             {@link XMLStreamConstants#START_DOCUMENT} or
+     *             {@link XMLStreamConstants#START_ELEMENT}
      */
     public static OMXMLParserWrapper createStAXOMBuilder(XMLStreamReader parser) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
@@ -60,6 +78,9 @@ public class OMXMLBuilderFactory {
     /**
      * Create an object model builder that pulls events from a StAX stream reader using a specified
      * object model factory.
+     * <p>
+     * See {@link #createStAXOMBuilder(XMLStreamReader)} for more information about the behavior of
+     * the returned builder.
      * 
      * @param omFactory
      *            the object model factory to use
@@ -149,6 +170,24 @@ public class OMXMLBuilderFactory {
     
     /**
      * Create an object model builder that reads an XML document from the provided input stream
+     * using a specified object model factory and with the default parser configuration defined by
+     * {@link StAXParserConfiguration#DEFAULT}.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param in
+     *            the input stream representing the XML document
+     * @param encoding
+     *            the charset encoding of the XML document or <code>null</code> if the parser should
+     *            determine the charset encoding
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, InputStream in, String encoding) {
+        return createOMBuilder(omFactory, StAXParserConfiguration.DEFAULT, in, encoding);
+    }
+    
+    /**
+     * Create an object model builder that reads an XML document from the provided input stream
      * using a specified object model factory and with a given parser configuration.
      * 
      * @param omFactory
@@ -160,7 +199,28 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputStream in) {
-        return omFactory.getMetaFactory().createOMBuilder(omFactory, configuration, new InputSource(in));
+        return createOMBuilder(omFactory, configuration, in, null);
+    }
+    
+    /**
+     * Create an object model builder that reads an XML document from the provided input stream
+     * using a specified object model factory and with a given parser configuration.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param configuration
+     *            the parser configuration to use
+     * @param in
+     *            the input stream representing the XML document
+     * @param encoding
+     *            the charset encoding of the XML document or <code>null</code> if the parser should
+     *            determine the charset encoding
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, StAXParserConfiguration configuration, InputStream in, String encoding) {
+        InputSource is = new InputSource(in);
+        is.setEncoding(encoding);
+        return omFactory.getMetaFactory().createOMBuilder(omFactory, configuration, is);
     }
     
     /**
@@ -250,9 +310,75 @@ public class OMXMLBuilderFactory {
     }
     
     /**
+     * Create an XOP aware model builder from the provided {@link Attachments} object and with a
+     * given parser configuration.
+     * 
+     * @param configuration
+     *            the parser configuration to use
+     * @param attachments
+     *            an {@link Attachments} object that must have been created from an input stream
+     * @return the builder
+     * @throws OMException
+     *             if an error occurs while processing the content type information from the
+     *             {@link Attachments} object
+     */
+    public static OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration, Attachments attachments) {
+        return createOMBuilder(OMAbstractFactory.getMetaFactory().getOMFactory(), configuration, attachments);
+    }
+    
+    /**
+     * Create an XOP aware model builder from the provided {@link Attachments} object using a
+     * specified object model factory and with a given parser configuration.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param configuration
+     *            the parser configuration to use
+     * @param attachments
+     *            an {@link Attachments} object that must have been created from an input stream
+     * @return the builder
+     * @throws OMException
+     *             if an error occurs while processing the content type information from the
+     *             {@link Attachments} object
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory,
+            StAXParserConfiguration configuration, Attachments attachments) {
+        ContentType contentType;
+        try {
+            contentType = new ContentType(attachments.getRootPartContentType());
+        } catch (ParseException ex) {
+            throw new OMException(ex);
+        }
+        InputSource rootPart = getRootPartInputSource(attachments, contentType);
+        return omFactory.getMetaFactory().createOMBuilder(configuration, omFactory,
+                rootPart, new OMAttachmentAccessorMimePartProvider(attachments));
+    }
+    
+    /**
+     * Create an object model builder for SOAP that pulls events from a StAX stream reader and that
+     * uses a particular Axiom implementation. The method will select the appropriate
+     * {@link SOAPFactory} based on the namespace URI of the SOAP envelope.
+     * <p>
+     * See {@link #createStAXOMBuilder(XMLStreamReader)} for more information about the behavior of
+     * the returned builder.
+     * 
+     * @param metaFactory
+     *            the meta factory for the Axiom implementation to use
+     * @param parser
+     *            the stream reader to read the XML data from
+     * @return the builder
+     */
+    public static SOAPModelBuilder createStAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser) {
+        return metaFactory.createStAXSOAPModelBuilder(parser);
+    }
+    
+    /**
      * Create an object model builder for SOAP that pulls events from a StAX stream reader.
      * The method will select the appropriate {@link SOAPFactory}
      * based on the namespace URI of the SOAP envelope.
+     * <p>
+     * See {@link #createStAXOMBuilder(XMLStreamReader)} for more information about the behavior of
+     * the returned builder.
      * 
      * @param parser
      *            the stream reader to read the XML data from
@@ -379,9 +505,28 @@ public class OMXMLBuilderFactory {
         } else {
             throw new OMException("Unable to determine SOAP version");
         }
-        InputSource rootPart = new InputSource(attachments.getRootPartInputStream());
-        rootPart.setEncoding(contentType.getParameter("charset"));
+        InputSource rootPart = getRootPartInputSource(attachments, contentType);
         return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, soapFactory,
                 rootPart, new OMAttachmentAccessorMimePartProvider(attachments));
+    }
+    
+    private static InputSource getRootPartInputSource(Attachments attachments, ContentType contentType) {
+        DataHandler dh = attachments.getDataHandler(attachments.getRootPartContentID());
+        if (dh == null) {
+            throw new OMException("Root part not found in MIME message");
+        }
+        InputStream in;
+        try {
+            if (dh instanceof DataHandlerExt) {
+                in = ((DataHandlerExt)dh).readOnce();
+            } else {
+                in = dh.getInputStream();
+            }
+        } catch (IOException ex) {
+            throw new OMException("Unable to get input stream from root MIME part", ex);
+        }
+        InputSource rootPart = new InputSource(in);
+        rootPart.setEncoding(contentType.getParameter("charset"));
+        return rootPart;
     }
 }
