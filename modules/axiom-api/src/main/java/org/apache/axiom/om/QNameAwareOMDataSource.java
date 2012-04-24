@@ -19,6 +19,7 @@
 package org.apache.axiom.om;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamReader;
 
 /**
  * Optional interface implemented by {@link OMDataSource} implementations that have knowledge about
@@ -29,8 +30,11 @@ import javax.xml.namespace.QName;
  * prefix. The returned information must be accurate, i.e. it must match the name of the root
  * element in the document returned by {@link OMDataSource#getReader()}.
  * <p>
- * This interface should be implemented by {@link OMDataSource} implementations that satisfy one of
- * the following conditions:
+ * This interface should be implemented by {@link OMDataSource} implementations that have an
+ * efficient way to determine the root element name (or part of it) from the information effectively
+ * used by {@link OMDataSource#getReader()} to construct the {@link XMLStreamReader} instance. In
+ * practice this applies to {@link OMDataSource} implementations that satisfy one of the following
+ * conditions:
  * <ul>
  * <li>The data source wraps another type of object and is able to determine the element name from
  * that object in an efficient way. E.g. this is often the case if the data source uses a
@@ -40,7 +44,8 @@ import javax.xml.namespace.QName;
  * </ul>
  * This interface should not be implemented if the returned information would be supplied by the
  * application code when the data source is instantiate, without the data source being able to
- * guarantee that the information is accurate. In fact, in this case the application code should use
+ * guarantee that the information is accurate (i.e. without {@link OMDataSource#getReader()}
+ * actually using that information). In fact, in this case the application code should use
  * {@link OMFactory#createOMElement(OMDataSource, String, OMNamespace)} or
  * {@link OMFactory#createOMElement(OMDataSource, QName)} to supply the QName information it has.
  */

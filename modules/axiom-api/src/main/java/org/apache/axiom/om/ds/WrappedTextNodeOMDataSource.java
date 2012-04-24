@@ -18,6 +18,30 @@
  */
 package org.apache.axiom.om.ds;
 
-public abstract class WrappedTextNodeOMDataSource {
+import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.QNameAwareOMDataSource;
+
+/**
+ * {@link OMDataSource} implementation that represents a text node wrapped inside an element.
+ */
+public abstract class WrappedTextNodeOMDataSource extends OMDataSourceExtBase implements QNameAwareOMDataSource {
+    protected final QName wrapperElementName;
+
+    public WrappedTextNodeOMDataSource(QName wrapperElementName) {
+        this.wrapperElementName = wrapperElementName;
+    }
+
+    public String getLocalName() {
+        return wrapperElementName.getLocalPart();
+    }
+
+    public String getNamespaceURI() {
+        return wrapperElementName.getNamespaceURI();
+    }
+
+    public String getPrefix() {
+        return wrapperElementName.getPrefix();
+    }
 }
