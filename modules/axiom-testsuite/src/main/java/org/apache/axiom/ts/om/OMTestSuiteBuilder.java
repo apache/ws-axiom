@@ -352,6 +352,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeToXMLWriterFromReaderEmbedded(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSource(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSourceOnAlreadyExpandedElement(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetLocalName(metaFactory, false));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetLocalName(metaFactory, true));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestWriteTextToWithNonDestructiveOMDataSource(metaFactory));
         }
         addTest(new org.apache.axiom.ts.om.pi.TestDigest(metaFactory));

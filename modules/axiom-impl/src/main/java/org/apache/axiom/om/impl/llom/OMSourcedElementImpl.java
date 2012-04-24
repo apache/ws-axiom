@@ -522,7 +522,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public void setLocalName(String localName) {
-        // no need to expand the tree, just call base method directly
+        // Need to expand the element so that the method actually overrides the the local name
+        forceExpand();
         super.setLocalName(localName);
     }
 
