@@ -293,8 +293,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             }
             String readerURI = readerFromDS.getNamespaceURI();
             readerURI = (readerURI == null) ? "" : readerURI;
-            String uri = (getNamespace() == null) ? "" : 
-                ((getNamespace().getNamespaceURI() == null) ? "" : getNamespace().getNamespaceURI());
+            String uri = (getNamespace() == null) ? "" : getNamespace().getNamespaceURI();
             if (!readerURI.equals(uri)) {
                 log.error("forceExpand: expected element namespace " +
                         getLocalName() + ", found " + uri);
