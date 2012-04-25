@@ -96,6 +96,10 @@ public class OMDOMFactory implements OMFactory {
         return new ElementImpl((ParentNode) parent, localName, (OMNamespaceImpl) ns, builder, this);
     }
 
+    public OMSourcedElement createOMElement(OMDataSource source) {
+        throw new UnsupportedOperationException("Not supported for DOM");
+    }
+
     /* (non-Javadoc)
      * @see org.apache.axiom.om.OMFactory#createOMElement(org.apache.axiom.om.OMDataSource, java.lang.String, org.apache.axiom.om.OMNamespace, org.apache.axiom.om.OMContainer)
      */

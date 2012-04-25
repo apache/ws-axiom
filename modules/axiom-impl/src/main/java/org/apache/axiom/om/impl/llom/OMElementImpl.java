@@ -160,6 +160,15 @@ public class OMElementImpl extends OMNodeImpl
         localName = qname.getLocalPart();
         this.ns = handleNamespace(qname);
     }
+    
+    /**
+     * Constructor reserved for use by {@link OMSourcedElementImpl}.
+     * 
+     * @param factory
+     */
+    OMElementImpl(OMFactory factory) {
+        super(null, factory, true);
+    }
 
     /** Method handleNamespace. */
     OMNamespace handleNamespace(QName qname) {

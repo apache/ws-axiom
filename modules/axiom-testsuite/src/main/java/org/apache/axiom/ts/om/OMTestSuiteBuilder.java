@@ -324,6 +324,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestComplete(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestExpand(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetLocalNameFromExpansion(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetLocalNameFromQNameAwareOMDataSource(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized2(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetTextAsStreamWithNonDestructiveOMDataSource(metaFactory));

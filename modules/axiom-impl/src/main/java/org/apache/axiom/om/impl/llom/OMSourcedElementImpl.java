@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
+import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.util.StAXUtils;
@@ -90,6 +91,12 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     private static OMNamespace getOMNamespace(QName qName) {
         return qName.getNamespaceURI().length() == 0 ? null
                 : new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
+    }
+    
+    public OMSourcedElementImpl(OMFactory factory, OMDataSource source) {
+        super(factory);
+        dataSource = source;
+        isExpanded = false;
     }
     
     /**
@@ -284,12 +291,18 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                         e.getMessage(), e);
             }
 
-            // Make sure element local name and namespace matches what was expected
-            if (!readerFromDS.getLocalName().equals(getLocalName())) {
-                log.error("forceExpand: expected element name " +
-                        getLocalName() + ", found " + readerFromDS.getLocalName());
-                throw new RuntimeException("Element name from data source is " +
-                        readerFromDS.getLocalName() + ", not the expected " + getLocalName());
+            String readerLocalName = readerFromDS.getLocalName();
+            if (localName == null) {
+                // The local name was not known in advance; initiliaze it from the reader
+                localName = readerLocalName;
+            } else {
+                // Make sure element local name and namespace matches what was expected
+                if (!readerLocalName.equals(getLocalName())) {
+                    log.error("forceExpand: expected element name " +
+                            getLocalName() + ", found " + readerLocalName);
+                    throw new RuntimeException("Element name from data source is " +
+                            readerLocalName + ", not the expected " + getLocalName());
+                }
             }
             String readerURI = readerFromDS.getNamespaceURI();
             readerURI = (readerURI == null) ? "" : readerURI;
@@ -516,8 +529,19 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.writeTextTo(out, cache);
     }
 
+    private void ensureLocalNameSet() {
+        if (localName == null) {
+            if (dataSource instanceof QNameAwareOMDataSource) {
+                localName = ((QNameAwareOMDataSource)dataSource).getLocalName();
+            }
+            if (localName == null) {
+                forceExpand();
+            }
+        }
+    }
+    
     public String getLocalName() {
-        // no need to set the parser, just call base method directly
+        ensureLocalNameSet();
         return super.getLocalName();
     }
 
