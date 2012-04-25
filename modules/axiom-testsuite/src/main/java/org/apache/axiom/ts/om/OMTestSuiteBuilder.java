@@ -20,6 +20,8 @@ package org.apache.axiom.ts.om;
 
 import java.lang.reflect.Method;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
@@ -326,6 +328,12 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestExpand(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetLocalNameFromExpansion(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetLocalNameFromQNameAwareOMDataSource(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceFromExpansion(metaFactory, new QName("root")));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceFromExpansion(metaFactory, new QName("urn:test", "root", "p")));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceFromExpansion(metaFactory, new QName("urn:test", "root")));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceFromQNameAwareOMDataSource(metaFactory, new QName("root")));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceFromQNameAwareOMDataSource(metaFactory, new QName("urn:test", "root", "p")));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceFromQNameAwareOMDataSource(metaFactory, new QName("urn:test", "root")));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized2(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetTextAsStreamWithNonDestructiveOMDataSource(metaFactory));

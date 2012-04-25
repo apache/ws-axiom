@@ -73,6 +73,15 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     /** Namespace for element, needed in order to bypass base class handling. */
     private OMNamespace definedNamespace = null;
+    
+    /**
+     * Flag indicating whether the {@link #definedNamespace} attribute has been set. If this flag is
+     * <code>true</code> and {@link #definedNamespace} is <code>null</code> then the element has no
+     * namespace. If this flag is set to <code>false</code> (in which case {@link #definedNamespace}
+     * is always <code>null</code>) then the namespace is not known and needs to be determined
+     * lazily. The flag is used only if {@link #isExpanded} is <code>false</code>.
+     */
+    private boolean definedNamespaceSet;
 
     /** Flag for parser provided to base element class. */
     private boolean isExpanded;
@@ -122,6 +131,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             // Create a deferred namespace that forces an expand to get the prefix
             definedNamespace = new DeferredNamespace(ns.getNamespaceURI());
         }
+        definedNamespaceSet = true;
     }
 
     /**
@@ -146,6 +156,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             // Create a deferred namespace that forces an expand to get the prefix
             definedNamespace = new DeferredNamespace(qName.getNamespaceURI());
         }
+        definedNamespaceSet = true;
     }
 
     public OMSourcedElementImpl(String localName, OMNamespace ns, OMContainer parent, OMFactory factory) {
@@ -293,7 +304,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
             String readerLocalName = readerFromDS.getLocalName();
             if (localName == null) {
-                // The local name was not known in advance; initiliaze it from the reader
+                // The local name was not known in advance; initialize it from the reader
                 localName = readerLocalName;
             } else {
                 // Make sure element local name and namespace matches what was expected
@@ -553,8 +564,39 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public OMNamespace getNamespace() throws OMException {
         if (isExpanded()) {
             return super.getNamespace();
+        } else if (definedNamespaceSet) {
+            return definedNamespace;
+        } else {
+            if (dataSource instanceof QNameAwareOMDataSource) {
+                String namespaceURI = ((QNameAwareOMDataSource)dataSource).getNamespaceURI();
+                if (namespaceURI != null) {
+                    if (namespaceURI.length() == 0) {
+                        // No namespace case. definedNamespace is already null, so we only need
+                        // to set definedNamespaceSet to true. Note that we don't need to retrieve
+                        // the namespace prefix because a prefix can't be bound to the empty
+                        // namespace URI.
+                        definedNamespaceSet = true;
+                    } else {
+                        String prefix = ((QNameAwareOMDataSource)dataSource).getPrefix();
+                        if (prefix == null) {
+                            // Prefix is unknown
+                            definedNamespace = new DeferredNamespace(namespaceURI);
+                        } else {
+                            definedNamespace = new OMNamespaceImpl(namespaceURI, prefix);
+                        }
+                        definedNamespaceSet = true;
+                    }
+                }
+            }
+            if (definedNamespaceSet) {
+                return definedNamespace;
+            } else {
+                // We have no information about the namespace of the element. Need to expand
+                // the element to get it.
+                forceExpand();
+                return super.getNamespace();
+            }
         }
-        return definedNamespace;
     }
 
     public String getPrefix() {
