@@ -129,7 +129,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             definedNamespace = normalize(ns);
         } else {
             // Create a deferred namespace that forces an expand to get the prefix
-            definedNamespace = new DeferredNamespace(ns.getNamespaceURI());
+            String uri = ns.getNamespaceURI();
+            definedNamespace = uri.length() == 0 ? null : new DeferredNamespace(uri);
         }
         definedNamespaceSet = true;
     }
@@ -154,7 +155,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             definedNamespace = getOMNamespace(qName);
         } else {
             // Create a deferred namespace that forces an expand to get the prefix
-            definedNamespace = new DeferredNamespace(qName.getNamespaceURI());
+            String uri = qName.getNamespaceURI();
+            definedNamespace = uri.length() == 0 ? null : new DeferredNamespace(uri);
         }
         definedNamespaceSet = true;
     }
@@ -1012,7 +1014,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             if (!isExpanded()) {
                 forceExpand();
             }
-            return getNamespace().getPrefix();
+            OMNamespace actualNS = getNamespace();
+            return actualNS == null ? "" : actualNS.getPrefix();
         }
         
         public int hashCode() {

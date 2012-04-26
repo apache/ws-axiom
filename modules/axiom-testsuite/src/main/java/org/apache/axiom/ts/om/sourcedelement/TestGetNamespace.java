@@ -37,7 +37,7 @@ public class TestGetNamespace extends LazyNameTestCase {
             assertEquals(qname.getNamespaceURI(), ns.getNamespaceURI());
             assertEquals(qname.getPrefix(), ns.getPrefix());
         }
-        if (variant.isNamespaceURIRequiresExpansion() || variant.isPrefixRequiresExpansion()) {
+        if (variant.isNamespaceURIRequiresExpansion() || variant.isPrefixRequiresExpansion(qname)) {
             assertTrue(element.isExpanded());
         } else {
             assertFalse(element.isExpanded());

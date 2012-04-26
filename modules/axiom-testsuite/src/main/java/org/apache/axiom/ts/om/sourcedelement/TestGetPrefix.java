@@ -35,7 +35,7 @@ public class TestGetPrefix extends LazyNameTestCase {
         } else {
             assertEquals(prefix, element.getPrefix());
         }
-        if (variant.isPrefixRequiresExpansion()) {
+        if (variant.isPrefixRequiresExpansion(qname)) {
             assertTrue(element.isExpanded());
         } else {
             assertFalse(element.isExpanded());
