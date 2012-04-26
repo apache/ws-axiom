@@ -17,23 +17,26 @@
  * under the License.
  */
 
-package org.apache.axiom.om.ds;
+package org.apache.axiom.ts.om.sourcedelement;
 
 import java.io.StringReader;
 import java.util.Random;
 
 import javax.xml.namespace.QName;
 
-import junit.framework.TestCase;
-
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromReader;
+import org.apache.axiom.ts.AxiomTestCase;
 
-public class WrappedTextNodeOMDataSourceTest extends TestCase {
-    public void testFromReader() throws Exception {
+public class TestWrappedTextNodeOMDataSourceFromReader extends AxiomTestCase {
+    public TestWrappedTextNodeOMDataSourceFromReader(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
+
+    protected void runTest() throws Throwable {
         Random random = new Random();
         StringBuilder buffer = new StringBuilder(40000);
         for (int i=0; i<40000; i++) {
@@ -42,7 +45,7 @@ public class WrappedTextNodeOMDataSourceTest extends TestCase {
         String testData = buffer.toString();
         QName qname = new QName("data");
         OMDataSource ds = new WrappedTextNodeOMDataSourceFromReader(qname, new StringReader(testData));
-        OMFactory factory = OMAbstractFactory.getOMFactory();
+        OMFactory factory = metaFactory.getOMFactory();
         OMSourcedElement element = factory.createOMElement(ds, qname);
         assertEquals(testData, element.getText());
     }
