@@ -41,17 +41,15 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
 
 /**
- * {@link org.apache.axiom.om.OMDataSource} implementation that represents a text node wrapped
- * inside an element. The text data is provided by a {@link DataSource} object.
+ * {@link WrappedTextNodeOMDataSource} that pulls the text data from a {@link DataSource} object.
  */
-public class WrappedTextNodeOMDataSourceFromDataSource extends OMDataSourceExtBase {
-    private final QName wrapperElementName;
+public class WrappedTextNodeOMDataSourceFromDataSource extends WrappedTextNodeOMDataSource {
     private final DataSource binaryData;
     private final Charset charset;
 
     public WrappedTextNodeOMDataSourceFromDataSource(QName wrapperElementName, DataSource binaryData,
             Charset charset) {
-        this.wrapperElementName = wrapperElementName;
+        super(wrapperElementName);
         this.binaryData = binaryData;
         this.charset = charset;
     }

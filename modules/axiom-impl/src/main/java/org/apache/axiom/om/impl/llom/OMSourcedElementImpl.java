@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
+import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.util.StAXUtils;
@@ -72,6 +73,15 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     /** Namespace for element, needed in order to bypass base class handling. */
     private OMNamespace definedNamespace = null;
+    
+    /**
+     * Flag indicating whether the {@link #definedNamespace} attribute has been set. If this flag is
+     * <code>true</code> and {@link #definedNamespace} is <code>null</code> then the element has no
+     * namespace. If this flag is set to <code>false</code> (in which case {@link #definedNamespace}
+     * is always <code>null</code>) then the namespace is not known and needs to be determined
+     * lazily. The flag is used only if {@link #isExpanded} is <code>false</code>.
+     */
+    private boolean definedNamespaceSet;
 
     /** Flag for parser provided to base element class. */
     private boolean isExpanded;
@@ -90,6 +100,12 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     private static OMNamespace getOMNamespace(QName qName) {
         return qName.getNamespaceURI().length() == 0 ? null
                 : new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
+    }
+    
+    public OMSourcedElementImpl(OMFactory factory, OMDataSource source) {
+        super(factory);
+        dataSource = source;
+        isExpanded = false;
     }
     
     /**
@@ -115,6 +131,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             // Create a deferred namespace that forces an expand to get the prefix
             definedNamespace = new DeferredNamespace(ns.getNamespaceURI());
         }
+        definedNamespaceSet = true;
     }
 
     /**
@@ -139,6 +156,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             // Create a deferred namespace that forces an expand to get the prefix
             definedNamespace = new DeferredNamespace(qName.getNamespaceURI());
         }
+        definedNamespaceSet = true;
     }
 
     public OMSourcedElementImpl(String localName, OMNamespace ns, OMContainer parent, OMFactory factory) {
@@ -284,21 +302,29 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                         e.getMessage(), e);
             }
 
-            // Make sure element local name and namespace matches what was expected
-            if (!readerFromDS.getLocalName().equals(getLocalName())) {
-                log.error("forceExpand: expected element name " +
-                        getLocalName() + ", found " + readerFromDS.getLocalName());
-                throw new RuntimeException("Element name from data source is " +
-                        readerFromDS.getLocalName() + ", not the expected " + getLocalName());
+            String readerLocalName = readerFromDS.getLocalName();
+            if (localName == null) {
+                // The local name was not known in advance; initialize it from the reader
+                localName = readerLocalName;
+            } else {
+                // Make sure element local name and namespace matches what was expected
+                if (!readerLocalName.equals(getLocalName())) {
+                    log.error("forceExpand: expected element name " +
+                            getLocalName() + ", found " + readerLocalName);
+                    throw new RuntimeException("Element name from data source is " +
+                            readerLocalName + ", not the expected " + getLocalName());
+                }
             }
-            String readerURI = readerFromDS.getNamespaceURI();
-            readerURI = (readerURI == null) ? "" : readerURI;
-            String uri = (getNamespace() == null) ? "" : getNamespace().getNamespaceURI();
-            if (!readerURI.equals(uri)) {
-                log.error("forceExpand: expected element namespace " +
-                        getLocalName() + ", found " + uri);
-                throw new RuntimeException("Element namespace from data source is " +
-                        readerURI + ", not the expected " + uri);
+            if (definedNamespaceSet) {
+                String readerURI = readerFromDS.getNamespaceURI();
+                readerURI = (readerURI == null) ? "" : readerURI;
+                String uri = (getNamespace() == null) ? "" : getNamespace().getNamespaceURI();
+                if (!readerURI.equals(uri)) {
+                    log.error("forceExpand: expected element namespace " +
+                            getLocalName() + ", found " + uri);
+                    throw new RuntimeException("Element namespace from data source is " +
+                            readerURI + ", not the expected " + uri);
+                }
             }
 
             // Set the builder for this element. Note that the StAXOMBuilder constructor will also
@@ -491,8 +517,19 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.writeTextTo(out, cache);
     }
 
+    private void ensureLocalNameSet() {
+        if (localName == null) {
+            if (dataSource instanceof QNameAwareOMDataSource) {
+                localName = ((QNameAwareOMDataSource)dataSource).getLocalName();
+            }
+            if (localName == null) {
+                forceExpand();
+            }
+        }
+    }
+    
     public String getLocalName() {
-        // no need to set the parser, just call base method directly
+        ensureLocalNameSet();
         return super.getLocalName();
     }
 
@@ -505,8 +542,39 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public OMNamespace getNamespace() throws OMException {
         if (isExpanded()) {
             return super.getNamespace();
+        } else if (definedNamespaceSet) {
+            return definedNamespace;
+        } else {
+            if (dataSource instanceof QNameAwareOMDataSource) {
+                String namespaceURI = ((QNameAwareOMDataSource)dataSource).getNamespaceURI();
+                if (namespaceURI != null) {
+                    if (namespaceURI.length() == 0) {
+                        // No namespace case. definedNamespace is already null, so we only need
+                        // to set definedNamespaceSet to true. Note that we don't need to retrieve
+                        // the namespace prefix because a prefix can't be bound to the empty
+                        // namespace URI.
+                        definedNamespaceSet = true;
+                    } else {
+                        String prefix = ((QNameAwareOMDataSource)dataSource).getPrefix();
+                        if (prefix == null) {
+                            // Prefix is unknown
+                            definedNamespace = new DeferredNamespace(namespaceURI);
+                        } else {
+                            definedNamespace = new OMNamespaceImpl(namespaceURI, prefix);
+                        }
+                        definedNamespaceSet = true;
+                    }
+                }
+            }
+            if (definedNamespaceSet) {
+                return definedNamespace;
+            } else {
+                // We have no information about the namespace of the element. Need to expand
+                // the element to get it.
+                forceExpand();
+                return super.getNamespace();
+            }
         }
-        return definedNamespace;
     }
 
     public String getPrefix() {

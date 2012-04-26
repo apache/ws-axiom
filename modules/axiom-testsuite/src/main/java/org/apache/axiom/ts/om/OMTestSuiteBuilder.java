@@ -20,6 +20,8 @@ package org.apache.axiom.ts.om;
 
 import java.lang.reflect.Method;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
@@ -29,6 +31,7 @@ import org.apache.axiom.ts.om.container.SerializationMethod;
 import org.apache.axiom.ts.om.container.SerializeToOutputStream;
 import org.apache.axiom.ts.om.factory.CreateOMElementParentSupplier;
 import org.apache.axiom.ts.om.factory.CreateOMElementVariant;
+import org.apache.axiom.ts.om.sourcedelement.OMSourcedElementVariant;
 import org.apache.axiom.ts.om.xpath.AXIOMXPathTestCase;
 import org.apache.axiom.ts.om.xpath.TestAXIOMXPath;
 
@@ -41,6 +44,11 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
     private static final SerializationMethod[] serializationMethods = {
         new SerializeToOutputStream(true),
         new SerializeToOutputStream(false) };
+    
+    private static final QName[] qnames = {
+        new QName("root"),
+        new QName("urn:test", "root", "p"),
+        new QName("urn:test", "root") };
     
     private final OMMetaFactory metaFactory;
     private final boolean supportsOMSourcedElement;
@@ -322,6 +330,16 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnOrphan(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnSelf(metaFactory));
         if (supportsOMSourcedElement) {
+            for (int i=0; i<OMSourcedElementVariant.INSTANCES.length; i++) {
+                OMSourcedElementVariant variant = OMSourcedElementVariant.INSTANCES[i];
+                for (int j=0; j<qnames.length; j++) {
+                    QName qname = qnames[j];
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetLocalName(metaFactory, variant, qname));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespace(metaFactory, variant, qname));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetPrefix(metaFactory, variant, qname));
+                    addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceURI(metaFactory, variant, qname));
+                }
+            }
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestByteArrayDS(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestCharArrayDS(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestComplete(metaFactory));

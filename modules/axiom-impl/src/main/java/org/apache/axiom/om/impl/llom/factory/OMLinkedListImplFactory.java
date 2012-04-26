@@ -140,6 +140,10 @@ public class OMLinkedListImplFactory implements OMFactory {
         return new OMElementImpl(qname, null, this);
     }
 
+    public OMSourcedElement createOMElement(OMDataSource source) {
+        return new OMSourcedElementImpl(this, source);
+    }
+
     /**
      * Construct element with arbitrary data source.
      *

@@ -96,6 +96,26 @@ public interface OMFactory {
                                      OMXMLParserWrapper builder);
 
     /**
+     * Create a sourced element. If the data source implements {@link QNameAwareOMDataSource} then
+     * the returned {@link OMSourcedElement} will use the information provided through this
+     * interface to determine the local name, namespace URI and namespace prefix. For information
+     * that is not available (either because the data source doesn't implement
+     * {@link QNameAwareOMDataSource} or because some of the methods defined by that interface
+     * return <code>null</code>) the element will be expanded to determine the missing information.
+     * This is done lazily, i.e. only when the information is really required. E.g. this will not
+     * occur during serialization of the element.
+     * <p>
+     * This is an optional operation which may not be supported by all factories.
+     * 
+     * @param source
+     *            the data source; must not be <code>null</code>
+     * @return the newly created element
+     * @throws IllegalArgumentException
+     *             if <code>source</code> is <code>null</code>
+     */
+    OMSourcedElement createOMElement(OMDataSource source);
+    
+    /**
      * Create a sourced element with a known local name, namespace URI and namespace prefix.
      * <p>
      * This is an optional operation which may not be supported by all factories.
