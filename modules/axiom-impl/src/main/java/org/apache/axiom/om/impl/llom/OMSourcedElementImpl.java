@@ -315,14 +315,16 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                             readerLocalName + ", not the expected " + getLocalName());
                 }
             }
-            String readerURI = readerFromDS.getNamespaceURI();
-            readerURI = (readerURI == null) ? "" : readerURI;
-            String uri = (getNamespace() == null) ? "" : getNamespace().getNamespaceURI();
-            if (!readerURI.equals(uri)) {
-                log.error("forceExpand: expected element namespace " +
-                        getLocalName() + ", found " + uri);
-                throw new RuntimeException("Element namespace from data source is " +
-                        readerURI + ", not the expected " + uri);
+            if (definedNamespaceSet) {
+                String readerURI = readerFromDS.getNamespaceURI();
+                readerURI = (readerURI == null) ? "" : readerURI;
+                String uri = (getNamespace() == null) ? "" : getNamespace().getNamespaceURI();
+                if (!readerURI.equals(uri)) {
+                    log.error("forceExpand: expected element namespace " +
+                            getLocalName() + ", found " + uri);
+                    throw new RuntimeException("Element namespace from data source is " +
+                            readerURI + ", not the expected " + uri);
+                }
             }
 
             // Set the builder for this element. Note that the StAXOMBuilder constructor will also

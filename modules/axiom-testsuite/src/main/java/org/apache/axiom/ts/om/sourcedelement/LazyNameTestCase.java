@@ -18,32 +18,28 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import java.io.StringReader;
-
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.QNameAwareOMDataSource;
-import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromReader;
 import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests that {@link OMNamedInformationItem#getLocalName()} behaves correctly on a
- * {@link OMSourcedElement} backed by a {@link QNameAwareOMDataSource}.
- */
-public class TestGetLocalNameFromQNameAwareOMDataSource extends AxiomTestCase {
-    public TestGetLocalNameFromQNameAwareOMDataSource(OMMetaFactory metaFactory) {
+public abstract class LazyNameTestCase extends AxiomTestCase {
+    protected final OMSourcedElementVariant variant;
+    protected final QName qname;
+    
+    public LazyNameTestCase(OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
         super(metaFactory);
+        this.variant = variant;
+        this.qname = qname;
+        addTestProperty("variant", variant.getName());
+        addTestProperty("prefix", qname.getPrefix());
+        addTestProperty("uri", qname.getNamespaceURI());
+    }
+    
+    protected final void runTest() throws Throwable {
+        runTest(variant.createOMSourcedElement(metaFactory.getOMFactory(), qname));
     }
 
-    protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(
-                new WrappedTextNodeOMDataSourceFromReader(new QName("root"), new StringReader("test")));
-        assertEquals("root", element.getLocalName());
-        assertFalse(element.isExpanded());
-    }
+    protected abstract void runTest(OMSourcedElement element) throws Throwable;
 }

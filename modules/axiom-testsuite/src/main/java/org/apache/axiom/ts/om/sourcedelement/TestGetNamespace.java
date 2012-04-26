@@ -18,36 +18,18 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import java.io.StringReader;
-
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamedInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.QNameAwareOMDataSource;
-import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromReader;
-import org.apache.axiom.ts.AxiomTestCase;
 
-/**
- * Tests that {@link OMNamedInformationItem#getNamespace()} behaves correctly on a
- * {@link OMSourcedElement} backed by a {@link QNameAwareOMDataSource}.
- */
-public class TestGetNamespaceFromQNameAwareOMDataSource extends AxiomTestCase {
-    private final QName qname;
-    
-    public TestGetNamespaceFromQNameAwareOMDataSource(OMMetaFactory metaFactory, QName qname) {
-        super(metaFactory);
-        this.qname = qname;
-        addTestProperty("qname", qname.toString());
+public class TestGetNamespace extends LazyNameTestCase {
+    public TestGetNamespace(OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
+        super(metaFactory, variant, qname);
     }
 
-    protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(
-                new WrappedTextNodeOMDataSourceFromReader(qname, new StringReader("test")));
+    protected void runTest(OMSourcedElement element) throws Throwable {
         OMNamespace ns = element.getNamespace();
         if (qname.getNamespaceURI().length() == 0) {
             assertNull(ns);
@@ -55,6 +37,10 @@ public class TestGetNamespaceFromQNameAwareOMDataSource extends AxiomTestCase {
             assertEquals(qname.getNamespaceURI(), ns.getNamespaceURI());
             assertEquals(qname.getPrefix(), ns.getPrefix());
         }
-        assertFalse(element.isExpanded());
+        if (variant.isNamespaceURIRequiresExpansion() || variant.isPrefixRequiresExpansion()) {
+            assertTrue(element.isExpanded());
+        } else {
+            assertFalse(element.isExpanded());
+        }
     }
 }

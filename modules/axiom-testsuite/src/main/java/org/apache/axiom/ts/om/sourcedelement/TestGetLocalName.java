@@ -18,25 +18,22 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMNamedInformationItem;
-import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.ts.AxiomTestCase;
+import javax.xml.namespace.QName;
 
-/**
- * Tests that {@link OMNamedInformationItem#getLocalName()} expands the element if the local name is
- * not known in advance.
- */
-public class TestGetLocalNameFromExpansion extends AxiomTestCase {
-    public TestGetLocalNameFromExpansion(OMMetaFactory metaFactory) {
-        super(metaFactory);
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMSourcedElement;
+
+public class TestGetLocalName extends LazyNameTestCase {
+    public TestGetLocalName(OMMetaFactory metaFactory, OMSourcedElementVariant variant, QName qname) {
+        super(metaFactory, variant, qname);
     }
 
-    protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        OMSourcedElement element = factory.createOMElement(new TestDataSource("<root ns='urn:test'/>"));
-        assertEquals("root", element.getLocalName());
-        assertTrue(element.isExpanded());
+    protected void runTest(OMSourcedElement element) throws Throwable {
+        assertEquals(qname.getLocalPart(), element.getLocalName());
+        if (variant.isLocalNameRequiresExpansion()) {
+            assertTrue(element.isExpanded());
+        } else {
+            assertFalse(element.isExpanded());
+        }
     }
 }
