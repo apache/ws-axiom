@@ -31,9 +31,11 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         TestConstants.EMPTY_BODY_MESSAGE };
     
     private final OMMetaFactory metaFactory;
+    private final boolean supportsOMSourcedElement;
     
-    public SOAPTestSuiteBuilder(OMMetaFactory metaFactory) {
+    public SOAPTestSuiteBuilder(OMMetaFactory metaFactory, boolean supportsOMSourcedElement) {
         this.metaFactory = metaFactory;
+        this.supportsOMSourcedElement = supportsOMSourcedElement;
     }
     
     private void addTests(SOAPSpec spec) {
@@ -94,6 +96,9 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.header.TestExtractAllHeaderBlocks(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeaderBlocksWithNSURI(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestGetHeadersToProcessWithNamespace(metaFactory, spec));
+        if (supportsOMSourcedElement) {
+            addTest(new org.apache.axiom.ts.soap.headerblock.TestByteArrayDS(metaFactory, spec));
+        }
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetMustUnderstand(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetRole(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestGetVersion(metaFactory, spec));

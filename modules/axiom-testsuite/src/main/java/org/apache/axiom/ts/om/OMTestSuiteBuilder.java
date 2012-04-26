@@ -322,11 +322,14 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnOrphan(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnSelf(metaFactory));
         if (supportsOMSourcedElement) {
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestByteArrayDS(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCharArrayDS(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestComplete(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestExpand(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized2(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetTextAsStreamWithNonDestructiveOMDataSource(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestInputStreamDS(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1DefaultPrefix(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1QualifiedPrefix(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1Unqualified(metaFactory));
@@ -354,6 +357,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetDataSourceOnAlreadyExpandedElement(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetLocalName(metaFactory, false));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetLocalName(metaFactory, true));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestWrappedTextNodeOMDataSourceFromReader(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestWriteTextToWithNonDestructiveOMDataSource(metaFactory));
         }
         addTest(new org.apache.axiom.ts.om.pi.TestDigest(metaFactory));
