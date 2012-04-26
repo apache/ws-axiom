@@ -301,38 +301,14 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                         readerURI + ", not the expected " + uri);
             }
 
-            // Get the current prefix and the reader's prefix
-            String readerPrefix = readerFromDS.getPrefix();
-            readerPrefix = (readerPrefix == null) ? "" : readerPrefix;
-            String prefix = null;
-            
-            OMNamespace ns = getNamespace();
-            if (ns == null || ns instanceof DeferredNamespace) {
-                // prefix is not available until after expansion
-            } else {
-                prefix = ns.getPrefix();
-            }
-            
-            // Set the builder for this element
+            // Set the builder for this element. Note that the StAXOMBuilder constructor will also
+            // update the namespace of the element, so we don't need to do that here.
             isExpanded = true;
             super.setBuilder(new StAXOMBuilder(getOMFactory(), 
                                                readerFromDS, 
                                                this, 
                                                characterEncoding));
             setComplete(false);
-
-            // Update the prefix if necessary.  This must be done after
-            // isParserSet to avoid a recursive call
-            if (!readerPrefix.equals(prefix) ||
-                 getNamespace() == null ||
-                 ns instanceof DeferredNamespace) {
-                if (log.isDebugEnabled()) {
-                    log.debug(
-                            "forceExpand: changing prefix from " + prefix + " to " + readerPrefix);
-                }
-                setNamespace(new OMNamespaceImpl(readerURI, readerPrefix));
-            }
-
         }
     }
 
