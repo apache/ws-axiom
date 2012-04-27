@@ -1452,6 +1452,21 @@ while (iterator.hasNext()) {
                         to avoid depending on two different versions of Woodstox.
                     </para>
                 </section>
+                <section>
+                    <title>DOOM factories are now stateless</title>
+                    <para>
+                        In contrast to previous versions, the <classname>OMFactory</classname> implementations for DOOM are
+                        stateless in Axiom 1.2.14. This makes it easier to write application code that is portable between
+                        LLOM and DOOM (in the sense that code that is known to work with LLOM will usually work with DOOM without
+                        changes). However, this slightly changes the behavior of DOOM with respect to owner documents, which means that
+                        in some cases existing code written for DOOM may trigger <literal>WRONG_DOCUMENT_ERR</literal> exceptions
+                        if it uses the DOM API on a tree created or manipulated using the Axiom API.
+                    </para>
+                    <para>
+                        For more information about the new semantics, refer to the Javadoc of <classname>DOMMetaFactory</classname>
+                        and to <ulink url="https://issues.apache.org/jira/browse/AXIOM-412">AXIOM-412</ulink>.
+                    </para>
+                </section>
             </section>
         </section>
     </chapter>
