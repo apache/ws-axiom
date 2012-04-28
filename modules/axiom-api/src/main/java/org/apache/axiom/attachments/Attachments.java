@@ -240,12 +240,33 @@ public class Attachments implements OMAttachmentAccessor {
     
     /**
      * Get an input stream for the root part of the MIME message. The root part is located as
-     * described in the documentation of the {@link #getRootPartContentID()} method.
+     * described in the documentation of the {@link #getRootPartContentID()} method. Note that a new
+     * stream is returned each time this method is called, i.e. the method does not consume the root
+     * part. Instead it loads the root part into memory so that it can be read several times.
      * 
      * @return the input stream for the root part
      */
     public InputStream getRootPartInputStream() throws OMException {
-        return delegate.getRootPartInputStream();
+        return delegate.getRootPartInputStream(true);
+    }
+
+    /**
+     * Get an input stream for the root part of the MIME message. This method is similar to
+     * {@link #getRootPartInputStream()}, but can be instructed to consume the root part. This
+     * allows streaming of the root part. If that feature is used, the root part will not be loaded
+     * into memory unless an attempt is made to access another part of the MIME message, in which
+     * case the remaining (i.e. unconsumed) content of the root part will be buffered. If the
+     * feature is not enabled, then this method behaves in the same way as
+     * {@link #getRootPartInputStream()}.
+     * 
+     * @param preserve
+     *            <code>true</code> if the content of the root part should be fetched into memory so
+     *            that it can be read several times, <code>false</code> if the root part should be
+     *            consumed
+     * @return the input stream for the root part
+     */
+    public InputStream getRootPartInputStream(boolean preserve) throws OMException {
+        return delegate.getRootPartInputStream(preserve);
     }
 
     /**

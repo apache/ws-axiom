@@ -55,7 +55,7 @@ abstract class AttachmentsDelegate {
     abstract DataHandler getDataHandler(String contentID);
     abstract void addDataHandler(String contentID, DataHandler dataHandler);
     abstract void removeDataHandler(String blobContentID);
-    abstract InputStream getRootPartInputStream() throws OMException;
+    abstract InputStream getRootPartInputStream(boolean preserve) throws OMException;
     abstract String getRootPartContentID();
     abstract String getRootPartContentType();
     abstract IncomingAttachmentStreams getIncomingAttachmentStreams();
