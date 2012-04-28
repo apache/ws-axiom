@@ -16,28 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.om.ds;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.nio.charset.Charset;
 
 import javax.activation.DataSource;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDataSourceExt;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
 
 /**
@@ -54,25 +46,6 @@ public class WrappedTextNodeOMDataSourceFromDataSource extends WrappedTextNodeOM
         this.charset = charset;
     }
     
-    public void serialize(OutputStream out, OMOutputFormat format) throws XMLStreamException {
-        XMLStreamWriter writer = new MTOMXMLStreamWriter(out, format);
-        serialize(writer);
-        writer.flush();
-    }
-
-    public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter xmlWriter =
-            new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer));
-        xmlWriter.setOutputFormat(format);
-        serialize(xmlWriter);
-        xmlWriter.flush();
-    }
-
-    public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        StreamingOMSerializer serializer = new StreamingOMSerializer();
-        serializer.serialize(getReader(), xmlWriter);
-    }
-
     public XMLStreamReader getReader() throws XMLStreamException {
         InputStream is;
         try {

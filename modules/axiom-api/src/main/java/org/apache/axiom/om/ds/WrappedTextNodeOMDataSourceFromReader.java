@@ -16,24 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.om.ds;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDataSourceExt;
-import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
 
 /**
@@ -46,19 +38,6 @@ public class WrappedTextNodeOMDataSourceFromReader extends WrappedTextNodeOMData
     public WrappedTextNodeOMDataSourceFromReader(QName wrapperElementName, Reader reader) {
         super(wrapperElementName);
         this.reader = reader;
-    }
-
-    public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
-        MTOMXMLStreamWriter xmlWriter =
-            new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer));
-        xmlWriter.setOutputFormat(format);
-        serialize(xmlWriter);
-        xmlWriter.flush();
-    }
-
-    public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        StreamingOMSerializer serializer = new StreamingOMSerializer();
-        serializer.serialize(getReader(), xmlWriter);
     }
 
     public XMLStreamReader getReader() throws XMLStreamException {
@@ -77,10 +56,6 @@ public class WrappedTextNodeOMDataSourceFromReader extends WrappedTextNodeOMData
         return true;
     }
     
-    public byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException {
-        throw new UnsupportedOperationException();
-    }
-
     public void close() {
         try {
             reader.close();

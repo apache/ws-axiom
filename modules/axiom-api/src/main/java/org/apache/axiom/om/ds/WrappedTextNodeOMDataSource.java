@@ -18,10 +18,20 @@
  */
 package org.apache.axiom.om.ds;
 
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDataSource;
+import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.QNameAwareOMDataSource;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
+import org.apache.axiom.om.util.StAXUtils;
 
 /**
  * {@link OMDataSource} implementation that represents a text node wrapped inside an element.
@@ -43,5 +53,28 @@ public abstract class WrappedTextNodeOMDataSource extends OMDataSourceExtBase im
 
     public String getPrefix() {
         return wrapperElementName.getPrefix();
+    }
+    
+    public void serialize(OutputStream out, OMOutputFormat format) throws XMLStreamException {
+        XMLStreamWriter writer = new MTOMXMLStreamWriter(out, format);
+        serialize(writer);
+        writer.flush();
+    }
+
+    public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException {
+        MTOMXMLStreamWriter xmlWriter =
+            new MTOMXMLStreamWriter(StAXUtils.createXMLStreamWriter(writer));
+        xmlWriter.setOutputFormat(format);
+        serialize(xmlWriter);
+        xmlWriter.flush();
+    }
+
+    public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
+        StreamingOMSerializer serializer = new StreamingOMSerializer();
+        serializer.serialize(getReader(), xmlWriter);
+    }
+
+    public byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException {
+        throw new UnsupportedOperationException();
     }
 }
