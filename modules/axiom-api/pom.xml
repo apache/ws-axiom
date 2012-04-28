@@ -100,11 +100,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <!-- We need this to be able to test Woodstox 4 -->
+            <!-- We need this in the StAX dialect for Woodstox 4 -->
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>stax2-api</artifactId>
-            <version>3.0.2</version>
-            <scope>test</scope>
+            <version>3.1.1</version>
+            <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <groupId>javax.xml.stream</groupId>

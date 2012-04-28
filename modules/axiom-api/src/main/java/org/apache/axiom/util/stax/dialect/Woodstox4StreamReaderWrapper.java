@@ -18,13 +18,20 @@
  */
 package org.apache.axiom.util.stax.dialect;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
+import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
+import org.codehaus.stax2.XMLStreamReader2;
 
-class Woodstox4StreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
+class Woodstox4StreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader, CharacterDataReader {
     public Woodstox4StreamReaderWrapper(XMLStreamReader reader) {
         super(reader);
     }
@@ -113,5 +120,18 @@ class Woodstox4StreamReaderWrapper extends XMLStreamReaderWrapper implements Del
 
     public XMLStreamReader getParent() {
         return super.getParent();
+    }
+
+    public Object getProperty(String name) throws IllegalArgumentException {
+        if (CharacterDataReader.PROPERTY.equals(name)) {
+            return this;
+        } else {
+            return super.getProperty(name);
+        }
+    }
+
+    public void writeTextTo(Writer writer) throws XMLStreamException, IOException {
+        // Allow efficient access to character data, even if coalescing is enabled
+        ((XMLStreamReader2)XMLStreamReaderUtils.getOriginalXMLStreamReader(this)).getText(writer, false);
     }
 }
