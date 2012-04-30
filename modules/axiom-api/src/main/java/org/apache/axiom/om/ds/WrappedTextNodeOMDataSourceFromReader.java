@@ -25,7 +25,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
 
 /**
@@ -44,27 +43,15 @@ public class WrappedTextNodeOMDataSourceFromReader extends WrappedTextNodeOMData
         return new WrappedTextNodeStreamReader(wrapperElementName, reader);
     }
 
-    public Object getObject() {
-        return null;
-    }
-
     public boolean isDestructiveRead() {
         return true;
     }
 
-    public boolean isDestructiveWrite() {
-        return true;
-    }
-    
     public void close() {
         try {
             reader.close();
         } catch (IOException ex) {
             // Ignore
         }
-    }
-
-    public OMDataSourceExt copy() {
-        throw new UnsupportedOperationException();
     }
 }

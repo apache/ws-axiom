@@ -21,7 +21,6 @@ package org.apache.axiom.om.ds;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 import javax.activation.DataSource;
@@ -63,17 +62,6 @@ public class WrappedTextNodeOMDataSourceFromDataSource extends WrappedTextNodeOM
 
     public boolean isDestructiveRead() {
         return false;
-    }
-
-    public boolean isDestructiveWrite() {
-        return false;
-    }
-    
-    public byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException {
-        throw new UnsupportedOperationException();
-    }
-
-    public void close() {
     }
 
     public OMDataSourceExt copy() {
