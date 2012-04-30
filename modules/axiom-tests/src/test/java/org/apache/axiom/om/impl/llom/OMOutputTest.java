@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.attachments.ByteArrayDataSource;
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
@@ -28,27 +27,20 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
+import org.apache.commons.io.output.NullOutputStream;
 
 import javax.activation.DataHandler;
-import java.io.File;
-import java.io.FileOutputStream;
 
-public class OMOutputTest extends AbstractTestCase {
+import junit.framework.TestCase;
+
+public class OMOutputTest extends TestCase {
 
     /** @param testName  */
     public OMOutputTest(String testName) {
         super(testName);
     }
 
-    String outFileName;
-
-    String outBase64FileName;
-
-    OMElement envelope;
-
-    File outMTOMFile;
-
-    File outBase64File;
+    private OMElement envelope;
 
     /*
      * @see TestCase#setUp()
@@ -56,11 +48,6 @@ public class OMOutputTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         DataHandler dataHandler;
-
-        outFileName = "OMSerializeMTOMOut.txt";
-        outBase64FileName = "OMSerializeBase64Out.xml";
-        outMTOMFile = getTempOutputFile(outFileName);
-        outBase64File = getTempOutputFile(outBase64FileName);
 
         OMFactory fac = OMAbstractFactory.getOMFactory();
 
@@ -91,26 +78,13 @@ public class OMOutputTest extends AbstractTestCase {
         text.addChild(textData);
     }
 
-    /*
-     * @see TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        if (this.outMTOMFile.exists()) {
-            this.outMTOMFile.delete();
-        }
-        if (this.outBase64File.exists()) {
-            this.outBase64File.delete();
-        }
-    }
-
     public void testComplete() throws Exception {
         OMOutputFormat mtomOutputFormat = new OMOutputFormat();
         mtomOutputFormat.setDoOptimize(true);
         OMOutputFormat baseOutputFormat = new OMOutputFormat();
         baseOutputFormat.setDoOptimize(false);
 
-        envelope.serializeAndConsume(new FileOutputStream(outBase64File), baseOutputFormat);
-        envelope.serializeAndConsume(new FileOutputStream(outMTOMFile), mtomOutputFormat);
+        envelope.serializeAndConsume(new NullOutputStream(), baseOutputFormat);
+        envelope.serializeAndConsume(new NullOutputStream(), mtomOutputFormat);
     }
 }

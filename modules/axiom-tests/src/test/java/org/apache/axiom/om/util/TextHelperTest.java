@@ -19,7 +19,6 @@
 package org.apache.axiom.om.util;
 
 import org.apache.axiom.attachments.impl.BufferUtils;
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
@@ -36,11 +35,13 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
 
+import junit.framework.TestCase;
+
 /**
  * Validate TextHelper code
  */
-public class TextHelperTest extends AbstractTestCase {
-
+public class TextHelperTest extends TestCase {
+    private File tempDir;
     private File file;
     private FileInputStream fis;
     private static final long SIZE = 101 * 1024; // More than the threshold
@@ -55,7 +56,9 @@ public class TextHelperTest extends AbstractTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        file = File.createTempFile("TextHelperTest", "txt");
+        tempDir = new File(System.getProperty("basedir", "."), "target/temp");
+        tempDir.mkdirs();
+        file = new File(tempDir, "TextHelperTest.txt");
         FileOutputStream fos = new FileOutputStream(file);
         BufferedOutputStream bos = new BufferedOutputStream(fos);
         for (long i = 0; i < SIZE; i++) {
@@ -147,7 +150,7 @@ public class TextHelperTest extends AbstractTestCase {
         OMFactory factory = OMAbstractFactory.getOMFactory();
         OMText omText = TextHelper.toOMText(b, 0, b.length, 
                                             factory, true,
-                                            this.tempDir);
+                                            tempDir.getAbsolutePath());
         
         // Ensure text is optimized
         assertTrue(omText != null);
