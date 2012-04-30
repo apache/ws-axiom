@@ -33,6 +33,7 @@ import org.apache.axiom.attachments.lifecycle.impl.FileAccessor;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.util.base64.Base64EncodingStringBufferOutputStream;
 import org.apache.axiom.util.base64.Base64Utils;
 
 public class TextHelper {
@@ -52,9 +53,8 @@ public class TextHelper {
     private static int DELETE_TIME = 60 * 60; // 1 Hour
     
     /**
-     * @param inStream InputStream
-     * @return Base64 encoded string representint the data in inStream
-     * @throws IOException
+     * @deprecated This method was internally used by Axiom before version 1.2.9 but is no longer
+     *             required.
      */
     public static String toString(InputStream inStream) throws IOException {
         StringBuffer buffer = new StringBuffer();
@@ -63,10 +63,8 @@ public class TextHelper {
     }
     
     /**
-     * Append Base64 encoding of the data in the inStream to the specified buffer
-     * @param inStream InputStream
-     * @param buffer Buffer
-     * @throws IOException
+     * @deprecated This method was internally used by Axiom before version 1.2.9 but is no longer
+     *             required.
      */
     public static void toStringBuffer(InputStream inStream, StringBuffer buffer) throws IOException {
         int avail = inStream.available();
@@ -100,10 +98,10 @@ public class TextHelper {
     }
     
     /**
-     * Append data in the omText to the specified buffer
-     * @param omText the text node to get the character data from
-     * @param buffer Buffer
-     * @throws IOException
+     * @deprecated If you really need to write the base64 encoded content of an {@link OMText}
+     *             instance to a {@link StringBuffer}, then request the {@link DataHandler} using
+     *             {@link OMText#getDataHandler()} and use
+     *             {@link Base64EncodingStringBufferOutputStream} to encode it.
      */
     public static void toStringBuffer(OMText omText, StringBuffer buffer) throws IOException {
         // If an InputStream is present, stream the BASE64 text to the StreamBuffer
