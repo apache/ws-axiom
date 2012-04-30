@@ -50,6 +50,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.MTOMConstants;
 import org.apache.axiom.testutils.activation.RandomDataSource;
+import org.apache.axiom.testutils.io.ExceptionInputStream;
 import org.apache.axiom.testutils.io.IOTestUtils;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.commons.io.IOUtils;
@@ -717,5 +718,38 @@ public class AttachmentsTest extends AbstractTestCase {
     
     public void testGetSizeOnDataSourceOnFile() throws Exception {
         testGetSizeOnDataSource(true);
+    }
+    
+    public void testIOExceptionInPartHeaders() throws Exception {
+        InputStream in = getTestResource(TestConstants.MTOM_MESSAGE.getName());
+        try {
+            Attachments attachments = new Attachments(new ExceptionInputStream(in, 1050), TestConstants.MTOM_MESSAGE.getContentType());
+            // TODO: decide what exception should be thrown exactly here
+            try {
+                attachments.getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
+                fail("Expected exception");
+            } catch (OMException ex) {
+                // Expected
+            }
+        } finally {
+            in.close();
+        }
+    }
+    
+    public void testIOExceptionInPartContent() throws Exception {
+        InputStream in = getTestResource(TestConstants.MTOM_MESSAGE.getName());
+        try {
+            Attachments attachments = new Attachments(new ExceptionInputStream(in, 1500), TestConstants.MTOM_MESSAGE.getContentType());
+            DataHandler dh = attachments.getDataHandler("1.urn:uuid:A3ADBAEE51A1A87B2A11443668160943@apache.org");
+            // TODO: decide what exception should be thrown exactly here
+            try {
+                dh.getInputStream();
+                fail("Expected exception");
+            } catch (OMException ex) {
+                // Expected
+            }
+        } finally {
+            in.close();
+        }
     }
 }

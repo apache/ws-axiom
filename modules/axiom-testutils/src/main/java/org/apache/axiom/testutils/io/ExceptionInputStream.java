@@ -25,35 +25,50 @@ import java.io.InputStream;
 import org.apache.commons.io.input.ProxyInputStream;
 
 /**
- * {@link InputStream} wrapper that throw an exception when the end of the
- * parent stream is reached.
+ * {@link InputStream} wrapper that throws an exception after a configurable number of bytes have
+ * been read from the stream or when the end of the stream is reached.
  */
 public class ExceptionInputStream extends ProxyInputStream {
+    private int remaining;
+    
     public ExceptionInputStream(InputStream in) {
+        this(in, Integer.MAX_VALUE);
+    }
+
+    public ExceptionInputStream(InputStream in, int maxBytes) {
         super(in);
+        remaining = maxBytes;
     }
 
     public int read() throws IOException {
+        if (remaining == 0) {
+            throw new IOException("Maximum number of bytes read");
+        }
         int b = super.read();
         if (b == -1) {
             throw new IOException("End of stream reached");
         }
+        remaining--;
         return b;
     }
 
     public int read(byte[] b) throws IOException {
-        int c = super.read(b);
-        if (c == -1) {
-            throw new IOException("End of stream reached");
-        }
-        return c;
+        return read(b, 0, b.length);
     }
 
     public int read(byte[] b, int off, int len) throws IOException {
-        int c = super.read(b, off, len);
+        if (remaining == 0) {
+            throw new IOException("Maximum number of bytes read");
+        }
+        // Note: We use a sort of throttling mechanism here where we reduce the
+        //       number of bytes read if we approach the point where we throw an
+        //       exception. This is useful when testing consumers that tend to
+        //       read too much in advance.
+        int c = super.read(b, off, Math.min(Math.max(1, remaining/2), len));
         if (c == -1) {
             throw new IOException("End of stream reached");
         }
+        remaining -= c;
         return c;
     }
 }
