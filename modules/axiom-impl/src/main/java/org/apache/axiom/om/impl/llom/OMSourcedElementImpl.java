@@ -227,25 +227,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     /**
-     * Get parser from data source. Note that getDataReader may consume the underlying data source.
-     *
-     * @return parser
-     */
-    private XMLStreamReader getDirectReader() {
-        try {
-            // If expansion has occurred, then the reader from the datasource is consumed or stale.
-            // In such cases use the stream reader from the OMElementImpl
-            if (isExpanded()) {
-                return super.getXMLStreamReader();
-            } else {
-                return dataSource.getReader();  
-            }
-        } catch (XMLStreamException ex) {
-            throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
-        }
-    }
-
-    /**
      * Set parser for OM, if not previously set. Since the builder is what actually constructs the
      * tree on demand, this first creates a builder
      */
@@ -267,7 +248,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             }
 
             // Get the XMLStreamReader
-            readerFromDS = getDirectReader();
+            try {
+                readerFromDS = dataSource.getReader();  
+            } catch (XMLStreamException ex) {
+                throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
+            }
             
             // Advance past the START_DOCUMENT to the start tag.
             // Remember the character encoding.
@@ -453,8 +438,13 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             if (cache && isDestructiveRead()) {
                 forceExpand();
                 return super.getXMLStreamReader(true, configuration);
+            } else {
+                try {
+                    return dataSource.getReader();  
+                } catch (XMLStreamException ex) {
+                    throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
+                }
             }
-            return getDirectReader();
         }
     }
 
