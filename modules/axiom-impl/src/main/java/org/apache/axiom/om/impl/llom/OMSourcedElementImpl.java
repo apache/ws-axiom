@@ -124,13 +124,14 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
         dataSource = source;
         isExpanded = false;
-        if (!isLossyPrefix(dataSource)) {
+        ns = normalize(ns);
+        if (ns == null || !isLossyPrefix(dataSource)) {
             // Believe the prefix and create a normal OMNamespace
-            definedNamespace = normalize(ns);
+            definedNamespace = ns;
         } else {
             // Create a deferred namespace that forces an expand to get the prefix
             String uri = ns.getNamespaceURI();
-            definedNamespace = uri.length() == 0 ? null : new DeferredNamespace(uri);
+            definedNamespace = new DeferredNamespace(uri);
         }
         definedNamespaceSet = true;
     }

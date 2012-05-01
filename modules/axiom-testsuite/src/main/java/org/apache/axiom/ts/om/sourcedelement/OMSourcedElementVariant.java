@@ -26,9 +26,11 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromReader;
+import org.apache.axiom.testutils.suite.TestCaseEx;
 
 public abstract class OMSourcedElementVariant {
     public static final OMSourcedElementVariant[] INSTANCES = {
@@ -45,6 +47,10 @@ public abstract class OMSourcedElementVariant {
             }
         },
         new OMSourcedElementVariant("lossy-prefix", false, false, true) {
+            public void addTestProperties(TestCaseEx test) {
+                test.addTestProperty("method", "QName");
+            }
+
             public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
                 // TODO: can't use createOMElement(QName) here because it would generate a prefix if the prefix in the QName is empty
                 OMElement orgElement = factory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
@@ -53,6 +59,27 @@ public abstract class OMSourcedElementVariant {
                 OMDataSourceExt ds = new ByteArrayDataSource(baos.toByteArray(), "UTF-8");
                 ds.setProperty(OMDataSourceExt.LOSSY_PREFIX, Boolean.TRUE);
                 return factory.createOMElement(ds, new QName(qname.getNamespaceURI(), qname.getLocalPart()));
+            }
+        },
+        new OMSourcedElementVariant("lossy-prefix", false, false, true) {
+            public void addTestProperties(TestCaseEx test) {
+                test.addTestProperty("method", "OMNamespace");
+            }
+
+            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
+                // TODO: can't use createOMElement(QName) here because it would generate a prefix if the prefix in the QName is empty
+                OMElement orgElement = factory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                orgElement.serialize(baos);
+                OMDataSourceExt ds = new ByteArrayDataSource(baos.toByteArray(), "UTF-8");
+                ds.setProperty(OMDataSourceExt.LOSSY_PREFIX, Boolean.TRUE);
+                OMNamespace ns;
+                if (qname.getNamespaceURI().length() == 0) {
+                    ns = null;
+                } else {
+                    ns = factory.createOMNamespace(qname.getNamespaceURI(), "");
+                }
+                return factory.createOMElement(ds, qname.getLocalPart(), ns);
             }
         }
     };
@@ -87,6 +114,10 @@ public abstract class OMSourcedElementVariant {
         // Note that if the element is known in advance not to have a namespace, then expansion is never
         // required to determine the prefix
         return prefixRequiresExpansion && (namespaceURIRequiresExpansion || qname.getNamespaceURI().length() != 0);
+    }
+    
+    public void addTestProperties(TestCaseEx test) {
+        // Empty. May be overridden in subclasses.
     }
 
     public abstract OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception;
