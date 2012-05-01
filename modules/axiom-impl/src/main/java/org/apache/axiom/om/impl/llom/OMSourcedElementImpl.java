@@ -208,21 +208,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
         return lossyPrefix == Boolean.TRUE;
     }
-    private void setDeferredNamespace(OMDataSource source, String uri, String prefix) {
-        Object lossyPrefix = null;
-        if (source instanceof OMDataSourceExt) {
-            lossyPrefix = 
-                ((OMDataSourceExt) source).getProperty(OMDataSourceExt.LOSSY_PREFIX);
-                        
-        }
-        if (lossyPrefix != Boolean.TRUE) {
-            // Believe the prefix and create a normal OMNamespace
-            definedNamespace = new OMNamespaceImpl(uri, prefix);
-        } else {
-            // Create a deferred namespace that forces an expand to get the prefix
-            definedNamespace = new DeferredNamespace(uri);
-        }
-    }
 
     /**
      * Generate element name for output.
