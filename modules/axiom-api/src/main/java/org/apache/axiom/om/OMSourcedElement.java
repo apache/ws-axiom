@@ -44,18 +44,18 @@ public interface OMSourcedElement extends OMElement {
     /**
      * @return true if tree is expanded or being expanded.
      */
-    public boolean isExpanded();
+    boolean isExpanded();
     
     /**
      * @return OMDataSource
      */
-    public OMDataSource getDataSource();
+    OMDataSource getDataSource();
     
     /**
      * Replace an existing OMDataSource with a new one. 
      * @param dataSource new OMDataSource
      * @return null or old OMDataSource
      */
-    public OMDataSource setDataSource(OMDataSource dataSource);
+    OMDataSource setDataSource(OMDataSource dataSource);
     
 } 
