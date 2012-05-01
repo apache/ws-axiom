@@ -255,11 +255,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             } else {
                 return dataSource.getReader();  
             }
-        } catch (XMLStreamException e) {
-            log.error("Could not get parser from data source for element " +
-                    getPrintableName(), e);
-            throw new RuntimeException("Error obtaining parser from data source:" +
-                    e.getMessage(), e);
+        } catch (XMLStreamException ex) {
+            throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
         }
     }
 
@@ -297,11 +294,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 if (readerFromDS.getEventType() != XMLStreamConstants.START_ELEMENT) {
                     while (readerFromDS.next() != XMLStreamConstants.START_ELEMENT) ;
                 }
-            } catch (XMLStreamException e) {
-                log.error("forceExpand: error parsing data soruce document for element " +
-                        getLocalName(), e);
-                throw new RuntimeException("Error parsing data source document:" +
-                        e.getMessage(), e);
+            } catch (XMLStreamException ex) {
+                throw new OMException("Error parsing data source document for element " + getLocalName(), ex);
             }
 
             String readerLocalName = readerFromDS.getLocalName();
@@ -311,9 +305,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             } else {
                 // Make sure element local name and namespace matches what was expected
                 if (!readerLocalName.equals(getLocalName())) {
-                    log.error("forceExpand: expected element name " +
-                            getLocalName() + ", found " + readerLocalName);
-                    throw new RuntimeException("Element name from data source is " +
+                    throw new OMException("Element name from data source is " +
                             readerLocalName + ", not the expected " + getLocalName());
                 }
             }
@@ -322,9 +314,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 readerURI = (readerURI == null) ? "" : readerURI;
                 String uri = (getNamespace() == null) ? "" : getNamespace().getNamespaceURI();
                 if (!readerURI.equals(uri)) {
-                    log.error("forceExpand: expected element namespace " +
-                            getLocalName() + ", found " + uri);
-                    throw new RuntimeException("Element namespace from data source is " +
+                    throw new OMException("Element namespace from data source is " +
                             readerURI + ", not the expected " + uri);
                 }
             }
