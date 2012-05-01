@@ -1036,4 +1036,12 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
         
     }
+
+    public Object getObject(Class dataSourceClass) {
+        if (dataSource == null || isExpanded || !dataSourceClass.isInstance(dataSource)) {
+            return null;
+        } else {
+            return ((OMDataSourceExt)dataSource).getObject();
+        }
+    }
 }

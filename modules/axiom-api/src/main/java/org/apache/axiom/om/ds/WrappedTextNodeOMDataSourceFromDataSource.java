@@ -33,6 +33,7 @@ import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
 
 /**
  * {@link WrappedTextNodeOMDataSource} that pulls the text data from a {@link DataSource} object.
+ * The {@link #getObject()} method returns the {@link DataSource} instance.
  */
 public class WrappedTextNodeOMDataSourceFromDataSource extends WrappedTextNodeOMDataSource {
     private final DataSource binaryData;

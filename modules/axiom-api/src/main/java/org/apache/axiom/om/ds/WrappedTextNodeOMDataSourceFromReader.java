@@ -29,10 +29,12 @@ import org.apache.axiom.util.stax.WrappedTextNodeStreamReader;
 
 /**
  * {@link WrappedTextNodeOMDataSource} that pulls text data from a {@link Reader} object. Since the
- * stream can only be read once, this data source is destructive.
+ * stream can only be read once, this data source is destructive. The {@link #getObject()} method
+ * returns the {@link Reader} object if it has not been accessed yet.
  */
 public class WrappedTextNodeOMDataSourceFromReader extends WrappedTextNodeOMDataSource {
     private final Reader reader;
+    private boolean isAccessed;
     
     public WrappedTextNodeOMDataSourceFromReader(QName wrapperElementName, Reader reader) {
         super(wrapperElementName);
@@ -40,7 +42,12 @@ public class WrappedTextNodeOMDataSourceFromReader extends WrappedTextNodeOMData
     }
 
     public XMLStreamReader getReader() throws XMLStreamException {
+        isAccessed = true;
         return new WrappedTextNodeStreamReader(wrapperElementName, reader);
+    }
+
+    public Object getObject() {
+        return isAccessed ? null : reader;
     }
 
     public boolean isDestructiveRead() {

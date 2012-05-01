@@ -128,4 +128,8 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
     public OMDataSource setDataSource(OMDataSource dataSource) {
         throw new UnsupportedOperationException();
     }
+
+    public Object getObject(Class dataSourceClass) {
+        throw new UnsupportedOperationException();
+    }
 }

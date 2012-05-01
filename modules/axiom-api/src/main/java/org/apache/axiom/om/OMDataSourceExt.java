@@ -96,8 +96,15 @@ public interface OMDataSourceExt extends OMDataSource {
     public XMLStreamReader getReader() throws XMLStreamException;
     
     /**
-     * Returns the backing Object.
-     * @return Object
+     * Get the object that backs this data source. Application code should in general not call this
+     * method directly, but use {@link OMSourcedElement#getObject(Class)} instead.
+     * <p>
+     * Data sources that support non destructive read/write should return the object from which the
+     * XML is produced. Data sources with destructive read/write should return a non null value only
+     * if the backing object has not been consumed yet (even partially).
+     * 
+     * @return the backing object, or <code>null</code> if the data source has no backing object or
+     *         if the backing object can't be accessed in a safe way
      */
     public Object getObject();
     
