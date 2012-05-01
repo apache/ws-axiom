@@ -20,7 +20,7 @@
 package org.apache.axiom.om;
 
 /**
- * Interface OMNamespace.
+ * A namespace binding specifying a namespace prefix and a namespace URI.
  * <p>
  * Implementations of this interface must be immutable or behave as if they were immutable,
  * i.e. {@link #getPrefix()} and {@link #getNamespaceURI()} must always return the same
@@ -41,9 +41,14 @@ public interface OMNamespace {
     boolean equals(String uri, String prefix);
 
     /**
-     * Method getPrefix.
-     *
-     * @return Returns String.
+     * Get the namespace prefix. This method may return <code>null</code> for instances returned by
+     * {@link OMFactory#createOMNamespace(String, String)}. This indicates that Axiom should
+     * generate a namespace prefix when this instance is passed to one of the factory methods in
+     * {@link OMFactory}. In all other cases the return value is not null. In particular, an empty
+     * string indicates that no prefix is used, i.e. that the namespace is used as default
+     * namespace.
+     * 
+     * @return the namespace prefix
      */
     String getPrefix();
 
@@ -56,9 +61,14 @@ public interface OMNamespace {
     String getName();
 
     /**
-     * Provides the namespace URI of this namespace.
-     *
-     * @return - the namespace URI of the namespace.
+     * Get the namespace URI. This method never returns <code>null</code>. It may return an empty
+     * string if this instance represents a namespace declaration of type <tt>xmlns=""</tt>. This
+     * may be the case for instances returned by {@link OMElement#getAllDeclaredNamespaces()}. On
+     * the other hand, methods such as {@link OMNamedInformationItem#getNamespace()} will return
+     * <code>null</code> for information items that have no namespace. In that case the returned
+     * string is never empty.
+     * 
+     * @return the namespace URI
      */
     String getNamespaceURI();
 }
