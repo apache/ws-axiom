@@ -92,11 +92,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     
     private XMLStreamReader readerFromDS = null;  // Reader from DataSource
 
-    private static OMNamespace normalize(OMNamespace ns) {
-        // TODO: the ns.getPrefix() == null case actually doesn't make sense for a sourced element!
-        return ns == null || (ns.getPrefix() == null || ns.getPrefix().length() == 0) && ns.getNamespaceURI().length() == 0 ? null : ns;
-    }
-    
     private static OMNamespace getOMNamespace(QName qName) {
         return qName.getNamespaceURI().length() == 0 ? null
                 : new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
@@ -124,8 +119,13 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
         dataSource = source;
         isExpanded = false;
-        ns = normalize(ns);
-        if (ns == null || !isLossyPrefix(dataSource)) {
+        // Normalize the namespace. Note that this also covers the case where the
+        // namespace URI is empty and the prefix is null (in which case we know that
+        // the actual prefix must be empty)
+        if (ns != null && ns.getNamespaceURI().length() == 0) {
+            ns = null;
+        }
+        if (ns == null || !(isLossyPrefix(dataSource) || ns.getPrefix() == null)) {
             // Believe the prefix and create a normal OMNamespace
             definedNamespace = ns;
         } else {

@@ -116,7 +116,18 @@ public interface OMFactory {
     OMSourcedElement createOMElement(OMDataSource source);
     
     /**
-     * Create a sourced element with a known local name, namespace URI and namespace prefix.
+     * Create a sourced element with a known local name and namespace URI. If the namespace prefix
+     * is known in advance, then the caller should specify it in the provided {@link OMNamespace}
+     * object. The caller may pass an {@link OMNamespace} instance with a <code>null</code> prefix.
+     * This indicates that the prefix is unknown and will be determined lazily by expanding the
+     * element.
+     * <p>
+     * Note that if the provided data source implements {@link QNameAwareOMDataSource}, then the
+     * information returned by {@link QNameAwareOMDataSource#getPrefix()} may be used to determine
+     * the prefix. However, this is an unusual use case.
+     * <p>
+     * Also note that if the specified namespace URI is empty, then the element can't have a prefix
+     * and it is not necessary to expand the element to determine its prefix.
      * <p>
      * This is an optional operation which may not be supported by all factories.
      * 

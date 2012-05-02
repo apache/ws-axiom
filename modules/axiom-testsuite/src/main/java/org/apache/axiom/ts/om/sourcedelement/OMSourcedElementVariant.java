@@ -81,6 +81,14 @@ public abstract class OMSourcedElementVariant {
                 }
                 return factory.createOMElement(ds, qname.getLocalPart(), ns);
             }
+        },
+        new OMSourcedElementVariant("unknown-prefix", false, false, true) {
+            public OMSourcedElement createOMSourcedElement(OMFactory factory, QName qname) throws Exception {
+                // TODO: can't use createOMElement(QName) here because it would generate a prefix if the prefix in the QName is empty
+                OMElement orgElement = factory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
+                return factory.createOMElement(new TestDataSource(orgElement.toString()),
+                        qname.getLocalPart(), factory.createOMNamespace(qname.getNamespaceURI(), null));
+            }
         }
     };
     
