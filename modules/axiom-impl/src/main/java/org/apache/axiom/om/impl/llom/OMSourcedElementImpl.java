@@ -216,14 +216,18 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * @return name
      */
     private String getPrintableName() {
-        String uri = null;
-        if (getNamespace() != null) {
-            uri = getNamespace().getNamespaceURI();
-        }
-        if (uri == null || uri.length() == 0) {
-            return getLocalName();
+        if (isExpanded || (definedNamespaceSet && localName != null)) {
+            String uri = null;
+            if (getNamespace() != null) {
+                uri = getNamespace().getNamespaceURI();
+            }
+            if (uri == null || uri.length() == 0) {
+                return getLocalName();
+            } else {
+                return "{" + uri + '}' + getLocalName();
+            }
         } else {
-            return "{" + uri + '}' + getLocalName();
+            return "<unknown>";
         }
     }
 
