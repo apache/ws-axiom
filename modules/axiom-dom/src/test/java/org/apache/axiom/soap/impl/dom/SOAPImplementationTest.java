@@ -31,7 +31,7 @@ import org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQNameWithExistingVal
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
-        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMDOMMetaFactory(), false);
+        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMDOMMetaFactory(), false, false);
         builder.exclude(TestWSCommons202.class);
         builder.exclude(TestGetDefaultFaultEnvelope.class);
         

@@ -21,6 +21,7 @@ package org.apache.axiom.ts.soap;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 
@@ -39,10 +40,22 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
     
     private final OMMetaFactory metaFactory;
     private final boolean supportsOMSourcedElement;
+    private final boolean supportsBodyElementNameOptimization;
     
-    public SOAPTestSuiteBuilder(OMMetaFactory metaFactory, boolean supportsOMSourcedElement) {
+    /**
+     * Constructor.
+     * 
+     * @param metaFactory
+     * @param supportsOMSourcedElement
+     *            indicates whether the implementation supports {@link OMSourcedElement}
+     * @param supportsBodyElementNameOptimization
+     *            indicates whether the implementation supports the optimization described by <a
+     *            href="https://issues.apache.org/jira/browse/AXIOM-282">AXIOM-282</a>
+     */
+    public SOAPTestSuiteBuilder(OMMetaFactory metaFactory, boolean supportsOMSourcedElement, boolean supportsBodyElementNameOptimization) {
         this.metaFactory = metaFactory;
         this.supportsOMSourcedElement = supportsOMSourcedElement;
+        this.supportsBodyElementNameOptimization = supportsBodyElementNameOptimization;
     }
     
     private void addTests(SOAPSpec spec) {
@@ -52,6 +65,9 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.body.TestGetFaultWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestHasFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParser(metaFactory, spec));
+        if (supportsBodyElementNameOptimization) {
+            addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(metaFactory, spec));
+        }
         addTest(new org.apache.axiom.ts.soap.envelope.TestAddHeaderToIncompleteEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestBodyHeaderOrder(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestDetach(metaFactory, spec));

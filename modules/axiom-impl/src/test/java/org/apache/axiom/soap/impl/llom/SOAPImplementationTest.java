@@ -26,7 +26,7 @@ import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
-        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMLinkedListMetaFactory(), true);
+        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMLinkedListMetaFactory(), true, true);
         return builder.build();
     }
 }
