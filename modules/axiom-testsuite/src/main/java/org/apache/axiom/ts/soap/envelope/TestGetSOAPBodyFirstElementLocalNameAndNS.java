@@ -18,22 +18,36 @@
  */
 package org.apache.axiom.ts.soap.envelope;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 public class TestGetSOAPBodyFirstElementLocalNameAndNS extends SOAPTestCase {
-    public TestGetSOAPBodyFirstElementLocalNameAndNS(OMMetaFactory metaFactory, SOAPSpec spec) {
+    private final QName qname;
+    
+    public TestGetSOAPBodyFirstElementLocalNameAndNS(OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
         super(metaFactory, spec);
+        this.qname = qname;
+        addTestProperty("prefix", qname.getPrefix());
+        addTestProperty("uri", qname.getNamespaceURI());
     }
 
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.getDefaultEnvelope();
-        OMElement bodyElement = soapFactory.createOMElement("myOperation", "urn:ns", "ns");
+        OMElement bodyElement = soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix());
         envelope.getBody().addChild(bodyElement);
-        assertEquals(bodyElement.getLocalName(), envelope.getSOAPBodyFirstElementLocalName());
-        assertEquals(bodyElement.getNamespace(), envelope.getSOAPBodyFirstElementNS());
+        assertEquals(qname.getLocalPart(), envelope.getSOAPBodyFirstElementLocalName());
+        OMNamespace ns = envelope.getSOAPBodyFirstElementNS();
+        if (qname.getNamespaceURI().length() == 0) {
+            assertNull(ns);
+        } else {
+            assertEquals(qname.getNamespaceURI(), ns.getNamespaceURI());
+            assertEquals(qname.getPrefix(), ns.getPrefix());
+        }
     }
 }

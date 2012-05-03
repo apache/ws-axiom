@@ -20,6 +20,7 @@ package org.apache.axiom.ts.soap.envelope;
 
 import java.io.StringReader;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMElement;
@@ -38,8 +39,13 @@ import org.apache.axiom.ts.soap.SOAPTestCase;
  * the name of the element without actually instantiating the corresponding {@link OMElement}.
  */
 public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTestCase {
-    public TestGetSOAPBodyFirstElementLocalNameAndNSWithParser(OMMetaFactory metaFactory, SOAPSpec spec) {
+    private final QName qname;
+    
+    public TestGetSOAPBodyFirstElementLocalNameAndNSWithParser(OMMetaFactory metaFactory, SOAPSpec spec, QName qname) {
         super(metaFactory, spec);
+        this.qname = qname;
+        addTestProperty("prefix", qname.getPrefix());
+        addTestProperty("uri", qname.getNamespaceURI());
     }
 
     protected void runTest() throws Throwable {
@@ -47,13 +53,18 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTes
         // doesn't contain any unwanted whitespace.
         SOAPFactory factory = spec.getFactory(metaFactory);
         SOAPEnvelope orgEnvelope = factory.getDefaultEnvelope();
-        OMNamespace ns = factory.createOMNamespace("urn:test", "ns");
-        factory.createOMElement("echo", ns, orgEnvelope.getBody());
+        orgEnvelope.getBody().addChild(soapFactory.createOMElement(qname.getLocalPart(), qname.getNamespaceURI(), qname.getPrefix()));
         String message = orgEnvelope.toString();
         
         SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory, new StringReader(message)).getSOAPEnvelope();
-        assertEquals("echo", envelope.getSOAPBodyFirstElementLocalName());
-        assertEquals(ns, envelope.getSOAPBodyFirstElementNS());
+        assertEquals(qname.getLocalPart(), envelope.getSOAPBodyFirstElementLocalName());
+        OMNamespace ns = envelope.getSOAPBodyFirstElementNS();
+        if (qname.getNamespaceURI().length() == 0) {
+            assertNull(ns);
+        } else {
+            assertEquals(qname.getNamespaceURI(), ns.getNamespaceURI());
+            assertEquals(qname.getPrefix(), ns.getPrefix());
+        }
         
         // Also request an XMLStreamReader. The LLOM implementation triggers some special processing
         // in this case (because the getSOAPBodyFirstElementXXX calls put the builder in lookahead
@@ -64,8 +75,16 @@ public class TestGetSOAPBodyFirstElementLocalNameAndNSWithParser extends SOAPTes
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals("Body", reader.getLocalName());
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-        assertEquals("echo", reader.getLocalName());
-        assertEquals("ns", reader.getPrefix());
-        assertEquals("urn:test", reader.getNamespaceURI());
+        assertEquals(qname.getLocalPart(), reader.getLocalName());
+        if (qname.getNamespaceURI().length() == 0) {
+            assertNull(reader.getNamespaceURI());
+        } else {
+            assertEquals(qname.getNamespaceURI(), reader.getNamespaceURI());
+        }
+        if (qname.getPrefix().length() == 0) {
+            assertNull(reader.getPrefix());
+        } else {
+            assertEquals(qname.getPrefix(), reader.getPrefix());
+        }
     }
 }

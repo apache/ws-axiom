@@ -192,9 +192,12 @@ public abstract class SOAPBodyImpl extends SOAPElement
             if (lookAheadSuccessful) {
                 this.lookAheadLocalName = soapBuilder.getName();
                 String ns = soapBuilder.getNamespace();
-                ns = (ns == null) ? "" : ns;
-                this.lookAheadNS = factory.createOMNamespace(ns, 
-                                                             soapBuilder.getPrefix());
+                if (ns == null) {
+                    lookAheadNS = null;
+                } else {
+                    String prefix = soapBuilder.getPrefix();
+                    lookAheadNS = factory.createOMNamespace(ns, prefix == null ? "" : prefix);
+                }
             }
         }
         return lookAheadSuccessful;

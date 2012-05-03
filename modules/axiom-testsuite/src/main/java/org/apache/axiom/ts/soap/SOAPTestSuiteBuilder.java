@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.ts.soap;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
@@ -29,6 +31,11 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
     private static final String[] goodSOAPFiles = { TestConstants.WHITESPACE_MESSAGE,
         TestConstants.MINIMAL_MESSAGE, TestConstants.REALLY_BIG_MESSAGE,
         TestConstants.EMPTY_BODY_MESSAGE };
+    
+    private static final QName[] qnames = {
+        new QName("root"),
+        new QName("urn:test", "root", "p"),
+        new QName("urn:test", "root") };
     
     private final OMMetaFactory metaFactory;
     private final boolean supportsOMSourcedElement;
@@ -55,8 +62,11 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetBodyWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetHeader(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetHeaderWithParser(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestGetSOAPBodyFirstElementLocalNameAndNS(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestGetSOAPBodyFirstElementLocalNameAndNSWithParser(metaFactory, spec));
+        for (int i=0; i<qnames.length; i++) {
+            QName qname = qnames[i];
+            addTest(new org.apache.axiom.ts.soap.envelope.TestGetSOAPBodyFirstElementLocalNameAndNS(metaFactory, spec, qname));
+            addTest(new org.apache.axiom.ts.soap.envelope.TestGetSOAPBodyFirstElementLocalNameAndNSWithParser(metaFactory, spec, qname));
+        }
         addTest(new org.apache.axiom.ts.soap.envelope.TestHasFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestHasFaultWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPEnvelope(metaFactory, spec));
