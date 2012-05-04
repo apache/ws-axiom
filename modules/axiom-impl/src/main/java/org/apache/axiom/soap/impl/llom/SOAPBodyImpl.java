@@ -96,15 +96,19 @@ public abstract class SOAPBodyImpl extends SOAPElement
             return true;
         } else {
             // Set hasSOAPFault if it matches the name matches a SOAP Fault
-            String name = this.getFirstElementLocalName();
-            if (SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(name)) {
-                OMNamespace ns = this.getFirstElementNS();
-                if (ns != null &&
-                    (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()) ||
-                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()))) {
+            if (hasLookahead()) {
+                if (SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(lookAheadLocalName)) {
+                    if (lookAheadNS != null &&
+                        (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(lookAheadNS.getNamespaceURI()) ||
+                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(lookAheadNS.getNamespaceURI()))) {
+                        hasSOAPFault = true;
+                    }                                                             
+                }
+            } else {
+                if (getFirstElement() instanceof SOAPFault) {
                     hasSOAPFault = true;
-                }                                                             
-            } 
+                }
+            }
             return hasSOAPFault;
         }
     }
