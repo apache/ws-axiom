@@ -41,19 +41,18 @@ public class TestName1QualifiedPrefix extends OMSourcedElementTest {
     protected void runTest() throws Throwable {
         OMFactory f = metaFactory.getOMFactory();
 
-        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        // Create OMSE with an unknown prefix
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
-        OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "");
+        OMNamespace ns = f.createOMNamespace("http://www.sosnoski.com/uwjws/library", null);
         OMElement element =
                 f.createOMElement(new TestDataSource(testDocument2), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
-        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        // Test getting the local name and namespace URI. This should used not result in expansion
         assertTrue(element.getLocalName().equals("library"));
         assertTrue(element.getNamespace().getNamespaceURI().equals(
                 "http://www.sosnoski.com/uwjws/library"));
-        assertTrue(element.getNamespace().getPrefix().equals(""));
 
         // Serialize and cache.  This should cause expansion and update the name to match the testDocument string
         StringWriter writer = new StringWriter();
