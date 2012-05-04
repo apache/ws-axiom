@@ -63,6 +63,15 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.body.TestAddFault2(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFaultWithParser(metaFactory, spec));
+        for (int i=0; i<qnames.length; i++) {
+            QName qname = qnames[i];
+            addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementLocalNameWithParser(metaFactory, spec,
+                    qname, supportsBodyElementNameOptimization));
+            addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementNSWithParser(metaFactory, spec,
+                    qname, supportsBodyElementNameOptimization));
+            addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParserNoFault(metaFactory, spec,
+                    qname, supportsBodyElementNameOptimization));
+        }
         addTest(new org.apache.axiom.ts.soap.body.TestHasFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParser(metaFactory, spec));
         if (supportsBodyElementNameOptimization) {
