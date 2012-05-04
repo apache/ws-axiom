@@ -23,22 +23,19 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDataSourceExt;
-import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 
 /**
- * Base class for {@link OMDataSourceExt} implementations that can easily produce the content as an
- * {@link XMLStreamReader} and that don't implement any kind of optimization for serializing the
- * content.
+ * Base class for {@link OMDataSourceExt} implementations that can easily serialize the content to
+ * an {@link XMLStreamWriter} but that are unable to produce the content as an
+ * {@link XMLStreamReader}.
  */
-public abstract class AbstractPullOMDataSource extends AbstractOMDataSource {
-    public final boolean isDestructiveWrite() {
-        // Since we serialize by copying the events from the XMLStreamReader returned by getReader(),
-        // obviously write is destructive if and only if read is destructiveñ
-        return isDestructiveRead();
+public abstract class AbstractPushOMDataSource extends AbstractOMDataSource {
+    public final boolean isDestructiveRead() {
+        return isDestructiveWrite();
     }
 
-    public final void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException {
-        StreamingOMSerializer serializer = new StreamingOMSerializer();
-        serializer.serialize(getReader(), xmlWriter);
+    public XMLStreamReader getReader() throws XMLStreamException {
+        // TODO: returning null here for the moment; for completeness we should serialize to a byte stream and create an XMLStreamReader from it
+        return null;
     }
 }
