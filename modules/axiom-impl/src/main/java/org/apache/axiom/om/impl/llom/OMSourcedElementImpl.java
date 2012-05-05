@@ -286,11 +286,24 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             }
             if (definedNamespaceSet) {
                 String readerURI = readerFromDS.getNamespaceURI();
-                readerURI = (readerURI == null) ? "" : readerURI;
-                String uri = (getNamespace() == null) ? "" : getNamespace().getNamespaceURI();
+                if (readerURI == null) {
+                    readerURI = "";
+                }
+                String uri = definedNamespace == null ? "" : definedNamespace.getNamespaceURI();
                 if (!readerURI.equals(uri)) {
                     throw new OMException("Element namespace from data source is " +
                             readerURI + ", not the expected " + uri);
+                }
+                if (!(definedNamespace instanceof DeferredNamespace)) {
+                    String readerPrefix = readerFromDS.getPrefix();
+                    if (readerPrefix == null) {
+                        readerPrefix = "";
+                    }
+                    String prefix = definedNamespace == null ? "" : definedNamespace.getPrefix();
+                    if (!readerPrefix.equals(prefix)) {
+                        throw new OMException("Element prefix from data source is '" +
+                                readerPrefix + "', not the expected '" + prefix + "'");
+                    }
                 }
             }
 
