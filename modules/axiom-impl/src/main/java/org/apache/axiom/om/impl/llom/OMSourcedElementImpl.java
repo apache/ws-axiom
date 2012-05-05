@@ -273,39 +273,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 throw new OMException("Error parsing data source document for element " + getLocalName(), ex);
             }
 
-            String readerLocalName = readerFromDS.getLocalName();
-            if (localName == null) {
-                // The local name was not known in advance; initialize it from the reader
-                localName = readerLocalName;
-            } else {
-                // Make sure element local name and namespace matches what was expected
-                if (!readerLocalName.equals(getLocalName())) {
-                    throw new OMException("Element name from data source is " +
-                            readerLocalName + ", not the expected " + getLocalName());
-                }
-            }
-            if (definedNamespaceSet) {
-                String readerURI = readerFromDS.getNamespaceURI();
-                if (readerURI == null) {
-                    readerURI = "";
-                }
-                String uri = definedNamespace == null ? "" : definedNamespace.getNamespaceURI();
-                if (!readerURI.equals(uri)) {
-                    throw new OMException("Element namespace from data source is " +
-                            readerURI + ", not the expected " + uri);
-                }
-                if (!(definedNamespace instanceof DeferredNamespace)) {
-                    String readerPrefix = readerFromDS.getPrefix();
-                    if (readerPrefix == null) {
-                        readerPrefix = "";
-                    }
-                    String prefix = definedNamespace == null ? "" : definedNamespace.getPrefix();
-                    if (!readerPrefix.equals(prefix)) {
-                        throw new OMException("Element prefix from data source is '" +
-                                readerPrefix + "', not the expected '" + prefix + "'");
-                    }
-                }
-            }
+            validateName(readerFromDS.getPrefix(), readerFromDS.getLocalName(), readerFromDS.getNamespaceURI());
 
             // Set the builder for this element. Note that the StAXOMBuilder constructor will also
             // update the namespace of the element, so we don't need to do that here.
@@ -318,6 +286,50 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
+    /**
+     * Validates that the actual name of the element obtained from StAX matches the information
+     * specified when the sourced element was constructed or retrieved through the
+     * {@link QNameAwareOMDataSource} interface. Also updates the local name if necessary. Note that
+     * the namespace information is not updated; this is the responsibility of the builder (and is
+     * done at the same time as namespace repairing).
+     * 
+     * @param staxPrefix
+     * @param staxLocalName
+     * @param staxNamespaceURI
+     */
+    void validateName(String staxPrefix, String staxLocalName, String staxNamespaceURI) {
+        if (localName == null) {
+            // The local name was not known in advance; initialize it from the reader
+            localName = staxLocalName;
+        } else {
+            // Make sure element local name and namespace matches what was expected
+            if (!staxLocalName.equals(localName)) {
+                throw new OMException("Element name from data source is " +
+                        staxLocalName + ", not the expected " + localName);
+            }
+        }
+        if (definedNamespaceSet) {
+            if (staxNamespaceURI == null) {
+                staxNamespaceURI = "";
+            }
+            String namespaceURI = definedNamespace == null ? "" : definedNamespace.getNamespaceURI();
+            if (!staxNamespaceURI.equals(namespaceURI)) {
+                throw new OMException("Element namespace from data source is " +
+                        staxNamespaceURI + ", not the expected " + namespaceURI);
+            }
+            if (!(definedNamespace instanceof DeferredNamespace)) {
+                if (staxPrefix == null) {
+                    staxPrefix = "";
+                }
+                String prefix = definedNamespace == null ? "" : definedNamespace.getPrefix();
+                if (!staxPrefix.equals(prefix)) {
+                    throw new OMException("Element prefix from data source is '" +
+                            staxPrefix + "', not the expected '" + prefix + "'");
+                }
+            }
+        }
+    }
+    
     /**
      * Check if element has been expanded into tree.
      *
