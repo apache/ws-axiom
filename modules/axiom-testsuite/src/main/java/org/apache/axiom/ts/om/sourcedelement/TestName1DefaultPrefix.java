@@ -41,20 +41,19 @@ public class TestName1DefaultPrefix extends OMSourcedElementTest {
     protected void runTest() throws Throwable {
         OMFactory f = metaFactory.getOMFactory();
 
-        // Create OMSE with a DUMMYPREFIX prefix even though the underlying element uses the default prefix
+        // Create OMSE with an unknown prefix
         OMNamespace rootNS = f.createOMNamespace("http://sampleroot", "rootPrefix");
         OMNamespace ns =
-                f.createOMNamespace("http://www.sosnoski.com/uwjws/library", "DUMMYPREFIX");
+                f.createOMNamespace("http://www.sosnoski.com/uwjws/library", null);
         OMElement element =
                 f.createOMElement(new TestDataSource(testDocument), "library", ns);
         OMElement root = f.createOMElement("root", rootNS);
         root.addChild(element);
 
-        // Test getting the namespace, localpart and prefix.  This should used not result in expansion
+        // Test getting the local name and namespace URI. This should used not result in expansion
         assertTrue(element.getLocalName().equals("library"));
         assertTrue(element.getNamespace().getNamespaceURI().equals(
                 "http://www.sosnoski.com/uwjws/library"));
-        assertTrue(element.getNamespace().getPrefix().equals("DUMMYPREFIX"));
 
         // Serialize and cache.  This should cause expansion.  The prefix should be updated to match the testDocument string
         StringWriter writer = new StringWriter();
@@ -68,8 +67,6 @@ public class TestName1DefaultPrefix extends OMSourcedElementTest {
                 "http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
         assertTrue(element.getDefaultNamespace() != null);
-        assertTrue(result.indexOf("DUMMYPREFIX") <
-                0);  // Make sure that the serialized string does not contain DUMMYPREFIX
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
 
         // Serialize again
@@ -84,8 +81,6 @@ public class TestName1DefaultPrefix extends OMSourcedElementTest {
                 "http://www.sosnoski.com/uwjws/library"));
         assertTrue(element.getNamespace().getPrefix().equals(""));
         assertTrue(element.getDefaultNamespace() != null);
-        assertTrue(result.indexOf("DUMMYPREFIX") <
-                0);  // Make sure that the serialized string does not contain DUMMYPREFIX
         assertTrue("Serialized text error" + result, result.indexOf("1930110111") > 0);
     }
 }
