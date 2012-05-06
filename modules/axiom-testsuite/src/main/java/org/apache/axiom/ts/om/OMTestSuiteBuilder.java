@@ -348,6 +348,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized2(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetObject(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetTextAsStreamWithNonDestructiveOMDataSource(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetXMLStreamReaderWithPushOMDataSource(metaFactory, true));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetXMLStreamReaderWithPushOMDataSource(metaFactory, false));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestInputStreamDS(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1DefaultPrefix(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName1QualifiedPrefix(metaFactory));
@@ -378,6 +380,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSetLocalName(metaFactory, true));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestWrappedTextNodeOMDataSourceFromReader(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestWriteTextToWithNonDestructiveOMDataSource(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteAttributeNoNamespace(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteStartElementAutoPrefix(metaFactory));
         }
         addTest(new org.apache.axiom.ts.om.pi.TestDigest(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestBase64Streaming(metaFactory));

@@ -22,17 +22,19 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.builder.BuilderUtil;
 import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 // TODO: need to seed the namespace context with the namespace context from the parent!
 public class PushOMBuilder extends AbstractXMLStreamWriter {
+    private final OMSourcedElementImpl root;
     private final OMFactory factory;
     private OMElement parent;
-    private int depth;
     
     public PushOMBuilder(OMSourcedElementImpl root) {
+        this.root = root;
         factory = root.getOMFactory();
-        parent = root;
     }
     
     public Object getProperty(String name) throws IllegalArgumentException {
@@ -40,19 +42,19 @@ public class PushOMBuilder extends AbstractXMLStreamWriter {
         throw new UnsupportedOperationException();
     }
 
-    protected void doWriteStartDocument() throws XMLStreamException {
+    protected void doWriteStartDocument() {
         // Do nothing
     }
 
-    protected void doWriteStartDocument(String encoding, String version) throws XMLStreamException {
+    protected void doWriteStartDocument(String encoding, String version) {
         // Do nothing
     }
 
-    protected void doWriteStartDocument(String version) throws XMLStreamException {
+    protected void doWriteStartDocument(String version) {
         // Do nothing
     }
 
-    protected void doWriteEndDocument() throws XMLStreamException {
+    protected void doWriteEndDocument() {
         // Do nothing
     }
 
@@ -60,10 +62,14 @@ public class PushOMBuilder extends AbstractXMLStreamWriter {
         throw new XMLStreamException("A DTD must not appear in element content");
     }
 
-    protected void doWriteStartElement(String prefix, String localName, String namespaceURI)
-            throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+    protected void doWriteStartElement(String prefix, String localName, String namespaceURI) {
+        if (parent == null) {
+            root.validateName(prefix, localName, namespaceURI);
+            parent = root;
+        } else {
+            parent = factory.createOMElement(localName, null, parent);
+        }
+        BuilderUtil.setNamespace(parent, namespaceURI, prefix, false);
     }
 
     protected void doWriteStartElement(String localName) throws XMLStreamException {
@@ -71,13 +77,15 @@ public class PushOMBuilder extends AbstractXMLStreamWriter {
         throw new UnsupportedOperationException();
     }
 
-    protected void doWriteEndElement() throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+    protected void doWriteEndElement() {
+        if (parent == root) {
+            parent = null;
+        } else {
+            parent = (OMElement)parent.getParent();
+        }
     }
 
-    protected void doWriteEmptyElement(String prefix, String localName, String namespaceURI)
-            throws XMLStreamException {
+    protected void doWriteEmptyElement(String prefix, String localName, String namespaceURI) {
         doWriteStartElement(prefix, localName, namespaceURI);
         doWriteEndElement();
     }
@@ -87,45 +95,38 @@ public class PushOMBuilder extends AbstractXMLStreamWriter {
         throw new UnsupportedOperationException();
     }
 
-    protected void doWriteAttribute(String prefix, String namespaceURI, String localName,
-            String value) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+    protected void doWriteAttribute(String prefix, String namespaceURI, String localName, String value) {
+        BuilderUtil.processAttribute(parent, prefix, namespaceURI, localName, value, null);
     }
 
     protected void doWriteAttribute(String localName, String value) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+        doWriteAttribute(null, null, localName, value);
     }
 
-    protected void doWriteNamespace(String prefix, String namespaceURI) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+    protected void doWriteNamespace(String prefix, String namespaceURI) {
+        // Note that the namespace declaration may already have been added automatically by writeStartElement
+        // or writeAttribute; we count on declareNamespace to do the necessary checks
+        parent.declareNamespace(namespaceURI == null ? "" : namespaceURI, prefix == null ? "" : prefix);
     }
 
-    protected void doWriteDefaultNamespace(String namespaceURI) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+    protected void doWriteDefaultNamespace(String namespaceURI) {
+        parent.declareDefaultNamespace(namespaceURI == null ? "" : namespaceURI);
     }
 
-    protected void doWriteCharacters(char[] text, int start, int len) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+    protected void doWriteCharacters(char[] text, int start, int len) {
+        doWriteCharacters(new String(text, start, len));
     }
 
-    protected void doWriteCharacters(String text) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+    protected void doWriteCharacters(String text) {
+        factory.createOMText(parent, text);
     }
 
-    protected void doWriteCData(String data) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+    protected void doWriteCData(String data) {
+        factory.createOMText(parent, data, OMNode.CDATA_SECTION_NODE);
     }
 
-    protected void doWriteComment(String data) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+    protected void doWriteComment(String data) {
+        factory.createOMComment(parent, data);
     }
 
     protected void doWriteEntityRef(String name) throws XMLStreamException {
@@ -133,15 +134,12 @@ public class PushOMBuilder extends AbstractXMLStreamWriter {
         throw new UnsupportedOperationException();
     }
 
-    protected void doWriteProcessingInstruction(String target, String data)
-            throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+    protected void doWriteProcessingInstruction(String target, String data) {
+        factory.createOMProcessingInstruction(parent, target, data);
     }
 
-    protected void doWriteProcessingInstruction(String target) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+    protected void doWriteProcessingInstruction(String target) {
+        doWriteProcessingInstruction(target, "");
     }
 
     public void flush() throws XMLStreamException {

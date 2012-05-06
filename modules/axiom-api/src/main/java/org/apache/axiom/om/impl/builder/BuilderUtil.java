@@ -18,14 +18,19 @@
  */
 package org.apache.axiom.om.impl.builder;
 
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.impl.OMElementEx;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 
-class BuilderUtil {
+/**
+ * For internal use only.
+ */
+public class BuilderUtil {
     private BuilderUtil() {}
     
-    static void setNamespace(OMElement element, String namespaceURI, String prefix, boolean namespaceURIInterning) {
+    public static void setNamespace(OMElement element, String namespaceURI, String prefix, boolean namespaceURIInterning) {
         if (prefix == null) {
             prefix = "";
         }
@@ -47,6 +52,31 @@ class BuilderUtil {
         }
         if (namespace != null && namespaceURI.length() > 0) {
             element.setNamespaceWithNoFindInCurrentScope(namespace);
+        }
+    }
+    
+    public static void processAttribute(OMElement element, String prefix, String namespaceURI, String localName, String value, String type) {
+        OMNamespace namespace = null;
+        if (namespaceURI != null && namespaceURI.length() > 0) {
+
+            // prefix being null means this elements has a default namespace or it has inherited
+            // a default namespace from its parent
+            namespace = element.findNamespace(namespaceURI, prefix);
+            if (namespace == null) {
+                if (prefix == null || "".equals(prefix)) {
+                    prefix = OMSerializerUtil.getNextNSPrefix();
+                }
+                namespace = element.declareNamespace(namespaceURI, prefix);
+            }
+        }
+
+        // todo if the attributes are supposed to namespace qualified all the time
+        // todo then this should throw an exception here
+
+        OMAttribute attr = element.addAttribute(localName,
+                          value, namespace);
+        if (type != null) {
+            attr.setAttributeType(type);
         }
     }
 }
