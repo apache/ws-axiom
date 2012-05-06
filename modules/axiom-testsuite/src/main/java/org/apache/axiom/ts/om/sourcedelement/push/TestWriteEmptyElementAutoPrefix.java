@@ -28,11 +28,11 @@ import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
 /**
- * Tests that {@link XMLStreamWriter#writeStartElement(String, String)} automatically selects an
+ * Tests that {@link XMLStreamWriter#writeEmptyElement(String, String)} automatically selects an
  * appropriate prefix.
  */
-public class TestWriteStartElementAutoPrefix extends AxiomTestCase {
-    public TestWriteStartElementAutoPrefix(OMMetaFactory metaFactory) {
+public class TestWriteEmptyElementAutoPrefix extends AxiomTestCase {
+    public TestWriteEmptyElementAutoPrefix(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
@@ -43,9 +43,7 @@ public class TestWriteStartElementAutoPrefix extends AxiomTestCase {
                 writer.writeStartElement(null, "root", null);
                 writer.writeNamespace("p", "urn:test");
                 writer.setPrefix("p", "urn:test");
-                writer.writeStartElement("urn:test", "child");
-                writer.writeCharacters("test");
-                writer.writeEndElement();
+                writer.writeEmptyElement("urn:test", "child");
                 writer.writeEndElement();
             }
             
