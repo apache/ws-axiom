@@ -49,51 +49,56 @@ public interface OMDataSourceExt extends OMDataSource {
      * If Boolean.TRUE, this indicates that expansion is needed to 
      * obtain the actual prefix name. 
      */
-    public static final String LOSSY_PREFIX = "lossyPrefix";
+    String LOSSY_PREFIX = "lossyPrefix";
 
     /**
      * Serializes element data directly to stream.
+     * <p>
      * Assumes that the backing object is destroyed during serialization if isDestructiveWrite
-     * @see OMDataSourceExt
-     *
-     * @param output destination stream for element XML text
-     * @param format Output format information. The implementation must use this information
-     *               to choose the correct character set encoding when writing to the
-     *               output stream. This parameter must not be null.
+     * 
+     * @param output
+     *            destination stream for element XML text
+     * @param format
+     *            Output format information. The implementation must use this information to choose
+     *            the correct character set encoding when writing to the output stream. This
+     *            parameter must not be null.
      * @throws XMLStreamException
      */
-    public void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException;
+    void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException;
 
     /**
      * Serializes element data directly to writer.
+     * <p>
      * Assumes that the backing object is destroyed during serialization isDestructiveWrite
-     * @see OMDataSourceExt
-     *
-     * @param writer destination writer for element XML text
-     * @param format output format information (<code>null</code> if none; may
-     * be ignored if not supported by data binding even if supplied)
+     * 
+     * @param writer
+     *            destination writer for element XML text
+     * @param format
+     *            output format information (<code>null</code> if none; may be ignored if not
+     *            supported by data binding even if supplied)
      * @throws XMLStreamException
      */
-    public void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException;
+    void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException;
 
     /**
      * Serializes element data directly to StAX writer.
+     * <p>
      * Assumes that the backing object is destroyed during serialization isDestructiveWrite
-     * @see OMDataSourceExt
-     *
-     * @param xmlWriter destination writer
+     * 
+     * @param xmlWriter
+     *            destination writer
      * @throws XMLStreamException
      */
-    public void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException;
+    void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException;
 
     /**
-     * Get parser for element data. In the general case this may require the
-     * data source to serialize data as XML text and then parse that text.
-     *
+     * Get parser for element data. In the general case this may require the data source to
+     * serialize data as XML text and then parse that text.
+     * 
      * @return element parser
      * @throws XMLStreamException
      */
-    public XMLStreamReader getReader() throws XMLStreamException;
+    XMLStreamReader getReader() throws XMLStreamException;
     
     /**
      * Get the object that backs this data source. Application code should in general not call this
@@ -106,7 +111,7 @@ public interface OMDataSourceExt extends OMDataSource {
      * @return the backing object, or <code>null</code> if the data source has no backing object or
      *         if the backing object can't be accessed in a safe way
      */
-    public Object getObject();
+    Object getObject();
     
     /**
      * Returns true if reading the backing object is destructive.
@@ -115,7 +120,7 @@ public interface OMDataSourceExt extends OMDataSource {
      * expansion is needed when reading the OMDataSourceExt.
      * @return boolean
      */
-    public boolean isDestructiveRead();
+    boolean isDestructiveRead();
     
     /**
      * Returns true if writing the backing object is destructive.
@@ -124,14 +129,14 @@ public interface OMDataSourceExt extends OMDataSource {
      * expansion is needed when writing the OMDataSourceExt.
      * @return boolean
      */
-    public boolean isDestructiveWrite();
+    boolean isDestructiveWrite();
     
     /**
      * Returns a InputStream representing the xml data
      * @param encoding String encoding of InputStream
      * @return InputStream
      */
-    public InputStream getXMLInputStream(String encoding) throws UnsupportedEncodingException;
+    InputStream getXMLInputStream(String encoding) throws UnsupportedEncodingException;
     
     /**
      * Returns a byte[] representing the xml data
@@ -139,32 +144,32 @@ public interface OMDataSourceExt extends OMDataSource {
      * @return byte[]
      * @see #getXMLInputStream(String)
      */
-    public byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException;
+    byte[] getXMLBytes(String encoding) throws UnsupportedEncodingException;
     
     /**
      * Close the DataSource and free its resources.
      */
-    public void close();
+    void close();
     
     /**
      * Create a copy of the OMDataSourceExt
      * @return OMDataSourceExt
      */
-    public OMDataSourceExt copy();
+    OMDataSourceExt copy();
     
     /**
      * Returns true if property is set
      * @param key
      * @return TODO
      */
-    public boolean hasProperty(String key);
+    boolean hasProperty(String key);
     
     /**
      * Query a property stored on the OMDataSource
      * @param key
      * @return value or null
      */
-    public Object getProperty(String key);
+    Object getProperty(String key);
     
     /**
      * Set a property on the OMDataSource
@@ -172,5 +177,5 @@ public interface OMDataSourceExt extends OMDataSource {
      * @param value
      * @return old property object or null
      */
-    public Object setProperty(String key, Object value);
+    Object setProperty(String key, Object value);
 }
