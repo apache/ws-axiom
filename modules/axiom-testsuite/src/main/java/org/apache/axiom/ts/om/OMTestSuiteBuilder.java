@@ -381,7 +381,12 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestWrappedTextNodeOMDataSourceFromReader(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestWriteTextToWithNonDestructiveOMDataSource(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteAttributeNoNamespace(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteDataHandler(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteDataHandlerProvider(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteEmptyElementAutoPrefix(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteNamespace(metaFactory, "", ""));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteNamespace(metaFactory, "", "urn:test"));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteNamespace(metaFactory, "p", "urn:test"));
             addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteStartElementAutoPrefix(metaFactory));
         }
         addTest(new org.apache.axiom.ts.om.pi.TestDigest(metaFactory));

@@ -18,16 +18,22 @@
  */
 package org.apache.axiom.om.impl.llom;
 
+import java.io.IOException;
+
+import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.builder.BuilderUtil;
 import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 // TODO: need to seed the namespace context with the namespace context from the parent!
-public class PushOMBuilder extends AbstractXMLStreamWriter {
+public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandlerWriter {
     private final OMSourcedElementImpl root;
     private final OMFactory factory;
     private OMElement parent;
@@ -38,8 +44,11 @@ public class PushOMBuilder extends AbstractXMLStreamWriter {
     }
     
     public Object getProperty(String name) throws IllegalArgumentException {
-        // TODO
-        throw new UnsupportedOperationException();
+        if (DataHandlerWriter.PROPERTY.equals(name)) {
+            return this;
+        } else {
+            throw new IllegalArgumentException("Unsupported property " + name);
+        }
     }
 
     protected void doWriteStartDocument() {
@@ -104,9 +113,16 @@ public class PushOMBuilder extends AbstractXMLStreamWriter {
     }
 
     protected void doWriteNamespace(String prefix, String namespaceURI) {
+        if (namespaceURI == null) {
+            namespaceURI = "";
+        }
         // Note that the namespace declaration may already have been added automatically by writeStartElement
         // or writeAttribute; we count on declareNamespace to do the necessary checks
-        parent.declareNamespace(namespaceURI == null ? "" : namespaceURI, prefix == null ? "" : prefix);
+        if (prefix == null || prefix.length() == 0) {
+            parent.declareDefaultNamespace(namespaceURI);
+        } else {
+            parent.declareNamespace(namespaceURI, prefix);
+        }
     }
 
     protected void doWriteDefaultNamespace(String namespaceURI) {
@@ -148,5 +164,19 @@ public class PushOMBuilder extends AbstractXMLStreamWriter {
 
     public void close() throws XMLStreamException {
         // Do nothing
+    }
+
+    public void writeDataHandler(DataHandler dataHandler, String contentID, boolean optimize)
+            throws IOException, XMLStreamException {
+        OMText child = factory.createOMText(dataHandler, optimize);
+        if (contentID != null) {
+            child.setContentID(contentID);
+        }
+        parent.addChild(child);
+    }
+
+    public void writeDataHandler(DataHandlerProvider dataHandlerProvider, String contentID,
+            boolean optimize) throws IOException, XMLStreamException {
+        parent.addChild(factory.createOMText(contentID, dataHandlerProvider, optimize));
     }
 }
