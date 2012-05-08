@@ -35,6 +35,10 @@ import java.io.Writer;
 public interface OMDataSource {
     /**
      * Serializes element data directly to stream.
+     * <p>
+     * It is assumed that this method consumed the content (i.e. destroys the backing object) unless
+     * the data source also implements {@link OMDataSourceExt} and
+     * {@link OMDataSourceExt#isDestructiveWrite()} returns <code>false</code>.
      * 
      * @param output
      *            destination stream for element XML text
@@ -48,6 +52,10 @@ public interface OMDataSource {
 
     /**
      * Serializes element data directly to writer.
+     * <p>
+     * It is assumed that this method consumed the content (i.e. destroys the backing object) unless
+     * the data source also implements {@link OMDataSourceExt} and
+     * {@link OMDataSourceExt#isDestructiveWrite()} returns <code>false</code>.
      * 
      * @param writer
      *            destination writer for element XML text
@@ -60,6 +68,10 @@ public interface OMDataSource {
 
     /**
      * Serializes element data directly to StAX writer.
+     * <p>
+     * It is assumed that this method consumed the content (i.e. destroys the backing object) unless
+     * the data source also implements {@link OMDataSourceExt} and
+     * {@link OMDataSourceExt#isDestructiveWrite()} returns <code>false</code>.
      * 
      * @param xmlWriter
      *            destination writer
@@ -71,6 +83,10 @@ public interface OMDataSource {
     /**
      * Get parser for element data. In the general case this may require the data source to
      * serialize data as XML text and then parse that text.
+     * <p>
+     * It is assumed that this method consumed the content (i.e. destroys the backing object) unless
+     * the data source also implements {@link OMDataSourceExt} and
+     * {@link OMDataSourceExt#isDestructiveRead()} returns <code>false</code>.
      * 
      * @return element parser
      * @throws XMLStreamException
