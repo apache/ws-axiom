@@ -433,12 +433,16 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
+        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
+        addNamespaceDeclaration(ns);
+        return ns;
+    }
+    
+    void addNamespaceDeclaration(OMNamespace ns) {
         if (namespaces == null) {
             this.namespaces = new HashMap(5);
         }
-        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
-        namespaces.put(prefix, ns);
-        return ns;
+        namespaces.put(ns.getPrefix(), ns);
     }
 
     /** @return Returns namespace. */
@@ -649,9 +653,6 @@ public class OMElementImpl extends OMNodeImpl
                     attr.getLocalName(), attr.getNamespace(), attr.getAttributeValue(), attr.getOMFactory());
         }
 
-        if (attributes == null) {
-            this.attributes = new LinkedHashMap(5);
-        }
         OMNamespace namespace = attr.getNamespace();
         if (namespace != null) {
             String uri = namespace.getNamespaceURI();
@@ -664,6 +665,14 @@ public class OMElementImpl extends OMNodeImpl
             }
         }
 
+        appendAttribute(attr);
+        return attr;
+    }
+    
+    void appendAttribute(OMAttribute attr) {
+        if (attributes == null) {
+            this.attributes = new LinkedHashMap(5);
+        }
         // Set the owner element of the attribute
         ((OMAttributeImpl)attr).owner = this;
         OMAttributeImpl oldAttr = (OMAttributeImpl)attributes.put(attr.getQName(), attr);
@@ -671,7 +680,6 @@ public class OMElementImpl extends OMNodeImpl
         if (oldAttr != null) {
             oldAttr.owner = null;
         }
-        return attr;
     }
 
     public void removeAttribute(OMAttribute attr) {

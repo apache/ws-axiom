@@ -25,11 +25,12 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.builder.BuilderUtil;
 import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 // TODO: need to seed the namespace context with the namespace context from the parent!
@@ -71,14 +72,40 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
         throw new XMLStreamException("A DTD must not appear in element content");
     }
 
+    private OMNamespace getOMNamespace(String prefix, String namespaceURI, boolean isDecl) {
+        if (prefix == null) {
+            prefix = "";
+        }
+        if (namespaceURI == null) {
+            namespaceURI = "";
+        }
+        if (!isDecl && namespaceURI.length() == 0) {
+            return null;
+        } else {
+            if (parent != null) {
+                // If possible, locate an existing OMNamespace object
+                OMNamespace ns = parent.findNamespaceURI(prefix);
+                if (ns != null && ns.getNamespaceURI().equals(namespaceURI)) {
+                    return ns;
+                }
+            }
+            return factory.createOMNamespace(namespaceURI, prefix);
+        }
+    }
+    
     protected void doWriteStartElement(String prefix, String localName, String namespaceURI) {
+        // Get the OMNamespace object before we change the parent
+        OMNamespace ns = getOMNamespace(prefix, namespaceURI, false);
         if (parent == null) {
             root.validateName(prefix, localName, namespaceURI);
             parent = root;
         } else {
+            // We don't pass the namespace here in order to avoid creation of a namespace declaration
             parent = factory.createOMElement(localName, null, parent);
         }
-        BuilderUtil.setNamespace(parent, namespaceURI, prefix, false);
+        if (ns != null) {
+            parent.setNamespaceWithNoFindInCurrentScope(ns);
+        }
     }
 
     protected void doWriteStartElement(String localName) throws XMLStreamException {
@@ -105,7 +132,11 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteAttribute(String prefix, String namespaceURI, String localName, String value) {
-        BuilderUtil.processAttribute(parent, prefix, namespaceURI, localName, value, null);
+        OMAttribute attr = factory.createOMAttribute(localName, getOMNamespace(prefix, namespaceURI, false), value);
+        // Use the internal appendAttribute method instead of addAttribute in order to avoid
+        // automatic of a namespace declaration (the OMDataSource is required to produce well formed
+        // XML with respect to namespaces, so it will take care of the namespace declarations).
+        ((OMElementImpl)parent).appendAttribute(attr);
     }
 
     protected void doWriteAttribute(String localName, String value) throws XMLStreamException {
@@ -113,20 +144,11 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteNamespace(String prefix, String namespaceURI) {
-        if (namespaceURI == null) {
-            namespaceURI = "";
-        }
-        // Note that the namespace declaration may already have been added automatically by writeStartElement
-        // or writeAttribute; we count on declareNamespace to do the necessary checks
-        if (prefix == null || prefix.length() == 0) {
-            parent.declareDefaultNamespace(namespaceURI);
-        } else {
-            parent.declareNamespace(namespaceURI, prefix);
-        }
+        ((OMElementImpl)parent).addNamespaceDeclaration(getOMNamespace(prefix, namespaceURI, true));
     }
 
     protected void doWriteDefaultNamespace(String namespaceURI) {
-        parent.declareDefaultNamespace(namespaceURI == null ? "" : namespaceURI);
+        doWriteNamespace(null, namespaceURI);
     }
 
     protected void doWriteCharacters(char[] text, int start, int len) {

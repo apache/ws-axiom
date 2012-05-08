@@ -21,17 +21,20 @@ package org.apache.axiom.om.impl.builder;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
@@ -202,9 +205,31 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected void processAttributes(OMElement node) {
         int attribCount = parser.getAttributeCount();
         for (int i = 0; i < attribCount; i++) {
-            BuilderUtil.processAttribute(node, parser.getAttributePrefix(i),
-                    parser.getAttributeNamespace(i), parser.getAttributeLocalName(i),
-                    parser.getAttributeValue(i), parser.getAttributeType(i));
+            String uri = parser.getAttributeNamespace(i);
+            String prefix = parser.getAttributePrefix(i);
+
+
+            OMNamespace namespace = null;
+            if (uri != null && uri.length() > 0) {
+
+                // prefix being null means this elements has a default namespace or it has inherited
+                // a default namespace from its parent
+                namespace = node.findNamespace(uri, prefix);
+                if (namespace == null) {
+                    if (prefix == null || "".equals(prefix)) {
+                        prefix = OMSerializerUtil.getNextNSPrefix();
+                    }
+                    namespace = node.declareNamespace(uri, prefix);
+                }
+            }
+
+            // todo if the attributes are supposed to namespace qualified all the time
+            // todo then this should throw an exception here
+
+            OMAttribute attr = node.addAttribute(parser.getAttributeLocalName(i),
+                              parser.getAttributeValue(i), namespace);
+            attr.setAttributeType(parser.getAttributeType(i));
+            
         }
     }
 

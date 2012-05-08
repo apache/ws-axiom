@@ -383,6 +383,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.addNamespaceDeclaration(uri, prefix);
     }
 
+    void addNamespaceDeclaration(OMNamespace ns) {
+        super.addNamespaceDeclaration(ns);
+    }
+
     public void undeclarePrefix(String prefix) {
         forceExpand();
         super.undeclarePrefix(prefix);
@@ -436,6 +440,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public OMAttribute addAttribute(String attributeName, String value, OMNamespace namespace) {
         forceExpand();
         return super.addAttribute(attributeName, value, namespace);
+    }
+
+    void appendAttribute(OMAttribute attr) {
+        super.appendAttribute(attr);
     }
 
     public void removeAttribute(OMAttribute attr) {
