@@ -35,41 +35,59 @@ import java.io.Writer;
 public interface OMDataSource {
     /**
      * Serializes element data directly to stream.
-     *
-     * @param output destination stream for element XML text
-     * @param format Output format information. The implementation must use this information
-     *               to choose the correct character set encoding when writing to the
-     *               output stream. This parameter must not be null.
+     * <p>
+     * It is assumed that this method consumed the content (i.e. destroys the backing object) unless
+     * the data source also implements {@link OMDataSourceExt} and
+     * {@link OMDataSourceExt#isDestructiveWrite()} returns <code>false</code>.
+     * 
+     * @param output
+     *            destination stream for element XML text
+     * @param format
+     *            Output format information. The implementation must use this information to choose
+     *            the correct character set encoding when writing to the output stream. This
+     *            parameter must not be null.
      * @throws XMLStreamException
      */
-    void serialize(OutputStream output, OMOutputFormat format)
-            throws XMLStreamException;
+    void serialize(OutputStream output, OMOutputFormat format) throws XMLStreamException;
 
     /**
      * Serializes element data directly to writer.
-     *
-     * @param writer destination writer for element XML text
-     * @param format output format information (<code>null</code> if none; may be ignored if not
-     *               supported by data binding even if supplied)
+     * <p>
+     * It is assumed that this method consumed the content (i.e. destroys the backing object) unless
+     * the data source also implements {@link OMDataSourceExt} and
+     * {@link OMDataSourceExt#isDestructiveWrite()} returns <code>false</code>.
+     * 
+     * @param writer
+     *            destination writer for element XML text
+     * @param format
+     *            output format information (<code>null</code> if none; may be ignored if not
+     *            supported by data binding even if supplied)
      * @throws XMLStreamException
      */
-    void serialize(Writer writer, OMOutputFormat format)
-            throws XMLStreamException;
+    void serialize(Writer writer, OMOutputFormat format) throws XMLStreamException;
 
     /**
      * Serializes element data directly to StAX writer.
-     *
-     * @param xmlWriter destination writer
+     * <p>
+     * It is assumed that this method consumed the content (i.e. destroys the backing object) unless
+     * the data source also implements {@link OMDataSourceExt} and
+     * {@link OMDataSourceExt#isDestructiveWrite()} returns <code>false</code>.
+     * 
+     * @param xmlWriter
+     *            destination writer
      * @throws XMLStreamException
      */
     // TODO: specify whether the implementation MUST, MAY or MUST NOT write START_DOCUMENT and END_DOCUMENT events to the stream
-    void serialize(XMLStreamWriter xmlWriter)
-            throws XMLStreamException;
+    void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException;
 
     /**
      * Get parser for element data. In the general case this may require the data source to
      * serialize data as XML text and then parse that text.
-     *
+     * <p>
+     * It is assumed that this method consumed the content (i.e. destroys the backing object) unless
+     * the data source also implements {@link OMDataSourceExt} and
+     * {@link OMDataSourceExt#isDestructiveRead()} returns <code>false</code>.
+     * 
      * @return element parser
      * @throws XMLStreamException
      */
