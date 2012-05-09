@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.llom;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
@@ -26,6 +27,7 @@ import javax.xml.stream.XMLStreamException;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -33,15 +35,22 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
-// TODO: need to seed the namespace context with the namespace context from the parent!
 public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandlerWriter {
     private final OMSourcedElementImpl root;
     private final OMFactory factory;
     private OMElement parent;
     
-    public PushOMBuilder(OMSourcedElementImpl root) {
+    public PushOMBuilder(OMSourcedElementImpl root) throws XMLStreamException {
         this.root = root;
         factory = root.getOMFactory();
+        // Seed the namespace context with the namespace context from the parent
+        OMContainer parent = root.getParent();
+        if (parent instanceof OMElement) {
+            for (Iterator it = ((OMElement)parent).getNamespacesInScope(); it.hasNext(); ) {
+                OMNamespace ns = (OMNamespace)it.next();
+                setPrefix(ns.getPrefix(), ns.getNamespaceURI());
+            }
+        }
     }
     
     public Object getProperty(String name) throws IllegalArgumentException {
@@ -109,8 +118,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteStartElement(String localName) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeStartElement(String)");
     }
 
     protected void doWriteEndElement() {
@@ -127,8 +135,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteEmptyElement(String localName) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("OMDataSource#serialize(XMLStreamWriter) MUST NOT use XMLStreamWriter#writeEmptyElement(String)");
     }
 
     protected void doWriteAttribute(String prefix, String namespaceURI, String localName, String value) {
@@ -168,8 +175,8 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteEntityRef(String name) throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
+        // TODO: this is equivalent to what StAXOMBuilder does; however, it doesn't look correct
+        factory.createOMText(parent, name, OMNode.ENTITY_REFERENCE_NODE);
     }
 
     protected void doWriteProcessingInstruction(String target, String data) {

@@ -18,11 +18,16 @@
  */
 package org.apache.axiom.om.ds;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDataSourceExt;
+import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.util.StAXUtils;
 
 /**
  * Base class for {@link OMDataSourceExt} implementations that can easily serialize the content to
@@ -35,7 +40,11 @@ public abstract class AbstractPushOMDataSource extends AbstractOMDataSource {
     }
 
     public XMLStreamReader getReader() throws XMLStreamException {
-        // TODO: returning null here for the moment; for completeness we should serialize to a byte stream and create an XMLStreamReader from it
-        return null;
+        // Note: we don't actually expect this code to be called because OMSourcedElement should handle
+        // AbstractPushOMDataSource instances differently. Nevertheless the code is functionally correct
+        // (but not very good from a performance point of view, especially for XOP).
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        serialize(bos, new OMOutputFormat());
+        return StAXUtils.createXMLStreamReader(new ByteArrayInputStream(bos.toByteArray()));
     }
 }
