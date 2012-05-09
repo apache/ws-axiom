@@ -33,6 +33,7 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.QNameAwareOMDataSource;
+import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.util.StAXUtils;
@@ -252,38 +253,52 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 }
             }
 
-            // Get the XMLStreamReader
-            try {
-                readerFromDS = dataSource.getReader();  
-            } catch (XMLStreamException ex) {
-                throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
-            }
-            
-            // Advance past the START_DOCUMENT to the start tag.
-            // Remember the character encoding.
-            String characterEncoding = readerFromDS.getCharacterEncodingScheme();
-            if (characterEncoding != null) {
-                characterEncoding = readerFromDS.getEncoding();
-            }
-            try {
-                if (readerFromDS.getEventType() != XMLStreamConstants.START_ELEMENT) {
-                    while (readerFromDS.next() != XMLStreamConstants.START_ELEMENT) ;
+            if (isPushDataSource()) {
+                // Set this before we start expanding; otherwise this would result in an infinite recursion
+                isExpanded = true;
+                try {
+                    dataSource.serialize(new PushOMBuilder(this));
+                } catch (XMLStreamException ex) {
+                    throw new OMException("Failed to expand data source", ex);
                 }
-            } catch (XMLStreamException ex) {
-                throw new OMException("Error parsing data source document for element " + getLocalName(), ex);
+            } else {
+                // Get the XMLStreamReader
+                try {
+                    readerFromDS = dataSource.getReader();  
+                } catch (XMLStreamException ex) {
+                    throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
+                }
+                
+                // Advance past the START_DOCUMENT to the start tag.
+                // Remember the character encoding.
+                String characterEncoding = readerFromDS.getCharacterEncodingScheme();
+                if (characterEncoding != null) {
+                    characterEncoding = readerFromDS.getEncoding();
+                }
+                try {
+                    if (readerFromDS.getEventType() != XMLStreamConstants.START_ELEMENT) {
+                        while (readerFromDS.next() != XMLStreamConstants.START_ELEMENT) ;
+                    }
+                } catch (XMLStreamException ex) {
+                    throw new OMException("Error parsing data source document for element " + getLocalName(), ex);
+                }
+    
+                validateName(readerFromDS.getPrefix(), readerFromDS.getLocalName(), readerFromDS.getNamespaceURI());
+    
+                // Set the builder for this element. Note that the StAXOMBuilder constructor will also
+                // update the namespace of the element, so we don't need to do that here.
+                isExpanded = true;
+                super.setBuilder(new StAXOMBuilder(getOMFactory(), 
+                                                   readerFromDS, 
+                                                   this, 
+                                                   characterEncoding));
+                setComplete(false);
             }
-
-            validateName(readerFromDS.getPrefix(), readerFromDS.getLocalName(), readerFromDS.getNamespaceURI());
-
-            // Set the builder for this element. Note that the StAXOMBuilder constructor will also
-            // update the namespace of the element, so we don't need to do that here.
-            isExpanded = true;
-            super.setBuilder(new StAXOMBuilder(getOMFactory(), 
-                                               readerFromDS, 
-                                               this, 
-                                               characterEncoding));
-            setComplete(false);
         }
+    }
+    
+    private boolean isPushDataSource() {
+        return dataSource instanceof AbstractPushOMDataSource;
     }
 
     /**
@@ -368,6 +383,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.addNamespaceDeclaration(uri, prefix);
     }
 
+    void addNamespaceDeclaration(OMNamespace ns) {
+        super.addNamespaceDeclaration(ns);
+    }
+
     public void undeclarePrefix(String prefix) {
         forceExpand();
         super.undeclarePrefix(prefix);
@@ -423,6 +442,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.addAttribute(attributeName, value, namespace);
     }
 
+    void appendAttribute(OMAttribute attr) {
+        super.appendAttribute(attr);
+    }
+
     public void removeAttribute(OMAttribute attr) {
         forceExpand();
         super.removeAttribute(attr);
@@ -465,7 +488,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         if (isExpanded) {
             return super.getXMLStreamReader(cache, configuration);
         } else {
-            if (cache && isDestructiveRead()) {
+            if ((cache && isDestructiveRead()) || isPushDataSource()) {
                 forceExpand();
                 return super.getXMLStreamReader(true, configuration);
             } else {
