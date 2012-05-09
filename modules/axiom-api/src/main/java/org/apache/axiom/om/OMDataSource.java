@@ -25,6 +25,7 @@ package org.apache.axiom.om;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+
 import java.io.OutputStream;
 import java.io.Writer;
 
@@ -36,7 +37,7 @@ public interface OMDataSource {
     /**
      * Serializes element data directly to stream.
      * <p>
-     * It is assumed that this method consumed the content (i.e. destroys the backing object) unless
+     * It is assumed that this method consumes the content (i.e. destroys the backing object) unless
      * the data source also implements {@link OMDataSourceExt} and
      * {@link OMDataSourceExt#isDestructiveWrite()} returns <code>false</code>.
      * 
@@ -53,7 +54,7 @@ public interface OMDataSource {
     /**
      * Serializes element data directly to writer.
      * <p>
-     * It is assumed that this method consumed the content (i.e. destroys the backing object) unless
+     * It is assumed that this method consumes the content (i.e. destroys the backing object) unless
      * the data source also implements {@link OMDataSourceExt} and
      * {@link OMDataSourceExt#isDestructiveWrite()} returns <code>false</code>.
      * 
@@ -69,7 +70,52 @@ public interface OMDataSource {
     /**
      * Serializes element data directly to StAX writer.
      * <p>
-     * It is assumed that this method consumed the content (i.e. destroys the backing object) unless
+     * The implementation of this method must satisfy the following requirements:
+     * <ul>
+     * <li>The implementation MUST NOT not write any start document or end document event, i.e. it
+     * MUST NOT use {@link XMLStreamWriter#writeStartDocument()},
+     * {@link XMLStreamWriter#writeStartDocument(String)},
+     * {@link XMLStreamWriter#writeStartDocument(String, String)} or
+     * {@link XMLStreamWriter#writeEndElement()}.
+     * <li>The implementation MUST output a single element (hereafter called the root element). It
+     * MUST NOT output any other content before or after that element.
+     * <li>The implementation MUST specify the namespace URI when writing an element, i.e. it MUST
+     * NOT use the namespace unaware methods {@link XMLStreamWriter#writeStartElement(String)} or
+     * {@link XMLStreamWriter#writeEmptyElement(String)}. On the other hand, it MAY use the
+     * namespace unaware {@link XMLStreamWriter#writeAttribute(String, String)} method, provided
+     * that the specified name is an <tt>NCName</tt>.
+     * <li>The implementation MUST ensure that the produced XML is well formed with respect to
+     * namespaces, i.e. it MUST generate the required namespace declarations using
+     * {@link XMLStreamWriter#writeNamespace(String, String)} and
+     * {@link XMLStreamWriter#writeDefaultNamespace(String)}. It MUST NOT assume that the
+     * {@link XMLStreamWriter} performs any kind of namespace repairing (although that may be the
+     * case).
+     * <li>In addition the implementation MAY use {@link XMLStreamWriter#setPrefix(String, String)}
+     * and {@link XMLStreamWriter#setDefaultNamespace(String)} to track the namespace declarations
+     * it generates, so that the namespace context maintained by the {@link XMLStreamWriter}
+     * accurately reflects the namespace context in the output document. However, it MUST NOT call
+     * these methods before the start of the root element or after the end of the root element.
+     * <li>Since the element may be serialized as part of a larger document, the implementation MUST
+     * take into account the pre-existing namespace context (which can be queried using
+     * {@link XMLStreamWriter#getPrefix(String)} and {@link XMLStreamWriter#getNamespaceContext()}).
+     * This means that the implementation MUST NOT assume that the empty prefix is bound to the
+     * empty namespace URI. Therefore if the implementation outputs elements that have no namespace,
+     * it MUST generate namespace declarations of the form <tt>xmlns=""</tt> in the appropriate
+     * locations. In addition it MAY use the namespace context information to minimize the number of
+     * generated namespace declarations (by reusing already bound prefixes).
+     * </ul>
+     * <p>
+     * On the other hand, the caller of this method (typically an {@link OMSourcedElement} instance)
+     * must ensure that the following requirements are satisfied:
+     * <ul>
+     * <li>The namespace context information provided by {@link XMLStreamWriter#getPrefix(String)}
+     * and {@link XMLStreamWriter#getNamespaceContext()} MUST accurately reflect the actual
+     * namespace context at the location in the output document where the root element is
+     * serialized. Note that this requirement may be relaxed if the caller implements some form of
+     * namespace repairing.
+     * </ul>
+     * <p>
+     * It is assumed that this method consumes the content (i.e. destroys the backing object) unless
      * the data source also implements {@link OMDataSourceExt} and
      * {@link OMDataSourceExt#isDestructiveWrite()} returns <code>false</code>.
      * 
@@ -77,7 +123,7 @@ public interface OMDataSource {
      *            destination writer
      * @throws XMLStreamException
      */
-    // TODO: specify whether the implementation MUST, MAY or MUST NOT write START_DOCUMENT and END_DOCUMENT events to the stream
+    // TODO: specify how optimizable base64 binary data (MTOM) is handled
     void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException;
 
     /**
