@@ -1028,7 +1028,7 @@ public class OMElementImpl extends OMNodeImpl
         
         // Build the (target) clonedElement from the parser
         OMElement clonedElement =
-                new StAXOMBuilder(xmlStreamReader).getDocumentElement();
+                new StAXOMBuilder(xmlStreamReader).getDocumentElement(true);
         clonedElement.build();
         return clonedElement;
     }

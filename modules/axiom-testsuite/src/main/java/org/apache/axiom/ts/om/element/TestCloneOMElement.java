@@ -49,10 +49,9 @@ public class TestCloneOMElement extends AxiomTestCase {
         XMLAssert.assertXMLEqual(firstClonedBodyElement.toString(),
                                  secondClonedBodyElement.toString());
 
-        // lets check some links. They must not be equal
-        assertNotSame(body.getParent(), firstClonedBodyElement.getParent());
-        assertNotSame(body.getParent(), secondClonedBodyElement.getParent());
-        assertNotSame(firstClonedBodyElement.getParent(), secondClonedBodyElement.getParent());
+        // The clone is expected to be orphaned
+        assertNull(firstClonedBodyElement.getParent());
+        assertNull(secondClonedBodyElement.getParent());
 
         soapEnvelope.close(false);
     }
