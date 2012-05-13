@@ -26,25 +26,23 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 
 /**
- * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} if no
- * namespace prefix is given and an existing namespace declaration is in scope. In this case,
- * <code>createOMElement</code> must use the existing prefix. Note that this only applies if a
- * parent is specified for the {@link OMElement} to be created.
+ * Tests the behavior of the <code>createOMElement</code> methods in {@link OMFactory} if an empty
+ * namespace prefix is given and an existing namespace declaration for the same URI but non empty
+ * prefix is in scope. In this case, <code>createOMElement</code> must use the empty prefix and not
+ * the existing prefix.
  */
-public class TestCreateOMElementWithNamespaceInScope extends CreateOMElementTestCase {
-    public TestCreateOMElementWithNamespaceInScope(OMMetaFactory metaFactory, CreateOMElementVariant variant) {
+public class TestCreateOMElementWithNamespaceInScope3 extends CreateOMElementTestCase {
+    public TestCreateOMElementWithNamespaceInScope3(OMMetaFactory metaFactory, CreateOMElementVariant variant) {
         super(metaFactory, variant, null);
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement parent = factory.createOMElement("parent", "urn:test", "p");
-        OMElement child = variant.createOMElement(factory, parent, "child", "urn:test", null);
-        assertTrue(child.isComplete());
-        assertEquals("child", child.getLocalName());
-        OMNamespace ns = factory.createOMNamespace("urn:test", "p");
+        OMElement child = variant.createOMElement(factory, parent, "child", "urn:test", "");
+        OMNamespace ns = factory.createOMNamespace("urn:test", "");
         assertEquals(ns, child.getNamespace());
         Iterator it = child.getAllDeclaredNamespaces();
-        assertFalse(it.hasNext());
+        assertTrue(it.hasNext());
     }
 }

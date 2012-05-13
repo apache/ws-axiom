@@ -28,7 +28,7 @@ import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
 import org.apache.axiom.ts.om.factory.TestCreateOMElementWithGeneratedPrefix;
-import org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope;
+import org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope1;
 import org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild;
 import org.apache.axiom.ts.om.node.TestInsertSiblingBeforeOnChild;
 
@@ -42,8 +42,8 @@ public class OMImplementationTest extends TestCase {
         
         // TODO: DOOM's behavior differs from LLOM's behavior in this case
         builder.exclude(TestCreateOMElementWithGeneratedPrefix.class, "(variant=QName*)");
-        builder.exclude(TestCreateOMElementWithNamespaceInScope.class, "(variant=QName,OMContainer)");
-        builder.exclude(TestCreateOMElementWithNamespaceInScope.class, "(variant=String,OMNamespace,OMContainer)");
+        builder.exclude(TestCreateOMElementWithNamespaceInScope1.class, "(variant=QName,OMContainer)");
+        builder.exclude(TestCreateOMElementWithNamespaceInScope1.class, "(variant=String,OMNamespace,OMContainer)");
         
         // TODO: this case is not working because Axiom generates an XML declaration
         //       but uses another charset encoding to serialize the document

@@ -213,7 +213,7 @@ public class OMElementImpl extends OMNodeImpl
             return null;
         } else {
             OMNamespace namespace = findNamespace(namespaceURI, prefix);
-            if (namespace == null) {
+            if (namespace == null || (prefix != null && !namespace.getPrefix().equals(prefix))) {
                 namespace = declareNamespace(ns);
             }
             return namespace;
