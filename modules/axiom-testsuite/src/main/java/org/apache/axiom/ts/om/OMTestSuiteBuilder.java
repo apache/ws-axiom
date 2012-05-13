@@ -288,9 +288,11 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
                 }
             }
             if (variant.isSupportsContainer()) {
-                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope(metaFactory, variant));
+                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope1(metaFactory, variant));
+                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope2(metaFactory, variant));
             }
             if (variant.isSupportsContainer() && variant.isSupportsDefaultNamespace()) {
+                addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithNamespaceInScope3(metaFactory, variant));
                 addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace2(metaFactory, variant));
                 addTest(new org.apache.axiom.ts.om.factory.TestCreateOMElementWithoutNamespace3(metaFactory, variant));
             }

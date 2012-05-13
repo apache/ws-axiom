@@ -115,7 +115,7 @@ public class CopyUtilsTest extends AbstractTestCase {
         copyAndCheck(sourceEnv, true);
         
         // The source SOAPHeaderBlock should not be expanded in the process
-        assertTrue(shb.isExpanded() == false);
+        assertFalse(shb.isExpanded());
         
     }
     
@@ -150,9 +150,7 @@ public class CopyUtilsTest extends AbstractTestCase {
         // In some cases the serialization code or internal hashmaps cause
         // attributes or namespaces to be in a different order...accept this for now.
         if (checkText) {
-            assertTrue("\nSource=" + sourceText +
-                   "\nTarget=" + targetText,
-                   sourceText.equals(targetText));
+            assertEquals(sourceText, targetText);
         }
         
         sourceEnv.close(false);
@@ -172,10 +170,7 @@ public class CopyUtilsTest extends AbstractTestCase {
                 assertTrue("Source = " + source.getClass().getName() + 
                            "Target = " + target.getClass().getName(),
                            target instanceof OMSourcedElement);
-                assertTrue("Source Expansion = " +((OMSourcedElement)source).isExpanded() +
-                           "Target Expansion = " + ((OMSourcedElement)target).isExpanded(),
-                           ((OMSourcedElement)source).isExpanded() ==
-                               ((OMSourcedElement)target).isExpanded());
+                assertEquals(((OMSourcedElement)source).isExpanded(), ((OMSourcedElement)target).isExpanded());
                 if (((OMSourcedElement)source).isExpanded()) {
                     Iterator i = ((OMElement) source).getChildren();
                     Iterator j = ((OMElement) target).getChildren();
@@ -184,14 +179,11 @@ public class CopyUtilsTest extends AbstractTestCase {
                         OMNode targetChild = (OMNode) j.next();
                         identityCheck(sourceChild, targetChild, depth + "  ");
                     }
-                    assertTrue("Source and Target have different number of children",
-                               i.hasNext() == j.hasNext());
+                    assertEquals("Source and Target have different number of children",
+                               i.hasNext(), j.hasNext());
                 }
             } else {
-                assertTrue("Source = " + source.getClass().getName() + 
-                           "Target = " + target.getClass().getName(),
-                           source.getClass().getName().equals(
-                           target.getClass().getName()));
+                assertEquals(source.getClass(), target.getClass());
                 Iterator i = ((OMElement) source).getChildren();
                 Iterator j = ((OMElement) target).getChildren();
                 while(i.hasNext() && j.hasNext()) {
@@ -199,14 +191,11 @@ public class CopyUtilsTest extends AbstractTestCase {
                     OMNode targetChild = (OMNode) j.next();
                     identityCheck(sourceChild, targetChild, depth + "  ");
                 }
-                assertTrue("Source and Target have different number of children",
-                           i.hasNext() == j.hasNext());
+                assertEquals("Source and Target have different number of children",
+                           i.hasNext(), j.hasNext());
             }
         } else {
-            assertTrue("Source = " + source.getClass().getName() + 
-                   "Target = " + target.getClass().getName(),
-                   source.getClass().getName().equals(
-                   target.getClass().getName()));
+            assertEquals(source.getClass(), target.getClass());
         }
     }
 }
