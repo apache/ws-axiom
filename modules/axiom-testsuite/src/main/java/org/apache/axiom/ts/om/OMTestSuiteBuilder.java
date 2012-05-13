@@ -133,6 +133,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestAddChildWithSameParent(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestChildReDeclaringGrandParentsDefaultNSWithPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestChildReDeclaringParentsDefaultNSWithPrefix(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestCloneOMElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareDefaultNamespace1(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareDefaultNamespace2(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareDefaultNamespaceConflict1(metaFactory));
