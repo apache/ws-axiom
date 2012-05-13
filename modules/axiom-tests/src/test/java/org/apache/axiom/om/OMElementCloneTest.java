@@ -21,14 +21,6 @@ package org.apache.axiom.om;
 
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 public class OMElementCloneTest extends AbstractTestCase {
 
@@ -46,10 +38,10 @@ public class OMElementCloneTest extends AbstractTestCase {
         String firstClonedBodyElementText = firstClonedBodyElement.toString();
         String secondClonedBodyElementText = secondClonedBodyElement.toString();
         String bodyText = body.toString();
-        assertXMLEqual(newDocument(bodyText), newDocument(firstClonedBodyElementText));
-        assertXMLEqual(newDocument(bodyText), newDocument(secondClonedBodyElementText));
-        assertXMLEqual(newDocument(firstClonedBodyElementText),
-                       newDocument(secondClonedBodyElementText));
+        assertXMLEqual(bodyText, firstClonedBodyElementText);
+        assertXMLEqual(bodyText, secondClonedBodyElementText);
+        assertXMLEqual(firstClonedBodyElementText,
+                       secondClonedBodyElementText);
 
         // lets check some links. They must not be equal
         assertNotSame(body.getParent(), firstClonedBodyElement.getParent());
@@ -68,12 +60,12 @@ public class OMElementCloneTest extends AbstractTestCase {
         OMElement secondClonedBodyElement = body.cloneOMElement();
 
         // first check whether both have the same information
-        assertXMLEqual(newDocument(body.toString()),
-                       newDocument(firstClonedBodyElement.toString()));
-        assertXMLEqual(newDocument(body.toString()),
-                       newDocument(secondClonedBodyElement.toString()));
-        assertXMLEqual(newDocument(firstClonedBodyElement.toString()),
-                       newDocument(secondClonedBodyElement.toString()));
+        assertXMLEqual(body.toString(),
+                       firstClonedBodyElement.toString());
+        assertXMLEqual(body.toString(),
+                       secondClonedBodyElement.toString());
+        assertXMLEqual(firstClonedBodyElement.toString(),
+                       secondClonedBodyElement.toString());
 
         // lets check some links. They must not be equal
         assertNotSame(body.getParent(), firstClonedBodyElement.getParent());
@@ -81,13 +73,5 @@ public class OMElementCloneTest extends AbstractTestCase {
         assertNotSame(firstClonedBodyElement.getParent(), secondClonedBodyElement.getParent());
 
         soapEnvelope.close(false);
-    }
-
-    public Document newDocument(String xml)
-            throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        return db.parse(new ByteArrayInputStream(xml.getBytes()));
     }
 }
