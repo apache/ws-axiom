@@ -496,8 +496,8 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
         // Then, if deep, clone the kids too.
         if (deep) {
-            for (ChildNode child = firstChild; child != null;
-                 child = child.nextSibling) {
+            for (Node child = getFirstChild(); child != null;
+                 child = child.getNextSibling()) {
                 newnode.appendChild(child.cloneNode(true));
             }
         }
