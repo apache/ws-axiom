@@ -214,7 +214,9 @@ public class OMDOMFactory implements OMFactory {
     
     
     public OMText createOMText(OMContainer parent, OMText source) {
-        return new TextImpl(parent, (TextImpl) source, this);
+        TextImpl text = new TextImpl(null, (TextImpl) source, this);
+        parent.addChild(text);
+        return text;
     }
 
     public OMText createOMText(OMContainer parent, char[] charArary, int type) {
