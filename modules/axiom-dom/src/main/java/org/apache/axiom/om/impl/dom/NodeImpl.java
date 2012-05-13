@@ -172,6 +172,9 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException("**Internal Error**" + e);
         }
+        
+        newnode.done = true;
+        newnode.builder = null;
 
         return newnode;
     }
