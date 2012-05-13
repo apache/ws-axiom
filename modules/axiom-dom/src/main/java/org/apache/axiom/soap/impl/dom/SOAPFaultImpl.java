@@ -19,7 +19,9 @@
 
 package org.apache.axiom.soap.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -200,4 +202,9 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
             XMLStreamWriter writer)
             throws XMLStreamException;
 
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return e == null ?
+                ((SOAPFactory)factory).createSOAPFault((SOAPBody) targetParent):
+                ((SOAPFactory)factory).createSOAPFault((SOAPBody) targetParent, e);
+    }
 }

@@ -20,7 +20,9 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -1155,15 +1157,39 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         }
     }
 
-    /**
-     * Creates a clone which belongs to a new document.
-     *
-     * @see org.apache.axiom.om.OMElement#cloneOMElement()
-     */
     public OMElement cloneOMElement() {
-        return (ElementImpl) this.cloneNode(true);
+        return cloneOMElement(new OMCloneOptions());
     }
 
+    public OMElement cloneOMElement(OMCloneOptions options) {
+        return (OMElement)clone(options, null);
+    }
+
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        OMElement targetElement;
+        if (options.isPreserveModel()) {
+            targetElement = createClone(options, targetParent);
+        } else {
+            targetElement = factory.createOMElement(localName, namespace, targetParent);
+        }
+        for (Iterator it = getAllDeclaredNamespaces(); it.hasNext(); ) {
+            OMNamespace ns = (OMNamespace)it.next();
+            targetElement.declareNamespace(ns);
+        }
+        for (Iterator it = getAllAttributes(); it.hasNext(); ) {
+            OMAttribute attr = (OMAttribute)it.next();
+            targetElement.addAttribute(attr);
+        }
+        for (Iterator it = getChildren(); it.hasNext(); ) {
+            ((ChildNode)it.next()).clone(options, targetElement);
+        }
+        return targetElement;
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return factory.createOMElement(localName, namespace, targetParent);
+    }
+    
     public void setLineNumber(int lineNumber) {
         this.lineNumber = lineNumber;
     }

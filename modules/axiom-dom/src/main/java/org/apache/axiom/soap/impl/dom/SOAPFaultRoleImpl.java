@@ -19,6 +19,9 @@
 
 package org.apache.axiom.soap.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
@@ -100,5 +103,9 @@ public abstract class SOAPFaultRoleImpl extends SOAPElement implements
 
             // do not serialise the siblings
         }
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return ((SOAPFactory)factory).createSOAPFaultRole((SOAPFault)targetParent);
     }
 }

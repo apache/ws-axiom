@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -77,5 +79,9 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
     public SOAPFaultText getSOAPFaultText(String language) {
         //TODO Ruchith
         throw new UnsupportedOperationException();
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return ((SOAPFactory)factory).createSOAPFaultReason((SOAPFault)targetParent);
     }
 }

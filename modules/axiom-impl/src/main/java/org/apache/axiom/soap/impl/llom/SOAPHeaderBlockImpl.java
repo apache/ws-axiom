@@ -156,7 +156,7 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        SOAPHeaderBlock clone = ((SOAPFactory)factory).createSOAPHeaderBlock(localName, ns, (SOAPHeader)targetParent);
+        SOAPHeaderBlock clone = ((SOAPFactory)factory).createSOAPHeaderBlock(getLocalName(), getNamespace(), (SOAPHeader)targetParent);
         copyData(options, clone);
         return clone;
     }

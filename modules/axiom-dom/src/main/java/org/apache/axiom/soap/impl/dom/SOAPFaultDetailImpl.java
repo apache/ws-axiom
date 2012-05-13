@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
@@ -75,5 +77,9 @@ public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFau
         }
 
         super.internalSerialize(writer, cache);
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return ((SOAPFactory)factory).createSOAPFaultDetail((SOAPFault)targetParent);
     }
 }
