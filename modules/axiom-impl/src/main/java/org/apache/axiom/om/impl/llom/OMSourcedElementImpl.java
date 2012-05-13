@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
@@ -660,8 +661,52 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public OMElement cloneOMElement() {
-        forceExpand();
         return super.cloneOMElement();
+    }
+
+    public OMElement cloneOMElement(OMCloneOptions options) {
+        return super.cloneOMElement(options);
+    }
+
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        // If already expanded or this is not an OMDataSourceExt, then
+        // create a copy of the OM Tree
+        OMDataSource ds = getDataSource();
+        if (ds == null || 
+            isExpanded() || 
+            !(ds instanceof OMDataSourceExt)) {
+            return super.clone(options, targetParent);
+        }
+        
+        // If copying is destructive, then copy the OM tree
+        OMDataSourceExt sourceDS = (OMDataSourceExt) ds;
+        if (sourceDS.isDestructiveRead() ||
+            sourceDS.isDestructiveWrite()) {
+            return super.clone(options, targetParent);
+        }
+        OMDataSourceExt targetDS = ((OMDataSourceExt) ds).copy();
+        if (targetDS == null) {
+            return super.clone(options, targetParent);
+        }
+        // Otherwise create a target OMSE with the copied DataSource
+        OMSourcedElement targetOMSE;
+        if (options.isPreserveModel()) {
+            targetOMSE = createClone(options, targetDS, getLocalName(), getNamespace());
+        } else {
+            targetOMSE = factory.createOMElement(targetDS, 
+                                    getLocalName(), 
+                                    getNamespace());
+        }
+        targetParent.addChild(targetOMSE);
+        return targetOMSE;
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return super.createClone(options, targetParent);
+    }
+    
+    protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds, String localName, OMNamespace ns) {
+        return factory.createOMElement(ds, localName, ns);
     }
 
     public void setLineNumber(int lineNumber) {

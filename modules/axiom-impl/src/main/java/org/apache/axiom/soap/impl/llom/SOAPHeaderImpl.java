@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -200,5 +202,9 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         pw.close();
         String text = sw.getBuffer().toString();
         return text;
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return ((SOAPFactory)factory).createSOAPHeader((SOAPEnvelope)targetParent);
     }
 }

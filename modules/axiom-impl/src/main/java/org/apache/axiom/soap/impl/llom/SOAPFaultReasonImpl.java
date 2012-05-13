@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -86,4 +88,7 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements SOAPFau
         return null;
     }
 
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return ((SOAPFactory)factory).createSOAPFaultReason((SOAPFault)targetParent);
+    }
 }
