@@ -71,8 +71,8 @@ public class TextImpl extends TextNodeImpl {
         super(parent, text, factory);
     }
 
-    public TextImpl(OMContainer parent, TextNodeImpl source, OMFactory factory) {
-        super(parent, source, factory);
+    public TextImpl(DocumentImpl ownerNode, TextNodeImpl source, OMFactory factory) {
+        super(ownerNode, source, factory);
     }
 
     public TextImpl(String contentID, OMContainer parent, OMXMLParserWrapper builder,

@@ -100,8 +100,8 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      * @param source  TextImpl
      * @param factory
      */
-    public TextNodeImpl(OMContainer parent, TextNodeImpl source, OMFactory factory) {
-        super((DocumentImpl) ((ParentNode) parent).getOwnerDocument(), factory);
+    public TextNodeImpl(DocumentImpl ownerNode, TextNodeImpl source, OMFactory factory) {
+        super(ownerNode, factory);
         this.done = true;
 
         // Copy the value of the text
