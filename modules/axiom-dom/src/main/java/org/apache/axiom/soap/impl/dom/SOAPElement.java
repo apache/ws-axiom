@@ -19,6 +19,7 @@
 
 package org.apache.axiom.soap.impl.dom;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -76,4 +77,11 @@ public abstract class SOAPElement extends ElementImpl {
     protected abstract void checkParent(OMElement parent)
             throws SOAPProcessingException;
 
+    protected void setParent(OMContainer element, boolean useDomSemantics) {
+        super.setParent(element, useDomSemantics);
+
+        if (!useDomSemantics && element instanceof OMElement) {
+            checkParent((OMElement) element);
+        }
+    }
 }

@@ -325,7 +325,7 @@ public class OMElementImpl extends OMNodeImpl
                 child.detach();
             }
             
-            child.parent = this;
+            child.setParent(this);
 
             if (firstChild == null) {
                 firstChild = child;

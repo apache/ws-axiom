@@ -118,6 +118,9 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.fault.TestSetException(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestSetReason(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestSetRole(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.fault.TestWrongParent1(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.fault.TestWrongParent2(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.fault.TestWrongParent3(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.faultdetail.TestAddDetailEntry(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.faultdetail.TestDetailEntriesUsingDefaultNamespaceWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.faultdetail.TestGetAllDetailEntries(metaFactory, spec));
@@ -145,6 +148,9 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandString01(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestSetMustUnderstandWithInvalidValue(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestSetRole(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestWrongParent1(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestWrongParent2(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.headerblock.TestWrongParent3(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.xpath.TestXPathAppliedToSOAPEnvelope(metaFactory, spec, true));
         addTest(new org.apache.axiom.ts.soap.xpath.TestXPathAppliedToSOAPEnvelope(metaFactory, spec, false));
     }

@@ -176,7 +176,7 @@ public abstract class ChildNode extends NodeImpl {
         setParent(element, false);
     }
     
-    void setParent(OMContainer element, boolean useDomSemantics) {
+    protected void setParent(OMContainer element, boolean useDomSemantics) {
         if (element == null) {
             ownerNode = useDomSemantics ? ownerDocument() : null;
             hasParent(false);

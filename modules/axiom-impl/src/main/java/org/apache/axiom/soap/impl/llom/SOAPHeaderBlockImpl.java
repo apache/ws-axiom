@@ -20,6 +20,7 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
@@ -80,6 +81,16 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
         this.setNamespace(ns);
     }
 
+    protected abstract void checkParent(OMElement parent) throws SOAPProcessingException;
+
+    public void setParent(OMContainer element) {
+        super.setParent(element);
+
+        if (element instanceof OMElement) {
+            checkParent((OMElement) element);
+        }
+    }
+    
     /**
      * @param attributeName
      * @param attrValue
