@@ -80,7 +80,7 @@ public abstract class SOAPElement extends ElementImpl {
     protected void setParent(OMContainer element, boolean useDomSemantics) {
         super.setParent(element, useDomSemantics);
 
-        if (element instanceof OMElement) {
+        if (!useDomSemantics && element instanceof OMElement) {
             checkParent((OMElement) element);
         }
     }

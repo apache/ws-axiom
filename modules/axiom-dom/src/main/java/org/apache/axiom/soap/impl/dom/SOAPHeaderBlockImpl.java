@@ -140,7 +140,7 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
     protected void setParent(OMContainer element, boolean useDomSemantics) {
         super.setParent(element, useDomSemantics);
     
-        if (element instanceof OMElement) {
+        if (!useDomSemantics && element instanceof OMElement) {
             checkParent((OMElement) element);
         }
     }
