@@ -84,6 +84,16 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
         this.setNamespace(ns);
     }
 
+    protected abstract void checkParent(OMElement parent) throws SOAPProcessingException;
+
+    public void setParent(OMContainer element) {
+        super.setParent(element);
+
+        if (element instanceof OMElement) {
+            checkParent((OMElement) element);
+        }
+    }
+    
     /**
      * @param attributeName
      * @param attrValue

@@ -135,6 +135,17 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
     public Object getObject(Class dataSourceClass) {
         throw new UnsupportedOperationException();
     }
+
+    protected abstract void checkParent(OMElement parent)
+            throws SOAPProcessingException;
+    
+    protected void setParent(OMContainer element, boolean useDomSemantics) {
+        super.setParent(element, useDomSemantics);
+    
+        if (!useDomSemantics && element instanceof OMElement) {
+            checkParent((OMElement) element);
+        }
+    }
     
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
         SOAPHeaderBlock clone = ((SOAPFactory)factory).createSOAPHeaderBlock(getLocalName(), getNamespace(), (SOAPHeader)targetParent);
