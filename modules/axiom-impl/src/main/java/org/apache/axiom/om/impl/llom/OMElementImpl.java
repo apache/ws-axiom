@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -33,7 +34,6 @@ import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMChildrenLegacyQNameIterator;
@@ -1015,24 +1015,38 @@ public class OMElementImpl extends OMNodeImpl
             log.debug(" isComplete = " + isComplete());
             log.debug("  builder = " + builder);
         }
-        // Make sure the source (this node) is completed
-        if (!isComplete()) {
-            this.build();
-        }
-        
-        // Now get a parser for the full tree
-        XMLStreamReader xmlStreamReader = this.getXMLStreamReader(true);
-        if (log.isDebugEnabled()) {
-            log.debug("  reader = " + xmlStreamReader);
-        }
-        
-        // Build the (target) clonedElement from the parser
-        OMElement clonedElement =
-                new StAXOMBuilder(xmlStreamReader).getDocumentElement(true);
-        clonedElement.build();
-        return clonedElement;
+        return cloneOMElement(new OMCloneOptions());
     }
 
+    public OMElement cloneOMElement(OMCloneOptions options) {
+        return (OMElement)clone(options, null);
+    }
+
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        OMElement targetElement;
+        if (options.isPreserveModel()) {
+            targetElement = createClone(options, targetParent);
+        } else {
+            targetElement = factory.createOMElement(localName, ns, targetParent);
+        }
+        for (Iterator it = getAllDeclaredNamespaces(); it.hasNext(); ) {
+            OMNamespace ns = (OMNamespace)it.next();
+            targetElement.declareNamespace(ns);
+        }
+        for (Iterator it = getAllAttributes(); it.hasNext(); ) {
+            OMAttribute attr = (OMAttribute)it.next();
+            targetElement.addAttribute(attr);
+        }
+        for (Iterator it = getChildren(); it.hasNext(); ) {
+            ((OMNodeImpl)it.next()).clone(options, targetElement);
+        }
+        return targetElement;
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return factory.createOMElement(localName, ns, targetParent);
+    }
+    
     public void setLineNumber(int lineNumber) {
         this.lineNumber = lineNumber;
     }

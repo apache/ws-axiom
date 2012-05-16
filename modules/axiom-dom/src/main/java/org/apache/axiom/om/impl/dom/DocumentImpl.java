@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
@@ -622,5 +623,9 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     protected void internalSerialize(XMLStreamWriter writer, boolean cache,
             boolean includeXMLDeclaration) throws XMLStreamException {
         OMDocumentImplUtil.internalSerialize(this, writer, cache, includeXMLDeclaration);
+    }
+
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        throw new UnsupportedOperationException();
     }
 }

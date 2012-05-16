@@ -25,6 +25,7 @@ import java.io.Writer;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -475,4 +476,6 @@ public abstract class ChildNode extends NodeImpl {
     // This method is actually defined by OMNodeEx, but OMNodeEx is only implemented
     // by certain subclasses (for the reason, see AXIOM-385).
     public abstract void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException;
+    
+    abstract OMNode clone(OMCloneOptions options, OMContainer targetParent);
 }

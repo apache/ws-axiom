@@ -22,6 +22,8 @@ package org.apache.axiom.om.impl.dom;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
@@ -92,5 +94,9 @@ public class ProcessingInstructionImpl extends ChildNode implements ProcessingIn
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         writer.writeProcessingInstruction(target + " ", value);
+    }
+
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        return factory.createOMProcessingInstruction(targetParent, target, value);
     }
 }

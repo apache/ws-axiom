@@ -19,7 +19,9 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -237,6 +239,8 @@ public abstract class SOAPBodyImpl extends SOAPElement
         this.enableLookAhead = false;
         super.addChild(child);
     }
-    
-    
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return ((SOAPFactory)factory).createSOAPBody((SOAPEnvelope)targetParent);
+    }
 }

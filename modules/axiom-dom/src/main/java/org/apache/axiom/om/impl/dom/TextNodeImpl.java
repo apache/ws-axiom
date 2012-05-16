@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.attachments.utils.DataHandlerUtils;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -519,5 +520,14 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
 
     public void setContentID(String cid) {
         this.contentID = cid;
+    }
+
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        if (isBinary && options.isFetchDataHandlers()) {
+            // Force loading of the reference to the DataHandler and ensure that its content is
+            // completely fetched into memory (or temporary storage).
+            ((DataHandler)getDataHandler()).getDataSource();
+        }
+        return factory.createOMText(targetParent, this);
     }
 }

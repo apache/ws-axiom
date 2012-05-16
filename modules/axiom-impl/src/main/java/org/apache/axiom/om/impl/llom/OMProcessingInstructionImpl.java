@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -106,5 +107,9 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
         if (done) {
             this.detach();
         } 
+    }
+
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        return factory.createOMProcessingInstruction(targetParent, target, value);
     }
 }

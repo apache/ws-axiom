@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMException;
@@ -84,5 +85,9 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
         if (done) {
             this.detach();
         } 
+    }
+
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        return factory.createOMDocType(targetParent, value);
     }
 }

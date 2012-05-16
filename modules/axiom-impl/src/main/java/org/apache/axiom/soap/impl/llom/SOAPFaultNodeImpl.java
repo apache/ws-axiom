@@ -19,6 +19,9 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -56,5 +59,9 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
 
     public String getNodeValue() {
         return getFaultNodeValue();
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return ((SOAPFactory)factory).createSOAPFaultNode((SOAPFault)targetParent);
     }
 }

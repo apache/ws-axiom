@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
@@ -84,5 +85,9 @@ public class OMCommentImpl extends OMNodeImpl implements OMComment {
         if (done) {
             this.detach();
         } 
+    }
+
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        return factory.createOMComment(targetParent, value);
     }
 }

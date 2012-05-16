@@ -20,12 +20,14 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -441,4 +443,12 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.contentID = cid;
     }
 
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        if (isBinary && options.isFetchDataHandlers()) {
+            // Force loading of the reference to the DataHandler and ensure that its content is
+            // completely fetched into memory (or temporary storage).
+            ((DataHandler)getDataHandler()).getDataSource();
+        }
+        return factory.createOMText(targetParent, this);
+    }
 }

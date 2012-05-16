@@ -20,15 +20,18 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
+import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -160,5 +163,26 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
             }
         }
         return false;
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        SOAPHeaderBlock clone = ((SOAPFactory)factory).createSOAPHeaderBlock(getLocalName(), getNamespace(), (SOAPHeader)targetParent);
+        copyData(options, clone);
+        return clone;
+    }
+
+    protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds, String localName, OMNamespace ns) {
+        SOAPHeaderBlock clone = ((SOAPFactory)factory).createSOAPHeaderBlock(localName, ns, ds);
+        copyData(options, clone);
+        return clone;
+    }
+
+    private void copyData(OMCloneOptions options, SOAPHeaderBlock targetSHB) {
+        // Copy the processed flag.  The other SOAPHeaderBlock information 
+        // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.
+        Boolean processedFlag = options instanceof SOAPCloneOptions ? ((SOAPCloneOptions)options).getProcessedFlag() : null;
+        if ((processedFlag == null && isProcessed()) || (processedFlag != null && processedFlag.booleanValue())) {
+            targetSHB.setProcessed();
+        }
     }
 }

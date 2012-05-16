@@ -19,7 +19,9 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
@@ -68,5 +70,9 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         writer.writeComment(this.textValue);
+    }
+
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        return factory.createOMComment(targetParent, getData());
     }
 }
