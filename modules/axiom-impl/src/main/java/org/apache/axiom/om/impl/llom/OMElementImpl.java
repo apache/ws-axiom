@@ -1027,7 +1027,7 @@ public class OMElementImpl extends OMNodeImpl
         if (options.isPreserveModel()) {
             targetElement = createClone(options, targetParent);
         } else {
-            targetElement = factory.createOMElement(localName, ns, targetParent);
+            targetElement = factory.createOMElement(getLocalName(), getNamespace(), targetParent);
         }
         for (Iterator it = getAllDeclaredNamespaces(); it.hasNext(); ) {
             OMNamespace ns = (OMNamespace)it.next();
@@ -1044,7 +1044,7 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return factory.createOMElement(localName, ns, targetParent);
+        return factory.createOMElement(getLocalName(), getNamespace(), targetParent);
     }
     
     public void setLineNumber(int lineNumber) {

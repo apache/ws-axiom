@@ -346,6 +346,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             }
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestByteArrayDS(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestCharArrayDS(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneOMElementNonDestructive(metaFactory, true));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneOMElementNonDestructive(metaFactory, false));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestComplete(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestExpand(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized(metaFactory));

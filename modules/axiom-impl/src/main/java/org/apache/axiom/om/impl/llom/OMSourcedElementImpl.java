@@ -672,7 +672,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         // If already expanded or this is not an OMDataSourceExt, then
         // create a copy of the OM Tree
         OMDataSource ds = getDataSource();
-        if (ds == null || 
+        if (!options.isCopyOMDataSources() ||
+            ds == null || 
             isExpanded() || 
             !(ds instanceof OMDataSourceExt)) {
             return super.clone(options, targetParent);
@@ -697,7 +698,9 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                                     getLocalName(), 
                                     getNamespace());
         }
-        targetParent.addChild(targetOMSE);
+        if (targetParent != null) {
+            targetParent.addChild(targetOMSE);
+        }
         return targetOMSE;
     }
 
