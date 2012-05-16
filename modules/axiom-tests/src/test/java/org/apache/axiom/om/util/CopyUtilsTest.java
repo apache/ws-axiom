@@ -75,6 +75,10 @@ public class CopyUtilsTest extends AbstractTestCase {
         copyAndCheck(createEnvelope(getTestResource(TestConstants.EMPTY_BODY_MESSAGE)), true);
     }
     
+    public void testSoap11fault() throws Exception { 
+        copyAndCheck(createEnvelope(getTestResource("soap/soap11/soap11fault.xml")), true); 
+    }
+    
     public void testOMSE() throws Exception {
         SOAPEnvelope sourceEnv = createEnvelope(getTestResource(TestConstants.EMPTY_BODY_MESSAGE));
         SOAPBody body = sourceEnv.getBody();
