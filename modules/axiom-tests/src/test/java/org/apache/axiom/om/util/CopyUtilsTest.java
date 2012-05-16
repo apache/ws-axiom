@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.ds.ByteArrayDataSource;
@@ -31,9 +32,8 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-
-import javax.xml.stream.XMLStreamReader;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
 
 import java.io.InputStream;
 import java.util.Iterator;
@@ -48,35 +48,35 @@ public class CopyUtilsTest extends AbstractTestCase {
     }
     
     public void testSample1() throws Exception {
-        copyAndCheck(createEnvelope(getTestResource(TestConstants.SAMPLE1)), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.SAMPLE1)));
     }
     
     public void testSOAPMESSAGE() throws Exception {
-        copyAndCheck(createEnvelope(getTestResource(TestConstants.SOAP_SOAPMESSAGE)), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.SOAP_SOAPMESSAGE)));
     }
     
     public void testSOAPMESSAGE1() throws Exception {
         // Ignore the serialization comparison
-        copyAndCheck(createEnvelope(getTestResource(TestConstants.SOAP_SOAPMESSAGE1)), false);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.SOAP_SOAPMESSAGE1)));
     }
     
     public void testWHITESPACE_MESSAGE() throws Exception {
-        copyAndCheck(createEnvelope(getTestResource(TestConstants.WHITESPACE_MESSAGE)), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.WHITESPACE_MESSAGE)));
     }
     
     public void testMINIMAL_MESSAGE() throws Exception {
-        copyAndCheck(createEnvelope(getTestResource(TestConstants.MINIMAL_MESSAGE)), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.MINIMAL_MESSAGE)));
     }
     public void testREALLY_BIG_MESSAGE() throws Exception {
         // Ignore the serialization comparison
-        copyAndCheck(createEnvelope(getTestResource(TestConstants.REALLY_BIG_MESSAGE)), false);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.REALLY_BIG_MESSAGE)));
     }
     public void testEMPTY_BODY_MESSAGE() throws Exception {
-        copyAndCheck(createEnvelope(getTestResource(TestConstants.EMPTY_BODY_MESSAGE)), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.EMPTY_BODY_MESSAGE)));
     }
     
     public void testSoap11fault() throws Exception { 
-        copyAndCheck(createEnvelope(getTestResource("soap/soap11/soap11fault.xml")), true); 
+        copyAndCheck(createEnvelope(getTestResource("soap/soap11/soap11fault.xml"))); 
     }
     
     public void testOMSE() throws Exception {
@@ -90,7 +90,7 @@ public class CopyUtilsTest extends AbstractTestCase {
         OMNamespace ns = body.getOMFactory().createOMNamespace("urn://test", "tns");
         OMSourcedElement omse =body.getOMFactory().createOMElement(bads, "payload", ns);
         body.addChild(omse);
-        copyAndCheck(sourceEnv, true);
+        copyAndCheck(sourceEnv);
     }
     
     public void testOMSE2() throws Exception {
@@ -116,7 +116,7 @@ public class CopyUtilsTest extends AbstractTestCase {
         OMSourcedElement omse =body.getOMFactory().createOMElement(bads, "payload", ns);
         body.addChild(omse);
         
-        copyAndCheck(sourceEnv, true);
+        copyAndCheck(sourceEnv);
         
         // The source SOAPHeaderBlock should not be expanded in the process
         assertFalse(shb.isExpanded());
@@ -130,10 +130,8 @@ public class CopyUtilsTest extends AbstractTestCase {
      * @throws Exception
      */
     protected SOAPEnvelope createEnvelope(InputStream in) throws Exception {
-        XMLStreamReader parser = StAXUtils.createXMLStreamReader(in);
-        OMXMLParserWrapper builder = new StAXSOAPModelBuilder(parser, null);
-        SOAPEnvelope sourceEnv = (SOAPEnvelope) builder.getDocumentElement();
-        return sourceEnv;
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(in, null);
+        return (SOAPEnvelope) builder.getDocumentElement();
     }
     
     /**
@@ -142,7 +140,7 @@ public class CopyUtilsTest extends AbstractTestCase {
      * @param checkText (if true, check the serialization of the source and target tree)
      * @throws Exception
      */
-    protected void copyAndCheck(SOAPEnvelope sourceEnv, boolean checkText) throws Exception {
+    protected void copyAndCheck(SOAPEnvelope sourceEnv) throws Exception {
        
         SOAPEnvelope targetEnv = CopyUtils.copy(sourceEnv);
         
@@ -151,11 +149,7 @@ public class CopyUtilsTest extends AbstractTestCase {
         String sourceText = sourceEnv.toString();
         String targetText = targetEnv.toString();
         
-        // In some cases the serialization code or internal hashmaps cause
-        // attributes or namespaces to be in a different order...accept this for now.
-        if (checkText) {
-            assertEquals(sourceText, targetText);
-        }
+        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(sourceText, targetText), true);
         
         sourceEnv.close(false);
     }
