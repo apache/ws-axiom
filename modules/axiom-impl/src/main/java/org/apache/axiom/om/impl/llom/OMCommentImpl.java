@@ -45,15 +45,6 @@ public class OMCommentImpl extends OMNodeImpl implements OMComment {
         nodeType = OMNode.COMMENT_NODE;
     }
 
-    /**
-     * Constructor OMCommentImpl.
-     *
-     * @param parentNode
-     */
-    public OMCommentImpl(OMContainer parentNode, OMFactory factory) {
-        this(parentNode, null, factory);
-    }
-
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         writer.writeComment(this.value);
     }
