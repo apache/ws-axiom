@@ -125,7 +125,7 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
     }
 
     public boolean isExpanded() {
-        throw new UnsupportedOperationException();
+        return true;
     }
 
     public OMDataSource setDataSource(OMDataSource dataSource) {
