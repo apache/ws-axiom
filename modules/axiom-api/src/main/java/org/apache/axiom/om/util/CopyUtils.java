@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.om.util;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAPCloneOptions;
@@ -47,12 +49,17 @@ public class CopyUtils {
 
 
     /**
-     * Creates a copy of the source envelope.
-     * If there are OMSourcedElements in the source tree, 
-     * similar MSourcedElements are used in the target tree.
-     *
-     * @param sourceEnv
-     * @return targetEnv
+     * @deprecated This method has the same effect as calling
+     *             {@link OMElement#cloneOMElement(OMCloneOptions)} on the source
+     *             {@link SOAPEnvelope} with the following options enabled:
+     *             <ul>
+     *             <li>{@link OMCloneOptions#setFetchDataHandlers(boolean)}
+     *             <li>{@link OMCloneOptions#setPreserveModel(boolean)}
+     *             <li>{@link OMCloneOptions#setCopyOMDataSources(boolean)}
+     *             </ul>
+     *             Instead of using this method, application code should use
+     *             {@link OMElement#cloneOMElement(OMCloneOptions)} directly and fine tune the
+     *             options for the particular use case.
      */
     public static SOAPEnvelope copy(SOAPEnvelope sourceEnv) {
         SOAPCloneOptions options = new SOAPCloneOptions();
