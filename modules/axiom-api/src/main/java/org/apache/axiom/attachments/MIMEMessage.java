@@ -28,8 +28,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.activation.DataHandler;
-import javax.mail.internet.ContentType;
-import javax.mail.internet.ParseException;
+import javax.activation.MimeType;
+import javax.activation.MimeTypeParseException;
 
 import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
@@ -55,7 +55,7 @@ class MIMEMessage extends AttachmentsDelegate {
     private static final Log log = LogFactory.getLog(MIMEMessage.class);
 
     /** <code>ContentType</code> of the MIME message */
-    private final ContentType contentType;
+    private final MimeType contentType;
     
     private final int contentLength; // Content Length
 
@@ -107,8 +107,8 @@ class MIMEMessage extends AttachmentsDelegate {
         }
         this.fileStorageThreshold = fileStorageThreshold;
         try {
-            contentType = new ContentType(contentTypeString);
-        } catch (ParseException e) {
+            contentType = new MimeType(contentTypeString);
+        } catch (MimeTypeParseException e) {
             throw new OMException(
                     "Invalid Content Type Field in the Mime Message"
                     , e);
@@ -149,7 +149,7 @@ class MIMEMessage extends AttachmentsDelegate {
         partsRequested = false;
     }
 
-    ContentType getContentType() {
+    MimeType getContentType() {
         return contentType;
     }
 

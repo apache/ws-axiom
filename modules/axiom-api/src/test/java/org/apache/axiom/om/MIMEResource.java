@@ -18,8 +18,8 @@
  */
 package org.apache.axiom.om;
 
-import javax.mail.internet.ContentType;
-import javax.mail.internet.ParseException;
+import javax.activation.MimeType;
+import javax.activation.MimeTypeParseException;
 
 public class MIMEResource {
     private final String name;
@@ -40,8 +40,8 @@ public class MIMEResource {
     
     private String getParameter(String name) {
         try {
-            return new ContentType(contentType).getParameter(name);
-        } catch (ParseException ex) {
+            return new MimeType(contentType).getParameter(name);
+        } catch (MimeTypeParseException ex) {
             // MIMEResource objects are only defined as constants. Therefore we
             // will never get here under normal conditions.
             throw new Error(ex);

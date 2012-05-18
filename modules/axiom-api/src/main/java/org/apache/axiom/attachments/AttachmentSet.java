@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.activation.DataHandler;
-import javax.mail.internet.ContentType;
+import javax.activation.MimeType;
 
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.om.OMException;
@@ -38,7 +38,7 @@ import org.apache.axiom.om.OMException;
 class AttachmentSet extends AttachmentsDelegate {
     private final Map attachmentsMap = new LinkedHashMap();
 
-    ContentType getContentType() {
+    MimeType getContentType() {
         return null;
     }
 
