@@ -1467,6 +1467,15 @@ while (iterator.hasNext()) {
                         and to <ulink url="https://issues.apache.org/jira/browse/AXIOM-412">AXIOM-412</ulink>.
                     </para>
                 </section>
+                <section>
+                    <title>Removal of deprecated classes from core artifacts</title>
+                    <para>
+                        Several deprecated classes have been moved to a new JAR file named <filename>axiom-compat</filename> and are
+                        no longer included in the core artifacts (<filename>axiom-api</filename>, <filename>axiom-impl</filename>
+                        and <filename>axiom-dom</filename>). If you rely on these deprecated classes or get <classname>NoClassDefFoundError</classname>s
+                        after upgrading to Axiom 1.2.14, then you need to add this new JAR to your project's dependencies.
+                    </para>
+                </section>
             </section>
         </section>
     </chapter>
