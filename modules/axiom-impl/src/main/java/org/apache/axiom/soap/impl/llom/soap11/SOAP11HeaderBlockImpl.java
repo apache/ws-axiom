@@ -39,6 +39,10 @@ public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
         super(localName, ns, factory);
     }
     
+    public SOAP11HeaderBlockImpl(SOAPFactory factory, OMDataSource source) {
+        super(factory, source);
+    }
+
     public SOAP11HeaderBlockImpl(String localName, OMNamespace ns,
                                  SOAPFactory factory, 
                                  OMDataSource ds) {

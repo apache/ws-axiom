@@ -132,6 +132,10 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
         throw new UnsupportedOperationException("TODO");
     }
 
+    public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
+        throw new UnsupportedOperationException("TODO");
+    }
+
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns, OMDataSource ds) throws SOAPProcessingException {
         throw new UnsupportedOperationException("TODO");
     }

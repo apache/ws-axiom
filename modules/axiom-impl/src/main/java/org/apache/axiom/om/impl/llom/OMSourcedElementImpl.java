@@ -690,14 +690,21 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             return super.clone(options, targetParent);
         }
         // Otherwise create a target OMSE with the copied DataSource
-        OMSourcedElement targetOMSE;
+        OMSourcedElementImpl targetOMSE;
         if (options.isPreserveModel()) {
-            targetOMSE = createClone(options, targetDS, getLocalName(), getNamespace());
+            targetOMSE = (OMSourcedElementImpl)createClone(options, targetDS);
         } else {
-            targetOMSE = factory.createOMElement(targetDS, 
-                                    getLocalName(), 
-                                    getNamespace());
+            targetOMSE = (OMSourcedElementImpl)factory.createOMElement(targetDS);
         }
+        
+        targetOMSE.localName = localName;
+        targetOMSE.definedNamespaceSet = definedNamespaceSet;
+        if (definedNamespace instanceof DeferredNamespace) {
+            targetOMSE.definedNamespace = targetOMSE.new DeferredNamespace(definedNamespace.getNamespaceURI());
+        } else {
+            targetOMSE.definedNamespace = definedNamespace;
+        }
+        
         if (targetParent != null) {
             targetParent.addChild(targetOMSE);
         }
@@ -708,8 +715,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.createClone(options, targetParent);
     }
     
-    protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds, String localName, OMNamespace ns) {
-        return factory.createOMElement(ds, localName, ns);
+    protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds) {
+        return factory.createOMElement(ds);
     }
 
     public void setLineNumber(int lineNumber) {

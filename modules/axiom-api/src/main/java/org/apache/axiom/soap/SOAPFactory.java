@@ -92,16 +92,34 @@ public interface SOAPFactory extends OMFactory {
                                                  OMNamespace ns) throws SOAPProcessingException;
     
     /**
-     * Create SOAPHeaderBlock that has an OMDataSource
+     * Create a {@link SOAPHeaderBlock} from an {@link OMDataSource}. The semantics of the method
+     * parameters are the same as for {@link OMFactory#createOMElement(OMDataSource)}.
+     * 
+     * @param source
+     *            the data source; must not be <code>null</code>
+     * @return the newly created header block
+     */
+    SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source);
+    
+    /**
+     * Create a {@link SOAPHeaderBlock} from an {@link OMDataSource} with a known local name and
+     * namespace URI. The semantics of the method parameters are the same as for
+     * {@link OMFactory#createOMElement(OMDataSource, String, OMNamespace)}.
+     * 
      * @param localName
+     *            the local part of the name of the element produced by the data source; must not be
+     *            <code>null</code>
      * @param ns
-     * @param ds
-     * @return SOAPHeaderBlock
+     *            the namespace of the element produced by the data source, or <code>null</code> if
+     *            the element has no namespace
+     * @param source
+     *            the data source; must not be <code>null</code>
+     * @return the newly created header block
      * @throws SOAPProcessingException
      */
     SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                           OMNamespace ns,
-                                          OMDataSource ds) throws SOAPProcessingException;
+                                          OMDataSource source) throws SOAPProcessingException;
 
     /**
      * @param localName

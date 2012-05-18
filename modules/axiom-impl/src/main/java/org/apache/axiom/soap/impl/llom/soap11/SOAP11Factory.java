@@ -108,6 +108,10 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
         return new SOAP11HeaderBlockImpl(localName, ns, this);
     }
 
+    public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
+        return new SOAP11HeaderBlockImpl(this, source);
+    }
+
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  OMNamespace ns,
                                                  OMDataSource ds) 

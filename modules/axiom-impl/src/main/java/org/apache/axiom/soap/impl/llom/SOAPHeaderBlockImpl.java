@@ -51,6 +51,10 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
         super(localName, ns, factory);
     }
     
+    public SOAPHeaderBlockImpl(SOAPFactory factory, OMDataSource source) {
+        super(factory, source);
+    }
+
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns, SOAPFactory factory, 
                                OMDataSource ds) {
         super(localName, ns, factory, ds);
@@ -171,8 +175,8 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
         return clone;
     }
 
-    protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds, String localName, OMNamespace ns) {
-        SOAPHeaderBlock clone = ((SOAPFactory)factory).createSOAPHeaderBlock(localName, ns, ds);
+    protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds) {
+        SOAPHeaderBlock clone = ((SOAPFactory)factory).createSOAPHeaderBlock(ds);
         copyData(options, clone);
         return clone;
     }

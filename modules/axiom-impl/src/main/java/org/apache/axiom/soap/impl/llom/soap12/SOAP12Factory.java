@@ -170,6 +170,10 @@ public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactor
         return new SOAP12FaultValueImpl(parent, builder, this);
     }
 
+    public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
+        return new SOAP12HeaderBlockImpl(this, source);
+    }
+
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  OMNamespace ns) throws SOAPProcessingException {
         return new SOAP12HeaderBlockImpl(localName, ns, this);

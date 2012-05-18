@@ -39,6 +39,10 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl implements SOAP12
         super(localName, ns, factory);
     }
     
+    public SOAP12HeaderBlockImpl(SOAPFactory factory, OMDataSource source) {
+        super(factory, source);
+    }
+
     public SOAP12HeaderBlockImpl(String localName, OMNamespace ns,
                                  SOAPFactory factory, OMDataSource ds) {
         super(localName, ns, factory, ds);
