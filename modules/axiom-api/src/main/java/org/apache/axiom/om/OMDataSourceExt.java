@@ -37,11 +37,10 @@ import java.io.UnsupportedEncodingException;
  * @see OMSourcedElement
  */
 public interface OMDataSourceExt extends OMDataSource {
-    
-    /* Property lossyPrefix
-     * Value null or Boolean.TRUE or Boolean.FALSE
-     * If Boolean.TRUE, this indicates that expansion is needed to 
-     * obtain the actual prefix name. 
+    /**
+     * @deprecated To create an {@link OMSourcedElement} with unknown prefix, use
+     *             {@link OMFactory#createOMElement(OMDataSource, String, OMNamespace)} and pass
+     *             <code>null</code> as prefix.
      */
     String LOSSY_PREFIX = "lossyPrefix";
     
