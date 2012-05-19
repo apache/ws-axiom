@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.activation.DataHandler;
-import javax.activation.MimeType;
+import javax.mail.internet.ContentType;
 
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.om.OMException;
@@ -49,7 +49,7 @@ import org.apache.axiom.om.OMException;
  * {@link Attachments} would simply become a legacy adapter.
  */
 abstract class AttachmentsDelegate {
-    abstract MimeType getContentType();
+    abstract ContentType getContentType();
     abstract LifecycleManager getLifecycleManager();
     abstract void setLifecycleManager(LifecycleManager manager);
     abstract DataHandler getDataHandler(String contentID);

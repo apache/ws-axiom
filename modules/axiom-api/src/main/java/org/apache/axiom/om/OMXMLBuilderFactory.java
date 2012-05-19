@@ -21,8 +21,8 @@ package org.apache.axiom.om;
 import java.io.InputStream;
 import java.io.Reader;
 
-import javax.activation.MimeType;
-import javax.activation.MimeTypeParseException;
+import javax.mail.internet.ContentType;
+import javax.mail.internet.ParseException;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
@@ -340,10 +340,10 @@ public class OMXMLBuilderFactory {
      */
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory,
             StAXParserConfiguration configuration, Attachments attachments) {
-        MimeType contentType;
+        ContentType contentType;
         try {
-            contentType = new MimeType(attachments.getRootPartContentType());
-        } catch (MimeTypeParseException ex) {
+            contentType = new ContentType(attachments.getRootPartContentType());
+        } catch (ParseException ex) {
             throw new OMException(ex);
         }
         InputSource rootPart = getRootPartInputSource(attachments, contentType);
@@ -487,10 +487,10 @@ public class OMXMLBuilderFactory {
      */
     public static SOAPModelBuilder createSOAPModelBuilder(OMMetaFactory metaFactory,
             Attachments attachments) {
-        MimeType contentType;
+        ContentType contentType;
         try {
-            contentType = new MimeType(attachments.getRootPartContentType());
-        } catch (MimeTypeParseException ex) {
+            contentType = new ContentType(attachments.getRootPartContentType());
+        } catch (ParseException ex) {
             throw new OMException(ex);
         }
         String type = contentType.getParameter("type");
@@ -507,7 +507,7 @@ public class OMXMLBuilderFactory {
                 rootPart, new OMAttachmentAccessorMimePartProvider(attachments));
     }
     
-    private static InputSource getRootPartInputSource(Attachments attachments, MimeType contentType) {
+    private static InputSource getRootPartInputSource(Attachments attachments, ContentType contentType) {
         InputSource rootPart = new InputSource(attachments.getRootPartInputStream(false));
         rootPart.setEncoding(contentType.getParameter("charset"));
         return rootPart;

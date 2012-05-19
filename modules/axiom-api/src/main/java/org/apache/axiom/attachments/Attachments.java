@@ -28,7 +28,7 @@ import org.apache.axiom.om.impl.MTOMConstants;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.activation.MimeType;
+import javax.mail.internet.ContentType;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -159,7 +159,7 @@ public class Attachments implements OMAttachmentAccessor {
      */
     public String getAttachmentSpecType() {
         if (this.applicationType == null) {
-            MimeType contentType = delegate.getContentType();
+            ContentType contentType = delegate.getContentType();
             if (contentType == null) {
                 throw new OMException("Unable to determine the attachment spec type because the " +
                 		"Attachments object doesn't have a known content type");
