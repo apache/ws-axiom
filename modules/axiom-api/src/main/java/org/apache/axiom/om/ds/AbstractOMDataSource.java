@@ -95,6 +95,6 @@ public abstract class AbstractOMDataSource implements OMDataSourceExt {
     }
 
     public OMDataSourceExt copy() {
-        throw new UnsupportedOperationException();
+        return null;
     }
 }
