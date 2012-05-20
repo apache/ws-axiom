@@ -39,7 +39,7 @@ public abstract class AbstractPushOMDataSource extends AbstractOMDataSource {
         return isDestructiveWrite();
     }
 
-    public XMLStreamReader getReader() throws XMLStreamException {
+    public final XMLStreamReader getReader() throws XMLStreamException {
         // Note: we don't actually expect this code to be called because OMSourcedElement should handle
         // AbstractPushOMDataSource instances differently. Nevertheless the code is functionally correct
         // (but not very good from a performance point of view, especially for XOP).
