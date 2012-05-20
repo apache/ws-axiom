@@ -399,6 +399,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteNamespace(metaFactory, "", "urn:test"));
             addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteNamespace(metaFactory, "p", "urn:test"));
             addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteStartElementAutoPrefix(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteStartElementWithDefaultNamespaceDeclaredOnParent(metaFactory));
         }
         addTest(new org.apache.axiom.ts.om.pi.TestDigest(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestBase64Streaming(metaFactory));

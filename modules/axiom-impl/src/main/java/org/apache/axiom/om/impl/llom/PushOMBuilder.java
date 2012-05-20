@@ -109,8 +109,9 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
             root.validateName(prefix, localName, namespaceURI);
             parent = root;
         } else {
-            // We don't pass the namespace here in order to avoid creation of a namespace declaration
-            parent = factory.createOMElement(localName, null, parent);
+            // We use the createOMElement variant that takes a OMXMLParserWrapper parameter and
+            // don't pass the namespace. This avoids creation of a namespace declaration.
+            parent = factory.createOMElement(localName, null, parent, null);
         }
         if (ns != null) {
             parent.setNamespaceWithNoFindInCurrentScope(ns);
