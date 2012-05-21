@@ -27,6 +27,7 @@ import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 public class PushOMDataSource extends AbstractPushOMDataSource implements QNameAwareOMDataSource {
     public void serialize(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement("p", "root", "urn:test");
+        writer.writeEmptyElement("p", "child", "urn:test");
         writer.writeEndElement();
     }
 

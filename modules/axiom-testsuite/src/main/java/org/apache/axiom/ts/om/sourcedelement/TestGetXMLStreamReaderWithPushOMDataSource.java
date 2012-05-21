@@ -46,5 +46,12 @@ public class TestGetXMLStreamReaderWithPushOMDataSource extends AxiomTestCase {
         assertTrue(element.isExpanded());
         // In addition, if the element is expanded, it will always be complete
         assertTrue(element.isComplete());
+        
+        // Verify remaining events
+        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
+        assertEquals("child", reader.getLocalName());
+        assertEquals(XMLStreamReader.END_ELEMENT, reader.next());
+        assertEquals(XMLStreamReader.END_ELEMENT, reader.next());
+        assertEquals(XMLStreamReader.END_DOCUMENT, reader.next());
     }
 }

@@ -33,6 +33,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandlerWriter {
@@ -126,6 +127,9 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
         if (parent == root) {
             parent = null;
         } else {
+            // Since we use the createOMElement variant that takes a OMXMLParserWrapper parameter,
+            // we need to update the completion status.
+            ((OMContainerEx)parent).setComplete(true);
             parent = (OMElement)parent.getParent();
         }
     }
