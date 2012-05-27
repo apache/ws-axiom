@@ -357,6 +357,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetNamespaceNormalized2(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetObject(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetReaderException(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetTextAsStreamWithNonDestructiveOMDataSource(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetXMLStreamReaderWithPushOMDataSource(metaFactory, true));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetXMLStreamReaderWithPushOMDataSource(metaFactory, false));
