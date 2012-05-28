@@ -118,8 +118,10 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
      *
      */
     public OMNode getNextOMSibling() throws OMException {
-        if ((nextSibling == null) && (parent != null) && !parent.isComplete()) {
-            parent.buildNext();
+        if (nextSibling == null && parent != null && parent.getBuilder() != null) {
+            while (!parent.isComplete() && nextSibling == null) {
+                parent.buildNext();
+            }
         }
         return nextSibling;
     }

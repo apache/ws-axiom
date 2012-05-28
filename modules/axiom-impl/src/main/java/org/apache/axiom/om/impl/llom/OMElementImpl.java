@@ -55,7 +55,6 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -350,27 +349,6 @@ public class OMElementImpl extends OMNodeImpl
             this.setComplete(false);
         }
 
-    }
-
-    /**
-     * Gets the next sibling. This can be an OMAttribute or OMText or OMELement for others.
-     *
-     * @throws OMException
-     */
-    public OMNode getNextOMSibling() throws OMException {
-        while (!done && builder != null ) {
-            if (builder.isCompleted()) {
-                log.debug("Builder is complete.  Setting OMElement to complete.");
-                setComplete(true);
-            } else {
-                int token = builder.next();
-                if (token == XMLStreamConstants.END_DOCUMENT) {
-                    throw new OMException(
-                    "Parser has already reached end of the document. No siblings found");
-                }
-            }
-        }
-        return super.getNextOMSibling();
     }
 
     /**

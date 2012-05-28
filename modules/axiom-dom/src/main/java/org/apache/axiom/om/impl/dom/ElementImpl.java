@@ -51,7 +51,6 @@ import org.w3c.dom.TypeInfo;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
@@ -1289,16 +1288,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         } else {
             return false;
         }
-    }
-
-    public OMNode getNextOMSibling() throws OMException {
-        while (!done) {
-            int token = builder.next();
-            if (token == XMLStreamConstants.END_DOCUMENT) {
-                throw new OMException();
-            }
-        }
-        return super.getNextOMSibling();
     }
 
     public void discard() throws OMException {
