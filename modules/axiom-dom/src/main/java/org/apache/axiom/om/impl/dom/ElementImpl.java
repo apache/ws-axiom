@@ -1234,6 +1234,8 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         if (attributes != null) {
             newnode.attributes = attributes.cloneMap(newnode);
         }
+        newnode.previousSibling = null;
+        newnode.nextSibling = null;
         return newnode;
 
     }

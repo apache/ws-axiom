@@ -19,6 +19,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMFactory;
+import org.w3c.dom.Node;
 
 public abstract class LeafNode extends ChildNode {
     private ParentNode ownerNode;
@@ -57,5 +58,12 @@ public abstract class LeafNode extends ChildNode {
     
     final void internalSetNextSibling(ChildNode nextSibling) {
         this.nextSibling = nextSibling;
+    }
+
+    public Node cloneNode(boolean deep) {
+        LeafNode newnode = (LeafNode)super.cloneNode(deep);
+        newnode.previousSibling = null;
+        newnode.nextSibling = null;
+        return newnode;
     }
 }

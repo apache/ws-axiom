@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -30,7 +31,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
@@ -53,7 +53,7 @@ import javax.xml.transform.sax.SAXSource;
 
 import java.util.Iterator;
 
-public abstract class ParentNode extends ChildNode implements OMContainerEx {
+public abstract class ParentNode extends ChildNode {
 
     protected ChildNode firstChild;
 
@@ -76,6 +76,10 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
         return this.builder;
     }
 
+    void internalAppendChild(ChildNode node) {
+        insertBefore(node, null, false);
+    }
+    
     public void addChild(OMNode omNode) {
         if (omNode.getOMFactory() instanceof OMDOMFactory) {
             insertBefore((Node)omNode, null, false);
@@ -95,7 +99,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
     }
 
     public Iterator getDescendants(boolean includeSelf) {
-        return new OMDescendantsIterator(this, includeSelf);
+        return new OMDescendantsIterator((OMContainer)this, includeSelf);
     }
 
     /**
@@ -151,7 +155,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
 
     public void setFirstChild(OMNode omNode) {
         if (firstChild != null) {
-            ((OMNodeEx) omNode).setParent(this);
+            ((OMNodeEx) omNode).setParent((OMContainer)this);
         }
         this.firstChild = (ChildNode) omNode;
     }
@@ -541,14 +545,14 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             case (OMNode.PI_NODE): {
                 OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
                 OMProcessingInstruction newPI = this.factory
-                        .createOMProcessingInstruction(this,
+                        .createOMProcessingInstruction((OMContainer)this,
                                                        importedPI.getTarget(),
                                                        importedPI.getValue());
                 return newPI;
             }
             case (OMNode.COMMENT_NODE): {
                 OMComment importedComment = (OMComment) child;
-                OMComment newComment = this.factory.createOMComment(this,
+                OMComment newComment = this.factory.createOMComment((OMContainer)this,
                                                                     importedComment.getValue());
                 DocumentImpl doc;
                 if (this instanceof DocumentImpl) {
@@ -562,7 +566,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
             }
             case (OMNode.DTD_NODE): {
                 OMDocType importedDocType = (OMDocType) child;
-                OMDocType newDocType = this.factory.createOMDocType(this,
+                OMDocType newDocType = this.factory.createOMDocType((OMContainer)this,
                                                                     importedDocType.getValue());
                 return newDocType;
             }
@@ -628,15 +632,15 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
     }
 
     public XMLStreamReader getXMLStreamReader(boolean cache) {
-        return OMContainerHelper.getXMLStreamReader(this, cache);
+        return OMContainerHelper.getXMLStreamReader((OMContainer)this, cache);
     }
     
     public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
-        return OMContainerHelper.getXMLStreamReader(this, cache, configuration);
+        return OMContainerHelper.getXMLStreamReader((OMContainer)this, cache, configuration);
     }
 
     public SAXSource getSAXSource(boolean cache) {
-        return new OMSource(this);
+        return new OMSource((OMContainer)this);
     }
 
     void notifyChildComplete() {

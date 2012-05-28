@@ -27,10 +27,6 @@ import org.apache.axiom.ts.dom.DOMTestSuiteBuilder;
 public class DOMImplementationTest extends TestCase {
     public static TestSuite suite() {
         DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(new OMDOMMetaFactory().newDocumentBuilderFactory());
-        
-        // TODO: AXIOM-425
-        builder.exclude(org.apache.axiom.ts.dom.attr.TestGetFirstChild.class);
-        
         return builder.build();
     }
 }

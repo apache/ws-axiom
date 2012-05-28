@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.OMDocumentImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -60,7 +61,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
-public class DocumentImpl extends RootNode implements Document, OMDocument {
+public class DocumentImpl extends RootNode implements Document, OMDocument, OMContainerEx {
 
     private String xmlVersion;
 

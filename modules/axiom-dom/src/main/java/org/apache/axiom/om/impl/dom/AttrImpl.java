@@ -20,28 +20,31 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 import org.w3c.dom.TypeInfo;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
-public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
+public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
 
     /** Name of the attribute */
     private String attrName;
-
-    /** Attribute value */
-    private TextImpl attrValue;
 
     /** Attribute type */
     private String attrType;
@@ -75,6 +78,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
     protected AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(factory);
         owner = ownerDocument;
+        this.done = true;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String localName,
@@ -87,8 +91,9 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
                 ns = null;
             }
         }
+        this.done = true;
         this.attrName = localName;
-        this.attrValue = new TextImpl(ownerDocument, value, factory);
+        internalAppendChild(new TextImpl(ownerDocument, value, factory));
         this.attrType = OMConstants.XMLATTRTYPE_CDATA;
         this.namespace = (OMNamespaceImpl) ns;
     }
@@ -96,8 +101,9 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
     public AttrImpl(DocumentImpl ownerDocument, String name, String value,
                     OMFactory factory) {
         this(ownerDocument, factory);
+        this.done = true;
         this.attrName = name;
-        this.attrValue = new TextImpl(ownerDocument, value, factory);
+        internalAppendChild(new TextImpl(ownerDocument, value, factory));
         this.attrType = OMConstants.XMLATTRTYPE_CDATA;
     }
 
@@ -110,6 +116,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
                     OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX);
         }
         this.attrType = OMConstants.XMLATTRTYPE_CDATA;
+        this.done = true;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String localName,
@@ -118,6 +125,15 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
         this.attrName = localName;
         this.namespace = (OMNamespaceImpl) namespace;
         this.attrType = OMConstants.XMLATTRTYPE_CDATA;
+        this.done = true;
+    }
+
+    final ParentNode internalGetOwnerNode() {
+        return owner;
+    }
+
+    final void internalSetOwnerNode(ParentNode ownerNode) {
+        this.owner = ownerNode;
     }
 
     // /
@@ -148,7 +164,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
      * @see org.w3c.dom.Node#getNodeValue()
      */
     public String getNodeValue() throws DOMException {
-        return (this.attrValue == null) ? "" : this.attrValue.getData();
+        return getValue();
     }
 
     /**
@@ -157,7 +173,38 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
      * @see org.w3c.dom.Attr#getValue()
      */
     public String getValue() {
-        return (this.attrValue == null) ? null : this.attrValue.getText();
+        String value = null;
+        StringBuffer buffer = null;
+        Node child = getFirstChild();
+
+        while (child != null) {
+            String textValue = ((Text)child).getData();
+            if (textValue != null && textValue.length() != 0) {
+                if (value == null) {
+                    // This is the first non empty text node. Just save the string.
+                    value = textValue;
+                } else {
+                    // We've already seen a non empty text node before. Concatenate using
+                    // a StringBuffer.
+                    if (buffer == null) {
+                        // This is the first text node we need to append. Initialize the
+                        // StringBuffer.
+                        buffer = new StringBuffer(value);
+                    }
+                    buffer.append(textValue);
+                }
+            }
+            child = child.getNextSibling();
+        }
+
+        if (value == null) {
+            // We didn't see any text nodes. Return an empty string.
+            return "";
+        } else if (buffer != null) {
+            return buffer.toString();
+        } else {
+            return value;
+        }
     }
 
     // /
@@ -236,7 +283,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
      * @see org.apache.axiom.om.OMAttribute#getAttributeValue()
      */
     public String getAttributeValue() {
-        return this.attrValue.getText();
+        return getValue();
     }
 
     /**
@@ -276,8 +323,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
      * @see org.apache.axiom.om.OMAttribute#setAttributeValue(String)
      */
     public void setAttributeValue(String value) {
-        this.attrValue = (TextImpl) this.getOwnerDocument().createTextNode(
-                value);
+        setValue(value);
     }
 
     /**
@@ -305,8 +351,11 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
      * @see org.w3c.dom.Attr#setValue(String)
      */
     public void setValue(String value) throws DOMException {
-        this.attrValue = (TextImpl) this.getOwnerDocument().createTextNode(
-                value);
+        Node child;
+        while ((child = getFirstChild()) != null) {
+            removeChild(child);
+        }
+        internalAppendChild((TextImpl)getOwnerDocument().createTextNode(value));
     }
 
     public Node getParentNode() {
@@ -352,17 +401,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
 
         AttrImpl clone = (AttrImpl) super.cloneNode(deep);
 
-        if (clone.attrValue == null) {
-            // Need to break the association w/ original kids
-            clone.attrValue = new TextImpl(this.attrValue.toString(), factory);
-            if (this.attrValue.internalGetNextSibling() != null) {
-                throw new UnsupportedOperationException(
-                        "Attribute value can contain only a text " +
-                                "node with out any siblings");
-            }
-        }
         clone.isSpecified(true);
-        clone.owner = (DocumentImpl)getOwnerDocument();
         clone.setUsed(false);
         return clone;
     }
@@ -383,10 +422,6 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
         return (this.namespace == null) ? this.attrName : this.namespace
                 .getPrefix()
                 + ":" + this.attrName;
-    }
-
-    public Document getOwnerDocument() {
-        return owner instanceof ElementImpl ? ((ElementImpl)owner).getOwnerDocument() : (DocumentImpl)owner;
     }
 
     /**
@@ -421,6 +456,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
      * @return True if the two objects are equal or else false. The equality is checked as explained above.
      */
     public boolean equals(Object obj) {
+        String attrValue = getValue();
         if (obj instanceof OMAttribute) { // Checks equality of an OMAttributeImpl or an AttrImpl with this instance
             OMAttribute other = (OMAttribute) obj;
             return (namespace == null ? other.getNamespace() == null :
@@ -456,8 +492,17 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
     }
 
     public int hashCode() {
+        String attrValue = getValue();
         return attrName.hashCode() ^ (attrValue != null ? attrValue.toString().hashCode() : 0) ^
                 (namespace != null ? namespace.hashCode() : 0);
     }
 
+    public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
+        throw new UnsupportedOperationException();
+    }
+
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        // Right now, this method is never called
+        throw new UnsupportedOperationException();
+    }
 }

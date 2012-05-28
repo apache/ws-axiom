@@ -172,7 +172,7 @@ public abstract class ChildNode extends NodeImpl {
     }
 
     public final OMContainer getParent() throws OMException {
-        return parentNode();
+        return (OMContainer)parentNode();
     }
 
     public Node getParentNode() {
@@ -180,21 +180,17 @@ public abstract class ChildNode extends NodeImpl {
     }
 
     public final void setParent(OMContainer element) {
-        setParent(element, false);
+        setParent((ParentNode)element, false);
     }
     
-    protected void setParent(OMContainer element, boolean useDomSemantics) {
-        if (element == null) {
+    protected void setParent(ParentNode parent, boolean useDomSemantics) {
+        if (parent == null) {
             internalSetOwnerNode(useDomSemantics ? ownerDocument() : null);
             hasParent(false);
-        } else if (element instanceof ParentNode) {
-            internalSetOwnerNode((ParentNode)element);
-            hasParent(true);
         } else {
-            throw new OMException("The given parent is not of the type "
-                    + ParentNode.class);
+            internalSetOwnerNode(parent);
+            hasParent(true);
         }
-
     }
 
     public OMNode detach() throws OMException {
@@ -250,7 +246,7 @@ public abstract class ChildNode extends NodeImpl {
         } else if (this == sibling) {
             throw new OMException("Inserting self as the sibling is not allowed");
         }
-        ((OMNodeEx) sibling).setParent(parentNode);
+        ((OMNodeEx) sibling).setParent((OMContainer)parentNode);
         if (sibling instanceof ChildNode) {
             ChildNode domSibling = (ChildNode) sibling;
             domSibling.internalSetPreviousSibling(this);
@@ -310,9 +306,6 @@ public abstract class ChildNode extends NodeImpl {
 
         ChildNode newnode = (ChildNode) super.cloneNode(deep);
 
-        // Need to break the association w/ original kids
-        newnode.internalSetPreviousSibling(null);
-        newnode.internalSetNextSibling(null);
         newnode.isFirstChild(false);
         newnode.internalSetOwnerNode(ownerDocument());
         newnode.hasParent(false);

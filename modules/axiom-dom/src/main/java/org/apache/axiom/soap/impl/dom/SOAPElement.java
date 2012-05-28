@@ -77,11 +77,11 @@ public abstract class SOAPElement extends ElementImpl {
     protected abstract void checkParent(OMElement parent)
             throws SOAPProcessingException;
 
-    protected void setParent(OMContainer element, boolean useDomSemantics) {
-        super.setParent(element, useDomSemantics);
+    protected void setParent(ParentNode parent, boolean useDomSemantics) {
+        super.setParent(parent, useDomSemantics);
 
-        if (!useDomSemantics && element instanceof OMElement) {
-            checkParent((OMElement) element);
+        if (!useDomSemantics && parent instanceof OMElement) {
+            checkParent((OMElement) parent);
         }
     }
 }
