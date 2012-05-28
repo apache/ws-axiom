@@ -126,26 +126,26 @@ public abstract class ChildNode extends NodeImpl {
         return (OMNode)internalGetNextSibling();
     }
 
-    public OMNode getNextOMSiblingIfAvailable() {
+    public final OMNode getNextOMSiblingIfAvailable() {
         return (OMNode)internalGetNextSibling();
     }
 
-    public Node getNextSibling() {
+    public final Node getNextSibling() {
         return (Node) this.getNextOMSibling();
     }
 
-    public OMNode getPreviousOMSibling() {
+    public final OMNode getPreviousOMSibling() {
         return (OMNode)internalGetPreviousSibling();
     }
 
-    public Node getPreviousSibling() {
+    public final Node getPreviousSibling() {
         return internalGetPreviousSibling();
     }
 
     // /
     // /OMNode methods
     // /
-    public void setNextOMSibling(OMNode node) {
+    public final void setNextOMSibling(OMNode node) {
         if (node == null) {
             internalSetNextSibling(null);
             return;
@@ -157,7 +157,7 @@ public abstract class ChildNode extends NodeImpl {
         }
     }
 
-    public void setPreviousOMSibling(OMNode node) {
+    public final void setPreviousOMSibling(OMNode node) {
         if (node == null) {
             internalSetPreviousSibling(null);
             return;
@@ -169,7 +169,7 @@ public abstract class ChildNode extends NodeImpl {
         }
     }
 
-    public OMContainer getParent() throws OMException {
+    public final OMContainer getParent() throws OMException {
         return parentNode();
     }
 
@@ -177,7 +177,7 @@ public abstract class ChildNode extends NodeImpl {
         return parentNode();
     }
 
-    public void setParent(OMContainer element) {
+    public final void setParent(OMContainer element) {
         setParent(element, false);
     }
     

@@ -123,41 +123,6 @@ public class DocumentImpl extends RootNode implements Document, OMDocument {
     }
 
     // /
-    // /Overrides ChildNode specific methods.
-    // /
-    public OMNode getNextOMSibling() throws OMException {
-        return null;
-    }
-
-    public Node getNextSibling() {
-        return null;
-    }
-
-    public OMContainer getParent() throws OMException {
-        throw new UnsupportedOperationException("This is the document node");
-    }
-
-    public OMNode getPreviousOMSibling() {
-        throw new UnsupportedOperationException("This is the document node");
-    }
-
-    public Node getPreviousSibling() {
-        return null;
-    }
-
-    public void setNextOMSibling(OMNode node) {
-        throw new UnsupportedOperationException("This is the document node");
-    }
-
-    public void setParent(OMContainer element) {
-        throw new UnsupportedOperationException("This is the document node");
-    }
-
-    public void setPreviousOMSibling(OMNode node) {
-        throw new UnsupportedOperationException("This is the document node");
-    }
-
-    // /
     // /org.w3c.dom.Node methods
     // /
     public String getNodeName() {
