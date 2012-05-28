@@ -29,19 +29,19 @@ public abstract class RootNode extends ParentNode {
         super(factory);
     }
 
-    final ChildNode internalGetPreviousSibling() {
+    final NodeImpl internalGetPreviousSibling() {
         return null;
     }
 
-    final ChildNode internalGetNextSibling() {
+    final NodeImpl internalGetNextSibling() {
         return null;
     }
 
-    final void internalSetPreviousSibling(ChildNode previousSibling) {
+    final void internalSetPreviousSibling(NodeImpl previousSibling) {
         throw new UnsupportedOperationException();
     }
 
-    final void internalSetNextSibling(ChildNode nextSibling) {
+    final void internalSetNextSibling(NodeImpl nextSibling) {
         throw new UnsupportedOperationException();
     }
 }

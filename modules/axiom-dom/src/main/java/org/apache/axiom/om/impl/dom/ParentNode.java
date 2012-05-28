@@ -53,11 +53,11 @@ import javax.xml.transform.sax.SAXSource;
 
 import java.util.Iterator;
 
-public abstract class ParentNode extends ChildNode {
+public abstract class ParentNode extends NodeImpl {
 
-    protected ChildNode firstChild;
+    protected NodeImpl firstChild;
 
-    protected ChildNode lastChild;
+    protected NodeImpl lastChild;
 
     /** @param ownerDocument  */
     protected ParentNode(DocumentImpl ownerDocument, OMFactory factory) {
@@ -76,7 +76,7 @@ public abstract class ParentNode extends ChildNode {
         return this.builder;
     }
 
-    void internalAppendChild(ChildNode node) {
+    void internalAppendChild(NodeImpl node) {
         insertBefore(node, null, false);
     }
     
@@ -161,7 +161,7 @@ public abstract class ParentNode extends ChildNode {
         if (firstChild != null) {
             ((OMNodeEx) omNode).setParent((OMContainer)this);
         }
-        this.firstChild = (ChildNode) omNode;
+        this.firstChild = (NodeImpl) omNode;
     }
 
     /**
@@ -169,7 +169,7 @@ public abstract class ParentNode extends ChildNode {
      * @param omNode
      */
     public void setLastChild(OMNode omNode) {
-        this.lastChild = (ChildNode) omNode;
+        this.lastChild = (NodeImpl) omNode;
     }
 
     // /
@@ -218,8 +218,8 @@ public abstract class ParentNode extends ChildNode {
     }
     
     private Node insertBefore(Node newChild, Node refChild, boolean useDomSemantics) {
-        ChildNode newDomChild = (ChildNode) newChild;
-        ChildNode refDomChild = (ChildNode) refChild;
+        NodeImpl newDomChild = (NodeImpl) newChild;
+        NodeImpl refDomChild = (NodeImpl) refChild;
 
         if (useDomSemantics) {
             checkSameOwnerDocument(newDomChild);
@@ -280,7 +280,7 @@ public abstract class ParentNode extends ChildNode {
             Iterator children = this.getChildren();
             boolean found = false;
             while (children.hasNext()) {
-                ChildNode tempNode = (ChildNode) children.next();
+                NodeImpl tempNode = (NodeImpl) children.next();
 
                 if (tempNode.equals(refChild)) {
                     // RefChild found
@@ -292,7 +292,7 @@ public abstract class ParentNode extends ChildNode {
                             DocumentFragmentImpl docFrag =
                                     (DocumentFragmentImpl) newChild;
                             
-                            ChildNode child = docFrag.firstChild;
+                            NodeImpl child = docFrag.firstChild;
                             while (child != null) {
                                 child.setParent(this, useDomSemantics);
                                 child = child.internalGetNextSibling();
@@ -319,14 +319,14 @@ public abstract class ParentNode extends ChildNode {
 
                         }
                     } else { // If the refChild is not the fist child
-                        ChildNode previousNode = refDomChild.internalGetPreviousSibling();
+                        NodeImpl previousNode = refDomChild.internalGetPreviousSibling();
 
                         if (newChild instanceof DocumentFragmentImpl) {
                             // the newChild is a document fragment
                             DocumentFragmentImpl docFrag =
                                     (DocumentFragmentImpl) newChild;
 
-                            ChildNode child = docFrag.firstChild;
+                            NodeImpl child = docFrag.firstChild;
                             while (child != null) {
                                 child.setParent(this, useDomSemantics);
                                 child = child.internalGetNextSibling();
@@ -377,8 +377,8 @@ public abstract class ParentNode extends ChildNode {
 
     /** Replaces the oldChild with the newChild. */
     public final Node replaceChild(Node newChild, Node oldChild) throws DOMException {
-        ChildNode newDomChild = (ChildNode) newChild;
-        ChildNode oldDomChild = (ChildNode) oldChild;
+        NodeImpl newDomChild = (NodeImpl) newChild;
+        NodeImpl oldDomChild = (NodeImpl) oldChild;
 
         if (newChild == null) {
             return this.removeChild(oldChild);
@@ -396,12 +396,12 @@ public abstract class ParentNode extends ChildNode {
         Iterator children = this.getChildren();
         boolean found = false;
         while (!found && children.hasNext()) {
-            ChildNode tempNode = (ChildNode) children.next();
+            NodeImpl tempNode = (NodeImpl) children.next();
             if (tempNode.equals(oldChild)) {
                 if (newChild instanceof DocumentFragmentImpl) {
                     DocumentFragmentImpl docFrag =
                             (DocumentFragmentImpl) newDomChild;
-                    ChildNode child = (ChildNode) docFrag.getFirstChild();
+                    NodeImpl child = (NodeImpl) docFrag.getFirstChild();
                     this.replaceChild(child, oldChild);
                     
                     //set the parent of all kids to me
@@ -410,7 +410,7 @@ public abstract class ParentNode extends ChildNode {
                         child = child.internalGetNextSibling();
                     }
 
-                    this.lastChild = (ChildNode)docFrag.getLastChild();
+                    this.lastChild = (NodeImpl)docFrag.getLastChild();
                     
                 } else {
                     if (this.firstChild == oldDomChild) {
@@ -466,7 +466,7 @@ public abstract class ParentNode extends ChildNode {
     /** Removes the given child from the DOM Tree. */
     public final Node removeChild(Node oldChild) throws DOMException {
         if (oldChild.getParentNode() == this) {
-            ((ChildNode)oldChild).detach(true);
+            ((NodeImpl)oldChild).detach(true);
             return oldChild;
         } else {
             throw new DOMException(DOMException.NOT_FOUND_ERR,

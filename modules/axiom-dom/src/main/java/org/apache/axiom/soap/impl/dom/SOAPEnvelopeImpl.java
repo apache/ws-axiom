@@ -28,8 +28,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.dom.ChildNode;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
+import org.apache.axiom.om.impl.dom.NodeImpl;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
@@ -243,11 +243,11 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
                 OMSerializerUtil.serializeStartpart(this, writer);
                 OMElement header = getHeader();
                 if ((header != null) && (header.getFirstOMChild() != null)) {
-                    serializeInternally((ChildNode) header, writer);
+                    serializeInternally((NodeImpl) header, writer);
                 }
                 SOAPBody body = getBody();
                 if (body != null) {
-                    serializeInternally((ChildNode) body, writer);
+                    serializeInternally((NodeImpl) body, writer);
                 }
                 OMSerializerUtil.serializeEndpart(writer);
             } else {
@@ -256,7 +256,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         }
     }
 
-    private void serializeInternally(ChildNode child, MTOMXMLStreamWriter writer)
+    private void serializeInternally(NodeImpl child, MTOMXMLStreamWriter writer)
             throws XMLStreamException {
         if ((!(child instanceof OMElement)) || child.isComplete() || child.builder == null) {
             child.internalSerialize(writer, false);

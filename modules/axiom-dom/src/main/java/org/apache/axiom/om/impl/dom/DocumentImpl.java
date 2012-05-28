@@ -515,8 +515,8 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
     }
 
     public Node adoptNode(Node node) throws DOMException {
-        if (node instanceof ChildNode) {
-            ChildNode childNode = (ChildNode)node;
+        if (node instanceof NodeImpl) {
+            NodeImpl childNode = (NodeImpl)node;
             if (childNode.hasParent()) {
                 childNode.detach();
             }

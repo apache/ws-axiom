@@ -69,9 +69,9 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     
     private ParentNode ownerNode;
     
-    private ChildNode previousSibling;
+    private NodeImpl previousSibling;
 
-    private ChildNode nextSibling;
+    private NodeImpl nextSibling;
 
     private int lineNumber;
 
@@ -184,19 +184,19 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         this.ownerNode = ownerNode;
     }
 
-    final ChildNode internalGetPreviousSibling() {
+    final NodeImpl internalGetPreviousSibling() {
         return previousSibling;
     }
     
-    final ChildNode internalGetNextSibling() {
+    final NodeImpl internalGetNextSibling() {
         return nextSibling;
     }
     
-    final void internalSetPreviousSibling(ChildNode previousSibling) {
+    final void internalSetPreviousSibling(NodeImpl previousSibling) {
         this.previousSibling = previousSibling;
     }
     
-    final void internalSetNextSibling(ChildNode nextSibling) {
+    final void internalSetNextSibling(NodeImpl nextSibling) {
         this.nextSibling = nextSibling;
     }
 
@@ -1210,7 +1210,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             targetElement.addAttribute(attr);
         }
         for (Iterator it = getChildren(); it.hasNext(); ) {
-            ((ChildNode)it.next()).clone(options, targetElement);
+            ((NodeImpl)it.next()).clone(options, targetElement);
         }
         return targetElement;
     }

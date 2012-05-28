@@ -23,12 +23,12 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public abstract class LeafNode extends ChildNode {
+public abstract class LeafNode extends NodeImpl {
     private ParentNode ownerNode;
     
-    private ChildNode previousSibling;
+    private NodeImpl previousSibling;
 
-    private ChildNode nextSibling;
+    private NodeImpl nextSibling;
 
     protected LeafNode(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
@@ -46,19 +46,19 @@ public abstract class LeafNode extends ChildNode {
         this.ownerNode = ownerNode;
     }
 
-    final ChildNode internalGetPreviousSibling() {
+    final NodeImpl internalGetPreviousSibling() {
         return previousSibling;
     }
     
-    final ChildNode internalGetNextSibling() {
+    final NodeImpl internalGetNextSibling() {
         return nextSibling;
     }
     
-    final void internalSetPreviousSibling(ChildNode previousSibling) {
+    final void internalSetPreviousSibling(NodeImpl previousSibling) {
         this.previousSibling = previousSibling;
     }
     
-    final void internalSetNextSibling(ChildNode nextSibling) {
+    final void internalSetNextSibling(NodeImpl nextSibling) {
         this.nextSibling = nextSibling;
     }
     
