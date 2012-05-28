@@ -23,7 +23,7 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public abstract class LeafNode extends ChildNode implements NodeList {
+public abstract class LeafNode extends ChildNode {
     private ParentNode ownerNode;
     
     private ChildNode previousSibling;
@@ -63,15 +63,7 @@ public abstract class LeafNode extends ChildNode implements NodeList {
     }
     
     public final NodeList getChildNodes() {
-        return this;
-    }
-
-    public final int getLength() {
-        return 0;
-    }
-
-    public final Node item(int index) {
-        return null;
+        return EmptyNodeList.INSTANCE;
     }
 
     public final Node appendChild(Node newChild) throws DOMException {

@@ -95,6 +95,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.attributes.TestSetNamedItemWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestAppendData(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetChildNodes(dbf));
+        addTest(new org.apache.axiom.ts.dom.text.TestGetLength(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeText(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeTextWithCDATASection(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeTextWithComment(dbf));
