@@ -147,13 +147,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
         this.done = state;
     }
 
-    /** Forces the parser to proceed, if parser has not yet finished with the XML input. */
-    public void buildNext() {
-        if (builder != null && !builder.isCompleted()) {
-            builder.next();
-        }
-    }
-
     /**
      * Adds child to the element. One can decide whether to append the child or to add to the front
      * of the children list.

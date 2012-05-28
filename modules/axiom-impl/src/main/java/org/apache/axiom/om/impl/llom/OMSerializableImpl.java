@@ -80,6 +80,17 @@ public abstract class OMSerializableImpl implements OMSerializable {
         }
     }
     
+    /** Forces the parser to proceed, if parser has not yet finished with the XML input. */
+    public void buildNext() {
+        if (builder != null) {
+            if (!builder.isCompleted()) {
+                builder.next();
+            } else {
+                this.setComplete(true);
+            }         
+        }
+    }
+
     public void close(boolean build) {
         if (build) {
             this.build();

@@ -697,18 +697,6 @@ public class OMElementImpl extends OMNodeImpl
         return builder;
     }
 
-    /** Forces the parser to proceed, if parser has not yet finished with the XML input. */
-    public void buildNext() {
-        if (builder != null) {
-            if (!builder.isCompleted()) {
-                builder.next();
-            } else {
-                this.setComplete(true);
-                log.debug("Builder is complete.  Setting OMElement to complete.");
-            }         
-        }
-    }
-
     /**
      * Method getFirstOMChild.
      *

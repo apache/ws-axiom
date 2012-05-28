@@ -90,7 +90,11 @@ public abstract class ParentNode extends ChildNode {
 
     public void buildNext() {
         if (builder != null) {
-            builder.next();
+            if (!builder.isCompleted()) {
+                builder.next();
+            } else {
+                this.setComplete(true);
+            }         
         }
     }
 
