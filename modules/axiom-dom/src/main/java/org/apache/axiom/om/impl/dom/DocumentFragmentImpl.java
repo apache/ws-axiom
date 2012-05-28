@@ -33,10 +33,20 @@ import javax.xml.stream.XMLStreamWriter;
 public class DocumentFragmentImpl extends RootNode implements
         DocumentFragment {
 
+    private ParentNode ownerNode;
+    
     /** @param ownerDocument  */
     public DocumentFragmentImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(ownerDocument, factory);
         this.done = true;
+    }
+
+    final ParentNode internalGetOwnerNode() {
+        return ownerNode;
+    }
+
+    final void internalSetOwnerNode(ParentNode ownerNode) {
+        this.ownerNode = ownerNode;
     }
 
     /*

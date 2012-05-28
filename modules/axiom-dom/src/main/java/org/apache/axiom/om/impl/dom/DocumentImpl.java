@@ -92,8 +92,13 @@ public class DocumentImpl extends RootNode implements Document, OMDocument {
         this.done = true;
     }
 
-    DocumentImpl ownerDocument() {
+    ParentNode internalGetOwnerNode() {
         return this;
+    }
+
+    void internalSetOwnerNode(ParentNode ownerNode) {
+        // The owner node of a document node cannot be set
+        throw new UnsupportedOperationException();
     }
 
     public Document getOwnerDocument() {

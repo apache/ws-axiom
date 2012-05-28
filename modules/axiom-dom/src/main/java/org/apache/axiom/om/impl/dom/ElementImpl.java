@@ -67,6 +67,8 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     private static final Log log = LogFactory.getLog(ElementImpl.class);
     
+    private ParentNode ownerNode;
+    
     private ChildNode previousSibling;
 
     private ChildNode nextSibling;
@@ -172,6 +174,14 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     public ElementImpl(OMFactory factory) {
         super(factory);
+    }
+
+    final ParentNode internalGetOwnerNode() {
+        return ownerNode;
+    }
+
+    final void internalSetOwnerNode(ParentNode ownerNode) {
+        this.ownerNode = ownerNode;
     }
 
     final ChildNode internalGetPreviousSibling() {

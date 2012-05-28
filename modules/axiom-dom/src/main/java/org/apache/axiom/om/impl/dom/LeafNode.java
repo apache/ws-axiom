@@ -21,6 +21,8 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMFactory;
 
 public abstract class LeafNode extends ChildNode {
+    private ParentNode ownerNode;
+    
     private ChildNode previousSibling;
 
     private ChildNode nextSibling;
@@ -31,6 +33,14 @@ public abstract class LeafNode extends ChildNode {
 
     public LeafNode(OMFactory factory) {
         super(factory);
+    }
+
+    final ParentNode internalGetOwnerNode() {
+        return ownerNode;
+    }
+
+    final void internalSetOwnerNode(ParentNode ownerNode) {
+        this.ownerNode = ownerNode;
     }
 
     final ChildNode internalGetPreviousSibling() {

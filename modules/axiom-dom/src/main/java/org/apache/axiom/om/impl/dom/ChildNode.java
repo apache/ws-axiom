@@ -40,13 +40,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 public abstract class ChildNode extends NodeImpl {
-
-    /**
-     * The parent or the owner document of the node. The meaning of this attribute depends on the
-     * {@link NodeImpl#HAS_PARENT} flag.
-     */
-    private ParentNode ownerNode;
-
     /** @param ownerDocument  */
     protected ChildNode(DocumentImpl ownerDocument, OMFactory factory) {
         super(factory);
@@ -57,6 +50,14 @@ public abstract class ChildNode extends NodeImpl {
         super(factory);
     }
 
+    /**
+     * Get the parent or the owner document of the node. The meaning of the return value depends on
+     * the {@link NodeImpl#HAS_PARENT} flag.
+     */
+    abstract ParentNode internalGetOwnerNode();
+    
+    abstract void internalSetOwnerNode(ParentNode ownerNode);
+    
     abstract ChildNode internalGetPreviousSibling();
     
     abstract ChildNode internalGetNextSibling();
@@ -71,12 +72,13 @@ public abstract class ChildNode extends NodeImpl {
      * 
      * @return the owner document
      */
-    DocumentImpl ownerDocument() {
+    final DocumentImpl ownerDocument() {
+        ParentNode ownerNode = internalGetOwnerNode();
         if (ownerNode == null) {
             // As specified by DOMMetaFactory, the OMFactory for an implicitly created owner
             // document is always the OMFactory for plain XML.
             DocumentImpl document = new DocumentImpl(factory.getMetaFactory().getOMFactory());
-            ownerNode = document;
+            internalSetOwnerNode(document);
             return document;
         } else if (ownerNode instanceof DocumentImpl) {
             // Note: the value of the HAS_PARENT flag doesn't matter here. If the ownerNode is of
@@ -107,7 +109,7 @@ public abstract class ChildNode extends NodeImpl {
         if (hasParent()) {
             throw new IllegalStateException();
         }
-        this.ownerNode = document;
+        internalSetOwnerNode(document);
     }
 
     public Document getOwnerDocument() {
@@ -115,7 +117,7 @@ public abstract class ChildNode extends NodeImpl {
     }
 
     ParentNode parentNode() {
-        return hasParent() ? ownerNode : null;
+        return hasParent() ? internalGetOwnerNode() : null;
     }
 
     public OMNode getNextOMSibling() throws OMException {
@@ -183,10 +185,10 @@ public abstract class ChildNode extends NodeImpl {
     
     protected void setParent(OMContainer element, boolean useDomSemantics) {
         if (element == null) {
-            ownerNode = useDomSemantics ? ownerDocument() : null;
+            internalSetOwnerNode(useDomSemantics ? ownerDocument() : null);
             hasParent(false);
         } else if (element instanceof ParentNode) {
-            ownerNode = (ParentNode) element;
+            internalSetOwnerNode((ParentNode)element);
             hasParent(true);
         } else {
             throw new OMException("The given parent is not of the type "
@@ -312,7 +314,7 @@ public abstract class ChildNode extends NodeImpl {
         newnode.internalSetPreviousSibling(null);
         newnode.internalSetNextSibling(null);
         newnode.isFirstChild(false);
-        newnode.ownerNode = ownerDocument();
+        newnode.internalSetOwnerNode(ownerDocument());
         newnode.hasParent(false);
 
         return newnode;
