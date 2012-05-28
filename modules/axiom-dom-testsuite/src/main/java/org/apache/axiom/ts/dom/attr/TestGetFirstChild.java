@@ -16,21 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.dom;
+package org.apache.axiom.ts.dom.attr;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
-import org.apache.axiom.ts.dom.DOMTestSuiteBuilder;
+import org.apache.axiom.ts.dom.DOMTestCase;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 
-public class DOMImplementationTest extends TestCase {
-    public static TestSuite suite() {
-        DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(new OMDOMMetaFactory().newDocumentBuilderFactory());
-        
-        // TODO: AXIOM-425
-        builder.exclude(org.apache.axiom.ts.dom.attr.TestGetFirstChild.class);
-        
-        return builder.build();
+public class TestGetFirstChild extends DOMTestCase {
+    public TestGetFirstChild(DocumentBuilderFactory dbf) {
+        super(dbf);
+    }
+
+    protected void runTest() throws Throwable {
+        Document document = dbf.newDocumentBuilder().newDocument();
+        Attr attr = document.createAttributeNS(null, "name");
+        attr.setValue("value");
+        Node child = attr.getFirstChild();
+        assertNotNull("Expected Attr to have a child node", child);
+        assertTrue(child instanceof Text);
+        assertEquals("value", ((Text)child).getData());
     }
 }
