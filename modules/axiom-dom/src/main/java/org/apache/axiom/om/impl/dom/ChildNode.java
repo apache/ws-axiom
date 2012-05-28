@@ -41,10 +41,6 @@ import org.w3c.dom.Node;
 
 public abstract class ChildNode extends NodeImpl {
 
-    protected ChildNode previousSibling;
-
-    protected ChildNode nextSibling;
-
     /**
      * The parent or the owner document of the node. The meaning of this attribute depends on the
      * {@link NodeImpl#HAS_PARENT} flag.
@@ -61,6 +57,14 @@ public abstract class ChildNode extends NodeImpl {
         super(factory);
     }
 
+    abstract ChildNode internalGetPreviousSibling();
+    
+    abstract ChildNode internalGetNextSibling();
+    
+    abstract void internalSetPreviousSibling(ChildNode previousSibling);
+    
+    abstract void internalSetNextSibling(ChildNode nextSibling);
+    
     /**
      * Get the owner document of this node. In contrast to {@link Node#getOwnerDocument()}, this
      * method returns a non null value when invoked on a {@link Document} instance.
@@ -116,14 +120,14 @@ public abstract class ChildNode extends NodeImpl {
 
     public OMNode getNextOMSibling() throws OMException {
         ParentNode parentNode = parentNode();
-        while (nextSibling == null && parentNode != null && !parentNode.done && parentNode.builder != null) {
+        while (internalGetNextSibling() == null && parentNode != null && !parentNode.done && parentNode.builder != null) {
             parentNode.buildNext();
         }
-        return (OMNode)nextSibling;
+        return (OMNode)internalGetNextSibling();
     }
 
     public OMNode getNextOMSiblingIfAvailable() {
-        return (OMNode)nextSibling;
+        return (OMNode)internalGetNextSibling();
     }
 
     public Node getNextSibling() {
@@ -131,11 +135,11 @@ public abstract class ChildNode extends NodeImpl {
     }
 
     public OMNode getPreviousOMSibling() {
-        return (OMNode)this.previousSibling;
+        return (OMNode)internalGetPreviousSibling();
     }
 
     public Node getPreviousSibling() {
-        return this.previousSibling;
+        return internalGetPreviousSibling();
     }
 
     // /
@@ -143,11 +147,11 @@ public abstract class ChildNode extends NodeImpl {
     // /
     public void setNextOMSibling(OMNode node) {
         if (node == null) {
-            this.nextSibling = null;
+            internalSetNextSibling(null);
             return;
         }
         if (node instanceof ChildNode) {
-            this.nextSibling = (ChildNode) node;
+            internalSetNextSibling((ChildNode)node);
         } else {
             throw new OMException("The node is not a " + ChildNode.class);
         }
@@ -155,11 +159,11 @@ public abstract class ChildNode extends NodeImpl {
 
     public void setPreviousOMSibling(OMNode node) {
         if (node == null) {
-            this.previousSibling = null;
+            internalSetPreviousSibling(null);
             return;
         }
         if (node instanceof ChildNode) {
-            this.previousSibling = (ChildNode) node;
+            internalSetPreviousSibling((ChildNode)node);
         } else {
             throw new OMException("The node is not a " + ChildNode.class);
         }
@@ -204,6 +208,8 @@ public abstract class ChildNode extends NodeImpl {
                 build();
             }
             getNextOMSibling(); // Make sure that nextSibling is set correctly
+            ChildNode previousSibling = internalGetPreviousSibling();
+            ChildNode nextSibling = internalGetNextSibling();
             if (previousSibling == null) { // This is the first child
                 if (nextSibling != null) {
                     parentNode.setFirstChild((OMNode)nextSibling);
@@ -212,20 +218,20 @@ public abstract class ChildNode extends NodeImpl {
                     parentNode.lastChild = null;
                 }
             } else {
-                this.previousSibling.setNextOMSibling((OMNode)nextSibling);
+                previousSibling.setNextOMSibling((OMNode)nextSibling);
                 if (nextSibling == null) {
-                    this.previousSibling.parentNode().done = true;
+                    previousSibling.parentNode().done = true;
                 }
             }
-            if (this.nextSibling != null) {
-                this.nextSibling.setPreviousOMSibling((OMNode)this.previousSibling);
-                this.nextSibling = null;
+            if (nextSibling != null) {
+                nextSibling.setPreviousOMSibling((OMNode)previousSibling);
+                internalSetNextSibling(null);
             }
             if (parentNode != null && parentNode.lastChild == this) {
                 parentNode.lastChild = previousSibling;
             }
             setParent(null, useDomSemantics);
-            this.previousSibling = null;
+            internalSetPreviousSibling(null);
         }
         return (OMNode)this;
     }
@@ -245,14 +251,15 @@ public abstract class ChildNode extends NodeImpl {
         ((OMNodeEx) sibling).setParent(parentNode);
         if (sibling instanceof ChildNode) {
             ChildNode domSibling = (ChildNode) sibling;
-            domSibling.previousSibling = this;
-            if (this.nextSibling == null) {
+            domSibling.internalSetPreviousSibling(this);
+            ChildNode nextSibling = internalGetNextSibling();
+            if (nextSibling == null) {
                 parentNode.setLastChild(sibling);
             } else {
-                this.nextSibling.previousSibling = domSibling;
+                nextSibling.internalSetPreviousSibling(domSibling);
             }
-            domSibling.nextSibling = this.nextSibling;
-            this.nextSibling = domSibling;
+            domSibling.internalSetNextSibling(nextSibling);
+            internalSetNextSibling(domSibling);
 
         } else {
             throw new OMException("The given child is not of type "
@@ -278,16 +285,17 @@ public abstract class ChildNode extends NodeImpl {
             // domSibling.previousSibling = this.previousSibling;
             // this.previousSibling = domSibling;
             ChildNode siblingImpl = (ChildNode) sibling;
-            siblingImpl.nextSibling = this;
+            siblingImpl.internalSetNextSibling(this);
+            ChildNode previousSibling = internalGetPreviousSibling();
             if (previousSibling == null) {
                 parentNode.setFirstChild((OMNode)siblingImpl);
-                siblingImpl.previousSibling = null;
+                siblingImpl.internalSetPreviousSibling(null);
             } else {
                 siblingImpl.setParent(parentNode, false);
                 previousSibling.setNextOMSibling((OMNode)siblingImpl);
                 siblingImpl.setPreviousOMSibling((OMNode)previousSibling);
             }
-            previousSibling = siblingImpl;
+            internalSetPreviousSibling(siblingImpl);
 
         } else {
             throw new OMException("The given child is not of type "
@@ -301,8 +309,8 @@ public abstract class ChildNode extends NodeImpl {
         ChildNode newnode = (ChildNode) super.cloneNode(deep);
 
         // Need to break the association w/ original kids
-        newnode.previousSibling = null;
-        newnode.nextSibling = null;
+        newnode.internalSetPreviousSibling(null);
+        newnode.internalSetNextSibling(null);
         newnode.isFirstChild(false);
         newnode.ownerNode = ownerDocument();
         newnode.hasParent(false);

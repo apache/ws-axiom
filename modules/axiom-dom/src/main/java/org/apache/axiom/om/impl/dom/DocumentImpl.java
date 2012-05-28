@@ -60,7 +60,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
-public class DocumentImpl extends ParentNode implements Document, OMDocument {
+public class DocumentImpl extends RootNode implements Document, OMDocument {
 
     private String xmlVersion;
 

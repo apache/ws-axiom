@@ -33,7 +33,7 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 
-public class ProcessingInstructionImpl extends ChildNode implements ProcessingInstruction, OMProcessingInstruction, OMNodeEx {
+public class ProcessingInstructionImpl extends LeafNode implements ProcessingInstruction, OMProcessingInstruction, OMNodeEx {
     private String target;
     private String value;
 

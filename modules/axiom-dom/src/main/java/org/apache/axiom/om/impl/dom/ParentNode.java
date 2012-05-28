@@ -256,10 +256,10 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 this.firstChild.isFirstChild(true);
                 newDomChild.setParent(this, useDomSemantics);
             } else {
-                this.lastChild.nextSibling = newDomChild;
-                newDomChild.previousSibling = this.lastChild;
+                this.lastChild.internalSetNextSibling(newDomChild);
+                newDomChild.internalSetPreviousSibling(this.lastChild);
                 this.lastChild = newDomChild;
-                this.lastChild.nextSibling = null;
+                this.lastChild.internalSetNextSibling(null);
             }
             if (newDomChild.parentNode() == null) {
                 newDomChild.setParent(this, useDomSemantics);
@@ -283,13 +283,12 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                             ChildNode child = docFrag.firstChild;
                             while (child != null) {
                                 child.setParent(this, useDomSemantics);
-                                child = child.nextSibling;
+                                child = child.internalGetNextSibling();
                             }
                             
                             this.firstChild = docFrag.firstChild;
-                            docFrag.lastChild.nextSibling = refDomChild;
-                            refDomChild.previousSibling =
-                                    docFrag.lastChild.nextSibling;
+                            docFrag.lastChild.internalSetNextSibling(refDomChild);
+                            refDomChild.internalSetPreviousSibling(docFrag.lastChild.internalGetNextSibling());
 
                             docFrag.firstChild = null;
                             docFrag.lastChild = null;
@@ -298,17 +297,17 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                             // Make the newNode the first Child
                             this.firstChild = newDomChild;
 
-                            newDomChild.nextSibling = refDomChild;
-                            refDomChild.previousSibling = newDomChild;
+                            newDomChild.internalSetNextSibling(refDomChild);
+                            refDomChild.internalSetPreviousSibling(newDomChild);
 
                             this.firstChild.isFirstChild(true);
                             refDomChild.isFirstChild(false);
-                            newDomChild.previousSibling = null; // Just to be
+                            newDomChild.internalSetPreviousSibling(null); // Just to be
                             // sure :-)
 
                         }
                     } else { // If the refChild is not the fist child
-                        ChildNode previousNode = refDomChild.previousSibling;
+                        ChildNode previousNode = refDomChild.internalGetPreviousSibling();
 
                         if (newChild instanceof DocumentFragmentImpl) {
                             // the newChild is a document fragment
@@ -318,24 +317,24 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                             ChildNode child = docFrag.firstChild;
                             while (child != null) {
                                 child.setParent(this, useDomSemantics);
-                                child = child.nextSibling;
+                                child = child.internalGetNextSibling();
                             }
                             
-                            previousNode.nextSibling = docFrag.firstChild;
-                            docFrag.firstChild.previousSibling = previousNode;
+                            previousNode.internalSetNextSibling(docFrag.firstChild);
+                            docFrag.firstChild.internalSetPreviousSibling(previousNode);
 
-                            docFrag.lastChild.nextSibling = refDomChild;
-                            refDomChild.previousSibling = docFrag.lastChild;
+                            docFrag.lastChild.internalSetNextSibling(refDomChild);
+                            refDomChild.internalSetPreviousSibling(docFrag.lastChild);
 
                             docFrag.firstChild = null;
                             docFrag.lastChild = null;
                         } else {
 
-                            previousNode.nextSibling = newDomChild;
-                            newDomChild.previousSibling = previousNode;
+                            previousNode.internalSetNextSibling(newDomChild);
+                            newDomChild.internalSetPreviousSibling(previousNode);
 
-                            newDomChild.nextSibling = refDomChild;
-                            refDomChild.previousSibling = newDomChild;
+                            newDomChild.internalSetNextSibling(refDomChild);
+                            refDomChild.internalSetPreviousSibling(newDomChild);
                         }
 
                     }
@@ -396,7 +395,7 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                     //set the parent of all kids to me
                     while(child != null) {
                         child.setParent(this, true);
-                        child = child.nextSibling;
+                        child = child.internalGetNextSibling();
                     }
 
                     this.lastChild = (ChildNode)docFrag.getLastChild();
@@ -404,28 +403,28 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 } else {
                     if (this.firstChild == oldDomChild) {
 
-                        if (this.firstChild.nextSibling != null) {
-                            this.firstChild.nextSibling.previousSibling = newDomChild;
-                            newDomChild.nextSibling = this.firstChild.nextSibling;
+                        if (this.firstChild.internalGetNextSibling() != null) {
+                            this.firstChild.internalGetNextSibling().internalSetPreviousSibling(newDomChild);
+                            newDomChild.internalSetNextSibling(this.firstChild.internalGetNextSibling());
                         }
 
                         //Cleanup the current first child
                         this.firstChild.setParent(null, true);
-                        this.firstChild.nextSibling = null;
+                        this.firstChild.internalSetNextSibling(null);
 
                         //Set the new first child
                         this.firstChild = newDomChild;
                         
 
                     } else {
-                        newDomChild.nextSibling = oldDomChild.nextSibling;
-                        newDomChild.previousSibling = oldDomChild.previousSibling;
+                        newDomChild.internalSetNextSibling(oldDomChild.internalGetNextSibling());
+                        newDomChild.internalSetPreviousSibling(oldDomChild.internalGetPreviousSibling());
 
-                        oldDomChild.previousSibling.nextSibling = newDomChild;
+                        oldDomChild.internalGetPreviousSibling().internalSetNextSibling(newDomChild);
 
                         // If the old child is not the last
-                        if (oldDomChild.nextSibling != null) {
-                            oldDomChild.nextSibling.previousSibling = newDomChild;
+                        if (oldDomChild.internalGetNextSibling() != null) {
+                            oldDomChild.internalGetNextSibling().internalSetPreviousSibling(newDomChild);
                         } else {
                             this.lastChild = newDomChild;
                         }
@@ -437,8 +436,8 @@ public abstract class ParentNode extends ChildNode implements OMContainerEx {
                 found = true;
 
                 // remove the old child's references to this tree
-                oldDomChild.nextSibling = null;
-                oldDomChild.previousSibling = null;
+                oldDomChild.internalSetNextSibling(null);
+                oldDomChild.internalSetPreviousSibling(null);
                 oldDomChild.setParent(null, true);
             }
         }

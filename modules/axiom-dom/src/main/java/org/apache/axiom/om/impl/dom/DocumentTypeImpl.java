@@ -32,7 +32,7 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;
 
-public class DocumentTypeImpl extends ChildNode implements DocumentType, OMDocType, OMNodeEx {
+public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocType, OMNodeEx {
     private String value;
     
     public DocumentTypeImpl(DocumentImpl ownerDocument, OMFactory factory) {

@@ -30,7 +30,7 @@ import org.w3c.dom.Node;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public class DocumentFragmentImpl extends ParentNode implements
+public class DocumentFragmentImpl extends RootNode implements
         DocumentFragment {
 
     /** @param ownerDocument  */

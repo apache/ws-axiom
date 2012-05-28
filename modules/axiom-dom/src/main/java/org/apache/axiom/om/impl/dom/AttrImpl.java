@@ -355,7 +355,7 @@ public class AttrImpl extends NodeImpl implements OMAttribute, Attr, NamedNode {
         if (clone.attrValue == null) {
             // Need to break the association w/ original kids
             clone.attrValue = new TextImpl(this.attrValue.toString(), factory);
-            if (this.attrValue.nextSibling != null) {
+            if (this.attrValue.internalGetNextSibling() != null) {
                 throw new UnsupportedOperationException(
                         "Attribute value can contain only a text " +
                                 "node with out any siblings");
