@@ -24,12 +24,11 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.UserDataHandler;
 
 import java.util.Hashtable;
 
-public abstract class NodeImpl implements Node, NodeList, Cloneable {
+public abstract class NodeImpl implements Node, Cloneable {
 
     /** Holds the user data objects */
     private Hashtable userData; // Will be initialized in setUserData()
@@ -179,94 +178,9 @@ public abstract class NodeImpl implements Node, NodeList, Cloneable {
         return newnode;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Node#getChildNodes()
-     */
-    public NodeList getChildNodes() {
-        return this;
-    }
-
     public boolean isSupported(String feature, String version) {
         throw new UnsupportedOperationException();
         // TODO
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Node#appendChild(org.w3c.dom.Node)
-     */
-    public Node appendChild(Node newChild) throws DOMException {
-        return insertBefore(newChild, null);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Node#removeChild(org.w3c.dom.Node)
-     */
-    public Node removeChild(Node oldChild) throws DOMException {
-        throw new DOMException(DOMException.NOT_FOUND_ERR, DOMMessageFormatter
-                .formatMessage(DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR,
-                               null));
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Node#insertBefore(org.w3c.dom.Node, org.w3c.dom.Node)
-     */
-    public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-        // Overridden in ParentNode
-        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                               DOMMessageFormatter.formatMessage(
-                                       DOMMessageFormatter.DOM_DOMAIN,
-                                       DOMException.HIERARCHY_REQUEST_ERR, null));
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.w3c.dom.Node#replaceChild(org.w3c.dom.Node, org.w3c.dom.Node)
-     */
-    public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
-        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                               DOMMessageFormatter.formatMessage(
-                                       DOMMessageFormatter.DOM_DOMAIN,
-                                       DOMException.HIERARCHY_REQUEST_ERR, null));
-    }
-
-    //
-    // NodeList methods
-    //
-
-    /**
-     * NodeList method: Returns the number of immediate children of this node.
-     * <p/>
-     * By default we do not have any children, ParentNode overrides this.
-     *
-     * @return Returns int.
-     * @see ParentNode
-     */
-    public int getLength() {
-        return 0;
-    }
-
-    /**
-     * NodeList method: Returns the Nth immediate child of this node, or null if the index is out of
-     * bounds.
-     * <p/>
-     * By default we do not have any children, ParentNode overrides this.
-     *
-     * @param index
-     * @return Returns org.w3c.dom.Node
-     * @see ParentNode
-     */
-    public Node item(int index) {
-        return null;
     }
 
     /*

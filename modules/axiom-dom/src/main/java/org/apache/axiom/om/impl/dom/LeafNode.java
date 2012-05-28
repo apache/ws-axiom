@@ -19,9 +19,11 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMFactory;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-public abstract class LeafNode extends ChildNode {
+public abstract class LeafNode extends ChildNode implements NodeList {
     private ParentNode ownerNode;
     
     private ChildNode previousSibling;
@@ -58,6 +60,45 @@ public abstract class LeafNode extends ChildNode {
     
     final void internalSetNextSibling(ChildNode nextSibling) {
         this.nextSibling = nextSibling;
+    }
+    
+    public final NodeList getChildNodes() {
+        return this;
+    }
+
+    public final int getLength() {
+        return 0;
+    }
+
+    public final Node item(int index) {
+        return null;
+    }
+
+    public final Node appendChild(Node newChild) throws DOMException {
+        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
+                DOMMessageFormatter.formatMessage(
+                        DOMMessageFormatter.DOM_DOMAIN,
+                        DOMException.HIERARCHY_REQUEST_ERR, null));
+    }
+
+    public final Node removeChild(Node oldChild) throws DOMException {
+        throw new DOMException(DOMException.NOT_FOUND_ERR, DOMMessageFormatter
+                .formatMessage(DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR,
+                               null));
+    }
+
+    public final Node insertBefore(Node newChild, Node refChild) throws DOMException {
+        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
+                               DOMMessageFormatter.formatMessage(
+                                       DOMMessageFormatter.DOM_DOMAIN,
+                                       DOMException.HIERARCHY_REQUEST_ERR, null));
+    }
+
+    public final Node replaceChild(Node newChild, Node oldChild) throws DOMException {
+        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
+                               DOMMessageFormatter.formatMessage(
+                                       DOMMessageFormatter.DOM_DOMAIN,
+                                       DOMException.HIERARCHY_REQUEST_ERR, null));
     }
 
     public Node cloneNode(boolean deep) {

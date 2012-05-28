@@ -205,6 +205,10 @@ public abstract class ParentNode extends ChildNode {
         return this.firstChild != null;
     }
 
+    public final Node appendChild(Node newChild) throws DOMException {
+        return insertBefore(newChild, null);
+    }
+
     /**
      * Inserts newChild before the refChild. If the refChild is null then the newChild is made the
      * last child.
@@ -372,7 +376,7 @@ public abstract class ParentNode extends ChildNode {
     }
 
     /** Replaces the oldChild with the newChild. */
-    public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
+    public final Node replaceChild(Node newChild, Node oldChild) throws DOMException {
         ChildNode newDomChild = (ChildNode) newChild;
         ChildNode oldDomChild = (ChildNode) oldChild;
 
@@ -460,7 +464,7 @@ public abstract class ParentNode extends ChildNode {
     }
 
     /** Removes the given child from the DOM Tree. */
-    public Node removeChild(Node oldChild) throws DOMException {
+    public final Node removeChild(Node oldChild) throws DOMException {
         if (oldChild.getParentNode() == this) {
             ((ChildNode)oldChild).detach(true);
             return oldChild;

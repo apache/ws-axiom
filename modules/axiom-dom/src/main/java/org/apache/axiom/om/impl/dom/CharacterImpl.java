@@ -126,12 +126,4 @@ public abstract class CharacterImpl extends LeafNode implements CharacterData, O
         int end = Math.min(count + offset, textValue.length());
         return this.textValue.substring(offset, end);
     }
-
-    /**
-     * Returns the length of the string value.
-     */
-    public int getLength() {
-        return (this.textValue != null) ? this.textValue.length() : 0;
-	}
-		
 }
