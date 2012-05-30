@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.locator;
 
+import java.util.Arrays;
+
 import org.apache.axiom.om.OMMetaFactory;
 
 final class Implementation {
@@ -41,5 +43,10 @@ final class Implementation {
 
     Feature[] getFeatures() {
         return features;
+    }
+
+    public String toString() {
+        return name + "(metaFactory=" + metaFactory.getClass().getName()
+                + ",features=" + (features != null ? Arrays.asList(features) : null) + ")";
     }
 }

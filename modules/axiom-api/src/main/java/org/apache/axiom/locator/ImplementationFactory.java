@@ -49,6 +49,9 @@ final class ImplementationFactory {
     private ImplementationFactory() {}
     
     static Implementation createDefaultImplementation(Loader loader, String className) {
+        if (log.isDebugEnabled()) {
+            log.debug("Creating default implementation for class " + className);
+        }
         OMMetaFactory metaFactory = (OMMetaFactory)load(loader, className);
         return metaFactory == null ? null : new Implementation(null, metaFactory,
                 new Feature[] { new Feature(OMAbstractFactory.FEATURE_DEFAULT, Integer.MAX_VALUE) });
@@ -71,6 +74,9 @@ final class ImplementationFactory {
     }
     
     static List/*<Implementation>*/ parseDescriptor(Loader loader, URL url) {
+        if (log.isDebugEnabled()) {
+            log.debug("Loading " + url);
+        }
         List implementations = new ArrayList();
         try {
             // Since this code is used to discover Axiom implementations, we have to use DOM here.
@@ -106,6 +112,9 @@ final class ImplementationFactory {
             log.error("Unable to read " + url, ex);
         } catch (SAXException ex) {
             log.error("Parser error while reading " + url, ex);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Discovered implementations: " + implementations);
         }
         return implementations;
     }
