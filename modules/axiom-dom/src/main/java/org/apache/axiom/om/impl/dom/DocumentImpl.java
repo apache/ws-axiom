@@ -111,19 +111,6 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
         return super.clone();
     }
 
-    // /
-    // /OMNode methods
-    // //
-    public void setType(int nodeType) throws OMException {
-        throw new UnsupportedOperationException(
-                "In OM Document object doesn't have a type");
-    }
-
-    public int getType() throws OMException {
-        throw new UnsupportedOperationException(
-                "In OM Document object doesn't have a type");
-    }
-
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         internalSerialize(writer, cache, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
     }
