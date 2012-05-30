@@ -25,7 +25,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -49,10 +48,6 @@ public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocTyp
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setType(int nodeType) throws OMException {
         throw new UnsupportedOperationException();
     }
 

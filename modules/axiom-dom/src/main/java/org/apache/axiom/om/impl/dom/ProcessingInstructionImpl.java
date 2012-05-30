@@ -24,7 +24,6 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -50,12 +49,6 @@ public class ProcessingInstructionImpl extends LeafNode implements ProcessingIns
         return OMNode.PI_NODE;
     }
 
-    public void setType(int nodeType) throws OMException {
-        if (nodeType != OMNode.PI_NODE) {
-            throw new OMException("Can't change the type of a ProcessingInstruction node");
-        }
-    }
-    
     public short getNodeType() {
         return Node.PROCESSING_INSTRUCTION_NODE;
     }

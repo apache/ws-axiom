@@ -42,7 +42,10 @@ public class OMCommentImpl extends OMNodeImpl implements OMComment {
                          OMFactory factory) {
         super(parentNode, factory, true);
         this.value = contentText;
-        nodeType = OMNode.COMMENT_NODE;
+    }
+
+    public final int getType() {
+        return OMNode.COMMENT_NODE;
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {

@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 
@@ -41,8 +40,6 @@ public interface OMNodeEx extends OMNode {
     public void setParent(OMContainer element);
 
     public void setComplete(boolean state);
-
-    public void setType(int nodeType) throws OMException;
 
     /**
      * Serializes the node. Note that this is an internal method that MUST NOT be used outside of

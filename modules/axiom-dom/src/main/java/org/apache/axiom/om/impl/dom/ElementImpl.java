@@ -296,16 +296,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         return OMNode.ELEMENT_NODE;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMNode#setType(int)
-     */
-    public void setType(int nodeType) throws OMException {
-        // Do nothing ...
-        // This is an Eement Node...
-    }
-
     // /
     // / org.w3c.dom.Element methods
     // /

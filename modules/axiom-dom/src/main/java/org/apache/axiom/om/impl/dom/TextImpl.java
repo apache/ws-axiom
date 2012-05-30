@@ -97,19 +97,6 @@ public class TextImpl extends TextNodeImpl {
         return isWhitespace ? OMNode.SPACE_NODE : OMNode.TEXT_NODE;
     }
 
-    public void setType(int nodeType) throws OMException {
-        switch (nodeType) {
-            case OMNode.TEXT_NODE:
-                isWhitespace = false;
-                break;
-            case OMNode.SPACE_NODE:
-                isWhitespace = true;
-                break;
-            default:
-                throw new UnsupportedOperationException();
-        }
-    }
-
     public Node cloneNode(boolean deep) {
         TextImpl textImpl = new TextImpl(this.textValue, this.factory);
         textImpl.setOwnerDocument(ownerDocument());

@@ -42,7 +42,6 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
                          OMFactory factory) {
         super(parentNode, factory, true);
         this.value = contentText;
-        nodeType = OMNode.DTD_NODE;
     }
 
     /**
@@ -52,6 +51,10 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
      */
     public OMDocTypeImpl(OMContainer parentNode, OMFactory factory) {
         this(parentNode, null, factory);
+    }
+
+    public final int getType() {
+        return OMNode.DTD_NODE;
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {

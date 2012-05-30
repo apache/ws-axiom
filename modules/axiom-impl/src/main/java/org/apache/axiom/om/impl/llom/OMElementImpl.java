@@ -740,7 +740,6 @@ public class OMElementImpl extends OMNodeImpl
         return this;
     }
 
-    /** Gets the type of node, as this is the super class of all the nodes. */
     public int getType() {
         return OMNode.ELEMENT_NODE;
     }

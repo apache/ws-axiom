@@ -47,6 +47,8 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     public static final OMNamespace XOP_NS = new OMNamespaceImpl(
             "http://www.w3.org/2004/08/xop/include", "xop");
 
+    private int nodeType;
+
     protected String value = null;
     protected char[] charArray;
 
@@ -237,6 +239,10 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.isBinary = true;
         this.builder = builder;
         this.nodeType = TEXT_NODE;
+    }
+
+    public final int getType() {
+        return nodeType;
     }
 
     /**

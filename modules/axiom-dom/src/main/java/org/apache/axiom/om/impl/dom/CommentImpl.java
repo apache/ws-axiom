@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.w3c.dom.Comment;
@@ -55,11 +54,6 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
 
     public int getType() {
         return OMNode.COMMENT_NODE;
-    }
-
-    public void setType(int nodeType) throws OMException {
-        throw new UnsupportedOperationException(
-                "You should not set the node type of a comment");
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {

@@ -49,9 +49,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
     /** Field previousSibling */
     protected OMNodeImpl previousSibling;
 
-    /** Field nodeType */
-    protected int nodeType;
-
     /**
      * Constructor OMNodeImpl
      *
@@ -249,26 +246,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
             previousSibling = siblingImpl;
 
         }
-    }
-
-    /**
-     * Gets the type of node, as this is the super class of all the nodes.
-     *
-     * @return Returns the type of node as indicated by {@link #setType}
-     * @see #setType
-     */
-    public int getType() {
-        return nodeType;
-    }
-
-    /**
-     * Method setType.
-     *
-     * @param nodeType
-     * @throws OMException
-     */
-    public void setType(int nodeType) throws OMException {
-        this.nodeType = nodeType;
     }
 
     /**

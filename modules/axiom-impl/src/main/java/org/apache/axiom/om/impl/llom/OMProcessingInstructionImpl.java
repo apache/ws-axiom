@@ -45,7 +45,6 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
         super(parentNode, factory, true);
         this.target = target;
         this.value = value;
-        nodeType = OMNode.PI_NODE;
     }
 
     /**
@@ -56,6 +55,10 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
     public OMProcessingInstructionImpl(OMContainer parentNode,
                                        OMFactory factory) {
         this(parentNode, null, null, factory);
+    }
+
+    public final int getType() {
+        return OMNode.PI_NODE;
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {

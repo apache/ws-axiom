@@ -38,12 +38,6 @@ public class CDATASectionImpl extends TextNodeImpl implements CDATASection {
         return OMNode.CDATA_SECTION_NODE;
     }
 
-    public void setType(int nodeType) throws OMException {
-        if (nodeType != OMNode.CDATA_SECTION_NODE) {
-            throw new UnsupportedOperationException();
-        }
-    }
-
     public Node cloneNode(boolean deep) {
         CDATASectionImpl textImpl = new CDATASectionImpl(this.textValue, this.factory);
         textImpl.setOwnerDocument(ownerDocument());
