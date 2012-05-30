@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.w3c.dom.DocumentFragment;
@@ -65,24 +64,6 @@ public class DocumentFragmentImpl extends RootNode implements
      */
     public String getNodeName() {
         return "#document-fragment";
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMNode#getType()
-     */
-    public int getType() throws OMException {
-        return -1;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMNode#setType(int)
-     */
-    public void setType(int nodeType) throws OMException {
-        // DO Nothing :-?
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
