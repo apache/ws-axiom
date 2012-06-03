@@ -116,7 +116,9 @@ import org.w3c.dom.Text;
  * fact that DOM is designed such that two nodes that are part of the same tree must have the same
  * owner document.
  * <li>Nodes created using the Axiom API and for which no parent node is specified will get a new
- * owner document.
+ * owner document. This applies to methods in {@link OMFactory} that don't have an
+ * {@link OMContainer} parameter or that are invoked with a <code>null</code> {@link OMContainer}
+ * as well as to methods such as {@link OMElement#cloneOMElement()}.
  * <li>When the Axiom API is used to add a node A as a child of another node B, then the owner
  * document of B becomes the new owner document of A and all its descendants. In DOM parlance, this
  * means that node A is automatically adopted by the owner document of B. This implies that no
