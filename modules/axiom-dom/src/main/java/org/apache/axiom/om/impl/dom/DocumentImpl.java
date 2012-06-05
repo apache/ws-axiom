@@ -583,7 +583,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
         OMDocumentImplUtil.internalSerialize(this, writer, cache, includeXMLDeclaration);
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+    OMNode clone(OMCloneOptions options, OMContainer targetParent, boolean deep) {
         throw new UnsupportedOperationException();
     }
 }

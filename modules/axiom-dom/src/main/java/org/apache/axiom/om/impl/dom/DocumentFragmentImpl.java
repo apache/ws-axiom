@@ -82,7 +82,7 @@ public class DocumentFragmentImpl extends RootNode implements
         throw new UnsupportedOperationException("TODO");
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+    OMNode clone(OMCloneOptions options, OMContainer targetParent, boolean deep) {
         throw new UnsupportedOperationException();
     }
 }

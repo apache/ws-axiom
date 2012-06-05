@@ -89,7 +89,7 @@ public class ProcessingInstructionImpl extends LeafNode implements ProcessingIns
         writer.writeProcessingInstruction(target + " ", value);
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+    OMNode clone(OMCloneOptions options, OMContainer targetParent, boolean deep) {
         return factory.createOMProcessingInstruction(targetParent, target, value);
     }
 }

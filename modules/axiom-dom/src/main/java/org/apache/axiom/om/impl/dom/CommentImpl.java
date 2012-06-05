@@ -60,7 +60,7 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
         writer.writeComment(this.textValue);
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+    OMNode clone(OMCloneOptions options, OMContainer targetParent, boolean deep) {
         return factory.createOMComment(targetParent, getData());
     }
 }

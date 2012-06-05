@@ -501,7 +501,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         throw new UnsupportedOperationException();
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+    OMNode clone(OMCloneOptions options, OMContainer targetParent, boolean deep) {
         // Right now, this method is never called
         throw new UnsupportedOperationException();
     }

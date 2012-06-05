@@ -1181,10 +1181,10 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     }
 
     public OMElement cloneOMElement(OMCloneOptions options) {
-        return (OMElement)clone(options, null);
+        return (OMElement)clone(options, null, true);
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+    OMNode clone(OMCloneOptions options, OMContainer targetParent, boolean deep) {
         OMElement targetElement;
         if (options.isPreserveModel()) {
             targetElement = createClone(options, targetParent);
@@ -1199,8 +1199,10 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             OMAttribute attr = (OMAttribute)it.next();
             targetElement.addAttribute(attr);
         }
-        for (Iterator it = getChildren(); it.hasNext(); ) {
-            ((NodeImpl)it.next()).clone(options, targetElement);
+        if (deep) {
+            for (Iterator it = getChildren(); it.hasNext(); ) {
+                ((NodeImpl)it.next()).clone(options, targetElement, true);
+            }
         }
         return targetElement;
     }

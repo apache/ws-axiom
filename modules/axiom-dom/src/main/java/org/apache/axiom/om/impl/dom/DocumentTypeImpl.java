@@ -88,7 +88,7 @@ public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocTyp
         value = text;
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+    OMNode clone(OMCloneOptions options, OMContainer targetParent, boolean deep) {
         return factory.createOMDocType(targetParent, value);
     }
 }
