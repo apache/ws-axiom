@@ -30,6 +30,8 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
     }
     
     protected void addTests() {
+        addTest(new org.apache.axiom.ts.dom.attr.TestCloneNode(dbf, true));
+        addTest(new org.apache.axiom.ts.dom.attr.TestCloneNode(dbf, false));
         addTest(new org.apache.axiom.ts.dom.attr.TestGetChildNodes(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestGetFirstChild(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestGetValueWithMultipleChildren(dbf));
@@ -68,6 +70,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestAttributes3(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAttributes4(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestCloneNode(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestCloneNodeWithAttributeHavingMultipleChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestCloneNodeWithAttributes(dbf, true));
         addTest(new org.apache.axiom.ts.dom.element.TestCloneNodeWithAttributes(dbf, false));
         addTest(new org.apache.axiom.ts.dom.element.TestGetElementsByTagName(dbf));

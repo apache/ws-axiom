@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.w3c.dom.DocumentFragment;
@@ -82,7 +81,7 @@ public class DocumentFragmentImpl extends RootNode implements
         throw new UnsupportedOperationException("TODO");
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent, boolean deep) {
+    OMNode clone(OMCloneOptions options, ParentNode targetParent, boolean deep) {
         throw new UnsupportedOperationException();
     }
 }

@@ -913,5 +913,5 @@ public abstract class NodeImpl implements Node, Cloneable {
     // by certain subclasses (for the reason, see AXIOM-385).
     public abstract void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException;
     
-    abstract OMNode clone(OMCloneOptions options, OMContainer targetParent, boolean deep);
+    abstract OMNode clone(OMCloneOptions options, ParentNode targetParent, boolean deep);
 }

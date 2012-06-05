@@ -1184,7 +1184,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         return (OMElement)clone(options, null, true);
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent, boolean deep) {
+    OMNode clone(OMCloneOptions options, ParentNode targetParent, boolean deep) {
         OMElement targetElement;
         if (options.isPreserveModel()) {
             targetElement = createClone(options, targetParent);

@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -399,7 +398,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
 
     public Node cloneNode(boolean deep) {
 
-        AttrImpl clone = (AttrImpl) super.cloneNode(deep);
+        AttrImpl clone = (AttrImpl) super.cloneNode(true);
 
         clone.isSpecified(true);
         clone.setUsed(false);
@@ -501,7 +500,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         throw new UnsupportedOperationException();
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent, boolean deep) {
+    OMNode clone(OMCloneOptions options, ParentNode targetParent, boolean deep) {
         // Right now, this method is never called
         throw new UnsupportedOperationException();
     }
