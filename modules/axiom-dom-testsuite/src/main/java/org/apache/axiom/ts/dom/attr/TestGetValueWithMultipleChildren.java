@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.dom.document;
+package org.apache.axiom.ts.dom.attr;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -24,29 +24,17 @@ import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
-public class TestCreateAttributeNS extends DOMTestCase {
-    public TestCreateAttributeNS(DocumentBuilderFactory dbf) {
+public class TestGetValueWithMultipleChildren extends DOMTestCase {
+    public TestGetValueWithMultipleChildren(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
     protected void runTest() throws Throwable {
-        String localName = "attrIdentifier";
-        String uri = "http://ws.apache.org/axis2/ns";
-        String prefix = "axis2";
-        String name = prefix + ":" + localName;
-
-        Document doc = dbf.newDocumentBuilder().newDocument();
-
-        Attr attr = doc.createAttributeNS(uri, name);
-        
-        // Check name
-        assertEquals("Attr name mismatch", localName, attr.getLocalName());
-        assertEquals("NamsspaceURI mismatch", uri, attr.getNamespaceURI());
-        assertEquals("namespace prefix mismatch", prefix, attr.getPrefix());
-        assertEquals(name, attr.getName());
-
-        // Check defaults
-        assertNull(attr.getFirstChild());
-        assertEquals("", attr.getValue());
+        Document document = dbf.newDocumentBuilder().newDocument();
+        Attr attr = document.createAttributeNS(null, "attr");
+        attr.appendChild(document.createTextNode("A"));
+        attr.appendChild(document.createTextNode("B"));
+        attr.appendChild(document.createTextNode("C"));
+        assertEquals("ABC", attr.getValue());
     }
 }
