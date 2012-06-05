@@ -53,7 +53,7 @@ import javax.xml.transform.sax.SAXSource;
 
 import java.util.Iterator;
 
-public abstract class ParentNode extends NodeImpl {
+public abstract class ParentNode extends NodeImpl implements NodeList {
 
     protected NodeImpl firstChild;
 
@@ -176,15 +176,32 @@ public abstract class ParentNode extends NodeImpl {
     // /DOM Node methods
     // /
 
-    public NodeList getChildNodes() {
-        if (!this.done) {
-            this.build();
+    public final NodeList getChildNodes() {
+        return this;
+    }
+
+    public final int getLength() {
+        int count = 0;
+        Node child = getFirstChild();
+        while (child != null) {
+            count++;
+            child = child.getNextSibling();
         }
-        return new NodeListImpl() {
-            protected Iterator getIterator() {
-                return getChildren();
+        return count;
+    }
+
+    public final Node item(int index) {
+        int count = 0;
+        Node child = getFirstChild();
+        while (child != null) {
+            if (count == index) {
+                return child;
+            } else {
+                child = child.getNextSibling();
             }
-        };
+            count++;
+        }
+        return null;
     }
 
     public Node getFirstChild() {

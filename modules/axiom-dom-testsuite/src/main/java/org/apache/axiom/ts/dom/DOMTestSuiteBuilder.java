@@ -30,6 +30,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
     }
     
     protected void addTests() {
+        addTest(new org.apache.axiom.ts.dom.attr.TestGetChildNodes(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestGetFirstChild(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestGetValueWithMultipleChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithNamespace(dbf));
