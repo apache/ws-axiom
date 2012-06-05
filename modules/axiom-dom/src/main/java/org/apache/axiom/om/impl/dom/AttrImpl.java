@@ -399,7 +399,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
 
     public Node cloneNode(boolean deep) {
 
-        AttrImpl clone = (AttrImpl) super.cloneNode(deep);
+        AttrImpl clone = (AttrImpl) super.cloneNode(true);
 
         clone.isSpecified(true);
         clone.setUsed(false);
