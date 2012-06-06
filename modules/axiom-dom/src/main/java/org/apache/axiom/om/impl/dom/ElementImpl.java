@@ -1175,21 +1175,18 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     }
 
     final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent) {
-        ElementImpl targetElement;
+        ElementImpl clone;
         if (options.isPreserveModel()) {
-            targetElement = (ElementImpl)createClone(options, (OMContainer)targetParent);
+            clone = (ElementImpl)createClone(options, (OMContainer)targetParent);
         } else {
-            targetElement = (ElementImpl)factory.createOMElement(localName, namespace, (OMContainer)targetParent);
+            clone = (ElementImpl)factory.createOMElement(localName, namespace, (OMContainer)targetParent);
         }
         for (Iterator it = getAllDeclaredNamespaces(); it.hasNext(); ) {
             OMNamespace ns = (OMNamespace)it.next();
-            targetElement.declareNamespace(ns);
+            clone.declareNamespace(ns);
         }
-        for (Iterator it = getAllAttributes(); it.hasNext(); ) {
-            OMAttribute attr = (OMAttribute)it.next();
-            targetElement.addAttribute(attr);
-        }
-        return targetElement;
+        clone.attributes.cloneContent(options, attributes);
+        return clone;
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
@@ -1203,19 +1200,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     public int getLineNumber() {
         return lineNumber;
     }
-
-//    public Node cloneNode(boolean deep) {
-//
-//        ElementImpl newnode = (ElementImpl) super.cloneNode(deep);
-//        // Replicate NamedNodeMap rather than sharing it.
-//        if (attributes != null) {
-//            newnode.attributes = attributes.cloneMap(newnode);
-//        }
-//        newnode.previousSibling = null;
-//        newnode.nextSibling = null;
-//        return newnode;
-//
-//    }
 
     /** Returns the set of attributes of this node and the namespace declarations available. */
     public NamedNodeMap getAttributes() {
