@@ -63,9 +63,6 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
      */
     private OMNamespaceImpl namespace;
 
-    /** Flag to indicate whether this attr is used or not */
-    private boolean used;
-
     /**
      * Owner of this attribute. This is either the owner element or the owner document (if the
      * attribute doesn't have an owner element).
@@ -335,14 +332,13 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     	this.attrType = attrType;
     }
 
-    /** @return Returns boolean. */
-    protected boolean isUsed() {
-        return used;
-    }
-
-    /** @param used The used to set. */
-    protected void setUsed(boolean used) {
-        this.used = used;
+    final void checkInUse() {
+        if (owner instanceof ElementImpl) {
+            String msg = DOMMessageFormatter.formatMessage(
+                    DOMMessageFormatter.DOM_DOMAIN, DOMException.INUSE_ATTRIBUTE_ERR,
+                    null);
+            throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR, msg);
+        }
     }
 
     /**
@@ -402,7 +398,6 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         AttrImpl clone = (AttrImpl) super.cloneNode(true);
 
         clone.isSpecified(true);
-        clone.setUsed(false);
         return clone;
     }
 

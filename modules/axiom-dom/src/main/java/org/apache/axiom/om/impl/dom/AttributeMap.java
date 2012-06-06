@@ -141,7 +141,6 @@ public class AttributeMap implements NamedNodeMap {
         }
 
         attr.setOwnerElement((ElementImpl)this.ownerNode, true); // Set the owner node
-        attr.setUsed(true); // Setting used to true
 
         int i = findNamePoint(attr.getNodeName(), 0);
 

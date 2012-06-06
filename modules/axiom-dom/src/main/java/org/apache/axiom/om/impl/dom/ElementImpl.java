@@ -452,12 +452,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         checkSameOwnerDocument(attr);
 
         // check whether the attr is in use
-        if (attrImpl.isUsed()) {
-            String msg = DOMMessageFormatter
-                    .formatMessage(DOMMessageFormatter.DOM_DOMAIN,
-                                   DOMException.INUSE_ATTRIBUTE_ERR, null);
-            throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR, msg);
-        }
+        attrImpl.checkInUse();
 
         if (attr.getNodeName().startsWith(OMConstants.XMLNS_NS_PREFIX + ":")) {
             // This is a ns declaration
@@ -525,12 +520,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             }
 
             // check whether the attr is in use
-            if (attrImpl.isUsed()) {
-                String msg = DOMMessageFormatter.formatMessage(
-                        DOMMessageFormatter.DOM_DOMAIN, DOMException.INUSE_ATTRIBUTE_ERR,
-                        null);
-                throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR, msg);
-            }
+            attrImpl.checkInUse();
 
             if (this.attributes == null) {
                 this.attributes = new AttributeMap(this);
