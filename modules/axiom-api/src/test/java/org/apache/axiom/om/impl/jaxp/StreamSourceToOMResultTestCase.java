@@ -28,6 +28,7 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.testutils.conformance.Conformance;
 
 public class StreamSourceToOMResultTestCase extends AbstractTestCase {
     private final OMMetaFactory omMetaFactory;
@@ -56,7 +57,7 @@ public class StreamSourceToOMResultTestCase extends AbstractTestCase {
     public static TestSuite suite(OMMetaFactory omMetaFactory,
             TransformerFactory transformerFactory) throws Exception {
         TestSuite suite = new TestSuite();
-        String[] files = getConformanceTestFiles();
+        String[] files = Conformance.getConformanceTestFiles();
         for (int i=0; i<files.length; i++) {
             String file = files[i];
             int idx = file.lastIndexOf('/');

@@ -19,13 +19,8 @@
 
 package org.apache.axiom.om;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.activation.DataSource;
 import javax.activation.URLDataSource;
@@ -82,24 +77,6 @@ public abstract class AbstractTestCase
         return OMXMLBuilderFactory.createOMBuilder(omMetaFactory.getOMFactory(), getTestResource(relativePath)).getDocumentElement();
     }
     
-    public static String[] getConformanceTestFiles() {
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    AbstractTestCase.class.getClassLoader().getResourceAsStream(
-                            "conformance/filelist")));
-            String line;
-            List result = new ArrayList(10);
-            while ((line = in.readLine()) != null) {
-                result.add("conformance/" + line);
-            }
-            in.close();
-            return (String[])result.toArray(new String[result.size()]);
-        } catch (IOException ex) {
-            fail("Unable to load file list: " + ex.getMessage());
-            return null; // Make compiler happy
-        }
-    }
-
     public static Document toDocumentWithoutDTD(InputStream in) throws Exception {
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(in);
         DocumentType docType = doc.getDoctype();

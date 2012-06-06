@@ -62,4 +62,45 @@
             <artifactId>org.osgi.core</artifactId>
         </dependency>
     </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${project.build.directory}/generated-resources</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                <!-- This generates a list of the files in src/main/resources/org/apache/axiom/testutils/conformance.
+                                     This is useful when loading these files from the classpath. -->
+                                <![CDATA[
+                                    def filelist = new File(project.build.directory, "generated-resources/org/apache/axiom/testutils/conformance/filelist");
+                                    filelist.parentFile.mkdirs();
+                                    filelist.delete();
+                                    new File(project.basedir, "src/main/resources/org/apache/axiom/testutils/conformance").eachFile({
+                                        if (it.file) {
+                                            filelist.append("$it.name\n");
+                                        }
+                                    })
+                                ]]>
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
