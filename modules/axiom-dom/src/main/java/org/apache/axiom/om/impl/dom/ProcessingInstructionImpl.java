@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl.dom;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -88,7 +87,7 @@ public class ProcessingInstructionImpl extends LeafNode implements ProcessingIns
         writer.writeProcessingInstruction(target + " ", value);
     }
 
-    OMNode clone(OMCloneOptions options, ParentNode targetParent, boolean deep) {
-        return factory.createOMProcessingInstruction(targetParent, target, value);
+    LeafNode createClone() {
+        return new ProcessingInstructionImpl(null, target, value, factory);
     }
 }

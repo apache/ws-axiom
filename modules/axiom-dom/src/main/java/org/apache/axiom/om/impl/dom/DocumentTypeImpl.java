@@ -22,10 +22,8 @@ package org.apache.axiom.om.impl.dom;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;
@@ -87,7 +85,9 @@ public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocTyp
         value = text;
     }
 
-    OMNode clone(OMCloneOptions options, ParentNode targetParent, boolean deep) {
-        return factory.createOMDocType(targetParent, value);
+    LeafNode createClone() {
+        DocumentTypeImpl clone = new DocumentTypeImpl(null, factory);
+        clone.setValue(value);
+        return clone;
     }
 }

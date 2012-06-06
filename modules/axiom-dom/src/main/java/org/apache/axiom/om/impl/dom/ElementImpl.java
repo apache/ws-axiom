@@ -1185,11 +1185,11 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     }
 
     OMNode clone(OMCloneOptions options, ParentNode targetParent, boolean deep) {
-        OMElement targetElement;
+        ElementImpl targetElement;
         if (options.isPreserveModel()) {
-            targetElement = createClone(options, targetParent);
+            targetElement = (ElementImpl)createClone(options, (OMContainer)targetParent);
         } else {
-            targetElement = factory.createOMElement(localName, namespace, targetParent);
+            targetElement = (ElementImpl)factory.createOMElement(localName, namespace, (OMContainer)targetParent);
         }
         for (Iterator it = getAllDeclaredNamespaces(); it.hasNext(); ) {
             OMNamespace ns = (OMNamespace)it.next();

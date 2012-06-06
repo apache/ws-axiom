@@ -29,7 +29,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -522,12 +521,11 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         this.contentID = cid;
     }
 
-    OMNode clone(OMCloneOptions options, ParentNode targetParent, boolean deep) {
+    void beforeClone(OMCloneOptions options) {
         if (isBinary && options.isFetchDataHandlers()) {
             // Force loading of the reference to the DataHandler and ensure that its content is
             // completely fetched into memory (or temporary storage).
             ((DataHandler)getDataHandler()).getDataSource();
         }
-        return factory.createOMText(targetParent, this);
     }
 }

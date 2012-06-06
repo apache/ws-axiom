@@ -18,7 +18,9 @@
  */
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNode;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -99,4 +101,19 @@ public abstract class LeafNode extends NodeImpl {
         newnode.nextSibling = null;
         return newnode;
     }
+
+    final OMNode clone(OMCloneOptions options, ParentNode targetParent, boolean deep) {
+        beforeClone(options);
+        LeafNode clone = createClone();
+        if (targetParent != null) {
+            targetParent.internalAppendChild(clone);
+        }
+        return (OMNode)clone; // TODO: no cast here!
+    }
+    
+    void beforeClone(OMCloneOptions options) {
+        // By default, do nothing
+    }
+    
+    abstract LeafNode createClone();
 }

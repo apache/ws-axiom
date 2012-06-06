@@ -43,4 +43,8 @@ public class CDATASectionImpl extends TextNodeImpl implements CDATASection {
         textImpl.setOwnerDocument(ownerDocument());
         return textImpl;
     }
+
+    LeafNode createClone() {
+        return new CDATASectionImpl(textValue, factory);
+    }
 }

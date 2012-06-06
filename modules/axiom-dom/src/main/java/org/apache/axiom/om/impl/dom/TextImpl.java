@@ -102,4 +102,8 @@ public class TextImpl extends TextNodeImpl {
         textImpl.setOwnerDocument(ownerDocument());
         return textImpl;
     }
+
+    LeafNode createClone() {
+        return new TextImpl(textValue, factory);
+    }
 }

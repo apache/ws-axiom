@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
@@ -59,11 +58,7 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
         writer.writeComment(this.textValue);
     }
 
-    OMNode clone(OMCloneOptions options, ParentNode targetParent, boolean deep) {
-        CommentImpl comment = new CommentImpl(null, getData(), getOMFactory());
-        if (targetParent != null) {
-            targetParent.addChild(comment);
-        }
-        return comment;
+    LeafNode createClone() {
+        return new CommentImpl(null, getData(), factory);
     }
 }
