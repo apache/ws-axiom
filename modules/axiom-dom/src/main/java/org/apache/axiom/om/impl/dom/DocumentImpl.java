@@ -23,7 +23,6 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -582,7 +581,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
         OMDocumentImplUtil.internalSerialize(this, writer, cache, includeXMLDeclaration);
     }
 
-    OMNode clone(OMCloneOptions options, ParentNode targetParent, boolean deep) {
+    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent) {
         throw new UnsupportedOperationException();
     }
 }

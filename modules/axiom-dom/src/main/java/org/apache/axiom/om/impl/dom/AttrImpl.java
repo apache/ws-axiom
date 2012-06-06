@@ -25,11 +25,9 @@ import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
@@ -396,15 +394,6 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         NamedNodeHelper.setPrefix(this, prefix);
     }
 
-    public Node cloneNode(boolean deep) {
-
-        AttrImpl clone = (AttrImpl) super.cloneNode(true);
-
-        clone.isSpecified(true);
-        clone.setUsed(false);
-        return clone;
-    }
-
     /*
      * DOM-Level 3 methods
      */
@@ -500,7 +489,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         throw new UnsupportedOperationException();
     }
 
-    OMNode clone(OMCloneOptions options, ParentNode targetParent, boolean deep) {
+    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent) {
         // Right now, this method is never called
         throw new UnsupportedOperationException();
     }
