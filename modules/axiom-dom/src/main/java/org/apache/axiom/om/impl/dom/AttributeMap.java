@@ -31,16 +31,6 @@ public class AttributeMap implements NamedNodeMap {
 
     private ElementImpl ownerNode;
 
-    //
-    // Data
-    //
-
-    private short flags;
-
-    private final static short CHANGED = 0x1 << 1;
-
-    private final static short HASDEFAULTS = 0x1 << 2;
-                            
     AttributeMap(ElementImpl ownerNode) {
         this.ownerNode = ownerNode;
     }
@@ -232,7 +222,6 @@ public class AttributeMap implements NamedNodeMap {
 
     public AttributeMap cloneMap(ElementImpl ownerNode) {
         AttributeMap newmap = new AttributeMap(ownerNode);
-        newmap.hasDefaults(hasDefaults());
         newmap.cloneContent(this);
         return newmap;
     } // cloneMap():AttributeMap
@@ -257,23 +246,6 @@ public class AttributeMap implements NamedNodeMap {
             }
         }
     } // cloneContent():AttributeMap
-
-
-    final boolean changed() {
-        return (flags & CHANGED) != 0;
-    }
-
-    final void changed(boolean value) {
-        flags = (short) (value ? flags | CHANGED : flags & ~CHANGED);
-    }
-
-    final boolean hasDefaults() {
-        return (flags & HASDEFAULTS) != 0;
-    }
-
-    final void hasDefaults(boolean value) {
-        flags = (short) (value ? flags | HASDEFAULTS : flags & ~HASDEFAULTS);
-    }
 
     /**
      * From org.apache.xerces.dom.NamedNodeMapImpl
