@@ -89,6 +89,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveSingleChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildWrongDocument(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSInUse(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSReplace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeWrongDocument(dbf));
