@@ -516,7 +516,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
         ParentNode clone = shallowClone(options, targetParent);
         if (deep) {
             for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
-                ((NodeImpl)child).clone(options, targetParent, true);
+                ((NodeImpl)child).clone(options, clone, true);
             }
         }
         return clone;

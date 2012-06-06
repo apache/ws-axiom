@@ -167,8 +167,9 @@ public abstract class NodeImpl implements Node {
         OMCloneOptions options = new OMCloneOptions();
         // This is not specified by the API, but it's compatible with versions before 1.2.14
         options.setPreserveModel(true);
-        // TODO: set owner document
-        return clone(options, null, deep);
+        NodeImpl clone = clone(options, null, getNodeType() == Node.ATTRIBUTE_NODE ? true : deep);
+        clone.setOwnerDocument(ownerDocument());
+        return clone;
     }
 
     public boolean isSupported(String feature, String version) {

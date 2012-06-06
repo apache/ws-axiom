@@ -39,12 +39,9 @@ import javax.xml.stream.XMLStreamWriter;
 
 /** Implementation of <code>org.w3c.dom.Attr</code> and <code>org.apache.axiom.om.OMAttribute</code> */
 public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
+    private String localName;
 
-    /** Name of the attribute */
-    private String attrName;
-
-    /** Attribute type */
-    private String attrType;
+    private String type;
 
     /**
      * The namespace of this attribute. Possible values:
@@ -58,7 +55,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
      * </ul>
      * </ul>
      */
-    private OMNamespaceImpl namespace;
+    private OMNamespace namespace;
 
     /**
      * Owner of this attribute. This is either the owner element or the owner document (if the
@@ -69,12 +66,20 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     /** Flag used to mark an attribute as per the DOM Level 3 specification */
     protected boolean isId;
 
-    protected AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
+    private AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(factory);
         owner = ownerDocument;
         this.done = true;
     }
 
+    // TODO: copy isId?
+    private AttrImpl(String localName, OMNamespace namespace, String type, OMFactory factory) {
+        this(null, factory);
+        this.localName = localName;
+        this.namespace = namespace;
+        this.type = type;
+    }
+    
     public AttrImpl(DocumentImpl ownerDocument, String localName,
                     OMNamespace ns, String value, OMFactory factory) {
         this(ownerDocument, factory);
@@ -86,39 +91,39 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
             }
         }
         this.done = true;
-        this.attrName = localName;
+        this.localName = localName;
         internalAppendChild(new TextImpl(ownerDocument, value, factory));
-        this.attrType = OMConstants.XMLATTRTYPE_CDATA;
-        this.namespace = (OMNamespaceImpl) ns;
+        this.type = OMConstants.XMLATTRTYPE_CDATA;
+        this.namespace = ns;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String name, String value,
                     OMFactory factory) {
         this(ownerDocument, factory);
         this.done = true;
-        this.attrName = name;
+        this.localName = name;
         internalAppendChild(new TextImpl(ownerDocument, value, factory));
-        this.attrType = OMConstants.XMLATTRTYPE_CDATA;
+        this.type = OMConstants.XMLATTRTYPE_CDATA;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String name, OMFactory factory) {
         this(ownerDocument, factory);
-        this.attrName = name;
+        this.localName = name;
         //If this is a default namespace attr
         if (OMConstants.XMLNS_NS_PREFIX.equals(name)) {
             this.namespace = new OMNamespaceImpl(
                     OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX);
         }
-        this.attrType = OMConstants.XMLATTRTYPE_CDATA;
+        this.type = OMConstants.XMLATTRTYPE_CDATA;
         this.done = true;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String localName,
                     OMNamespace namespace, OMFactory factory) {
         this(ownerDocument, factory);
-        this.attrName = localName;
-        this.namespace = (OMNamespaceImpl) namespace;
-        this.attrType = OMConstants.XMLATTRTYPE_CDATA;
+        this.localName = localName;
+        this.namespace = namespace;
+        this.type = OMConstants.XMLATTRTYPE_CDATA;
         this.done = true;
     }
 
@@ -138,9 +143,9 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     public String getNodeName() {
         return (this.namespace != null
                 && !"".equals(this.namespace.getPrefix()) &&
-                !(OMConstants.XMLNS_NS_PREFIX.equals(this.attrName)))
-                ? this.namespace.getPrefix() + ":" + this.attrName
-                : this.attrName;
+                !(OMConstants.XMLNS_NS_PREFIX.equals(this.localName)))
+                ? this.namespace.getPrefix() + ":" + this.localName
+                : this.localName;
     }
 
     /**
@@ -206,17 +211,17 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     // /
     public String getName() {
         if (this.namespace != null) {
-            if ((OMConstants.XMLNS_NS_PREFIX.equals(this.attrName))) {
-                return this.attrName;
+            if ((OMConstants.XMLNS_NS_PREFIX.equals(this.localName))) {
+                return this.localName;
             } else if (OMConstants.XMLNS_NS_URI.equals(this.namespace.getNamespaceURI())) {
-                return OMConstants.XMLNS_NS_PREFIX + ":" + this.attrName;
+                return OMConstants.XMLNS_NS_PREFIX + ":" + this.localName;
             } else if (this.namespace.getPrefix().equals("")) {
-                return this.attrName;
+                return this.localName;
             } else {
-                return this.namespace.getPrefix() + ":" + this.attrName;
+                return this.namespace.getPrefix() + ":" + this.localName;
             }
         } else {
-            return this.attrName;
+            return this.localName;
         }
     }
 
@@ -264,29 +269,19 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
      */
     public QName getQName() {
         return (namespace == null) ?
-                new QName(this.attrName) :
+                new QName(this.localName) :
                         new QName(namespace.getNamespaceURI(),
-                                  attrName,
+                                  localName,
                                   namespace.getPrefix());
 
     }
 
-    /**
-     * Returns the attribute value.
-     *
-     * @see org.apache.axiom.om.OMAttribute#getAttributeValue()
-     */
     public String getAttributeValue() {
         return getValue();
     }
 
-    /**
-     * Returns the attribute value.
-     *
-     * @see org.apache.axiom.om.OMAttribute#getAttributeType()
-     */
     public String getAttributeType() {
-        return this.attrType;
+        return type;
     }
 
     /**
@@ -295,11 +290,11 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
      * @see org.apache.axiom.om.OMAttribute#setLocalName(String)
      */
     public void setLocalName(String localName) {
-        this.attrName = localName;
+        this.localName = localName;
     }
 
     public void internalSetNamespace(OMNamespace namespace) {
-        this.namespace = (OMNamespaceImpl)namespace;
+        this.namespace = namespace;
     }
 
     /**
@@ -326,7 +321,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
      * @see org.apache.axiom.om.OMAttribute#setAttributeType(String)
      */
     public void setAttributeType(String attrType) {    
-    	this.attrType = attrType;
+    	this.type = attrType;
     }
 
     final void checkInUse() {
@@ -356,15 +351,8 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         return null;
     }
 
-    /**
-     * Returns the attribute name.
-     *
-     * @see org.w3c.dom.Node#getLocalName()
-     */
     public String getLocalName() {
-        return (this.namespace == null) ? this.attrName : DOMUtil
-                .getLocalName(this.attrName);
-        
+        return localName;
     }
 
     /**
@@ -403,17 +391,11 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     }
 
     public String toString() {
-        return (this.namespace == null) ? this.attrName : this.namespace
+        return (this.namespace == null) ? this.localName : this.namespace
                 .getPrefix()
-                + ":" + this.attrName;
+                + ":" + this.localName;
     }
 
-    /**
-     * Returns the owner element of this attribute
-     * @return OMElement - if the parent OMContainer is an instanceof OMElement
-     * we return that OMElement else return null. To get the OMContainer itself use
-     * getParent() method.
-     */
     public OMElement getOwner() {
         return owner instanceof ElementImpl ? (OMElement)owner : null;
     }
@@ -445,7 +427,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
             OMAttribute other = (OMAttribute) obj;
             return (namespace == null ? other.getNamespace() == null :
                     namespace.equals(other.getNamespace()) &&
-                    attrName.equals(other.getLocalName()) &&
+                    localName.equals(other.getLocalName()) &&
                     (attrValue == null ? other.getAttributeValue() == null :
                             attrValue.toString().equals(other.getAttributeValue())));
         } else if (obj instanceof Attr) {// Checks equality of an org.w3c.dom.Attr with this instance
@@ -456,7 +438,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
                     return false; // I don't have a namespace and the other has. So return false
                 } else {
                     // Both of us don't have namespaces. So check for name and value equality only
-                    return (attrName.equals(other.getLocalName()) &&
+                    return (localName.equals(other.getLocalName()) &&
                             (attrValue == null ? other.getValue() == null :
                                     attrValue.toString().equals(other.getValue())));
                 }
@@ -467,7 +449,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
                 // First check for namespaceURI equality. Then check for prefix equality.
                 // Then check for name and value equality
                 return (ns.equals(otherNs) && (prefix == null ? otherPrefix == null : prefix.equals(otherPrefix)) &&
-                        (attrName.equals(other.getLocalName())) &&
+                        (localName.equals(other.getLocalName())) &&
                         (attrValue == null ? other.getValue() == null :
                                 attrValue.toString().equals(other.getValue())));
             }
@@ -477,7 +459,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
 
     public int hashCode() {
         String attrValue = getValue();
-        return attrName.hashCode() ^ (attrValue != null ? attrValue.toString().hashCode() : 0) ^
+        return localName.hashCode() ^ (attrValue != null ? attrValue.toString().hashCode() : 0) ^
                 (namespace != null ? namespace.hashCode() : 0);
     }
 
@@ -486,7 +468,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     }
 
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent) {
-        // Right now, this method is never called
-        throw new UnsupportedOperationException();
+        // Note: targetParent is always null here
+        return new AttrImpl(localName, namespace, type, factory);
     }
 }

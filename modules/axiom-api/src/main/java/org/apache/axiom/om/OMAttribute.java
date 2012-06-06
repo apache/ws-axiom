@@ -21,13 +21,21 @@ package org.apache.axiom.om;
 
 /** Interface OMAttribute */
 public interface OMAttribute extends OMNamedInformationItem {
-    /** @return Returns String. */
+    /**
+     * Get the attribute value.
+     * 
+     * @return the attribute value; never <code>null</code
+     */
     String getAttributeValue();
 
     /** @param value  */
     void setAttributeValue(String value);
 
-    /** @return Returns String. */
+    /**
+     * Get the attribute type. For most attributes, the type is <code>CDATA</code>.
+     * 
+     * @return the attribute type
+     */
     String getAttributeType();
 
     /** @param value  */
