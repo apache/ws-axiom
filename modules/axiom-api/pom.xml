@@ -114,44 +114,7 @@
         </dependency>
     </dependencies>
     <build>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-            <testResource>
-                <directory>${project.build.directory}/generated-test-resources</directory>
-            </testResource>
-        </testResources>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.gmaven</groupId>
-                <artifactId>gmaven-plugin</artifactId>
-                <version>1.2</version>
-                <executions>
-                    <execution>
-                        <phase>generate-test-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <source>
-                                <!-- This generates a list of the files in src/test/resources/conformance.
-                                     This is useful when loading these files from the classpath. -->
-                                <![CDATA[
-                                    def filelist = new File(project.build.directory, "generated-test-resources/conformance/filelist");
-                                    filelist.parentFile.mkdirs();
-                                    filelist.delete();
-                                    new File(project.basedir, "src/test/resources/conformance").eachFile({
-                                        if (it.file) {
-                                            filelist.append("$it.name\n");
-                                        }
-                                    })
-                                ]]>
-                            </source>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>

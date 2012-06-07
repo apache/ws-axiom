@@ -582,6 +582,11 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
     }
 
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent) {
-        throw new UnsupportedOperationException();
+        DocumentImpl clone = new DocumentImpl(factory);
+        clone.xmlVersion = xmlVersion;
+        clone.xmlEncoding = xmlEncoding;
+        clone.xmlStandalone = xmlStandalone;
+        clone.charEncoding = charEncoding;
+        return clone;
     }
 }

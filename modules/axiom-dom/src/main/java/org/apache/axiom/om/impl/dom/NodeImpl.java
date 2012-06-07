@@ -168,7 +168,9 @@ public abstract class NodeImpl implements Node {
         // This is not specified by the API, but it's compatible with versions before 1.2.14
         options.setPreserveModel(true);
         NodeImpl clone = clone(options, null, getNodeType() == Node.ATTRIBUTE_NODE ? true : deep);
-        clone.setOwnerDocument(ownerDocument());
+        if (!(clone instanceof DocumentImpl)) {
+            clone.setOwnerDocument(ownerDocument());
+        }
         return clone;
     }
 

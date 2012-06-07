@@ -28,6 +28,7 @@ import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.testutils.conformance.Conformance;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -69,7 +70,7 @@ public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
     }
     
     private static void addTests(TestSuite suite, SAXParserFactory factory, String name) throws Exception {
-        for (String file : getConformanceTestFiles()) {
+        for (String file : Conformance.getConformanceTestFiles()) {
             suite.addTest(new SAXOMBuilderSAXParserTest(
                     file.substring(file.lastIndexOf('/')+1) + " - " + name, factory, file));
         }

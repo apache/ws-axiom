@@ -30,6 +30,7 @@ import javax.xml.stream.XMLStreamWriter;
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.testutils.conformance.Conformance;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 
@@ -63,7 +64,7 @@ public class StreamingOMSerializerTest extends AbstractTestCase {
 
     public static TestSuite suite() throws Exception {
         TestSuite suite = new TestSuite();
-        String[] files = getConformanceTestFiles();
+        String[] files = Conformance.getConformanceTestFiles();
         for (int i=0; i<files.length; i++) {
             String file = files[i];
             int idx = file.lastIndexOf('/');
