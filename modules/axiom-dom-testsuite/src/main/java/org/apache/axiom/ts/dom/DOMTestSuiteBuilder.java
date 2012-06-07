@@ -20,6 +20,7 @@ package org.apache.axiom.ts.dom;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.axiom.testutils.conformance.Conformance;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 
 public class DOMTestSuiteBuilder extends TestSuiteBuilder {
@@ -30,6 +31,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
     }
     
     protected void addTests() {
+        String[] conformanceFiles = Conformance.getConformanceTestFiles();
         addTest(new org.apache.axiom.ts.dom.attr.TestCloneNode(dbf, true));
         addTest(new org.apache.axiom.ts.dom.attr.TestCloneNode(dbf, false));
         addTest(new org.apache.axiom.ts.dom.attr.TestGetChildNodes(dbf));
@@ -43,6 +45,9 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestAdoptNodeWithParent(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAllowedChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAppendChildWrongDocument(dbf));
+        for (int i=0; i<conformanceFiles.length; i++) {
+            addTest(new org.apache.axiom.ts.dom.document.TestCloneNode(dbf, conformanceFiles[i]));
+        }
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttribute(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNS(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNSWithoutNamespace(dbf));
