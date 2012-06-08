@@ -24,34 +24,24 @@ import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import org.w3c.dom.NamedNodeMap;
 
-/**
- * Tests that {@link Node#cloneNode(boolean)} correctly clones the attributes of an element.
- */
-public class TestCloneNodeWithAttributes extends DOMTestCase {
-    private final boolean deep;
-    
-    public TestCloneNodeWithAttributes(DocumentBuilderFactory dbf, boolean deep) {
+public class TestSetAttributeNS extends DOMTestCase {
+    public TestSetAttributeNS(DocumentBuilderFactory dbf) {
         super(dbf);
-        this.deep = deep;
-        addTestProperty("deep", String.valueOf(deep));
     }
 
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
-        Element element = document.createElementNS("urn:ns1", "p:elem");
-        element.setAttributeNS(null, "attr1", "value1");
-        element.setAttributeNS("urn:ns2", "q:attr2", "value2");
-        Element clone = (Element)element.cloneNode(deep);
-        assertEquals(2, clone.getAttributes().getLength());
-        Attr attr1 = clone.getAttributeNodeNS(null, "attr1");
-        Attr attr2 = clone.getAttributeNodeNS("urn:ns2", "attr2");
-        assertNotNull(attr1);
-        assertNotNull(attr2);
-        assertSame(clone, attr1.getOwnerElement());
-        assertSame(clone, attr2.getOwnerElement());
-        assertEquals("value1", attr1.getValue());
-        assertEquals("value2", attr2.getValue());
+        Element element = document.createElementNS("urn:ns1", "p:element");
+        element.setAttributeNS("urn:ns2", "q:attr", "value");
+        NamedNodeMap attributes = element.getAttributes();
+        assertEquals(1, attributes.getLength());
+        Attr attr = (Attr)attributes.item(0);
+        assertEquals("urn:ns2", attr.getNamespaceURI());
+        assertEquals("q", attr.getPrefix());
+        assertEquals("attr", attr.getLocalName());
+        assertEquals("value", attr.getValue());
+        assertSame(attr, element.getAttributeNodeNS("urn:ns2", "attr"));
     }
 }

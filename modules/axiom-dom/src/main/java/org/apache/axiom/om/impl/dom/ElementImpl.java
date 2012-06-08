@@ -527,7 +527,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             }
 
             // handle the namespaces
-            if (attr.getNamespaceURI() != null
+            if (!useDomSemantics && attr.getNamespaceURI() != null
                     && findNamespace(attr.getNamespaceURI(), attr.getPrefix())
                     == null) {
                 // TODO checkwhether the same ns is declared with a different
