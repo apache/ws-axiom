@@ -52,13 +52,13 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
                                SOAPHeader parent, SOAPFactory factory)
             throws SOAPProcessingException {
-        super((ParentNode) parent, localName, (OMNamespaceImpl) ns, factory);
+        super((ParentNode) parent, localName, ns, factory, true);
         this.setNamespace(ns);
     }
 
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
                                SOAPFactory factory) throws SOAPProcessingException {
-        super(localName, (OMNamespaceImpl) ns, factory);
+        super(null, localName, ns, factory, true);
         this.setNamespace(ns);
     }
 
@@ -72,7 +72,7 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
      */
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
                                OMElement parent, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super((ParentNode) parent, localName, (OMNamespaceImpl) ns, builder, factory);
+        super((ParentNode) parent, localName, ns, builder, factory);
         this.setNamespace(ns);
     }
 

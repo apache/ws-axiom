@@ -86,7 +86,7 @@ public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocTyp
     }
 
     LeafNode createClone() {
-        DocumentTypeImpl clone = new DocumentTypeImpl(null, factory);
+        DocumentTypeImpl clone = new DocumentTypeImpl(factory);
         clone.setValue(value);
         return clone;
     }

@@ -48,7 +48,7 @@ public class DOMImplementationImpl implements DOMImplementation {
 
         new ElementImpl(doc, DOMUtil.getLocalName(qualifiedName),
                         new OMNamespaceImpl(namespaceURI, DOMUtil
-                                .getPrefix(qualifiedName)), factory);
+                                .getPrefix(qualifiedName)), factory, false);
 
         return doc;
     }

@@ -30,16 +30,12 @@ import org.apache.axiom.soap.SOAPProcessingException;
 
 public abstract class SOAPElement extends ElementImpl {
 
-    public SOAPElement(SOAPFactory factory) {
-        super(factory);
-    }
-
     /** @param parent  */
     protected SOAPElement(OMElement parent,
                           String localName,
                           boolean extractNamespaceFromParent,
                           SOAPFactory factory) throws SOAPProcessingException {
-        super((ParentNode) parent, localName, null, factory);
+        super((ParentNode) parent, localName, null, factory, true);
         if (parent == null) {
             throw new SOAPProcessingException(
                     " Can not create " + localName +
@@ -63,7 +59,7 @@ public abstract class SOAPElement extends ElementImpl {
 
     protected SOAPElement(String localName, OMNamespace ns,
                           SOAPFactory factory) {
-        super(localName, (OMNamespaceImpl) ns, factory);
+        super(null, localName, ns, factory, true);
     }
 
     protected SOAPElement(String tagName,

@@ -81,6 +81,6 @@ public class DocumentFragmentImpl extends RootNode implements
     }
 
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent) {
-        return new DocumentFragmentImpl(null, factory);
+        return new DocumentFragmentImpl(factory);
     }
 }

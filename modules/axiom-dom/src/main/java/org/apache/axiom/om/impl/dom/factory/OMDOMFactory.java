@@ -77,7 +77,7 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns) {
-        return new ElementImpl(localName, (OMNamespaceImpl) ns, this);
+        return new ElementImpl(null, localName, ns, this, true);
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns,
@@ -85,7 +85,7 @@ public class OMDOMFactory implements OMFactory {
         if (parent == null) {
             return createOMElement(localName, ns);
         } else {
-            return new ElementImpl((ParentNode) parent, localName, (OMNamespaceImpl) ns, this);
+            return new ElementImpl((ParentNode) parent, localName, ns, this, true);
         }
     }
 

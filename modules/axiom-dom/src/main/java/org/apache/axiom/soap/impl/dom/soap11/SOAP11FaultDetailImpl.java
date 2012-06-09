@@ -27,6 +27,9 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultDetailImpl;
 
 public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
+    public SOAP11FaultDetailImpl(SOAPFactory factory) {
+        super(null, factory);
+    }
 
     public SOAP11FaultDetailImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
@@ -36,10 +39,6 @@ public class SOAP11FaultDetailImpl extends SOAPFaultDetailImpl {
     public SOAP11FaultDetailImpl(SOAPFault parent, OMXMLParserWrapper builder,
                                  SOAPFactory factory) {
         super(parent, builder, factory);
-    }
-
-    public SOAP11FaultDetailImpl(SOAPFactory factory) {
-        super(factory);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {

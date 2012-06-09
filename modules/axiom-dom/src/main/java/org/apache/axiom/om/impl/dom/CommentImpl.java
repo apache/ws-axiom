@@ -59,6 +59,6 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
     }
 
     LeafNode createClone() {
-        return new CommentImpl(null, getData(), factory);
+        return new CommentImpl(getData(), factory);
     }
 }

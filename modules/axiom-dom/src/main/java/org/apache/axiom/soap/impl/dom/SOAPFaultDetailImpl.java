@@ -22,6 +22,7 @@ package org.apache.axiom.soap.impl.dom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.soap.SOAPFactory;
@@ -35,24 +36,23 @@ import java.util.Iterator;
 
 public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFaultDetail {
 
-
-    protected SOAPFaultDetailImpl(SOAPFault parent,
-                                  boolean extractNamespaceFromParent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super(parent,
-              factory.getSOAPVersion().getFaultDetailQName().getLocalPart(),
-              extractNamespaceFromParent, factory);
+    protected SOAPFaultDetailImpl(OMNamespace ns, SOAPFactory factory) {
+        super(factory.getSOAPVersion().getFaultDetailQName().getLocalPart(), ns, factory);
     }
 
-    protected SOAPFaultDetailImpl(SOAPFactory factory) {
-        super(factory);
+    protected SOAPFaultDetailImpl(SOAPFault parent,
+                                  boolean extractNamespaceFromParent,
+                                  SOAPFactory factory) throws SOAPProcessingException {
+        super(parent,
+                factory.getSOAPVersion().getFaultDetailQName().getLocalPart(),
+                extractNamespaceFromParent, factory);
     }
 
     protected SOAPFaultDetailImpl(SOAPFault parent,
                                   OMXMLParserWrapper builder,
                                   SOAPFactory factory) {
         super(parent, factory.getSOAPVersion().getFaultDetailQName().getLocalPart(), builder,
-              factory);
+                factory);
     }
 
     public void addDetailEntry(OMElement detailElement) {
