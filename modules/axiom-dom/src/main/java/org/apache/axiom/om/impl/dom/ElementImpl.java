@@ -106,9 +106,8 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
      *  @param factory OMFactory
      *
      * */
-    public ElementImpl(DocumentImpl ownerDocument, String tagName,
-                       OMFactory factory) {
-        super(ownerDocument, factory);
+    public ElementImpl(String tagName, OMFactory factory) {
+        super(factory);
         this.localName = tagName;
         this.attributes = new AttributeMap(this);
         this.done = true;
@@ -122,9 +121,8 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
      * @param ns
      * @param factory
      */
-    public ElementImpl(DocumentImpl ownerDocument, String tagName,
-                       OMNamespaceImpl ns, OMFactory factory) {
-        super(ownerDocument, factory);
+    public ElementImpl(String tagName, OMNamespaceImpl ns, OMFactory factory) {
+        super(factory);
         this.localName = tagName;
         if (ns != null) {
             setNamespace(ns);
@@ -133,20 +131,9 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         this.done = true;
     }
 
-    public ElementImpl(DocumentImpl ownerDocument, String tagName,
-                       OMNamespaceImpl ns, OMXMLParserWrapper builder, OMFactory factory) {
-        super(ownerDocument, factory);
-        this.localName = tagName;
-        if (ns != null) {
-            setNamespace(ns);
-        }
-        this.builder = builder;
-        this.attributes = new AttributeMap(this);
-    }
-
     public ElementImpl(ParentNode parentNode, String tagName, OMNamespaceImpl ns,
                        OMFactory factory) {
-        this(null, tagName, null, factory);
+        this(tagName, null, factory);
         parentNode.addChild(this);
         this.done = true;
         namespace = handleNamespace(ns);

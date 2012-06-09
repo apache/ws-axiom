@@ -36,10 +36,9 @@ public class ProcessingInstructionImpl extends LeafNode implements ProcessingIns
     private String target;
     private String value;
 
-    public ProcessingInstructionImpl(DocumentImpl ownerDocument, String target, String value,
-            OMFactory factory) {
+    public ProcessingInstructionImpl(String target, String value, OMFactory factory) {
         
-        super(ownerDocument, factory);
+        super(factory);
         this.target = target;
         this.value = value;
         done = true;

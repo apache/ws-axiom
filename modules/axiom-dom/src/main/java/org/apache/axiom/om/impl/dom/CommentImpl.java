@@ -31,8 +31,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 public class CommentImpl extends CharacterImpl implements Comment, OMComment {
-    public CommentImpl(DocumentImpl ownerNode, String value, OMFactory factory) {
-        super(ownerNode, value, factory);
+    public CommentImpl(String value, OMFactory factory) {
+        super(value, factory);
         this.done = true;
     }
 

@@ -29,7 +29,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -86,7 +85,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      */
     public TextNodeImpl(String contentID, OMContainer parent,
                         OMXMLParserWrapper builder, OMFactory factory) {
-        super((DocumentImpl) ((ParentNode) parent).getOwnerDocument(), factory);
+        super(factory);
         this.contentID = contentID;
         this.optimize = true;
         this.isBinary = true;
@@ -101,8 +100,8 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      * @param source  TextImpl
      * @param factory
      */
-    public TextNodeImpl(DocumentImpl ownerNode, TextNodeImpl source, OMFactory factory) {
-        super(ownerNode, factory);
+    public TextNodeImpl(TextNodeImpl source, OMFactory factory) {
+        super(factory);
         this.done = true;
 
         // Copy the value of the text
@@ -151,9 +150,9 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      * @param dataHandler
      * @param optimize    To send binary content. Created progrmatically.
      */
-    public TextNodeImpl(DocumentImpl ownerNode, Object dataHandler, boolean optimize,
+    public TextNodeImpl(Object dataHandler, boolean optimize,
                         OMFactory factory) {
-        super(ownerNode, factory);
+        super(factory);
         this.dataHandlerObject = dataHandler;
         this.isBinary = true;
         this.optimize = optimize;
@@ -168,9 +167,9 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      * @param optimize
      * @param factory
      */
-    public TextNodeImpl(DocumentImpl ownerNode, String contentID, DataHandlerProvider
+    public TextNodeImpl(String contentID, DataHandlerProvider
             dataHandlerProvider, boolean optimize, OMFactory factory) {
-        super(ownerNode, factory);
+        super(factory);
         this.contentID = contentID;
         dataHandlerObject = dataHandlerProvider;
         isBinary = true;
@@ -181,38 +180,15 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     /**
      * @param ownerNode
      */
-    public TextNodeImpl(DocumentImpl ownerNode, OMFactory factory) {
-        super(ownerNode, factory);
+    public TextNodeImpl(OMFactory factory) {
+        super(factory);
         this.done = true;
     }
 
-    /**
-     * @param ownerNode
-     * @param value
-     */
-    public TextNodeImpl(DocumentImpl ownerNode, String value, OMFactory factory) {
-        super(ownerNode, value, factory);
-        this.done = true;
-    }
-
-
-    public TextNodeImpl(DocumentImpl ownerNode, char[] value, OMFactory factory) {
-        super(ownerNode, factory);
+    public TextNodeImpl(char[] value, OMFactory factory) {
+        super(factory);
         this.charArray = value;
         this.done = true;
-    }
-
-    /**
-     * @param ownerNode
-     * @param value
-     */
-    public TextNodeImpl(DocumentImpl ownerNode, String value, String mimeType,
-                        boolean optimize, OMFactory factory) {
-        this(ownerNode, value, factory);
-        this.mimeType = mimeType;
-        this.optimize = optimize;
-        this.isBinary = true;
-        done = true;
     }
 
     public TextNodeImpl(OMContainer parent, QName text, OMFactory factory) {
@@ -222,7 +198,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
 
     public TextNodeImpl(OMContainer parent, QName text, int nodeType,
                         OMFactory factory) {
-        this(((ElementImpl) parent).ownerDocument(), factory);
+        this(factory);
         this.textNS =
                 ((ElementImpl) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
         this.textValue = textNS == null ? text.getLocalPart() : textNS.getPrefix() + ":" + text.getLocalPart();

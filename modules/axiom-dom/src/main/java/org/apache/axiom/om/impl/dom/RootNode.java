@@ -21,10 +21,6 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMFactory;
 
 public abstract class RootNode extends ParentNode {
-    protected RootNode(DocumentImpl ownerDocument, OMFactory factory) {
-        super(ownerDocument, factory);
-    }
-
     public RootNode(OMFactory factory) {
         super(factory);
     }

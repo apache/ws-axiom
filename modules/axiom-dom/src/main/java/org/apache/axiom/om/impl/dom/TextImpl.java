@@ -32,35 +32,26 @@ import org.w3c.dom.Node;
 public class TextImpl extends TextNodeImpl {
     private boolean isWhitespace;
 
-    public TextImpl(DocumentImpl ownerNode, char[] value, OMFactory factory) {
-        super(ownerNode, value, factory);
+    public TextImpl(char[] value, OMFactory factory) {
+        super(value, factory);
     }
 
-    public TextImpl(DocumentImpl ownerNode, Object dataHandler, boolean optimize, OMFactory factory) {
-        super(ownerNode, dataHandler, optimize, factory);
+    public TextImpl(Object dataHandler, boolean optimize, OMFactory factory) {
+        super(dataHandler, optimize, factory);
     }
 
-    public TextImpl(DocumentImpl ownerNode, String contentID,
+    public TextImpl(String contentID,
             DataHandlerProvider dataHandlerProvider, boolean optimize, OMFactory factory) {
-        super(ownerNode, contentID, dataHandlerProvider, optimize, factory);
+        super(contentID, dataHandlerProvider, optimize, factory);
     }
 
-    public TextImpl(DocumentImpl ownerNode, OMFactory factory) {
-        super(ownerNode, factory);
+    public TextImpl(OMFactory factory) {
+        super(factory);
     }
 
-    public TextImpl(DocumentImpl ownerNode, String value, OMFactory factory) {
-        super(ownerNode, value, factory);
-    }
-
-    public TextImpl(DocumentImpl ownerNode, String value, int nodeType, OMFactory factory) {
-        super(ownerNode, value, factory);
+    public TextImpl(String value, int nodeType, OMFactory factory) {
+        super(value, factory);
         isWhitespace = nodeType == SPACE_NODE;
-    }
-
-    public TextImpl(DocumentImpl ownerNode, String value, String mimeType, boolean optimize,
-            OMFactory factory) {
-        super(ownerNode, value, mimeType, optimize, factory);
     }
 
     public TextImpl(OMContainer parent, QName text, int nodeType, OMFactory factory) {
@@ -71,8 +62,8 @@ public class TextImpl extends TextNodeImpl {
         super(parent, text, factory);
     }
 
-    public TextImpl(DocumentImpl ownerNode, TextNodeImpl source, OMFactory factory) {
-        super(ownerNode, source, factory);
+    public TextImpl(TextNodeImpl source, OMFactory factory) {
+        super(source, factory);
     }
 
     public TextImpl(String contentID, OMContainer parent, OMXMLParserWrapper builder,

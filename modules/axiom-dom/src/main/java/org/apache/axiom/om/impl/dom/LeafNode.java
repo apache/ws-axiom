@@ -30,10 +30,6 @@ public abstract class LeafNode extends NodeImpl {
 
     private NodeImpl nextSibling;
 
-    protected LeafNode(DocumentImpl ownerDocument, OMFactory factory) {
-        super(ownerDocument, factory);
-    }
-
     public LeafNode(OMFactory factory) {
         super(factory);
     }

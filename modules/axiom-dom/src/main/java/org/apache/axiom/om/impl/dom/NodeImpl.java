@@ -77,11 +77,6 @@ public abstract class NodeImpl implements Node, Cloneable {
     // Constructors
     //
 
-    protected NodeImpl(DocumentImpl ownerDocument, OMFactory factory) {
-        this(factory);
-        setOwnerDocument(ownerDocument);
-    }
-    
     protected NodeImpl(OMFactory factory) {
         this.factory = factory;
     }

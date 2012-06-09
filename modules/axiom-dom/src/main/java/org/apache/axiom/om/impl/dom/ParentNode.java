@@ -59,11 +59,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
 
     protected NodeImpl lastChild;
 
-    /** @param ownerDocument  */
-    protected ParentNode(DocumentImpl ownerDocument, OMFactory factory) {
-        super(ownerDocument, factory);
-    }
-
     protected ParentNode(OMFactory factory) {
         super(factory);
     }
@@ -558,11 +553,9 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
                     newText = this.factory.createOMText(importedText
                             .getDataHandler(), isOptimize);
                 } else if (importedText.isCharacters()) {
-                    newText = new TextImpl((DocumentImpl) this.getOwnerDocument(),
-                                           importedText.getTextCharacters(), this.factory);
+                    newText = new TextImpl(importedText.getTextCharacters(), this.factory);
                 } else {
-                    newText = new TextImpl((DocumentImpl) this.getOwnerDocument(),
-                                           importedText.getText(), this.factory);
+                    newText = new TextImpl(importedText.getText(), this.factory);
                 }
                 return newText;
             }
@@ -579,13 +572,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
                 OMComment importedComment = (OMComment) child;
                 OMComment newComment = this.factory.createOMComment((OMContainer)this,
                                                                     importedComment.getValue());
-                DocumentImpl doc;
-                if (this instanceof DocumentImpl) {
-                    doc = (DocumentImpl) this;
-                } else {
-                    doc = (DocumentImpl) getOwnerDocument();
-                }
-                newComment = new CommentImpl(doc, importedComment.getValue(),
+                newComment = new CommentImpl(importedComment.getValue(),
                                              this.factory);
                 return newComment;
             }

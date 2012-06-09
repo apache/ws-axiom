@@ -58,7 +58,7 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
 
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
                                SOAPFactory factory) throws SOAPProcessingException {
-        super(null, localName, (OMNamespaceImpl) ns, factory);
+        super(localName, (OMNamespaceImpl) ns, factory);
         this.setNamespace(ns);
     }
 

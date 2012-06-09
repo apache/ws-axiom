@@ -86,7 +86,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         }
         this.done = true;
         this.localName = localName;
-        internalAppendChild(new TextImpl(ownerDocument, value, factory));
+        internalAppendChild(new TextImpl(value, factory));
         this.type = OMConstants.XMLATTRTYPE_CDATA;
         this.namespace = ns;
     }
@@ -96,7 +96,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         this(ownerDocument, factory);
         this.done = true;
         this.localName = name;
-        internalAppendChild(new TextImpl(ownerDocument, value, factory));
+        internalAppendChild(new TextImpl(value, factory));
         this.type = OMConstants.XMLATTRTYPE_CDATA;
     }
 

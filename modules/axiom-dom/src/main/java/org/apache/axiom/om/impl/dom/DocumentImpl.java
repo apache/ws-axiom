@@ -24,7 +24,6 @@ import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -76,12 +75,6 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
     protected Hashtable identifiers;
     
     private final DOMConfigurationImpl domConfig = new DOMConfigurationImpl();
-
-    /** @param ownerDocument  */
-    public DocumentImpl(DocumentImpl ownerDocument, OMFactory factory) {
-        super(ownerDocument, factory);
-        this.done = true;
-    }
 
     public DocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
         super(factory);
@@ -160,19 +153,27 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
     }
 
     public CDATASection createCDATASection(String data) throws DOMException {
-        return new CDATASectionImpl(this, data, factory);
+        CDATASectionImpl cdataSection = new CDATASectionImpl(data, factory);
+        cdataSection.setOwnerDocument(this);
+        return cdataSection;
     }
 
     public Comment createComment(String data) {
-        return new CommentImpl(this, data, this.factory);
+        CommentImpl comment = new CommentImpl(data, this.factory);
+        comment.setOwnerDocument(this);
+        return comment;
     }
 
     public DocumentFragment createDocumentFragment() {
-        return new DocumentFragmentImpl(this, this.factory);
+        DocumentFragmentImpl fragment = new DocumentFragmentImpl(this.factory);
+        fragment.setOwnerDocument(this);
+        return fragment;
     }
 
     public Element createElement(String tagName) throws DOMException {
-        return new ElementImpl(this, tagName, this.factory);
+        ElementImpl element = new ElementImpl(tagName, this.factory);
+        element.setOwnerDocument(this);
+        return element;
     }
 
     public Element createElementNS(String ns, String qualifiedName)
@@ -196,7 +197,8 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
         }
         // DOM doesn't create namespace declarations automatically. Therefore we set the
         // namespace afterwards with setNamespaceWithNoFindInCurrentScope.
-        ElementImpl element = new ElementImpl(this, localName, null, this.factory);
+        ElementImpl element = new ElementImpl(localName, null, this.factory);
+        element.setOwnerDocument(this);
         element.setNamespaceWithNoFindInCurrentScope(namespace);
         return element;
     }
@@ -209,11 +211,15 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
 
     public ProcessingInstruction createProcessingInstruction(String target,
                                                              String data) throws DOMException {
-        return new ProcessingInstructionImpl(this, target, data, factory);
+        ProcessingInstructionImpl pi = new ProcessingInstructionImpl(target, data, factory);
+        pi.setOwnerDocument(this);
+        return pi;
     }
 
     public Text createTextNode(String value) {
-        return new TextImpl(this, value, this.factory);
+        TextImpl text = new TextImpl(value, this.factory);
+        text.setOwnerDocument(this);
+        return text;
     }
 
     public DocumentType getDoctype() {
