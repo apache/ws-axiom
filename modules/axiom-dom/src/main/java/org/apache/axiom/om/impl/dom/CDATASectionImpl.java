@@ -29,10 +29,6 @@ public class CDATASectionImpl extends TextNodeImpl implements CDATASection {
         super(text, factory);
     }
 
-    public CDATASectionImpl(DocumentImpl ownerDocument, String text, OMFactory factory) {
-        super(ownerDocument, text, factory);
-    }
-
     public int getType() throws OMException {
         return OMNode.CDATA_SECTION_NODE;
     }

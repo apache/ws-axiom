@@ -31,8 +31,8 @@ import org.w3c.dom.NamedNodeMap;
 public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocType, OMNodeEx {
     private String value;
     
-    public DocumentTypeImpl(DocumentImpl ownerDocument, OMFactory factory) {
-        super(ownerDocument, factory);
+    public DocumentTypeImpl(OMFactory factory) {
+        super(factory);
         done = true;
     }
 

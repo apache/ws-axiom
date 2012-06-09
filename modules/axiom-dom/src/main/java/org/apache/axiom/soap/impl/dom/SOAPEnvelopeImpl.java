@@ -61,16 +61,12 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
     }
 
     public SOAPEnvelopeImpl(DocumentImpl doc, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(
-                doc,
-                SOAPConstants.SOAPENVELOPE_LOCAL_NAME,
-                null,
-                builder, factory);
+        super(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, null, builder, factory);
     }
 
     /** @param ns  */
     public SOAPEnvelopeImpl(OMNamespace ns, SOAPFactory factory) {
-        super(null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
+        super(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
     }
 
     public SOAPVersion getVersion() {

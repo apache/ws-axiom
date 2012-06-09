@@ -77,8 +77,7 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns) {
-        return new ElementImpl(null,
-                               localName, (OMNamespaceImpl) ns, this);
+        return new ElementImpl(localName, (OMNamespaceImpl) ns, this);
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns,
@@ -203,9 +202,9 @@ public class OMDOMFactory implements OMFactory {
         } else {
             TextNodeImpl txt;
             if (type == OMNode.CDATA_SECTION_NODE) {
-                txt = new CDATASectionImpl(null, text, this);
+                txt = new CDATASectionImpl(text, this);
             } else {
-                txt = new TextImpl(null, text, type, this);
+                txt = new TextImpl(text, type, this);
             }
             parent.addChild(txt);
             return txt;
@@ -214,13 +213,13 @@ public class OMDOMFactory implements OMFactory {
     
     
     public OMText createOMText(OMContainer parent, OMText source) {
-        TextImpl text = new TextImpl(null, (TextImpl) source, this);
+        TextImpl text = new TextImpl((TextImpl) source, this);
         parent.addChild(text);
         return text;
     }
 
     public OMText createOMText(OMContainer parent, char[] charArary, int type) {
-        TextImpl txt = new TextImpl(null, charArary, this);
+        TextImpl txt = new TextImpl(charArary, this);
         parent.addChild(txt);
         return txt;
     }
@@ -231,7 +230,7 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText(String)
      */
     public OMText createOMText(String s) {
-        return new TextImpl(null, s, this);
+        return new TextImpl(s, this);
     }
 
     /**
@@ -241,9 +240,9 @@ public class OMDOMFactory implements OMFactory {
      */
     public OMText createOMText(String text, int type) {
         if (type == OMNode.CDATA_SECTION_NODE) {
-            return new CDATASectionImpl(null, text, this);
+            return new CDATASectionImpl(text, this);
         } else {
-            return new TextImpl(null, text, this);
+            return new TextImpl(text, this);
         }
     }
 
@@ -254,7 +253,7 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText(String, String, boolean)
      */
     public OMText createOMText(String text, String mimeType, boolean optimize) {
-        return new TextImpl(null, text, mimeType, optimize, this);
+        return new TextImpl(text, mimeType, optimize, this);
     }
 
     /**
@@ -264,12 +263,12 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText(Object, boolean)
      */
     public OMText createOMText(Object dataHandler, boolean optimize) {
-        return new TextImpl(null, dataHandler, optimize, this);
+        return new TextImpl(dataHandler, optimize, this);
     }
 
     public OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
             boolean optimize) {
-        return new TextImpl(null, contentID, dataHandlerProvider, optimize, this);
+        return new TextImpl(contentID, dataHandlerProvider, optimize, this);
     }
 
     /**
@@ -280,7 +279,7 @@ public class OMDOMFactory implements OMFactory {
      */
     public OMText createOMText(OMContainer parent, String s, String mimeType,
                                boolean optimize) {
-        TextImpl text = new TextImpl(null, s, mimeType, optimize, this);
+        TextImpl text = new TextImpl(s, mimeType, optimize, this);
         parent.addChild(text);
         return text;
     }
@@ -306,7 +305,7 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMDocType createOMDocType(OMContainer parent, String content) {
-        DocumentTypeImpl docType = new DocumentTypeImpl(null, this);
+        DocumentTypeImpl docType = new DocumentTypeImpl(this);
         docType.setValue(content);
         if (parent != null) {
             parent.addChild(docType);
@@ -317,7 +316,7 @@ public class OMDOMFactory implements OMFactory {
     public OMProcessingInstruction createOMProcessingInstruction(
             OMContainer parent, String piTarget, String piData) {
         ProcessingInstructionImpl pi =
-            new ProcessingInstructionImpl(null, piTarget, piData, this);
+            new ProcessingInstructionImpl(piTarget, piData, this);
         if (parent != null) {
             parent.addChild(pi);
         }
@@ -325,7 +324,7 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMComment createOMComment(OMContainer parent, String content) {
-        CommentImpl comment = new CommentImpl(null, content, this);
+        CommentImpl comment = new CommentImpl(content, this);
         if (parent != null) {
             parent.addChild(comment);
         }

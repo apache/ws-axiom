@@ -21,26 +21,25 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
-import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
 
 /**
  * @deprecated Use {@link OMAbstractFactory#getMetaFactory(String)} with
  *             {@link OMAbstractFactory#FEATURE_DOM} to get a meta factory for DOOM.
  */
 public class DOOMAbstractFactory {
+    private static final OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM);
 
     public static OMFactory getOMFactory() {
-        return new OMDOMFactory();
+        return metaFactory.getOMFactory();
     }
 
     public static SOAPFactory getSOAP11Factory() {
-        return new SOAP11Factory();
+        return metaFactory.getSOAP11Factory();
     }
 
     public static SOAPFactory getSOAP12Factory() {
-        return new SOAP12Factory();
+        return metaFactory.getSOAP12Factory();
     }
 }

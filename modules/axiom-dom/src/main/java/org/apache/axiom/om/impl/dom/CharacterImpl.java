@@ -36,13 +36,8 @@ public abstract class CharacterImpl extends LeafNode implements CharacterData, O
         super(factory);
     }
 
-    /** @param ownerNode  */
-    public CharacterImpl(DocumentImpl ownerNode, OMFactory factory) {
-        super(ownerNode, factory);
-    }
-
-    public CharacterImpl(DocumentImpl ownerNode, String value, OMFactory factory) {
-        super(ownerNode, factory);
+    public CharacterImpl(String value, OMFactory factory) {
+        super(factory);
         this.textValue = (value != null) ? value : "";
     }
 
