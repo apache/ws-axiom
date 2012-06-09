@@ -171,7 +171,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
     }
 
     public Element createElement(String tagName) throws DOMException {
-        ElementImpl element = new ElementImpl(tagName, this.factory);
+        ElementImpl element = new ElementImpl(null, tagName, null, this.factory, false);
         element.setOwnerDocument(this);
         return element;
     }
@@ -195,11 +195,8 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
         } else {
             namespace = new OMNamespaceImpl(ns, prefix);
         }
-        // DOM doesn't create namespace declarations automatically. Therefore we set the
-        // namespace afterwards with setNamespaceWithNoFindInCurrentScope.
-        ElementImpl element = new ElementImpl(localName, null, this.factory);
+        ElementImpl element = new ElementImpl(null, localName, namespace, this.factory, false);
         element.setOwnerDocument(this);
-        element.setNamespaceWithNoFindInCurrentScope(namespace);
         return element;
     }
 

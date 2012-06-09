@@ -101,45 +101,19 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     
     private static final OMNamespace XMLNS_NAMESPACE_WITHOUT_PREFIX = new OMNamespaceImpl(OMConstants.XMLNS_NS_URI, null);
     
-    /** @param ownerDocument  ownerDocument
-     *  @param tagName tagName
-     *  @param factory OMFactory
-     *
-     * */
-    public ElementImpl(String tagName, OMFactory factory) {
+    public ElementImpl(ParentNode parentNode, String localName, OMNamespace ns,
+                       OMFactory factory, boolean generateNSDecl) {
         super(factory);
-        this.localName = tagName;
-        this.attributes = new AttributeMap(this);
+        this.localName = localName;
         this.done = true;
-    }
-
-    /**
-     * Creates a new element with the namespace.
-     *
-     * @param ownerDocument
-     * @param tagName
-     * @param ns
-     * @param factory
-     */
-    public ElementImpl(String tagName, OMNamespaceImpl ns, OMFactory factory) {
-        super(factory);
-        this.localName = tagName;
-        if (ns != null) {
-            setNamespace(ns);
+        if (parentNode != null) {
+            parentNode.addChild(this);
         }
         this.attributes = new AttributeMap(this);
-        this.done = true;
+        namespace = generateNSDecl ? handleNamespace(ns) : ns;
     }
 
-    public ElementImpl(ParentNode parentNode, String tagName, OMNamespaceImpl ns,
-                       OMFactory factory) {
-        this(tagName, null, factory);
-        parentNode.addChild(this);
-        this.done = true;
-        namespace = handleNamespace(ns);
-    }
-
-    public ElementImpl(ParentNode parentNode, String tagName, OMNamespaceImpl ns,
+    public ElementImpl(ParentNode parentNode, String tagName, OMNamespace ns,
                        OMXMLParserWrapper builder, OMFactory factory) {
         this(tagName, ns, builder, factory);
         if (parentNode != null) {
@@ -148,7 +122,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     }
 
-    public ElementImpl(String tagName, OMNamespaceImpl ns,
+    public ElementImpl(String tagName, OMNamespace ns,
                        OMXMLParserWrapper builder, OMFactory factory) {
         super(factory);
         this.localName = tagName;
