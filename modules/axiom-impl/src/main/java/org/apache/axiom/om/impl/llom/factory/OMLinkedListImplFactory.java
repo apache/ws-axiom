@@ -28,13 +28,13 @@ import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.axiom.om.impl.llom.OMCommentImpl;
@@ -50,7 +50,7 @@ import javax.xml.namespace.QName;
 
 /** Class OMLinkedListImplFactory
  */
-public class OMLinkedListImplFactory implements OMFactory {
+public class OMLinkedListImplFactory implements OMFactoryEx {
     private final OMLinkedListMetaFactory metaFactory;
     
     public OMLinkedListImplFactory(OMLinkedListMetaFactory metaFactory) {

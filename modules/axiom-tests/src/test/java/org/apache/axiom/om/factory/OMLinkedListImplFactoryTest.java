@@ -31,10 +31,10 @@ import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
 
 import javax.xml.namespace.QName;
 
@@ -43,14 +43,14 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
         super(testName);
     }
 
-    SOAPFactory omFactory;
+    SOAPFactoryEx omFactory;
     OMNamespace namespace;
     String nsUri = "http://www.apache.org/~chinthaka";
     String nsPrefix = "myhome";
 
     protected void setUp() throws Exception {
         super.setUp();
-        omFactory = OMAbstractFactory.getSOAP11Factory();
+        omFactory = (SOAPFactoryEx)OMAbstractFactory.getSOAP11Factory();
         namespace = omFactory.createOMNamespace(nsUri, nsPrefix);
     }
 

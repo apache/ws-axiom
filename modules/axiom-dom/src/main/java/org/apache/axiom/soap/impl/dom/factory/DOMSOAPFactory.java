@@ -26,7 +26,6 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultNode;
@@ -39,11 +38,12 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
 import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.SOAPMessageImpl;
 import org.apache.axiom.soap.impl.dom.soap12.SOAP12FaultImpl;
 
-public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
+public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactoryEx {
     public DOMSOAPFactory(OMDOMMetaFactory metaFactory) {
         super(metaFactory);
     }

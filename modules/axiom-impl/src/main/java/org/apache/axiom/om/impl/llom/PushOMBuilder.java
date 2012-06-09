@@ -34,6 +34,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandlerWriter {
@@ -112,7 +113,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
         } else {
             // We use the createOMElement variant that takes a OMXMLParserWrapper parameter and
             // don't pass the namespace. This avoids creation of a namespace declaration.
-            parent = factory.createOMElement(localName, null, parent, null);
+            parent = ((OMFactoryEx)factory).createOMElement(localName, null, parent, null);
         }
         if (ns != null) {
             parent.setNamespaceWithNoFindInCurrentScope(ns);

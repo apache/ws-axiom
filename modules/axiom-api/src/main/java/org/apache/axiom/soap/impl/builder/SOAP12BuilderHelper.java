@@ -24,7 +24,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.exception.OMBuilderException;
 import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultReason;
@@ -36,7 +35,7 @@ import java.util.Vector;
 
 public class SOAP12BuilderHelper extends SOAPBuilderHelper {
 
-    private SOAPFactory factory;
+    private SOAPFactoryEx factory;
     private boolean codePresent = false;
     private boolean reasonPresent = false;
     private boolean nodePresent = false;

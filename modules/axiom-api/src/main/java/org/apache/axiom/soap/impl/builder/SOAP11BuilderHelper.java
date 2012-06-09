@@ -23,7 +23,6 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.exception.OMBuilderException;
 import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultReason;
@@ -34,7 +33,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Constants {
-    private SOAPFactory factory;
+    private SOAPFactoryEx factory;
     private boolean faultcodePresent = false;
     private boolean faultstringPresent = false;
 

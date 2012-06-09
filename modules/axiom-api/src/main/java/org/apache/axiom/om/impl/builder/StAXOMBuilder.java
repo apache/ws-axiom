@@ -157,7 +157,7 @@ public class StAXOMBuilder extends StAXBuilder {
         doTrace = log.isDebugEnabled();
         namespaceURIInterning = false;
         lookAheadToken = -1;
-        omfactory = OMAbstractFactory.getOMFactory();
+        omfactory = (OMFactoryEx)OMAbstractFactory.getOMFactory();
         document = createDocument();
     }
 

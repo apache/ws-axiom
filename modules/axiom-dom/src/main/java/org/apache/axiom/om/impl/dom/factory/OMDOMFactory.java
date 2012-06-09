@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -37,6 +36,7 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
@@ -57,7 +57,7 @@ import javax.xml.namespace.QName;
  * OM factory implementation for DOOM. It creates nodes that implement
  * DOM as defined by the interfaces in {@link org.w3c.dom}.
  */
-public class OMDOMFactory implements OMFactory {
+public class OMDOMFactory implements OMFactoryEx {
     private final OMDOMMetaFactory metaFactory;
 
     public OMDOMFactory(OMDOMMetaFactory metaFactory) {
