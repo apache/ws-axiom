@@ -150,17 +150,13 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     public ElementImpl(String tagName, OMNamespaceImpl ns,
                        OMXMLParserWrapper builder, OMFactory factory) {
-        this(factory);
+        super(factory);
         this.localName = tagName;
         if (ns != null) {
             setNamespace(ns);
         }
         this.builder = builder;
         this.attributes = new AttributeMap(this);
-    }
-
-    public ElementImpl(OMFactory factory) {
-        super(factory);
     }
 
     final ParentNode internalGetOwnerNode() {

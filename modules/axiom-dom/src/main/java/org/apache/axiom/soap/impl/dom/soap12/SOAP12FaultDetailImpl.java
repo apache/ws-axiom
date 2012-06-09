@@ -28,6 +28,10 @@ import org.apache.axiom.soap.impl.dom.SOAPFaultDetailImpl;
 
 public class SOAP12FaultDetailImpl extends SOAPFaultDetailImpl {
 
+    public SOAP12FaultDetailImpl(SOAPFactory factory) {
+        super(factory.getNamespace(), factory);
+    }
+
     public SOAP12FaultDetailImpl(SOAPFault parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, true, factory);
@@ -36,10 +40,6 @@ public class SOAP12FaultDetailImpl extends SOAPFaultDetailImpl {
     public SOAP12FaultDetailImpl(SOAPFault parent, OMXMLParserWrapper builder,
                                  SOAPFactory factory) {
         super(parent, builder, factory);
-    }
-
-    public SOAP12FaultDetailImpl(SOAPFactory factory) {
-        super(factory);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
