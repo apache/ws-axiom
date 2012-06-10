@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
@@ -71,7 +72,6 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     private AttrImpl(DocumentImpl ownerDocument, OMFactory factory) {
         super(factory);
         owner = ownerDocument;
-        this.done = true;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String localName,
@@ -84,7 +84,6 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
                 ns = null;
             }
         }
-        this.done = true;
         this.localName = localName;
         internalAppendChild(new TextImpl(value, factory));
         this.type = OMConstants.XMLATTRTYPE_CDATA;
@@ -94,7 +93,6 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     public AttrImpl(DocumentImpl ownerDocument, String name, String value,
                     OMFactory factory) {
         this(ownerDocument, factory);
-        this.done = true;
         this.localName = name;
         internalAppendChild(new TextImpl(value, factory));
         this.type = OMConstants.XMLATTRTYPE_CDATA;
@@ -109,7 +107,6 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
                     OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX);
         }
         this.type = OMConstants.XMLATTRTYPE_CDATA;
-        this.done = true;
     }
 
     public AttrImpl(DocumentImpl ownerDocument, String localName,
@@ -118,7 +115,6 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         this.localName = localName;
         this.namespace = namespace;
         this.type = OMConstants.XMLATTRTYPE_CDATA;
-        this.done = true;
     }
 
     final ParentNode internalGetOwnerNode() {
@@ -472,5 +468,19 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
         // Right now, this method is never called
         throw new UnsupportedOperationException();
+    }
+
+    public final OMXMLParserWrapper getBuilder() {
+        return null;
+    }
+
+    public final boolean isComplete() {
+        return true;
+    }
+
+    public final void setComplete(boolean state) {
+        if (state != true) {
+            throw new IllegalStateException();
+        }
     }
 }

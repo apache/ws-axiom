@@ -61,6 +61,9 @@ import java.util.Iterator;
 import java.util.Vector;
 
 public class DocumentImpl extends RootNode implements Document, OMDocument, OMContainerEx {
+    protected OMXMLParserWrapper builder;
+
+    protected boolean done;
 
     private String xmlVersion;
 
@@ -97,6 +100,13 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
 
     public Document getOwnerDocument() {
         return null;
+    }
+
+    public Node cloneNode(boolean deep) {
+        DocumentImpl newnode = (DocumentImpl)super.cloneNode(deep);
+        newnode.done = true;
+        newnode.builder = null;
+        return newnode;
     }
 
     protected Object clone() throws CloneNotSupportedException {
@@ -588,5 +598,17 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
         throw new UnsupportedOperationException();
+    }
+
+    public final OMXMLParserWrapper getBuilder() {
+        return builder;
+    }
+
+    public final boolean isComplete() {
+        return done;
+    }
+
+    public final void setComplete(boolean state) {
+        done = state;
     }
 }

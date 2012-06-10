@@ -39,26 +39,18 @@ import org.apache.commons.logging.LogFactory;
 public abstract class OMSerializableImpl implements OMSerializable {
     private static final Log log = LogFactory.getLog(OMSerializableImpl.class);
     
-    /** Field parserWrapper */
-    public OMXMLParserWrapper builder;
-
-    /** Field done */
-    protected boolean done = false;
-
     protected final OMFactory factory;
 
     public OMSerializableImpl(OMFactory factory) {
         this.factory = factory;
     }
-
+    
     public OMFactory getOMFactory() {
         return factory;
     }
 
-    public boolean isComplete() {
-        return done;
-    }
-
+    public abstract OMXMLParserWrapper getBuilder();
+    
     /**
      * Parses this node and builds the object structure in memory. However a node, created
      * programmatically, will have done set to true by default and this will cause populateyourself
@@ -67,13 +59,14 @@ public abstract class OMSerializableImpl implements OMSerializable {
      * @throws OMException
      */
     public void build() throws OMException {
+        OMXMLParserWrapper builder = getBuilder();
         if (builder != null && builder.isCompleted()) {
             log.debug("Builder is already complete.");
         }
-        while (!done) {
+        while (!isComplete()) {
 
             builder.next();    
-            if (builder.isCompleted() && !done) {
+            if (builder.isCompleted() && !isComplete()) {
                 log.debug("Builder is complete.  Setting OMObject to complete.");
                 setComplete(true);
             }
@@ -82,6 +75,7 @@ public abstract class OMSerializableImpl implements OMSerializable {
     
     /** Forces the parser to proceed, if parser has not yet finished with the XML input. */
     public void buildNext() {
+        OMXMLParserWrapper builder = getBuilder();
         if (builder != null) {
             if (!builder.isCompleted()) {
                 builder.next();
@@ -92,10 +86,11 @@ public abstract class OMSerializableImpl implements OMSerializable {
     }
 
     public void close(boolean build) {
+        OMXMLParserWrapper builder = getBuilder();
         if (build) {
             this.build();
         }
-        this.done = true;
+        setComplete(true);
         
         // If this is a StAXBuilder, close it.
         if (builder instanceof StAXBuilder &&

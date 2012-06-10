@@ -265,7 +265,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
 
     private void serializeInternally(OMNodeImpl child, MTOMXMLStreamWriter writer)
             throws XMLStreamException {
-        if ((!(child instanceof OMElement)) || child.isComplete() || child.builder == null) {
+        if ((!(child instanceof OMElement)) || child.isComplete() || child.getBuilder() == null) {
             child.internalSerialize(writer, false);
         } else {
             OMElement element = (OMElement) child;

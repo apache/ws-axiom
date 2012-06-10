@@ -74,6 +74,10 @@ public class OMElementImpl extends OMNodeImpl
 
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
+    protected OMXMLParserWrapper builder;
+
+    protected boolean done;
+
     /**
      * The namespace of this element. Possible values:
      * <ul>
@@ -112,7 +116,10 @@ public class OMElementImpl extends OMNodeImpl
      */
     public OMElementImpl(String localName, OMNamespace ns, OMContainer parent,
                          OMXMLParserWrapper builder, OMFactory factory) {
-        super(parent, factory, false);
+        super(factory);
+        if (parent != null) {
+            parent.addChild(this);
+        }
         this.localName = localName;
         if (ns != null) {
             setNamespace(ns);
@@ -139,7 +146,11 @@ public class OMElementImpl extends OMNodeImpl
      */
     public OMElementImpl(String localName, OMNamespace ns, OMContainer parent,
                          OMFactory factory) {
-        super(parent, factory, true);
+        super(factory);
+        done = true;
+        if (parent != null) {
+            parent.addChild(this);
+        }
         if (localName == null || localName.trim().length() == 0) {
             throw new OMException("localname can not be null or empty");
         }
@@ -155,7 +166,11 @@ public class OMElementImpl extends OMNodeImpl
      */
     public OMElementImpl(QName qname, OMContainer parent, OMFactory factory)
             throws OMException {
-        super(parent, factory, true);
+        super(factory);
+        done = true;
+        if (parent != null) {
+            parent.addChild(this);
+        }
         localName = qname.getLocalPart();
         this.ns = handleNamespace(qname);
     }
@@ -166,7 +181,8 @@ public class OMElementImpl extends OMNodeImpl
      * @param factory
      */
     OMElementImpl(OMFactory factory) {
-        super(null, factory, true);
+        super(factory);
+        done = true;
     }
 
     /** Method handleNamespace. */
@@ -758,6 +774,23 @@ public class OMElementImpl extends OMNodeImpl
             super.build();
         }
 
+    }
+
+    public boolean isComplete() {
+        return done;
+    }
+
+    public void setComplete(boolean state) {
+        this.done = state;
+        if (parent != null) {
+            if (!done) {
+                parent.setComplete(false);
+            } else if (parent instanceof OMElementImpl) {
+                ((OMElementImpl) parent).notifyChildComplete();
+            } else if (parent instanceof OMDocumentImpl) {
+                ((OMDocumentImpl) parent).notifyChildComplete();
+            }
+        }
     }
 
     public XMLStreamReader getXMLStreamReader() {

@@ -72,7 +72,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         //this.textValue = (text != null) ? new StringBuffer(text)
         //        : new StringBuffer("");
         this.textValue = (text != null) ? text : "";
-        this.done = true;
     }
 
     /**
@@ -84,7 +83,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      */
     public TextNodeImpl(TextNodeImpl source, OMFactory factory) {
         super(factory);
-        this.done = true;
 
         // Copy the value of the text
         if (source.textValue != null) {
@@ -138,7 +136,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         this.dataHandlerObject = dataHandler;
         this.isBinary = true;
         this.optimize = optimize;
-        done = true;
     }
 
     /**
@@ -156,7 +153,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         dataHandlerObject = dataHandlerProvider;
         isBinary = true;
         this.optimize = optimize;
-        done = true;
     }
 
     /**
@@ -164,13 +160,11 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      */
     public TextNodeImpl(OMFactory factory) {
         super(factory);
-        this.done = true;
     }
 
     public TextNodeImpl(char[] value, OMFactory factory) {
         super(factory);
         this.charArray = value;
-        this.done = true;
     }
 
     public TextNodeImpl(OMContainer parent, QName text, OMFactory factory) {
@@ -184,7 +178,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         this.textNS =
                 ((ElementImpl) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
         this.textValue = textNS == null ? text.getLocalPart() : textNS.getPrefix() + ":" + text.getLocalPart();
-        this.done = true;
     }
 
     /**
@@ -242,12 +235,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         this.optimize = value;
         if (value) {
             isBinary = true;
-        }
-    }
-
-    public void discard() throws OMException {
-        if (done) {
-            this.detach();
         }
     }
 

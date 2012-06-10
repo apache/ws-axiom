@@ -67,10 +67,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     // /OMContainer methods
     // /
 
-    public OMXMLParserWrapper getBuilder() {
-        return this.builder;
-    }
-
     void internalAppendChild(NodeImpl node) {
         insertBefore(node, null, false);
     }
@@ -84,6 +80,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     }
 
     public void buildNext() {
+        OMXMLParserWrapper builder = getBuilder();
         if (builder != null) {
             if (!builder.isCompleted()) {
                 builder.next();
@@ -142,7 +139,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     }
 
     public OMNode getFirstOMChild() {
-        while ((firstChild == null) && !done) {
+        while ((firstChild == null) && !isComplete()) {
             buildNext();
         }
         return (OMNode)firstChild;
@@ -204,14 +201,14 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     }
 
     public Node getLastChild() {
-        if (!this.done) {
+        if (!this.isComplete()) {
             this.build();
         }
         return this.lastChild;
     }
 
     public boolean hasChildNodes() {
-        while ((firstChild == null) && !done) {
+        while ((firstChild == null) && !isComplete()) {
             buildNext();
         }
         return this.firstChild != null;
@@ -656,7 +653,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     }
 
     void notifyChildComplete() {
-        if (!this.done && builder == null) {
+        if (!this.isComplete() && getBuilder() == null) {
             Iterator iterator = getChildren();
             while (iterator.hasNext()) {
                 OMNode node = (OMNode) iterator.next();

@@ -22,14 +22,13 @@ package org.apache.axiom.om.impl.llom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public class OMCommentImpl extends OMNodeImpl implements OMComment {
+public class OMCommentImpl extends OMLeafNode implements OMComment {
     protected String value;
 
     /**
@@ -40,7 +39,7 @@ public class OMCommentImpl extends OMNodeImpl implements OMComment {
      */
     public OMCommentImpl(OMContainer parentNode, String contentText,
                          OMFactory factory) {
-        super(parentNode, factory, true);
+        super(parentNode, factory);
         this.value = contentText;
     }
 
@@ -68,17 +67,6 @@ public class OMCommentImpl extends OMNodeImpl implements OMComment {
      */
     public void setValue(String text) {
         this.value = text;
-    }
-
-    /**
-     * Discards this node.
-     *
-     * @throws OMException
-     */
-    public void discard() throws OMException {
-        if (done) {
-            this.detach();
-        } 
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {

@@ -22,14 +22,13 @@ package org.apache.axiom.om.impl.llom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
+public class OMDocTypeImpl extends OMLeafNode implements OMDocType {
     protected String value;
 
     /**
@@ -40,7 +39,7 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
      */
     public OMDocTypeImpl(OMContainer parentNode, String contentText,
                          OMFactory factory) {
-        super(parentNode, factory, true);
+        super(parentNode, factory);
         this.value = contentText;
     }
 
@@ -77,17 +76,6 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
      */
     public void setValue(String text) {
         this.value = text;
-    }
-
-    /**
-     * Discards this node.
-     *
-     * @throws OMException
-     */
-    public void discard() throws OMException {
-        if (done) {
-            this.detach();
-        } 
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {

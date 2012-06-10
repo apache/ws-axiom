@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
@@ -37,7 +38,6 @@ public class DocumentFragmentImpl extends RootNode implements
     /** @param ownerDocument  */
     public DocumentFragmentImpl(OMFactory factory) {
         super(factory);
-        this.done = true;
     }
 
     final ParentNode internalGetOwnerNode() {
@@ -84,5 +84,19 @@ public class DocumentFragmentImpl extends RootNode implements
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
         throw new UnsupportedOperationException();
+    }
+
+    public final OMXMLParserWrapper getBuilder() {
+        return null;
+    }
+
+    public final boolean isComplete() {
+        return true;
+    }
+
+    public final void setComplete(boolean state) {
+        if (state != true) {
+            throw new IllegalStateException();
+        }
     }
 }

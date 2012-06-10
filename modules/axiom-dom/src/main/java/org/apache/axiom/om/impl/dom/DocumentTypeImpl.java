@@ -36,7 +36,6 @@ public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocTyp
     
     public DocumentTypeImpl(OMFactory factory) {
         super(factory);
-        done = true;
     }
 
     public String getNodeName() {

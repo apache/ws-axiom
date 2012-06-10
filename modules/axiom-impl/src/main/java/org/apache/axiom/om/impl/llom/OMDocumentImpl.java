@@ -49,6 +49,10 @@ import java.util.Iterator;
 
 /** Class OMDocumentImpl */
 public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OMContainerEx {
+    protected OMXMLParserWrapper builder;
+
+    protected boolean done;
+
     /** Field firstChild */
     protected OMNode firstChild;
 
@@ -136,6 +140,10 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
                 nextSibling.insertSiblingBefore(documentElement);
             }
         }
+    }
+
+    public boolean isComplete() {
+        return done;
     }
 
     /**
