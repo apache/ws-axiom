@@ -23,7 +23,6 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 /**
@@ -43,7 +42,4 @@ public interface OMFactoryEx extends OMFactory {
     OMElement createOMElement(String localName, OMNamespace ns,
                                      OMContainer parent,
                                      OMXMLParserWrapper builder);
-
-    OMText createOMText(String contentID, OMContainer parent,
-                               OMXMLParserWrapper builder);
 }

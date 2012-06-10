@@ -245,11 +245,6 @@ public class OMLinkedListImplFactory implements OMFactoryEx {
         return new OMTextImpl(contentID, dataHandlerProvider, optimize, this);
     }
 
-    public OMText createOMText(String contentID, OMContainer parent,
-                               OMXMLParserWrapper builder) {
-        return new OMTextImpl(contentID, parent, builder, this);
-    }
-    
     public OMText createOMText(OMContainer parent, OMText source) {
         return new OMTextImpl(parent, (OMTextImpl) source, this);
     }

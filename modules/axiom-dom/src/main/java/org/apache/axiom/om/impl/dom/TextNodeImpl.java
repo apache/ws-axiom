@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -74,23 +73,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         //        : new StringBuffer("");
         this.textValue = (text != null) ? text : "";
         this.done = true;
-    }
-
-    /**
-     * @param contentID
-     * @param parent
-     * @param builder   Used when the builder is encountered with a XOP:Include tag Stores a
-     *                  reference to the builder and the content-id. Supports deffered parsing of
-     *                  MIME messages
-     */
-    public TextNodeImpl(String contentID, OMContainer parent,
-                        OMXMLParserWrapper builder, OMFactory factory) {
-        super(factory);
-        this.contentID = contentID;
-        this.optimize = true;
-        this.isBinary = true;
-        this.done = true;
-        this.builder = builder;
     }
 
     /**

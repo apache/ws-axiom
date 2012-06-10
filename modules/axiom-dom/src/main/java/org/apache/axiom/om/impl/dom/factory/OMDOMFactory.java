@@ -284,13 +284,6 @@ public class OMDOMFactory implements OMFactoryEx {
         return text;
     }
 
-    public OMText createOMText(String contentID, OMContainer parent,
-                               OMXMLParserWrapper builder) {
-        TextImpl text = new TextImpl(contentID, parent, builder, this);
-        parent.addChild(text);
-        return text;
-    }
-
     public OMAttribute createOMAttribute(String localName, OMNamespace ns,
                                          String value) {
         if (ns != null && ns.getPrefix() == null) {

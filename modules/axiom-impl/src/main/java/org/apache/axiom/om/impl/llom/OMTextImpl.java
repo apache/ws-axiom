@@ -29,7 +29,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
@@ -222,23 +221,6 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.optimize = optimize;
         done = true;
         nodeType = TEXT_NODE;
-    }
-
-    /**
-     * @param contentID
-     * @param parent
-     * @param builder   Used when the builder is encountered with a XOP:Include tag Stores a
-     *                  reference to the builder and the content-id. Supports deferred parsing of
-     *                  MIME messages.
-     */
-    public OMTextImpl(String contentID, OMContainer parent,
-                      OMXMLParserWrapper builder, OMFactory factory) {
-        super(parent, factory, false);
-        this.contentID = contentID;
-        this.optimize = true;
-        this.isBinary = true;
-        this.builder = builder;
-        this.nodeType = TEXT_NODE;
     }
 
     public final int getType() {
