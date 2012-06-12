@@ -19,7 +19,7 @@
 
 package org.apache.axiom.ts.soap.builder;
 
-import junit.framework.TestCase;
+import junit.framework.Assert;
 
 import java.util.Iterator;
 
@@ -27,25 +27,18 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 
 public class OMTestUtils {
-    public static void walkThrough(OMElement omEle) {
-        Iterator attibIt = omEle.getAllAttributes();
-        if (attibIt != null) {
-            while (attibIt.hasNext()) {
-                TestCase.assertNotNull("once the has next is not null, the " +
-                        "element should not be null",
-                                       attibIt.next());
-            }
+    public static void walkThrough(OMElement element) {
+        Assert.assertFalse(element.isComplete());
+        for (Iterator it = element.getAllAttributes(); it.hasNext(); ) {
+            Assert.assertNotNull(it.next());
         }
-        Iterator it = omEle.getChildren();
-        if (it != null) {
-            while (it.hasNext()) {
-                OMNode ele = (OMNode) it.next();
-                TestCase.assertNotNull("once the has next is not null, the " +
-                        "element should not be null", ele);
-                if (ele instanceof OMElement) {
-                    walkThrough((OMElement) ele);
-                }
+        OMNode child = element.getFirstOMChild();
+        while (child != null) {
+            if (child instanceof OMElement) {
+                walkThrough((OMElement)child);
             }
+            child = child.getNextOMSibling();
         }
+        Assert.assertTrue(element.isComplete());
     }
 }
