@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -29,7 +28,7 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcessingInstruction {
+public class OMProcessingInstructionImpl extends OMLeafNode implements OMProcessingInstruction {
     protected String target;
     protected String value;
 
@@ -42,7 +41,7 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
      */
     public OMProcessingInstructionImpl(OMContainer parentNode, String target,
                                        String value, OMFactory factory) {
-        super(parentNode, factory, true);
+        super(parentNode, factory);
         this.target = target;
         this.value = value;
     }
@@ -99,17 +98,6 @@ public class OMProcessingInstructionImpl extends OMNodeImpl implements OMProcess
      */
     public void setValue(String text) {
         this.value = text;
-    }
-
-    /**
-     * Discards this node.
-     *
-     * @throws OMException
-     */
-    public void discard() throws OMException {
-        if (done) {
-            this.detach();
-        } 
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {

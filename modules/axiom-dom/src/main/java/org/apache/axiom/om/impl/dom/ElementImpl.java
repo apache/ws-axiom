@@ -67,6 +67,10 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     private static final Log log = LogFactory.getLog(ElementImpl.class);
     
+    protected OMXMLParserWrapper builder;
+
+    protected boolean done;
+
     private ParentNode ownerNode;
     
     private NodeImpl previousSibling;
@@ -1333,5 +1337,25 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             }
         }
         super.normalize(config);
+    }
+
+    public final OMXMLParserWrapper getBuilder() {
+        return builder;
+    }
+
+    public final boolean isComplete() {
+        return done;
+    }
+
+    public final void setComplete(boolean state) {
+        done = state;
+        ParentNode parentNode = parentNode();
+        if (parentNode != null) {
+            if (!done) {
+                parentNode.setComplete(false);
+            } else {
+                parentNode.notifyChildComplete();
+            }
+        }
     }
 }

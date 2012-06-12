@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axiom.util.stax.XMLStreamWriterUtils;
@@ -73,24 +72,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         //this.textValue = (text != null) ? new StringBuffer(text)
         //        : new StringBuffer("");
         this.textValue = (text != null) ? text : "";
-        this.done = true;
-    }
-
-    /**
-     * @param contentID
-     * @param parent
-     * @param builder   Used when the builder is encountered with a XOP:Include tag Stores a
-     *                  reference to the builder and the content-id. Supports deffered parsing of
-     *                  MIME messages
-     */
-    public TextNodeImpl(String contentID, OMContainer parent,
-                        OMXMLParserWrapper builder, OMFactory factory) {
-        super(factory);
-        this.contentID = contentID;
-        this.optimize = true;
-        this.isBinary = true;
-        this.done = true;
-        this.builder = builder;
     }
 
     /**
@@ -102,7 +83,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      */
     public TextNodeImpl(TextNodeImpl source, OMFactory factory) {
         super(factory);
-        this.done = true;
 
         // Copy the value of the text
         if (source.textValue != null) {
@@ -156,7 +136,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         this.dataHandlerObject = dataHandler;
         this.isBinary = true;
         this.optimize = optimize;
-        done = true;
     }
 
     /**
@@ -174,7 +153,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         dataHandlerObject = dataHandlerProvider;
         isBinary = true;
         this.optimize = optimize;
-        done = true;
     }
 
     /**
@@ -182,13 +160,11 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      */
     public TextNodeImpl(OMFactory factory) {
         super(factory);
-        this.done = true;
     }
 
     public TextNodeImpl(char[] value, OMFactory factory) {
         super(factory);
         this.charArray = value;
-        this.done = true;
     }
 
     public TextNodeImpl(OMContainer parent, QName text, OMFactory factory) {
@@ -202,7 +178,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         this.textNS =
                 ((ElementImpl) parent).handleNamespace(text.getNamespaceURI(), text.getPrefix());
         this.textValue = textNS == null ? text.getLocalPart() : textNS.getPrefix() + ":" + text.getLocalPart();
-        this.done = true;
     }
 
     /**
@@ -260,12 +235,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         this.optimize = value;
         if (value) {
             isBinary = true;
-        }
-    }
-
-    public void discard() throws OMException {
-        if (done) {
-            this.detach();
         }
     }
 

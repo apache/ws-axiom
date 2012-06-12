@@ -51,14 +51,14 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
 
     OMElement nextElem = null;
 
-    private final OMFactory factory;
+    private final OMFactoryEx factory;
 
     List prefixMappings = new ArrayList();
     
     int textNodeType = OMNode.TEXT_NODE;
 
     public SAXOMBuilder(OMFactory factory) {
-        this.factory = factory;
+        this.factory = (OMFactoryEx)factory;
     }
     
     public SAXOMBuilder() {

@@ -59,21 +59,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
     }
 
     /**
-     * For a node to exist there must be a parent.
-     *
-     * @param parent  Parent <code>OMContainer</code> of this node
-     * @param factory The <code>OMFactory</code> that created this
-     */
-    public OMNodeImpl(OMContainer parent, OMFactory factory, boolean done) {
-        super(factory);
-        this.done = done;
-        if ((parent != null)) {
-            parent.addChild(this);
-        }
-
-    }
-
-    /**
      * Returns the immediate parent of the node. Parent is always an Element.
      *
      * @return Returns OMContainer.
@@ -139,24 +124,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
             this.nextSibling = (OMNodeImpl) importNode(node);
         }
         this.nextSibling = (OMNodeImpl) node;
-    }
-
-    /**
-     * Method setComplete.
-     *
-     * @param state
-     */
-    public void setComplete(boolean state) {
-        this.done = state;
-        if (parent != null) {
-            if (!done) {
-                parent.setComplete(false);
-            } else if (parent instanceof OMElementImpl) {
-                ((OMElementImpl) parent).notifyChildComplete();
-            } else if (parent instanceof OMDocumentImpl) {
-                ((OMDocumentImpl) parent).notifyChildComplete();
-            }
-        }
     }
 
     /**
@@ -280,7 +247,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
      * to free the input stream.
      */
     public void buildWithAttachments() {
-        if (!this.done) {
+        if (!isComplete()) {
             this.build();
         }
     }

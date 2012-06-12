@@ -62,7 +62,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected XMLStreamReader parser;
 
     /** Field omfactory */
-    protected OMFactory omfactory;
+    protected OMFactoryEx omfactory;
 
     /** Field lastNode */
     protected OMNode lastNode;
@@ -120,7 +120,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @param parser
      */
     protected StAXBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
-        omfactory = ombuilderFactory;
+        omfactory = (OMFactoryEx)ombuilderFactory;
         
         // The getEncoding information is only available at the START_DOCUMENT event.
         charEncoding = parser.getEncoding();
@@ -139,7 +139,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected StAXBuilder(OMFactory ombuilderFactory, 
                           XMLStreamReader parser, 
                           String characterEncoding) {
-        omfactory = ombuilderFactory;
+        omfactory = (OMFactoryEx)ombuilderFactory;
         charEncoding = characterEncoding;
         initParser(parser);
     }
@@ -175,7 +175,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         } catch (XMLStreamException e1) {
             throw new OMException(e1);
         }
-        omfactory = OMAbstractFactory.getOMFactory();
+        omfactory = (OMFactoryEx)OMAbstractFactory.getOMFactory();
     }
 
     /**
@@ -184,7 +184,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @param ombuilderFactory
      */
     public void setOMBuilderFactory(OMFactory ombuilderFactory) {
-        this.omfactory = ombuilderFactory;
+        this.omfactory = (OMFactoryEx)ombuilderFactory;
     }
 
     /**

@@ -60,6 +60,9 @@ import java.util.Iterator;
 import java.util.Vector;
 
 public class DocumentImpl extends RootNode implements Document, OMDocument, OMContainerEx {
+    protected OMXMLParserWrapper builder;
+
+    protected boolean done;
 
     private String xmlVersion;
 
@@ -592,5 +595,17 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
         clone.xmlStandalone = xmlStandalone;
         clone.charEncoding = charEncoding;
         return clone;
+    }
+
+    public final OMXMLParserWrapper getBuilder() {
+        return builder;
+    }
+
+    public final boolean isComplete() {
+        return done;
+    }
+
+    public final void setComplete(boolean state) {
+        done = state;
     }
 }

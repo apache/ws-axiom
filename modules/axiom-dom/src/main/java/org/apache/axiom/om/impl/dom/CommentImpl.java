@@ -31,7 +31,6 @@ import javax.xml.stream.XMLStreamWriter;
 public class CommentImpl extends CharacterImpl implements Comment, OMComment {
     public CommentImpl(String value, OMFactory factory) {
         super(value, factory);
-        this.done = true;
     }
 
     public String getNodeName() {

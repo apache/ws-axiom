@@ -39,7 +39,6 @@ public class ProcessingInstructionImpl extends LeafNode implements ProcessingIns
         super(factory);
         this.target = target;
         this.value = value;
-        done = true;
     }
 
     public int getType() {

@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMXMLParserWrapper;
 
 public class TextImpl extends TextNodeImpl {
     private boolean isWhitespace;
@@ -63,11 +62,6 @@ public class TextImpl extends TextNodeImpl {
 
     public TextImpl(TextNodeImpl source, OMFactory factory) {
         super(source, factory);
-    }
-
-    public TextImpl(String contentID, OMContainer parent, OMXMLParserWrapper builder,
-            OMFactory factory) {
-        super(contentID, parent, builder, factory);
     }
 
     public TextImpl(String text, OMFactory factory) {

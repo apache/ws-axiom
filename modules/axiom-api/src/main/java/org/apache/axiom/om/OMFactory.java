@@ -41,8 +41,6 @@ public interface OMFactory {
     /** Creates a new OMDocument. */
     OMDocument createOMDocument();
 
-    OMDocument createOMDocument(OMXMLParserWrapper builder);
-
 
     /**
      * Create an element with the given name. If a namespace is given, a namespace declaration will
@@ -84,16 +82,6 @@ public interface OMFactory {
      */
     OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent)
             throws OMException;
-
-    /**
-     * @param localName
-     * @param ns        - this can be null
-     * @param parent
-     * @param builder
-     */
-    OMElement createOMElement(String localName, OMNamespace ns,
-                                     OMContainer parent,
-                                     OMXMLParserWrapper builder);
 
     /**
      * Create a sourced element. If the data source implements {@link QNameAwareOMDataSource} then
@@ -310,9 +298,6 @@ public interface OMFactory {
      */
     OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
             boolean optimize);
-
-    OMText createOMText(String contentID, OMContainer parent,
-                               OMXMLParserWrapper builder);
 
     /**
      * Create an attribute with the given name and value. If the provided {@link OMNamespace} object

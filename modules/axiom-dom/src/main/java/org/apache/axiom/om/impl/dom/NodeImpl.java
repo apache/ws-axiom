@@ -48,12 +48,6 @@ public abstract class NodeImpl implements Node {
     /** Holds the user data objects */
     private Hashtable userData; // Will be initialized in setUserData()
 
-    /** Field builder */
-    public OMXMLParserWrapper builder;
-
-    /** Field done */
-    protected boolean done = false;
-
     /** Factory that created this node */
     protected final OMFactory factory;
 
@@ -544,7 +538,7 @@ public abstract class NodeImpl implements Node {
 
     public OMNode getNextOMSibling() throws OMException {
         ParentNode parentNode = parentNode();
-        while (internalGetNextSibling() == null && parentNode != null && !parentNode.done && parentNode.builder != null) {
+        while (internalGetNextSibling() == null && parentNode != null && !parentNode.isComplete() && parentNode.getBuilder() != null) {
             parentNode.buildNext();
         }
         return (OMNode)internalGetNextSibling();
@@ -624,7 +618,7 @@ public abstract class NodeImpl implements Node {
         if (parentNode == null) {
             throw new OMException("Parent level elements cannot be detached");
         } else {
-            if (!done) {
+            if (!isComplete()) {
                 build();
             }
             getNextOMSibling(); // Make sure that nextSibling is set correctly
@@ -640,7 +634,7 @@ public abstract class NodeImpl implements Node {
             } else {
                 previousSibling.setNextOMSibling((OMNode)nextSibling);
                 if (nextSibling == null) {
-                    previousSibling.parentNode().done = true;
+                    previousSibling.parentNode().setComplete(true);
                 }
             }
             if (nextSibling != null) {
@@ -724,26 +718,17 @@ public abstract class NodeImpl implements Node {
 
     }
 
-    public void setComplete(boolean state) {
-        done = state;
-        ParentNode parentNode = parentNode();
-        if (parentNode != null) {
-            if (!done) {
-                parentNode.setComplete(false);
-            } else {
-                parentNode.notifyChildComplete();
-            }
-        }
-    }
+    public abstract OMXMLParserWrapper getBuilder();
+    
+    public abstract void setComplete(boolean state);
 
-    public boolean isComplete() {
-        return this.done;
-    }
+    public abstract boolean isComplete();
 
     /** Builds next element. */
     public void build() {
-        while (!done)
-            this.builder.next();
+        while (!isComplete()) {
+            getBuilder().next();
+        }
     }
 
     /**
@@ -755,16 +740,17 @@ public abstract class NodeImpl implements Node {
      * input stream.
      */
     public void buildWithAttachments() {
-        if (!this.done) {
+        if (!this.isComplete()) {
             this.build();
         }
     }
 
     public void close(boolean build) {
+        OMXMLParserWrapper builder = getBuilder();
         if (build) {
             this.build();
         }
-        this.done = true;
+        setComplete(true);
         
         // If this is a StAXBuilder, close it.
         if (builder instanceof StAXBuilder &&
