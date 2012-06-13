@@ -90,9 +90,9 @@ public class OMDOMFactory implements OMFactoryEx {
     }
 
     /** Creates an OMElement with the builder. */
-    public OMElement createOMElement(String localName, OMNamespace ns,
-                                     OMContainer parent, OMXMLParserWrapper builder) {
-        return new ElementImpl((ParentNode) parent, localName, (OMNamespaceImpl) ns, builder, this);
+    public OMElement createOMElement(String localName, OMContainer parent,
+                                     OMXMLParserWrapper builder) {
+        return new ElementImpl((ParentNode) parent, localName, null, builder, this);
     }
 
     public OMSourcedElement createOMElement(OMDataSource source) {

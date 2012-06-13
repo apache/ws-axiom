@@ -111,7 +111,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
     }
 
     protected OMElement createNextElement(String localName) throws OMException {
-        OMElement element = factory.createOMElement(localName, null, getContainer(), null);
+        OMElement element = factory.createOMElement(localName, getContainer(), null);
         addNode(element);
         return element;
     }

@@ -446,16 +446,16 @@ public class StAXOMBuilder extends StAXBuilder {
         OMElement node;
         String elementName = parser.getLocalName();
         if (lastNode == null) {
-            node = omfactory.createOMElement(elementName, null, document, this);
+            node = omfactory.createOMElement(elementName, document, this);
         } else if (lastNode.isComplete()) {
-            node = omfactory.createOMElement(elementName, null,
-                                             lastNode.getParent(), this);
+            node = omfactory.createOMElement(elementName, lastNode.getParent(),
+                                             this);
             ((OMNodeEx) lastNode).setNextOMSibling(node);
             ((OMNodeEx) node).setPreviousOMSibling(lastNode);
         } else {
             OMContainerEx e = (OMContainerEx) lastNode;
-            node = omfactory.createOMElement(elementName, null,
-                                             (OMElement) lastNode, this);
+            node = omfactory.createOMElement(elementName, (OMElement) lastNode,
+                                             this);
             e.setFirstChild(node);
         }
         populateOMElement(node);

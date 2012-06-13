@@ -422,8 +422,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             element = builderHelper.handleEvent(parser, parent, elementLevel);
         } else {
             // this is neither of above. Just create an element
-            element = soapFactory.createOMElement(elementName, null,
-                                                  parent, this);
+            element = soapFactory.createOMElement(elementName, parent,
+                                                  this);
             processNamespaceData(element, false);
             processAttributes(element);
 

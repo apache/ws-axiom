@@ -234,7 +234,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     SOAP12Constants.SOAP_FAULT_DETAIL_LOCAL_NAME)) {
                 element =
                         this.factory.createOMElement(
-                                parser.getLocalName(), null, parent, builder);
+                                parser.getLocalName(), parent, builder);
                 builder.setProcessingDetailElements(true);
                 detailElementNames = new Vector();
                 detailElementNames.add(parser.getLocalName());
@@ -301,7 +301,6 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                     element =
                             this.factory.createOMElement(
                                     parser.getLocalName(),
-                                    null,
                                     parent,
                                     builder);
                     detailElementNames.add(parser.getLocalName());

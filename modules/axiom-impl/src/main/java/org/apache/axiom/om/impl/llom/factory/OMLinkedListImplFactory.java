@@ -84,15 +84,13 @@ public class OMLinkedListImplFactory implements OMFactoryEx {
      * Method createOMElement.
      *
      * @param localName
-     * @param ns
      * @param parent
      * @param builder
      * @return Returns OMElement.
      */
-    public OMElement createOMElement(String localName, OMNamespace ns,
-                                     OMContainer parent,
+    public OMElement createOMElement(String localName, OMContainer parent,
                                      OMXMLParserWrapper builder) {
-        return new OMElementImpl(localName, ns, parent,
+        return new OMElementImpl(localName, null, parent,
                                  builder, this);
     }
 
