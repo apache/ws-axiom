@@ -19,13 +19,11 @@
 
 package org.apache.axiom.soap.impl.llom.soap12;
 
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.traverse.OMChildrenWithSpecificAttributeIterator;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.llom.SOAPHeaderImpl;
 
@@ -53,11 +51,6 @@ public class SOAP12HeaderImpl extends SOAPHeaderImpl {
                             SOAPFactory factory) {
         super(envelope, builder, factory);
     }
-
-    protected SOAPHeaderBlock createHeaderBlock(String localName, OMNamespace ns) {
-        return new SOAP12HeaderBlockImpl(localName, ns, this, (SOAPFactory)factory);
-    }
-
 
     public Iterator extractHeaderBlocks(String role) {
         return new OMChildrenWithSpecificAttributeIterator(getFirstOMChild(),
