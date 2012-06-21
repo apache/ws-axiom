@@ -103,10 +103,9 @@ public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactor
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-                                                 OMNamespace ns, SOAPHeader parent,
-                                                 OMXMLParserWrapper builder)
+                                                 SOAPHeader parent, OMXMLParserWrapper builder)
             throws SOAPProcessingException {
-        return new SOAP12HeaderBlockImpl(localName, ns, parent, builder, this);
+        return new SOAP12HeaderBlockImpl(localName, null, parent, builder, this);
     }
 
     public SOAPFault createSOAPFault(SOAPBody parent, Exception e)
