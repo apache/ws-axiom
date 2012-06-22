@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -47,10 +48,11 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
     private boolean processed = false;
 
 
-    public SOAPHeaderBlockImpl(String localName, OMNamespace ns, SOAPFactory factory) {
-        super(localName, ns, factory);
+    public SOAPHeaderBlockImpl(OMContainer parent, String localName, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parent, localName, ns, builder, factory, generateNSDecl);
     }
-    
+
     public SOAPHeaderBlockImpl(SOAPFactory factory, OMDataSource source) {
         super(factory, source);
     }
@@ -58,34 +60,6 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns, SOAPFactory factory, 
                                OMDataSource ds) {
         super(localName, ns, factory, ds);
-    }
-
-    /**
-     * @param localName
-     * @param ns
-     * @param parent
-     */
-    public SOAPHeaderBlockImpl(String localName,
-                               OMNamespace ns,
-                               SOAPHeader parent,
-                               SOAPFactory factory) throws SOAPProcessingException {
-        super(localName, ns, parent, factory);
-        this.setNamespace(ns);
-    }
-
-    /**
-     * Constructor SOAPHeaderBlockImpl.
-     *
-     * @param localName
-     * @param ns
-     * @param parent
-     * @param builder
-     */
-    public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
-                               OMElement parent, OMXMLParserWrapper builder,
-                               SOAPFactory factory) {
-        super(localName, ns, parent, builder, factory);
-        this.setNamespace(ns);
     }
 
     protected abstract void checkParent(OMElement parent) throws SOAPProcessingException;

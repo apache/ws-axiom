@@ -112,6 +112,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
 
     protected OMElement createNextElement(String localName) throws OMException {
         OMElement element = factory.createOMElement(localName, getContainer(), null);
+        ((OMElementEx)element).setComplete(false);
         addNode(element);
         return element;
     }
@@ -125,7 +126,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
     public void startPrefixMapping(String prefix, String uri)
             throws SAXException {
         if (nextElem == null) {
-            nextElem = createNextElement(null);
+            nextElem = createNextElement("DUMMY");
         }
         ((OMElementEx)nextElem).addNamespaceDeclaration(uri, prefix);
     }

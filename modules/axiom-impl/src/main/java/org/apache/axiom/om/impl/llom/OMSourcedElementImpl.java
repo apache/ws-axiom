@@ -115,7 +115,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      */
     public OMSourcedElementImpl(String localName, OMNamespace ns, OMFactory factory,
                                 OMDataSource source) {
-        super(localName, null, factory);
+        super(null, localName, null, null, factory, false);
         if (source == null) {
             throw new IllegalArgumentException("OMDataSource can't be null");
         }
@@ -147,7 +147,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      */
     public OMSourcedElementImpl(QName qName, OMFactory factory, OMDataSource source) {
         //create a namespace
-        super(qName.getLocalPart(), null, factory);
+        super(null, qName.getLocalPart(), null, null, factory, false);
         if (source == null) {
             throw new IllegalArgumentException("OMDataSource can't be null");
         }
@@ -165,7 +165,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public OMSourcedElementImpl(String localName, OMNamespace ns, OMContainer parent, OMFactory factory) {
-        super(localName, null, parent, factory);
+        super(parent, localName, null, null, factory, false);
         dataSource = null;
         definedNamespace = ns;
         isExpanded = true;
@@ -174,27 +174,13 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    public OMSourcedElementImpl(String localName, OMNamespace ns, OMContainer parent, OMXMLParserWrapper builder, OMFactory factory) {
-        super(localName, null, parent, builder, factory);
-        dataSource = null;
+    public OMSourcedElementImpl(OMContainer parent, String localName, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parent, localName, ns, builder, factory, generateNSDecl);
         definedNamespace = ns;
         isExpanded = true;
-        if (ns != null) {
-            this.setNamespace(ns);
-        }
     }
 
-    public OMSourcedElementImpl(String localName, OMNamespace ns, OMFactory factory) {
-        super(localName, null, factory);
-        dataSource = null;
-        definedNamespace = ns;
-        isExpanded = true;
-        if (ns != null) {
-            this.setNamespace(ns);
-        }
-    }
-    
-    
     /**
      * The namespace uri is immutable, but the OMDataSource may change
      * the value of the prefix.  This method queries the OMDataSource to 

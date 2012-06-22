@@ -105,36 +105,17 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     
     private static final OMNamespace XMLNS_NAMESPACE_WITHOUT_PREFIX = new OMNamespaceImpl(OMConstants.XMLNS_NS_URI, null);
     
-    public ElementImpl(ParentNode parentNode, String localName, OMNamespace ns,
+    public ElementImpl(ParentNode parentNode, String localName, OMNamespace ns, OMXMLParserWrapper builder,
                        OMFactory factory, boolean generateNSDecl) {
         super(factory);
         this.localName = localName;
-        this.done = true;
+        this.builder = builder;
+        this.done = builder == null;
         if (parentNode != null) {
             parentNode.addChild(this);
         }
         this.attributes = new AttributeMap(this);
         namespace = generateNSDecl ? handleNamespace(ns) : ns;
-    }
-
-    public ElementImpl(ParentNode parentNode, String tagName, OMNamespace ns,
-                       OMXMLParserWrapper builder, OMFactory factory) {
-        this(tagName, ns, builder, factory);
-        if (parentNode != null) {
-            parentNode.addChild(this);
-        }
-
-    }
-
-    public ElementImpl(String tagName, OMNamespace ns,
-                       OMXMLParserWrapper builder, OMFactory factory) {
-        super(factory);
-        this.localName = tagName;
-        if (ns != null) {
-            setNamespace(ns);
-        }
-        this.builder = builder;
-        this.attributes = new AttributeMap(this);
     }
 
     final ParentNode internalGetOwnerNode() {

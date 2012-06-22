@@ -22,6 +22,7 @@ package org.apache.axiom.soap.impl.dom.soap11;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
@@ -88,20 +89,20 @@ public class SOAP11Factory extends DOMSOAPFactory {
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns)
             throws SOAPProcessingException {
-        return new SOAP11HeaderBlockImpl(localName, ns, this);
+        return new SOAP11HeaderBlockImpl(null, localName, ns, null, this, true);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  OMNamespace ns, SOAPHeader parent)
             throws SOAPProcessingException {
-        return new SOAP11HeaderBlockImpl(localName, ns, parent, this);
+        return new SOAP11HeaderBlockImpl((ParentNode)parent, localName, ns, null, this, true);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  SOAPHeader parent,
                                                  OMXMLParserWrapper builder)
             throws SOAPProcessingException {
-        return new SOAP11HeaderBlockImpl(localName, null, parent, builder, this);
+        return new SOAP11HeaderBlockImpl((ParentNode)parent, localName, null, builder, this, false);
     }
 
     public SOAPFault createSOAPFault(SOAPBody parent, Exception e)

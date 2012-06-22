@@ -77,7 +77,7 @@ public class OMDOMFactory implements OMFactoryEx {
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns) {
-        return new ElementImpl(null, localName, ns, this, true);
+        return new ElementImpl(null, localName, ns, null, this, true);
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns,
@@ -85,14 +85,14 @@ public class OMDOMFactory implements OMFactoryEx {
         if (parent == null) {
             return createOMElement(localName, ns);
         } else {
-            return new ElementImpl((ParentNode) parent, localName, ns, this, true);
+            return new ElementImpl((ParentNode) parent, localName, ns, null, this, true);
         }
     }
 
     /** Creates an OMElement with the builder. */
     public OMElement createOMElement(String localName, OMContainer parent,
                                      OMXMLParserWrapper builder) {
-        return new ElementImpl((ParentNode) parent, localName, null, builder, this);
+        return new ElementImpl((ParentNode) parent, localName, null, builder, this, false);
     }
 
     public OMSourcedElement createOMElement(OMDataSource source) {

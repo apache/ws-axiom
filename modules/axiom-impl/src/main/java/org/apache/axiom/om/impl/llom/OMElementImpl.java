@@ -110,52 +110,19 @@ public class OMElementImpl extends OMNodeImpl
     private int lineNumber;
     private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
 
-    /**
-     * Constructor OMElementImpl. A null namespace indicates that the default namespace in scope is
-     * used
-     */
-    public OMElementImpl(String localName, OMNamespace ns, OMContainer parent,
-                         OMXMLParserWrapper builder, OMFactory factory) {
+    public OMElementImpl(OMContainer parent, String localName, OMNamespace ns, OMXMLParserWrapper builder,
+                    OMFactory factory, boolean generateNSDecl) {
         super(factory);
-        if (parent != null) {
-            parent.addChild(this);
-        }
-        this.localName = localName;
-        if (ns != null) {
-            setNamespace(ns);
-        }
-        this.builder = builder;
-        firstChild = null;
-    }
-
-
-    /** Constructor OMElementImpl. */
-    public OMElementImpl(String localName, OMNamespace ns, OMFactory factory) {
-        this(localName, ns, null, factory);
-    }
-
-    /**
-     * This is the basic constructor for OMElement. All the other constructors depends on this.
-     *
-     * @param localName - this MUST always be not null
-     * @param ns        - can be null
-     * @param parent    - this should be an OMContainer
-     * @param factory   - factory that created this OMElement
-     *                  <p/>
-     *                  A null namespace indicates that the default namespace in scope is used
-     */
-    public OMElementImpl(String localName, OMNamespace ns, OMContainer parent,
-                         OMFactory factory) {
-        super(factory);
-        done = true;
-        if (parent != null) {
-            parent.addChild(this);
-        }
         if (localName == null || localName.trim().length() == 0) {
             throw new OMException("localname can not be null or empty");
         }
         this.localName = localName;
-        setNamespace(ns);
+        this.builder = builder;
+        this.done = builder == null;
+        if (parent != null) {
+            parent.addChild(this);
+        }
+        this.ns = generateNSDecl ? handleNamespace(ns) : ns;
     }
 
     /**

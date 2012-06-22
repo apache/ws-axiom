@@ -99,13 +99,13 @@ public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactor
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  OMNamespace ns, SOAPHeader parent)
             throws SOAPProcessingException {
-        return new SOAP12HeaderBlockImpl(localName, ns, parent, this);
+        return new SOAP12HeaderBlockImpl(parent, localName, ns, null, this, true);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  SOAPHeader parent, OMXMLParserWrapper builder)
             throws SOAPProcessingException {
-        return new SOAP12HeaderBlockImpl(localName, null, parent, builder, this);
+        return new SOAP12HeaderBlockImpl(parent, localName, null, builder, this, false);
     }
 
     public SOAPFault createSOAPFault(SOAPBody parent, Exception e)
@@ -175,7 +175,7 @@ public class SOAP12Factory extends OMLinkedListImplFactory implements SOAPFactor
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  OMNamespace ns) throws SOAPProcessingException {
-        return new SOAP12HeaderBlockImpl(localName, ns, this);
+        return new SOAP12HeaderBlockImpl(null, localName, ns, null, this, true);
     }
     
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
