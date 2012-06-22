@@ -391,8 +391,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             // this is a headerblock
             try {
                 element =
-                        soapFactory.createSOAPHeaderBlock(elementName, null,
-                                                          (SOAPHeader) parent, this);
+                        soapFactory.createSOAPHeaderBlock(elementName, (SOAPHeader) parent,
+                                                          this);
             } catch (SOAPProcessingException e) {
                 throw new SOAPProcessingException("Can not create SOAPHeader block",
                                                   getReceiverFaultCode(), e);
@@ -422,8 +422,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             element = builderHelper.handleEvent(parser, parent, elementLevel);
         } else {
             // this is neither of above. Just create an element
-            element = soapFactory.createOMElement(elementName, null,
-                                                  parent, this);
+            element = soapFactory.createOMElement(elementName, parent,
+                                                  this);
             processNamespaceData(element, false);
             processAttributes(element);
 

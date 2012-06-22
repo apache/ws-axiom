@@ -73,27 +73,24 @@ public class OMLinkedListImplFactory implements OMFactoryEx {
      * @return Returns OMElement.
      */
     public OMElement createOMElement(String localName, OMNamespace ns) {
-        return new OMElementImpl(localName, ns, this);
+        return new OMElementImpl(null, localName, ns, null, this, true);
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent) {
-        return new OMElementImpl(localName, ns, parent, this);
+        return new OMElementImpl(parent, localName, ns, null, this, true);
     }
 
     /**
      * Method createOMElement.
      *
      * @param localName
-     * @param ns
      * @param parent
      * @param builder
      * @return Returns OMElement.
      */
-    public OMElement createOMElement(String localName, OMNamespace ns,
-                                     OMContainer parent,
+    public OMElement createOMElement(String localName, OMContainer parent,
                                      OMXMLParserWrapper builder) {
-        return new OMElementImpl(localName, ns, parent,
-                                 builder, this);
+        return new OMElementImpl(parent, localName, null, builder, this, false);
     }
 
     public OMElement createOMElement(String localName, String namespaceURI, String prefix) {

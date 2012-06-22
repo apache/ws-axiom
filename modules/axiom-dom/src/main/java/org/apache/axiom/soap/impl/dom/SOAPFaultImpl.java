@@ -139,7 +139,7 @@ public abstract class SOAPFaultImpl extends SOAPElement implements SOAPFault,
         }
         OMElement faultDetailEnty = new ElementImpl((ParentNode)detail,
                                                     SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY,
-                                                    null, this.factory, true);
+                                                    null, null, this.factory, true);
         faultDetailEnty.setText(sw.getBuffer().toString());
     }
 

@@ -22,7 +22,6 @@ package org.apache.axiom.soap.impl.dom;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFactory;
@@ -35,7 +34,7 @@ public abstract class SOAPElement extends ElementImpl {
                           String localName,
                           boolean extractNamespaceFromParent,
                           SOAPFactory factory) throws SOAPProcessingException {
-        super((ParentNode) parent, localName, null, factory, true);
+        super((ParentNode) parent, localName, null, null, factory, true);
         if (parent == null) {
             throw new SOAPProcessingException(
                     " Can not create " + localName +
@@ -54,17 +53,12 @@ public abstract class SOAPElement extends ElementImpl {
                           String localName,
                           OMXMLParserWrapper builder,
                           SOAPFactory factory) {
-        super((ParentNode) parent, localName, null, builder, factory);
+        super((ParentNode) parent, localName, null, builder, factory, false);
     }
 
     protected SOAPElement(String localName, OMNamespace ns,
                           SOAPFactory factory) {
-        super(null, localName, ns, factory, true);
-    }
-
-    protected SOAPElement(String tagName,
-                          OMNamespaceImpl ns, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(tagName, ns, builder, factory);
+        super(null, localName, ns, null, factory, true);
     }
 
     /** This has to be implemented by all the derived classes to check for the correct parent. */

@@ -94,7 +94,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
             } else {
                 element =
                         factory.createOMElement(
-                                localName, null, parent, builder);
+                                localName, parent, builder);
                 processNamespaceData(element, false);
                 processAttributes(element);
             }
@@ -122,7 +122,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
             } else {
                 element =
                         this.factory.createOMElement(
-                                localName, null, parent, builder);
+                                localName, parent, builder);
                 processNamespaceData(element, false);
                 processAttributes(element);
             }
@@ -130,7 +130,6 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
         } else if (elementLevel > 5) {
             element =
                     this.factory.createOMElement(localName,
-                                                 null,
                                                  parent,
                                                  builder);
             processNamespaceData(element, false);

@@ -20,50 +20,22 @@
 package org.apache.axiom.soap.impl.dom.soap11;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.impl.dom.SOAPHeaderBlockImpl;
 
 public class SOAP11HeaderBlockImpl extends SOAPHeaderBlockImpl {
-    /**
-     * @param localName
-     * @param ns
-     */
-    public SOAP11HeaderBlockImpl(String localName,
-                                 OMNamespace ns,
-                                 SOAPHeader parent,
-                                 SOAPFactory factory) throws SOAPProcessingException {
-        super(localName, ns, parent, factory);
-        checkParent(parent);
+    public SOAP11HeaderBlockImpl(ParentNode parentNode, String localName, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, localName, ns, builder, factory, generateNSDecl);
     }
-
-    public SOAP11HeaderBlockImpl(String localName, OMNamespace ns, SOAPFactory factory) {
-        super(localName, ns, factory);
-    }
-
-    /**
-     * Constructor SOAPHeaderBlockImpl
-     *
-     * @param localName
-     * @param ns
-     * @param parent
-     * @param builder
-     */
-    public SOAP11HeaderBlockImpl(String localName,
-                                 OMNamespace ns,
-                                 OMElement parent,
-                                 OMXMLParserWrapper builder,
-                                 SOAPFactory factory) {
-        super(localName, ns, parent, builder, factory);
-    }
-
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!(parent instanceof SOAP11HeaderImpl)) {

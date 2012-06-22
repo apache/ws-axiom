@@ -41,7 +41,7 @@ public abstract class SOAPElement extends OMElementImpl {
                           String localName,
                           boolean extractNamespaceFromParent,
                           SOAPFactory factory) throws SOAPProcessingException {
-        super(localName, null, parent, factory);
+        super(parent, localName, null, null, factory, true);
         if (parent == null) {
             throw new SOAPProcessingException(
                     " Can not create " + localName +
@@ -59,7 +59,7 @@ public abstract class SOAPElement extends OMElementImpl {
                           String localName,
                           OMXMLParserWrapper builder,
                           SOAPFactory factory) {
-        super(localName, null, parent, builder, factory);
+        super(parent, localName, null, builder, factory, false);
     }
 
     /**
@@ -68,7 +68,7 @@ public abstract class SOAPElement extends OMElementImpl {
      */
     protected SOAPElement(String localName, OMNamespace ns,
                           SOAPFactory factory) {
-        super(localName, ns, factory);
+        super(null, localName, ns, null, factory, true);
     }
 
     /** This has to be implemented by all the derived classes to check for the correct parent. */

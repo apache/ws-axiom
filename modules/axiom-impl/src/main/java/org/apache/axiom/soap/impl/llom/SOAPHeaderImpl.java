@@ -86,7 +86,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         
         SOAPHeaderBlock soapHeaderBlock;
         try {
-            soapHeaderBlock = createHeaderBlock(localName, ns);
+            soapHeaderBlock = ((SOAPFactory)factory).createSOAPHeaderBlock(localName, ns, this);
         } catch (SOAPProcessingException e) {
             throw new OMException(e);
         }
@@ -94,8 +94,6 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         return soapHeaderBlock;
     }
 
-    protected abstract SOAPHeaderBlock createHeaderBlock(String localname, OMNamespace ns);
-    
     public Iterator getHeadersToProcess(RolePlayer rolePlayer) {
         return new HeaderIterator(this, new RolePlayerChecker(rolePlayer));
     }

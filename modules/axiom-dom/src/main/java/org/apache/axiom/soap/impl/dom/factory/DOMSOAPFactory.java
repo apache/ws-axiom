@@ -60,7 +60,7 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
     }
 
     public SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder) {
-        return new SOAPEnvelopeImpl(null, builder, this);
+        return new SOAPEnvelopeImpl(builder, this);
     }
 
     public SOAPFault createSOAPFault(SOAPBody parent) throws SOAPProcessingException {

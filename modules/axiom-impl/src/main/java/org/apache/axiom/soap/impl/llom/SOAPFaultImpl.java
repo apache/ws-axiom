@@ -138,9 +138,9 @@ public abstract class SOAPFaultImpl extends SOAPElement
             detail = getNewSOAPFaultDetail(this);
             setDetail(detail);
         }
-        OMElement faultDetailEnty = new OMElementImpl(
-                SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, null, detail,
-                factory);
+        OMElement faultDetailEnty = new OMElementImpl(detail,
+                SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, null, null,
+                factory, true);
         faultDetailEnty.setText(sw.getBuffer().toString());
     }
 

@@ -24,6 +24,7 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -44,36 +45,9 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
 
     private boolean processed = false;
 
-    /**
-     * @param localName
-     * @param ns
-     * @param parent
-     */
-    public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
-                               SOAPHeader parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super((ParentNode) parent, localName, ns, factory, true);
-        this.setNamespace(ns);
-    }
-
-    public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
-                               SOAPFactory factory) throws SOAPProcessingException {
-        super(null, localName, ns, factory, true);
-        this.setNamespace(ns);
-    }
-
-    /**
-     * Constructor SOAPHeaderBlockImpl.
-     *
-     * @param localName
-     * @param ns
-     * @param parent
-     * @param builder
-     */
-    public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
-                               OMElement parent, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super((ParentNode) parent, localName, ns, builder, factory);
-        this.setNamespace(ns);
+    public SOAPHeaderBlockImpl(ParentNode parentNode, String localName, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, localName, ns, builder, factory, generateNSDecl);
     }
 
     /**

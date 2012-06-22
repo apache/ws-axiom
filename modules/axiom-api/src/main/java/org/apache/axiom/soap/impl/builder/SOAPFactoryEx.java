@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.soap.impl.builder;
 
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.soap.SOAPBody;
@@ -60,13 +59,11 @@ public interface SOAPFactoryEx extends SOAPFactory, OMFactoryEx {
 
     /**
      * @param localName
-     * @param ns
      * @param parent
      * @param builder
      * @return Returns SOAPHeaderBlock.
      */
     SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-                                                 OMNamespace ns,
                                                  SOAPHeader parent,
                                                  OMXMLParserWrapper builder)
             throws SOAPProcessingException;
