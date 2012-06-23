@@ -19,13 +19,13 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
@@ -48,15 +48,9 @@ public abstract class SOAPBodyImpl extends SOAPElement implements SOAPBody,
 
     }
 
-    /**
-     * Constructor SOAPBodyImpl
-     *
-     * @param envelope
-     * @param builder
-     */
-    public SOAPBodyImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
-                        SOAPFactory factory) {
-        super(envelope, SOAPConstants.BODY_LOCAL_NAME, builder, factory);
+    public SOAPBodyImpl(ParentNode parentNode, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, SOAPConstants.BODY_LOCAL_NAME, ns, builder, factory, generateNSDecl);
     }
 
     /**
@@ -166,9 +160,5 @@ public abstract class SOAPBodyImpl extends SOAPElement implements SOAPBody,
             return element.getLocalName();
         } 
 
-    }
-
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPBody((SOAPEnvelope)targetParent);
     }
 }

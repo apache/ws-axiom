@@ -19,10 +19,10 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAPFactory;
@@ -32,7 +32,6 @@ import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
 
 public abstract class SOAPFaultRoleImpl extends SOAPElement implements
         SOAPFaultRole {
@@ -44,12 +43,9 @@ public abstract class SOAPFaultRoleImpl extends SOAPElement implements
         super(parent, localName, extractNamespaceFromParent, factory);
     }
 
-    public SOAPFaultRoleImpl(SOAPFault parent, OMXMLParserWrapper builder,
-                             SOAPFactory factory) {
-        super(parent,
-              factory.getSOAPVersion().getFaultRoleQName().getLocalPart(),
-              builder,
-              factory);
+    public SOAPFaultRoleImpl(ParentNode parentNode, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, ((SOAPFactory)factory).getSOAPVersion().getFaultRoleQName().getLocalPart(), ns, builder, factory, generateNSDecl);
     }
 
     public void setRoleValue(String uri) {
@@ -103,9 +99,5 @@ public abstract class SOAPFaultRoleImpl extends SOAPElement implements
 
             // do not serialise the siblings
         }
-    }
-
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPFaultRole((SOAPFault)targetParent);
     }
 }

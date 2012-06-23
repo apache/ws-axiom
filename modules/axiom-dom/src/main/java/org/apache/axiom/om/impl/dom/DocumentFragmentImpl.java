@@ -80,7 +80,7 @@ public class DocumentFragmentImpl extends RootNode implements
         throw new UnsupportedOperationException("TODO");
     }
 
-    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent) {
+    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         return new DocumentFragmentImpl(factory);
     }
 

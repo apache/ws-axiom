@@ -92,7 +92,7 @@ public abstract class LeafNode extends NodeImpl {
                                        DOMException.HIERARCHY_REQUEST_ERR, null));
     }
 
-    final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep) {
+    final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing) {
         beforeClone(options);
         LeafNode clone = createClone();
         if (targetParent != null) {

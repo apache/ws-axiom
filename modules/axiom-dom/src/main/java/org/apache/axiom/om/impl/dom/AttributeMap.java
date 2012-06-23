@@ -227,7 +227,7 @@ public class AttributeMap implements NamedNodeMap {
                 nodes.setSize(size);
                 for (int i = 0; i < size; ++i) {
                     AttrImpl n = (AttrImpl) srcnodes.elementAt(i);
-                    AttrImpl clone = (AttrImpl)n.clone(options, null, true);
+                    AttrImpl clone = (AttrImpl)n.clone(options, null, true, false);
                     clone.isSpecified(n.isSpecified());
                     nodes.setElementAt(clone, i);
                     clone.setOwnerElement(ownerNode, true);

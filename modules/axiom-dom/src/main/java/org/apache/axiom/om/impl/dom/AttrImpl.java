@@ -463,7 +463,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         throw new UnsupportedOperationException();
     }
 
-    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent) {
+    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         // Note: targetParent is always null here
         return new AttrImpl(localName, namespace, type, factory);
     }

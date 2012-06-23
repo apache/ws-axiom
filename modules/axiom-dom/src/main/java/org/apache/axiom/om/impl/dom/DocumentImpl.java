@@ -588,7 +588,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
         OMDocumentImplUtil.internalSerialize(this, writer, cache, includeXMLDeclaration);
     }
 
-    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent) {
+    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         DocumentImpl clone = new DocumentImpl(factory);
         clone.xmlVersion = xmlVersion;
         clone.xmlEncoding = xmlEncoding;

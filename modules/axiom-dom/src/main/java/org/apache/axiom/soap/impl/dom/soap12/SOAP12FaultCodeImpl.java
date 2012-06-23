@@ -19,8 +19,12 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultSubCode;
@@ -31,15 +35,9 @@ import org.apache.axiom.soap.impl.dom.SOAPFaultCodeImpl;
 import javax.xml.namespace.QName;
 
 public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
-    /**
-     * Constructor OMElementImpl
-     *
-     * @param parent
-     * @param builder
-     */
-    public SOAP12FaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder,
-                               SOAPFactory factory) {
-        super(parent, builder, factory);
+    public SOAP12FaultCodeImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
+            OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, ns, builder, factory, generateNSDecl);
     }
 
     /** @param parent  */
@@ -88,5 +86,10 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
             valueElement = ((SOAPFactory)getOMFactory()).createSOAPFaultValue(this);
         }
         valueElement.setText(value);
+    }
+
+    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
+            boolean generateNSDecl) {
+        return new SOAP12FaultCodeImpl(targetParent, namespace, null, factory, generateNSDecl);
     }
 }

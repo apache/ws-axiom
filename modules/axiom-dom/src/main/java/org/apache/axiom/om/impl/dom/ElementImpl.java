@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -1113,26 +1112,34 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     }
 
     public OMElement cloneOMElement(OMCloneOptions options) {
-        return (OMElement)clone(options, null, true);
+        return (OMElement)clone(options, null, true, true);
     }
 
-    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent) {
+    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
         ElementImpl clone;
         if (options.isPreserveModel()) {
-            clone = (ElementImpl)createClone(options, (OMContainer)targetParent);
+            clone = (ElementImpl)createClone(options, targetParent, namespaceRepairing);
         } else {
-            clone = (ElementImpl)factory.createOMElement(localName, namespace, (OMContainer)targetParent);
+            clone = new ElementImpl(targetParent, localName, namespace, null, factory, namespaceRepairing);
         }
         for (Iterator it = getAllDeclaredNamespaces(); it.hasNext(); ) {
             OMNamespace ns = (OMNamespace)it.next();
             clone.declareNamespace(ns);
         }
         clone.attributes.cloneContent(options, attributes);
+        if (namespaceRepairing) {
+            for (Iterator it = getAllAttributes(); it.hasNext(); ) {
+                OMNamespace ns = ((OMAttribute)it.next()).getNamespace();
+                if (ns != null) {
+                    clone.declareNamespace(ns);
+                }
+            }
+        }
         return clone;
     }
 
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return factory.createOMElement(localName, namespace, targetParent);
+    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
+        return new ElementImpl(targetParent, localName, namespace, null, factory, generateNSDecl);
     }
     
     public void setLineNumber(int lineNumber) {

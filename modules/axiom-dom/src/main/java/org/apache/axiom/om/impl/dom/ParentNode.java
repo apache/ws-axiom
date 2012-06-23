@@ -504,17 +504,17 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
         return false;
     }
 
-    final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep) {
-        ParentNode clone = shallowClone(options, targetParent);
+    final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing) {
+        ParentNode clone = shallowClone(options, targetParent, namespaceRepairing);
         if (deep) {
             for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
-                ((NodeImpl)child).clone(options, clone, true);
+                ((NodeImpl)child).clone(options, clone, true, namespaceRepairing);
             }
         }
         return clone;
     }
     
-    abstract ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent);
+    abstract ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing);
 
     /**
      * This method is intended only to be used by Axiom intenals when merging Objects from different
