@@ -43,7 +43,7 @@ import java.util.Hashtable;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public abstract class NodeImpl implements Node, Cloneable {
+public abstract class NodeImpl implements Node {
 
     /** Holds the user data objects */
     private Hashtable userData; // Will be initialized in setUserData()
@@ -152,30 +152,15 @@ public abstract class NodeImpl implements Node, Cloneable {
         return null;
     }
 
-    // public Node cloneNode(boolean deep) {
-    // if(this instanceof OMElement) {
-    // return (Node)((OMElement)this).cloneOMElement();
-    // } else if(this instanceof OMText ){
-    // return ((TextImpl)this).cloneText();
-    // } else {
-    // throw new UnsupportedOperationException("Only elements can be cloned
-    // right now");
-    // }
-    // }
-    //    
-    public Node cloneNode(boolean deep) {
-        NodeImpl newnode;
-        try {
-            newnode = (NodeImpl) clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException("**Internal Error**" + e);
+    public final Node cloneNode(boolean deep) {
+        OMCloneOptions options = new OMCloneOptions();
+        // This is not specified by the API, but it's compatible with versions before 1.2.14
+        options.setPreserveModel(true);
+        NodeImpl clone = clone(options, null, getNodeType() == Node.ATTRIBUTE_NODE ? true : deep, false);
+        if (!(clone instanceof DocumentImpl)) {
+            clone.setOwnerDocument(ownerDocument());
         }
-        
-        newnode.isFirstChild(false);
-        newnode.internalSetOwnerNode(ownerDocument());
-        newnode.hasParent(false);
-
-        return newnode;
+        return clone;
     }
 
     public boolean isSupported(String feature, String version) {
@@ -892,5 +877,5 @@ public abstract class NodeImpl implements Node, Cloneable {
     // by certain subclasses (for the reason, see AXIOM-385).
     public abstract void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException;
     
-    abstract OMNode clone(OMCloneOptions options, OMContainer targetParent);
+    abstract NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing);
 }

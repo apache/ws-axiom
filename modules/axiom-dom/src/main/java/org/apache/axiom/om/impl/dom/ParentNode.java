@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
@@ -503,26 +504,17 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
         return false;
     }
 
-    public Node cloneNode(boolean deep) {
-
-        ParentNode newnode = (ParentNode) super.cloneNode(deep);
-
-        // set parent and owner document
-        newnode.setParent(null, true);
-
-        // Need to break the association w/ original kids
-        newnode.firstChild = null;
-        newnode.lastChild = null;
-
-        // Then, if deep, clone the kids too.
+    final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing) {
+        ParentNode clone = shallowClone(options, targetParent, namespaceRepairing);
         if (deep) {
-            for (Node child = getFirstChild(); child != null;
-                 child = child.getNextSibling()) {
-                newnode.appendChild(child.cloneNode(true));
+            for (Node child = getFirstChild(); child != null; child = child.getNextSibling()) {
+                ((NodeImpl)child).clone(options, clone, true, namespaceRepairing);
             }
         }
-        return newnode;
+        return clone;
     }
+    
+    abstract ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing);
 
     /**
      * This method is intended only to be used by Axiom intenals when merging Objects from different

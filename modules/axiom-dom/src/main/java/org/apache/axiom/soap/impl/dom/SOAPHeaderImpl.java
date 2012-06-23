@@ -19,14 +19,14 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.RolePlayer;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -51,15 +51,9 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
 
     }
 
-    /**
-     * Constructor SOAPHeaderImpl
-     *
-     * @param envelope
-     * @param builder
-     */
-    public SOAPHeaderImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
-                          SOAPFactory factory) {
-        super(envelope, SOAPConstants.HEADER_LOCAL_NAME, builder, factory);
+    public SOAPHeaderImpl(ParentNode parentNode, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, SOAPConstants.HEADER_LOCAL_NAME, ns, builder, factory, generateNSDecl);
     }
 
     public SOAPHeaderBlock addHeaderBlock(String localName, OMNamespace ns)
@@ -157,9 +151,5 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
                     "Expecting an implementation of SOAP Envelope as the " +
                             "parent. But received some other implementation");
         }
-    }
-
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPHeader((SOAPEnvelope)targetParent);
     }
 }

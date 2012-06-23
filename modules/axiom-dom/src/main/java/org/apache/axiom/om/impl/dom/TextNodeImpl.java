@@ -467,12 +467,11 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
         this.contentID = cid;
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+    void beforeClone(OMCloneOptions options) {
         if (isBinary && options.isFetchDataHandlers()) {
             // Force loading of the reference to the DataHandler and ensure that its content is
             // completely fetched into memory (or temporary storage).
             ((DataHandler)getDataHandler()).getDataSource();
         }
-        return factory.createOMText(targetParent, this);
     }
 }

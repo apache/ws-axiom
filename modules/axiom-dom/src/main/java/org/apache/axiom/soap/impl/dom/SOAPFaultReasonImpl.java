@@ -19,14 +19,14 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPFaultText;
 import org.apache.axiom.soap.SOAPProcessingException;
@@ -39,16 +39,10 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
         SOAPFaultReason {
     protected SOAPFaultText text;
 
-    /**
-     * Constructor OMElementImpl
-     *
-     * @param parent
-     * @param builder
-     */
-    public SOAPFaultReasonImpl(SOAPFault parent, OMXMLParserWrapper builder,
-                               SOAPFactory factory) {
-        super(parent, factory.getSOAPVersion().getFaultReasonQName().getLocalPart(), builder,
-              factory);
+    public SOAPFaultReasonImpl(ParentNode parentNode, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, ((SOAPFactory)factory).getSOAPVersion().getFaultReasonQName().getLocalPart(),
+                ns, builder, factory, generateNSDecl);
     }
 
     /** @param parent  */
@@ -79,9 +73,5 @@ public abstract class SOAPFaultReasonImpl extends SOAPElement implements
     public SOAPFaultText getSOAPFaultText(String language) {
         //TODO Ruchith
         throw new UnsupportedOperationException();
-    }
-
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPFaultReason((SOAPFault)targetParent);
     }
 }

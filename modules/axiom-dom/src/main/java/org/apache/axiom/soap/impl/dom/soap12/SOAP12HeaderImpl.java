@@ -19,7 +19,12 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.traverse.OMChildrenWithSpecificAttributeIterator;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -37,15 +42,9 @@ public class SOAP12HeaderImpl extends SOAPHeaderImpl {
         super(envelope, factory);
     }
 
-    /**
-     * Constructor SOAPHeaderImpl
-     *
-     * @param envelope
-     * @param builder
-     */
-    public SOAP12HeaderImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
-                            SOAPFactory factory) {
-        super(envelope, builder, factory);
+    public SOAP12HeaderImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
+            OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, ns, builder, factory, generateNSDecl);
     }
 
     public Iterator extractHeaderBlocks(String role) {
@@ -55,5 +54,10 @@ public class SOAP12HeaderImpl extends SOAPHeaderImpl {
                                                                    SOAP12Constants.SOAP_ROLE),
                                                            role,
                                                            true);
+    }
+
+    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
+            boolean generateNSDecl) {
+        return new SOAP12HeaderImpl(targetParent, namespace, null, factory, generateNSDecl);
     }
 }

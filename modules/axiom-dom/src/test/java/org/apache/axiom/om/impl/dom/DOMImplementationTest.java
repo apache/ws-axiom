@@ -29,8 +29,8 @@ public class DOMImplementationTest extends TestCase {
     public static TestSuite suite() {
         DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(new OMDOMMetaFactory().newDocumentBuilderFactory());
         
-        // TODO: doesn't work
-        builder.exclude(TestCloneNode.class);
+        // DTDs are not handled correctly
+        builder.exclude(TestCloneNode.class, "(file=spaces.xml)");
         
         return builder.build();
     }

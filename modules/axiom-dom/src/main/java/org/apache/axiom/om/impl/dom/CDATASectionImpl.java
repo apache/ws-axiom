@@ -23,7 +23,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.w3c.dom.CDATASection;
-import org.w3c.dom.Node;
 
 public class CDATASectionImpl extends TextNodeImpl implements CDATASection {
     public CDATASectionImpl(String text, OMFactory factory) {
@@ -34,9 +33,7 @@ public class CDATASectionImpl extends TextNodeImpl implements CDATASection {
         return OMNode.CDATA_SECTION_NODE;
     }
 
-    public Node cloneNode(boolean deep) {
-        CDATASectionImpl textImpl = new CDATASectionImpl(this.textValue, this.factory);
-        textImpl.setOwnerDocument(ownerDocument());
-        return textImpl;
+    LeafNode createClone() {
+        return new CDATASectionImpl(textValue, factory);
     }
 }

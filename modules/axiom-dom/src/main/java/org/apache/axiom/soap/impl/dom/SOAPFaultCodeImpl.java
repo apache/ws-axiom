@@ -19,10 +19,10 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -33,17 +33,10 @@ import org.apache.axiom.soap.SOAPFaultValue;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFaultCode {
-
-    /**
-     * Constructor OMElementImpl
-     *
-     * @param parent
-     * @param builder
-     */
-    public SOAPFaultCodeImpl(SOAPFault parent, OMXMLParserWrapper builder,
-                             SOAPFactory factory) {
-        super(parent, factory.getSOAPVersion().getFaultCodeQName().getLocalPart(), builder,
-              factory);
+    public SOAPFaultCodeImpl(ParentNode parentNode, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, ((SOAPFactory)factory).getSOAPVersion().getFaultCodeQName().getLocalPart(),
+                ns, builder, factory, generateNSDecl);
     }
 
     /** @param parent  */
@@ -68,9 +61,5 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
 
     public SOAPFaultSubCode getSubCode() {
         return (SOAPFaultSubCode)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_SUBCODE);
-    }
-
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPFaultCode((SOAPFault)targetParent);
     }
 }

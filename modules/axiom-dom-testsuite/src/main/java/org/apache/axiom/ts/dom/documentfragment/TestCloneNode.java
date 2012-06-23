@@ -36,6 +36,7 @@ public class TestCloneNode extends DOMTestCase {
         fragment.appendChild(document.createComment("comment"));
         fragment.appendChild(document.createElementNS(null, "test"));
         DocumentFragment clone = (DocumentFragment)fragment.cloneNode(true);
+        assertSame(document, clone.getOwnerDocument());
         Node child = clone.getFirstChild();
         assertNotNull(child);
         assertEquals(Node.COMMENT_NODE, child.getNodeType());

@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -91,12 +92,20 @@ public abstract class LeafNode extends NodeImpl {
                                        DOMException.HIERARCHY_REQUEST_ERR, null));
     }
 
-    public Node cloneNode(boolean deep) {
-        LeafNode newnode = (LeafNode)super.cloneNode(deep);
-        newnode.previousSibling = null;
-        newnode.nextSibling = null;
-        return newnode;
+    final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing) {
+        beforeClone(options);
+        LeafNode clone = createClone();
+        if (targetParent != null) {
+            targetParent.internalAppendChild(clone);
+        }
+        return clone;
     }
+    
+    void beforeClone(OMCloneOptions options) {
+        // By default, do nothing
+    }
+    
+    abstract LeafNode createClone();
 
     public final OMXMLParserWrapper getBuilder() {
         return null;

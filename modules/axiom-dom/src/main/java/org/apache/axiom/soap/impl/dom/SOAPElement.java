@@ -20,6 +20,7 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ElementImpl;
@@ -48,17 +49,9 @@ public abstract class SOAPElement extends ElementImpl {
         this.localName = localName;
     }
 
-
-    protected SOAPElement(OMElement parent,
-                          String localName,
-                          OMXMLParserWrapper builder,
-                          SOAPFactory factory) {
-        super((ParentNode) parent, localName, null, builder, factory, false);
-    }
-
-    protected SOAPElement(String localName, OMNamespace ns,
-                          SOAPFactory factory) {
-        super(null, localName, ns, null, factory, true);
+    public SOAPElement(ParentNode parentNode, String localName, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, localName, ns, builder, factory, generateNSDecl);
     }
 
     /** This has to be implemented by all the derived classes to check for the correct parent. */

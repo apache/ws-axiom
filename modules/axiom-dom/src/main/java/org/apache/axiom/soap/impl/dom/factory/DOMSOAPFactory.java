@@ -60,7 +60,7 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
     }
 
     public SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder) {
-        return new SOAPEnvelopeImpl(builder, this);
+        return new SOAPEnvelopeImpl(null, null, builder, this, false);
     }
 
     public SOAPFault createSOAPFault(SOAPBody parent) throws SOAPProcessingException {
@@ -68,7 +68,7 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
     }
 
     public final SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
-        SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(getNamespace(), this);
+        SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(null, getNamespace(), null, this, true);
         createSOAPHeader(env);
         createSOAPBody(env);
         return env;

@@ -19,10 +19,10 @@
 
 package org.apache.axiom.soap.impl.dom;
 
-import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP12Constants;
@@ -41,10 +41,9 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
         super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, true, factory);
     }
 
-    public SOAPFaultNodeImpl(SOAPFault parent, OMXMLParserWrapper builder,
-                             SOAPFactory factory) {
-        super(parent, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, builder,
-              factory);
+    public SOAPFaultNodeImpl(ParentNode parentNode, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, SOAP12Constants.SOAP_FAULT_NODE_LOCAL_NAME, ns, builder, factory, generateNSDecl);
     }
 
     public void setFaultNodeValue(String uri) {
@@ -106,9 +105,5 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
         }
 
 
-    }
-
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPFaultNode((SOAPFault)targetParent);
     }
 }

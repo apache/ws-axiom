@@ -64,15 +64,15 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
     public SOAPEnvelope createSOAPEnvelope() {
         return new SOAPEnvelopeImpl(
+                null,
                 new OMNamespaceImpl(
                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI,
                         SOAP12Constants.SOAP_DEFAULT_NAMESPACE_PREFIX),
-                this);
+                null, this, true);
     }
     
     public SOAPEnvelope createSOAPEnvelope(OMNamespace ns) {
-        return new SOAPEnvelopeImpl(ns,
-                                    this);
+        return new SOAPEnvelopeImpl(null, ns, null, this, true);
     }
 
     public SOAPHeader createSOAPHeader(SOAPEnvelope envelope) throws SOAPProcessingException {
@@ -81,7 +81,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
     public SOAPHeader createSOAPHeader(SOAPEnvelope envelope,
                                        OMXMLParserWrapper builder) {
-        return new SOAP12HeaderImpl(envelope, builder, this);
+        return new SOAP12HeaderImpl((ParentNode)envelope, null, builder, this, false);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName, OMNamespace ns)
@@ -112,7 +112,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
     public SOAPFault createSOAPFault(SOAPBody parent,
                                      OMXMLParserWrapper builder) {
-        return new SOAP12FaultImpl(parent, builder, this);
+        return new SOAP12FaultImpl((ParentNode)parent, null, builder, this, false);
     }
 
     public SOAPBody createSOAPBody(SOAPEnvelope envelope) throws SOAPProcessingException {
@@ -121,7 +121,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
     public SOAPBody createSOAPBody(SOAPEnvelope envelope,
                                    OMXMLParserWrapper builder) {
-        return new SOAP12BodyImpl(envelope, builder, this);
+        return new SOAP12BodyImpl((ParentNode)envelope, null, builder, this, false);
     }
 
     public SOAPFaultCode createSOAPFaultCode(SOAPFault parent) throws SOAPProcessingException {
@@ -130,7 +130,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
     public SOAPFaultCode createSOAPFaultCode(SOAPFault parent,
                                              OMXMLParserWrapper builder) {
-        return new SOAP12FaultCodeImpl(parent, builder, this);
+        return new SOAP12FaultCodeImpl((ParentNode)parent, null, builder, this, false);
     }
 
     public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent)
@@ -140,7 +140,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
     public SOAPFaultValue createSOAPFaultValue(SOAPFaultCode parent,
                                                OMXMLParserWrapper builder) {
-        return new SOAP12FaultValueImpl(parent, builder, this);
+        return new SOAP12FaultValueImpl((ParentNode)parent, null, builder, this, false);
     }
 
     //added
@@ -152,7 +152,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
     //added
     public SOAPFaultValue createSOAPFaultValue(SOAPFaultSubCode parent,
                                                OMXMLParserWrapper builder) {
-        return new SOAP12FaultValueImpl(parent, builder, this);
+        return new SOAP12FaultValueImpl((ParentNode)parent, null, builder, this, false);
     }
 
     //changed
@@ -164,7 +164,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
     //changed
     public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultCode parent,
                                                    OMXMLParserWrapper builder) {
-        return new SOAP12FaultSubCodeImpl(parent, builder, this);
+        return new SOAP12FaultSubCodeImpl((ParentNode)parent, null, builder, this, false);
     }
 
     public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent)
@@ -174,7 +174,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
     public SOAPFaultSubCode createSOAPFaultSubCode(SOAPFaultSubCode parent,
                                                    OMXMLParserWrapper builder) {
-        return new SOAP12FaultSubCodeImpl(parent, builder, this);
+        return new SOAP12FaultSubCodeImpl((ParentNode)parent, null, builder, this, false);
     }
 
     public SOAPFaultReason createSOAPFaultReason(SOAPFault parent) throws SOAPProcessingException {
@@ -183,7 +183,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
     public SOAPFaultReason createSOAPFaultReason(SOAPFault parent,
                                                  OMXMLParserWrapper builder) {
-        return new SOAP12FaultReasonImpl(parent, builder, this);
+        return new SOAP12FaultReasonImpl((ParentNode)parent, null, builder, this, false);
     }
 
     public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent)
@@ -193,7 +193,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
     public SOAPFaultText createSOAPFaultText(SOAPFaultReason parent,
                                              OMXMLParserWrapper builder) {
-        return new SOAP12FaultTextImpl(parent, builder, this);
+        return new SOAP12FaultTextImpl((ParentNode)parent, null, builder, this, false);
     }
 
     public SOAPFaultNode createSOAPFaultNode(SOAPFault parent) throws SOAPProcessingException {
@@ -202,7 +202,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
     public SOAPFaultNode createSOAPFaultNode(SOAPFault parent,
                                              OMXMLParserWrapper builder) {
-        return new SOAP12FaultNodeImpl(parent, builder, this);
+        return new SOAP12FaultNodeImpl((ParentNode)parent, null, builder, this, false);
     }
 
     public SOAPFaultRole createSOAPFaultRole(SOAPFault parent) throws SOAPProcessingException {
@@ -211,7 +211,7 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
     public SOAPFaultRole createSOAPFaultRole(SOAPFault parent,
                                              OMXMLParserWrapper builder) {
-        return new SOAP12FaultRoleImpl(parent, builder, this);
+        return new SOAP12FaultRoleImpl((ParentNode)parent, null, builder, this, false);
     }
 
     public SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent) throws SOAPProcessingException {
@@ -220,11 +220,11 @@ public class SOAP12Factory extends DOMSOAPFactory {
 
     public SOAPFaultDetail createSOAPFaultDetail(SOAPFault parent,
                                                  OMXMLParserWrapper builder) {
-        return new SOAP12FaultDetailImpl(parent, builder, this);
+        return new SOAP12FaultDetailImpl((ParentNode)parent, null, builder, this, false);
     }
 
     public SOAPFaultDetail createSOAPFaultDetail() throws SOAPProcessingException {
-        return new SOAP12FaultDetailImpl(this);
+        return new SOAP12FaultDetailImpl(null, getNamespace(), null, this, true);
     }
 
     public OMNamespace getNamespace() {

@@ -21,7 +21,6 @@ package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -100,13 +99,6 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
 
     public Document getOwnerDocument() {
         return null;
-    }
-
-    public Node cloneNode(boolean deep) {
-        DocumentImpl newnode = (DocumentImpl)super.cloneNode(deep);
-        newnode.done = true;
-        newnode.builder = null;
-        return newnode;
     }
 
     protected Object clone() throws CloneNotSupportedException {
@@ -596,8 +588,13 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
         OMDocumentImplUtil.internalSerialize(this, writer, cache, includeXMLDeclaration);
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        throw new UnsupportedOperationException();
+    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
+        DocumentImpl clone = new DocumentImpl(factory);
+        clone.xmlVersion = xmlVersion;
+        clone.xmlEncoding = xmlEncoding;
+        clone.xmlStandalone = xmlStandalone;
+        clone.charEncoding = charEncoding;
+        return clone;
     }
 
     public final OMXMLParserWrapper getBuilder() {

@@ -21,15 +21,16 @@ package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.NodeImpl;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
@@ -55,14 +56,9 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
 
     private static final QName HEADER_QNAME = new QName(SOAPConstants.HEADER_LOCAL_NAME);
 
-    /** @param builder  */
-    public SOAPEnvelopeImpl(OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, builder, factory);
-    }
-
-    /** @param ns  */
-    public SOAPEnvelopeImpl(OMNamespace ns, SOAPFactory factory) {
-        super(SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
+    public SOAPEnvelopeImpl(ParentNode parentNode, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, builder, factory, generateNSDecl);
     }
 
     public SOAPVersion getVersion() {
@@ -325,7 +321,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         return null;
     }
 
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPEnvelope(getNamespace());
+    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
+        return new SOAPEnvelopeImpl(targetParent, namespace, null, factory, generateNSDecl);
     }
 }

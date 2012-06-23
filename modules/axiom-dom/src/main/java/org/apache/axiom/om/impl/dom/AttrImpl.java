@@ -22,11 +22,9 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
@@ -74,6 +72,14 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         owner = ownerDocument;
     }
 
+    // TODO: copy isId?
+    private AttrImpl(String localName, OMNamespace namespace, String type, OMFactory factory) {
+        this(null, factory);
+        this.localName = localName;
+        this.namespace = namespace;
+        this.type = type;
+    }
+    
     public AttrImpl(DocumentImpl ownerDocument, String localName,
                     OMNamespace ns, String value, OMFactory factory) {
         this(ownerDocument, factory);
@@ -368,14 +374,6 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         NamedNodeHelper.setPrefix(this, prefix);
     }
 
-    public Node cloneNode(boolean deep) {
-
-        AttrImpl clone = (AttrImpl) super.cloneNode(true);
-
-        clone.isSpecified(true);
-        return clone;
-    }
-
     /*
      * DOM-Level 3 methods
      */
@@ -465,9 +463,9 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         throw new UnsupportedOperationException();
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        // Right now, this method is never called
-        throw new UnsupportedOperationException();
+    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
+        // Note: targetParent is always null here
+        return new AttrImpl(localName, namespace, type, factory);
     }
 
     public final OMXMLParserWrapper getBuilder() {

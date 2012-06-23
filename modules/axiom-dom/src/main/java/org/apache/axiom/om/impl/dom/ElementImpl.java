@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
@@ -1113,32 +1112,34 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     }
 
     public OMElement cloneOMElement(OMCloneOptions options) {
-        return (OMElement)clone(options, null);
+        return (OMElement)clone(options, null, true, true);
     }
 
-    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        OMElement targetElement;
+    final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
+        ElementImpl clone;
         if (options.isPreserveModel()) {
-            targetElement = createClone(options, targetParent);
+            clone = (ElementImpl)createClone(options, targetParent, namespaceRepairing);
         } else {
-            targetElement = factory.createOMElement(localName, namespace, targetParent);
+            clone = new ElementImpl(targetParent, localName, namespace, null, factory, namespaceRepairing);
         }
         for (Iterator it = getAllDeclaredNamespaces(); it.hasNext(); ) {
             OMNamespace ns = (OMNamespace)it.next();
-            targetElement.declareNamespace(ns);
+            clone.declareNamespace(ns);
         }
-        for (Iterator it = getAllAttributes(); it.hasNext(); ) {
-            OMAttribute attr = (OMAttribute)it.next();
-            targetElement.addAttribute(attr);
+        clone.attributes.cloneContent(options, attributes);
+        if (namespaceRepairing) {
+            for (Iterator it = getAllAttributes(); it.hasNext(); ) {
+                OMNamespace ns = ((OMAttribute)it.next()).getNamespace();
+                if (ns != null) {
+                    clone.declareNamespace(ns);
+                }
+            }
         }
-        for (Iterator it = getChildren(); it.hasNext(); ) {
-            ((NodeImpl)it.next()).clone(options, targetElement);
-        }
-        return targetElement;
+        return clone;
     }
 
-    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return factory.createOMElement(localName, namespace, targetParent);
+    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
+        return new ElementImpl(targetParent, localName, namespace, null, factory, generateNSDecl);
     }
     
     public void setLineNumber(int lineNumber) {
@@ -1147,21 +1148,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
 
     public int getLineNumber() {
         return lineNumber;
-    }
-
-    public Node cloneNode(boolean deep) {
-
-        ElementImpl newnode = (ElementImpl) super.cloneNode(deep);
-        // Replicate NamedNodeMap rather than sharing it.
-        if (attributes != null) {
-            newnode.attributes = attributes.cloneMap(newnode);
-        }
-        newnode.done = true;
-        newnode.builder = null;
-        newnode.previousSibling = null;
-        newnode.nextSibling = null;
-        return newnode;
-
     }
 
     /** Returns the set of attributes of this node and the namespace declarations available. */
