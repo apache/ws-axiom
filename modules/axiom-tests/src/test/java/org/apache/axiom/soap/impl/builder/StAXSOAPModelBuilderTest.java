@@ -53,7 +53,7 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
 
     }
 
-    public void testStAXSOAPModelBuilder() throws Exception {
+    public void testStAXSOAPModelBuilderSOAP12() throws Exception {
         String soap12Message =
                 "<env:Envelope xmlns:env=\"http://www.w3.org/2003/05/soap-envelope\">\n" +
                         "   <env:Header>\n" +
@@ -94,48 +94,6 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                         "                   </m:Time>\n" +
                         "               </m:AveTime>\n" +
                         "           </env:Detail>\n" +
-                        "       </env:Fault>\n" +
-                        "   </env:Body>\n" +
-                        "</env:Envelope>";
-
-        String soap11Message =
-                "<?xml version='1.0' ?>" +
-                        "<env:Envelope xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
-                        "   <env:Header>\n" +
-                        "       <test:echoOk xmlns:test=\"http://example.org/ts-tests\"\n" +
-                        "                    env:actor=\"http://schemas.xmlsoap.org/soap/actor/next\"\n" +
-                        "                    env:mustUnderstand=\"1\"" +
-                        "       >\n" +
-                        "                       foo\n" +
-                        "       </test:echoOk>\n" +
-                        "   </env:Header>\n" +
-                        "   <env:Body>\n" +
-                        "       <env:Fault>\n" +
-                        "           <faultcode>\n" +
-                        "               env:Sender\n" +
-                        "           </faultcode>\n" +
-                        "           <faultstring>\n" +
-                        "               Sender Timeout\n" +
-                        "           </faultstring>\n" +
-                        "           <faultactor>\n" +
-                        "               http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver\n" +
-                        "           </faultactor>\n" +
-                        "           <detail xmlns:m=\"http:www.sample.org\">\n" +
-                        "               Details of error\n" +
-                        "               <m:MaxTime m:detail=\"This is only a test\">\n" +
-                        "                   P5M\n" +
-                        "               </m:MaxTime>\n" +
-                        "               <m:AveTime>\n" +
-                        "                   <m:Time>\n" +
-                        "                       P3M\n" +
-                        "                   </m:Time>\n" +
-                        "               </m:AveTime>\n" +
-                        "           </detail>\n" +
-                        "           <n:Test xmlns:n=\"http:www.Test.org\">\n" +
-                        "               <n:TestElement>\n" +
-                        "                   This is only a test\n" +
-                        "               </n:TestElement>\n" +
-                        "           </n:Test>\n" +
                         "       </env:Fault>\n" +
                         "   </env:Body>\n" +
                         "</env:Envelope>";
@@ -389,6 +347,52 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                            "http:www.sample.org"));
         assertTrue("SOAP 1.2 :- Text value in Time element mismatch",
                    element21.getText().trim().equals("P3M"));
+        
+        soap12Parser.close();
+    }
+
+    public void testStAXSOAPModelBuilderSOAP11() throws Exception {
+        String soap11Message =
+                "<?xml version='1.0' ?>" +
+                        "<env:Envelope xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                        "   <env:Header>\n" +
+                        "       <test:echoOk xmlns:test=\"http://example.org/ts-tests\"\n" +
+                        "                    env:actor=\"http://schemas.xmlsoap.org/soap/actor/next\"\n" +
+                        "                    env:mustUnderstand=\"1\"" +
+                        "       >\n" +
+                        "                       foo\n" +
+                        "       </test:echoOk>\n" +
+                        "   </env:Header>\n" +
+                        "   <env:Body>\n" +
+                        "       <env:Fault>\n" +
+                        "           <faultcode>\n" +
+                        "               env:Sender\n" +
+                        "           </faultcode>\n" +
+                        "           <faultstring>\n" +
+                        "               Sender Timeout\n" +
+                        "           </faultstring>\n" +
+                        "           <faultactor>\n" +
+                        "               http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver\n" +
+                        "           </faultactor>\n" +
+                        "           <detail xmlns:m=\"http:www.sample.org\">\n" +
+                        "               Details of error\n" +
+                        "               <m:MaxTime m:detail=\"This is only a test\">\n" +
+                        "                   P5M\n" +
+                        "               </m:MaxTime>\n" +
+                        "               <m:AveTime>\n" +
+                        "                   <m:Time>\n" +
+                        "                       P3M\n" +
+                        "                   </m:Time>\n" +
+                        "               </m:AveTime>\n" +
+                        "           </detail>\n" +
+                        "           <n:Test xmlns:n=\"http:www.Test.org\">\n" +
+                        "               <n:TestElement>\n" +
+                        "                   This is only a test\n" +
+                        "               </n:TestElement>\n" +
+                        "           </n:Test>\n" +
+                        "       </env:Fault>\n" +
+                        "   </env:Body>\n" +
+                        "</env:Envelope>";
 
         XMLStreamReader soap11Parser = StAXUtils.createXMLStreamReader(
                 new StringReader(soap11Message));
@@ -406,7 +410,7 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                    soap11Envelope.getNamespace().getNamespaceURI().equals(
                            SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
 
-        header = soap11Envelope.getHeader();
+        SOAPHeader header = soap11Envelope.getHeader();
         assertTrue("SOAP 1.1 :- Header local name mismatch",
                    header.getLocalName().equals(
                            SOAPConstants.HEADER_LOCAL_NAME));
@@ -414,7 +418,7 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                    header.getNamespace().getNamespaceURI().equals(
                            SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
 
-        headerBlock = (SOAPHeaderBlock) header.getFirstElement();
+        SOAPHeaderBlock headerBlock = (SOAPHeaderBlock) header.getFirstElement();
         assertTrue("SOAP 1.1 :- Header block name mismatch",
                    headerBlock.getLocalName().equals("echoOk"));
         assertTrue("SOAP 1.1 :- Header block name space uri mismatch",
@@ -427,11 +431,11 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
         // Use QNames to get the OMAttributes.
         QName actorQName = new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
                                      SOAP11Constants.ATTR_ACTOR);
-        mustUnderstandQName = new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
+        QName mustUnderstandQName = new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
                                         SOAP11Constants.ATTR_MUSTUNDERSTAND);
 
         OMAttribute actorAttribute = headerBlock.getAttribute(actorQName);
-        mustUnderstandAttribute = headerBlock.getAttribute(mustUnderstandQName);
+        OMAttribute mustUnderstandAttribute = headerBlock.getAttribute(mustUnderstandQName);
 
         assertTrue("SOAP 1.1 :- Mustunderstand attribute not found",
                    mustUnderstandAttribute != null);
@@ -455,22 +459,22 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                    actorAttribute.getNamespace().getNamespaceURI().equals(
                            SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
 
-        body = soap11Envelope.getBody();
+        SOAPBody body = soap11Envelope.getBody();
         assertTrue("SOAP 1.1 :- Body local name mismatch",
                    body.getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME));
         assertTrue("SOAP 1.1 :- Body namespace uri mismatch",
                    body.getNamespace().getNamespaceURI().equals(
                            SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
 
-        fault = body.getFault();
+        SOAPFault fault = body.getFault();
         assertTrue("SOAP 1.1 :- Fault namespace uri mismatch",
                    fault.getNamespace().getNamespaceURI().equals(
                            SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI));
 
-        iteratorInFault = fault.getChildren();
+        Iterator iteratorInFault = fault.getChildren();
 
         iteratorInFault.next();
-        code = (SOAPFaultCode) iteratorInFault.next();
+        SOAPFaultCode code = (SOAPFaultCode) iteratorInFault.next();
         assertEquals("SOAP Fault code local name mismatch",
                      code.getLocalName(),
                      (SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME));
@@ -479,7 +483,7 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                      "env:Sender");
 
         iteratorInFault.next();
-        reason = (SOAPFaultReason) iteratorInFault.next();
+        SOAPFaultReason reason = (SOAPFaultReason) iteratorInFault.next();
         assertTrue("SOAP 1.1 :- Fault string local name mismatch",
                    reason.getLocalName().equals(
                            SOAP11Constants.SOAP_FAULT_STRING_LOCAL_NAME));
@@ -487,7 +491,7 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                    reason.getText().trim().equals("Sender Timeout"));
 
         iteratorInFault.next();
-        role = (SOAPFaultRole) iteratorInFault.next();
+        SOAPFaultRole role = (SOAPFaultRole) iteratorInFault.next();
         assertTrue("SOAP 1.1 :- Fault actor local name mismatch",
                    role.getLocalName().equals(
                            SOAP11Constants.SOAP_FAULT_ACTOR_LOCAL_NAME));
@@ -496,17 +500,17 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                            "http://schemas.xmlsoap.org/soap/envelope/actor/ultimateReceiver"));
 
         iteratorInFault.next();
-        detail = (SOAPFaultDetail) iteratorInFault.next();
+        SOAPFaultDetail detail = (SOAPFaultDetail) iteratorInFault.next();
         assertTrue("SOAP 1.1 :- Fault detail local name mismatch",
                    detail.getLocalName().equals(
                            SOAP11Constants.SOAP_FAULT_DETAIL_LOCAL_NAME));
         assertTrue("SOAP 1.2 :- Text in detail mismatch",
                    detail.getText().trim().equals("Details of error"));
 
-        iteratorInDetail = detail.getChildren();
+        Iterator iteratorInDetail = detail.getChildren();
 
         iteratorInDetail.next();
-        element1 = (OMElement) iteratorInDetail.next();
+        OMElement element1 = (OMElement) iteratorInDetail.next();
         assertTrue("SOAP 1.1 :- MaxTime element mismatch",
                    element1.getLocalName().equals("MaxTime"));
         assertTrue("SOAP 1.1 :- MaxTime element namespace mismatch",
@@ -515,8 +519,8 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
         assertTrue("SOAP 1.1 :- Text value in MaxTime element mismatch",
                    element1.getText().trim().equals("P5M"));
 
-        attributeIterator = element1.getAllAttributes();
-        attributeInMaxTime = (OMAttribute) attributeIterator.next();
+        Iterator attributeIterator = element1.getAllAttributes();
+        OMAttribute attributeInMaxTime = (OMAttribute) attributeIterator.next();
         assertTrue("SOAP 1.1 :- Attribute local name mismatch",
                    attributeInMaxTime.getLocalName().equals("detail"));
         assertTrue("SOAP 1.1 :- Attribute namespace mismatch",
@@ -526,17 +530,17 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
                    attributeInMaxTime.getAttributeValue().equals("This is only a test"));
 
         iteratorInDetail.next();
-        element2 = (OMElement) iteratorInDetail.next();
+        OMElement element2 = (OMElement) iteratorInDetail.next();
         assertTrue("SOAP 1.1 :- AveTime element mismatch",
                    element2.getLocalName().equals("AveTime"));
         assertTrue("SOAP 1.1 :- AveTime element namespace mismatch",
                    element2.getNamespace().getNamespaceURI().equals(
                            "http:www.sample.org"));
 
-        iteratorInAveTimeElement = element2.getChildren();
+        Iterator iteratorInAveTimeElement = element2.getChildren();
 
         iteratorInAveTimeElement.next();
-        element21 = (OMElement) iteratorInAveTimeElement.next();
+        OMElement element21 = (OMElement) iteratorInAveTimeElement.next();
         assertTrue("SOAP 1.1 :- Time element mismatch",
                    element21.getLocalName().equals("Time"));
         assertTrue("SOAP 1.1 :- Time element namespace mismatch",
@@ -562,7 +566,6 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
         assertTrue("SOAP 1.1 :- Test element child value mismatch",
                    childOfTestElement.getText().trim().equals("This is only a test"));
         
-        soap12Parser.close();
         soap11Parser.close();
     }
 
