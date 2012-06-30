@@ -24,10 +24,10 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.soap.SOAPModelBuilder;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
@@ -68,8 +68,8 @@ public class CharacterEncodingTest extends TestCase {
 
         ByteArrayInputStream byteInStr = new ByteArrayInputStream(byteOutStr.toByteArray());
 
-        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(
-                StAXUtils.createXMLStreamReader(byteInStr, UTF_16), null);
+        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(
+                byteInStr, UTF_16);
 
         SOAPEnvelope resultEnv = builder.getSOAPEnvelope();
 

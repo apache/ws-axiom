@@ -21,7 +21,6 @@ package org.apache.axiom.soap.impl.llom.soap11;
 
 import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -29,10 +28,6 @@ public class SOAP11SerializerTest extends OMTestCase {
 
     public SOAP11SerializerTest(String testName) {
         super(testName);
-    }
-
-    protected StAXSOAPModelBuilder getOMBuilder(String fileName) throws Exception {
-        return super.getOMBuilder(fileName);
     }
 
     protected void setUp() throws Exception {

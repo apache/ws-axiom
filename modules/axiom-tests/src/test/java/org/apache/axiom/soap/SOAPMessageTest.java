@@ -29,8 +29,9 @@ public class SOAPMessageTest extends OMTestCase {
     }
 
     public void testSOAPMessageCreation() throws Exception {
-        StAXSOAPModelBuilder soapBuilder = getOMBuilder("");
-        SOAPMessage soapMessage = soapBuilder.getSoapMessage();
+        SOAPModelBuilder soapBuilder = getOMBuilder("");
+        // TODO: avoid cast here
+        SOAPMessage soapMessage = ((StAXSOAPModelBuilder)soapBuilder).getSoapMessage();
         assertNotNull(soapMessage);
         assertNotNull(soapMessage.getSOAPEnvelope());
     }

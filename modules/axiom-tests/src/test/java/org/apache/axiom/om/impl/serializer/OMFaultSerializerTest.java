@@ -21,40 +21,21 @@ package org.apache.axiom.om.impl.serializer;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-
-import javax.xml.stream.XMLStreamReader;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.soap.SOAPModelBuilder;
 
 public class OMFaultSerializerTest extends AbstractTestCase {
-    private XMLStreamReader reader1;
-    private XMLStreamReader reader2;
-
-    public OMFaultSerializerTest(String testName) {
-        super(testName);
-    }
-
-    protected void setUp() throws Exception {
-        reader1 = StAXUtils.createXMLStreamReader(getTestResource("soap/soap11/soapfault1.xml"));
-        reader2 = StAXUtils.createXMLStreamReader(getTestResource("soap/soap11/soapfault2.xml"));
-
-    }
-
-    protected void tearDown() throws Exception {
-        reader1.close();
-        reader2.close();
-    }
-
     /**
      * Test SOAPFault that does not disable the default namespace (i.e. does not use xmlns="")
      * 
      * @throws Exception
      */
     public void test1() throws Exception {
-        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(reader1, null);
+        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource("soap/soap11/soapfault1.xml"), null);
         OMElement ome = builder.getDocumentElement();
         ome.toString();
 //        System.out.println(ome);
+        builder.close();
     }
 
     /**
@@ -63,10 +44,11 @@ public class OMFaultSerializerTest extends AbstractTestCase {
      * @throws Exception
      */
     public void test2() throws Exception {
-        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(reader2, null);
+        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource("soap/soap11/soapfault2.xml"), null);
         OMElement ome = builder.getDocumentElement();
         ome.toString();
 //        System.out.println(ome);
+        builder.close();
     }
 }
     

@@ -19,15 +19,12 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-
-import javax.xml.stream.XMLStreamReader;
+import org.apache.axiom.soap.SOAPModelBuilder;
 
 public abstract class OMTestCase extends AbstractTestCase {
-    protected StAXSOAPModelBuilder builder;
+    protected SOAPModelBuilder builder;
     protected OMFactory ombuilderFactory;
     protected SOAPFactory soapFactory;
 
@@ -49,12 +46,11 @@ public abstract class OMTestCase extends AbstractTestCase {
         soapEnvelope.close(false);
     }
 
-    protected StAXSOAPModelBuilder getOMBuilder(String fileName) throws Exception {
+    protected SOAPModelBuilder getOMBuilder(String fileName) throws Exception {
         if ("".equals(fileName) || fileName == null) {
             fileName = TestConstants.SOAP_SOAPMESSAGE;
         }
-        XMLStreamReader parser = StAXUtils.createXMLStreamReader(getTestResource(fileName));
-        builder = new StAXSOAPModelBuilder(parser, null);
+        builder = OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource(fileName), null);
         return builder;
     }
 }

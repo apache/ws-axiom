@@ -32,7 +32,6 @@ import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -43,7 +42,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class OMSerializerTest extends AbstractTestCase {
-    private XMLStreamReader reader;
     private XMLStreamWriter writer;
     private File tempFile;
 
@@ -52,7 +50,6 @@ public class OMSerializerTest extends AbstractTestCase {
     }
 
     protected void setUp() throws Exception {
-        reader = StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
         tempFile = File.createTempFile("temp", "xml");
 //        writer =
 //                XMLOutputFactory.newInstance().
@@ -62,6 +59,7 @@ public class OMSerializerTest extends AbstractTestCase {
     }
 
     public void testRawSerializer() throws Exception {
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
@@ -75,8 +73,8 @@ public class OMSerializerTest extends AbstractTestCase {
     }
 
     public void testElementPullStream1() throws Exception {
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                reader);
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
+                getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -91,12 +89,13 @@ public class OMSerializerTest extends AbstractTestCase {
 
     public void testElementPullStream1WithCacheOff() throws Exception {
 
-        StAXSOAPModelBuilder soapBuilder = new StAXSOAPModelBuilder(reader, null);
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
+                getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream,
                 OMConstants.DEFAULT_CHAR_SET_ENCODING);
 
-        SOAPEnvelope env = (SOAPEnvelope) soapBuilder.getDocumentElement();
+        SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
         env.serializeAndConsume(writer);
         writer.flush();
 
@@ -124,8 +123,8 @@ public class OMSerializerTest extends AbstractTestCase {
     }
 
     public void testElementPullStream2() throws Exception {
-        OMXMLParserWrapper builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                reader);
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
+                getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
 
@@ -152,7 +151,7 @@ public class OMSerializerTest extends AbstractTestCase {
      */
     public void testElementPullStreamAndOMExpansion() throws Exception {
         // Create a reader sourced from a message containing an interesting payload
-        reader = StAXUtils.createXMLStreamReader(getTestResource("soap/OMElementTest.xml"));
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource("soap/OMElementTest.xml"));
         
         // Create a builder connected to the reader
         StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createStAXSOAPModelBuilder(
@@ -207,7 +206,7 @@ public class OMSerializerTest extends AbstractTestCase {
      */
     public void testElementPullStreamAndOMExpansion2() throws Exception {
         // Create a reader sourced from a message containing an interesting payload
-        reader = StAXUtils.createXMLStreamReader(getTestResource("soap/soapmessageWithXSI.xml"));
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource("soap/soapmessageWithXSI.xml"));
         
         // Create a builder connected to the reader
         StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createStAXSOAPModelBuilder(
@@ -258,7 +257,7 @@ public class OMSerializerTest extends AbstractTestCase {
      */
     public void testElementPullStreamAndOMExpansion3() throws Exception {
         // Create a reader sourced from a message containing an interesting payload
-        reader = StAXUtils.createXMLStreamReader(getTestResource("soap/noprettyprint.xml"));
+        XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource("soap/noprettyprint.xml"));
         
         // Create a builder connected to the reader
         StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createStAXSOAPModelBuilder(
@@ -314,7 +313,7 @@ public class OMSerializerTest extends AbstractTestCase {
         final String USR_URI = "http://ws.apache.org/axis2/user";
         final String USR_DEF = "xmlns:usr";
         
-        reader =
+        XMLStreamReader reader =
             XMLInputFactory.newInstance()
                            .createXMLStreamReader(getTestResource("soap/soapmessageWithXSI.xml"));
         OMXMLParserWrapper builder =
@@ -346,7 +345,7 @@ public class OMSerializerTest extends AbstractTestCase {
         final String USR_URI = "http://ws.apache.org/axis2/user";
         final String USR_DEF = "xmlns:usr";
         
-        reader =
+        XMLStreamReader reader =
             XMLInputFactory.newInstance()
                            .createXMLStreamReader(getTestResource("soap/soapmessageWithXSI.xml"));
         OMXMLParserWrapper builder =
@@ -371,7 +370,6 @@ public class OMSerializerTest extends AbstractTestCase {
     }
 
     protected void tearDown() throws Exception {
-        reader.close();
         tempFile.delete();
     }
 }

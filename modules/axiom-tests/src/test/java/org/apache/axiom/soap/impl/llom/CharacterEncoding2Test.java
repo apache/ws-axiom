@@ -20,9 +20,9 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.custommonkey.xmlunit.XMLTestCase;
 
 import java.io.ByteArrayInputStream;
@@ -49,8 +49,8 @@ public class CharacterEncoding2Test extends XMLTestCase {
     public void testISO99591() throws Exception {
         ByteArrayInputStream byteInStr = new ByteArrayInputStream(xml.getBytes("iso-8859-1"));
 
-        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(
-                StAXUtils.createXMLStreamReader(byteInStr));
+        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(
+                byteInStr, null);
 
         SOAPEnvelope envelope = builder.getSOAPEnvelope();
         envelope.build();

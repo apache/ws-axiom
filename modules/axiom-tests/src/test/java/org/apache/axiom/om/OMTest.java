@@ -19,11 +19,8 @@
 
 package org.apache.axiom.om;
 
-import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
-import javax.xml.stream.XMLStreamReader;
 import java.util.Iterator;
 
 /** This test case tests the basic expectations of the engine from the OM. */
@@ -36,9 +33,8 @@ public class OMTest extends AbstractTestCase {
     }
 
     protected void setUp() throws Exception {
-        XMLStreamReader parser = StAXUtils.createXMLStreamReader(
-                getTestResource(TestConstants.SAMPLE1));
-        OMXMLParserWrapper builder = new StAXSOAPModelBuilder(parser, null);
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
+                getTestResource(TestConstants.SAMPLE1), null);
         envelope = (SOAPEnvelope) builder.getDocumentElement();
     }
 

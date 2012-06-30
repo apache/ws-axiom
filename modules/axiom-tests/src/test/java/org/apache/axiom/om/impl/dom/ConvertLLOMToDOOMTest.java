@@ -24,14 +24,11 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.soap.SOAPModelBuilder;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
 
 /** This test will test the conversion of a LLOM soap envelope to DOOM */
@@ -85,17 +82,15 @@ public class ConvertLLOMToDOOMTest extends TestCase {
                 "      </soapenv:Body>\n" +
                 "   </soapenv:Envelope>";
 
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(
-                new ByteArrayInputStream(origXML.getBytes()));
-        StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(reader, null);
+        SOAPModelBuilder builder = OMXMLBuilderFactory.createSOAPModelBuilder(new ByteArrayInputStream(origXML.getBytes()), null);
 
         SOAPEnvelope env = builder.getSOAPEnvelope();
 
         env.build();
 
-        StAXSOAPModelBuilder doomBuilder = new StAXSOAPModelBuilder(env.getXMLStreamReader(),
-                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getSOAP11Factory(),
-                                                                    SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        SOAPModelBuilder doomBuilder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
+                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM),
+                env.getXMLStreamReader());
 
         SOAPEnvelope doomEnv = doomBuilder.getSOAPEnvelope();
 
@@ -121,9 +116,9 @@ public class ConvertLLOMToDOOMTest extends TestCase {
         fac.createOMElement(new QName("http://test.org", "Test"), env.getBody());
         env.build();
 
-        StAXSOAPModelBuilder doomBuilder = new StAXSOAPModelBuilder(env.getXMLStreamReader(),
-                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM).getSOAP11Factory(),
-                                                                    SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        SOAPModelBuilder doomBuilder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(
+                OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM),
+                env.getXMLStreamReader());
 
         SOAPEnvelope doomEnv = doomBuilder.getSOAPEnvelope();
 
