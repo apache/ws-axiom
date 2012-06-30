@@ -839,6 +839,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.addChild(omNode);
     }
 
+    public void addChild(OMNode omNode, boolean fromBuilder) {
+        forceExpand();
+        super.addChild(omNode, fromBuilder);
+    }
+
     public Iterator getChildrenWithName(QName elementQName) {
         forceExpand();
         return super.getChildrenWithName(elementQName);
@@ -876,6 +881,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     public OMNode getFirstOMChildIfAvailable() {
         return super.getFirstOMChildIfAvailable();
+    }
+
+    public OMNode getLastKnownOMChild() {
+        return super.getLastKnownOMChild();
     }
 
     public void buildNext() {

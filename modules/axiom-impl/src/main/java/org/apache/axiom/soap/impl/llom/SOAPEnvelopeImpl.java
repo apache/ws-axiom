@@ -112,7 +112,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
      * Add a SOAPHeader or SOAPBody object
      * @param child an OMNode to add - must be either a SOAPHeader or a SOAPBody
      */
-    public void addChild(OMNode child) {
+    public void addChild(OMNode child, boolean fromBuilder) {
         // SOAP 1.1 allows for arbitrary elements after SOAPBody so do NOT check for
         // node types when appending to SOAP 1.1 envelope.
         if (getVersion() instanceof SOAP12Version) {
@@ -149,7 +149,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
                 }
             }
         }
-        super.addChild(child);        
+        super.addChild(child, fromBuilder);        
     }
     
     /**

@@ -22,6 +22,7 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.OMContainerEx;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
@@ -29,7 +30,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 public class DocumentFragmentImpl extends RootNode implements
-        DocumentFragment {
+        DocumentFragment, OMContainerEx {
 
     private ParentNode ownerNode;
     

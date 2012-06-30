@@ -20,6 +20,7 @@
 package org.apache.axiom.soap.impl.builder;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.exception.OMBuilderException;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -144,9 +145,9 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
             int token = parser.next();
             while (token != XMLStreamReader.END_ELEMENT) {
                 if (token == XMLStreamReader.CHARACTERS) {
-                    factory.createOMText(value, parser.getText());
+                    factory.createOMText(value, parser.getText(), OMNode.TEXT_NODE, true);
                 } else if (token == XMLStreamReader.CDATA) {
-                    factory.createOMText(value, parser.getText());
+                    factory.createOMText(value, parser.getText(), OMNode.TEXT_NODE, true);
                 } else {
                     throw new SOAPProcessingException(
                     "Only Characters are allowed here");

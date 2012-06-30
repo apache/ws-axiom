@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.OMContainerEx;
@@ -45,7 +44,6 @@ import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMElementImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.jaxp.OMSource;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
@@ -120,7 +118,7 @@ public class OMElementImpl extends OMNodeImpl
         this.builder = builder;
         this.done = builder == null;
         if (parent != null) {
-            parent.addChild(this);
+            ((OMContainerEx)parent).addChild(this, builder != null);
         }
         this.ns = generateNSDecl ? handleNamespace(ns) : ns;
     }
@@ -219,18 +217,13 @@ public class OMElementImpl extends OMNodeImpl
         }
     }
 
-    /**
-     * Adds child to the element. One can decide whether to append the child or to add to the front
-     * of the children list.
-     */
-    public void addChild(OMNode child) {
-        if (child.getOMFactory() instanceof OMLinkedListImplFactory) {
-            addChild((OMNodeImpl) child);
-        } else {
-            addChild(importNode(child));
-        }
+    public void addChild(OMNode omNode) {
+        addChild(omNode, false);
     }
 
+    public void addChild(OMNode omNode, boolean fromBuilder) {
+        OMContainerHelper.addChild(this, omNode, fromBuilder);
+    }
 
     /**
      * Searches for children with a given QName and returns an iterator to traverse through the
@@ -292,45 +285,6 @@ public class OMElementImpl extends OMNodeImpl
 
         return ((omNode != null) && (OMNode.ELEMENT_NODE == omNode.getType())) ?
                 (OMElement) omNode : null;
-
-    }
-
-    /** Method addChild. */
-    private void addChild(OMNodeImpl child) {
-        if (child.parent == this && child == lastChild && done) {
-            // The child is already the last node. 
-            // We don't need to detach and re-add it.
-        } else {
-            // Normal Case
-            
-            if (child.parent != null) {
-                child.detach();
-            }
-            
-            child.setParent(this);
-
-            if (firstChild == null) {
-                firstChild = child;
-                child.previousSibling = null;
-            } else {
-                child.previousSibling = (OMNodeImpl) lastChild;
-                ((OMNodeImpl) lastChild).nextSibling = child;
-            }
-
-            child.nextSibling = null;
-            lastChild = child;
-        }
-
-        // For a normal OMNode, the incomplete status is
-        // propogated up the tree.  
-        // However, a OMSourcedElement is self-contained 
-        // (it has an independent parser source).
-        // So only propogate the incomplete setting if this
-        // is a normal OMNode
-        if (!child.isComplete() && 
-            !(child instanceof OMSourcedElement)) {
-            this.setComplete(false);
-        }
 
     }
 
@@ -696,6 +650,9 @@ public class OMElementImpl extends OMNodeImpl
         return firstChild;
     }
 
+    public OMNode getLastKnownOMChild() {
+        return lastChild;
+    }
 
     /** Method setFirstChild. */
     public void setFirstChild(OMNode firstChild) {

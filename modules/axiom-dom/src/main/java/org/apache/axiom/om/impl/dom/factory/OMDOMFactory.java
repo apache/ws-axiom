@@ -36,7 +36,9 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
@@ -194,6 +196,10 @@ public class OMDOMFactory implements OMFactoryEx {
     }
 
     public OMText createOMText(OMContainer parent, String text, int type) {
+        return createOMText(parent, text, type, false);
+    }
+    
+    public OMText createOMText(OMContainer parent, String text, int type, boolean fromBuilder) {
         if (parent == null) {
             return createOMText(text, type);
         } else if (parent instanceof DocumentImpl) {
@@ -206,7 +212,7 @@ public class OMDOMFactory implements OMFactoryEx {
             } else {
                 txt = new TextImpl(text, type, this);
             }
-            parent.addChild(txt);
+            ((OMContainerEx)parent).addChild(txt, fromBuilder);
             return txt;
         }
     }
@@ -263,7 +269,16 @@ public class OMDOMFactory implements OMFactoryEx {
      * @see org.apache.axiom.om.OMFactory#createOMText(Object, boolean)
      */
     public OMText createOMText(Object dataHandler, boolean optimize) {
-        return new TextImpl(dataHandler, optimize, this);
+        return createOMText(null, dataHandler, optimize, false);
+    }
+
+    public OMText createOMText(OMContainer parent, Object dataHandler, boolean optimize,
+            boolean fromBuilder) {
+        TextImpl text = new TextImpl(dataHandler, optimize, this);
+        if (parent != null) {
+            ((OMContainerEx)parent).addChild(text, fromBuilder);
+        }
+        return text;
     }
 
     public OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
@@ -298,33 +313,103 @@ public class OMDOMFactory implements OMFactoryEx {
     }
 
     public OMDocType createOMDocType(OMContainer parent, String content) {
+        return createOMDocType(parent, content, false);
+    }
+    
+    public OMDocType createOMDocType(OMContainer parent, String content, boolean fromBuilder) {
         DocumentTypeImpl docType = new DocumentTypeImpl(this);
         docType.setValue(content);
         if (parent != null) {
-            parent.addChild(docType);
+            ((OMContainerEx)parent).addChild(docType, fromBuilder);
         }
         return docType;
     }
 
     public OMProcessingInstruction createOMProcessingInstruction(
             OMContainer parent, String piTarget, String piData) {
+        return createOMProcessingInstruction(parent, piTarget, piData, false);
+    }
+    
+    public OMProcessingInstruction createOMProcessingInstruction(
+            OMContainer parent, String piTarget, String piData, boolean fromBuilder) {
         ProcessingInstructionImpl pi =
             new ProcessingInstructionImpl(piTarget, piData, this);
         if (parent != null) {
-            parent.addChild(pi);
+            ((OMContainerEx)parent).addChild(pi, fromBuilder);
         }
         return pi;
     }
 
     public OMComment createOMComment(OMContainer parent, String content) {
+        return createOMComment(parent, content, false);
+    }
+    
+    public OMComment createOMComment(OMContainer parent, String content, boolean fromBuilder) {
         CommentImpl comment = new CommentImpl(content, this);
         if (parent != null) {
-            parent.addChild(comment);
+            ((OMContainerEx)parent).addChild(comment, fromBuilder);
         }
         return comment;
     }
 
     public OMDocument createOMDocument(OMXMLParserWrapper builder) {
         return new DocumentImpl(builder, this);
+    }
+
+    /**
+     * This method is intended only to be used by Axiom intenals when merging Objects from different
+     * Axiom implementations to the DOOM implementation.
+     *
+     * @param child
+     */
+    public OMNode importNode(OMNode child) {
+        int type = child.getType();
+        switch (type) {
+            case (OMNode.ELEMENT_NODE): {
+                OMElement childElement = (OMElement) child;
+                OMElement newElement = (new StAXOMBuilder(this,
+                                                          childElement.getXMLStreamReader()))
+                        .getDocumentElement();
+                newElement.build();
+                return newElement;
+            }
+            case (OMNode.TEXT_NODE): {
+                OMText importedText = (OMText) child;
+                OMText newText;
+                if (importedText.isBinary()) {
+                    boolean isOptimize = importedText.isOptimized();
+                    newText = createOMText(importedText
+                            .getDataHandler(), isOptimize);
+                } else if (importedText.isCharacters()) {
+                    newText = new TextImpl(importedText.getTextCharacters(), this);
+                } else {
+                    newText = new TextImpl(importedText.getText(), this);
+                }
+                return newText;
+            }
+
+            case (OMNode.PI_NODE): {
+                OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
+                OMProcessingInstruction newPI =
+                        createOMProcessingInstruction(null, importedPI.getTarget(),
+                                                       importedPI.getValue());
+                return newPI;
+            }
+            case (OMNode.COMMENT_NODE): {
+                OMComment importedComment = (OMComment) child;
+                OMComment newComment = createOMComment(null, importedComment.getValue());
+                newComment = new CommentImpl(importedComment.getValue(), this);
+                return newComment;
+            }
+            case (OMNode.DTD_NODE): {
+                OMDocType importedDocType = (OMDocType) child;
+                OMDocType newDocType = createOMDocType(null, importedDocType.getValue());
+                return newDocType;
+            }
+            default: {
+                throw new UnsupportedOperationException(
+                        "Not Implemented Yet for the given node type");
+            }
+        }
     }
 }

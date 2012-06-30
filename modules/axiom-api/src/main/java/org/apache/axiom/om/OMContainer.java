@@ -46,10 +46,10 @@ public interface OMContainer extends OMSerializable {
     OMXMLParserWrapper getBuilder();
 
     /**
-     * Adds the given node as the last child. One must preserve the order of children, in this
-     * operation. Tip : appending the new child is preferred.
-     *
+     * Adds the given node as the last child of this container.
+     * 
      * @param omNode
+     *            the node to be added to this container
      */
     // TODO: specify whether the node is removed from its original location
     // TODO: specify what happens if the node has been created by a foreign OMFactory

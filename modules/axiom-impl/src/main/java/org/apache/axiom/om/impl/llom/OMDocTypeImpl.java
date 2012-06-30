@@ -38,18 +38,9 @@ public class OMDocTypeImpl extends OMLeafNode implements OMDocType {
      * @param contentText
      */
     public OMDocTypeImpl(OMContainer parentNode, String contentText,
-                         OMFactory factory) {
-        super(parentNode, factory);
+                         OMFactory factory, boolean fromBuilder) {
+        super(parentNode, factory, fromBuilder);
         this.value = contentText;
-    }
-
-    /**
-     * Constructor OMDocTypeImpl.
-     *
-     * @param parentNode
-     */
-    public OMDocTypeImpl(OMContainer parentNode, OMFactory factory) {
-        this(parentNode, null, factory);
     }
 
     public final int getType() {

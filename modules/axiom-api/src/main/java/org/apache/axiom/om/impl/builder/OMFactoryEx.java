@@ -18,10 +18,15 @@
  */
 package org.apache.axiom.om.impl.builder;
 
+import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 
 /**
@@ -39,4 +44,17 @@ public interface OMFactoryEx extends OMFactory {
      */
     OMElement createOMElement(String localName, OMContainer parent,
                                      OMXMLParserWrapper builder);
+
+    OMText createOMText(OMContainer parent, Object dataHandler, boolean optimize, boolean fromBuilder);
+    
+    OMText createOMText(OMContainer parent, String text, int type, boolean fromBuilder);
+    
+    OMComment createOMComment(OMContainer parent, String content, boolean fromBuilder);
+    
+    OMDocType createOMDocType(OMContainer parent, String content, boolean fromBuilder);
+    
+    OMProcessingInstruction createOMProcessingInstruction(OMContainer parent,
+            String piTarget, String piData, boolean fromBuilder);
+    
+    OMNode importNode(OMNode child);
 }

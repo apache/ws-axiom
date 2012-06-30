@@ -24,12 +24,10 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
@@ -110,16 +108,12 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
     }
 
     public OMElement getOMDocumentElement() {
-        return getOMDocumentElement(true);
-    }
-
-    private OMElement getOMDocumentElement(boolean build) {
-        OMNode child = build ? getFirstOMChild() : getFirstOMChildIfAvailable();
+        OMNode child = getFirstOMChild();
         while (child != null) {
             if (child instanceof OMElement) {
                 return (OMElement)child;
             }
-            child = build ? child.getNextOMSibling() : ((OMNodeEx)child).getNextOMSiblingIfAvailable();
+            child = child.getNextOMSibling();
         }
         return null;
     }
@@ -155,45 +149,15 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
         this.done = state;
     }
 
-    /**
-     * Adds child to the element. One can decide whether to append the child or to add to the front
-     * of the children list.
-     *
-     * @param child
-     */
     public void addChild(OMNode child) {
-        if (child instanceof OMElement) {
-            if (getOMDocumentElement(false) == null) {
-                addChild((OMNodeImpl) child);
-            } else {
-                throw new OMException("Document element already exists");
-            }
-        } else {
-            addChild((OMNodeImpl) child);
-        }
+        addChild(child, false);
     }
 
-    /**
-     * Method addChild.
-     *
-     * @param child
-     */
-    private void addChild(OMNodeImpl child) {
-        if (firstChild == null) {
-            firstChild = child;
-            child.setPreviousOMSibling(null);
-        } else {
-            child.setPreviousOMSibling(lastChild);
-            ((OMNodeEx) lastChild).setNextOMSibling(child);
+    public void addChild(OMNode omNode, boolean fromBuilder) {
+        if (!fromBuilder && omNode instanceof OMElement && getOMDocumentElement() != null) {
+            throw new OMException("Document element already exists");
         }
-        child.setNextOMSibling(null);
-        child.setParent(this);
-        lastChild = child;
-
-        if (!child.isComplete() && 
-            !(child instanceof OMSourcedElement)) {
-            this.setComplete(false);
-        }
+        OMContainerHelper.addChild(this, omNode, fromBuilder);
     }
 
     /**
@@ -247,6 +211,10 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
 
     public OMNode getFirstOMChildIfAvailable() {
         return firstChild;
+    }
+
+    public OMNode getLastKnownOMChild() {
+        return lastChild;
     }
 
     /**

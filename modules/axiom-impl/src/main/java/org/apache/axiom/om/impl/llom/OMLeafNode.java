@@ -22,12 +22,13 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.OMContainerEx;
 
 public abstract class OMLeafNode extends OMNodeImpl {
-    public OMLeafNode(OMContainer parent, OMFactory factory) {
+    public OMLeafNode(OMContainer parent, OMFactory factory, boolean fromBuilder) {
         super(factory);
         if (parent != null) {
-            parent.addChild(this);
+            ((OMContainerEx)parent).addChild(this, fromBuilder);
         }
     }
 

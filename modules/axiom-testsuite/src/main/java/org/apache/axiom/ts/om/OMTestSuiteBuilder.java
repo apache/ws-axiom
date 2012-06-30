@@ -101,6 +101,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
                 }
             }
         }
+        addTest(new org.apache.axiom.ts.om.document.TestAddChildIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest1.xml", "MD5", "3e5d68c6607bc56c9c171560e4f19db9"));
         addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest2.xml", "SHA1", "3c47a807517d867d42ffacb2d3e9da81895d5aac"));
         addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest3.xml", "SHA", "41466144c1cab4234fb127cfb8cf92f9"));
@@ -128,6 +129,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestAddAttributeWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChild2(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestAddChildIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChildWithParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestAddChildWithSameParent(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.TestAddChildWithSameParent(metaFactory, false));

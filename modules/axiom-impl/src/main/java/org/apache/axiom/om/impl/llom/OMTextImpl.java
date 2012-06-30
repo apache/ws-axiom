@@ -86,7 +86,7 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
      *                 Constants for this can be found in OMNode.
      */
     public OMTextImpl(String s, int nodeType, OMFactory factory) {
-        this(null, s, nodeType, factory);
+        this(null, s, nodeType, factory, false);
     }
 
     /**
@@ -96,7 +96,7 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
      * @param text
      */
     public OMTextImpl(OMContainer parent, String text, OMFactory factory) {
-        this(parent, text, TEXT_NODE, factory);
+        this(parent, text, TEXT_NODE, factory, false);
     }
     
     /**
@@ -106,7 +106,7 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
      * @param factory
      */
     public OMTextImpl(OMContainer parent, OMTextImpl source, OMFactory factory) {
-        super(parent, factory);
+        super(parent, factory, false);
         // Copy the value of the text
         this.value = source.value;
         this.nodeType = source.nodeType;
@@ -134,15 +134,15 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
     }
 
     public OMTextImpl(OMContainer parent, String text, int nodeType,
-                      OMFactory factory) {
-        super(parent, factory);
+                      OMFactory factory, boolean fromBuilder) {
+        super(parent, factory, fromBuilder);
         this.value = text == null ? EMTPY_STRING : text;
         this.nodeType = nodeType;
     }
 
     public OMTextImpl(OMContainer parent, char[] charArray, int nodeType,
                       OMFactory factory) {
-        super(parent, factory);
+        super(parent, factory, false);
         this.charArray = charArray;
         this.nodeType = nodeType;
     }
@@ -154,7 +154,7 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
 
     public OMTextImpl(OMContainer parent, QName text, int nodeType,
                       OMFactory factory) {
-        super(parent, factory);
+        super(parent, factory, false);
         if (text == null) throw new IllegalArgumentException("QName text arg cannot be null!");
         this.calcNS = true;
         this.textNS =
@@ -188,15 +188,15 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
 
     /** @param dataHandler To send binary optimised content Created programatically. */
     public OMTextImpl(Object dataHandler, OMFactory factory) {
-        this(dataHandler, true, factory);
+        this(null, dataHandler, true, factory, false);
     }
 
     /**
      * @param dataHandler
      * @param optimize    To send binary content. Created progrmatically.
      */
-    public OMTextImpl(Object dataHandler, boolean optimize, OMFactory factory) {
-        super(factory);
+    public OMTextImpl(OMContainer parent, Object dataHandler, boolean optimize, OMFactory factory, boolean fromBuilder) {
+        super(parent, factory, fromBuilder);
         this.dataHandlerObject = dataHandler;
         this.isBinary = true;
         this.optimize = optimize;

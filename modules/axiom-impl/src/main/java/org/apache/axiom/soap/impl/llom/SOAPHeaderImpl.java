@@ -174,7 +174,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     }
 
     
-    public void addChild(OMNode child) {
+    public void addChild(OMNode child, boolean fromBuilder) {
         
         // Make sure a proper element is added.  The children of a SOAPHeader should be
         // SOAPHeaderBlock objects.
@@ -189,7 +189,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
                 log.debug(exceptionToString(e));
             }
         }
-        super.addChild(child);
+        super.addChild(child, fromBuilder);
     }
     
     public static String exceptionToString(Throwable e) {

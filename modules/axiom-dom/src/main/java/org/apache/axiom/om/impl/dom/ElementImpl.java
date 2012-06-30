@@ -111,7 +111,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         this.builder = builder;
         this.done = builder == null;
         if (parentNode != null) {
-            parentNode.addChild(this);
+            parentNode.addChild(this, builder != null);
         }
         this.attributes = new AttributeMap(this);
         namespace = generateNSDecl ? handleNamespace(ns) : ns;

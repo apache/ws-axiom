@@ -68,6 +68,6 @@ public class SOAP12FaultReasonImpl extends SOAPFaultReasonImpl {
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
-        return new SOAP12FaultReasonImpl(targetParent, namespace, builder, factory, generateNSDecl);
+        return new SOAP12FaultReasonImpl(targetParent, namespace, null, factory, generateNSDecl);
     }
 }

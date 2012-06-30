@@ -94,6 +94,6 @@ public class SOAP11FaultReasonImpl extends SOAPFaultReasonImpl {
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
-        return new SOAP11FaultReasonImpl(targetParent, namespace, builder, factory, generateNSDecl);
+        return new SOAP11FaultReasonImpl(targetParent, namespace, null, factory, generateNSDecl);
     }
 }

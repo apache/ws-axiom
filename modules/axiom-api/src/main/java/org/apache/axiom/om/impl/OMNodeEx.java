@@ -27,10 +27,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Interface OMNodeEx
- * <p/>
- * Internal Implementation detail. Adding special interface to stop folks from accidently using
- * OMNode. Please use at your own risk. May corrupt the data integrity.
+ * Interface that is used internally by Axiom and that should not be considered being part of the
+ * public API.
  */
 public interface OMNodeEx extends OMNode {
     public void setNextOMSibling(OMNode node);

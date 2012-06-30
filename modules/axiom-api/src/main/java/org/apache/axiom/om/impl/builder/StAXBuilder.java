@@ -271,12 +271,11 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                     throw new OMException(ex);
                 }
             }
-            OMText text = omfactory.createOMText(dataHandlerObject, dataHandlerReader.isOptimized());
+            OMText text = omfactory.createOMText(omContainer, dataHandlerObject, dataHandlerReader.isOptimized(), true);
             String contentID = dataHandlerReader.getContentID();
             if (contentID != null) {
                 text.setContentID(contentID);
             }
-            omContainer.addChild(text);
             return text;
         } else {
             // Some parsers (like Woodstox) parse text nodes lazily and may throw a
@@ -288,7 +287,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                 parserException = ex;
                 throw ex;
             }
-            return omfactory.createOMText(omContainer, text, textType);
+            return omfactory.createOMText(omContainer, text, textType, true);
         }
     }
 

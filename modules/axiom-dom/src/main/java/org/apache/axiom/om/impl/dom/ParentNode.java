@@ -20,31 +20,25 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
+import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
 import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDescendantsIterator;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -73,11 +67,11 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     }
     
     public void addChild(OMNode omNode) {
-        if (omNode.getOMFactory() instanceof OMDOMFactory) {
-            insertBefore((Node)omNode, null, false);
-        } else {
-            addChild(importNode(omNode));
-        }
+        addChild(omNode, false);
+    }
+
+    public void addChild(OMNode omNode, boolean fromBuilder) {
+        OMContainerHelper.addChild((OMContainerEx)this, omNode, fromBuilder);
     }
 
     public void buildNext() {
@@ -148,6 +142,10 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
 
     public OMNode getFirstOMChildIfAvailable() {
         return (OMNode)firstChild;
+    }
+
+    public OMNode getLastKnownOMChild() {
+        return (OMNode)lastChild;
     }
 
     public void setFirstChild(OMNode omNode) {
@@ -516,68 +514,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     
     abstract ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing);
 
-    /**
-     * This method is intended only to be used by Axiom intenals when merging Objects from different
-     * Axiom implementations to the DOOM implementation.
-     *
-     * @param child
-     */
-    protected OMNode importNode(OMNode child) {
-        int type = child.getType();
-        switch (type) {
-            case (OMNode.ELEMENT_NODE): {
-                OMElement childElement = (OMElement) child;
-                OMElement newElement = (new StAXOMBuilder(this.factory,
-                                                          childElement.getXMLStreamReader()))
-                        .getDocumentElement();
-                newElement.build();
-                return (OMNode)ownerDocument().importNode((Element) newElement,
-                                                          true);
-            }
-            case (OMNode.TEXT_NODE): {
-                OMText importedText = (OMText) child;
-                OMText newText;
-                if (importedText.isBinary()) {
-                    boolean isOptimize = importedText.isOptimized();
-                    newText = this.factory.createOMText(importedText
-                            .getDataHandler(), isOptimize);
-                } else if (importedText.isCharacters()) {
-                    newText = new TextImpl(importedText.getTextCharacters(), this.factory);
-                } else {
-                    newText = new TextImpl(importedText.getText(), this.factory);
-                }
-                return newText;
-            }
-
-            case (OMNode.PI_NODE): {
-                OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
-                OMProcessingInstruction newPI = this.factory
-                        .createOMProcessingInstruction((OMContainer)this,
-                                                       importedPI.getTarget(),
-                                                       importedPI.getValue());
-                return newPI;
-            }
-            case (OMNode.COMMENT_NODE): {
-                OMComment importedComment = (OMComment) child;
-                OMComment newComment = this.factory.createOMComment((OMContainer)this,
-                                                                    importedComment.getValue());
-                newComment = new CommentImpl(importedComment.getValue(),
-                                             this.factory);
-                return newComment;
-            }
-            case (OMNode.DTD_NODE): {
-                OMDocType importedDocType = (OMDocType) child;
-                OMDocType newDocType = this.factory.createOMDocType((OMContainer)this,
-                                                                    importedDocType.getValue());
-                return newDocType;
-            }
-            default: {
-                throw new UnsupportedOperationException(
-                        "Not Implemented Yet for the given node type");
-            }
-        }
-    }
-    
     public String getTextContent() throws DOMException {
         Node child = getFirstChild();
         if (child != null) {

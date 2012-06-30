@@ -235,9 +235,9 @@ public abstract class SOAPBodyImpl extends SOAPElement
         }
     }
 
-    public void addChild(OMNode child) {
+    public void addChild(OMNode child, boolean fromBuilder) {
         this.enableLookAhead = false;
-        super.addChild(child);
+        super.addChild(child, fromBuilder);
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {

@@ -23,10 +23,8 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 
 /**
- * Interface OMContainerEx
- * <p/>
- * Internal Implementation detail. Adding special interface to stop folks from accidently using
- * OMContainer. Please use at your own risk. May corrupt the data integrity.
+ * Interface that is used internally by Axiom and that should not be considered being part of the
+ * public API.
  */
 public interface OMContainerEx extends OMContainer {
     public void setComplete(boolean state);
@@ -54,4 +52,8 @@ public interface OMContainerEx extends OMContainer {
      *         the builder has not yet started to build the first child
      */
     public OMNode getFirstOMChildIfAvailable();
+    
+    public OMNode getLastKnownOMChild();
+    
+    public void addChild(OMNode omNode, boolean fromBuilder);
 }

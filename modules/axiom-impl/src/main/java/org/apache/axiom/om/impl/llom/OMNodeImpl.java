@@ -23,18 +23,13 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 /** Class OMNodeImpl */
@@ -121,7 +116,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
         if (node == null || node.getOMFactory() instanceof OMLinkedListImplFactory) {
             this.nextSibling = (OMNodeImpl) node;
         } else {
-            this.nextSibling = (OMNodeImpl) importNode(node);
+            this.nextSibling = (OMNodeImpl) ((OMFactoryEx)factory).importNode(node);
         }
         this.nextSibling = (OMNodeImpl) node;
     }
@@ -234,7 +229,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
                 previousSibling.getOMFactory() instanceof OMLinkedListImplFactory) {
             this.previousSibling = (OMNodeImpl) previousSibling;
         } else {
-            this.previousSibling = (OMNodeImpl) importNode(previousSibling);
+            this.previousSibling = (OMNodeImpl) ((OMFactoryEx)factory).importNode(previousSibling);
         }
     }
 
@@ -249,60 +244,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
     public void buildWithAttachments() {
         if (!isComplete()) {
             this.build();
-        }
-    }
-
-    /**
-     * This method is intended only to be used by Axiom intenals when merging Objects from different
-     * Axiom implementations to the LLOM implementation.
-     *
-     * @param child
-     */
-    protected OMNode importNode(OMNode child) {
-        int type = child.getType();
-        switch (type) {
-            case (OMNode.ELEMENT_NODE): {
-                OMElement childElement = (OMElement) child;
-                OMElement newElement = (new StAXOMBuilder(this.factory, childElement
-                        .getXMLStreamReader())).getDocumentElement();
-                newElement.buildWithAttachments();
-                return newElement;
-            }
-            case (OMNode.TEXT_NODE): {
-                OMText importedText = (OMText) child;
-                OMText newText;
-                if (importedText.isBinary()) {
-                    boolean isOptimize = importedText.isOptimized();
-                    newText = this.factory.createOMText(importedText
-                            .getDataHandler(), isOptimize);
-                } else if (importedText.isCharacters()) {
-                    newText = this.factory.createOMText(null, importedText
-                            .getTextCharacters(), importedText.getType());
-                } else {
-                    newText = this.factory.createOMText(null, importedText
-                            .getText()/*, importedText.getOMNodeType()*/);
-                }
-                return newText;
-            }
-
-            case (OMNode.PI_NODE): {
-                OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
-                return factory.createOMProcessingInstruction(null,
-                                                                  importedPI.getTarget(),
-                                                                  importedPI.getValue());
-            }
-            case (OMNode.COMMENT_NODE): {
-                OMComment importedComment = (OMComment) child;
-                return factory.createOMComment(null, importedComment.getValue());
-            }
-            case (OMNode.DTD_NODE) : {
-                OMDocType importedDocType = (OMDocType) child;
-                return factory.createOMDocType(null, importedDocType.getValue());
-            }
-            default: {
-                throw new UnsupportedOperationException(
-                        "Not Implemented Yet for the given node type");
-            }
         }
     }
 

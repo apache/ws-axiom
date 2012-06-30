@@ -40,20 +40,10 @@ public class OMProcessingInstructionImpl extends OMLeafNode implements OMProcess
      * @param value
      */
     public OMProcessingInstructionImpl(OMContainer parentNode, String target,
-                                       String value, OMFactory factory) {
-        super(parentNode, factory);
+                                       String value, OMFactory factory, boolean fromBuilder) {
+        super(parentNode, factory, fromBuilder);
         this.target = target;
         this.value = value;
-    }
-
-    /**
-     * Constructor OMProcessingInstructionImpl.
-     *
-     * @param parentNode
-     */
-    public OMProcessingInstructionImpl(OMContainer parentNode,
-                                       OMFactory factory) {
-        this(parentNode, null, null, factory);
     }
 
     public final int getType() {

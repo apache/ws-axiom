@@ -341,7 +341,20 @@ public class StAXOMBuilder extends StAXBuilder {
         } else {
             parent = document;
         }
+        
+        // TODO: dirty hack part 1
+        // The custom builder will use addNode to insert the new node into the tree. However,
+        // addNode is expected to always add the new child at the end and will attempt to
+        // build the parent node. We temporarily set complete to true to avoid this.
+        // There is really an incompatibility between the contract of addNode and the
+        // custom builder API. This should be fixed in Axiom 1.3.
+        ((OMContainerEx)parent).setComplete(true);
+        
         OMNode node = customBuilder.create(namespace, localPart, parent, parser, factory);
+        
+        // TODO: dirty hack part 2
+        ((OMContainerEx)parent).setComplete(false);
+        
         if (log.isDebugEnabled()) {
             if (node != null) {
                 log.debug("The CustomBuilder, " + customBuilder.toString() + 
@@ -471,11 +484,11 @@ public class StAXOMBuilder extends StAXBuilder {
     protected OMNode createComment() throws OMException {
         OMNode node;
         if (lastNode == null) {
-            node = omfactory.createOMComment(document, parser.getText());
+            node = omfactory.createOMComment(document, parser.getText(), true);
         } else if (lastNode.isComplete()) {
-            node = omfactory.createOMComment(lastNode.getParent(), parser.getText());
+            node = omfactory.createOMComment(lastNode.getParent(), parser.getText(), true);
         } else {
-            node = omfactory.createOMComment((OMElement) lastNode, parser.getText());
+            node = omfactory.createOMComment((OMElement) lastNode, parser.getText(), true);
         }
         return node;
     }
@@ -491,7 +504,7 @@ public class StAXOMBuilder extends StAXBuilder {
             return null;
         }
         String dtdText = getDTDText();
-        lastNode = omfactory.createOMDocType(document, dtdText);
+        lastNode = omfactory.createOMDocType(document, dtdText, true);
         return lastNode;
     }
     
@@ -538,13 +551,13 @@ public class StAXOMBuilder extends StAXBuilder {
         String target = parser.getPITarget();
         String data = parser.getPIData();
         if (lastNode == null) {
-            node = omfactory.createOMProcessingInstruction(document, target, data);
+            node = omfactory.createOMProcessingInstruction(document, target, data, true);
         } else if (lastNode.isComplete()) {
-            node = omfactory.createOMProcessingInstruction(lastNode.getParent(), target, data);
+            node = omfactory.createOMProcessingInstruction(lastNode.getParent(), target, data, true);
         } else if (lastNode instanceof OMText) {
-            node = omfactory.createOMProcessingInstruction(lastNode.getParent(), target, data);
+            node = omfactory.createOMProcessingInstruction(lastNode.getParent(), target, data, true);
         } else {
-            node = omfactory.createOMProcessingInstruction((OMContainer) lastNode, target, data);
+            node = omfactory.createOMProcessingInstruction((OMContainer) lastNode, target, data, true);
         }
         return node;
     }

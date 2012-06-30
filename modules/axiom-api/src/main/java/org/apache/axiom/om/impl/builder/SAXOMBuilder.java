@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -42,7 +43,7 @@ import java.util.List;
 
 import javax.xml.XMLConstants;
 
-public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
+public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, OMXMLParserWrapper {
     private OMDocument document;
     
     OMElement root = null;
@@ -96,7 +97,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
     }
 
     public void startDocument() throws SAXException {
-        document = factory.createOMDocument(null);
+        document = factory.createOMDocument(this);
     }
 
     public void endDocument() throws SAXException {
@@ -111,8 +112,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
     }
 
     protected OMElement createNextElement(String localName) throws OMException {
-        OMElement element = factory.createOMElement(localName, getContainer(), null);
-        ((OMElementEx)element).setComplete(false);
+        OMElement element = factory.createOMElement(localName, getContainer(), this);
         addNode(element);
         return element;
     }
@@ -215,7 +215,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
 
     public void characterData(char[] ch, int start, int length, int nodeType)
             throws SAXException {
-        addNode(factory.createOMText(getContainer(), new String(ch, start, length), nodeType));
+        addNode(factory.createOMText(getContainer(), new String(ch, start, length), nodeType, true));
     }
 
     public void characters(char[] ch, int start, int length)
@@ -230,7 +230,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
 
     public void processingInstruction(String target, String data)
             throws SAXException {
-        addNode(factory.createOMProcessingInstruction(getContainer(), target, data));
+        addNode(factory.createOMProcessingInstruction(getContainer(), target, data, true));
     }
 
     public void comment(char[] ch, int start, int length) throws SAXException {
@@ -238,7 +238,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
             // Do nothing: the comment appears before the root element.
             return;
         } 
-        addNode(factory.createOMComment(getContainer(), new String(ch, start, length)));
+        addNode(factory.createOMComment(getContainer(), new String(ch, start, length), true));
     }
 
     public void skippedEntity(String name) throws SAXException {
@@ -270,5 +270,57 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler {
         } else {
             throw new OMException("Tree not complete");
         }
+    }
+
+    public int next() throws OMException {
+        throw new UnsupportedOperationException();
+    }
+
+    public void discard(OMElement el) throws OMException {
+        throw new UnsupportedOperationException();
+    }
+
+    public void setCache(boolean b) throws OMException {
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean isCache() {
+        throw new UnsupportedOperationException();
+    }
+
+    public Object getParser() {
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean isCompleted() {
+        throw new UnsupportedOperationException();
+    }
+
+    public OMElement getDocumentElement() {
+        throw new UnsupportedOperationException();
+    }
+
+    public OMElement getDocumentElement(boolean discardDocument) {
+        throw new UnsupportedOperationException();
+    }
+
+    public short getBuilderType() {
+        throw new UnsupportedOperationException();
+    }
+
+    public void registerExternalContentHandler(Object obj) {
+        throw new UnsupportedOperationException();
+    }
+
+    public Object getRegisteredContentHandler() {
+        throw new UnsupportedOperationException();
+    }
+
+    public String getCharacterEncoding() {
+        throw new UnsupportedOperationException();
+    }
+
+    public void close() {
+        throw new UnsupportedOperationException();
     }
 }

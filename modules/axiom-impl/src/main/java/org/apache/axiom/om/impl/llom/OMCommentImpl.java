@@ -38,8 +38,8 @@ public class OMCommentImpl extends OMLeafNode implements OMComment {
      * @param contentText
      */
     public OMCommentImpl(OMContainer parentNode, String contentText,
-                         OMFactory factory) {
-        super(parentNode, factory);
+                         OMFactory factory, boolean fromBuilder) {
+        super(parentNode, factory, fromBuilder);
         this.value = contentText;
     }
 
