@@ -41,20 +41,6 @@ public class OMBodyTest extends OMTestCase implements OMConstants {
         soapBody = soapEnvelope.getBody();
     }
 
-    /*
-     * Class under test for SOAPFault addFault()
-     */
-    public void testAddFault() {
-        SOAPBody soapBody = soapFactory.createSOAPBody();
-        log.debug("Adding SOAP fault to body ....");
-        soapFactory.createSOAPFault(soapBody,
-                                    new Exception("Testing soap fault"));
-        log.debug("\t checking for SOAP Fault ...");
-        assertTrue("SOAP body has no SOAP fault", soapBody.hasFault());
-        log.debug("\t checking for not-nullity ...");
-        assertTrue("SOAP body has no SOAP fault", soapBody.getFault() != null);
-    }
-    
     /**
      * Ensure that invoking addChild twice on the same element only
      * adds the child one time.

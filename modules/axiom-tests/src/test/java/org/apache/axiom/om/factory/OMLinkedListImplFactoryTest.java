@@ -32,7 +32,6 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
@@ -139,17 +138,5 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
         assertTrue(
                 "Programatically created SOAPHeaderBlock should have done = true ",
                 soapHeaderBlock.isComplete());
-    }
-
-    public void testCreateSOAPFault() throws Exception {
-        OMXMLParserWrapper omBuilder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
-        SOAPEnvelope soapEnvelope = (SOAPEnvelope) omBuilder.getDocumentElement();
-        SOAPBody soapBody = soapEnvelope.getBody();
-        SOAPFault soapFault = omFactory.createSOAPFault(soapBody,
-                                                        new Exception(" this is just a test "));
-        assertTrue(
-                "Programatically created SOAPFault should have done = true ",
-                soapFault.isComplete());
     }
 }
