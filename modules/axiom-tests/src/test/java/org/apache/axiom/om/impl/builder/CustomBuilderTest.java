@@ -47,11 +47,6 @@ import java.util.Iterator;
  */
 // TODO: This class seems to be a copy and paste of CopyUtilsTest. Clean this up.
 public class CustomBuilderTest extends AbstractTestCase {
-
-    public CustomBuilderTest(String testName) {
-        super(testName);
-    }
-    
     public void testSample1() throws Exception {
         copyAndCheck(createEnvelope(getTestResource(TestConstants.SAMPLE1)), true);
     }

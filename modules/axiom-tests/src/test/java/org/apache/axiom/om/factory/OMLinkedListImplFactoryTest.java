@@ -38,10 +38,6 @@ import org.apache.axiom.soap.SOAPHeaderBlock;
 import javax.xml.namespace.QName;
 
 public class OMLinkedListImplFactoryTest extends AbstractTestCase {
-    public OMLinkedListImplFactoryTest(String testName) {
-        super(testName);
-    }
-
     SOAPFactory omFactory;
     OMNamespace namespace;
     String nsUri = "http://www.apache.org/~chinthaka";

@@ -45,10 +45,6 @@ public class OMSerializerTest extends AbstractTestCase {
     private XMLStreamWriter writer;
     private File tempFile;
 
-    public OMSerializerTest(String testName) {
-        super(testName);
-    }
-
     protected void setUp() throws Exception {
         tempFile = File.createTempFile("temp", "xml");
 //        writer =

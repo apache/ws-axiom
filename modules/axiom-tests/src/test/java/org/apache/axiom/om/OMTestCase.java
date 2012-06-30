@@ -30,8 +30,7 @@ public abstract class OMTestCase extends AbstractTestCase {
 
     protected SOAPEnvelope soapEnvelope;
 
-    public OMTestCase(String testName) {
-        super(testName);
+    public OMTestCase() {
         ombuilderFactory = OMAbstractFactory.getOMFactory();
         soapFactory = OMAbstractFactory.getSOAP11Factory();
     }

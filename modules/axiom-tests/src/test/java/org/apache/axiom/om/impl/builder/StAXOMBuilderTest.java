@@ -33,11 +33,6 @@ public class StAXOMBuilderTest extends AbstractTestCase {
     OMXMLParserWrapper stAXOMBuilder;
     private OMElement rootElement;
 
-    /** Constructor. */
-    public StAXOMBuilderTest(String testName) {
-        super(testName);
-    }
-
     protected void setUp() throws Exception {
         stAXOMBuilder =
                 OMXMLBuilderFactory.createOMBuilder(

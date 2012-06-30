@@ -29,10 +29,6 @@ public class OMBodyTest extends OMTestCase implements OMConstants {
     SOAPBody soapBody;
     private static Log log = LogFactory.getLog(OMBodyTest.class);
 
-    public OMBodyTest(String testName) {
-        super(testName);
-    }
-
     /*
      * @see TestCase#setUp()
      */

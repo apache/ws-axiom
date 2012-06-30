@@ -25,20 +25,8 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class OMEnvelopeTest extends OMTestCase {
-    private static Log log = LogFactory.getLog(OMEnvelopeTest.class);
-
-    public OMEnvelopeTest(String testName) {
-        super(testName);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
     public void testGetHeader1() {
         SOAPHeader header = soapEnvelope.getHeader();
         assertTrue("Header information retrieved not correct",

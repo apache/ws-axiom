@@ -22,13 +22,6 @@ package org.apache.axiom.om;
  *Test the discard method
  */
 public class OMDiscardTest extends AbstractTestCase {
-
-
-    public OMDiscardTest(String testName) {
-        super(testName);   
-    }
-
-    
     public void testDiscard(){
         OMElement documentElement = null;
         try {

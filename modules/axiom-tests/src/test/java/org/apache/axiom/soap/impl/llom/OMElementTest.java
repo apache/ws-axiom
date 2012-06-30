@@ -46,11 +46,6 @@ public class OMElementTest extends OMTestCase implements OMConstants {
     private OMElement firstElement;
     private OMElement secondElement;
 
-
-    public OMElementTest(String testName) {
-        super(testName);
-    }
-
     /*
      * @see TestCase#setUp()
      */

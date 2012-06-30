@@ -20,20 +20,8 @@
 package org.apache.axiom.om;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 public class OMCachingTest extends AbstractTestCase {
-    private XMLStreamReader xmlStreamReader;
-
-    /** @param testName  */
-    public OMCachingTest(String testName) {
-        super(testName);
-    }
-
-    protected void setUp() throws Exception {
-
-    }
-
     /** This will first serialize the element without caching. Then it tries to serialize again . */
     public void testCachingOne() {
 

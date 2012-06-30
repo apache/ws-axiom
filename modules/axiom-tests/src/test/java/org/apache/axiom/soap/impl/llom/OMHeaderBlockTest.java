@@ -29,10 +29,6 @@ public class OMHeaderBlockTest extends OMTestCase {
     SOAPHeader soapHeader;
     SOAPHeaderBlock soapHeaderElement;
 
-    public OMHeaderBlockTest(String testName) {
-        super(testName);
-    }
-
     protected void setUp() throws Exception {
         super.setUp();
         soapHeader = soapEnvelope.getHeader();

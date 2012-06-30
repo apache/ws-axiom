@@ -51,12 +51,6 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
 
     private final static QName XOP_INCLUDE = 
         new QName("http://www.w3.org/2004/08/xop/include", "Include");
-    
-    /** @param testName  */
-    public MTOMStAXSOAPModelBuilderTest(String testName) {
-        super(testName);
-    }
-
 
     protected void setUp() throws Exception {
         super.setUp();

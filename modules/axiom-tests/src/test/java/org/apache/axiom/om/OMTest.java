@@ -27,11 +27,6 @@ import java.util.Iterator;
 public class OMTest extends AbstractTestCase {
     private SOAPEnvelope envelope;
 
-    /** Constructor. */
-    public OMTest(String testName) {
-        super(testName);
-    }
-
     protected void setUp() throws Exception {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
                 getTestResource(TestConstants.SAMPLE1), null);

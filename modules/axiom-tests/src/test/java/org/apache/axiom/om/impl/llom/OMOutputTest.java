@@ -34,12 +34,6 @@ import javax.activation.DataHandler;
 import junit.framework.TestCase;
 
 public class OMOutputTest extends TestCase {
-
-    /** @param testName  */
-    public OMOutputTest(String testName) {
-        super(testName);
-    }
-
     private OMElement envelope;
 
     /*

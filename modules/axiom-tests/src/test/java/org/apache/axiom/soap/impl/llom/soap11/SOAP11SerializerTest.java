@@ -25,11 +25,6 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import javax.xml.stream.XMLStreamException;
 
 public class SOAP11SerializerTest extends OMTestCase {
-
-    public SOAP11SerializerTest(String testName) {
-        super(testName);
-    }
-
     protected void setUp() throws Exception {
         soapEnvelope =
                 (SOAPEnvelope) getOMBuilder("soap/soap11/soap11fault.xml")

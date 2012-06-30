@@ -45,10 +45,6 @@ public class ElementSerializerTest extends AbstractTestCase {
     private OMXMLParserWrapper builder;
     private File tempFile;
 
-    public ElementSerializerTest(String testName) {
-        super(testName);
-    }
-
     protected void setUp() throws Exception {
         reader = StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
         tempFile = File.createTempFile("temp", "xml");

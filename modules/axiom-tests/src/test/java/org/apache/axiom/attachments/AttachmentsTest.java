@@ -37,11 +37,6 @@ import java.io.InputStream;
 import java.io.StringWriter;
 
 public class AttachmentsTest extends AbstractTestCase {
-
-    public AttachmentsTest(String testName) {
-        super(testName);
-    }
-
     public void testWritingBinaryAttachments() throws Exception {
         MIMEResource testMessage = TestConstants.MTOM_MESSAGE;
 
