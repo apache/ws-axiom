@@ -269,6 +269,9 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
         }
         
         if (refChild == null) { // Append the child to the end of the list
+            if (!isComplete()) {
+                build();
+            }
             // if there are no children
             if (this.lastChild == null && firstChild == null) {
                 this.lastChild = newDomChild;

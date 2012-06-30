@@ -41,10 +41,12 @@ public class OMDOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.omdom.document.TestImportNode(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestAddAttributeReplace(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestAddChildFromForeignDocument(metaFactory));
+        addTest(new org.apache.axiom.ts.omdom.element.TestAppendChildIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestCloneNodeIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestCloneOMElement(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestDetach(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestGetNamespaceNormalized(metaFactory));
+        addTest(new org.apache.axiom.ts.omdom.element.TestInsertBeforeIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestRemoveAttribute(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestRemoveChildIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.factory.TestCreateOMAttribute(metaFactory));
