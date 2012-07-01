@@ -19,7 +19,6 @@
 
 package org.apache.axiom.soap.impl.builder;
 
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.util.StAXUtils;
@@ -75,27 +74,6 @@ public class StAXSOAPModelBuilderTest extends XMLTestCase {
         }
     }
 
-    public void testFault() throws Exception {
-        String soap11Fault = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
-                    "<SOAP-ENV:Body>" +
-                    "<SOAP-ENV:Fault>" +
-                        "<faultcode>SOAP-ENV:Server</faultcode>" +
-                        "<faultstring xml:lang=\"en\">handleMessage throws SOAPFaultException for ThrowsSOAPFaultToClientHandlersTest</faultstring>" +
-                        "<detail>" +
-                            "<somefaultentry/>" +
-                        "</detail>" +
-                        "<faultactor>faultActor</faultactor>" +
-                        "</SOAP-ENV:Fault>" +
-                    "</SOAP-ENV:Body>" +
-                "</SOAP-ENV:Envelope>";
-        SOAPModelBuilder soap11Builder = OMXMLBuilderFactory.createSOAPModelBuilder(new StringReader(soap11Fault));
-        OMElement element = soap11Builder.getDocumentElement();
-        element.build();
-        this.assertXMLEqual(soap11Fault, element.toString());
-        soap11Builder.close();
-    }
-    
     /**
      * @throws Exception
      */

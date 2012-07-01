@@ -31,7 +31,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
     
     private static final String[] goodSOAPFiles = { TestConstants.WHITESPACE_MESSAGE,
         TestConstants.MINIMAL_MESSAGE, TestConstants.REALLY_BIG_MESSAGE,
-        TestConstants.EMPTY_BODY_MESSAGE };
+        TestConstants.EMPTY_BODY_MESSAGE, "soap/soap11/soapfault.xml" };
     
     private static final QName[] qnames = {
         new QName("root"),
