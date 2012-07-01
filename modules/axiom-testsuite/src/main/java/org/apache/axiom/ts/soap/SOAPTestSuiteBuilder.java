@@ -178,6 +178,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElement(metaFactory, SOAPSpec.SOAP11, "reallyReallyBigMessage.xml"));
         addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElement(metaFactory, SOAPSpec.SOAP11, "emtyBodymessage.xml"));
         addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElement(metaFactory, SOAPSpec.SOAP11, "soap11fault.xml")); 
+        addTest(new org.apache.axiom.ts.soap11.builder.TestBuilder(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestGetNode(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestSetNode(metaFactory));
@@ -190,6 +191,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap11.header.TestExamineMustUnderstandHeaderBlocksWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.header.TestGetHeaderBlocksWithNSURIWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.header.TestGetHeadersToProcessWithParser(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.builder.TestBuilder(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestBuildWithAttachments(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.envelope.TestMTOMForwardStreaming(metaFactory, true));
