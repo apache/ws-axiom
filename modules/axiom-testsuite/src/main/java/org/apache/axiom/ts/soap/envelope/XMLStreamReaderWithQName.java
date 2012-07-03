@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.soap.impl.builder;
+package org.apache.axiom.ts.soap.envelope;
 
 import org.apache.axiom.soap.SOAPConstants;
 

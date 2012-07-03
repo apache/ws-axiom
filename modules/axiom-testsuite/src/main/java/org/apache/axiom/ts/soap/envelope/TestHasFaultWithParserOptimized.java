@@ -16,51 +16,38 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap.envelope;
 
-package org.apache.axiom.soap.impl.builder;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPModelBuilder;
-import org.custommonkey.xmlunit.XMLTestCase;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamReader;
-import java.io.StringReader;
+public class TestHasFaultWithParserOptimized extends SOAPTestCase {
+    public TestHasFaultWithParserOptimized(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
+    }
 
-public class StAXSOAPModelBuilderTest extends XMLTestCase {
-    /**
-     * @throws Exception
-     */
-    public void testOptimizedFault() throws Exception {
-        String soap11Fault = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
-                    "<SOAP-ENV:Body>" +
-                    "<SOAP-ENV:Fault>" +
-                        "<faultcode>SOAP-ENV:Server</faultcode>" +
-                        "<faultstring xml:lang=\"en\">handleMessage throws SOAPFaultException for ThrowsSOAPFaultToClientHandlersTest</faultstring>" +
-                        "<detail>" +
-                            "<somefaultentry/>" +
-                        "</detail>" +
-                        "<faultactor>faultActor</faultactor>" +
-                        "</SOAP-ENV:Fault>" +
-                    "</SOAP-ENV:Body>" +
-                "</SOAP-ENV:Envelope>";
-        
+    protected void runTest() throws Throwable {
         // Use the test parser that is aware of the first qname in the body.
         // This simulates the use of the parser that has this information built into its
         // implementation.
         
         XMLStreamReader soap11Parser = StAXUtils.createXMLStreamReader(
-                new StringReader(soap11Fault));
+                AbstractTestCase.getTestResource("soap/" + spec.getName() + "/" + MESSAGE), null);
         QName qname = new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, SOAP11Constants.BODY_FAULT_LOCAL_NAME, "SOAP-ENV");
         XMLStreamReaderWithQName parser = new XMLStreamReaderWithQName(soap11Parser, qname);
-        SOAPModelBuilder soap11Builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(parser);
+        SOAPModelBuilder soap11Builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(metaFactory, parser);
         SOAPEnvelope env = soap11Builder.getSOAPEnvelope();
-        boolean isFault = env.hasFault();
-        assertTrue(isFault);
+        assertTrue(env.hasFault());
         assertTrue(!parser.isReadBody());
         
         // Get the name of the first element in the body
