@@ -85,7 +85,8 @@ public interface SOAPBody extends OMElement {
      * obtain this information from the builder/parser without building
      * the OMElement.  Use this method in the situations where you need
      * to know the name, but don't necessarily need the OMElement.
-     * @return local name of first element in the body or null
+     * 
+     * @return local name of first element in the body, or <code>null</code> if the body is empty
      */
     public String getFirstElementLocalName();
 }

@@ -74,6 +74,8 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParserNoFault(metaFactory, spec,
                     qname, supportsBodyElementNameOptimization));
         }
+        addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementLocalNameEmptyBody(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementNSEmptyBody(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestHasFault(metaFactory, spec));
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithOMSEUnknownName(metaFactory, spec));
