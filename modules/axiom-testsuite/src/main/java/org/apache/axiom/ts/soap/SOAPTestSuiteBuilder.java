@@ -26,7 +26,7 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 
 public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
-    private static final String[] badSOAPFiles = { "wrongSoapNs.xml", "soap11/twoheaders.xml", "soap11/twoBodymessage.xml",
+    private static final String[] badSOAPFiles = { "wrongSoapNs.xml", "notnamespaceQualified.xml", "soap11/twoheaders.xml", "soap11/twoBodymessage.xml",
             "soap11/envelopeMissing.xml", "soap11/haederBodyWrongOrder.xml" };
     
     private static final String[] goodSOAPFiles = { TestConstants.WHITESPACE_MESSAGE,

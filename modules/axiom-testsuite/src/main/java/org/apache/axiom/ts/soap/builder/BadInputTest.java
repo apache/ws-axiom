@@ -49,20 +49,6 @@ public class BadInputTest extends AxiomTestCase {
     }
 
     //done
-    //    public void testNotnamespaceQualified() throws Exception {
-    //        try {
-    //            SOAPEnvelope soapEnvelope =
-    //                    (SOAPEnvelope) OMTestUtils.getOMBuilder(new File(dir, "notnamespaceQualified.xml")).getDocumentElement();
-    //            OMTestUtils.walkThrough(soapEnvelope);
-    //            fail("this must failed gracefully with OMException or AxisFault");
-    //        } catch (OMException e) {
-    //            return;
-    //        } catch (AxisFault e) {
-    //            return;
-    //        }
-    //
-    //    }
-    //done
     //    public void testBodyNotQualified() throws Exception {
     //        try {
     //            SOAPEnvelope soapEnvelope =
