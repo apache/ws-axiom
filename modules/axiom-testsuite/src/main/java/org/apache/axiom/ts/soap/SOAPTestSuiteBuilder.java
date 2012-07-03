@@ -106,6 +106,9 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.envelope.TestHasFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestHasFaultWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestHasFaultWithParserOptimized(metaFactory, spec));
+        if (supportsOMSourcedElement) {
+            addTest(new org.apache.axiom.ts.soap.envelope.TestSerializeAndConsumeWithOMSEInBody(metaFactory, spec));
+        }
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPEnvelopeWithCustomPrefix(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.factory.TestCreateSOAPFault(metaFactory, spec));

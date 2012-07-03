@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.axiom.om;
+package org.apache.axiom.ts.soap.envelope;
 
 import java.io.OutputStream;
 import java.io.StringReader;
@@ -28,28 +28,31 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
-import junit.framework.TestCase;
-
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
+/**
+ * Regression test for WSCOMMONS-226.
+ */
+public class TestSerializeAndConsumeWithOMSEInBody extends SOAPTestCase {
+    public TestSerializeAndConsumeWithOMSEInBody(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
+    }
 
-public class SourcedOMElementTest extends TestCase {
-    
-    public void testSerialization() throws Exception {
-        SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();
-        SOAPEnvelope envelope = factory.createSOAPEnvelope();
-        SOAPBody body = factory.createSOAPBody();
+    protected void runTest() throws Throwable {
+        SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
+        SOAPBody body = soapFactory.createSOAPBody();
         envelope.addChild(body);
-        OMNamespace ns = factory.createOMNamespace("http://ns1", "d");
-        OMElement payload = factory.createOMElement(new DummySource(), "dummy", ns);
+        OMNamespace ns = soapFactory.createOMNamespace("http://ns1", "d");
+        OMElement payload = soapFactory.createOMElement(new DummySource(), "dummy", ns);
         payload.setNamespace(ns); // This line will cause NoSuchElementException
         body.addChild(payload);
         payload.getBuilder().setCache(false); // Or This line will cause NoSuchElementException
