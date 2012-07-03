@@ -25,15 +25,10 @@ import java.util.Iterator;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.soap.SOAPFaultReason;
 
 public class OMTestUtils {
     public static void walkThrough(OMElement element) {
-        // TODO: SOAP11BuilderHelper handles fault codes and fault strings in a special way (it eagerly loads the content); check if there is a good reason to do so
-        if (!(element instanceof SOAPFaultCode) && !(element instanceof SOAPFaultReason)) {
-            Assert.assertFalse("Expected " + element.getQName() + " to be incomplete", element.isComplete());
-        }
+        Assert.assertFalse("Expected " + element.getQName() + " to be incomplete", element.isComplete());
         for (Iterator it = element.getAllAttributes(); it.hasNext(); ) {
             Assert.assertNotNull(it.next());
         }

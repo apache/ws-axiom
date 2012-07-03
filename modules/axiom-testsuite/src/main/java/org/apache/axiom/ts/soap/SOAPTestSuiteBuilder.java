@@ -27,11 +27,13 @@ import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 
 public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
     private static final String[] badSOAPFiles = { "wrongSoapNs.xml", "notnamespaceQualified.xml", "soap11/twoheaders.xml", "soap11/twoBodymessage.xml",
-            "soap11/envelopeMissing.xml", "soap11/haederBodyWrongOrder.xml" };
+            "soap11/envelopeMissing.xml", "soap11/haederBodyWrongOrder.xml", "soap11/invalid-faultcode.xml", "soap11/invalid-faultstring.xml",
+            "soap11/invalid-faultactor.xml" };
     
     private static final String[] goodSOAPFiles = { TestConstants.WHITESPACE_MESSAGE,
         TestConstants.MINIMAL_MESSAGE, TestConstants.REALLY_BIG_MESSAGE,
-        TestConstants.EMPTY_BODY_MESSAGE, "soap/soap11/soapfault.xml", "soap/soap11/bodyNotQualified.xml" };
+        TestConstants.EMPTY_BODY_MESSAGE, "soap/soap11/soapfault.xml", "soap/soap11/bodyNotQualified.xml",
+        "soap/soap11/faultstring-with-comment.xml"};
     
     private static final QName[] qnames = {
         new QName("root"),

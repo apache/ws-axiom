@@ -20,17 +20,12 @@
 package org.apache.axiom.soap.impl.builder;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.exception.OMBuilderException;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPFault;
-import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.soap.SOAPFaultReason;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.w3c.dom.Element;
 
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Constants {
@@ -55,30 +50,17 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
 
             if (SOAP_FAULT_CODE_LOCAL_NAME.equals(localName)) {
 
-                SOAPFaultCode code = factory.createSOAPFaultCode(
+                element = factory.createSOAPFaultCode(
                         (SOAPFault) parent, builder);
-                processNamespaceData(code, false);
-                processAttributes(code);
-
-                processText(parser, code);
-                ((OMNodeEx) code).setComplete(true);
-                element = code;
-                ((StAXSOAPModelBuilder) builder).adjustElementLevel(-1);
-
+                processNamespaceData(element, false);
+                processAttributes(element);
                 faultcodePresent = true;
             } else if (SOAP_FAULT_STRING_LOCAL_NAME.equals(localName)) {
 
-                SOAPFaultReason reason = factory.createSOAPFaultReason(
+                element = factory.createSOAPFaultReason(
                         (SOAPFault) parent, builder);
-                processNamespaceData(reason, false);
-                processAttributes(reason);
-
-                processText(parser, reason);
-                ((OMNodeEx) reason).setComplete(true);
-                element = reason;
-                ((StAXSOAPModelBuilder) builder).adjustElementLevel(-1);
-
-
+                processNamespaceData(element, false);
+                processAttributes(element);
                 faultstringPresent = true;
             } else if (SOAP_FAULT_ACTOR_LOCAL_NAME.equals(localName)) {
                 element =
@@ -139,26 +121,4 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
 
         return element;
     }
-
-    private void processText(XMLStreamReader parser, OMElement value) {
-        try {
-            int token = parser.next();
-            while (token != XMLStreamReader.END_ELEMENT) {
-                if (token == XMLStreamReader.CHARACTERS) {
-                    factory.createOMText(value, parser.getText(), OMNode.TEXT_NODE, true);
-                } else if (token == XMLStreamReader.CDATA) {
-                    factory.createOMText(value, parser.getText(), OMNode.TEXT_NODE, true);
-                } else {
-                    throw new SOAPProcessingException(
-                    "Only Characters are allowed here");
-                }
-                token = parser.next();
-            }
-
-
-        } catch (XMLStreamException e) {
-            throw new SOAPProcessingException(e);
-        }
-    }
-
 }

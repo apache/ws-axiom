@@ -529,14 +529,4 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     protected SOAPFactoryEx getSoapFactory() {
         return soapFactory;
     }
-
-    /**
-     * Increase or decrease the element level by the desired amount.
-     * This is needed by the SOAP11BuilderHelper to account for the different
-     * depths for the SOAP fault sytax.
-     * @param value
-     */
-    void adjustElementLevel(int value) {
-        elementLevel = elementLevel + value;
-    }
 }
