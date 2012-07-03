@@ -20,7 +20,6 @@
 package org.apache.axiom.soap.impl.builder;
 
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -32,48 +31,6 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
 
 public class StAXSOAPModelBuilderTest extends XMLTestCase {
-    /**
-     * Test a couple of malformed envelopes, make sure parsing fails correctly.
-     *
-     * @throws Exception
-     */
-    public void testBadEnvelope() throws Exception {
-        String badEnvStart =
-                "<env:Envelope xmlns:env=\"http://www.w3.org/2003/05/soap-envelope\">\n";
-        String badEnvHeader =
-                "       <test:echoOk xmlns:test=\"http://example.org/ts-tests\"\n" +
-                        "                    env:role=\"http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver\"\n" +
-                        "                    env:mustUnderstand=\"true\">\n" +
-                        "                       foo\n" +
-                        "       </test:echoOk>\n";
-        String badEnvEnd =
-                "   <env:Body><content/></env:Body>\n" +
-                        "</env:Envelope>";
-        String [] badHeaders = {
-                "env:HeaDER",   // Bad case
-                "Header"        // No namespace
-        };
-
-        for (int i = 0; i < badHeaders.length; i++) {
-            String soap12Message = badEnvStart + "<" + badHeaders[i] + ">\n" +
-                    badEnvHeader + "</" + badHeaders[i] + ">\n" +
-                    badEnvEnd;
-            SOAPModelBuilder soap12Builder = OMXMLBuilderFactory.createSOAPModelBuilder(new StringReader(soap12Message));
-            try {
-                SOAPEnvelope soap12Envelope = (SOAPEnvelope) soap12Builder.getDocumentElement();
-                try {
-                    soap12Envelope.getHeader();
-                } catch (OMException e) {
-                    // Good, we failed.  Keep going.
-                    continue;
-                }
-            } finally {
-                soap12Builder.close();
-            }
-            fail("Successfully parsed bad envelope ('" + badHeaders[i] + "')");
-        }
-    }
-
     /**
      * @throws Exception
      */
