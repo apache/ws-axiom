@@ -18,23 +18,28 @@
  */
 package org.apache.axiom.ts.soap.body;
 
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
-import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class TestAddFault2 extends SOAPTestCase {
-    public TestAddFault2(OMMetaFactory metaFactory, SOAPSpec spec) {
+/**
+ * Tests that {@link SOAPBody#hasFault()} returns the correct value after a {@link SOAPFault} child
+ * has been replaced by an {@link OMElement} that is not a {@link SOAPFault}. Earlier versions of
+ * Axiom attempted to cache the result of {@link SOAPBody#hasFault()}, but this cached value was not
+ * updated correctly in all situations. This is a regression test for this issue.
+ */
+public class TestHasFaultAfterReplace extends SOAPTestCase {
+    public TestHasFaultAfterReplace(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {
-        SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
-        SOAPBody body = soapFactory.createSOAPBody(envelope);
-        body.addFault(soapFactory.createSOAPFault());
-        assertTrue(
-                "Body Test:- After calling addFault method, SOAP body has no fault",
-                body.hasFault());
+        SOAPBody body = soapFactory.getDefaultFaultEnvelope().getBody();
+        assertTrue(body.hasFault());
+        body.getFault().detach();
+        soapFactory.createOMElement("echo", soapFactory.createOMNamespace("urn:test", "echo"));
+        assertFalse(body.hasFault());
     }
 }

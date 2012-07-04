@@ -45,10 +45,7 @@ public class SOAP12BodyImpl extends SOAPBodyImpl {
     }
 
     public SOAPFault addFault(Exception e) throws OMException {
-        SOAPFault soapFault = new SOAP12FaultImpl(this, e,
-                                                  (SOAPFactory) this.factory);
-        this.hasSOAPFault = true;
-        return soapFault;
+        return new SOAP12FaultImpl(this, e, (SOAPFactory) this.factory);
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
