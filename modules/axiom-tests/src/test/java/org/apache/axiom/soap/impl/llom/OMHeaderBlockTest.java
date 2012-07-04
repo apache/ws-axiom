@@ -44,15 +44,4 @@ public class OMHeaderBlockTest extends OMTestCase {
         assertTrue("Actor was not properly set",
                    soapHeaderElement.getRole().equalsIgnoreCase(newActorURI));
     }
-
-    public void testSetAndGetMustUnderstand() {
-        soapHeaderElement.setMustUnderstand(false);
-        assertTrue("MustUnderstand was not properly set",
-                   !soapHeaderElement.getMustUnderstand());
-    }
-
-    public void testGetMustUnderstand() {
-        //TODO Implement getMustUnderstand().
-    }
-
 }
