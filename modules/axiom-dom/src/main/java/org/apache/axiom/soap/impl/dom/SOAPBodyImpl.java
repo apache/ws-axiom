@@ -76,14 +76,16 @@ public abstract class SOAPBodyImpl extends SOAPElement implements SOAPBody,
         } else {
             OMElement element = getFirstElement();
             if (element != null
-                    && SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(element
-                    .getLocalName())
-                    && (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI
-                    .equals(element.getNamespace().getNamespaceURI()) ||
-                    SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI
-                            .equals(element.getNamespace().getNamespaceURI()))) { //added this line
-                hasSOAPFault = true;
-                return true;
+                    && SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(element.getLocalName())) {
+                OMNamespace ns = element.getNamespace();
+                if (ns != null &&
+                        (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()) ||
+                         SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()))) {
+                    hasSOAPFault = true;
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -100,17 +102,19 @@ public abstract class SOAPBodyImpl extends SOAPElement implements SOAPBody,
         if (hasSOAPFault) {
             return (SOAPFault) element;
         } else if (element != null
-                && SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(element
-                .getLocalName())
-                && (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(element
-                .getNamespace().getNamespaceURI()) || SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI
-                .equals(element.getNamespace().getNamespaceURI()))) { //added this line
-            hasSOAPFault = true;
-            return (SOAPFault) element;
+                && SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(element.getLocalName())) {
+            OMNamespace ns = element.getNamespace();
+            if (ns != null &&
+                    (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()) ||
+                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()))) {
+                hasSOAPFault = true;
+                return (SOAPFault) element;
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
-
     }
 
     /**

@@ -49,6 +49,7 @@ public abstract class FirstElementNameWithParserTestCase extends SOAPTestCase {
         this.qname = qname;
         addTestProperty("prefix", qname.getPrefix());
         addTestProperty("uri", qname.getNamespaceURI());
+        addTestProperty("localName", qname.getLocalPart());
         this.supportsOptimization = supportsOptimization;
     }
 

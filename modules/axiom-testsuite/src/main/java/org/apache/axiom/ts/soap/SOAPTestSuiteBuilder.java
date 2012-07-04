@@ -23,6 +23,9 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.TestConstants;
+import org.apache.axiom.soap.SOAP11Constants;
+import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 
 public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
@@ -35,10 +38,19 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         TestConstants.EMPTY_BODY_MESSAGE, "soap/soap11/soapfault.xml", "soap/soap11/bodyNotQualified.xml",
         "soap/soap11/faultstring-with-comment.xml"};
     
-    private static final QName[] qnames = {
+    private static final QName[] generalQNames = {
         new QName("root"),
         new QName("urn:test", "root", "p"),
         new QName("urn:test", "root") };
+    
+    private static final QName[] noFaultQNames = {
+        new QName("root"),
+        new QName("urn:test", "root", "p"),
+        new QName("urn:test", "root"),
+        new QName("Fault"),
+        new QName("urn:test", "Fault", "p"),
+        new QName(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI, "NoFault", SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX),
+        new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, "NoFault", SOAPConstants.SOAP_DEFAULT_NAMESPACE_PREFIX) };
     
     private final OMMetaFactory metaFactory;
     private final boolean supportsOMSourcedElement;
@@ -65,12 +77,17 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.body.TestAddFault2(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFaultWithParser(metaFactory, spec));
-        for (int i=0; i<qnames.length; i++) {
-            QName qname = qnames[i];
+        for (int i=0; i<generalQNames.length; i++) {
+            QName qname = generalQNames[i];
             addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementLocalNameWithParser(metaFactory, spec,
                     qname, supportsBodyElementNameOptimization));
             addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementNSWithParser(metaFactory, spec,
                     qname, supportsBodyElementNameOptimization));
+        }
+        for (int i=0; i<noFaultQNames.length; i++) {
+            QName qname = noFaultQNames[i];
+            addTest(new org.apache.axiom.ts.soap.body.TestGetFaultNoFault(metaFactory, spec, qname));
+            addTest(new org.apache.axiom.ts.soap.body.TestHasFaultNoFault(metaFactory, spec, qname));
             addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParserNoFault(metaFactory, spec,
                     qname, supportsBodyElementNameOptimization));
         }
@@ -98,8 +115,8 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetBodyWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetHeader(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetHeaderWithParser(metaFactory, spec));
-        for (int i=0; i<qnames.length; i++) {
-            QName qname = qnames[i];
+        for (int i=0; i<generalQNames.length; i++) {
+            QName qname = generalQNames[i];
             addTest(new org.apache.axiom.ts.soap.envelope.TestGetSOAPBodyFirstElementLocalNameAndNS(metaFactory, spec, qname));
             addTest(new org.apache.axiom.ts.soap.envelope.TestGetSOAPBodyFirstElementLocalNameAndNSWithParser(metaFactory, spec, qname));
         }
