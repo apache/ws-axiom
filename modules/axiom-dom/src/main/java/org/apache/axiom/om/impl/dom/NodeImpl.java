@@ -650,10 +650,6 @@ public abstract class NodeImpl implements Node {
         return (OMNode)this;
     }
 
-    public void discard() throws OMException {
-        throw new UnsupportedOperationException("Cannot discard this node");
-    }
-
     /** Inserts the given sibling next to this item. */
     public void insertSiblingAfter(OMNode sibling) throws OMException {
         ParentNode parentNode = parentNode();
