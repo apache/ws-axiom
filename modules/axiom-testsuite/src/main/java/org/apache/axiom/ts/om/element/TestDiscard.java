@@ -16,18 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om;
+package org.apache.axiom.ts.om.element;
+
+import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.TestConstants;
+import org.apache.axiom.ts.AxiomTestCase;
 
 /**
  *Test the discard method
  */
-public class OMDiscardTest extends AbstractTestCase {
-    public void testDiscard(){
+public class TestDiscard extends AxiomTestCase {
+    public TestDiscard(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
+
+    protected void runTest() throws Throwable {
         OMElement documentElement = null;
         try {
             // first build the OM tree without caching and see whether we can discard
             // an element from it
-            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
+            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
+                    AbstractTestCase.getTestResource(TestConstants.SOAP_SOAPMESSAGE));
             documentElement = builder.getDocumentElement();
 
             documentElement.getFirstElement().discard();
