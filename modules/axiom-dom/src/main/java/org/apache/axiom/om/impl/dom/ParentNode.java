@@ -148,11 +148,11 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
         return (OMNode)lastChild;
     }
 
-    public void setFirstChild(OMNode omNode) {
+    public void setFirstChild(OMNode firstChild) {
         if (firstChild != null) {
-            ((OMNodeEx) omNode).setParent((OMContainer)this);
+            ((OMNodeEx) firstChild).setParent((OMContainer)this);
         }
-        this.firstChild = (NodeImpl) omNode;
+        this.firstChild = (NodeImpl) firstChild;
     }
 
     /**

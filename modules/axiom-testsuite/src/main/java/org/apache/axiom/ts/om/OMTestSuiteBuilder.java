@@ -152,7 +152,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestDeclareNamespaceWithGeneratedPrefix3(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDigestWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDigestWithoutNamespace(metaFactory));
-        addTest(new org.apache.axiom.ts.om.element.TestDiscard(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestDiscardIncomplete(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestDiscardPartiallyBuilt(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestFindNamespaceByNamespaceURIMasked(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestFindNamespaceByPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestFindNamespaceCaseSensitivity(metaFactory));

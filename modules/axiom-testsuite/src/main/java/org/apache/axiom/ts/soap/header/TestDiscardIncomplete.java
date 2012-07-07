@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap.envelope;
+package org.apache.axiom.ts.soap.header;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -24,8 +24,8 @@ import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
 // Regression test for AXIOM-223 (see r567512)
-public class TestDiscardHeader extends SOAPTestCase {
-    public TestDiscardHeader(OMMetaFactory metaFactory, SOAPSpec spec) {
+public class TestDiscardIncomplete extends SOAPTestCase {
+    public TestDiscardIncomplete(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }
 

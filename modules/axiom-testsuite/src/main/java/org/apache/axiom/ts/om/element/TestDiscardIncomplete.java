@@ -29,8 +29,8 @@ import org.apache.axiom.ts.AxiomTestCase;
 /**
  *Test the discard method
  */
-public class TestDiscard extends AxiomTestCase {
-    public TestDiscard(OMMetaFactory metaFactory) {
+public class TestDiscardIncomplete extends AxiomTestCase {
+    public TestDiscardIncomplete(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 

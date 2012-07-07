@@ -109,7 +109,6 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElementWithSourcedElement2(metaFactory, spec));
         }
         addTest(new org.apache.axiom.ts.soap.envelope.TestDetach(metaFactory, spec));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestDiscardHeader(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetBody(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetBodyOnEmptyEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetBodyOnEnvelopeWithHeaderOnly(metaFactory, spec));
@@ -163,6 +162,8 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.header.TestAddHeaderBlock(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestAddHeaderBlockWithoutNamespace1(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestAddHeaderBlockWithoutNamespace2(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.header.TestDiscardIncomplete(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.header.TestDiscardPartiallyBuilt(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestExamineAllHeaderBlocks(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestExamineAllHeaderBlocksWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.header.TestExamineHeaderBlocks(metaFactory, spec));
