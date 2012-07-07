@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.common;
 
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -135,6 +136,36 @@ public final class OMContainerHelper {
         if (!child.isComplete() && 
             !(child instanceof OMSourcedElement)) {
             container.setComplete(false);
+        }
+    }
+    
+    public static void build(OMContainerEx container) {
+        OMXMLParserWrapper builder = container.getBuilder();
+        if (builder != null && builder.isCompleted()) {
+            log.debug("Builder is already complete.");
+        }
+        while (!container.isComplete()) {
+
+            builder.next();    
+            if (builder.isCompleted() && !container.isComplete()) {
+                log.debug("Builder is complete.  Setting OMObject to complete.");
+                container.setComplete(true);
+            }
+        }
+    }
+    
+    public static void buildNext(OMContainerEx container) {
+        OMXMLParserWrapper builder = container.getBuilder();
+        if (builder != null) {
+            if (((StAXOMBuilder)builder).isClosed()) {
+                throw new OMException("The builder has already been closed");
+            } else if (!builder.isCompleted()) {
+                builder.next();
+            } else {
+                // If the builder is suddenly complete, but the completion status of the node
+                // doesn't change, then this means that we built the wrong nodes
+                throw new IllegalStateException("Builder is already complete");
+            }         
         }
     }
 }

@@ -481,4 +481,12 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
             throw new IllegalStateException();
         }
     }
+
+    public final void build() {
+        // An attribute node doesn't have a builder
+    }
+
+    public final Node getNextSibling() {
+        return null;
+    }
 }

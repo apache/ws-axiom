@@ -340,4 +340,12 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
     public SAXSource getSAXSource(boolean cache) {
         return new OMSource(this);
     }
+
+    public void build() {
+        OMContainerHelper.build(this);
+    }
+
+    public void buildNext() {
+        OMContainerHelper.buildNext(this);
+    }
 }

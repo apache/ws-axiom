@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.NodeImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
@@ -254,14 +253,6 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
             OMSerializerUtil.serializeByPullStream(element, writer, false);
         }
 //        child = (NodeImpl) child.getNextOMSibling();
-    }
-
-    public OMNode getNextOMSibling() throws OMException {
-        DocumentImpl ownerDocument = (DocumentImpl)getOwnerDocument();
-        if (ownerDocument != null && !ownerDocument.isComplete()) {
-            ownerDocument.setComplete(true);
-        }
-        return null;
     }
 
     public boolean hasFault() {      

@@ -705,9 +705,13 @@ public class OMElementImpl extends OMNodeImpl
                 omNode.build();
             }
         } else {
-            super.build();
+            OMContainerHelper.build(this);
         }
 
+    }
+
+    public void buildNext() {
+        OMContainerHelper.buildNext(this);
     }
 
     public boolean isComplete() {

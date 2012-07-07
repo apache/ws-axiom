@@ -32,8 +32,10 @@ import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
+import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMElementImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.OMNodeHelper;
 import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
 import org.apache.axiom.om.impl.traverse.OMQualifiedNameFilterIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
@@ -1363,5 +1365,21 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
             super.detach();
         }
         return this;
+    }
+
+    public final void build() {
+        OMContainerHelper.build(this);
+    }
+
+    public final void buildNext() {
+        OMContainerHelper.buildNext(this);
+    }
+
+    public final OMNode getNextOMSibling() throws OMException {
+        return OMNodeHelper.getNextOMSibling(this);
+    }
+
+    public final Node getNextSibling() {
+        return (Node)getNextOMSibling();
     }
 }

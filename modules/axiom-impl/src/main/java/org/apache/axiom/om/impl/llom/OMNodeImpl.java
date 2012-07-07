@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
+import org.apache.axiom.om.impl.common.OMNodeHelper;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 /** Class OMNodeImpl */
@@ -95,12 +96,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
      *
      */
     public OMNode getNextOMSibling() throws OMException {
-        if (nextSibling == null && parent != null && parent.getBuilder() != null) {
-            while (!parent.isComplete() && nextSibling == null) {
-                parent.buildNext();
-            }
-        }
-        return nextSibling;
+        return OMNodeHelper.getNextOMSibling(this);
     }
 
     public OMNode getNextOMSiblingIfAvailable() {

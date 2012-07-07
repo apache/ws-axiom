@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
@@ -97,5 +98,17 @@ public class DocumentFragmentImpl extends RootNode implements
         if (state != true) {
             throw new IllegalStateException();
         }
+    }
+
+    public final void build() {
+        // A document fragment doesn't have a builder
+    }
+
+    public final void buildNext() {
+        // A document fragment doesn't have a builder
+    }
+
+    public final Node getNextSibling() {
+        return null;
     }
 }

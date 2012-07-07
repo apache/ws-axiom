@@ -32,6 +32,7 @@ import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDocumentImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
@@ -607,5 +608,17 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
 
     public final void setComplete(boolean state) {
         done = state;
+    }
+
+    public final void build() {
+        OMContainerHelper.build(this);
+    }
+
+    public final void buildNext() {
+        OMContainerHelper.buildNext(this);
+    }
+
+    public final Node getNextSibling() {
+        return null;
     }
 }

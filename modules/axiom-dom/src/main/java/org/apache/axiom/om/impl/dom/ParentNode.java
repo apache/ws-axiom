@@ -75,21 +75,6 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
         OMContainerHelper.addChild((OMContainerEx)this, omNode, fromBuilder);
     }
 
-    public void buildNext() {
-        OMXMLParserWrapper builder = getBuilder();
-        if (builder != null) {
-            if (((StAXOMBuilder)builder).isClosed()) {
-                throw new OMException("The builder has already been closed");
-            } else if (!builder.isCompleted()) {
-                builder.next();
-            } else {
-                // If the builder is suddenly complete, but the completion status of the node
-                // doesn't change, then this means that we built the wrong nodes
-                throw new IllegalStateException("Builder is already complete");
-            }         
-        }
-    }
-
     public Iterator getChildren() {
         return new OMChildrenIterator(getFirstOMChild());
     }
@@ -139,8 +124,11 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     }
 
     public OMNode getFirstOMChild() {
-        while ((firstChild == null) && !isComplete()) {
-            buildNext();
+        // TODO: this is ugly
+        if (this instanceof OMContainerEx) {
+            while ((firstChild == null) && !isComplete()) {
+                ((OMContainerEx)this).buildNext();
+            }
         }
         return (OMNode)firstChild;
     }
@@ -212,10 +200,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     }
 
     public boolean hasChildNodes() {
-        while ((firstChild == null) && !isComplete()) {
-            buildNext();
-        }
-        return this.firstChild != null;
+        return getFirstChild() != null;
     }
 
     public final Node appendChild(Node newChild) throws DOMException {
