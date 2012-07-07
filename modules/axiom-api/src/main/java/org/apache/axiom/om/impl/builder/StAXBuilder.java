@@ -41,7 +41,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -314,27 +313,30 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         }
         try {
 
-            // We simply cannot use the parser instance from the builder for this case
-            // it is not safe to assume that the parser inside the builder will be in
-            // sync with the parser of the element in question
-            // Note 1 - however  calling getXMLStreamReaderWithoutCaching sets off two flags
-            // the cache flag for this builder and the parserAccessed flag. These flags will be
-            // reset later in this procedure
-
-            int event =0;
-            XMLStreamReader elementParser = element.getXMLStreamReaderWithoutCaching();
-            do{
-               event = elementParser.next();
-            }while(!(event == XMLStreamConstants.END_ELEMENT &&
-                     element.getLocalName().equals(elementParser.getLocalName())));
+            // Calculate the depth of the element to be discarded. This determines how many
+            // END_ELEMENT events we need to consume.
+            int targetDepth = elementLevel;
+            if (!lastNode.isComplete()) {
+                targetDepth--;
+            }
+            OMNode current = lastNode;
+            while (current != element) {
+                OMContainer parent = current.getParent();
+                if (parent instanceof OMElement) {
+                    current = (OMElement)parent;
+                } else {
+                    throw new OMException("Called discard for an element that is not being built by this builder");
+                }
+                targetDepth--;
+            }
+            
+            while (elementLevel > targetDepth) {
+                parserNext();
+            }
 
             //at this point we are safely at the end_element event of the element we discarded
             lastNode = element.getPreviousOMSibling();
 
-            // resetting the flags - see Note 1 above
-            cache = true;
-            parserAccessed = false;
-            
             if (lastNode != null) {
                 // if the last node is not an element, we are in trouble because leaf nodes
                 // (such as text) cannot build themselves. worst the lastchild of the
@@ -361,9 +363,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         } catch (Exception e) {
             throw new OMException(e);
         } 
-        // when an element is discarded the element index that was incremented
-        //at creation needs to be decremented !
-        elementLevel--;
     }
 
     /**
@@ -563,6 +562,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     protected abstract OMNode createOMElement() throws OMException;
 
+    abstract int parserNext() throws XMLStreamException;
+    
     /**
      * Forwards the parser one step further, if parser is not completed yet. If this is called after
      * parser is done, then throw an OMException. If the cache is set to false, then returns the

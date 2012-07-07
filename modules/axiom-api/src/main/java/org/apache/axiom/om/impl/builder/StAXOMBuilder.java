@@ -245,7 +245,6 @@ public class StAXOMBuilder extends StAXBuilder {
                
                 switch (token) {
                     case XMLStreamConstants.START_ELEMENT:
-                        elementLevel++;
                         lastNode = createNextOMElement();
                         break;
                     case XMLStreamConstants.CHARACTERS:
@@ -256,7 +255,6 @@ public class StAXOMBuilder extends StAXBuilder {
                         break;
                     case XMLStreamConstants.END_ELEMENT:
                         endElement();
-                        elementLevel--;
                         break;
                     case XMLStreamConstants.END_DOCUMENT:
                         done = true;
@@ -662,7 +660,7 @@ public class StAXOMBuilder extends StAXBuilder {
      * @return next token
      * @throws XMLStreamException
      */
-    private int parserNext() throws XMLStreamException {
+    int parserNext() throws XMLStreamException {
         if (lookAheadToken >= 0) {
             int token = lookAheadToken;
             lookAheadToken = -1; // Reset
@@ -677,12 +675,27 @@ public class StAXOMBuilder extends StAXBuilder {
                     throw (RuntimeException)parserException;
                 }
             }
+            int event;
             try {
-                return parser.next();
+                event = parser.next();
             } catch (XMLStreamException ex) {
                 parserException = ex;
                 throw ex;
             }
+            switch (event) {
+                case XMLStreamConstants.START_ELEMENT:
+                    elementLevel++;
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    elementLevel--;
+                    break;
+                case XMLStreamConstants.END_DOCUMENT:
+                    if (elementLevel != 0) {
+                        throw new OMException("Unexpected END_DOCUMENT event");
+                    }
+                    break;
+            }
+            return event;
         }
     }
     

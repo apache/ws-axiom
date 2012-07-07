@@ -172,29 +172,31 @@ public class OMNavigator {
      */
     private boolean isLeaf(OMSerializable n) {
         if (n instanceof OMContainer) {
-            if (this.isDataSourceALeaf && (n instanceof OMSourcedElement) && n != root) {
-                OMDataSource ds = null;
-                try {
-                    ds = ((OMSourcedElement) n).getDataSource();
-                } catch (UnsupportedOperationException e) {
-                    ; // Operation unsupported for some implementations
-                }
-                if (ds != null) {
-                    return true;
-                }
-            }
-            return false;
+            return this.isDataSourceALeaf && isOMSourcedElement(n) && n != root;
         } else {
             return true;
         }
     }
 
+    private boolean isOMSourcedElement(OMSerializable node) {
+        if (node instanceof OMSourcedElement) {
+            try {
+                return ((OMSourcedElement)node).getDataSource() != null;
+            } catch (UnsupportedOperationException e) {
+                // Operation unsupported for some implementations
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
     /**
      * @param node
      * @return first child or null
      */
     private OMNode _getFirstChild(OMContainer node) {
-        if (node instanceof OMSourcedElement) {
+        if (isOMSourcedElement(node)) {
             OMNode first = node.getFirstOMChild();
             OMNode sibling = first;
             while (sibling != null) {
@@ -211,7 +213,7 @@ public class OMNavigator {
      * @return next sibling or null
      */
     private OMNode getNextSibling(OMNode node) {
-        if (node instanceof OMSourcedElement) {
+        if (isOMSourcedElement(node)) {
             return node.getNextOMSibling();
         } else {
             return ((OMNodeEx) node).getNextOMSiblingIfAvailable();

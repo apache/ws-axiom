@@ -42,7 +42,7 @@ public class TestDiscardPartiallyBuilt extends AxiomTestCase {
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
         OMElement root = OMXMLBuilderFactory.createOMBuilder(factory, new StringReader(
-                "<root><element><a><b>text</b></a><c/></element><sibling/></root>")).getDocumentElement();;
+                "<root><element><a><b>text</b></a><c/></element><sibling/></root>")).getDocumentElement();
         OMElement element = root.getFirstElement();
         
         // Navigate to the text node so that the element is partially built
@@ -52,5 +52,9 @@ public class TestDiscardPartiallyBuilt extends AxiomTestCase {
         
         element.discard();
         XMLAssert.assertXMLEqual("<root><sibling/></root>", root.toString());
+        
+        // Force the builder to complete the document. If the discard method didn't adjust the
+        // element depth correctly, then an exception will occur here
+        assertNull(root.getNextOMSibling());
     }
 }
