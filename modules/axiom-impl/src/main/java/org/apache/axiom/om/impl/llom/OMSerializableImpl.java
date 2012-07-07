@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -77,10 +78,14 @@ public abstract class OMSerializableImpl implements OMSerializable {
     public void buildNext() {
         OMXMLParserWrapper builder = getBuilder();
         if (builder != null) {
-            if (!builder.isCompleted()) {
+            if (((StAXOMBuilder)builder).isClosed()) {
+                throw new OMException("The builder has already been closed");
+            } else if (!builder.isCompleted()) {
                 builder.next();
             } else {
-                this.setComplete(true);
+                // If the builder is suddenly complete, but the completion status of the node
+                // doesn't change, then this means that we built the wrong nodes
+                throw new IllegalStateException("Builder is already complete");
             }         
         }
     }

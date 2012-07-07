@@ -335,6 +335,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.node.TestDetachAfterBuilderClose(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestDetachFirstChild(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.node.TestDetachFirstChild(metaFactory, false));
+        addTest(new org.apache.axiom.ts.om.node.TestGetNextOMSiblingAfterDiscard(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingAfter(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingAfterLastChild(metaFactory));
         addTest(new org.apache.axiom.ts.om.node.TestInsertSiblingAfterOnChild(metaFactory));

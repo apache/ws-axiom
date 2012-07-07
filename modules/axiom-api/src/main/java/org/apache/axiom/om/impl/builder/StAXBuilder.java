@@ -33,6 +33,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
@@ -308,9 +309,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     public void discard(OMElement element) throws OMException {
 
-        if (element.isComplete() || !cache) {
-            throw new OMException();
-        }
+//        if (element.isComplete() || !cache) {
+//            throw new OMException();
+//        }
         try {
 
             // Calculate the depth of the element to be discarded. This determines how many
@@ -359,6 +360,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                 }
             }
             
+            ((OMElementEx)element).setParent(null);
+            ((OMElementEx)element).setPreviousOMSibling(null);
+            ((OMElementEx)element).setNextOMSibling(null);
         } catch (XMLStreamException e) {
             throw new OMException(e);
         } 

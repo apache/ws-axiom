@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
@@ -77,10 +78,14 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     public void buildNext() {
         OMXMLParserWrapper builder = getBuilder();
         if (builder != null) {
-            if (!builder.isCompleted()) {
+            if (((StAXOMBuilder)builder).isClosed()) {
+                throw new OMException("The builder has already been closed");
+            } else if (!builder.isCompleted()) {
                 builder.next();
             } else {
-                this.setComplete(true);
+                // If the builder is suddenly complete, but the completion status of the node
+                // doesn't change, then this means that we built the wrong nodes
+                throw new IllegalStateException("Builder is already complete");
             }         
         }
     }
