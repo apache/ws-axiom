@@ -20,7 +20,10 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.serialize.StreamWriterToContentHandlerConverter;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -32,25 +35,18 @@ import javax.xml.stream.XMLStreamWriter;
 import java.util.Iterator;
 
 public abstract class SOAPFaultDetailImpl extends SOAPElement implements SOAPFaultDetail {
-
+    public SOAPFaultDetailImpl(ParentNode parentNode, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, ((SOAPFactory)factory).getSOAPVersion().getFaultDetailQName().getLocalPart(),
+                ns, builder, factory, generateNSDecl);
+    }
 
     protected SOAPFaultDetailImpl(SOAPFault parent,
-                                  boolean extractNamespaceFromParent, SOAPFactory factory)
-            throws SOAPProcessingException {
+                                  boolean extractNamespaceFromParent,
+                                  SOAPFactory factory) throws SOAPProcessingException {
         super(parent,
-              factory.getSOAPVersion().getFaultDetailQName().getLocalPart(),
-              extractNamespaceFromParent, factory);
-    }
-
-    protected SOAPFaultDetailImpl(SOAPFactory factory) {
-        super(factory);
-    }
-
-    protected SOAPFaultDetailImpl(SOAPFault parent,
-                                  OMXMLParserWrapper builder,
-                                  SOAPFactory factory) {
-        super(parent, factory.getSOAPVersion().getFaultDetailQName().getLocalPart(), builder,
-              factory);
+                factory.getSOAPVersion().getFaultDetailQName().getLocalPart(),
+                extractNamespaceFromParent, factory);
     }
 
     public void addDetailEntry(OMElement detailElement) {

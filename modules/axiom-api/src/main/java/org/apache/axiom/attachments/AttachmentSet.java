@@ -62,7 +62,7 @@ class AttachmentSet extends AttachmentsDelegate {
         attachmentsMap.remove(blobContentID);
     }
 
-    InputStream getRootPartInputStream() throws OMException {
+    InputStream getRootPartInputStream(boolean preserve) throws OMException {
         throw new OMException("Invalid operation. Attachments are created programatically.");
     }
 

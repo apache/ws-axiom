@@ -23,14 +23,10 @@ import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
 public class SOAPMessageTest extends OMTestCase {
-
-    public SOAPMessageTest(String testName) {
-        super(testName);
-    }
-
     public void testSOAPMessageCreation() throws Exception {
-        StAXSOAPModelBuilder soapBuilder = getOMBuilder("");
-        SOAPMessage soapMessage = soapBuilder.getSoapMessage();
+        SOAPModelBuilder soapBuilder = getOMBuilder("");
+        // TODO: avoid cast here
+        SOAPMessage soapMessage = ((StAXSOAPModelBuilder)soapBuilder).getSoapMessage();
         assertNotNull(soapMessage);
         assertNotNull(soapMessage.getSOAPEnvelope());
     }

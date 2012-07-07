@@ -44,11 +44,6 @@ import java.io.OutputStream;
 import java.util.Iterator;
 
 public class ImageSampleTest extends AbstractTestCase {
-
-    public ImageSampleTest(String testName) {
-        super(testName);
-    }
-
     /*
      * @see TestCase#setUp()
      */

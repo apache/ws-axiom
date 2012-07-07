@@ -19,7 +19,9 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -136,9 +138,9 @@ public abstract class SOAPFaultImpl extends SOAPElement
             detail = getNewSOAPFaultDetail(this);
             setDetail(detail);
         }
-        OMElement faultDetailEnty = new OMElementImpl(
-                SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, null, detail,
-                factory);
+        OMElement faultDetailEnty = new OMElementImpl(detail,
+                SOAPConstants.SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, null, null,
+                factory, true);
         faultDetailEnty.setText(sw.getBuffer().toString());
     }
 
@@ -187,5 +189,9 @@ public abstract class SOAPFaultImpl extends SOAPElement
 
     protected abstract void serializeFaultNode(XMLStreamWriter writer) throws XMLStreamException;
 
-
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return e == null ?
+                ((SOAPFactory)factory).createSOAPFault((SOAPBody) targetParent):
+                ((SOAPFactory)factory).createSOAPFault((SOAPBody) targetParent, e);
+    }
 }

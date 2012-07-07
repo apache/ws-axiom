@@ -22,25 +22,15 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
-
-import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.jaxp.OMSource;
 import org.apache.axiom.om.util.StAXParserConfiguration;
-import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.ConformanceTestCase;
-import org.apache.axiom.util.stax.dialect.StAXDialect;
-import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 import org.apache.xalan.processor.TransformerFactoryImpl;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;

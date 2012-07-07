@@ -54,7 +54,7 @@ public class SOAPMessageImpl extends DocumentImpl implements SOAPMessage {
 
     public void setSOAPEnvelope(SOAPEnvelope envelope)
             throws SOAPProcessingException {
-        this.addChild(envelope);
+        this.addChild(envelope, true);
     }
 
     protected void internalSerialize(XMLStreamWriter writer, boolean cache,

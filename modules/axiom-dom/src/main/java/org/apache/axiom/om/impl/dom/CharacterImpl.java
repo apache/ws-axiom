@@ -28,7 +28,7 @@ import org.w3c.dom.DOMException;
  * This implements the OMText operations which are to be inherited by TextImpl, CommentImpl,
  * CDATASectionImpl.
  */
-public abstract class CharacterImpl extends ChildNode implements CharacterData, OMNodeEx {
+public abstract class CharacterImpl extends LeafNode implements CharacterData, OMNodeEx {
 
     protected String textValue;
 
@@ -36,13 +36,8 @@ public abstract class CharacterImpl extends ChildNode implements CharacterData, 
         super(factory);
     }
 
-    /** @param ownerNode  */
-    public CharacterImpl(DocumentImpl ownerNode, OMFactory factory) {
-        super(ownerNode, factory);
-    }
-
-    public CharacterImpl(DocumentImpl ownerNode, String value, OMFactory factory) {
-        super(ownerNode, factory);
+    public CharacterImpl(String value, OMFactory factory) {
+        super(factory);
         this.textValue = (value != null) ? value : "";
     }
 

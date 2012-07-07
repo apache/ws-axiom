@@ -22,12 +22,10 @@ package org.apache.axiom.soap.impl.dom.factory;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultNode;
@@ -40,11 +38,12 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
 import org.apache.axiom.soap.impl.dom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.dom.SOAPMessageImpl;
 import org.apache.axiom.soap.impl.dom.soap12.SOAP12FaultImpl;
 
-public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory {
+public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactoryEx {
     public DOMSOAPFactory(OMDOMMetaFactory metaFactory) {
         super(metaFactory);
     }
@@ -61,7 +60,7 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
     }
 
     public SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder) {
-        return new SOAPEnvelopeImpl((DocumentImpl) this.createOMDocument(), builder, this);
+        return new SOAPEnvelopeImpl(null, null, builder, this, false);
     }
 
     public SOAPFault createSOAPFault(SOAPBody parent) throws SOAPProcessingException {
@@ -69,7 +68,7 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
     }
 
     public final SOAPEnvelope getDefaultEnvelope() throws SOAPProcessingException {
-        SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(getNamespace(), this);
+        SOAPEnvelopeImpl env = new SOAPEnvelopeImpl(null, getNamespace(), null, this, true);
         createSOAPHeader(env);
         createSOAPBody(env);
         return env;
@@ -129,6 +128,10 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
     }
 
     public SOAPFaultRole createSOAPFaultRole() throws SOAPProcessingException {
+        throw new UnsupportedOperationException("TODO");
+    }
+
+    public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
         throw new UnsupportedOperationException("TODO");
     }
 

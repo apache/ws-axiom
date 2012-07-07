@@ -19,11 +19,10 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -31,6 +30,7 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.OMDocumentImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -59,7 +59,10 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
-public class DocumentImpl extends ParentNode implements Document, OMDocument {
+public class DocumentImpl extends RootNode implements Document, OMDocument, OMContainerEx {
+    protected OMXMLParserWrapper builder;
+
+    protected boolean done;
 
     private String xmlVersion;
 
@@ -75,12 +78,6 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     
     private final DOMConfigurationImpl domConfig = new DOMConfigurationImpl();
 
-    /** @param ownerDocument  */
-    public DocumentImpl(DocumentImpl ownerDocument, OMFactory factory) {
-        super(ownerDocument, factory);
-        this.done = true;
-    }
-
     public DocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
         super(factory);
         this.builder = parserWrapper;
@@ -91,8 +88,13 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         this.done = true;
     }
 
-    DocumentImpl ownerDocument() {
+    ParentNode internalGetOwnerNode() {
         return this;
+    }
+
+    void internalSetOwnerNode(ParentNode ownerNode) {
+        // The owner node of a document node cannot be set
+        throw new UnsupportedOperationException();
     }
 
     public Document getOwnerDocument() {
@@ -104,56 +106,8 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         return super.clone();
     }
 
-    // /
-    // /OMNode methods
-    // //
-    public void setType(int nodeType) throws OMException {
-        throw new UnsupportedOperationException(
-                "In OM Document object doesn't have a type");
-    }
-
-    public int getType() throws OMException {
-        throw new UnsupportedOperationException(
-                "In OM Document object doesn't have a type");
-    }
-
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         internalSerialize(writer, cache, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
-    }
-
-    // /
-    // /Overrides ChildNode specific methods.
-    // /
-    public OMNode getNextOMSibling() throws OMException {
-        return null;
-    }
-
-    public Node getNextSibling() {
-        return null;
-    }
-
-    public OMContainer getParent() throws OMException {
-        throw new UnsupportedOperationException("This is the document node");
-    }
-
-    public OMNode getPreviousOMSibling() {
-        throw new UnsupportedOperationException("This is the document node");
-    }
-
-    public Node getPreviousSibling() {
-        return null;
-    }
-
-    public void setNextOMSibling(OMNode node) {
-        throw new UnsupportedOperationException("This is the document node");
-    }
-
-    public void setParent(OMContainer element) {
-        throw new UnsupportedOperationException("This is the document node");
-    }
-
-    public void setPreviousOMSibling(OMNode node) {
-        throw new UnsupportedOperationException("This is the document node");
     }
 
     // /
@@ -201,19 +155,27 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public CDATASection createCDATASection(String data) throws DOMException {
-        return new CDATASectionImpl(this, data, factory);
+        CDATASectionImpl cdataSection = new CDATASectionImpl(data, factory);
+        cdataSection.setOwnerDocument(this);
+        return cdataSection;
     }
 
     public Comment createComment(String data) {
-        return new CommentImpl(this, data, this.factory);
+        CommentImpl comment = new CommentImpl(data, this.factory);
+        comment.setOwnerDocument(this);
+        return comment;
     }
 
     public DocumentFragment createDocumentFragment() {
-        return new DocumentFragmentImpl(this, this.factory);
+        DocumentFragmentImpl fragment = new DocumentFragmentImpl(this.factory);
+        fragment.setOwnerDocument(this);
+        return fragment;
     }
 
     public Element createElement(String tagName) throws DOMException {
-        return new ElementImpl(this, tagName, this.factory);
+        ElementImpl element = new ElementImpl(null, tagName, null, null, this.factory, false);
+        element.setOwnerDocument(this);
+        return element;
     }
 
     public Element createElementNS(String ns, String qualifiedName)
@@ -235,10 +197,8 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
         } else {
             namespace = new OMNamespaceImpl(ns, prefix);
         }
-        // DOM doesn't create namespace declarations automatically. Therefore we set the
-        // namespace afterwards with setNamespaceWithNoFindInCurrentScope.
-        ElementImpl element = new ElementImpl(this, localName, null, this.factory);
-        element.setNamespaceWithNoFindInCurrentScope(namespace);
+        ElementImpl element = new ElementImpl(null, localName, namespace, null, this.factory, false);
+        element.setOwnerDocument(this);
         return element;
     }
 
@@ -250,11 +210,15 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
 
     public ProcessingInstruction createProcessingInstruction(String target,
                                                              String data) throws DOMException {
-        return new ProcessingInstructionImpl(this, target, data, factory);
+        ProcessingInstructionImpl pi = new ProcessingInstructionImpl(target, data, factory);
+        pi.setOwnerDocument(this);
+        return pi;
     }
 
     public Text createTextNode(String value) {
-        return new TextImpl(this, value, this.factory);
+        TextImpl text = new TextImpl(value, this.factory);
+        text.setOwnerDocument(this);
+        return text;
     }
 
     public DocumentType getDoctype() {
@@ -543,8 +507,8 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     }
 
     public Node adoptNode(Node node) throws DOMException {
-        if (node instanceof ChildNode) {
-            ChildNode childNode = (ChildNode)node;
+        if (node instanceof NodeImpl) {
+            NodeImpl childNode = (NodeImpl)node;
             if (childNode.hasParent()) {
                 childNode.detach();
             }
@@ -622,5 +586,26 @@ public class DocumentImpl extends ParentNode implements Document, OMDocument {
     protected void internalSerialize(XMLStreamWriter writer, boolean cache,
             boolean includeXMLDeclaration) throws XMLStreamException {
         OMDocumentImplUtil.internalSerialize(this, writer, cache, includeXMLDeclaration);
+    }
+
+    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
+        DocumentImpl clone = new DocumentImpl(factory);
+        clone.xmlVersion = xmlVersion;
+        clone.xmlEncoding = xmlEncoding;
+        clone.xmlStandalone = xmlStandalone;
+        clone.charEncoding = charEncoding;
+        return clone;
+    }
+
+    public final OMXMLParserWrapper getBuilder() {
+        return builder;
+    }
+
+    public final boolean isComplete() {
+        return done;
+    }
+
+    public final void setComplete(boolean state) {
+        done = state;
     }
 }

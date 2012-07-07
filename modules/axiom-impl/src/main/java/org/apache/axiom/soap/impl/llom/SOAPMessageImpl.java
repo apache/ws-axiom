@@ -52,7 +52,7 @@ public class SOAPMessageImpl extends OMDocumentImpl implements SOAPMessage {
     }
 
     public void setSOAPEnvelope(SOAPEnvelope envelope) throws SOAPProcessingException {
-        super.addChild(envelope);
+        super.addChild(envelope, true);
     }
 
     public void setOMDocumentElement(OMElement rootElement) {

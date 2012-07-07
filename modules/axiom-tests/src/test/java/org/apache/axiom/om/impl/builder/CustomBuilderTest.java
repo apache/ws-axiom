@@ -47,13 +47,8 @@ import java.util.Iterator;
  */
 // TODO: This class seems to be a copy and paste of CopyUtilsTest. Clean this up.
 public class CustomBuilderTest extends AbstractTestCase {
-
-    public CustomBuilderTest(String testName) {
-        super(testName);
-    }
-    
     public void testSample1() throws Exception {
-        copyAndCheck(createEnvelope(getTestResource(TestConstants.SAMPLE1), false), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.SAMPLE1)), true);
     }
     
     
@@ -80,29 +75,19 @@ public class CustomBuilderTest extends AbstractTestCase {
      * @throws Exception
      */
     public void testSOAPMESSAGE() throws Exception {
-        copyAndCheck(createEnvelope(getTestResource(TestConstants.SOAP_SOAPMESSAGE), false), true);
-    }
-    
-    
-    /** 
-     * Same as testSOAPMessage, except that the a fault check is done too.
-     * (The fault check simulates what happens in the engine.)
-     * @throws Exception
-     */
-    public void testSOAPMESSAGE2() throws Exception {
-        copyAndCheck(createEnvelope(getTestResource(TestConstants.SOAP_SOAPMESSAGE), true), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.SOAP_SOAPMESSAGE)), true);
     }
     
     public void testWHITESPACE_MESSAGE() throws Exception {
-        copyAndCheck(createEnvelope(getTestResource(TestConstants.WHITESPACE_MESSAGE), false), true);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.WHITESPACE_MESSAGE)), true);
     }
     
     public void testREALLY_BIG_MESSAGE() throws Exception {
         // Ignore the serialization comparison
-        copyAndCheck(createEnvelope(getTestResource(TestConstants.REALLY_BIG_MESSAGE), false), false);
+        copyAndCheck(createEnvelope(getTestResource(TestConstants.REALLY_BIG_MESSAGE)), false);
     }
     public void testOMSE() throws Exception {
-        SOAPEnvelope sourceEnv = createEnvelope(getTestResource(TestConstants.EMPTY_BODY_MESSAGE), false);
+        SOAPEnvelope sourceEnv = createEnvelope(getTestResource(TestConstants.EMPTY_BODY_MESSAGE));
         SOAPBody body = sourceEnv.getBody();
         
         // Create a payload
@@ -116,7 +101,7 @@ public class CustomBuilderTest extends AbstractTestCase {
     }
     
     public void testOMSE2() throws Exception {
-        SOAPEnvelope sourceEnv = createEnvelope(getTestResource(TestConstants.EMPTY_BODY_MESSAGE), false);
+        SOAPEnvelope sourceEnv = createEnvelope(getTestResource(TestConstants.EMPTY_BODY_MESSAGE));
         SOAPBody body = sourceEnv.getBody();
         SOAPHeader header = sourceEnv.getHeader();
         String encoding = "UTF-8";
@@ -151,22 +136,11 @@ public class CustomBuilderTest extends AbstractTestCase {
      * @return
      * @throws Exception
      */
-    protected SOAPEnvelope createEnvelope(InputStream in, boolean doFaultCheck) throws Exception {
+    protected SOAPEnvelope createEnvelope(InputStream in) throws Exception {
         XMLStreamReader parser = StAXUtils.createXMLStreamReader(in);
         StAXSOAPModelBuilder builder = new StAXSOAPModelBuilder(parser, null);
-        
-        SOAPEnvelope sourceEnv = (SOAPEnvelope) builder.getDocumentElement();
-        
-        // Do a fault check.  This is normally done in the engine (Axiom) and should
-        // not cause inteference with the custom builder processing
-        if (doFaultCheck) {
-            sourceEnv.getBody().hasFault();
-        }
-        
-        // Do the registration here...this simulates when it could occure in the engine
-        // (After the fault check and during phase processing...probably dispatch phase)
         builder.registerCustomBuilderForPayload(new ByteArrayCustomBuilder("utf-8"));
-        return sourceEnv;
+        return (SOAPEnvelope) builder.getDocumentElement();
     }
     
     /**

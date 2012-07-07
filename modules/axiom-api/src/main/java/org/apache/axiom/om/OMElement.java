@@ -565,13 +565,27 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
     QName resolveQName(String qname);
 
     /**
-     * Clones this element. Since both elements are build compleletely, you will lose the differed
-     * building capability.
-     *
-     * @return Returns OMElement.
+     * Clones this element and its descendants using default options. This method has the same
+     * effect as {@link #cloneOMElement(OMCloneOptions)} with default options.
+     * 
+     * @return the cloned element
      */
     OMElement cloneOMElement();
 
+    /**
+     * Clones this element and its descendants. Note that this method will traverse the descendants
+     * and create clones immediately. It will also preserve the original nodes. This means that
+     * after the execution of this method, both the returned clone and the original element will be
+     * completely built.
+     * 
+     * @param options
+     *            the options to use when cloning this element and its descendants; for object
+     *            models with domain specific extensions (such as SOAP), this may be a subclass of
+     *            {@link OMCloneOptions}
+     * @return the cloned element
+     */
+    OMElement cloneOMElement(OMCloneOptions options);
+    
     void setLineNumber(int lineNumber);
 
     int getLineNumber();

@@ -20,14 +20,19 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
+import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
@@ -43,43 +48,30 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
     private boolean processed = false;
 
 
-    public SOAPHeaderBlockImpl(String localName, OMNamespace ns, SOAPFactory factory) {
-        super(localName, ns, factory);
+    public SOAPHeaderBlockImpl(OMContainer parent, String localName, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parent, localName, ns, builder, factory, generateNSDecl);
     }
-    
+
+    public SOAPHeaderBlockImpl(SOAPFactory factory, OMDataSource source) {
+        super(factory, source);
+    }
+
     public SOAPHeaderBlockImpl(String localName, OMNamespace ns, SOAPFactory factory, 
                                OMDataSource ds) {
         super(localName, ns, factory, ds);
     }
 
-    /**
-     * @param localName
-     * @param ns
-     * @param parent
-     */
-    public SOAPHeaderBlockImpl(String localName,
-                               OMNamespace ns,
-                               SOAPHeader parent,
-                               SOAPFactory factory) throws SOAPProcessingException {
-        super(localName, ns, parent, factory);
-        this.setNamespace(ns);
-    }
+    protected abstract void checkParent(OMElement parent) throws SOAPProcessingException;
 
-    /**
-     * Constructor SOAPHeaderBlockImpl.
-     *
-     * @param localName
-     * @param ns
-     * @param parent
-     * @param builder
-     */
-    public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
-                               OMElement parent, OMXMLParserWrapper builder,
-                               SOAPFactory factory) {
-        super(localName, ns, parent, builder, factory);
-        this.setNamespace(ns);
-    }
+    public void setParent(OMContainer element) {
+        super.setParent(element);
 
+        if (element instanceof OMElement) {
+            checkParent((OMElement) element);
+        }
+    }
+    
     /**
      * @param attributeName
      * @param attrValue
@@ -149,5 +141,26 @@ public abstract class SOAPHeaderBlockImpl extends OMSourcedElementImpl
             }
         }
         return false;
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        SOAPHeaderBlock clone = ((SOAPFactory)factory).createSOAPHeaderBlock(getLocalName(), getNamespace(), (SOAPHeader)targetParent);
+        copyData(options, clone);
+        return clone;
+    }
+
+    protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds) {
+        SOAPHeaderBlock clone = ((SOAPFactory)factory).createSOAPHeaderBlock(ds);
+        copyData(options, clone);
+        return clone;
+    }
+
+    private void copyData(OMCloneOptions options, SOAPHeaderBlock targetSHB) {
+        // Copy the processed flag.  The other SOAPHeaderBlock information 
+        // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.
+        Boolean processedFlag = options instanceof SOAPCloneOptions ? ((SOAPCloneOptions)options).getProcessedFlag() : null;
+        if ((processedFlag == null && isProcessed()) || (processedFlag != null && processedFlag.booleanValue())) {
+            targetSHB.setProcessed();
+        }
     }
 }

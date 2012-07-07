@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -31,16 +32,6 @@ public class AttributeMap implements NamedNodeMap {
 
     private ElementImpl ownerNode;
 
-    //
-    // Data
-    //
-
-    private short flags;
-
-    private final static short CHANGED = 0x1 << 1;
-
-    private final static short HASDEFAULTS = 0x1 << 2;
-                            
     AttributeMap(ElementImpl ownerNode) {
         this.ownerNode = ownerNode;
     }
@@ -141,7 +132,6 @@ public class AttributeMap implements NamedNodeMap {
         }
 
         attr.setOwnerElement((ElementImpl)this.ownerNode, true); // Set the owner node
-        attr.setUsed(true); // Setting used to true
 
         int i = findNamePoint(attr.getNodeName(), 0);
 
@@ -226,20 +216,7 @@ public class AttributeMap implements NamedNodeMap {
         return previous;
     }
 
-    /**
-     * BORROWED from Xerces impl. Cloning a NamedNodeMap is a DEEP OPERATION; it always clones all
-     * the nodes contained in the map.
-     */
-
-    public AttributeMap cloneMap(ElementImpl ownerNode) {
-        AttributeMap newmap = new AttributeMap(ownerNode);
-        newmap.hasDefaults(hasDefaults());
-        newmap.cloneContent(this);
-        return newmap;
-    } // cloneMap():AttributeMap
-
-    /** BORROWED from Xerces impl. */
-    protected void cloneContent(AttributeMap srcmap) {
+    void cloneContent(OMCloneOptions options, AttributeMap srcmap) {
         Vector srcnodes = srcmap.nodes;
         if (srcnodes != null) {
             int size = srcnodes.size();
@@ -250,30 +227,13 @@ public class AttributeMap implements NamedNodeMap {
                 nodes.setSize(size);
                 for (int i = 0; i < size; ++i) {
                     AttrImpl n = (AttrImpl) srcnodes.elementAt(i);
-                    AttrImpl clone = (AttrImpl) n.cloneNode(true);
+                    AttrImpl clone = (AttrImpl)n.clone(options, null, true, false);
                     clone.isSpecified(n.isSpecified());
                     nodes.setElementAt(clone, i);
                     clone.setOwnerElement(ownerNode, true);
                 }
             }
         }
-    } // cloneContent():AttributeMap
-
-
-    final boolean changed() {
-        return (flags & CHANGED) != 0;
-    }
-
-    final void changed(boolean value) {
-        flags = (short) (value ? flags | CHANGED : flags & ~CHANGED);
-    }
-
-    final boolean hasDefaults() {
-        return (flags & HASDEFAULTS) != 0;
-    }
-
-    final void hasDefaults(boolean value) {
-        flags = (short) (value ? flags | HASDEFAULTS : flags & ~HASDEFAULTS);
     }
 
     /**

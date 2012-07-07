@@ -19,16 +19,16 @@
 
 package org.apache.axiom.om.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
+public class OMDocTypeImpl extends OMLeafNode implements OMDocType {
     protected String value;
 
     /**
@@ -38,19 +38,13 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
      * @param contentText
      */
     public OMDocTypeImpl(OMContainer parentNode, String contentText,
-                         OMFactory factory) {
-        super(parentNode, factory, true);
+                         OMFactory factory, boolean fromBuilder) {
+        super(parentNode, factory, fromBuilder);
         this.value = contentText;
-        nodeType = OMNode.DTD_NODE;
     }
 
-    /**
-     * Constructor OMDocTypeImpl.
-     *
-     * @param parentNode
-     */
-    public OMDocTypeImpl(OMContainer parentNode, OMFactory factory) {
-        this(parentNode, null, factory);
+    public final int getType() {
+        return OMNode.DTD_NODE;
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
@@ -75,14 +69,7 @@ public class OMDocTypeImpl extends OMNodeImpl implements OMDocType {
         this.value = text;
     }
 
-    /**
-     * Discards this node.
-     *
-     * @throws OMException
-     */
-    public void discard() throws OMException {
-        if (done) {
-            this.detach();
-        } 
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        return factory.createOMDocType(targetParent, value);
     }
 }

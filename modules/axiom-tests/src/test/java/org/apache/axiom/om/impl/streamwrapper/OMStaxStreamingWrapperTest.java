@@ -33,10 +33,6 @@ public class OMStaxStreamingWrapperTest extends AbstractTestCase {
     private File tempFile;
     private XMLStreamReader parser;
 
-    public OMStaxStreamingWrapperTest(String testName) {
-        super(testName);
-    }
-
     protected void setUp() throws Exception {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
                 getTestResource(TestConstants.SOAP_SOAPMESSAGE1), null);

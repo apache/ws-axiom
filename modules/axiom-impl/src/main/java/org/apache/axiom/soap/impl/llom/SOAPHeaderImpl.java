@@ -19,6 +19,8 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -84,7 +86,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         
         SOAPHeaderBlock soapHeaderBlock;
         try {
-            soapHeaderBlock = createHeaderBlock(localName, ns);
+            soapHeaderBlock = ((SOAPFactory)factory).createSOAPHeaderBlock(localName, ns, this);
         } catch (SOAPProcessingException e) {
             throw new OMException(e);
         }
@@ -92,8 +94,6 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         return soapHeaderBlock;
     }
 
-    protected abstract SOAPHeaderBlock createHeaderBlock(String localname, OMNamespace ns);
-    
     public Iterator getHeadersToProcess(RolePlayer rolePlayer) {
         return new HeaderIterator(this, new RolePlayerChecker(rolePlayer));
     }
@@ -174,7 +174,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
     }
 
     
-    public void addChild(OMNode child) {
+    public void addChild(OMNode child, boolean fromBuilder) {
         
         // Make sure a proper element is added.  The children of a SOAPHeader should be
         // SOAPHeaderBlock objects.
@@ -189,7 +189,7 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
                 log.debug(exceptionToString(e));
             }
         }
-        super.addChild(child);
+        super.addChild(child, fromBuilder);
     }
     
     public static String exceptionToString(Throwable e) {
@@ -200,5 +200,9 @@ public abstract class SOAPHeaderImpl extends SOAPElement implements SOAPHeader {
         pw.close();
         String text = sw.getBuffer().toString();
         return text;
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return ((SOAPFactory)factory).createSOAPHeader((SOAPEnvelope)targetParent);
     }
 }

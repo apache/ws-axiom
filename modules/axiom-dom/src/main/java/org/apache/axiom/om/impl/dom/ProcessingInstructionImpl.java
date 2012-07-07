@@ -22,7 +22,6 @@ package org.apache.axiom.om.impl.dom;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -31,29 +30,21 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 
-public class ProcessingInstructionImpl extends ChildNode implements ProcessingInstruction, OMProcessingInstruction, OMNodeEx {
+public class ProcessingInstructionImpl extends LeafNode implements ProcessingInstruction, OMProcessingInstruction, OMNodeEx {
     private String target;
     private String value;
 
-    public ProcessingInstructionImpl(DocumentImpl ownerDocument, String target, String value,
-            OMFactory factory) {
+    public ProcessingInstructionImpl(String target, String value, OMFactory factory) {
         
-        super(ownerDocument, factory);
+        super(factory);
         this.target = target;
         this.value = value;
-        done = true;
     }
 
     public int getType() {
         return OMNode.PI_NODE;
     }
 
-    public void setType(int nodeType) throws OMException {
-        if (nodeType != OMNode.PI_NODE) {
-            throw new OMException("Can't change the type of a ProcessingInstruction node");
-        }
-    }
-    
     public short getNodeType() {
         return Node.PROCESSING_INSTRUCTION_NODE;
     }
@@ -92,5 +83,9 @@ public class ProcessingInstructionImpl extends ChildNode implements ProcessingIn
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         writer.writeProcessingInstruction(target + " ", value);
+    }
+
+    LeafNode createClone() {
+        return new ProcessingInstructionImpl(target, value, factory);
     }
 }

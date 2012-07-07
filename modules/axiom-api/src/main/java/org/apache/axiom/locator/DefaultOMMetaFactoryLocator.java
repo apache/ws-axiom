@@ -26,11 +26,15 @@ import java.util.List;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMMetaFactoryLocator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * The default {@link OMMetaFactoryLocator} implementation used in non OSGi environments.
  */
 public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactoryLocator {
+    private static final Log log = LogFactory.getLog(DefaultOMMetaFactoryLocator.class);
+    
     public DefaultOMMetaFactoryLocator() {
         ClassLoader classLoader = DefaultOMMetaFactoryLocator.class.getClassLoader();
         
@@ -53,6 +57,9 @@ public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactor
             // Ignore and continue
         }
         if (metaFactoryClassName != null) {
+            if (log.isDebugEnabled()) {
+                log.debug(OMAbstractFactory.META_FACTORY_NAME_PROPERTY + " system property is set; value=" + metaFactoryClassName);
+            }
             Implementation implementation = ImplementationFactory.createDefaultImplementation(loader, metaFactoryClassName);
             if (implementation != null) {
                 implementations.add(implementation);
@@ -60,6 +67,7 @@ public final class DefaultOMMetaFactoryLocator extends PriorityBasedOMMetaFactor
         }
 
         // Now discover the available implementations by looking for the axiom.xml descriptor.
+        log.debug("Starting class path based discovery");
         try {
             Enumeration e = classLoader.getResources(ImplementationFactory.DESCRIPTOR_RESOURCE);
             while (e.hasMoreElements()) {

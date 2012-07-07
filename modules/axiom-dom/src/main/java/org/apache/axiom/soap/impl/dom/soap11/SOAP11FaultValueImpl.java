@@ -19,8 +19,12 @@
 
 package org.apache.axiom.soap.impl.dom.soap11;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.dom.SOAPFaultValueImpl;
@@ -32,11 +36,10 @@ public class SOAP11FaultValueImpl extends SOAPFaultValueImpl {
         super(parent, factory);
     }
 
-    public SOAP11FaultValueImpl(OMElement parent, OMXMLParserWrapper builder,
-                                SOAPFactory factory) {
-        super(parent, builder, factory);
+    public SOAP11FaultValueImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
+            OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, ns, builder, factory, generateNSDecl);
     }
-
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
         if (!((parent instanceof SOAP11FaultSubCodeImpl) ||
@@ -47,5 +50,10 @@ public class SOAP11FaultValueImpl extends SOAPFaultValueImpl {
                             " implementation." +
                             parent.getClass());
         }
+    }
+
+    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
+            boolean generateNSDecl) {
+        return new SOAP11FaultValueImpl(targetParent, namespace, null, factory, generateNSDecl);
     }
 }

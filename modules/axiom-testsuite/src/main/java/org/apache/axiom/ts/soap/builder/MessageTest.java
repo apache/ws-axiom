@@ -18,11 +18,21 @@
  */
 package org.apache.axiom.ts.soap.builder;
 
+import java.io.InputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
+
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
+import org.w3c.dom.Document;
 
 public class MessageTest extends AxiomTestCase {
     private final String file;
@@ -37,6 +47,20 @@ public class MessageTest extends AxiomTestCase {
         SOAPEnvelope soapEnvelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
                 AbstractTestCase.getTestResource(file), null).getSOAPEnvelope();
         OMTestUtils.walkThrough(soapEnvelope);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document expected;
+        InputStream in = AbstractTestCase.getTestResource(file);
+        try {
+            expected = db.parse(in);
+        } finally {
+            in.close();
+        }
+        Document actual = db.newDocument();
+        // TODO: need to use getSAXSource (instead of toString) because of AXIOM-430
+        TransformerFactory.newInstance().newTransformer().transform(soapEnvelope.getSAXSource(true), new DOMResult(actual));
+        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(expected, actual), true);
         soapEnvelope.close(false);
     }
 }

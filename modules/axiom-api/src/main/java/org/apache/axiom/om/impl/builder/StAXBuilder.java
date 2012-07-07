@@ -33,6 +33,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
@@ -41,7 +42,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -62,7 +62,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected XMLStreamReader parser;
 
     /** Field omfactory */
-    protected OMFactory omfactory;
+    protected OMFactoryEx omfactory;
 
     /** Field lastNode */
     protected OMNode lastNode;
@@ -120,7 +120,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @param parser
      */
     protected StAXBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
-        omfactory = ombuilderFactory;
+        omfactory = (OMFactoryEx)ombuilderFactory;
         
         // The getEncoding information is only available at the START_DOCUMENT event.
         charEncoding = parser.getEncoding();
@@ -139,7 +139,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected StAXBuilder(OMFactory ombuilderFactory, 
                           XMLStreamReader parser, 
                           String characterEncoding) {
-        omfactory = ombuilderFactory;
+        omfactory = (OMFactoryEx)ombuilderFactory;
         charEncoding = characterEncoding;
         initParser(parser);
     }
@@ -175,7 +175,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         } catch (XMLStreamException e1) {
             throw new OMException(e1);
         }
-        omfactory = OMAbstractFactory.getOMFactory();
+        omfactory = (OMFactoryEx)OMAbstractFactory.getOMFactory();
     }
 
     /**
@@ -184,7 +184,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * @param ombuilderFactory
      */
     public void setOMBuilderFactory(OMFactory ombuilderFactory) {
-        this.omfactory = ombuilderFactory;
+        this.omfactory = (OMFactoryEx)ombuilderFactory;
     }
 
     /**
@@ -271,12 +271,11 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                     throw new OMException(ex);
                 }
             }
-            OMText text = omfactory.createOMText(dataHandlerObject, dataHandlerReader.isOptimized());
+            OMText text = omfactory.createOMText(omContainer, dataHandlerObject, dataHandlerReader.isOptimized(), true);
             String contentID = dataHandlerReader.getContentID();
             if (contentID != null) {
                 text.setContentID(contentID);
             }
-            omContainer.addChild(text);
             return text;
         } else {
             // Some parsers (like Woodstox) parse text nodes lazily and may throw a
@@ -288,7 +287,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                 parserException = ex;
                 throw ex;
             }
-            return omfactory.createOMText(omContainer, text, textType);
+            return omfactory.createOMText(omContainer, text, textType, true);
         }
     }
 
@@ -310,32 +309,35 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     public void discard(OMElement element) throws OMException {
 
-        if (element.isComplete() || !cache) {
-            throw new OMException();
-        }
+//        if (element.isComplete() || !cache) {
+//            throw new OMException();
+//        }
         try {
 
-            // We simply cannot use the parser instance from the builder for this case
-            // it is not safe to assume that the parser inside the builder will be in
-            // sync with the parser of the element in question
-            // Note 1 - however  calling getXMLStreamReaderWithoutCaching sets off two flags
-            // the cache flag for this builder and the parserAccessed flag. These flags will be
-            // reset later in this procedure
-
-            int event =0;
-            XMLStreamReader elementParser = element.getXMLStreamReaderWithoutCaching();
-            do{
-               event = elementParser.next();
-            }while(!(event == XMLStreamConstants.END_ELEMENT &&
-                     element.getLocalName().equals(elementParser.getLocalName())));
+            // Calculate the depth of the element to be discarded. This determines how many
+            // END_ELEMENT events we need to consume.
+            int targetDepth = elementLevel;
+            if (!lastNode.isComplete()) {
+                targetDepth--;
+            }
+            OMNode current = lastNode;
+            while (current != element) {
+                OMContainer parent = current.getParent();
+                if (parent instanceof OMElement) {
+                    current = (OMElement)parent;
+                } else {
+                    throw new OMException("Called discard for an element that is not being built by this builder");
+                }
+                targetDepth--;
+            }
+            
+            while (elementLevel > targetDepth) {
+                parserNext();
+            }
 
             //at this point we are safely at the end_element event of the element we discarded
             lastNode = element.getPreviousOMSibling();
 
-            // resetting the flags - see Note 1 above
-            cache = true;
-            parserAccessed = false;
-            
             if (lastNode != null) {
                 // if the last node is not an element, we are in trouble because leaf nodes
                 // (such as text) cannot build themselves. worst the lastchild of the
@@ -349,22 +351,21 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                  }
 
             } else {
-                OMElement parent = (OMElement) element.getParent();
+                OMContainer parent = element.getParent();
                 if (parent == null) {
                     throw new OMException();
+                } else {
+                    ((OMContainerEx) parent).setFirstChild(null);
+                    lastNode = parent instanceof OMDocument ? null : (OMNode)parent;
                 }
-                ((OMContainerEx) parent).setFirstChild(null);
-                lastNode = parent;
             }
             
-        } catch (OMException e) {
-            throw e;
-        } catch (Exception e) {
+            ((OMElementEx)element).setParent(null);
+            ((OMElementEx)element).setPreviousOMSibling(null);
+            ((OMElementEx)element).setNextOMSibling(null);
+        } catch (XMLStreamException e) {
             throw new OMException(e);
         } 
-        // when an element is discarded the element index that was incremented
-        //at creation needs to be decremented !
-        elementLevel--;
     }
 
     /**
@@ -564,6 +565,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      */
     protected abstract OMNode createOMElement() throws OMException;
 
+    abstract int parserNext() throws XMLStreamException;
+    
     /**
      * Forwards the parser one step further, if parser is not completed yet. If this is called after
      * parser is done, then throw an OMException. If the cache is set to false, then returns the

@@ -19,11 +19,8 @@
 package org.apache.axiom.om.ds;
 
 import org.apache.axiom.om.OMDataSourceExt;
-import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -36,7 +33,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.Iterator;
 
 /**
  * InputStream is an example OMDataSourceExt.
@@ -177,30 +173,6 @@ public class InputStreamDataSource extends OMDataSourceExtBase {
         while (bytesRead > 0) {
             os.write(buffer, 0, bytesRead);
             bytesRead = is.read(buffer);
-        }
-    }
-    
-    /**
-     * Simple utility that takes an XMLStreamReader and writes it
-     * to an XMLStreamWriter
-     * @param reader
-     * @param writer
-     * @throws XMLStreamException
-     */
-    private static void reader2writer(XMLStreamReader reader, 
-                                     XMLStreamWriter writer)
-    throws XMLStreamException {
-        StAXOMBuilder builder = new StAXOMBuilder(reader);
-        builder.releaseParserOnClose(true);
-        try {
-            OMDocument omDocument = builder.getDocument();
-            Iterator it = omDocument.getChildren();
-            while (it.hasNext()) {
-                OMNode omNode = (OMNode) it.next();
-                omNode.serializeAndConsume(writer);
-            }
-        } finally {
-            builder.close();
         }
     }
     

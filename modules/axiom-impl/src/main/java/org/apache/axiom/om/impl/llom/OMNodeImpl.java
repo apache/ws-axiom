@@ -22,18 +22,14 @@ package org.apache.axiom.om.impl.llom;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMProcessingInstruction;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 /** Class OMNodeImpl */
@@ -48,9 +44,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
     /** Field previousSibling */
     protected OMNodeImpl previousSibling;
 
-    /** Field nodeType */
-    protected int nodeType;
-
     /**
      * Constructor OMNodeImpl
      *
@@ -58,21 +51,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
      */
     public OMNodeImpl(OMFactory factory) {
         super(factory);
-    }
-
-    /**
-     * For a node to exist there must be a parent.
-     *
-     * @param parent  Parent <code>OMContainer</code> of this node
-     * @param factory The <code>OMFactory</code> that created this
-     */
-    public OMNodeImpl(OMContainer parent, OMFactory factory, boolean done) {
-        super(factory);
-        this.done = done;
-        if ((parent != null)) {
-            parent.addChild(this);
-        }
-
     }
 
     /**
@@ -117,8 +95,10 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
      *
      */
     public OMNode getNextOMSibling() throws OMException {
-        if ((nextSibling == null) && (parent != null) && !parent.isComplete()) {
-            parent.buildNext();
+        if (nextSibling == null && parent != null && parent.getBuilder() != null) {
+            while (!parent.isComplete() && nextSibling == null) {
+                parent.buildNext();
+            }
         }
         return nextSibling;
     }
@@ -136,27 +116,9 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
         if (node == null || node.getOMFactory() instanceof OMLinkedListImplFactory) {
             this.nextSibling = (OMNodeImpl) node;
         } else {
-            this.nextSibling = (OMNodeImpl) importNode(node);
+            this.nextSibling = (OMNodeImpl) ((OMFactoryEx)factory).importNode(node);
         }
         this.nextSibling = (OMNodeImpl) node;
-    }
-
-    /**
-     * Method setComplete.
-     *
-     * @param state
-     */
-    public void setComplete(boolean state) {
-        this.done = state;
-        if (parent != null) {
-            if (!done) {
-                parent.setComplete(false);
-            } else if (parent instanceof OMElementImpl) {
-                ((OMElementImpl) parent).notifyChildComplete();
-            } else if (parent instanceof OMDocumentImpl) {
-                ((OMDocumentImpl) parent).notifyChildComplete();
-            }
-        }
     }
 
     /**
@@ -249,26 +211,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
     }
 
     /**
-     * Gets the type of node, as this is the super class of all the nodes.
-     *
-     * @return Returns the type of node as indicated by {@link #setType}
-     * @see #setType
-     */
-    public int getType() {
-        return nodeType;
-    }
-
-    /**
-     * Method setType.
-     *
-     * @param nodeType
-     * @throws OMException
-     */
-    public void setType(int nodeType) throws OMException {
-        this.nodeType = nodeType;
-    }
-
-    /**
      * Gets the previous sibling.
      *
      * @return boolean
@@ -287,7 +229,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
                 previousSibling.getOMFactory() instanceof OMLinkedListImplFactory) {
             this.previousSibling = (OMNodeImpl) previousSibling;
         } else {
-            this.previousSibling = (OMNodeImpl) importNode(previousSibling);
+            this.previousSibling = (OMNodeImpl) ((OMFactoryEx)factory).importNode(previousSibling);
         }
     }
 
@@ -300,62 +242,8 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
      * to free the input stream.
      */
     public void buildWithAttachments() {
-        if (!this.done) {
+        if (!isComplete()) {
             this.build();
-        }
-    }
-
-    /**
-     * This method is intended only to be used by Axiom intenals when merging Objects from different
-     * Axiom implementations to the LLOM implementation.
-     *
-     * @param child
-     */
-    protected OMNode importNode(OMNode child) {
-        int type = child.getType();
-        switch (type) {
-            case (OMNode.ELEMENT_NODE): {
-                OMElement childElement = (OMElement) child;
-                OMElement newElement = (new StAXOMBuilder(this.factory, childElement
-                        .getXMLStreamReader())).getDocumentElement();
-                newElement.buildWithAttachments();
-                return newElement;
-            }
-            case (OMNode.TEXT_NODE): {
-                OMText importedText = (OMText) child;
-                OMText newText;
-                if (importedText.isBinary()) {
-                    boolean isOptimize = importedText.isOptimized();
-                    newText = this.factory.createOMText(importedText
-                            .getDataHandler(), isOptimize);
-                } else if (importedText.isCharacters()) {
-                    newText = this.factory.createOMText(null, importedText
-                            .getTextCharacters(), importedText.getType());
-                } else {
-                    newText = this.factory.createOMText(null, importedText
-                            .getText()/*, importedText.getOMNodeType()*/);
-                }
-                return newText;
-            }
-
-            case (OMNode.PI_NODE): {
-                OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
-                return factory.createOMProcessingInstruction(null,
-                                                                  importedPI.getTarget(),
-                                                                  importedPI.getValue());
-            }
-            case (OMNode.COMMENT_NODE): {
-                OMComment importedComment = (OMComment) child;
-                return factory.createOMComment(null, importedComment.getValue());
-            }
-            case (OMNode.DTD_NODE) : {
-                OMDocType importedDocType = (OMDocType) child;
-                return factory.createOMDocType(null, importedDocType.getValue());
-            }
-            default: {
-                throw new UnsupportedOperationException(
-                        "Not Implemented Yet for the given node type");
-            }
         }
     }
 
@@ -366,4 +254,6 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
     public void internalSerializeAndConsume(XMLStreamWriter writer) throws XMLStreamException {
         internalSerialize(writer, false);
     }
+    
+    abstract OMNode clone(OMCloneOptions options, OMContainer targetParent);
 }

@@ -41,8 +41,6 @@ public interface OMFactory {
     /** Creates a new OMDocument. */
     OMDocument createOMDocument();
 
-    OMDocument createOMDocument(OMXMLParserWrapper builder);
-
 
     /**
      * Create an element with the given name. If a namespace is given, a namespace declaration will
@@ -86,17 +84,38 @@ public interface OMFactory {
             throws OMException;
 
     /**
-     * @param localName
-     * @param ns        - this can be null
-     * @param parent
-     * @param builder
+     * Create a sourced element. If the data source implements {@link QNameAwareOMDataSource} then
+     * the returned {@link OMSourcedElement} will use the information provided through this
+     * interface to determine the local name, namespace URI and namespace prefix. For information
+     * that is not available (either because the data source doesn't implement
+     * {@link QNameAwareOMDataSource} or because some of the methods defined by that interface
+     * return <code>null</code>) the element will be expanded to determine the missing information.
+     * This is done lazily, i.e. only when the information is really required. E.g. this will not
+     * occur during serialization of the element.
+     * <p>
+     * This is an optional operation which may not be supported by all factories.
+     * 
+     * @param source
+     *            the data source; must not be <code>null</code>
+     * @return the newly created element
+     * @throws IllegalArgumentException
+     *             if <code>source</code> is <code>null</code>
      */
-    OMElement createOMElement(String localName, OMNamespace ns,
-                                     OMContainer parent,
-                                     OMXMLParserWrapper builder);
-
+    OMSourcedElement createOMElement(OMDataSource source);
+    
     /**
-     * Create a sourced element with a known local name, namespace URI and namespace prefix.
+     * Create a sourced element with a known local name and namespace URI. If the namespace prefix
+     * is known in advance, then the caller should specify it in the provided {@link OMNamespace}
+     * object. The caller may pass an {@link OMNamespace} instance with a <code>null</code> prefix.
+     * This indicates that the prefix is unknown and will be determined lazily by expanding the
+     * element.
+     * <p>
+     * Note that if the provided data source implements {@link QNameAwareOMDataSource}, then the
+     * information returned by {@link QNameAwareOMDataSource#getPrefix()} may be used to determine
+     * the prefix. However, this is an unusual use case.
+     * <p>
+     * Also note that if the specified namespace URI is empty, then the element can't have a prefix
+     * and it is not necessary to expand the element to determine its prefix.
      * <p>
      * This is an optional operation which may not be supported by all factories.
      * 
@@ -279,9 +298,6 @@ public interface OMFactory {
      */
     OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
             boolean optimize);
-
-    OMText createOMText(String contentID, OMContainer parent,
-                               OMXMLParserWrapper builder);
 
     /**
      * Create an attribute with the given name and value. If the provided {@link OMNamespace} object

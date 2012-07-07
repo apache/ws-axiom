@@ -20,7 +20,10 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.util.ElementHelper;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
@@ -39,11 +42,9 @@ public abstract class SOAPFaultSubCodeImpl extends SOAPElement implements SOAPFa
         super(parent, localName, true, factory);
     }
 
-    protected SOAPFaultSubCodeImpl(OMElement parent,
-                                   String localName,
-                                   OMXMLParserWrapper builder,
-                                   SOAPFactory factory) {
-        super(parent, localName, builder, factory);
+    public SOAPFaultSubCodeImpl(ParentNode parentNode, String localName, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, localName, ns, builder, factory, generateNSDecl);
     }
 
     public void setValue(SOAPFaultValue soapFaultSubCodeValue) throws SOAPProcessingException {

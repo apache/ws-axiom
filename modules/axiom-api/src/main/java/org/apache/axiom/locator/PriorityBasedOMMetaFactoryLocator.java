@@ -25,8 +25,12 @@ import java.util.Map;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMMetaFactoryLocator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 class PriorityBasedOMMetaFactoryLocator implements OMMetaFactoryLocator {
+    private static final Log log = LogFactory.getLog(PriorityBasedOMMetaFactoryLocator.class);
+    
     private final Map/*<String,OMMetaFactory>*/ factories = new HashMap();
     
     void loadImplementations(List/*<Implementation>*/ implementations) {
@@ -45,6 +49,17 @@ class PriorityBasedOMMetaFactoryLocator implements OMMetaFactoryLocator {
                     factories.put(name, implementation.getMetaFactory());
                 }
             }
+        }
+        if (log.isDebugEnabled()) {
+            StringBuilder buffer = new StringBuilder("Meta factories:");
+            for (Iterator it = factories.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry entry = (Map.Entry)it.next();
+                buffer.append("\n  ");
+                buffer.append(entry.getKey());
+                buffer.append(": ");
+                buffer.append(entry.getValue().getClass().getName());
+            }
+            log.debug(buffer);
         }
     }
     

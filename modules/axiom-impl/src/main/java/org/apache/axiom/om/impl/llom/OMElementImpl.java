@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
@@ -27,13 +28,11 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMChildrenLegacyQNameIterator;
@@ -45,7 +44,6 @@ import org.apache.axiom.om.impl.common.OMDescendantsIterator;
 import org.apache.axiom.om.impl.common.OMElementImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.jaxp.OMSource;
-import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.apache.axiom.om.impl.traverse.OMChildrenIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
@@ -55,7 +53,6 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
@@ -75,6 +72,10 @@ public class OMElementImpl extends OMNodeImpl
 
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
+    protected OMXMLParserWrapper builder;
+
+    protected boolean done;
+
     /**
      * The namespace of this element. Possible values:
      * <ul>
@@ -107,45 +108,19 @@ public class OMElementImpl extends OMNodeImpl
     private int lineNumber;
     private static final EmptyIterator EMPTY_ITERATOR = new EmptyIterator();
 
-    /**
-     * Constructor OMElementImpl. A null namespace indicates that the default namespace in scope is
-     * used
-     */
-    public OMElementImpl(String localName, OMNamespace ns, OMContainer parent,
-                         OMXMLParserWrapper builder, OMFactory factory) {
-        super(parent, factory, false);
-        this.localName = localName;
-        if (ns != null) {
-            setNamespace(ns);
-        }
-        this.builder = builder;
-        firstChild = null;
-    }
-
-
-    /** Constructor OMElementImpl. */
-    public OMElementImpl(String localName, OMNamespace ns, OMFactory factory) {
-        this(localName, ns, null, factory);
-    }
-
-    /**
-     * This is the basic constructor for OMElement. All the other constructors depends on this.
-     *
-     * @param localName - this MUST always be not null
-     * @param ns        - can be null
-     * @param parent    - this should be an OMContainer
-     * @param factory   - factory that created this OMElement
-     *                  <p/>
-     *                  A null namespace indicates that the default namespace in scope is used
-     */
-    public OMElementImpl(String localName, OMNamespace ns, OMContainer parent,
-                         OMFactory factory) {
-        super(parent, factory, true);
+    public OMElementImpl(OMContainer parent, String localName, OMNamespace ns, OMXMLParserWrapper builder,
+                    OMFactory factory, boolean generateNSDecl) {
+        super(factory);
         if (localName == null || localName.trim().length() == 0) {
             throw new OMException("localname can not be null or empty");
         }
         this.localName = localName;
-        setNamespace(ns);
+        this.builder = builder;
+        this.done = builder == null;
+        if (parent != null) {
+            ((OMContainerEx)parent).addChild(this, builder != null);
+        }
+        this.ns = generateNSDecl ? handleNamespace(ns) : ns;
     }
 
     /**
@@ -156,9 +131,23 @@ public class OMElementImpl extends OMNodeImpl
      */
     public OMElementImpl(QName qname, OMContainer parent, OMFactory factory)
             throws OMException {
-        super(parent, factory, true);
+        super(factory);
+        done = true;
+        if (parent != null) {
+            parent.addChild(this);
+        }
         localName = qname.getLocalPart();
         this.ns = handleNamespace(qname);
+    }
+    
+    /**
+     * Constructor reserved for use by {@link OMSourcedElementImpl}.
+     * 
+     * @param factory
+     */
+    OMElementImpl(OMFactory factory) {
+        super(factory);
+        done = true;
     }
 
     /** Method handleNamespace. */
@@ -204,7 +193,7 @@ public class OMElementImpl extends OMNodeImpl
             return null;
         } else {
             OMNamespace namespace = findNamespace(namespaceURI, prefix);
-            if (namespace == null) {
+            if (namespace == null || (prefix != null && !namespace.getPrefix().equals(prefix))) {
                 namespace = declareNamespace(ns);
             }
             return namespace;
@@ -228,18 +217,13 @@ public class OMElementImpl extends OMNodeImpl
         }
     }
 
-    /**
-     * Adds child to the element. One can decide whether to append the child or to add to the front
-     * of the children list.
-     */
-    public void addChild(OMNode child) {
-        if (child.getOMFactory() instanceof OMLinkedListImplFactory) {
-            addChild((OMNodeImpl) child);
-        } else {
-            addChild(importNode(child));
-        }
+    public void addChild(OMNode omNode) {
+        addChild(omNode, false);
     }
 
+    public void addChild(OMNode omNode, boolean fromBuilder) {
+        OMContainerHelper.addChild(this, omNode, fromBuilder);
+    }
 
     /**
      * Searches for children with a given QName and returns an iterator to traverse through the
@@ -304,66 +288,6 @@ public class OMElementImpl extends OMNodeImpl
 
     }
 
-    /** Method addChild. */
-    private void addChild(OMNodeImpl child) {
-        if (child.parent == this && child == lastChild && done) {
-            // The child is already the last node. 
-            // We don't need to detach and re-add it.
-        } else {
-            // Normal Case
-            
-            if (child.parent != null) {
-                child.detach();
-            }
-            
-            child.parent = this;
-
-            if (firstChild == null) {
-                firstChild = child;
-                child.previousSibling = null;
-            } else {
-                child.previousSibling = (OMNodeImpl) lastChild;
-                ((OMNodeImpl) lastChild).nextSibling = child;
-            }
-
-            child.nextSibling = null;
-            lastChild = child;
-        }
-
-        // For a normal OMNode, the incomplete status is
-        // propogated up the tree.  
-        // However, a OMSourcedElement is self-contained 
-        // (it has an independent parser source).
-        // So only propogate the incomplete setting if this
-        // is a normal OMNode
-        if (!child.isComplete() && 
-            !(child instanceof OMSourcedElement)) {
-            this.setComplete(false);
-        }
-
-    }
-
-    /**
-     * Gets the next sibling. This can be an OMAttribute or OMText or OMELement for others.
-     *
-     * @throws OMException
-     */
-    public OMNode getNextOMSibling() throws OMException {
-        while (!done && builder != null ) {
-            if (builder.isCompleted()) {
-                log.debug("Builder is complete.  Setting OMElement to complete.");
-                setComplete(true);
-            } else {
-                int token = builder.next();
-                if (token == XMLStreamConstants.END_DOCUMENT) {
-                    throw new OMException(
-                    "Parser has already reached end of the document. No siblings found");
-                }
-            }
-        }
-        return super.getNextOMSibling();
-    }
-
     /**
      * Returns a collection of this element. Children can be of types OMElement, OMText.
      *
@@ -424,12 +348,16 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
+        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
+        addNamespaceDeclaration(ns);
+        return ns;
+    }
+    
+    void addNamespaceDeclaration(OMNamespace ns) {
         if (namespaces == null) {
             this.namespaces = new HashMap(5);
         }
-        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
-        namespaces.put(prefix, ns);
-        return ns;
+        namespaces.put(ns.getPrefix(), ns);
     }
 
     /** @return Returns namespace. */
@@ -640,9 +568,6 @@ public class OMElementImpl extends OMNodeImpl
                     attr.getLocalName(), attr.getNamespace(), attr.getAttributeValue(), attr.getOMFactory());
         }
 
-        if (attributes == null) {
-            this.attributes = new LinkedHashMap(5);
-        }
         OMNamespace namespace = attr.getNamespace();
         if (namespace != null) {
             String uri = namespace.getNamespaceURI();
@@ -655,6 +580,14 @@ public class OMElementImpl extends OMNodeImpl
             }
         }
 
+        appendAttribute(attr);
+        return attr;
+    }
+    
+    void appendAttribute(OMAttribute attr) {
+        if (attributes == null) {
+            this.attributes = new LinkedHashMap(5);
+        }
         // Set the owner element of the attribute
         ((OMAttributeImpl)attr).owner = this;
         OMAttributeImpl oldAttr = (OMAttributeImpl)attributes.put(attr.getQName(), attr);
@@ -662,7 +595,6 @@ public class OMElementImpl extends OMNodeImpl
         if (oldAttr != null) {
             oldAttr.owner = null;
         }
-        return attr;
     }
 
     public void removeAttribute(OMAttribute attr) {
@@ -702,18 +634,6 @@ public class OMElementImpl extends OMNodeImpl
         return builder;
     }
 
-    /** Forces the parser to proceed, if parser has not yet finished with the XML input. */
-    public void buildNext() {
-        if (builder != null) {
-            if (!builder.isCompleted()) {
-                builder.next();
-            } else {
-                this.setComplete(true);
-                log.debug("Builder is complete.  Setting OMElement to complete.");
-            }         
-        }
-    }
-
     /**
      * Method getFirstOMChild.
      *
@@ -730,6 +650,9 @@ public class OMElementImpl extends OMNodeImpl
         return firstChild;
     }
 
+    public OMNode getLastKnownOMChild() {
+        return lastChild;
+    }
 
     /** Method setFirstChild. */
     public void setFirstChild(OMNode firstChild) {
@@ -750,14 +673,23 @@ public class OMElementImpl extends OMNodeImpl
      * @throws OMException
      */
     public OMNode detach() throws OMException {
-        if (!done) {
-            build();
+        if (isComplete() && !parent.isComplete() && getNextOMSiblingIfAvailable() == null) {
+            // Special case: the node is complete, but the next node has not yet been created.
+            // In this case we want to detach the node without creating the next node because
+            // the builder may already have been closed (there is code in Axis2 that calls
+            // detach in that situation). We use discard for this: in this state, discard
+            // actually won't discard anything, but it will update the lastNode attribute
+            // of the builder.
+            getBuilder().discard(this);
+        } else {
+            if (!done) {
+                build();
+            }
+            super.detach();
         }
-        super.detach();
         return this;
     }
 
-    /** Gets the type of node, as this is the super class of all the nodes. */
     public int getType() {
         return OMNode.ELEMENT_NODE;
     }
@@ -776,6 +708,23 @@ public class OMElementImpl extends OMNodeImpl
             super.build();
         }
 
+    }
+
+    public boolean isComplete() {
+        return done;
+    }
+
+    public void setComplete(boolean state) {
+        this.done = state;
+        if (parent != null) {
+            if (!done) {
+                parent.setComplete(false);
+            } else if (parent instanceof OMElementImpl) {
+                ((OMElementImpl) parent).notifyChildComplete();
+            } else if (parent instanceof OMDocumentImpl) {
+                ((OMDocumentImpl) parent).notifyChildComplete();
+            }
+        }
     }
 
     public XMLStreamReader getXMLStreamReader() {
@@ -998,24 +947,38 @@ public class OMElementImpl extends OMNodeImpl
             log.debug(" isComplete = " + isComplete());
             log.debug("  builder = " + builder);
         }
-        // Make sure the source (this node) is completed
-        if (!isComplete()) {
-            this.build();
-        }
-        
-        // Now get a parser for the full tree
-        XMLStreamReader xmlStreamReader = this.getXMLStreamReader(true);
-        if (log.isDebugEnabled()) {
-            log.debug("  reader = " + xmlStreamReader);
-        }
-        
-        // Build the (target) clonedElement from the parser
-        OMElement clonedElement =
-                new StAXOMBuilder(xmlStreamReader).getDocumentElement();
-        clonedElement.build();
-        return clonedElement;
+        return cloneOMElement(new OMCloneOptions());
     }
 
+    public OMElement cloneOMElement(OMCloneOptions options) {
+        return (OMElement)clone(options, null);
+    }
+
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        OMElement targetElement;
+        if (options.isPreserveModel()) {
+            targetElement = createClone(options, targetParent);
+        } else {
+            targetElement = factory.createOMElement(getLocalName(), getNamespace(), targetParent);
+        }
+        for (Iterator it = getAllDeclaredNamespaces(); it.hasNext(); ) {
+            OMNamespace ns = (OMNamespace)it.next();
+            targetElement.declareNamespace(ns);
+        }
+        for (Iterator it = getAllAttributes(); it.hasNext(); ) {
+            OMAttribute attr = (OMAttribute)it.next();
+            targetElement.addAttribute(attr);
+        }
+        for (Iterator it = getChildren(); it.hasNext(); ) {
+            ((OMNodeImpl)it.next()).clone(options, targetElement);
+        }
+        return targetElement;
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return factory.createOMElement(getLocalName(), getNamespace(), targetParent);
+    }
+    
     public void setLineNumber(int lineNumber) {
         this.lineNumber = lineNumber;
     }

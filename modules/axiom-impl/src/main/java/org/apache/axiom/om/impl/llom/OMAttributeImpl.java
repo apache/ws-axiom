@@ -29,13 +29,10 @@ import javax.xml.namespace.QName;
 
 /** Class OMAttributeImpl */
 public class OMAttributeImpl implements OMAttribute {
-    /** Field localName */
     private String localName;
 
-    /** Field value */
     private String value;
 
-    /** Field type */
     private String type;
 
     /**
@@ -124,11 +121,6 @@ public class OMAttributeImpl implements OMAttribute {
         this.qName = null;
     }
 
-    /**
-     * Method getAttributeValue.
-     *
-     * @return Returns value.
-     */
     public String getAttributeValue() {
         return value;
     }
@@ -142,13 +134,8 @@ public class OMAttributeImpl implements OMAttribute {
         this.value = value;
     }
 
-    /**
-     * Method getAttributeType.
-     *
-     * @return Returns type.
-     */
     public String getAttributeType() {
-    	return type;
+        return type;
     }
 
     /**
@@ -203,10 +190,6 @@ public class OMAttributeImpl implements OMAttribute {
         return this.factory;
     }
 
-    /**
-     * Returns the owner element of this attribute
-     * @return OMElement - the owner element
-     */
     public OMElement getOwner() {
         return owner;
     }

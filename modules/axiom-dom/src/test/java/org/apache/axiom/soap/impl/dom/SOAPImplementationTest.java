@@ -23,6 +23,7 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
+import org.apache.axiom.ts.soap.body.TestHasFaultAfterReplace;
 import org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope;
 import org.apache.axiom.ts.soap.faultdetail.TestWSCommons202;
 import org.apache.axiom.ts.soap.faulttext.TestSetLang;
@@ -31,9 +32,12 @@ import org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQNameWithExistingVal
 
 public class SOAPImplementationTest extends TestCase {
     public static TestSuite suite() {
-        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMDOMMetaFactory());
+        SOAPTestSuiteBuilder builder = new SOAPTestSuiteBuilder(new OMDOMMetaFactory(), false, false);
         builder.exclude(TestWSCommons202.class);
-        builder.exclude(TestGetDefaultFaultEnvelope.class);
+        
+        // TODO: getDefaultFaultEnvelope is broken
+        builder.exclude(TestGetDefaultFaultEnvelope.class, "(spec=soap11)");
+        builder.exclude(TestHasFaultAfterReplace.class, "(spec=soap11)");
         
         // TODO: not sure if this is an issue in DOOM or if the test case is wrong
         builder.exclude(TestMoreChildrenAddition.class);

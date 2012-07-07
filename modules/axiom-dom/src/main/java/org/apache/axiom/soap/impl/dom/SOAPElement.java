@@ -20,10 +20,9 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.common.OMNamespaceImpl;
-import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPFactory;
@@ -31,16 +30,12 @@ import org.apache.axiom.soap.SOAPProcessingException;
 
 public abstract class SOAPElement extends ElementImpl {
 
-    public SOAPElement(SOAPFactory factory) {
-        super(factory);
-    }
-
     /** @param parent  */
     protected SOAPElement(OMElement parent,
                           String localName,
                           boolean extractNamespaceFromParent,
                           SOAPFactory factory) throws SOAPProcessingException {
-        super((ParentNode) parent, localName, null, factory);
+        super((ParentNode) parent, localName, null, null, factory, true);
         if (parent == null) {
             throw new SOAPProcessingException(
                     " Can not create " + localName +
@@ -54,26 +49,20 @@ public abstract class SOAPElement extends ElementImpl {
         this.localName = localName;
     }
 
-
-    protected SOAPElement(OMElement parent,
-                          String localName,
-                          OMXMLParserWrapper builder,
-                          SOAPFactory factory) {
-        super((ParentNode) parent, localName, null, builder, factory);
-    }
-
-    protected SOAPElement(DocumentImpl doc, String localName, OMNamespace ns,
-                          SOAPFactory factory) {
-        super(doc, localName, (OMNamespaceImpl) ns, factory);
-    }
-
-    protected SOAPElement(DocumentImpl ownerDocument, String tagName,
-                          OMNamespaceImpl ns, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(ownerDocument, tagName, ns, builder, factory);
+    public SOAPElement(ParentNode parentNode, String localName, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, localName, ns, builder, factory, generateNSDecl);
     }
 
     /** This has to be implemented by all the derived classes to check for the correct parent. */
     protected abstract void checkParent(OMElement parent)
             throws SOAPProcessingException;
 
+    protected void setParent(ParentNode parent, boolean useDomSemantics) {
+        super.setParent(parent, useDomSemantics);
+
+        if (!useDomSemantics && parent instanceof OMElement) {
+            checkParent((OMElement) parent);
+        }
+    }
 }

@@ -21,7 +21,9 @@ package org.apache.axiom.soap.impl.llom;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -110,7 +112,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
      * Add a SOAPHeader or SOAPBody object
      * @param child an OMNode to add - must be either a SOAPHeader or a SOAPBody
      */
-    public void addChild(OMNode child) {
+    public void addChild(OMNode child, boolean fromBuilder) {
         // SOAP 1.1 allows for arbitrary elements after SOAPBody so do NOT check for
         // node types when appending to SOAP 1.1 envelope.
         if (getVersion() instanceof SOAP12Version) {
@@ -147,7 +149,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
                 }
             }
         }
-        super.addChild(child);        
+        super.addChild(child, fromBuilder);        
     }
     
     /**
@@ -263,7 +265,7 @@ public class SOAPEnvelopeImpl extends SOAPElement
 
     private void serializeInternally(OMNodeImpl child, MTOMXMLStreamWriter writer)
             throws XMLStreamException {
-        if ((!(child instanceof OMElement)) || child.isComplete() || child.builder == null) {
+        if ((!(child instanceof OMElement)) || child.isComplete() || child.getBuilder() == null) {
             child.internalSerialize(writer, false);
         } else {
             OMElement element = (OMElement) child;
@@ -328,5 +330,9 @@ public class SOAPEnvelopeImpl extends SOAPElement
             
         }
         return null;
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return ((SOAPFactory)factory).createSOAPEnvelope(getNamespace());
     }
 }

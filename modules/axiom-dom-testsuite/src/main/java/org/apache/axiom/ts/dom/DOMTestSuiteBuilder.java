@@ -20,6 +20,7 @@ package org.apache.axiom.ts.dom;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.axiom.testutils.conformance.Conformance;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 
 public class DOMTestSuiteBuilder extends TestSuiteBuilder {
@@ -30,6 +31,12 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
     }
     
     protected void addTests() {
+        String[] conformanceFiles = Conformance.getConformanceTestFiles();
+        addTest(new org.apache.axiom.ts.dom.attr.TestCloneNode(dbf, true));
+        addTest(new org.apache.axiom.ts.dom.attr.TestCloneNode(dbf, false));
+        addTest(new org.apache.axiom.ts.dom.attr.TestGetChildNodes(dbf));
+        addTest(new org.apache.axiom.ts.dom.attr.TestGetFirstChild(dbf));
+        addTest(new org.apache.axiom.ts.dom.attr.TestGetValueWithMultipleChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.builder.TestWhitespaceAroundDocumentElement(dbf));
@@ -38,6 +45,9 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestAdoptNodeWithParent(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAllowedChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAppendChildWrongDocument(dbf));
+        for (int i=0; i<conformanceFiles.length; i++) {
+            addTest(new org.apache.axiom.ts.dom.document.TestCloneNode(dbf, conformanceFiles[i]));
+        }
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttribute(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNS(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNSWithoutNamespace(dbf));
@@ -56,6 +66,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithStylesheet(dbf, org.apache.xalan.processor.TransformerFactoryImpl.class));
         addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithStylesheet(dbf, net.sf.saxon.TransformerFactoryImpl.class));
         addTest(new org.apache.axiom.ts.dom.document.TestValidator(dbf));
+        addTest(new org.apache.axiom.ts.dom.documentfragment.TestCloneNode(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAppendChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAppendChildCyclic(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAppendChildSelf(dbf));
@@ -65,6 +76,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestAttributes3(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAttributes4(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestCloneNode(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestCloneNodeWithAttributeHavingMultipleChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestCloneNodeWithAttributes(dbf, true));
         addTest(new org.apache.axiom.ts.dom.element.TestCloneNodeWithAttributes(dbf, false));
         addTest(new org.apache.axiom.ts.dom.element.TestGetElementsByTagName(dbf));
@@ -83,9 +95,11 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveSingleChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildWrongDocument(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSInUse(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSReplace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeWrongDocument(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNull(dbf));
@@ -93,6 +107,8 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.attributes.TestSetNamedItemNSWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.element.attributes.TestSetNamedItemWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestAppendData(dbf));
+        addTest(new org.apache.axiom.ts.dom.text.TestGetChildNodes(dbf));
+        addTest(new org.apache.axiom.ts.dom.text.TestGetLength(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeText(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeTextWithCDATASection(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeTextWithComment(dbf));

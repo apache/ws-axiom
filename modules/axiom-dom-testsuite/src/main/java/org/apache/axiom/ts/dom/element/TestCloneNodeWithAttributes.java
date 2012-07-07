@@ -44,8 +44,7 @@ public class TestCloneNodeWithAttributes extends DOMTestCase {
         element.setAttributeNS(null, "attr1", "value1");
         element.setAttributeNS("urn:ns2", "q:attr2", "value2");
         Element clone = (Element)element.cloneNode(deep);
-        // TODO: this doesn't work with DOOM yet
-//        assertEquals(2, clone.getAttributes().getLength());
+        assertEquals(2, clone.getAttributes().getLength());
         Attr attr1 = clone.getAttributeNodeNS(null, "attr1");
         Attr attr2 = clone.getAttributeNodeNS("urn:ns2", "attr2");
         assertNotNull(attr1);

@@ -20,6 +20,9 @@
 package org.apache.axiom.soap.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
@@ -84,5 +87,9 @@ public abstract class SOAPFaultTextImpl extends SOAPElement implements SOAPFault
         }
 
         return langAttr == null ? null : langAttr.getAttributeValue();
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return ((SOAPFactory)factory).createSOAPFaultText((SOAPFaultReason)targetParent);
     }
 }

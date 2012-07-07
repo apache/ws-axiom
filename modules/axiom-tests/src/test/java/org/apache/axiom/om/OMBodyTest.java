@@ -29,10 +29,6 @@ public class OMBodyTest extends OMTestCase implements OMConstants {
     SOAPBody soapBody;
     private static Log log = LogFactory.getLog(OMBodyTest.class);
 
-    public OMBodyTest(String testName) {
-        super(testName);
-    }
-
     /*
      * @see TestCase#setUp()
      */
@@ -41,20 +37,6 @@ public class OMBodyTest extends OMTestCase implements OMConstants {
         soapBody = soapEnvelope.getBody();
     }
 
-    /*
-     * Class under test for SOAPFault addFault()
-     */
-    public void testAddFault() {
-        log.debug("Adding SOAP fault to body ....");
-        soapBody.addChild(
-                soapFactory.createSOAPFault(soapBody,
-                                            new Exception("Testing soap fault")));
-        log.debug("\t checking for SOAP Fault ...");
-        assertTrue("SOAP body has no SOAP fault", soapBody.hasFault());
-        log.debug("\t checking for not-nullity ...");
-        assertTrue("SOAP body has no SOAP fault", soapBody.getFault() != null);
-    }
-    
     /**
      * Ensure that invoking addChild twice on the same element only
      * adds the child one time.

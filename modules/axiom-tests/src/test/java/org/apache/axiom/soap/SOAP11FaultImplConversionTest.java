@@ -20,12 +20,9 @@
 package org.apache.axiom.soap;
 
 import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 
-import javax.xml.stream.XMLStreamReader;
 import java.io.InputStream;
-
 
 public class SOAP11FaultImplConversionTest extends AbstractTestCase {
 
@@ -33,14 +30,13 @@ public class SOAP11FaultImplConversionTest extends AbstractTestCase {
 
     public void testConversion() throws Exception {
         InputStream is = getTestResource(soap11FaulXmlPath);
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(is);
 
-        SOAPEnvelope env = new StAXSOAPModelBuilder(reader, null).getSOAPEnvelope();
+        SOAPEnvelope env = OMXMLBuilderFactory.createSOAPModelBuilder(is, null).getSOAPEnvelope();
 
         env.build();
 
         SOAPEnvelope env2 =
-                new StAXSOAPModelBuilder(env.getXMLStreamReader(), null).getSOAPEnvelope();
+                OMXMLBuilderFactory.createStAXSOAPModelBuilder(env.getXMLStreamReader()).getSOAPEnvelope();
 
         env2.build();
 

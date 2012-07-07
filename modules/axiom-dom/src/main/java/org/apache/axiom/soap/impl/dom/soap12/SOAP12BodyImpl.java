@@ -19,8 +19,13 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -34,21 +39,16 @@ public class SOAP12BodyImpl extends SOAPBodyImpl {
         super(envelope, factory);
     }
 
-    /**
-     * Constructor SOAPBodyImpl
-     *
-     * @param envelope
-     * @param builder
-     */
-    public SOAP12BodyImpl(SOAPEnvelope envelope, OMXMLParserWrapper builder,
-                          SOAPFactory factory) {
-        super(envelope, builder, factory);
+    public SOAP12BodyImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
+            OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, ns, builder, factory, generateNSDecl);
     }
 
     public SOAPFault addFault(Exception e) throws OMException {
-        SOAPFault soapFault = new SOAP12FaultImpl(this, e,
-                                                  (SOAPFactory) this.factory);
-        this.hasSOAPFault = true;
-        return soapFault;
+        return new SOAP12FaultImpl(this, e, (SOAPFactory) this.factory);
+    }
+
+    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
+        return new SOAP12BodyImpl(targetParent, namespace, null, factory, generateNSDecl);
     }
 }

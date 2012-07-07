@@ -30,19 +30,23 @@ public class TestCreateAttributeNS extends DOMTestCase {
     }
 
     protected void runTest() throws Throwable {
-        String attrName = "attrIdentifier";
-        String attrValue = "attrValue";
-        String attrNs = "http://ws.apache.org/axis2/ns";
-        String attrNsPrefix = "axis2";
+        String localName = "attrIdentifier";
+        String uri = "http://ws.apache.org/axis2/ns";
+        String prefix = "axis2";
+        String name = prefix + ":" + localName;
 
         Document doc = dbf.newDocumentBuilder().newDocument();
 
-        Attr attr = doc.createAttributeNS(attrNs, attrNsPrefix + ":" + attrName);
-        assertEquals("Attr name mismatch", attrName, attr.getLocalName());
-        assertNotNull("Namespace value should not be null", attr.getNamespaceURI());
-        assertEquals("NamsspaceURI mismatch", attrNs, attr.getNamespaceURI());
-        assertEquals("namespace prefix mismatch", attrNsPrefix, attr.getPrefix());
+        Attr attr = doc.createAttributeNS(uri, name);
+        
+        // Check name
+        assertEquals("Attr name mismatch", localName, attr.getLocalName());
+        assertEquals("NamsspaceURI mismatch", uri, attr.getNamespaceURI());
+        assertEquals("namespace prefix mismatch", prefix, attr.getPrefix());
+        assertEquals(name, attr.getName());
 
-        attr.setValue(attrValue);
+        // Check defaults
+        assertNull(attr.getFirstChild());
+        assertEquals("", attr.getValue());
     }
 }

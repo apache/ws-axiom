@@ -20,14 +20,15 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.util.UIDGenerator;
 import org.apache.axiom.util.base64.Base64Utils;
@@ -40,10 +41,12 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
+public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
     /** Field nameSpace used when serializing Binary stuff as MTOM optimized. */
     public static final OMNamespace XOP_NS = new OMNamespaceImpl(
             "http://www.w3.org/2004/08/xop/include", "xop");
+
+    private int nodeType;
 
     protected String value = null;
     protected char[] charArray;
@@ -83,7 +86,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      *                 Constants for this can be found in OMNode.
      */
     public OMTextImpl(String s, int nodeType, OMFactory factory) {
-        this(null, s, nodeType, factory);
+        this(null, s, nodeType, factory, false);
     }
 
     /**
@@ -93,7 +96,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * @param text
      */
     public OMTextImpl(OMContainer parent, String text, OMFactory factory) {
-        this(parent, text, TEXT_NODE, factory);
+        this(parent, text, TEXT_NODE, factory, false);
     }
     
     /**
@@ -103,7 +106,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
      * @param factory
      */
     public OMTextImpl(OMContainer parent, OMTextImpl source, OMFactory factory) {
-        super(parent, factory, true);
+        super(parent, factory, false);
         // Copy the value of the text
         this.value = source.value;
         this.nodeType = source.nodeType;
@@ -131,15 +134,15 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
     }
 
     public OMTextImpl(OMContainer parent, String text, int nodeType,
-                      OMFactory factory) {
-        super(parent, factory, true);
+                      OMFactory factory, boolean fromBuilder) {
+        super(parent, factory, fromBuilder);
         this.value = text == null ? EMTPY_STRING : text;
         this.nodeType = nodeType;
     }
 
     public OMTextImpl(OMContainer parent, char[] charArray, int nodeType,
                       OMFactory factory) {
-        super(parent, factory, true);
+        super(parent, factory, false);
         this.charArray = charArray;
         this.nodeType = nodeType;
     }
@@ -151,7 +154,7 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
 
     public OMTextImpl(OMContainer parent, QName text, int nodeType,
                       OMFactory factory) {
-        super(parent, factory, true);
+        super(parent, factory, false);
         if (text == null) throw new IllegalArgumentException("QName text arg cannot be null!");
         this.calcNS = true;
         this.textNS =
@@ -180,25 +183,23 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.mimeType = mimeType;
         this.optimize = optimize;
         this.isBinary = true;
-        done = true;
         this.nodeType = TEXT_NODE;
     }
 
     /** @param dataHandler To send binary optimised content Created programatically. */
     public OMTextImpl(Object dataHandler, OMFactory factory) {
-        this(dataHandler, true, factory);
+        this(null, dataHandler, true, factory, false);
     }
 
     /**
      * @param dataHandler
      * @param optimize    To send binary content. Created progrmatically.
      */
-    public OMTextImpl(Object dataHandler, boolean optimize, OMFactory factory) {
-        super(factory);
+    public OMTextImpl(OMContainer parent, Object dataHandler, boolean optimize, OMFactory factory, boolean fromBuilder) {
+        super(parent, factory, fromBuilder);
         this.dataHandlerObject = dataHandler;
         this.isBinary = true;
         this.optimize = optimize;
-        done = true;
         this.nodeType = TEXT_NODE;
     }
 
@@ -216,25 +217,11 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         dataHandlerObject = dataHandlerProvider;
         isBinary = true;
         this.optimize = optimize;
-        done = true;
         nodeType = TEXT_NODE;
     }
 
-    /**
-     * @param contentID
-     * @param parent
-     * @param builder   Used when the builder is encountered with a XOP:Include tag Stores a
-     *                  reference to the builder and the content-id. Supports deferred parsing of
-     *                  MIME messages.
-     */
-    public OMTextImpl(String contentID, OMContainer parent,
-                      OMXMLParserWrapper builder, OMFactory factory) {
-        super(parent, factory, false);
-        this.contentID = contentID;
-        this.optimize = true;
-        this.isBinary = true;
-        this.builder = builder;
-        this.nodeType = TEXT_NODE;
+    public final int getType() {
+        return nodeType;
     }
 
     /**
@@ -413,24 +400,10 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         }
     }
 
-    /**
-     * A slightly different implementation of the discard method.
-     *
-     * @throws OMException
-     */
-    public void discard() throws OMException {
-        if (done) {
-            this.detach();
-        } 
-    }
-
     /* (non-Javadoc)
       * @see org.apache.axiom.om.OMNode#buildAll()
       */
     public void buildWithAttachments() {
-        if (!this.done) {
-            this.build();
-        }
         if (isOptimized()) {
             // The call to getDataSource ensures that the MIME part is completely read
             ((DataHandler)this.getDataHandler()).getDataSource();
@@ -441,4 +414,12 @@ public class OMTextImpl extends OMNodeImpl implements OMText, OMConstants {
         this.contentID = cid;
     }
 
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        if (isBinary && options.isFetchDataHandlers()) {
+            // Force loading of the reference to the DataHandler and ensure that its content is
+            // completely fetched into memory (or temporary storage).
+            ((DataHandler)getDataHandler()).getDataSource();
+        }
+        return factory.createOMText(targetParent, this);
+    }
 }

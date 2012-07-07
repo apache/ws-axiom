@@ -64,14 +64,14 @@ public class Base64Utils {
      */
     public static String encode(DataHandler dh) throws IOException {
         long size = DataSourceUtils.getSize(dh.getDataSource());
-        StringBuffer buffer;
+        StringBuilder buffer;
         if (size == -1) {
             // Use a reasonable default capacity (better than the default of 16).
-            buffer = new StringBuffer(4096);
+            buffer = new StringBuilder(4096);
         } else if (size > Integer.MAX_VALUE) {
             throw new IllegalArgumentException("DataHandler is too large to encode to string");
         } else {
-            buffer = new StringBuffer(getEncodedSize((int)size));
+            buffer = new StringBuilder(getEncodedSize((int)size));
         }
         Base64EncodingStringBufferOutputStream out = new Base64EncodingStringBufferOutputStream(buffer);
         // Always prefer writeTo, because getInputStream will create a thread and a pipe if

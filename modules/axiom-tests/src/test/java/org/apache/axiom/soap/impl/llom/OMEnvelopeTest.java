@@ -22,34 +22,15 @@ package org.apache.axiom.soap.impl.llom;
 import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.TestConstants;
-import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class OMEnvelopeTest extends OMTestCase {
-    private static Log log = LogFactory.getLog(OMEnvelopeTest.class);
-
-    public OMEnvelopeTest(String testName) {
-        super(testName);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
     public void testGetHeader1() {
         SOAPHeader header = soapEnvelope.getHeader();
         assertTrue("Header information retrieved not correct",
                    (header != null &&
                            header.getLocalName().equalsIgnoreCase("Header")));
-    }
-
-    public void testGetBody1() {
-        SOAPBody body = soapEnvelope.getBody();
-        assertTrue("Header information retrieved not correct",
-                   (body != null && body.getLocalName().equalsIgnoreCase("Body")));
     }
 
     private SOAPEnvelope getSecondEnvelope() throws Exception {
@@ -63,12 +44,5 @@ public class OMEnvelopeTest extends OMTestCase {
                    (header != null &&
                            header.getLocalName().equalsIgnoreCase("Header")));
         header.close(false);
-    }
-
-    public void testGetBody2() throws Exception {
-        SOAPBody body = getSecondEnvelope().getBody();
-        assertTrue("Header information retrieved not correct",
-                   (body != null && body.getLocalName().equalsIgnoreCase("Body")));
-        body.close(false);
     }
 }

@@ -18,11 +18,9 @@
  */
 package org.apache.axiom.om;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
-import javax.activation.DataHandler;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.ParseException;
 import javax.xml.stream.XMLStreamConstants;
@@ -30,7 +28,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 
 import org.apache.axiom.attachments.Attachments;
-import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
@@ -511,21 +508,7 @@ public class OMXMLBuilderFactory {
     }
     
     private static InputSource getRootPartInputSource(Attachments attachments, ContentType contentType) {
-        DataHandler dh = attachments.getDataHandler(attachments.getRootPartContentID());
-        if (dh == null) {
-            throw new OMException("Root part not found in MIME message");
-        }
-        InputStream in;
-        try {
-            if (dh instanceof DataHandlerExt) {
-                in = ((DataHandlerExt)dh).readOnce();
-            } else {
-                in = dh.getInputStream();
-            }
-        } catch (IOException ex) {
-            throw new OMException("Unable to get input stream from root MIME part", ex);
-        }
-        InputSource rootPart = new InputSource(in);
+        InputSource rootPart = new InputSource(attachments.getRootPartInputStream(false));
         rootPart.setEncoding(contentType.getParameter("charset"));
         return rootPart;
     }

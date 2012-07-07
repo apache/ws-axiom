@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 
@@ -28,10 +27,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Interface OMNodeEx
- * <p/>
- * Internal Implementation detail. Adding special interface to stop folks from accidently using
- * OMNode. Please use at your own risk. May corrupt the data integrity.
+ * Interface that is used internally by Axiom and that should not be considered being part of the
+ * public API.
  */
 public interface OMNodeEx extends OMNode {
     public void setNextOMSibling(OMNode node);
@@ -41,8 +38,6 @@ public interface OMNodeEx extends OMNode {
     public void setParent(OMContainer element);
 
     public void setComplete(boolean state);
-
-    public void setType(int nodeType) throws OMException;
 
     /**
      * Serializes the node. Note that this is an internal method that MUST NOT be used outside of

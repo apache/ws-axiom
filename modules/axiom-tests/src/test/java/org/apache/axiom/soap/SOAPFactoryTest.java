@@ -20,27 +20,23 @@
 package org.apache.axiom.soap;
 
 import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.util.StAXUtils;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 
 public class SOAPFactoryTest extends AbstractTestCase {
 
     protected static final String SOAP11_FILE_NAME = "soap/soap11/message.xml";
     protected static final String SOAP12_FILE_NAME = "soap/soap12/message.xml";
-    private static Log log = LogFactory.getLog(SOAPFactoryTest.class);
 
     public void testSOAPFactory() throws Exception {
         SOAPEnvelope soapEnvelope =
-                (SOAPEnvelope) new StAXSOAPModelBuilder(StAXUtils.
-                        createXMLStreamReader(getTestResource(SOAP11_FILE_NAME)), null)
+                (SOAPEnvelope) OMXMLBuilderFactory.createSOAPModelBuilder(
+                        getTestResource(SOAP11_FILE_NAME), null)
                         .getDocumentElement();
         assertNotNull(soapEnvelope);
         soapEnvelope.close(false);
 
-        soapEnvelope = (SOAPEnvelope) new StAXSOAPModelBuilder(StAXUtils.
-                createXMLStreamReader(getTestResource(SOAP12_FILE_NAME)), null)
+        soapEnvelope = (SOAPEnvelope) OMXMLBuilderFactory.createSOAPModelBuilder(
+                getTestResource(SOAP12_FILE_NAME), null)
                 .getDocumentElement();
         assertNotNull(soapEnvelope);
         soapEnvelope.close(false);

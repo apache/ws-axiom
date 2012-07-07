@@ -29,10 +29,6 @@ public class OMHeaderBlockTest extends OMTestCase {
     SOAPHeader soapHeader;
     SOAPHeaderBlock soapHeaderElement;
 
-    public OMHeaderBlockTest(String testName) {
-        super(testName);
-    }
-
     protected void setUp() throws Exception {
         super.setUp();
         soapHeader = soapEnvelope.getHeader();
@@ -48,15 +44,4 @@ public class OMHeaderBlockTest extends OMTestCase {
         assertTrue("Actor was not properly set",
                    soapHeaderElement.getRole().equalsIgnoreCase(newActorURI));
     }
-
-    public void testSetAndGetMustUnderstand() {
-        soapHeaderElement.setMustUnderstand(false);
-        assertTrue("MustUnderstand was not properly set",
-                   !soapHeaderElement.getMustUnderstand());
-    }
-
-    public void testGetMustUnderstand() {
-        //TODO Implement getMustUnderstand().
-    }
-
 }

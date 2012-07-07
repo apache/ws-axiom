@@ -19,15 +19,18 @@
 
 package org.apache.axiom.soap.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.dom.ChildNode;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
+import org.apache.axiom.om.impl.dom.NodeImpl;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAP11Version;
@@ -53,22 +56,9 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
 
     private static final QName HEADER_QNAME = new QName(SOAPConstants.HEADER_LOCAL_NAME);
 
-    /** @param builder  */
-    public SOAPEnvelopeImpl(OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, builder, factory);
-    }
-
-    public SOAPEnvelopeImpl(DocumentImpl doc, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(
-                doc,
-                SOAPConstants.SOAPENVELOPE_LOCAL_NAME,
-                null,
-                builder, factory);
-    }
-
-    /** @param ns  */
-    public SOAPEnvelopeImpl(OMNamespace ns, SOAPFactory factory) {
-        super(null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, factory);
+    public SOAPEnvelopeImpl(ParentNode parentNode, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, ns, builder, factory, generateNSDecl);
     }
 
     public SOAPVersion getVersion() {
@@ -110,7 +100,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         }
     }
 
-    public void addChild(OMNode child) {
+    public void addChild(OMNode child, boolean fromBuilder) {
         // SOAP 1.1 allows for arbitrary elements after SOAPBody so do NOT check for
         // node types when appending to SOAP 1.1 envelope.
         if (getVersion() instanceof SOAP12Version) {
@@ -147,7 +137,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
                 }
             }
         }
-        super.addChild(child);
+        super.addChild(child, fromBuilder);
     }
 
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
@@ -241,11 +231,11 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
                 OMSerializerUtil.serializeStartpart(this, writer);
                 OMElement header = getHeader();
                 if ((header != null) && (header.getFirstOMChild() != null)) {
-                    serializeInternally((ChildNode) header, writer);
+                    serializeInternally((NodeImpl) header, writer);
                 }
                 SOAPBody body = getBody();
                 if (body != null) {
-                    serializeInternally((ChildNode) body, writer);
+                    serializeInternally((NodeImpl) body, writer);
                 }
                 OMSerializerUtil.serializeEndpart(writer);
             } else {
@@ -254,9 +244,9 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         }
     }
 
-    private void serializeInternally(ChildNode child, MTOMXMLStreamWriter writer)
+    private void serializeInternally(NodeImpl child, MTOMXMLStreamWriter writer)
             throws XMLStreamException {
-        if ((!(child instanceof OMElement)) || child.isComplete() || child.builder == null) {
+        if ((!(child instanceof OMElement)) || child.isComplete() || child.getBuilder() == null) {
             child.internalSerialize(writer, false);
         } else {
             OMElement element = (OMElement) child;
@@ -331,4 +321,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         return null;
     }
 
+    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
+        return new SOAPEnvelopeImpl(targetParent, namespace, null, factory, generateNSDecl);
+    }
 }

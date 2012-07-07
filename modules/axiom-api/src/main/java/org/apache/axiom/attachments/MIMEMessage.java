@@ -31,6 +31,7 @@ import javax.activation.DataHandler;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.ParseException;
 
+import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.lifecycle.impl.LifecycleManagerImpl;
 import org.apache.axiom.mime.Header;
@@ -185,7 +186,7 @@ class MIMEMessage extends AttachmentsDelegate {
         } while (getNextPartDataHandler() != null);
     }
 
-    InputStream getRootPartInputStream() throws OMException {
+    InputStream getRootPartInputStream(boolean preserve) throws OMException {
         DataHandler dh;
         try {
             dh = getDataHandler(getRootPartContentID());
@@ -193,7 +194,11 @@ class MIMEMessage extends AttachmentsDelegate {
                 throw new OMException(
                         "Mandatory root MIME part is missing");
             }
-            return dh.getInputStream();
+            if (!preserve && dh instanceof DataHandlerExt) {
+                return ((DataHandlerExt)dh).readOnce();
+            } else {
+                return dh.getInputStream();
+            }
         } catch (IOException e) {
             throw new OMException(
                     "Problem with DataHandler of the Root Mime Part. ", e);

@@ -32,7 +32,7 @@ public class TestAddFault2 extends SOAPTestCase {
     protected void runTest() throws Throwable {
         SOAPEnvelope envelope = soapFactory.createSOAPEnvelope();
         SOAPBody body = soapFactory.createSOAPBody(envelope);
-        body.addFault(soapFactory.createSOAPFault(body));
+        body.addFault(soapFactory.createSOAPFault());
         assertTrue(
                 "Body Test:- After calling addFault method, SOAP body has no fault",
                 body.hasFault());

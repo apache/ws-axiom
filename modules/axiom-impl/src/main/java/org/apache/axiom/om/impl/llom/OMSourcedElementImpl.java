@@ -20,6 +20,7 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
@@ -32,6 +33,8 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
+import org.apache.axiom.om.QNameAwareOMDataSource;
+import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.util.StAXUtils;
@@ -72,6 +75,15 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     /** Namespace for element, needed in order to bypass base class handling. */
     private OMNamespace definedNamespace = null;
+    
+    /**
+     * Flag indicating whether the {@link #definedNamespace} attribute has been set. If this flag is
+     * <code>true</code> and {@link #definedNamespace} is <code>null</code> then the element has no
+     * namespace. If this flag is set to <code>false</code> (in which case {@link #definedNamespace}
+     * is always <code>null</code>) then the namespace is not known and needs to be determined
+     * lazily. The flag is used only if {@link #isExpanded} is <code>false</code>.
+     */
+    private boolean definedNamespaceSet;
 
     /** Flag for parser provided to base element class. */
     private boolean isExpanded;
@@ -82,14 +94,15 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     
     private XMLStreamReader readerFromDS = null;  // Reader from DataSource
 
-    private static OMNamespace normalize(OMNamespace ns) {
-        // TODO: the ns.getPrefix() == null case actually doesn't make sense for a sourced element!
-        return ns == null || (ns.getPrefix() == null || ns.getPrefix().length() == 0) && ns.getNamespaceURI().length() == 0 ? null : ns;
-    }
-    
     private static OMNamespace getOMNamespace(QName qName) {
         return qName.getNamespaceURI().length() == 0 ? null
                 : new OMNamespaceImpl(qName.getNamespaceURI(), qName.getPrefix());
+    }
+    
+    public OMSourcedElementImpl(OMFactory factory, OMDataSource source) {
+        super(factory);
+        dataSource = source;
+        isExpanded = false;
     }
     
     /**
@@ -102,19 +115,27 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      */
     public OMSourcedElementImpl(String localName, OMNamespace ns, OMFactory factory,
                                 OMDataSource source) {
-        super(localName, null, factory);
+        super(null, localName, null, null, factory, false);
         if (source == null) {
             throw new IllegalArgumentException("OMDataSource can't be null");
         }
         dataSource = source;
         isExpanded = false;
-        if (!isLossyPrefix(dataSource)) {
+        // Normalize the namespace. Note that this also covers the case where the
+        // namespace URI is empty and the prefix is null (in which case we know that
+        // the actual prefix must be empty)
+        if (ns != null && ns.getNamespaceURI().length() == 0) {
+            ns = null;
+        }
+        if (ns == null || !(isLossyPrefix(dataSource) || ns.getPrefix() == null)) {
             // Believe the prefix and create a normal OMNamespace
-            definedNamespace = normalize(ns);
+            definedNamespace = ns;
         } else {
             // Create a deferred namespace that forces an expand to get the prefix
-            definedNamespace = new DeferredNamespace(ns.getNamespaceURI());
+            String uri = ns.getNamespaceURI();
+            definedNamespace = new DeferredNamespace(uri);
         }
+        definedNamespaceSet = true;
     }
 
     /**
@@ -126,7 +147,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      */
     public OMSourcedElementImpl(QName qName, OMFactory factory, OMDataSource source) {
         //create a namespace
-        super(qName.getLocalPart(), null, factory);
+        super(null, qName.getLocalPart(), null, null, factory, false);
         if (source == null) {
             throw new IllegalArgumentException("OMDataSource can't be null");
         }
@@ -137,12 +158,14 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             definedNamespace = getOMNamespace(qName);
         } else {
             // Create a deferred namespace that forces an expand to get the prefix
-            definedNamespace = new DeferredNamespace(qName.getNamespaceURI());
+            String uri = qName.getNamespaceURI();
+            definedNamespace = uri.length() == 0 ? null : new DeferredNamespace(uri);
         }
+        definedNamespaceSet = true;
     }
 
     public OMSourcedElementImpl(String localName, OMNamespace ns, OMContainer parent, OMFactory factory) {
-        super(localName, null, parent, factory);
+        super(parent, localName, null, null, factory, false);
         dataSource = null;
         definedNamespace = ns;
         isExpanded = true;
@@ -151,27 +174,13 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
 
-    public OMSourcedElementImpl(String localName, OMNamespace ns, OMContainer parent, OMXMLParserWrapper builder, OMFactory factory) {
-        super(localName, null, parent, builder, factory);
-        dataSource = null;
+    public OMSourcedElementImpl(OMContainer parent, String localName, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parent, localName, ns, builder, factory, generateNSDecl);
         definedNamespace = ns;
         isExpanded = true;
-        if (ns != null) {
-            this.setNamespace(ns);
-        }
     }
 
-    public OMSourcedElementImpl(String localName, OMNamespace ns, OMFactory factory) {
-        super(localName, null, factory);
-        dataSource = null;
-        definedNamespace = ns;
-        isExpanded = true;
-        if (ns != null) {
-            this.setNamespace(ns);
-        }
-    }
-    
-    
     /**
      * The namespace uri is immutable, but the OMDataSource may change
      * the value of the prefix.  This method queries the OMDataSource to 
@@ -188,21 +197,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
         return lossyPrefix == Boolean.TRUE;
     }
-    private void setDeferredNamespace(OMDataSource source, String uri, String prefix) {
-        Object lossyPrefix = null;
-        if (source instanceof OMDataSourceExt) {
-            lossyPrefix = 
-                ((OMDataSourceExt) source).getProperty(OMDataSourceExt.LOSSY_PREFIX);
-                        
-        }
-        if (lossyPrefix != Boolean.TRUE) {
-            // Believe the prefix and create a normal OMNamespace
-            definedNamespace = new OMNamespaceImpl(uri, prefix);
-        } else {
-            // Create a deferred namespace that forces an expand to get the prefix
-            definedNamespace = new DeferredNamespace(uri);
-        }
-    }
 
     /**
      * Generate element name for output.
@@ -210,36 +204,18 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * @return name
      */
     private String getPrintableName() {
-        String uri = null;
-        if (getNamespace() != null) {
-            uri = getNamespace().getNamespaceURI();
-        }
-        if (uri == null || uri.length() == 0) {
-            return getLocalName();
-        } else {
-            return "{" + uri + '}' + getLocalName();
-        }
-    }
-
-    /**
-     * Get parser from data source. Note that getDataReader may consume the underlying data source.
-     *
-     * @return parser
-     */
-    private XMLStreamReader getDirectReader() {
-        try {
-            // If expansion has occurred, then the reader from the datasource is consumed or stale.
-            // In such cases use the stream reader from the OMElementImpl
-            if (isExpanded()) {
-                return super.getXMLStreamReader();
-            } else {
-                return dataSource.getReader();  
+        if (isExpanded || (definedNamespaceSet && localName != null)) {
+            String uri = null;
+            if (getNamespace() != null) {
+                uri = getNamespace().getNamespaceURI();
             }
-        } catch (XMLStreamException e) {
-            log.error("Could not get parser from data source for element " +
-                    getPrintableName(), e);
-            throw new RuntimeException("Error obtaining parser from data source:" +
-                    e.getMessage(), e);
+            if (uri == null || uri.length() == 0) {
+                return getLocalName();
+            } else {
+                return "{" + uri + '}' + getLocalName();
+            }
+        } else {
+            return "<unknown>";
         }
     }
 
@@ -264,79 +240,98 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 }
             }
 
-            // Get the XMLStreamReader
-            readerFromDS = getDirectReader();
-            
-            // Advance past the START_DOCUMENT to the start tag.
-            // Remember the character encoding.
-            String characterEncoding = readerFromDS.getCharacterEncodingScheme();
-            if (characterEncoding != null) {
-                characterEncoding = readerFromDS.getEncoding();
-            }
-            try {
-                if (readerFromDS.getEventType() != XMLStreamConstants.START_ELEMENT) {
-                    while (readerFromDS.next() != XMLStreamConstants.START_ELEMENT) ;
+            if (isPushDataSource()) {
+                // Set this before we start expanding; otherwise this would result in an infinite recursion
+                isExpanded = true;
+                try {
+                    dataSource.serialize(new PushOMBuilder(this));
+                } catch (XMLStreamException ex) {
+                    throw new OMException("Failed to expand data source", ex);
                 }
-            } catch (XMLStreamException e) {
-                log.error("forceExpand: error parsing data soruce document for element " +
-                        getLocalName(), e);
-                throw new RuntimeException("Error parsing data source document:" +
-                        e.getMessage(), e);
-            }
-
-            // Make sure element local name and namespace matches what was expected
-            if (!readerFromDS.getLocalName().equals(getLocalName())) {
-                log.error("forceExpand: expected element name " +
-                        getLocalName() + ", found " + readerFromDS.getLocalName());
-                throw new RuntimeException("Element name from data source is " +
-                        readerFromDS.getLocalName() + ", not the expected " + getLocalName());
-            }
-            String readerURI = readerFromDS.getNamespaceURI();
-            readerURI = (readerURI == null) ? "" : readerURI;
-            String uri = (getNamespace() == null) ? "" : 
-                ((getNamespace().getNamespaceURI() == null) ? "" : getNamespace().getNamespaceURI());
-            if (!readerURI.equals(uri)) {
-                log.error("forceExpand: expected element namespace " +
-                        getLocalName() + ", found " + uri);
-                throw new RuntimeException("Element namespace from data source is " +
-                        readerURI + ", not the expected " + uri);
-            }
-
-            // Get the current prefix and the reader's prefix
-            String readerPrefix = readerFromDS.getPrefix();
-            readerPrefix = (readerPrefix == null) ? "" : readerPrefix;
-            String prefix = null;
-            
-            OMNamespace ns = getNamespace();
-            if (ns == null || ns instanceof DeferredNamespace) {
-                // prefix is not available until after expansion
             } else {
-                prefix = ns.getPrefix();
-            }
-            
-            // Set the builder for this element
-            isExpanded = true;
-            super.setBuilder(new StAXOMBuilder(getOMFactory(), 
-                                               readerFromDS, 
-                                               this, 
-                                               characterEncoding));
-            setComplete(false);
-
-            // Update the prefix if necessary.  This must be done after
-            // isParserSet to avoid a recursive call
-            if (!readerPrefix.equals(prefix) ||
-                 getNamespace() == null ||
-                 ns instanceof DeferredNamespace) {
-                if (log.isDebugEnabled()) {
-                    log.debug(
-                            "forceExpand: changing prefix from " + prefix + " to " + readerPrefix);
+                // Get the XMLStreamReader
+                try {
+                    readerFromDS = dataSource.getReader();  
+                } catch (XMLStreamException ex) {
+                    throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
                 }
-                setNamespace(new OMNamespaceImpl(readerURI, readerPrefix));
+                
+                // Advance past the START_DOCUMENT to the start tag.
+                // Remember the character encoding.
+                String characterEncoding = readerFromDS.getCharacterEncodingScheme();
+                if (characterEncoding != null) {
+                    characterEncoding = readerFromDS.getEncoding();
+                }
+                try {
+                    if (readerFromDS.getEventType() != XMLStreamConstants.START_ELEMENT) {
+                        while (readerFromDS.next() != XMLStreamConstants.START_ELEMENT) ;
+                    }
+                } catch (XMLStreamException ex) {
+                    throw new OMException("Error parsing data source document for element " + getLocalName(), ex);
+                }
+    
+                validateName(readerFromDS.getPrefix(), readerFromDS.getLocalName(), readerFromDS.getNamespaceURI());
+    
+                // Set the builder for this element. Note that the StAXOMBuilder constructor will also
+                // update the namespace of the element, so we don't need to do that here.
+                isExpanded = true;
+                super.setBuilder(new StAXOMBuilder(getOMFactory(), 
+                                                   readerFromDS, 
+                                                   this, 
+                                                   characterEncoding));
+                setComplete(false);
             }
-
         }
     }
+    
+    private boolean isPushDataSource() {
+        return dataSource instanceof AbstractPushOMDataSource;
+    }
 
+    /**
+     * Validates that the actual name of the element obtained from StAX matches the information
+     * specified when the sourced element was constructed or retrieved through the
+     * {@link QNameAwareOMDataSource} interface. Also updates the local name if necessary. Note that
+     * the namespace information is not updated; this is the responsibility of the builder (and is
+     * done at the same time as namespace repairing).
+     * 
+     * @param staxPrefix
+     * @param staxLocalName
+     * @param staxNamespaceURI
+     */
+    void validateName(String staxPrefix, String staxLocalName, String staxNamespaceURI) {
+        if (localName == null) {
+            // The local name was not known in advance; initialize it from the reader
+            localName = staxLocalName;
+        } else {
+            // Make sure element local name and namespace matches what was expected
+            if (!staxLocalName.equals(localName)) {
+                throw new OMException("Element name from data source is " +
+                        staxLocalName + ", not the expected " + localName);
+            }
+        }
+        if (definedNamespaceSet) {
+            if (staxNamespaceURI == null) {
+                staxNamespaceURI = "";
+            }
+            String namespaceURI = definedNamespace == null ? "" : definedNamespace.getNamespaceURI();
+            if (!staxNamespaceURI.equals(namespaceURI)) {
+                throw new OMException("Element namespace from data source is " +
+                        staxNamespaceURI + ", not the expected " + namespaceURI);
+            }
+            if (!(definedNamespace instanceof DeferredNamespace)) {
+                if (staxPrefix == null) {
+                    staxPrefix = "";
+                }
+                String prefix = definedNamespace == null ? "" : definedNamespace.getPrefix();
+                if (!staxPrefix.equals(prefix)) {
+                    throw new OMException("Element prefix from data source is '" +
+                            staxPrefix + "', not the expected '" + prefix + "'");
+                }
+            }
+        }
+    }
+    
     /**
      * Check if element has been expanded into tree.
      *
@@ -373,6 +368,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
         return super.addNamespaceDeclaration(uri, prefix);
+    }
+
+    void addNamespaceDeclaration(OMNamespace ns) {
+        super.addNamespaceDeclaration(ns);
     }
 
     public void undeclarePrefix(String prefix) {
@@ -430,6 +429,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.addAttribute(attributeName, value, namespace);
     }
 
+    void appendAttribute(OMAttribute attr) {
+        super.appendAttribute(attr);
+    }
+
     public void removeAttribute(OMAttribute attr) {
         forceExpand();
         super.removeAttribute(attr);
@@ -472,11 +475,16 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         if (isExpanded) {
             return super.getXMLStreamReader(cache, configuration);
         } else {
-            if (cache && isDestructiveRead()) {
+            if ((cache && isDestructiveRead()) || isPushDataSource()) {
                 forceExpand();
                 return super.getXMLStreamReader(true, configuration);
+            } else {
+                try {
+                    return dataSource.getReader();  
+                } catch (XMLStreamException ex) {
+                    throw new OMException("Error obtaining parser from data source for element " + getPrintableName(), ex);
+                }
             }
-            return getDirectReader();
         }
     }
 
@@ -516,21 +524,64 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.writeTextTo(out, cache);
     }
 
+    private void ensureLocalNameSet() {
+        if (localName == null) {
+            if (dataSource instanceof QNameAwareOMDataSource) {
+                localName = ((QNameAwareOMDataSource)dataSource).getLocalName();
+            }
+            if (localName == null) {
+                forceExpand();
+            }
+        }
+    }
+    
     public String getLocalName() {
-        // no need to set the parser, just call base method directly
+        ensureLocalNameSet();
         return super.getLocalName();
     }
 
     public void setLocalName(String localName) {
-        // no need to expand the tree, just call base method directly
+        // Need to expand the element so that the method actually overrides the the local name
+        forceExpand();
         super.setLocalName(localName);
     }
 
     public OMNamespace getNamespace() throws OMException {
         if (isExpanded()) {
             return super.getNamespace();
+        } else if (definedNamespaceSet) {
+            return definedNamespace;
+        } else {
+            if (dataSource instanceof QNameAwareOMDataSource) {
+                String namespaceURI = ((QNameAwareOMDataSource)dataSource).getNamespaceURI();
+                if (namespaceURI != null) {
+                    if (namespaceURI.length() == 0) {
+                        // No namespace case. definedNamespace is already null, so we only need
+                        // to set definedNamespaceSet to true. Note that we don't need to retrieve
+                        // the namespace prefix because a prefix can't be bound to the empty
+                        // namespace URI.
+                        definedNamespaceSet = true;
+                    } else {
+                        String prefix = ((QNameAwareOMDataSource)dataSource).getPrefix();
+                        if (prefix == null) {
+                            // Prefix is unknown
+                            definedNamespace = new DeferredNamespace(namespaceURI);
+                        } else {
+                            definedNamespace = new OMNamespaceImpl(namespaceURI, prefix);
+                        }
+                        definedNamespaceSet = true;
+                    }
+                }
+            }
+            if (definedNamespaceSet) {
+                return definedNamespace;
+            } else {
+                // We have no information about the namespace of the element. Need to expand
+                // the element to get it.
+                forceExpand();
+                return super.getNamespace();
+            }
         }
-        return definedNamespace;
     }
 
     public String getPrefix() {
@@ -596,8 +647,62 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     }
 
     public OMElement cloneOMElement() {
-        forceExpand();
         return super.cloneOMElement();
+    }
+
+    public OMElement cloneOMElement(OMCloneOptions options) {
+        return super.cloneOMElement(options);
+    }
+
+    OMNode clone(OMCloneOptions options, OMContainer targetParent) {
+        // If already expanded or this is not an OMDataSourceExt, then
+        // create a copy of the OM Tree
+        OMDataSource ds = getDataSource();
+        if (!options.isCopyOMDataSources() ||
+            ds == null || 
+            isExpanded() || 
+            !(ds instanceof OMDataSourceExt)) {
+            return super.clone(options, targetParent);
+        }
+        
+        // If copying is destructive, then copy the OM tree
+        OMDataSourceExt sourceDS = (OMDataSourceExt) ds;
+        if (sourceDS.isDestructiveRead() ||
+            sourceDS.isDestructiveWrite()) {
+            return super.clone(options, targetParent);
+        }
+        OMDataSourceExt targetDS = ((OMDataSourceExt) ds).copy();
+        if (targetDS == null) {
+            return super.clone(options, targetParent);
+        }
+        // Otherwise create a target OMSE with the copied DataSource
+        OMSourcedElementImpl targetOMSE;
+        if (options.isPreserveModel()) {
+            targetOMSE = (OMSourcedElementImpl)createClone(options, targetDS);
+        } else {
+            targetOMSE = (OMSourcedElementImpl)factory.createOMElement(targetDS);
+        }
+        
+        targetOMSE.localName = localName;
+        targetOMSE.definedNamespaceSet = definedNamespaceSet;
+        if (definedNamespace instanceof DeferredNamespace) {
+            targetOMSE.definedNamespace = targetOMSE.new DeferredNamespace(definedNamespace.getNamespaceURI());
+        } else {
+            targetOMSE.definedNamespace = definedNamespace;
+        }
+        
+        if (targetParent != null) {
+            targetParent.addChild(targetOMSE);
+        }
+        return targetOMSE;
+    }
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return super.createClone(options, targetParent);
+    }
+    
+    protected OMSourcedElement createClone(OMCloneOptions options, OMDataSource ds) {
+        return factory.createOMElement(ds);
     }
 
     public void setLineNumber(int lineNumber) {
@@ -734,6 +839,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         super.addChild(omNode);
     }
 
+    public void addChild(OMNode omNode, boolean fromBuilder) {
+        forceExpand();
+        super.addChild(omNode, fromBuilder);
+    }
+
     public Iterator getChildrenWithName(QName elementQName) {
         forceExpand();
         return super.getChildrenWithName(elementQName);
@@ -771,6 +881,10 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
 
     public OMNode getFirstOMChildIfAvailable() {
         return super.getFirstOMChildIfAvailable();
+    }
+
+    public OMNode getLastKnownOMChild() {
+        return super.getLastKnownOMChild();
     }
 
     public void buildNext() {
@@ -968,7 +1082,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             if (!isExpanded()) {
                 forceExpand();
             }
-            return getNamespace().getPrefix();
+            OMNamespace actualNS = getNamespace();
+            return actualNS == null ? "" : actualNS.getPrefix();
         }
         
         public int hashCode() {
@@ -988,5 +1103,13 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                             thisPrefix.equals(otherPrefix)));
         }
         
+    }
+
+    public Object getObject(Class dataSourceClass) {
+        if (dataSource == null || isExpanded || !dataSourceClass.isInstance(dataSource)) {
+            return null;
+        } else {
+            return ((OMDataSourceExt)dataSource).getObject();
+        }
     }
 }

@@ -34,6 +34,7 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.soap.SOAPFactory;
 import org.w3c.dom.Attr;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
@@ -74,8 +75,12 @@ import org.w3c.dom.Text;
  * <td>{@link Attr} [2]</td>
  * </tr>
  * <tr>
- * <td>{@link OMText}</td>
+ * <td>{@link OMText} with type {@link OMNode#TEXT_NODE} or {@link OMNode#SPACE_NODE}</td>
  * <td>{@link Text}</td>
+ * </tr>
+ * <tr>
+ * <td>{@link OMText} with type {@link OMNode#CDATA_SECTION_NODE}</td>
+ * <td>{@link CDATASection}</td>
  * </tr>
  * <tr>
  * <td>{@link OMComment}</td>
@@ -111,7 +116,9 @@ import org.w3c.dom.Text;
  * fact that DOM is designed such that two nodes that are part of the same tree must have the same
  * owner document.
  * <li>Nodes created using the Axiom API and for which no parent node is specified will get a new
- * owner document.
+ * owner document. This applies to methods in {@link OMFactory} that don't have an
+ * {@link OMContainer} parameter or that are invoked with a <code>null</code> {@link OMContainer}
+ * as well as to methods such as {@link OMElement#cloneOMElement()}.
  * <li>When the Axiom API is used to add a node A as a child of another node B, then the owner
  * document of B becomes the new owner document of A and all its descendants. In DOM parlance, this
  * means that node A is automatically adopted by the owner document of B. This implies that no
@@ -130,10 +137,12 @@ import org.w3c.dom.Text;
  * {@link OMElement#addAttribute(String, String, OMNamespace)} (in the case where the new attribute
  * replaces an existing one, which will be removed from its owner)
  * </ul>
- * <li>Any node created using the DOM API as well as the {@link Document} instance implicitly
- * created for the owner document (when the Axiom API is used) will have as its {@link OMFactory}
- * (as reported by {@link OMInformationItem#getOMFactory()}) the instance returned by
- * {@link OMMetaFactory#getOMFactory()}.
+ * <li>{@link Document} instances created using the {@link DocumentBuilderFactory} and
+ * {@link DOMImplementation} APIs as well as the {@link Document} instances implicitly created (as
+ * owner documents) by the Axiom API will have as their {@link OMFactory} (as reported by
+ * {@link OMInformationItem#getOMFactory()}) the instance returned by
+ * {@link OMMetaFactory#getOMFactory()}. Any additional nodes created using the DOM API will inherit
+ * the {@link OMFactory} of the owner document.
  * </ol>
  * <p>
  * The implementation SHOULD instantiate the implicitly created owner documents lazily (typically

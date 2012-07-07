@@ -34,4 +34,8 @@ final class Feature {
     int getPriority() {
         return priority;
     }
+
+    public String toString() {
+        return name + "(priority=" + priority + ")";
+    }
 }

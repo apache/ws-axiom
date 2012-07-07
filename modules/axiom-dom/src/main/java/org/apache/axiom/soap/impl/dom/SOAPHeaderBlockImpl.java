@@ -20,8 +20,10 @@
 package org.apache.axiom.soap.impl.dom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
@@ -29,9 +31,8 @@ import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
+import org.apache.axiom.soap.SOAPCloneOptions;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 
@@ -41,36 +42,9 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
 
     private boolean processed = false;
 
-    /**
-     * @param localName
-     * @param ns
-     * @param parent
-     */
-    public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
-                               SOAPHeader parent, SOAPFactory factory)
-            throws SOAPProcessingException {
-        super((ParentNode) parent, localName, (OMNamespaceImpl) ns, factory);
-        this.setNamespace(ns);
-    }
-
-    public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
-                               SOAPFactory factory) throws SOAPProcessingException {
-        super(null, localName, (OMNamespaceImpl) ns, factory);
-        this.setNamespace(ns);
-    }
-
-    /**
-     * Constructor SOAPHeaderBlockImpl.
-     *
-     * @param localName
-     * @param ns
-     * @param parent
-     * @param builder
-     */
-    public SOAPHeaderBlockImpl(String localName, OMNamespace ns,
-                               OMElement parent, OMXMLParserWrapper builder, SOAPFactory factory) {
-        super((ParentNode) parent, localName, (OMNamespaceImpl) ns, builder, factory);
-        this.setNamespace(ns);
+    public SOAPHeaderBlockImpl(ParentNode parentNode, String localName, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, localName, ns, builder, factory, generateNSDecl);
     }
 
     /**
@@ -122,10 +96,34 @@ public abstract class SOAPHeaderBlockImpl extends ElementImpl implements SOAPHea
     }
 
     public boolean isExpanded() {
-        throw new UnsupportedOperationException();
+        return true;
     }
 
     public OMDataSource setDataSource(OMDataSource dataSource) {
         throw new UnsupportedOperationException();
+    }
+
+    public Object getObject(Class dataSourceClass) {
+        throw new UnsupportedOperationException();
+    }
+
+    protected abstract void checkParent(OMElement parent)
+            throws SOAPProcessingException;
+    
+    protected void setParent(ParentNode parent, boolean useDomSemantics) {
+        super.setParent(parent, useDomSemantics);
+    
+        if (!useDomSemantics && parent instanceof OMElement) {
+            checkParent((OMElement) parent);
+        }
+    }
+    
+    protected final void copyData(OMCloneOptions options, SOAPHeaderBlock targetSHB) {
+        // Copy the processed flag.  The other SOAPHeaderBlock information 
+        // (e.g. role, mustUnderstand) are attributes on the tag and are copied elsewhere.
+        Boolean processedFlag = options instanceof SOAPCloneOptions ? ((SOAPCloneOptions)options).getProcessedFlag() : null;
+        if ((processedFlag == null && isProcessed()) || (processedFlag != null && processedFlag.booleanValue())) {
+            targetSHB.setProcessed();
+        }
     }
 }

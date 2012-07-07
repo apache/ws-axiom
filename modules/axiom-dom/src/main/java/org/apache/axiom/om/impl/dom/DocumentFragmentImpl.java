@@ -19,21 +19,32 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.OMContainerEx;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-public class DocumentFragmentImpl extends ParentNode implements
-        DocumentFragment {
+public class DocumentFragmentImpl extends RootNode implements
+        DocumentFragment, OMContainerEx {
 
+    private ParentNode ownerNode;
+    
     /** @param ownerDocument  */
-    public DocumentFragmentImpl(DocumentImpl ownerDocument, OMFactory factory) {
-        super(ownerDocument, factory);
-        this.done = true;
+    public DocumentFragmentImpl(OMFactory factory) {
+        super(factory);
+    }
+
+    final ParentNode internalGetOwnerNode() {
+        return ownerNode;
+    }
+
+    final void internalSetOwnerNode(ParentNode ownerNode) {
+        this.ownerNode = ownerNode;
     }
 
     /*
@@ -54,24 +65,6 @@ public class DocumentFragmentImpl extends ParentNode implements
         return "#document-fragment";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMNode#getType()
-     */
-    public int getType() throws OMException {
-        return -1;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axiom.om.OMNode#setType(int)
-     */
-    public void setType(int nodeType) throws OMException {
-        // DO Nothing :-?
-    }
-
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException("TODO");
@@ -88,4 +81,21 @@ public class DocumentFragmentImpl extends ParentNode implements
         throw new UnsupportedOperationException("TODO");
     }
 
+    ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
+        return new DocumentFragmentImpl(factory);
+    }
+
+    public final OMXMLParserWrapper getBuilder() {
+        return null;
+    }
+
+    public final boolean isComplete() {
+        return true;
+    }
+
+    public final void setComplete(boolean state) {
+        if (state != true) {
+            throw new IllegalStateException();
+        }
+    }
 }

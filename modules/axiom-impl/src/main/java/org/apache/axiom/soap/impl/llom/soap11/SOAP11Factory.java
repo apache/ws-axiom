@@ -28,7 +28,6 @@ import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.soap.SOAP11Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.soap.SOAPFaultDetail;
@@ -44,12 +43,13 @@ import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP11Version;
+import org.apache.axiom.soap.impl.builder.SOAPFactoryEx;
 import org.apache.axiom.soap.impl.llom.SOAPEnvelopeImpl;
 import org.apache.axiom.soap.impl.llom.SOAPMessageImpl;
 
 /**
  */
-public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactory {
+public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactoryEx {
     public SOAP11Factory(OMLinkedListMetaFactory metaFactory) {
         super(metaFactory);
     }
@@ -100,12 +100,16 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  OMNamespace ns, SOAPHeader parent)
             throws SOAPProcessingException {
-        return new SOAP11HeaderBlockImpl(localName, ns, parent, this);
+        return new SOAP11HeaderBlockImpl(parent, localName, ns, null, this, true);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
                                                  OMNamespace ns) throws SOAPProcessingException {
-        return new SOAP11HeaderBlockImpl(localName, ns, this);
+        return new SOAP11HeaderBlockImpl(null, localName, ns, null, this, true);
+    }
+
+    public SOAPHeaderBlock createSOAPHeaderBlock(OMDataSource source) {
+        return new SOAP11HeaderBlockImpl(this, source);
     }
 
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
@@ -115,11 +119,10 @@ public class SOAP11Factory extends OMLinkedListImplFactory implements SOAPFactor
         return new SOAP11HeaderBlockImpl(localName, ns, this, ds);
     }
     public SOAPHeaderBlock createSOAPHeaderBlock(String localName,
-                                                 OMNamespace ns,
                                                  SOAPHeader parent,
                                                  OMXMLParserWrapper builder)
             throws SOAPProcessingException {
-        return new SOAP11HeaderBlockImpl(localName, ns, parent, builder, this);
+        return new SOAP11HeaderBlockImpl(parent, localName, null, builder, this, false);
     }
 
     public SOAPFault createSOAPFault(SOAPBody parent, Exception e)

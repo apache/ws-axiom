@@ -43,10 +43,6 @@ public class StaxParserTest extends AbstractTestCase {
             "  <date>2005-03-06T14:06:12.697+06:00</date>" +
             "</purchase-order>";
 
-    public StaxParserTest(String testName) {
-        super(testName);
-    }
-
     protected void setUp() throws Exception {
         //make the parsers
         //Parser 1 is a plain parser from the stax implementation

@@ -32,17 +32,12 @@ import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 
 import javax.xml.namespace.QName;
 
 public class OMLinkedListImplFactoryTest extends AbstractTestCase {
-    public OMLinkedListImplFactoryTest(String testName) {
-        super(testName);
-    }
-
     SOAPFactory omFactory;
     OMNamespace namespace;
     String nsUri = "http://www.apache.org/~chinthaka";
@@ -76,15 +71,6 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
         }
         OMElement body = (OMElement) node;
         
-
-        OMElement child = omFactory.createOMElement("child",
-                                                    namespace,
-                                                    body,
-                                                    omBuilder);
-        assertFalse("OMElement with a builder should start with done = false",
-                    child.isComplete());
-        assertNotNull("This OMElement must have a builder", child.getBuilder());
-
         // Try the QName version
         QName qname = new QName(nsUri, "local", nsPrefix);
         OMElement element = omFactory.createOMElement(qname);
@@ -92,7 +78,7 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
         assertNotNull(element);
 
         // Now make one with a parent (and thus inherit the NS)
-        element = omFactory.createOMElement(qname, child);
+        element = omFactory.createOMElement(qname, body);
         assertNotNull(element);
         assertEquals("Namespace wasn't found correctly",
                      element.getNamespace(),
@@ -118,19 +104,6 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
                 soapBodyOne.isComplete());
     }
 
-    public void testCreateSOAPBodyWithBuilder() throws Exception {
-        OMXMLParserWrapper omBuilder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                getTestResource(TestConstants.MINIMAL_MESSAGE), null);
-        SOAPEnvelope soapEnvelope = (SOAPEnvelope) omBuilder.getDocumentElement();
-
-        SOAPBody soapBodyTwo = omFactory.createSOAPBody(soapEnvelope,
-                                                        omBuilder);
-        assertTrue(
-                "SOAPBody with a builder should start with done = false ",
-                !soapBodyTwo.isComplete());
-        assertNotNull("This SOAPBody must have a builder ", soapBodyTwo.getBuilder());
-    }
-
     public void testCreateSOAPEnvelope() throws Exception {
         omFactory.createOMNamespace(
                 SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI,
@@ -139,13 +112,6 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
         assertTrue(
                 "Programatically created SOAPEnvelope should have done = true ",
                 soapEnvelopeTwo.isComplete());
-        SOAPEnvelope soapEnvelope = omFactory.createSOAPEnvelope(
-                OMXMLBuilderFactory.createSOAPModelBuilder(
-                        getTestResource(TestConstants.MINIMAL_MESSAGE), null));
-        assertTrue(
-                "SOAPEnvelope with a builder should start with done = false ",
-                !soapEnvelope.isComplete());
-        assertNotNull("This SOAPEnvelope must have a builder", soapEnvelope.getBuilder());
     }
 
     public void testCreateSOAPHeader() throws Exception {
@@ -156,13 +122,6 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
         assertTrue(
                 "Programatically created SOAPHeader should have done = true ",
                 soapHeader.isComplete());
-        soapHeader.detach();
-        SOAPHeader soapHeaderTwo = omFactory.createSOAPHeader(soapEnvelope,
-                                                              omBuilder);
-        assertTrue(
-                "SOAPHeader with a builder should start with done = false ",
-                !soapHeaderTwo.isComplete());
-        assertNotNull("This SOAPHeader must have a builder ", soapHeaderTwo.getBuilder());
     }
 
     public void testCreateSOAPHeaderBlock() throws Exception {
@@ -175,30 +134,5 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
         assertTrue(
                 "Programatically created SOAPHeaderBlock should have done = true ",
                 soapHeaderBlock.isComplete());
-        SOAPHeaderBlock soapHeaderBlockTwo = omFactory.createSOAPHeaderBlock(
-                "soapHeaderBlockOne", namespace, soapHeader, omBuilder);
-        assertTrue(
-                "SOAPHeaderBlock with a builder should start with done = false ",
-                !soapHeaderBlockTwo.isComplete());
-        assertNotNull("SOAPHeaderBlock must have a builder", soapHeaderBlockTwo.getBuilder());
-    }
-
-    public void testCreateSOAPFault() throws Exception {
-        OMXMLParserWrapper omBuilder = OMXMLBuilderFactory.createSOAPModelBuilder(
-                getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
-        SOAPEnvelope soapEnvelope = (SOAPEnvelope) omBuilder.getDocumentElement();
-        SOAPBody soapBody = soapEnvelope.getBody();
-        SOAPFault soapFault = omFactory.createSOAPFault(soapBody,
-                                                        new Exception(" this is just a test "));
-        assertTrue(
-                "Programatically created SOAPFault should have done = true ",
-                soapFault.isComplete());
-        soapFault.detach();
-        SOAPFault soapFaultTwo = omFactory.createSOAPFault(soapBody,
-                                                           omBuilder);
-        assertTrue(
-                "SOAPFault with a builder should start with done = false ",
-                !soapFaultTwo.isComplete());
-        assertNotNull("This SOAPFault must have a builder", soapFaultTwo.getBuilder());
     }
 }

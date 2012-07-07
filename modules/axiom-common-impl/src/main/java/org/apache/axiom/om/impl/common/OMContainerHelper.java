@@ -21,9 +21,14 @@ package org.apache.axiom.om.impl.common;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
+import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.commons.logging.Log;
@@ -84,4 +89,53 @@ public final class OMContainerHelper {
         return reader;
     }
     
+    public static void addChild(OMContainerEx container, OMNode omNode, boolean fromBuilder) {
+        OMNodeEx child;
+        if (fromBuilder) {
+            // If the new child was provided by the builder, we know that it was created by
+            // the same factory
+            child = (OMNodeEx)omNode;
+        } else {
+            // Careful here: if the child was created by another Axiom implementation, it doesn't
+            // necessarily implement OMNodeEx
+            if (omNode.getOMFactory().getMetaFactory() == container.getOMFactory().getMetaFactory()) {
+                child = (OMNodeEx)omNode;
+            } else {
+                child = (OMNodeEx)((OMFactoryEx)container.getOMFactory()).importNode(omNode);
+            }
+            if (!container.isComplete()) {
+                container.build();
+            }
+            if (child.getParent() == container && child == container.getLastKnownOMChild()) {
+                // The child is already the last node. 
+                // We don't need to detach and re-add it.
+                return;
+            }
+        }
+        if (child.getParent() != null) {
+            child.detach();
+        }
+        
+        child.setParent(container);
+
+        if (container.getFirstOMChildIfAvailable() == null) {
+            container.setFirstChild(child);
+        } else {
+            OMNode lastChild = container.getLastKnownOMChild();
+            child.setPreviousOMSibling(lastChild);
+            ((OMNodeEx)lastChild).setNextOMSibling(child);
+        }
+        container.setLastChild(child);
+
+        // For a normal OMNode, the incomplete status is
+        // propogated up the tree.  
+        // However, a OMSourcedElement is self-contained 
+        // (it has an independent parser source).
+        // So only propogate the incomplete setting if this
+        // is a normal OMNode
+        if (!child.isComplete() && 
+            !(child instanceof OMSourcedElement)) {
+            container.setComplete(false);
+        }
+    }
 }

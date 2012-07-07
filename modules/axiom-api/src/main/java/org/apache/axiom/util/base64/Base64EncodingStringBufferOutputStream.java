@@ -23,10 +23,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * {@link OutputStream} implementation that writes base64 encoded data to a {@link StringBuffer}.
+ * {@link OutputStream} implementation that writes base64 encoded data to a {@link StringBuffer} or
+ * {@link StringBuilder}. The data is <b>not</b> buffered before writing it to the target.
  */
 public class Base64EncodingStringBufferOutputStream extends AbstractBase64EncodingOutputStream {
-    private final StringBuffer buffer;
+    private final Appendable buffer;
 
     /**
      * Constructor.
@@ -34,6 +35,15 @@ public class Base64EncodingStringBufferOutputStream extends AbstractBase64Encodi
      * @param buffer the buffer to append the encoded data to
      */
     public Base64EncodingStringBufferOutputStream(StringBuffer buffer) {
+        this.buffer = buffer;
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param buffer the buffer to append the encoded data to
+     */
+    public Base64EncodingStringBufferOutputStream(StringBuilder buffer) {
         this.buffer = buffer;
     }
 

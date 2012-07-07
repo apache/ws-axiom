@@ -28,13 +28,15 @@ import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.builder.OMFactoryEx;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.llom.OMAttributeImpl;
 import org.apache.axiom.om.impl.llom.OMCommentImpl;
@@ -50,7 +52,7 @@ import javax.xml.namespace.QName;
 
 /** Class OMLinkedListImplFactory
  */
-public class OMLinkedListImplFactory implements OMFactory {
+public class OMLinkedListImplFactory implements OMFactoryEx {
     private final OMLinkedListMetaFactory metaFactory;
     
     public OMLinkedListImplFactory(OMLinkedListMetaFactory metaFactory) {
@@ -73,27 +75,24 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns OMElement.
      */
     public OMElement createOMElement(String localName, OMNamespace ns) {
-        return new OMElementImpl(localName, ns, this);
+        return new OMElementImpl(null, localName, ns, null, this, true);
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns, OMContainer parent) {
-        return new OMElementImpl(localName, ns, parent, this);
+        return new OMElementImpl(parent, localName, ns, null, this, true);
     }
 
     /**
      * Method createOMElement.
      *
      * @param localName
-     * @param ns
      * @param parent
      * @param builder
      * @return Returns OMElement.
      */
-    public OMElement createOMElement(String localName, OMNamespace ns,
-                                     OMContainer parent,
+    public OMElement createOMElement(String localName, OMContainer parent,
                                      OMXMLParserWrapper builder) {
-        return new OMElementImpl(localName, ns, parent,
-                                 builder, this);
+        return new OMElementImpl(parent, localName, null, builder, this, false);
     }
 
     public OMElement createOMElement(String localName, String namespaceURI, String prefix) {
@@ -138,6 +137,10 @@ public class OMLinkedListImplFactory implements OMFactory {
      */
     public OMElement createOMElement(QName qname) throws OMException {
         return new OMElementImpl(qname, null, this);
+    }
+
+    public OMSourcedElement createOMElement(OMDataSource source) {
+        return new OMSourcedElementImpl(this, source);
     }
 
     /**
@@ -188,7 +191,11 @@ public class OMLinkedListImplFactory implements OMFactory {
     }
 
     public OMText createOMText(OMContainer parent, String text, int type) {
-        return new OMTextImpl(parent, text, type, this);
+        return createOMText(parent, text, type, false);
+    }
+
+    public OMText createOMText(OMContainer parent, String text, int type, boolean fromBuilder) {
+        return new OMTextImpl(parent, text, type, this, fromBuilder);
     }
 
     public OMText createOMText(OMContainer parent, char[] charArary, int type) {
@@ -233,7 +240,11 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns OMText.
      */
     public OMText createOMText(Object dataHandler, boolean optimize) {
-        return new OMTextImpl(dataHandler, optimize, this);
+        return createOMText(null, dataHandler, optimize, false);
+    }
+
+    public OMText createOMText(OMContainer parent, Object dataHandler, boolean optimize, boolean fromBuilder) {
+        return new OMTextImpl(parent, dataHandler, optimize, this, fromBuilder);
     }
 
     public OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
@@ -241,11 +252,6 @@ public class OMLinkedListImplFactory implements OMFactory {
         return new OMTextImpl(contentID, dataHandlerProvider, optimize, this);
     }
 
-    public OMText createOMText(String contentID, OMContainer parent,
-                               OMXMLParserWrapper builder) {
-        return new OMTextImpl(contentID, parent, builder, this);
-    }
-    
     public OMText createOMText(OMContainer parent, OMText source) {
         return new OMTextImpl(parent, (OMTextImpl) source, this);
     }
@@ -296,7 +302,11 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns doctype.
      */
     public OMDocType createOMDocType(OMContainer parent, String content) {
-        return new OMDocTypeImpl(parent, content, this);
+        return createOMDocType(parent, content, false);
+    }
+
+    public OMDocType createOMDocType(OMContainer parent, String content, boolean fromBuilder) {
+        return new OMDocTypeImpl(parent, content, this, fromBuilder);
     }
 
     /**
@@ -309,7 +319,12 @@ public class OMLinkedListImplFactory implements OMFactory {
      */
     public OMProcessingInstruction createOMProcessingInstruction(OMContainer parent,
                                                                  String piTarget, String piData) {
-        return new OMProcessingInstructionImpl(parent, piTarget, piData, this);
+        return createOMProcessingInstruction(parent, piTarget, piData, false);
+    }
+
+    public OMProcessingInstruction createOMProcessingInstruction(OMContainer parent,
+            String piTarget, String piData, boolean fromBuilder) {
+        return new OMProcessingInstructionImpl(parent, piTarget, piData, this, fromBuilder);
     }
 
     /**
@@ -320,7 +335,11 @@ public class OMLinkedListImplFactory implements OMFactory {
      * @return Returns OMComment.
      */
     public OMComment createOMComment(OMContainer parent, String content) {
-        return new OMCommentImpl(parent, content, this);
+        return createOMComment(parent, content, false);
+    }
+
+    public OMComment createOMComment(OMContainer parent, String content, boolean fromBuilder) {
+        return new OMCommentImpl(parent, content, this, fromBuilder);
     }
 
     /* (non-Javadoc)
@@ -335,5 +354,59 @@ public class OMLinkedListImplFactory implements OMFactory {
       */
     public OMDocument createOMDocument(OMXMLParserWrapper builder) {
         return new OMDocumentImpl(builder, this);
+    }
+
+    /**
+     * This method is intended only to be used by Axiom intenals when merging Objects from different
+     * Axiom implementations to the LLOM implementation.
+     *
+     * @param child
+     */
+    public OMNode importNode(OMNode child) {
+        int type = child.getType();
+        switch (type) {
+            case (OMNode.ELEMENT_NODE): {
+                OMElement childElement = (OMElement) child;
+                OMElement newElement = (new StAXOMBuilder(this, childElement
+                        .getXMLStreamReader())).getDocumentElement();
+                newElement.buildWithAttachments();
+                return newElement;
+            }
+            case (OMNode.TEXT_NODE): {
+                OMText importedText = (OMText) child;
+                OMText newText;
+                if (importedText.isBinary()) {
+                    boolean isOptimize = importedText.isOptimized();
+                    newText = createOMText(importedText
+                            .getDataHandler(), isOptimize);
+                } else if (importedText.isCharacters()) {
+                    newText = createOMText(null, importedText
+                            .getTextCharacters(), importedText.getType());
+                } else {
+                    newText = createOMText(null, importedText
+                            .getText()/*, importedText.getOMNodeType()*/);
+                }
+                return newText;
+            }
+
+            case (OMNode.PI_NODE): {
+                OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
+                return createOMProcessingInstruction(null,
+                                                                  importedPI.getTarget(),
+                                                                  importedPI.getValue());
+            }
+            case (OMNode.COMMENT_NODE): {
+                OMComment importedComment = (OMComment) child;
+                return createOMComment(null, importedComment.getValue());
+            }
+            case (OMNode.DTD_NODE) : {
+                OMDocType importedDocType = (OMDocType) child;
+                return createOMDocType(null, importedDocType.getValue());
+            }
+            default: {
+                throw new UnsupportedOperationException(
+                        "Not Implemented Yet for the given node type");
+            }
+        }
     }
 }

@@ -29,11 +29,6 @@ import javax.xml.namespace.QName;
 import java.util.Iterator;
 
 public class OMChildrenWithSpecificAttributeIteratorTest extends TestCase {
-
-    public OMChildrenWithSpecificAttributeIteratorTest(String testName) {
-        super(testName);
-    }
-
     public void testChildrenRetrievalWithDetaching() {
 
         OMFactory factory = OMAbstractFactory.getOMFactory();

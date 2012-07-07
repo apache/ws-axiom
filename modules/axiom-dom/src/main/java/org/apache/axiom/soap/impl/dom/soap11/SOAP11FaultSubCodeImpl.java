@@ -21,9 +21,13 @@ package org.apache.axiom.soap.impl.dom.soap11;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFaultCode;
@@ -40,24 +44,14 @@ public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
         super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, factory);
     }
 
-    //changed
-    public SOAP11FaultSubCodeImpl(SOAPFaultCode parent,
-                                  OMXMLParserWrapper builder,
-                                  SOAPFactory factory) {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, builder,
-              factory);
+    public SOAP11FaultSubCodeImpl(ParentNode parentNode, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, ns, builder, factory, generateNSDecl);
     }
 
     public SOAP11FaultSubCodeImpl(SOAPFaultSubCode parent, SOAPFactory factory)
             throws SOAPProcessingException {
         super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, factory);
-    }
-
-    public SOAP11FaultSubCodeImpl(SOAPFaultSubCode parent,
-                                  OMXMLParserWrapper builder,
-                                  SOAPFactory factory) {
-        super(parent, SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME, builder,
-              factory);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -94,5 +88,10 @@ public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
     public void setValue(QName value) {
         // TODO: AXIOM-394: SOAPFaultSubCode should not exist for SOAP 1.1
         throw new UnsupportedOperationException();
+    }
+
+    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
+            boolean generateNSDecl) {
+        return new SOAP11FaultSubCodeImpl(targetParent, namespace, null, factory, generateNSDecl);
     }
 }

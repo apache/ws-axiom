@@ -32,10 +32,6 @@ public class OmStAXBuilderTest extends AbstractTestCase {
     private OMXMLParserWrapper builder;
     private File tempFile;
 
-    public OmStAXBuilderTest(String testName) {
-        super(testName);
-    }
-
     protected void setUp() throws Exception {
         builder = OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource(
                 TestConstants.SOAP_SOAPMESSAGE), null);

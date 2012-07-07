@@ -19,7 +19,9 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
@@ -40,9 +42,6 @@ import javax.xml.stream.XMLStreamConstants;
 /** Class SOAPBodyImpl */
 public abstract class SOAPBodyImpl extends SOAPElement
         implements SOAPBody, OMConstants {
-    /** Field hasSOAPFault */
-    private boolean hasSOAPFault = false;
-    
     private boolean enableLookAhead = true;
     private boolean lookAheadAttempted = false;
     private boolean lookAheadSuccessful = false;
@@ -92,20 +91,14 @@ public abstract class SOAPBodyImpl extends SOAPElement
      *         <code>SOAPBody</code> object; <code>false</code> otherwise
      */
     public boolean hasFault() {
-        if (hasSOAPFault) {
-            return true;
+        // Set hasSOAPFault if it matches the name matches a SOAP Fault
+        if (hasLookahead()) {
+            return SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(lookAheadLocalName)
+                    && lookAheadNS != null
+                    && (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(lookAheadNS.getNamespaceURI()) ||
+                        SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(lookAheadNS.getNamespaceURI()));
         } else {
-            // Set hasSOAPFault if it matches the name matches a SOAP Fault
-            String name = this.getFirstElementLocalName();
-            if (SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(name)) {
-                OMNamespace ns = this.getFirstElementNS();
-                if (ns != null &&
-                    (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()) ||
-                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()))) {
-                    hasSOAPFault = true;
-                }                                                             
-            } 
-            return hasSOAPFault;
+            return getFirstElement() instanceof SOAPFault;
         }
     }
 
@@ -116,24 +109,19 @@ public abstract class SOAPBodyImpl extends SOAPElement
      */
     public SOAPFault getFault() {
         OMElement element = getFirstElement();
-        if (hasSOAPFault) {
-            return (SOAPFault) element;
-        } else if (element != null
-                &&
-                SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(
-                        element.getLocalName())
-                &&
-                (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                        element.getNamespace().getNamespaceURI())
-                        ||
-                        SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(
-                                element.getNamespace().getNamespaceURI()))) {     //added this line
-            hasSOAPFault = true;
-            return (SOAPFault) element;
+        if (element != null
+                && SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(element.getLocalName())) {
+            OMNamespace ns = element.getNamespace();
+            if (ns != null &&
+                    (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()) ||
+                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()))) {
+                return (SOAPFault) element;
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
-
     }
 
     /**
@@ -143,12 +131,11 @@ public abstract class SOAPBodyImpl extends SOAPElement
      * @throws OMException
      */
     public void addFault(SOAPFault soapFault) throws OMException {
-        if (hasSOAPFault) {
+        if (hasFault()) {
             throw new OMException(
                     "SOAP Body already has a SOAP Fault and there can not be more than one SOAP fault");
         }
         addChild(soapFault);
-        hasSOAPFault = true;
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -192,9 +179,12 @@ public abstract class SOAPBodyImpl extends SOAPElement
             if (lookAheadSuccessful) {
                 this.lookAheadLocalName = soapBuilder.getName();
                 String ns = soapBuilder.getNamespace();
-                ns = (ns == null) ? "" : ns;
-                this.lookAheadNS = factory.createOMNamespace(ns, 
-                                                             soapBuilder.getPrefix());
+                if (ns == null) {
+                    lookAheadNS = null;
+                } else {
+                    String prefix = soapBuilder.getPrefix();
+                    lookAheadNS = factory.createOMNamespace(ns, prefix == null ? "" : prefix);
+                }
             }
         }
         return lookAheadSuccessful;
@@ -226,10 +216,12 @@ public abstract class SOAPBodyImpl extends SOAPElement
         }
     }
 
-    public void addChild(OMNode child) {
+    public void addChild(OMNode child, boolean fromBuilder) {
         this.enableLookAhead = false;
-        super.addChild(child);
+        super.addChild(child, fromBuilder);
     }
-    
-    
+
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return ((SOAPFactory)factory).createSOAPBody((SOAPEnvelope)targetParent);
+    }
 }

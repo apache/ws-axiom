@@ -19,8 +19,12 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
@@ -43,9 +47,9 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
         super(parent, e, factory);
     }
 
-    public SOAP12FaultImpl(SOAPBody parent, OMXMLParserWrapper builder,
-                           SOAPFactory factory) {
-        super(parent, builder, factory);
+    public SOAP12FaultImpl(ParentNode parentNode, OMNamespace ns, OMXMLParserWrapper builder,
+            OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, ns, builder, factory, generateNSDecl);
     }
 
     /**
@@ -137,5 +141,14 @@ public class SOAP12FaultImpl extends SOAPFaultImpl {
 
     public SOAPFaultRole getRole() {
         return (SOAPFaultRoleImpl)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_ROLE);
+    }
+
+    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
+            boolean generateNSDecl) {
+        SOAPFault clone = new SOAP12FaultImpl(targetParent, namespace, null, factory, generateNSDecl);
+        if (e != null) {
+            clone.setException(e);
+        }
+        return clone;
     }
 }

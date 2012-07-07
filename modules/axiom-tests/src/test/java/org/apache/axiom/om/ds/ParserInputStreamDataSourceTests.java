@@ -36,15 +36,15 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.ParserInputStreamDataSource.Data;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
-
+import org.apache.axiom.soap.SOAPModelBuilder;
 
 public class ParserInputStreamDataSourceTests extends TestCase {
-	private StAXSOAPModelBuilder builder = null;
+	private SOAPModelBuilder builder = null;
 	private XMLStreamReader parser = null;
 	private String mockenvelope= "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">"+
 	"<soapenv:Header/>"+
@@ -133,9 +133,9 @@ public class ParserInputStreamDataSourceTests extends TestCase {
     }
 	
         
-    private StAXSOAPModelBuilder getOMBuilder() throws Exception {
+    private SOAPModelBuilder getOMBuilder() throws Exception {
     	if(builder == null){
-	        builder = new StAXSOAPModelBuilder(getParser(), null);
+	        builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(getParser());
     	}
         return builder;
     }

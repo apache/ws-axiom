@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMComment;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.w3c.dom.Comment;
@@ -30,15 +29,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 public class CommentImpl extends CharacterImpl implements Comment, OMComment {
-
-    public CommentImpl(DocumentImpl ownerNode, OMFactory factory) {
-        super(ownerNode, factory);
-        this.done = true;
-    }
-
-    public CommentImpl(DocumentImpl ownerNode, String value, OMFactory factory) {
-        super(ownerNode, value, factory);
-        this.done = true;
+    public CommentImpl(String value, OMFactory factory) {
+        super(value, factory);
     }
 
     public String getNodeName() {
@@ -61,12 +53,11 @@ public class CommentImpl extends CharacterImpl implements Comment, OMComment {
         return OMNode.COMMENT_NODE;
     }
 
-    public void setType(int nodeType) throws OMException {
-        throw new UnsupportedOperationException(
-                "You should not set the node type of a comment");
-    }
-
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         writer.writeComment(this.textValue);
+    }
+
+    LeafNode createClone() {
+        return new CommentImpl(getData(), factory);
     }
 }

@@ -80,7 +80,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
      */
     private OMMetaFactory metaFactory;
 
-    private SOAPFactory soapFactory;
+    private SOAPFactoryEx soapFactory;
 
     /** Field headerPresent */
     private boolean headerPresent = false;
@@ -165,7 +165,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
      */
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
         super(factory, parser);
-        soapFactory = factory;
+        soapFactory = (SOAPFactoryEx)factory;
         parserVersion = parser.getVersion();
         identifySOAPVersion(soapVersion);
     }
@@ -305,10 +305,10 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             if (soapFactory == null) {
                 namespaceURI = this.parser.getNamespaceURI();
                 if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                    soapFactory = metaFactory.getSOAP12Factory();
+                    soapFactory = (SOAPFactoryEx)metaFactory.getSOAP12Factory();
                     log.debug("Starting to process SOAP 1.2 message");
                 } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
-                    soapFactory = metaFactory.getSOAP11Factory();
+                    soapFactory = (SOAPFactoryEx)metaFactory.getSOAP11Factory();
                     log.debug("Starting to process SOAP 1.1 message");
                 } else {
                     throw new SOAPProcessingException(
@@ -391,8 +391,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             // this is a headerblock
             try {
                 element =
-                        soapFactory.createSOAPHeaderBlock(elementName, null,
-                                                          (SOAPHeader) parent, this);
+                        soapFactory.createSOAPHeaderBlock(elementName, (SOAPHeader) parent,
+                                                          this);
             } catch (SOAPProcessingException e) {
                 throw new SOAPProcessingException("Can not create SOAPHeader block",
                                                   getReceiverFaultCode(), e);
@@ -422,8 +422,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             element = builderHelper.handleEvent(parser, parent, elementLevel);
         } else {
             // this is neither of above. Just create an element
-            element = soapFactory.createOMElement(elementName, null,
-                                                  parent, this);
+            element = soapFactory.createOMElement(elementName, parent,
+                                                  this);
             processNamespaceData(element, false);
             processAttributes(element);
 
@@ -526,17 +526,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     }
 
     /** @return Returns the soapFactory. */
-    protected SOAPFactory getSoapFactory() {
+    protected SOAPFactoryEx getSoapFactory() {
         return soapFactory;
-    }
-
-    /**
-     * Increase or decrease the element level by the desired amount.
-     * This is needed by the SOAP11BuilderHelper to account for the different
-     * depths for the SOAP fault sytax.
-     * @param value
-     */
-    void adjustElementLevel(int value) {
-        elementLevel = elementLevel + value;
     }
 }

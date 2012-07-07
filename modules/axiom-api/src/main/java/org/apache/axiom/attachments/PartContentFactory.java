@@ -22,6 +22,7 @@ import org.apache.axiom.attachments.impl.BufferUtils;
 import org.apache.axiom.attachments.lifecycle.LifecycleManager;
 import org.apache.axiom.attachments.utils.BAAInputStream;
 import org.apache.axiom.attachments.utils.BAAOutputStream;
+import org.apache.axiom.ext.io.StreamCopyException;
 import org.apache.axiom.om.OMException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -100,6 +101,12 @@ class PartContentFactory {
                                           attachmentDir);
                 }
             } 
+        } catch (StreamCopyException ex) {
+            if (ex.getOperation() == StreamCopyException.READ) {
+                throw new OMException("Failed to fetch the MIME part content", ex.getCause());
+            } else {
+                throw new OMException("Failed to write the MIME part content to temporary storage", ex.getCause());
+            }
         } catch (Exception e) {
             throw new OMException(e);
         } 

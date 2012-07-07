@@ -23,18 +23,16 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;
 
-public class DocumentTypeImpl extends ChildNode implements DocumentType, OMDocType, OMNodeEx {
+public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocType, OMNodeEx {
     private String value;
     
-    public DocumentTypeImpl(DocumentImpl ownerDocument, OMFactory factory) {
-        super(ownerDocument, factory);
-        done = true;
+    public DocumentTypeImpl(OMFactory factory) {
+        super(factory);
     }
 
     public String getNodeName() {
@@ -46,10 +44,6 @@ public class DocumentTypeImpl extends ChildNode implements DocumentType, OMDocTy
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setType(int nodeType) throws OMException {
         throw new UnsupportedOperationException();
     }
 
@@ -88,5 +82,11 @@ public class DocumentTypeImpl extends ChildNode implements DocumentType, OMDocTy
 
     public void setValue(String text) {
         value = text;
+    }
+
+    LeafNode createClone() {
+        DocumentTypeImpl clone = new DocumentTypeImpl(factory);
+        clone.setValue(value);
+        return clone;
     }
 }

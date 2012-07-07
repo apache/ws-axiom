@@ -19,6 +19,9 @@
 
 package org.apache.axiom.soap.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.ElementHelper;
@@ -74,4 +77,7 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
         ElementHelper.setNewElement(this, getSubCode(), value);
     }
 
+    protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
+        return ((SOAPFactory)factory).createSOAPFaultCode((SOAPFault)targetParent);
+    }
 }

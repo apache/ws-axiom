@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -37,6 +36,9 @@ import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.builder.OMFactoryEx;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.apache.axiom.om.impl.dom.AttrImpl;
 import org.apache.axiom.om.impl.dom.CDATASectionImpl;
@@ -57,7 +59,7 @@ import javax.xml.namespace.QName;
  * OM factory implementation for DOOM. It creates nodes that implement
  * DOM as defined by the interfaces in {@link org.w3c.dom}.
  */
-public class OMDOMFactory implements OMFactory {
+public class OMDOMFactory implements OMFactoryEx {
     private final OMDOMMetaFactory metaFactory;
 
     public OMDOMFactory(OMDOMMetaFactory metaFactory) {
@@ -77,8 +79,7 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns) {
-        return new ElementImpl(null,
-                               localName, (OMNamespaceImpl) ns, this);
+        return new ElementImpl(null, localName, ns, null, this, true);
     }
 
     public OMElement createOMElement(String localName, OMNamespace ns,
@@ -86,14 +87,18 @@ public class OMDOMFactory implements OMFactory {
         if (parent == null) {
             return createOMElement(localName, ns);
         } else {
-            return new ElementImpl((ParentNode) parent, localName, (OMNamespaceImpl) ns, this);
+            return new ElementImpl((ParentNode) parent, localName, ns, null, this, true);
         }
     }
 
     /** Creates an OMElement with the builder. */
-    public OMElement createOMElement(String localName, OMNamespace ns,
-                                     OMContainer parent, OMXMLParserWrapper builder) {
-        return new ElementImpl((ParentNode) parent, localName, (OMNamespaceImpl) ns, builder, this);
+    public OMElement createOMElement(String localName, OMContainer parent,
+                                     OMXMLParserWrapper builder) {
+        return new ElementImpl((ParentNode) parent, localName, null, builder, this, false);
+    }
+
+    public OMSourcedElement createOMElement(OMDataSource source) {
+        throw new UnsupportedOperationException("Not supported for DOM");
     }
 
     /* (non-Javadoc)
@@ -191,6 +196,10 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMText createOMText(OMContainer parent, String text, int type) {
+        return createOMText(parent, text, type, false);
+    }
+    
+    public OMText createOMText(OMContainer parent, String text, int type, boolean fromBuilder) {
         if (parent == null) {
             return createOMText(text, type);
         } else if (parent instanceof DocumentImpl) {
@@ -199,22 +208,24 @@ public class OMDOMFactory implements OMFactory {
         } else {
             TextNodeImpl txt;
             if (type == OMNode.CDATA_SECTION_NODE) {
-                txt = new CDATASectionImpl(null, text, this);
+                txt = new CDATASectionImpl(text, this);
             } else {
-                txt = new TextImpl(null, text, type, this);
+                txt = new TextImpl(text, type, this);
             }
-            parent.addChild(txt);
+            ((OMContainerEx)parent).addChild(txt, fromBuilder);
             return txt;
         }
     }
     
     
     public OMText createOMText(OMContainer parent, OMText source) {
-        return new TextImpl(parent, (TextImpl) source, this);
+        TextImpl text = new TextImpl((TextImpl) source, this);
+        parent.addChild(text);
+        return text;
     }
 
     public OMText createOMText(OMContainer parent, char[] charArary, int type) {
-        TextImpl txt = new TextImpl(null, charArary, this);
+        TextImpl txt = new TextImpl(charArary, this);
         parent.addChild(txt);
         return txt;
     }
@@ -225,7 +236,7 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText(String)
      */
     public OMText createOMText(String s) {
-        return new TextImpl(null, s, this);
+        return new TextImpl(s, this);
     }
 
     /**
@@ -235,9 +246,9 @@ public class OMDOMFactory implements OMFactory {
      */
     public OMText createOMText(String text, int type) {
         if (type == OMNode.CDATA_SECTION_NODE) {
-            return new CDATASectionImpl(null, text, this);
+            return new CDATASectionImpl(text, this);
         } else {
-            return new TextImpl(null, text, this);
+            return new TextImpl(text, this);
         }
     }
 
@@ -248,7 +259,7 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText(String, String, boolean)
      */
     public OMText createOMText(String text, String mimeType, boolean optimize) {
-        return new TextImpl(null, text, mimeType, optimize, this);
+        return new TextImpl(text, mimeType, optimize, this);
     }
 
     /**
@@ -258,12 +269,21 @@ public class OMDOMFactory implements OMFactory {
      * @see org.apache.axiom.om.OMFactory#createOMText(Object, boolean)
      */
     public OMText createOMText(Object dataHandler, boolean optimize) {
-        return new TextImpl(null, dataHandler, optimize, this);
+        return createOMText(null, dataHandler, optimize, false);
+    }
+
+    public OMText createOMText(OMContainer parent, Object dataHandler, boolean optimize,
+            boolean fromBuilder) {
+        TextImpl text = new TextImpl(dataHandler, optimize, this);
+        if (parent != null) {
+            ((OMContainerEx)parent).addChild(text, fromBuilder);
+        }
+        return text;
     }
 
     public OMText createOMText(String contentID, DataHandlerProvider dataHandlerProvider,
             boolean optimize) {
-        return new TextImpl(null, contentID, dataHandlerProvider, optimize, this);
+        return new TextImpl(contentID, dataHandlerProvider, optimize, this);
     }
 
     /**
@@ -274,14 +294,7 @@ public class OMDOMFactory implements OMFactory {
      */
     public OMText createOMText(OMContainer parent, String s, String mimeType,
                                boolean optimize) {
-        TextImpl text = new TextImpl(null, s, mimeType, optimize, this);
-        parent.addChild(text);
-        return text;
-    }
-
-    public OMText createOMText(String contentID, OMContainer parent,
-                               OMXMLParserWrapper builder) {
-        TextImpl text = new TextImpl(contentID, parent, builder, this);
+        TextImpl text = new TextImpl(s, mimeType, optimize, this);
         parent.addChild(text);
         return text;
     }
@@ -300,31 +313,103 @@ public class OMDOMFactory implements OMFactory {
     }
 
     public OMDocType createOMDocType(OMContainer parent, String content) {
-        DocumentTypeImpl docType = new DocumentTypeImpl(null, this);
+        return createOMDocType(parent, content, false);
+    }
+    
+    public OMDocType createOMDocType(OMContainer parent, String content, boolean fromBuilder) {
+        DocumentTypeImpl docType = new DocumentTypeImpl(this);
         docType.setValue(content);
-        parent.addChild(docType);
+        if (parent != null) {
+            ((OMContainerEx)parent).addChild(docType, fromBuilder);
+        }
         return docType;
     }
 
     public OMProcessingInstruction createOMProcessingInstruction(
             OMContainer parent, String piTarget, String piData) {
+        return createOMProcessingInstruction(parent, piTarget, piData, false);
+    }
+    
+    public OMProcessingInstruction createOMProcessingInstruction(
+            OMContainer parent, String piTarget, String piData, boolean fromBuilder) {
         ProcessingInstructionImpl pi =
-            new ProcessingInstructionImpl(null, piTarget, piData, this);
+            new ProcessingInstructionImpl(piTarget, piData, this);
         if (parent != null) {
-            parent.addChild(pi);
+            ((OMContainerEx)parent).addChild(pi, fromBuilder);
         }
         return pi;
     }
 
     public OMComment createOMComment(OMContainer parent, String content) {
-        CommentImpl comment = new CommentImpl(null, content, this);
+        return createOMComment(parent, content, false);
+    }
+    
+    public OMComment createOMComment(OMContainer parent, String content, boolean fromBuilder) {
+        CommentImpl comment = new CommentImpl(content, this);
         if (parent != null) {
-            parent.addChild(comment);
+            ((OMContainerEx)parent).addChild(comment, fromBuilder);
         }
         return comment;
     }
 
     public OMDocument createOMDocument(OMXMLParserWrapper builder) {
         return new DocumentImpl(builder, this);
+    }
+
+    /**
+     * This method is intended only to be used by Axiom intenals when merging Objects from different
+     * Axiom implementations to the DOOM implementation.
+     *
+     * @param child
+     */
+    public OMNode importNode(OMNode child) {
+        int type = child.getType();
+        switch (type) {
+            case (OMNode.ELEMENT_NODE): {
+                OMElement childElement = (OMElement) child;
+                OMElement newElement = (new StAXOMBuilder(this,
+                                                          childElement.getXMLStreamReader()))
+                        .getDocumentElement();
+                newElement.build();
+                return newElement;
+            }
+            case (OMNode.TEXT_NODE): {
+                OMText importedText = (OMText) child;
+                OMText newText;
+                if (importedText.isBinary()) {
+                    boolean isOptimize = importedText.isOptimized();
+                    newText = createOMText(importedText
+                            .getDataHandler(), isOptimize);
+                } else if (importedText.isCharacters()) {
+                    newText = new TextImpl(importedText.getTextCharacters(), this);
+                } else {
+                    newText = new TextImpl(importedText.getText(), this);
+                }
+                return newText;
+            }
+
+            case (OMNode.PI_NODE): {
+                OMProcessingInstruction importedPI = (OMProcessingInstruction) child;
+                OMProcessingInstruction newPI =
+                        createOMProcessingInstruction(null, importedPI.getTarget(),
+                                                       importedPI.getValue());
+                return newPI;
+            }
+            case (OMNode.COMMENT_NODE): {
+                OMComment importedComment = (OMComment) child;
+                OMComment newComment = createOMComment(null, importedComment.getValue());
+                newComment = new CommentImpl(importedComment.getValue(), this);
+                return newComment;
+            }
+            case (OMNode.DTD_NODE): {
+                OMDocType importedDocType = (OMDocType) child;
+                OMDocType newDocType = createOMDocType(null, importedDocType.getValue());
+                return newDocType;
+            }
+            default: {
+                throw new UnsupportedOperationException(
+                        "Not Implemented Yet for the given node type");
+            }
+        }
     }
 }

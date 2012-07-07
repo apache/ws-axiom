@@ -67,6 +67,9 @@ public class ByteArrayCustomBuilder implements CustomBuilder {
         try {
             // Get the prefix of the start tag
             String prefix = reader.getPrefix();
+            if (prefix == null) {
+                prefix = "";
+            }
             
             // Stream the events to a writer starting with the current event
             StreamingOMSerializer ser = new StreamingOMSerializer();

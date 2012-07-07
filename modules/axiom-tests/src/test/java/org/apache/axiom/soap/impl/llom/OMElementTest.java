@@ -29,7 +29,7 @@ import org.apache.axiom.om.OMTestCase;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
+import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -45,11 +45,6 @@ public class OMElementTest extends OMTestCase implements OMConstants {
     OMFactory factory = OMAbstractFactory.getOMFactory();
     private OMElement firstElement;
     private OMElement secondElement;
-
-
-    public OMElementTest(String testName) {
-        super(testName);
-    }
 
     /*
      * @see TestCase#setUp()
@@ -67,7 +62,7 @@ public class OMElementTest extends OMTestCase implements OMConstants {
 
     public void testGetText() {
         try {
-            StAXSOAPModelBuilder soapBuilder = getOMBuilder(
+            SOAPModelBuilder soapBuilder = getOMBuilder(
                     "soap/OMElementTest.xml");
             SOAPEnvelope soapEnvelope = (SOAPEnvelope) soapBuilder.getDocumentElement();
             OMElement wsaTo = soapEnvelope.getHeader().getFirstChildWithName(

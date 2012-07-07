@@ -19,50 +19,24 @@
 
 package org.apache.axiom.soap.impl.dom.soap12;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPConstants;
-import org.apache.axiom.soap.SOAPFactory;
-import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.impl.dom.SOAPHeaderBlockImpl;
 
 public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
-    /**
-     * @param localName
-     * @param ns
-     */
-    public SOAP12HeaderBlockImpl(String localName,
-                                 OMNamespace ns,
-                                 SOAPHeader parent,
-                                 SOAPFactory factory) throws SOAPProcessingException {
-        super(localName, ns, parent, factory);
-        checkParent(parent);
-    }
-
-    public SOAP12HeaderBlockImpl(String localName, OMNamespace ns, SOAPFactory factory) {
-        super(localName, ns, factory);
-    }
-
-    /**
-     * Constructor SOAPHeaderBlockImpl
-     *
-     * @param localName
-     * @param ns
-     * @param parent
-     * @param builder
-     */
-    public SOAP12HeaderBlockImpl(String localName,
-                                 OMNamespace ns,
-                                 SOAPHeader parent,
-                                 OMXMLParserWrapper builder,
-                                 SOAPFactory factory) {
-        super(localName, ns, parent, builder, factory);
-
+    public SOAP12HeaderBlockImpl(ParentNode parentNode, String localName, OMNamespace ns,
+            OMXMLParserWrapper builder, OMFactory factory, boolean generateNSDecl) {
+        super(parentNode, localName, ns, builder, factory, generateNSDecl);
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -149,5 +123,11 @@ public class SOAP12HeaderBlockImpl extends SOAPHeaderBlockImpl {
      */
     public SOAPVersion getVersion() {
         return SOAP12Version.getSingleton();
+    }
+
+    protected OMElement createClone(OMCloneOptions options, ParentNode targetParent, boolean generateNSDecl) {
+        SOAPHeaderBlock clone = new SOAP12HeaderBlockImpl(targetParent, getLocalName(), getNamespace(), null, factory, generateNSDecl);
+        copyData(options, clone);
+        return clone;
     }
 }

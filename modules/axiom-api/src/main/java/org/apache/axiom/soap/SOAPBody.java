@@ -73,7 +73,9 @@ public interface SOAPBody extends OMElement {
      * obtain this information from the builder/parser without building
      * the OMElement.  Use this method in the situations where you need
      * to know the OMNamespace, but don't necessarily need the OMElement.
-     * @return OMNamespace of first element in the body or null
+     * 
+     * @return the namespace of first element in the body, or <code>null</code> if the element
+     * has no namespace or the body is empty
      */
     public OMNamespace getFirstElementNS();
     
@@ -83,7 +85,8 @@ public interface SOAPBody extends OMElement {
      * obtain this information from the builder/parser without building
      * the OMElement.  Use this method in the situations where you need
      * to know the name, but don't necessarily need the OMElement.
-     * @return local name of first element in the body or null
+     * 
+     * @return local name of first element in the body, or <code>null</code> if the body is empty
      */
     public String getFirstElementLocalName();
 }
