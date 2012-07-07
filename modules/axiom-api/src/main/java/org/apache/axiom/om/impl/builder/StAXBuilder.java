@@ -350,17 +350,16 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                  }
 
             } else {
-                OMElement parent = (OMElement) element.getParent();
+                OMContainer parent = element.getParent();
                 if (parent == null) {
                     throw new OMException();
+                } else {
+                    ((OMContainerEx) parent).setFirstChild(null);
+                    lastNode = parent instanceof OMDocument ? null : (OMNode)parent;
                 }
-                ((OMContainerEx) parent).setFirstChild(null);
-                lastNode = parent;
             }
             
-        } catch (OMException e) {
-            throw e;
-        } catch (Exception e) {
+        } catch (XMLStreamException e) {
             throw new OMException(e);
         } 
     }
