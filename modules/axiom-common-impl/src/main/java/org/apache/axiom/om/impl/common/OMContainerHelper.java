@@ -20,7 +20,6 @@ package org.apache.axiom.om.impl.common;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -41,11 +40,11 @@ public final class OMContainerHelper {
     
     private OMContainerHelper() {}
     
-    public static XMLStreamReader getXMLStreamReader(OMContainer container, boolean cache) {
+    public static XMLStreamReader getXMLStreamReader(OMContainerEx container, boolean cache) {
         return getXMLStreamReader(container, cache, defaultReaderConfiguration);
     }
     
-    public static XMLStreamReader getXMLStreamReader(OMContainer container, boolean cache, OMXMLStreamReaderConfiguration configuration) {
+    public static XMLStreamReader getXMLStreamReader(OMContainerEx container, boolean cache, OMXMLStreamReaderConfiguration configuration) {
         OMXMLParserWrapper builder = container.getBuilder();
         if (builder != null && builder instanceof StAXOMBuilder) {
             if (!container.isComplete()) {

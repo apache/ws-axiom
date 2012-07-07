@@ -234,8 +234,6 @@ public interface OMContainer extends OMSerializable {
     void serializeAndConsume(Writer writer, OMOutputFormat format)
             throws XMLStreamException;
 
-    void buildNext();
-
     /**
      * Get a pull parser representation of this element with caching enabled. This method has the
      * same effect as {@link #getXMLStreamReader(boolean)} with <code>cache</code> set to

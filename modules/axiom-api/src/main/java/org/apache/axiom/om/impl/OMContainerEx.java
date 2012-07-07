@@ -29,6 +29,8 @@ import org.apache.axiom.om.OMNode;
 public interface OMContainerEx extends OMContainer {
     public void setComplete(boolean state);
 
+    void buildNext();
+
     /**
      * forcefully set the first element in this parent element
      * @param omNode

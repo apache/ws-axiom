@@ -577,11 +577,11 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     }
 
     public XMLStreamReader getXMLStreamReader(boolean cache) {
-        return OMContainerHelper.getXMLStreamReader((OMContainer)this, cache);
+        return OMContainerHelper.getXMLStreamReader((OMContainerEx)this, cache);
     }
     
     public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
-        return OMContainerHelper.getXMLStreamReader((OMContainer)this, cache, configuration);
+        return OMContainerHelper.getXMLStreamReader((OMContainerEx)this, cache, configuration);
     }
 
     public SAXSource getSAXSource(boolean cache) {
