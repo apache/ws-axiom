@@ -472,6 +472,10 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         return null;
     }
 
+    public final int getState() {
+        return COMPLETE;
+    }
+
     public final boolean isComplete() {
         return true;
     }

@@ -602,12 +602,20 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
         return builder;
     }
 
+    public final int getState() {
+        return state;
+    }
+
     public final boolean isComplete() {
         return state == COMPLETE;
     }
 
     public final void setComplete(boolean complete) {
         state = complete ? COMPLETE : INCOMPLETE;
+    }
+
+    public final void discarded() {
+        state = DISCARDED;
     }
 
     public final void build() {

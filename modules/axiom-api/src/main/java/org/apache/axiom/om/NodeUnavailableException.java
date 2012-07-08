@@ -16,11 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.om.impl.common;
+package org.apache.axiom.om;
 
-import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.OMContainerEx;
+import javax.xml.stream.XMLStreamWriter;
 
-public interface IContainer extends OMContainerEx, IParentNode {
-    OMNode getLastKnownOMChild();
+/**
+ * Exception indicating that a requested node cannot be returned because it is no longer available.
+ * A node may become unavailable because it has been consumed by a method such as
+ * {@link OMContainer#serializeAndConsume(XMLStreamWriter)} or
+ * {@link OMContainer#getXMLStreamReaderWithoutCaching()}, or because one of its ancestors has been
+ * discarded using {@link OMNode#discard()}.
+ */
+public class NodeUnavailableException extends OMException {
+    private static final long serialVersionUID = -9034004432518092807L;
+
+    public NodeUnavailableException() {
+    }
 }

@@ -335,6 +335,18 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                 parserNext();
             }
 
+            // Mark nodes as discarded
+            current = lastNode;
+            while (true) {
+                if (!current.isComplete()) {
+                    ((OMContainerEx)current).discarded();
+                }
+                if (current == element) {
+                    break;
+                }
+                current = (OMElement)current.getParent();
+            }
+            
             //at this point we are safely at the end_element event of the element we discarded
             lastNode = element.getPreviousOMSibling();
 

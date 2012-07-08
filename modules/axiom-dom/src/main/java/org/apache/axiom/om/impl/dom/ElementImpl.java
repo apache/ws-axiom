@@ -1335,6 +1335,10 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, ICh
         return builder;
     }
 
+    public final int getState() {
+        return state;
+    }
+
     public final boolean isComplete() {
         return state == COMPLETE;
     }
@@ -1349,6 +1353,10 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, ICh
                 parentNode.notifyChildComplete();
             }
         }
+    }
+
+    public final void discarded() {
+        state = DISCARDED;
     }
 
     public OMNode detach() throws OMException {

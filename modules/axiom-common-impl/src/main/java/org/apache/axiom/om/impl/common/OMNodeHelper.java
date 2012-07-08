@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.om.impl.common;
 
+import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 
@@ -25,14 +26,21 @@ public final class OMNodeHelper {
     private OMNodeHelper() {}
     
     public static OMNode getNextOMSibling(IChildNode node) throws OMException {
-        if (node.getNextOMSiblingIfAvailable() == null) {
+        OMNode nextSibling = node.getNextOMSiblingIfAvailable();
+        if (nextSibling == null) {
             IParentNode parent = node.getIParentNode();
             if (parent != null && parent.getBuilder() != null) {
-                while (!parent.isComplete() && node.getNextOMSiblingIfAvailable() == null) {
-                    parent.buildNext();
+                switch (parent.getState()) {
+                    case IParentNode.DISCARDED:
+                        throw new NodeUnavailableException();
+                    case IParentNode.INCOMPLETE:
+                        do {
+                            parent.buildNext();
+                        } while (parent.getState() == IParentNode.INCOMPLETE
+                                && (nextSibling = node.getNextOMSiblingIfAvailable()) == null);
                 }
             }
         }
-        return node.getNextOMSiblingIfAvailable();
+        return nextSibling;
     }
 }

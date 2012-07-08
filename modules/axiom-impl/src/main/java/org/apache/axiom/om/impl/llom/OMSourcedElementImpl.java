@@ -915,6 +915,14 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.handleNamespace(qname);
     }
 
+    public int getState() {
+        if (isExpanded) {
+            return super.getState();
+        } else {
+            return COMPLETE;
+        }
+    }
+
     public boolean isComplete() {
         if (isExpanded) {
             return super.isComplete();
@@ -1051,6 +1059,11 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         }
     }
     
+    public void discarded() {
+        // TODO: will we ever get here?
+        super.discarded();
+    }
+
     public SAXSource getSAXSource(boolean cache) {
         return super.getSAXSource(cache);
     }

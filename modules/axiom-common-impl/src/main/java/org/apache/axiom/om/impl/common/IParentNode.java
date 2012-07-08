@@ -30,7 +30,12 @@ import org.w3c.dom.DocumentFragment;
  * (such as DOOM's {@link Attr} and {@link DocumentFragment} implementations).
  */
 public interface IParentNode {
+    int INCOMPLETE = 0;
+    int COMPLETE = 1;
+    int DISCARDED = 2;
+    
     OMXMLParserWrapper getBuilder();
+    int getState();
     boolean isComplete();
     void buildNext();
 

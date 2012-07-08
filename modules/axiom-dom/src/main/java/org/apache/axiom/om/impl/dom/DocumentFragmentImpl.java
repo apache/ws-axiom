@@ -90,6 +90,10 @@ public class DocumentFragmentImpl extends RootNode implements
         return null;
     }
 
+    public final int getState() {
+        return COMPLETE;
+    }
+
     public final boolean isComplete() {
         return true;
     }
@@ -98,6 +102,10 @@ public class DocumentFragmentImpl extends RootNode implements
         if (state != true) {
             throw new IllegalStateException();
         }
+    }
+
+    public final void discarded() {
+        throw new UnsupportedOperationException();
     }
 
     public final void build() {

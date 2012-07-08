@@ -711,6 +711,10 @@ public class OMElementImpl extends OMNodeImpl
         OMContainerHelper.buildNext(this);
     }
 
+    public int getState() {
+        return state;
+    }
+
     public boolean isComplete() {
         return state == COMPLETE;
     }
@@ -726,6 +730,10 @@ public class OMElementImpl extends OMNodeImpl
                 ((OMDocumentImpl) parent).notifyChildComplete();
             }
         }
+    }
+
+    public void discarded() {
+        state = DISCARDED;
     }
 
     public XMLStreamReader getXMLStreamReader() {

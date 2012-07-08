@@ -136,6 +136,10 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IC
         }
     }
 
+    public int getState() {
+        return state;
+    }
+
     public boolean isComplete() {
         return state == COMPLETE;
     }
@@ -147,6 +151,10 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IC
      */
     public void setComplete(boolean complete) {
         state = complete ? COMPLETE : INCOMPLETE;
+    }
+
+    public void discarded() {
+        state = DISCARDED;
     }
 
     public void addChild(OMNode child) {
