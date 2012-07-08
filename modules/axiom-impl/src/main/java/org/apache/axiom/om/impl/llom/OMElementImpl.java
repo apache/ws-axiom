@@ -74,7 +74,7 @@ public class OMElementImpl extends OMNodeImpl
     
     protected OMXMLParserWrapper builder;
 
-    protected boolean done;
+    protected int state;
 
     /**
      * The namespace of this element. Possible values:
@@ -116,7 +116,7 @@ public class OMElementImpl extends OMNodeImpl
         }
         this.localName = localName;
         this.builder = builder;
-        this.done = builder == null;
+        state = builder == null ? COMPLETE : INCOMPLETE;
         if (parent != null) {
             ((IContainer)parent).addChild(this, builder != null);
         }
@@ -132,7 +132,7 @@ public class OMElementImpl extends OMNodeImpl
     public OMElementImpl(QName qname, OMContainer parent, OMFactory factory)
             throws OMException {
         super(factory);
-        done = true;
+        state = COMPLETE;
         if (parent != null) {
             parent.addChild(this);
         }
@@ -147,7 +147,7 @@ public class OMElementImpl extends OMNodeImpl
      */
     OMElementImpl(OMFactory factory) {
         super(factory);
-        done = true;
+        state = COMPLETE;
     }
 
     /** Method handleNamespace. */
@@ -679,7 +679,7 @@ public class OMElementImpl extends OMNodeImpl
             // of the builder.
             getBuilder().discard(this);
         } else {
-            if (!done) {
+            if (state == INCOMPLETE) {
                 build();
             }
             super.detach();
@@ -696,7 +696,7 @@ public class OMElementImpl extends OMNodeImpl
          * builder is null. Meaning this is a programatical created element but it has children which are not completed
          * Build them all.
          */
-        if (builder == null && !done) {
+        if (builder == null && state == INCOMPLETE) {
             for (Iterator childrenIterator = this.getChildren(); childrenIterator.hasNext();) {
                 OMNode omNode = (OMNode) childrenIterator.next();
                 omNode.build();
@@ -712,13 +712,13 @@ public class OMElementImpl extends OMNodeImpl
     }
 
     public boolean isComplete() {
-        return done;
+        return state == COMPLETE;
     }
 
-    public void setComplete(boolean state) {
-        this.done = state;
+    public void setComplete(boolean complete) {
+        state = complete ? COMPLETE : INCOMPLETE;
         if (parent != null) {
-            if (!done) {
+            if (!complete) {
                 parent.setComplete(false);
             } else if (parent instanceof OMElementImpl) {
                 ((OMElementImpl) parent).notifyChildComplete();
@@ -791,7 +791,7 @@ public class OMElementImpl extends OMNodeImpl
     public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
 
-        if (cache || this.done || (this.builder == null)) {
+        if (cache || state == COMPLETE || (this.builder == null)) {
             OMSerializerUtil.serializeStartpart(this, writer);
             OMSerializerUtil.serializeChildren(this, writer, cache);
             OMSerializerUtil.serializeEndpart(writer);
@@ -921,7 +921,7 @@ public class OMElementImpl extends OMNodeImpl
      * @throws OMException
      */
     public void discard() throws OMException {
-        if (done || builder == null) {
+        if (state == COMPLETE || builder == null) {
             this.detach();
         } else {
             builder.discard(this);
@@ -992,7 +992,7 @@ public class OMElementImpl extends OMNodeImpl
       * @see org.apache.axiom.om.OMNode#buildAll()
       */
     public void buildWithAttachments() {
-        if (!done) {
+        if (state == INCOMPLETE) {
             this.build();
         }
         Iterator iterator = getChildren();
@@ -1004,7 +1004,7 @@ public class OMElementImpl extends OMNodeImpl
 
     /** This method will be called when one of the children becomes complete. */
     void notifyChildComplete() {
-        if (!this.done && builder == null) {
+        if (state == INCOMPLETE && builder == null) {
             Iterator iterator = getChildren();
             while (iterator.hasNext()) {
                 OMNode node = (OMNode) iterator.next();

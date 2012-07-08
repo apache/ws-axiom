@@ -72,7 +72,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, ICh
     
     protected OMXMLParserWrapper builder;
 
-    protected boolean done;
+    protected int state;
 
     private ParentNode ownerNode;
     
@@ -113,7 +113,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, ICh
         super(factory);
         this.localName = localName;
         this.builder = builder;
-        this.done = builder == null;
+        state = builder == null ? COMPLETE : INCOMPLETE;
         if (parentNode != null) {
             parentNode.addChild(this, builder != null);
         }
@@ -997,7 +997,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, ICh
     public void internalSerialize(XMLStreamWriter writer,
                                      boolean cache) throws XMLStreamException {
 
-        if (cache || this.done || (this.builder == null)) {
+        if (cache || state == COMPLETE || (this.builder == null)) {
             OMSerializerUtil.serializeStartpart(this, writer);
             OMSerializerUtil.serializeChildren(this, writer, cache);
             OMSerializerUtil.serializeEndpart(writer);
@@ -1217,7 +1217,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, ICh
     }
 
     public void discard() throws OMException {
-        if (done) {
+        if (state == COMPLETE) {
             this.detach();
         } else {
             builder.discard(this);
@@ -1304,7 +1304,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, ICh
       * @see org.apache.axiom.om.OMNode#buildAll()
       */
     public void buildWithAttachments() {
-        if (!done) {
+        if (state == INCOMPLETE) {
             this.build();
         }
         Iterator iterator = getChildren();
@@ -1336,14 +1336,14 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, ICh
     }
 
     public final boolean isComplete() {
-        return done;
+        return state == COMPLETE;
     }
 
-    public final void setComplete(boolean state) {
-        done = state;
+    public final void setComplete(boolean complete) {
+        state = complete ? COMPLETE : INCOMPLETE;
         ParentNode parentNode = parentNode();
         if (parentNode != null) {
-            if (!done) {
+            if (!complete) {
                 parentNode.setComplete(false);
             } else {
                 parentNode.notifyChildComplete();
@@ -1361,7 +1361,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, ICh
             // of the builder.
             getBuilder().discard(this);
         } else {
-            if (!done) {
+            if (state == INCOMPLETE) {
                 build();
             }
             super.detach();

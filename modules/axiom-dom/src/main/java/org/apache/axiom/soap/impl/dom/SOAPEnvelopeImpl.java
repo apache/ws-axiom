@@ -110,7 +110,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
             // The SOAPHeader is added before the SOAPBody
             // We must be sensitive to the state of the parser.  It is possible that the
             // has not been processed yet.
-            if (this.done) {
+            if (state == COMPLETE) {
                 // Parsing is complete, therefore it is safe to
                 // call getBody.
                 SOAPBody body = getBody();
@@ -226,7 +226,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         } else {
             //Now the caching is supposed to be off. However caching been switched off
             //has nothing to do if the element is already built!
-            if (this.done || (this.builder == null)) {
+            if (state == COMPLETE || (this.builder == null)) {
                 OMSerializerUtil.serializeStartpart(this, writer);
                 OMElement header = getHeader();
                 if ((header != null) && (header.getFirstOMChild() != null)) {

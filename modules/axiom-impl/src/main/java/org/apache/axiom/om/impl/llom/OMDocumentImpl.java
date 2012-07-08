@@ -49,7 +49,7 @@ import java.util.Iterator;
 public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IContainer {
     protected OMXMLParserWrapper builder;
 
-    protected boolean done;
+    protected int state;
 
     /** Field firstChild */
     protected OMNode firstChild;
@@ -74,7 +74,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IC
      */
     public OMDocumentImpl(OMFactory factory) {
         super(factory);
-        this.done = true;
+        state = COMPLETE;
     }
 
     /**
@@ -137,7 +137,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IC
     }
 
     public boolean isComplete() {
-        return done;
+        return state == COMPLETE;
     }
 
     /**
@@ -145,8 +145,8 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IC
      *
      * @param state
      */
-    public void setComplete(boolean state) {
-        this.done = state;
+    public void setComplete(boolean complete) {
+        state = complete ? COMPLETE : INCOMPLETE;
     }
 
     public void addChild(OMNode child) {
@@ -322,7 +322,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IC
     }
 
     void notifyChildComplete() {
-        if (!this.done && builder == null) {
+        if (state == INCOMPLETE && builder == null) {
             Iterator iterator = getChildren();
             while (iterator.hasNext()) {
                 OMNode node = (OMNode) iterator.next();

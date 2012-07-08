@@ -63,7 +63,7 @@ import java.util.Vector;
 public class DocumentImpl extends RootNode implements Document, OMDocument, IContainer {
     protected OMXMLParserWrapper builder;
 
-    protected boolean done;
+    protected int state;
 
     private String xmlVersion;
 
@@ -86,7 +86,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
 
     public DocumentImpl(OMFactory factory) {
         super(factory);
-        this.done = true;
+        state = COMPLETE;
     }
 
     ParentNode internalGetOwnerNode() {
@@ -603,11 +603,11 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
     }
 
     public final boolean isComplete() {
-        return done;
+        return state == COMPLETE;
     }
 
-    public final void setComplete(boolean state) {
-        done = state;
+    public final void setComplete(boolean complete) {
+        state = complete ? COMPLETE : INCOMPLETE;
     }
 
     public final void build() {

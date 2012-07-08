@@ -948,7 +948,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
     public void buildWithAttachments() {
         
         // If not done, force the parser to build the elements
-        if (!done) {
+        if (state == INCOMPLETE) {
             this.build();
         }
         
@@ -1026,8 +1026,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
      * parent (which may have a different builder or no builder).
      */
     public void setComplete(boolean value) {
-        done = value;
-        if (done == true) {
+        state = value ? COMPLETE : INCOMPLETE;
+        if (value == true) {
             if (readerFromDS != null) {
                 try {
                     readerFromDS.close();
@@ -1042,7 +1042,7 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
                 dataSource = null;
             }
         }
-        if (done == true && readerFromDS != null) {
+        if (value == true && readerFromDS != null) {
             try {
                 readerFromDS.close();
             } catch (XMLStreamException e) {

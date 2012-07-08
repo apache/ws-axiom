@@ -18,10 +18,13 @@
  */
 package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMContainerEx;
 
 public interface IContainer extends OMContainerEx, IParentNode {
-    public OMNode getLastKnownOMChild();
+    int INCOMPLETE = 0;
+    int COMPLETE = 1;
+    int DISCARDED = 2;
+    
+    OMNode getLastKnownOMChild();
 }

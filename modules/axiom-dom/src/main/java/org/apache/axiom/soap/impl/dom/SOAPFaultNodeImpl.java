@@ -82,7 +82,7 @@ public abstract class SOAPFaultNodeImpl extends SOAPElement implements SOAPFault
                 OMSerializerUtil.serializeStartpart(this, writer);
                 firstChild.internalSerialize(writer, false);
                 OMSerializerUtil.serializeEndpart(writer);
-            } else if (!this.done) {
+            } else if (state == INCOMPLETE) {
                 if (builderType == PULL_TYPE_BUILDER) {
                     OMSerializerUtil.serializeByPullStream(this, writer);
                 } else {
