@@ -259,8 +259,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                 node = constructNode((OMElement)parent,
                                      elementName,
                                      false);
-                ((OMNodeEx) lastNode).setNextOMSibling(node);
-                ((OMNodeEx) node).setPreviousOMSibling(lastNode);
             }
         } else {
             OMContainerEx e = (OMContainerEx) lastNode;
