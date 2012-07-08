@@ -20,15 +20,13 @@ package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.OMContainerEx;
-import org.apache.axiom.om.impl.OMNodeEx;
 
 public final class OMNodeHelper {
     private OMNodeHelper() {}
     
-    public static OMNode getNextOMSibling(OMNodeEx node) throws OMException {
+    public static OMNode getNextOMSibling(IChildNode node) throws OMException {
         if (node.getNextOMSiblingIfAvailable() == null) {
-            OMContainerEx parent = (OMContainerEx)node.getParent();
+            IParentNode parent = node.getIParentNode();
             if (parent != null && parent.getBuilder() != null) {
                 while (!parent.isComplete() && node.getNextOMSiblingIfAvailable() == null) {
                     parent.buildNext();

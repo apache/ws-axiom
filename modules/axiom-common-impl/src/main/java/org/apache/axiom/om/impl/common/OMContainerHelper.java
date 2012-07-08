@@ -26,7 +26,6 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -41,11 +40,11 @@ public final class OMContainerHelper {
     
     private OMContainerHelper() {}
     
-    public static XMLStreamReader getXMLStreamReader(OMContainerEx container, boolean cache) {
+    public static XMLStreamReader getXMLStreamReader(IContainer container, boolean cache) {
         return getXMLStreamReader(container, cache, defaultReaderConfiguration);
     }
     
-    public static XMLStreamReader getXMLStreamReader(OMContainerEx container, boolean cache, OMXMLStreamReaderConfiguration configuration) {
+    public static XMLStreamReader getXMLStreamReader(IContainer container, boolean cache, OMXMLStreamReaderConfiguration configuration) {
         OMXMLParserWrapper builder = container.getBuilder();
         if (builder != null && builder instanceof StAXOMBuilder) {
             if (!container.isComplete()) {
@@ -89,7 +88,7 @@ public final class OMContainerHelper {
         return reader;
     }
     
-    public static void addChild(OMContainerEx container, OMNode omNode, boolean fromBuilder) {
+    public static void addChild(IContainer container, OMNode omNode, boolean fromBuilder) {
         OMNodeEx child;
         if (fromBuilder) {
             // If the new child was provided by the builder, we know that it was created by
@@ -139,7 +138,7 @@ public final class OMContainerHelper {
         }
     }
     
-    public static void build(OMContainerEx container) {
+    public static void build(IContainer container) {
         OMXMLParserWrapper builder = container.getBuilder();
         if (builder != null && builder.isCompleted()) {
             log.debug("Builder is already complete.");
@@ -154,7 +153,7 @@ public final class OMContainerHelper {
         }
     }
     
-    public static void buildNext(OMContainerEx container) {
+    public static void buildNext(IContainer container) {
         OMXMLParserWrapper builder = container.getBuilder();
         if (builder != null) {
             if (((StAXOMBuilder)builder).isClosed()) {
@@ -167,5 +166,13 @@ public final class OMContainerHelper {
                 throw new IllegalStateException("Builder is already complete");
             }         
         }
+    }
+    
+    public static OMNode getFirstOMChild(IParentNode that) {
+        OMNode firstChild;
+        while ((firstChild = that.getFirstOMChildIfAvailable()) == null && !that.isComplete()) {
+            that.buildNext();
+        }
+        return firstChild;
     }
 }

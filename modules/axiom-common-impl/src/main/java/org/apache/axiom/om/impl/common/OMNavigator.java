@@ -20,12 +20,10 @@
 package org.apache.axiom.om.impl.common;
 
 import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSerializable;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 
 /**
@@ -204,7 +202,7 @@ public class OMNavigator {
             }
             return first;
         } else {
-            return ((OMContainerEx) node).getFirstOMChildIfAvailable();
+            return ((IContainer)node).getFirstOMChildIfAvailable();
         }
     }
 

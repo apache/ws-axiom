@@ -16,32 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.om.impl.common;
 
-package org.apache.axiom.om.impl;
+import org.apache.axiom.om.impl.OMNodeEx;
 
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMNode;
-
-/**
- * Interface that is used internally by Axiom and that should not be considered being part of the
- * public API.
- */
-public interface OMContainerEx extends OMContainer {
-    public void setComplete(boolean state);
-
-    void buildNext();
-
-    /**
-     * forcefully set the first element in this parent element
-     * @param omNode
-     */
-    public void setFirstChild(OMNode omNode);
-
-    /**
-     * forcefully set the last element in this parent element
-     * @param omNode
-     */
-    public void setLastChild(OMNode omNode);
-    
-    public void addChild(OMNode omNode, boolean fromBuilder);
+public interface IChildNode extends OMNodeEx {
+    IParentNode getIParentNode();
 }

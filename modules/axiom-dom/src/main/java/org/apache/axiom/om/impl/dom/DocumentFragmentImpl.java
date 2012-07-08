@@ -22,16 +22,16 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMContainerEx;
-import org.apache.axiom.om.impl.common.OMContainerHelper;
+import org.apache.axiom.om.impl.common.IContainer;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+// TODO: we should not implement IContainer here
 public class DocumentFragmentImpl extends RootNode implements
-        DocumentFragment, OMContainerEx {
+        DocumentFragment, IContainer {
 
     private ParentNode ownerNode;
     

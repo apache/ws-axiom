@@ -30,9 +30,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMChildrenLegacyQNameIterator;
@@ -68,7 +68,7 @@ import java.util.LinkedHashMap;
 
 /** Class OMElementImpl */
 public class OMElementImpl extends OMNodeImpl
-        implements OMElementEx, OMConstants, OMContainerEx {
+        implements OMElementEx, OMConstants, IContainer {
 
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
@@ -118,7 +118,7 @@ public class OMElementImpl extends OMNodeImpl
         this.builder = builder;
         this.done = builder == null;
         if (parent != null) {
-            ((OMContainerEx)parent).addChild(this, builder != null);
+            ((IContainer)parent).addChild(this, builder != null);
         }
         this.ns = generateNSDecl ? handleNamespace(ns) : ns;
     }
@@ -640,10 +640,7 @@ public class OMElementImpl extends OMNodeImpl
      * @return Returns child.
      */
     public OMNode getFirstOMChild() {
-        while ((firstChild == null) && !done) {
-            buildNext();
-        }
-        return firstChild;
+        return OMContainerHelper.getFirstOMChild(this);
     }
 
     public OMNode getFirstOMChildIfAvailable() {

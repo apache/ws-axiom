@@ -27,7 +27,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
@@ -46,7 +46,7 @@ import javax.xml.transform.sax.SAXSource;
 import java.util.Iterator;
 
 /** Class OMDocumentImpl */
-public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OMContainerEx {
+public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IContainer {
     protected OMXMLParserWrapper builder;
 
     protected boolean done;
@@ -203,10 +203,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
      * @return Returns first om child.
      */
     public OMNode getFirstOMChild() {
-        while ((firstChild == null) && !done) {
-            buildNext();
-        }
-        return firstChild;
+        return OMContainerHelper.getFirstOMChild(this);
     }
 
     public OMNode getFirstOMChildIfAvailable() {

@@ -30,14 +30,17 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
+import org.apache.axiom.om.impl.common.IChildNode;
+import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.IParentNode;
 import org.apache.axiom.om.impl.common.OMNodeHelper;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 
 /** Class OMNodeImpl */
-public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, OMNodeEx {
+public abstract class OMNodeImpl extends OMSerializableImpl implements IChildNode {
     
     /** Field parent */
-    protected OMContainerEx parent;
+    protected IContainer parent;
 
     /** Field nextSibling */
     protected OMNodeImpl nextSibling;
@@ -64,6 +67,10 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
         return parent;
     }
 
+    public IParentNode getIParentNode() {
+        return parent;
+    }
+
     /**
      * Method setParent.
      *
@@ -82,7 +89,7 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements OMNode, O
             if (this.parent != null) {
                 this.detach();
             }
-            this.parent = (OMContainerEx) element;
+            this.parent = (IContainer) element;
         } else {
             this.parent = null;
         }
