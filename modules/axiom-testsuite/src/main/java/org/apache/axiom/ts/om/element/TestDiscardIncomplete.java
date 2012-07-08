@@ -36,19 +36,17 @@ public class TestDiscardIncomplete extends AxiomTestCase {
 
     protected void runTest() throws Throwable {
         OMElement documentElement = null;
-        try {
-            // first build the OM tree without caching and see whether we can discard
-            // an element from it
-            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                    AbstractTestCase.getTestResource(TestConstants.SOAP_SOAPMESSAGE));
-            documentElement = builder.getDocumentElement();
+        
+        // first build the OM tree without caching and see whether we can discard
+        // an element from it
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
+                AbstractTestCase.getTestResource(TestConstants.SOAP_SOAPMESSAGE));
+        documentElement = builder.getDocumentElement();
 
-            documentElement.getFirstElement().discard();
+        documentElement.getFirstElement().discard();
 
-            String envelopeString = documentElement.toStringWithConsume();
-        } catch (Exception e) {
-            fail("discarding an element should work!");
-        }
+        String envelopeString = documentElement.toStringWithConsume();
+        
         documentElement.close(false);
     }
 }
