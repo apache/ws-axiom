@@ -33,8 +33,6 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
-import org.apache.axiom.om.impl.OMElementEx;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
@@ -65,7 +63,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     protected OMFactoryEx omfactory;
 
     /** Field lastNode */
-    protected OMNode lastNode;
+    protected OMContainerEx target;
 
     // returns the state of completion
 
@@ -234,32 +232,13 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     }
 
     /**
-     * Method createOMText.
-     *
-     * @return Returns OMNode.
-     * @throws OMException
-     */
-    protected OMNode createOMText(int textType) throws OMException {
-        OMNode node;
-        if (lastNode == null) {
-            return null;
-        } else if (!lastNode.isComplete()) {
-            node = createOMText((OMElement) lastNode, textType);
-        } else {
-            node = createOMText(lastNode.getParent(), textType);
-        }
-        return node;
-    }
-
-    /**
      * This method will check whether the text can be optimizable using IS_BINARY flag. If that is
      * set then we try to get the data handler.
      *
-     * @param omContainer
      * @param textType
      * @return omNode
      */
-    private OMNode createOMText(OMContainer omContainer, int textType) {
+    protected OMNode createOMText(int textType) {
         if (dataHandlerReader != null && dataHandlerReader.isBinary()) {
             Object dataHandlerObject;
             if (dataHandlerReader.isDeferred()) {
@@ -271,7 +250,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                     throw new OMException(ex);
                 }
             }
-            OMText text = omfactory.createOMText(omContainer, dataHandlerObject, dataHandlerReader.isOptimized(), true);
+            OMText text = omfactory.createOMText(target, dataHandlerObject, dataHandlerReader.isOptimized(), true);
             String contentID = dataHandlerReader.getContentID();
             if (contentID != null) {
                 text.setContentID(contentID);
@@ -287,18 +266,8 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
                 parserException = ex;
                 throw ex;
             }
-            return omfactory.createOMText(omContainer, text, textType, true);
+            return omfactory.createOMText(target, text, textType, true);
         }
-    }
-
-    /**
-     * Method reset.
-     *
-     * @param node
-     * @throws OMException
-     */
-    public void reset(OMNode node) throws OMException {
-        lastNode = null;
     }
 
     /**
@@ -316,19 +285,15 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
             // Calculate the depth of the element to be discarded. This determines how many
             // END_ELEMENT events we need to consume.
-            int targetDepth = elementLevel;
-            if (!lastNode.isComplete()) {
-                targetDepth--;
-            }
-            OMNode current = lastNode;
+            int targetDepth = elementLevel-1;
+            OMContainerEx current = target;
             while (current != element) {
-                OMContainer parent = current.getParent();
-                if (parent instanceof OMElement) {
-                    current = (OMElement)parent;
+                if (current instanceof OMElement) {
+                    targetDepth--;
+                    current = (OMContainerEx)((OMElement)current).getParent();
                 } else {
                     throw new OMException("Called discard for an element that is not being built by this builder");
                 }
-                targetDepth--;
             }
             
             while (elementLevel > targetDepth) {
@@ -336,45 +301,17 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             }
 
             // Mark nodes as discarded
-            current = lastNode;
+            current = target;
             while (true) {
-                if (!current.isComplete()) {
-                    ((OMContainerEx)current).discarded();
-                }
+                current.discarded();
                 if (current == element) {
                     break;
                 }
-                current = (OMElement)current.getParent();
+                current = (OMContainerEx)((OMElement)current).getParent();
             }
             
-            //at this point we are safely at the end_element event of the element we discarded
-            lastNode = element.getPreviousOMSibling();
-
-            if (lastNode != null) {
-                // if the last node is not an element, we are in trouble because leaf nodes
-                // (such as text) cannot build themselves. worst the lastchild of the
-                // currentparent is still the removed node! we have to correct it
-                OMContainerEx ex = ((OMContainerEx) lastNode.getParent());
-                ex.setLastChild(lastNode);
-                 if (!(lastNode instanceof OMContainerEx)){
-                     ex.buildNext();
-                 }else{
-                    ((OMNodeEx) lastNode).setNextOMSibling(null); 
-                 }
-
-            } else {
-                OMContainer parent = element.getParent();
-                if (parent == null) {
-                    throw new OMException();
-                } else {
-                    ((OMContainerEx) parent).setFirstChild(null);
-                    lastNode = parent instanceof OMDocument ? null : (OMNode)parent;
-                }
-            }
-            
-            ((OMElementEx)element).setParent(null);
-            ((OMElementEx)element).setPreviousOMSibling(null);
-            ((OMElementEx)element).setNextOMSibling(null);
+            target = (OMContainerEx)element.getParent();
+            element.detach();
         } catch (XMLStreamException e) {
             throw new OMException(e);
         } 
@@ -669,10 +606,6 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
     public String getCharsetEncoding() {
         return document.getCharsetEncoding();
-    }
-
-    public OMNode getLastNode() {
-        return this.lastNode;
     }
 
     public void close() {

@@ -607,10 +607,6 @@ public abstract class NodeImpl implements Node {
         if (parentNode == null) {
             throw new OMException("Parent level elements cannot be detached");
         } else {
-            if (!isComplete()) {
-                build();
-            }
-            getNextSibling(); // Make sure that nextSibling is set correctly
             NodeImpl previousSibling = internalGetPreviousSibling();
             NodeImpl nextSibling = internalGetNextSibling();
             if (previousSibling == null) { // This is the first child
@@ -622,9 +618,6 @@ public abstract class NodeImpl implements Node {
                 }
             } else {
                 previousSibling.setNextOMSibling((OMNode)nextSibling);
-                if (nextSibling == null) {
-                    previousSibling.parentNode().setComplete(true);
-                }
             }
             if (nextSibling != null) {
                 nextSibling.setPreviousOMSibling((OMNode)previousSibling);

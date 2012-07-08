@@ -134,7 +134,10 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements IChildNod
             throw new OMException(
                     "Nodes that don't have a parent can not be detached");
         }
-        OMNodeImpl nextSibling = (OMNodeImpl) getNextOMSibling();
+        // Note that we don't need to force creation of the next sibling because the
+        // builder will always add new nodes to the end of list of children of the
+        // document or element being built.
+        OMNodeImpl nextSibling = (OMNodeImpl) getNextOMSiblingIfAvailable();
         if (previousSibling == null) {
             parent.setFirstChild(nextSibling);
         } else {

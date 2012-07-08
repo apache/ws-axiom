@@ -20,15 +20,12 @@
 package org.apache.axiom.soap.impl.builder;
 
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.OMContainerEx;
-import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAP11Constants;
@@ -207,11 +204,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         if (elementLevel == 3 && 
             customBuilderForPayload != null) {
             
-            OMNode parent = lastNode;
-            if (parent != null && parent.isComplete()) {
-                parent = (OMNode) lastNode.getParent();
-            }
-            if (parent instanceof SOAPBody) {
+            if (target instanceof SOAPBody) {
                 newElement = createWithCustomBuilder(customBuilderForPayload,  soapFactory);
             }
         } 
@@ -242,28 +235,11 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         
         OMElement node;
         String elementName = parser.getLocalName();
-        if (lastNode == null) {
+        if (target instanceof OMDocument) {
             node = constructNode(null, elementName, true);
             setSOAPEnvelope(node);
-        } else if (lastNode.isComplete()) {
-            OMContainer parent = lastNode.getParent();
-            if (parent == document) {
-                // If we get here, this means that we found the SOAP envelope, but that it was
-                // preceded by a comment node. Since constructNode will create a new document
-                // based on the SOAP version of the envelope, we simply discard the last node 
-                // and do as if we just encountered the first node in the document.
-                lastNode = null;
-                node = constructNode(null, elementName, true);
-                setSOAPEnvelope(node);
-            } else {
-                node = constructNode((OMElement)parent,
-                                     elementName,
-                                     false);
-            }
         } else {
-            OMContainerEx e = (OMContainerEx) lastNode;
-            node = constructNode((OMElement) lastNode, elementName, false);
-            e.setFirstChild(node);
+            node = constructNode((OMElement)target, elementName, false);
         }
 
         if (log.isDebugEnabled()) {
@@ -435,17 +411,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
     private String getReceiverFaultCode() {
         return envelope.getVersion().getReceiverFaultCode().getLocalPart();
-    }
-
-    public void endElement() {
-        if (lastNode.isComplete()) {
-            OMElement parent = (OMElement) lastNode.getParent();
-            ((OMNodeEx) parent).setComplete(true);
-            lastNode = parent;
-        } else {
-            OMNode e = lastNode;
-            ((OMNodeEx) e).setComplete(true);
-        }
     }
 
     /** Method createDTD. Overriding the default behaviour as a SOAPMessage should not have a DTD. */

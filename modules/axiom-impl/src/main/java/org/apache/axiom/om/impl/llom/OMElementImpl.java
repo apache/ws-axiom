@@ -670,20 +670,10 @@ public class OMElementImpl extends OMNodeImpl
      * @throws OMException
      */
     public OMNode detach() throws OMException {
-        if (isComplete() && !parent.isComplete() && getNextOMSiblingIfAvailable() == null) {
-            // Special case: the node is complete, but the next node has not yet been created.
-            // In this case we want to detach the node without creating the next node because
-            // the builder may already have been closed (there is code in Axis2 that calls
-            // detach in that situation). We use discard for this: in this state, discard
-            // actually won't discard anything, but it will update the lastNode attribute
-            // of the builder.
-            getBuilder().discard(this);
-        } else {
-            if (state == INCOMPLETE) {
-                build();
-            }
-            super.detach();
+        if (state == INCOMPLETE) {
+            build();
         }
+        super.detach();
         return this;
     }
 

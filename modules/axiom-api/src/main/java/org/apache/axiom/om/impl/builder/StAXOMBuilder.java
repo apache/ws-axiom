@@ -20,14 +20,12 @@
 package org.apache.axiom.om.impl.builder;
 
 import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
@@ -44,7 +42,6 @@ import javax.xml.stream.Location;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-
 
 /**
  * StAX based builder that produces a pure XML infoset compliant object model.
@@ -103,6 +100,7 @@ public class StAXOMBuilder extends StAXBuilder {
     public StAXOMBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
         super(ombuilderFactory, parser);
         document = createDocument();
+        target = (OMContainerEx)document;
     }
 
     /**
@@ -123,7 +121,7 @@ public class StAXOMBuilder extends StAXBuilder {
         namespaceURIInterning = false;
         lookAheadToken = -1;
         document = createDocument();
-        lastNode = element;
+        target = (OMContainerEx)element;
         populateOMElement(element);
     }
     
@@ -159,6 +157,7 @@ public class StAXOMBuilder extends StAXBuilder {
         lookAheadToken = -1;
         omfactory = (OMFactoryEx)OMAbstractFactory.getOMFactory();
         document = createDocument();
+        target = (OMContainerEx)document;
     }
 
     /**
@@ -244,14 +243,20 @@ public class StAXOMBuilder extends StAXBuilder {
                 }
                
                 switch (token) {
-                    case XMLStreamConstants.START_ELEMENT:
-                        lastNode = createNextOMElement();
+                    case XMLStreamConstants.START_ELEMENT: {
+                        OMNode node = createNextOMElement();
+                        // If the node was created by a custom builder, then it will be complete;
+                        // in this case, the target doesn't change
+                        if (!node.isComplete()) {
+                            target = (OMContainerEx)node;
+                        }
                         break;
+                    }
                     case XMLStreamConstants.CHARACTERS:
-                        lastNode = createOMText(XMLStreamConstants.CHARACTERS);
+                        createOMText(XMLStreamConstants.CHARACTERS);
                         break;
                     case XMLStreamConstants.CDATA:
-                        lastNode = createOMText(XMLStreamConstants.CDATA);
+                        createOMText(XMLStreamConstants.CDATA);
                         break;
                     case XMLStreamConstants.END_ELEMENT:
                         endElement();
@@ -262,8 +267,8 @@ public class StAXOMBuilder extends StAXBuilder {
                         break;
                     case XMLStreamConstants.SPACE:
                         try {
-                            lastNode = createOMText(XMLStreamConstants.SPACE);
-                            if (lastNode == null) {
+                            OMNode node = createOMText(XMLStreamConstants.SPACE);
+                            if (node == null) {
                                 continue;
                             }
                         } catch (OMHierarchyException ex) {
@@ -274,16 +279,16 @@ public class StAXOMBuilder extends StAXBuilder {
                         }
                         break;
                     case XMLStreamConstants.COMMENT:
-                        lastNode = createComment();
+                        createComment();
                         break;
                     case XMLStreamConstants.DTD:
                         createDTD();
                         break;
                     case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                        lastNode = createPI();
+                        createPI();
                         break;
                     case XMLStreamConstants.ENTITY_REFERENCE:
-                        lastNode = createOMText(XMLStreamConstants.ENTITY_REFERENCE);
+                        createOMText(XMLStreamConstants.ENTITY_REFERENCE);
                         break;
                     default :
                         throw new OMException();
@@ -329,16 +334,6 @@ public class StAXOMBuilder extends StAXBuilder {
             log.debug("Invoking CustomBuilder, " + customBuilder.toString() + 
                       ", to the OMNode for {" + namespace + "}" + localPart);
         }
-        OMContainer parent = null;
-        if (lastNode != null) {
-            if (lastNode.isComplete()) {
-                parent = lastNode.getParent();
-            } else {
-                parent = (OMContainer)lastNode;
-            }
-        } else {
-            parent = document;
-        }
         
         // TODO: dirty hack part 1
         // The custom builder will use addNode to insert the new node into the tree. However,
@@ -346,12 +341,12 @@ public class StAXOMBuilder extends StAXBuilder {
         // build the parent node. We temporarily set complete to true to avoid this.
         // There is really an incompatibility between the contract of addNode and the
         // custom builder API. This should be fixed in Axiom 1.3.
-        ((OMContainerEx)parent).setComplete(true);
+        target.setComplete(true);
         
-        OMNode node = customBuilder.create(namespace, localPart, parent, parser, factory);
+        OMNode node = customBuilder.create(namespace, localPart, target, parser, factory);
         
         // TODO: dirty hack part 2
-        ((OMContainerEx)parent).setComplete(false);
+        target.setComplete(false);
         
         if (log.isDebugEnabled()) {
             if (node != null) {
@@ -454,19 +449,7 @@ public class StAXOMBuilder extends StAXBuilder {
      * @throws OMException
      */
     protected OMNode createOMElement() throws OMException {
-        OMElement node;
-        String elementName = parser.getLocalName();
-        if (lastNode == null) {
-            node = omfactory.createOMElement(elementName, document, this);
-        } else if (lastNode.isComplete()) {
-            node = omfactory.createOMElement(elementName, lastNode.getParent(),
-                                             this);
-        } else {
-            OMContainerEx e = (OMContainerEx) lastNode;
-            node = omfactory.createOMElement(elementName, (OMElement) lastNode,
-                                             this);
-            e.setFirstChild(node);
-        }
+        OMElement node = omfactory.createOMElement(parser.getLocalName(), target, this);
         populateOMElement(node);
         return node;
     }
@@ -478,15 +461,7 @@ public class StAXOMBuilder extends StAXBuilder {
      * @throws OMException
      */
     protected OMNode createComment() throws OMException {
-        OMNode node;
-        if (lastNode == null) {
-            node = omfactory.createOMComment(document, parser.getText(), true);
-        } else if (lastNode.isComplete()) {
-            node = omfactory.createOMComment(lastNode.getParent(), parser.getText(), true);
-        } else {
-            node = omfactory.createOMComment((OMElement) lastNode, parser.getText(), true);
-        }
-        return node;
+        return omfactory.createOMComment(target, parser.getText(), true);
     }
 
     /**
@@ -499,9 +474,7 @@ public class StAXOMBuilder extends StAXBuilder {
         if (!parser.hasText()) {
             return null;
         }
-        String dtdText = getDTDText();
-        lastNode = omfactory.createOMDocType(document, dtdText, true);
-        return lastNode;
+        return omfactory.createOMDocType(target, getDTDText(), true);
     }
     
     /**
@@ -543,32 +516,12 @@ public class StAXOMBuilder extends StAXBuilder {
      * @throws OMException
      */
     protected OMNode createPI() throws OMException {
-        OMNode node;
-        String target = parser.getPITarget();
-        String data = parser.getPIData();
-        if (lastNode == null) {
-            node = omfactory.createOMProcessingInstruction(document, target, data, true);
-        } else if (lastNode.isComplete()) {
-            node = omfactory.createOMProcessingInstruction(lastNode.getParent(), target, data, true);
-        } else if (lastNode instanceof OMText) {
-            node = omfactory.createOMProcessingInstruction(lastNode.getParent(), target, data, true);
-        } else {
-            node = omfactory.createOMProcessingInstruction((OMContainer) lastNode, target, data, true);
-        }
-        return node;
+        return omfactory.createOMProcessingInstruction(target, parser.getPITarget(), parser.getPIData(), true);
     }
 
     protected void endElement() {
-        if (lastNode.isComplete()) {
-            OMNodeEx parent = (OMNodeEx) lastNode.getParent();
-            parent.setComplete(true);
-            lastNode = parent;
-        } else {
-            OMNodeEx e = (OMNodeEx) lastNode;
-            e.setComplete(true);
-        }
-
-        //return lastNode;
+        target.setComplete(true);
+        target = (OMContainerEx)((OMElement)target).getParent();
     }
 
     public OMElement getDocumentElement() {
