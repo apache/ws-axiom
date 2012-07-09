@@ -622,10 +622,6 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
         OMContainerHelper.build(this);
     }
 
-    public final void buildNext() {
-        OMContainerHelper.buildNext(this);
-    }
-
     public final Node getNextSibling() {
         return null;
     }

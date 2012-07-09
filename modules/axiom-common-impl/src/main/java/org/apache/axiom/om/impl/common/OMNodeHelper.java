@@ -35,7 +35,7 @@ public final class OMNodeHelper {
                         throw new NodeUnavailableException();
                     case IParentNode.INCOMPLETE:
                         do {
-                            parent.buildNext();
+                            OMContainerHelper.buildNext(parent);
                         } while (parent.getState() == IParentNode.INCOMPLETE
                                 && (nextSibling = node.getNextOMSiblingIfAvailable()) == null);
                 }

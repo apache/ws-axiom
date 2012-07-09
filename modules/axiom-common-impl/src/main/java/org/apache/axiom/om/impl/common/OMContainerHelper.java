@@ -49,7 +49,7 @@ public final class OMContainerHelper {
         if (builder != null && builder instanceof StAXOMBuilder) {
             if (!container.isComplete()) {
                 if (((StAXOMBuilder) builder).isLookahead()) {
-                    container.buildNext();
+                    buildNext(container);
                 }
             }
         }
@@ -153,8 +153,8 @@ public final class OMContainerHelper {
         }
     }
     
-    public static void buildNext(IContainer container) {
-        OMXMLParserWrapper builder = container.getBuilder();
+    public static void buildNext(IParentNode that) {
+        OMXMLParserWrapper builder = that.getBuilder();
         if (builder != null) {
             if (((StAXOMBuilder)builder).isClosed()) {
                 throw new OMException("The builder has already been closed");
@@ -171,7 +171,7 @@ public final class OMContainerHelper {
     public static OMNode getFirstOMChild(IParentNode that) {
         OMNode firstChild;
         while ((firstChild = that.getFirstOMChildIfAvailable()) == null && !that.isComplete()) {
-            that.buildNext();
+            buildNext(that);
         }
         return firstChild;
     }

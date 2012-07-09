@@ -887,11 +887,6 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.getLastKnownOMChild();
     }
 
-    public void buildNext() {
-        forceExpand();
-        super.buildNext();
-    }
-
     public OMNode detach() throws OMException {
         // detach without expanding the tree
         boolean complete = isComplete();

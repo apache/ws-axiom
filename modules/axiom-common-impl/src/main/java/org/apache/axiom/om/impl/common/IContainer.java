@@ -22,5 +22,17 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMContainerEx;
 
 public interface IContainer extends OMContainerEx, IParentNode {
+    /**
+     * forcefully set the first element in this parent element
+     * @param omNode
+     */
+    public void setFirstChild(OMNode omNode);
+
+    /**
+     * forcefully set the last element in this parent element
+     * @param omNode
+     */
+    public void setLastChild(OMNode omNode);
+    
     OMNode getLastKnownOMChild();
 }

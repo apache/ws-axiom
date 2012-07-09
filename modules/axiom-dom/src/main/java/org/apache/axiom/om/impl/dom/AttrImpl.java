@@ -490,10 +490,6 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         // An attribute node doesn't have a builder
     }
 
-    public void buildNext() {
-        // An attribute node doesn't have a builder
-    }
-    
     public final Node getNextSibling() {
         return null;
     }

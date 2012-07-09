@@ -31,19 +31,5 @@ public interface OMContainerEx extends OMContainer {
 
     void discarded();
     
-    void buildNext();
-
-    /**
-     * forcefully set the first element in this parent element
-     * @param omNode
-     */
-    public void setFirstChild(OMNode omNode);
-
-    /**
-     * forcefully set the last element in this parent element
-     * @param omNode
-     */
-    public void setLastChild(OMNode omNode);
-    
     public void addChild(OMNode omNode, boolean fromBuilder);
 }

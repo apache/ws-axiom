@@ -697,10 +697,6 @@ public class OMElementImpl extends OMNodeImpl
 
     }
 
-    public void buildNext() {
-        OMContainerHelper.buildNext(this);
-    }
-
     public int getState() {
         return state;
     }

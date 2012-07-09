@@ -349,8 +349,4 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IC
     public void build() {
         OMContainerHelper.build(this);
     }
-
-    public void buildNext() {
-        OMContainerHelper.buildNext(this);
-    }
 }

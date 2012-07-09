@@ -1370,10 +1370,6 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, ICh
         OMContainerHelper.build(this);
     }
 
-    public final void buildNext() {
-        OMContainerHelper.buildNext(this);
-    }
-
     public final OMNode getNextOMSibling() throws OMException {
         return OMNodeHelper.getNextOMSibling(this);
     }

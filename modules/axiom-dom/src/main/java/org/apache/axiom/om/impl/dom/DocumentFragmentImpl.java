@@ -112,10 +112,6 @@ public class DocumentFragmentImpl extends RootNode implements
         // A document fragment doesn't have a builder
     }
 
-    public final void buildNext() {
-        // A document fragment doesn't have a builder
-    }
-
     public final Node getNextSibling() {
         return null;
     }

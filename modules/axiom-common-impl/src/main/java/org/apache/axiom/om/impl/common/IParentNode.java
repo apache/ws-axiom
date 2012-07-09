@@ -37,7 +37,6 @@ public interface IParentNode {
     OMXMLParserWrapper getBuilder();
     int getState();
     boolean isComplete();
-    void buildNext();
 
     /**
      * Get the first child if it is available. The child is available if it is complete or
