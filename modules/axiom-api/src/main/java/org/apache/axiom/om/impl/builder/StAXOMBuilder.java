@@ -146,10 +146,7 @@ public class StAXOMBuilder extends StAXBuilder {
      * @param parser
      */
     public StAXOMBuilder(XMLStreamReader parser) {
-        super(parser);
-        omfactory = (OMFactoryEx)OMAbstractFactory.getOMFactory();
-        document = createDocument();
-        target = (OMContainerEx)document;
+        this(OMAbstractFactory.getOMFactory(), parser);
     }
 
     /**
