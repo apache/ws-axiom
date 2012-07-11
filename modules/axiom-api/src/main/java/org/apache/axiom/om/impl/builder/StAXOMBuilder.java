@@ -116,7 +116,6 @@ public class StAXOMBuilder extends StAXBuilder {
                          String characterEncoding) {
         // Use this constructor because the parser is passed the START_DOCUMENT state.
         super(factory, parser, characterEncoding);  
-        document = createDocument();
         target = (OMContainerEx)element;
         populateOMElement(element);
     }
@@ -173,17 +172,9 @@ public class StAXOMBuilder extends StAXBuilder {
         if (charEncoding != null) {
             document.setCharsetEncoding(charEncoding);
         }
-        if (parser.getEventType() == XMLStreamConstants.START_DOCUMENT) {
-            document.setXMLVersion(parser.getVersion());
-            document.setXMLEncoding(parser.getCharacterEncodingScheme());
-            document.setStandalone(parser.isStandalone() ? "yes" : "no");
-        } else {
-            // We allow creating a StAXOMWrapper from a parser in state START_ELEMENT. In that
-            // case, we must not call getVersion or isStandalone since this is forbidden by the
-            // StAX specs. Set some reasonable defaults.
-            document.setXMLVersion("1.0");
-            document.setStandalone("yes");
-        }
+        document.setXMLVersion(parser.getVersion());
+        document.setXMLEncoding(parser.getCharacterEncodingScheme());
+        document.setStandalone(parser.isStandalone() ? "yes" : "no");
         return document;
     }
 
@@ -519,7 +510,7 @@ public class StAXOMBuilder extends StAXBuilder {
     }
 
     public OMElement getDocumentElement(boolean discardDocument) {
-        OMElement element = document.getOMDocumentElement();
+        OMElement element = getDocument().getOMDocumentElement();
         if (discardDocument) {
             OMNodeEx nodeEx = (OMNodeEx)element;
             nodeEx.setParent(null);

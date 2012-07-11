@@ -603,6 +603,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
     }
 
     public OMDocument getDocument() {
+        if (document == null) {
+            throw new UnsupportedOperationException("There is no document linked to this builder");
+        }
         return document;
     }
 
