@@ -80,6 +80,10 @@ public class StAXOMBuilder extends StAXBuilder {
     private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
     
     private boolean doTrace = log.isDebugEnabled();
+    
+    /**
+     * @deprecated
+     */
     private static int nsCount = 0;
 
     // namespaceURI interning
@@ -564,6 +568,9 @@ public class StAXOMBuilder extends StAXBuilder {
         this.doTrace = doDebug;
     }
 
+    /**
+     * @deprecated A builder doesn't need to generate prefixes.
+     */
     protected String createPrefix() {
         return "ns" + nsCount++;
     }
