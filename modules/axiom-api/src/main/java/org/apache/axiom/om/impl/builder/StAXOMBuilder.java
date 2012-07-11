@@ -77,9 +77,8 @@ import java.io.InputStream;
  * them during a call to {@link #next()}.
  */
 public class StAXOMBuilder extends StAXBuilder {
-    /** Field document */
-
     private static final Log log = LogFactory.getLog(StAXOMBuilder.class);
+    
     private boolean doTrace = log.isDebugEnabled();
     private static int nsCount = 0;
 
@@ -87,9 +86,9 @@ public class StAXOMBuilder extends StAXBuilder {
     // default is false because most XMLStreamReader implementations don't do interning
     // due to performance impacts.  Thus a customer should not assume that a namespace
     // on an OMElement is interned.
-    boolean namespaceURIInterning = false;
+    private boolean namespaceURIInterning = false;
     
-    int lookAheadToken = -1;
+    private int lookAheadToken = -1;
     
     /**
      * Constructor StAXOMBuilder.
@@ -117,9 +116,6 @@ public class StAXOMBuilder extends StAXBuilder {
                          String characterEncoding) {
         // Use this constructor because the parser is passed the START_DOCUMENT state.
         super(factory, parser, characterEncoding);  
-        doTrace = log.isDebugEnabled();
-        namespaceURIInterning = false;
-        lookAheadToken = -1;
         document = createDocument();
         target = (OMContainerEx)element;
         populateOMElement(element);
@@ -152,9 +148,6 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     public StAXOMBuilder(XMLStreamReader parser) {
         super(parser);
-        doTrace = log.isDebugEnabled();
-        namespaceURIInterning = false;
-        lookAheadToken = -1;
         omfactory = (OMFactoryEx)OMAbstractFactory.getOMFactory();
         document = createDocument();
         target = (OMContainerEx)document;
@@ -169,13 +162,10 @@ public class StAXOMBuilder extends StAXBuilder {
     }
 
     /**
-     * Init() *must* be called after creating the builder using this constructor.
+     * @deprecated
      */
     public StAXOMBuilder() {
         super();
-        doTrace = log.isDebugEnabled();
-        namespaceURIInterning = false;
-        lookAheadToken = -1;
     }
 
     private OMDocument createDocument() {

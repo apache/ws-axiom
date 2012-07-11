@@ -159,7 +159,9 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         this(OMAbstractFactory.getOMFactory(), parser);
     }
 
-    /** Init() *must* be called after creating the builder using this constructor. */
+    /**
+     * @deprecated
+     */
     protected StAXBuilder() {
     }
 
