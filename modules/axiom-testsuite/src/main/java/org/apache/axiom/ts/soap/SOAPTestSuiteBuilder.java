@@ -99,6 +99,8 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithOMSEUnknownName(metaFactory, spec));
         }
         addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParser(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.builder.TestCommentInEpilog(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.builder.TestCommentInProlog(metaFactory, spec));
         if (supportsBodyElementNameOptimization) {
             addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(metaFactory, spec));
         }

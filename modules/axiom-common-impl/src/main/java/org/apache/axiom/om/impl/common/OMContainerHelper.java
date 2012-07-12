@@ -132,7 +132,7 @@ public final class OMContainerHelper {
         // (it has an independent parser source).
         // So only propogate the incomplete setting if this
         // is a normal OMNode
-        if (!child.isComplete() && 
+        if (!fromBuilder && !child.isComplete() && 
             !(child instanceof OMSourcedElement)) {
             container.setComplete(false);
         }

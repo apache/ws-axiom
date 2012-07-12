@@ -24,6 +24,7 @@ import junit.framework.TestSuite;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.soap.SOAPTestSuiteBuilder;
 import org.apache.axiom.ts.soap.body.TestHasFaultAfterReplace;
+import org.apache.axiom.ts.soap.builder.TestCommentInProlog;
 import org.apache.axiom.ts.soap.factory.TestGetDefaultFaultEnvelope;
 import org.apache.axiom.ts.soap.faultdetail.TestWSCommons202;
 import org.apache.axiom.ts.soap.faulttext.TestSetLang;
@@ -49,6 +50,9 @@ public class SOAPImplementationTest extends TestCase {
         builder.exclude(org.apache.axiom.ts.soap11.faultcode.TestSetValueFromQName.class);
         builder.exclude(org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQName.class);
         builder.exclude(TestSetValueFromQNameWithExistingValue.class);
+        
+        // TODO
+        builder.exclude(TestCommentInProlog.class);
         
         return builder.build();
     }
