@@ -22,6 +22,7 @@ package org.apache.axiom.soap.impl.dom.factory;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
@@ -55,8 +56,8 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
         return new SOAPMessageImpl(builder, this);
     }
 
-    public SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder) {
-        return new SOAPEnvelopeImpl(null, null, builder, this, false);
+    public SOAPEnvelope createSOAPEnvelope(SOAPMessage message, OMXMLParserWrapper builder) {
+        return new SOAPEnvelopeImpl((ParentNode)message, null, builder, this, false);
     }
 
     public SOAPFault createSOAPFault(SOAPBody parent) throws SOAPProcessingException {

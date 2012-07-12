@@ -30,6 +30,7 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -49,7 +50,7 @@ public abstract class NodeImpl implements Node {
     private Hashtable userData; // Will be initialized in setUserData()
 
     /** Factory that created this node */
-    protected final OMFactory factory;
+    protected OMFactory factory;
 
     // data
 
@@ -462,7 +463,10 @@ public abstract class NodeImpl implements Node {
 
     /** Returns the <code>OMFactory</code> that created this node */
     public OMFactory getOMFactory() {
-        return this.factory;
+        if (factory == null) {
+            factory = ((StAXSOAPModelBuilder)getBuilder()).getSOAPFactory();
+        }
+        return factory;
     }
 
 

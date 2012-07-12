@@ -34,6 +34,7 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder;
+import org.apache.axiom.soap.impl.builder.OMMetaFactoryEx;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axiom.util.stax.XMLEventUtils;
 import org.apache.axiom.util.stax.XMLFragmentStreamReader;
@@ -44,7 +45,7 @@ import org.xml.sax.InputSource;
  * Base class for {@link OMMetaFactory} implementations that make use of the standard builders
  * ({@link org.apache.axiom.om.impl.builder.StAXOMBuilder} and its subclasses).
  */
-public abstract class AbstractOMMetaFactory implements OMMetaFactory {
+public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     private static XMLStreamReader createXMLStreamReader(StAXParserConfiguration configuration, InputSource is) {
         try {
             if (is.getByteStream() != null) {

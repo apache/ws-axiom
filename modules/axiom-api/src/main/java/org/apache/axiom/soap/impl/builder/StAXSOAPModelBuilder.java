@@ -20,6 +20,7 @@
 package org.apache.axiom.soap.impl.builder;
 
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -29,7 +30,9 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.builder.CustomBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAP11Constants;
+import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAP12Version;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -64,13 +67,6 @@ import javax.xml.stream.XMLStreamReader;
  * meta factory returned by {@link OMAbstractFactory#getMetaFactory()}.
  */
 public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuilder {
-
-    SOAPMessage soapMessage;
-    /** Field envelope */
-    private SOAPEnvelope envelope;
-    private OMNamespace envelopeNamespace;
-    private String namespaceURI;
-
     /**
      * The meta factory used to get the SOAPFactory implementation when SOAP version detection
      * is enabled. This is only used if <code>soapFactory</code> is <code>null</code>.
@@ -98,8 +94,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
     private SOAPBuilderHelper builderHelper;
 
-    private String parserVersion = null;
-    
     /**
      * Constructor.
      *
@@ -124,7 +118,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             String soapVersion) {
         super(metaFactory.getOMFactory(), parser);
         this.metaFactory = metaFactory;
-        parserVersion = parser.getVersion();
         identifySOAPVersion(soapVersion);
     }
     
@@ -147,9 +140,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     public StAXSOAPModelBuilder(OMMetaFactory metaFactory, XMLStreamReader parser) {
         super(metaFactory.getOMFactory(), parser);
         this.metaFactory = metaFactory;
-        parserVersion = parser.getVersion();
-        SOAPEnvelope soapEnvelope = getSOAPEnvelope();
-        envelopeNamespace = soapEnvelope.getNamespace();
     }
 
     /**
@@ -163,7 +153,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     public StAXSOAPModelBuilder(XMLStreamReader parser, SOAPFactory factory, String soapVersion) {
         super(factory, parser);
         soapFactory = (SOAPFactoryEx)factory;
-        parserVersion = parser.getVersion();
         identifySOAPVersion(soapVersion);
     }
 
@@ -176,7 +165,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                                               SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
         }
 
-        envelopeNamespace = soapEnvelope.getNamespace();
+        OMNamespace envelopeNamespace = soapEnvelope.getNamespace();
 
         if (soapVersionURIFromTransport != null) {
             String namespaceName = envelopeNamespace.getNamespaceURI();
@@ -191,10 +180,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     }
 
     public SOAPEnvelope getSOAPEnvelope() throws OMException {
-        while ((envelope == null) && !done) {
-            next();
-        }
-        return envelope;
+        return (SOAPEnvelope)getDocumentElement();
     }
 
     protected OMNode createNextOMElement() {
@@ -232,16 +218,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
      * @throws OMException
      */
     protected OMNode createOMElement() throws OMException {
-        
-        OMElement node;
-        String elementName = parser.getLocalName();
-        if (target instanceof OMDocument) {
-            node = constructNode(null, elementName, true);
-            setSOAPEnvelope(node);
-        } else {
-            node = constructNode((OMElement)target, elementName, false);
-        }
-
+        OMElement node = constructNode(target, parser.getLocalName());
         if (log.isDebugEnabled()) {
             log.debug("Build the OMElement " + node.getLocalName() +
                     " by the StaxSOAPModelBuilder");
@@ -249,25 +226,17 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         return node;
     }
 
-    protected void setSOAPEnvelope(OMElement node) {
-        soapMessage.setSOAPEnvelope((SOAPEnvelope) node);
-        soapMessage.setXMLVersion(parserVersion);
-        soapMessage.setCharsetEncoding(charEncoding);
-    }
-
     /**
      * Method constructNode
      *
      * @param parent
      * @param elementName
-     * @param isEnvelope
      */
-    protected OMElement constructNode(OMElement parent, String elementName,
-                                      boolean isEnvelope) {
+    protected OMElement constructNode(OMContainer parent, String elementName) {
         OMElement element;
-        if (parent == null) {
+        if (elementLevel == 1) {
 
-            // Now I've found a SOAP Envelope, now create SOAPDocument and SOAPEnvelope here.
+            // Now I've found a SOAP Envelope, now create SOAPEnvelope here.
 
             if (!elementName.equals(SOAPConstants.SOAPENVELOPE_LOCAL_NAME)) {
                 throw new SOAPProcessingException("First Element must contain the local name, "
@@ -277,7 +246,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
             // determine SOAP version and from that determine a proper factory here.
             if (soapFactory == null) {
-                namespaceURI = this.parser.getNamespaceURI();
+                String namespaceURI = this.parser.getNamespaceURI();
                 if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
                     soapFactory = (SOAPFactoryEx)metaFactory.getSOAP12Factory();
                     log.debug("Starting to process SOAP 1.2 message");
@@ -289,23 +258,9 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                             "Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
                                     " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
                 }
-            } else {
-                namespaceURI = soapFactory.getSoapVersionURI();
             }
 
-            // create a SOAPMessage to hold the SOAP envelope and assign the SOAP envelope in that.
-            soapMessage = soapFactory.createSOAPMessage(this);
-            // TODO: this needs to be reviewed; why do we create an OMDocument in StAXOMBuilder and
-            //       then replace it here
-            OMDocument orgDocument = this.document;
-            soapMessage.setXMLEncoding(orgDocument.getXMLEncoding());
-            this.document = soapMessage;
-            if (charEncoding != null) {
-                document.setCharsetEncoding(charEncoding);
-            }
-
-            envelope = soapFactory.createSOAPEnvelope(this);
-            element = envelope;
+            element = soapFactory.createSOAPEnvelope((SOAPMessage)parent, this);
             processNamespaceData(element, true);
             // fill in the attributes
             processAttributes(element);
@@ -314,9 +269,9 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             // Must be in the right namespace regardless
             String elementNS = parser.getNamespaceURI();
 
-            if (!(namespaceURI.equals(elementNS))) {
+            if (!(soapFactory.getSoapVersionURI().equals(elementNS))) {
                 if (!bodyPresent ||
-                        !SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
+                        soapFactory.getSOAPVersion() != SOAP11Version.getSingleton()) {
                     throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
                             + elementNS + "}" + elementName);
                 }
@@ -360,7 +315,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             }
         } else if ((elementLevel == 3)
                 &&
-                parent.getLocalName().equals(SOAPConstants.HEADER_LOCAL_NAME)) {
+                ((OMElement)parent).getLocalName().equals(SOAPConstants.HEADER_LOCAL_NAME)) {
 
             // this is a headerblock
             try {
@@ -375,7 +330,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             processAttributes(element);
 
         } else if ((elementLevel == 3) &&
-                parent.getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME) &&
+                ((OMElement)parent).getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME) &&
                 elementName.equals(SOAPConstants.BODY_FAULT_LOCAL_NAME)) {
             // this is a headerblock
             element = soapFactory.createSOAPFault((SOAPBody) parent, this);
@@ -384,16 +339,14 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
 
             processingFault = true;
-            if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI
-                    .equals(envelopeNamespace.getNamespaceURI())) {
-                builderHelper = new SOAP12BuilderHelper(this);
-            } else if (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI
-                    .equals(envelopeNamespace.getNamespaceURI())) {
-                builderHelper = new SOAP11BuilderHelper(this);
+            if (soapFactory.getSOAPVersion() == SOAP12Version.getSingleton()) {
+                builderHelper = new SOAP12BuilderHelper(this, soapFactory);
+            } else if (soapFactory.getSOAPVersion() == SOAP11Version.getSingleton()) {
+                builderHelper = new SOAP11BuilderHelper(this, soapFactory);
             }
 
         } else if (elementLevel > 3 && processingFault) {
-            element = builderHelper.handleEvent(parser, parent, elementLevel);
+            element = builderHelper.handleEvent(parser, (OMElement)parent, elementLevel);
         } else {
             // this is neither of above. Just create an element
             element = soapFactory.createOMElement(elementName, parent,
@@ -406,11 +359,19 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     }
 
     private String getSenderFaultCode() {
-        return envelope.getVersion().getSenderFaultCode().getLocalPart();
+        return getSOAPEnvelope().getVersion().getSenderFaultCode().getLocalPart();
     }
 
     private String getReceiverFaultCode() {
-        return envelope.getVersion().getReceiverFaultCode().getLocalPart();
+        return getSOAPEnvelope().getVersion().getReceiverFaultCode().getLocalPart();
+    }
+
+    protected OMDocument createDocument() {
+        if (soapFactory != null) {
+            return soapFactory.createSOAPMessage(this);
+        } else {
+            return ((OMMetaFactoryEx)metaFactory).createSOAPMessage(this);
+        }
     }
 
     /** Method createDTD. Overriding the default behaviour as a SOAPMessage should not have a DTD. */
@@ -421,15 +382,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     /** Method createPI. Overriding the default behaviour as a SOAP Message should not have a PI. */
     protected OMNode createPI() throws OMException {
         throw new OMException("SOAP message MUST NOT contain Processing Instructions(PI)");
-    }
-
-    /**
-     * Method getDocumentElement.
-     *
-     * @return Returns OMElement.
-     */
-    public OMElement getDocumentElement() {
-        return envelope != null ? envelope : getSOAPEnvelope();
     }
 
     // Necessary to allow SOAPBuilderHelper to access this method
@@ -469,7 +421,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 */
 
     public OMNamespace getEnvelopeNamespace() {
-        return envelopeNamespace;
+        return getSOAPEnvelope().getNamespace();
     }
 
     public boolean isProcessingDetailElements() {
@@ -481,15 +433,13 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     }
 
     public SOAPMessage getSoapMessage() {
-        return soapMessage;
+        return (SOAPMessage)getDocument();
     }
 
-    public OMDocument getDocument() {
-        return this.soapMessage;
-    }
-
-    /** @return Returns the soapFactory. */
-    protected SOAPFactoryEx getSoapFactory() {
+    public SOAPFactory getSOAPFactory() {
+        if (soapFactory == null) {
+            getSOAPEnvelope();
+        }
         return soapFactory;
     }
 }

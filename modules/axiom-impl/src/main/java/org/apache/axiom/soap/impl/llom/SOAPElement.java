@@ -55,7 +55,7 @@ public abstract class SOAPElement extends OMElementImpl {
     }
 
 
-    protected SOAPElement(OMElement parent,
+    protected SOAPElement(OMContainer parent,
                           String localName,
                           OMXMLParserWrapper builder,
                           SOAPFactory factory) {

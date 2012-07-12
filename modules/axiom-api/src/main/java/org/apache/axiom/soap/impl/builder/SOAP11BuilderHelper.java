@@ -29,13 +29,11 @@ import org.w3c.dom.Element;
 import javax.xml.stream.XMLStreamReader;
 
 public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Constants {
-    private SOAPFactoryEx factory;
     private boolean faultcodePresent = false;
     private boolean faultstringPresent = false;
 
-    public SOAP11BuilderHelper(StAXSOAPModelBuilder builder) {
-        super(builder);
-        factory = builder.getSoapFactory();
+    public SOAP11BuilderHelper(StAXSOAPModelBuilder builder, SOAPFactoryEx factory) {
+        super(builder, factory);
     }
 
     public OMElement handleEvent(XMLStreamReader parser,

@@ -102,8 +102,6 @@ public class StAXOMBuilder extends StAXBuilder {
      */
     public StAXOMBuilder(OMFactory ombuilderFactory, XMLStreamReader parser) {
         super(ombuilderFactory, parser);
-        document = createDocument();
-        target = (OMContainerEx)document;
     }
 
     /**
@@ -168,15 +166,8 @@ public class StAXOMBuilder extends StAXBuilder {
         super();
     }
 
-    private OMDocument createDocument() {
-        OMDocument document = omfactory.createOMDocument(this);
-        if (charEncoding != null) {
-            document.setCharsetEncoding(charEncoding);
-        }
-        document.setXMLVersion(parser.getVersion());
-        document.setXMLEncoding(parser.getCharacterEncodingScheme());
-        document.setStandalone(parser.isStandalone() ? "yes" : "no");
-        return document;
+    protected OMDocument createDocument() {
+        return omfactory.createOMDocument(this);
     }
 
     /**

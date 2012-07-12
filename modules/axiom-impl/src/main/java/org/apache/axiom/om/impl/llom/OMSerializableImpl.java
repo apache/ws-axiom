@@ -34,19 +34,23 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public abstract class OMSerializableImpl implements OMSerializable {
     private static final Log log = LogFactory.getLog(OMSerializableImpl.class);
     
-    protected final OMFactory factory;
+    protected OMFactory factory;
 
     public OMSerializableImpl(OMFactory factory) {
         this.factory = factory;
     }
     
     public OMFactory getOMFactory() {
+        if (factory == null) {
+            factory = ((StAXSOAPModelBuilder)getBuilder()).getSOAPFactory();
+        }
         return factory;
     }
 

@@ -41,6 +41,7 @@ import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axiom.soap.SOAPMessage;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
@@ -56,11 +57,12 @@ public class SOAPEnvelopeImpl extends SOAPElement
 
     /**
      * Constructor
+     * @param message
      * @param builder the OMXMLParserWrapper building this envelope
      * @param factory the SOAPFactory building this envelope
      */
-    public SOAPEnvelopeImpl(OMXMLParserWrapper builder, SOAPFactory factory) {
-        super(null, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, builder, factory);
+    public SOAPEnvelopeImpl(SOAPMessage message, OMXMLParserWrapper builder, SOAPFactory factory) {
+        super(message, SOAPConstants.SOAPENVELOPE_LOCAL_NAME, builder, factory);
     }
 
     /**

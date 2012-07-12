@@ -602,9 +602,22 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         throw new UnsupportedOperationException();
     }
 
+    protected abstract OMDocument createDocument();
+    
     public OMDocument getDocument() {
         if (document == null) {
-            throw new UnsupportedOperationException("There is no document linked to this builder");
+            if (parser.getEventType() == XMLStreamReader.START_DOCUMENT) {
+                document = createDocument();
+                if (charEncoding != null) {
+                    document.setCharsetEncoding(charEncoding);
+                }
+                document.setXMLVersion(parser.getVersion());
+                document.setXMLEncoding(parser.getCharacterEncodingScheme());
+                document.setStandalone(parser.isStandalone() ? "yes" : "no");
+                target = (OMContainerEx)document;
+            } else {
+                throw new UnsupportedOperationException("There is no document linked to this builder");
+            }
         }
         return document;
     }
