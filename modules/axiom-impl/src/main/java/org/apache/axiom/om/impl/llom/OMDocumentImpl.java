@@ -88,6 +88,21 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IC
         this.builder = parserWrapper;
     }
 
+    /**
+     * Create the <code>OMDoucment</code> with the factory and set the given <code>OMElement</code>
+     * as the document element
+     *
+     * @param documentElement
+     * @param parserWrapper
+     * @param factory
+     */
+    public OMDocumentImpl(OMElement documentElement, OMXMLParserWrapper parserWrapper,
+                          OMFactory factory) {
+        super(factory);
+        this.builder = parserWrapper;
+        setOMDocumentElement(documentElement);
+    }
+
     public OMXMLParserWrapper getBuilder() {
         return builder;
     }

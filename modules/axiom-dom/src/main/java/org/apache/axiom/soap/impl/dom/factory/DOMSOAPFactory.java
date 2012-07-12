@@ -55,6 +55,10 @@ public abstract class DOMSOAPFactory extends OMDOMFactory implements SOAPFactory
         return new SOAPMessageImpl(builder, this);
     }
 
+    public SOAPMessage createSOAPMessage(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper) {
+        return new SOAPMessageImpl(envelope, parserWrapper, this);
+    }
+
     public SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder) {
         return new SOAPEnvelopeImpl(null, null, builder, this, false);
     }

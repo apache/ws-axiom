@@ -38,6 +38,10 @@ public class SOAPMessageImpl extends OMDocumentImpl implements SOAPMessage {
         super(factory);
     }
 
+    public SOAPMessageImpl(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper, SOAPFactory factory) {
+        super(envelope, parserWrapper, factory);
+    }
+
     public SOAPMessageImpl(OMXMLParserWrapper parserWrapper, SOAPFactory factory) {
         super(parserWrapper, factory);
     }
