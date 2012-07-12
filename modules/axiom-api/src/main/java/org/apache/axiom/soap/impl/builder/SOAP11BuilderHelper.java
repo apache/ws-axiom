@@ -92,15 +92,15 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
             }
 
             if (parentTagName.equals(SOAP_FAULT_CODE_LOCAL_NAME)) {
-                throw new OMBuilderException(
+                throw new SOAPProcessingException(
                         "faultcode element should not have children");
             } else if (parentTagName.equals(
                     SOAP_FAULT_STRING_LOCAL_NAME)) {
-                throw new OMBuilderException(
+                throw new SOAPProcessingException(
                         "faultstring element should not have children");
             } else if (parentTagName.equals(
                     SOAP_FAULT_ACTOR_LOCAL_NAME)) {
-                throw new OMBuilderException(
+                throw new SOAPProcessingException(
                         "faultactor element should not have children");
             } else {
                 element =
