@@ -185,6 +185,8 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.headerblock.TestWrongParent1(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestWrongParent2(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestWrongParent3(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.message.TestGetCharsetEncodingWithParser(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.message.TestGetOMFactoryWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.xpath.TestXPathAppliedToSOAPEnvelope(metaFactory, spec, true));
         addTest(new org.apache.axiom.ts.soap.xpath.TestXPathAppliedToSOAPEnvelope(metaFactory, spec, false));
     }
