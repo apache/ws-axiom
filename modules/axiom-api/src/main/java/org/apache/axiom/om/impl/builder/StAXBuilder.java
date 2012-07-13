@@ -604,20 +604,23 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
 
     protected abstract OMDocument createDocument();
     
-    public OMDocument getDocument() {
-        if (document == null) {
-            if (parser.getEventType() == XMLStreamReader.START_DOCUMENT) {
-                document = createDocument();
-                if (charEncoding != null) {
-                    document.setCharsetEncoding(charEncoding);
-                }
-                document.setXMLVersion(parser.getVersion());
-                document.setXMLEncoding(parser.getCharacterEncodingScheme());
-                document.setStandalone(parser.isStandalone() ? "yes" : "no");
-                target = (OMContainerEx)document;
-            } else {
-                throw new UnsupportedOperationException("There is no document linked to this builder");
+    protected void createDocumentIfNecessary() {
+        if (document == null && parser.getEventType() == XMLStreamReader.START_DOCUMENT) {
+            document = createDocument();
+            if (charEncoding != null) {
+                document.setCharsetEncoding(charEncoding);
             }
+            document.setXMLVersion(parser.getVersion());
+            document.setXMLEncoding(parser.getCharacterEncodingScheme());
+            document.setStandalone(parser.isStandalone() ? "yes" : "no");
+            target = (OMContainerEx)document;
+        }
+    }
+    
+    public OMDocument getDocument() {
+        createDocumentIfNecessary();
+        if (document == null) {
+            throw new UnsupportedOperationException("There is no document linked to this builder");
         }
         return document;
     }

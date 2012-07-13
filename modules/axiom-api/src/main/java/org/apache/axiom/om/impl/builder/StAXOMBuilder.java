@@ -183,6 +183,7 @@ public class StAXOMBuilder extends StAXBuilder {
                 if (done) {
                     throw new OMException();
                 }
+                createDocumentIfNecessary();
                 int token = parserNext();
                 if (!cache) {
                     return token;
