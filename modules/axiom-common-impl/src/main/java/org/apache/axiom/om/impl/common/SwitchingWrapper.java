@@ -242,8 +242,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             returnStr = parser.getNamespaceURI();
         } else {
             if ((currentEvent == START_ELEMENT)
-                    || (currentEvent == END_ELEMENT)
-                    || (currentEvent == NAMESPACE)) {
+                    || (currentEvent == END_ELEMENT)) {
                 OMNamespace ns = ((OMElement) lastNode).getNamespace();
                 if (ns == null) {
                     returnStr = null;
@@ -520,8 +519,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getNamespaceURI(i);
         } else {
-            if (isStartElement() || isEndElement()
-                    || (currentEvent == NAMESPACE)) {
+            if (isStartElement() || isEndElement()) {
                 loadNamespaces();
                 returnString = namespaces[i].getNamespaceURI();
             }
@@ -551,8 +549,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getNamespacePrefix(i);
         } else {
-            if (isStartElement() || isEndElement()
-                    || (currentEvent == NAMESPACE)) {
+            if (isStartElement() || isEndElement()) {
                 loadNamespaces();
                 String prefix = namespaces[i].getPrefix();
                 returnString = prefix == null || prefix.length() == 0 ? null : prefix; 
@@ -569,8 +566,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getNamespaceCount();
         } else {
-            if (isStartElement() || isEndElement()
-                    || (currentEvent == NAMESPACE)) {
+            if (isStartElement() || isEndElement()) {
                 loadNamespaces();
                 return namespaceCount;
             } else {
@@ -588,7 +584,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.isAttributeSpecified(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 // The Axiom object model doesn't store this information,
                 // but returning true is a reasonable default.
                 return true;
@@ -609,7 +605,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getAttributeValue(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 returnString = attributes[i].getAttributeValue();
             } else {
@@ -630,7 +626,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getAttributeType(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 returnString = attributes[i].getAttributeType();
             } else {
@@ -651,7 +647,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getAttributePrefix(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 OMAttribute attrib = attributes[i];
                 if (attrib != null) {
@@ -678,7 +674,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getAttributeLocalName(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 returnString = attributes[i].getLocalName();
             } else {
@@ -699,7 +695,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getAttributeNamespace(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 OMAttribute attrib = attributes[i];
                 if (attrib != null) {
@@ -726,7 +722,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnQName = parser.getAttributeName(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 returnQName = attributes[i].getQName();
             } else {
@@ -746,7 +742,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnCount = parser.getAttributeCount();
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 returnCount = attributeCount;
             } else {
@@ -772,7 +768,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getAttributeValue(s, s1);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 QName qname = new QName(s, s1);
                 OMAttribute attrib = ((OMElement) lastNode).getAttribute(qname);
                 if (attrib != null) {
@@ -873,8 +869,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getNamespaceURI(prefix);
         } else {
-            if (isStartElement() || isEndElement()
-                    || (currentEvent == NAMESPACE)) {
+            if (isStartElement() || isEndElement()) {
 
                 if (lastNode instanceof OMElement) {
                     OMNamespace namespaceURI =
