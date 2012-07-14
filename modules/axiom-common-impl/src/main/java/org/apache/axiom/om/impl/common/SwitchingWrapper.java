@@ -225,7 +225,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                     return null;
                 } else {
                     String prefix = ns.getPrefix();
-                    return prefix == null || prefix.length() == 0 ? null : prefix; 
+                    return prefix.length() == 0 ? null : prefix; 
                 }
             } else {
                 throw new IllegalStateException();
@@ -242,8 +242,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             return parser.getNamespaceURI();
         } else {
             if ((currentEvent == START_ELEMENT)
-                    || (currentEvent == END_ELEMENT)
-                    || (currentEvent == NAMESPACE)) {
+                    || (currentEvent == END_ELEMENT)) {
                 OMNamespace ns = ((OMElement) lastNode).getNamespace();
                 if (ns == null) {
                     return null;
@@ -298,7 +297,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } else {
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)) {
-                return getQName((OMElement) lastNode);
+                return ((OMElement)lastNode).getQName();
             } else {
                 throw new IllegalStateException();
             }
@@ -519,8 +518,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getNamespaceURI(i);
         } else {
-            if (isStartElement() || isEndElement()
-                    || (currentEvent == NAMESPACE)) {
+            if (isStartElement() || isEndElement()) {
                 loadNamespaces();
                 returnString = namespaces[i].getNamespaceURI();
             }
@@ -550,11 +548,10 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getNamespacePrefix(i);
         } else {
-            if (isStartElement() || isEndElement()
-                    || (currentEvent == NAMESPACE)) {
+            if (isStartElement() || isEndElement()) {
                 loadNamespaces();
                 String prefix = namespaces[i].getPrefix();
-                returnString = prefix == null || prefix.length() == 0 ? null : prefix; 
+                returnString = prefix.length() == 0 ? null : prefix; 
             }
         }
         return returnString;
@@ -568,8 +565,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getNamespaceCount();
         } else {
-            if (isStartElement() || isEndElement()
-                    || (currentEvent == NAMESPACE)) {
+            if (isStartElement() || isEndElement()) {
                 loadNamespaces();
                 return namespaceCount;
             } else {
@@ -587,7 +583,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.isAttributeSpecified(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 // The Axiom object model doesn't store this information,
                 // but returning true is a reasonable default.
                 return true;
@@ -608,7 +604,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getAttributeValue(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 returnString = attributes[i].getAttributeValue();
             } else {
@@ -629,7 +625,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getAttributeType(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 returnString = attributes[i].getAttributeType();
             } else {
@@ -650,7 +646,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getAttributePrefix(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 OMAttribute attrib = attributes[i];
                 if (attrib != null) {
@@ -677,7 +673,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getAttributeLocalName(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 returnString = attributes[i].getLocalName();
             } else {
@@ -698,7 +694,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getAttributeNamespace(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 OMAttribute attrib = attributes[i];
                 if (attrib != null) {
@@ -725,7 +721,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnQName = parser.getAttributeName(i);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 returnQName = attributes[i].getQName();
             } else {
@@ -745,7 +741,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnCount = parser.getAttributeCount();
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 loadAttributes();
                 returnCount = attributeCount;
             } else {
@@ -771,7 +767,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getAttributeValue(s, s1);
         } else {
-            if (isStartElement() || (currentEvent == ATTRIBUTE)) {
+            if (isStartElement()) {
                 QName qname = new QName(s, s1);
                 OMAttribute attrib = ((OMElement) lastNode).getAttribute(qname);
                 if (attrib != null) {
@@ -872,8 +868,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             returnString = parser.getNamespaceURI(prefix);
         } else {
-            if (isStartElement() || isEndElement()
-                    || (currentEvent == NAMESPACE)) {
+            if (isStartElement() || isEndElement()) {
 
                 if (lastNode instanceof OMElement) {
                     OMNamespace namespaceURI =
@@ -1420,30 +1415,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * Other helper methods
      * ####################################################################
      */
-
-    /**
-     * Helper method getQName.
-     *
-     * @param element
-     * @return Returns QName.
-     */
-    private QName getQName(OMElement element) {
-        QName returnName;
-        OMNamespace ns = element.getNamespace();
-        String localPart = element.getLocalName();
-        if (ns != null) {
-            String prefix = ns.getPrefix();
-            String uri = ns.getNamespaceURI();
-            if ((prefix == null) || prefix.equals("")) {
-                returnName = new QName(uri, localPart);
-            } else {
-                returnName = new QName(uri, localPart, prefix);
-            }
-        } else {
-            returnName = new QName(localPart);
-        }
-        return returnName;
-    }
 
     private void setParser(XMLStreamReader parser) {
         this.parser = parser;
