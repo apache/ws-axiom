@@ -16,35 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.axiom.ts.soap.builder;
 
-import org.apache.axiom.om.AbstractTestCase;
+import java.io.StringReader;
+
+import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPProcessingException;
-import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
-public class BadInputTest extends AxiomTestCase {
-    private final String file;
-
-    public BadInputTest(OMMetaFactory metaFactory, String file) {
-        super(metaFactory);
-        this.file = file;
-        addTestProperty("file", file);
+/**
+ * Tests that the SOAP builder creates {@link OMComment} nodes for comments appearing after the
+ * document element.
+ */
+public class TestCommentInEpilog extends SOAPTestCase {
+    public TestCommentInEpilog(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {
-        try {
-            SOAPEnvelope soapEnvelope =
-                    OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                            AbstractTestCase.getTestResource("badsoap/" + file), null)
-                            .getSOAPEnvelope();
-            OMTestUtils.walkThrough(soapEnvelope);
-            fail("this must failed gracefully with SOAPProcessingException");
-        } catch (SOAPProcessingException e) {
-            return;
-        }
+        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
+                new StringReader(soapFactory.getDefaultEnvelope() + "<!--comment-->")).getSOAPEnvelope();
+        OMNode sibling = envelope.getNextOMSibling();
+        assertTrue(sibling instanceof OMComment);
     }
 }

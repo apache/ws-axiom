@@ -34,62 +34,28 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public abstract class OMSerializableImpl implements OMSerializable {
     private static final Log log = LogFactory.getLog(OMSerializableImpl.class);
     
-    protected final OMFactory factory;
+    protected OMFactory factory;
 
     public OMSerializableImpl(OMFactory factory) {
         this.factory = factory;
     }
     
     public OMFactory getOMFactory() {
+        if (factory == null) {
+            factory = ((StAXSOAPModelBuilder)getBuilder()).getSOAPFactory();
+        }
         return factory;
     }
 
     public abstract OMXMLParserWrapper getBuilder();
     
-    /**
-     * Parses this node and builds the object structure in memory. However a node, created
-     * programmatically, will have done set to true by default and this will cause populateyourself
-     * not to work properly!
-     *
-     * @throws OMException
-     */
-    public void build() throws OMException {
-        OMXMLParserWrapper builder = getBuilder();
-        if (builder != null && builder.isCompleted()) {
-            log.debug("Builder is already complete.");
-        }
-        while (!isComplete()) {
-
-            builder.next();    
-            if (builder.isCompleted() && !isComplete()) {
-                log.debug("Builder is complete.  Setting OMObject to complete.");
-                setComplete(true);
-            }
-        }
-    }
-    
-    /** Forces the parser to proceed, if parser has not yet finished with the XML input. */
-    public void buildNext() {
-        OMXMLParserWrapper builder = getBuilder();
-        if (builder != null) {
-            if (((StAXOMBuilder)builder).isClosed()) {
-                throw new OMException("The builder has already been closed");
-            } else if (!builder.isCompleted()) {
-                builder.next();
-            } else {
-                // If the builder is suddenly complete, but the completion status of the node
-                // doesn't change, then this means that we built the wrong nodes
-                throw new IllegalStateException("Builder is already complete");
-            }         
-        }
-    }
-
     public void close(boolean build) {
         OMXMLParserWrapper builder = getBuilder();
         if (build) {

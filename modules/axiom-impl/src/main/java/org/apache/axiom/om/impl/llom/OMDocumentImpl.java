@@ -27,7 +27,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
@@ -46,10 +46,10 @@ import javax.xml.transform.sax.SAXSource;
 import java.util.Iterator;
 
 /** Class OMDocumentImpl */
-public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OMContainerEx {
+public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IContainer {
     protected OMXMLParserWrapper builder;
 
-    protected boolean done;
+    protected int state;
 
     /** Field firstChild */
     protected OMNode firstChild;
@@ -74,7 +74,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
      */
     public OMDocumentImpl(OMFactory factory) {
         super(factory);
-        this.done = true;
+        state = COMPLETE;
     }
 
     /**
@@ -86,21 +86,6 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
     public OMDocumentImpl(OMXMLParserWrapper parserWrapper, OMFactory factory) {
         super(factory);
         this.builder = parserWrapper;
-    }
-
-    /**
-     * Create the <code>OMDoucment</code> with the factory and set the given <code>OMElement</code>
-     * as the document element
-     *
-     * @param documentElement
-     * @param parserWrapper
-     * @param factory
-     */
-    public OMDocumentImpl(OMElement documentElement, OMXMLParserWrapper parserWrapper,
-                          OMFactory factory) {
-        super(factory);
-        this.builder = parserWrapper;
-        setOMDocumentElement(documentElement);
     }
 
     public OMXMLParserWrapper getBuilder() {
@@ -136,8 +121,12 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
         }
     }
 
+    public int getState() {
+        return state;
+    }
+
     public boolean isComplete() {
-        return done;
+        return state == COMPLETE;
     }
 
     /**
@@ -145,8 +134,12 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
      *
      * @param state
      */
-    public void setComplete(boolean state) {
-        this.done = state;
+    public void setComplete(boolean complete) {
+        state = complete ? COMPLETE : INCOMPLETE;
+    }
+
+    public void discarded() {
+        state = DISCARDED;
     }
 
     public void addChild(OMNode child) {
@@ -203,10 +196,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
      * @return Returns first om child.
      */
     public OMNode getFirstOMChild() {
-        while ((firstChild == null) && !done) {
-            buildNext();
-        }
-        return firstChild;
+        return OMContainerHelper.getFirstOMChild(this);
     }
 
     public OMNode getFirstOMChildIfAvailable() {
@@ -325,7 +315,7 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
     }
 
     void notifyChildComplete() {
-        if (!this.done && builder == null) {
+        if (state == INCOMPLETE && builder == null) {
             Iterator iterator = getChildren();
             while (iterator.hasNext()) {
                 OMNode node = (OMNode) iterator.next();
@@ -339,5 +329,9 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, OM
     
     public SAXSource getSAXSource(boolean cache) {
         return new OMSource(this);
+    }
+
+    public void build() {
+        OMContainerHelper.build(this);
     }
 }

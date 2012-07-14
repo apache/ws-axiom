@@ -20,6 +20,7 @@ package org.apache.axiom.ts.om.node;
 
 import java.io.StringReader;
 
+import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
@@ -40,9 +41,8 @@ public class TestGetNextOMSiblingAfterDiscard extends AxiomTestCase {
         element.discard();
         try {
             child.getNextOMSibling();
-            fail("Expected OMException");
-        } catch (Exception ex) {
-            // TODO: we should get an OMException here; right now we get an IllegalStateException
+            fail("Expected NodeUnavailableException");
+        } catch (NodeUnavailableException ex) {
             // Expected
         }
     }

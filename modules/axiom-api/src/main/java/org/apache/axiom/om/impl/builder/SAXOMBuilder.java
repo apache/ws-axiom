@@ -77,16 +77,6 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, OMXM
     }
     
     private void addNode(OMNode node) {
-        if (lastNode != null) {
-            if (lastNode.isComplete()) {
-                ((OMNodeEx) lastNode).setNextOMSibling(node);
-                ((OMNodeEx) node).setPreviousOMSibling(lastNode);
-            } else {
-                ((OMContainerEx) lastNode).setFirstChild(node);
-            }
-        } else if (document != null) {
-            ((OMContainerEx)document).setFirstChild(node);
-        }
         if (root == null && node instanceof OMElement) {
             root = (OMElement)node;
         }

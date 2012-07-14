@@ -22,15 +22,16 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMContainerEx;
+import org.apache.axiom.om.impl.common.IContainer;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+// TODO: we should not implement IContainer here
 public class DocumentFragmentImpl extends RootNode implements
-        DocumentFragment, OMContainerEx {
+        DocumentFragment, IContainer {
 
     private ParentNode ownerNode;
     
@@ -89,6 +90,10 @@ public class DocumentFragmentImpl extends RootNode implements
         return null;
     }
 
+    public final int getState() {
+        return COMPLETE;
+    }
+
     public final boolean isComplete() {
         return true;
     }
@@ -97,5 +102,17 @@ public class DocumentFragmentImpl extends RootNode implements
         if (state != true) {
             throw new IllegalStateException();
         }
+    }
+
+    public final void discarded() {
+        throw new UnsupportedOperationException();
+    }
+
+    public final void build() {
+        // A document fragment doesn't have a builder
+    }
+
+    public final Node getNextSibling() {
+        return null;
     }
 }

@@ -35,7 +35,6 @@ import java.util.Vector;
 
 public class SOAP12BuilderHelper extends SOAPBuilderHelper {
 
-    private SOAPFactoryEx factory;
     private boolean codePresent = false;
     private boolean reasonPresent = false;
     private boolean nodePresent = false;
@@ -50,9 +49,8 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
     private boolean reasonProcessing = false;
     private Vector detailElementNames;
 
-    public SOAP12BuilderHelper(StAXSOAPModelBuilder builder) {
-        super(builder);
-        factory = builder.getSoapFactory();
+    public SOAP12BuilderHelper(StAXSOAPModelBuilder builder, SOAPFactoryEx factory) {
+        super(builder, factory);
     }
 
     public OMElement handleEvent(XMLStreamReader parser,

@@ -16,35 +16,33 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.om.builder;
 
-package org.apache.axiom.ts.soap.builder;
+import java.io.StringReader;
 
-import org.apache.axiom.om.AbstractTestCase;
+import javax.xml.stream.XMLStreamReader;
+
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPProcessingException;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
 
-public class BadInputTest extends AxiomTestCase {
-    private final String file;
-
-    public BadInputTest(OMMetaFactory metaFactory, String file) {
+/**
+ * Tests that the builder works correctly if {@link OMXMLParserWrapper#next()} is called before
+ * {@link OMXMLParserWrapper#getDocumentElement()}.
+ */
+public class TestNextBeforeGetDocumentElement extends AxiomTestCase {
+    public TestNextBeforeGetDocumentElement(OMMetaFactory metaFactory) {
         super(metaFactory);
-        this.file = file;
-        addTestProperty("file", file);
     }
 
     protected void runTest() throws Throwable {
-        try {
-            SOAPEnvelope soapEnvelope =
-                    OMXMLBuilderFactory.createSOAPModelBuilder(metaFactory,
-                            AbstractTestCase.getTestResource("badsoap/" + file), null)
-                            .getSOAPEnvelope();
-            OMTestUtils.walkThrough(soapEnvelope);
-            fail("this must failed gracefully with SOAPProcessingException");
-        } catch (SOAPProcessingException e) {
-            return;
-        }
+        OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
+                new StringReader("<root>text</root>"));
+        assertEquals(XMLStreamReader.START_ELEMENT, builder.next());
+        assertEquals(XMLStreamReader.CHARACTERS, builder.next());
+        OMElement element = builder.getDocumentElement();
+        assertEquals("root", element.getLocalName());
     }
 }

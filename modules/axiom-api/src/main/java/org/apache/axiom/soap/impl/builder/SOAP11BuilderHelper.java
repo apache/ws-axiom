@@ -29,13 +29,11 @@ import org.w3c.dom.Element;
 import javax.xml.stream.XMLStreamReader;
 
 public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Constants {
-    private SOAPFactoryEx factory;
     private boolean faultcodePresent = false;
     private boolean faultstringPresent = false;
 
-    public SOAP11BuilderHelper(StAXSOAPModelBuilder builder) {
-        super(builder);
-        factory = builder.getSoapFactory();
+    public SOAP11BuilderHelper(StAXSOAPModelBuilder builder, SOAPFactoryEx factory) {
+        super(builder, factory);
     }
 
     public OMElement handleEvent(XMLStreamReader parser,
@@ -92,15 +90,15 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
             }
 
             if (parentTagName.equals(SOAP_FAULT_CODE_LOCAL_NAME)) {
-                throw new OMBuilderException(
+                throw new SOAPProcessingException(
                         "faultcode element should not have children");
             } else if (parentTagName.equals(
                     SOAP_FAULT_STRING_LOCAL_NAME)) {
-                throw new OMBuilderException(
+                throw new SOAPProcessingException(
                         "faultstring element should not have children");
             } else if (parentTagName.equals(
                     SOAP_FAULT_ACTOR_LOCAL_NAME)) {
-                throw new OMBuilderException(
+                throw new SOAPProcessingException(
                         "faultactor element should not have children");
             } else {
                 element =

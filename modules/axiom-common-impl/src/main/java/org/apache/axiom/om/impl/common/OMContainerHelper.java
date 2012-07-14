@@ -20,13 +20,12 @@ package org.apache.axiom.om.impl.common;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
@@ -41,16 +40,16 @@ public final class OMContainerHelper {
     
     private OMContainerHelper() {}
     
-    public static XMLStreamReader getXMLStreamReader(OMContainer container, boolean cache) {
+    public static XMLStreamReader getXMLStreamReader(IContainer container, boolean cache) {
         return getXMLStreamReader(container, cache, defaultReaderConfiguration);
     }
     
-    public static XMLStreamReader getXMLStreamReader(OMContainer container, boolean cache, OMXMLStreamReaderConfiguration configuration) {
+    public static XMLStreamReader getXMLStreamReader(IContainer container, boolean cache, OMXMLStreamReaderConfiguration configuration) {
         OMXMLParserWrapper builder = container.getBuilder();
         if (builder != null && builder instanceof StAXOMBuilder) {
             if (!container.isComplete()) {
                 if (((StAXOMBuilder) builder).isLookahead()) {
-                    container.buildNext();
+                    buildNext(container);
                 }
             }
         }
@@ -89,7 +88,7 @@ public final class OMContainerHelper {
         return reader;
     }
     
-    public static void addChild(OMContainerEx container, OMNode omNode, boolean fromBuilder) {
+    public static void addChild(IContainer container, OMNode omNode, boolean fromBuilder) {
         OMNodeEx child;
         if (fromBuilder) {
             // If the new child was provided by the builder, we know that it was created by
@@ -133,9 +132,47 @@ public final class OMContainerHelper {
         // (it has an independent parser source).
         // So only propogate the incomplete setting if this
         // is a normal OMNode
-        if (!child.isComplete() && 
+        if (!fromBuilder && !child.isComplete() && 
             !(child instanceof OMSourcedElement)) {
             container.setComplete(false);
         }
+    }
+    
+    public static void build(IContainer container) {
+        OMXMLParserWrapper builder = container.getBuilder();
+        if (builder != null && builder.isCompleted()) {
+            log.debug("Builder is already complete.");
+        }
+        while (!container.isComplete()) {
+
+            builder.next();    
+            if (builder.isCompleted() && !container.isComplete()) {
+                log.debug("Builder is complete.  Setting OMObject to complete.");
+                container.setComplete(true);
+            }
+        }
+    }
+    
+    public static void buildNext(IParentNode that) {
+        OMXMLParserWrapper builder = that.getBuilder();
+        if (builder != null) {
+            if (((StAXOMBuilder)builder).isClosed()) {
+                throw new OMException("The builder has already been closed");
+            } else if (!builder.isCompleted()) {
+                builder.next();
+            } else {
+                // If the builder is suddenly complete, but the completion status of the node
+                // doesn't change, then this means that we built the wrong nodes
+                throw new IllegalStateException("Builder is already complete");
+            }         
+        }
+    }
+    
+    public static OMNode getFirstOMChild(IParentNode that) {
+        OMNode firstChild;
+        while ((firstChild = that.getFirstOMChildIfAvailable()) == null && !that.isComplete()) {
+            buildNext(that);
+        }
+        return firstChild;
     }
 }

@@ -70,6 +70,9 @@ public interface OMXMLParserWrapper {
      * Get the document being built by this builder.
      * 
      * @return the {@link OMDocument} instance
+     * @throws UnsupportedOperationException
+     *             if there is no document linked to this builder; this may occur if the builder is
+     *             associated with an {@link OMSourcedElement}
      */
     OMDocument getDocument();
     
@@ -86,6 +89,9 @@ public interface OMXMLParserWrapper {
      * @return the document element
      * @throws OMException
      *             if a parse error occurs
+     * @throws UnsupportedOperationException
+     *             if there is no document linked to this builder; this may occur if the builder is
+     *             associated with an {@link OMSourcedElement}
      */
     OMElement getDocumentElement();
 
@@ -104,6 +110,9 @@ public interface OMXMLParserWrapper {
      * @return the document element
      * @throws OMException
      *             if a parse error occurs
+     * @throws UnsupportedOperationException
+     *             if there is no document linked to this builder; this may occur if the builder is
+     *             associated with an {@link OMSourcedElement}
      */
     OMElement getDocumentElement(boolean discardDocument);
 

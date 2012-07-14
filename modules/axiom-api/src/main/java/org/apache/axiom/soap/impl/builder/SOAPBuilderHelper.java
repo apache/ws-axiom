@@ -29,11 +29,13 @@ import org.apache.axiom.soap.SOAPProcessingException;
 import javax.xml.stream.XMLStreamReader;
 
 public abstract class SOAPBuilderHelper {
-    protected StAXSOAPModelBuilder builder;
+    protected final SOAPFactoryEx factory;
+    protected final StAXSOAPModelBuilder builder;
     protected XMLStreamReader parser;
 
-    protected SOAPBuilderHelper(StAXSOAPModelBuilder builder) {
+    protected SOAPBuilderHelper(StAXSOAPModelBuilder builder, SOAPFactoryEx factory) {
         this.builder = builder;
+        this.factory = factory;
     }
 
     public abstract OMElement handleEvent(XMLStreamReader parser,

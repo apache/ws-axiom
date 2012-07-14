@@ -26,11 +26,10 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.IParentNode;
 import org.apache.axiom.om.impl.common.OMChildrenLocalNameIterator;
 import org.apache.axiom.om.impl.common.OMChildrenNamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildrenQNameIterator;
@@ -49,7 +48,7 @@ import javax.xml.transform.sax.SAXSource;
 
 import java.util.Iterator;
 
-public abstract class ParentNode extends NodeImpl implements NodeList {
+public abstract class ParentNode extends NodeImpl implements NodeList, IParentNode {
 
     protected NodeImpl firstChild;
 
@@ -72,22 +71,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     }
 
     public void addChild(OMNode omNode, boolean fromBuilder) {
-        OMContainerHelper.addChild((OMContainerEx)this, omNode, fromBuilder);
-    }
-
-    public void buildNext() {
-        OMXMLParserWrapper builder = getBuilder();
-        if (builder != null) {
-            if (((StAXOMBuilder)builder).isClosed()) {
-                throw new OMException("The builder has already been closed");
-            } else if (!builder.isCompleted()) {
-                builder.next();
-            } else {
-                // If the builder is suddenly complete, but the completion status of the node
-                // doesn't change, then this means that we built the wrong nodes
-                throw new IllegalStateException("Builder is already complete");
-            }         
-        }
+        OMContainerHelper.addChild((IContainer)this, omNode, fromBuilder);
     }
 
     public Iterator getChildren() {
@@ -139,10 +123,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     }
 
     public OMNode getFirstOMChild() {
-        while ((firstChild == null) && !isComplete()) {
-            buildNext();
-        }
-        return (OMNode)firstChild;
+        return OMContainerHelper.getFirstOMChild(this);
     }
 
     public OMNode getFirstOMChildIfAvailable() {
@@ -212,10 +193,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     }
 
     public boolean hasChildNodes() {
-        while ((firstChild == null) && !isComplete()) {
-            buildNext();
-        }
-        return this.firstChild != null;
+        return getFirstChild() != null;
     }
 
     public final Node appendChild(Node newChild) throws DOMException {
@@ -577,11 +555,11 @@ public abstract class ParentNode extends NodeImpl implements NodeList {
     }
 
     public XMLStreamReader getXMLStreamReader(boolean cache) {
-        return OMContainerHelper.getXMLStreamReader((OMContainer)this, cache);
+        return OMContainerHelper.getXMLStreamReader((IContainer)this, cache);
     }
     
     public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration configuration) {
-        return OMContainerHelper.getXMLStreamReader((OMContainer)this, cache, configuration);
+        return OMContainerHelper.getXMLStreamReader((IContainer)this, cache, configuration);
     }
 
     public SAXSource getSAXSource(boolean cache) {

@@ -21,12 +21,16 @@ package org.apache.axiom.om.impl.dom;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.common.IChildNode;
+import org.apache.axiom.om.impl.common.IParentNode;
+import org.apache.axiom.om.impl.common.OMNodeHelper;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public abstract class LeafNode extends NodeImpl {
+public abstract class LeafNode extends NodeImpl implements IChildNode {
     private ParentNode ownerNode;
     
     private NodeImpl previousSibling;
@@ -123,5 +127,21 @@ public abstract class LeafNode extends NodeImpl {
 
     public final void discard() throws OMException {
         detach();
+    }
+
+    public final void build() {
+        // Do nothing; a leaf node is always complete
+    }
+
+    public final OMNode getNextOMSibling() throws OMException {
+        return OMNodeHelper.getNextOMSibling(this);
+    }
+
+    public final Node getNextSibling() {
+        return (Node)getNextOMSibling();
+    }
+
+    public final IParentNode getIParentNode() {
+        return parentNode();
     }
 }

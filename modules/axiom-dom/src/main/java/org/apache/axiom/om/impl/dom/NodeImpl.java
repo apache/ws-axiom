@@ -30,6 +30,7 @@ import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -49,7 +50,7 @@ public abstract class NodeImpl implements Node {
     private Hashtable userData; // Will be initialized in setUserData()
 
     /** Factory that created this node */
-    protected final OMFactory factory;
+    protected OMFactory factory;
 
     // data
 
@@ -462,7 +463,10 @@ public abstract class NodeImpl implements Node {
 
     /** Returns the <code>OMFactory</code> that created this node */
     public OMFactory getOMFactory() {
-        return this.factory;
+        if (factory == null) {
+            factory = ((StAXSOAPModelBuilder)getBuilder()).getSOAPFactory();
+        }
+        return factory;
     }
 
 
@@ -536,20 +540,8 @@ public abstract class NodeImpl implements Node {
         return hasParent() ? internalGetOwnerNode() : null;
     }
 
-    public OMNode getNextOMSibling() throws OMException {
-        ParentNode parentNode = parentNode();
-        while (internalGetNextSibling() == null && parentNode != null && !parentNode.isComplete() && parentNode.getBuilder() != null) {
-            parentNode.buildNext();
-        }
-        return (OMNode)internalGetNextSibling();
-    }
-
     public final OMNode getNextOMSiblingIfAvailable() {
         return (OMNode)internalGetNextSibling();
-    }
-
-    public final Node getNextSibling() {
-        return (Node) this.getNextOMSibling();
     }
 
     public final OMNode getPreviousOMSibling() {
@@ -588,7 +580,8 @@ public abstract class NodeImpl implements Node {
     }
 
     public final OMContainer getParent() throws OMException {
-        return (OMContainer)parentNode();
+        Node parent = parentNode();
+        return parent instanceof OMContainer ? (OMContainer)parentNode() : null;
     }
 
     public Node getParentNode() {
@@ -618,10 +611,6 @@ public abstract class NodeImpl implements Node {
         if (parentNode == null) {
             throw new OMException("Parent level elements cannot be detached");
         } else {
-            if (!isComplete()) {
-                build();
-            }
-            getNextOMSibling(); // Make sure that nextSibling is set correctly
             NodeImpl previousSibling = internalGetPreviousSibling();
             NodeImpl nextSibling = internalGetNextSibling();
             if (previousSibling == null) { // This is the first child
@@ -633,9 +622,6 @@ public abstract class NodeImpl implements Node {
                 }
             } else {
                 previousSibling.setNextOMSibling((OMNode)nextSibling);
-                if (nextSibling == null) {
-                    previousSibling.parentNode().setComplete(true);
-                }
             }
             if (nextSibling != null) {
                 nextSibling.setPreviousOMSibling((OMNode)previousSibling);
@@ -720,12 +706,7 @@ public abstract class NodeImpl implements Node {
 
     public abstract boolean isComplete();
 
-    /** Builds next element. */
-    public void build() {
-        while (!isComplete()) {
-            getBuilder().next();
-        }
-    }
+    abstract void build();
 
     /**
      * Parses this node and builds the object structure in memory. AXIOM supports two levels of

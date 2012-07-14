@@ -28,7 +28,6 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.NodeImpl;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.util.OMSerializerUtil;
@@ -111,7 +110,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
             // The SOAPHeader is added before the SOAPBody
             // We must be sensitive to the state of the parser.  It is possible that the
             // has not been processed yet.
-            if (this.done) {
+            if (state == COMPLETE) {
                 // Parsing is complete, therefore it is safe to
                 // call getBody.
                 SOAPBody body = getBody();
@@ -227,7 +226,7 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
         } else {
             //Now the caching is supposed to be off. However caching been switched off
             //has nothing to do if the element is already built!
-            if (this.done || (this.builder == null)) {
+            if (state == COMPLETE || (this.builder == null)) {
                 OMSerializerUtil.serializeStartpart(this, writer);
                 OMElement header = getHeader();
                 if ((header != null) && (header.getFirstOMChild() != null)) {
@@ -254,14 +253,6 @@ public class SOAPEnvelopeImpl extends SOAPElement implements SOAPEnvelope,
             OMSerializerUtil.serializeByPullStream(element, writer, false);
         }
 //        child = (NodeImpl) child.getNextOMSibling();
-    }
-
-    public OMNode getNextOMSibling() throws OMException {
-        DocumentImpl ownerDocument = (DocumentImpl)getOwnerDocument();
-        if (ownerDocument != null && !ownerDocument.isComplete()) {
-            ownerDocument.setComplete(true);
-        }
-        return null;
     }
 
     public boolean hasFault() {      

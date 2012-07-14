@@ -28,6 +28,7 @@ import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
+import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.InputSource;
 
@@ -52,10 +53,13 @@ public abstract class SOAPTestCase extends AxiomTestCase {
         altSoapFactory = spec.getAltFactory(metaFactory);
     }
 
-    protected SOAPEnvelope getTestMessage(String name) {
+    protected SOAPModelBuilder getBuilderForTestMessage(String name) {
         InputStream in = AbstractTestCase.getTestResource("soap/" + spec.getName() + "/" + name);
-        SOAPEnvelope envelope = (SOAPEnvelope)metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP,
-                new InputSource(in)).getDocumentElement();
+        return metaFactory.createSOAPModelBuilder(StAXParserConfiguration.SOAP, new InputSource(in));
+    }
+    
+    protected SOAPEnvelope getTestMessage(String name) {
+        SOAPEnvelope envelope = getBuilderForTestMessage(name).getSOAPEnvelope();
         assertSame(spec.getEnvelopeNamespaceURI(), ((SOAPFactory)envelope.getOMFactory()).getSoapVersionURI());
         return envelope;
     }

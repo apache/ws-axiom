@@ -16,20 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ts.soap.builder;
 
-package org.apache.axiom.om.impl;
-
-import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.soap.SOAPMessage;
+import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.ts.soap.SOAPTestCase;
 
 /**
- * Interface that is used internally by Axiom and that should not be considered being part of the
- * public API.
+ * Tests that the SOAP builder creates {@link OMComment} nodes for comments in the XML prolog.
  */
-public interface OMContainerEx extends OMContainer {
-    public void setComplete(boolean state);
+public class TestCommentInProlog extends SOAPTestCase {
+    public TestCommentInProlog(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
+    }
 
-    void discarded();
-    
-    public void addChild(OMNode omNode, boolean fromBuilder);
+    protected void runTest() throws Throwable {
+        SOAPMessage message = (SOAPMessage)getBuilderForTestMessage(SOAP_MESSAGE).getDocument();
+        OMNode firstChild = message.getFirstOMChild();
+        assertTrue(firstChild instanceof OMComment);
+    }
 }

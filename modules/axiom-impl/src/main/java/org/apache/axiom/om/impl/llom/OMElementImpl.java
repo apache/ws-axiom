@@ -30,9 +30,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.IContainer;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMChildrenLegacyQNameIterator;
@@ -68,13 +68,13 @@ import java.util.LinkedHashMap;
 
 /** Class OMElementImpl */
 public class OMElementImpl extends OMNodeImpl
-        implements OMElementEx, OMConstants, OMContainerEx {
+        implements OMElementEx, OMConstants, IContainer {
 
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
     protected OMXMLParserWrapper builder;
 
-    protected boolean done;
+    protected int state;
 
     /**
      * The namespace of this element. Possible values:
@@ -116,9 +116,9 @@ public class OMElementImpl extends OMNodeImpl
         }
         this.localName = localName;
         this.builder = builder;
-        this.done = builder == null;
+        state = builder == null ? COMPLETE : INCOMPLETE;
         if (parent != null) {
-            ((OMContainerEx)parent).addChild(this, builder != null);
+            ((IContainer)parent).addChild(this, builder != null);
         }
         this.ns = generateNSDecl ? handleNamespace(ns) : ns;
     }
@@ -132,7 +132,7 @@ public class OMElementImpl extends OMNodeImpl
     public OMElementImpl(QName qname, OMContainer parent, OMFactory factory)
             throws OMException {
         super(factory);
-        done = true;
+        state = COMPLETE;
         if (parent != null) {
             parent.addChild(this);
         }
@@ -147,7 +147,7 @@ public class OMElementImpl extends OMNodeImpl
      */
     OMElementImpl(OMFactory factory) {
         super(factory);
-        done = true;
+        state = COMPLETE;
     }
 
     /** Method handleNamespace. */
@@ -640,10 +640,7 @@ public class OMElementImpl extends OMNodeImpl
      * @return Returns child.
      */
     public OMNode getFirstOMChild() {
-        while ((firstChild == null) && !done) {
-            buildNext();
-        }
-        return firstChild;
+        return OMContainerHelper.getFirstOMChild(this);
     }
 
     public OMNode getFirstOMChildIfAvailable() {
@@ -673,20 +670,10 @@ public class OMElementImpl extends OMNodeImpl
      * @throws OMException
      */
     public OMNode detach() throws OMException {
-        if (isComplete() && !parent.isComplete() && getNextOMSiblingIfAvailable() == null) {
-            // Special case: the node is complete, but the next node has not yet been created.
-            // In this case we want to detach the node without creating the next node because
-            // the builder may already have been closed (there is code in Axis2 that calls
-            // detach in that situation). We use discard for this: in this state, discard
-            // actually won't discard anything, but it will update the lastNode attribute
-            // of the builder.
-            getBuilder().discard(this);
-        } else {
-            if (!done) {
-                build();
-            }
-            super.detach();
+        if (state == INCOMPLETE) {
+            build();
         }
+        super.detach();
         return this;
     }
 
@@ -699,25 +686,29 @@ public class OMElementImpl extends OMNodeImpl
          * builder is null. Meaning this is a programatical created element but it has children which are not completed
          * Build them all.
          */
-        if (builder == null && !done) {
+        if (builder == null && state == INCOMPLETE) {
             for (Iterator childrenIterator = this.getChildren(); childrenIterator.hasNext();) {
                 OMNode omNode = (OMNode) childrenIterator.next();
                 omNode.build();
             }
         } else {
-            super.build();
+            OMContainerHelper.build(this);
         }
 
     }
 
-    public boolean isComplete() {
-        return done;
+    public int getState() {
+        return state;
     }
 
-    public void setComplete(boolean state) {
-        this.done = state;
+    public boolean isComplete() {
+        return state == COMPLETE;
+    }
+
+    public void setComplete(boolean complete) {
+        state = complete ? COMPLETE : INCOMPLETE;
         if (parent != null) {
-            if (!done) {
+            if (!complete) {
                 parent.setComplete(false);
             } else if (parent instanceof OMElementImpl) {
                 ((OMElementImpl) parent).notifyChildComplete();
@@ -725,6 +716,10 @@ public class OMElementImpl extends OMNodeImpl
                 ((OMDocumentImpl) parent).notifyChildComplete();
             }
         }
+    }
+
+    public void discarded() {
+        state = DISCARDED;
     }
 
     public XMLStreamReader getXMLStreamReader() {
@@ -790,7 +785,7 @@ public class OMElementImpl extends OMNodeImpl
     public void internalSerialize(XMLStreamWriter writer, boolean cache)
             throws XMLStreamException {
 
-        if (cache || this.done || (this.builder == null)) {
+        if (cache || state == COMPLETE || (this.builder == null)) {
             OMSerializerUtil.serializeStartpart(this, writer);
             OMSerializerUtil.serializeChildren(this, writer, cache);
             OMSerializerUtil.serializeEndpart(writer);
@@ -920,7 +915,7 @@ public class OMElementImpl extends OMNodeImpl
      * @throws OMException
      */
     public void discard() throws OMException {
-        if (done || builder == null) {
+        if (state == COMPLETE || builder == null) {
             this.detach();
         } else {
             builder.discard(this);
@@ -991,7 +986,7 @@ public class OMElementImpl extends OMNodeImpl
       * @see org.apache.axiom.om.OMNode#buildAll()
       */
     public void buildWithAttachments() {
-        if (!done) {
+        if (state == INCOMPLETE) {
             this.build();
         }
         Iterator iterator = getChildren();
@@ -1003,7 +998,7 @@ public class OMElementImpl extends OMNodeImpl
 
     /** This method will be called when one of the children becomes complete. */
     void notifyChildComplete() {
-        if (!this.done && builder == null) {
+        if (state == INCOMPLETE && builder == null) {
             Iterator iterator = getChildren();
             while (iterator.hasNext()) {
                 OMNode node = (OMNode) iterator.next();

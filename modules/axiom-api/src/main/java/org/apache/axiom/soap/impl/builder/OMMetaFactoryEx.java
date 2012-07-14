@@ -16,20 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.soap.impl.builder;
 
-package org.apache.axiom.om.impl;
-
-import org.apache.axiom.om.OMContainer;
-import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPMessage;
 
 /**
  * Interface that is used internally by Axiom and that should not be considered being part of the
  * public API.
  */
-public interface OMContainerEx extends OMContainer {
-    public void setComplete(boolean state);
-
-    void discarded();
-    
-    public void addChild(OMNode omNode, boolean fromBuilder);
+public interface OMMetaFactoryEx extends OMMetaFactory {
+    /**
+     * Create a {@link SOAPMessage} not linked to a particular {@link SOAPFactory}. The returned
+     * {@link SOAPMessage} instance is expected to resolve the {@link SOAPFactory} lazily using a
+     * call to {@link StAXSOAPModelBuilder#getSOAPFactory()}.
+     * 
+     * @param builder
+     *            the builder
+     * @return the newly created {@link SOAPMessage} instance
+     */
+    SOAPMessage createSOAPMessage(OMXMLParserWrapper builder);
 }

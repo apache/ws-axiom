@@ -16,22 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.om;
 
-package org.apache.axiom.soap;
+import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.om.OMXMLBuilderFactory;
+/**
+ * Exception indicating that a requested node cannot be returned because it is no longer available.
+ * A node may become unavailable because it has been consumed by a method such as
+ * {@link OMContainer#serializeAndConsume(XMLStreamWriter)} or
+ * {@link OMContainer#getXMLStreamReaderWithoutCaching()}, or because one of its ancestors has been
+ * discarded using {@link OMNode#discard()}.
+ */
+public class NodeUnavailableException extends OMException {
+    private static final long serialVersionUID = -9034004432518092807L;
 
-public class WrongEnvelopeNamespaceTest extends AbstractTestCase {
-    public void testCode() {
-        try {
-            String filename = "soap/wrongEnvelopeNamespace.xml";
-            OMXMLBuilderFactory.createSOAPModelBuilder(getTestResource(filename), null); //exception here
-            fail("Builder must fail here due to wrong SOAP namespace");
-        } catch (SOAPProcessingException e) {
-            assertTrue(true);
-        } catch (Exception e) {
-            fail("Only SOAPProcessingException can be thrown here");
-        }
+    public NodeUnavailableException() {
     }
 }

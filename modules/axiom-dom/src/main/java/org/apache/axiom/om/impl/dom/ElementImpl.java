@@ -29,11 +29,15 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMElementEx;
-import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.IChildNode;
+import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.IParentNode;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
+import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMElementImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
+import org.apache.axiom.om.impl.common.OMNodeHelper;
 import org.apache.axiom.om.impl.traverse.OMQNameFilterIterator;
 import org.apache.axiom.om.impl.traverse.OMQualifiedNameFilterIterator;
 import org.apache.axiom.om.impl.util.EmptyIterator;
@@ -61,14 +65,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
-public class ElementImpl extends ParentNode implements Element, OMElementEx, OMNodeEx, NamedNode,
-        OMConstants {
+public class ElementImpl extends ParentNode implements Element, OMElementEx, IChildNode, NamedNode,
+        OMConstants, IContainer {
 
     private static final Log log = LogFactory.getLog(ElementImpl.class);
     
     protected OMXMLParserWrapper builder;
 
-    protected boolean done;
+    protected int state;
 
     private ParentNode ownerNode;
     
@@ -109,7 +113,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         super(factory);
         this.localName = localName;
         this.builder = builder;
-        this.done = builder == null;
+        state = builder == null ? COMPLETE : INCOMPLETE;
         if (parentNode != null) {
             parentNode.addChild(this, builder != null);
         }
@@ -993,7 +997,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     public void internalSerialize(XMLStreamWriter writer,
                                      boolean cache) throws XMLStreamException {
 
-        if (cache || this.done || (this.builder == null)) {
+        if (cache || state == COMPLETE || (this.builder == null)) {
             OMSerializerUtil.serializeStartpart(this, writer);
             OMSerializerUtil.serializeChildren(this, writer, cache);
             OMSerializerUtil.serializeEndpart(writer);
@@ -1213,7 +1217,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
     }
 
     public void discard() throws OMException {
-        if (done) {
+        if (state == COMPLETE) {
             this.detach();
         } else {
             builder.discard(this);
@@ -1300,7 +1304,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
       * @see org.apache.axiom.om.OMNode#buildAll()
       */
     public void buildWithAttachments() {
-        if (!done) {
+        if (state == INCOMPLETE) {
             this.build();
         }
         Iterator iterator = getChildren();
@@ -1331,15 +1335,19 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         return builder;
     }
 
-    public final boolean isComplete() {
-        return done;
+    public final int getState() {
+        return state;
     }
 
-    public final void setComplete(boolean state) {
-        done = state;
+    public final boolean isComplete() {
+        return state == COMPLETE;
+    }
+
+    public final void setComplete(boolean complete) {
+        state = complete ? COMPLETE : INCOMPLETE;
         ParentNode parentNode = parentNode();
         if (parentNode != null) {
-            if (!done) {
+            if (!complete) {
                 parentNode.setComplete(false);
             } else {
                 parentNode.notifyChildComplete();
@@ -1347,21 +1355,30 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, OMN
         }
     }
 
-    public OMNode detach() throws OMException {
-        if (isComplete() && !getParent().isComplete() && getNextOMSiblingIfAvailable() == null) {
-            // Special case: the node is complete, but the next node has not yet been created.
-            // In this case we want to detach the node without creating the next node because
-            // the builder may already have been closed (there is code in Axis2 that calls
-            // detach in that situation). We use discard for this: in this state, discard
-            // actually won't discard anything, but it will update the lastNode attribute
-            // of the builder.
-            getBuilder().discard(this);
-        } else {
-            if (!done) {
-                build();
-            }
-            super.detach();
+    public final void discarded() {
+        state = DISCARDED;
+    }
+
+    OMNode detach(boolean useDomSemantics) {
+        if (state == INCOMPLETE) {
+            build();
         }
-        return this;
+        return super.detach(useDomSemantics);
+    }
+
+    public final void build() {
+        OMContainerHelper.build(this);
+    }
+
+    public final OMNode getNextOMSibling() throws OMException {
+        return OMNodeHelper.getNextOMSibling(this);
+    }
+
+    public final Node getNextSibling() {
+        return (Node)getNextOMSibling();
+    }
+
+    public final IParentNode getIParentNode() {
+        return parentNode();
     }
 }

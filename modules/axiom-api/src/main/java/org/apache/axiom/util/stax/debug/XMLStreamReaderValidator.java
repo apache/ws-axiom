@@ -96,41 +96,32 @@ public class XMLStreamReaderValidator extends XMLStreamReaderWrapper {
         case XMLStreamConstants.END_ELEMENT:
             QName delegateQName = super.getName();
             if (stack.isEmpty()) {
-                reportMismatchedEndElement(null, delegateQName);
+                reportError("An END_ELEMENT event for " + delegateQName + 
+                        " was encountered, but the START_ELEMENT stack is empty.");
             } else {
                 QName expectedQName = (QName) stack.pop();
                 
                 if (!expectedQName.equals(delegateQName)) {
-                    reportMismatchedEndElement(expectedQName, delegateQName);
+                    reportError("An END_ELEMENT event for " + delegateQName + 
+                            " was encountered, but this doesn't match the corresponding START_ELEMENT " + 
+                            expectedQName + " event.");
                 }
             }
             break;
-            
+        case XMLStreamConstants.END_DOCUMENT:
+            if (!stack.isEmpty()) {
+                reportError("An unexpected END_DOCUMENT event was encountered; element stack: " + stack);
+            }
+            break;
         default :
         
         }
     }
     
-    
-    /**
-     * Report a mismatched end element.
-     * @param expectedQName
-     * @param delegateQName
-     * @throws XMLStreamException 
-     */
-    private void reportMismatchedEndElement(QName expectedQName, QName delegateQName) throws XMLStreamException {
-        String text = null;
-        if (expectedQName == null) {
-            text = "An END_ELEMENT event for " + delegateQName + 
-                " was encountered, but the START_ELEMENT stack is empty.";
-        } else {
-            text = "An END_ELEMENT event for " + delegateQName + 
-                " was encountered, but this doesn't match the corresponding START_ELEMENT " + 
-                expectedQName + " event.";
-        }
-        log.debug(text);
+    private void reportError(String message) throws XMLStreamException {
+        log.debug(message);
         if (throwExceptions) {
-            throw new XMLStreamException(text);
+            throw new XMLStreamException(message);
         }
     }
     

@@ -53,4 +53,8 @@ public abstract class OMLeafNode extends OMNodeImpl {
     public final void discard() throws OMException {
         detach();
     }
+
+    public void build() {
+        // Do nothing; a leaf node is always complete
+    }
 }

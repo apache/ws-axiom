@@ -30,8 +30,9 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.apache.axiom.om.impl.common.OMDocumentImplUtil;
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
@@ -59,10 +60,10 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
-public class DocumentImpl extends RootNode implements Document, OMDocument, OMContainerEx {
+public class DocumentImpl extends RootNode implements Document, OMDocument, IContainer {
     protected OMXMLParserWrapper builder;
 
-    protected boolean done;
+    protected int state;
 
     private String xmlVersion;
 
@@ -85,7 +86,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
 
     public DocumentImpl(OMFactory factory) {
         super(factory);
-        this.done = true;
+        state = COMPLETE;
     }
 
     ParentNode internalGetOwnerNode() {
@@ -601,11 +602,27 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, OMCo
         return builder;
     }
 
-    public final boolean isComplete() {
-        return done;
+    public final int getState() {
+        return state;
     }
 
-    public final void setComplete(boolean state) {
-        done = state;
+    public final boolean isComplete() {
+        return state == COMPLETE;
+    }
+
+    public final void setComplete(boolean complete) {
+        state = complete ? COMPLETE : INCOMPLETE;
+    }
+
+    public final void discarded() {
+        state = DISCARDED;
+    }
+
+    public final void build() {
+        OMContainerHelper.build(this);
+    }
+
+    public final Node getNextSibling() {
+        return null;
     }
 }

@@ -37,8 +37,6 @@ import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPProcessingException;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 
-import javax.xml.stream.XMLStreamConstants;
-
 /** Class SOAPBodyImpl */
 public abstract class SOAPBodyImpl extends SOAPElement
         implements SOAPBody, OMConstants {
@@ -150,18 +148,6 @@ public abstract class SOAPBodyImpl extends SOAPElement
                 "Can not detach SOAP Body, SOAP Envelope must have a Body !!");
     }
 
-    /* 
-     * Overridden so that we can detect when a child element is built
-     */
-    public void buildNext() {
-        if (builder != null) {
-            int token = builder.next();
-            if (token == XMLStreamConstants.START_ELEMENT) {
-                enableLookAhead = false;
-            }
-        }
-    }
-    
     private boolean hasLookahead() {
         if (!enableLookAhead) {
            return false; 

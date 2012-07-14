@@ -22,11 +22,14 @@ package org.apache.axiom.om.impl.dom.factory;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.common.factory.AbstractOMMetaFactory;
 import org.apache.axiom.om.impl.dom.DOMImplementationImpl;
 import org.apache.axiom.om.impl.dom.jaxp.DOOMDocumentBuilderFactory;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.axiom.soap.SOAPMessage;
+import org.apache.axiom.soap.impl.dom.SOAPMessageImpl;
 import org.apache.axiom.soap.impl.dom.soap11.SOAP11Factory;
 import org.apache.axiom.soap.impl.dom.soap12.SOAP12Factory;
 import org.w3c.dom.DOMImplementation;
@@ -54,6 +57,10 @@ public class OMDOMMetaFactory extends AbstractOMMetaFactory implements DOMMetaFa
 
     public SOAPFactory getSOAP12Factory() {
         return soap12Factory;
+    }
+
+    public SOAPMessage createSOAPMessage(OMXMLParserWrapper builder) {
+        return new SOAPMessageImpl(builder, null);
     }
 
     public DocumentBuilderFactory newDocumentBuilderFactory() {

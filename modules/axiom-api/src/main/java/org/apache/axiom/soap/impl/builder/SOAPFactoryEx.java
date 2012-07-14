@@ -45,9 +45,7 @@ public interface SOAPFactoryEx extends SOAPFactory, OMFactoryEx {
 
     SOAPMessage createSOAPMessage(OMXMLParserWrapper builder);
 
-    SOAPMessage createSOAPMessage(SOAPEnvelope envelope, OMXMLParserWrapper parserWrapper);
-
-    SOAPEnvelope createSOAPEnvelope(OMXMLParserWrapper builder);
+    SOAPEnvelope createSOAPEnvelope(SOAPMessage message, OMXMLParserWrapper builder);
 
     /**
      * @param envelope
