@@ -224,7 +224,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                     return null;
                 } else {
                     String prefix = ns.getPrefix();
-                    return prefix == null || prefix.length() == 0 ? null : prefix; 
+                    return prefix.length() == 0 ? null : prefix; 
                 }
             } else {
                 throw new IllegalStateException();
@@ -552,7 +552,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             if (isStartElement() || isEndElement()) {
                 loadNamespaces();
                 String prefix = namespaces[i].getPrefix();
-                returnString = prefix == null || prefix.length() == 0 ? null : prefix; 
+                returnString = prefix.length() == 0 ? null : prefix; 
             }
         }
         return returnString;
@@ -1430,7 +1430,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (ns != null) {
             String prefix = ns.getPrefix();
             String uri = ns.getNamespaceURI();
-            if ((prefix == null) || prefix.equals("")) {
+            if (prefix.length() == 0) {
                 returnName = new QName(uri, localPart);
             } else {
                 returnName = new QName(uri, localPart, prefix);
