@@ -298,7 +298,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } else {
             if ((currentEvent == START_ELEMENT)
                     || (currentEvent == END_ELEMENT)) {
-                return getQName((OMElement) lastNode);
+                return ((OMElement)lastNode).getQName();
             } else {
                 throw new IllegalStateException();
             }
@@ -1416,30 +1416,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * Other helper methods
      * ####################################################################
      */
-
-    /**
-     * Helper method getQName.
-     *
-     * @param element
-     * @return Returns QName.
-     */
-    private QName getQName(OMElement element) {
-        QName returnName;
-        OMNamespace ns = element.getNamespace();
-        String localPart = element.getLocalName();
-        if (ns != null) {
-            String prefix = ns.getPrefix();
-            String uri = ns.getNamespaceURI();
-            if (prefix.length() == 0) {
-                returnName = new QName(uri, localPart);
-            } else {
-                returnName = new QName(uri, localPart, prefix);
-            }
-        } else {
-            returnName = new QName(localPart);
-        }
-        return returnName;
-    }
 
     private void setParser(XMLStreamReader parser) {
         this.parser = parser;
