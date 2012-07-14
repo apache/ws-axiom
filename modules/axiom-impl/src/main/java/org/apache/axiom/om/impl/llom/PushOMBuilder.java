@@ -29,7 +29,6 @@ import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMText;
@@ -39,12 +38,12 @@ import org.apache.axiom.util.stax.AbstractXMLStreamWriter;
 
 public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandlerWriter {
     private final OMSourcedElementImpl root;
-    private final OMFactory factory;
+    private final OMFactoryEx factory;
     private OMElement parent;
     
     public PushOMBuilder(OMSourcedElementImpl root) throws XMLStreamException {
         this.root = root;
-        factory = root.getOMFactory();
+        factory = (OMFactoryEx)root.getOMFactory();
         // Seed the namespace context with the namespace context from the parent
         OMContainer parent = root.getParent();
         if (parent instanceof OMElement) {
@@ -113,7 +112,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
         } else {
             // We use the createOMElement variant that takes a OMXMLParserWrapper parameter and
             // don't pass the namespace. This avoids creation of a namespace declaration.
-            parent = ((OMFactoryEx)factory).createOMElement(localName, parent, null);
+            parent = factory.createOMElement(localName, parent, null);
         }
         if (ns != null) {
             parent.setNamespaceWithNoFindInCurrentScope(ns);
@@ -169,24 +168,24 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteCharacters(String text) {
-        factory.createOMText(parent, text);
+        factory.createOMText(parent, text, OMNode.TEXT_NODE, true);
     }
 
     protected void doWriteCData(String data) {
-        factory.createOMText(parent, data, OMNode.CDATA_SECTION_NODE);
+        factory.createOMText(parent, data, OMNode.CDATA_SECTION_NODE, true);
     }
 
     protected void doWriteComment(String data) {
-        factory.createOMComment(parent, data);
+        factory.createOMComment(parent, data, true);
     }
 
     protected void doWriteEntityRef(String name) throws XMLStreamException {
         // TODO: this is equivalent to what StAXOMBuilder does; however, it doesn't look correct
-        factory.createOMText(parent, name, OMNode.ENTITY_REFERENCE_NODE);
+        factory.createOMText(parent, name, OMNode.ENTITY_REFERENCE_NODE, true);
     }
 
     protected void doWriteProcessingInstruction(String target, String data) {
-        factory.createOMProcessingInstruction(parent, target, data);
+        factory.createOMProcessingInstruction(parent, target, data, true);
     }
 
     protected void doWriteProcessingInstruction(String target) {
