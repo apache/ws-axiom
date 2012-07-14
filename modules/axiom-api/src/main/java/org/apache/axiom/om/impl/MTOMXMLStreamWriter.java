@@ -36,7 +36,6 @@ import org.apache.axiom.attachments.lifecycle.DataHandlerExt;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.util.CommonUtils;
@@ -48,7 +47,6 @@ import org.apache.axiom.util.stax.xop.OptimizationPolicy;
 import org.apache.axiom.util.stax.xop.XOPEncodingStreamWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 
 /**
  * MTOMXMLStreamWriter is an XML + Attachments stream writer.
@@ -575,23 +573,6 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
             this.flush();
         }
         return os;
-    }
-    
-    /**
-     * Writes the relevant output.
-     *
-     * @param writer
-     * @throws XMLStreamException
-     */
-    private void writeOutput(OMText textNode) throws XMLStreamException {
-        int type = textNode.getType();
-        if (type == OMNode.TEXT_NODE || type == OMNode.SPACE_NODE) {
-            writeCharacters(textNode.getText());
-        } else if (type == OMNode.CDATA_SECTION_NODE) {
-            writeCData(textNode.getText());
-        } else if (type == OMNode.ENTITY_REFERENCE_NODE) {
-            writeEntityRef(textNode.getText());
-        }
     }
     
     public void setFilter(XMLStreamWriterFilter filter) {
