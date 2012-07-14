@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE root [
+  <!ENTITY entityref "test">
+  <!ELEMENT root (#PCDATA)>
+]>
+<root>
+    &entityref;
+</root>
