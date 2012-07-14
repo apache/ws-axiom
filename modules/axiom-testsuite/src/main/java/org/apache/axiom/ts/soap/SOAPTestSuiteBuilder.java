@@ -31,7 +31,8 @@ import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
     private static final String[] badSOAPFiles = { "wrongSoapNs.xml", "notnamespaceQualified.xml", "soap11/twoheaders.xml", "soap11/twoBodymessage.xml",
             "soap11/envelopeMissing.xml", "soap11/haederBodyWrongOrder.xml", "soap11/invalid-faultcode.xml", "soap11/invalid-faultstring.xml",
-            "soap11/invalid-faultactor.xml", "soap12/header-bad-case.xml", "soap12/header-no-namespace.xml" };
+            "soap11/invalid-faultactor.xml", "soap11/processing-instruction.xml",
+            "soap12/header-bad-case.xml", "soap12/header-no-namespace.xml", "soap12/processing-instruction.xml" };
     
     private static final String[] goodSOAPFiles = { TestConstants.WHITESPACE_MESSAGE,
         TestConstants.MINIMAL_MESSAGE, TestConstants.REALLY_BIG_MESSAGE,
@@ -101,6 +102,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.builder.TestCommentInEpilog(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.builder.TestCommentInProlog(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.builder.TestDTD(metaFactory, spec));
         if (supportsBodyElementNameOptimization) {
             addTest(new org.apache.axiom.ts.soap.builder.TestRegisterCustomBuilderForPayloadAfterSOAPFaultCheck(metaFactory, spec));
         }

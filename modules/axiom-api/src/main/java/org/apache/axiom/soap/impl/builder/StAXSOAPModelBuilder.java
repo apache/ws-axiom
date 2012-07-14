@@ -376,12 +376,16 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
     /** Method createDTD. Overriding the default behaviour as a SOAPMessage should not have a DTD. */
     protected OMNode createDTD() throws OMException {
-        throw new OMException("SOAP message MUST NOT contain a Document Type Declaration(DTD)");
+        throw new SOAPProcessingException("SOAP message MUST NOT contain a Document Type Declaration(DTD)");
     }
 
     /** Method createPI. Overriding the default behaviour as a SOAP Message should not have a PI. */
     protected OMNode createPI() throws OMException {
-        throw new OMException("SOAP message MUST NOT contain Processing Instructions(PI)");
+        throw new SOAPProcessingException("SOAP message MUST NOT contain Processing Instructions(PI)");
+    }
+
+    protected OMNode createEntityReference() {
+        throw new SOAPProcessingException("A SOAP message cannot contain entity references because it must not have a DTD");
     }
 
     // Necessary to allow SOAPBuilderHelper to access this method
