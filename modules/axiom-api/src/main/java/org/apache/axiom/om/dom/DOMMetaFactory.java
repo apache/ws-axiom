@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
@@ -41,6 +42,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
+import org.w3c.dom.EntityReference;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
@@ -89,6 +91,10 @@ import org.w3c.dom.Text;
  * <tr>
  * <td>{@link OMProcessingInstruction}</td>
  * <td>{@link ProcessingInstruction}</td>
+ * </tr>
+ * <tr>
+ * <td>{@link OMEntityReference}</td>
+ * <td>{@link EntityReference}</td>
  * </tr>
  * </table>
  * <dl>

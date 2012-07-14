@@ -248,8 +248,9 @@ public interface OMFactory {
     /**
      * @param parent
      * @param text
-     * @param type   - this should be either of XMLStreamConstants.CHARACTERS,
-     *               XMLStreamConstants.CDATA, XMLStreamConstants.SPACE, XMLStreamConstants.ENTITY_REFERENCE
+     * @param type
+     *            the node type: {@link OMNode#TEXT_NODE}, {@link OMNode#CDATA_SECTION_NODE} or
+     *            {@link OMNode#SPACE_NODE}
      * @return Returns OMText.
      */
     OMText createOMText(OMContainer parent, String text, int type);
@@ -271,8 +272,9 @@ public interface OMFactory {
 
     /**
      * @param s
-     * @param type - OMText node can handle SPACE, CHARACTERS, CDATA and ENTITY REFERENCES. For
-     *             Constants, use either XMLStreamConstants or constants found in OMNode.
+     * @param type
+     *            the node type: {@link OMNode#TEXT_NODE}, {@link OMNode#CDATA_SECTION_NODE} or
+     *            {@link OMNode#SPACE_NODE}
      * @return Returns OMText.
      */
     OMText createOMText(String s, int type);
