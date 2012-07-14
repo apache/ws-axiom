@@ -19,6 +19,7 @@
 
 package org.apache.axiom.util.stax;
 
+import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -30,6 +31,10 @@ import javax.xml.stream.XMLStreamReader;
  * implementation.
  */
 public abstract class AbstractXMLStreamReader implements XMLStreamReader {
+    public Location getLocation() {
+        return DummyLocation.INSTANCE;
+    }
+
     /**
      * @return Returns boolean.
      * @see javax.xml.stream.XMLStreamReader#hasText()
