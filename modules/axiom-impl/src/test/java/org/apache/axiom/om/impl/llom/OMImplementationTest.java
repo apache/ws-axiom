@@ -23,7 +23,6 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.ts.om.OMTestSuiteBuilder;
-import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource;
 import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetXMLStreamReaderWithOMSourcedElementDescendant;
@@ -46,12 +45,6 @@ public class OMImplementationTest extends TestCase {
         
         // TODO: this case is not working because Axiom doesn't serialize the DTD
         builder.exclude(TestSerialize.class, "(&(file=spaces.xml)(container=document))");
-        
-        // TODO: CDATA sections are lost when using createOMBuilder with a DOMSource
-        builder.exclude(TestCreateOMBuilderFromDOMSource.class, "(|(file=cdata.xml)(file=test.xml))");
-        
-        // TODO: suspecting Woodstox bug here
-        builder.exclude(TestCreateOMBuilderFromDOMSource.class, "(file=spaces.xml)");
         
         // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
         builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");

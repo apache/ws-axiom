@@ -31,7 +31,6 @@ import java.util.Stack;
 import javax.activation.DataHandler;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -58,7 +57,6 @@ import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.exception.OMStreamingException;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.AbstractXMLStreamReader;
-import org.apache.axiom.util.stax.DummyLocation;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -1171,15 +1169,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 throw new IllegalStateException();
             }
         }
-    }
-
-    /**
-     * Method getLocation.
-     *
-     * @return Returns Location.
-     */
-    public Location getLocation() {
-        return DummyLocation.INSTANCE;
     }
 
     /**
