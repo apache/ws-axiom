@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!DOCTYPE root [
-  <!ENTITY entityref "test">
+  <!ENTITY testentref "test">
   <!ELEMENT root (#PCDATA)>
 ]>
 <root>
-    &entityref;
+    &testentref;
 </root>

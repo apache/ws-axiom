@@ -25,10 +25,15 @@ import java.net.URL;
 import javax.activation.DataSource;
 import javax.activation.URLDataSource;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.events.XMLEvent;
+import javax.xml.transform.dom.DOMResult;
 
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
 
 /** Abstract base class for test cases. */
 public abstract class AbstractTestCase
@@ -78,15 +83,20 @@ public abstract class AbstractTestCase
     }
     
     public static Document toDocumentWithoutDTD(InputStream in) throws Exception {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
-        factory.setExpandEntityReferences(false);
-        Document doc = factory.newDocumentBuilder().parse(in);
-        DocumentType docType = doc.getDoctype();
-        if (docType != null) {
-            doc.removeChild(docType);
+        // We use StAX to parse the document because in contrast to DOM, it allows references to undeclared entities.
+        XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+        inputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
+        XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
+        XMLEventReader reader = inputFactory.createXMLEventReader(in);
+        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+        XMLEventWriter writer = outputFactory.createXMLEventWriter(new DOMResult(document));
+        while (reader.hasNext()) {
+            XMLEvent event = reader.nextEvent();
+            if (event.getEventType() != XMLEvent.DTD) {
+                writer.add(event);
+            }
         }
-        return doc;
+        return document;
     }
 }
 
