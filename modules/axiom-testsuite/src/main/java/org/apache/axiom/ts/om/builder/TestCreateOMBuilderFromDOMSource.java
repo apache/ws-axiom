@@ -42,6 +42,7 @@ public class TestCreateOMBuilderFromDOMSource extends ConformanceTestCase {
     protected void runTest() throws Throwable {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
+        factory.setExpandEntityReferences(false);
         DocumentBuilder documentBuilder = factory.newDocumentBuilder();
         InputStream in = getFileAsStream();
         try {

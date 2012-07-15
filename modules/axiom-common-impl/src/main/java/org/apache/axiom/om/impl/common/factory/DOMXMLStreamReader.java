@@ -99,6 +99,9 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader {
                 case Node.PROCESSING_INSTRUCTION_NODE:
                     event = PROCESSING_INSTRUCTION;
                     break;
+                case Node.ENTITY_REFERENCE_NODE:
+                    event = ENTITY_REFERENCE;
+                    break;
                 default:
                     throw new IllegalStateException("Unexpected node type " + node.getNodeType());
             }
@@ -127,7 +130,15 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader {
     }
 
     public String getLocalName() {
-        return node.getLocalName();
+        switch (event) {
+            case START_ELEMENT:
+            case END_ELEMENT:
+                return node.getLocalName();
+            case ENTITY_REFERENCE:
+                return node.getNodeName();
+            default:
+                throw new IllegalStateException();
+        }
     }
     
     public String getNamespaceURI() {

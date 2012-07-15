@@ -78,7 +78,10 @@ public abstract class AbstractTestCase
     }
     
     public static Document toDocumentWithoutDTD(InputStream in) throws Exception {
-        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(in);
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        factory.setExpandEntityReferences(false);
+        Document doc = factory.newDocumentBuilder().parse(in);
         DocumentType docType = doc.getDoctype();
         if (docType != null) {
             doc.removeChild(docType);
