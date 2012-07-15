@@ -21,14 +21,19 @@ package org.apache.axiom.om;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collections;
 
 import javax.activation.DataSource;
 import javax.activation.URLDataSource;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.EntityReference;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.dom.DOMResult;
 
@@ -90,10 +95,20 @@ public abstract class AbstractTestCase
         XMLEventReader reader = inputFactory.createXMLEventReader(in);
         Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         XMLEventWriter writer = outputFactory.createXMLEventWriter(new DOMResult(document));
+        XMLEventFactory eventFactory = XMLEventFactory.newInstance();
         while (reader.hasNext()) {
             XMLEvent event = reader.nextEvent();
-            if (event.getEventType() != XMLEvent.DTD) {
-                writer.add(event);
+            switch (event.getEventType()) {
+                case XMLEvent.DTD:
+                    // Skip the DTD
+                    break;
+                case XMLEvent.ENTITY_REFERENCE:
+                    // Replace entity references by elements so that we can compare them (XMLUnit doesn't handle entity references)
+                    Attribute attr = eventFactory.createAttribute("name", ((EntityReference)event).getName());
+                    writer.add(eventFactory.createStartElement(new QName("entity-reference"), Collections.singleton(attr).iterator(), null));
+                    break;
+                default:
+                    writer.add(event);
             }
         }
         return document;
