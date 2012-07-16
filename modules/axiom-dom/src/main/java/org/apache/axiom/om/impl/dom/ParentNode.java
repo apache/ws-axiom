@@ -423,7 +423,8 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
                         
 
                     } else {
-                        newDomChild.internalSetNextSibling(oldDomChild.internalGetNextSibling());
+                        // We use getNextSibling here to force bulding the node if necessary
+                        newDomChild.internalSetNextSibling((NodeImpl)oldDomChild.getNextSibling());
                         newDomChild.internalSetPreviousSibling(oldDomChild.internalGetPreviousSibling());
 
                         oldDomChild.internalGetPreviousSibling().internalSetNextSibling(newDomChild);
