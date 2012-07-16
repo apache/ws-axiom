@@ -238,6 +238,7 @@ public class StAXOMBuilder extends StAXBuilder {
                     case XMLStreamConstants.END_DOCUMENT:
                         done = true;
                         ((OMContainerEx) this.document).setComplete(true);
+                        target = null;
                         break;
                     case XMLStreamConstants.SPACE:
                         try {

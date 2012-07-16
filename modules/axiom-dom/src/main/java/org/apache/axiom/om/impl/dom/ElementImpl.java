@@ -28,9 +28,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.OMElementEx;
-import org.apache.axiom.om.impl.common.IChildNode;
-import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.IElement;
 import org.apache.axiom.om.impl.common.IParentNode;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
@@ -65,8 +63,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /** Implementation of the org.w3c.dom.Element and org.apache.axiom.om.Element interfaces. */
-public class ElementImpl extends ParentNode implements Element, OMElementEx, IChildNode, NamedNode,
-        OMConstants, IContainer {
+public class ElementImpl extends ParentNode implements Element, IElement, NamedNode,
+        OMConstants {
 
     private static final Log log = LogFactory.getLog(ElementImpl.class);
     
@@ -1217,11 +1215,7 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, ICh
     }
 
     public void discard() throws OMException {
-        if (state == COMPLETE) {
-            this.detach();
-        } else {
-            builder.discard(this);
-        }
+        OMElementImplUtil.discard(this);
     }
 
     /*
@@ -1380,5 +1374,9 @@ public class ElementImpl extends ParentNode implements Element, OMElementEx, ICh
 
     public final IParentNode getIParentNode() {
         return parentNode();
+    }
+    
+    public final void removeChildren() {
+        OMContainerHelper.removeChildren(this);
     }
 }

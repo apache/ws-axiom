@@ -1120,4 +1120,14 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
             return ((OMDataSourceExt)dataSource).getObject();
         }
     }
+
+    public void removeChildren() {
+        // One might think that if the element is not expanded, we don't need to expand it because
+        // we are going to remove the children anyway. However, this is not true for two reasons:
+        //  * The element may have attributes and they must be available after removeChildren().
+        //  * The local name, namespace URI and/or prefix of the element may be unknown. In that
+        //    case, we need to expand the element to make this information available.
+        forceExpand();
+        super.removeChildren();
+    }
 }

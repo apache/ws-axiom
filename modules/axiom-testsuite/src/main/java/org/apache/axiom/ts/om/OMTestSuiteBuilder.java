@@ -111,6 +111,10 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementAfterDetach(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestRemoveChildren(metaFactory, true, false));
+        addTest(new org.apache.axiom.ts.om.document.TestRemoveChildren(metaFactory, true, true));
+        addTest(new org.apache.axiom.ts.om.document.TestRemoveChildren(metaFactory, false, false));
+        addTest(new org.apache.axiom.ts.om.document.TestRemoveChildren(metaFactory, false, true));
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsume(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSetOMDocumentElementNew(metaFactory));
@@ -236,6 +240,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestMultipleDefaultNS(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestRemoveAttribute(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestRemoveAttributeNotOwner(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestRemoveChildren(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.element.TestRemoveChildren(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithNonDefaultNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithoutNamespace(metaFactory));
@@ -386,6 +392,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4DefaultPrefix(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4QualifiedPrefix(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4Unqualified(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestRemoveChildrenUnexpanded(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToStream(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToWriter(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToXMLWriter(metaFactory));

@@ -30,12 +30,14 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.util.namespace.MapBasedNamespaceContext;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
 
@@ -143,5 +145,12 @@ public class OMElementImplUtil {
         } catch (XMLStreamException ex) {
             throw new OMException(ex);
         }
+    }
+    
+    public static void discard(IElement that) {
+        if (that.getState() == IParentNode.INCOMPLETE && that.getBuilder() != null) {
+            ((StAXOMBuilder)that.getBuilder()).discard((OMContainer)that);
+        }
+        that.detach();
     }
 }

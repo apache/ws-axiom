@@ -625,4 +625,8 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
     public final Node getNextSibling() {
         return null;
     }
+    
+    public final void removeChildren() {
+        OMContainerHelper.removeChildren(this);
+    }
 }
