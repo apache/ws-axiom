@@ -24,10 +24,16 @@ import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class TestInsertBeforeWithDocumentFragment extends DOMTestCase {
-    public TestInsertBeforeWithDocumentFragment(DocumentBuilderFactory dbf) {
+/**
+ * Tests the behavior of {@link Node#replaceChild(Node, Node)} when replacing a child by a
+ * {@link DocumentFragment}. This test covers the case where the child being replaced is neither the
+ * first nor the last child.
+ */
+public class TestReplaceChildMiddleWithDocumentFragment extends DOMTestCase {
+    public TestReplaceChildMiddleWithDocumentFragment(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
@@ -40,20 +46,22 @@ public class TestInsertBeforeWithDocumentFragment extends DOMTestCase {
         fragment.appendChild(x);
         fragment.appendChild(y);
         
-        Element element = document.createElementNS(null, "parent1");
+        Element element = document.createElementNS(null, "parent");
         Element a = document.createElementNS(null, "a");
         Element b = document.createElementNS(null, "b");
+        Element c = document.createElementNS(null, "c");
         element.appendChild(a);
         element.appendChild(b);
+        element.appendChild(c);
         
-        element.insertBefore(fragment, b);
+        element.replaceChild(fragment, b);
         
         NodeList children = element.getChildNodes();
         assertEquals(4, children.getLength());
         assertSame(a, children.item(0));
         assertSame(x, children.item(1));
         assertSame(y, children.item(2));
-        assertSame(b, children.item(3));
+        assertSame(c, children.item(3));
         
         assertSame(element, x.getParentNode());
         assertSame(element, y.getParentNode());

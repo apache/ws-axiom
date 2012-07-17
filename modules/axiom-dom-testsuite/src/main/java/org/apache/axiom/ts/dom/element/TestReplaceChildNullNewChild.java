@@ -16,28 +16,35 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.dom.document;
+package org.apache.axiom.ts.dom.element;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.dom.DOMTestCase;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
-public class TestCloneNode extends DOMTestCase {
-    private final ConformanceTestFile file;
-
-    public TestCloneNode(DocumentBuilderFactory dbf, ConformanceTestFile file) {
+/**
+ * Tests the behavior of {@link Node#replaceChild(Node, Node)} if <code>newChild</code> is
+ * <code>null</code>. In this case an exception should be thrown. Note that the DOM doesn't specify
+ * the exception to throw; Xerces throws a {@link NullPointerException}.
+ */
+public class TestReplaceChildNullNewChild extends DOMTestCase {
+    public TestReplaceChildNullNewChild(DocumentBuilderFactory dbf) {
         super(dbf);
-        this.file = file;
-        addTestProperty("file", file.getShortName());
     }
 
     protected void runTest() throws Throwable {
-        Document document = dbf.newDocumentBuilder().parse(file.getAsStream());
-        Document document2 = (Document)document.cloneNode(true);
-        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(document, document2), true);
+        Document document = dbf.newDocumentBuilder().newDocument();
+        Element root = document.createElementNS(null, "root");
+        Element child = document.createElementNS(null, "child");
+        root.appendChild(child);
+        try {
+            root.replaceChild(null, child);
+            fail("Expected exception");
+        } catch (Exception ex) {
+            // Expected
+        }
     }
 }

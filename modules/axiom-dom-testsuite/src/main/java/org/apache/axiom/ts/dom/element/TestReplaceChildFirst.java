@@ -23,10 +23,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class TestReplaceChild extends DOMTestCase {
-    public TestReplaceChild(DocumentBuilderFactory dbf) {
+/**
+ * Tests the behavior of {@link Node#replaceChild(Node, Node)}. This test covers the case where the
+ * child being replaced is the first child (which uses a different code path in DOOM).
+ */
+public class TestReplaceChildFirst extends DOMTestCase {
+    public TestReplaceChildFirst(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
@@ -35,16 +40,18 @@ public class TestReplaceChild extends DOMTestCase {
         Element parent = doc.createElementNS(null, "parent");
         Element child1 = doc.createElementNS(null, "child1");
         Element child2 = doc.createElementNS(null, "child2");
-        Element child3 = doc.createElementNS(null, "child3");
         parent.appendChild(child1);
         parent.appendChild(child2);
-        parent.appendChild(child3);
         Element replacementChild = doc.createElementNS(null, "replacement");
-        parent.replaceChild(replacementChild, child2);
+        parent.replaceChild(replacementChild, child1);
+        assertSame(replacementChild, parent.getFirstChild());
+        assertSame(child2, parent.getLastChild());
+        assertNull(replacementChild.getPreviousSibling());
+        assertSame(child2, replacementChild.getNextSibling());
+        assertSame(replacementChild, child2.getPreviousSibling());
         NodeList children = parent.getChildNodes();
-        assertEquals(3, children.getLength());
-        assertSame(child1, children.item(0));
-        assertSame(replacementChild, children.item(1));
-        assertSame(child3, children.item(2));
+        assertEquals(2, children.getLength());
+        assertSame(replacementChild, children.item(0));
+        assertSame(child2, children.item(1));
     }
 }

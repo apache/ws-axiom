@@ -28,16 +28,16 @@ import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.testutils.conformance.Conformance;
+import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
     private final SAXParserFactory factory;
-    private final String file;
+    private final ConformanceTestFile file;
     
-    public SAXOMBuilderSAXParserTest(String name, SAXParserFactory factory, String file) {
+    public SAXOMBuilderSAXParserTest(String name, SAXParserFactory factory, ConformanceTestFile file) {
         super(name);
         this.factory = factory;
         this.file = file;
@@ -50,13 +50,13 @@ public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
         SAXOMBuilder builder = new SAXOMBuilder();
         reader.setContentHandler(builder);
         reader.setProperty("http://xml.org/sax/properties/lexical-handler", builder);
-        InputStream in = getTestResource(file);
+        InputStream in = file.getAsStream();
         try {
             reader.parse(new InputSource(in));
         } finally {
             in.close();
         }
-        in = getTestResource(file);
+        in = file.getAsStream();
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             builder.getDocument().serialize(baos);
@@ -70,9 +70,9 @@ public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
     }
     
     private static void addTests(TestSuite suite, SAXParserFactory factory, String name) throws Exception {
-        for (String file : Conformance.getConformanceTestFiles()) {
+        for (ConformanceTestFile file : ConformanceTestFile.getConformanceTestFiles()) {
             suite.addTest(new SAXOMBuilderSAXParserTest(
-                    file.substring(file.lastIndexOf('/')+1) + " - " + name, factory, file));
+                    file.getShortName() + " - " + name, factory, file));
         }
     }
     

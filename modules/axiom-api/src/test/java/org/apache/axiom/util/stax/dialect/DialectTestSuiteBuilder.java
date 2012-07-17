@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamConstants;
 
-import org.apache.axiom.testutils.conformance.Conformance;
+import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 
 public class DialectTestSuiteBuilder extends TestSuiteBuilder {
@@ -41,7 +41,7 @@ public class DialectTestSuiteBuilder extends TestSuiteBuilder {
     }
 
     private void addTests(StAXImplementation staxImpl) {
-        String[] conformanceTestFiles = Conformance.getConformanceTestFiles();
+        ConformanceTestFile[] conformanceTestFiles = ConformanceTestFile.getConformanceTestFiles();
         addTest(new TestCloseInputStream(staxImpl));
         addTest(new TestCloseReader(staxImpl));
         addTest(new TestCreateXMLEventWriterWithNullEncoding(staxImpl));

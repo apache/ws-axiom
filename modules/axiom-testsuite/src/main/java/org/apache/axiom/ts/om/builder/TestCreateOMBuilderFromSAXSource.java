@@ -30,13 +30,14 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.InputSource;
 
 public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
-    public TestCreateOMBuilderFromSAXSource(OMMetaFactory metaFactory, String file) {
+    public TestCreateOMBuilderFromSAXSource(OMMetaFactory metaFactory, ConformanceTestFile file) {
         super(metaFactory, file);
     }
 

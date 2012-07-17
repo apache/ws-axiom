@@ -28,15 +28,15 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.conformance.Conformance;
+import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 
 public class StreamSourceToOMResultTestCase extends AbstractTestCase {
     private final OMMetaFactory omMetaFactory;
     private final TransformerFactory transformerFactory;
-    private final String file;
+    private final ConformanceTestFile file;
     
     private StreamSourceToOMResultTestCase(OMMetaFactory omMetaFactory,
-            TransformerFactory transformerFactory, String name, String file) {
+            TransformerFactory transformerFactory, String name, ConformanceTestFile file) {
         super(name);
         this.omMetaFactory = omMetaFactory;
         this.transformerFactory = transformerFactory;
@@ -44,26 +44,24 @@ public class StreamSourceToOMResultTestCase extends AbstractTestCase {
     }
     
     protected void runTest() throws Throwable {
-        StreamSource source = new StreamSource(getTestResource(file));
+        StreamSource source = new StreamSource(file.getAsStream());
         OMResult result = new OMResult(omMetaFactory.getOMFactory());
         transformerFactory.newTransformer().transform(source, result);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         result.getDocument().serialize(out);
         assertXMLIdentical(compareXML(
-                toDocumentWithoutDTD(getTestResource(file)),
+                toDocumentWithoutDTD(file.getAsStream()),
                 toDocumentWithoutDTD(new ByteArrayInputStream(out.toByteArray()))), true);
     }
 
     public static TestSuite suite(OMMetaFactory omMetaFactory,
             TransformerFactory transformerFactory) throws Exception {
         TestSuite suite = new TestSuite();
-        String[] files = Conformance.getConformanceTestFiles();
+        ConformanceTestFile[] files = ConformanceTestFile.getConformanceTestFiles();
         for (int i=0; i<files.length; i++) {
-            String file = files[i];
-            int idx = file.lastIndexOf('/');
-            String name = file.substring(idx+1);
+            ConformanceTestFile file = files[i];
             suite.addTest(new StreamSourceToOMResultTestCase(omMetaFactory, transformerFactory,
-                    name, file));
+                    file.getShortName(), file));
         }
         return suite;
     }

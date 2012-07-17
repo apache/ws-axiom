@@ -127,6 +127,21 @@ public interface OMContainer extends OMSerializable {
     OMNode getFirstOMChild();
 
     /**
+     * Remove all children from this container. This method has the same effect as the following
+     * code:
+     * 
+     * <pre>
+     * for (Iterator it = container.getChildren(); it.hasNext(); ) {
+     *     it.next();
+     *     it.remove();
+     * }</pre>
+     * 
+     * However, the implementation may do this in an optimized way. In particular, if the node is
+     * incomplete, it may choose not to instantiate child node that would become unreachable anyway.
+     */
+    void removeChildren();
+    
+    /**
      * Serialize the node with caching enabled.
      * <p>
      * This method will always serialize the infoset as plain XML. In particular, any {@link OMText}

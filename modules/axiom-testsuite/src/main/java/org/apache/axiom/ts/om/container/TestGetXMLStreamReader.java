@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.ts.ConformanceTestCase;
 
@@ -38,7 +39,7 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
     private final OMContainerFactory containerFactory;
     private final boolean cache;
     
-    public TestGetXMLStreamReader(OMMetaFactory metaFactory, String file, OMContainerFactory containerFactory, boolean cache) {
+    public TestGetXMLStreamReader(OMMetaFactory metaFactory, ConformanceTestFile file, OMContainerFactory containerFactory, boolean cache) {
         super(metaFactory, file);
         this.containerFactory = containerFactory;
         this.cache = cache;

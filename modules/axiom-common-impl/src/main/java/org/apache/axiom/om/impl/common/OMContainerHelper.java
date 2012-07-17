@@ -175,4 +175,31 @@ public final class OMContainerHelper {
         }
         return firstChild;
     }
+    
+    public static void removeChildren(IContainer that) {
+        boolean updateState;
+        if (that.getState() == IParentNode.INCOMPLETE && that.getBuilder() != null) {
+            OMNode lastKnownChild = that.getLastKnownOMChild();
+            if (lastKnownChild != null) {
+                lastKnownChild.build();
+            }
+            ((StAXOMBuilder)that.getBuilder()).discard(that);
+            updateState = true;
+        } else {
+            updateState = false;
+        }
+        IChildNode child = (IChildNode)that.getFirstOMChildIfAvailable();
+        while (child != null) {
+            IChildNode nextSibling = (IChildNode)child.getNextOMSiblingIfAvailable();
+            child.setPreviousOMSibling(null);
+            child.setNextOMSibling(null);
+            child.setParent(null);
+            child = nextSibling;
+        }
+        that.setFirstChild(null);
+        that.setLastChild(null);
+        if (updateState) {
+            that.setComplete(true);
+        }
+    }
 }

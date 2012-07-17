@@ -40,6 +40,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -272,48 +273,60 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         }
     }
 
-    /**
-     * Method discard.
-     *
-     * @param element
-     * @throws OMException
-     */
+    // For compatibility only
     public void discard(OMElement element) throws OMException {
+        discard((OMContainer)element);
+        element.discard();
+    }
+    
+    public void discard(OMContainer container) throws OMException {
 
 //        if (element.isComplete() || !cache) {
 //            throw new OMException();
 //        }
         try {
 
-            // Calculate the depth of the element to be discarded. This determines how many
-            // END_ELEMENT events we need to consume.
-            int targetDepth = elementLevel-1;
-            OMContainerEx current = target;
-            while (current != element) {
-                if (current instanceof OMElement) {
-                    targetDepth--;
-                    current = (OMContainerEx)((OMElement)current).getParent();
-                } else {
-                    throw new OMException("Called discard for an element that is not being built by this builder");
+            if (container instanceof OMDocument) {
+                if (container != document) {
+                    throw new OMException("Called discard for a document that is not being built by this builder");
                 }
-            }
-            
-            while (elementLevel > targetDepth) {
-                parserNext();
+                while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
+                    // Just loop
+                }
+            } else {
+                // Calculate the depth of the element to be discarded. This determines how many
+                // END_ELEMENT events we need to consume.
+                int targetDepth = elementLevel-1;
+                OMContainerEx current = target;
+                while (current != container) {
+                    if (current instanceof OMElement) {
+                        targetDepth--;
+                        current = (OMContainerEx)((OMElement)current).getParent();
+                    } else {
+                        throw new OMException("Called discard for an element that is not being built by this builder");
+                    }
+                }
+                while (elementLevel > targetDepth) {
+                    parserNext();
+                }
             }
 
             // Mark nodes as discarded
-            current = target;
+            OMContainerEx current = target;
             while (true) {
                 current.discarded();
-                if (current == element) {
+                if (current == container) {
                     break;
                 }
                 current = (OMContainerEx)((OMElement)current).getParent();
             }
             
-            target = (OMContainerEx)element.getParent();
-            element.detach();
+            if (container instanceof OMDocument) {
+                target = null;
+                done = true;
+            } else {
+                target = (OMContainerEx)((OMElement)container).getParent();
+            }
         } catch (XMLStreamException e) {
             throw new OMException(e);
         } 

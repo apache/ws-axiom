@@ -16,28 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.dom.document;
+package org.apache.axiom.ts.dom.element;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.dom.DOMTestCase;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-public class TestCloneNode extends DOMTestCase {
-    private final ConformanceTestFile file;
-
-    public TestCloneNode(DocumentBuilderFactory dbf, ConformanceTestFile file) {
+/**
+ * Tests the behavior of {@link Node#replaceChild(Node, Node)}. This test covers the case where the
+ * child being replaced is the only child.
+ */
+public class TestReplaceChildSingle extends DOMTestCase {
+    public TestReplaceChildSingle(DocumentBuilderFactory dbf) {
         super(dbf);
-        this.file = file;
-        addTestProperty("file", file.getShortName());
     }
 
     protected void runTest() throws Throwable {
-        Document document = dbf.newDocumentBuilder().parse(file.getAsStream());
-        Document document2 = (Document)document.cloneNode(true);
-        XMLAssert.assertXMLIdentical(XMLUnit.compareXML(document, document2), true);
+        Document doc = dbf.newDocumentBuilder().newDocument();
+        Element parent = doc.createElementNS(null, "parent");
+        Element oldChild = doc.createElementNS(null, "oldChild");
+        parent.appendChild(oldChild);
+        Element newChild = doc.createElementNS(null, "newChild");
+        parent.replaceChild(newChild, oldChild);
+        NodeList children = parent.getChildNodes();
+        assertEquals(1, children.getLength());
+        assertSame(newChild, children.item(0));
     }
 }

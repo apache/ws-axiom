@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.OMContainerHelper;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
@@ -114,5 +115,10 @@ public class DocumentFragmentImpl extends RootNode implements
 
     public final Node getNextSibling() {
         return null;
+    }
+
+    // TODO: we really shouldn't implement IContainer, but only IParentNode
+    public void removeChildren() {
+        OMContainerHelper.removeChildren(this);
     }
 }
