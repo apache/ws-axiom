@@ -28,28 +28,22 @@ import org.w3c.dom.NodeList;
 
 /**
  * Tests the behavior of {@link Node#replaceChild(Node, Node)}. This test covers the case where the
- * child being replaced is not the first child.
+ * child being replaced is the only child.
  */
-public class TestReplaceChild extends DOMTestCase {
-    public TestReplaceChild(DocumentBuilderFactory dbf) {
+public class TestReplaceChildSingle extends DOMTestCase {
+    public TestReplaceChildSingle(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
     protected void runTest() throws Throwable {
         Document doc = dbf.newDocumentBuilder().newDocument();
         Element parent = doc.createElementNS(null, "parent");
-        Element child1 = doc.createElementNS(null, "child1");
-        Element child2 = doc.createElementNS(null, "child2");
-        Element child3 = doc.createElementNS(null, "child3");
-        parent.appendChild(child1);
-        parent.appendChild(child2);
-        parent.appendChild(child3);
-        Element replacementChild = doc.createElementNS(null, "replacement");
-        parent.replaceChild(replacementChild, child2);
+        Element oldChild = doc.createElementNS(null, "oldChild");
+        parent.appendChild(oldChild);
+        Element newChild = doc.createElementNS(null, "newChild");
+        parent.replaceChild(newChild, oldChild);
         NodeList children = parent.getChildNodes();
-        assertEquals(3, children.getLength());
-        assertSame(child1, children.item(0));
-        assertSame(replacementChild, children.item(1));
-        assertSame(child3, children.item(2));
+        assertEquals(1, children.getLength());
+        assertSame(newChild, children.item(0));
     }
 }

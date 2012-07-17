@@ -21,35 +21,32 @@ package org.apache.axiom.ts.dom.element;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
- * Tests the behavior of {@link Node#replaceChild(Node, Node)}. This test covers the case where the
- * child being replaced is not the first child.
+ * Tests the behavior of {@link Node#replaceChild(Node, Node)} if an attempt is made to replace a
+ * child with an ancestor of the node, i.e. if the replacement would create a cycle.
  */
-public class TestReplaceChild extends DOMTestCase {
-    public TestReplaceChild(DocumentBuilderFactory dbf) {
+public class TestReplaceChildWithAncestor extends DOMTestCase {
+    public TestReplaceChildWithAncestor(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
     protected void runTest() throws Throwable {
-        Document doc = dbf.newDocumentBuilder().newDocument();
-        Element parent = doc.createElementNS(null, "parent");
-        Element child1 = doc.createElementNS(null, "child1");
-        Element child2 = doc.createElementNS(null, "child2");
-        Element child3 = doc.createElementNS(null, "child3");
-        parent.appendChild(child1);
-        parent.appendChild(child2);
-        parent.appendChild(child3);
-        Element replacementChild = doc.createElementNS(null, "replacement");
-        parent.replaceChild(replacementChild, child2);
-        NodeList children = parent.getChildNodes();
-        assertEquals(3, children.getLength());
-        assertSame(child1, children.item(0));
-        assertSame(replacementChild, children.item(1));
-        assertSame(child3, children.item(2));
+        Document document = dbf.newDocumentBuilder().newDocument();
+        Element ancestor = document.createElementNS(null, "ancestor");
+        Element element = document.createElementNS(null, "element");
+        ancestor.appendChild(element);
+        Element child = document.createElementNS(null, "child");
+        element.appendChild(child);
+        try {
+            element.replaceChild(ancestor, child);
+            fail("Expected DOMException");
+        } catch (DOMException ex) {
+            assertEquals(DOMException.HIERARCHY_REQUEST_ERR, ex.code);
+        }
     }
 }

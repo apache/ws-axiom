@@ -375,7 +375,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         NodeImpl oldDomChild = (NodeImpl) oldChild;
 
         if (newChild == null) {
-            return this.removeChild(oldChild);
+            throw new IllegalArgumentException("newChild can't be null");
         }
 
         if (isAncestorOrSelf(newChild)) {

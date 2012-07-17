@@ -21,35 +21,32 @@ package org.apache.axiom.ts.dom.element;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 /**
- * Tests the behavior of {@link Node#replaceChild(Node, Node)}. This test covers the case where the
- * child being replaced is not the first child.
+ * Tests the behavior of {@link Node#replaceChild(Node, Node)} if <code>oldChild</code> is not a
+ * child.
  */
-public class TestReplaceChild extends DOMTestCase {
-    public TestReplaceChild(DocumentBuilderFactory dbf) {
+public class TestReplaceChildNotFound extends DOMTestCase {
+    public TestReplaceChildNotFound(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
     protected void runTest() throws Throwable {
-        Document doc = dbf.newDocumentBuilder().newDocument();
-        Element parent = doc.createElementNS(null, "parent");
-        Element child1 = doc.createElementNS(null, "child1");
-        Element child2 = doc.createElementNS(null, "child2");
-        Element child3 = doc.createElementNS(null, "child3");
-        parent.appendChild(child1);
-        parent.appendChild(child2);
-        parent.appendChild(child3);
-        Element replacementChild = doc.createElementNS(null, "replacement");
-        parent.replaceChild(replacementChild, child2);
-        NodeList children = parent.getChildNodes();
-        assertEquals(3, children.getLength());
-        assertSame(child1, children.item(0));
-        assertSame(replacementChild, children.item(1));
-        assertSame(child3, children.item(2));
+        Document document = dbf.newDocumentBuilder().newDocument();
+        Element root = document.createElementNS(null, "root");
+        root.appendChild(document.createElementNS(null, "child"));
+        Text node1 = document.createTextNode("test1");
+        Text node2 = document.createTextNode("test2");
+        try {
+            root.replaceChild(node2, node1);
+            fail("Expected DOMException");
+        } catch (DOMException ex) {
+            assertEquals(DOMException.NOT_FOUND_ERR, ex.code);
+        }
     }
 }
