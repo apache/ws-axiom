@@ -392,54 +392,61 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         while (!found && children.hasNext()) {
             NodeImpl tempNode = (NodeImpl) children.next();
             if (tempNode.equals(oldChild)) {
+                NodeImpl head; // The first child to insert
+                NodeImpl tail; // The last child to insert
+                
                 if (newChild instanceof DocumentFragmentImpl) {
                     DocumentFragmentImpl docFrag =
                             (DocumentFragmentImpl) newDomChild;
-                    NodeImpl child = (NodeImpl) docFrag.getFirstChild();
-                    this.replaceChild(child, oldChild);
+                    head = (NodeImpl)docFrag.getFirstChild();
+                    tail = (NodeImpl)docFrag.getLastChild();
                     
+                    NodeImpl child = (NodeImpl) docFrag.getFirstChild();
                     //set the parent of all kids to me
                     while(child != null) {
                         child.setParent(this, true);
                         child = child.internalGetNextSibling();
                     }
 
-                    this.lastChild = (NodeImpl)docFrag.getLastChild();
-                    
+                    docFrag.setFirstChild(null);
+                    docFrag.setLastChild(null);
                 } else {
-                    if (this.firstChild == oldDomChild) {
-
-                        if (this.firstChild.internalGetNextSibling() != null) {
-                            this.firstChild.internalGetNextSibling().internalSetPreviousSibling(newDomChild);
-                            newDomChild.internalSetNextSibling(this.firstChild.internalGetNextSibling());
-                        }
-
-                        //Cleanup the current first child
-                        this.firstChild.setParent(null, true);
-                        this.firstChild.internalSetNextSibling(null);
-
-                        //Set the new first child
-                        this.firstChild = newDomChild;
-                        
-
-                    } else {
-                        // We use getNextSibling here to force bulding the node if necessary
-                        newDomChild.internalSetNextSibling((NodeImpl)oldDomChild.getNextSibling());
-                        newDomChild.internalSetPreviousSibling(oldDomChild.internalGetPreviousSibling());
-
-                        oldDomChild.internalGetPreviousSibling().internalSetNextSibling(newDomChild);
-
-                        // If the old child is not the last
-                        if (oldDomChild.internalGetNextSibling() != null) {
-                            oldDomChild.internalGetNextSibling().internalSetPreviousSibling(newDomChild);
-                        } else {
-                            this.lastChild = newDomChild;
-                        }
-
-                    }
-
+                    head = newDomChild;
+                    tail = newDomChild;
                     newDomChild.setParent(this, true);
                 }
+                
+                if (this.firstChild == oldDomChild) {
+
+                    if (this.firstChild.internalGetNextSibling() != null) {
+                        this.firstChild.internalGetNextSibling().internalSetPreviousSibling(tail);
+                        tail.internalSetNextSibling(this.firstChild.internalGetNextSibling());
+                    }
+
+                    //Cleanup the current first child
+                    this.firstChild.setParent(null, true);
+                    this.firstChild.internalSetNextSibling(null);
+
+                    //Set the new first child
+                    this.firstChild = head;
+                    
+
+                } else {
+                    // We use getNextSibling here to force bulding the node if necessary
+                    tail.internalSetNextSibling((NodeImpl)oldDomChild.getNextSibling());
+                    head.internalSetPreviousSibling(oldDomChild.internalGetPreviousSibling());
+
+                    oldDomChild.internalGetPreviousSibling().internalSetNextSibling(head);
+
+                    // If the old child is not the last
+                    if (oldDomChild.internalGetNextSibling() != null) {
+                        oldDomChild.internalGetNextSibling().internalSetPreviousSibling(tail);
+                    } else {
+                        this.lastChild = newDomChild;
+                    }
+
+                }
+
                 found = true;
 
                 // remove the old child's references to this tree

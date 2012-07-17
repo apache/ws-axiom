@@ -28,10 +28,10 @@ import org.w3c.dom.NodeList;
 
 /**
  * Tests the behavior of {@link Node#replaceChild(Node, Node)}. This test covers the case where the
- * child being replaced is not the first child.
+ * child being replaced is neither the first nor the last child.
  */
-public class TestReplaceChild extends DOMTestCase {
-    public TestReplaceChild(DocumentBuilderFactory dbf) {
+public class TestReplaceChildMiddle extends DOMTestCase {
+    public TestReplaceChildMiddle(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 

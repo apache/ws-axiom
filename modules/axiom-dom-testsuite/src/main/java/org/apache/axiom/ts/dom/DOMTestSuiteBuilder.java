@@ -93,12 +93,16 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveFirstChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveLastChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestRemoveSingleChild(dbf));
-        addTest(new org.apache.axiom.ts.dom.element.TestReplaceChild(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildCyclic(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildFirst(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildFirstWithDocumentFragment(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildLast(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildLastWithDocumentFragment(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildMiddle(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildMiddleWithDocumentFragment(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildNotFound(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildNullNewChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildSingle(dbf));
-        addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildWithAncestor(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestReplaceChildWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSInUse(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSReplace(dbf));

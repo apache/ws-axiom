@@ -30,8 +30,8 @@ import org.w3c.dom.Node;
  * Tests the behavior of {@link Node#replaceChild(Node, Node)} if an attempt is made to replace a
  * child with an ancestor of the node, i.e. if the replacement would create a cycle.
  */
-public class TestReplaceChildWithAncestor extends DOMTestCase {
-    public TestReplaceChildWithAncestor(DocumentBuilderFactory dbf) {
+public class TestReplaceChildCyclic extends DOMTestCase {
+    public TestReplaceChildCyclic(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
