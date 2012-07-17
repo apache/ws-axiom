@@ -20,23 +20,23 @@ package org.apache.axiom.ts.dom.document;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.w3c.dom.Document;
 
 public class TestCloneNode extends DOMTestCase {
-    private final String file;
+    private final ConformanceTestFile file;
 
-    public TestCloneNode(DocumentBuilderFactory dbf, String file) {
+    public TestCloneNode(DocumentBuilderFactory dbf, ConformanceTestFile file) {
         super(dbf);
         this.file = file;
-        int idx = file.lastIndexOf('/');
-        addTestProperty("file", file.substring(idx+1));
+        addTestProperty("file", file.getShortName());
     }
 
     protected void runTest() throws Throwable {
-        Document document = dbf.newDocumentBuilder().parse(TestCloneNode.class.getClassLoader().getResourceAsStream(file));
+        Document document = dbf.newDocumentBuilder().parse(file.getAsStream());
         Document document2 = (Document)document.cloneNode(true);
         XMLAssert.assertXMLIdentical(XMLUnit.compareXML(document, document2), true);
     }

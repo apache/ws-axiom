@@ -30,14 +30,14 @@ import javax.xml.stream.XMLStreamWriter;
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
-import org.apache.axiom.testutils.conformance.Conformance;
+import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
 
 public class StreamingOMSerializerTest extends AbstractTestCase {
-    private final String file;
+    private final ConformanceTestFile file;
 
-    public StreamingOMSerializerTest(String name, String file) {
+    public StreamingOMSerializerTest(String name, ConformanceTestFile file) {
         super(name);
         this.file = file;
     }
@@ -51,25 +51,23 @@ public class StreamingOMSerializerTest extends AbstractTestCase {
         XMLOutputFactory outputFactory = dialect.normalize(XMLOutputFactory.newInstance());
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        XMLStreamReader reader = inputFactory.createXMLStreamReader(getTestResource(file));
+        XMLStreamReader reader = inputFactory.createXMLStreamReader(file.getAsStream());
         String encoding = reader.getEncoding();
         XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out, encoding);
         writer.writeStartDocument(encoding, reader.getVersion());
         serializer.serialize(reader, writer, false);
         writer.writeEndDocument();
         writer.flush();
-        assertXMLIdentical(compareXML(toDocumentWithoutDTD(getTestResource(file)),
+        assertXMLIdentical(compareXML(toDocumentWithoutDTD(file.getAsStream()),
                 toDocumentWithoutDTD(new ByteArrayInputStream(out.toByteArray()))), true);
     }
 
     public static TestSuite suite() throws Exception {
         TestSuite suite = new TestSuite();
-        String[] files = Conformance.getConformanceTestFiles();
+        ConformanceTestFile[] files = ConformanceTestFile.getConformanceTestFiles();
         for (int i=0; i<files.length; i++) {
-            String file = files[i];
-            int idx = file.lastIndexOf('/');
-            String name = file.substring(idx+1);
-            suite.addTest(new StreamingOMSerializerTest(name, file));
+            ConformanceTestFile file = files[i];
+            suite.addTest(new StreamingOMSerializerTest(file.getShortName(), file));
         }
         return suite;
     }

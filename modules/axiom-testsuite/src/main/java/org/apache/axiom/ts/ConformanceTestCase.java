@@ -20,8 +20,8 @@ package org.apache.axiom.ts;
 
 import java.io.InputStream;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 
 /**
  * Base class for test cases that are executed against the files from the conformance test set.
@@ -29,16 +29,15 @@ import org.apache.axiom.om.OMMetaFactory;
  * @see org.apache.axiom.om.AbstractTestCase#getConformanceTestFiles()
  */
 public abstract class ConformanceTestCase extends AxiomTestCase {
-    private final String file;
+    private final ConformanceTestFile file;
 
-    public ConformanceTestCase(OMMetaFactory metaFactory, String file) {
+    public ConformanceTestCase(OMMetaFactory metaFactory, ConformanceTestFile file) {
         super(metaFactory);
         this.file = file;
-        int idx = file.lastIndexOf('/');
-        addTestProperty("file", file.substring(idx+1));
+        addTestProperty("file", file.getShortName());
     }
 
     protected InputStream getFileAsStream() {
-        return AbstractTestCase.getTestResource(file);
+        return file.getAsStream();
     }
 }

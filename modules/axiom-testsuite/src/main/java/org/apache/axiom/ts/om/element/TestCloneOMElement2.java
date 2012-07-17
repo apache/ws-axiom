@@ -24,12 +24,13 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 
 public class TestCloneOMElement2 extends ConformanceTestCase {
-    public TestCloneOMElement2(OMMetaFactory metaFactory, String file) {
+    public TestCloneOMElement2(OMMetaFactory metaFactory, ConformanceTestFile file) {
         super(metaFactory, file);
     }
 

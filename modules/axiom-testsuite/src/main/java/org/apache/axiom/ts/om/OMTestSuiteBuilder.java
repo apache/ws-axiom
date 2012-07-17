@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.conformance.Conformance;
+import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 import org.apache.axiom.ts.om.container.OMContainerFactory;
 import org.apache.axiom.ts.om.container.OMElementFactory;
@@ -59,7 +59,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
     }
     
     protected void addTests() {
-        String[] conformanceFiles = Conformance.getConformanceTestFiles();
+        ConformanceTestFile[] conformanceFiles = ConformanceTestFile.getConformanceTestFiles();
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestEqualsHashCode(metaFactory));

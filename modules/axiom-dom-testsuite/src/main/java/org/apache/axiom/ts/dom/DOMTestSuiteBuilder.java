@@ -20,7 +20,7 @@ package org.apache.axiom.ts.dom;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.testutils.conformance.Conformance;
+import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 
 public class DOMTestSuiteBuilder extends TestSuiteBuilder {
@@ -31,7 +31,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
     }
     
     protected void addTests() {
-        String[] conformanceFiles = Conformance.getConformanceTestFiles();
+        ConformanceTestFile[] conformanceFiles = ConformanceTestFile.getConformanceTestFiles();
         addTest(new org.apache.axiom.ts.dom.attr.TestCloneNode(dbf, true));
         addTest(new org.apache.axiom.ts.dom.attr.TestCloneNode(dbf, false));
         addTest(new org.apache.axiom.ts.dom.attr.TestGetChildNodes(dbf));
