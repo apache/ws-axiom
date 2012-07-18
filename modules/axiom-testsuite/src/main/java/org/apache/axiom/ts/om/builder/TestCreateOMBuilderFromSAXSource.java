@@ -37,8 +37,15 @@ import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.InputSource;
 
 public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
-    public TestCreateOMBuilderFromSAXSource(OMMetaFactory metaFactory, ConformanceTestFile file) {
+    private final Boolean expandEntityReferences;
+    
+    public TestCreateOMBuilderFromSAXSource(OMMetaFactory metaFactory, ConformanceTestFile file,
+            Boolean expandEntityReferences) {
         super(metaFactory, file);
+        this.expandEntityReferences = expandEntityReferences;
+        if (expandEntityReferences != null) {
+            addTestProperty("expandEntityReferences", expandEntityReferences.toString());
+        }
     }
 
     protected void runTest() throws Throwable {
@@ -49,11 +56,18 @@ public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
         InputStream in = getFileAsStream();
         try {
             SAXSource source = new SAXSource(parser.getXMLReader(), new InputSource(in));
-            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
+            OMXMLParserWrapper builder;
+            if (expandEntityReferences == null) {
+                builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
+            } else {
+                builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source,
+                        expandEntityReferences.booleanValue());
+            }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             builder.getDocument().serialize(baos);
             XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
-                    AbstractTestCase.toDocumentWithoutDTD(getFileAsStream()),
+                    AbstractTestCase.toDocumentWithoutDTD(getFileAsStream(),
+                            expandEntityReferences == null ? true : expandEntityReferences.booleanValue()),
                     AbstractTestCase.toDocumentWithoutDTD(new ByteArrayInputStream(baos.toByteArray()))), true);
         } finally {
             in.close();

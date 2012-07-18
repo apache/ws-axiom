@@ -44,6 +44,8 @@ import java.util.List;
 import javax.xml.XMLConstants;
 
 public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, OMXMLParserWrapper {
+    private final boolean expandEntityReferences;
+    
     private OMDocument document;
     
     OMElement root = null;
@@ -58,8 +60,13 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, OMXM
     
     int textNodeType = OMNode.TEXT_NODE;
 
-    public SAXOMBuilder(OMFactory factory) {
+    public SAXOMBuilder(OMFactory factory, boolean expandEntityReferences) {
         this.factory = (OMFactoryEx)factory;
+        this.expandEntityReferences = expandEntityReferences;
+    }
+    
+    public SAXOMBuilder(OMFactory factory) {
+        this(factory, true);
     }
     
     public SAXOMBuilder() {

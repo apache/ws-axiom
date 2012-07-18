@@ -99,7 +99,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source) {
         if (source instanceof SAXSource) {
-            return new SAXOMXMLParserWrapper(omFactory, (SAXSource)source);
+            return createOMBuilder(omFactory, (SAXSource)source, true);
         } else if (source instanceof DOMSource) {
             return createOMBuilder(omFactory, (DOMSource)source, true);
         } else {
@@ -114,6 +114,11 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, DOMSource source,
             boolean expandEntityReferences) {
         return new StAXOMBuilder(omFactory, new DOMXMLStreamReader(((DOMSource)source).getNode(), expandEntityReferences));
+    }
+
+    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, SAXSource source,
+            boolean expandEntityReferences) {
+        return new SAXOMXMLParserWrapper(omFactory, (SAXSource)source);
     }
 
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
