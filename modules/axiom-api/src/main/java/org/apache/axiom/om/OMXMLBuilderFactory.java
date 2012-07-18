@@ -26,12 +26,14 @@ import javax.mail.internet.ParseException;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
 
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.w3c.dom.EntityReference;
 import org.xml.sax.InputSource;
 
 /**
@@ -293,6 +295,29 @@ public class OMXMLBuilderFactory {
     }
     
     /**
+     * Create an object model builder that reads a plain XML document from the provided
+     * {@link DOMSource}.
+     * 
+     * @param source
+     *            the source of the XML document
+     * @param expandEntityReferences
+     *            Determines how {@link EntityReference} nodes are handled:
+     *            <ul>
+     *            <li>If the parameter is <code>false</code> then a single {@link OMEntityReference}
+     *            will be created for each {@link EntityReference}. The child nodes of
+     *            {@link EntityReference} nodes are not taken into account.
+     *            <li>If the parameter is <code>true</code> then no {@link OMEntityReference} nodes
+     *            are created and the children of {@link EntityReference} nodes are converted and
+     *            inserted into the Axiom tree.
+     *            </ul>
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(DOMSource source, boolean expandEntityReferences) {
+        OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
+        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), source, expandEntityReferences);
+    }
+    
+    /**
      * Create an object model builder that reads an XML document from the provided {@link Source}
      * using a specified object model factory.
      * 
@@ -303,8 +328,33 @@ public class OMXMLBuilderFactory {
      * @return the builder
      */
     // TODO: if the source is a SAXSource or DOMSource and the document has a DTD, then Axiom will remove the DTD (or even fail); fix this and/or specify the behavior
+    // TODO: update Javadoc to explain relationship with the methods that take a DOMSource or SAXSource
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source) {
         return omFactory.getMetaFactory().createOMBuilder(omFactory, source);
+    }
+    
+    /**
+     * Create an object model builder that reads an XML document from the provided {@link DOMSource}
+     * using a specified object model factory.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param source
+     *            the source of the XML document
+     * @param expandEntityReferences
+     *            Determines how {@link EntityReference} nodes are handled:
+     *            <ul>
+     *            <li>If the parameter is <code>false</code> then a single {@link OMEntityReference}
+     *            will be created for each {@link EntityReference}. The child nodes of
+     *            {@link EntityReference} nodes are not taken into account.
+     *            <li>If the parameter is <code>true</code> then no {@link OMEntityReference} nodes
+     *            are created and the children of {@link EntityReference} nodes are converted and
+     *            inserted into the Axiom tree.
+     *            </ul>
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, DOMSource source, boolean expandEntityReferences) {
+        return omFactory.getMetaFactory().createOMBuilder(omFactory, source, expandEntityReferences);
     }
     
     /**

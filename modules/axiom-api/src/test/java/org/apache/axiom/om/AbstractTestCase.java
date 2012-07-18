@@ -88,9 +88,13 @@ public abstract class AbstractTestCase
     }
     
     public static Document toDocumentWithoutDTD(InputStream in) throws Exception {
+        return toDocumentWithoutDTD(in, false);
+    }
+    
+    public static Document toDocumentWithoutDTD(InputStream in, boolean replaceEntityReferences) throws Exception {
         // We use StAX to parse the document because in contrast to DOM, it allows references to undeclared entities.
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-        inputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
+        inputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.valueOf(replaceEntityReferences));
         XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
         XMLEventReader reader = inputFactory.createXMLEventReader(in);
         Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();

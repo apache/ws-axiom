@@ -36,23 +36,39 @@ import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 
 public class TestCreateOMBuilderFromDOMSource extends ConformanceTestCase {
-    public TestCreateOMBuilderFromDOMSource(OMMetaFactory metaFactory, ConformanceTestFile file) {
+    private final Boolean expandEntityReferences;
+    
+    public TestCreateOMBuilderFromDOMSource(OMMetaFactory metaFactory, ConformanceTestFile file,
+            Boolean expandEntityReferences) {
         super(metaFactory, file);
+        this.expandEntityReferences = expandEntityReferences;
+        if (expandEntityReferences != null) {
+            addTestProperty("expandEntityReferences", expandEntityReferences.toString());
+        }
     }
 
     protected void runTest() throws Throwable {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
+        // We never expand entity references during parsing, but we may do this later when
+        // converting DOM to OM.
         factory.setExpandEntityReferences(false);
         DocumentBuilder documentBuilder = factory.newDocumentBuilder();
         InputStream in = getFileAsStream();
         try {
             DOMSource source = new DOMSource(documentBuilder.parse(in));
-            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
+            OMXMLParserWrapper builder;
+            if (expandEntityReferences == null) {
+                builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
+            } else {
+                builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source,
+                        expandEntityReferences.booleanValue());
+            }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             builder.getDocument().serialize(baos);
             XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
-                    AbstractTestCase.toDocumentWithoutDTD(getFileAsStream()),
+                    AbstractTestCase.toDocumentWithoutDTD(getFileAsStream(),
+                            expandEntityReferences == null ? true : expandEntityReferences.booleanValue()),
                     AbstractTestCase.toDocumentWithoutDTD(new ByteArrayInputStream(baos.toByteArray()))), true);
         } finally {
             in.close();
