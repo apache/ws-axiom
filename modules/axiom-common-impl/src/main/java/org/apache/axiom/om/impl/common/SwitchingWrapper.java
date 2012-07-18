@@ -45,6 +45,7 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -276,12 +277,14 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getLocalName();
         } else {
-            if ((currentEvent == START_ELEMENT)
-                    || (currentEvent == END_ELEMENT)
-                    || (currentEvent == ENTITY_REFERENCE)) {
-                return ((OMElement) lastNode).getLocalName();
-            } else {
-                throw new IllegalStateException();
+            switch (currentEvent) {
+                case START_ELEMENT:
+                case END_ELEMENT:
+                    return ((OMElement)lastNode).getLocalName();
+                case ENTITY_REFERENCE:
+                    return ((OMEntityReference)lastNode).getName();
+                default:
+                    throw new IllegalStateException();
             }
         }
     }

@@ -59,6 +59,8 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, OMXM
     List prefixMappings = new ArrayList();
     
     int textNodeType = OMNode.TEXT_NODE;
+    
+    private boolean inEntityReference;
 
     public SAXOMBuilder(OMFactory factory, boolean expandEntityReferences) {
         this.factory = (OMFactoryEx)factory;
@@ -217,7 +219,9 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, OMXM
 
     public void characters(char[] ch, int start, int length)
             throws SAXException {
-        characterData(ch, start, length, textNodeType);
+        if (!inEntityReference) {
+            characterData(ch, start, length, textNodeType);
+        }
     }
     
     public void ignorableWhitespace(char[] ch, int start, int length)
@@ -242,9 +246,14 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, OMXM
     }
 
     public void startEntity(String name) throws SAXException {
+        if (!expandEntityReferences) {
+            addNode(factory.createOMEntityReference(getContainer(), name, true));
+            inEntityReference = true;
+        }
     }
 
     public void endEntity(String name) throws SAXException {
+        inEntityReference = false;
     }
 
     public OMDocument getDocument() {

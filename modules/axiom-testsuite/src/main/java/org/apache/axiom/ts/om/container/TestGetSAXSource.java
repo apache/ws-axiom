@@ -23,18 +23,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
-import org.apache.xalan.processor.TransformerFactoryImpl;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.xml.sax.XMLReader;
 
 public class TestGetSAXSource extends ConformanceTestCase {
     private final OMContainerFactory containerFactory;
@@ -53,15 +51,19 @@ public class TestGetSAXSource extends ConformanceTestCase {
         InputStream in = getFileAsStream();
         try {
             OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                    StAXParserConfiguration.PRESERVE_CDATA_SECTIONS, in);
+                    TEST_PARSER_CONFIGURATION, in);
             SAXSource source = containerFactory.getContainer(builder).getSAXSource(cache);
-            StreamResult result = new StreamResult(out);
-            new TransformerFactoryImpl().newTransformer().transform(source, result);
+            XMLReader xmlReader = source.getXMLReader();
+            SAXSerializer serializer = new SAXSerializer();
+            serializer.setOutputStream(out);
+            xmlReader.setContentHandler(serializer);
+            xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", serializer);
+            xmlReader.parse(source.getInputSource());
         } finally {
             in.close();
         }
         XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
-                AbstractTestCase.toDocumentWithoutDTD(getFileAsStream()),
-                AbstractTestCase.toDocumentWithoutDTD(new ByteArrayInputStream(out.toByteArray()))), true);
+                AbstractTestCase.toDocumentWithoutDTD(getFileAsStream(), false),
+                AbstractTestCase.toDocumentWithoutDTD(new ByteArrayInputStream(out.toByteArray()), false)), true);
     }
 }

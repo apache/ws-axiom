@@ -25,7 +25,6 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFault;
@@ -54,7 +53,7 @@ public class TestGetTextWithCDATA extends SOAPTestCase {
                     "</SOAP-ENV:Body>" +
                 "</SOAP-ENV:Envelope>";
         XMLStreamReader soap11Parser = StAXUtils.createXMLStreamReader(
-                StAXParserConfiguration.PRESERVE_CDATA_SECTIONS, new StringReader(soap11Fault));
+                TEST_PARSER_CONFIGURATION, new StringReader(soap11Fault));
         SOAPModelBuilder soap11Builder = OMXMLBuilderFactory.createStAXSOAPModelBuilder(metaFactory, soap11Parser);
         OMElement element = soap11Builder.getDocumentElement();
         element.build();

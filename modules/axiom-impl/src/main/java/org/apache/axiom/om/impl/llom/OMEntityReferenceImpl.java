@@ -36,8 +36,7 @@ public class OMEntityReferenceImpl extends OMLeafNode implements OMEntityReferen
     }
 
     public int getType() {
-        // TODO
-        throw new UnsupportedOperationException();
+        return OMNode.ENTITY_REFERENCE_NODE;
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
@@ -45,8 +44,7 @@ public class OMEntityReferenceImpl extends OMLeafNode implements OMEntityReferen
     }
 
     public String getName() {
-        // TODO
-        throw new UnsupportedOperationException();
+        return name;
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {

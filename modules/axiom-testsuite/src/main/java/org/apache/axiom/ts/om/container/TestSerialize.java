@@ -29,7 +29,6 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.commons.io.IOUtils;
@@ -54,7 +53,7 @@ public class TestSerialize extends ConformanceTestCase {
         InputStream in = getFileAsStream();
         try {
             OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                    StAXParserConfiguration.PRESERVE_CDATA_SECTIONS, in);
+                    TEST_PARSER_CONFIGURATION, in);
             try {
                 OMContainer container = containerFactory.getContainer(builder);
                 // We need to clone the InputSource objects so that we can dump their contents

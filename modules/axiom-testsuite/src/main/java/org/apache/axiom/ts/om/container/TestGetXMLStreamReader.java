@@ -51,9 +51,9 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
         InputStream in1 = getFileAsStream();
         InputStream in2 = getFileAsStream();
         try {
-            XMLStreamReader expected = StAXUtils.createXMLStreamReader(in1);
+            XMLStreamReader expected = StAXUtils.createXMLStreamReader(TEST_PARSER_CONFIGURATION, in1);
             try {
-                OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in2);
+                OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), TEST_PARSER_CONFIGURATION, in2);
                 try {
                     XMLStreamReader actual = containerFactory.getContainer(builder).getXMLStreamReader(cache);
                     new XMLStreamReaderComparator(containerFactory.filter(expected), containerFactory.filter(actual)).compare();

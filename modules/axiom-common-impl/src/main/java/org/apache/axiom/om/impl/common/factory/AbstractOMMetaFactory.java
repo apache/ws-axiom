@@ -113,12 +113,12 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
 
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, DOMSource source,
             boolean expandEntityReferences) {
-        return new StAXOMBuilder(omFactory, new DOMXMLStreamReader(((DOMSource)source).getNode(), expandEntityReferences));
+        return new StAXOMBuilder(omFactory, new DOMXMLStreamReader(source.getNode(), expandEntityReferences));
     }
 
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, SAXSource source,
             boolean expandEntityReferences) {
-        return new SAXOMXMLParserWrapper(omFactory, (SAXSource)source);
+        return new SAXOMXMLParserWrapper(omFactory, source, expandEntityReferences);
     }
 
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
