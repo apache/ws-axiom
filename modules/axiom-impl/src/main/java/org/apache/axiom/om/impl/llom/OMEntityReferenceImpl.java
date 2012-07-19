@@ -29,10 +29,13 @@ import org.apache.axiom.om.OMNode;
 
 public class OMEntityReferenceImpl extends OMLeafNode implements OMEntityReference {
     private final String name;
+    private final String replacementText;
 
-    public OMEntityReferenceImpl(OMContainer parent, String name, OMFactory factory, boolean fromBuilder) {
+    public OMEntityReferenceImpl(OMContainer parent, String name, String replacementText,
+            OMFactory factory, boolean fromBuilder) {
         super(parent, factory, fromBuilder);
         this.name = name;
+        this.replacementText = replacementText;
     }
 
     public int getType() {
@@ -45,6 +48,10 @@ public class OMEntityReferenceImpl extends OMLeafNode implements OMEntityReferen
 
     public String getName() {
         return name;
+    }
+
+    public String getReplacementText() {
+        return replacementText;
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {

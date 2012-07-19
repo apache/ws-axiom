@@ -409,6 +409,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 return ((OMComment)lastNode).getValue();
             case DTD:
                 return ((OMDocType)lastNode).getValue();
+            case ENTITY_REFERENCE:
+                return ((OMEntityReference)lastNode).getReplacementText();
             default:
                 throw new IllegalStateException();
         }

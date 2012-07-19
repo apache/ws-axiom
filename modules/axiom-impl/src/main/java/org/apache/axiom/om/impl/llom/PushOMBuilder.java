@@ -180,7 +180,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteEntityRef(String name) throws XMLStreamException {
-        factory.createOMEntityReference(parent, name, true);
+        factory.createOMEntityReference(parent, name, null, true);
     }
 
     protected void doWriteProcessingInstruction(String target, String data) {

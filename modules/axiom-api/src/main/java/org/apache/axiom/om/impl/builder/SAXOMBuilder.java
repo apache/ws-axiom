@@ -247,7 +247,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, OMXM
 
     public void startEntity(String name) throws SAXException {
         if (!expandEntityReferences) {
-            addNode(factory.createOMEntityReference(getContainer(), name, true));
+            addNode(factory.createOMEntityReference(getContainer(), name, null, true));
             inEntityReference = true;
         }
     }

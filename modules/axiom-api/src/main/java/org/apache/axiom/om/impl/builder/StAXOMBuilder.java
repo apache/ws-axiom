@@ -495,7 +495,7 @@ public class StAXOMBuilder extends StAXBuilder {
     }
 
     protected OMNode createEntityReference() {
-        return omfactory.createOMEntityReference(target, parser.getLocalName(), true);
+        return omfactory.createOMEntityReference(target, parser.getLocalName(), parser.getText(), true);
     }
     
     protected void endElement() {

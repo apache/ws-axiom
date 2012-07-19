@@ -57,7 +57,7 @@ public interface OMFactoryEx extends OMFactory {
     OMProcessingInstruction createOMProcessingInstruction(OMContainer parent,
             String piTarget, String piData, boolean fromBuilder);
     
-    OMEntityReference createOMEntityReference(OMContainer parent, String name, boolean fromBuilder);
+    OMEntityReference createOMEntityReference(OMContainer parent, String name, String replacementText, boolean fromBuilder);
     
     OMNode importNode(OMNode child);
 }
