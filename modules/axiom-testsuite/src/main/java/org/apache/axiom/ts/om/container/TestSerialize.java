@@ -63,7 +63,7 @@ public class TestSerialize extends ConformanceTestCase {
                 InputSource actual[] = duplicateInputSource(serializationMethod.serialize(container));
                 try {
                     XMLAssert.assertXMLIdentical(XMLUnit.compareXML(control[0], actual[0]), true);
-                } catch (AssertionFailedError ex) {
+                } catch (Throwable ex) {
                     System.out.println("Control:");
                     dumpInputSource(control[1]);
                     System.out.println("Actual:");
