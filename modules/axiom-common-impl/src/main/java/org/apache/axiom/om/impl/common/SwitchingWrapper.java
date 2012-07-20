@@ -326,15 +326,14 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getTextStart();
         } else {
-            if (currentEvent == DTD) {
-                // Not sure if that conforms to the StAX spec, but it is what Woodstox does
+            if (currentEvent == DTD || currentEvent == ENTITY_REFERENCE || !hasText()) {
+                // getTextStart() is not allowed for DTD and ENTITY_REFERENCE events; see
+                // the table in the Javadoc of XMLStreamReader
                 throw new IllegalStateException();
-            } else if (hasText()) {
+            } else {
                 // getTextCharacters always returns a new char array and the start
                 // index is therefore always 0
                 return 0;
-            } else {
-                throw new IllegalStateException();
             }
         }
     }
@@ -384,12 +383,16 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getText();
         } else {
-            if (currentEvent == DTD) {
-                // For a DTD event, only getText is allowed, but not getTextCharacters etc.
-                // (see the table in the Javadoc of XMLStreamReader)
-                return ((OMDocType)lastNode).getValue();
-            } else {
-                return getTextFromNode();
+            // For DTD and ENTITY_REFERENCE events, only getText() is allowed, but not getTextCharacters() etc.
+            // (see the table in the Javadoc of XMLStreamReader); therefore we handle these event here,
+            // and the other ones in getTextFromNode().
+            switch (currentEvent) {
+                case DTD:
+                    return ((OMDocType)lastNode).getValue();
+                case ENTITY_REFERENCE:
+                    return ((OMEntityReference)lastNode).getReplacementText();
+                default:
+                    return getTextFromNode();
             }
         }
     }
@@ -409,8 +412,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 return ((OMText)lastNode).getText();
             case COMMENT:
                 return ((OMComment)lastNode).getValue();
-            case ENTITY_REFERENCE:
-                return ((OMEntityReference)lastNode).getReplacementText();
             default:
                 throw new IllegalStateException();
         }
