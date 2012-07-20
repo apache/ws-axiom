@@ -310,9 +310,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     public int getTextLength() {
         if (parser != null) {
             return parser.getTextLength();
-        } else if (currentEvent == DTD) {
-            // Not sure if that conforms to the StAX spec, but it is what Woodstox does
-            throw new IllegalStateException();
         } else {
             return getTextFromNode().length();
         }
@@ -357,15 +354,10 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 throw new OMStreamingException(e);
             }
         } else {
-            if (currentEvent == DTD) {
-                // Not sure if that conforms to the StAX spec, but it is what Woodstox does
-                throw new IllegalStateException();
-            } else {
-                String text = getTextFromNode();
-                int copied = Math.min(length, text.length()-sourceStart);
-                text.getChars(sourceStart, sourceStart + copied, target, targetStart);
-                return copied;
-            }
+            String text = getTextFromNode();
+            int copied = Math.min(length, text.length()-sourceStart);
+            text.getChars(sourceStart, sourceStart + copied, target, targetStart);
+            return copied;
         }
     }
 
@@ -376,9 +368,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     public char[] getTextCharacters() {
         if (parser != null) {
             return parser.getTextCharacters();
-        } else if (currentEvent == DTD) {
-            // Not sure if that conforms to the StAX spec, but it is what Woodstox does
-            throw new IllegalStateException();
         } else {
             return getTextFromNode().toCharArray();
         }
@@ -392,10 +381,23 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getText();
         } else {
-            return getTextFromNode();
+            if (currentEvent == DTD) {
+                // For a DTD event, only getText is allowed, but not getTextCharacters etc.
+                // (see the table in the Javadoc of XMLStreamReader)
+                return ((OMDocType)lastNode).getValue();
+            } else {
+                return getTextFromNode();
+            }
         }
     }
     
+    /**
+     * Get the text for the current node. This methods applies to events for which all
+     * <code>getText</code> methods are valid. This excludes {@link XMLStreamConstants#DTD} events
+     * for which only {@link #getText()} is valid.
+     * 
+     * @return the text for the current node
+     */
     private String getTextFromNode() {
         switch (currentEvent) {
             case CHARACTERS:
@@ -404,8 +406,6 @@ class SwitchingWrapper extends AbstractXMLStreamReader
                 return ((OMText)lastNode).getText();
             case COMMENT:
                 return ((OMComment)lastNode).getValue();
-            case DTD:
-                return ((OMDocType)lastNode).getValue();
             default:
                 throw new IllegalStateException();
         }
