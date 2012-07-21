@@ -39,6 +39,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.attr.TestGetValueWithMultipleChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithoutNamespace(dbf));
+        addTest(new org.apache.axiom.ts.dom.builder.TestParseURI(dbf));
         addTest(new org.apache.axiom.ts.dom.builder.TestWhitespaceAroundDocumentElement(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAdoptNode(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAdoptNodeToSameDocument(dbf));
