@@ -18,6 +18,9 @@
  */
 package org.apache.axiom.om.impl.common.factory;
 
+import java.io.IOException;
+import java.net.URL;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
@@ -59,9 +62,12 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
             } else if (is.getCharacterStream() != null) {
                 return StAXUtils.createXMLStreamReader(configuration, is.getCharacterStream());
             } else {
-                throw new IllegalArgumentException();
+                String systemId = is.getSystemId();
+                return StAXUtils.createXMLStreamReader(configuration, systemId, new URL(systemId).openConnection().getInputStream());
             }
         } catch (XMLStreamException ex) {
+            throw new OMException(ex);
+        } catch (IOException ex) {
             throw new OMException(ex);
         }
     }

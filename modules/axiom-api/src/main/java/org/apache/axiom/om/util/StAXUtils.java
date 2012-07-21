@@ -240,6 +240,29 @@ public class StAXUtils {
         }
     }
 
+    public static XMLStreamReader createXMLStreamReader(StAXParserConfiguration configuration,
+            final String systemId, final InputStream in) throws XMLStreamException {
+        
+        final XMLInputFactory inputFactory = getXMLInputFactory(configuration);
+        try {
+            XMLStreamReader reader = 
+                (XMLStreamReader)
+                AccessController.doPrivileged(new PrivilegedExceptionAction() {
+                    public Object run() throws XMLStreamException {
+                        return inputFactory.createXMLStreamReader(systemId, in);
+                    }
+                }
+                );
+            
+            if (log.isDebugEnabled()) {
+                log.debug("XMLStreamReader is " + reader.getClass().getName());
+            }
+            return reader;
+        } catch (PrivilegedActionException pae) {
+            throw (XMLStreamException) pae.getException();
+        }
+    }
+
     public static XMLStreamReader createXMLStreamReader(Reader in)
             throws XMLStreamException {
         
