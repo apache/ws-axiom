@@ -456,8 +456,13 @@ public class StAXOMBuilder extends StAXBuilder {
         if (dtdReader == null) {
             throw new OMException("Cannot create OMDocType because the XMLStreamReader doesn't support the DTDReader extension");
         }
+        String internalSubset = getDTDText();
+        // Woodstox returns an empty string if there is no internal subset
+        if (internalSubset != null && internalSubset.length() == 0) {
+            internalSubset = null;
+        }
         return omfactory.createOMDocType(target, dtdReader.getRootName(), dtdReader.getPublicId(),
-                dtdReader.getSystemId(), getDTDText(), true);
+                dtdReader.getSystemId(), internalSubset, true);
     }
     
     /**

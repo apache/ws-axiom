@@ -30,7 +30,7 @@ public class TestWithParser2 extends DOMTestCase {
     }
 
     protected void runTest() throws Throwable {
-        Document document = dbf.newDocumentBuilder().parse(TestWithParser2.class.getResourceAsStream("test2.xml"));
+        Document document = dbf.newDocumentBuilder().parse(TestWithParser2.class.getResource("test2.xml").toString());
         DocumentType doctype = document.getDoctype();
         assertEquals("root", doctype.getName());
         assertEquals("dummy", doctype.getPublicId());
