@@ -28,8 +28,11 @@ public class TestCreateOMDocTypeWithoutParent extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMDocType dtd = metaFactory.getOMFactory().createOMDocType(null, "content");
+        OMDocType dtd = metaFactory.getOMFactory().createOMDocType(null, "root", "publicId", "systemId", "internalSubset");
         assertNull(dtd.getParent());
-        assertEquals("content", dtd.getValue());
+        assertEquals("root", dtd.getRootName());
+        assertEquals("publicId", dtd.getPublicId());
+        assertEquals("systemId", dtd.getSystemId());
+        assertEquals("internalSubset", dtd.getInternalSubset());
     }
 }
