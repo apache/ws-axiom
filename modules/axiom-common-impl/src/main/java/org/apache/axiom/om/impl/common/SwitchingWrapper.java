@@ -384,7 +384,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             if (currentEvent == DTD) {
                 // For a DTD event, only getText is allowed, but not getTextCharacters etc.
                 // (see the table in the Javadoc of XMLStreamReader)
-                return ((OMDocType)lastNode).getValue();
+                return ((OMDocType)lastNode).getInternalSubset();
             } else {
                 return getTextFromNode();
             }

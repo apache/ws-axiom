@@ -43,9 +43,6 @@ public class OMImplementationTest extends TestCase {
         //       but uses another charset encoding to serialize the document
         builder.exclude(TestSerialize.class, "(&(file=iso-8859-1.xml)(container=document))");
         
-        // TODO: this case is not working because Axiom doesn't serialize the DTD
-        builder.exclude(TestSerialize.class, "(&(file=spaces.xml)(container=document))");
-        
         // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
         builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
         

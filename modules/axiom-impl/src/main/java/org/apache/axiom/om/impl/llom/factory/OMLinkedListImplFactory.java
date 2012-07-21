@@ -305,8 +305,9 @@ public class OMLinkedListImplFactory implements OMFactoryEx {
         return createOMDocType(parent, content, false);
     }
 
-    public OMDocType createOMDocType(OMContainer parent, String content, boolean fromBuilder) {
-        return new OMDocTypeImpl(parent, content, this, fromBuilder);
+    public OMDocType createOMDocType(OMContainer parent, String rootName, String publicId,
+            String systemId, String internalSubset, boolean fromBuilder) {
+        return new OMDocTypeImpl(parent, rootName, publicId, systemId, internalSubset, this, fromBuilder);
     }
 
     /**

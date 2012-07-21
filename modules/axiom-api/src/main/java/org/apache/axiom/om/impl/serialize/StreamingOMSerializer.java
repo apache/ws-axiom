@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.serialize;
 
+import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerReader;
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
 import org.apache.axiom.om.OMDataSource;
@@ -193,6 +194,9 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                     } catch (Exception e) {
                         //TODO: log exceptions
                     }
+                    break;
+                case DTD:
+                    serializeDTD(reader, writer);
                 }
             }
             if (depth == 0) {
@@ -622,5 +626,19 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
         } catch (IOException ex) {
             throw new XMLStreamException("Error while reading data handler", ex);
         }
+    }
+
+    private void serializeDTD(XMLStreamReader reader, XMLStreamWriter writer) throws XMLStreamException {
+        DTDReader dtdReader;
+        try {
+            dtdReader = (DTDReader)reader.getProperty(DTDReader.PROPERTY);
+        } catch (IllegalArgumentException ex) {
+            dtdReader = null;
+        }
+        if (dtdReader == null) {
+            throw new XMLStreamException("Cannot serialize the DTD because the XMLStreamReader doesn't support the DTDReader extension");
+        }
+        XMLStreamWriterUtils.writeDTD(writer, dtdReader.getRootName(), dtdReader.getPublicId(),
+                dtdReader.getSystemId(), reader.getText());
     }
 }
