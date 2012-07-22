@@ -33,6 +33,7 @@ import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
+import org.xml.sax.InputSource;
 
 public class StreamingOMSerializerTest extends AbstractTestCase {
     private final ConformanceTestFile file;
@@ -58,8 +59,8 @@ public class StreamingOMSerializerTest extends AbstractTestCase {
         serializer.serialize(reader, writer, false);
         writer.writeEndDocument();
         writer.flush();
-        assertXMLIdentical(compareXML(toDocumentWithoutDTD(file.getAsStream()),
-                toDocumentWithoutDTD(new ByteArrayInputStream(out.toByteArray()))), true);
+        assertXMLIdentical(compareXML(new InputSource(file.getAsStream()),
+                new InputSource(new ByteArrayInputStream(out.toByteArray()))), true);
     }
 
     public static TestSuite suite() throws Exception {

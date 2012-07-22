@@ -16,15 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.ext.stax;
 
-package org.apache.axiom.om;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamReader;
 
-/** Interface OMDocType */
-public interface OMDocType extends OMNode {
+/**
+ * Optional interface implemented by {@link XMLStreamReader} implementations that provide additional
+ * data about {@link XMLStreamConstants#DTD} events.
+ * <p>
+ * All the requirements outlined in {@link org.apache.axiom.ext.stax} apply to this extension
+ * interface. In particular, to get a reference to the extension, the consumer MUST call
+ * {@link XMLStreamReader#getProperty(String)} with {@link #PROPERTY} as the property name.
+ */
+public interface DTDReader {
     /**
-     * Get the root name, i.e. the name immediately following the <tt>DOCTYPE</tt> keyword.
+     * The name of the property used to look up this extension interface from a
+     * {@link XMLStreamReader} implementation.
+     */
+    String PROPERTY = DTDReader.class.getName();
+    
+    /**
+     * Get the root name of the DTD, i.e. the name immediately following the <tt>DOCTYPE</tt> keyword.
      * 
      * @return the root name; must not be <code>null</code>
+     * @throws IllegalStateException
+     *             if the current event is not {@link XMLStreamConstants#DTD}
      */
     String getRootName();
 
@@ -33,6 +50,8 @@ public interface OMDocType extends OMNode {
      * 
      * @return the public ID, or <code>null</code> if there is no external subset or no public ID
      *         has been specified for the external subset
+     * @throws IllegalStateException
+     *             if the current event is not {@link XMLStreamConstants#DTD}
      */
     String getPublicId();
 
@@ -40,13 +59,8 @@ public interface OMDocType extends OMNode {
      * Get the system ID of the external subset.
      * 
      * @return the system ID, or <code>null</code> if there is no external subset
+     * @throws IllegalStateException
+     *             if the current event is not {@link XMLStreamConstants#DTD}
      */
     String getSystemId();
-    
-    /**
-     * Get the internal subset.
-     * 
-     * @return the internal subset, or <code>null</code> if there is none
-     */
-    String getInternalSubset();
 }

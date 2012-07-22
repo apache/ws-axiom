@@ -317,13 +317,25 @@ public interface OMFactory {
                                          String value);
 
     /**
-     * Creates DocType/DTD.
+     * Creates DTD (<tt>DOCTYPE</tt> declaration) node.
      *
      * @param parent
-     * @param content
-     * @return Returns doctype.
+     *            the parent to which the newly created text node will be added; this may be
+     *            <code>null</code>
+     * @param rootName
+     *            the root name, i.e. the name immediately following the <tt>DOCTYPE</tt> keyword
+     * @param publicId
+     *            the public ID of the external subset, or <code>null</code> if there is no external
+     *            subset or no public ID has been specified for the external subset
+     * @param systemId
+     *            the system ID of the external subset, or <code>null</code> if there is no external
+     *            subset
+     * @param internalSubset
+     *            the internal subset, or <code>null</code> if there is none
+     * @return the newly created {@link OMDocType} node
      */
-    OMDocType createOMDocType(OMContainer parent, String content);
+    OMDocType createOMDocType(OMContainer parent, String rootName, String publicId, String systemId,
+            String internalSubset);
 
     /**
      * Creates a PI.

@@ -35,6 +35,7 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -43,8 +44,33 @@ import java.util.List;
 
 import javax.xml.XMLConstants;
 
-public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, OMXMLParserWrapper {
+public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, DeclHandler, OMXMLParserWrapper {
     private OMDocument document;
+    
+    /**
+     * Stores the root name if there is a DTD.
+     */
+    private String dtdName;
+    
+    /**
+     * Stores the public ID if there is a DTD.
+     */
+    private String dtdPublicId;
+    
+    /**
+     * Stores the system ID if there is a DTD.
+     */
+    private String dtdSystemId;
+    
+    /**
+     * Stores the internal subset if there is a DTD.
+     */
+    private StringBuilder internalSubset;
+    
+    /**
+     * Flag indicating that the parser is processing the external subset.
+     */
+    private boolean inExternalSubset;
     
     OMElement root = null;
 
@@ -95,10 +121,101 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, OMXM
     }
 
     public void startDTD(String name, String publicId, String systemId) throws SAXException {
-//        addNode(factory.createOMDocType(getContainer(), ""));
+        dtdName = name;
+        dtdPublicId = publicId;
+        dtdSystemId = systemId;
+        internalSubset = new StringBuilder();
+    }
+
+    public void elementDecl(String name, String model) throws SAXException {
+        if (!inExternalSubset) {
+            internalSubset.append("<!ELEMENT ");
+            internalSubset.append(name);
+            internalSubset.append(' ');
+            internalSubset.append(model);
+            internalSubset.append(">\n");
+        }
+    }
+
+    public void attributeDecl(String eName, String aName, String type, String mode, String value)
+            throws SAXException {
+        if (!inExternalSubset) {
+            internalSubset.append("<!ATTLIST ");
+            internalSubset.append(eName);
+            internalSubset.append(' ');
+            internalSubset.append(aName);
+            internalSubset.append(' ');
+            internalSubset.append(type);
+            if (value != null) {
+                internalSubset.append(' ');
+                internalSubset.append(value);
+            }
+            internalSubset.append(">\n");
+        }
+    }
+
+    public void externalEntityDecl(String name, String publicId, String systemId) throws SAXException {
+        if (!inExternalSubset) {
+            internalSubset.append("<!ENTITY ");            
+            internalSubset.append(name);
+            if (publicId != null) {
+                internalSubset.append(" PUBLIC \"");
+                internalSubset.append(publicId);
+            } else {
+                internalSubset.append(" SYSTEM \"");
+                internalSubset.append(systemId);
+            }
+            internalSubset.append("\">\n");
+        }
+    }
+
+    public void internalEntityDecl(String name, String value) throws SAXException {
+        if (!inExternalSubset) {
+            internalSubset.append("<!ENTITY ");
+            internalSubset.append(name);
+            internalSubset.append(" \"");
+            internalSubset.append(value);
+            internalSubset.append("\">\n");
+        }
+    }
+
+    public void notationDecl(String name, String publicId, String systemId) throws SAXException {
+        if (!inExternalSubset) {
+            internalSubset.append("<!NOTATION ");            
+            internalSubset.append(name);
+            if (publicId != null) {
+                internalSubset.append(" PUBLIC \"");
+                internalSubset.append(publicId);
+            } else {
+                internalSubset.append(" SYSTEM \"");
+                internalSubset.append(systemId);
+            }
+            internalSubset.append("\">\n");
+        }
+    }
+
+    public void unparsedEntityDecl(String name, String publicId, String systemId, String notationName)
+            throws SAXException {
+        if (!inExternalSubset) {
+            internalSubset.append("<!ENTITY ");
+            internalSubset.append(name);
+            if (publicId != null) {
+                internalSubset.append(" PUBLIC \"");
+                internalSubset.append(publicId);
+            } else {
+                internalSubset.append(" SYSTEM \"");
+                internalSubset.append(systemId);
+            }
+            internalSubset.append("\" NDATA ");
+            internalSubset.append(notationName);
+            internalSubset.append(">\n");
+        }
     }
 
     public void endDTD() throws SAXException {
+        addNode(factory.createOMDocType(getContainer(), dtdName, dtdPublicId, dtdSystemId,
+                internalSubset.length() == 0 ? null : internalSubset.toString(), true));
+        internalSubset = null;
     }
 
     protected OMElement createNextElement(String localName) throws OMException {
@@ -235,9 +352,15 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, OMXM
     }
 
     public void startEntity(String name) throws SAXException {
+        if (name.equals("[dtd]")) {
+            inExternalSubset = true;
+        }
     }
 
     public void endEntity(String name) throws SAXException {
+        if (name.equals("[dtd]")) {
+            inExternalSubset = false;
+        }
     }
 
     public OMDocument getDocument() {

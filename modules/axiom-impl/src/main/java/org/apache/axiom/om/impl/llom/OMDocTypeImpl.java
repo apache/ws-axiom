@@ -24,23 +24,24 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 public class OMDocTypeImpl extends OMLeafNode implements OMDocType {
-    protected String value;
+    private final String rootName;
+    private final String publicId;
+    private final String systemId;
+    private final String internalSubset;
 
-    /**
-     * Constructor OMDocTypeImpl.
-     *
-     * @param parentNode
-     * @param contentText
-     */
-    public OMDocTypeImpl(OMContainer parentNode, String contentText,
-                         OMFactory factory, boolean fromBuilder) {
+    public OMDocTypeImpl(OMContainer parentNode, String rootName, String publicId, String systemId,
+            String internalSubset, OMFactory factory, boolean fromBuilder) {
         super(parentNode, factory, fromBuilder);
-        this.value = contentText;
+        this.rootName = rootName;
+        this.publicId = publicId;
+        this.systemId = systemId;
+        this.internalSubset = internalSubset;
     }
 
     public final int getType() {
@@ -48,28 +49,26 @@ public class OMDocTypeImpl extends OMLeafNode implements OMDocType {
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        writer.writeDTD(this.value);
+        XMLStreamWriterUtils.writeDTD(writer, rootName, publicId, systemId, internalSubset);
     }
 
-    /**
-     * Gets the value of this DocType.
-     *
-     * @return Returns String.
-     */
-    public String getValue() {
-        return value;
+    public String getRootName() {
+        return rootName;
     }
 
-    /**
-     * Sets the value of this DocType.
-     *
-     * @param text
-     */
-    public void setValue(String text) {
-        this.value = text;
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public String getInternalSubset() {
+        return internalSubset;
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        return factory.createOMDocType(targetParent, value);
+        return factory.createOMDocType(targetParent, rootName, publicId, systemId, internalSubset);
     }
 }

@@ -29,6 +29,7 @@ import junit.framework.TestSuite;
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
+import org.xml.sax.InputSource;
 
 public class StreamSourceToOMResultTestCase extends AbstractTestCase {
     private final OMMetaFactory omMetaFactory;
@@ -50,8 +51,8 @@ public class StreamSourceToOMResultTestCase extends AbstractTestCase {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         result.getDocument().serialize(out);
         assertXMLIdentical(compareXML(
-                toDocumentWithoutDTD(file.getAsStream()),
-                toDocumentWithoutDTD(new ByteArrayInputStream(out.toByteArray()))), true);
+                new InputSource(file.getAsStream()),
+                new InputSource(new ByteArrayInputStream(out.toByteArray()))), true);
     }
 
     public static TestSuite suite(OMMetaFactory omMetaFactory,

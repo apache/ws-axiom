@@ -312,13 +312,14 @@ public class OMDOMFactory implements OMFactoryEx {
         return new AttrImpl(null, localName, ns, value, this);
     }
 
-    public OMDocType createOMDocType(OMContainer parent, String content) {
-        return createOMDocType(parent, content, false);
+    public OMDocType createOMDocType(OMContainer parent, String rootName, String publicId,
+            String systemId, String internalSubset) {
+        return createOMDocType(parent, rootName, publicId, systemId, internalSubset, false);
     }
-    
-    public OMDocType createOMDocType(OMContainer parent, String content, boolean fromBuilder) {
-        DocumentTypeImpl docType = new DocumentTypeImpl(this);
-        docType.setValue(content);
+
+    public OMDocType createOMDocType(OMContainer parent, String rootName, String publicId,
+            String systemId, String internalSubset, boolean fromBuilder) {
+        DocumentTypeImpl docType = new DocumentTypeImpl(rootName, publicId, systemId, internalSubset, this);
         if (parent != null) {
             ((OMContainerEx)parent).addChild(docType, fromBuilder);
         }
@@ -403,8 +404,9 @@ public class OMDOMFactory implements OMFactoryEx {
             }
             case (OMNode.DTD_NODE): {
                 OMDocType importedDocType = (OMDocType) child;
-                OMDocType newDocType = createOMDocType(null, importedDocType.getValue());
-                return newDocType;
+                return createOMDocType(null, importedDocType.getRootName(),
+                        importedDocType.getPublicId(), importedDocType.getSystemId(),
+                        importedDocType.getInternalSubset());
             }
             default: {
                 throw new UnsupportedOperationException(

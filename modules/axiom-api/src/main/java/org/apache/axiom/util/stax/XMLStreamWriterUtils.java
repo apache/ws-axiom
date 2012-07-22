@@ -166,4 +166,47 @@ public class XMLStreamWriterUtils {
             writeBase64(writer, dataHandlerProvider.getDataHandler());
         }
     }
+    
+    /**
+     * Prepare the <tt>DOCTYPE</tt> declaration using the provided information and output it using
+     * {@link XMLStreamWriter#writeDTD(String)}.
+     * 
+     * @param writer
+     *            the stream writer to write the <tt>DOCTYPE</tt> declaration to
+     * @param rootName
+     *            the root name, i.e. the name immediately following the <tt>DOCTYPE</tt> keyword
+     * @param publicId
+     *            the public ID of the external subset, or <code>null</code> if there is no external
+     *            subset or no public ID has been specified for the external subset
+     * @param systemId
+     *            the system ID of the external subset, or <code>null</code> if there is no external
+     *            subset
+     * @param internalSubset
+     *            the internal subset, or <code>null</code> if there is none
+     * @throws XMLStreamException
+     *             if an error occurs while writing to the stream
+     */
+    public static void writeDTD(XMLStreamWriter writer, String rootName, String publicId,
+            String systemId, String internalSubset) throws XMLStreamException {
+        StringBuilder buffer = new StringBuilder("<!DOCTYPE ");
+        buffer.append(rootName);
+        if (publicId != null) {
+            buffer.append(" PUBLIC \"");
+            buffer.append(publicId);
+            buffer.append("\" \"");
+            buffer.append(systemId);
+            buffer.append("\"");
+        } else if (systemId != null) {
+            buffer.append(" SYSTEM \"");
+            buffer.append(systemId);
+            buffer.append("\"");
+        }
+        if (internalSubset != null) {
+            buffer.append(" [");
+            buffer.append(internalSubset);
+            buffer.append("]");
+        }
+        buffer.append(">");
+        writer.writeDTD(buffer.toString());
+    }
 }

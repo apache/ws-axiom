@@ -68,6 +68,8 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithStylesheet(dbf, net.sf.saxon.TransformerFactoryImpl.class));
         addTest(new org.apache.axiom.ts.dom.document.TestValidator(dbf));
         addTest(new org.apache.axiom.ts.dom.documentfragment.TestCloneNode(dbf));
+        addTest(new org.apache.axiom.ts.dom.documenttype.TestWithParser1(dbf));
+        addTest(new org.apache.axiom.ts.dom.documenttype.TestWithParser2(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAppendChild(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAppendChildCyclic(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAppendChildSelf(dbf));

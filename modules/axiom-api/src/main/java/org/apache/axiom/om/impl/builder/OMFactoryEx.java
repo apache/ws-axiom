@@ -51,7 +51,8 @@ public interface OMFactoryEx extends OMFactory {
     
     OMComment createOMComment(OMContainer parent, String content, boolean fromBuilder);
     
-    OMDocType createOMDocType(OMContainer parent, String content, boolean fromBuilder);
+    OMDocType createOMDocType(OMContainer parent, String rootName, String publicId, String systemId,
+            String internalSubset, boolean fromBuilder);
     
     OMProcessingInstruction createOMProcessingInstruction(OMContainer parent,
             String piTarget, String piData, boolean fromBuilder);

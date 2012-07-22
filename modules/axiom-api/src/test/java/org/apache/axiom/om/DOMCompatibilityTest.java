@@ -50,7 +50,10 @@ public class DOMCompatibilityTest extends TestCase {
                                         new MethodSignature("getNamespaceURI", new Class[0]),
                                         new MethodSignature("getLocalName", new Class[0]) }));
         suite.addTest(new MethodCollisionTestCase(OMComment.class, Comment.class));
-        suite.addTest(new MethodCollisionTestCase(OMDocType.class, DocumentType.class));
+        suite.addTest(new MethodCollisionTestCase(OMDocType.class, DocumentType.class,
+                new MethodSignature[] { new MethodSignature("getPublicId", new Class[0]),
+                                        new MethodSignature("getSystemId", new Class[0]),
+                                        new MethodSignature("getInternalSubset", new Class[0]) }));
         suite.addTest(new MethodCollisionTestCase(OMDocument.class, Document.class));
         suite.addTest(new MethodCollisionTestCase(OMProcessingInstruction.class, ProcessingInstruction.class,
                 new MethodSignature[] { new MethodSignature("getTarget", new Class[0]) }));

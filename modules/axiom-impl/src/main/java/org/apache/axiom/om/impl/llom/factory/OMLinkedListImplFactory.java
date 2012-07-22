@@ -294,19 +294,14 @@ public class OMLinkedListImplFactory implements OMFactoryEx {
         return new OMAttributeImpl(localName, ns, value, this);
     }
 
-    /**
-     * Creates DocType/DTD.
-     *
-     * @param parent
-     * @param content
-     * @return Returns doctype.
-     */
-    public OMDocType createOMDocType(OMContainer parent, String content) {
-        return createOMDocType(parent, content, false);
+    public OMDocType createOMDocType(OMContainer parent, String rootName, String publicId,
+            String systemId, String internalSubset) {
+        return createOMDocType(parent, rootName, publicId, systemId, internalSubset, false);
     }
 
-    public OMDocType createOMDocType(OMContainer parent, String content, boolean fromBuilder) {
-        return new OMDocTypeImpl(parent, content, this, fromBuilder);
+    public OMDocType createOMDocType(OMContainer parent, String rootName, String publicId,
+            String systemId, String internalSubset, boolean fromBuilder) {
+        return new OMDocTypeImpl(parent, rootName, publicId, systemId, internalSubset, this, fromBuilder);
     }
 
     /**
@@ -401,7 +396,9 @@ public class OMLinkedListImplFactory implements OMFactoryEx {
             }
             case (OMNode.DTD_NODE) : {
                 OMDocType importedDocType = (OMDocType) child;
-                return createOMDocType(null, importedDocType.getValue());
+                return createOMDocType(null, importedDocType.getRootName(),
+                        importedDocType.getPublicId(), importedDocType.getSystemId(),
+                        importedDocType.getInternalSubset());
             }
             default: {
                 throw new UnsupportedOperationException(

@@ -25,7 +25,6 @@ import java.io.InputStream;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -35,6 +34,7 @@ import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.xalan.processor.TransformerFactoryImpl;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.xml.sax.InputSource;
 
 public class TestGetSAXSource extends ConformanceTestCase {
     private final OMContainerFactory containerFactory;
@@ -61,7 +61,7 @@ public class TestGetSAXSource extends ConformanceTestCase {
             in.close();
         }
         XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
-                AbstractTestCase.toDocumentWithoutDTD(getFileAsStream()),
-                AbstractTestCase.toDocumentWithoutDTD(new ByteArrayInputStream(out.toByteArray()))), true);
+                containerFactory.getControl(getFileAsStream()),
+                new InputSource(new ByteArrayInputStream(out.toByteArray()))), true);
     }
 }
