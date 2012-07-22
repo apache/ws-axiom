@@ -24,15 +24,19 @@ import javax.xml.transform.sax.SAXSource;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.serialize.OMXMLReader;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.DTDHandler;
 import org.xml.sax.InputSource;
+import org.xml.sax.ext.DeclHandler;
+import org.xml.sax.ext.LexicalHandler;
 
 /**
  * Implementation of {@link javax.xml.transform.Source} for AXIOM.
  * The implementation is based on {@link SAXSource} and directly transforms an AXIOM
  * tree into a stream of SAX events using {@link OMXMLReader}.
  * <p>
- * Note that {@link org.apache.axiom.om.OMDocType} nodes are not supported and will be
- * silently skipped.
+ * Note that this class only supports {@link ContentHandler} and {@link LexicalHandler}.
+ * {@link DTDHandler} and {@link DeclHandler} are not supported.
  * <p>
  * <b>NOTE: As of version 1.2.13, application code should use
  * {@link OMContainer#getSAXSource(boolean)} instead of instantiating this class directly.</b>

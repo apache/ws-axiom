@@ -29,6 +29,7 @@ import java.util.Set;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -38,17 +39,20 @@ import org.apache.axiom.om.OMText;
 import org.apache.axiom.util.sax.AbstractXMLReader;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
+import org.xml.sax.DTDHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.ext.DeclHandler;
+import org.xml.sax.ext.LexicalHandler;
 
 /**
  * SAX {@link XMLReader} implementation that traverses a given OM tree and invokes the
  * callback methods on the configured {@link ContentHandler}. This can be used to
  * serialize an Axiom tree to SAX.
  * <p>
- * Note that this class doesn't support serializing {@link org.apache.axiom.om.OMDocType}
- * nodes. They will be silently skipped.
+ * Note that this class only supports {@link ContentHandler} and {@link LexicalHandler}.
+ * {@link DTDHandler} and {@link DeclHandler} are not supported.
  * <p>
  * This class can also generate SAX events for a subtree. This is the case if the
  * element passed to the constructor is not the root element of the document. In this
@@ -177,6 +181,13 @@ public class OMXMLReader extends AbstractXMLReader {
         for (Iterator it = parent.getChildren(); it.hasNext(); ) {
             OMNode node = (OMNode)it.next();
             switch (node.getType()) {
+                case OMNode.DTD_NODE:
+                    if (lexicalHandler != null) {
+                        OMDocType doctype = (OMDocType)node;
+                        lexicalHandler.startDTD(doctype.getRootName(), doctype.getPublicId(), doctype.getSystemId());
+                        lexicalHandler.endDTD();
+                    }
+                    break;
                 case OMNode.ELEMENT_NODE:
                     generateEvents((OMElement)node);
                     break;
