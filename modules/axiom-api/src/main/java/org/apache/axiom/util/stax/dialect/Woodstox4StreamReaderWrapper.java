@@ -28,10 +28,9 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.ext.stax.CharacterDataReader;
 import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
-import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 import org.codehaus.stax2.XMLStreamReader2;
 
-class Woodstox4StreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader, CharacterDataReader {
+class Woodstox4StreamReaderWrapper extends StAX2StreamReaderWrapper implements DelegatingXMLStreamReader, CharacterDataReader {
     public Woodstox4StreamReaderWrapper(XMLStreamReader reader) {
         super(reader);
     }

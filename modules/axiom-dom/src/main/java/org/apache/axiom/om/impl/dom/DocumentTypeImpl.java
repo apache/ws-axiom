@@ -25,14 +25,23 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.apache.axiom.util.stax.XMLStreamWriterUtils;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;
 
 public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocType, OMNodeEx {
-    private String value;
+    private final String rootName;
+    private final String publicId;
+    private final String systemId;
+    private final String internalSubset;
     
-    public DocumentTypeImpl(OMFactory factory) {
+    public DocumentTypeImpl(String rootName, String publicId, String systemId,
+            String internalSubset, OMFactory factory) {
         super(factory);
+        this.rootName = rootName;
+        this.publicId = publicId;
+        this.systemId = systemId;
+        this.internalSubset = internalSubset;
     }
 
     public String getNodeName() {
@@ -44,7 +53,7 @@ public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocTyp
     }
 
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
-        throw new UnsupportedOperationException();
+        XMLStreamWriterUtils.writeDTD(writer, rootName, publicId, systemId, internalSubset);
     }
 
     public int getType() {
@@ -56,12 +65,15 @@ public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocTyp
     }
 
     public String getInternalSubset() {
-        throw new UnsupportedOperationException();
+        return internalSubset;
     }
 
     public String getName() {
-        // TODO Auto-generated method stub
-        return null;
+        return rootName;
+    }
+
+    public String getRootName() {
+        return rootName;
     }
 
     public NamedNodeMap getNotations() {
@@ -69,24 +81,14 @@ public class DocumentTypeImpl extends LeafNode implements DocumentType, OMDocTyp
     }
 
     public String getPublicId() {
-        throw new UnsupportedOperationException();
+        return publicId;
     }
 
     public String getSystemId() {
-        throw new UnsupportedOperationException();
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String text) {
-        value = text;
+        return systemId;
     }
 
     LeafNode createClone() {
-        DocumentTypeImpl clone = new DocumentTypeImpl(factory);
-        clone.setValue(value);
-        return clone;
+        return new DocumentTypeImpl(rootName, publicId, systemId, internalSubset, factory);
     }
 }

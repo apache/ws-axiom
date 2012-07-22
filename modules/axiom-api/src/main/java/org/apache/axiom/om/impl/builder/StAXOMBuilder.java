@@ -19,6 +19,7 @@
 
 package org.apache.axiom.om.impl.builder;
 
+import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
@@ -446,10 +447,22 @@ public class StAXOMBuilder extends StAXBuilder {
      * @throws OMException
      */
     protected OMNode createDTD() throws OMException {
-        if (!parser.hasText()) {
-            return null;
+        DTDReader dtdReader;
+        try {
+            dtdReader = (DTDReader)parser.getProperty(DTDReader.PROPERTY);
+        } catch (IllegalArgumentException ex) {
+            dtdReader = null;
         }
-        return omfactory.createOMDocType(target, getDTDText(), true);
+        if (dtdReader == null) {
+            throw new OMException("Cannot create OMDocType because the XMLStreamReader doesn't support the DTDReader extension");
+        }
+        String internalSubset = getDTDText();
+        // Woodstox returns an empty string if there is no internal subset
+        if (internalSubset != null && internalSubset.length() == 0) {
+            internalSubset = null;
+        }
+        return omfactory.createOMDocType(target, dtdReader.getRootName(), dtdReader.getPublicId(),
+                dtdReader.getSystemId(), internalSubset, true);
     }
     
     /**

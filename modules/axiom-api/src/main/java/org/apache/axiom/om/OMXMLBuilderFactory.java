@@ -356,7 +356,6 @@ public class OMXMLBuilderFactory {
      *            the source of the XML document
      * @return the builder
      */
-    // TODO: if the source is a SAXSource or DOMSource and the document has a DTD, then Axiom will remove the DTD (or even fail); fix this and/or specify the behavior
     // TODO: update Javadoc to explain relationship with the methods that take a DOMSource or SAXSource
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source) {
         return omFactory.getMetaFactory().createOMBuilder(omFactory, source);

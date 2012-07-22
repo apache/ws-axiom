@@ -16,23 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.om.factory;
+package org.apache.axiom.ts.dom.builder;
 
-import org.apache.axiom.om.OMDocType;
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.AxiomTestCase;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-public class TestCreateOMDocTypeWithoutParent extends AxiomTestCase {
-    public TestCreateOMDocTypeWithoutParent(OMMetaFactory metaFactory) {
-        super(metaFactory);
+import org.apache.axiom.ts.dom.DOMTestCase;
+import org.w3c.dom.Document;
+
+/**
+ * Tests {@link DocumentBuilder#parse(String)}.
+ */
+public class TestParseURI extends DOMTestCase {
+    public TestParseURI(DocumentBuilderFactory dbf) {
+        super(dbf);
     }
 
     protected void runTest() throws Throwable {
-        OMDocType dtd = metaFactory.getOMFactory().createOMDocType(null, "root", "publicId", "systemId", "internalSubset");
-        assertNull(dtd.getParent());
-        assertEquals("root", dtd.getRootName());
-        assertEquals("publicId", dtd.getPublicId());
-        assertEquals("systemId", dtd.getSystemId());
-        assertEquals("internalSubset", dtd.getInternalSubset());
+        DocumentBuilder builder = dbf.newDocumentBuilder();
+        Document document = builder.parse(TestParseURI.class.getResource("test.xml").toString());
+        assertEquals("root", document.getDocumentElement().getLocalName());
     }
 }

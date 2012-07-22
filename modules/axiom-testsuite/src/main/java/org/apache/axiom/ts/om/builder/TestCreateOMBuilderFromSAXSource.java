@@ -26,7 +26,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.sax.SAXSource;
 
-import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -66,9 +65,8 @@ public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             builder.getDocument().serialize(baos);
             XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
-                    AbstractTestCase.toDocumentWithoutDTD(getFileAsStream(),
-                            expandEntityReferences == null ? true : expandEntityReferences.booleanValue()),
-                    AbstractTestCase.toDocumentWithoutDTD(new ByteArrayInputStream(baos.toByteArray()))), true);
+                    new InputSource(getFileAsStream()),
+                    new InputSource(new ByteArrayInputStream(baos.toByteArray()))), true);
         } finally {
             in.close();
         }

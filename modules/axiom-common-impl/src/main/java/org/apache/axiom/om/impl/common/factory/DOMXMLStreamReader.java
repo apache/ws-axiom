@@ -23,14 +23,16 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.util.stax.AbstractXMLStreamReader;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 
-class DOMXMLStreamReader extends AbstractXMLStreamReader {
+class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     private final Node root;
     private final boolean expandEntityReferences;
     private Node node;
@@ -49,7 +51,11 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader {
     }
 
     public Object getProperty(String name) throws IllegalArgumentException {
-        return null;
+        if (DTDReader.PROPERTY.equals(name)) {
+            return this;
+        } else {
+            return null;
+        }
     }
 
     public int next() throws XMLStreamException {
@@ -81,8 +87,7 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader {
                     break;
                 case Node.DOCUMENT_TYPE_NODE:
                     event = DTD;
-                    // There is no meaningful way to convert a DOM doctype node to StAX; skip the node
-                    continue;
+                    break;
                 case Node.ELEMENT_NODE:
                     if (visited) {
                         event = END_ELEMENT;
@@ -138,6 +143,18 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader {
 
     public boolean isStandalone() {
         return ((Document)node).getXmlStandalone();
+    }
+
+    public String getRootName() {
+        return ((DocumentType)node).getName();
+    }
+
+    public String getPublicId() {
+        return ((DocumentType)node).getPublicId();
+    }
+
+    public String getSystemId() {
+        return ((DocumentType)node).getSystemId();
     }
 
     public String getLocalName() {
@@ -236,7 +253,11 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader {
     }
 
     public String getText() {
-        return node.getNodeValue();
+        if (event == DTD) {
+            return ((DocumentType)node).getInternalSubset();
+        } else {
+            return node.getNodeValue();
+        }
     }
 
     public String getPITarget() {

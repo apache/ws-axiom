@@ -388,7 +388,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             // and the other ones in getTextFromNode().
             switch (currentEvent) {
                 case DTD:
-                    return ((OMDocType)lastNode).getValue();
+                    return ((OMDocType)lastNode).getInternalSubset();
                 case ENTITY_REFERENCE:
                     return ((OMEntityReference)lastNode).getReplacementText();
                 default:
