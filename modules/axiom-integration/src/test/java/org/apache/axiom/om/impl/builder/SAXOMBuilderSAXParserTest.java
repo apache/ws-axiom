@@ -49,7 +49,9 @@ public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
         XMLReader reader = factory.newSAXParser().getXMLReader();
         SAXOMBuilder builder = new SAXOMBuilder();
         reader.setContentHandler(builder);
+        reader.setDTDHandler(builder);
         reader.setProperty("http://xml.org/sax/properties/lexical-handler", builder);
+        reader.setProperty("http://xml.org/sax/properties/declaration-handler", builder);
         InputStream in = file.getAsStream();
         try {
             reader.parse(new InputSource(in));
@@ -62,8 +64,8 @@ public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
             builder.getDocument().serialize(baos);
             XMLUnit.setIgnoreAttributeOrder(true);
             assertXMLIdentical(compareXML(
-                    toDocumentWithoutDTD(in),
-                    toDocumentWithoutDTD(new ByteArrayInputStream(baos.toByteArray()))), true);
+                    new InputSource(in),
+                    new InputSource(new ByteArrayInputStream(baos.toByteArray()))), true);
         } finally {
             in.close();
         }
