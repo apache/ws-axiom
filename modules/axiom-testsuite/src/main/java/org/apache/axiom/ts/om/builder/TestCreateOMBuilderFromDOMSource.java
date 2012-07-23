@@ -29,6 +29,7 @@ import javax.xml.transform.dom.DOMSource;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.custommonkey.xmlunit.XMLAssert;
@@ -66,9 +67,10 @@ public class TestCreateOMBuilderFromDOMSource extends ConformanceTestCase {
             }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             builder.getDocument().serialize(baos);
-            XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
-                    new InputSource(getFileAsStream()),
-                    new InputSource(new ByteArrayInputStream(baos.toByteArray()))), true);
+            XMLAssertEx.assertXMLIdentical(
+                    getFileAsStream(),
+                    new ByteArrayInputStream(baos.toByteArray()),
+                    expandEntityReferences == null ? false : expandEntityReferences.booleanValue());
         } finally {
             in.close();
         }

@@ -61,6 +61,10 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+        </dependency>
+        <dependency>
             <!-- We use this only for LDAP like filters -->
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
