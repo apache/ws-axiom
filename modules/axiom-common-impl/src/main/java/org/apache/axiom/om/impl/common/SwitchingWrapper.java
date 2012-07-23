@@ -388,7 +388,9 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             // and the other ones in getTextFromNode().
             switch (currentEvent) {
                 case DTD:
-                    return ((OMDocType)lastNode).getInternalSubset();
+                    String internalSubset = ((OMDocType)lastNode).getInternalSubset();
+                    // Woodstox returns the empty string if there is no internal subset
+                    return internalSubset != null ? internalSubset : "";
                 case ENTITY_REFERENCE:
                     return ((OMEntityReference)lastNode).getReplacementText();
                 default:

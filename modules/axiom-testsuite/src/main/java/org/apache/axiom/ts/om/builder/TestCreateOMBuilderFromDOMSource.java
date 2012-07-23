@@ -20,7 +20,6 @@ package org.apache.axiom.ts.om.builder;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,9 +31,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
-import org.xml.sax.InputSource;
 
 public class TestCreateOMBuilderFromDOMSource extends ConformanceTestCase {
     private final Boolean expandEntityReferences;
@@ -55,24 +51,19 @@ public class TestCreateOMBuilderFromDOMSource extends ConformanceTestCase {
         // converting DOM to OM.
         factory.setExpandEntityReferences(false);
         DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-        InputStream in = getFileAsStream();
-        try {
-            DOMSource source = new DOMSource(documentBuilder.parse(in));
-            OMXMLParserWrapper builder;
-            if (expandEntityReferences == null) {
-                builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
-            } else {
-                builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source,
-                        expandEntityReferences.booleanValue());
-            }
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            builder.getDocument().serialize(baos);
-            XMLAssertEx.assertXMLIdentical(
-                    getFileAsStream(),
-                    new ByteArrayInputStream(baos.toByteArray()),
-                    expandEntityReferences == null ? false : expandEntityReferences.booleanValue());
-        } finally {
-            in.close();
+        DOMSource source = new DOMSource(documentBuilder.parse(file.getUrl().toString()));
+        OMXMLParserWrapper builder;
+        if (expandEntityReferences == null) {
+            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
+        } else {
+            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source,
+                    expandEntityReferences.booleanValue());
         }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        builder.getDocument().serialize(baos);
+        XMLAssertEx.assertXMLIdentical(
+                file.getUrl(),
+                new ByteArrayInputStream(baos.toByteArray()),
+                expandEntityReferences == null ? false : expandEntityReferences.booleanValue());
     }
 }

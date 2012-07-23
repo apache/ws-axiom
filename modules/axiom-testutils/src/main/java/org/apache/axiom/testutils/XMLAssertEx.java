@@ -19,6 +19,7 @@
 package org.apache.axiom.testutils;
 
 import java.io.InputStream;
+import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -29,15 +30,18 @@ import org.w3c.dom.Element;
 import org.w3c.dom.EntityReference;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 public final class XMLAssertEx {
     private XMLAssertEx() {}
     
-    private static Document parse(InputStream in, boolean expandEntityReferences) throws Exception {
+    private static Document parse(InputSource is, boolean expandEntityReferences) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         factory.setExpandEntityReferences(expandEntityReferences);
-        Document document = factory.newDocumentBuilder().parse(in);
+        Document document = factory.newDocumentBuilder().parse(is);
+        // XMLUnit doesn't support entity references; replace them by elements so that we can still
+        // compare documents
         replaceEntityReferences(document);
         return document;
     }
@@ -56,7 +60,26 @@ public final class XMLAssertEx {
         }
     }
     
-    public static void assertXMLIdentical(InputStream control, InputStream test, boolean entityReferencesExpanded) throws Exception {
+    /**
+     * Asserts that the two documents are identical.
+     * 
+     * @param control
+     *            the control (expected) document
+     * @param test
+     *            the test (actual) document; this document is parsed any references to external
+     *            entities are resolved in the same way as for the control document
+     * @param entityReferencesExpanded
+     *            indicates whether in the test document, entity references have been expanded
+     * @throws Exception
+     */
+    public static void assertXMLIdentical(URL control, InputStream test, boolean entityReferencesExpanded) throws Exception {
+        InputSource controlInputSource = new InputSource(control.toString());
+        InputSource testInputSource = new InputSource(test);
+        testInputSource.setSystemId(new URL(control, "dummy.xml").toString());
+        assertXMLIdentical(controlInputSource, testInputSource, entityReferencesExpanded);
+    }
+
+    public static void assertXMLIdentical(InputSource control, InputSource test, boolean entityReferencesExpanded) throws Exception {
         XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
                 parse(control, entityReferencesExpanded),
                 parse(test, false)), true);
