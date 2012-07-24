@@ -102,11 +102,6 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
         return null;
     }
 
-    protected Object clone() throws CloneNotSupportedException {
-        // TODO Auto-generated method stub
-        return super.clone();
-    }
-
     public void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException {
         internalSerialize(writer, cache, !((MTOMXMLStreamWriter) writer).isIgnoreXMLDeclaration());
     }
