@@ -20,7 +20,7 @@ package org.apache.axiom.om.util;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.soap.SOAPCloneOptions;
@@ -50,7 +50,7 @@ public class CopyUtils {
 
     /**
      * @deprecated This method has the same effect as calling
-     *             {@link OMElement#cloneOMElement(OMCloneOptions)} on the source
+     *             {@link OMInformationItem#clone(OMCloneOptions)} on the source
      *             {@link SOAPEnvelope} with the following options enabled:
      *             <ul>
      *             <li>{@link OMCloneOptions#setFetchDataHandlers(boolean)}
@@ -58,7 +58,7 @@ public class CopyUtils {
      *             <li>{@link OMCloneOptions#setCopyOMDataSources(boolean)}
      *             </ul>
      *             Instead of using this method, application code should use
-     *             {@link OMElement#cloneOMElement(OMCloneOptions)} directly and fine tune the
+     *             {@link OMInformationItem#clone(OMCloneOptions)} directly and fine tune the
      *             options for the particular use case.
      */
     public static SOAPEnvelope copy(SOAPEnvelope sourceEnv) {
@@ -66,7 +66,7 @@ public class CopyUtils {
         options.setFetchDataHandlers(true);
         options.setPreserveModel(true);
         options.setCopyOMDataSources(true);
-        return (SOAPEnvelope)sourceEnv.cloneOMElement(options);
+        return (SOAPEnvelope)sourceEnv.clone(options);
     }
 
     /**

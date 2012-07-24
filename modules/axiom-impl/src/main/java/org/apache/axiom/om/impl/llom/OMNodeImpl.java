@@ -26,8 +26,8 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
-import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
 import org.apache.axiom.om.impl.common.IChildNode;
@@ -261,5 +261,9 @@ public abstract class OMNodeImpl extends OMSerializableImpl implements IChildNod
         internalSerialize(writer, false);
     }
     
+    public OMInformationItem clone(OMCloneOptions options) {
+        return clone(options, null);
+    }
+
     abstract OMNode clone(OMCloneOptions options, OMContainer targetParent);
 }

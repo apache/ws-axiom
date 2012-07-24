@@ -31,8 +31,8 @@ import org.custommonkey.xmlunit.XMLUnit;
 
 import java.util.Iterator;
 
-public abstract class CloneOMElementTestCase extends SOAPTestCase {
-    public CloneOMElementTestCase(OMMetaFactory metaFactory, SOAPSpec spec) {
+public abstract class CloneTestCase extends SOAPTestCase {
+    public CloneTestCase(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }
 
@@ -47,7 +47,7 @@ public abstract class CloneOMElementTestCase extends SOAPTestCase {
         options.setFetchDataHandlers(true);
         options.setPreserveModel(true);
         options.setCopyOMDataSources(true);
-        SOAPEnvelope targetEnv = (SOAPEnvelope)sourceEnv.cloneOMElement(options);
+        SOAPEnvelope targetEnv = (SOAPEnvelope)sourceEnv.clone(options);
         
         identityCheck(sourceEnv, targetEnv, "");
         

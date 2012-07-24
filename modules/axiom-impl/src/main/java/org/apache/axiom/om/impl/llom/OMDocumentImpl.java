@@ -19,10 +19,12 @@
 
 package org.apache.axiom.om.impl.llom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
@@ -337,5 +339,26 @@ public class OMDocumentImpl extends OMSerializableImpl implements OMDocument, IC
     
     public void removeChildren() {
         OMContainerHelper.removeChildren(this);
+    }
+
+    public OMInformationItem clone(OMCloneOptions options) {
+        OMDocument targetDocument;
+        if (options.isPreserveModel()) {
+            targetDocument = createClone(options);
+        } else {
+            targetDocument = getOMFactory().createOMDocument();
+        }
+        targetDocument.setXMLVersion(xmlVersion);
+        targetDocument.setXMLEncoding(xmlEncoding);
+        targetDocument.setCharsetEncoding(charSetEncoding);
+        targetDocument.setStandalone(isStandalone);
+        for (Iterator it = getChildren(); it.hasNext(); ) {
+            ((OMNodeImpl)it.next()).clone(options, targetDocument);
+        }
+        return targetDocument;
+    }
+
+    protected OMDocument createClone(OMCloneOptions options) {
+        return factory.createOMDocument();
     }
 }

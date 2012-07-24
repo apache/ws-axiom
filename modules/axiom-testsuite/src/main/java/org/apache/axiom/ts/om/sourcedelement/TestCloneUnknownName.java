@@ -18,45 +18,42 @@
  */
 package org.apache.axiom.ts.om.sourcedelement;
 
-import java.nio.charset.Charset;
-
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMSourcedElement;
-import org.apache.axiom.om.ds.WrappedTextNodeOMDataSourceFromDataSource;
+import org.apache.axiom.om.ds.ByteArrayDataSource;
 import org.apache.axiom.ts.AxiomTestCase;
 
-public class TestCloneOMElementNonDestructive extends AxiomTestCase {
-    private final boolean copyOMDataSources;
-    
-    public TestCloneOMElementNonDestructive(OMMetaFactory metaFactory, boolean copyOMDataSources) {
+/**
+ * Tests the behavior of {@link OMInformationItem#clone(OMCloneOptions)} on an
+ * {@link OMSourcedElement} backed by a non destructive {@link OMDataSource} if the name of the
+ * element is unknown and the {@link OMCloneOptions#setCopyOMDataSources(boolean)} option is
+ * enabled. In this case, the call to {@link OMInformationItem#clone(OMCloneOptions)} should not
+ * cause expansion of the original {@link OMSourcedElement}.
+ */
+public class TestCloneUnknownName extends AxiomTestCase {
+    public TestCloneUnknownName(OMMetaFactory metaFactory) {
         super(metaFactory);
-        this.copyOMDataSources = copyOMDataSources;
-        addTestProperty("copyOMDataSources", String.valueOf(copyOMDataSources));
     }
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        OMDataSource ds = new WrappedTextNodeOMDataSourceFromDataSource(new QName("wrapper"),
-                new ByteArrayDataSource("test".getBytes("utf-8")), Charset.forName("utf-8"));
+        OMDataSource ds = new ByteArrayDataSource("<p:element xmlns:p='urn:ns'>test</p:element>".getBytes("utf-8"), "utf-8");
         OMSourcedElement element = factory.createOMElement(ds);
         OMCloneOptions options = new OMCloneOptions();
-        options.setCopyOMDataSources(copyOMDataSources);
-        OMElement clone = element.cloneOMElement(options);
-        if (copyOMDataSources) {
-            assertTrue(clone instanceof OMSourcedElement);
-            assertFalse(element.isExpanded());
-        } else {
-            assertFalse(clone instanceof OMSourcedElement);
-            assertTrue(clone.isComplete());
-        }
-        assertEquals("test", clone.getText());
-        assertEquals("wrapper", clone.getLocalName());
+        options.setCopyOMDataSources(true);
+        OMElement clone = (OMElement)element.clone(options);
+        assertTrue(clone instanceof OMSourcedElement);
+        assertFalse(element.isExpanded());
+        OMNamespace expectedNS = factory.createOMNamespace("urn:ns", "p");
+        assertEquals("element", element.getLocalName());
+        assertEquals("element", clone.getLocalName());
+        assertEquals(expectedNS, element.getNamespace());
+        assertEquals(expectedNS, clone.getNamespace());
     }
 }

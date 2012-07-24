@@ -109,8 +109,8 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.envelope.TestAddHeaderToIncompleteEnvelope(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestBodyHeaderOrder(metaFactory, spec));
         if (supportsOMSourcedElement) {
-            addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElementWithSourcedElement1(metaFactory, spec));
-            addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElementWithSourcedElement2(metaFactory, spec));
+            addTest(new org.apache.axiom.ts.soap.envelope.TestCloneWithSourcedElement1(metaFactory, spec));
+            addTest(new org.apache.axiom.ts.soap.envelope.TestCloneWithSourcedElement2(metaFactory, spec));
         }
         addTest(new org.apache.axiom.ts.soap.envelope.TestDetach(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.envelope.TestGetBody(metaFactory, spec));
@@ -189,6 +189,10 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.headerblock.TestWrongParent1(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestWrongParent2(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.headerblock.TestWrongParent3(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.message.TestClone(metaFactory, spec, true));
+        addTest(new org.apache.axiom.ts.soap.message.TestClone(metaFactory, spec, false));
+        addTest(new org.apache.axiom.ts.soap.message.TestCloneIncomplete(metaFactory, spec, true));
+        addTest(new org.apache.axiom.ts.soap.message.TestCloneIncomplete(metaFactory, spec, false));
         addTest(new org.apache.axiom.ts.soap.message.TestGetCharsetEncodingWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.message.TestGetOMFactoryWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.xpath.TestXPathAppliedToSOAPEnvelope(metaFactory, spec, true));
@@ -204,14 +208,14 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         for (int i=0; i<goodSOAPFiles.length; i++) {
             addTest(new org.apache.axiom.ts.soap.builder.MessageTest(metaFactory, goodSOAPFiles[i]));
         }
-        addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElement(metaFactory, SOAPSpec.SOAP11, "sample1.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElement(metaFactory, SOAPSpec.SOAP11, "soapmessage.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElement(metaFactory, SOAPSpec.SOAP11, "soapmessage1.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElement(metaFactory, SOAPSpec.SOAP11, "whitespacedMessage.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElement(metaFactory, SOAPSpec.SOAP11, "minimalMessage.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElement(metaFactory, SOAPSpec.SOAP11, "reallyReallyBigMessage.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElement(metaFactory, SOAPSpec.SOAP11, "emtyBodymessage.xml"));
-        addTest(new org.apache.axiom.ts.soap.envelope.TestCloneOMElement(metaFactory, SOAPSpec.SOAP11, "soap11fault.xml")); 
+        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "sample1.xml"));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "soapmessage.xml"));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "soapmessage1.xml"));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "whitespacedMessage.xml"));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "minimalMessage.xml"));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "reallyReallyBigMessage.xml"));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "emtyBodymessage.xml"));
+        addTest(new org.apache.axiom.ts.soap.envelope.TestClone(metaFactory, SOAPSpec.SOAP11, "soap11fault.xml")); 
         addTest(new org.apache.axiom.ts.soap11.builder.TestBuilder(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestGetNode(metaFactory));
