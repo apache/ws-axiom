@@ -19,6 +19,7 @@
 
 package org.apache.axiom.soap.impl.dom;
 
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
@@ -53,5 +54,9 @@ public class SOAPMessageImpl extends DocumentImpl implements SOAPMessage {
     protected void internalSerialize(XMLStreamWriter writer, boolean cache,
                                      boolean includeXMLDeclaration) throws XMLStreamException {
         ((OMNodeEx)getOwnerDocument().getDocumentElement()).internalSerialize(writer, cache);
+    }
+
+    protected DocumentImpl createClone(OMCloneOptions options) {
+        return new SOAPMessageImpl((SOAPFactory)getOMFactory());
     }
 }

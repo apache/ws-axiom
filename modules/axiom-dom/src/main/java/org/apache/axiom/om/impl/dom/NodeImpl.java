@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
@@ -854,5 +855,9 @@ public abstract class NodeImpl implements Node {
     // by certain subclasses (for the reason, see AXIOM-385).
     public abstract void internalSerialize(XMLStreamWriter writer, boolean cache) throws XMLStreamException;
     
+    public final OMInformationItem clone(OMCloneOptions options) {
+        return (OMInformationItem)clone(options, null, true, true);
+    }
+
     abstract NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing);
 }

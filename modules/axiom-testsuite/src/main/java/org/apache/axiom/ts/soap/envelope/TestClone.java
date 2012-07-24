@@ -21,10 +21,10 @@ package org.apache.axiom.ts.soap.envelope;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-public class TestCloneOMElement extends CloneOMElementTestCase {
+public class TestClone extends CloneTestCase {
     private final String file;
 
-    public TestCloneOMElement(OMMetaFactory metaFactory, SOAPSpec spec, String file) {
+    public TestClone(OMMetaFactory metaFactory, SOAPSpec spec, String file) {
         super(metaFactory, spec);
         this.file = file;
         addTestProperty("file", file);

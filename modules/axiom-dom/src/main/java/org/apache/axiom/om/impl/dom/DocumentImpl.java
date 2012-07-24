@@ -590,7 +590,12 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
     }
 
     ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {
-        DocumentImpl clone = new DocumentImpl(factory);
+        DocumentImpl clone;
+        if (options.isPreserveModel()) {
+            clone = createClone(options);
+        } else {
+            clone = new DocumentImpl(getOMFactory());
+        }
         clone.xmlVersion = xmlVersion;
         clone.xmlEncoding = xmlEncoding;
         clone.xmlStandalone = xmlStandalone;
@@ -598,6 +603,10 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
         return clone;
     }
 
+    protected DocumentImpl createClone(OMCloneOptions options) {
+        return new DocumentImpl(factory);
+    }
+    
     public final OMXMLParserWrapper getBuilder() {
         return builder;
     }

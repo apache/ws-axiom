@@ -1110,11 +1110,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     public OMElement cloneOMElement() {
-        return cloneOMElement(new OMCloneOptions());
-    }
-
-    public OMElement cloneOMElement(OMCloneOptions options) {
-        return (OMElement)clone(options, null, true, true);
+        return (OMElement)clone(new OMCloneOptions());
     }
 
     final ParentNode shallowClone(OMCloneOptions options, ParentNode targetParent, boolean namespaceRepairing) {

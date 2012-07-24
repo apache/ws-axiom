@@ -335,6 +335,10 @@ public class SOAPEnvelopeImpl extends SOAPElement
     }
 
     protected OMElement createClone(OMCloneOptions options, OMContainer targetParent) {
-        return ((SOAPFactory)factory).createSOAPEnvelope(getNamespace());
+        SOAPEnvelope clone = ((SOAPFactory)factory).createSOAPEnvelope(getNamespace());
+        if (targetParent != null) {
+            targetParent.addChild(clone);
+        }
+        return clone;
     }
 }

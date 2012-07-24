@@ -938,11 +938,7 @@ public class OMElementImpl extends OMNodeImpl
             log.debug(" isComplete = " + isComplete());
             log.debug("  builder = " + builder);
         }
-        return cloneOMElement(new OMCloneOptions());
-    }
-
-    public OMElement cloneOMElement(OMCloneOptions options) {
-        return (OMElement)clone(options, null);
+        return (OMElement)clone(new OMCloneOptions());
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {

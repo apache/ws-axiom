@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
@@ -650,8 +651,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.cloneOMElement();
     }
 
-    public OMElement cloneOMElement(OMCloneOptions options) {
-        return super.cloneOMElement(options);
+    public OMInformationItem clone(OMCloneOptions options) {
+        return super.clone(options);
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {

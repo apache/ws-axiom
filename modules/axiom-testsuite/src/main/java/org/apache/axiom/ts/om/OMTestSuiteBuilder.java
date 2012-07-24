@@ -103,6 +103,9 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             }
         }
         addTest(new org.apache.axiom.ts.om.document.TestAddChildIncomplete(metaFactory));
+        for (int i=0; i<conformanceFiles.length; i++) {
+            addTest(new org.apache.axiom.ts.om.document.TestClone(metaFactory, conformanceFiles[i]));
+        }
         addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest1.xml", "MD5", "3e5d68c6607bc56c9c171560e4f19db9"));
         addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest2.xml", "SHA1", "3c47a807517d867d42ffacb2d3e9da81895d5aac"));
         addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest3.xml", "SHA", "41466144c1cab4234fb127cfb8cf92f9"));
@@ -365,9 +368,9 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             }
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestByteArrayDS(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestCharArrayDS(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneOMElementNonDestructive(metaFactory, true));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneOMElementNonDestructive(metaFactory, false));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneOMElementUnknownName(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive(metaFactory, true));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive(metaFactory, false));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneUnknownName(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestComplete(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestExpand(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetDocumentFromBuilder(metaFactory));
