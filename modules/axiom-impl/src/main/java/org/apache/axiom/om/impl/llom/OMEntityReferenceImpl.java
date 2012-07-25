@@ -55,7 +55,6 @@ public class OMEntityReferenceImpl extends OMLeafNode implements OMEntityReferen
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
-        // TODO
-        throw new UnsupportedOperationException();
+        return new OMEntityReferenceImpl(targetParent, name, replacementText, factory, false);
     }
 }

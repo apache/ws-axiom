@@ -99,7 +99,7 @@
                                     filelist.parentFile.mkdirs();
                                     filelist.delete();
                                     new File(project.basedir, "src/main/resources/org/apache/axiom/testutils/conformance").eachFile({
-                                        if (it.file) {
+                                        if (it.file && it.name.endsWith(".xml")) {
                                             filelist.append("$it.name\n");
                                         }
                                     })

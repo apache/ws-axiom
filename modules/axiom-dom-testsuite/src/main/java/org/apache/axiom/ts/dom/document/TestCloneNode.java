@@ -36,7 +36,7 @@ public class TestCloneNode extends DOMTestCase {
     }
 
     protected void runTest() throws Throwable {
-        Document document = dbf.newDocumentBuilder().parse(file.getAsStream());
+        Document document = dbf.newDocumentBuilder().parse(file.getUrl().toString());
         Document document2 = (Document)document.cloneNode(true);
         XMLAssert.assertXMLIdentical(XMLUnit.compareXML(document, document2), true);
     }

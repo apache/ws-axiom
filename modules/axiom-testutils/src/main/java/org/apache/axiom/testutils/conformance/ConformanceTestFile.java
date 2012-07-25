@@ -31,20 +31,24 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
 
+import org.codehaus.stax2.DTDInfo;
+
 public final class ConformanceTestFile {
     private static ConformanceTestFile[] instances;
     
     private final String resourceName;
     private final String shortName;
     private final boolean hasDTD;
+    private final boolean hasExternalSubset;
     private final boolean hasInternalSubset;
     private final boolean hasEntityReferences;
     
     private ConformanceTestFile(String resourceName, String shortName, boolean hasDTD,
-            boolean hasInternalSubset, boolean hasEntityReferences) {
+            boolean hasExternalSubset, boolean hasInternalSubset, boolean hasEntityReferences) {
         this.resourceName = resourceName;
         this.shortName = shortName;
         this.hasDTD = hasDTD;
+        this.hasExternalSubset = hasExternalSubset;
         this.hasInternalSubset = hasInternalSubset;
         this.hasEntityReferences = hasEntityReferences;
     }
@@ -59,6 +63,10 @@ public final class ConformanceTestFile {
 
     public boolean hasDTD() {
         return hasDTD;
+    }
+
+    public boolean hasExternalSubset() {
+        return hasExternalSubset;
     }
 
     public boolean hasInternalSubset() {
@@ -89,6 +97,7 @@ public final class ConformanceTestFile {
                 while ((name = in.readLine()) != null) {
                     String resourceName = "org/apache/axiom/testutils/conformance/" + name;
                     boolean hasDTD = false;
+                    boolean hasExternalSubset = false;
                     boolean hasInternalSubset = false;
                     boolean hasEntityReferences = false;
                     try {
@@ -99,6 +108,7 @@ public final class ConformanceTestFile {
                                 case XMLStreamReader.DTD:
                                     hasDTD = true;
                                     hasInternalSubset = reader.getText().length() > 0;
+                                    hasExternalSubset = ((DTDInfo)reader).getDTDSystemId() != null;
                                     break;
                                 case XMLStreamReader.ENTITY_REFERENCE:
                                     hasEntityReferences = true;
@@ -109,7 +119,7 @@ public final class ConformanceTestFile {
                     } catch (XMLStreamException ex) {
                         throw new Error("Unable to parse " + resourceName);
                     }
-                    result.add(new ConformanceTestFile(resourceName, name, hasDTD, hasInternalSubset, hasEntityReferences));
+                    result.add(new ConformanceTestFile(resourceName, name, hasDTD, hasExternalSubset, hasInternalSubset, hasEntityReferences));
                 }
                 in.close();
                 return (ConformanceTestFile[])result.toArray(new ConformanceTestFile[result.size()]);

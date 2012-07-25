@@ -28,8 +28,8 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
-import org.xml.sax.InputSource;
 
 public class StreamSourceToOMResultTestCase extends AbstractTestCase {
     private final OMMetaFactory omMetaFactory;
@@ -45,14 +45,13 @@ public class StreamSourceToOMResultTestCase extends AbstractTestCase {
     }
     
     protected void runTest() throws Throwable {
-        StreamSource source = new StreamSource(file.getAsStream());
+        StreamSource source = new StreamSource(file.getUrl().toString());
         OMResult result = new OMResult(omMetaFactory.getOMFactory());
         transformerFactory.newTransformer().transform(source, result);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         result.getDocument().serialize(out);
-        assertXMLIdentical(compareXML(
-                new InputSource(file.getAsStream()),
-                new InputSource(new ByteArrayInputStream(out.toByteArray()))), true);
+        XMLAssertEx.assertXMLIdentical(file.getUrl(),
+                new ByteArrayInputStream(out.toByteArray()), true);
     }
 
     public static TestSuite suite(OMMetaFactory omMetaFactory,
