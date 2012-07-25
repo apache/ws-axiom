@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.custommonkey.xmlunit.XMLAssert;
@@ -41,15 +40,15 @@ public class TestClone extends ConformanceTestCase {
 
     protected void runTest() throws Throwable {
         OMFactory factory = metaFactory.getOMFactory();
-        InputStream in = getFileAsStream();
+        InputStream in = file.getAsStream();
         try {
             OMDocument original = OMXMLBuilderFactory.createOMBuilder(factory,
-                    StAXParserConfiguration.PRESERVE_CDATA_SECTIONS, in).getDocument();
+                    TEST_PARSER_CONFIGURATION, in).getDocument();
             OMDocument clone = (OMDocument)original.clone(new OMCloneOptions());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             clone.serialize(baos);
             XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
-                    new InputSource(getFileAsStream()),
+                    new InputSource(file.getAsStream()),
                     new InputSource(new ByteArrayInputStream(baos.toByteArray()))), true);
         } finally {
             in.close();
