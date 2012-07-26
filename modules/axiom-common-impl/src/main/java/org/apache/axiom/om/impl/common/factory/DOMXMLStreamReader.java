@@ -34,6 +34,7 @@ import org.w3c.dom.ProcessingInstruction;
 
 class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     private final Node root;
+    private final boolean expandEntityReferences;
     private Node node;
     private int event;
     private boolean attributesLoaded;
@@ -42,9 +43,10 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     private int namespaceCount;
     private Attr[] namespaces = new Attr[8];
 
-    public DOMXMLStreamReader(Node node) {
+    public DOMXMLStreamReader(Node node, boolean expandEntityReferences) {
         root = node;
         this.node = node;
+        this.expandEntityReferences = expandEntityReferences;
         event = START_DOCUMENT;
     }
 
@@ -57,9 +59,10 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     }
 
     public int next() throws XMLStreamException {
+        boolean forceTraverse = false;
         while (true) {
             boolean visited;
-            if (event == START_DOCUMENT || event == START_ELEMENT) {
+            if (event == START_DOCUMENT || event == START_ELEMENT || forceTraverse) {
                 Node firstChild = node.getFirstChild();
                 if (firstChild == null) {
                     visited = true;
@@ -67,6 +70,7 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
                     node = firstChild;
                     visited = false;
                 }
+                forceTraverse = false;
             } else {
                 Node nextSibling = node.getNextSibling();
                 if (nextSibling == null) {
@@ -103,6 +107,16 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
                     break;
                 case Node.PROCESSING_INSTRUCTION_NODE:
                     event = PROCESSING_INSTRUCTION;
+                    break;
+                case Node.ENTITY_REFERENCE_NODE:
+                    if (expandEntityReferences) {
+                        if (!visited) {
+                            forceTraverse = true;
+                        }
+                        continue;
+                    } else {
+                        event = ENTITY_REFERENCE;
+                    }
                     break;
                 default:
                     throw new IllegalStateException("Unexpected node type " + node.getNodeType());
@@ -144,7 +158,15 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     }
 
     public String getLocalName() {
-        return node.getLocalName();
+        switch (event) {
+            case START_ELEMENT:
+            case END_ELEMENT:
+                return node.getLocalName();
+            case ENTITY_REFERENCE:
+                return node.getNodeName();
+            default:
+                throw new IllegalStateException();
+        }
     }
     
     public String getNamespaceURI() {

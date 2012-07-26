@@ -20,12 +20,28 @@ package org.apache.axiom.ts;
 
 import java.util.Iterator;
 
+import javax.xml.stream.XMLInputFactory;
+
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
+import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.suite.TestCaseEx;
+import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.commons.io.output.NullOutputStream;
 
 public abstract class AxiomTestCase extends TestCaseEx {
+    protected static final StAXParserConfiguration TEST_PARSER_CONFIGURATION = new StAXParserConfiguration() {
+        public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
+            // For the tests, preserve as much of the syntactic structure of the test documents
+            factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
+            return dialect.enableCDataReporting(factory);
+        }
+        
+        public String toString() {
+            return "TEST";
+        }
+    };
+    
     protected final OMMetaFactory metaFactory;
 
     public AxiomTestCase(OMMetaFactory metaFactory) {

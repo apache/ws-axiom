@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMNamespace;
@@ -43,6 +44,7 @@ import org.apache.axiom.om.impl.llom.OMCommentImpl;
 import org.apache.axiom.om.impl.llom.OMDocTypeImpl;
 import org.apache.axiom.om.impl.llom.OMDocumentImpl;
 import org.apache.axiom.om.impl.llom.OMElementImpl;
+import org.apache.axiom.om.impl.llom.OMEntityReferenceImpl;
 import org.apache.axiom.om.impl.llom.OMProcessingInstructionImpl;
 import org.apache.axiom.om.impl.llom.OMSourcedElementImpl;
 import org.apache.axiom.om.impl.llom.OMTextImpl;
@@ -349,6 +351,10 @@ public class OMLinkedListImplFactory implements OMFactoryEx {
       */
     public OMDocument createOMDocument(OMXMLParserWrapper builder) {
         return new OMDocumentImpl(builder, this);
+    }
+
+    public OMEntityReference createOMEntityReference(OMContainer parent, String name, String replacementText, boolean fromBuilder) {
+        return new OMEntityReferenceImpl(parent, name, replacementText, this, fromBuilder);
     }
 
     /**

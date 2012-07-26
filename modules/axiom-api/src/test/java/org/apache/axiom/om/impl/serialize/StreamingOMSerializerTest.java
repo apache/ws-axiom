@@ -26,14 +26,15 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.stream.StreamSource;
 
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.axiom.util.stax.dialect.StAXDialectDetector;
-import org.xml.sax.InputSource;
 
 public class StreamingOMSerializerTest extends AbstractTestCase {
     private final ConformanceTestFile file;
@@ -49,18 +50,18 @@ public class StreamingOMSerializerTest extends AbstractTestCase {
         inputFactory = dialect.normalize(inputFactory);
         // Allow CDATA events
         inputFactory = dialect.enableCDataReporting(inputFactory);
+        inputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
         XMLOutputFactory outputFactory = dialect.normalize(XMLOutputFactory.newInstance());
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        XMLStreamReader reader = inputFactory.createXMLStreamReader(file.getAsStream());
+        XMLStreamReader reader = inputFactory.createXMLStreamReader(new StreamSource(file.getUrl().toString()));
         String encoding = reader.getEncoding();
         XMLStreamWriter writer = outputFactory.createXMLStreamWriter(out, encoding);
         writer.writeStartDocument(encoding, reader.getVersion());
         serializer.serialize(reader, writer, false);
         writer.writeEndDocument();
         writer.flush();
-        assertXMLIdentical(compareXML(new InputSource(file.getAsStream()),
-                new InputSource(new ByteArrayInputStream(out.toByteArray()))), true);
+        XMLAssertEx.assertXMLIdentical(file.getUrl(), new ByteArrayInputStream(out.toByteArray()), false);
     }
 
     public static TestSuite suite() throws Exception {

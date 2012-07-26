@@ -28,6 +28,7 @@ import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestSuite;
 
 import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.InputSource;
@@ -52,23 +53,12 @@ public class SAXOMBuilderSAXParserTest extends AbstractTestCase {
         reader.setDTDHandler(builder);
         reader.setProperty("http://xml.org/sax/properties/lexical-handler", builder);
         reader.setProperty("http://xml.org/sax/properties/declaration-handler", builder);
-        InputStream in = file.getAsStream();
-        try {
-            reader.parse(new InputSource(in));
-        } finally {
-            in.close();
-        }
-        in = file.getAsStream();
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            builder.getDocument().serialize(baos);
-            XMLUnit.setIgnoreAttributeOrder(true);
-            assertXMLIdentical(compareXML(
-                    new InputSource(in),
-                    new InputSource(new ByteArrayInputStream(baos.toByteArray()))), true);
-        } finally {
-            in.close();
-        }
+        reader.parse(new InputSource(file.getUrl().toString()));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        builder.getDocument().serialize(baos);
+        XMLUnit.setIgnoreAttributeOrder(true);
+        XMLAssertEx.assertXMLIdentical(file.getUrl(),
+                new ByteArrayInputStream(baos.toByteArray()), true);
     }
     
     private static void addTests(TestSuite suite, SAXParserFactory factory, String name) throws Exception {

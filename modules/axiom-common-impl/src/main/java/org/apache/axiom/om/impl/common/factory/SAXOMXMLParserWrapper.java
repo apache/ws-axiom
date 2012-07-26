@@ -44,16 +44,18 @@ import org.xml.sax.XMLReader;
 public class SAXOMXMLParserWrapper implements OMXMLParserWrapper {
     private final OMFactory factory;
     private final SAXSource source;
+    private final boolean expandEntityReferences;
     private OMDocument document;
 
-    public SAXOMXMLParserWrapper(OMFactory factory, SAXSource source) {
+    public SAXOMXMLParserWrapper(OMFactory factory, SAXSource source, boolean expandEntityReferences) {
         this.factory = factory;
         this.source = source;
+        this.expandEntityReferences = expandEntityReferences;
     }
 
     public OMDocument getDocument() {
         if (document == null) {
-            SAXOMBuilder builder = new SAXOMBuilder(factory);
+            SAXOMBuilder builder = new SAXOMBuilder(factory, expandEntityReferences);
             XMLReader reader = source.getXMLReader();
             reader.setContentHandler(builder);
             reader.setDTDHandler(builder);

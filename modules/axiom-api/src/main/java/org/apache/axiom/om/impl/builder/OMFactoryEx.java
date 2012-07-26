@@ -23,6 +23,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -56,6 +57,8 @@ public interface OMFactoryEx extends OMFactory {
     
     OMProcessingInstruction createOMProcessingInstruction(OMContainer parent,
             String piTarget, String piData, boolean fromBuilder);
+    
+    OMEntityReference createOMEntityReference(OMContainer parent, String name, String replacementText, boolean fromBuilder);
     
     OMNode importNode(OMNode child);
 }

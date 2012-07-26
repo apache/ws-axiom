@@ -16,22 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts;
+package org.apache.axiom.ts.om.container;
 
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
+import org.apache.xml.serializer.ToXMLStream;
+import org.xml.sax.SAXException;
 
-/**
- * Base class for test cases that are executed against the files from the conformance test set.
- * 
- * @see org.apache.axiom.om.AbstractTestCase#getConformanceTestFiles()
- */
-public abstract class ConformanceTestCase extends AxiomTestCase {
-    protected final ConformanceTestFile file;
-
-    public ConformanceTestCase(OMMetaFactory metaFactory, ConformanceTestFile file) {
-        super(metaFactory);
-        this.file = file;
-        addTestProperty("file", file.getShortName());
+public class SAXSerializer extends ToXMLStream {
+    public void skippedEntity(String name) throws SAXException {
+        // The Xalan serializer ignores skippedEntity events; output them as entity references
+        entityReference(name);
     }
 }

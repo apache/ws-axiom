@@ -180,8 +180,7 @@ public class PushOMBuilder extends AbstractXMLStreamWriter implements DataHandle
     }
 
     protected void doWriteEntityRef(String name) throws XMLStreamException {
-        // TODO: this is equivalent to what StAXOMBuilder does; however, it doesn't look correct
-        factory.createOMText(parent, name, OMNode.ENTITY_REFERENCE_NODE, true);
+        factory.createOMEntityReference(parent, name, null, true);
     }
 
     protected void doWriteProcessingInstruction(String target, String data) {

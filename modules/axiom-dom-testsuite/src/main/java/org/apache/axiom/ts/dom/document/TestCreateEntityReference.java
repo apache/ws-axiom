@@ -16,22 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts;
+package org.apache.axiom.ts.dom.document;
 
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.conformance.ConformanceTestFile;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-/**
- * Base class for test cases that are executed against the files from the conformance test set.
- * 
- * @see org.apache.axiom.om.AbstractTestCase#getConformanceTestFiles()
- */
-public abstract class ConformanceTestCase extends AxiomTestCase {
-    protected final ConformanceTestFile file;
+import org.apache.axiom.ts.dom.DOMTestCase;
+import org.w3c.dom.Document;
+import org.w3c.dom.EntityReference;
+import org.w3c.dom.Node;
 
-    public ConformanceTestCase(OMMetaFactory metaFactory, ConformanceTestFile file) {
-        super(metaFactory);
-        this.file = file;
-        addTestProperty("file", file.getShortName());
+public class TestCreateEntityReference extends DOMTestCase {
+    public TestCreateEntityReference(DocumentBuilderFactory dbf) {
+        super(dbf);
+    }
+
+    protected void runTest() throws Throwable {
+        Document document = dbf.newDocumentBuilder().newDocument();
+        EntityReference entref = document.createEntityReference("myentity");
+        assertEquals(Node.ENTITY_REFERENCE_NODE, entref.getNodeType());
+        assertEquals("myentity", entref.getNodeName());
+        assertNull(entref.getNodeValue());
+        assertSame(document, entref.getOwnerDocument());
     }
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE root [
+  <!ENTITY testentref "test">
+  <!ELEMENT root (#PCDATA)>
+]>
+<root>
+    &testentref;
+</root>

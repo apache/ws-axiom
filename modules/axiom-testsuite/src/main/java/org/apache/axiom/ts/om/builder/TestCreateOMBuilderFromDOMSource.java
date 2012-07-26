@@ -20,7 +20,6 @@ package org.apache.axiom.ts.om.builder;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,32 +28,42 @@ import javax.xml.transform.dom.DOMSource;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
-import org.xml.sax.InputSource;
 
 public class TestCreateOMBuilderFromDOMSource extends ConformanceTestCase {
-    public TestCreateOMBuilderFromDOMSource(OMMetaFactory metaFactory, ConformanceTestFile file) {
+    private final Boolean expandEntityReferences;
+    
+    public TestCreateOMBuilderFromDOMSource(OMMetaFactory metaFactory, ConformanceTestFile file,
+            Boolean expandEntityReferences) {
         super(metaFactory, file);
+        this.expandEntityReferences = expandEntityReferences;
+        if (expandEntityReferences != null) {
+            addTestProperty("expandEntityReferences", expandEntityReferences.toString());
+        }
     }
 
     protected void runTest() throws Throwable {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
+        // We never expand entity references during parsing, but we may do this later when
+        // converting DOM to OM.
+        factory.setExpandEntityReferences(false);
         DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-        InputStream in = getFileAsStream();
-        try {
-            DOMSource source = new DOMSource(documentBuilder.parse(in));
-            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            builder.getDocument().serialize(baos);
-            XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
-                    new InputSource(getFileAsStream()),
-                    new InputSource(new ByteArrayInputStream(baos.toByteArray()))), true);
-        } finally {
-            in.close();
+        DOMSource source = new DOMSource(documentBuilder.parse(file.getUrl().toString()));
+        OMXMLParserWrapper builder;
+        if (expandEntityReferences == null) {
+            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
+        } else {
+            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source,
+                    expandEntityReferences.booleanValue());
         }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        builder.getDocument().serialize(baos);
+        XMLAssertEx.assertXMLIdentical(
+                file.getUrl(),
+                new ByteArrayInputStream(baos.toByteArray()),
+                expandEntityReferences == null ? false : expandEntityReferences.booleanValue());
     }
 }

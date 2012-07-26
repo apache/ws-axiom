@@ -197,6 +197,9 @@ public class StreamingOMSerializer implements XMLStreamConstants, OMSerializer {
                     break;
                 case DTD:
                     serializeDTD(reader, writer);
+                    break;
+                case ENTITY_REFERENCE:
+                    writer.writeEntityRef(reader.getLocalName());
                 }
             }
             if (depth == 0) {

@@ -45,6 +45,8 @@ import java.util.List;
 import javax.xml.XMLConstants;
 
 public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, DeclHandler, OMXMLParserWrapper {
+    private final boolean expandEntityReferences;
+    
     private OMDocument document;
     
     /**
@@ -83,9 +85,16 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     List prefixMappings = new ArrayList();
     
     int textNodeType = OMNode.TEXT_NODE;
+    
+    private boolean inEntityReference;
 
-    public SAXOMBuilder(OMFactory factory) {
+    public SAXOMBuilder(OMFactory factory, boolean expandEntityReferences) {
         this.factory = (OMFactoryEx)factory;
+        this.expandEntityReferences = expandEntityReferences;
+    }
+    
+    public SAXOMBuilder(OMFactory factory) {
+        this(factory, true);
     }
     
     public SAXOMBuilder() {
@@ -327,7 +336,9 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
 
     public void characters(char[] ch, int start, int length)
             throws SAXException {
-        characterData(ch, start, length, textNodeType);
+        if (!inEntityReference) {
+            characterData(ch, start, length, textNodeType);
+        }
     }
     
     public void ignorableWhitespace(char[] ch, int start, int length)
@@ -354,12 +365,17 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     public void startEntity(String name) throws SAXException {
         if (name.equals("[dtd]")) {
             inExternalSubset = true;
+        } else if (!expandEntityReferences) {
+            addNode(factory.createOMEntityReference(getContainer(), name, null, true));
+            inEntityReference = true;
         }
     }
 
     public void endEntity(String name) throws SAXException {
         if (name.equals("[dtd]")) {
             inExternalSubset = false;
+        } else {
+            inEntityReference = false;
         }
     }
 

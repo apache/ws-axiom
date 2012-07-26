@@ -45,6 +45,7 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
@@ -276,12 +277,14 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null && currentEvent != END_DOCUMENT) {
             return parser.getLocalName();
         } else {
-            if ((currentEvent == START_ELEMENT)
-                    || (currentEvent == END_ELEMENT)
-                    || (currentEvent == ENTITY_REFERENCE)) {
-                return ((OMElement) lastNode).getLocalName();
-            } else {
-                throw new IllegalStateException();
+            switch (currentEvent) {
+                case START_ELEMENT:
+                case END_ELEMENT:
+                    return ((OMElement)lastNode).getLocalName();
+                case ENTITY_REFERENCE:
+                    return ((OMEntityReference)lastNode).getName();
+                default:
+                    throw new IllegalStateException();
             }
         }
     }
@@ -323,15 +326,14 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getTextStart();
         } else {
-            if (currentEvent == DTD) {
-                // Not sure if that conforms to the StAX spec, but it is what Woodstox does
+            if (currentEvent == DTD || currentEvent == ENTITY_REFERENCE || !hasText()) {
+                // getTextStart() is not allowed for DTD and ENTITY_REFERENCE events; see
+                // the table in the Javadoc of XMLStreamReader
                 throw new IllegalStateException();
-            } else if (hasText()) {
+            } else {
                 // getTextCharacters always returns a new char array and the start
                 // index is therefore always 0
                 return 0;
-            } else {
-                throw new IllegalStateException();
             }
         }
     }
@@ -381,12 +383,18 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         if (parser != null) {
             return parser.getText();
         } else {
-            if (currentEvent == DTD) {
-                // For a DTD event, only getText is allowed, but not getTextCharacters etc.
-                // (see the table in the Javadoc of XMLStreamReader)
-                return ((OMDocType)lastNode).getInternalSubset();
-            } else {
-                return getTextFromNode();
+            // For DTD and ENTITY_REFERENCE events, only getText() is allowed, but not getTextCharacters() etc.
+            // (see the table in the Javadoc of XMLStreamReader); therefore we handle these event here,
+            // and the other ones in getTextFromNode().
+            switch (currentEvent) {
+                case DTD:
+                    String internalSubset = ((OMDocType)lastNode).getInternalSubset();
+                    // Woodstox returns the empty string if there is no internal subset
+                    return internalSubset != null ? internalSubset : "";
+                case ENTITY_REFERENCE:
+                    return ((OMEntityReference)lastNode).getReplacementText();
+                default:
+                    return getTextFromNode();
             }
         }
     }

@@ -95,7 +95,12 @@ public class DialectTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new TestGetNameIllegalStateException(staxImpl, XMLStreamConstants.CDATA, true));
         addTest(new TestGetNamespaceContextImplicitNamespaces(staxImpl));
         for (int i=0; i<conformanceTestFiles.length; i++) {
-            addTest(new TestGetNamespaceContext(staxImpl, conformanceTestFiles[i]));
+            ConformanceTestFile file = conformanceTestFiles[i];
+            // Some parsers have problems with external subsets; anyway the test files with
+            // DTDs are not essential for this test.
+            if (!file.hasExternalSubset()) {
+                addTest(new TestGetNamespaceContext(staxImpl, file));
+            }
         }
         addTest(new TestGetNamespacePrefixDefaultNamespace(staxImpl));
         addTest(new TestGetNamespaceURIIllegalStateException(staxImpl, XMLStreamConstants.START_ELEMENT, false));

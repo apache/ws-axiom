@@ -26,13 +26,17 @@ import javax.mail.internet.ParseException;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.impl.builder.OMAttachmentAccessorMimePartProvider;
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
+import org.w3c.dom.EntityReference;
 import org.xml.sax.InputSource;
+import org.xml.sax.ext.LexicalHandler;
 
 /**
  * Provides static factory methods to create various kinds of object model builders from different
@@ -293,6 +297,56 @@ public class OMXMLBuilderFactory {
     }
     
     /**
+     * Create an object model builder that reads a plain XML document from the provided
+     * {@link DOMSource}.
+     * 
+     * @param source
+     *            the source of the XML document
+     * @param expandEntityReferences
+     *            Determines how {@link EntityReference} nodes are handled:
+     *            <ul>
+     *            <li>If the parameter is <code>false</code> then a single {@link OMEntityReference}
+     *            will be created for each {@link EntityReference}. The child nodes of
+     *            {@link EntityReference} nodes are not taken into account.
+     *            <li>If the parameter is <code>true</code> then no {@link OMEntityReference} nodes
+     *            are created and the children of {@link EntityReference} nodes are converted and
+     *            inserted into the Axiom tree.
+     *            </ul>
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(DOMSource source, boolean expandEntityReferences) {
+        OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
+        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), source, expandEntityReferences);
+    }
+    
+    /**
+     * Create an object model builder that reads a plain XML document from the provided
+     * {@link SAXSource}.
+     * 
+     * @param source
+     *            the source of the XML document
+     * @param expandEntityReferences
+     *            Determines how entity references (i.e. {@link LexicalHandler#startEntity(String)}
+     *            and {@link LexicalHandler#endEntity(String)} events) are handled:
+     *            <ul>
+     *            <li>If the parameter is <code>false</code> then a single {@link OMEntityReference}
+     *            will be created for each pair of {@link LexicalHandler#startEntity(String)} and
+     *            {@link LexicalHandler#endEntity(String)} events. Other events reported between
+     *            these two events are not taken into account.
+     *            <li>If the parameter is <code>true</code> then no {@link OMEntityReference} nodes
+     *            are created and {@link LexicalHandler#startEntity(String)} and
+     *            {@link LexicalHandler#endEntity(String)} events are ignored. However, events
+     *            between {@link LexicalHandler#startEntity(String)} and
+     *            {@link LexicalHandler#endEntity(String)} are processed normally.
+     *            </ul>
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(SAXSource source, boolean expandEntityReferences) {
+        OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
+        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), source, expandEntityReferences);
+    }
+    
+    /**
      * Create an object model builder that reads an XML document from the provided {@link Source}
      * using a specified object model factory.
      * 
@@ -302,8 +356,61 @@ public class OMXMLBuilderFactory {
      *            the source of the XML document
      * @return the builder
      */
+    // TODO: update Javadoc to explain relationship with the methods that take a DOMSource or SAXSource
     public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source) {
         return omFactory.getMetaFactory().createOMBuilder(omFactory, source);
+    }
+    
+    /**
+     * Create an object model builder that reads an XML document from the provided {@link DOMSource}
+     * using a specified object model factory.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param source
+     *            the source of the XML document
+     * @param expandEntityReferences
+     *            Determines how {@link EntityReference} nodes are handled:
+     *            <ul>
+     *            <li>If the parameter is <code>false</code> then a single {@link OMEntityReference}
+     *            will be created for each {@link EntityReference}. The child nodes of
+     *            {@link EntityReference} nodes are not taken into account.
+     *            <li>If the parameter is <code>true</code> then no {@link OMEntityReference} nodes
+     *            are created and the children of {@link EntityReference} nodes are converted and
+     *            inserted into the Axiom tree.
+     *            </ul>
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, DOMSource source, boolean expandEntityReferences) {
+        return omFactory.getMetaFactory().createOMBuilder(omFactory, source, expandEntityReferences);
+    }
+    
+    /**
+     * Create an object model builder that reads an XML document from the provided {@link SAXSource}
+     * using a specified object model factory.
+     * 
+     * @param omFactory
+     *            the object model factory to use
+     * @param source
+     *            the source of the XML document
+     * @param expandEntityReferences
+     *            Determines how entity references (i.e. {@link LexicalHandler#startEntity(String)}
+     *            and {@link LexicalHandler#endEntity(String)} events) are handled:
+     *            <ul>
+     *            <li>If the parameter is <code>false</code> then a single {@link OMEntityReference}
+     *            will be created for each pair of {@link LexicalHandler#startEntity(String)} and
+     *            {@link LexicalHandler#endEntity(String)} events. Other events reported between
+     *            these two events are not taken into account.
+     *            <li>If the parameter is <code>true</code> then no {@link OMEntityReference} nodes
+     *            are created and {@link LexicalHandler#startEntity(String)} and
+     *            {@link LexicalHandler#endEntity(String)} events are ignored. However, events
+     *            between {@link LexicalHandler#startEntity(String)} and
+     *            {@link LexicalHandler#endEntity(String)} are processed normally.
+     *            </ul>
+     * @return the builder
+     */
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, SAXSource source, boolean expandEntityReferences) {
+        return omFactory.getMetaFactory().createOMBuilder(omFactory, source, expandEntityReferences);
     }
     
     /**

@@ -67,7 +67,7 @@ public class DOMCompatibilityTest extends TestCase {
                                         new MethodSignature("getLocalName", new Class[0]) }));
         suite.addTest(new MethodCollisionTestCase(OMText.class, Text.class));
         suite.addTest(new MethodCollisionTestCase(OMText.class, CDATASection.class));
-        suite.addTest(new MethodCollisionTestCase(OMText.class, EntityReference.class));
+        suite.addTest(new MethodCollisionTestCase(OMEntityReference.class, EntityReference.class));
         return suite;
     }
 }

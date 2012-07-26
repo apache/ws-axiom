@@ -61,6 +61,17 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+        </dependency>
+        <dependency>
+            <!-- This should not be necessary, but XMLAssertEx contains code that fails on some Java runtimes,
+                 presumably because of a bug in the DOM implementation. Therefore we use a well defined
+                 version of Xerces. -->
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+        </dependency>
+        <dependency>
             <!-- We use this only for LDAP like filters -->
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
@@ -95,7 +106,7 @@
                                     filelist.parentFile.mkdirs();
                                     filelist.delete();
                                     new File(project.basedir, "src/main/resources/org/apache/axiom/testutils/conformance").eachFile({
-                                        if (it.file) {
+                                        if (it.file && it.name.endsWith(".xml")) {
                                             filelist.append("$it.name\n");
                                         }
                                     })

@@ -264,7 +264,7 @@ public class StAXOMBuilder extends StAXBuilder {
                         createPI();
                         break;
                     case XMLStreamConstants.ENTITY_REFERENCE:
-                        createOMText(XMLStreamConstants.ENTITY_REFERENCE);
+                        createEntityReference();
                         break;
                     default :
                         throw new OMException();
@@ -507,6 +507,10 @@ public class StAXOMBuilder extends StAXBuilder {
         return omfactory.createOMProcessingInstruction(target, parser.getPITarget(), parser.getPIData(), true);
     }
 
+    protected OMNode createEntityReference() {
+        return omfactory.createOMEntityReference(target, parser.getLocalName(), parser.getText(), true);
+    }
+    
     protected void endElement() {
         target.setComplete(true);
         target = (OMContainerEx)((OMElement)target).getParent();

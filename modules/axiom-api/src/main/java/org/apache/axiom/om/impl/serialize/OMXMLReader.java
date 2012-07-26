@@ -32,6 +32,7 @@ import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
@@ -215,6 +216,12 @@ public class OMXMLReader extends AbstractXMLReader {
                 case OMNode.PI_NODE:
                     OMProcessingInstruction pi = (OMProcessingInstruction)node;
                     contentHandler.processingInstruction(pi.getTarget(), pi.getValue());
+                    break;
+                case OMNode.ENTITY_REFERENCE_NODE:
+                    contentHandler.skippedEntity(((OMEntityReference)node).getName());
+                    break;
+                default:
+                    throw new IllegalStateException("Unrecognized node type " + node.getType());
             }
         }
     }

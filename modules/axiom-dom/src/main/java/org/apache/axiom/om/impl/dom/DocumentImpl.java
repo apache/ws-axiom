@@ -198,10 +198,10 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
         return element;
     }
 
-    public EntityReference createEntityReference(String name)
-            throws DOMException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+    public EntityReference createEntityReference(String name) throws DOMException {
+        EntityReferenceImpl node = new EntityReferenceImpl(name, null, factory);
+        node.setOwnerDocument(this);
+        return node;
     }
 
     public ProcessingInstruction createProcessingInstruction(String target,

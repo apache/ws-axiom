@@ -24,12 +24,12 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.xml.sax.InputSource;
 
 /**
  * Test comparing the output of {@link OMContainer#getXMLStreamReader(boolean)} with that of a
@@ -48,12 +48,12 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
     }
     
     protected final void runTest() throws Throwable {
-        InputStream in1 = getFileAsStream();
-        InputStream in2 = getFileAsStream();
+        InputStream in = file.getAsStream();
         try {
-            XMLStreamReader expected = StAXUtils.createXMLStreamReader(in1);
+            XMLStreamReader expected = StAXUtils.createXMLStreamReader(TEST_PARSER_CONFIGURATION, file.getUrl().toString(), in);
             try {
-                OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), in2);
+                OMXMLParserWrapper builder = metaFactory.createOMBuilder(metaFactory.getOMFactory(),
+                        TEST_PARSER_CONFIGURATION, new InputSource(file.getUrl().toString()));
                 try {
                     XMLStreamReader actual = containerFactory.getContainer(builder).getXMLStreamReader(cache);
                     new XMLStreamReaderComparator(containerFactory.filter(expected), containerFactory.filter(actual)).compare();
@@ -64,8 +64,7 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
                 expected.close();
             }
         } finally {
-            in1.close();
-            in2.close();
+            in.close();
         }
     }
 }

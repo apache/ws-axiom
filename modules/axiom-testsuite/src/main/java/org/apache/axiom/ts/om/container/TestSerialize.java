@@ -21,15 +21,11 @@ package org.apache.axiom.ts.om.container;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-
-import junit.framework.AssertionFailedError;
+import java.net.URL;
 
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
 import org.apache.commons.io.IOUtils;
@@ -51,37 +47,36 @@ public class TestSerialize extends ConformanceTestCase {
     }
 
     protected void runTest() throws Throwable {
-        InputStream in = getFileAsStream();
+        OMXMLParserWrapper builder = metaFactory.createOMBuilder(metaFactory.getOMFactory(),
+                TEST_PARSER_CONFIGURATION, new InputSource(file.getUrl().toString()));
         try {
-            OMXMLParserWrapper builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(),
-                    StAXParserConfiguration.PRESERVE_CDATA_SECTIONS, in);
+            OMContainer container = containerFactory.getContainer(builder);
+            // We need to clone the InputSource objects so that we can dump their contents
+            // if the test fails
+            InputSource control[] = duplicateInputSource(containerFactory.getControl(file.getAsStream()));
+            InputSource actual[] = duplicateInputSource(serializationMethod.serialize(container));
             try {
-                OMContainer container = containerFactory.getContainer(builder);
-                // We need to clone the InputSource objects so that we can dump their contents
-                // if the test fails
-                InputSource control[] = duplicateInputSource(containerFactory.getControl(getFileAsStream()));
-                InputSource actual[] = duplicateInputSource(serializationMethod.serialize(container));
-                try {
-                    XMLAssert.assertXMLIdentical(XMLUnit.compareXML(control[0], actual[0]), true);
-                } catch (Throwable ex) {
-                    System.out.println("Control:");
-                    dumpInputSource(control[1]);
-                    System.out.println("Actual:");
-                    dumpInputSource(actual[1]);
-                    throw ex;
-                }
-                if (serializationMethod.isCaching()) {
-                    assertTrue(container.isComplete());
-                } else {
-                    // TODO: need to investigate why assertConsumed is not working here
-                    assertFalse(container.isComplete());
-//                    assertConsumed(element);
-                }
-            } finally {
-                builder.close();
+                // Configure the InputSources such that external entities can be resolved
+                String systemId = new URL(file.getUrl(), "dummy.xml").toString();
+                control[0].setSystemId(systemId);
+                actual[0].setSystemId(systemId);
+                XMLAssert.assertXMLIdentical(XMLUnit.compareXML(control[0], actual[0]), true);
+            } catch (Throwable ex) {
+                System.out.println("Control:");
+                dumpInputSource(control[1]);
+                System.out.println("Actual:");
+                dumpInputSource(actual[1]);
+                throw ex;
+            }
+            if (serializationMethod.isCaching()) {
+                assertTrue(container.isComplete());
+            } else {
+                // TODO: need to investigate why assertConsumed is not working here
+                assertFalse(container.isComplete());
+//                assertConsumed(element);
             }
         } finally {
-            in.close();
+            builder.close();
         }
     }
 

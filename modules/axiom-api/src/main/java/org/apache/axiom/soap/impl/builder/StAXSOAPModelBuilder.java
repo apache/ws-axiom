@@ -384,6 +384,10 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         throw new SOAPProcessingException("SOAP message MUST NOT contain Processing Instructions(PI)");
     }
 
+    protected OMNode createEntityReference() {
+        throw new SOAPProcessingException("A SOAP message cannot contain entity references because it must not have a DTD");
+    }
+
     // Necessary to allow SOAPBuilderHelper to access this method
     protected void processNamespaceData(OMElement node) {
         super.processNamespaceData(node);

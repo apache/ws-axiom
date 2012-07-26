@@ -22,12 +22,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stream.StreamSource;
+
+import org.codehaus.stax2.DTDInfo;
 
 public final class ConformanceTestFile {
     private static ConformanceTestFile[] instances;
@@ -35,12 +39,17 @@ public final class ConformanceTestFile {
     private final String resourceName;
     private final String shortName;
     private final boolean hasDTD;
+    private final boolean hasExternalSubset;
+    private final boolean hasInternalSubset;
     private final boolean hasEntityReferences;
     
-    private ConformanceTestFile(String resourceName, String shortName, boolean hasDTD, boolean hasEntityReferences) {
+    private ConformanceTestFile(String resourceName, String shortName, boolean hasDTD,
+            boolean hasExternalSubset, boolean hasInternalSubset, boolean hasEntityReferences) {
         this.resourceName = resourceName;
         this.shortName = shortName;
         this.hasDTD = hasDTD;
+        this.hasExternalSubset = hasExternalSubset;
+        this.hasInternalSubset = hasInternalSubset;
         this.hasEntityReferences = hasEntityReferences;
     }
 
@@ -56,16 +65,24 @@ public final class ConformanceTestFile {
         return hasDTD;
     }
 
+    public boolean hasExternalSubset() {
+        return hasExternalSubset;
+    }
+
+    public boolean hasInternalSubset() {
+        return hasInternalSubset;
+    }
+
     public boolean hasEntityReferences() {
         return hasEntityReferences;
     }
 
     public InputStream getAsStream() {
-        InputStream in = ConformanceTestFile.class.getClassLoader().getResourceAsStream(resourceName);
-        if (in == null) {
-            throw new Error("The test resource " + resourceName + " could not be found");
-        }
-        return in;
+        return ConformanceTestFile.class.getClassLoader().getResourceAsStream(resourceName);
+    }
+    
+    public URL getUrl() {
+        return ConformanceTestFile.class.getClassLoader().getResource(resourceName);
     }
     
     public static synchronized ConformanceTestFile[] getConformanceTestFiles() {
@@ -80,14 +97,18 @@ public final class ConformanceTestFile {
                 while ((name = in.readLine()) != null) {
                     String resourceName = "org/apache/axiom/testutils/conformance/" + name;
                     boolean hasDTD = false;
+                    boolean hasExternalSubset = false;
+                    boolean hasInternalSubset = false;
                     boolean hasEntityReferences = false;
-                    InputStream in2 = ConformanceTestFile.class.getResourceAsStream(name);
                     try {
-                        XMLStreamReader reader = inputFactory.createXMLStreamReader(in2);
+                        XMLStreamReader reader = inputFactory.createXMLStreamReader(new StreamSource(
+                                ConformanceTestFile.class.getResource(name).toString()));
                         while (reader.hasNext()) {
                             switch (reader.next()) {
                                 case XMLStreamReader.DTD:
                                     hasDTD = true;
+                                    hasInternalSubset = reader.getText().length() > 0;
+                                    hasExternalSubset = ((DTDInfo)reader).getDTDSystemId() != null;
                                     break;
                                 case XMLStreamReader.ENTITY_REFERENCE:
                                     hasEntityReferences = true;
@@ -97,10 +118,8 @@ public final class ConformanceTestFile {
                         reader.close();
                     } catch (XMLStreamException ex) {
                         throw new Error("Unable to parse " + resourceName);
-                    } finally {
-                        in2.close();
                     }
-                    result.add(new ConformanceTestFile(resourceName, name, hasDTD, hasEntityReferences));
+                    result.add(new ConformanceTestFile(resourceName, name, hasDTD, hasExternalSubset, hasInternalSubset, hasEntityReferences));
                 }
                 in.close();
                 return (ConformanceTestFile[])result.toArray(new ConformanceTestFile[result.size()]);

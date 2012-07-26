@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMMetaFactory;
@@ -46,6 +47,7 @@ import org.apache.axiom.om.impl.dom.CommentImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.DocumentTypeImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
+import org.apache.axiom.om.impl.dom.EntityReferenceImpl;
 import org.apache.axiom.om.impl.dom.OMDOMException;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
@@ -355,6 +357,14 @@ public class OMDOMFactory implements OMFactoryEx {
 
     public OMDocument createOMDocument(OMXMLParserWrapper builder) {
         return new DocumentImpl(builder, this);
+    }
+
+    public OMEntityReference createOMEntityReference(OMContainer parent, String name, String replacementText, boolean fromBuilder) {
+        EntityReferenceImpl node = new EntityReferenceImpl(name, replacementText, this);
+        if (parent != null) {
+            ((OMContainerEx)parent).addChild(node, fromBuilder);
+        }
+        return node;
     }
 
     /**

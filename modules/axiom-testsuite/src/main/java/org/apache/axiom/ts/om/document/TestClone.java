@@ -20,18 +20,13 @@ package org.apache.axiom.ts.om.document;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 
 import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMDocument;
-import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.util.StAXParserConfiguration;
+import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.InputSource;
 
 public class TestClone extends ConformanceTestCase {
@@ -40,19 +35,12 @@ public class TestClone extends ConformanceTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMFactory factory = metaFactory.getOMFactory();
-        InputStream in = getFileAsStream();
-        try {
-            OMDocument original = OMXMLBuilderFactory.createOMBuilder(factory,
-                    StAXParserConfiguration.PRESERVE_CDATA_SECTIONS, in).getDocument();
-            OMDocument clone = (OMDocument)original.clone(new OMCloneOptions());
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            clone.serialize(baos);
-            XMLAssert.assertXMLIdentical(XMLUnit.compareXML(
-                    new InputSource(getFileAsStream()),
-                    new InputSource(new ByteArrayInputStream(baos.toByteArray()))), true);
-        } finally {
-            in.close();
-        }
+        OMDocument original = metaFactory.createOMBuilder(metaFactory.getOMFactory(),
+                TEST_PARSER_CONFIGURATION, new InputSource(file.getUrl().toString())).getDocument();
+        OMDocument clone = (OMDocument)original.clone(new OMCloneOptions());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        clone.serialize(baos);
+        XMLAssertEx.assertXMLIdentical(file.getUrl(),
+                new ByteArrayInputStream(baos.toByteArray()), false);
     }
 }
