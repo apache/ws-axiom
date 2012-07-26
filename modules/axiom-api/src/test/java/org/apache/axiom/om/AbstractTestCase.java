@@ -24,11 +24,8 @@ import java.net.URL;
 
 import javax.activation.DataSource;
 import javax.activation.URLDataSource;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.custommonkey.xmlunit.XMLTestCase;
-import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
 
 /** Abstract base class for test cases. */
 public abstract class AbstractTestCase
@@ -75,15 +72,6 @@ public abstract class AbstractTestCase
     
     public static OMElement getTestResourceAsElement(OMMetaFactory omMetaFactory, String relativePath) {
         return OMXMLBuilderFactory.createOMBuilder(omMetaFactory.getOMFactory(), getTestResource(relativePath)).getDocumentElement();
-    }
-    
-    public static Document toDocumentWithoutDTD(InputStream in) throws Exception {
-        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(in);
-        DocumentType docType = doc.getDoctype();
-        if (docType != null) {
-            doc.removeChild(docType);
-        }
-        return doc;
     }
 }
 

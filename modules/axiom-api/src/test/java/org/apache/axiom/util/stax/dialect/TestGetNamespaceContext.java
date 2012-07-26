@@ -27,16 +27,16 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axiom.om.AbstractTestCase;
+import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.util.namespace.ScopedNamespaceContext;
 
 public class TestGetNamespaceContext extends DialectTestCase {
-    private final String testResource;
+    private final ConformanceTestFile testResource;
     
-    public TestGetNamespaceContext(StAXImplementation staxImpl, String testResource) {
+    public TestGetNamespaceContext(StAXImplementation staxImpl, ConformanceTestFile testResource) {
         super(staxImpl);
         this.testResource = testResource;
-        addTestProperty("file", testResource);
+        addTestProperty("file", testResource.getShortName());
     }
 
     // Copy & paste from XMLStreamReaderComparator
@@ -54,7 +54,7 @@ public class TestGetNamespaceContext extends DialectTestCase {
     
     protected void runTest() throws Throwable {
         XMLInputFactory factory = staxImpl.newNormalizedXMLInputFactory();
-        InputStream in = AbstractTestCase.getTestResource(testResource);
+        InputStream in = testResource.getAsStream();
         Set/*<String>*/ prefixes = new HashSet();
         Set/*<String>*/ namespaceURIs = new HashSet();
         prefixes.add("");

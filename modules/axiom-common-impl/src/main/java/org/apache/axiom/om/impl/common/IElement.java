@@ -16,21 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap.envelope;
+package org.apache.axiom.om.impl.common;
 
-import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.ts.soap.SOAPSpec;
+import org.apache.axiom.om.impl.OMElementEx;
 
-public class TestCloneOMElement extends CloneOMElementTestCase {
-    private final String file;
+public interface IElement extends OMElementEx, IContainer, IChildNode {
 
-    public TestCloneOMElement(OMMetaFactory metaFactory, SOAPSpec spec, String file) {
-        super(metaFactory, spec);
-        this.file = file;
-        addTestProperty("file", file);
-    }
-
-    protected void runTest() throws Throwable {
-        copyAndCheck(getTestMessage(file));
-    }
 }

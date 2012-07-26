@@ -20,8 +20,10 @@
 package org.apache.axiom.om.impl.llom;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMElement;
 
@@ -229,4 +231,7 @@ public class OMAttributeImpl implements OMAttribute {
                 (namespace != null ? namespace.hashCode() : 0);
     }
 
+    public OMInformationItem clone(OMCloneOptions options) {
+        return new OMAttributeImpl(localName, namespace, value, factory);
+    }
 }

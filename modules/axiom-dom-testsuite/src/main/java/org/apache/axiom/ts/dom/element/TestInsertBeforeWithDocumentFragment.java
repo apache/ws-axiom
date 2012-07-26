@@ -59,5 +59,7 @@ public class TestInsertBeforeWithDocumentFragment extends DOMTestCase {
         assertSame(element, y.getParentNode());
         
         assertNull(fragment.getFirstChild());
+        assertNull(fragment.getLastChild());
+        assertEquals(0, fragment.getChildNodes().getLength());
     }
 }

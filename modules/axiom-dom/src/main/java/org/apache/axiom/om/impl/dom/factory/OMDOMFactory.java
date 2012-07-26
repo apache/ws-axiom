@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMHierarchyException;
 import org.apache.axiom.om.OMMetaFactory;
@@ -46,6 +47,7 @@ import org.apache.axiom.om.impl.dom.CommentImpl;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
 import org.apache.axiom.om.impl.dom.DocumentTypeImpl;
 import org.apache.axiom.om.impl.dom.ElementImpl;
+import org.apache.axiom.om.impl.dom.EntityReferenceImpl;
 import org.apache.axiom.om.impl.dom.OMDOMException;
 import org.apache.axiom.om.impl.dom.ParentNode;
 import org.apache.axiom.om.impl.dom.ProcessingInstructionImpl;
@@ -312,13 +314,14 @@ public class OMDOMFactory implements OMFactoryEx {
         return new AttrImpl(null, localName, ns, value, this);
     }
 
-    public OMDocType createOMDocType(OMContainer parent, String content) {
-        return createOMDocType(parent, content, false);
+    public OMDocType createOMDocType(OMContainer parent, String rootName, String publicId,
+            String systemId, String internalSubset) {
+        return createOMDocType(parent, rootName, publicId, systemId, internalSubset, false);
     }
-    
-    public OMDocType createOMDocType(OMContainer parent, String content, boolean fromBuilder) {
-        DocumentTypeImpl docType = new DocumentTypeImpl(this);
-        docType.setValue(content);
+
+    public OMDocType createOMDocType(OMContainer parent, String rootName, String publicId,
+            String systemId, String internalSubset, boolean fromBuilder) {
+        DocumentTypeImpl docType = new DocumentTypeImpl(rootName, publicId, systemId, internalSubset, this);
         if (parent != null) {
             ((OMContainerEx)parent).addChild(docType, fromBuilder);
         }
@@ -354,6 +357,14 @@ public class OMDOMFactory implements OMFactoryEx {
 
     public OMDocument createOMDocument(OMXMLParserWrapper builder) {
         return new DocumentImpl(builder, this);
+    }
+
+    public OMEntityReference createOMEntityReference(OMContainer parent, String name, String replacementText, boolean fromBuilder) {
+        EntityReferenceImpl node = new EntityReferenceImpl(name, replacementText, this);
+        if (parent != null) {
+            ((OMContainerEx)parent).addChild(node, fromBuilder);
+        }
+        return node;
     }
 
     /**
@@ -403,8 +414,9 @@ public class OMDOMFactory implements OMFactoryEx {
             }
             case (OMNode.DTD_NODE): {
                 OMDocType importedDocType = (OMDocType) child;
-                OMDocType newDocType = createOMDocType(null, importedDocType.getValue());
-                return newDocType;
+                return createOMDocType(null, importedDocType.getRootName(),
+                        importedDocType.getPublicId(), importedDocType.getSystemId(),
+                        importedDocType.getInternalSubset());
             }
             default: {
                 throw new UnsupportedOperationException(

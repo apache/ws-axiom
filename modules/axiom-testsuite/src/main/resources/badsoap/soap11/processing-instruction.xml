@@ -1,0 +1,7 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <soapenv:Body>
+        <ns:echo xmlns:ns="urn:test">
+            <?pi some processing instruction?>
+        </ns:echo>
+    </soapenv:Body>
+</soapenv:Envelope>

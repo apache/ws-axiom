@@ -20,10 +20,10 @@
 package org.apache.axiom.om.impl.dom.jaxp;
 
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.dom.DOMMetaFactory;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.dom.DocumentImpl;
-import org.apache.axiom.om.util.StAXUtils;
+import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -32,8 +32,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.validation.Schema;
 
 import java.io.File;
@@ -97,33 +95,16 @@ public class DOOMDocumentBuilder extends DocumentBuilder {
         // TODO 
     }
 
-    public Document parse(InputSource inputSource) throws SAXException,
-            IOException {
-        try {
-            // Not really sure whether this will work :-?
-            XMLStreamReader reader = StAXUtils
-                    .createXMLStreamReader(inputSource.getCharacterStream());
-            StAXOMBuilder builder = new StAXOMBuilder(factory, reader);
-            DocumentImpl doc = (DocumentImpl) builder.getDocument();
-            doc.close(true);
-            return doc;
-        } catch (XMLStreamException e) {
-            throw new SAXException(e);
-        }
+    public Document parse(InputSource inputSource) throws SAXException, IOException {
+        OMXMLParserWrapper builder = factory.getMetaFactory().createOMBuilder(factory,
+                StAXParserConfiguration.DEFAULT, inputSource);
+        DocumentImpl doc = (DocumentImpl) builder.getDocument();
+        doc.close(true);
+        return doc;
     }
 
-    /** @see javax.xml.parsers.DocumentBuilder#parse(java.io.InputStream) */
     public Document parse(InputStream is) throws SAXException, IOException {
-        try {
-            XMLStreamReader reader = StAXUtils
-                    .createXMLStreamReader(is);
-            StAXOMBuilder builder = new StAXOMBuilder(factory, reader);
-            DocumentImpl doc = (DocumentImpl) builder.getDocument();
-            doc.close(true);
-            return doc;
-        } catch (XMLStreamException e) {
-            throw new SAXException(e);
-        }
+        return parse(new InputSource(is));
     }
 
     /** @see javax.xml.parsers.DocumentBuilder#parse(java.io.File) */
@@ -143,9 +124,7 @@ public class DOOMDocumentBuilder extends DocumentBuilder {
         throw new UnsupportedOperationException("TODO");
     }
 
-    /** @see javax.xml.parsers.DocumentBuilder#parse(String) */
     public Document parse(String uri) throws SAXException, IOException {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        return parse(new InputSource(uri));
     }
 }

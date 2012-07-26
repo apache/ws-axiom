@@ -115,7 +115,7 @@ public class XMLStreamReaderComparator extends Assert {
             if (actualException == null) {
                 fail("Expected " + methodName + " to throw " +
                         expectedException.getClass().getName() +
-                        ", but the method retuned normally (" + getLocation() + ")");
+                        ", but the method returned normally (" + getLocation() + ")");
             } else {
                 assertEquals(expectedException.getClass(), actualException.getClass());
             }

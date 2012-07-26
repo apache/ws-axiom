@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.testutils.conformance.Conformance;
+import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 import org.apache.axiom.ts.om.container.OMContainerFactory;
 import org.apache.axiom.ts.om.container.OMElementFactory;
@@ -59,7 +59,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
     }
     
     protected void addTests() {
-        String[] conformanceFiles = Conformance.getConformanceTestFiles();
+        ConformanceTestFile[] conformanceFiles = ConformanceTestFile.getConformanceTestFiles();
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestDigestWithoutNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.attribute.TestEqualsHashCode(metaFactory));
@@ -75,8 +75,16 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestCloseWithReader(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCloseWithXMLStreamReader(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
-            addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource(metaFactory, conformanceFiles[i]));
-            addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, conformanceFiles[i]));
+            ConformanceTestFile file = conformanceFiles[i];
+            if (file.hasEntityReferences()) {
+                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource(metaFactory, file, Boolean.TRUE));
+                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource(metaFactory, file, Boolean.FALSE));
+                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, Boolean.TRUE));
+                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, Boolean.FALSE));
+            } else {
+                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource(metaFactory, file, null));
+                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, null));
+            }
         }
         addTest(new org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderFromFragment(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderIncorrectState(metaFactory));
@@ -92,17 +100,30 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestRootPartStreaming(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestStandaloneConfiguration(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
+            ConformanceTestFile file = conformanceFiles[i];
             for (int j=0; j<containerFactories.length; j++) {
-                addTest(new org.apache.axiom.ts.om.container.TestGetSAXSource(metaFactory, conformanceFiles[i], containerFactories[j], true));
-                addTest(new org.apache.axiom.ts.om.container.TestGetSAXSource(metaFactory, conformanceFiles[i], containerFactories[j], false));
-                addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], containerFactories[j], true));
-                addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, conformanceFiles[i], containerFactories[j], false));
-                for (int k=0; k<serializationMethods.length; k++) {
-                    addTest(new org.apache.axiom.ts.om.container.TestSerialize(metaFactory, conformanceFiles[i], containerFactories[j], serializationMethods[k]));
+                OMContainerFactory cf = containerFactories[j];
+                addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, file, cf, true));
+                addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, file, cf, false));
+                // On a document containing entity references, serialization tests will only work correctly if
+                // the entire document is serialized (so that the DTD is available)
+                if (!file.hasEntityReferences() || cf == OMContainerFactory.DOCUMENT) {
+                    for (int k=0; k<serializationMethods.length; k++) {
+                        addTest(new org.apache.axiom.ts.om.container.TestSerialize(metaFactory, file, containerFactories[j], serializationMethods[k]));
+                    }
+                    // The SAXSource returned by getSAXSource is not able to reconstruct the internal subset.
+                    // Skip test documents that have a DTD with an internal subset.
+                    if (!file.hasInternalSubset()) {
+                        addTest(new org.apache.axiom.ts.om.container.TestGetSAXSource(metaFactory, file, cf, true));
+                        addTest(new org.apache.axiom.ts.om.container.TestGetSAXSource(metaFactory, file, cf, false));
+                    }
                 }
             }
         }
         addTest(new org.apache.axiom.ts.om.document.TestAddChildIncomplete(metaFactory));
+        for (int i=0; i<conformanceFiles.length; i++) {
+            addTest(new org.apache.axiom.ts.om.document.TestClone(metaFactory, conformanceFiles[i]));
+        }
         addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest1.xml", "MD5", "3e5d68c6607bc56c9c171560e4f19db9"));
         addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest2.xml", "SHA1", "3c47a807517d867d42ffacb2d3e9da81895d5aac"));
         addTest(new org.apache.axiom.ts.om.document.TestDigest(metaFactory, "digest3.xml", "SHA", "41466144c1cab4234fb127cfb8cf92f9"));
@@ -111,6 +132,10 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementAfterDetach(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestGetOMDocumentElementWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestIsCompleteAfterAddingIncompleteChild(metaFactory));
+        addTest(new org.apache.axiom.ts.om.document.TestRemoveChildren(metaFactory, true, false));
+        addTest(new org.apache.axiom.ts.om.document.TestRemoveChildren(metaFactory, true, true));
+        addTest(new org.apache.axiom.ts.om.document.TestRemoveChildren(metaFactory, false, false));
+        addTest(new org.apache.axiom.ts.om.document.TestRemoveChildren(metaFactory, false, true));
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsume(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSerializeAndConsumeWithIncompleteDescendant(metaFactory));
         addTest(new org.apache.axiom.ts.om.document.TestSetOMDocumentElementNew(metaFactory));
@@ -138,7 +163,10 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestChildReDeclaringParentsDefaultNSWithPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestCloneOMElement(metaFactory));
         for (int i=0; i<conformanceFiles.length; i++) {
-            addTest(new org.apache.axiom.ts.om.element.TestCloneOMElement2(metaFactory, conformanceFiles[i]));
+            ConformanceTestFile file = conformanceFiles[i];
+            if (!file.hasEntityReferences()) {
+                addTest(new org.apache.axiom.ts.om.element.TestCloneOMElement2(metaFactory, file));
+            }
         }
         addTest(new org.apache.axiom.ts.om.element.TestCloneOMElementNamespaceRepairing(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestDeclareDefaultNamespace1(metaFactory));
@@ -236,6 +264,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestMultipleDefaultNS(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestRemoveAttribute(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestRemoveAttributeNotOwner(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestRemoveChildren(metaFactory, true));
+        addTest(new org.apache.axiom.ts.om.element.TestRemoveChildren(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithDefaultNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithNonDefaultNamespace(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestResolveQNameWithoutNamespace(metaFactory));
@@ -359,9 +389,9 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             }
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestByteArrayDS(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestCharArrayDS(metaFactory));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneOMElementNonDestructive(metaFactory, true));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneOMElementNonDestructive(metaFactory, false));
-            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneOMElementUnknownName(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive(metaFactory, true));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneNonDestructive(metaFactory, false));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestCloneUnknownName(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestComplete(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestExpand(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestGetDocumentFromBuilder(metaFactory));
@@ -386,6 +416,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4DefaultPrefix(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4QualifiedPrefix(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestName4Unqualified(metaFactory));
+            addTest(new org.apache.axiom.ts.om.sourcedelement.TestRemoveChildrenUnexpanded(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToStream(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToWriter(metaFactory));
             addTest(new org.apache.axiom.ts.om.sourcedelement.TestSerializeAndConsumeToXMLWriter(metaFactory));

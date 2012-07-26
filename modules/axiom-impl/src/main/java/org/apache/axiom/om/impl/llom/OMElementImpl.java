@@ -30,9 +30,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
-import org.apache.axiom.om.impl.OMElementEx;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.common.IContainer;
+import org.apache.axiom.om.impl.common.IElement;
 import org.apache.axiom.om.impl.common.NamespaceIterator;
 import org.apache.axiom.om.impl.common.OMChildElementIterator;
 import org.apache.axiom.om.impl.common.OMChildrenLegacyQNameIterator;
@@ -68,7 +68,7 @@ import java.util.LinkedHashMap;
 
 /** Class OMElementImpl */
 public class OMElementImpl extends OMNodeImpl
-        implements OMElementEx, OMConstants, IContainer {
+        implements IElement, OMConstants {
 
     private static final Log log = LogFactory.getLog(OMElementImpl.class);
     
@@ -915,11 +915,7 @@ public class OMElementImpl extends OMNodeImpl
      * @throws OMException
      */
     public void discard() throws OMException {
-        if (state == COMPLETE || builder == null) {
-            this.detach();
-        } else {
-            builder.discard(this);
-        }
+        OMElementImplUtil.discard(this);
     }
 
     public QName resolveQName(String qname) {
@@ -942,11 +938,7 @@ public class OMElementImpl extends OMNodeImpl
             log.debug(" isComplete = " + isComplete());
             log.debug("  builder = " + builder);
         }
-        return cloneOMElement(new OMCloneOptions());
-    }
-
-    public OMElement cloneOMElement(OMCloneOptions options) {
-        return (OMElement)clone(options, null);
+        return (OMElement)clone(new OMCloneOptions());
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
@@ -1012,6 +1004,10 @@ public class OMElementImpl extends OMNodeImpl
 
     public SAXSource getSAXSource(boolean cache) {
         return new OMSource(this);
+    }
+    
+    public void removeChildren() {
+        OMContainerHelper.removeChildren(this);
     }
 }
 

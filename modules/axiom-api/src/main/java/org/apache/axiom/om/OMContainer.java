@@ -26,6 +26,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.sax.SAXSource;
 
 import org.xml.sax.ContentHandler;
+import org.xml.sax.DTDHandler;
+import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
 
 import java.io.OutputStream;
@@ -126,6 +128,21 @@ public interface OMContainer extends OMSerializable {
      */
     OMNode getFirstOMChild();
 
+    /**
+     * Remove all children from this container. This method has the same effect as the following
+     * code:
+     * 
+     * <pre>
+     * for (Iterator it = container.getChildren(); it.hasNext(); ) {
+     *     it.next();
+     *     it.remove();
+     * }</pre>
+     * 
+     * However, the implementation may do this in an optimized way. In particular, if the node is
+     * incomplete, it may choose not to instantiate child node that would become unreachable anyway.
+     */
+    void removeChildren();
+    
     /**
      * Serialize the node with caching enabled.
      * <p>
@@ -372,8 +389,7 @@ public interface OMContainer extends OMSerializable {
      * used with the {@link Transformer} API.
      * <p>
      * The returned object supports all events defined by {@link ContentHandler} and
-     * {@link LexicalHandler}, with the exception of DTD related events. {@link OMDocType} nodes
-     * will be silently skipped.
+     * {@link LexicalHandler}. {@link DTDHandler} and {@link DeclHandler} are not supported.
      * <p>
      * If the node is an element and has a parent which is not a document, care is taken to properly
      * generate {@link ContentHandler#startPrefixMapping(String, String)} and

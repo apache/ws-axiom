@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
@@ -650,8 +651,8 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         return super.cloneOMElement();
     }
 
-    public OMElement cloneOMElement(OMCloneOptions options) {
-        return super.cloneOMElement(options);
+    public OMInformationItem clone(OMCloneOptions options) {
+        return super.clone(options);
     }
 
     OMNode clone(OMCloneOptions options, OMContainer targetParent) {
@@ -1119,5 +1120,15 @@ public class OMSourcedElementImpl extends OMElementImpl implements OMSourcedElem
         } else {
             return ((OMDataSourceExt)dataSource).getObject();
         }
+    }
+
+    public void removeChildren() {
+        // One might think that if the element is not expanded, we don't need to expand it because
+        // we are going to remove the children anyway. However, this is not true for two reasons:
+        //  * The element may have attributes and they must be available after removeChildren().
+        //  * The local name, namespace URI and/or prefix of the element may be unknown. In that
+        //    case, we need to expand the element to make this information available.
+        forceExpand();
+        super.removeChildren();
     }
 }

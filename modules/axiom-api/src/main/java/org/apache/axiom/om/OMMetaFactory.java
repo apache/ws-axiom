@@ -21,12 +21,16 @@ package org.apache.axiom.om;
 
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.util.stax.xop.MimePartProvider;
+import org.w3c.dom.EntityReference;
 import org.xml.sax.InputSource;
+import org.xml.sax.ext.LexicalHandler;
 
 /**
  * Object model meta factory. This interface encapsulates a particular Axiom implementation and
@@ -110,6 +114,60 @@ public interface OMMetaFactory {
      * @return the builder
      */
     OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source);
+    
+    /**
+     * Create an object model builder for plain XML that gets its input from a {@link DOMSource}.
+     * 
+     * @param omFactory
+     *            The object model factory to use. This factory must be obtained from the same
+     *            {@link OMMetaFactory} instance as the one used to invoke this method. In general
+     *            the factory will be retrieved from {@link #getOMFactory()}), but in some cases it
+     *            may be necessary to pass a {@link SOAPFactory} instance, although this method will
+     *            never produce a SOAP infoset.
+     * @param expandEntityReferences
+     *            Determines how {@link EntityReference} nodes are handled:
+     *            <ul>
+     *            <li>If the parameter is <code>false</code> then a single {@link OMEntityReference}
+     *            will be created for each {@link EntityReference}. The child nodes of
+     *            {@link EntityReference} nodes are not taken into account.
+     *            <li>If the parameter is <code>true</code> then no {@link OMEntityReference} nodes
+     *            are created and the children of {@link EntityReference} nodes are converted and
+     *            inserted into the Axiom tree.
+     *            </ul>
+     * @param source
+     *            the source of the XML document
+     * @return the builder
+     */
+    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, DOMSource source, boolean expandEntityReferences);
+    
+    /**
+     * Create an object model builder for plain XML that gets its input from a {@link SAXSource}.
+     * 
+     * @param omFactory
+     *            The object model factory to use. This factory must be obtained from the same
+     *            {@link OMMetaFactory} instance as the one used to invoke this method. In general
+     *            the factory will be retrieved from {@link #getOMFactory()}), but in some cases it
+     *            may be necessary to pass a {@link SOAPFactory} instance, although this method will
+     *            never produce a SOAP infoset.
+     * @param expandEntityReferences
+     *            Determines how entity references (i.e. {@link LexicalHandler#startEntity(String)}
+     *            and {@link LexicalHandler#endEntity(String)} events) are handled:
+     *            <ul>
+     *            <li>If the parameter is <code>false</code> then a single {@link OMEntityReference}
+     *            will be created for each pair of {@link LexicalHandler#startEntity(String)} and
+     *            {@link LexicalHandler#endEntity(String)} events. Other events reported between
+     *            these two events are not taken into account.
+     *            <li>If the parameter is <code>true</code> then no {@link OMEntityReference} nodes
+     *            are created and {@link LexicalHandler#startEntity(String)} and
+     *            {@link LexicalHandler#endEntity(String)} events are ignored. However, events
+     *            between {@link LexicalHandler#startEntity(String)} and
+     *            {@link LexicalHandler#endEntity(String)} are processed normally.
+     *            </ul>
+     * @param source
+     *            the source of the XML document
+     * @return the builder
+     */
+    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, SAXSource source, boolean expandEntityReferences);
     
     /**
      * Create an XOP aware object model builder.

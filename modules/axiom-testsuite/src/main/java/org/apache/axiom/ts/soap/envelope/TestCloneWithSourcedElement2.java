@@ -29,8 +29,8 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axiom.ts.soap.SOAPSpec;
 
-public class TestCloneOMElementWithSourcedElement2 extends CloneOMElementTestCase {
-    public TestCloneOMElementWithSourcedElement2(OMMetaFactory metaFactory, SOAPSpec spec) {
+public class TestCloneWithSourcedElement2 extends CloneTestCase {
+    public TestCloneWithSourcedElement2(OMMetaFactory metaFactory, SOAPSpec spec) {
         super(metaFactory, spec);
     }
 

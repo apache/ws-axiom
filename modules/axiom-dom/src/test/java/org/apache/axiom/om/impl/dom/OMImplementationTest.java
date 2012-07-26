@@ -25,6 +25,7 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.om.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource;
 import org.apache.axiom.ts.om.container.TestSerialize;
+import org.apache.axiom.ts.om.document.TestClone;
 import org.apache.axiom.ts.om.document.TestDigest;
 import org.apache.axiom.ts.om.element.TestGetChildrenWithName4;
 import org.apache.axiom.ts.om.element.TestSerializationWithTwoNonBuiltOMElements;
@@ -49,15 +50,8 @@ public class OMImplementationTest extends TestCase {
         // TODO: this case is not working because Axiom generates an XML declaration
         //       but uses another charset encoding to serialize the document
         builder.exclude(TestSerialize.class, "(&(file=iso-8859-1.xml)(container=document))");
-        
-        // TODO: this case is not working because Axiom doesn't serialize the DTD
-        builder.exclude(TestSerialize.class, "(&(file=spaces.xml)(container=document))");
-        
-        // TODO: CDATA sections are lost when using createOMBuilder with a DOMSource
-        builder.exclude(TestCreateOMBuilderFromDOMSource.class, "(|(file=cdata.xml)(file=test.xml))");
-        
-        // TODO: suspecting Woodstox bug here
-        builder.exclude(TestCreateOMBuilderFromDOMSource.class, "(file=spaces.xml)");
+        builder.exclude(TestCreateOMBuilderFromDOMSource.class, "(file=iso-8859-1.xml)");
+        builder.exclude(TestClone.class, "(file=iso-8859-1.xml)");
         
         // TODO: investigate why this is not working with DOOM
         builder.exclude(TestGetChildrenWithName4.class);

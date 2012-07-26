@@ -32,12 +32,7 @@ public interface OMXMLParserWrapper {
     int next() throws OMException;
 
     /**
-     * Discards the current element. This will remove the given element and its descendants.
-     *
-     * @param el
-     * @throws OMException
-     *
-     * @throws OMException
+     * @deprecated Use {@link OMNode#discard()} to discard elements.
      */
     void discard(OMElement el) throws OMException;
 

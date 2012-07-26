@@ -22,9 +22,8 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.ext.stax.DelegatingXMLStreamReader;
-import org.apache.axiom.util.stax.wrapper.XMLStreamReaderWrapper;
 
-class Woodstox3StreamReaderWrapper extends XMLStreamReaderWrapper implements DelegatingXMLStreamReader {
+class Woodstox3StreamReaderWrapper extends StAX2StreamReaderWrapper implements DelegatingXMLStreamReader {
     public Woodstox3StreamReaderWrapper(XMLStreamReader reader) {
         super(reader);
     }

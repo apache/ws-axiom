@@ -16,35 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.dom.element;
+package org.apache.axiom.ts.dom.documenttype;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.DocumentType;
 
-public class TestReplaceChild extends DOMTestCase {
-    public TestReplaceChild(DocumentBuilderFactory dbf) {
+public class TestWithParser2 extends DOMTestCase {
+    public TestWithParser2(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
     protected void runTest() throws Throwable {
-        Document doc = dbf.newDocumentBuilder().newDocument();
-        Element parent = doc.createElementNS(null, "parent");
-        Element child1 = doc.createElementNS(null, "child1");
-        Element child2 = doc.createElementNS(null, "child2");
-        Element child3 = doc.createElementNS(null, "child3");
-        parent.appendChild(child1);
-        parent.appendChild(child2);
-        parent.appendChild(child3);
-        Element replacementChild = doc.createElementNS(null, "replacement");
-        parent.replaceChild(replacementChild, child2);
-        NodeList children = parent.getChildNodes();
-        assertEquals(3, children.getLength());
-        assertSame(child1, children.item(0));
-        assertSame(replacementChild, children.item(1));
-        assertSame(child3, children.item(2));
+        Document document = dbf.newDocumentBuilder().parse(TestWithParser2.class.getResource("test2.xml").toString());
+        DocumentType doctype = document.getDoctype();
+        assertEquals("root", doctype.getName());
+        assertEquals("dummy", doctype.getPublicId());
+        assertEquals("test.dtd", doctype.getSystemId());
+        assertNull(doctype.getInternalSubset());
     }
 }

@@ -18,9 +18,13 @@
  */
 package org.apache.axiom.om.impl.common.factory;
 
+import java.io.IOException;
+import java.net.URL;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.om.OMException;
@@ -58,9 +62,12 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
             } else if (is.getCharacterStream() != null) {
                 return StAXUtils.createXMLStreamReader(configuration, is.getCharacterStream());
             } else {
-                throw new IllegalArgumentException();
+                String systemId = is.getSystemId();
+                return StAXUtils.createXMLStreamReader(configuration, systemId, new URL(systemId).openConnection().getInputStream());
             }
         } catch (XMLStreamException ex) {
+            throw new OMException(ex);
+        } catch (IOException ex) {
             throw new OMException(ex);
         }
     }
@@ -98,7 +105,9 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
     
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source) {
         if (source instanceof SAXSource) {
-            return new SAXOMXMLParserWrapper(omFactory, (SAXSource)source);
+            return createOMBuilder(omFactory, (SAXSource)source, true);
+        } else if (source instanceof DOMSource) {
+            return createOMBuilder(omFactory, (DOMSource)source, true);
         } else {
             try {
                 return new StAXOMBuilder(omFactory, StAXUtils.getXMLInputFactory().createXMLStreamReader(source));
@@ -106,6 +115,16 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
                 throw new OMException(ex);
             }
         }
+    }
+
+    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, DOMSource source,
+            boolean expandEntityReferences) {
+        return new StAXOMBuilder(omFactory, new DOMXMLStreamReader(source.getNode(), expandEntityReferences));
+    }
+
+    public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, SAXSource source,
+            boolean expandEntityReferences) {
+        return new SAXOMXMLParserWrapper(omFactory, source, expandEntityReferences);
     }
 
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,
