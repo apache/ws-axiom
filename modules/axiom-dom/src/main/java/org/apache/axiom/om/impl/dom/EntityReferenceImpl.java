@@ -24,8 +24,10 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMEntityReference;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNode;
+import org.w3c.dom.EntityReference;
+import org.w3c.dom.Node;
 
-public class EntityReferenceImpl extends LeafNode implements OMEntityReference {
+public class EntityReferenceImpl extends LeafNode implements OMEntityReference, EntityReference {
     private final String name;
     private final String replacementText;
 
@@ -56,12 +58,10 @@ public class EntityReferenceImpl extends LeafNode implements OMEntityReference {
     }
 
     public String getNodeName() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+        return name;
     }
 
     public short getNodeType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
+        return Node.ENTITY_REFERENCE_NODE;
     }
 }

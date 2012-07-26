@@ -57,6 +57,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestCreateElementNS(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateElementNSWithInvalidName(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateElementNSWithoutNamespace(dbf));
+        addTest(new org.apache.axiom.ts.dom.document.TestCreateEntityReference(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateText(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestDocumentSiblings(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestGetDomConfigDefaults(dbf));
