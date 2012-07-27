@@ -31,8 +31,9 @@ import org.apache.axiom.util.stax.wrapper.XMLStreamWriterWrapper;
 
 /**
  * {@link XMLStreamWriter} wrapper that decodes XOP. It assumes that the underlying stream
- * implements the {@link DataHandlerWriter} and translates calls that write <tt>xop:Include</tt>
- * elements into calls to the appropriate methods defined by {@link DataHandlerWriter}.
+ * implements the {@link DataHandlerWriter} extension and translates calls that write
+ * <tt>xop:Include</tt> elements into calls to the appropriate methods defined by
+ * {@link DataHandlerWriter}.
  */
 public class XOPDecodingStreamWriter extends XMLStreamWriterWrapper {
     private final MimePartProvider mimePartProvider;
