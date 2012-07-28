@@ -26,8 +26,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
-import org.apache.axiom.soap.SOAP11Constants;
-import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPBody;
 import org.apache.axiom.soap.SOAPConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
@@ -67,16 +65,7 @@ public abstract class SOAPBodyImpl extends SOAPElement implements SOAPBody,
      *         <code>SOAPBody</code> object; <code>false</code> otherwise
      */
     public boolean hasFault() {
-        OMElement element = getFirstElement();
-        if (element != null
-                && SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(element.getLocalName())) {
-            OMNamespace ns = element.getNamespace();
-            return ns != null &&
-                    (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()) ||
-                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()));
-        } else {
-            return false;
-        }
+        return getFirstElement() instanceof SOAPFault;
     }
 
     /**
@@ -86,19 +75,7 @@ public abstract class SOAPBodyImpl extends SOAPElement implements SOAPBody,
      */
     public SOAPFault getFault() {
         OMElement element = getFirstElement();
-        if (element != null
-                && SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(element.getLocalName())) {
-            OMNamespace ns = element.getNamespace();
-            if (ns != null &&
-                    (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()) ||
-                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()))) {
-                return (SOAPFault) element;
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
+        return element instanceof SOAPFault ? (SOAPFault)element : null;
     }
 
     /**

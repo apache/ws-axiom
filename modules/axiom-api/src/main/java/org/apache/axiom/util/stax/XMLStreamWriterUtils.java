@@ -76,7 +76,7 @@ public class XMLStreamWriterUtils {
 
     /**
      * Get the {@link DataHandlerWriter} extension for a given {@link XMLStreamWriter}. If the
-     * writer expose the extension, a reference to the extension interface implementation is
+     * writer exposes the extension, a reference to the extension interface implementation is
      * returned. If the writer doesn't expose the extension, this method returns an instance of the
      * extension interface that emulates the extension (by writing the binary data as base64
      * character data to the stream).

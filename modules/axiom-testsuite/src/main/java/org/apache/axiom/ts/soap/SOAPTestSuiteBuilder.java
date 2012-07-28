@@ -77,6 +77,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.body.TestAddFault1(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestAddFault2(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFault(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.body.TestGetFaultFakeFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestGetFaultWithParser(metaFactory, spec));
         for (int i=0; i<generalQNames.length; i++) {
             QName qname = generalQNames[i];
@@ -88,6 +89,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         for (int i=0; i<noFaultQNames.length; i++) {
             QName qname = noFaultQNames[i];
             addTest(new org.apache.axiom.ts.soap.body.TestGetFaultNoFault(metaFactory, spec, qname));
+            addTest(new org.apache.axiom.ts.soap.body.TestGetFaultWithParserNoFault(metaFactory, spec, qname));
             addTest(new org.apache.axiom.ts.soap.body.TestHasFaultNoFault(metaFactory, spec, qname));
             addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithParserNoFault(metaFactory, spec,
                     qname, supportsBodyElementNameOptimization));
@@ -96,6 +98,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.body.TestGetFirstElementNSEmptyBody(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestHasFault(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.body.TestHasFaultAfterReplace(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.body.TestHasFaultFakeFault(metaFactory, spec));
         if (supportsOMSourcedElement) {
             addTest(new org.apache.axiom.ts.soap.body.TestHasFaultWithOMSEUnknownName(metaFactory, spec));
         }
