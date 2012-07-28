@@ -32,7 +32,6 @@ final class MTOMXMLStreamWriterAttachmentMarshaller extends AttachmentMarshaller
     @Override
     public String addMtomAttachment(DataHandler data, String elementNamespace,
             String elementLocalName) {
-        // TODO: add "cid:" + test!
-        return out.prepareDataHandler(data);
+        return "cid:" + out.prepareDataHandler(data);
     }
 }
