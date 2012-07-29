@@ -53,7 +53,6 @@ public class JAXBOMDataSource extends AbstractPushOMDataSource implements QNameA
             marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
             if (writer instanceof MTOMXMLStreamWriter) {
                 MTOMXMLStreamWriter mtomWriter = (MTOMXMLStreamWriter)writer;
-                // TODO: usage of deprecated method here
                 if (mtomWriter.isOptimized()) {
                     marshaller.setAttachmentMarshaller(new MTOMXMLStreamWriterAttachmentMarshaller(mtomWriter));
                 }
