@@ -352,14 +352,22 @@ public class MTOMXMLStreamWriter implements XMLStreamWriter {
     }
 
     /**
-     * @deprecated
-     * Serialization code should use
+     * Check if MTOM is enabled.
+     * <p>
+     * Note that serialization code should use
      * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
-     * or {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, org.apache.axiom.ext.stax.datahandler.DataHandlerProvider, String, boolean)}
-     * to submit any binary content and let this writer decide whether the content should be
-     * written as base64 encoded character data or using <tt>xop:Include</tt>.
-     * This makes optimization entirely transparent for the caller and there should be no need
-     * to check if the writer is producing MTOM.
+     * or
+     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
+     * to submit any binary content and let this writer decide whether the content should be written
+     * as base64 encoded character data or using <tt>xop:Include</tt>. This makes optimization
+     * entirely transparent for the caller and there should be no need to check if the writer is
+     * producing MTOM. However, in some cases this is not possible, such as when integrating with
+     * 3rd party libraries. The serialization code should then use
+     * {@link #prepareDataHandler(DataHandler)} so that it can write <tt>xop:Include</tt> elements
+     * directly to the stream. In that case, the code may use the {@link #isOptimized()} method
+     * check if MTOM is enabled at all.
+     * 
+     * @return <code>true</code> if MTOM is enabled, <code>false</code> otherwise
      */
     public boolean isOptimized() {
         return format.isOptimized();
