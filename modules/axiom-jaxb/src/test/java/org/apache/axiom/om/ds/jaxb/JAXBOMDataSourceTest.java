@@ -30,9 +30,11 @@ import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.attachments.Attachments;
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMOutputFormat;
@@ -40,8 +42,11 @@ import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.jaxb.beans.DocumentBean;
+import org.apache.axiom.om.ds.jaxb.beans.MyBean;
+import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
+import org.apache.commons.io.IOUtils;
 import org.example.identity.LinkIdentitiesType;
 import org.example.identity.ObjectFactory;
 import org.junit.Test;
@@ -73,11 +78,40 @@ public class JAXBOMDataSourceTest {
     }
     
     /**
-     * Tests that an {@link OMSourcedElement} backed by a {@link JAXBOMDataSource} is correctly
-     * serialized to MTOM. The test uses a bean containing a {@link DataHandler}.
+     * Tests that an {@link OMSourcedElement} backed by a {@link JAXBOMDataSource} with a bean
+     * containing a {@link DataHandler} is correctly serialized.
      */
     @Test
-    public void testMTOM() throws Exception {
+    public void testDataHandlerSerializationWithoutMTOM() throws Exception{
+        SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();
+        JAXBContext context = JAXBContext.newInstance(DocumentBean.class);
+        
+        // Construct the original message
+        DocumentBean orgObject = new DocumentBean();
+        orgObject.setId("123456");
+        orgObject.setContent(new DataHandler("some content", "text/plain; charset=utf-8"));
+        SOAPEnvelope orgEnvelope = factory.getDefaultEnvelope();
+        OMSourcedElement element = factory.createOMElement(new JAXBOMDataSource(context, orgObject));
+        orgEnvelope.getBody().addChild(element);
+        
+        // Serialize the message
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        orgEnvelope.serialize(out);
+        assertFalse(element.isExpanded());
+        
+        SOAPEnvelope envelope = OMXMLBuilderFactory.createSOAPModelBuilder(
+                new ByteArrayInputStream(out.toByteArray()), null).getSOAPEnvelope();
+        DocumentBean object = (DocumentBean)context.createUnmarshaller().unmarshal(
+                envelope.getBody().getFirstElement().getXMLStreamReader(false));
+        assertEquals("some content", IOUtils.toString(object.getContent().getInputStream(), "utf-8"));
+    }
+    
+    /**
+     * Tests that an {@link OMSourcedElement} backed by a {@link JAXBOMDataSource} with a bean
+     * containing a {@link DataHandler} is correctly serialized to MTOM.
+     */
+    @Test
+    public void testDataHandlerSerializationWithMTOM() throws Exception {
         SOAPFactory factory = OMAbstractFactory.getSOAP11Factory();
         JAXBContext context = JAXBContext.newInstance(DocumentBean.class);
         
@@ -107,6 +141,25 @@ public class JAXBOMDataSourceTest {
         assertTrue(content.isOptimized());
         DataHandler dh = (DataHandler)content.getDataHandler();
         assertEquals("some content", dh.getContent());
+    }
+    
+    /**
+     * Tests serialization using {@link OMDataSource#serialize(XMLStreamWriter)} to a standard
+     * {@link XMLStreamWriter}.
+     */
+    @Test
+    public void testSerializeDirect() throws Exception {
+        JAXBContext context = JAXBContext.newInstance(MyBean.class);
+        MyBean orgBean = new MyBean(3, 5);
+        JAXBOMDataSource ds = new JAXBOMDataSource(context, orgBean);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(out);
+        ds.serialize(writer);
+        writer.close();
+        MyBean bean = (MyBean)context.createUnmarshaller().unmarshal(
+                new ByteArrayInputStream(out.toByteArray()));
+        assertEquals(orgBean.getA(), bean.getA());
+        assertEquals(orgBean.getB(), bean.getB());
     }
     
     /**
