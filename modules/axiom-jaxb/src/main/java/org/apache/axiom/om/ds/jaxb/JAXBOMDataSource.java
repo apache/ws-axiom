@@ -19,19 +19,24 @@
 package org.apache.axiom.om.ds.jaxb;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.QNameAwareOMDataSource;
 import org.apache.axiom.om.ds.AbstractPushOMDataSource;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.util.stax.xop.XOPDecodingStreamWriter;
 
-public class JAXBOMDataSource extends AbstractPushOMDataSource {
+public class JAXBOMDataSource extends AbstractPushOMDataSource implements QNameAwareOMDataSource {
     private final JAXBContext context;
     private final Object object;
+    private QName cachedQName;
     
     public JAXBOMDataSource(JAXBContext context, Object object) {
         this.context = context;
@@ -69,5 +74,33 @@ public class JAXBOMDataSource extends AbstractPushOMDataSource {
         } catch (JAXBException ex) {
             throw new XMLStreamException("Error marshalling JAXB object", ex);
         }
+    }
+
+    private QName getQName() {
+        if (cachedQName == null) {
+            if (object instanceof JAXBElement) {
+                cachedQName = ((JAXBElement<?>)object).getName();
+            } else {
+                cachedQName = context.createJAXBIntrospector().getElementName(object);
+                if (cachedQName == null) {
+                    // We get here if the class of the object is not known to
+                    // the JAXBContext
+                    throw new OMException("Unable to determine the element name of the object");
+                }
+            }
+        }
+        return cachedQName;
+    }
+    
+    public String getLocalName() {
+        return getQName().getLocalPart();
+    }
+
+    public String getNamespaceURI() {
+        return getQName().getNamespaceURI();
+    }
+
+    public String getPrefix() {
+        return null;
     }
 }

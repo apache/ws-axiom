@@ -22,7 +22,7 @@ import javax.activation.DataHandler;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement
+@XmlRootElement(name="document")
 @XmlType(propOrder={ "id", "content" })
 public class DocumentBean {
     private String id;

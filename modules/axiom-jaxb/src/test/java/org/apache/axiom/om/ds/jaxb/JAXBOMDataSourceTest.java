@@ -28,6 +28,7 @@ import java.io.ByteArrayOutputStream;
 
 import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.attachments.Attachments;
@@ -41,6 +42,8 @@ import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.ds.jaxb.beans.DocumentBean;
 import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPFactory;
+import org.example.identity.LinkIdentitiesType;
+import org.example.identity.ObjectFactory;
 import org.junit.Test;
 
 public class JAXBOMDataSourceTest {
@@ -104,5 +107,41 @@ public class JAXBOMDataSourceTest {
         assertTrue(content.isOptimized());
         DataHandler dh = (DataHandler)content.getDataHandler();
         assertEquals("some content", dh.getContent());
+    }
+    
+    /**
+     * Tests that {@link JAXBOMDataSource} backed by a plain Java bean is able to determine the
+     * namespace URI and local name of the element without expansion.
+     */
+    @Test
+    public void testGetNameFromPlainObject() throws Exception {
+        OMFactory omFactory = OMAbstractFactory.getOMFactory();
+        JAXBContext context = JAXBContext.newInstance(DocumentBean.class);
+        OMSourcedElement element = omFactory.createOMElement(new JAXBOMDataSource(context, new DocumentBean()));
+        assertEquals("http://ws.apache.org/axiom/test/jaxb", element.getNamespaceURI());
+        assertEquals("document", element.getLocalName());
+        assertFalse(element.isExpanded());
+        // Force expansion so that OMSourcedElement compares the namespace URI and local name
+        // provided by JAXBOMDataSource with the actual name of the element
+        element.getFirstOMChild();
+    }
+    
+    /**
+     * Tests that {@link JAXBOMDataSource} backed by a {@link JAXBElement} is able to determine the
+     * namespace URI and local name of the element without expansion.
+     */
+    @Test
+    public void testGetNameFromJAXBElement() throws Exception {
+        OMFactory omFactory = OMAbstractFactory.getOMFactory();
+        ObjectFactory objectFactory = new ObjectFactory();
+        JAXBContext context = JAXBContext.newInstance(ObjectFactory.class);
+        JAXBElement<LinkIdentitiesType> jaxbElement = objectFactory.createLinkIdentities(new LinkIdentitiesType());
+        OMSourcedElement element = omFactory.createOMElement(new JAXBOMDataSource(context, jaxbElement));
+        assertEquals("http://www.example.org/identity", element.getNamespaceURI());
+        assertEquals("LinkIdentities", element.getLocalName());
+        assertFalse(element.isExpanded());
+        // Force expansion so that OMSourcedElement compares the namespace URI and local name
+        // provided by JAXBOMDataSource with the actual name of the element
+        element.getFirstOMChild();
     }
 }

@@ -65,6 +65,24 @@
     </dependencies>
     <build>
         <plugins>
+			<plugin>
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<version>0.8.0</version>
+				<executions>
+					<execution>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<schemaDirectory>src/test/schemas</schemaDirectory>
+							<addCompileSourceRoot>false</addCompileSourceRoot>
+							<addTestCompileSourceRoot>true</addTestCompileSourceRoot>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
