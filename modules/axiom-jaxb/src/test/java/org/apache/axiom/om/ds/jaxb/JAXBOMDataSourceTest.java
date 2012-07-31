@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,7 +30,9 @@ import java.io.ByteArrayOutputStream;
 import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.attachments.Attachments;
@@ -196,5 +199,26 @@ public class JAXBOMDataSourceTest {
         // Force expansion so that OMSourcedElement compares the namespace URI and local name
         // provided by JAXBOMDataSource with the actual name of the element
         element.getFirstOMChild();
+    }
+    
+    /**
+     * Tests that an {@link XMLStreamException} thrown by the {@link XMLStreamWriter} during
+     * serialization is propagated without being wrapped. Note that this implies that the data must
+     * unwrap {@link JAXBException} to extract the cause.
+     */
+    @Test
+    public void testExceptionDuringSerialization() throws Exception {
+        OMFactory omFactory = OMAbstractFactory.getOMFactory();
+        JAXBContext context = JAXBContext.newInstance(DocumentBean.class);
+        DocumentBean object = new DocumentBean();
+        object.setId("test");
+        OMSourcedElement element = omFactory.createOMElement(new JAXBOMDataSource(context, object));
+        XMLStreamException exception = new XMLStreamException("TEST");
+        try {
+            element.serialize(new ExceptionXMLStreamWriterWrapper(StAXUtils.createXMLStreamWriter(new ByteArrayOutputStream()), exception));
+            fail("Expected XMLStreamException");
+        } catch (XMLStreamException ex) {
+            assertSame(exception, ex);
+        }
     }
 }
