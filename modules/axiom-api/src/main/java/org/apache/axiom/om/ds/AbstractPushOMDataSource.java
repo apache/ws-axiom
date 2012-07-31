@@ -25,6 +25,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.util.StAXUtils;
@@ -33,6 +34,13 @@ import org.apache.axiom.om.util.StAXUtils;
  * Base class for {@link OMDataSourceExt} implementations that can easily serialize the content to
  * an {@link XMLStreamWriter} but that are unable to produce the content as an
  * {@link XMLStreamReader}.
+ * <p>
+ * {@link OMSourcedElement} will handle {@link OMDataSource} implementations extending this class
+ * differently when it comes to expansion: instead of using {@link OMDataSource#getReader()} to
+ * expand the element, it will use {@link OMDataSource#serialize(XMLStreamWriter)} (with a special
+ * {@link XMLStreamWriter} that builds the descendants of the {@link OMSourcedElement}). This means
+ * that such an {@link OMSourcedElement} will be expanded instantly, and that deferred building of
+ * the descendants is not applicable.
  */
 public abstract class AbstractPushOMDataSource extends AbstractOMDataSource {
     public final boolean isDestructiveRead() {

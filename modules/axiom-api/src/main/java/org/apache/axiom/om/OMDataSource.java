@@ -22,9 +22,17 @@
  */
 package org.apache.axiom.om;
 
+import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+
+import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
+import org.apache.axiom.ext.stax.datahandler.DataHandlerWriter;
+import org.apache.axiom.om.ds.AbstractPushOMDataSource;
+import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
+import org.apache.axiom.util.stax.XMLStreamWriterUtils;
+import org.apache.axiom.util.stax.xop.XOPDecodingStreamWriter;
 
 import java.io.OutputStream;
 import java.io.Writer;
@@ -103,6 +111,42 @@ public interface OMDataSource {
      * it MUST generate namespace declarations of the form <tt>xmlns=""</tt> in the appropriate
      * locations. In addition it MAY use the namespace context information to minimize the number of
      * generated namespace declarations (by reusing already bound prefixes).
+     * <li>If the implementation produces base64 binary data (that could be optimized using
+     * XOP/MTOM), then it SHOULD use
+     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandler, String, boolean)}
+     * or
+     * {@link XMLStreamWriterUtils#writeDataHandler(XMLStreamWriter, DataHandlerProvider, String, boolean)}
+     * to write the data to the stream. If this is not possible (e.g. because the content is
+     * produced by a third party library that is not aware of these APIs), then the implementation
+     * MUST use the following approach:
+     * <ul>
+     * <li>If the {@link XMLStreamWriter} is an {@link MTOMXMLStreamWriter}, then the implementation
+     * MAY use {@link MTOMXMLStreamWriter#prepareDataHandler(DataHandler)} and generate the
+     * necessary <tt>xop:Include</tt> elements itself. In this case, the implementation MAY use
+     * {@link MTOMXMLStreamWriter#isOptimized()} to check if XOP/MTOM is enabled at all.
+     * Alternatively, instead of handling {@link MTOMXMLStreamWriter} in a special way, the
+     * implementation MAY use the approach described in the next item. This works because
+     * {@link MTOMXMLStreamWriter} exposes the {@link DataHandlerWriter} extension. However, this
+     * causes a slight overhead because the stream is first XOP decoded and then reencoded again.
+     * <li>If the {@link XMLStreamWriter} exposes the {@link DataHandlerWriter} extension, but is
+     * not an {@link MTOMXMLStreamWriter} (or is an {@link MTOMXMLStreamWriter}, but the
+     * implementation doesn't implement the approach described in the previous item), then the
+     * implementation MUST wrap the {@link XMLStreamWriter} in an {@link XOPDecodingStreamWriter}
+     * and write <tt>xop:Include</tt> elements to that wrapper, so that they can be translated into
+     * appropriate calls to the {@link DataHandlerWriter}. This requirement is important for two
+     * reasons:
+     * <ul>
+     * <li>It allows Axiom to respect the contract of the
+     * {@link OMSerializable#serialize(XMLStreamWriter, boolean)} method.
+     * <li>If the {@link OMDataSource} is push-only (see {@link AbstractPushOMDataSource}), then it
+     * enables {@link OMSourcedElement} to create {@link OMText} nodes for the binary content in an
+     * efficient way.
+     * </ul>
+     * <li>In all other cases, the implementation MUST use
+     * {@link XMLStreamWriter#writeCharacters(String)} or
+     * {@link XMLStreamWriter#writeCharacters(char[], int, int)} to write the base64 encoded data to
+     * the stream.
+     * </ul>
      * </ul>
      * <p>
      * On the other hand, the caller of this method (typically an {@link OMSourcedElement} instance)
@@ -123,7 +167,6 @@ public interface OMDataSource {
      *            destination writer
      * @throws XMLStreamException
      */
-    // TODO: specify how optimizable base64 binary data (MTOM) is handled
     void serialize(XMLStreamWriter xmlWriter) throws XMLStreamException;
 
     /**
