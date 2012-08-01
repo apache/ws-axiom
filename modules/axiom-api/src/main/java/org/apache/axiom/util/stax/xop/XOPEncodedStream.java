@@ -23,7 +23,7 @@ import javax.xml.stream.XMLStreamReader;
 
 /**
  * Represents an XOP encoded stream. Since an XOP message is a MIME package with
- * an main part in XML and a set of additional (binary) parts referenced from
+ * a root part in XML and a set of additional (binary) parts referenced from
  * the main part, this class encapsulates an {@link XMLStreamReader}
  * representing the main part and a {@link MimePartProvider} giving access to
  * the attachments. Instances of this class can be obtained from
