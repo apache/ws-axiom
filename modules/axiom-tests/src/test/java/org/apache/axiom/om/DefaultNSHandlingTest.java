@@ -24,38 +24,8 @@ import org.custommonkey.xmlunit.XMLTestCase;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.StringReader;
-import java.util.Iterator;
 
-public class DefaultNSHandlingTest extends XMLTestCase {
-
-    public void testDefaultNamespaceWithSameDefaultNSForAll() {
-        String testXML = "<html xmlns='http://www.w3.org/TR/REC-html40'>" +
-                "<head><title>Frobnostication</title></head>" +
-                "<body><p>Moved to <a href='http://frob.com'>here</a>.</p></body>" +
-                "</html>";
-        OMXMLParserWrapper builder =
-                OMXMLBuilderFactory.createOMBuilder(new StringReader(testXML));
-        OMElement documentElement = builder.getDocumentElement();
-
-        checkNS(documentElement);
-
-        checkNSWithChildren(documentElement);
-    }
-
-    private void checkNSWithChildren(OMElement documentElement) {
-        Iterator childElementsIter = documentElement.getChildElements();
-        while (childElementsIter.hasNext()) {
-            OMElement omElement = (OMElement) childElementsIter.next();
-            checkNS(omElement);
-            checkNSWithChildren(omElement);
-        }
-    }
-
-    private void checkNS(OMElement element) {
-        assertTrue(
-                "http://www.w3.org/TR/REC-html40".equals(element.getNamespace().getNamespaceURI()));
-    }
+public class DefaultNSHandlingTest /*extends XMLTestCase*/ {
 
 //    public void testForIssueWSCOMMONS119() {
 //
