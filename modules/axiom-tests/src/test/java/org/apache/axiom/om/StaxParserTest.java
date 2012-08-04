@@ -29,13 +29,12 @@ import java.util.Iterator;
 
 public class StaxParserTest extends AbstractTestCase {
 
-    XMLStreamReader parser1;
-    OMXMLParserWrapper builder2;
-    XMLStreamReader parser2;
-    OMXMLParserWrapper builder3;
-    XMLStreamReader parser3;
-    XMLStreamReader parser4;
-    String xmlDocument = "<purchase-order xmlns=\"http://openuri.org/easypo\">" +
+    private XMLStreamReader parser1;
+    private OMXMLParserWrapper builder2;
+    private XMLStreamReader parser2;
+    private OMXMLParserWrapper builder3;
+    private XMLStreamReader parser3;
+    private String xmlDocument = "<purchase-order xmlns=\"http://openuri.org/easypo\">" +
             "<customer>" +
             "    <name>Gladys Kravitz</name>" +
             "    <address>Anytown, PA</address>" +
@@ -63,12 +62,6 @@ public class StaxParserTest extends AbstractTestCase {
                 new ByteArrayInputStream(xmlDocument.getBytes()));
         parser3 =
                 builder3.getDocumentElement().getXMLStreamReaderWithoutCaching();
-
-        //parser4 is another instance of our parser accessing the same stream as parser3.
-        // Note - The implementation returns a *new* instance but with reference to
-        //the same underlying stream!
-        parser4 = builder2.getDocumentElement().getXMLStreamReaderWithoutCaching();
-
     }
 
     protected void tearDown() throws Exception {
