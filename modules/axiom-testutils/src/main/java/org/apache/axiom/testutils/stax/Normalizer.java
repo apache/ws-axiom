@@ -18,7 +18,12 @@
  */
 package org.apache.axiom.testutils.stax;
 
+import java.io.StringReader;
 import java.util.Locale;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.xml.sax.InputSource;
 
 public interface Normalizer {
     Normalizer IDENTITY = new Normalizer() {
@@ -34,8 +39,9 @@ public interface Normalizer {
     };
     
     Normalizer DTD = new Normalizer() {
-        public Object normalize(Object value) {
-            return value == null ? null : ((String)value).trim().replaceAll("\n\\s*", "\n");
+        public Object normalize(Object value) throws Exception {
+            return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+                    new InputSource(new StringReader("<!DOCTYPE root [" + value + "]><root/>"))).getDoctype().getInternalSubset();
         }
     };
     
@@ -45,5 +51,5 @@ public interface Normalizer {
         }
     };
 
-    Object normalize(Object value);
+    Object normalize(Object value) throws Exception;
 }
