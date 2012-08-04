@@ -36,13 +36,17 @@ import org.xml.sax.InputSource;
  * native StAX parser.
  */
 public class TestGetXMLStreamReader extends ConformanceTestCase {
+    private final BuilderFactory builderFactory;
     private final OMContainerFactory containerFactory;
     private final boolean cache;
     
-    public TestGetXMLStreamReader(OMMetaFactory metaFactory, ConformanceTestFile file, OMContainerFactory containerFactory, boolean cache) {
+    public TestGetXMLStreamReader(OMMetaFactory metaFactory, ConformanceTestFile file,
+            BuilderFactory builderFactory, OMContainerFactory containerFactory, boolean cache) {
         super(metaFactory, file);
+        this.builderFactory = builderFactory;
         this.containerFactory = containerFactory;
         this.cache = cache;
+        builderFactory.addTestProperties(this);
         containerFactory.addTestProperties(this);
         addTestProperty("cache", Boolean.toString(cache));
     }
@@ -52,8 +56,7 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
         try {
             XMLStreamReader expected = StAXUtils.createXMLStreamReader(TEST_PARSER_CONFIGURATION, file.getUrl().toString(), in);
             try {
-                OMXMLParserWrapper builder = metaFactory.createOMBuilder(metaFactory.getOMFactory(),
-                        TEST_PARSER_CONFIGURATION, new InputSource(file.getUrl().toString()));
+                OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory, new InputSource(file.getUrl().toString()));
                 try {
                     XMLStreamReader actual = containerFactory.getContainer(builder).getXMLStreamReader(cache);
                     new XMLStreamReaderComparator(containerFactory.filter(expected), containerFactory.filter(actual)).compare();

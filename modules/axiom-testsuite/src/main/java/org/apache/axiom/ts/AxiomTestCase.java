@@ -30,7 +30,7 @@ import org.apache.axiom.util.stax.dialect.StAXDialect;
 import org.apache.commons.io.output.NullOutputStream;
 
 public abstract class AxiomTestCase extends TestCaseEx {
-    protected static final StAXParserConfiguration TEST_PARSER_CONFIGURATION = new StAXParserConfiguration() {
+    public static final StAXParserConfiguration TEST_PARSER_CONFIGURATION = new StAXParserConfiguration() {
         public XMLInputFactory configure(XMLInputFactory factory, StAXDialect dialect) {
             // For the tests, preserve as much of the syntactic structure of the test documents
             factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);

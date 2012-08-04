@@ -18,7 +18,6 @@
  */
 package org.apache.axiom.om.impl.common.factory;
 
-import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -28,9 +27,11 @@ import org.apache.axiom.util.stax.AbstractXMLStreamReader;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
+import org.w3c.dom.Text;
 
 class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     private final Node root;
@@ -42,20 +43,29 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     private Attr[] attributes = new Attr[8];
     private int namespaceCount;
     private Attr[] namespaces = new Attr[8];
+    private NamespaceContext nsContext;
 
-    public DOMXMLStreamReader(Node node, boolean expandEntityReferences) {
+    DOMXMLStreamReader(Node node, boolean expandEntityReferences) {
         root = node;
         this.node = node;
         this.expandEntityReferences = expandEntityReferences;
         event = START_DOCUMENT;
     }
 
+    Node currentNode() {
+        return node;
+    }
+    
     public Object getProperty(String name) throws IllegalArgumentException {
         if (DTDReader.PROPERTY.equals(name)) {
             return this;
         } else {
             return null;
         }
+    }
+
+    public boolean hasNext() throws XMLStreamException {
+        return event != END_DOCUMENT;
     }
 
     public int next() throws XMLStreamException {
@@ -89,15 +99,13 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
                     event = DTD;
                     break;
                 case Node.ELEMENT_NODE:
-                    if (visited) {
-                        event = END_ELEMENT;
-                    } else {
-                        event = START_ELEMENT;
-                        attributesLoaded = false;
-                    }
+                    event = visited? END_ELEMENT : START_ELEMENT;
+                    // Namespace declarations can be queried on an END_ELEMENT event; always reset the
+                    // attributesLoaded flag
+                    attributesLoaded = false;
                     break;
                 case Node.TEXT_NODE:
-                    event = CHARACTERS;
+                    event = ((Text)node).isElementContentWhitespace() ? SPACE : CHARACTERS;
                     break;
                 case Node.CDATA_SECTION_NODE:
                     event = CDATA;
@@ -130,7 +138,11 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     }
 
     public String getEncoding() {
-        return ((Document)node).getInputEncoding();
+        if (event == START_DOCUMENT) {
+            return ((Document)node).getInputEncoding();
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     public String getVersion() {
@@ -138,7 +150,11 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     }
 
     public String getCharacterEncodingScheme() {
-        return ((Document)node).getXmlEncoding();
+        if (event == START_DOCUMENT) {
+            return ((Document)node).getXmlEncoding();
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     public boolean isStandalone() {
@@ -170,11 +186,33 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     }
     
     public String getNamespaceURI() {
-        return node.getNamespaceURI();
+        switch (event) {
+            case START_ELEMENT:
+            case END_ELEMENT:
+                return node.getNamespaceURI();
+            default:
+                throw new IllegalStateException();
+        }
     }
 
     public String getPrefix() {
-        return node.getPrefix();
+        switch (event) {
+            case START_ELEMENT:
+            case END_ELEMENT:
+                return node.getPrefix();
+            default:
+                throw new IllegalStateException();
+        }
+    }
+
+    public QName getName() {
+        switch (event) {
+            case START_ELEMENT:
+            case END_ELEMENT:
+                return getQName(node);
+            default:
+                throw new IllegalStateException();
+        }
     }
 
     private Attr[] grow(Attr[] array) {
@@ -190,7 +228,7 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
             NamedNodeMap attrs = node.getAttributes();
             for (int i=0, l=attrs.getLength(); i<l; i++) {
                 Attr attr = (Attr)attrs.item(i);
-                if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI())) {
+                if (DOMUtils.isNSDecl(attr)) {
                     if (namespaceCount == namespaces.length) {
                         namespaces = grow(namespaces);
                     }
@@ -207,65 +245,169 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     }
     
     public int getAttributeCount() {
-        loadAttributes();
-        return attributeCount;
+        if (event == START_ELEMENT) {
+            loadAttributes();
+            return attributeCount;
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
+    private Attr getAttribute(int index) {
+        if (event == START_ELEMENT) {
+            loadAttributes();
+            return attributes[index];
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+    
     public String getAttributeLocalName(int index) {
-        loadAttributes();
-        return attributes[index].getLocalName();
+        return getAttribute(index).getLocalName();
     }
 
     public String getAttributeNamespace(int index) {
-        loadAttributes();
-        return attributes[index].getNamespaceURI();
+        return getAttribute(index).getNamespaceURI();
     }
 
     public String getAttributePrefix(int index) {
-        loadAttributes();
-        return attributes[index].getPrefix();
+        return getAttribute(index).getPrefix();
+    }
+
+    public QName getAttributeName(int index) {
+        return getQName(getAttribute(index));
     }
 
     public String getAttributeValue(int index) {
-        loadAttributes();
-        return attributes[index].getValue();
+        return getAttribute(index).getValue();
     }
 
     public String getAttributeType(int index) {
-        return "CDATA";
+        if (event == START_ELEMENT) {
+            return "CDATA";
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public boolean isAttributeSpecified(int index) {
+        return getAttribute(index).getSpecified();
+    }
+
+    public String getAttributeValue(String namespaceURI, String localName) {
+        return ((Element)node).getAttributeNS(namespaceURI == null || namespaceURI.length() == 0 ? null : namespaceURI, localName);
     }
 
     public int getNamespaceCount() {
-        loadAttributes();
-        return namespaceCount;
+        switch (event) {
+            case START_ELEMENT:
+            case END_ELEMENT:
+                loadAttributes();
+                return namespaceCount;
+            default:
+                throw new IllegalStateException();
+        }
+    }
+    
+    private Attr getNamespace(int index) {
+        switch (event) {
+            case START_ELEMENT:
+            case END_ELEMENT:
+                loadAttributes();
+                return namespaces[index];
+            default:
+                throw new IllegalStateException();
+        }
     }
     
     public String getNamespacePrefix(int index) {
-        loadAttributes();
-        Attr attr = namespaces[index];
-        String prefix = attr.getPrefix();
-        return prefix == null ? null : attr.getLocalName();
+        return DOMUtils.getNSDeclPrefix(getNamespace(index));
     }
 
     public String getNamespaceURI(int index) {
-        loadAttributes();
-        return namespaces[index].getValue();
+        return getNamespace(index).getValue();
     }
 
+    private String internalGetText() {
+        switch (event) {
+            case CHARACTERS:
+            case SPACE:
+            case CDATA:
+            case COMMENT:
+                return node.getNodeValue();
+            case ENTITY_REFERENCE:
+                return null;
+            default:
+                throw new IllegalStateException();
+        }
+    }
+    
     public String getText() {
         if (event == DTD) {
             return ((DocumentType)node).getInternalSubset();
         } else {
-            return node.getNodeValue();
+            return internalGetText();
         }
     }
 
+    public int getTextStart() {
+        // Call internalGetText to throw an IllegalStateException if appropriate
+        internalGetText();
+        return 0;
+    }
+
+    public int getTextLength() {
+        return internalGetText().length();
+    }
+
+    public char[] getTextCharacters() {
+        return internalGetText().toCharArray();
+    }
+
     public String getPITarget() {
-        return ((ProcessingInstruction)node).getTarget();
+        if (event == PROCESSING_INSTRUCTION) {
+            return ((ProcessingInstruction)node).getTarget();
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     public String getPIData() {
-        return ((ProcessingInstruction)node).getData();
+        if (event == PROCESSING_INSTRUCTION) {
+            return ((ProcessingInstruction)node).getData();
+        } else {
+            throw new IllegalStateException();
+        }
+    }
+
+    public NamespaceContext getNamespaceContext() {
+        if (nsContext == null) {
+            nsContext = new DOMNamespaceContext(this);
+        }
+        return nsContext;
+    }
+
+    public String getNamespaceURI(String prefix) {
+        Node current = node;
+        do {
+            NamedNodeMap attributes = current.getAttributes();
+            if (attributes != null) {
+                for (int i=0, l=attributes.getLength(); i<l; i++) {
+                    Attr attr = (Attr)attributes.item(i);
+                    if (DOMUtils.isNSDecl(attr)) {
+                        String candidatePrefix = DOMUtils.getNSDeclPrefix(attr);
+                        if (candidatePrefix == null) {
+                            candidatePrefix = "";
+                        }
+                        if (candidatePrefix.equals(prefix)) {
+                            return attr.getValue();
+                        }
+                    }
+                }
+            }
+            current = current.getParentNode();
+        } while (current != null);
+        return null;
     }
 
     public void close() throws XMLStreamException {
@@ -273,37 +415,7 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
         throw new UnsupportedOperationException();
     }
 
-    public QName getAttributeName(int arg0) {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public String getAttributeValue(String arg0, String arg1) {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
     public String getElementText() throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public QName getName() {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public NamespaceContext getNamespaceContext() {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public String getNamespaceURI(String arg0) {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public char[] getTextCharacters() {
         // TODO
         throw new UnsupportedOperationException();
     }
@@ -314,33 +426,13 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
         throw new UnsupportedOperationException();
     }
 
-    public int getTextLength() {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public int getTextStart() {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean hasNext() throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean isAttributeSpecified(int arg0) {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean isWhiteSpace() {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
     public boolean standaloneSet() {
         // TODO
         throw new UnsupportedOperationException();
+    }
+    
+    private static QName getQName(Node node) {
+        String prefix = node.getPrefix();
+        return new QName(node.getNamespaceURI(), node.getLocalName(), prefix == null ? "" : prefix);
     }
 }

@@ -29,7 +29,7 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.xml.sax.InputSource;
 
 /**
- * Prepares {@link OMContainer} instances from a test file.
+ * Extracts an {@link OMContainer} instance from a test file.
  */
 public interface OMContainerFactory {
     OMContainerFactory DOCUMENT = new OMContainerFactory() {
@@ -51,7 +51,33 @@ public interface OMContainerFactory {
     };
     
     void addTestProperties(AxiomTestCase testCase);
+    
+    /**
+     * Prepare a control document that has the same content as the container returned by
+     * {@link #getContainer(OMXMLParserWrapper)}.
+     * 
+     * @param testFileContent
+     *            the content of the test file
+     * @return the {@link InputSource} for the control document
+     * @throws Exception
+     */
     InputSource getControl(InputStream testFileContent) throws Exception;
+    
+    /**
+     * Extract the {@link OMContainer} from the given test file.
+     * 
+     * @param builder the builder for the test file
+     * @return the container
+     */
     OMContainer getContainer(OMXMLParserWrapper builder);
+    
+    /**
+     * Filter the given stream so that its content matches the content of the container returned by
+     * {@link #getContainer(OMXMLParserWrapper)}.
+     * 
+     * @param reader
+     *            the original stream reader representing the content of the test file
+     * @return the filtered stream reader
+     */
     XMLStreamReader filter(XMLStreamReader reader);
 }

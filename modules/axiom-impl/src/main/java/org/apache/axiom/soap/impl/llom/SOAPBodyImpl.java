@@ -107,19 +107,7 @@ public abstract class SOAPBodyImpl extends SOAPElement
      */
     public SOAPFault getFault() {
         OMElement element = getFirstElement();
-        if (element != null
-                && SOAPConstants.SOAPFAULT_LOCAL_NAME.equals(element.getLocalName())) {
-            OMNamespace ns = element.getNamespace();
-            if (ns != null &&
-                    (SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()) ||
-                     SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(ns.getNamespaceURI()))) {
-                return (SOAPFault) element;
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
+        return element instanceof SOAPFault ? (SOAPFault)element : null;
     }
 
     /**

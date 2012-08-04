@@ -331,8 +331,9 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
         } else if ((elementLevel == 3) &&
                 ((OMElement)parent).getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME) &&
-                elementName.equals(SOAPConstants.BODY_FAULT_LOCAL_NAME)) {
-            // this is a headerblock
+                elementName.equals(SOAPConstants.BODY_FAULT_LOCAL_NAME) &&
+                soapFactory.getSoapVersionURI().equals(parser.getNamespaceURI())) {
+            // this is a SOAP fault
             element = soapFactory.createSOAPFault((SOAPBody) parent, this);
             processNamespaceData(element, false);
             processAttributes(element);

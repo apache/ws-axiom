@@ -21,7 +21,6 @@ package org.apache.axiom.testutils.stax;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,8 +44,6 @@ import junit.framework.Assert;
  * (return values or exceptions thrown) of these invocations are compared to each other.
  */
 public class XMLStreamReaderComparator extends Assert {
-    private static final Map noPrefixValueMap = Collections.singletonMap("", null);
-    
     private final XMLStreamReader expected;
     private final XMLStreamReader actual;
     private final LinkedList path = new LinkedList();
@@ -117,7 +114,8 @@ public class XMLStreamReaderComparator extends Assert {
                         expectedException.getClass().getName() +
                         ", but the method returned normally (" + getLocation() + ")");
             } else {
-                assertEquals(expectedException.getClass(), actualException.getClass());
+                assertEquals("Unexpected exception thrown by " + methodName,
+                        expectedException.getClass(), actualException.getClass());
             }
         }
         return null;
@@ -128,21 +126,12 @@ public class XMLStreamReaderComparator extends Assert {
     }
 
     private Object assertSameResult(String methodName, Class[] paramTypes, Object[] args,
-            Map valueMap) throws Exception {
+            Normalizer normalizer) throws Exception {
         
         Object[] results = invoke(methodName, paramTypes, args);
         if (results != null) {
-            Object expected = results[0];
-            Object actual = results[1];
-            if (valueMap != null) {
-                // Attention! The value in the map can be null
-                if (valueMap.containsKey(expected)) {
-                    expected = valueMap.get(expected);
-                }
-                if (valueMap.containsKey(actual)) {
-                    actual = valueMap.get(actual);
-                }
-            }
+            Object expected = normalizer.normalize(results[0]);
+            Object actual = normalizer.normalize(results[1]);
             assertEquals("Return value of " + methodName + " for arguments " +
                         Arrays.asList(args) + " (" + getLocation() + ")",
                         expected, actual);
@@ -153,15 +142,15 @@ public class XMLStreamReaderComparator extends Assert {
     }
     
     private Object assertSameResult(String methodName, Class[] paramTypes, Object[] args) throws Exception {
-        return assertSameResult(methodName, paramTypes, args, null);
+        return assertSameResult(methodName, paramTypes, args, Normalizer.IDENTITY);
     }
     
-    private Object assertSameResult(String methodName, Map valueMap) throws Exception {
-        return assertSameResult(methodName, new Class[0], new Object[0], valueMap);
+    private Object assertSameResult(String methodName, Normalizer normalizer) throws Exception {
+        return assertSameResult(methodName, new Class[0], new Object[0], normalizer);
     }
 
     private Object assertSameResult(String methodName) throws Exception {
-        return assertSameResult(methodName, null);
+        return assertSameResult(methodName, Normalizer.IDENTITY);
     }
     
     private Set toPrefixSet(Iterator it) {
@@ -215,7 +204,7 @@ public class XMLStreamReaderComparator extends Assert {
                 path.addLast(expected.getName());
             }
             assertSameResult("getCharacterEncodingScheme");
-            assertSameResult("getEncoding");
+            assertSameResult("getEncoding", Normalizer.LOWER_CASE);
             Integer attributeCount = (Integer)assertSameResult("getAttributeCount");
             // Test the behavior of the getAttributeXxx methods for all types of events,
             // to check that an appropriate exception is thrown for events other than
@@ -226,7 +215,7 @@ public class XMLStreamReaderComparator extends Assert {
                 assertSameResult("getAttributeLocalName", paramTypes, args);
                 assertSameResult("getAttributeName", paramTypes, args);
                 namespaceURIs.add(assertSameResult("getAttributeNamespace", paramTypes, args));
-                prefixes.add(assertSameResult("getAttributePrefix", paramTypes, args, noPrefixValueMap));
+                prefixes.add(assertSameResult("getAttributePrefix", paramTypes, args, Normalizer.EMPTY_STRING_TO_NULL));
                 assertSameResult("getAttributeType", paramTypes, args);
                 assertSameResult("getAttributeValue", paramTypes, args);
                 assertSameResult("isAttributeSpecified", paramTypes, args);
@@ -266,7 +255,7 @@ public class XMLStreamReaderComparator extends Assert {
             assertSameResult("getPIData");
             assertSameResult("getPITarget");
             prefixes.add(assertSameResult("getPrefix"));
-            assertSameResult("getText");
+            assertSameResult("getText", eventType == XMLStreamReader.DTD ? Normalizer.DTD : Normalizer.IDENTITY);
             Integer textLength = (Integer)assertSameResult("getTextLength");
             Object[] textStart = invoke("getTextStart");
             Object[] textCharacters = invoke("getTextCharacters");
