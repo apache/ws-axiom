@@ -24,6 +24,7 @@ import junit.framework.TestSuite;
 import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.om.OMTestSuiteBuilder;
 import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource;
+import org.apache.axiom.ts.om.container.TestGetXMLStreamReader;
 import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestClone;
 import org.apache.axiom.ts.om.document.TestDigest;
@@ -61,6 +62,9 @@ public class OMImplementationTest extends TestCase {
         
         // TODO
         builder.exclude(TestSerializationWithTwoNonBuiltOMElements.class);
+        
+        // TODO
+        builder.exclude(TestGetXMLStreamReader.class, "(&(source=dom)(|(file=entity-reference-external-subset.xml)(file=entity-reference-internal-subset.xml)))");
         
         return builder.build();
     }

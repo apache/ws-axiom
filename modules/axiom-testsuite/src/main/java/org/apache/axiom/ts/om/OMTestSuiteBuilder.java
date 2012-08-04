@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
+import org.apache.axiom.ts.om.container.BuilderFactory;
 import org.apache.axiom.ts.om.container.OMContainerFactory;
 import org.apache.axiom.ts.om.container.OMElementFactory;
 import org.apache.axiom.ts.om.container.SerializationMethod;
@@ -36,6 +37,10 @@ import org.apache.axiom.ts.om.xpath.AXIOMXPathTestCase;
 import org.apache.axiom.ts.om.xpath.TestAXIOMXPath;
 
 public class OMTestSuiteBuilder extends TestSuiteBuilder {
+    private static final BuilderFactory[] builderFactories = {
+        BuilderFactory.PARSER,
+        BuilderFactory.DOM };
+    
     private static final OMContainerFactory[] containerFactories = {
         OMContainerFactory.DOCUMENT,
         new OMElementFactory(false),
@@ -103,8 +108,11 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             ConformanceTestFile file = conformanceFiles[i];
             for (int j=0; j<containerFactories.length; j++) {
                 OMContainerFactory cf = containerFactories[j];
-                addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, file, cf, true));
-                addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, file, cf, false));
+                for (int k=0; k<builderFactories.length; k++) {
+                    BuilderFactory bf = builderFactories[k];
+                    addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, file, bf, cf, true));
+                    addTest(new org.apache.axiom.ts.om.container.TestGetXMLStreamReader(metaFactory, file, bf, cf, false));
+                }
                 // On a document containing entity references, serialization tests will only work correctly if
                 // the entire document is serialized (so that the DTD is available)
                 if (!file.hasEntityReferences() || cf == OMContainerFactory.DOCUMENT) {
