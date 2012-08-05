@@ -28,12 +28,6 @@ import java.io.ByteArrayInputStream;
 import java.util.Iterator;
 
 public class StaxParserTest extends AbstractTestCase {
-
-    private XMLStreamReader parser1;
-    private OMXMLParserWrapper builder2;
-    private XMLStreamReader parser2;
-    private OMXMLParserWrapper builder3;
-    private XMLStreamReader parser3;
     private String xmlDocument = "<purchase-order xmlns=\"http://openuri.org/easypo\">" +
             "<customer>" +
             "    <name>Gladys Kravitz</name>" +
@@ -41,77 +35,6 @@ public class StaxParserTest extends AbstractTestCase {
             "  </customer>" +
             "  <date>2005-03-06T14:06:12.697+06:00</date>" +
             "</purchase-order>";
-
-    protected void setUp() throws Exception {
-        //make the parsers
-        //Parser 1 is a plain parser from the stax implementation
-        parser1 = StAXUtils.createXMLStreamReader(
-                        new ByteArrayInputStream(xmlDocument.getBytes()));
-
-        //parser 2 is one of our parsers taken with cache. i.e. when the parser
-        //proceeds the object model will be built
-        builder2 = OMXMLBuilderFactory.createOMBuilder(
-                OMAbstractFactory.getSOAP11Factory(),
-                new ByteArrayInputStream(xmlDocument.getBytes()));
-        parser2 = builder2.getDocumentElement().getXMLStreamReader();
-
-        //same as parser2 but this time the parser is not a caching parser. Once the
-        //parser proceeds, it's gone forever.
-        builder3 = OMXMLBuilderFactory.createOMBuilder(
-                OMAbstractFactory.getSOAP11Factory(),
-                new ByteArrayInputStream(xmlDocument.getBytes()));
-        parser3 =
-                builder3.getDocumentElement().getXMLStreamReaderWithoutCaching();
-    }
-
-    protected void tearDown() throws Exception {
-        parser1.close();
-        builder2.close();
-        builder3.close();
-    }
-
-    public void testParserEventsWithCache() throws Exception {
-
-        //check the initial event
-        assertEquals(parser1.getEventType(), parser2.getEventType());
-
-        //check the other events
-        while (parser1.hasNext()) {
-
-            int parser1Event = parser1.next();
-            int parser2Event = parser2.next();
-            assertEquals(parser1Event, parser2Event);
-
-        }
-
-
-    }
-
-    public void testParserEventsWithoutCache() throws Exception {
-
-        assertEquals(parser1.getEventType(), parser3.getEventType());
-
-        while (parser1.hasNext()) {
-            int parser1Event = parser1.next();
-            int parser2Event = parser3.next();
-            assertEquals(parser1Event, parser2Event);
-        }
-
-
-    }
-
-    public void testParserEvents2WithCache() throws Exception {
-        while (parser1.hasNext()) {
-            int parser1Event = parser1.getEventType();
-            int parser2Event = parser2.getEventType();
-            parser1.next();
-            parser2.next();
-            assertEquals(parser1Event, parser2Event);
-        }
-
-
-    }
-
 
     public void testParserBehaviornonCaching() throws Exception {
 
