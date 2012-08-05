@@ -85,15 +85,6 @@ public class OMLinkedListImplFactoryTest extends AbstractTestCase {
                      namespace);
     }
 
-    public void testCreateOMNamespace() throws Exception {
-        assertTrue("OMNamespace uri not correct",
-                   nsUri.equals(
-                           namespace.getNamespaceURI()));   // here equalsIgnoreCase should not be used as case does matter
-        assertTrue("OMNamespace prefix not correct",
-                   nsPrefix.equals(
-                           namespace.getPrefix()));  // here equalsIgnoreCase should not be used as case does matter
-    }
-
     public void testCreateSOAPBody() throws Exception {
         OMXMLParserWrapper omBuilder = OMXMLBuilderFactory.createSOAPModelBuilder(
                 getTestResource(TestConstants.MINIMAL_MESSAGE), null);

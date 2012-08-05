@@ -297,7 +297,7 @@ public class OMSerializerTest extends AbstractTestCase {
     }
 
     public void testDefaultNsSerialization() throws Exception {
-        StAXOMBuilder builder = new StAXOMBuilder(getTestResource("original.xml"));
+        StAXOMBuilder builder = new StAXOMBuilder(getTestResource("defaultNamespace2.xml"));
         String xml = builder.getDocumentElement().toString();
         assertEquals("There shouldn't be any xmlns=\"\"", -1, xml.indexOf("xmlns=\"\""));
     }
