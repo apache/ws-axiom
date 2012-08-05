@@ -350,11 +350,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
             throws XMLStreamException {
         if (parser != null) {
-            try {
-                return parser.getTextCharacters(sourceStart, target, targetStart, length);
-            } catch (XMLStreamException e) {
-                throw new OMStreamingException(e);
-            }
+            return parser.getTextCharacters(sourceStart, target, targetStart, length);
         } else {
             String text = getTextFromNode();
             int copied = Math.min(length, text.length()-sourceStart);
@@ -915,13 +911,9 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      */
     public String getElementText() throws XMLStreamException {
         if (parser != null) {
-            try {
-                String elementText = parser.getElementText();
-                currentEvent = END_ELEMENT;
-                return elementText;
-            } catch (XMLStreamException e) {
-                throw new OMStreamingException(e);
-            }
+            String elementText = parser.getElementText();
+            currentEvent = END_ELEMENT;
+            return elementText;
         } else {
             ///////////////////////////////////////////////////////
             //// Code block directly from the API documentation ///
