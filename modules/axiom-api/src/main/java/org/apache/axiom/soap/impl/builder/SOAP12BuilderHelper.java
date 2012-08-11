@@ -312,7 +312,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
             }
         }
 
-        processNamespaceData(element, false);
+        processNamespaceData(element);
         processAttributes(element);
         return element;
     }

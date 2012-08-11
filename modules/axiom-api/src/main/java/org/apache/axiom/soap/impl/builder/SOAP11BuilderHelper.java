@@ -50,33 +50,33 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
 
                 element = factory.createSOAPFaultCode(
                         (SOAPFault) parent, builder);
-                processNamespaceData(element, false);
+                processNamespaceData(element);
                 processAttributes(element);
                 faultcodePresent = true;
             } else if (SOAP_FAULT_STRING_LOCAL_NAME.equals(localName)) {
 
                 element = factory.createSOAPFaultReason(
                         (SOAPFault) parent, builder);
-                processNamespaceData(element, false);
+                processNamespaceData(element);
                 processAttributes(element);
                 faultstringPresent = true;
             } else if (SOAP_FAULT_ACTOR_LOCAL_NAME.equals(localName)) {
                 element =
                         factory.createSOAPFaultRole((SOAPFault) parent,
                                                     builder);
-                processNamespaceData(element, false);
+                processNamespaceData(element);
                 processAttributes(element);
             } else if (SOAP_FAULT_DETAIL_LOCAL_NAME.equals(localName)) {
                 element =
                         factory.createSOAPFaultDetail((SOAPFault) parent,
                                                       builder);
-                processNamespaceData(element, false);
+                processNamespaceData(element);
                 processAttributes(element);
             } else {
                 element =
                         factory.createOMElement(
                                 localName, parent, builder);
-                processNamespaceData(element, false);
+                processNamespaceData(element);
                 processAttributes(element);
             }
 
@@ -104,7 +104,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
                 element =
                         this.factory.createOMElement(
                                 localName, parent, builder);
-                processNamespaceData(element, false);
+                processNamespaceData(element);
                 processAttributes(element);
             }
 
@@ -113,7 +113,7 @@ public class SOAP11BuilderHelper extends SOAPBuilderHelper implements SOAP11Cons
                     this.factory.createOMElement(localName,
                                                  parent,
                                                  builder);
-            processNamespaceData(element, false);
+            processNamespaceData(element);
             processAttributes(element);
         }
 
