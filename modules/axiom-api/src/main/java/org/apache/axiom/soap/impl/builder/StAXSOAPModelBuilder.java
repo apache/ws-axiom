@@ -205,29 +205,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         return newElement;
     }
     
-    /**
-     * Method createOMElement.
-     *
-     * @return Returns OMNode.
-     * @throws OMException
-     */
-    protected OMNode createOMElement() throws OMException {
-        OMElement node = constructNode(target, parser.getLocalName());
-        if (log.isDebugEnabled()) {
-            log.debug("Build the OMElement " + node.getLocalName() +
-                    " by the StaxSOAPModelBuilder");
-        }
-        processNamespaceData(node);
-        processAttributes(node);
-        return node;
-    }
-
-    /**
-     * Method constructNode
-     *
-     * @param parent
-     * @param elementName
-     */
     protected OMElement constructNode(OMContainer parent, String elementName) {
         OMElement element;
         if (elementLevel == 1) {
