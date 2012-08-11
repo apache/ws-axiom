@@ -266,52 +266,50 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             processAttributes(element);
 
         } else if (elementLevel == 2) {
-            // Must be in the right namespace regardless
             String elementNS = parser.getNamespaceURI();
 
-            if (!(soapFactory.getSoapVersionURI().equals(elementNS))) {
-                if (!bodyPresent ||
-                        soapFactory.getSOAPVersion() != SOAP11Version.getSingleton()) {
-                    throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
-                            + elementNS + "}" + elementName);
-                }
-            }
-
-            // this is either a header or a body
-            if (elementName.equals(SOAPConstants.HEADER_LOCAL_NAME)) {
-                if (headerPresent) {
-                    throw new SOAPProcessingException("Multiple headers encountered!",
+            if (soapFactory.getSoapVersionURI().equals(elementNS)) {
+                // this is either a header or a body
+                if (elementName.equals(SOAPConstants.HEADER_LOCAL_NAME)) {
+                    if (headerPresent) {
+                        throw new SOAPProcessingException("Multiple headers encountered!",
+                                                          getSenderFaultCode());
+                    }
+                    if (bodyPresent) {
+                        throw new SOAPProcessingException("Header Body wrong order!",
+                                                          getSenderFaultCode());
+                    }
+                    headerPresent = true;
+                    element =
+                            soapFactory.createSOAPHeader((SOAPEnvelope) parent,
+                                                         this);
+    
+                    processNamespaceData(element, true);
+                    processAttributes(element);
+    
+                } else if (elementName.equals(SOAPConstants.BODY_LOCAL_NAME)) {
+                    if (bodyPresent) {
+                        throw new SOAPProcessingException("Multiple body elements encountered",
+                                                          getSenderFaultCode());
+                    }
+                    bodyPresent = true;
+                    element =
+                            soapFactory.createSOAPBody((SOAPEnvelope) parent,
+                                                       this);
+    
+                    processNamespaceData(element, true);
+                    processAttributes(element);
+                } else {
+                    throw new SOAPProcessingException(elementName + " is not supported here.",
                                                       getSenderFaultCode());
                 }
-                if (bodyPresent) {
-                    throw new SOAPProcessingException("Header Body wrong order!",
-                                                      getSenderFaultCode());
-                }
-                headerPresent = true;
-                element =
-                        soapFactory.createSOAPHeader((SOAPEnvelope) parent,
-                                                     this);
-
-                processNamespaceData(element, true);
-                processAttributes(element);
-
-            } else if (elementName.equals(SOAPConstants.BODY_LOCAL_NAME)) {
-                if (bodyPresent) {
-                    throw new SOAPProcessingException("Multiple body elements encountered",
-                                                      getSenderFaultCode());
-                }
-                bodyPresent = true;
-                element =
-                        soapFactory.createSOAPBody((SOAPEnvelope) parent,
-                                                   this);
-
-                processNamespaceData(element, true);
+            } else if (soapFactory.getSOAPVersion() == SOAP11Version.getSingleton() && bodyPresent) {
+                element = omfactory.createOMElement(parser.getLocalName(), parent, this);
+                processNamespaceData(element, false);
                 processAttributes(element);
             } else {
-                throw new SOAPProcessingException(elementName
-                        +
-                        " is not supported here. Envelope can not have elements other than Header and Body.",
-                                                  getSenderFaultCode());
+                throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
+                        + elementNS + "}" + elementName);
             }
         } else if ((elementLevel == 3)
                 &&
