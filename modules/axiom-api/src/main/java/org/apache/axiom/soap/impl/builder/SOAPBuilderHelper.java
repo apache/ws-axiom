@@ -20,7 +20,6 @@
 package org.apache.axiom.soap.impl.builder;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPProcessingException;
 
 import javax.xml.stream.XMLStreamReader;
@@ -44,19 +43,6 @@ public abstract class SOAPBuilderHelper {
     }
 
     protected void processAttributes(OMElement node) {
-        int attribCount = parser.getAttributeCount();
-        for (int i = 0; i < attribCount; i++) {
-            OMNamespace ns = null;
-            String uri = parser.getAttributeNamespace(i);
-            if (uri != null && uri.hashCode() != 0) {
-                ns = node.findNamespace(uri,
-                                        parser.getAttributePrefix(i));
-            }
-
-            // todo if the attributes are supposed to namespace qualified all the time
-            // todo then this should throw an exception here
-            node.addAttribute(parser.getAttributeLocalName(i),
-                              parser.getAttributeValue(i), ns);
-        }
+        builder.processAttributes(node);
     }
 }

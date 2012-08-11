@@ -395,6 +395,11 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         super.processNamespaceData(node);
     }
 
+    // Necessary to allow SOAPBuilderHelper to access this method
+    protected void processAttributes(OMElement node) {
+        super.processAttributes(node);
+    }
+
 /*these three methods to set and check detail element processing or mandatory fault element are present
 */
 
