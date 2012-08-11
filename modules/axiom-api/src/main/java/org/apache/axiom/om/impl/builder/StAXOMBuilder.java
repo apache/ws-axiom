@@ -531,7 +531,7 @@ public class StAXOMBuilder extends StAXBuilder {
         return omfactory.createOMEntityReference(target, parser.getLocalName(), parser.getText(), true);
     }
     
-    protected void endElement() {
+    private void endElement() {
         target.setComplete(true);
         target = (OMContainerEx)((OMElement)target).getParent();
     }
