@@ -37,12 +37,4 @@ public abstract class SOAPBuilderHelper {
     public abstract OMElement handleEvent(XMLStreamReader parser,
                                           OMElement element,
                                           int elementLevel) throws SOAPProcessingException;
-
-    protected void processNamespaceData(OMElement node) {
-        builder.processNamespaceData(node);
-    }
-
-    protected void processAttributes(OMElement node) {
-        builder.processAttributes(node);
-    }
 }

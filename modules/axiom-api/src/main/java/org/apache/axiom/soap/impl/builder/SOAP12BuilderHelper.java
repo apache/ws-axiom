@@ -311,9 +311,6 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                                 elementLevel);
             }
         }
-
-        processNamespaceData(element);
-        processAttributes(element);
         return element;
     }
 }

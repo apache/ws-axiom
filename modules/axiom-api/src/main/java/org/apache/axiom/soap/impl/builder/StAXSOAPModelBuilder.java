@@ -223,6 +223,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             log.debug("Build the OMElement " + node.getLocalName() +
                     " by the StaxSOAPModelBuilder");
         }
+        processNamespaceData(node);
+        processAttributes(node);
         return node;
     }
 
@@ -264,10 +266,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             }
 
             element = soapFactory.createSOAPEnvelope((SOAPMessage)parent, this);
-            processNamespaceData(element);
-            // fill in the attributes
-            processAttributes(element);
-
         } else if (elementLevel == 2) {
             String elementNS = parser.getNamespaceURI();
 
@@ -286,10 +284,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                     element =
                             soapFactory.createSOAPHeader((SOAPEnvelope) parent,
                                                          this);
-    
-                    processNamespaceData(element);
-                    processAttributes(element);
-    
                 } else if (elementName.equals(SOAPConstants.BODY_LOCAL_NAME)) {
                     if (bodyPresent) {
                         throw new SOAPProcessingException("Multiple body elements encountered",
@@ -299,17 +293,12 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                     element =
                             soapFactory.createSOAPBody((SOAPEnvelope) parent,
                                                        this);
-    
-                    processNamespaceData(element);
-                    processAttributes(element);
                 } else {
                     throw new SOAPProcessingException(elementName + " is not supported here.",
                                                       getSenderFaultCode());
                 }
             } else if (soapFactory.getSOAPVersion() == SOAP11Version.getSingleton() && bodyPresent) {
                 element = omfactory.createOMElement(parser.getLocalName(), parent, this);
-                processNamespaceData(element);
-                processAttributes(element);
             } else {
                 throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
                         + elementNS + "}" + elementName);
@@ -327,19 +316,12 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                 throw new SOAPProcessingException("Can not create SOAPHeader block",
                                                   getReceiverFaultCode(), e);
             }
-            processNamespaceData(element);
-            processAttributes(element);
-
         } else if ((elementLevel == 3) &&
                 ((OMElement)parent).getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME) &&
                 elementName.equals(SOAPConstants.BODY_FAULT_LOCAL_NAME) &&
                 soapFactory.getSoapVersionURI().equals(parser.getNamespaceURI())) {
             // this is a SOAP fault
             element = soapFactory.createSOAPFault((SOAPBody) parent, this);
-            processNamespaceData(element);
-            processAttributes(element);
-
-
             processingFault = true;
             if (soapFactory.getSOAPVersion() == SOAP12Version.getSingleton()) {
                 builderHelper = new SOAP12BuilderHelper(this, soapFactory);
@@ -353,9 +335,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             // this is neither of above. Just create an element
             element = soapFactory.createOMElement(elementName, parent,
                                                   this);
-            processNamespaceData(element);
-            processAttributes(element);
-
         }
         return element;
     }
@@ -388,16 +367,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
     protected OMNode createEntityReference() {
         throw new SOAPProcessingException("A SOAP message cannot contain entity references because it must not have a DTD");
-    }
-
-    // Necessary to allow SOAPBuilderHelper to access this method
-    protected void processNamespaceData(OMElement node) {
-        super.processNamespaceData(node);
-    }
-
-    // Necessary to allow SOAPBuilderHelper to access this method
-    protected void processAttributes(OMElement node) {
-        super.processAttributes(node);
     }
 
 /*these three methods to set and check detail element processing or mandatory fault element are present
