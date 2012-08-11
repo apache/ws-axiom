@@ -86,12 +86,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
     private boolean processingFault = false;
 
-
-    //added
-    /* This is used to indicate whether detail element is processing in soap 1.2 builderhelper
-    */
-    private boolean processingDetailElements = false;
-
     private SOAPBuilderHelper builderHelper;
 
     /**
@@ -374,14 +368,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
     public OMNamespace getEnvelopeNamespace() {
         return getSOAPEnvelope().getNamespace();
-    }
-
-    public boolean isProcessingDetailElements() {
-        return processingDetailElements;
-    }
-
-    public void setProcessingDetailElements(boolean value) {
-        processingDetailElements = value;
     }
 
     public SOAPMessage getSoapMessage() {

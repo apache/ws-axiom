@@ -47,6 +47,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
     private boolean codeprocessing = false;
     private boolean subCodeProcessing = false;
     private boolean reasonProcessing = false;
+    private boolean processingDetailElements = false;
     private Vector detailElementNames;
 
     public SOAP12BuilderHelper(StAXSOAPModelBuilder builder, SOAPFactoryEx factory) {
@@ -233,7 +234,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                 element =
                         this.factory.createOMElement(
                                 parser.getLocalName(), parent, builder);
-                builder.setProcessingDetailElements(true);
+                processingDetailElements = true;
                 detailElementNames = new Vector();
                 detailElementNames.add(parser.getLocalName());
 
@@ -284,7 +285,7 @@ public class SOAP12BuilderHelper extends SOAPBuilderHelper {
                             parser.getLocalName() +
                                     " is not supported inside the subCode element");
                 }
-            } else if (builder.isProcessingDetailElements()) {
+            } else if (processingDetailElements) {
                 int detailElementLevel = 0;
                 boolean localNameExist = false;
                 for (int i = 0; i < detailElementNames.size(); i++) {
