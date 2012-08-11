@@ -245,8 +245,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             }
 
             // determine SOAP version and from that determine a proper factory here.
+            String namespaceURI = this.parser.getNamespaceURI();
             if (soapFactory == null) {
-                String namespaceURI = this.parser.getNamespaceURI();
                 if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
                     soapFactory = (SOAPFactoryEx)metaFactory.getSOAP12Factory();
                     log.debug("Starting to process SOAP 1.2 message");
@@ -258,10 +258,13 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                             "Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
                                     " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
                 }
+            } else if (!soapFactory.getSoapVersionURI().equals(namespaceURI)) {
+                throw new SOAPProcessingException("Invalid SOAP namespace URI. " +
+                        "Expected " + soapFactory.getSoapVersionURI(), SOAP12Constants.FAULT_CODE_SENDER);
             }
 
             element = soapFactory.createSOAPEnvelope((SOAPMessage)parent, this);
-            processNamespaceData(element, true);
+            processNamespaceData(element);
             // fill in the attributes
             processAttributes(element);
 
@@ -284,7 +287,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                             soapFactory.createSOAPHeader((SOAPEnvelope) parent,
                                                          this);
     
-                    processNamespaceData(element, true);
+                    processNamespaceData(element);
                     processAttributes(element);
     
                 } else if (elementName.equals(SOAPConstants.BODY_LOCAL_NAME)) {
@@ -297,7 +300,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                             soapFactory.createSOAPBody((SOAPEnvelope) parent,
                                                        this);
     
-                    processNamespaceData(element, true);
+                    processNamespaceData(element);
                     processAttributes(element);
                 } else {
                     throw new SOAPProcessingException(elementName + " is not supported here.",
@@ -305,7 +308,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                 }
             } else if (soapFactory.getSOAPVersion() == SOAP11Version.getSingleton() && bodyPresent) {
                 element = omfactory.createOMElement(parser.getLocalName(), parent, this);
-                processNamespaceData(element, false);
+                processNamespaceData(element);
                 processAttributes(element);
             } else {
                 throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
@@ -324,7 +327,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                 throw new SOAPProcessingException("Can not create SOAPHeader block",
                                                   getReceiverFaultCode(), e);
             }
-            processNamespaceData(element, false);
+            processNamespaceData(element);
             processAttributes(element);
 
         } else if ((elementLevel == 3) &&
@@ -333,7 +336,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                 soapFactory.getSoapVersionURI().equals(parser.getNamespaceURI())) {
             // this is a SOAP fault
             element = soapFactory.createSOAPFault((SOAPBody) parent, this);
-            processNamespaceData(element, false);
+            processNamespaceData(element);
             processAttributes(element);
 
 
@@ -350,7 +353,7 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             // this is neither of above. Just create an element
             element = soapFactory.createOMElement(elementName, parent,
                                                   this);
-            processNamespaceData(element, false);
+            processNamespaceData(element);
             processAttributes(element);
 
         }
@@ -390,34 +393,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
     // Necessary to allow SOAPBuilderHelper to access this method
     protected void processNamespaceData(OMElement node) {
         super.processNamespaceData(node);
-    }
-
-    /**
-     * Method processNamespaceData.
-     *
-     * @param node
-     * @param isSOAPElement
-     */
-    protected void processNamespaceData(OMElement node, boolean isSOAPElement) {
-
-        super.processNamespaceData(node);
-
-        if (isSOAPElement) {
-            OMNamespace omNS = node.getNamespace();
-            if (omNS != null) {
-                String uri = omNS.getNamespaceURI();
-                if (uri.equals(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI) ||
-                    uri.equals(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI)) {
-                    // okay
-                } else {
-                    throw new SOAPProcessingException("invalid SOAP namespace URI. " +
-                            "Only " + SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI +
-                            " and " + SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI +
-                            " are supported.", SOAP12Constants.FAULT_CODE_SENDER);
-                }
-            }
-        }
-
     }
 
 /*these three methods to set and check detail element processing or mandatory fault element are present
