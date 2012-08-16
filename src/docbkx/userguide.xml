@@ -1707,17 +1707,9 @@ public InputStream getInputStream() throws IOException;</programlisting>
                             to pull the events from the reader returned by a call to
                             <methodname>getReader</methodname> and copy them to the
                             <classname>XMLStreamReader</classname>. The easiest and most efficient
-                            way to do this is using <classname>StreamingOMSerializer</classname>:
-                        </para>
-                        <example id="OMDataSource-serialize">
-                            <title>Proper implementation of the <methodname>OMDataSource#serialize</methodname> method</title>
-<programlisting>public void serialize(XMLStreamWriter xmlWriter)
-        throws XMLStreamException {
-    StreamingOMSerializer serializer = new StreamingOMSerializer();
-    serializer.serialize(getReader(), xmlWriter);
-}</programlisting>
-                        </example>
-                        <para>
+                            way to do this is to extend <classname>org.apache.axiom.om.ds.AbstractPullOMDataSource</classname>
+                            (available in Axiom 1.2.14), which implements the <methodname>serialize</methodname>
+                            method in exactly that way.
                             There is thus no need to build an intermediary object model in this case.
                         </para>
                     </listitem>
