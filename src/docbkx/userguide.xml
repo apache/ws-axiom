@@ -1648,15 +1648,15 @@ public InputStream getInputStream() throws IOException;</programlisting>
                 <para>
                     Experience indeed shows that the most challenging part in creating an
                     <classname>OMDataSource</classname> implementation is to write the
-                    <methodname>getReader</methodname> method. To avoid that difficulty some
-                    implementations simply build an Axiom tree and return the
+                    <methodname>getReader</methodname> method. In the past, to avoid that difficulty some
+                    implementations simply built an Axiom tree and returned the
                     <classname>XMLStreamReader</classname> provided by
-                    <methodname>OMElement#getXMLStreamReader()</methodname>. For example, some ADB
-                    (Axis2 Data Binding) versions use the following code<footnote><para>For the complete
+                    <methodname>OMElement#getXMLStreamReader()</methodname>. For example, older versions of ADB
+                    (Axis2 Data Binding) used the following code<footnote><para>For the complete
                     code, see <ulink url="http://svn.apache.org/repos/asf/webservices/axis2/tags/java/v1.5/modules/adb/src/org/apache/axis2/databinding/ADBDataSource.java"/>.</para></footnote>:
                 </para>
                 <example id="adb-getReader">
-                    <title><methodname>OMDataSource#getReader()</methodname> implementation used by ADB</title>
+                    <title><methodname>OMDataSource#getReader()</methodname> implementation used in older ADB versions</title>
 <programlisting>public XMLStreamReader getReader() throws XMLStreamException {
     MTOMAwareOMBuilder mtomAwareOMBuilder = new MTOMAwareOMBuilder();
     serialize(mtomAwareOMBuilder);
@@ -1664,39 +1664,28 @@ public InputStream getInputStream() throws IOException;</programlisting>
 }</programlisting>
                 </example>
                 <para>
-                    The <classname>MTOMAwareOMBuilder</classname> class referenced by this code is a special
-                    implementation of <classname>XMLStreamWriter</classname> that builds an Axiom tree from the
-                    sequence of events send to it. The code than uses this Axiom tree to get the
-                    <classname>XMLStreamReader</classname> implementation. While this is a functionally correct
+                    The <classname>MTOMAwareOMBuilder</classname> class referenced by this code was a special
+                    implementation of <classname>XMLStreamWriter</classname> building an Axiom tree from the
+                    sequence of events sent to it. The code than used this Axiom tree to get the
+                    <classname>XMLStreamReader</classname> implementation. While this was a functionally correct
                     implementation of the <methodname>getReader</methodname> method, it is not a good
                     solution from a performance perspective and also contradicts some of the ideas on
                     which Axiom is based, namely that the object model should only be built when necessary.
                 </para>
                 <para>
-                    Indeed, it should not be necessary to build an intermediary tree when requesting a pull
-                    parser from the <classname>OMDataSource</classname> because all the required information
-                    is already present in the ADB beans. Worse, if the <classname>OMSourcedElement</classname>
-                    is expanded, the object model instance will be built twice: once by the
-                    <methodname>getReader</methodname> and once by Axiom itself!
+                    Starting with Axiom 1.2.14, there is a solution to avoid this anti-pattern.
+                    <classname>OMDataSource</classname> implementations that cannot provide a meaningful
+                    <classname>XMLStreamReader</classname> instance should extend
+                    <classname>org.apache.axiom.om.ds.AbstractPushOMDataSource</classname> and only
+                    implement the <methodname>serialize</methodname> method.
+                    <classname>OMSourcedElement</classname> will handle <classname>OMDataSource</classname> implementations extending this class
+                    differently when it comes to expansion: instead of using <methodname>OMDataSource#getReader()</methodname> to
+                    expand the element, it will use <methodname>OMDataSource#serialize(XMLStreamWriter)</methodname> (with a special
+                    <classname>XMLStreamWriter</classname> that builds the descendants of the <classname>OMSourcedElement</classname>). Note that this means
+                    that such an <classname>OMSourcedElement</classname> will be expanded instantly, and that deferred building of
+                    the descendants is not applicable. Nevertheless, this approach is significantly more efficient
+                    than using the OM-inside-OMDataSource anti-pattern.
                 </para>
-                <para>
-                    While constructing an Axiom tree inside the <methodname>getReader</methodname> method is clearly
-                    an anti-pattern, at least in the case of ADB it is not as bad as it seems at first glance.
-                    The reason is that in the case which is the most relevant for performance
-                    (which is sending a Web Service response prepared using ADB), Axiom will only invoke
-                    the <methodname>serialize</methodname> method and not make use of
-                    <methodname>getReader</methodname>.
-                </para>
-                <note>
-                    <para>
-                        At the time of writing there is no general solution available to avoid the
-                        weak version of the OM-inside-OMDataSource anti-pattern in cases where it would be far
-                        too difficult to build a proper <classname>XMLStreamReader</classname>
-                        implementation. Future versions of Axiom may implement a solution that
-                        avoids the complexity of implementing <classname>XMLStreamReader</classname>
-                        without too much performance trade-offs.
-                    </para>
-                </note>
             </section>
             <section>
                 <title>Strong version</title>
@@ -1753,23 +1742,6 @@ public InputStream getInputStream() throws IOException;</programlisting>
                             method properly by transforming the raw or foreign data directly to StAX events written to the
                             <classname>XMLStreamWriter</classname>.
                         </para>
-                        <note>
-                            <para>
-                                Implementing the <methodname>serialize</methodname> method to serialize
-                                directly to an <classname>XMLStreamWriter</classname>
-                                instead of using an intermediary Axiom tree of course still leaves the question about
-                                the <methodname>getReader</methodname> method open.
-                                Since we are assuming that implementing <methodname>getReader</methodname>
-                                properly would be too complex (otherwise one could use the code shown in
-                                <xref linkend="OMDataSource-serialize"/> to avoid the
-                                OM-inside-OMDataSource anti-pattern entirely), one is forced to
-                                use the code shown in <xref linkend="adb-getReader"/> (and thus the weaker version of
-                                the anti-pattern). However this code depends on the <classname>MTOMAwareOMBuilder</classname>
-                                class which is part of <literal>axis2-adb</literal>. In some cases, depending on
-                                that library may not be an option. Therefore this class should probably
-                                be moved to Axiom.
-                            </para>
-                        </note>
                     </listitem>
                 </orderedlist>
                 <para>
