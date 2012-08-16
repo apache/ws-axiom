@@ -1515,7 +1515,7 @@ public InputStream getInputStream() throws IOException;</programlisting>
                 <methodname>getInputStream</methodname> <quote>destructive</quote>. Consider
                 the implementation shown in <xref linkend="InputStreamDataSource"/><footnote><para>The example
                 shown is actually a simplified version of code that is 
-                <ulink url="http://svn.apache.org/repos/asf/webservices/axis2/tags/java/v1.5/modules/kernel/src/org/apache/axis2/builder/unknowncontent/InputStreamDataSource.java">part of Axis2 1.5</ulink>.</para></footnote>.
+                <ulink url="http://svn.apache.org/repos/asf/axis/axis2/java/core/tags/v1.5/modules/kernel/src/org/apache/axis2/builder/unknowncontent/InputStreamDataSource.java">part of Axis2 1.5</ulink>.</para></footnote>.
                 It is clear that this data source can only be read once and that any subsequent call to
                 <methodname>getInputStream</methodname> will return an already closed input stream.
             </para>
@@ -1653,7 +1653,7 @@ public InputStream getInputStream() throws IOException;</programlisting>
                     <classname>XMLStreamReader</classname> provided by
                     <methodname>OMElement#getXMLStreamReader()</methodname>. For example, older versions of ADB
                     (Axis2 Data Binding) used the following code<footnote><para>For the complete
-                    code, see <ulink url="http://svn.apache.org/repos/asf/webservices/axis2/tags/java/v1.5/modules/adb/src/org/apache/axis2/databinding/ADBDataSource.java"/>.</para></footnote>:
+                    code, see <ulink url="http://svn.apache.org/repos/asf/axis/axis2/java/core/tags/v1.5/modules/adb/src/org/apache/axis2/databinding/ADBDataSource.java"/>.</para></footnote>:
                 </para>
                 <example id="adb-getReader">
                     <title><methodname>OMDataSource#getReader()</methodname> implementation used in older ADB versions</title>
@@ -1725,7 +1725,7 @@ public InputStream getInputStream() throws IOException;</programlisting>
                         <para>
                             The <methodname>getReader</methodname> method also uses an intermediary
                             Axiom tree<footnote><para>See e.g.
-                            <ulink url="http://svn.apache.org/repos/asf/webservices/axis2/tags/java/v1.5/modules/kernel/src/org/apache/axis2/builder/unknowncontent/UnknownContentOMDataSource.java"/>.</para></footnote>.
+                            <ulink url="http://svn.apache.org/repos/asf/axis/axis2/java/core/tags/v1.5/modules/kernel/src/org/apache/axis2/builder/unknowncontent/UnknownContentOMDataSource.java"/>.</para></footnote>.
                             In that case it doesn't make sense to use an <classname>OMSourcedElement</classname>
                             in the first place! At least it doesn't make sense if one assumes that
                             in general the <classname>OMSourcedElement</classname> will either be
