@@ -46,6 +46,7 @@ import junit.framework.Assert;
 public class XMLStreamReaderComparator extends Assert {
     private final XMLStreamReader expected;
     private final XMLStreamReader actual;
+    private boolean compareEntityReplacementValue = true;
     private final LinkedList path = new LinkedList();
     
     /**
@@ -197,6 +198,19 @@ public class XMLStreamReaderComparator extends Assert {
         prefixes.add(prefix);
     }
     
+    /**
+     * Specify whether the replacement value for entity references (as reported by
+     * {@link XMLStreamReader#getText()}) should be compared. The default value for this option is
+     * <code>true</code>.
+     * 
+     * @param value
+     *            <code>true</code> if the replacement value should be compared; <code>false</code>
+     *            if replacement values for entity references are ignored
+     */
+    public void setCompareEntityReplacementValue(boolean value) {
+        compareEntityReplacementValue = value;
+    }
+    
     public void compare() throws Exception {
         while (true) {
             int eventType = ((Integer)assertSameResult("getEventType")).intValue();
@@ -255,7 +269,9 @@ public class XMLStreamReaderComparator extends Assert {
             assertSameResult("getPIData");
             assertSameResult("getPITarget");
             prefixes.add(assertSameResult("getPrefix"));
-            assertSameResult("getText", eventType == XMLStreamReader.DTD ? Normalizer.DTD : Normalizer.IDENTITY);
+            if (eventType != XMLStreamReader.ENTITY_REFERENCE || compareEntityReplacementValue) {
+                assertSameResult("getText", eventType == XMLStreamReader.DTD ? Normalizer.DTD : Normalizer.IDENTITY);
+            }
             Integer textLength = (Integer)assertSameResult("getTextLength");
             Object[] textStart = invoke("getTextStart");
             Object[] textCharacters = invoke("getTextCharacters");

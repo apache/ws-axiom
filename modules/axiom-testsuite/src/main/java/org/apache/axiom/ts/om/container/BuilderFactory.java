@@ -36,6 +36,10 @@ public interface BuilderFactory {
      * instantiate an appropriate parser.
      */
     BuilderFactory PARSER = new BuilderFactory() {
+        public boolean supportsEntityReplacementValues() {
+            return true;
+        }
+
         public void addTestProperties(AxiomTestCase testCase) {
             testCase.addTestProperty("source", "parser");
         }
@@ -51,6 +55,13 @@ public interface BuilderFactory {
      * tree to Axiom.
      */
     BuilderFactory DOM = new BuilderFactory() {
+        public boolean supportsEntityReplacementValues() {
+            // DOM gives access to the parsed replacement value (via the Entity interface), but Axiom
+            // stores the unparsed replacement value. Therefore OMEntityReference#getReplacementText()
+            // returns null for nodes created from a DOM tree.
+            return false;
+        }
+
         public void addTestProperties(AxiomTestCase testCase) {
             testCase.addTestProperty("source", "dom");
         }
@@ -63,6 +74,8 @@ public interface BuilderFactory {
             return OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), document, false);
         }
     };
+    
+    boolean supportsEntityReplacementValues();
     
     void addTestProperties(AxiomTestCase testCase);
     

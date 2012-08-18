@@ -335,18 +335,21 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
             case CDATA:
             case COMMENT:
                 return node.getNodeValue();
-            case ENTITY_REFERENCE:
-                return null;
             default:
                 throw new IllegalStateException();
         }
     }
     
     public String getText() {
-        if (event == DTD) {
-            return ((DocumentType)node).getInternalSubset();
-        } else {
-            return internalGetText();
+        switch (event) {
+            case DTD:
+                return ((DocumentType)node).getInternalSubset();
+            case ENTITY_REFERENCE:
+                // DOM only gives access to the parsed replacement value, but StAX returns
+                // the unparsed replacement value
+                return null;
+            default:
+                return internalGetText();
         }
     }
 

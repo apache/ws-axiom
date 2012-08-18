@@ -40,8 +40,13 @@ public interface Normalizer {
     
     Normalizer DTD = new Normalizer() {
         public Object normalize(Object value) throws Exception {
-            return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-                    new InputSource(new StringReader("<!DOCTYPE root [" + value + "]><root/>"))).getDoctype().getInternalSubset();
+            String content = (String)value;
+            if (content == null || content.trim().length() == 0) {
+                return null;
+            } else {
+                return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+                        new InputSource(new StringReader("<!DOCTYPE root [" + content + "]><root/>"))).getDoctype().getInternalSubset();
+            }
         }
     };
     

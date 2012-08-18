@@ -59,7 +59,9 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
                 OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory, new InputSource(file.getUrl().toString()));
                 try {
                     XMLStreamReader actual = containerFactory.getContainer(builder).getXMLStreamReader(cache);
-                    new XMLStreamReaderComparator(containerFactory.filter(expected), containerFactory.filter(actual)).compare();
+                    XMLStreamReaderComparator comparator = new XMLStreamReaderComparator(containerFactory.filter(expected), containerFactory.filter(actual));
+                    comparator.setCompareEntityReplacementValue(builderFactory.supportsEntityReplacementValues());
+                    comparator.compare();
                 } finally {
                     builder.close();
                 }
