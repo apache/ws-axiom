@@ -29,12 +29,19 @@ import java.util.HashMap;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.impl.MTOMXMLStreamWriter;
 import org.apache.axiom.om.util.StAXUtils;
 
+/**
+ * Base class for {@link OMDataSourceExt} implementations. This class should only be used by data
+ * sources that can equally well produce an {@link XMLStreamReader} and have a meaningful
+ * implementation of {@link OMDataSource#serialize(XMLStreamWriter)}. Most implementations should
+ * actually use {@link AbstractPullOMDataSource} or {@link AbstractPushOMDataSource}.
+ */
 public abstract class AbstractOMDataSource implements OMDataSourceExt {
     private HashMap properties = null;
 
