@@ -19,7 +19,6 @@
 package org.apache.axiom.ts.om.container;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.dom.DOMSource;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -48,8 +47,8 @@ public interface BuilderFactory {
     };
 
     /**
-     * Creates an {@link OMXMLParserWrapper} by parsing the input using DOM and passing it as a
-     * {@link DOMSource} to Axiom.
+     * Creates an {@link OMXMLParserWrapper} by parsing the input using DOM and passing it as a DOM
+     * tree to Axiom.
      */
     BuilderFactory DOM = new BuilderFactory() {
         public void addTestProperties(AxiomTestCase testCase) {
@@ -61,7 +60,7 @@ public interface BuilderFactory {
             dbf.setNamespaceAware(true);
             dbf.setExpandEntityReferences(false);
             Document document = dbf.newDocumentBuilder().parse(inputSource);
-            return OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new DOMSource(document), false);
+            return OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), document, false);
         }
     };
     

@@ -31,11 +31,12 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
+import org.w3c.dom.Document;
 
-public class TestCreateOMBuilderFromDOMSource extends ConformanceTestCase {
+public class TestCreateOMBuilderFromDOM extends ConformanceTestCase {
     private final Boolean expandEntityReferences;
     
-    public TestCreateOMBuilderFromDOMSource(OMMetaFactory metaFactory, ConformanceTestFile file,
+    public TestCreateOMBuilderFromDOM(OMMetaFactory metaFactory, ConformanceTestFile file,
             Boolean expandEntityReferences) {
         super(metaFactory, file);
         this.expandEntityReferences = expandEntityReferences;
@@ -51,12 +52,12 @@ public class TestCreateOMBuilderFromDOMSource extends ConformanceTestCase {
         // converting DOM to OM.
         factory.setExpandEntityReferences(false);
         DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-        DOMSource source = new DOMSource(documentBuilder.parse(file.getUrl().toString()));
+        Document document = documentBuilder.parse(file.getUrl().toString());
         OMXMLParserWrapper builder;
         if (expandEntityReferences == null) {
-            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source);
+            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), new DOMSource(document));
         } else {
-            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source,
+            builder = OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), document,
                     expandEntityReferences.booleanValue());
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

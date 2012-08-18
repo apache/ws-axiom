@@ -82,12 +82,12 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         for (int i=0; i<conformanceFiles.length; i++) {
             ConformanceTestFile file = conformanceFiles[i];
             if (file.hasEntityReferences()) {
-                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource(metaFactory, file, Boolean.TRUE));
-                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource(metaFactory, file, Boolean.FALSE));
+                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, Boolean.TRUE));
+                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, Boolean.FALSE));
                 addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, Boolean.TRUE));
                 addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, Boolean.FALSE));
             } else {
-                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource(metaFactory, file, null));
+                addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM(metaFactory, file, null));
                 addTest(new org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromSAXSource(metaFactory, file, null));
             }
         }
