@@ -359,6 +359,10 @@ public class OMDOMFactory implements OMFactoryEx {
         return new DocumentImpl(builder, this);
     }
 
+    public OMEntityReference createOMEntityReference(OMContainer parent, String name) {
+        return createOMEntityReference(parent, name, null, false);
+    }
+
     public OMEntityReference createOMEntityReference(OMContainer parent, String name, String replacementText, boolean fromBuilder) {
         EntityReferenceImpl node = new EntityReferenceImpl(name, replacementText, this);
         if (parent != null) {

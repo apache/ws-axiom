@@ -358,4 +358,16 @@ public interface OMFactory {
      * @return Returns OMComment.
      */
     OMComment createOMComment(OMContainer parent, String content);
+    
+    /**
+     * Create an entity reference.
+     * 
+     * @param parent
+     *            the parent to which the newly created entity reference node will be added; this
+     *            may be <code>null</code>
+     * @param name
+     *            the name of the entity
+     * @return the newly created {@link OMEntityReference} node
+     */
+    OMEntityReference createOMEntityReference(OMContainer parent, String name);
 }
