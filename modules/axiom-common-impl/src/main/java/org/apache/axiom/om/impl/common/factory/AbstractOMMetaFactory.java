@@ -31,6 +31,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.builder.SAXOMBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.builder.XOPAwareStAXOMBuilder;
 import org.apache.axiom.om.util.StAXParserConfiguration;
@@ -125,7 +126,7 @@ public abstract class AbstractOMMetaFactory implements OMMetaFactoryEx {
 
     public OMXMLParserWrapper createOMBuilder(OMFactory omFactory, SAXSource source,
             boolean expandEntityReferences) {
-        return new SAXOMXMLParserWrapper(omFactory, source, expandEntityReferences);
+        return new SAXOMBuilder(omFactory, source, expandEntityReferences);
     }
 
     public OMXMLParserWrapper createOMBuilder(StAXParserConfiguration configuration,

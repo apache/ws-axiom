@@ -19,10 +19,14 @@
 package org.apache.axiom.ts.om.container;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.testutils.stax.XMLStreamReaderComparator;
 import org.apache.axiom.ts.AxiomTestCase;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -36,8 +40,7 @@ public interface BuilderFactory {
      * instantiate an appropriate parser.
      */
     BuilderFactory PARSER = new BuilderFactory() {
-        public boolean supportsEntityReplacementValues() {
-            return true;
+        public void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator) {
         }
 
         public void addTestProperties(AxiomTestCase testCase) {
@@ -55,11 +58,11 @@ public interface BuilderFactory {
      * tree to Axiom.
      */
     BuilderFactory DOM = new BuilderFactory() {
-        public boolean supportsEntityReplacementValues() {
+        public void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator) {
             // DOM gives access to the parsed replacement value (via the Entity interface), but Axiom
             // stores the unparsed replacement value. Therefore OMEntityReference#getReplacementText()
             // returns null for nodes created from a DOM tree.
-            return false;
+            comparator.setCompareEntityReplacementValue(false);
         }
 
         public void addTestProperties(AxiomTestCase testCase) {
@@ -75,7 +78,31 @@ public interface BuilderFactory {
         }
     };
     
-    boolean supportsEntityReplacementValues();
+    /**
+     * Creates an {@link OMXMLParserWrapper} by passing a {@link SAXSource} to Axiom.
+     */
+    BuilderFactory SAX = new BuilderFactory() {
+        public void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator) {
+            // SAX doesn't provide this information
+            comparator.setCompareCharacterEncodingScheme(false);
+            comparator.setCompareEncoding(false);
+        }
+
+        public void addTestProperties(AxiomTestCase testCase) {
+            testCase.addTestProperty("source", "sax");
+        }
+
+        public OMXMLParserWrapper getBuilder(OMMetaFactory metaFactory, InputSource inputSource) throws Exception {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            factory.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
+            SAXParser parser = factory.newSAXParser();
+            SAXSource source = new SAXSource(parser.getXMLReader(), inputSource);
+            return OMXMLBuilderFactory.createOMBuilder(metaFactory.getOMFactory(), source, false);
+        }
+    };
+    
+    void configureXMLStreamReaderComparator(XMLStreamReaderComparator comparator);
     
     void addTestProperties(AxiomTestCase testCase);
     

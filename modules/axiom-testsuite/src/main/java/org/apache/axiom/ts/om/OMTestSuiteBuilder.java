@@ -39,7 +39,8 @@ import org.apache.axiom.ts.om.xpath.TestAXIOMXPath;
 public class OMTestSuiteBuilder extends TestSuiteBuilder {
     private static final BuilderFactory[] builderFactories = {
         BuilderFactory.PARSER,
-        BuilderFactory.DOM };
+        BuilderFactory.DOM,
+        BuilderFactory.SAX };
     
     private static final OMContainerFactory[] containerFactories = {
         OMContainerFactory.DOCUMENT,

@@ -47,6 +47,8 @@ public class XMLStreamReaderComparator extends Assert {
     private final XMLStreamReader expected;
     private final XMLStreamReader actual;
     private boolean compareEntityReplacementValue = true;
+    private boolean compareCharacterEncodingScheme = true;
+    private boolean compareEncoding = true;
     private final LinkedList path = new LinkedList();
     
     /**
@@ -211,14 +213,26 @@ public class XMLStreamReaderComparator extends Assert {
         compareEntityReplacementValue = value;
     }
     
+    public void setCompareCharacterEncodingScheme(boolean value) {
+        compareCharacterEncodingScheme = value;
+    }
+
+    public void setCompareEncoding(boolean value) {
+        compareEncoding = value;
+    }
+
     public void compare() throws Exception {
         while (true) {
             int eventType = ((Integer)assertSameResult("getEventType")).intValue();
             if (eventType == XMLStreamReader.START_ELEMENT) {
                 path.addLast(expected.getName());
             }
-            assertSameResult("getCharacterEncodingScheme");
-            assertSameResult("getEncoding", Normalizer.LOWER_CASE);
+            if (compareCharacterEncodingScheme) {
+                assertSameResult("getCharacterEncodingScheme");
+            }
+            if (compareEncoding) {
+                assertSameResult("getEncoding", Normalizer.LOWER_CASE);
+            }
             Integer attributeCount = (Integer)assertSameResult("getAttributeCount");
             // Test the behavior of the getAttributeXxx methods for all types of events,
             // to check that an appropriate exception is thrown for events other than

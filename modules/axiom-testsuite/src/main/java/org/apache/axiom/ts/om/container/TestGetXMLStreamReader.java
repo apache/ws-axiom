@@ -60,7 +60,7 @@ public class TestGetXMLStreamReader extends ConformanceTestCase {
                 try {
                     XMLStreamReader actual = containerFactory.getContainer(builder).getXMLStreamReader(cache);
                     XMLStreamReaderComparator comparator = new XMLStreamReaderComparator(containerFactory.filter(expected), containerFactory.filter(actual));
-                    comparator.setCompareEntityReplacementValue(builderFactory.supportsEntityReplacementValues());
+                    builderFactory.configureXMLStreamReaderComparator(comparator);
                     comparator.compare();
                 } finally {
                     builder.close();

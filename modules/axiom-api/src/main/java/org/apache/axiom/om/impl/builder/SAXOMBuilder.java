@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
@@ -35,16 +36,22 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.XMLConstants;
+import javax.xml.transform.sax.SAXSource;
 
 public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, DeclHandler, OMXMLParserWrapper {
+    private final SAXSource source;
     private final boolean expandEntityReferences;
     
     private OMDocument document;
@@ -68,6 +75,11 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
      * Stores the internal subset if there is a DTD.
      */
     private StringBuilder internalSubset;
+
+    /**
+     * Stores the replacement values for entities.
+     */
+    private Map entities;
     
     /**
      * Flag indicating that the parser is processing the external subset.
@@ -88,15 +100,33 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     
     private boolean inEntityReference;
 
-    public SAXOMBuilder(OMFactory factory, boolean expandEntityReferences) {
+    /**
+     * For internal use only.
+     * 
+     * @param factory
+     * @param source
+     * @param expandEntityReferences
+     */
+    public SAXOMBuilder(OMFactory factory, SAXSource source, boolean expandEntityReferences) {
         this.factory = (OMFactoryEx)factory;
+        this.source = source;
         this.expandEntityReferences = expandEntityReferences;
     }
     
+    /**
+     * @deprecated Instead of creating an instance of this class directly, create a
+     *             {@link SAXSource} and use
+     *             {@link OMXMLBuilderFactory#createOMBuilder(OMFactory, SAXSource, boolean)}.
+     */
     public SAXOMBuilder(OMFactory factory) {
-        this(factory, true);
+        this(factory, null, true);
     }
     
+    /**
+     * @deprecated Instead of creating an instance of this class directly, create a
+     *             {@link SAXSource} and use
+     *             {@link OMXMLBuilderFactory#createOMBuilder(SAXSource, boolean)}.
+     */
     public SAXOMBuilder() {
         this(OMAbstractFactory.getOMFactory());
     }
@@ -179,6 +209,10 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     }
 
     public void internalEntityDecl(String name, String value) throws SAXException {
+        if (entities == null) {
+            entities = new HashMap();
+        }
+        entities.put(name, value);
         if (!inExternalSubset) {
             internalSubset.append("<!ENTITY ");
             internalSubset.append(name);
@@ -366,7 +400,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
         if (name.equals("[dtd]")) {
             inExternalSubset = true;
         } else if (!expandEntityReferences) {
-            addNode(factory.createOMEntityReference(getContainer(), name, null, true));
+            addNode(factory.createOMEntityReference(getContainer(), name, entities == null ? null : (String)entities.get(name), true));
             inEntityReference = true;
         }
     }
@@ -380,6 +414,28 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     }
 
     public OMDocument getDocument() {
+        if (document == null && source != null) {
+            XMLReader reader = source.getXMLReader();
+            reader.setContentHandler(this);
+            reader.setDTDHandler(this);
+            try {
+                reader.setProperty("http://xml.org/sax/properties/lexical-handler", this);
+            } catch (SAXException ex) {
+                // Ignore
+            }
+            try {
+                reader.setProperty("http://xml.org/sax/properties/declaration-handler", this);
+            } catch (SAXException ex) {
+                // Ignore
+            }
+            try {
+                reader.parse(source.getInputSource());
+            } catch (IOException ex) {
+                throw new OMException(ex);
+            } catch (SAXException ex) {
+                throw new OMException(ex);
+            }
+        }
         if (document != null && document.isComplete()) {
             return document;
         } else {
@@ -422,15 +478,17 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     }
 
     public boolean isCompleted() {
-        throw new UnsupportedOperationException();
+        return document != null && document.isComplete();
     }
 
     public OMElement getDocumentElement() {
-        throw new UnsupportedOperationException();
+        return getDocument().getOMDocumentElement();
     }
 
     public OMElement getDocumentElement(boolean discardDocument) {
-        throw new UnsupportedOperationException();
+        OMElement documentElement = getDocument().getOMDocumentElement();
+        documentElement.detach();
+        return documentElement;
     }
 
     public short getBuilderType() {
@@ -450,6 +508,6 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     }
 
     public void close() {
-        throw new UnsupportedOperationException();
+        // This is a no-op
     }
 }
