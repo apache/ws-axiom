@@ -224,6 +224,8 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap11.envelope.TestAddElementAfterBody(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestGetNode(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.fault.TestSetNode(metaFactory));
+        addTest(new org.apache.axiom.ts.soap11.faultcode.TestGetValue(metaFactory));
+        addTest(new org.apache.axiom.ts.soap11.faultcode.TestGetValueWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.faultcode.TestSetValueFromQName(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.faultreason.TestAddSOAPText(metaFactory));
         addTest(new org.apache.axiom.ts.soap11.faultreason.TestGetFirstSOAPText(metaFactory));

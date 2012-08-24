@@ -51,10 +51,6 @@ public abstract class SOAPFaultCodeImpl extends SOAPElement implements SOAPFault
         ElementHelper.setNewElement(this, value, value);
     }
 
-    public SOAPFaultValue getValue() {
-        return (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
-    }
-
     public void setSubCode(SOAPFaultSubCode value) throws SOAPProcessingException {
         ElementHelper.setNewElement(this, getSubCode(), value);
     }

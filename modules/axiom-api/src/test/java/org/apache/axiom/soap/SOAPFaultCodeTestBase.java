@@ -45,18 +45,6 @@ public class SOAPFaultCodeTestBase extends SOAPFaultCodeTestCase {
 //
 //    }
 
-    public void testSOAP11GetValue() {
-        assertNull(soap11FaultCode.getValue());
-//        assertTrue(
-//                "SOAP 1.1 Fault Code Test :- After creating soapfaultcode, it has a value",
-//                soap11FaultCode.getValue() == null);
-//        soap11FaultCode.setValue(
-//                soap11Factory.createSOAPFaultValue(soap11FaultCode));
-//        assertFalse(
-//                "SOAP 1.1 Fault Code Test :- After calling setValue method, getValue method returns null",
-//                soap11FaultCode.getValue() == null);
-    }
-
     //SOAP 1.2 Fault Code Test (Programaticaly Created)
     public void testSOAP12SetValue() {
         soap12FaultCode.setValue(
@@ -129,10 +117,5 @@ public class SOAPFaultCodeTestBase extends SOAPFaultCodeTestCase {
         assertFalse(
                 "SOAP 1.2 Fault Code Test :- After calling setSubCode method, getSubCode method returns null",
                 soap12FaultCode.getSubCode() == null);
-    }
-
-    //SOAP 1.1 Fault Code Test (With Parser)
-    public void testSOAP11GetValueWithParser() {
-        assertNull(soap11FaultCodeWithParser.getValue());
     }
 }

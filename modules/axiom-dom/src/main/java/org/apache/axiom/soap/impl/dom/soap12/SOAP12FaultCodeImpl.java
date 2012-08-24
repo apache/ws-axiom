@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultSubCode;
@@ -78,6 +79,10 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
                     "Expecting SOAP 1.2 implementation of SOAP Fault as " +
                             "the parent. But received some other implementation");
         }
+    }
+
+    public SOAPFaultValue getValue() {
+        return (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
     }
 
     public void setValue(QName value) {

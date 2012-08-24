@@ -91,7 +91,6 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
 
     public SOAPFaultValue getValue() {
         return null;
-//        throw new UnsupportedOperationException("getValue() not supported for SOAP 1.1 faults");
     }
 
     public SOAPFaultSubCode getSubCode() {

@@ -37,7 +37,13 @@ public interface SOAPFaultClassifier extends OMElement {
      */
     void setValue(SOAPFaultValue value) throws SOAPProcessingException;
 
-    /** @return Returns SOAPFaultValue. */
+    /**
+     * Get the {@link SOAPFaultValue} for this fault code or subcode. Note that for SOAP 1.1, the
+     * return value will always be <code>null</code>.
+     * 
+     * @return the {@link SOAPFaultValue} object or <code>null</code> if there is no
+     *         {@link SOAPFaultValue}
+     */
     SOAPFaultValue getValue();
 
     /**
