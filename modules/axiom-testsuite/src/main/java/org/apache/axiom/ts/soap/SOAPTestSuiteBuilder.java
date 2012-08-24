@@ -254,6 +254,10 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestAddSOAPTextWithSOAPVersionMismatch(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestGetFirstSOAPText(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultreason.TestGetFirstSOAPTextWithParser(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.faultsubcode.TestGetSubCodeNestedWithParser(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.faultsubcode.TestGetSubCodeWithParser(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.faultsubcode.TestGetValueNestedWithParser(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.faultsubcode.TestGetValueWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faulttext.TestGetLangWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.header.TestExamineAllHeaderBlocksWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.header.TestExamineHeaderBlocksWithParser(metaFactory));

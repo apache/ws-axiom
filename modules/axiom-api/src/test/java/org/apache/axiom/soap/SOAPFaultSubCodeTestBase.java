@@ -134,48 +134,4 @@ public class SOAPFaultSubCodeTestBase extends SOAPFaultSubCodeTestCase {
                 "SOAP 1.2 SOAPFaultSubCode Test In FaultSubCode : - After calling setSubCode method, getSubCode method returns null",
                 soap12FaultSubCodeInSubCode.getSubCode() == null);
     }
-
-    //SOAP Fault SubCode(In Fault Code) Test (With Parser)
-    public void testGetValueInFaultCodeWithParser() {
-        assertFalse(
-                "SOAP 1.2 SOAPFaultSubCode Test In FaultCode With Parser : - getValue method returns null",
-                soap12FaultSubCodeInFaultCodeWithParser.getValue() == null);
-        assertTrue(
-                "SOAP 1.2 SOAPFaultSubCode Test In FaultCode With Parser : - Value text mismatch",
-                soap12FaultSubCodeInFaultCodeWithParser.getValue().getText()
-                        .equals("m:MessageTimeout In First Subcode"));
-    }
-
-    public void testGetSubCodeInFaultCodeWithParser() {
-        assertFalse(
-                "SOAP 1.2 SOAPFaultSubCode Test In FaultCode With Parser : - getSubCode method returns null",
-                soap12FaultSubCodeInFaultCodeWithParser.getSubCode() == null);
-        assertTrue(
-                "SOAP 1.2 SOAPFaultSubCode Test In FaultCode With Parser : - SubCode local name mismatch",
-                soap12FaultSubCodeInFaultCodeWithParser.getSubCode()
-                        .getLocalName()
-                        .equals(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME));
-    }
-
-    //SOAP Fault SubCode(In Fault SubCode) Test (With Parser)
-    public void testGetValueInFaultSubCodeWithParser() {
-        assertFalse(
-                "SOAP 1.2 SOAPFaultSubCode Test In FaultSubCode With Parser : - getValue method returns null",
-                soap12FaultSubCodeInSubCodeWithParser.getValue() == null);
-        assertTrue(
-                "SOAP 1.2 SOAPFaultSubCode Test In FaultSubCode With Parser : - Value text mismatch",
-                soap12FaultSubCodeInSubCodeWithParser.getValue().getText()
-                        .equals("m:MessageTimeout In Second Subcode"));
-    }
-
-    public void testGetSubCodeInFaultSubCodeWithParser() {
-        assertFalse(
-                "SOAP 1.2 SOAPFaultSubCode Test In FaultSubCode With Parser : - getSubCode method returns null",
-                soap12FaultSubCodeInSubCodeWithParser.getSubCode() == null);
-        assertTrue(
-                "SOAP 1.2 SOAPFaultSubCode Test In FaultSubCode With Parser : - SubCode local name mismatch",
-                soap12FaultSubCodeInSubCodeWithParser.getSubCode()
-                        .getLocalName()
-                        .equals(SOAP12Constants.SOAP_FAULT_SUB_CODE_LOCAL_NAME));
-    }
 }
