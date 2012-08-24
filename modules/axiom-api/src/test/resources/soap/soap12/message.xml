@@ -39,15 +39,15 @@
         </test2:echoOk2>
     </env:Header>
     <env:Body>
-        <env:Fault>
+        <env:Fault xmlns:m="http:www.sample.org">
             <env:Code>
                 <env:Value>env:Sender</env:Value>
                 <env:Subcode>
-                    <env:Value>m:MessageTimeout In First Subcode</env:Value>
+                    <env:Value>m:MessageTimeout_In_First_Subcode</env:Value>
                     <env:Subcode>
-                        <env:Value>m:MessageTimeout In Second Subcode</env:Value>
+                        <env:Value>m:MessageTimeout_In_Second_Subcode</env:Value>
                         <env:Subcode>
-                            <env:Value>m:MessageTimeout In Third Subcode</env:Value>
+                            <env:Value>m:MessageTimeout_In_Third_Subcode</env:Value>
                         </env:Subcode>
                     </env:Subcode>
                 </env:Subcode>
@@ -61,7 +61,7 @@
             <env:Role>
                 ultimateReceiver
             </env:Role>
-            <env:Detail xmlns:m="http:www.sample.org">
+            <env:Detail>
                 Details of error
                 <m:MaxTime m:detail="This is only a test">
                     P5M\n

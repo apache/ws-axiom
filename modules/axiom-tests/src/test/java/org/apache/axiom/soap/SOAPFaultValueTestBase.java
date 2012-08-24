@@ -103,7 +103,7 @@ public class SOAPFaultValueTestBase extends SOAPFaultSubCodeTestCase {
     public void testSOAP12setTextWithParserInFaultSubCode() {
         assertEquals(
                 "SOAP 1.2 Fault Value Test with parser in Fault SubCode : - value text mismatch",
-                "m:MessageTimeout In First Subcode",
+                "m:MessageTimeout_In_First_Subcode",
                 soap12FaultValueInFaultSubCodeWithParser.getText());
     }
 }

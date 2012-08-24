@@ -35,6 +35,6 @@ public class TestGetValueNestedWithParser extends SOAPTestCase {
                 subCode.getValue());
         assertEquals(
                 "SOAP 1.2 SOAPFaultSubCode Test In FaultSubCode With Parser : - Value text mismatch",
-                "m:MessageTimeout In Second Subcode", subCode.getValue().getText());
+                "m:MessageTimeout_In_Second_Subcode", subCode.getValue().getText());
     }
 }
