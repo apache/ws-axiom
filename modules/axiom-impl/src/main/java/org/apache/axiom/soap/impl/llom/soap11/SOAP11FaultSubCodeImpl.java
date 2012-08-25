@@ -95,4 +95,9 @@ public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
         // TODO: AXIOM-394: SOAPFaultSubCode should not exist for SOAP 1.1
         throw new UnsupportedOperationException();
     }
+
+    public QName getValueAsQName() {
+        // TODO: AXIOM-394: SOAPFaultSubCode should not exist for SOAP 1.1
+        throw new UnsupportedOperationException();
+    }
 }

@@ -161,6 +161,8 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap.fault.TestWrongParent1(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestWrongParent2(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.fault.TestWrongParent3(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.faultcode.TestGetValueAsQName(metaFactory, spec));
+        addTest(new org.apache.axiom.ts.soap.faultcode.TestGetValueAsQNameWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.faultdetail.TestAddDetailEntry(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.faultdetail.TestDetailEntriesUsingDefaultNamespaceWithParser(metaFactory, spec));
         addTest(new org.apache.axiom.ts.soap.faultdetail.TestGetAllDetailEntries(metaFactory, spec));
@@ -246,7 +248,6 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.fault.TestMoreChildrenAddition(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.fault.TestSetNode(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultcode.TestGetSubCodeWithParser(metaFactory));
-        addTest(new org.apache.axiom.ts.soap12.faultcode.TestGetTextAsQNameWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultcode.TestGetValueWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQName(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultcode.TestSetValueFromQNameWithExistingValue(metaFactory));
@@ -257,6 +258,7 @@ public class SOAPTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.soap12.faultsubcode.TestGetSubCodeNestedWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultsubcode.TestGetSubCodeWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultsubcode.TestGetValueNestedWithParser(metaFactory));
+        addTest(new org.apache.axiom.ts.soap12.faultsubcode.TestGetValueAsQNameWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faultsubcode.TestGetValueWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.faulttext.TestGetLangWithParser(metaFactory));
         addTest(new org.apache.axiom.ts.soap12.header.TestExamineAllHeaderBlocksWithParser(metaFactory));

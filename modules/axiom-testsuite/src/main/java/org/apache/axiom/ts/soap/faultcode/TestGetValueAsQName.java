@@ -16,29 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap12.faultcode;
+package org.apache.axiom.ts.soap.faultcode;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAP12Constants;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultCode;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 
-/**
- * Tests that the {@link SOAPFaultCode} implementation for SOAP 1.2 overrides the
- * {@link OMElement#getTextAsQName()} method such that it gets the QName from the <tt>Value</tt>
- * element.
- */
-public class TestGetTextAsQNameWithParser extends SOAPTestCase {
-    public TestGetTextAsQNameWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+public class TestGetValueAsQName extends SOAPTestCase {
+    public TestGetValueAsQName(OMMetaFactory metaFactory, SOAPSpec spec) {
+        super(metaFactory, spec);
     }
 
     protected void runTest() throws Throwable {
-        SOAPFaultCode faultCode = getTestMessage(MESSAGE).getBody().getFault().getCode();
-        assertEquals(new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, "Sender"), faultCode.getTextAsQName());
+        SOAPEnvelope env = soapFactory.getDefaultEnvelope();
+        SOAPFault fault = soapFactory.createSOAPFault(env.getBody());
+        SOAPFaultCode code = soapFactory.createSOAPFaultCode(fault);
+        QName value = new QName("urn:test", "myFaultCode");
+        code.setValue(value);
+        assertEquals(value, code.getValueAsQName());
     }
 }

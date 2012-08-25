@@ -89,6 +89,11 @@ public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
         valueElement.setText(value);
     }
 
+    public QName getValueAsQName() {
+        SOAPFaultValue value = getValue();
+        return value == null ? null : value.getTextAsQName();
+    }
+
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
         return new SOAP12FaultSubCodeImpl(targetParent, namespace, null, factory, generateNSDecl);

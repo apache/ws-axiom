@@ -113,6 +113,10 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
         setText(value);
     }
 
+    public QName getValueAsQName() {
+        return getTextAsQName();
+    }
+
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
         return new SOAP11FaultCodeImpl(targetParent, namespace, null, factory, generateNSDecl);

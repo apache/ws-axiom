@@ -39,7 +39,8 @@ public interface SOAPFaultClassifier extends OMElement {
 
     /**
      * Get the {@link SOAPFaultValue} for this fault code or subcode. Note that for SOAP 1.1, the
-     * return value will always be <code>null</code>.
+     * return value will always be <code>null</code>. Use {@link #getValueAsQName()} as a SOAP
+     * version independent way to extract the value of a fault code or subcode.
      * 
      * @return the {@link SOAPFaultValue} object or <code>null</code> if there is no
      *         {@link SOAPFaultValue}
@@ -58,6 +59,22 @@ public interface SOAPFaultClassifier extends OMElement {
      *            the QName for the fault code or subcode value
      */
     void setValue(QName value);
+    
+    /**
+     * Get the value of this fault code or subcode. This method can be consistently used for all
+     * SOAP versions. For SOAP 1.1, it gets the text content of this element (which is necessarily a
+     * {@link SOAPFaultCode}) and resolves it as a {@link QName}. For SOAP 1.2, it locates the
+     * {@link SOAPFaultValue} child, extracts the text content from that element and resolves it as
+     * a {@link QName}.
+     * <p>
+     * The method returns <code>null</code> if it fails to extract the value. Note that invalid SOAP
+     * faults are very common (especially with SOAP 1.1). Therefore the caller must be prepared to
+     * get a <code>null</code> value.
+     * 
+     * @return the QName for the fault code or subcode value, or <code>null</code> if the value
+     *         could not be determined
+     */
+    QName getValueAsQName();
     
     /**
      * Fault SubCode can contain an optional SubCode

@@ -67,10 +67,9 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
         super.setValue(value);
     }
 
-
+    // TODO: For compatibility with Axiom 1.2.x; remove in Axiom 1.3
     public QName getTextAsQName() {
-        SOAPFaultValue value = getValue();
-        return value == null ? null : value.getTextAsQName();
+        return getValueAsQName();
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -91,6 +90,11 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
             valueElement = ((SOAPFactory)getOMFactory()).createSOAPFaultValue(this);
         }
         valueElement.setText(value);
+    }
+
+    public QName getValueAsQName() {
+        SOAPFaultValue value = getValue();
+        return value == null ? null : value.getTextAsQName();
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
