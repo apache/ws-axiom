@@ -99,6 +99,7 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     int textNodeType = OMNode.TEXT_NODE;
     
     private boolean inEntityReference;
+    private int entityReferenceDepth;
 
     /**
      * For internal use only.
@@ -415,19 +416,25 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     }
 
     public void startEntity(String name) throws SAXException {
-        if (name.equals("[dtd]")) {
+        if (inEntityReference) {
+            entityReferenceDepth++;
+        } else if (name.equals("[dtd]")) {
             inExternalSubset = true;
         } else if (!expandEntityReferences) {
             addNode(factory.createOMEntityReference(getContainer(), name, entities == null ? null : (String)entities.get(name), true));
             inEntityReference = true;
+            entityReferenceDepth = 1;
         }
     }
 
     public void endEntity(String name) throws SAXException {
-        if (name.equals("[dtd]")) {
+        if (inEntityReference) {
+            entityReferenceDepth--;
+            if (entityReferenceDepth == 0) {
+                inEntityReference = false;
+            }
+        } else if (name.equals("[dtd]")) {
             inExternalSubset = false;
-        } else {
-            inEntityReference = false;
         }
     }
 

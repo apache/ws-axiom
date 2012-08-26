@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!DOCTYPE root [
+  <!ENTITY ref1 "A &ref2; C">
+  <!ENTITY ref2 "B">
+  <!ELEMENT root (#PCDATA)>
+]>
+<root>
+    &ref1;
+</root>
