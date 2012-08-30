@@ -27,21 +27,38 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
 public class TestSetAttributeNS extends DOMTestCase {
-    public TestSetAttributeNS(DocumentBuilderFactory dbf) {
+    private final String namespaceURI;
+    private final String prefix;
+    private final String localName;
+    private final String name;
+    private final String value;
+    
+    public TestSetAttributeNS(DocumentBuilderFactory dbf, String namespaceURI, String prefix, String localName, String value) {
         super(dbf);
+        this.namespaceURI = namespaceURI;
+        this.prefix = prefix;
+        this.localName = localName;
+        name = prefix == null ? localName : prefix + ":" + localName;
+        this.value = value;
+        addTestProperty("uri", namespaceURI == null ? "" : namespaceURI);
+        addTestProperty("name", name);
     }
 
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:ns1", "p:element");
-        element.setAttributeNS("urn:ns2", "q:attr", "value");
+        element.setAttributeNS(namespaceURI, name, value);
+        assertTrue(element.hasAttributes());
         NamedNodeMap attributes = element.getAttributes();
         assertEquals(1, attributes.getLength());
         Attr attr = (Attr)attributes.item(0);
-        assertEquals("urn:ns2", attr.getNamespaceURI());
-        assertEquals("q", attr.getPrefix());
-        assertEquals("attr", attr.getLocalName());
-        assertEquals("value", attr.getValue());
-        assertSame(attr, element.getAttributeNodeNS("urn:ns2", "attr"));
+        assertSame(document, attr.getOwnerDocument());
+        assertSame(element, attr.getOwnerElement());
+        assertEquals(namespaceURI, attr.getNamespaceURI());
+        assertEquals(prefix, attr.getPrefix());
+        assertEquals(localName, attr.getLocalName());
+        assertEquals(name, attr.getName());
+        assertEquals(value, attr.getValue());
+        assertSame(attr, element.getAttributeNodeNS(namespaceURI, localName));
     }
 }

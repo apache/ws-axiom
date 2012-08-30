@@ -18,6 +18,7 @@
  */
 package org.apache.axiom.ts.dom;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
@@ -112,7 +113,10 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSReplace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeWrongDocument(dbf));
-        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf, "urn:ns2", "q", "attr", "value"));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf, null, null, "attr", "value"));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf, XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns", "ns", "urn:ns"));
+        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf, XMLConstants.XMLNS_ATTRIBUTE_NS_URI, null, "xmlns", "urn:ns"));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNull(dbf));
