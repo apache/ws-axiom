@@ -24,38 +24,38 @@ public interface OMConstants {
 
     // OMBuilder constants
     /** Field PUSH_TYPE_BUILDER */
-    static final short PUSH_TYPE_BUILDER = 0;
+    short PUSH_TYPE_BUILDER = 0;
 
     /** Field PULL_TYPE_BUILDER */
-    static final short PULL_TYPE_BUILDER = 1;
+    short PULL_TYPE_BUILDER = 1;
 
     /** Field ARRAY_ITEM_NSURI */
-    static final String ARRAY_ITEM_NSURI =
+    String ARRAY_ITEM_NSURI =
             "http://axis.apache.org/encoding/Arrays";
 
     /** Field ARRAY_ITEM_LOCALNAME */
-    static final String ARRAY_ITEM_LOCALNAME = "item";
+    String ARRAY_ITEM_LOCALNAME = "item";
 
     /** Field ARRAY_ITEM_NS_PREFIX */
-    static final String ARRAY_ITEM_NS_PREFIX = "arrays";
+    String ARRAY_ITEM_NS_PREFIX = "arrays";
 
     /** Field ARRAY_ITEM_QNAME */
-    static final String ARRAY_ITEM_QNAME =
+    String ARRAY_ITEM_QNAME =
             OMConstants.ARRAY_ITEM_NS_PREFIX + ':'
                     + OMConstants.ARRAY_ITEM_LOCALNAME;
 
     /** Field DEFAULT_CHAR_SET_ENCODING specifies the default character encoding scheme to be used */
-    static final String DEFAULT_CHAR_SET_ENCODING = "utf-8";
-    static final String DEFAULT_XML_VERSION = "1.0";
+    String DEFAULT_CHAR_SET_ENCODING = "utf-8";
+    String DEFAULT_XML_VERSION = "1.0";
 
 
-    static final String XMLNS_URI =
+    String XMLNS_URI =
             "http://www.w3.org/XML/1998/namespace";
 
-    static final String XMLNS_NS_URI = "http://www.w3.org/2000/xmlns/";
-    final static String XMLNS_NS_PREFIX = "xmlns";
+    String XMLNS_NS_URI = "http://www.w3.org/2000/xmlns/";
+    String XMLNS_NS_PREFIX = "xmlns";
 
-    static final String XMLNS_PREFIX =
+    String XMLNS_PREFIX =
             "xml";
     
     /**
@@ -82,16 +82,16 @@ public interface OMConstants {
     /**
      * @deprecated
      */
-    static final String DEFAULT_DEFAULT_NAMESPACE = "\"\"";
+    String DEFAULT_DEFAULT_NAMESPACE = "\"\"";
     
-	static final String XMLATTRTYPE_CDATA = "CDATA";
-	static final String XMLATTRTYPE_ID = "ID";
-	static final String XMLATTRTYPE_IDREF = "IDREF"; 
-	static final String XMLATTRTYPE_IDREFS = "IDREFS"; 
-	static final String XMLATTRTYPE_NMTOKEN = "NMTOKEN"; 
-	static final String XMLATTRTYPE_NMTOKENS = "NMTOKENS"; 
-	static final String XMLATTRTYPE_ENTITY = "ENTITY"; 
-	static final String XMLATTRTYPE_ENTITIES = "ENTITIES";  
-	static final String XMLATTRTYPE_NOTATION = "NOTATION"; 
+	String XMLATTRTYPE_CDATA = "CDATA";
+	String XMLATTRTYPE_ID = "ID";
+	String XMLATTRTYPE_IDREF = "IDREF"; 
+	String XMLATTRTYPE_IDREFS = "IDREFS"; 
+	String XMLATTRTYPE_NMTOKEN = "NMTOKEN"; 
+	String XMLATTRTYPE_NMTOKENS = "NMTOKENS"; 
+	String XMLATTRTYPE_ENTITY = "ENTITY"; 
+	String XMLATTRTYPE_ENTITIES = "ENTITIES";  
+	String XMLATTRTYPE_NOTATION = "NOTATION"; 
 
 }
