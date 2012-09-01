@@ -65,6 +65,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestGetDomConfigDefaults(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestGetOwnerDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestLookupNamespaceURI(dbf));
+        addTest(new org.apache.axiom.ts.dom.document.TestLookupNamespaceURIWithEmptyDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestNormalizeDocumentNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithIdentityStylesheet(dbf, org.apache.xalan.processor.TransformerFactoryImpl.class));
         addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithIdentityStylesheet(dbf, net.sf.saxon.TransformerFactoryImpl.class));

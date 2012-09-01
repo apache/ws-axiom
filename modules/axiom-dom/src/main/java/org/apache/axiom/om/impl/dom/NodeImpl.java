@@ -34,6 +34,7 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.UserDataHandler;
@@ -297,8 +298,9 @@ public abstract class NodeImpl implements Node {
 
         }
         case Node.DOCUMENT_NODE: {
-            return ((NodeImpl) ((Document) this).getDocumentElement())
-                    .lookupNamespaceURI(specifiedPrefix);
+            Element documentElement = ((Document) this).getDocumentElement();
+            return documentElement == null ? null
+                    : documentElement.lookupNamespaceURI(specifiedPrefix);
         }
         case Node.ENTITY_NODE:
         case Node.NOTATION_NODE:

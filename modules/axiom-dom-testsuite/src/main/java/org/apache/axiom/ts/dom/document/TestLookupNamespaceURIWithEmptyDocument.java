@@ -16,25 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.dom;
+package org.apache.axiom.ts.dom.document;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.apache.axiom.ts.dom.DOMTestCase;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
-import org.apache.axiom.ts.dom.document.TestLookupNamespaceURIWithEmptyDocument;
-import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
+/**
+ * Tests the behavior of {@link Node#lookupNamespaceURI(String)} on an empty {@link Document}.
+ */
+public class TestLookupNamespaceURIWithEmptyDocument extends DOMTestCase {
+    public TestLookupNamespaceURIWithEmptyDocument(DocumentBuilderFactory dbf) {
+        super(dbf);
+    }
 
-public class XercesTest extends TestCase {
-    public static TestSuite suite() {
-        DocumentBuilderFactory dbf = new DocumentBuilderFactoryImpl();
-        dbf.setNamespaceAware(true);
-        DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(dbf);
-        
-        // XERCESJ-1582
-        builder.exclude(TestLookupNamespaceURIWithEmptyDocument.class);
-        
-        return builder.build();
+    protected void runTest() throws Throwable {
+        Document document = dbf.newDocumentBuilder().newDocument();
+        assertNull(document.lookupNamespaceURI("p"));
     }
 }
