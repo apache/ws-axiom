@@ -64,6 +64,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestDocumentSiblings(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestGetDomConfigDefaults(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestGetOwnerDocument(dbf));
+        addTest(new org.apache.axiom.ts.dom.document.TestLookupNamespaceURI(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestNormalizeDocumentNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithIdentityStylesheet(dbf, org.apache.xalan.processor.TransformerFactoryImpl.class));
         addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithIdentityStylesheet(dbf, net.sf.saxon.TransformerFactoryImpl.class));
@@ -71,6 +72,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.document.TestTransformerWithStylesheet(dbf, net.sf.saxon.TransformerFactoryImpl.class));
         addTest(new org.apache.axiom.ts.dom.document.TestValidator(dbf));
         addTest(new org.apache.axiom.ts.dom.documentfragment.TestCloneNode(dbf));
+        addTest(new org.apache.axiom.ts.dom.documentfragment.TestLookupNamespaceURI(dbf));
         addTest(new org.apache.axiom.ts.dom.documenttype.TestWithParser1(dbf));
         addTest(new org.apache.axiom.ts.dom.documenttype.TestWithParser2(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestAppendChild(dbf));
@@ -131,6 +133,8 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeText(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeTextWithCDATASection(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestGetWholeTextWithComment(dbf));
+        addTest(new org.apache.axiom.ts.dom.text.TestLookupNamespaceURIWithNSDeclInScope(dbf));
+        addTest(new org.apache.axiom.ts.dom.text.TestLookupNamespaceURIWithoutParent(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSetPrefix(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestSplitText(dbf));
     }
