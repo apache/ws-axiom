@@ -26,9 +26,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
-public class TestLookpNamespaceURI extends DOMTestCase {
+public class TestLookupNamespaceURI extends DOMTestCase {
 
-    public TestLookpNamespaceURI(DocumentBuilderFactory dbf) {
+    public TestLookupNamespaceURI(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
