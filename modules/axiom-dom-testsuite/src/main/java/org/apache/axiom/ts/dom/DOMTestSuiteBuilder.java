@@ -40,6 +40,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.attr.TestGetValueWithMultipleChildren(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.attr.TestSetPrefixNotNullWithoutNamespace(dbf));
+        addTest(new org.apache.axiom.ts.dom.attr.TestLookpNamespaceURI(dbf));
         addTest(new org.apache.axiom.ts.dom.builder.TestParseURI(dbf));
         addTest(new org.apache.axiom.ts.dom.builder.TestWhitespaceAroundDocumentElement(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestAdoptNode(dbf));
@@ -121,6 +122,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNull(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetTextContent(dbf));
+        addTest(new org.apache.axiom.ts.dom.element.TestLookupNamespaceURI(dbf));
         addTest(new org.apache.axiom.ts.dom.element.attributes.TestSetNamedItemNSWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.element.attributes.TestSetNamedItemWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.text.TestAppendData(dbf));

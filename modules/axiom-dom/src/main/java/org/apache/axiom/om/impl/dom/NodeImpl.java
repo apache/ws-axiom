@@ -37,6 +37,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.UserDataHandler;
+import org.w3c.dom.Attr;
 
 import java.io.OutputStream;
 import java.io.Writer;
@@ -246,9 +247,82 @@ public abstract class NodeImpl implements Node {
         throw new UnsupportedOperationException("TODO");
     }
 
-    public String lookupNamespaceURI(String prefix) {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
+    /**
+     * Returns the namespace for a given prefix <br/>
+     * The prefix can be of an Attribute's or an Element's.
+     */
+    public String lookupNamespaceURI(String specifiedPrefix) {
+        short type = this.getNodeType();
+        switch (type) {
+        case Node.ELEMENT_NODE: {
+
+            String namespace = this.getNamespaceURI();
+            String prefix = this.getPrefix();
+            // looking in the element
+            if (namespace != null) {
+                if (prefix == null && specifiedPrefix == null) {
+                    // looking for default namespace
+                    return namespace;
+                } else if (prefix != null && prefix.equals(specifiedPrefix)) {
+                    // non default namespace
+                    return namespace;
+                }
+            }
+            // looking in attributes
+            if (this.hasAttributes()) {
+                NamedNodeMap map = this.getAttributes();
+                int length = map.getLength();
+                for (int i = 0; i < length; i++) {
+                    Node attr = map.item(i);
+                    String attrPrefix = attr.getPrefix();
+                    String value = attr.getNodeValue();
+                    namespace = attr.getNamespaceURI();
+                    if (namespace != null && namespace.equals("http://www.w3.org/2000/xmlns/")) {
+                        if (specifiedPrefix == null && attr.getNodeName().equals("xmlns")) {
+                            return value.length() > 0 ? value : null;
+                        } else if (attrPrefix != null && attrPrefix.equals("xmlns")
+                                && attr.getLocalName().equals(specifiedPrefix)) {
+                            return value.length() > 0 ? value : null;
+                        }
+                    }
+                }
+            }
+            // looking in ancestor
+            NodeImpl ancestor = (NodeImpl) getElementAncestor(this);
+            if (ancestor != null) {
+                return ancestor.lookupNamespaceURI(specifiedPrefix);
+            }
+
+            return null;
+
+        }
+        case Node.DOCUMENT_NODE: {
+            return ((NodeImpl) ((Document) this).getDocumentElement())
+                    .lookupNamespaceURI(specifiedPrefix);
+        }
+        case Node.ENTITY_NODE:
+        case Node.NOTATION_NODE:
+        case Node.DOCUMENT_FRAGMENT_NODE:
+        case Node.DOCUMENT_TYPE_NODE:
+            // type is unknown
+            return null;
+        case Node.ATTRIBUTE_NODE: {
+            NodeImpl ownerNode = (NodeImpl) ((Attr) this).getOwnerElement();
+            if (ownerNode.getNodeType() == Node.ELEMENT_NODE) {
+                return ownerNode.lookupNamespaceURI(specifiedPrefix);
+
+            }
+            return null;
+        }
+        default: {
+            NodeImpl ancestor = (NodeImpl) getElementAncestor(this);
+            if (ancestor != null) {
+                return ancestor.lookupNamespaceURI(specifiedPrefix);
+            }
+            return null;
+        }
+
+        }
     }
 
     /**
@@ -860,4 +934,17 @@ public abstract class NodeImpl implements Node {
     }
 
     abstract NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing);
+
+    public Node getElementAncestor(Node currentNode) {
+        Node parent = currentNode.getParentNode();
+        while (parent != null) {
+            short type = parent.getNodeType();
+            if (type == Node.ELEMENT_NODE) {
+                return parent;
+            }
+            parent = parent.getParentNode();
+        }
+        return null;
+    }
+
 }
