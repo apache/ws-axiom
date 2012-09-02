@@ -29,17 +29,25 @@ public interface OMConstants {
     /** Field PULL_TYPE_BUILDER */
     short PULL_TYPE_BUILDER = 1;
 
-    /** Field ARRAY_ITEM_NSURI */
+    /**
+     * @deprecated This constant was used in early prototypes of Axis2 and is no longer relevant.
+     */
     String ARRAY_ITEM_NSURI =
             "http://axis.apache.org/encoding/Arrays";
 
-    /** Field ARRAY_ITEM_LOCALNAME */
+    /**
+     * @deprecated This constant was used in early prototypes of Axis2 and is no longer relevant.
+     */
     String ARRAY_ITEM_LOCALNAME = "item";
 
-    /** Field ARRAY_ITEM_NS_PREFIX */
+    /**
+     * @deprecated This constant was used in early prototypes of Axis2 and is no longer relevant.
+     */
     String ARRAY_ITEM_NS_PREFIX = "arrays";
 
-    /** Field ARRAY_ITEM_QNAME */
+    /**
+     * @deprecated This constant was used in early prototypes of Axis2 and is no longer relevant.
+     */
     String ARRAY_ITEM_QNAME =
             OMConstants.ARRAY_ITEM_NS_PREFIX + ':'
                     + OMConstants.ARRAY_ITEM_LOCALNAME;
