@@ -309,12 +309,8 @@ public abstract class NodeImpl implements Node {
             // type is unknown
             return null;
         case Node.ATTRIBUTE_NODE: {
-            NodeImpl ownerNode = (NodeImpl) ((Attr) this).getOwnerElement();
-            if (ownerNode.getNodeType() == Node.ELEMENT_NODE) {
-                return ownerNode.lookupNamespaceURI(specifiedPrefix);
-
-            }
-            return null;
+            Element ownerElement = ((Attr) this).getOwnerElement();
+            return ownerElement == null ? null : ownerElement.lookupNamespaceURI(specifiedPrefix);
         }
         default: {
             NodeImpl ancestor = (NodeImpl) getElementAncestor(this);
