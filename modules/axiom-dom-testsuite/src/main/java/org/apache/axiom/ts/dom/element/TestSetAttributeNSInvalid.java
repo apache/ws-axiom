@@ -16,20 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.dom.document;
+package org.apache.axiom.ts.dom.element;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.apache.axiom.ts.dom.DOMUtils;
-import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
-public class TestCreateAttributeNS extends DOMTestCase {
+public class TestSetAttributeNSInvalid extends DOMTestCase {
     private final QName qname;
-    
-    public TestCreateAttributeNS(DocumentBuilderFactory dbf, QName qname) {
+
+    public TestSetAttributeNSInvalid(DocumentBuilderFactory dbf, QName qname) {
         super(dbf);
         this.qname = qname;
         addTestProperty("ns", qname.getNamespaceURI());
@@ -37,25 +38,13 @@ public class TestCreateAttributeNS extends DOMTestCase {
     }
 
     protected void runTest() throws Throwable {
-        String localName = qname.getLocalPart();
-        String uri = DOMUtils.getNamespaceURI(qname);
-        String prefix = DOMUtils.getPrefix(qname);
-        String name = DOMUtils.getQualifiedName(qname);
-
-        Document doc = dbf.newDocumentBuilder().newDocument();
-
-        Attr attr = doc.createAttributeNS(uri, name);
-        
-        // Check name
-        assertEquals("Attr name mismatch", localName, attr.getLocalName());
-        assertEquals("NamsspaceURI mismatch", uri, attr.getNamespaceURI());
-        assertEquals("namespace prefix mismatch", prefix, attr.getPrefix());
-        assertEquals(name, attr.getName());
-
-        // Check defaults
-        assertSame(doc, attr.getOwnerDocument());
-        assertNull(attr.getOwnerElement());
-        assertNull(attr.getFirstChild());
-        assertEquals("", attr.getValue());
+        Document document = dbf.newDocumentBuilder().newDocument();
+        Element element = document.createElementNS(null, "test");
+        try {
+            element.setAttributeNS(DOMUtils.getNamespaceURI(qname), DOMUtils.getQualifiedName(qname), "value");
+            fail("Expected DOMException");
+        } catch (DOMException ex) {
+            assertEquals(DOMException.NAMESPACE_ERR, ex.code);
+        }
     }
 }

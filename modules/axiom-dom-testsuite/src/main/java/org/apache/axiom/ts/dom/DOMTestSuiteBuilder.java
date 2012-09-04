@@ -19,12 +19,27 @@
 package org.apache.axiom.ts.dom;
 
 import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.testutils.suite.TestSuiteBuilder;
 
 public class DOMTestSuiteBuilder extends TestSuiteBuilder {
+    private static final QName[] validAttrQNames = new QName[] {
+        new QName("urn:ns2", "attr", "q"),
+        new QName("", "attr", ""),
+        new QName(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "ns", XMLConstants.XMLNS_ATTRIBUTE),
+        new QName(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE, ""),
+    };
+    
+    private static final QName[] invalidAttrQNames = new QName[] {
+        new QName(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "attr", ""),
+        new QName(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "attr", "p"),
+        new QName("urn:test", "p", XMLConstants.XMLNS_ATTRIBUTE),
+        new QName("", XMLConstants.XMLNS_ATTRIBUTE, ""),
+    };
+    
     private final DocumentBuilderFactory dbf;
     
     public DOMTestSuiteBuilder(DocumentBuilderFactory dbf) {
@@ -53,7 +68,12 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.dom.document.TestCloneNode(dbf, conformanceFiles[i]));
         }
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttribute(dbf));
-        addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNS(dbf));
+        for (int i=0; i<validAttrQNames.length; i++) {
+            addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNS(dbf, validAttrQNames[i]));
+        }
+        for (int i=0; i<invalidAttrQNames.length; i++) {
+            addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNSInvalid(dbf, invalidAttrQNames[i]));
+        }
         addTest(new org.apache.axiom.ts.dom.document.TestCreateAttributeNSWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateCDATASection(dbf));
         addTest(new org.apache.axiom.ts.dom.document.TestCreateElement(dbf));
@@ -119,10 +139,12 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSReplace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeNSWrongDocument(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNodeWrongDocument(dbf));
-        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf, "urn:ns2", "q", "attr", "value"));
-        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf, null, null, "attr", "value"));
-        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf, XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns", "ns", "urn:ns"));
-        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf, XMLConstants.XMLNS_ATTRIBUTE_NS_URI, null, "xmlns", "urn:ns"));
+        for (int i=0; i<validAttrQNames.length; i++) {
+            addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf, validAttrQNames[i], "value"));
+        }
+        for (int i=0; i<invalidAttrQNames.length; i++) {
+            addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNSInvalid(dbf, invalidAttrQNames[i]));
+        }
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNotNullWithoutNamespace(dbf));
         addTest(new org.apache.axiom.ts.dom.element.TestSetPrefixNull(dbf));
