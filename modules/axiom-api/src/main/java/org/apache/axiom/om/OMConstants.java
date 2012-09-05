@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om;
 
+import javax.xml.XMLConstants;
+
 /** Interface OMConstants */
 public interface OMConstants {
 
@@ -60,7 +62,14 @@ public interface OMConstants {
     String XMLNS_URI =
             "http://www.w3.org/XML/1998/namespace";
 
+    /**
+     * @deprecated Use {@link XMLConstants#XMLNS_ATTRIBUTE_NS_URI} instead.
+     */
     String XMLNS_NS_URI = "http://www.w3.org/2000/xmlns/";
+    
+    /**
+     * @deprecated Use {@link XMLConstants#XMLNS_ATTRIBUTE} instead.
+     */
     String XMLNS_NS_PREFIX = "xmlns";
 
     String XMLNS_PREFIX =

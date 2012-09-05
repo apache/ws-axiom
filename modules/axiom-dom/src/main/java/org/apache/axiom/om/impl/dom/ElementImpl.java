@@ -50,6 +50,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.TypeInfo;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -364,14 +365,14 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         // check whether the attr is in use
         attrImpl.checkInUse();
 
-        if (attr.getNodeName().startsWith(OMConstants.XMLNS_NS_PREFIX + ":")) {
+        if (attr.getNodeName().startsWith(XMLConstants.XMLNS_ATTRIBUTE + ":")) {
             // This is a ns declaration
             this.declareNamespace(attr.getNodeValue(), DOMUtil
                     .getLocalName(attr.getName()));
 
             //Don't add this to attr list, since its a namespace
             return attr;
-        } else if (attr.getNodeName().equals(OMConstants.XMLNS_NS_PREFIX)) {
+        } else if (attr.getNodeName().equals(XMLConstants.XMLNS_ATTRIBUTE)) {
             this.declareDefaultNamespace(attr.getValue());
 
             //Don't add this to attr list, since its a namespace
@@ -398,10 +399,10 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
                     null);
             throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
         }
-        if (name.startsWith(OMConstants.XMLNS_NS_PREFIX + ":")) {
+        if (name.startsWith(XMLConstants.XMLNS_ATTRIBUTE + ":")) {
             // This is a ns declaration
             this.declareNamespace(value, DOMUtil.getLocalName(name));
-        } else if (name.equals(OMConstants.XMLNS_NS_PREFIX)) {
+        } else if (name.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
             this.declareDefaultNamespace(value);
         } else {
             this.setAttributeNode(new AttrImpl(ownerDocument(), name, value,
@@ -610,7 +611,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     }
 
     public OMNamespace addNamespaceDeclaration(String uri, String prefix) {
-        setAttributeNS(OMConstants.XMLNS_NS_URI, prefix.length() == 0 ? OMConstants.XMLNS_NS_PREFIX : OMConstants.XMLNS_NS_PREFIX + ":" + prefix, uri);
+        setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : XMLConstants.XMLNS_ATTRIBUTE + ":" + prefix, uri);
         return new OMNamespaceImpl(uri, prefix);
     }
 
@@ -630,15 +631,15 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
                 throw new IllegalArgumentException("Cannot bind a prefix to the empty namespace name");
             }
 
-            if (!namespace.getPrefix().startsWith(OMConstants.XMLNS_NS_PREFIX)) {
-                setAttributeNS(OMConstants.XMLNS_NS_URI, prefix.length() == 0 ? OMConstants.XMLNS_NS_PREFIX : OMConstants.XMLNS_NS_PREFIX + ":" + prefix, namespace.getNamespaceURI());
+            if (!namespace.getPrefix().startsWith(XMLConstants.XMLNS_ATTRIBUTE)) {
+                setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : XMLConstants.XMLNS_ATTRIBUTE + ":" + prefix, namespace.getNamespaceURI());
             }
         }
         return namespace;
     }
 
     public void undeclarePrefix(String prefix) {
-        setAttributeNS(OMConstants.XMLNS_NS_URI, prefix.length() == 0 ? OMConstants.XMLNS_NS_PREFIX : OMConstants.XMLNS_NS_PREFIX + ":" + prefix, "");
+        setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : XMLConstants.XMLNS_ATTRIBUTE + ":" + prefix, "");
     }
 
     public OMNamespace declareNamespace(String uri, String prefix) {
@@ -658,12 +659,12 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
                     "the namespace information of the element");
         }
 
-        setAttributeNS(OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX, uri);
+        setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE, uri);
         return new OMNamespaceImpl(uri, "");
     }
 
     public OMNamespace getDefaultNamespace() {
-        Attr decl = (Attr)attributes.getNamedItemNS(OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX);
+        Attr decl = (Attr)attributes.getNamedItemNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE);
         if (decl != null) {
             String uri = decl.getValue();
             return uri.length() == 0 ? null : new OMNamespaceImpl(uri, "");
@@ -713,7 +714,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
 
     public OMNamespace findNamespaceURI(String prefix) {
         if (attributes != null) {
-            Attr decl = (Attr)attributes.getNamedItemNS(OMConstants.XMLNS_NS_URI, prefix.length() == 0 ? OMConstants.XMLNS_NS_PREFIX : prefix);
+            Attr decl = (Attr)attributes.getNamedItemNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : prefix);
             if (decl != null) {
                 String namespaceURI = decl.getValue();
                 if (prefix != null && prefix.length() > 0 && namespaceURI.length() == 0) {
@@ -740,8 +741,8 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     private OMNamespace findDeclaredNamespace(String uri, String prefix) {
 
         if (uri == null) {
-            Attr decl = (Attr)attributes.getNamedItemNS(OMConstants.XMLNS_NS_URI,
-                    prefix.length() == 0 ? OMConstants.XMLNS_NS_PREFIX : prefix);
+            Attr decl = (Attr)attributes.getNamedItemNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
+                    prefix.length() == 0 ? XMLConstants.XMLNS_ATTRIBUTE : prefix);
             return decl == null ? null : new OMNamespaceImpl(decl.getValue(), prefix);
         }
         // If the prefix is available and uri is available and its the xml
@@ -754,7 +755,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         if (prefix == null || "".equals(prefix)) {
             for (int i=0; i<attributes.getLength(); i++) {
                 Attr attr = (Attr)attributes.item(i);
-                if (OMConstants.XMLNS_NS_URI.equals(attr.getNamespaceURI())) {
+                if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI())) {
                     String declaredUri = attr.getValue();
                     if (declaredUri.equals(uri)) {
                         return new OMNamespaceImpl(uri, attr.getPrefix() == null ? "" : attr.getLocalName());
@@ -762,7 +763,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
                 }
             }
         } else {
-            Attr decl = (Attr)attributes.getNamedItemNS(OMConstants.XMLNS_NS_URI, prefix);
+            Attr decl = (Attr)attributes.getNamedItemNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix);
             if (decl != null) {
                 String declaredUri = decl.getValue();
                 if (declaredUri.equals(uri)) {
@@ -993,7 +994,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         for (int i = 0; i < attributes.getLength(); i++) {
             OMAttribute item = (OMAttribute) attributes.getItem(i);
             if (item.getNamespace() == null
-                    || !(item.getNamespace() != null && OMConstants.XMLNS_NS_URI
+                    || !(item.getNamespace() != null && XMLConstants.XMLNS_ATTRIBUTE_NS_URI
                     .equals(item.getNamespace().getNamespaceURI()))) {
                 list.add(item);
             }
@@ -1057,7 +1058,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
             AttrImpl attr = (AttrImpl)attributes.item(i);
             AttrImpl clonedAttr = (AttrImpl)attr.clone(options, null, true, false);
             clonedAttr.isSpecified(attr.isSpecified());
-            clone.setAttributeNodeNS(clonedAttr, false, namespaceRepairing && !OMConstants.XMLNS_NS_URI.equals(attr.getNamespaceURI()));
+            clone.setAttributeNodeNS(clonedAttr, false, namespaceRepairing && !XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI()));
         }
         return clone;
     }

@@ -20,7 +20,8 @@ package org.apache.axiom.om.impl.dom;
 
 import java.util.Iterator;
 
-import org.apache.axiom.om.OMConstants;
+import javax.xml.XMLConstants;
+
 import org.apache.axiom.om.impl.common.OMNamespaceImpl;
 import org.w3c.dom.Attr;
 
@@ -44,7 +45,7 @@ class NSDeclIterator implements Iterator {
                     break;
                 }
                 Attr attr = (Attr)attributes.item(index);
-                if (OMConstants.XMLNS_NS_URI.equals(attr.getNamespaceURI())) {
+                if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.getNamespaceURI())) {
                     nsDecl = attr;
                     hasNextCalled = true;
                     break;

@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -52,6 +51,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
+import javax.xml.XMLConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
@@ -135,7 +135,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
         String localName = DOMUtil.getLocalName(qualifiedName);
         String prefix = DOMUtil.getPrefix(qualifiedName);
 
-        if (!OMConstants.XMLNS_NS_PREFIX.equals(localName)) {
+        if (!XMLConstants.XMLNS_ATTRIBUTE.equals(localName)) {
             this.checkQName(prefix, localName);
         } else {
             return this.createAttribute(localName);
@@ -288,7 +288,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
                         Attr attr = (Attr) sourceAttrs.item(index);
                         if (attr.getNamespaceURI() != null
                                 && !attr.getNamespaceURI().equals(
-                                OMConstants.XMLNS_NS_URI)) {
+                                XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
                             Attr newAttr = (Attr) importNode(attr, true);
                             newElement.setAttributeNodeNS(newAttr);
                         } else { // if (attr.getLocalName() == null) {
@@ -308,7 +308,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
                     newNode = createAttribute(importedNode.getNodeName());
                 } else {
                     //Check whether it is a default ns decl
-                    if (OMConstants.XMLNS_NS_PREFIX.equals(importedNode.getNodeName())) {
+                    if (XMLConstants.XMLNS_ATTRIBUTE.equals(importedNode.getNodeName())) {
                         newNode = createAttribute(importedNode.getNodeName());
                     } else {
                         String ns = importedNode.getNamespaceURI();

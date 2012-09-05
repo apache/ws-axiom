@@ -44,6 +44,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Hashtable;
 
+import javax.xml.XMLConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -278,10 +279,10 @@ public abstract class NodeImpl implements Node {
                     String attrPrefix = attr.getPrefix();
                     String value = attr.getNodeValue();
                     namespace = attr.getNamespaceURI();
-                    if (namespace != null && namespace.equals("http://www.w3.org/2000/xmlns/")) {
-                        if (specifiedPrefix == null && attr.getNodeName().equals("xmlns")) {
+                    if (namespace != null && namespace.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
+                        if (specifiedPrefix == null && attr.getNodeName().equals(XMLConstants.XMLNS_ATTRIBUTE)) {
                             return value.length() > 0 ? value : null;
-                        } else if (attrPrefix != null && attrPrefix.equals("xmlns")
+                        } else if (attrPrefix != null && attrPrefix.equals(XMLConstants.XMLNS_ATTRIBUTE)
                                 && attr.getLocalName().equals(specifiedPrefix)) {
                             return value.length() > 0 ? value : null;
                         }
