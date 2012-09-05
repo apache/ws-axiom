@@ -110,6 +110,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         this.localName = name;
         //If this is a default namespace attr
         if (XMLConstants.XMLNS_ATTRIBUTE.equals(name)) {
+            // TODO: this looks wrong; if the attribute name is "xmlns", then the prefix shouldn't be "xmlns"
             this.namespace = new OMNamespaceImpl(
                     XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE);
         }
