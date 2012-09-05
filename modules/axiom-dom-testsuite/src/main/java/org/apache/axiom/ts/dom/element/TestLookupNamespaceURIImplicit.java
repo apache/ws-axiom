@@ -23,10 +23,16 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
-public class TestLookupNamespaceURI extends DOMTestCase {
+/**
+ * Tests the behavior of {@link Node#lookupNamespaceURI(String)} on an {@link Element} for
+ * namespaces defined implicitly by the namespace prefix/URI of the element and its ancestors, i.e.
+ * for namespaces not defined explicitly by attributes representing namespace declarations.
+ */
+public class TestLookupNamespaceURIImplicit extends DOMTestCase {
 
-    public TestLookupNamespaceURI(DocumentBuilderFactory dbf) {
+    public TestLookupNamespaceURIImplicit(DocumentBuilderFactory dbf) {
         super(dbf);
     }
 
@@ -52,14 +58,22 @@ public class TestLookupNamespaceURI extends DOMTestCase {
         parent.appendChild(element2);
         // parent has the prefix
         Element element3 = doc.createElement(element3Name);
+        element3.setAttributeNS("urn:test", "ns3:attr", "value");
         parent.appendChild(element3);
 
         assertEquals("Incorrect default namespace returned for the element", ns1,
                 element1.lookupNamespaceURI(null));
+        assertNull(element1.lookupNamespaceURI("ns0"));
+        
         assertEquals("Incorrect namespace returned for the element", ns2,
                 element2.lookupNamespaceURI(pref2));
+        assertNull(element2.lookupNamespaceURI("ns0"));
+        assertNull(element2.lookupNamespaceURI(null));
+        
         assertEquals("Incorrect namespace returned for the given prefix", nsParent,
                 element3.lookupNamespaceURI(prefParent));
+        // This asserts that namespaces can only be defined implicitly by elements, but not attributes
+        assertNull(element3.lookupNamespaceURI("ns3"));
     }
 
 }

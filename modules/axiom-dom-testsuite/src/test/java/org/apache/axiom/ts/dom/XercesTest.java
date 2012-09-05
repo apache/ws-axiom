@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.axiom.ts.dom.document.TestLookupNamespaceURIWithEmptyDocument;
+import org.apache.axiom.ts.dom.element.TestLookupNamespaceURIExplicit;
 import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
 
 public class XercesTest extends TestCase {
@@ -34,6 +35,9 @@ public class XercesTest extends TestCase {
         
         // XERCESJ-1582
         builder.exclude(TestLookupNamespaceURIWithEmptyDocument.class);
+        
+        // XERCESJ-1394
+        builder.exclude(TestLookupNamespaceURIExplicit.class);
         
         return builder.build();
     }
