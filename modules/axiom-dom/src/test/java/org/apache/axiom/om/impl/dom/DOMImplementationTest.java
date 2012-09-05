@@ -25,6 +25,7 @@ import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.ts.dom.DOMTestSuiteBuilder;
 import org.apache.axiom.ts.dom.document.TestCreateAttributeNS;
 import org.apache.axiom.ts.dom.document.TestCreateAttributeNSInvalid;
+import org.apache.axiom.ts.dom.element.TestSetAttributeNSExisting;
 import org.apache.axiom.ts.dom.element.TestSetAttributeNSInvalid;
 
 public class DOMImplementationTest extends TestCase {
@@ -35,6 +36,7 @@ public class DOMImplementationTest extends TestCase {
         builder.exclude(TestCreateAttributeNS.class, "(name=xmlns)");
         builder.exclude(TestCreateAttributeNSInvalid.class);
         builder.exclude(TestSetAttributeNSInvalid.class);
+        builder.exclude(TestSetAttributeNSExisting.class);
         
         return builder.build();
     }

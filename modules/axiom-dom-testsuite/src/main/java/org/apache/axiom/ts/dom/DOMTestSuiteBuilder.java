@@ -142,6 +142,7 @@ public class DOMTestSuiteBuilder extends TestSuiteBuilder {
         for (int i=0; i<validAttrQNames.length; i++) {
             addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNS(dbf, validAttrQNames[i], "value"));
         }
+        addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNSExisting(dbf));
         for (int i=0; i<invalidAttrQNames.length; i++) {
             addTest(new org.apache.axiom.ts.dom.element.TestSetAttributeNSInvalid(dbf, invalidAttrQNames[i]));
         }
