@@ -77,9 +77,7 @@ public class AttributeMap implements NamedNodeMap {
 
         int i = findNamePoint(name, 0);
         if (i < 0) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR, null);
-            throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         }
 
         NodeImpl n = (NodeImpl) nodes.elementAt(i);
@@ -93,9 +91,7 @@ public class AttributeMap implements NamedNodeMap {
 
         int i = findNamePoint(namespaceURI, name);
         if (i < 0) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR, null);
-            throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         }
 
         NodeImpl n = (NodeImpl) nodes.elementAt(i);
@@ -109,11 +105,7 @@ public class AttributeMap implements NamedNodeMap {
 
         ownerNode.checkSameOwnerDocument(attribute);
         if (attribute.getNodeType() != Node.ATTRIBUTE_NODE) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.HIERARCHY_REQUEST_ERR,
-                    null);
-            throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
 
         AttrImpl attr = (AttrImpl) attribute;
@@ -121,10 +113,7 @@ public class AttributeMap implements NamedNodeMap {
             if (attr.getOwnerElement() != this.ownerNode) // the owner must be
                 // the owner of this
                 // list
-                throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR,
-                                       DOMMessageFormatter.formatMessage(
-                                               DOMMessageFormatter.DOM_DOMAIN,
-                                               DOMException.INUSE_ATTRIBUTE_ERR, null));
+                throw DOMUtil.newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
             else
                 return attr; // No point adding the 'same' attr again to the
             // same element
@@ -166,20 +155,14 @@ public class AttributeMap implements NamedNodeMap {
     /** Almost a copy of the Xerces impl. */
     Node setAttribute(Node attribute, boolean useDomSemantics) throws DOMException {
         if (attribute.getNodeType() != Node.ATTRIBUTE_NODE) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.HIERARCHY_REQUEST_ERR,
-                    null);
-            throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
 
         AttrImpl attr = (AttrImpl) attribute;
         if (attr.getOwnerElement() != null) { // If the attribute is owned then:
             //the owner must be the owner of this list
             if (attr.getOwnerElement() != this.ownerNode)
-                throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR,
-                                       DOMMessageFormatter.formatMessage(
-                                               DOMMessageFormatter.DOM_DOMAIN,
-                                               DOMException.INUSE_ATTRIBUTE_ERR, null));
+                throw DOMUtil.newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
             else
                 return attr; // No point adding the 'same' attr again to the
             // same element

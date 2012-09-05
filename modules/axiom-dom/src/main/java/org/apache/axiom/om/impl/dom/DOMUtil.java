@@ -19,6 +19,8 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import org.w3c.dom.DOMException;
+
 /** Utility class for the OM-DOM implementation */
 class DOMUtil {
 
@@ -61,5 +63,10 @@ class DOMUtil {
     public static String getPrefix(String qualifiedName) {
         int idx = qualifiedName.indexOf(':');
         return idx == -1 ? null : qualifiedName.substring(0, idx);
+    }
+    
+    public static DOMException newDOMException(short code) {
+        throw new DOMException(code, DOMMessageFormatter.formatMessage(
+                DOMMessageFormatter.DOM_DOMAIN, code, null));
     }
 }

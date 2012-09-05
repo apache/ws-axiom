@@ -122,10 +122,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
 
     public Attr createAttribute(String name) throws DOMException {
         if (!DOMUtil.isQualifiedName(name)) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.INVALID_CHARACTER_ERR,
-                    null);
-            throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
         }
         return new AttrImpl(this, name, this.factory);
     }
@@ -346,12 +343,8 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
                 throw new UnsupportedOperationException("TODO : Implement handling of org.w3c.dom.Node type == " + type );
 
             case Node.DOCUMENT_NODE: // Can't import document nodes
-            default: { // Unknown node type
-                String msg = DOMMessageFormatter.formatMessage(
-                        DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_SUPPORTED_ERR, null);
-                throw new DOMException(DOMException.NOT_SUPPORTED_ERR, msg);
-            }
-
+            default:
+                throw DOMUtil.newDOMException(DOMException.NOT_SUPPORTED_ERR);
         }
 
         // If deep, replicate and attach the kids.
@@ -468,11 +461,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
         // check that both prefix and local part match NCName
         if ((prefix != null && !XMLChar.isValidNCName(prefix))
                 || !XMLChar.isValidNCName(local)) {
-            // REVISIT: add qname parameter to the message
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.INVALID_CHARACTER_ERR,
-                    null);
-            throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
         }
     }
 

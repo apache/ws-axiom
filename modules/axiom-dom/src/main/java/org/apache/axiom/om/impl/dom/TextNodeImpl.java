@@ -190,10 +190,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      */
     public Text splitText(int offset) throws DOMException {
         if (offset < 0 || offset > this.textValue.length()) {
-            throw new DOMException(DOMException.INDEX_SIZE_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN, DOMException.INDEX_SIZE_ERR,
-                            null));
+            throw DOMUtil.newDOMException(DOMException.INDEX_SIZE_ERR);
         }
         String newValue = this.textValue.substring(offset);
         this.deleteData(offset, this.textValue.length());

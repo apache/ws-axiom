@@ -278,9 +278,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
      */
     public Attr removeAttributeNode(Attr oldAttr) throws DOMException {
         if (oldAttr.getOwnerElement() != this) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR, null);
-            throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         }
         attributes.remove((AttrImpl)oldAttr, true);
         return oldAttr;
@@ -394,10 +392,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     public void setAttribute(String name, String value) throws DOMException {
         // Check for invalid charaters
         if (!DOMUtil.isQualifiedName(name)) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.INVALID_CHARACTER_ERR,
-                    null);
-            throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
         }
         if (name.startsWith(XMLConstants.XMLNS_ATTRIBUTE + ":")) {
             // This is a ns declaration
@@ -1051,11 +1046,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         //find the attr
         AttrImpl tempAttr = (AttrImpl) this.getAttributeNode(name);
         if (tempAttr == null) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NOT_FOUND_ERR, null);
-            throw new DOMException(DOMException.NOT_FOUND_ERR,
-                                   msg);
+            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         }
 
         this.updateIsId(isId, tempAttr);
@@ -1066,11 +1057,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         //find the attr
         AttrImpl tempAttr = (AttrImpl) this.getAttributeNodeNS(namespaceURI, localName);
         if (tempAttr == null) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NOT_FOUND_ERR, null);
-            throw new DOMException(DOMException.NOT_FOUND_ERR,
-                                   msg);
+            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         }
 
         this.updateIsId(isId, tempAttr);
@@ -1089,11 +1076,7 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
         }
 
         if (tempAttr == null) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.NOT_FOUND_ERR, null);
-            throw new DOMException(DOMException.NOT_FOUND_ERR,
-                                   msg);
+            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         }
 
         this.updateIsId(isId, tempAttr);

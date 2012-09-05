@@ -32,11 +32,7 @@ public final class NamedNodeHelper {
         OMNamespace ns = node.getNamespace();
         if (ns == null) {
             if (prefix.length() > 0) {
-                String msg = DOMMessageFormatter.formatMessage(
-                        DOMMessageFormatter.DOM_DOMAIN,
-                        DOMException.NAMESPACE_ERR,
-                        null);
-                throw new DOMException(DOMException.NAMESPACE_ERR, msg);
+                throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
             } else {
                 // No need to set a new OMNamespace in this case
             }

@@ -70,30 +70,19 @@ public abstract class LeafNode extends NodeImpl implements IChildNode {
     }
 
     public final Node appendChild(Node newChild) throws DOMException {
-        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                DOMMessageFormatter.formatMessage(
-                        DOMMessageFormatter.DOM_DOMAIN,
-                        DOMException.HIERARCHY_REQUEST_ERR, null));
+        throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
     }
 
     public final Node removeChild(Node oldChild) throws DOMException {
-        throw new DOMException(DOMException.NOT_FOUND_ERR, DOMMessageFormatter
-                .formatMessage(DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR,
-                               null));
+        throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
     }
 
     public final Node insertBefore(Node newChild, Node refChild) throws DOMException {
-        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                               DOMMessageFormatter.formatMessage(
-                                       DOMMessageFormatter.DOM_DOMAIN,
-                                       DOMException.HIERARCHY_REQUEST_ERR, null));
+        throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
     }
 
     public final Node replaceChild(Node newChild, Node oldChild) throws DOMException {
-        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                               DOMMessageFormatter.formatMessage(
-                                       DOMMessageFormatter.DOM_DOMAIN,
-                                       DOMException.HIERARCHY_REQUEST_ERR, null));
+        throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
     }
 
     final NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing) {

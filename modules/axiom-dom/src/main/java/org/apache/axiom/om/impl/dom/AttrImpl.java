@@ -323,10 +323,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
 
     final void checkInUse() {
         if (owner instanceof ElementImpl) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.INUSE_ATTRIBUTE_ERR,
-                    null);
-            throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
         }
     }
 

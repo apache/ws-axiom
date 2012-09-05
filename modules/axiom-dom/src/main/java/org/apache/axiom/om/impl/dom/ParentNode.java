@@ -217,10 +217,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         }
 
         if (isAncestorOrSelf(newChild)) {
-            throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.HIERARCHY_REQUEST_ERR, null));
+            throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
 
         if (newDomChild.parentNode() != null) {
@@ -232,10 +229,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
             if (newDomChild instanceof ElementImpl) {
                 if (((DocumentImpl) this).getOMDocumentElement(false) != null) {
                     // Throw exception since there cannot be two document elements
-                    throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                                           DOMMessageFormatter.formatMessage(
-                                                   DOMMessageFormatter.DOM_DOMAIN,
-                                                   DOMException.HIERARCHY_REQUEST_ERR, null));
+                    throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
                 }
                 if (newDomChild.parentNode() == null) {
                     newDomChild.setParent(this, useDomSemantics);
@@ -244,10 +238,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
                     || newDomChild instanceof ProcessingInstructionImpl
                     || newDomChild instanceof DocumentFragmentImpl
                     || newDomChild instanceof DocumentTypeImpl)) {
-                throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                        DOMMessageFormatter.formatMessage(
-                                DOMMessageFormatter.DOM_DOMAIN,
-                                DOMException.HIERARCHY_REQUEST_ERR, null));
+                throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
             }
         }
         
@@ -350,10 +341,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
             }
 
             if (!found) {
-                throw new DOMException(DOMException.NOT_FOUND_ERR,
-                                       DOMMessageFormatter.formatMessage(
-                                               DOMMessageFormatter.DOM_DOMAIN,
-                                               DOMException.NOT_FOUND_ERR, null));
+                throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
             }
 
             if (newDomChild.parentNode() == null) {
@@ -379,10 +367,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         }
 
         if (isAncestorOrSelf(newChild)) {
-            throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.HIERARCHY_REQUEST_ERR, null));
+            throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
 
         checkSameOwnerDocument(newDomChild);
@@ -457,10 +442,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         }
 
         if (!found)
-            throw new DOMException(DOMException.NOT_FOUND_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR,
-                                           null));
+            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
 
         return oldChild;
     }
@@ -471,10 +453,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
             ((NodeImpl)oldChild).detach(true);
             return oldChild;
         } else {
-            throw new DOMException(DOMException.NOT_FOUND_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR,
-                                           null));
+            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         }
     }
 
