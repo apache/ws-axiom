@@ -131,18 +131,18 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
             throws DOMException {
         String localName = DOMUtil.getLocalName(qualifiedName);
         String prefix = DOMUtil.getPrefix(qualifiedName);
+        DOMUtil.validateAttrNamespace(namespaceURI, localName, prefix);
 
         if (!XMLConstants.XMLNS_ATTRIBUTE.equals(localName)) {
             this.checkQName(prefix, localName);
-        } else {
-            return this.createAttribute(localName);
         }
 
         OMNamespace namespace;
         if (namespaceURI == null) {
             namespace = null;
         } else {
-            namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
+            namespace = new OMNamespaceImpl(namespaceURI,
+                    prefix == null && !XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI) ? "" : prefix);
         }
         return new AttrImpl(this, localName, namespace, this.factory);
     }

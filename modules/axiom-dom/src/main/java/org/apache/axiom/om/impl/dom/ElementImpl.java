@@ -444,19 +444,30 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
      */
     public void setAttributeNS(String namespaceURI, String qualifiedName,
                                String value) throws DOMException {
-
-        if (namespaceURI != null && !"".equals(namespaceURI)) {
-            AttrImpl attr = new AttrImpl(ownerDocument(), DOMUtil
-                    .getLocalName(qualifiedName), value, this.factory);
-            attr.setOMNamespace(new OMNamespaceImpl(namespaceURI, DOMUtil
-                    .getPrefix(qualifiedName)));
-
-            this.setAttributeNodeNS(attr);
+        
+        if (namespaceURI != null && namespaceURI.length() == 0) {
+            namespaceURI = null;
+        }
+        String localName = DOMUtil.getLocalName(qualifiedName);
+        String prefix = DOMUtil.getPrefix(qualifiedName);
+        DOMUtil.validateAttrNamespace(namespaceURI, localName, prefix);
+        
+        AttrImpl attr = (AttrImpl)getAttributeNodeNS(namespaceURI, localName);
+        if (attr != null) {
+            attr.setPrefix(prefix);
+            attr.setValue(value);
         } else {
-            // When the namespace is null, the attr name given better not be
-            // a qualified name
-            // But anyway check and set it
-            this.setAttribute(DOMUtil.getLocalName(qualifiedName), value);
+            if (namespaceURI != null) {
+                attr = new AttrImpl(ownerDocument(), localName, value, this.factory);
+                attr.setOMNamespace(new OMNamespaceImpl(namespaceURI, prefix));
+    
+                this.setAttributeNodeNS(attr);
+            } else {
+                // When the namespace is null, the attr name given better not be
+                // a qualified name
+                // But anyway check and set it
+                this.setAttribute(localName, value);
+            }
         }
 
     }
