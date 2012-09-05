@@ -466,59 +466,6 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
 
     }
 
-    private OMAttribute addAttribute(String namespaceURI, String qualifiedName,
-                                     String value) throws DOMException {
-        if (!DOMUtil.isQualifiedName(qualifiedName)) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.INVALID_CHARACTER_ERR ,
-                    null);
-            throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
-        }
-
-        if (this.attributes == null) {
-            this.attributes = new AttributeMap(this);
-        }
-        if (namespaceURI != null) {
-            if (!DOMUtil.isValidNamespace(namespaceURI, qualifiedName)) {
-                String msg = DOMMessageFormatter.formatMessage(
-                        DOMMessageFormatter.DOM_DOMAIN, DOMException.NAMESPACE_ERR, null);
-                throw new DOMException(DOMException.NAMESPACE_ERR, msg);
-            }
-            // Check whether there's an existing Attr with same local name and
-            // namespace URI
-            String localName = DOMUtil.getLocalName(qualifiedName);
-            Attr attributeNode = this.getAttributeNodeNS(namespaceURI, localName);
-            if (attributeNode != null) {
-                AttrImpl tempAttr = ((AttrImpl) attributeNode);
-                tempAttr.setOMNamespace(new OMNamespaceImpl(namespaceURI, DOMUtil
-                        .getPrefix(qualifiedName)));
-                tempAttr.setAttributeValue(value);
-                this.attributes.setNamedItem(tempAttr);
-                return tempAttr;
-            } else {
-                OMNamespaceImpl ns = new OMNamespaceImpl(namespaceURI, DOMUtil
-                        .getPrefix(qualifiedName));
-                AttrImpl attr = new AttrImpl((DocumentImpl) this
-                        .getOwnerDocument(), localName, ns, value, this.factory);
-                this.attributes.setNamedItem(attr);
-                return attr;
-            }
-        } else {
-            Attr attributeNode = this.getAttributeNode(qualifiedName);
-            if (attributeNode != null) {
-                AttrImpl tempAttr = ((AttrImpl) attributeNode);
-                tempAttr.setAttributeValue(value);
-                this.attributes.setNamedItem(tempAttr);
-                return tempAttr;
-            } else {
-                AttrImpl attr = new AttrImpl((DocumentImpl) this
-                        .getOwnerDocument(), qualifiedName, value, this.factory);
-                this.attributes.setNamedItem(attr);
-                return attr;
-            }
-        }
-    }
-
     /** Returns whether this element contains any attribute or not. */
     public boolean hasAttributes() {
         return attributes != null && attributes.getLength() > 0;
