@@ -28,17 +28,6 @@ class DOMUtil {
         return true;
     }
 
-    /**
-     * @deprecated please use isQualifiedName
-     * @param value
-     * @return
-     */
-    public static boolean isValidChras(String value) {
-        // TODO check for valid characters
-        // throw new UnsupportedOperationException("TODO");
-        return true;
-    }
-
     public static boolean isValidNamespace(String namespaceURI,
                                            String qualifiedname) {
         // TODO check for valid namespace
