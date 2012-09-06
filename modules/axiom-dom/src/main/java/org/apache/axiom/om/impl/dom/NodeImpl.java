@@ -258,6 +258,7 @@ public abstract class NodeImpl implements Node {
             String namespace = this.getNamespaceURI();
             String prefix = this.getPrefix();
             // looking in the element
+            // TODO: although the namespace != null condition conforms to the specs, it is likely incorrect; see XERCESJ-1586
             if (namespace != null) {
                 if (prefix == null && specifiedPrefix == null) {
                     // looking for default namespace
