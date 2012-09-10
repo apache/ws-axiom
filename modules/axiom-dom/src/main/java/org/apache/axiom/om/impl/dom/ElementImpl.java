@@ -44,6 +44,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -1197,5 +1198,42 @@ public class ElementImpl extends ParentNode implements Element, IElement, NamedN
     
     public final void removeChildren() {
         OMContainerHelper.removeChildren(this);
+    }
+
+    public final String lookupNamespaceURI(String specifiedPrefix) {
+        String namespace = this.getNamespaceURI();
+        String prefix = this.getPrefix();
+        // First check for namespaces implicitly defined by the namespace prefix/URI of the element
+        // TODO: although the namespace != null condition conforms to the specs, it is likely incorrect; see XERCESJ-1586
+        if (namespace != null
+                && (prefix == null && specifiedPrefix == null
+                        || prefix != null && prefix.equals(specifiedPrefix))) {
+            return namespace;
+        }
+        // looking in attributes
+        if (this.hasAttributes()) {
+            NamedNodeMap map = this.getAttributes();
+            int length = map.getLength();
+            for (int i = 0; i < length; i++) {
+                Node attr = map.item(i);
+                namespace = attr.getNamespaceURI();
+                if (namespace != null && namespace.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
+                    // At this point we know that either the prefix of the attribute is null and
+                    // the local name is "xmlns" or the prefix is "xmlns" and the local name is the
+                    // namespace prefix declared by the namespace declaration. We check that constraint
+                    // when the attribute is created.
+                    String attrPrefix = attr.getPrefix();
+                    if ((specifiedPrefix == null && attrPrefix == null)
+                            || (specifiedPrefix != null && attrPrefix != null
+                                    && attr.getLocalName().equals(specifiedPrefix))) {
+                        String value = attr.getNodeValue();
+                        return value.length() > 0 ? value : null;
+                    }
+                }
+            }
+        }
+        // looking in ancestor
+        ParentNode parent = parentNode();
+        return parent == null || parent instanceof Document ? null : parent.lookupNamespaceURI(specifiedPrefix);
     }
 }

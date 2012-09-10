@@ -34,17 +34,14 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.UserDataHandler;
-import org.w3c.dom.Attr;
 
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Hashtable;
 
-import javax.xml.XMLConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -244,81 +241,6 @@ public abstract class NodeImpl implements Node {
     public boolean isDefaultNamespace(String namespaceURI) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
-    }
-
-    /**
-     * Returns the namespace for a given prefix <br/>
-     * The prefix can be of an Attribute's or an Element's.
-     */
-    public String lookupNamespaceURI(String specifiedPrefix) {
-        short type = this.getNodeType();
-        switch (type) {
-        case Node.ELEMENT_NODE: {
-
-            String namespace = this.getNamespaceURI();
-            String prefix = this.getPrefix();
-            // First check for namespaces implicitly defined by the namespace prefix/URI of the element
-            // TODO: although the namespace != null condition conforms to the specs, it is likely incorrect; see XERCESJ-1586
-            if (namespace != null
-                    && (prefix == null && specifiedPrefix == null
-                            || prefix != null && prefix.equals(specifiedPrefix))) {
-                return namespace;
-            }
-            // looking in attributes
-            if (this.hasAttributes()) {
-                NamedNodeMap map = this.getAttributes();
-                int length = map.getLength();
-                for (int i = 0; i < length; i++) {
-                    Node attr = map.item(i);
-                    namespace = attr.getNamespaceURI();
-                    if (namespace != null && namespace.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-                        // At this point we know that either the prefix of the attribute is null and
-                        // the local name is "xmlns" or the prefix is "xmlns" and the local name is the
-                        // namespace prefix declared by the namespace declaration. We check that constraint
-                        // when the attribute is created.
-                        String attrPrefix = attr.getPrefix();
-                        if ((specifiedPrefix == null && attrPrefix == null)
-                                || (specifiedPrefix != null && attrPrefix != null
-                                        && attr.getLocalName().equals(specifiedPrefix))) {
-                            String value = attr.getNodeValue();
-                            return value.length() > 0 ? value : null;
-                        }
-                    }
-                }
-            }
-            // looking in ancestor
-            NodeImpl ancestor = (NodeImpl) getElementAncestor(this);
-            if (ancestor != null) {
-                return ancestor.lookupNamespaceURI(specifiedPrefix);
-            }
-
-            return null;
-
-        }
-        case Node.DOCUMENT_NODE: {
-            Element documentElement = ((Document) this).getDocumentElement();
-            return documentElement == null ? null
-                    : documentElement.lookupNamespaceURI(specifiedPrefix);
-        }
-        case Node.ENTITY_NODE:
-        case Node.NOTATION_NODE:
-        case Node.DOCUMENT_FRAGMENT_NODE:
-        case Node.DOCUMENT_TYPE_NODE:
-            // type is unknown
-            return null;
-        case Node.ATTRIBUTE_NODE: {
-            Element ownerElement = ((Attr) this).getOwnerElement();
-            return ownerElement == null ? null : ownerElement.lookupNamespaceURI(specifiedPrefix);
-        }
-        default: {
-            NodeImpl ancestor = (NodeImpl) getElementAncestor(this);
-            if (ancestor != null) {
-                return ancestor.lookupNamespaceURI(specifiedPrefix);
-            }
-            return null;
-        }
-
-        }
     }
 
     /**
@@ -927,17 +849,4 @@ public abstract class NodeImpl implements Node {
     }
 
     abstract NodeImpl clone(OMCloneOptions options, ParentNode targetParent, boolean deep, boolean namespaceRepairing);
-
-    public Node getElementAncestor(Node currentNode) {
-        Node parent = currentNode.getParentNode();
-        while (parent != null) {
-            short type = parent.getNodeType();
-            if (type == Node.ELEMENT_NODE) {
-                return parent;
-            }
-            parent = parent.getParentNode();
-        }
-        return null;
-    }
-
 }

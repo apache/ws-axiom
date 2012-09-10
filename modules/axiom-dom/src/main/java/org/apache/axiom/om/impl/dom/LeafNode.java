@@ -27,6 +27,7 @@ import org.apache.axiom.om.impl.common.IChildNode;
 import org.apache.axiom.om.impl.common.IParentNode;
 import org.apache.axiom.om.impl.common.OMNodeHelper;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -132,5 +133,13 @@ public abstract class LeafNode extends NodeImpl implements IChildNode {
 
     public final IParentNode getIParentNode() {
         return parentNode();
+    }
+
+    public final String lookupNamespaceURI(String specifiedPrefix) {
+        ParentNode parent = parentNode();
+        // Note: according to the DOM specs, we need to delegate the lookup if the parent
+        // is an element or an entity reference. However, since we don't support entity
+        // references fully, we only check for elements.
+        return parent instanceof Element ? parent.lookupNamespaceURI(specifiedPrefix) : null;
     }
 }

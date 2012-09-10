@@ -622,4 +622,10 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
     public final void removeChildren() {
         OMContainerHelper.removeChildren(this);
     }
+
+    public final String lookupNamespaceURI(String specifiedPrefix) {
+        Element documentElement = getDocumentElement();
+        return documentElement == null ? null
+                : documentElement.lookupNamespaceURI(specifiedPrefix);
+    }
 }

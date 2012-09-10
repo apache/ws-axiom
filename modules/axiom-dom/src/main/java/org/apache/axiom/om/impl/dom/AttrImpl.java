@@ -492,4 +492,9 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     public final Node getNextSibling() {
         return null;
     }
+
+    public final String lookupNamespaceURI(String specifiedPrefix) {
+        Element ownerElement = getOwnerElement();
+        return ownerElement == null ? null : ownerElement.lookupNamespaceURI(specifiedPrefix);
+    }
 }

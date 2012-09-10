@@ -121,4 +121,8 @@ public class DocumentFragmentImpl extends RootNode implements
     public void removeChildren() {
         OMContainerHelper.removeChildren(this);
     }
+
+    public final String lookupNamespaceURI(String specifiedPrefix) {
+        return null;
+    }
 }
