@@ -66,5 +66,8 @@ public class TestReplaceChildFirstWithDocumentFragment extends DOMTestCase {
         assertNull(fragment.getFirstChild());
         assertNull(fragment.getLastChild());
         assertEquals(0, fragment.getChildNodes().getLength());
+        
+        assertSame(x, element.getFirstChild());
+        assertSame(b, element.getLastChild());
     }
 }

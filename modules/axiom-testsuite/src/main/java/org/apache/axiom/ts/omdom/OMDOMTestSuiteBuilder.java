@@ -50,7 +50,8 @@ public class OMDOMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.omdom.element.TestRemoveAttribute(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestRemoveAttributeNSNamespaceDeclaration(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.element.TestRemoveChildIncomplete(metaFactory));
-        addTest(new org.apache.axiom.ts.omdom.element.TestReplaceChildIncomplete(metaFactory));
+        addTest(new org.apache.axiom.ts.omdom.element.TestReplaceChildFirstIncomplete(metaFactory));
+        addTest(new org.apache.axiom.ts.omdom.element.TestReplaceChildMiddleIncomplete(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.factory.TestCreateOMAttribute(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.factory.TestCreateOMTextCDATASection(metaFactory));
         addTest(new org.apache.axiom.ts.omdom.factory.TestCreateOMTextCDATASectionWithParent(metaFactory));

@@ -20,29 +20,31 @@ package org.apache.axiom.ts.dom.element;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-/**
- * Tests the behavior of {@link Node#replaceChild(Node, Node)}. This test covers the case where the
- * child being replaced is the only child.
- */
-public class TestReplaceChildSingle extends ReplaceChildTestCase {
-    public TestReplaceChildSingle(DocumentBuilderFactory dbf, boolean newChildHasSiblings) {
-        super(dbf, newChildHasSiblings);
+public abstract class ReplaceChildTestCase extends DOMTestCase {
+    private final boolean newChildHasSiblings;
+    
+    public ReplaceChildTestCase(DocumentBuilderFactory dbf, boolean newChildHasSiblings) {
+        super(dbf);
+        this.newChildHasSiblings = newChildHasSiblings;
+        addTestProperty("newChildHasSiblings", String.valueOf(newChildHasSiblings));
     }
 
-    protected void runTest(Document doc, Node newChild) {
-        Element parent = doc.createElementNS(null, "parent");
-        Element oldChild = doc.createElementNS(null, "oldChild");
-        parent.appendChild(oldChild);
-        parent.replaceChild(newChild, oldChild);
-        assertSame(newChild, parent.getFirstChild());
-        assertSame(newChild, parent.getLastChild());
-        NodeList children = parent.getChildNodes();
-        assertEquals(1, children.getLength());
-        assertSame(newChild, children.item(0));
+    protected final void runTest() throws Throwable {
+        Document doc = dbf.newDocumentBuilder().newDocument();
+        Element newChild = doc.createElementNS(null, "newChild");
+        if (newChildHasSiblings) {
+            Element parent = doc.createElementNS(null, "parent");
+            parent.appendChild(doc.createComment("previous sibling"));
+            parent.appendChild(newChild);
+            parent.appendChild(doc.createComment("next sibling"));
+        }
+        runTest(doc, newChild);
     }
+
+    protected abstract void runTest(Document doc, Node newChild);
 }

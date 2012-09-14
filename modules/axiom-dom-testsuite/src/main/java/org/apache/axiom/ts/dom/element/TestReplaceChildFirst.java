@@ -20,7 +20,6 @@ package org.apache.axiom.ts.dom.element;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.axiom.ts.dom.DOMTestCase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,28 +29,26 @@ import org.w3c.dom.NodeList;
  * Tests the behavior of {@link Node#replaceChild(Node, Node)}. This test covers the case where the
  * child being replaced is the first child (which uses a different code path in DOOM).
  */
-public class TestReplaceChildFirst extends DOMTestCase {
-    public TestReplaceChildFirst(DocumentBuilderFactory dbf) {
-        super(dbf);
+public class TestReplaceChildFirst extends ReplaceChildTestCase {
+    public TestReplaceChildFirst(DocumentBuilderFactory dbf, boolean newChildHasSiblings) {
+        super(dbf, newChildHasSiblings);
     }
 
-    protected void runTest() throws Throwable {
-        Document doc = dbf.newDocumentBuilder().newDocument();
+    protected void runTest(Document doc, Node newChild) {
         Element parent = doc.createElementNS(null, "parent");
         Element child1 = doc.createElementNS(null, "child1");
         Element child2 = doc.createElementNS(null, "child2");
         parent.appendChild(child1);
         parent.appendChild(child2);
-        Element replacementChild = doc.createElementNS(null, "replacement");
-        parent.replaceChild(replacementChild, child1);
-        assertSame(replacementChild, parent.getFirstChild());
+        parent.replaceChild(newChild, child1);
+        assertSame(newChild, parent.getFirstChild());
         assertSame(child2, parent.getLastChild());
-        assertNull(replacementChild.getPreviousSibling());
-        assertSame(child2, replacementChild.getNextSibling());
-        assertSame(replacementChild, child2.getPreviousSibling());
+        assertNull(newChild.getPreviousSibling());
+        assertSame(child2, newChild.getNextSibling());
+        assertSame(newChild, child2.getPreviousSibling());
         NodeList children = parent.getChildNodes();
         assertEquals(2, children.getLength());
-        assertSame(replacementChild, children.item(0));
+        assertSame(newChild, children.item(0));
         assertSame(child2, children.item(1));
     }
 }
