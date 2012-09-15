@@ -29,11 +29,11 @@ import org.apache.axiom.ts.AxiomTestCase;
 import org.apache.axiom.ts.om.container.BuilderFactory;
 import org.xml.sax.InputSource;
 
-public class TestGetXMLStreamReaderCommentEvent extends AxiomTestCase {
+public class TestGetXMLStreamReaderGetElementTextFromParser extends AxiomTestCase {
     private final BuilderFactory builderFactory;
     private final boolean cache;
     
-    public TestGetXMLStreamReaderCommentEvent(OMMetaFactory metaFactory, BuilderFactory builderFactory, boolean cache) {
+    public TestGetXMLStreamReaderGetElementTextFromParser(OMMetaFactory metaFactory, BuilderFactory builderFactory, boolean cache) {
         super(metaFactory);
         this.builderFactory = builderFactory;
         this.cache = cache;
@@ -42,23 +42,17 @@ public class TestGetXMLStreamReaderCommentEvent extends AxiomTestCase {
     }
 
     protected void runTest() throws Throwable {
-        OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory, new InputSource(new StringReader("<a><!--comment text--></a>")));
+        // Note: We test getElementText on a child element ("b") of the element from which we request
+        //       the XMLStreamReader ("a"). This is to make sure that the XMLStreamReader implementation actually
+        //       delegates to the underlying parser (which is not necessarily the case on "a").
+        OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory, new InputSource(
+                new StringReader("<a><b>AB<!--comment text-->CD</b></a>")));
         OMElement element = builder.getDocumentElement();
+        
         XMLStreamReader reader = element.getXMLStreamReader(cache);
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
-        assertEquals(XMLStreamReader.COMMENT, reader.next());
-        assertEquals("comment text", reader.getText());
-        assertEquals("comment text", new String(reader.getTextCharacters(), reader.getTextStart(), reader.getTextLength()));
-        StringBuffer text = new StringBuffer();
-        char[] buf = new char[5];
-        for (int sourceStart = 0; ; sourceStart += buf.length) {
-            int nCopied = reader.getTextCharacters(sourceStart, buf, 0, buf.length);
-            text.append(buf, 0, nCopied);
-            if (nCopied < buf.length) {
-                break;
-            }
-        }
-        assertEquals("comment text", text.toString());
-        element.close(false);
+        assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
+
+        assertEquals("ABCD", reader.getElementText());
     }
 }

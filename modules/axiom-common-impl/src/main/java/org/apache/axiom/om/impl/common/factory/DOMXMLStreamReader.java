@@ -367,6 +367,13 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
         return internalGetText().toCharArray();
     }
 
+    public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length) throws XMLStreamException {
+        String text = internalGetText();
+        int copied = Math.min(length, text.length()-sourceStart);
+        text.getChars(sourceStart, sourceStart + copied, target, targetStart);
+        return copied;
+    }
+
     public String getPITarget() {
         if (event == PROCESSING_INSTRUCTION) {
             return ((ProcessingInstruction)node).getTarget();
@@ -414,17 +421,6 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     }
 
     public void close() throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public String getElementText() throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-    public int getTextCharacters(int arg0, char[] arg1, int arg2, int arg3)
-            throws XMLStreamException {
         // TODO
         throw new UnsupportedOperationException();
     }
