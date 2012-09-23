@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.common;
 
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
@@ -169,9 +170,17 @@ public final class OMContainerHelper {
     }
     
     public static OMNode getFirstOMChild(IParentNode that) {
-        OMNode firstChild;
-        while ((firstChild = that.getFirstOMChildIfAvailable()) == null && !that.isComplete()) {
-            buildNext(that);
+        OMNode firstChild = that.getFirstOMChildIfAvailable();
+        if (firstChild == null) {
+            switch (that.getState()) {
+                case IParentNode.DISCARDED:
+                    throw new NodeUnavailableException();
+                case IParentNode.INCOMPLETE:
+                    do {
+                        buildNext(that);
+                    } while (that.getState() == IParentNode.INCOMPLETE
+                            && (firstChild = that.getFirstOMChildIfAvailable()) == null);
+            }
         }
         return firstChild;
     }

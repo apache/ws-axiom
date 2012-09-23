@@ -227,6 +227,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.element.TestGetDescendants(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithName(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetFirstChildWithNameOnIncompleteElement(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetFirstOMChildAfterConsume(metaFactory));
+        addTest(new org.apache.axiom.ts.om.element.TestGetFirstOMChildAfterDiscard(metaFactory));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceContext(metaFactory, false));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceContext(metaFactory, true));
         addTest(new org.apache.axiom.ts.om.element.TestGetNamespaceNormalized(metaFactory, true));

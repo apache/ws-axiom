@@ -505,6 +505,16 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         }
         if (!cache) {
             parserAccessed = true;
+            // Mark all containers in the hierarchy as discarded because they can no longer be built
+            OMContainerEx current = target;
+            while (current != null) {
+                current.discarded();
+                if (current instanceof OMElement) {
+                    current = (OMContainerEx)((OMElement)current).getParent();
+                } else {
+                    current = null;
+                }
+            }
             return parser;
         } else {
             throw new IllegalStateException(
