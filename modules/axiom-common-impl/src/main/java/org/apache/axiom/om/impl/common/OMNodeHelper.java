@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.common;
 import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
 
 public final class OMNodeHelper {
     private OMNodeHelper() {}
@@ -32,6 +33,7 @@ public final class OMNodeHelper {
             if (parent != null && parent.getBuilder() != null) {
                 switch (parent.getState()) {
                     case IParentNode.DISCARDED:
+                        ((StAXBuilder)parent.getBuilder()).debugDiscarded(parent);
                         throw new NodeUnavailableException();
                     case IParentNode.INCOMPLETE:
                         do {

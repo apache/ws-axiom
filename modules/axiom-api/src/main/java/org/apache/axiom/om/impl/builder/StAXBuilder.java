@@ -46,6 +46,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -110,6 +111,12 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
      * again after is has thrown a parse exception.
      */
     protected Exception parserException;
+    
+    /**
+     * Stores the stack trace of the code that caused a node to be discarded or consumed. This is
+     * only used if debug logging was enabled when builder was created.
+     */
+    private final Map/*<OMContainer,Throwable>*/ discardTracker = log.isDebugEnabled() ? new LinkedHashMap() : null;
     
     /**
      * Constructor StAXBuilder.
@@ -273,6 +280,27 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
         }
     }
 
+    private void discarded(OMContainerEx container) {
+        container.discarded();
+        if (discardTracker != null) {
+            discardTracker.put(container, new Throwable());
+        }
+    }
+    
+    /**
+     * For internal use only.
+     * 
+     * @param container
+     */
+    public void debugDiscarded(Object container) {
+        if (log.isDebugEnabled() && discardTracker != null) {
+            Throwable t = (Throwable)discardTracker.get(container);
+            if (t != null) {
+                log.debug("About to throw NodeUnavailableException. Location of the code that caused the node to be discarded/consumed:", t);
+            }
+        }
+    }
+    
     // For compatibility only
     public void discard(OMElement element) throws OMException {
         discard((OMContainer)element);
@@ -314,7 +342,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             // Mark nodes as discarded
             OMContainerEx current = target;
             while (true) {
-                current.discarded();
+                discarded(current);
                 if (current == container) {
                     break;
                 }
@@ -508,7 +536,7 @@ public abstract class StAXBuilder implements OMXMLParserWrapper {
             // Mark all containers in the hierarchy as discarded because they can no longer be built
             OMContainerEx current = target;
             while (current != null) {
-                current.discarded();
+                discarded(current);
                 if (current instanceof OMElement) {
                     current = (OMContainerEx)((OMElement)current).getParent();
                 } else {

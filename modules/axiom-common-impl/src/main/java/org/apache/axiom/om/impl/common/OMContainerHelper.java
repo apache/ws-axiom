@@ -29,6 +29,7 @@ import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.commons.logging.Log;
@@ -174,6 +175,7 @@ public final class OMContainerHelper {
         if (firstChild == null) {
             switch (that.getState()) {
                 case IParentNode.DISCARDED:
+                    ((StAXBuilder)that.getBuilder()).debugDiscarded(that);
                     throw new NodeUnavailableException();
                 case IParentNode.INCOMPLETE:
                     do {
