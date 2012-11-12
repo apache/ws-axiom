@@ -18,8 +18,11 @@
  */
 package org.apache.axiom.om.impl.common.factory;
 
+import java.util.NoSuchElementException;
+
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.ext.stax.DTDReader;
@@ -34,10 +37,26 @@ import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
 class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
+    /**
+     * The root node for which StAX events are synthesized. This may be a {@link Document} or an
+     * {@link Element}.
+     */
     private final Node root;
+    
     private final boolean expandEntityReferences;
+    
+    /**
+     * The DOM node corresponding to the current StAX event. This is <code>null</code> if the
+     * current event is {@link XMLStreamConstants#START_DOCUMENT} or
+     * {@link XMLStreamConstants#END_DOCUMENT} and {@link #root} is an {@link Element}.
+     */
     private Node node;
+    
+    /**
+     * The current StAX event type;
+     */
     private int event;
+    
     private boolean attributesLoaded;
     private int attributeCount;
     private Attr[] attributes = new Attr[8];
@@ -47,7 +66,7 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
 
     DOMXMLStreamReader(Node node, boolean expandEntityReferences) {
         root = node;
-        this.node = node;
+        this.node = node.getNodeType() == Node.DOCUMENT_NODE ? node : null;
         this.expandEntityReferences = expandEntityReferences;
         event = START_DOCUMENT;
     }
@@ -69,10 +88,21 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     }
 
     public int next() throws XMLStreamException {
+        if (event == END_DOCUMENT) {
+            throw new NoSuchElementException("End of the document reached");
+        }
         boolean forceTraverse = false;
         while (true) {
+            // Determine the DOM node corresponding to the next event and determine if we
+            // have already traversed the descendants of that node
             boolean visited;
-            if (event == START_DOCUMENT || event == START_ELEMENT || forceTraverse) {
+            if (node == null) {
+                // We get here if the root node is an element (not a document) and we have
+                // not yet traversed that element (in which case the current event must
+                // be START_DOCUMENT)
+                node = root;
+                visited = false;
+            } else if (event == START_DOCUMENT || event == START_ELEMENT || forceTraverse) {
                 Node firstChild = node.getFirstChild();
                 if (firstChild == null) {
                     visited = true;
@@ -81,6 +111,11 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
                     visited = false;
                 }
                 forceTraverse = false;
+            } else if (node == root) {
+                // We get here if the root node is an element and we have finished traversal
+                // of that element
+                node = null;
+                visited = true;
             } else {
                 Node nextSibling = node.getNextSibling();
                 if (nextSibling == null) {
@@ -91,7 +126,9 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
                     visited = false;
                 }
             }
-            switch (node.getNodeType()) {
+            
+            // Determine the event type for the next node
+            switch (node == null ? Node.DOCUMENT_NODE : node.getNodeType()) {
                 case Node.DOCUMENT_NODE:
                     event = END_DOCUMENT;
                     break;
@@ -99,7 +136,7 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
                     event = DTD;
                     break;
                 case Node.ELEMENT_NODE:
-                    event = visited? END_ELEMENT : START_ELEMENT;
+                    event = visited ? END_ELEMENT : START_ELEMENT;
                     // Namespace declarations can be queried on an END_ELEMENT event; always reset the
                     // attributesLoaded flag
                     attributesLoaded = false;
@@ -139,26 +176,30 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
 
     public String getEncoding() {
         if (event == START_DOCUMENT) {
-            return ((Document)node).getInputEncoding();
+            return node != null ? ((Document)node).getInputEncoding() : null;
         } else {
             throw new IllegalStateException();
         }
     }
 
     public String getVersion() {
-        return ((Document)node).getXmlVersion();
+        return node != null ? ((Document)node).getXmlVersion() : "1.0";
     }
 
     public String getCharacterEncodingScheme() {
         if (event == START_DOCUMENT) {
-            return ((Document)node).getXmlEncoding();
+            return node != null ? ((Document)node).getXmlEncoding() : null;
         } else {
             throw new IllegalStateException();
         }
     }
 
     public boolean isStandalone() {
-        return ((Document)node).getXmlStandalone();
+        return node != null ? ((Document)node).getXmlStandalone() : true;
+    }
+
+    public boolean standaloneSet() {
+        return true;
     }
 
     public String getRootName() {
@@ -421,15 +462,8 @@ class DOMXMLStreamReader extends AbstractXMLStreamReader implements DTDReader {
     }
 
     public void close() throws XMLStreamException {
-        // TODO
-        throw new UnsupportedOperationException();
     }
 
-    public boolean standaloneSet() {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-    
     private static QName getQName(Node node) {
         String prefix = node.getPrefix();
         return new QName(node.getNamespaceURI(), node.getLocalName(), prefix == null ? "" : prefix);
