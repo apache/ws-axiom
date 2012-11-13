@@ -249,6 +249,16 @@
                                 <name>java.awt.headless</name>
                                 <value>true</value>
                             </property>
+                            <!-- Uncomment this to test with the StAX implementation in Java 7 -->
+                            <!-- property>
+                                <name>javax.xml.stream.XMLInputFactory</name>
+                                <value>com.sun.xml.internal.stream.XMLInputFactoryImpl</value>
+                            </property>
+                            <property>
+                                <name>javax.xml.stream.XMLOutputFactory</name>
+                                <value>com.sun.xml.internal.stream.XMLOutputFactoryImpl</value>
+                            </property -->
+                            <!-- Uncomment this to test with BEA's reference implementation -->
                             <!-- property>
                                 <name>javax.xml.stream.XMLInputFactory</name>
                                 <value>com.bea.xml.stream.MXParserFactory</value>
