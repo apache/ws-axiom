@@ -565,14 +565,19 @@ public class StAXOMBuilder extends StAXBuilder {
             // check whether this is the default namespace and make sure we have not declared that earlier
             String namespaceURI = parser.getNamespaceURI(i);
             
-            // NOTE_A:
-            // By default most parsers don't intern the namespace.
-            // Unfortunately the property to detect interning on the delegate parsers is hard to detect.
-            // Woodstox has a proprietary property on the XMLInputFactory.
-            // IBM has a proprietary property on the XMLStreamReader.
-            // For now only force the interning if requested.
-            if (isNamespaceURIInterning()) {
-                namespaceURI = namespaceURI.intern();
+            if (namespaceURI == null) {
+                // No need to care about interning here; String literals are always interned
+                namespaceURI = "";
+            } else {
+                // NOTE_A:
+                // By default most parsers don't intern the namespace.
+                // Unfortunately the property to detect interning on the delegate parsers is hard to detect.
+                // Woodstox has a proprietary property on the XMLInputFactory.
+                // IBM has a proprietary property on the XMLStreamReader.
+                // For now only force the interning if requested.
+                if (isNamespaceURIInterning()) {
+                    namespaceURI = namespaceURI.intern();
+                }
             }
             
             if (prefix == null) {
