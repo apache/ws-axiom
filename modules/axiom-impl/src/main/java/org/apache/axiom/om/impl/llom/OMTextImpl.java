@@ -39,7 +39,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
     /** Field nameSpace used when serializing Binary stuff as MTOM optimized. */
@@ -361,26 +360,6 @@ public class OMTextImpl extends OMLeafNode implements OMText, OMConstants {
                 }
             }
             return dataHandlerObject;
-        }
-    }
-
-    public java.io.InputStream getInputStream() throws OMException {
-        if (isBinary) {
-            if (dataHandlerObject == null) {
-                getDataHandler();
-            }
-            InputStream inStream;
-            javax.activation.DataHandler dataHandler =
-                    (javax.activation.DataHandler) dataHandlerObject;
-            try {
-                inStream = dataHandler.getDataSource().getInputStream();
-            } catch (IOException e) {
-                throw new OMException(
-                        "Cannot get InputStream from DataHandler.", e);
-            }
-            return inStream;
-        } else {
-            throw new OMException("Unsupported Operation");
         }
     }
 
