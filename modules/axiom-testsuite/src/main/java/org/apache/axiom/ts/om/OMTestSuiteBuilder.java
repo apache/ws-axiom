@@ -473,7 +473,8 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
             addTest(new org.apache.axiom.ts.om.sourcedelement.push.TestWriteStartElementWithDefaultNamespaceDeclaredOnParent(metaFactory));
         }
         addTest(new org.apache.axiom.ts.om.pi.TestDigest(metaFactory));
-        addTest(new org.apache.axiom.ts.om.text.TestBase64Streaming(metaFactory));
+        addTest(new org.apache.axiom.ts.om.text.TestBase64StreamingWithGetSAXSource(metaFactory));
+        addTest(new org.apache.axiom.ts.om.text.TestBase64StreamingWithSerialize(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestDigest(metaFactory));
         addTest(new org.apache.axiom.ts.om.text.TestGetTextCharactersFromDataHandler(metaFactory));
         Method[] methods = AXIOMXPathTestCase.class.getMethods();

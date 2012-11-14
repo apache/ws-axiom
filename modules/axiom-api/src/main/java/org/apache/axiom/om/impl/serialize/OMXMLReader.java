@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.activation.DataHandler;
+
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -37,6 +39,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
+import org.apache.axiom.util.base64.Base64EncodingWriterOutputStream;
 import org.apache.axiom.util.sax.AbstractXMLReader;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -227,11 +230,28 @@ public class OMXMLReader extends AbstractXMLReader {
     }
     
     private void generateEvents(OMText omText, boolean space) throws SAXException {
-        char[] ch = omText.getTextCharacters();
-        if (space) {
-            contentHandler.ignorableWhitespace(ch, 0, ch.length);
+        if (omText.isBinary()) {
+            // Stream the binary content
+            DataHandler dh = (DataHandler)omText.getDataHandler();
+            Base64EncodingWriterOutputStream out = new Base64EncodingWriterOutputStream(new ContentHandlerWriter(contentHandler));
+            try {
+                dh.writeTo(out);
+                out.complete();
+            } catch (IOException ex) {
+                Throwable cause = ex.getCause();
+                if (cause instanceof SAXException) {
+                    throw (SAXException)ex.getCause();
+                } else {
+                    throw new SAXException(ex);
+                }
+            }
         } else {
-            contentHandler.characters(ch, 0, ch.length);
+            char[] ch = omText.getTextCharacters();
+            if (space) {
+                contentHandler.ignorableWhitespace(ch, 0, ch.length);
+            } else {
+                contentHandler.characters(ch, 0, ch.length);
+            }
         }
     }
 
