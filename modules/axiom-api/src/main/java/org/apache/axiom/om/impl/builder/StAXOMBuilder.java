@@ -702,8 +702,7 @@ public class StAXOMBuilder extends StAXBuilder {
      * 
      * @return A return value of <code>true</code> indicates that the parser is one token ahead
      *         of the builder, i.e. that the node for the current token has not been created yet.
-     *         In this case {@link #getLastNode()} returns the node corresponding to the previous
-     *         token. This state can only be reached by a call to {@link #lookahead()}, and the
+     *         This state can only be reached by a call to {@link #lookahead()}, and the
      *         current token is always a {@link XMLStreamConstants#START_ELEMENT START_ELEMENT}.
      *         The information related to that element can be obtained by calls to
      *         {@link #getName()}, {@link #getNamespace()}, {@link #getPrefix()},
@@ -713,8 +712,7 @@ public class StAXOMBuilder extends StAXBuilder {
      *         {@link #getNamespaceUri(int)}.
      *         <p>
      *         A return value of <code>false</code> indicates that the node corresponding to the
-     *         current token hold by the parser has already been created, i.e.
-     *         {@link #getLastNode()} returns the node corresponding to the current token.
+     *         current token hold by the parser has already been created.
      */
     public boolean isLookahead() {
         return lookAheadToken >= 0;

@@ -21,6 +21,7 @@ package org.apache.axiom.ts.soap.body;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.ts.soap.SOAPSpec;
 import org.apache.axiom.ts.soap.SOAPTestCase;
 

@@ -23,6 +23,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocType;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMEntityReference;

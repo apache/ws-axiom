@@ -18,6 +18,8 @@
  */
 package org.apache.axiom.om;
 
+import javax.activation.DataHandler;
+
 import org.apache.axiom.ext.stax.datahandler.DataHandlerProvider;
 
 public class OMCloneOptions {

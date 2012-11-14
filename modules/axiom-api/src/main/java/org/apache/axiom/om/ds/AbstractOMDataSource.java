@@ -27,6 +27,7 @@ import java.io.Writer;
 import java.util.HashMap;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.axiom.om.OMDataSource;
