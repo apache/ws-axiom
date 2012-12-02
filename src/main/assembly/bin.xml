@@ -77,6 +77,8 @@
                 <include>org.apache.ws.commons.axiom:axiom-api</include>
                 <include>org.apache.ws.commons.axiom:axiom-impl</include>
                 <include>org.apache.ws.commons.axiom:axiom-dom</include>
+                <include>org.apache.ws.commons.axiom:axiom-compat</include>
+                <include>org.apache.ws.commons.axiom:axiom-jaxb</include>
                 <include>org.apache.ws.commons.axiom:axiom-c14n</include>
             </includes>
             <binaries>
@@ -86,6 +88,12 @@
                 <dependencySets>
                     <dependencySet>
                         <outputDirectory>lib</outputDirectory>
+                        <excludes>
+                            <!-- This artifact is actually shaded into axiom-impl and axiom-dom -->
+                            <exclude>org.apache.ws.commons.axiom:axiom-common-impl</exclude>
+                            <!-- This dependency should be considered as provided by the application code -->
+                            <exclude>javax.xml.bind:jaxb-api</exclude>
+                        </excludes>
                     </dependencySet>
                 </dependencySets>
             </binaries>
