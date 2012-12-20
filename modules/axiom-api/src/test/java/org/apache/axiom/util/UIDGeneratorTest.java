@@ -22,6 +22,7 @@ package org.apache.axiom.util;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
@@ -45,7 +46,7 @@ public class UIDGeneratorTest extends TestCase {
         assertTrue(UIDGenerator.generateMimeBoundary().length() <= 70);
     }
     
-    public void testThreadSafety() {
+    public void testGenerateUIDThreadSafety() {
         final Set generatedIds = Collections.synchronizedSet(new HashSet());
         final AtomicInteger errorCount = new AtomicInteger(0);
         Thread[] threads = new Thread[100];
@@ -73,5 +74,41 @@ public class UIDGeneratorTest extends TestCase {
         }
         
         assertEquals(0, errorCount.get());
+    }
+    
+    public void testGenerateURNString() {
+        Thread[] threads = new Thread[100];
+        final String[][] urns = new String[threads.length][1000];
+        for (int i = 0; i < threads.length; i++) {
+            final String[] threadURNs = urns[i];
+            threads[i] = new Thread(new Runnable() {
+                public void run() {
+                    for (int i=0; i<threadURNs.length; i++) {
+                        threadURNs[i] = UIDGenerator.generateURNString();
+                    }
+                }
+            });
+            threads[i].start();
+        }
+
+        for (int i = 0; i < threads.length; i++) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Set set = new HashSet();
+        for (int i = 0; i < threads.length; i++) {
+            for (int j = 0; j < urns[i].length; j++) {
+                String urn = urns[i][j];
+                assertTrue(urn.startsWith("urn:uuid:"));
+                assertTrue(set.add(urn));
+                UUID uuid = UUID.fromString(urn.substring(9));
+                assertEquals(4, uuid.version());
+                assertEquals(2, uuid.variant());
+            }
+        }
     }
 }

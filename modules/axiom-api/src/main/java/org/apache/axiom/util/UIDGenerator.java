@@ -21,6 +21,7 @@ package org.apache.axiom.util;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.SecureRandom;
 import java.util.Random;
 import java.util.UUID;
 
@@ -28,7 +29,8 @@ import java.util.UUID;
  * Contains utility methods to generate unique IDs of various kinds.
  * <p>
  * Depending on the requested type of ID, this class will either use
- * {@link UUID#randomUUID()} or its own unique ID generator. This implementation
+ * {@link UUID#randomUUID()} (or an equivalent algorithm)
+ * or its own unique ID generator. This implementation
  * generates unique IDs based on the assumption that the following triplet is
  * unique:
  * <ol>
@@ -67,11 +69,25 @@ public final class UIDGenerator {
     private static final long threadIdXorOperand;
     private static final long seqXorOperand;
     
+    private static final SecureRandom secureRandom = new SecureRandom();
+    
+    /**
+     * Array of 16 caches that contain random bytes fetched from {@link #secureRandom} and that are
+     * used to compute UUIDs. These caches are used to reduce the number of calls to
+     * {@link SecureRandom#nextBytes(byte[])}. The cache used by a given thread is determined by the
+     * thread ID. Multiple caches are used to reduce contention between threads.
+     */
+    private static final UUIDCache[] uuidCaches;
+    
     static {
         Random rand = new Random();
         threadIdXorOperand = rand.nextLong();
         startTimeXorOperand = rand.nextLong();
         seqXorOperand = rand.nextLong();
+        uuidCaches = new UUIDCache[16];
+        for (int i=0; i<16; i++) {
+            uuidCaches[i] = new UUIDCache();
+        }
     }
     
     /**
@@ -93,8 +109,12 @@ public final class UIDGenerator {
     private static void writeReverseLongHex(long value, StringBuilder buffer) {
         for (int i=0; i<16; i++) {
             int n = (int)(value >> (4*i)) & 0xF;
-            buffer.append((char)(n < 10 ? '0' + n : 'a' + n - 10));
+            writeNibble(n, buffer);
         }
+    }
+    
+    private static void writeNibble(int n, StringBuilder buffer) {
+        buffer.append((char)(n < 10 ? '0' + n : 'a' + n - 10));
     }
     
     /**
@@ -210,7 +230,53 @@ public final class UIDGenerator {
      * @return the generated URN
      */
     public static String generateURNString() {
-        return "urn:uuid:" + UUID.randomUUID();
+        StringBuilder urn = new StringBuilder(45);
+        urn.append("urn:uuid:");
+        UUIDCache cache = uuidCaches[(int)Thread.currentThread().getId() & 0xF];
+        synchronized (cache) {
+            boolean fill;
+            int position = cache.position;
+            byte[] randomBytes = cache.randomBytes;
+            if (randomBytes == null) {
+                cache.randomBytes = randomBytes = new byte[4096];
+                fill = true;
+            } else if (position == 4096) {
+                position = 0;
+                fill = true;
+            } else {
+                fill = false;
+            }
+            if (fill) {
+                secureRandom.nextBytes(cache.randomBytes);
+            }
+            writeHex(randomBytes[position], urn);
+            writeHex(randomBytes[position+1], urn);
+            writeHex(randomBytes[position+2], urn);
+            writeHex(randomBytes[position+3], urn);
+            urn.append('-');
+            writeHex(randomBytes[position+4], urn);
+            writeHex(randomBytes[position+5], urn);
+            urn.append('-');
+            writeHex((byte)(randomBytes[position+6] & 0x0F | 0x40), urn);
+            writeHex(randomBytes[position+7], urn);
+            urn.append('-');
+            writeHex((byte)(randomBytes[position+8] & 0x3F | 0x80), urn);
+            writeHex(randomBytes[position+9], urn);
+            urn.append('-');
+            writeHex(randomBytes[position+10], urn);
+            writeHex(randomBytes[position+11], urn);
+            writeHex(randomBytes[position+12], urn);
+            writeHex(randomBytes[position+13], urn);
+            writeHex(randomBytes[position+14], urn);
+            writeHex(randomBytes[position+15], urn);
+            cache.position = position+16;
+        }
+        return urn.toString();
+    }
+    
+    private static void writeHex(byte b, StringBuilder buffer) {
+        writeNibble(b >> 4 & 0xF, buffer);
+        writeNibble(b & 0xF, buffer);
     }
     
     /**
