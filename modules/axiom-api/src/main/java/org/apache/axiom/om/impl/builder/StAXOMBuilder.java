@@ -120,6 +120,7 @@ public class StAXOMBuilder extends StAXBuilder {
                          String characterEncoding) {
         // Use this constructor because the parser is passed the START_DOCUMENT state.
         super(factory, parser, characterEncoding);  
+        elementLevel = 1;
         target = (OMContainerEx)element;
         populateOMElement(element);
     }
@@ -270,6 +271,23 @@ public class StAXOMBuilder extends StAXBuilder {
                     default :
                         throw new OMException();
                 }
+                
+                if (target == null && !done) {
+                    // We get here if the document has been discarded (using getDocumentElement(true)) and
+                    // we just processed the END_ELEMENT event for the root element. In this case, we consume
+                    // the remaining events until we reach the end of the document. This serves several purposes:
+                    //  * It allows us to detect documents that have an epilog that is not well formed.
+                    //  * Many parsers will perform some cleanup when the end of the document is reached.
+                    //    For example, Woodstox will recycle the symbol table if the parser gets past the
+                    //    last END_ELEMENT. This improves performance because Woodstox by default interns
+                    //    all symbols; if the symbol table can be recycled, then this reduces the number of
+                    //    calls to String#intern().
+                    while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
+                        // Just loop
+                    }
+                    done = true;
+                }
+                
                 return token;
             }
         } catch (XMLStreamException e) {
@@ -533,7 +551,14 @@ public class StAXOMBuilder extends StAXBuilder {
     
     private void endElement() {
         target.setComplete(true);
-        target = (OMContainerEx)((OMElement)target).getParent();
+        if (elementLevel == 0) {
+            // This is relevant for OMSourcedElements and for the case where the document has been discarded
+            // using getDocumentElement(true). In these cases, this will actually set target to null. In all
+            // other cases, this will have the same effect as the instruction in the else clause.
+            target = (OMContainerEx)document;
+        } else {
+            target = (OMContainerEx)((OMElement)target).getParent();
+        }
     }
 
     public OMElement getDocumentElement() {
@@ -547,6 +572,7 @@ public class StAXOMBuilder extends StAXBuilder {
             nodeEx.setParent(null);
             nodeEx.setPreviousOMSibling(null);
             nodeEx.setNextOMSibling(null);
+            document = null;
         }
         return element;
     }

@@ -99,6 +99,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.builder.TestCreateStAXOMBuilderNamespaceRepairing2(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElement(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocument(metaFactory));
+        addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithDiscardDocumentIllFormedEpilog(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestGetDocumentElementWithIllFormedDocument(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestInvalidXML(metaFactory));
         addTest(new org.apache.axiom.ts.om.builder.TestIOExceptionInGetText(metaFactory));
