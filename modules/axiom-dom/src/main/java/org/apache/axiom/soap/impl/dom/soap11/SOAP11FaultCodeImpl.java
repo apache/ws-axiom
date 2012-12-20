@@ -105,8 +105,16 @@ public class SOAP11FaultCodeImpl extends SOAPFaultCodeImpl {
         return SOAP11Constants.SOAP_FAULT_CODE_LOCAL_NAME;
     }
 
+    public SOAPFaultValue getValue() {
+        return null;
+    }
+
     public void setValue(QName value) {
         setText(value);
+    }
+
+    public QName getValueAsQName() {
+        return getTextAsQName();
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,

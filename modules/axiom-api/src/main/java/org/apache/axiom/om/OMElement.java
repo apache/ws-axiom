@@ -566,7 +566,7 @@ public interface OMElement extends OMNode, OMContainer, OMNamedInformationItem {
 
     /**
      * Clones this element and its descendants using default options. This method has the same
-     * effect as {@link #cloneOMElement(OMCloneOptions)} with default options.
+     * effect as {@link #clone(OMCloneOptions)} with default options.
      * 
      * @return the cloned element
      */

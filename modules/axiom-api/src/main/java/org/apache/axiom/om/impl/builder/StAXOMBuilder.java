@@ -21,6 +21,7 @@ package org.apache.axiom.om.impl.builder;
 
 import org.apache.axiom.ext.stax.DTDReader;
 import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
@@ -119,6 +120,7 @@ public class StAXOMBuilder extends StAXBuilder {
                          String characterEncoding) {
         // Use this constructor because the parser is passed the START_DOCUMENT state.
         super(factory, parser, characterEncoding);  
+        elementLevel = 1;
         target = (OMContainerEx)element;
         populateOMElement(element);
     }
@@ -269,6 +271,23 @@ public class StAXOMBuilder extends StAXBuilder {
                     default :
                         throw new OMException();
                 }
+                
+                if (target == null && !done) {
+                    // We get here if the document has been discarded (using getDocumentElement(true)) and
+                    // we just processed the END_ELEMENT event for the root element. In this case, we consume
+                    // the remaining events until we reach the end of the document. This serves several purposes:
+                    //  * It allows us to detect documents that have an epilog that is not well formed.
+                    //  * Many parsers will perform some cleanup when the end of the document is reached.
+                    //    For example, Woodstox will recycle the symbol table if the parser gets past the
+                    //    last END_ELEMENT. This improves performance because Woodstox by default interns
+                    //    all symbols; if the symbol table can be recycled, then this reduces the number of
+                    //    calls to String#intern().
+                    while (parserNext() != XMLStreamConstants.END_DOCUMENT) {
+                        // Just loop
+                    }
+                    done = true;
+                }
+                
                 return token;
             }
         } catch (XMLStreamException e) {
@@ -424,12 +443,31 @@ public class StAXOMBuilder extends StAXBuilder {
      * @return Returns OMNode.
      * @throws OMException
      */
-    protected OMNode createOMElement() throws OMException {
-        OMElement node = omfactory.createOMElement(parser.getLocalName(), target, this);
+    // This method is not meant to be overridden. Override constructNode to create model specific OMElement instances.
+    protected final OMNode createOMElement() throws OMException {
+        OMElement node = constructNode(target, parser.getLocalName());
         populateOMElement(node);
         return node;
     }
 
+    /**
+     * Instantiate the appropriate {@link OMElement} implementation for the current element. This
+     * method may be overridden by subclasses to support model specific {@link OMElement} types. The
+     * implementation of this method is expected to initialize the {@link OMElement} with the
+     * specified local name and to add it to the specified parent. However, the implementation
+     * should not set the namespace of the element or process the attributes of the element. This is
+     * taken care of by the caller of this method.
+     * 
+     * @param parent
+     *            the parent for the element
+     * @param elementName
+     *            the local name for the element
+     * @return the newly created {@link OMElement}; must not be <code>null</code>
+     */
+    protected OMElement constructNode(OMContainer parent, String elementName) {
+        return omfactory.createOMElement(parser.getLocalName(), target, this);
+    }
+    
     /**
      * Method createOMText.
      *
@@ -511,9 +549,16 @@ public class StAXOMBuilder extends StAXBuilder {
         return omfactory.createOMEntityReference(target, parser.getLocalName(), parser.getText(), true);
     }
     
-    protected void endElement() {
+    private void endElement() {
         target.setComplete(true);
-        target = (OMContainerEx)((OMElement)target).getParent();
+        if (elementLevel == 0) {
+            // This is relevant for OMSourcedElements and for the case where the document has been discarded
+            // using getDocumentElement(true). In these cases, this will actually set target to null. In all
+            // other cases, this will have the same effect as the instruction in the else clause.
+            target = (OMContainerEx)document;
+        } else {
+            target = (OMContainerEx)((OMElement)target).getParent();
+        }
     }
 
     public OMElement getDocumentElement() {
@@ -527,6 +572,7 @@ public class StAXOMBuilder extends StAXBuilder {
             nodeEx.setParent(null);
             nodeEx.setPreviousOMSibling(null);
             nodeEx.setNextOMSibling(null);
+            document = null;
         }
         return element;
     }
@@ -545,14 +591,19 @@ public class StAXOMBuilder extends StAXBuilder {
             // check whether this is the default namespace and make sure we have not declared that earlier
             String namespaceURI = parser.getNamespaceURI(i);
             
-            // NOTE_A:
-            // By default most parsers don't intern the namespace.
-            // Unfortunately the property to detect interning on the delegate parsers is hard to detect.
-            // Woodstox has a proprietary property on the XMLInputFactory.
-            // IBM has a proprietary property on the XMLStreamReader.
-            // For now only force the interning if requested.
-            if (isNamespaceURIInterning()) {
-                namespaceURI = namespaceURI.intern();
+            if (namespaceURI == null) {
+                // No need to care about interning here; String literals are always interned
+                namespaceURI = "";
+            } else {
+                // NOTE_A:
+                // By default most parsers don't intern the namespace.
+                // Unfortunately the property to detect interning on the delegate parsers is hard to detect.
+                // Woodstox has a proprietary property on the XMLInputFactory.
+                // IBM has a proprietary property on the XMLStreamReader.
+                // For now only force the interning if requested.
+                if (isNamespaceURIInterning()) {
+                    namespaceURI = namespaceURI.intern();
+                }
             }
             
             if (prefix == null) {
@@ -677,8 +728,7 @@ public class StAXOMBuilder extends StAXBuilder {
      * 
      * @return A return value of <code>true</code> indicates that the parser is one token ahead
      *         of the builder, i.e. that the node for the current token has not been created yet.
-     *         In this case {@link #getLastNode()} returns the node corresponding to the previous
-     *         token. This state can only be reached by a call to {@link #lookahead()}, and the
+     *         This state can only be reached by a call to {@link #lookahead()}, and the
      *         current token is always a {@link XMLStreamConstants#START_ELEMENT START_ELEMENT}.
      *         The information related to that element can be obtained by calls to
      *         {@link #getName()}, {@link #getNamespace()}, {@link #getPrefix()},
@@ -688,8 +738,7 @@ public class StAXOMBuilder extends StAXBuilder {
      *         {@link #getNamespaceUri(int)}.
      *         <p>
      *         A return value of <code>false</code> indicates that the node corresponding to the
-     *         current token hold by the parser has already been created, i.e.
-     *         {@link #getLastNode()} returns the node corresponding to the current token.
+     *         current token hold by the parser has already been created.
      */
     public boolean isLookahead() {
         return lookAheadToken >= 0;

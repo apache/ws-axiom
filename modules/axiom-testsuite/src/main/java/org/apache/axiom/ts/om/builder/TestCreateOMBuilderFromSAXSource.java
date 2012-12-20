@@ -31,8 +31,6 @@ import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.testutils.XMLAssertEx;
 import org.apache.axiom.testutils.conformance.ConformanceTestFile;
 import org.apache.axiom.ts.ConformanceTestCase;
-import org.custommonkey.xmlunit.XMLAssert;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.xml.sax.InputSource;
 
 public class TestCreateOMBuilderFromSAXSource extends ConformanceTestCase {

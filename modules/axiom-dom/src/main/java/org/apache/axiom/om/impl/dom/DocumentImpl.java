@@ -20,7 +20,6 @@
 package org.apache.axiom.om.impl.dom;
 
 import org.apache.axiom.om.OMCloneOptions;
-import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -52,6 +51,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 
+import javax.xml.XMLConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
@@ -122,10 +122,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
 
     public Attr createAttribute(String name) throws DOMException {
         if (!DOMUtil.isQualifiedName(name)) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.INVALID_CHARACTER_ERR,
-                    null);
-            throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
         }
         return new AttrImpl(this, name, this.factory);
     }
@@ -134,18 +131,18 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
             throws DOMException {
         String localName = DOMUtil.getLocalName(qualifiedName);
         String prefix = DOMUtil.getPrefix(qualifiedName);
+        DOMUtil.validateAttrNamespace(namespaceURI, localName, prefix);
 
-        if (!OMConstants.XMLNS_NS_PREFIX.equals(localName)) {
+        if (!XMLConstants.XMLNS_ATTRIBUTE.equals(localName)) {
             this.checkQName(prefix, localName);
-        } else {
-            return this.createAttribute(localName);
         }
 
         OMNamespace namespace;
         if (namespaceURI == null) {
             namespace = null;
         } else {
-            namespace = new OMNamespaceImpl(namespaceURI, prefix == null ? "" : prefix);
+            namespace = new OMNamespaceImpl(namespaceURI,
+                    prefix == null && !XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI) ? "" : prefix);
         }
         return new AttrImpl(this, localName, namespace, this.factory);
     }
@@ -288,7 +285,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
                         Attr attr = (Attr) sourceAttrs.item(index);
                         if (attr.getNamespaceURI() != null
                                 && !attr.getNamespaceURI().equals(
-                                OMConstants.XMLNS_NS_URI)) {
+                                XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
                             Attr newAttr = (Attr) importNode(attr, true);
                             newElement.setAttributeNodeNS(newAttr);
                         } else { // if (attr.getLocalName() == null) {
@@ -308,7 +305,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
                     newNode = createAttribute(importedNode.getNodeName());
                 } else {
                     //Check whether it is a default ns decl
-                    if (OMConstants.XMLNS_NS_PREFIX.equals(importedNode.getNodeName())) {
+                    if (XMLConstants.XMLNS_ATTRIBUTE.equals(importedNode.getNodeName())) {
                         newNode = createAttribute(importedNode.getNodeName());
                     } else {
                         String ns = importedNode.getNamespaceURI();
@@ -346,12 +343,8 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
                 throw new UnsupportedOperationException("TODO : Implement handling of org.w3c.dom.Node type == " + type );
 
             case Node.DOCUMENT_NODE: // Can't import document nodes
-            default: { // Unknown node type
-                String msg = DOMMessageFormatter.formatMessage(
-                        DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_SUPPORTED_ERR, null);
-                throw new DOMException(DOMException.NOT_SUPPORTED_ERR, msg);
-            }
-
+            default:
+                throw DOMUtil.newDOMException(DOMException.NOT_SUPPORTED_ERR);
         }
 
         // If deep, replicate and attach the kids.
@@ -468,11 +461,7 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
         // check that both prefix and local part match NCName
         if ((prefix != null && !XMLChar.isValidNCName(prefix))
                 || !XMLChar.isValidNCName(local)) {
-            // REVISIT: add qname parameter to the message
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.INVALID_CHARACTER_ERR,
-                    null);
-            throw new DOMException(DOMException.INVALID_CHARACTER_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.INVALID_CHARACTER_ERR);
         }
     }
 
@@ -632,5 +621,11 @@ public class DocumentImpl extends RootNode implements Document, OMDocument, ICon
     
     public final void removeChildren() {
         OMContainerHelper.removeChildren(this);
+    }
+
+    public final String lookupNamespaceURI(String specifiedPrefix) {
+        Element documentElement = getDocumentElement();
+        return documentElement == null ? null
+                : documentElement.lookupNamespaceURI(specifiedPrefix);
     }
 }

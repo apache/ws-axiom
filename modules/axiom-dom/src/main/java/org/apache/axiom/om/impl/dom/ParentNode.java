@@ -217,10 +217,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         }
 
         if (isAncestorOrSelf(newChild)) {
-            throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.HIERARCHY_REQUEST_ERR, null));
+            throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
 
         if (newDomChild.parentNode() != null) {
@@ -232,10 +229,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
             if (newDomChild instanceof ElementImpl) {
                 if (((DocumentImpl) this).getOMDocumentElement(false) != null) {
                     // Throw exception since there cannot be two document elements
-                    throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                                           DOMMessageFormatter.formatMessage(
-                                                   DOMMessageFormatter.DOM_DOMAIN,
-                                                   DOMException.HIERARCHY_REQUEST_ERR, null));
+                    throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
                 }
                 if (newDomChild.parentNode() == null) {
                     newDomChild.setParent(this, useDomSemantics);
@@ -244,10 +238,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
                     || newDomChild instanceof ProcessingInstructionImpl
                     || newDomChild instanceof DocumentFragmentImpl
                     || newDomChild instanceof DocumentTypeImpl)) {
-                throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                        DOMMessageFormatter.formatMessage(
-                                DOMMessageFormatter.DOM_DOMAIN,
-                                DOMException.HIERARCHY_REQUEST_ERR, null));
+                throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
             }
         }
         
@@ -350,10 +341,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
             }
 
             if (!found) {
-                throw new DOMException(DOMException.NOT_FOUND_ERR,
-                                       DOMMessageFormatter.formatMessage(
-                                               DOMMessageFormatter.DOM_DOMAIN,
-                                               DOMException.NOT_FOUND_ERR, null));
+                throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
             }
 
             if (newDomChild.parentNode() == null) {
@@ -379,10 +367,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         }
 
         if (isAncestorOrSelf(newChild)) {
-            throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.HIERARCHY_REQUEST_ERR, null));
+            throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
 
         checkSameOwnerDocument(newDomChild);
@@ -391,7 +376,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         boolean found = false;
         while (!found && children.hasNext()) {
             NodeImpl tempNode = (NodeImpl) children.next();
-            if (tempNode.equals(oldChild)) {
+            if (tempNode == oldChild) {
                 NodeImpl head; // The first child to insert
                 NodeImpl tail; // The last child to insert
                 
@@ -416,37 +401,25 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
                     newDomChild.setParent(this, true);
                 }
                 
-                if (this.firstChild == oldDomChild) {
-
-                    if (this.firstChild.internalGetNextSibling() != null) {
-                        this.firstChild.internalGetNextSibling().internalSetPreviousSibling(tail);
-                        tail.internalSetNextSibling(this.firstChild.internalGetNextSibling());
-                    }
-
-                    //Cleanup the current first child
-                    this.firstChild.setParent(null, true);
-                    this.firstChild.internalSetNextSibling(null);
-
-                    //Set the new first child
-                    this.firstChild = head;
-                    
-
+                // We use getNextSibling here to force bulding the node if necessary
+                NodeImpl nextSibling = (NodeImpl)oldDomChild.getNextSibling();
+                NodeImpl previousSibling = oldDomChild.internalGetPreviousSibling();
+                
+                tail.internalSetNextSibling(nextSibling);
+                head.internalSetPreviousSibling(previousSibling);
+                
+                if (previousSibling != null) {
+                    previousSibling.internalSetNextSibling(head);
                 } else {
-                    // We use getNextSibling here to force bulding the node if necessary
-                    tail.internalSetNextSibling((NodeImpl)oldDomChild.getNextSibling());
-                    head.internalSetPreviousSibling(oldDomChild.internalGetPreviousSibling());
-
-                    oldDomChild.internalGetPreviousSibling().internalSetNextSibling(head);
-
-                    // If the old child is not the last
-                    if (oldDomChild.internalGetNextSibling() != null) {
-                        oldDomChild.internalGetNextSibling().internalSetPreviousSibling(tail);
-                    } else {
-                        this.lastChild = newDomChild;
-                    }
-
+                    this.firstChild = head;
                 }
 
+                if (nextSibling != null) {
+                    nextSibling.internalSetPreviousSibling(tail);
+                } else {
+                    this.lastChild = tail;
+                }
+                
                 found = true;
 
                 // remove the old child's references to this tree
@@ -457,10 +430,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
         }
 
         if (!found)
-            throw new DOMException(DOMException.NOT_FOUND_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR,
-                                           null));
+            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
 
         return oldChild;
     }
@@ -471,10 +441,7 @@ public abstract class ParentNode extends NodeImpl implements NodeList, IParentNo
             ((NodeImpl)oldChild).detach(true);
             return oldChild;
         } else {
-            throw new DOMException(DOMException.NOT_FOUND_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR,
-                                           null));
+            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         }
     }
 

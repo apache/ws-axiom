@@ -62,10 +62,7 @@ public abstract class CharacterImpl extends LeafNode implements CharacterData, O
 
         int length = this.textValue.length();
         if (offset < 0 || offset > length - 1 || count < 0) {
-            throw new DOMException(DOMException.INDEX_SIZE_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN, DOMException.INDEX_SIZE_ERR,
-                                           null));
+            throw DOMUtil.newDOMException(DOMException.INDEX_SIZE_ERR);
         } else {
 
             int end = Math.min(count + offset, length);
@@ -90,10 +87,7 @@ public abstract class CharacterImpl extends LeafNode implements CharacterData, O
         int length = this.getLength();
 
         if (offset < 0 || offset > length - 1) {
-            throw new DOMException(DOMException.INDEX_SIZE_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.INDEX_SIZE_ERR, null));
+            throw DOMUtil.newDOMException(DOMException.INDEX_SIZE_ERR);
         }
 
         this.textValue = (new StringBuilder(textValue)).insert(offset, data).toString();
@@ -112,10 +106,7 @@ public abstract class CharacterImpl extends LeafNode implements CharacterData, O
      */
     public String substringData(int offset, int count) throws DOMException {
         if (offset < 0 || offset > this.getLength() || count < 0) {
-            throw new DOMException(DOMException.INDEX_SIZE_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.INDEX_SIZE_ERR, null));
+            throw DOMUtil.newDOMException(DOMException.INDEX_SIZE_ERR);
         }
 
         int end = Math.min(count + offset, textValue.length());

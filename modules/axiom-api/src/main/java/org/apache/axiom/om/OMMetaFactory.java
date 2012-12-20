@@ -21,7 +21,6 @@ package org.apache.axiom.om;
 
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.om.util.StAXParserConfiguration;
@@ -29,6 +28,7 @@ import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.util.stax.xop.MimePartProvider;
 import org.w3c.dom.EntityReference;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.ext.LexicalHandler;
 
@@ -116,7 +116,7 @@ public interface OMMetaFactory {
     OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Source source);
     
     /**
-     * Create an object model builder for plain XML that gets its input from a {@link DOMSource}.
+     * Create an object model builder for plain XML that gets its input from a DOM tree.
      * 
      * @param omFactory
      *            The object model factory to use. This factory must be obtained from the same
@@ -124,6 +124,8 @@ public interface OMMetaFactory {
      *            the factory will be retrieved from {@link #getOMFactory()}), but in some cases it
      *            may be necessary to pass a {@link SOAPFactory} instance, although this method will
      *            never produce a SOAP infoset.
+     * @param node
+     *            the DOM node; must be a {@link Node#DOCUMENT_NODE} or {@link Node#ELEMENT_NODE}
      * @param expandEntityReferences
      *            Determines how {@link EntityReference} nodes are handled:
      *            <ul>
@@ -134,11 +136,9 @@ public interface OMMetaFactory {
      *            are created and the children of {@link EntityReference} nodes are converted and
      *            inserted into the Axiom tree.
      *            </ul>
-     * @param source
-     *            the source of the XML document
      * @return the builder
      */
-    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, DOMSource source, boolean expandEntityReferences);
+    OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Node node, boolean expandEntityReferences);
     
     /**
      * Create an object model builder for plain XML that gets its input from a {@link SAXSource}.

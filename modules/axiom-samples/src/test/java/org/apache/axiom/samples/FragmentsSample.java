@@ -41,7 +41,7 @@ public class FragmentsSample extends TestCase {
                 // A matching START_ELEMENT event was found. Build a corresponding OMElement.
                 OMElement element = 
                     OMXMLBuilderFactory.createStAXOMBuilder(reader).getDocumentElement();
-                // Make sure that all events belonging to the element are consumed so that
+                // Make sure that all events belonging to the element are consumed so
                 // that the XMLStreamReader points to a well defined location (namely the
                 // event immediately following the END_ELEMENT event).
                 element.build();

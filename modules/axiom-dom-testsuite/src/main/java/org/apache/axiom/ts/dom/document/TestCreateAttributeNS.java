@@ -18,22 +18,29 @@
  */
 package org.apache.axiom.ts.dom.document;
 
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
+import org.apache.axiom.ts.dom.DOMUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
 public class TestCreateAttributeNS extends DOMTestCase {
-    public TestCreateAttributeNS(DocumentBuilderFactory dbf) {
+    private final QName qname;
+    
+    public TestCreateAttributeNS(DocumentBuilderFactory dbf, QName qname) {
         super(dbf);
+        this.qname = qname;
+        addTestProperty("ns", qname.getNamespaceURI());
+        addTestProperty("name", DOMUtils.getQualifiedName(qname));
     }
 
     protected void runTest() throws Throwable {
-        String localName = "attrIdentifier";
-        String uri = "http://ws.apache.org/axis2/ns";
-        String prefix = "axis2";
-        String name = prefix + ":" + localName;
+        String localName = qname.getLocalPart();
+        String uri = DOMUtils.getNamespaceURI(qname);
+        String prefix = DOMUtils.getPrefix(qname);
+        String name = DOMUtils.getQualifiedName(qname);
 
         Document doc = dbf.newDocumentBuilder().newDocument();
 
@@ -46,6 +53,8 @@ public class TestCreateAttributeNS extends DOMTestCase {
         assertEquals(name, attr.getName());
 
         // Check defaults
+        assertSame(doc, attr.getOwnerDocument());
+        assertNull(attr.getOwnerElement());
         assertNull(attr.getFirstChild());
         assertEquals("", attr.getValue());
     }

@@ -20,6 +20,7 @@ package org.apache.axiom.om.impl.common;
 
 import javax.xml.stream.XMLStreamReader;
 
+import org.apache.axiom.om.NodeUnavailableException;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMSourcedElement;
@@ -28,6 +29,7 @@ import org.apache.axiom.om.OMXMLStreamReader;
 import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.apache.axiom.om.impl.builder.OMFactoryEx;
+import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.util.OMXMLStreamReaderValidator;
 import org.apache.commons.logging.Log;
@@ -169,9 +171,18 @@ public final class OMContainerHelper {
     }
     
     public static OMNode getFirstOMChild(IParentNode that) {
-        OMNode firstChild;
-        while ((firstChild = that.getFirstOMChildIfAvailable()) == null && !that.isComplete()) {
-            buildNext(that);
+        OMNode firstChild = that.getFirstOMChildIfAvailable();
+        if (firstChild == null) {
+            switch (that.getState()) {
+                case IParentNode.DISCARDED:
+                    ((StAXBuilder)that.getBuilder()).debugDiscarded(that);
+                    throw new NodeUnavailableException();
+                case IParentNode.INCOMPLETE:
+                    do {
+                        buildNext(that);
+                    } while (that.getState() == IParentNode.INCOMPLETE
+                            && (firstChild = that.getFirstOMChildIfAvailable()) == null);
+            }
         }
         return firstChild;
     }

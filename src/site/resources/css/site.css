@@ -80,6 +80,10 @@ div#navcolumn > ul > li.expanded,
 div#navcolumn > ul > li.none {
 }
 
+div#navcolumn > ul > li.none {
+  text-indent: 0.4em;
+}
+
 div#navcolumn > ul > li.expanded > ul > li.none > a,
 div#navcolumn > ul > li.expanded > ul > li.none > strong {
   padding-left: 0.3em;

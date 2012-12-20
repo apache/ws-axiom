@@ -16,11 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.axiom.util;
 
-package org.apache.axiom.om.util;
-
-import org.apache.axiom.util.base64.Base64Utils;
-
-public class Base64 extends Base64Utils {
-
+final class UUIDCache {
+    int position;
+    byte[] randomBytes;
 }

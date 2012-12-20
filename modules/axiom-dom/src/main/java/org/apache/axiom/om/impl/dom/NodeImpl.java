@@ -117,9 +117,7 @@ public abstract class NodeImpl implements Node {
     }
 
     public void setPrefix(String prefix) throws DOMException {
-        throw new DOMException(DOMException.NAMESPACE_ERR, DOMMessageFormatter
-                .formatMessage(DOMMessageFormatter.DOM_DOMAIN, DOMException.NAMESPACE_ERR,
-                               null));
+        throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
     }
 
     /**
@@ -211,8 +209,7 @@ public abstract class NodeImpl implements Node {
         // This is not yet implemented. In the meantime, we throw a DOMException
         // and not an UnsupportedOperationException, since this works better with
         // some other libraries (such as Saxon 8.9).
-        throw new DOMException(DOMException.NOT_SUPPORTED_ERR, DOMMessageFormatter
-                .formatMessage(DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_SUPPORTED_ERR, null));
+        throw DOMUtil.newDOMException(DOMException.NOT_SUPPORTED_ERR);
     }
 
     public String getTextContent() throws DOMException {
@@ -242,11 +239,6 @@ public abstract class NodeImpl implements Node {
     }
 
     public boolean isDefaultNamespace(String namespaceURI) {
-        // TODO TODO
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public String lookupNamespaceURI(String prefix) {
         // TODO TODO
         throw new UnsupportedOperationException("TODO");
     }
@@ -514,10 +506,7 @@ public abstract class NodeImpl implements Node {
         if (ownerDocument() != (otherNode instanceof AttrImpl
                 ? ((AttrImpl)otherNode).getOwnerDocument()
                 : ((NodeImpl)otherNode).ownerDocument())) {
-            throw new DOMException(DOMException.WRONG_DOCUMENT_ERR,
-                                   DOMMessageFormatter.formatMessage(
-                                           DOMMessageFormatter.DOM_DOMAIN,
-                                           DOMException.WRONG_DOCUMENT_ERR, null));
+            throw DOMUtil.newDOMException(DOMException.WRONG_DOCUMENT_ERR);
         }
     }
     

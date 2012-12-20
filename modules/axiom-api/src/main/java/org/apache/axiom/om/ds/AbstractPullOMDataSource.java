@@ -33,7 +33,7 @@ import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 public abstract class AbstractPullOMDataSource extends AbstractOMDataSource {
     public final boolean isDestructiveWrite() {
         // Since we serialize by copying the events from the XMLStreamReader returned by getReader(),
-        // obviously write is destructive if and only if read is destructiveñ
+        // obviously write is destructive if and only if read is destructive
         return isDestructiveRead();
     }
 

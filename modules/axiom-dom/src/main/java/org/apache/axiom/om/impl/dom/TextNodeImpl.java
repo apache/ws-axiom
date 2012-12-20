@@ -40,7 +40,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
-import java.io.InputStream;
 
 public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText {
     private String mimeType;
@@ -190,10 +189,7 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
      */
     public Text splitText(int offset) throws DOMException {
         if (offset < 0 || offset > this.textValue.length()) {
-            throw new DOMException(DOMException.INDEX_SIZE_ERR,
-                    DOMMessageFormatter.formatMessage(
-                            DOMMessageFormatter.DOM_DOMAIN, DOMException.INDEX_SIZE_ERR,
-                            null));
+            throw DOMUtil.newDOMException(DOMException.INDEX_SIZE_ERR);
         }
         String newValue = this.textValue.substring(offset);
         this.deleteData(offset, this.textValue.length());
@@ -272,7 +268,17 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
     }
 
     public char[] getTextCharacters() {
-        return charArray != null ? charArray : this.textValue.toCharArray();
+        if (charArray != null) {
+            return charArray;
+        } else if (textValue != null) {
+            return textValue.toCharArray();
+        } else {
+            try {
+                return Base64Utils.encodeToCharArray((DataHandler)getDataHandler());
+            } catch (IOException ex) {
+                throw new OMException(ex);
+            }
+        }
     }
 
     public boolean isCharacters() {
@@ -349,26 +355,6 @@ public abstract class TextNodeImpl extends CharacterImpl implements Text, OMText
                 }
             }
             return dataHandlerObject;
-        }
-    }
-
-    public java.io.InputStream getInputStream() throws OMException {
-        if (isBinary) {
-            if (dataHandlerObject == null) {
-                getDataHandler();
-            }
-            InputStream inStream;
-            javax.activation.DataHandler dataHandler =
-                    (javax.activation.DataHandler) dataHandlerObject;
-            try {
-                inStream = dataHandler.getDataSource().getInputStream();
-            } catch (IOException e) {
-                throw new OMException(
-                        "Cannot get InputStream from DataHandler.", e);
-            }
-            return inStream;
-        } else {
-            throw new OMException("Unsupported Operation");
         }
     }
 

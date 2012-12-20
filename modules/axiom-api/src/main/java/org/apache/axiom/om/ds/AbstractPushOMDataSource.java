@@ -28,6 +28,7 @@ import javax.xml.stream.XMLStreamWriter;
 import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMOutputFormat;
+import org.apache.axiom.om.OMSourcedElement;
 import org.apache.axiom.om.util.StAXUtils;
 
 /**

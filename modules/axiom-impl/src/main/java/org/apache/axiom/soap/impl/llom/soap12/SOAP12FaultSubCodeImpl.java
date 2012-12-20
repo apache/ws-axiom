@@ -96,4 +96,9 @@ public class SOAP12FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
         }
         valueElement.setText(value);
     }
+
+    public QName getValueAsQName() {
+        SOAPFaultValue value = getValue();
+        return value == null ? null : value.getTextAsQName();
+    }
 }

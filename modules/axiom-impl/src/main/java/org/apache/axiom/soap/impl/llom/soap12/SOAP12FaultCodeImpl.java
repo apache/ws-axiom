@@ -76,9 +76,9 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
         }
     }
 
-    // Overridden so that we can have a single interface to reliably get the faultcode's value
+    // TODO: For compatibility with Axiom 1.2.x; remove in Axiom 1.3
     public QName getTextAsQName() {
-        return getValue().getTextAsQName();
+        return getValueAsQName();
     }
 
     public SOAPFaultValue getValue() {
@@ -95,5 +95,10 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
             valueElement = ((SOAPFactory)getOMFactory()).createSOAPFaultValue(this);
         }
         valueElement.setText(value);
+    }
+
+    public QName getValueAsQName() {
+        SOAPFaultValue value = getValue();
+        return value == null ? null : value.getTextAsQName();
     }
 }

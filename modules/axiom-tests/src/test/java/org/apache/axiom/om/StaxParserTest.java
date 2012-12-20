@@ -54,8 +54,8 @@ public class StaxParserTest extends AbstractTestCase {
 
         //try to find the children of the document element. This should produce an
         //error since the underlying stream is fully consumed without building the object tree
-        Iterator childElements = documentElement.getChildElements();
         try {
+            Iterator childElements = documentElement.getChildElements();
             while (childElements.hasNext()) {
                 childElements.next();
             }
@@ -122,7 +122,6 @@ public class StaxParserTest extends AbstractTestCase {
 
         //try to find the children of the document element. This should produce an
         //error since the underlying stream is fully consumed without building the object tree
-        Iterator childElements = documentElement.getChildElements();
         try {
             XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(System.out);
             documentElement.serializeAndConsume(writer);

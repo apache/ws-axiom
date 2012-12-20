@@ -23,6 +23,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.apache.axiom.ts.dom.document.TestLookupNamespaceURIWithEmptyDocument;
 import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
 
 public class XercesTest extends TestCase {
@@ -30,6 +31,10 @@ public class XercesTest extends TestCase {
         DocumentBuilderFactory dbf = new DocumentBuilderFactoryImpl();
         dbf.setNamespaceAware(true);
         DOMTestSuiteBuilder builder = new DOMTestSuiteBuilder(dbf);
+        
+        // XERCESJ-1582
+        builder.exclude(TestLookupNamespaceURIWithEmptyDocument.class);
+        
         return builder.build();
     }
 }

@@ -57,6 +57,25 @@ Key Features
 
 Latest Release
 
+  <<2nd December 2012 - Apache Axiom Verson 1.2.14 Released!>>
+  
+  Axiom 1.2.14 contains fixes for more than twenty {{{https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311190&version=12318340}JIRA issues}}
+  as well as lots of other improvements.
+  
+  Users upgrading to 1.2.14 should take into account the following changes:
+  
+    * Axiom now uses Woodstox 4.1.x as StAX implementation (although 3.2.x and 4.0.x are still supported).
+    
+    * <<<OMFactory>>> implementations for DOOM are now stateless.
+    
+    * Several deprecated classes have been moved to a new JAR file named <<<axiom-compat>>> and are no
+      longer included in the core artifacts (<<<axiom-api>>>, <<<axiom-impl>>> and <<<axiom-dom>>>).
+  
+  For more information about the possible impact on existing application code of these changes,
+  please refer to the {{{./userguide/ch04.html#changes-1.2.14}user guide}}.
+  
+Previous Releases
+
   <<2nd April 2012 - Apache Axiom Version 1.2.13 Released!>>
 
   \[{{{http://ws.apache.org/axiom/download.cgi}Download Axiom 1.2.13}}\]
@@ -74,8 +93,6 @@ Latest Release
   For more information about the possible impact on existing application code of the changes included in Axiom 1.2.13,
   please refer to the {{{./userguide/ch04.html#changes-1.2.13}user guide}}.
   
-Previous Releases
-
   <<2nd July 2011 - Apache Axiom Version 1.2.12 Released!>>
 
   Axiom 1.2.12 contains fixes for the following JIRA issues:

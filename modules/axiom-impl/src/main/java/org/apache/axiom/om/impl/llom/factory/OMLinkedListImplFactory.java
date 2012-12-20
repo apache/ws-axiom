@@ -353,6 +353,10 @@ public class OMLinkedListImplFactory implements OMFactoryEx {
         return new OMDocumentImpl(builder, this);
     }
 
+    public OMEntityReference createOMEntityReference(OMContainer parent, String name) {
+        return createOMEntityReference(parent, name, null, false);
+    }
+
     public OMEntityReference createOMEntityReference(OMContainer parent, String name, String replacementText, boolean fromBuilder) {
         return new OMEntityReferenceImpl(parent, name, replacementText, this, fromBuilder);
     }

@@ -26,7 +26,6 @@ import javax.mail.internet.ParseException;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.attachments.Attachments;
@@ -35,6 +34,7 @@ import org.apache.axiom.om.util.StAXParserConfiguration;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.w3c.dom.EntityReference;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.ext.LexicalHandler;
 
@@ -297,11 +297,10 @@ public class OMXMLBuilderFactory {
     }
     
     /**
-     * Create an object model builder that reads a plain XML document from the provided
-     * {@link DOMSource}.
+     * Create an object model builder that reads a plain XML document from the provided DOM tree.
      * 
-     * @param source
-     *            the source of the XML document
+     * @param node
+     *            the DOM node; must be a {@link Node#DOCUMENT_NODE} or {@link Node#ELEMENT_NODE}
      * @param expandEntityReferences
      *            Determines how {@link EntityReference} nodes are handled:
      *            <ul>
@@ -314,9 +313,9 @@ public class OMXMLBuilderFactory {
      *            </ul>
      * @return the builder
      */
-    public static OMXMLParserWrapper createOMBuilder(DOMSource source, boolean expandEntityReferences) {
+    public static OMXMLParserWrapper createOMBuilder(Node node, boolean expandEntityReferences) {
         OMMetaFactory metaFactory = OMAbstractFactory.getMetaFactory();
-        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), source, expandEntityReferences);
+        return metaFactory.createOMBuilder(metaFactory.getOMFactory(), node, expandEntityReferences);
     }
     
     /**
@@ -362,13 +361,13 @@ public class OMXMLBuilderFactory {
     }
     
     /**
-     * Create an object model builder that reads an XML document from the provided {@link DOMSource}
-     * using a specified object model factory.
+     * Create an object model builder that reads an XML document from the provided DOM tree using a
+     * specified object model factory.
      * 
      * @param omFactory
      *            the object model factory to use
-     * @param source
-     *            the source of the XML document
+     * @param node
+     *            the DOM node; must be a {@link Node#DOCUMENT_NODE} or {@link Node#ELEMENT_NODE}
      * @param expandEntityReferences
      *            Determines how {@link EntityReference} nodes are handled:
      *            <ul>
@@ -381,8 +380,8 @@ public class OMXMLBuilderFactory {
      *            </ul>
      * @return the builder
      */
-    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, DOMSource source, boolean expandEntityReferences) {
-        return omFactory.getMetaFactory().createOMBuilder(omFactory, source, expandEntityReferences);
+    public static OMXMLParserWrapper createOMBuilder(OMFactory omFactory, Node node, boolean expandEntityReferences) {
+        return omFactory.getMetaFactory().createOMBuilder(omFactory, node, expandEntityReferences);
     }
     
     /**

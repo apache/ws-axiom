@@ -34,6 +34,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 import org.w3c.dom.TypeInfo;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -108,9 +109,10 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
         this(ownerDocument, factory);
         this.localName = name;
         //If this is a default namespace attr
-        if (OMConstants.XMLNS_NS_PREFIX.equals(name)) {
+        if (XMLConstants.XMLNS_ATTRIBUTE.equals(name)) {
+            // TODO: this looks wrong; if the attribute name is "xmlns", then the prefix shouldn't be "xmlns"
             this.namespace = new OMNamespaceImpl(
-                    OMConstants.XMLNS_NS_URI, OMConstants.XMLNS_NS_PREFIX);
+                    XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE);
         }
         this.type = OMConstants.XMLATTRTYPE_CDATA;
     }
@@ -139,7 +141,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     public String getNodeName() {
         return (this.namespace != null
                 && !"".equals(this.namespace.getPrefix()) &&
-                !(OMConstants.XMLNS_NS_PREFIX.equals(this.localName)))
+                !(XMLConstants.XMLNS_ATTRIBUTE.equals(this.localName)))
                 ? this.namespace.getPrefix() + ":" + this.localName
                 : this.localName;
     }
@@ -207,10 +209,10 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
     // /
     public String getName() {
         if (this.namespace != null) {
-            if ((OMConstants.XMLNS_NS_PREFIX.equals(this.localName))) {
+            if ((XMLConstants.XMLNS_ATTRIBUTE.equals(this.localName))) {
                 return this.localName;
-            } else if (OMConstants.XMLNS_NS_URI.equals(this.namespace.getNamespaceURI())) {
-                return OMConstants.XMLNS_NS_PREFIX + ":" + this.localName;
+            } else if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(this.namespace.getNamespaceURI())) {
+                return XMLConstants.XMLNS_ATTRIBUTE + ":" + this.localName;
             } else if (this.namespace.getPrefix().equals("")) {
                 return this.localName;
             } else {
@@ -322,10 +324,7 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
 
     final void checkInUse() {
         if (owner instanceof ElementImpl) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.INUSE_ATTRIBUTE_ERR,
-                    null);
-            throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
         }
     }
 
@@ -492,5 +491,10 @@ public class AttrImpl extends RootNode implements OMAttribute, Attr, NamedNode {
 
     public final Node getNextSibling() {
         return null;
+    }
+
+    public final String lookupNamespaceURI(String specifiedPrefix) {
+        Element ownerElement = getOwnerElement();
+        return ownerElement == null ? null : ownerElement.lookupNamespaceURI(specifiedPrefix);
     }
 }

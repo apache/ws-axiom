@@ -19,7 +19,6 @@
 
 package org.apache.axiom.om.impl.dom;
 
-import org.apache.axiom.om.OMCloneOptions;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -78,9 +77,7 @@ public class AttributeMap implements NamedNodeMap {
 
         int i = findNamePoint(name, 0);
         if (i < 0) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR, null);
-            throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         }
 
         NodeImpl n = (NodeImpl) nodes.elementAt(i);
@@ -94,9 +91,7 @@ public class AttributeMap implements NamedNodeMap {
 
         int i = findNamePoint(namespaceURI, name);
         if (i < 0) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.NOT_FOUND_ERR, null);
-            throw new DOMException(DOMException.NOT_FOUND_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.NOT_FOUND_ERR);
         }
 
         NodeImpl n = (NodeImpl) nodes.elementAt(i);
@@ -110,11 +105,7 @@ public class AttributeMap implements NamedNodeMap {
 
         ownerNode.checkSameOwnerDocument(attribute);
         if (attribute.getNodeType() != Node.ATTRIBUTE_NODE) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN,
-                    DOMException.HIERARCHY_REQUEST_ERR,
-                    null);
-            throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
 
         AttrImpl attr = (AttrImpl) attribute;
@@ -122,10 +113,7 @@ public class AttributeMap implements NamedNodeMap {
             if (attr.getOwnerElement() != this.ownerNode) // the owner must be
                 // the owner of this
                 // list
-                throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR,
-                                       DOMMessageFormatter.formatMessage(
-                                               DOMMessageFormatter.DOM_DOMAIN,
-                                               DOMException.INUSE_ATTRIBUTE_ERR, null));
+                throw DOMUtil.newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
             else
                 return attr; // No point adding the 'same' attr again to the
             // same element
@@ -167,20 +155,14 @@ public class AttributeMap implements NamedNodeMap {
     /** Almost a copy of the Xerces impl. */
     Node setAttribute(Node attribute, boolean useDomSemantics) throws DOMException {
         if (attribute.getNodeType() != Node.ATTRIBUTE_NODE) {
-            String msg = DOMMessageFormatter.formatMessage(
-                    DOMMessageFormatter.DOM_DOMAIN, DOMException.HIERARCHY_REQUEST_ERR,
-                    null);
-            throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, msg);
+            throw DOMUtil.newDOMException(DOMException.HIERARCHY_REQUEST_ERR);
         }
 
         AttrImpl attr = (AttrImpl) attribute;
         if (attr.getOwnerElement() != null) { // If the attribute is owned then:
             //the owner must be the owner of this list
             if (attr.getOwnerElement() != this.ownerNode)
-                throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR,
-                                       DOMMessageFormatter.formatMessage(
-                                               DOMMessageFormatter.DOM_DOMAIN,
-                                               DOMException.INUSE_ATTRIBUTE_ERR, null));
+                throw DOMUtil.newDOMException(DOMException.INUSE_ATTRIBUTE_ERR);
             else
                 return attr; // No point adding the 'same' attr again to the
             // same element
@@ -214,26 +196,6 @@ public class AttributeMap implements NamedNodeMap {
         }
 
         return previous;
-    }
-
-    void cloneContent(OMCloneOptions options, AttributeMap srcmap) {
-        Vector srcnodes = srcmap.nodes;
-        if (srcnodes != null) {
-            int size = srcnodes.size();
-            if (size != 0) {
-                if (nodes == null) {
-                    nodes = new Vector(size);
-                }
-                nodes.setSize(size);
-                for (int i = 0; i < size; ++i) {
-                    AttrImpl n = (AttrImpl) srcnodes.elementAt(i);
-                    AttrImpl clone = (AttrImpl)n.clone(options, null, true, false);
-                    clone.isSpecified(n.isSpecified());
-                    nodes.setElementAt(clone, i);
-                    clone.setOwnerElement(ownerNode, true);
-                }
-            }
-        }
     }
 
     /**

@@ -42,7 +42,7 @@
     <soapenv:Body>
         <soapenv:Fault>
             <faultcode>
-                env:Sender
+                soapenv:Sender
             </faultcode>
             <faultstring>Sender Timeout</faultstring>
             <faultactor>

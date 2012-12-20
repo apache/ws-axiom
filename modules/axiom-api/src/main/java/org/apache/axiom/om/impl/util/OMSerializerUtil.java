@@ -551,9 +551,10 @@ public class OMSerializerUtil {
     public static void serializeChildren(OMContainer container, XMLStreamWriter writer,
             boolean cache) throws XMLStreamException {
         if (cache) {
-            Iterator children = container.getChildren();
-            while (children.hasNext()) {
-                ((OMNodeEx) children.next()).internalSerialize(writer, true);
+            OMNodeEx child = (OMNodeEx)container.getFirstOMChild();
+            while (child != null) {
+                child.internalSerialize(writer, true);
+                child = (OMNodeEx)child.getNextOMSibling();
             }
         } else {
             OMNodeEx child = (OMNodeEx)container.getFirstOMChild();

@@ -28,6 +28,7 @@ import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.OMContainerEx;
 import org.apache.axiom.om.impl.OMElementEx;
@@ -35,16 +36,22 @@ import org.apache.axiom.om.impl.OMNodeEx;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.XMLConstants;
+import javax.xml.transform.sax.SAXSource;
 
 public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, DeclHandler, OMXMLParserWrapper {
+    private final SAXSource source;
     private final boolean expandEntityReferences;
     
     private OMDocument document;
@@ -68,6 +75,11 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
      * Stores the internal subset if there is a DTD.
      */
     private StringBuilder internalSubset;
+
+    /**
+     * Stores the replacement values for entities.
+     */
+    private Map entities;
     
     /**
      * Flag indicating that the parser is processing the external subset.
@@ -87,16 +99,35 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     int textNodeType = OMNode.TEXT_NODE;
     
     private boolean inEntityReference;
+    private int entityReferenceDepth;
 
-    public SAXOMBuilder(OMFactory factory, boolean expandEntityReferences) {
+    /**
+     * For internal use only.
+     * 
+     * @param factory
+     * @param source
+     * @param expandEntityReferences
+     */
+    public SAXOMBuilder(OMFactory factory, SAXSource source, boolean expandEntityReferences) {
         this.factory = (OMFactoryEx)factory;
+        this.source = source;
         this.expandEntityReferences = expandEntityReferences;
     }
     
+    /**
+     * @deprecated Instead of creating an instance of this class directly, create a
+     *             {@link SAXSource} and use
+     *             {@link OMXMLBuilderFactory#createOMBuilder(OMFactory, SAXSource, boolean)}.
+     */
     public SAXOMBuilder(OMFactory factory) {
-        this(factory, true);
+        this(factory, null, true);
     }
     
+    /**
+     * @deprecated Instead of creating an instance of this class directly, create a
+     *             {@link SAXSource} and use
+     *             {@link OMXMLBuilderFactory#createOMBuilder(SAXSource, boolean)}.
+     */
     public SAXOMBuilder() {
         this(OMAbstractFactory.getOMFactory());
     }
@@ -179,6 +210,10 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     }
 
     public void internalEntityDecl(String name, String value) throws SAXException {
+        if (entities == null) {
+            entities = new HashMap();
+        }
+        entities.put(name, value);
         if (!inExternalSubset) {
             internalSubset.append("<!ENTITY ");
             internalSubset.append(name);
@@ -241,10 +276,12 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
      */
     public void startPrefixMapping(String prefix, String uri)
             throws SAXException {
-        if (nextElem == null) {
-            nextElem = createNextElement("DUMMY");
+        if (!inEntityReference) {
+            if (nextElem == null) {
+                nextElem = createNextElement("DUMMY");
+            }
+            ((OMElementEx)nextElem).addNamespaceDeclaration(uri, prefix);
         }
-        ((OMElementEx)nextElem).addNamespaceDeclaration(uri, prefix);
     }
 
     public void endPrefixMapping(String prefix) throws SAXException {
@@ -258,49 +295,51 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
      */
     public void startElement(String namespaceURI, String localName,
                              String qName, Attributes atts) throws SAXException {
-        if (localName == null || localName.trim().equals(""))
-            localName = qName.substring(qName.indexOf(':') + 1);
-        if (nextElem == null)
-            nextElem = createNextElement(localName);
-        else
-            nextElem.setLocalName(localName);
-
-        int idx = qName.indexOf(':');
-        String prefix = idx == -1 ? "" : qName.substring(0, idx);
-        BuilderUtil.setNamespace(nextElem, namespaceURI, prefix, false);
-        
-        int j = atts.getLength();
-        for (int i = 0; i < j; i++) {
-            // Note that some SAX parsers report namespace declarations as attributes in addition
-            // to calling start/endPrefixMapping.
-            // NOTE: This filter was introduced to make SAXOMBuilder work with some versions of
-            //       XMLBeans (2.3.0). It is not clear whether this is a bug in XMLBeans or not.
-            //       See http://forum.springframework.org/showthread.php?t=43958 for a discussion.
-            //       If this test causes problems with other parsers, don't hesitate to remove it.
-            if (!atts.getQName(i).startsWith("xmlns")) {
-                String attrNamespaceURI = atts.getURI(i);
-                OMNamespace ns;
-                if (attrNamespaceURI.length() > 0) {
-                    ns = nextElem.findNamespace(atts.getURI(i), null);
-                    if (ns == null) {
-                        // The "xml" prefix is not necessarily declared explicitly; in this case,
-                        // create a new OMNamespace instance.
-                        if (attrNamespaceURI.equals(XMLConstants.XML_NS_URI)) {
-                            ns = factory.createOMNamespace(XMLConstants.XML_NS_URI, XMLConstants.XML_NS_PREFIX);
-                        } else {
-                            throw new SAXException("Unbound namespace " + attrNamespaceURI);
+        if (!inEntityReference) {
+            if (localName == null || localName.trim().equals(""))
+                localName = qName.substring(qName.indexOf(':') + 1);
+            if (nextElem == null)
+                nextElem = createNextElement(localName);
+            else
+                nextElem.setLocalName(localName);
+    
+            int idx = qName.indexOf(':');
+            String prefix = idx == -1 ? "" : qName.substring(0, idx);
+            BuilderUtil.setNamespace(nextElem, namespaceURI, prefix, false);
+            
+            int j = atts.getLength();
+            for (int i = 0; i < j; i++) {
+                // Note that some SAX parsers report namespace declarations as attributes in addition
+                // to calling start/endPrefixMapping.
+                // NOTE: This filter was introduced to make SAXOMBuilder work with some versions of
+                //       XMLBeans (2.3.0). It is not clear whether this is a bug in XMLBeans or not.
+                //       See http://forum.springframework.org/showthread.php?t=43958 for a discussion.
+                //       If this test causes problems with other parsers, don't hesitate to remove it.
+                if (!atts.getQName(i).startsWith("xmlns")) {
+                    String attrNamespaceURI = atts.getURI(i);
+                    OMNamespace ns;
+                    if (attrNamespaceURI.length() > 0) {
+                        ns = nextElem.findNamespace(atts.getURI(i), null);
+                        if (ns == null) {
+                            // The "xml" prefix is not necessarily declared explicitly; in this case,
+                            // create a new OMNamespace instance.
+                            if (attrNamespaceURI.equals(XMLConstants.XML_NS_URI)) {
+                                ns = factory.createOMNamespace(XMLConstants.XML_NS_URI, XMLConstants.XML_NS_PREFIX);
+                            } else {
+                                throw new SAXException("Unbound namespace " + attrNamespaceURI);
+                            }
                         }
+                    } else {
+                        ns = null;
                     }
-                } else {
-                    ns = null;
+                    OMAttribute attr = nextElem.addAttribute(atts.getLocalName(i), atts.getValue(i), ns);
+                    attr.setAttributeType(atts.getType(i));
                 }
-                OMAttribute attr = nextElem.addAttribute(atts.getLocalName(i), atts.getValue(i), ns);
-                attr.setAttributeType(atts.getType(i));
             }
+            
+            lastNode = nextElem;
+            nextElem = null;
         }
-        
-        lastNode = nextElem;
-        nextElem = null;
     }
 
     /*
@@ -311,27 +350,35 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
      */
     public void endElement(String uri, String localName, String qName)
             throws SAXException {
-        if (lastNode.isComplete()) {
-            OMContainer parent = lastNode.getParent();
-            ((OMNodeEx) parent).setComplete(true);
-            lastNode = (OMNode) parent;
-        } else {
-            OMElement e = (OMElement) lastNode;
-            ((OMNodeEx) e).setComplete(true);
+        if (!inEntityReference) {
+            if (lastNode.isComplete()) {
+                OMContainer parent = lastNode.getParent();
+                ((OMNodeEx) parent).setComplete(true);
+                lastNode = (OMNode) parent;
+            } else {
+                OMElement e = (OMElement) lastNode;
+                ((OMNodeEx) e).setComplete(true);
+            }
         }
     }
 
     public void startCDATA() throws SAXException {
-        textNodeType = OMNode.CDATA_SECTION_NODE;
+        if (!inEntityReference) {
+            textNodeType = OMNode.CDATA_SECTION_NODE;
+        }
     }
 
     public void endCDATA() throws SAXException {
-        textNodeType = OMNode.TEXT_NODE;
+        if (!inEntityReference) {
+            textNodeType = OMNode.TEXT_NODE;
+        }
     }
 
     public void characterData(char[] ch, int start, int length, int nodeType)
             throws SAXException {
-        addNode(factory.createOMText(getContainer(), new String(ch, start, length), nodeType, true));
+        if (!inEntityReference) {
+            addNode(factory.createOMText(getContainer(), new String(ch, start, length), nodeType, true));
+        }
     }
 
     public void characters(char[] ch, int start, int length)
@@ -343,43 +390,77 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     
     public void ignorableWhitespace(char[] ch, int start, int length)
             throws SAXException {
-        characterData(ch, start, length, OMNode.SPACE_NODE);
+        if (!inEntityReference) {
+            characterData(ch, start, length, OMNode.SPACE_NODE);
+        }
     }
 
     public void processingInstruction(String target, String data)
             throws SAXException {
-        addNode(factory.createOMProcessingInstruction(getContainer(), target, data, true));
+        if (!inEntityReference) {
+            addNode(factory.createOMProcessingInstruction(getContainer(), target, data, true));
+        }
     }
 
     public void comment(char[] ch, int start, int length) throws SAXException {
-        if (lastNode == null) {
-            // Do nothing: the comment appears before the root element.
-            return;
-        } 
-        addNode(factory.createOMComment(getContainer(), new String(ch, start, length), true));
+        if (!inEntityReference) {
+            if (lastNode == null) {
+                // Do nothing: the comment appears before the root element.
+                return;
+            } 
+            addNode(factory.createOMComment(getContainer(), new String(ch, start, length), true));
+        }
     }
 
     public void skippedEntity(String name) throws SAXException {
     }
 
     public void startEntity(String name) throws SAXException {
-        if (name.equals("[dtd]")) {
+        if (inEntityReference) {
+            entityReferenceDepth++;
+        } else if (name.equals("[dtd]")) {
             inExternalSubset = true;
         } else if (!expandEntityReferences) {
-            addNode(factory.createOMEntityReference(getContainer(), name, null, true));
+            addNode(factory.createOMEntityReference(getContainer(), name, entities == null ? null : (String)entities.get(name), true));
             inEntityReference = true;
+            entityReferenceDepth = 1;
         }
     }
 
     public void endEntity(String name) throws SAXException {
-        if (name.equals("[dtd]")) {
+        if (inEntityReference) {
+            entityReferenceDepth--;
+            if (entityReferenceDepth == 0) {
+                inEntityReference = false;
+            }
+        } else if (name.equals("[dtd]")) {
             inExternalSubset = false;
-        } else {
-            inEntityReference = false;
         }
     }
 
     public OMDocument getDocument() {
+        if (document == null && source != null) {
+            XMLReader reader = source.getXMLReader();
+            reader.setContentHandler(this);
+            reader.setDTDHandler(this);
+            try {
+                reader.setProperty("http://xml.org/sax/properties/lexical-handler", this);
+            } catch (SAXException ex) {
+                // Ignore
+            }
+            try {
+                reader.setProperty("http://xml.org/sax/properties/declaration-handler", this);
+            } catch (SAXException ex) {
+                // Ignore
+            }
+            try {
+                reader.parse(source.getInputSource());
+            } catch (IOException ex) {
+                throw new OMException(ex);
+            } catch (SAXException ex) {
+                throw new OMException(ex);
+            }
+        }
         if (document != null && document.isComplete()) {
             return document;
         } else {
@@ -422,15 +503,17 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     }
 
     public boolean isCompleted() {
-        throw new UnsupportedOperationException();
+        return document != null && document.isComplete();
     }
 
     public OMElement getDocumentElement() {
-        throw new UnsupportedOperationException();
+        return getDocument().getOMDocumentElement();
     }
 
     public OMElement getDocumentElement(boolean discardDocument) {
-        throw new UnsupportedOperationException();
+        OMElement documentElement = getDocument().getOMDocumentElement();
+        documentElement.detach();
+        return documentElement;
     }
 
     public short getBuilderType() {
@@ -450,6 +533,6 @@ public class SAXOMBuilder extends DefaultHandler implements LexicalHandler, Decl
     }
 
     public void close() {
-        throw new UnsupportedOperationException();
+        // This is a no-op
     }
 }

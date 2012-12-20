@@ -19,6 +19,10 @@
 
 package org.apache.axiom.om.impl.dom;
 
+import javax.xml.XMLConstants;
+
+import org.w3c.dom.DOMException;
+
 /** Utility class for the OM-DOM implementation */
 class DOMUtil {
 
@@ -28,19 +32,7 @@ class DOMUtil {
         return true;
     }
 
-    /**
-     * @deprecated please use isQualifiedName
-     * @param value
-     * @return
-     */
-    public static boolean isValidChras(String value) {
-        // TODO check for valid characters
-        // throw new UnsupportedOperationException("TODO");
-        return true;
-    }
-
-    public static boolean isValidNamespace(String namespaceURI,
-                                           String qualifiedname) {
+    public static void validateAttrNamespace(String namespaceURI, String localName, String prefix) {
         // TODO check for valid namespace
         /**
          * if the qualifiedName has a prefix and the namespaceURI is null, if
@@ -49,9 +41,21 @@ class DOMUtil {
          * qualifiedName, or its prefix, is "xmlns" and the namespaceURI is
          * different from " http://www.w3.org/2000/xmlns/".
          */
-        // throw new UnsupportedOperationException("TODO");
-        // temporary fix
-        return true;
+        
+        if (namespaceURI == null) {
+            if (localName.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
+                throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
+            }
+        } else if (namespaceURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
+            if (prefix != null && !prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)
+                    || prefix == null && !localName.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
+                throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
+            }
+        } else {
+            if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
+                throw DOMUtil.newDOMException(DOMException.NAMESPACE_ERR);
+            }
+        }
     }
 
     /**
@@ -72,5 +76,10 @@ class DOMUtil {
     public static String getPrefix(String qualifiedName) {
         int idx = qualifiedName.indexOf(':');
         return idx == -1 ? null : qualifiedName.substring(0, idx);
+    }
+    
+    public static DOMException newDOMException(short code) {
+        throw new DOMException(code, DOMMessageFormatter.formatMessage(
+                DOMMessageFormatter.DOM_DOMAIN, code, null));
     }
 }

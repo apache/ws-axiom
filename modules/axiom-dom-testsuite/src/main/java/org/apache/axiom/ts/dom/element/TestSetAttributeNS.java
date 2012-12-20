@@ -18,30 +18,43 @@
  */
 package org.apache.axiom.ts.dom.element;
 
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.axiom.ts.dom.DOMTestCase;
+import org.apache.axiom.ts.dom.DOMUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
 public class TestSetAttributeNS extends DOMTestCase {
-    public TestSetAttributeNS(DocumentBuilderFactory dbf) {
+    private final QName qname;
+    private final String value;
+    
+    public TestSetAttributeNS(DocumentBuilderFactory dbf, QName qname, String value) {
         super(dbf);
+        this.qname = qname;
+        this.value = value;
+        addTestProperty("ns", qname.getNamespaceURI());
+        addTestProperty("name", DOMUtils.getQualifiedName(qname));
     }
 
     protected void runTest() throws Throwable {
         Document document = dbf.newDocumentBuilder().newDocument();
         Element element = document.createElementNS("urn:ns1", "p:element");
-        element.setAttributeNS("urn:ns2", "q:attr", "value");
+        element.setAttributeNS(DOMUtils.getNamespaceURI(qname), DOMUtils.getQualifiedName(qname), value);
+        assertTrue(element.hasAttributes());
         NamedNodeMap attributes = element.getAttributes();
         assertEquals(1, attributes.getLength());
         Attr attr = (Attr)attributes.item(0);
-        assertEquals("urn:ns2", attr.getNamespaceURI());
-        assertEquals("q", attr.getPrefix());
-        assertEquals("attr", attr.getLocalName());
-        assertEquals("value", attr.getValue());
-        assertSame(attr, element.getAttributeNodeNS("urn:ns2", "attr"));
+        assertSame(document, attr.getOwnerDocument());
+        assertSame(element, attr.getOwnerElement());
+        assertEquals(DOMUtils.getNamespaceURI(qname), attr.getNamespaceURI());
+        assertEquals(DOMUtils.getPrefix(qname), attr.getPrefix());
+        assertEquals(qname.getLocalPart(), attr.getLocalName());
+        assertEquals(DOMUtils.getQualifiedName(qname), attr.getName());
+        assertEquals(value, attr.getValue());
+        assertSame(attr, element.getAttributeNodeNS(DOMUtils.getNamespaceURI(qname), qname.getLocalPart()));
     }
 }

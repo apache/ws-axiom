@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!DOCTYPE root [
+  <!ENTITY testentref "<child><!--comment--><?pi test?></child>">
+  <!ELEMENT root (child)>
+  <!ELEMENT child (#PCDATA)>
+]>
+<root>
+    &testentref;
+</root>

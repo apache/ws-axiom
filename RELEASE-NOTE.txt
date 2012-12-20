@@ -1,24 +1,26 @@
 
 ===========================================
 
-     Apache Axiom 1.2.13 Release Note
+     Apache Axiom 1.2.14 Release Note
 
 ===========================================
 
-  Axiom 1.2.13 contains fixes for over thirty JIRA issues [1] as well as lots of other improvements,
-  mainly related to XOP/MTOM processing, namespace handling, DOM support, documentation and code
-  quality.
+  Axiom 1.2.14 contains fixes for more than twenty JIRA issues [1] as well as lots of other
+  improvements.
   
-  The most prominent change in 1.2.13 is that Axiom no longer uses its own MIME parser, but instead
-  relies on Apache James Mime4J [2] for XOP/MTOM processing. This was done in order to support
-  streaming of the content of MIME parts in XOP/MTOM messages: they can now be processed without
-  writing them to memory or disk first. This also applies to the root/SOAP part, which in previous
-  versions was always read into memory before parsing could start.
+  Users upgrading to 1.2.14 should take into account the following changes:
   
-  For more information about the possible impact on existing application code of the changes
-  included in Axiom 1.2.13, please refer to the user guide.
+    * Axiom now uses Woodstox 4.1.x as StAX implementation (although 3.2.x and 4.0.x are still
+      supported).
+    
+    * OMFactory implementations for DOOM are now stateless.
+    
+    * Several deprecated classes have been moved to a new JAR file named axiom-compat and are no
+      longer included in the core artifacts (axiom-api, axiom-impl and axiom-dom).
+  
+  For more information about the possible impact on existing application code of these changes,
+  please refer to the user guide.
 
-  [1] https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311190&version=12316677
-  [2] http://james.apache.org/mime4j/
+  [1] https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12311190&version=12318340
 
 - The Apache Axiom Team.

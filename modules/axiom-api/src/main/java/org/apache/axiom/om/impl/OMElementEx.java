@@ -35,9 +35,9 @@ public interface OMElementEx extends OMElement, OMNodeEx, OMContainerEx {
      * declare the default namespace.
      * 
      * @param uri
-     *            the namespace to declare
+     *            the namespace to declare; must not be <code>null</code>
      * @param prefix
-     *            the prefix to associate with the given namespace
+     *            the prefix to associate with the given namespace; must not be <code>null</code>
      * @return the created namespace information item
      */
     OMNamespace addNamespaceDeclaration(String uri, String prefix);

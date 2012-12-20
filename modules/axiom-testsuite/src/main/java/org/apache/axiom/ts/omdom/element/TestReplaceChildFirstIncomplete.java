@@ -30,11 +30,10 @@ import org.w3c.dom.NodeList;
 
 /**
  * Tests the behavior of {@link Node#replaceChild(Node, Node)} on an element that has not been built
- * completely. This is a regression test for <a
- * href="https://issues.apache.org/jira/browse/AXIOM-432">AXIOM-432</a>.
+ * completely. This test covers the case where the child being replaced is the first child.
  */
-public class TestReplaceChildIncomplete extends AxiomTestCase {
-    public TestReplaceChildIncomplete(OMMetaFactory metaFactory) {
+public class TestReplaceChildFirstIncomplete extends AxiomTestCase {
+    public TestReplaceChildFirstIncomplete(OMMetaFactory metaFactory) {
         super(metaFactory);
     }
 
@@ -43,32 +42,31 @@ public class TestReplaceChildIncomplete extends AxiomTestCase {
         Element element = (Element)OMXMLBuilderFactory.createOMBuilder(factory,
                 new StringReader("<root><a/><b/><c/></root>")).getDocumentElement();
         Element a = (Element)element.getFirstChild();
-        Element b = (Element)a.getNextSibling();
-        Element b2 = element.getOwnerDocument().createElementNS(null, "b2");
-        element.replaceChild(b2, b);
-        // This line is critical: before the invocation of replaceChild, b was not complete,
-        // and the next sibling was not yet created. replaceChild must ensure that the next
-        // sibling is available now.
-        Element c = (Element)b2.getNextSibling();
+        Element a2 = element.getOwnerDocument().createElementNS(null, "a2");
+        element.replaceChild(a2, a);
+        Element b = (Element)a2.getNextSibling();
+        assertNotNull(b);
+        Element c = (Element)b.getNextSibling();
         assertNotNull(c);
         // Check the other sibling relations
-        assertNull(a.getPreviousSibling());
-        assertSame(b2, a.getNextSibling());
-        assertSame(a, b2.getPreviousSibling());
-        assertSame(b2, c.getPreviousSibling());
+        assertNull(a2.getPreviousSibling());
+        assertSame(a2, b.getPreviousSibling());
+        assertSame(b, c.getPreviousSibling());
         assertNull(c.getNextSibling());
         // Check parent-child relations
-        assertSame(element, a.getParentNode());
-        assertSame(element, b2.getParentNode());
+        assertSame(a2, element.getFirstChild());
+        assertSame(c, element.getLastChild());
+        assertSame(element, a2.getParentNode());
+        assertSame(element, b.getParentNode());
         assertSame(element, c.getParentNode());
         NodeList children = element.getChildNodes();
         assertEquals(3, children.getLength());
-        assertSame(a, children.item(0));
-        assertSame(b2, children.item(1));
+        assertSame(a2, children.item(0));
+        assertSame(b, children.item(1));
         assertSame(c, children.item(2));
-        // Check that b has been detached properly
-        assertNull(b.getPreviousSibling());
-        assertNull(b.getNextSibling());
-        assertNull(b.getParentNode());
+        // Check that a has been detached properly
+        assertNull(a.getPreviousSibling());
+        assertNull(a.getNextSibling());
+        assertNull(a.getParentNode());
     }
 }

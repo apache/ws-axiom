@@ -110,7 +110,7 @@ class SwitchingWrapper extends AbstractXMLStreamReader
     private short state;
 
     /** Field currentEvent Default set to START_DOCUMENT */
-    private int currentEvent = START_DOCUMENT;
+    private int currentEvent;
 
     /**
      * Specifies whether the original document content is cached (i.e. whether the object model is
@@ -195,17 +195,20 @@ class SwitchingWrapper extends AbstractXMLStreamReader
         } catch(Throwable t) {}
         
         currentNode = navigator.getNext();
-        updateNextNode(false);
-        if (resetCache) {
-            builder.setCache(cache); 
-        }
-        
+        updateNextNode(!cache);
         if (startNode instanceof OMDocument) {
+            currentEvent = -1;
             try {
                 next();
             } catch (XMLStreamException ex) {
                 throw new OMException(ex);
             }
+        } else {
+            currentEvent = START_DOCUMENT;
+        }
+        
+        if (resetCache) {
+            builder.setCache(cache); 
         }
     }
 
@@ -914,39 +917,8 @@ class SwitchingWrapper extends AbstractXMLStreamReader
             currentEvent = END_ELEMENT;
             return elementText;
         } else {
-            ///////////////////////////////////////////////////////
-            //// Code block directly from the API documentation ///
-            if (getEventType() != XMLStreamConstants.START_ELEMENT) {
-                throw new XMLStreamException(
-                        "parser must be on START_ELEMENT to read next text", getLocation());
-            }
-            int eventType = next();
-            StringBuffer content = new StringBuffer();
-            while (eventType != XMLStreamConstants.END_ELEMENT) {
-                if (eventType == XMLStreamConstants.CHARACTERS
-                        || eventType == XMLStreamConstants.CDATA
-                        || eventType == XMLStreamConstants.SPACE
-                        || eventType == XMLStreamConstants.ENTITY_REFERENCE) {
-                    content.append(getText());
-                } else if (eventType == XMLStreamConstants.PROCESSING_INSTRUCTION
-                        || eventType == XMLStreamConstants.COMMENT) {
-                    // skipping
-                } else if (eventType == XMLStreamConstants.END_DOCUMENT) {
-                    throw new XMLStreamException(
-                            "unexpected end of document when reading element text content");
-                } else if (eventType == XMLStreamConstants.START_ELEMENT) {
-                    throw new XMLStreamException(
-                            "element text content may not contain START_ELEMENT");
-                } else {
-                    throw new XMLStreamException(
-                            "Unexpected event type " + eventType, getLocation());
-                }
-                eventType = next();
-            }
-            return content.toString();
-            ///////////////////////////////////////////////////////////////
+            return super.getElementText();
         }
-
     }
 
     /**
@@ -1124,11 +1096,12 @@ class SwitchingWrapper extends AbstractXMLStreamReader
      * @return Returns NamespaceContext.
      */
     public NamespaceContext getNamespaceContext() {
-        if (state==SWITCHED){
-            return parser.getNamespaceContext();
+        if (parser != null) {
+            return currentEvent == END_DOCUMENT ? new MapBasedNamespaceContext(Collections.EMPTY_MAP) : parser.getNamespaceContext();
+        } else {
+            return new MapBasedNamespaceContext(
+                    currentEvent == END_DOCUMENT ? Collections.EMPTY_MAP : getAllNamespaces(lastNode));
         }
-        return new MapBasedNamespaceContext(
-                currentEvent == END_DOCUMENT ? Collections.EMPTY_MAP : getAllNamespaces(lastNode));
     }
 
     /**

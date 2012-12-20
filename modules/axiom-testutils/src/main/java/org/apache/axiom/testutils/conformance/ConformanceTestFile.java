@@ -33,6 +33,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.codehaus.stax2.DTDInfo;
 
+import com.ctc.wstx.stax.WstxInputFactory;
+
 public final class ConformanceTestFile {
     private static ConformanceTestFile[] instances;
     
@@ -91,7 +93,10 @@ public final class ConformanceTestFile {
                 BufferedReader in = new BufferedReader(new InputStreamReader(
                         ConformanceTestFile.class.getResourceAsStream("filelist")));
                 List result = new ArrayList(10);
-                XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+                // We make use of Woodstox' DTDInfo interface here, but we want to be able to use system properties
+                // to specify the StAX implementation to be used by the tests. Therefore we need to create
+                // an instance of the Woodstox InputFactory implementation directly.
+                XMLInputFactory inputFactory = new WstxInputFactory();
                 inputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
                 String name;
                 while ((name = in.readLine()) != null) {

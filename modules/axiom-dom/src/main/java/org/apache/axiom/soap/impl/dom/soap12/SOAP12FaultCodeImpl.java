@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.om.impl.dom.ParentNode;
+import org.apache.axiom.soap.SOAP12Constants;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPFault;
 import org.apache.axiom.soap.SOAPFaultSubCode;
@@ -66,10 +67,9 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
         super.setValue(value);
     }
 
-
+    // TODO: For compatibility with Axiom 1.2.x; remove in Axiom 1.3
     public QName getTextAsQName() {
-        SOAPFaultValue value = getValue();
-        return value == null ? null : value.getTextAsQName();
+        return getValueAsQName();
     }
 
     protected void checkParent(OMElement parent) throws SOAPProcessingException {
@@ -80,12 +80,21 @@ public class SOAP12FaultCodeImpl extends SOAPFaultCodeImpl {
         }
     }
 
+    public SOAPFaultValue getValue() {
+        return (SOAPFaultValue)getFirstChildWithName(SOAP12Constants.QNAME_FAULT_VALUE);
+    }
+
     public void setValue(QName value) {
         SOAPFaultValue valueElement = getValue();
         if (valueElement == null) {
             valueElement = ((SOAPFactory)getOMFactory()).createSOAPFaultValue(this);
         }
         valueElement.setText(value);
+    }
+
+    public QName getValueAsQName() {
+        SOAPFaultValue value = getValue();
+        return value == null ? null : value.getTextAsQName();
     }
 
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,

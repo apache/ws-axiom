@@ -97,7 +97,7 @@ public interface OMDataSourceExt extends OMDataSource {
     
     /**
      * Create a copy of the data source. This method is used by
-     * {@link OMElement#cloneOMElement(OMCloneOptions)} when the
+     * {@link OMInformationItem#clone(OMCloneOptions)} when the
      * {@link OMCloneOptions#isCopyOMDataSources()} option is enabled. If the data source is
      * immutable and stateless, then it may return a reference to itself instead of creating a new
      * data source instance.

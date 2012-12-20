@@ -23,8 +23,7 @@ import junit.framework.TestSuite;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListMetaFactory;
 import org.apache.axiom.ts.om.OMTestSuiteBuilder;
-import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOMSource;
-import org.apache.axiom.ts.om.container.TestGetXMLStreamReader;
+import org.apache.axiom.ts.om.builder.TestCreateOMBuilderFromDOM;
 import org.apache.axiom.ts.om.container.TestSerialize;
 import org.apache.axiom.ts.om.document.TestClone;
 import org.apache.axiom.ts.om.document.TestDigest;
@@ -45,14 +44,11 @@ public class OMImplementationTest extends TestCase {
         // TODO: this case is not working because Axiom generates an XML declaration
         //       but uses another charset encoding to serialize the document
         builder.exclude(TestSerialize.class, "(&(file=iso-8859-1.xml)(container=document))");
-        builder.exclude(TestCreateOMBuilderFromDOMSource.class, "(file=iso-8859-1.xml)");
+        builder.exclude(TestCreateOMBuilderFromDOM.class, "(file=iso-8859-1.xml)");
         builder.exclude(TestClone.class, "(file=iso-8859-1.xml)");
         
         // TODO: if there is a comment node surrounded by text, then these text nodes need to be merged
         builder.exclude(TestDigest.class, "(|(file=digest3.xml)(file=digest4.xml))");
-        
-        // TODO
-        builder.exclude(TestGetXMLStreamReader.class, "(&(source=dom)(|(file=entity-reference-external-subset.xml)(file=entity-reference-internal-subset.xml)))");
         
         return builder.build();
     }

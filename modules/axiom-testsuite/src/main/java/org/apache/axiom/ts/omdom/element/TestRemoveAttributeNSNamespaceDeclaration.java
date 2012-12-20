@@ -16,29 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.axiom.ts.soap12.faultcode;
+package org.apache.axiom.ts.omdom.element;
 
-import javax.xml.namespace.QName;
+import javax.xml.XMLConstants;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.soap.SOAP12Constants;
-import org.apache.axiom.soap.SOAPFaultCode;
-import org.apache.axiom.ts.soap.SOAPSpec;
-import org.apache.axiom.ts.soap.SOAPTestCase;
+import org.apache.axiom.ts.AxiomTestCase;
+import org.w3c.dom.Element;
 
 /**
- * Tests that the {@link SOAPFaultCode} implementation for SOAP 1.2 overrides the
- * {@link OMElement#getTextAsQName()} method such that it gets the QName from the <tt>Value</tt>
- * element.
+ * Tests that {@link Element#removeAttributeNS(String, String)} can be used to remove a namespace
+ * declaration.
  */
-public class TestGetTextAsQNameWithParser extends SOAPTestCase {
-    public TestGetTextAsQNameWithParser(OMMetaFactory metaFactory) {
-        super(metaFactory, SOAPSpec.SOAP12);
+public class TestRemoveAttributeNSNamespaceDeclaration extends AxiomTestCase {
+    public TestRemoveAttributeNSNamespaceDeclaration(OMMetaFactory metaFactory) {
+        super(metaFactory);
     }
 
     protected void runTest() throws Throwable {
-        SOAPFaultCode faultCode = getTestMessage(MESSAGE).getBody().getFault().getCode();
-        assertEquals(new QName(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI, "Sender"), faultCode.getTextAsQName());
+        OMFactory factory = metaFactory.getOMFactory();
+        OMElement element = factory.createOMElement("test", null);
+        element.declareNamespace("urn:test", "ns");
+        ((Element)element).removeAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "ns");
+        assertFalse(element.getAllDeclaredNamespaces().hasNext());
     }
 }

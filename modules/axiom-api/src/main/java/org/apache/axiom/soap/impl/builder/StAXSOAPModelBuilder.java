@@ -86,12 +86,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
 
     private boolean processingFault = false;
 
-
-    //added
-    /* This is used to indicate whether detail element is processing in soap 1.2 builderhelper
-    */
-    private boolean processingDetailElements = false;
-
     private SOAPBuilderHelper builderHelper;
 
     /**
@@ -211,27 +205,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         return newElement;
     }
     
-    /**
-     * Method createOMElement.
-     *
-     * @return Returns OMNode.
-     * @throws OMException
-     */
-    protected OMNode createOMElement() throws OMException {
-        OMElement node = constructNode(target, parser.getLocalName());
-        if (log.isDebugEnabled()) {
-            log.debug("Build the OMElement " + node.getLocalName() +
-                    " by the StaxSOAPModelBuilder");
-        }
-        return node;
-    }
-
-    /**
-     * Method constructNode
-     *
-     * @param parent
-     * @param elementName
-     */
     protected OMElement constructNode(OMContainer parent, String elementName) {
         OMElement element;
         if (elementLevel == 1) {
@@ -245,8 +218,8 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             }
 
             // determine SOAP version and from that determine a proper factory here.
+            String namespaceURI = this.parser.getNamespaceURI();
             if (soapFactory == null) {
-                String namespaceURI = this.parser.getNamespaceURI();
                 if (SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI.equals(namespaceURI)) {
                     soapFactory = (SOAPFactoryEx)metaFactory.getSOAP12Factory();
                     log.debug("Starting to process SOAP 1.2 message");
@@ -258,60 +231,48 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                             "Only SOAP 1.1 or SOAP 1.2 messages are supported in the" +
                                     " system", SOAPConstants.FAULT_CODE_VERSION_MISMATCH);
                 }
+            } else if (!soapFactory.getSoapVersionURI().equals(namespaceURI)) {
+                throw new SOAPProcessingException("Invalid SOAP namespace URI. " +
+                        "Expected " + soapFactory.getSoapVersionURI(), SOAP12Constants.FAULT_CODE_SENDER);
             }
 
             element = soapFactory.createSOAPEnvelope((SOAPMessage)parent, this);
-            processNamespaceData(element, true);
-            // fill in the attributes
-            processAttributes(element);
-
         } else if (elementLevel == 2) {
-            // Must be in the right namespace regardless
             String elementNS = parser.getNamespaceURI();
 
-            if (!(soapFactory.getSoapVersionURI().equals(elementNS))) {
-                if (!bodyPresent ||
-                        soapFactory.getSOAPVersion() != SOAP11Version.getSingleton()) {
-                    throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
-                            + elementNS + "}" + elementName);
-                }
-            }
-
-            // this is either a header or a body
-            if (elementName.equals(SOAPConstants.HEADER_LOCAL_NAME)) {
-                if (headerPresent) {
-                    throw new SOAPProcessingException("Multiple headers encountered!",
+            if (soapFactory.getSoapVersionURI().equals(elementNS)) {
+                // this is either a header or a body
+                if (elementName.equals(SOAPConstants.HEADER_LOCAL_NAME)) {
+                    if (headerPresent) {
+                        throw new SOAPProcessingException("Multiple headers encountered!",
+                                                          getSenderFaultCode());
+                    }
+                    if (bodyPresent) {
+                        throw new SOAPProcessingException("Header Body wrong order!",
+                                                          getSenderFaultCode());
+                    }
+                    headerPresent = true;
+                    element =
+                            soapFactory.createSOAPHeader((SOAPEnvelope) parent,
+                                                         this);
+                } else if (elementName.equals(SOAPConstants.BODY_LOCAL_NAME)) {
+                    if (bodyPresent) {
+                        throw new SOAPProcessingException("Multiple body elements encountered",
+                                                          getSenderFaultCode());
+                    }
+                    bodyPresent = true;
+                    element =
+                            soapFactory.createSOAPBody((SOAPEnvelope) parent,
+                                                       this);
+                } else {
+                    throw new SOAPProcessingException(elementName + " is not supported here.",
                                                       getSenderFaultCode());
                 }
-                if (bodyPresent) {
-                    throw new SOAPProcessingException("Header Body wrong order!",
-                                                      getSenderFaultCode());
-                }
-                headerPresent = true;
-                element =
-                        soapFactory.createSOAPHeader((SOAPEnvelope) parent,
-                                                     this);
-
-                processNamespaceData(element, true);
-                processAttributes(element);
-
-            } else if (elementName.equals(SOAPConstants.BODY_LOCAL_NAME)) {
-                if (bodyPresent) {
-                    throw new SOAPProcessingException("Multiple body elements encountered",
-                                                      getSenderFaultCode());
-                }
-                bodyPresent = true;
-                element =
-                        soapFactory.createSOAPBody((SOAPEnvelope) parent,
-                                                   this);
-
-                processNamespaceData(element, true);
-                processAttributes(element);
+            } else if (soapFactory.getSOAPVersion() == SOAP11Version.getSingleton() && bodyPresent) {
+                element = omfactory.createOMElement(parser.getLocalName(), parent, this);
             } else {
-                throw new SOAPProcessingException(elementName
-                        +
-                        " is not supported here. Envelope can not have elements other than Header and Body.",
-                                                  getSenderFaultCode());
+                throw new SOAPProcessingException("Disallowed element found inside Envelope : {"
+                        + elementNS + "}" + elementName);
             }
         } else if ((elementLevel == 3)
                 &&
@@ -326,19 +287,12 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
                 throw new SOAPProcessingException("Can not create SOAPHeader block",
                                                   getReceiverFaultCode(), e);
             }
-            processNamespaceData(element, false);
-            processAttributes(element);
-
         } else if ((elementLevel == 3) &&
                 ((OMElement)parent).getLocalName().equals(SOAPConstants.BODY_LOCAL_NAME) &&
                 elementName.equals(SOAPConstants.BODY_FAULT_LOCAL_NAME) &&
                 soapFactory.getSoapVersionURI().equals(parser.getNamespaceURI())) {
             // this is a SOAP fault
             element = soapFactory.createSOAPFault((SOAPBody) parent, this);
-            processNamespaceData(element, false);
-            processAttributes(element);
-
-
             processingFault = true;
             if (soapFactory.getSOAPVersion() == SOAP12Version.getSingleton()) {
                 builderHelper = new SOAP12BuilderHelper(this, soapFactory);
@@ -352,9 +306,6 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
             // this is neither of above. Just create an element
             element = soapFactory.createOMElement(elementName, parent,
                                                   this);
-            processNamespaceData(element, false);
-            processAttributes(element);
-
         }
         return element;
     }
@@ -389,52 +340,11 @@ public class StAXSOAPModelBuilder extends StAXOMBuilder implements SOAPModelBuil
         throw new SOAPProcessingException("A SOAP message cannot contain entity references because it must not have a DTD");
     }
 
-    // Necessary to allow SOAPBuilderHelper to access this method
-    protected void processNamespaceData(OMElement node) {
-        super.processNamespaceData(node);
-    }
-
-    /**
-     * Method processNamespaceData.
-     *
-     * @param node
-     * @param isSOAPElement
-     */
-    protected void processNamespaceData(OMElement node, boolean isSOAPElement) {
-
-        super.processNamespaceData(node);
-
-        if (isSOAPElement) {
-            OMNamespace omNS = node.getNamespace();
-            if (omNS != null) {
-                String uri = omNS.getNamespaceURI();
-                if (uri.equals(SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI) ||
-                    uri.equals(SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI)) {
-                    // okay
-                } else {
-                    throw new SOAPProcessingException("invalid SOAP namespace URI. " +
-                            "Only " + SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI +
-                            " and " + SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI +
-                            " are supported.", SOAP12Constants.FAULT_CODE_SENDER);
-                }
-            }
-        }
-
-    }
-
 /*these three methods to set and check detail element processing or mandatory fault element are present
 */
 
     public OMNamespace getEnvelopeNamespace() {
         return getSOAPEnvelope().getNamespace();
-    }
-
-    public boolean isProcessingDetailElements() {
-        return processingDetailElements;
-    }
-
-    public void setProcessingDetailElements(boolean value) {
-        processingDetailElements = value;
     }
 
     public SOAPMessage getSoapMessage() {

@@ -18,22 +18,33 @@
  */
 package org.apache.axiom.ts.om.element;
 
+import java.io.StringReader;
+
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMMetaFactory;
-import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.ts.om.container.BuilderFactory;
+import org.xml.sax.InputSource;
 
 public class TestGetXMLStreamReaderCommentEvent extends AxiomTestCase {
-    public TestGetXMLStreamReaderCommentEvent(OMMetaFactory metaFactory) {
+    private final BuilderFactory builderFactory;
+    private final boolean cache;
+    
+    public TestGetXMLStreamReaderCommentEvent(OMMetaFactory metaFactory, BuilderFactory builderFactory, boolean cache) {
         super(metaFactory);
+        this.builderFactory = builderFactory;
+        this.cache = cache;
+        builderFactory.addTestProperties(this);
+        addTestProperty("cache", Boolean.toString(cache));
     }
 
     protected void runTest() throws Throwable {
-        OMElement element = AXIOMUtil.stringToOM(metaFactory.getOMFactory(),
-                "<a><!--comment text--></a>");
-        XMLStreamReader reader = element.getXMLStreamReader();
+        OMXMLParserWrapper builder = builderFactory.getBuilder(metaFactory, new InputSource(new StringReader("<a><!--comment text--></a>")));
+        OMElement element = builder.getDocumentElement();
+        XMLStreamReader reader = element.getXMLStreamReader(cache);
         assertEquals(XMLStreamReader.START_ELEMENT, reader.next());
         assertEquals(XMLStreamReader.COMMENT, reader.next());
         assertEquals("comment text", reader.getText());

@@ -26,6 +26,7 @@ import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.apache.axiom.ts.AxiomTestCase;
+import org.custommonkey.xmlunit.XMLAssert;
 
 /**
  * Tests the behavior of {@link OMXMLParserWrapper#getDocumentElement(boolean)} with
@@ -49,5 +50,13 @@ public class TestGetDocumentElementWithDiscardDocument extends AxiomTestCase {
         OMElement newParent = factory.createOMElement("newParent", null);
         newParent.addChild(element);
         assertFalse(element.isComplete());
+        assertFalse(builder.isCompleted());
+        XMLAssert.assertXMLEqual("<newParent><root/></newParent>", newParent.toString());
+        assertTrue(element.isComplete());
+        // Since we discarded the document, the nodes in the epilog will not be accessible.
+        // Therefore we expect that when the document element changes its completion status,
+        // the builder will consume the epilog and change its completion status as well.
+        // This gives the underlying parser a chance to release some resources.
+        assertTrue(builder.isCompleted());
     }
 }

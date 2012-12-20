@@ -31,6 +31,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.axiom.om.OMDataSource;
 import org.apache.axiom.om.OMDataSourceExt;
 import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMNode;
@@ -43,6 +44,12 @@ import org.apache.commons.logging.LogFactory;
 /**
  * OMDataSourceExtBase is a convenient base class that can be extended
  * by other OMDataSourceExt implementations.
+ * 
+ * @deprecated As described in <a
+ *             href="https://issues.apache.org/jira/browse/AXIOM-419">AXIOM-419</a>, this class has
+ *             multiple issues and should no longer be used as a base class for {@link OMDataSource}
+ *             implementations. Instead, use {@link AbstractOMDataSource},
+ *             {@link AbstractPullOMDataSource} or {@link AbstractPushOMDataSource}.
  */
 public abstract class OMDataSourceExtBase implements OMDataSourceExt {
 

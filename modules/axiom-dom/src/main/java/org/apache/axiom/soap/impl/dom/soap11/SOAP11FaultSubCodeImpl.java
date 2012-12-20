@@ -90,6 +90,11 @@ public class SOAP11FaultSubCodeImpl extends SOAPFaultSubCodeImpl {
         throw new UnsupportedOperationException();
     }
 
+    public QName getValueAsQName() {
+        // TODO: AXIOM-394: SOAPFaultSubCode should not exist for SOAP 1.1
+        throw new UnsupportedOperationException();
+    }
+
     protected OMElement createClone(OMCloneOptions options, ParentNode targetParent,
             boolean generateNSDecl) {
         return new SOAP11FaultSubCodeImpl(targetParent, namespace, null, factory, generateNSDecl);
