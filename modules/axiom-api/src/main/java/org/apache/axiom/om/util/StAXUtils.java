@@ -761,15 +761,18 @@ public class StAXUtils {
      * @return Trhead Context ClassLoader
      */
     private static ClassLoader getContextClassLoader() {
-        ClassLoader cl = (ClassLoader) AccessController.doPrivileged(
+        if (System.getSecurityManager() == null) {
+            // If there is no security manager, avoid the overhead of the doPrivileged call.
+            return Thread.currentThread().getContextClassLoader();
+        } else {
+            return (ClassLoader)AccessController.doPrivileged(
                     new PrivilegedAction() {
                         public Object run()  {
                             return Thread.currentThread().getContextClassLoader();
                         }
                     }
             );
-        
-        return cl;
+        }
     }
 
     /**
