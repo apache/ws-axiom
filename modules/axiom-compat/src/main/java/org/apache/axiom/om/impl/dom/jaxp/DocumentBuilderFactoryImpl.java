@@ -24,6 +24,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.dom.DOMMetaFactory;
+
 /**
  * @deprecated
  *    This class has static methods that allow to switch between DOOM and the default
@@ -47,6 +50,9 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
     private static String originalDocumentBuilderFactoryClassName = null;
     private static ThreadLocal documentBuilderFactoryTracker = new ThreadLocal();
 
+    private static final DOMMetaFactory domMetaFactory =
+            (DOMMetaFactory)OMAbstractFactory.getMetaFactory(OMAbstractFactory.FEATURE_DOM);
+    
     protected Schema schema;
 
     public static boolean isDOOMRequired() {
@@ -91,7 +97,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
          * Determine which DocumentBuilder implementation should be returned
          */
         return isDOOMRequired()
-                ? new DocumentBuilderImpl(this)
+                ? new DocumentBuilderImpl(this, domMetaFactory)
                 : originalDocumentBuilderFactory.newDocumentBuilder();
     }
 

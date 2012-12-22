@@ -53,7 +53,7 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>axiom-dom</artifactId>
             <version>${project.version}</version>
-        	<optional>true</optional>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

@@ -19,11 +19,10 @@
 
 package org.apache.axiom.om.impl.dom.jaxp;
 
+import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.dom.DOMMetaFactory;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.impl.dom.DocumentImpl;
-import org.apache.axiom.om.impl.dom.ElementImpl;
-import org.apache.axiom.om.impl.dom.factory.OMDOMFactory;
-import org.apache.axiom.om.impl.dom.factory.OMDOMMetaFactory;
 import org.apache.axiom.om.util.StAXUtils;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -49,9 +48,12 @@ public class DocumentBuilderImpl extends DocumentBuilder {
     /** The DocumentBuilderFactory used to create this document builder */
     private DocumentBuilderFactoryImpl factory;
 
-    protected DocumentBuilderImpl(DocumentBuilderFactoryImpl fac) {
+    private final DOMMetaFactory domMetaFactory;
+    
+    protected DocumentBuilderImpl(DocumentBuilderFactoryImpl fac, DOMMetaFactory domMetaFactory) {
         super();
         this.factory = fac;
+        this.domMetaFactory = domMetaFactory;
     }
 
     /**
@@ -75,7 +77,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
     }
 
     public DOMImplementation getDOMImplementation() {
-        return OMDOMMetaFactory.INSTANCE.getDOMImplementation();
+        return domMetaFactory.getDOMImplementation();
     }
 
     /**
@@ -84,10 +86,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
      * @see javax.xml.parsers.DocumentBuilder#newDocument()
      */
     public Document newDocument() {
-        OMDOMFactory factory = new OMDOMFactory();
-        DocumentImpl documentImpl = new DocumentImpl(factory);
-        documentImpl.setComplete(true);
-        return documentImpl;
+        return (Document)domMetaFactory.getOMFactory().createOMDocument();
     }
 
     public void setEntityResolver(EntityResolver er) {
@@ -101,14 +100,14 @@ public class DocumentBuilderImpl extends DocumentBuilder {
     public Document parse(InputSource inputSource) throws SAXException,
             IOException {
         try {
-            OMDOMFactory factory = new OMDOMFactory();
+            OMFactory factory = domMetaFactory.getOMFactory();
             // Not really sure whether this will work :-?
             XMLStreamReader reader = StAXUtils
                     .createXMLStreamReader(inputSource.getCharacterStream());
             StAXOMBuilder builder = new StAXOMBuilder(factory, reader);
-            DocumentImpl doc = (DocumentImpl) builder.getDocument();
-            ((ElementImpl) doc.getDocumentElement()).build();
-            return (DocumentImpl) builder.getDocument();
+            OMDocument doc = builder.getDocument();
+            doc.build();
+            return (Document)doc;
         } catch (XMLStreamException e) {
             throw new SAXException(e);
         }
@@ -117,11 +116,11 @@ public class DocumentBuilderImpl extends DocumentBuilder {
     /** @see javax.xml.parsers.DocumentBuilder#parse(java.io.InputStream) */
     public Document parse(InputStream is) throws SAXException, IOException {
         try {
-            OMDOMFactory factory = new OMDOMFactory();
+            OMFactory factory = domMetaFactory.getOMFactory();
             XMLStreamReader reader = StAXUtils
                     .createXMLStreamReader(is);
             StAXOMBuilder builder = new StAXOMBuilder(factory, reader);
-            return (DocumentImpl) builder.getDocument();
+            return (Document) builder.getDocument();
         } catch (XMLStreamException e) {
             throw new SAXException(e);
         }
@@ -130,11 +129,11 @@ public class DocumentBuilderImpl extends DocumentBuilder {
     /** @see javax.xml.parsers.DocumentBuilder#parse(java.io.File) */
     public Document parse(File file) throws SAXException, IOException {
         try {
-            OMDOMFactory factory = new OMDOMFactory();
+            OMFactory factory = domMetaFactory.getOMFactory();
             XMLStreamReader reader = StAXUtils
                     .createXMLStreamReader(new FileInputStream(file));
             StAXOMBuilder builder = new StAXOMBuilder(factory, reader);
-            return (DocumentImpl) builder.getDocument();
+            return (Document) builder.getDocument();
         } catch (XMLStreamException e) {
             throw new SAXException(e);
         }
