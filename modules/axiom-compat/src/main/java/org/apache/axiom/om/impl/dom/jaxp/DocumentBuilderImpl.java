@@ -41,7 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * @deprecated see {@link DocumentBuilderFactoryImpl}
+ * @deprecated See {@link DocumentBuilderFactoryImpl} for the reason why this class is deprecated.
  */
 public class DocumentBuilderImpl extends DocumentBuilder {
 

@@ -31,7 +31,9 @@ import java.util.Iterator;
 import java.util.Vector;
 
 
-/** @deprecated This class is outdated. Please use XmlUnit to compate two xml files. */
+/**
+ * @deprecated This class is no longer maintained. Please use XmlUnit to compare XML documents.
+ */
 public class XMLComparator {
     private static final Log log = LogFactory.getLog(XMLComparator.class);
 

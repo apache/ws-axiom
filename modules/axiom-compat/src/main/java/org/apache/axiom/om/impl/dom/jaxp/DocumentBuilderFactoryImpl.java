@@ -33,10 +33,16 @@ import org.apache.axiom.om.dom.DOMMetaFactory;
  *    DOM implementation as returned by JAXP. This was a hack introduced for Rampart.
  *    Recent versions of Rampart no longer rely on this hack. On the other hand
  *    usage of {@link #setDOOMRequired(boolean)} in a concurrent environment can
- *    lead to unexpected behavior and severe bugs, as shown in AXIOM-3 and AXIS2-1570.
+ *    lead to unexpected behavior and severe bugs, as shown in
+ *    <a href="https://issues.apache.org/jira/browse/AXIOM-3">AXIOM-3</a> and
+ *    <a href="https://issues.apache.org/jira/browse/AXIS2-1570">AXIS2-1570</a>.
  *    Due to the way {@link #newDocumentBuilder()} is implemented, it is not possible
  *    to get rid of the setDOOMRequired hack without the risk of breaking existing code.
- *    Therefore this class has been deprecated in favor of {@link DOOMDocumentBuilderFactory}. 
+ *    <p>
+ *    Application code should always use {@link DOMMetaFactory#newDocumentBuilderFactory()}
+ *    to get an Axiom compatible {@link DocumentBuilderFactory} and should not attempt to
+ *    override the JVM's default {@link DocumentBuilderFactory} with an Axiom compatible
+ *    version.
  */
 public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
 

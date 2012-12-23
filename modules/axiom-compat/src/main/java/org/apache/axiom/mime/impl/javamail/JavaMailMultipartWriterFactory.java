@@ -23,9 +23,16 @@ import java.io.OutputStream;
 
 import org.apache.axiom.mime.MultipartWriter;
 import org.apache.axiom.mime.MultipartWriterFactory;
+import org.apache.axiom.mime.impl.axiom.AxiomMultipartWriterFactory;
 
 /**
  * Factory for the JavaMail based {@link MultipartWriter} implementation.
+ * 
+ * @deprecated The original purpose of this class was to provide an alternative implementation
+ *             should bugs be discovered in {@link AxiomMultipartWriterFactory}. However,
+ *             {@link AxiomMultipartWriterFactory} exists for several releases now and has no known
+ *             issues. It should therefore always be used as {@link MultipartWriterFactory}
+ *             implementation.
  */
 public class JavaMailMultipartWriterFactory implements MultipartWriterFactory {
     public static final MultipartWriterFactory INSTANCE = new JavaMailMultipartWriterFactory();
