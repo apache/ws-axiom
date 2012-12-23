@@ -23,20 +23,11 @@
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom</artifactId>
         <version>1.2.15-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>axiom-all</artifactId>
-    <name>Axiom Uber-JAR</name>
-    <packaging>jar</packaging>
-    <description>Combines all Axiom artifacts into a single one.</description>
-    <!-- This needs to be set explicitly because the project structure implies that the Maven calculated defaults are wrong -->
-    <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-all</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom/modules/axiom-all</developerConnection>
-        <url>http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom/modules/axiom-all</url>
-    </scm>
-    <!-- This also needs to be set explicitly because the Maven calculated URL would point to nowhere -->
-    <url>http://ws.apache.org/axiom/</url>
+    <artifactId>distribution</artifactId>
+    <name>Distribution</name>
+    <packaging>pom</packaging>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -68,46 +59,69 @@
             <artifactId>axiom-c14n</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>axiom-all</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>devguide</artifactId>
+            <version>${project.version}</version>
+            <type>pdf</type>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>userguide</artifactId>
+            <version>${project.version}</version>
+            <type>pdf</type>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>apidocs</artifactId>
+            <version>${project.version}</version>
+            <type>zip</type>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-shade-plugin</artifactId>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <id>generate-timestamp</id>
+                        <phase>initialize</phase>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <artifactSet>
-                                <includes>
-                                    <include>${project.groupId}:*</include>
-                                </includes>
-                            </artifactSet>
-                            <transformers>
-                                <transformer implementation="org.apache.axiom.buildutils.AxiomXmlResourceTransformer" />
-                            </transformers>
+                            <source>
+                                import java.util.Date 
+                                import java.text.MessageFormat 
+                                project.properties['build_date'] = MessageFormat.format("{0,date,MMMMM dd, yyyy}", new Date())
+                            </source>
                         </configuration>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>axiom-buildutils</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
-                <!-- If we deploy the uber-JAR to the Maven repositories, then we will end up with
-                     some projects depending on the uber-JAR while others depend on the
-                     individual artifacts. To avoid a dependency hell, we must not allow this.
-                     All Maven projects should depend on individual artifacts, not the uber-JAR. -->
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>bin</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/bin.xml</descriptor>
+                            </descriptors>
+                            <tarLongFileMode>gnu</tarLongFileMode>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>

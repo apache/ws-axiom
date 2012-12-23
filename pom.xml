@@ -237,9 +237,235 @@
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/webservices/commons/trunk/modules/axiom</developerConnection>
         <url>http://svn.apache.org/viewvc/webservices/commons/trunk/modules/axiom</url>
     </scm>
+    <dependencyManagement>
+        <dependencies>
+            <!-- We use the 1.0 version of the StAX API as Maven dependency (because
+                 we need to ensure compatibility with that StAX version), but we need
+                 the 1.2 version because Geronimo's 1.0 bundles are not fully OSGi aware
+                 (they don't locate StAX implementations that are deployed as bundles). -->
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                <version>1.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-stax-api_1.2_spec</artifactId>
+                <version>1.1</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-activation_1.1_spec</artifactId>
+                <version>1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-javamail_1.4_spec</artifactId>
+                <version>1.7.1</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.1.1</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>avalon-framework</artifactId>
+                        <groupId>avalon-framework</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>logkit</artifactId>
+                        <groupId>logkit</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>log4j</artifactId>
+                        <groupId>log4j</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${stax.impl.groupid}</groupId>
+                <artifactId>${stax.impl.artifact}</artifactId>
+                <version>${stax.impl.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>stax</groupId>
+                        <artifactId>stax-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.xml.stream</groupId>
+                        <artifactId>stax-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>jaxen</groupId>
+                <artifactId>jaxen</artifactId>
+                <version>1.1.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.james</groupId>
+                <artifactId>apache-mime4j-core</artifactId>
+                <version>0.7.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.core</artifactId>
+                <version>${osgi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.compendium</artifactId>
+                <version>${osgi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.9</version>
+            </dependency>
+            <dependency>
+                <groupId>xmlunit</groupId>
+                <artifactId>xmlunit</artifactId>
+                <version>1.3</version>
+            </dependency>
+            <dependency>
+                <groupId>xalan</groupId>
+                <artifactId>xalan</artifactId>
+                <version>2.7.1</version>
+            </dependency>
+            <dependency>
+                <groupId>xerces</groupId>
+                <artifactId>xercesImpl</artifactId>
+                <version>2.10.0</version>
+            </dependency>
+            <dependency>
+                <!-- Recent versions of Xerces require this (because they need org.w3c.dom.ElementTraversal) -->
+                <groupId>xml-apis</groupId>
+                <artifactId>xml-apis</artifactId>
+                <version>1.4.01</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.2</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>2.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.stream</groupId>
+                        <artifactId>stax-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.activation</groupId>
+                        <artifactId>activation</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>2.1.9</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.woodstox</groupId>
+                <artifactId>stax2-api</artifactId>
+                <version>3.1.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.stream</groupId>
+                        <artifactId>stax-api</artifactId>
+                    </exclusion>
+                </exclusions>
+        </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <properties>
+        <osgi.version>4.2.0</osgi.version>
+        <stax.impl.groupid>org.codehaus.woodstox</stax.impl.groupid>
+        <stax.impl.artifact>woodstox-core-asl</stax.impl.artifact>
+        <stax.impl.version>4.1.4</stax.impl.version>
+        <failIfNoTests>false</failIfNoTests>
+        <!--
+        <stax.impl.groupid>com.sun.xml.stream</stax.impl.groupid>
+        <stax.impl.artifact>sjsxp</stax.impl.artifact>
+        <stax.impl.version>1.0.1</stax.impl.version>
+        -->
+        <!--
+        <stax.impl.groupid>stax</stax.impl.groupid>
+        <stax.impl.artifact>stax</stax.impl.artifact>
+        <stax.impl.version>1.2.0</stax.impl.version>
+        -->
+        <shade.plugin.version>1.6</shade.plugin.version>
+    </properties>
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>2.2</version>
+            </extension>
+        </extensions>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>1.4.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.10</version>
+                    <configuration>
+                        <includes>
+                            <include>**/*Test.java</include>
+                        </includes>
+                        <systemProperties>
+                            <property>
+                                <name>java.awt.headless</name>
+                                <value>true</value>
+                            </property>
+                            <!-- Uncomment this to test with the StAX implementation in Java 7 -->
+                            <!-- property>
+                                <name>javax.xml.stream.XMLInputFactory</name>
+                                <value>com.sun.xml.internal.stream.XMLInputFactoryImpl</value>
+                            </property>
+                            <property>
+                                <name>javax.xml.stream.XMLOutputFactory</name>
+                                <value>com.sun.xml.internal.stream.XMLOutputFactoryImpl</value>
+                            </property -->
+                            <!-- Uncomment this to test with BEA's reference implementation -->
+                            <!-- property>
+                                <name>javax.xml.stream.XMLInputFactory</name>
+                                <value>com.bea.xml.stream.MXParserFactory</value>
+                            </property>
+                            <property>
+                                <name>javax.xml.stream.XMLOutputFactory</name>
+                                <value>com.bea.xml.stream.XMLOutputFactoryBase</value>
+                            </property -->
+                        </systemProperties>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>2.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>${shade.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.agilejava.docbkx</groupId>
+                    <artifactId>docbkx-maven-plugin</artifactId>
+                    <version>2.0.13</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>1.5</version>
+                </plugin>
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
                     <configuration>
@@ -262,204 +488,46 @@
                         </dependency>
                     </dependencies>
                 </plugin>
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.2-beta-5</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.gmaven</groupId>
+                    <artifactId>gmaven-plugin</artifactId>
+                    <version>1.2</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.gmaven</groupId>
-                <artifactId>gmaven-plugin</artifactId>
-                <version>1.2</version>
-                <executions>
-                    <execution>
-                        <id>generate-timestamp</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <source>
-                                import java.util.Date 
-                                import java.text.MessageFormat 
-                                project.properties['build_date'] = MessageFormat.format("{0,date,MMMMM dd, yyyy}", new Date())
-                            </source>
-                        </configuration>
-                    </execution>
-                </executions>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <inherited>true</inherited>
+                <configuration>
+                    <source>1.3</source>
+                    <target>1.5</target>
+                </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.7</version>
+                <!-- This serves two purposes:
+                      (1) we want to generate source JARs for all builds, not just release builds;
+                      (2) we need (some of) the source JARs to generate the Javadoc in the apidocs module. -->
+                <artifactId>maven-source-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>distribution-javadoc</id>
-                        <!-- Need to execute this before the package phase. Reason: If the
-                             apache-release profile is activated, then the assembly plugin is run
-                             before the javadoc plugin in the package phase. Note that the
-                             prepare-package phase is only available in Maven 2.1. -->
-                        <phase>compile</phase>
+                        <!-- Use the same ID as in org.apache:apache; otherwise, the goal
+                             will be executed twice when the apache-release profile is
+                             activated -->
+                        <id>attach-sources</id>
                         <goals>
-                            <goal>aggregate</goal>
-                        </goals>
-                        <configuration>
-                            <reportOutputDirectory>${project.build.directory}/apidocs</reportOutputDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>site-javadoc</id>
-                        <phase>pre-site</phase>
-                        <goals>
-                            <goal>aggregate</goal>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <links>
-                        <link>http://download.oracle.com/javase/1.5.0/docs/api/</link>
-                        <link>http://download.oracle.com/javaee/1.4/api/</link>
-                        <link>http://download.oracle.com/docs/cd/E17802_01/webservices/webservices/docs/1.5/api/</link>
-                        <link>http://jaxen.codehaus.org/apidocs/</link>
-                    </links>
-                    <excludePackageNames>org.apache.axiom.test:org.apache.axiom.testutils:org.jaxen.test:org.apache.axiom.om.impl.common*:org.apache.axiom.soap.impl.common*:org.apache.axiom.om.impl.llom*:org.apache.axiom.soap.impl.llom*:org.apache.axiom.om.impl.dom*:org.apache.axiom.soap.impl.dom*</excludePackageNames>
-                    <breakiterator>true</breakiterator>
+                    <attach>true</attach>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.agilejava.docbkx</groupId>
-                <artifactId>docbkx-maven-plugin</artifactId>
-                <version>2.0.13</version>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>userguide-html</id>
-                        <goals>
-                            <goal>generate-html</goal>
-                        </goals>
-                        <phase>pre-site</phase>
-                        <configuration>
-                            <includes>userguide.xml</includes>
-                            <chunkedOutput>true</chunkedOutput>
-                            <targetDirectory>${project.reporting.outputDirectory}</targetDirectory>
-                            <htmlCustomization>src/docbkx/xsl/html.xsl</htmlCustomization>
-                            <postProcess>
-                                <copy todir="${project.reporting.outputDirectory}/userguide/images">
-                                    <fileset dir="src/docbkx/images">
-                                        <include name="**/*.jpg" />
-                                        <include name="**/*.png" />
-                                    </fileset>
-                                </copy>
-                            </postProcess>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>devguide-html</id>
-                        <goals>
-                            <goal>generate-html</goal>
-                        </goals>
-                        <phase>pre-site</phase>
-                        <configuration>
-                            <includes>devguide.xml</includes>
-                            <chunkedOutput>true</chunkedOutput>
-                            <targetDirectory>${project.reporting.outputDirectory}</targetDirectory>
-                            <htmlCustomization>src/docbkx/xsl/html.xsl</htmlCustomization>
-                            <postProcess>
-                                <copy todir="${project.reporting.outputDirectory}/devguide/images">
-                                    <fileset dir="src/docbkx/images">
-                                        <include name="**/*.jpg" />
-                                        <include name="**/*.png" />
-                                    </fileset>
-                                </copy>
-                            </postProcess>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>userguide-pdf</id>
-                        <goals>
-                            <goal>generate-pdf</goal>
-                        </goals>
-                        <phase>compile</phase>
-                        <configuration>
-                            <includes>userguide.xml</includes>
-                            <foCustomization>${basedir}/src/docbkx/xsl/fo.xsl</foCustomization>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>devguide-pdf</id>
-                        <goals>
-                            <goal>generate-pdf</goal>
-                        </goals>
-                        <phase>compile</phase>
-                        <configuration>
-                            <includes>devguide.xml</includes>
-                            <foCustomization>${basedir}/src/docbkx/xsl/fo.xsl</foCustomization>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.docbook</groupId>
-                        <artifactId>docbook-xml</artifactId>
-                        <version>4.4</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <admonGraphics>true</admonGraphics>
-                    <entities>
-                        <entity>
-                            <name>version</name>
-                            <value>${project.version}</value>
-                        </entity>
-                    </entities>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.5</version>
-                <executions>
-                    <execution>
-                        <id>attach-pdfs</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>${project.build.directory}/docbkx/pdf/userguide.pdf</file>
-                                    <type>pdf</type>
-                                    <classifier>userguide</classifier>
-                                </artifact>
-                                <artifact>
-                                    <file>${project.build.directory}/docbkx/pdf/devguide.pdf</file>
-                                    <type>pdf</type>
-                                    <classifier>devguide</classifier>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2-beta-5</version>
-                <executions>
-                    <execution>
-                        <id>bin</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/main/assembly/bin.xml</descriptor>
-                            </descriptors>
-                            <tarLongFileMode>gnu</tarLongFileMode>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
@@ -482,6 +550,8 @@
                         </executions>
                         <configuration>
                             <excludes>
+                                <!-- Exclusions specific to the root project -->
+                                
                                 <!-- RAT doesn't recognize this one as notes file -->
                                 <exclude>RELEASE-NOTE.txt</exclude>
                                 <!-- SVG files are not edited by hand, so license headers would be lost anyway -->
@@ -494,6 +564,13 @@
                                 <exclude>*.sonarj</exclude>
                                 <!-- File generated by maven-release-plugin -->
                                 <exclude>release.properties</exclude>
+                                
+                                <!-- Exclusions that apply to submodules -->
+                                
+                                <!-- We can't add license headers to test resources -->
+                                <exclude>src/test/resources/**</exclude>
+                                <!-- Temporary file created by maven-shade-plugin -->
+                                <exclude>dependency-reduced-pom.xml</exclude>
                             </excludes>
                         </configuration> 
                     </plugin>
@@ -522,11 +599,10 @@
     <distributionManagement>
         <site>
             <id>website</id>
-            <url>scpexe://people.apache.org/www/ws.apache.org/commons/axiom</url>
+            <url>scpexe://people.apache.org/home/${user.name}/public_html/axiom</url>
         </site>
     </distributionManagement>
     <modules>
-        <module>modules/axiom-parent</module>
         <module>modules/axiom-buildutils</module>
         <module>modules/axiom-testutils</module>
         <module>modules/axiom-jaxen-testsuite</module>
@@ -545,5 +621,9 @@
         <module>modules/axiom-integration</module>
         <module>modules/axiom-all</module>
         <module>modules/axiom-samples</module>
+        <module>devguide</module>
+        <module>userguide</module>
+        <module>apidocs</module>
+        <module>distribution</module>
     </modules>
 </project>
