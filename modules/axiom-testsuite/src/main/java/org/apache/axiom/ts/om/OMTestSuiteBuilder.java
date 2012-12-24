@@ -377,6 +377,7 @@ public class OMTestSuiteBuilder extends TestSuiteBuilder {
         addTest(new org.apache.axiom.ts.om.factory.TestCreateOMTextWithNullParent(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestFactoryIsSingleton(metaFactory));
         addTest(new org.apache.axiom.ts.om.factory.TestGetMetaFactory(metaFactory));
+        addTest(new org.apache.axiom.ts.om.misc.TestAxiom95(metaFactory));
         addTest(new org.apache.axiom.ts.om.namespace.TestEquals(metaFactory));
         addTest(new org.apache.axiom.ts.om.namespace.TestEqualsWithNullPrefix(metaFactory));
         addTest(new org.apache.axiom.ts.om.namespace.TestGetNamespaceURI(metaFactory));

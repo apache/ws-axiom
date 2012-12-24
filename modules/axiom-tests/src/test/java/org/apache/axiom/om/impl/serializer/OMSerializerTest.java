@@ -27,7 +27,6 @@ import org.apache.axiom.om.OMConstants;
 import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.ds.custombuilder.ByteArrayCustomBuilder;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.axiom.om.impl.serialize.StreamingOMSerializer;
 import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.SOAPBody;
@@ -296,12 +295,6 @@ public class OMSerializerTest extends AbstractTestCase {
                 !omse.isExpanded());
     }
 
-    public void testDefaultNsSerialization() throws Exception {
-        StAXOMBuilder builder = new StAXOMBuilder(getTestResource("defaultNamespace2.xml"));
-        String xml = builder.getDocumentElement().toString();
-        assertEquals("There shouldn't be any xmlns=\"\"", -1, xml.indexOf("xmlns=\"\""));
-    }
-    
     public void testXSITypePullStream() throws Exception {
         
         // Read the SOAP Message that defines prefix "usr" on the envelope and only uses it within an xsi:type
