@@ -32,11 +32,9 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.om.impl.builder.StAXBuilder;
 import org.apache.axiom.soap.SOAPModelBuilder;
 import org.apache.axiom.util.stax.XMLStreamReaderUtils;
-import org.apache.axiom.util.stax.xop.XOPEncodedStream;
 import org.apache.axiom.util.stax.xop.XOPUtils;
 
 import javax.activation.DataHandler;
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
 import java.io.BufferedInputStream;
@@ -48,9 +46,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
-
-    private final static QName XOP_INCLUDE = 
-        new QName("http://www.w3.org/2004/08/xop/include", "Include");
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -285,44 +280,6 @@ public class MTOMStAXSOAPModelBuilderTest extends AbstractTestCase {
         root.build();
     }
 
-    public void testCreateAndXMLStreamReader() throws Exception {
-        OMElement root = createTestMTOMMessage();
-        
-        // Build tree
-        root.build();
-        
-        // Use tree as input to XMLStreamReader
-        // Issue XOP:Include events for optimized MTOM text nodes
-        XOPEncodedStream xopEncodedStream = XOPUtils.getXOPEncodedStream(root.getXMLStreamReader());
-        XMLStreamReader xmlStreamReader = xopEncodedStream.getReader();
-        
-        DataHandler dh = null;
-        while(xmlStreamReader.hasNext() && dh == null) {
-            xmlStreamReader.next();
-            if (xmlStreamReader.isStartElement()) {
-                QName qName =xmlStreamReader.getName();
-                if (XOP_INCLUDE.equals(qName)) {
-                    String hrefValue = xmlStreamReader.getAttributeValue("", "href");
-                    if (hrefValue != null) {
-                        dh = xopEncodedStream.getMimePartProvider().getDataHandler(
-                                XOPUtils.getContentIDFromURL(hrefValue));
-                    }
-                }
-            }
-        }
-        assertTrue(dh != null);   
-        
-        // Make sure next event is an an XOP_Include END element
-        xmlStreamReader.next();
-        assertTrue(xmlStreamReader.isEndElement());
-        assertTrue(XOP_INCLUDE.equals(xmlStreamReader.getName()));
-        
-        // Make sure the next event is the end tag of name
-        xmlStreamReader.next();
-        assertTrue(xmlStreamReader.isEndElement());
-        assertTrue("name".equals(xmlStreamReader.getLocalName()));
-    }
-   
     private byte[] append(byte[] a, byte[] b) {
         byte[] z = new byte[a.length + b.length];
         System.arraycopy(a, 0, z, 0, a.length);
