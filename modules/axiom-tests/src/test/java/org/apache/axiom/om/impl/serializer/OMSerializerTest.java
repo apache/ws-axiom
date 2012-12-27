@@ -145,12 +145,9 @@ public class OMSerializerTest extends AbstractTestCase {
      * @throws Exception
      */
     public void testElementPullStreamAndOMExpansion() throws Exception {
-        // Create a reader sourced from a message containing an interesting payload
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource("soap/OMElementTest.xml"));
-        
-        // Create a builder connected to the reader
-        StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                reader);
+        // Create a builder from a message containing an interesting payload
+        StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createSOAPModelBuilder(
+                getTestResource("soap/OMElementTest.xml"), null);
         
         // Create a custom builder to store the sub trees as a byte array instead of a full tree
         ByteArrayCustomBuilder customBuilder = new ByteArrayCustomBuilder("utf-8");
@@ -200,12 +197,9 @@ public class OMSerializerTest extends AbstractTestCase {
      * @throws Exception
      */
     public void testElementPullStreamAndOMExpansion2() throws Exception {
-        // Create a reader sourced from a message containing an interesting payload
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource("soap/soapmessageWithXSI.xml"));
-        
-        // Create a builder connected to the reader
-        StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                reader);
+        // Create a builder from a message containing an interesting payload
+        StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createSOAPModelBuilder(
+                getTestResource("soap/soapmessageWithXSI.xml"), null);
         
         // Create a custom builder to store the sub trees as a byte array instead of a full tree
         ByteArrayCustomBuilder customBuilder = new ByteArrayCustomBuilder("utf-8");
@@ -251,12 +245,9 @@ public class OMSerializerTest extends AbstractTestCase {
      * @throws Exception
      */
     public void testElementPullStreamAndOMExpansion3() throws Exception {
-        // Create a reader sourced from a message containing an interesting payload
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource("soap/noprettyprint.xml"));
-        
-        // Create a builder connected to the reader
-        StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createStAXSOAPModelBuilder(
-                reader);
+        // Create a builder from a message containing an interesting payload
+        StAXBuilder builder = (StAXBuilder)OMXMLBuilderFactory.createSOAPModelBuilder(
+                getTestResource("soap/noprettyprint.xml"), null);
         
         // Create a custom builder to store the sub trees as a byte array instead of a full tree
         ByteArrayCustomBuilder customBuilder = new ByteArrayCustomBuilder("utf-8");
