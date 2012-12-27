@@ -36,22 +36,11 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class OMSerializerTest extends AbstractTestCase {
     private XMLStreamWriter writer;
-    private File tempFile;
-
-    protected void setUp() throws Exception {
-        tempFile = File.createTempFile("temp", "xml");
-//        writer =
-//                XMLOutputFactory.newInstance().
-//                        createXMLStreamWriter(new FileOutputStream(tempFile));
-
-
-    }
 
     public void testRawSerializer() throws Exception {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
@@ -347,9 +336,5 @@ public class OMSerializerTest extends AbstractTestCase {
         assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
         assertTrue(outputString.indexOf(USR_DEF) > 0);
         assertTrue(outputString.indexOf(USR_URI) > 0);
-    }
-
-    protected void tearDown() throws Exception {
-        tempFile.delete();
     }
 }
