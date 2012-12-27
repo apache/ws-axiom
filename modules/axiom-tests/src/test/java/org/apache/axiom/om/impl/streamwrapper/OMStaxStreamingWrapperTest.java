@@ -26,19 +26,15 @@ import org.apache.axiom.om.TestConstants;
 import org.apache.axiom.soap.SOAPEnvelope;
 
 import javax.xml.stream.XMLStreamReader;
-import java.io.File;
 
 public class OMStaxStreamingWrapperTest extends AbstractTestCase {
     private SOAPEnvelope envelope = null;
-    private File tempFile;
     private XMLStreamReader parser;
 
     protected void setUp() throws Exception {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
                 getTestResource(TestConstants.SOAP_SOAPMESSAGE1), null);
         envelope = (SOAPEnvelope) builder.getDocumentElement();
-        tempFile = File.createTempFile("temp", "xml");
-
     }
 
     public void testWrapperHalfOM() throws Exception {
@@ -52,6 +48,5 @@ public class OMStaxStreamingWrapperTest extends AbstractTestCase {
 
     protected void tearDown() throws Exception {
         envelope.close(false);
-        tempFile.delete();
     }
 }
