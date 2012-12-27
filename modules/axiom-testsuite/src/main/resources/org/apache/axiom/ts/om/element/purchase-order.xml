@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<purchase-order xmlns="http://openuri.org/easypo">
+<customer>
+    <name>Gladys Kravitz</name>
+    <address>Anytown, PA</address>
+  </customer>
+  <date>2005-03-06T14:06:12.697+06:00</date>
+</purchase-order>
