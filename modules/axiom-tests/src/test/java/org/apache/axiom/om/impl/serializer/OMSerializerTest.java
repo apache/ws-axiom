@@ -40,13 +40,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class OMSerializerTest extends AbstractTestCase {
-    private XMLStreamWriter writer;
-
     public void testRawSerializer() throws Exception {
         XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
         //serializer.setNamespacePrefixStack(new Stack());
         serializer.serialize(reader, writer);
         writer.flush();
@@ -62,7 +60,7 @@ public class OMSerializerTest extends AbstractTestCase {
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
 
         serializer.serialize(env.getXMLStreamReaderWithoutCaching(), writer);
         writer.flush();
@@ -76,7 +74,7 @@ public class OMSerializerTest extends AbstractTestCase {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
                 getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream,
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream,
                 OMConstants.DEFAULT_CHAR_SET_ENCODING);
 
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
@@ -110,7 +108,7 @@ public class OMSerializerTest extends AbstractTestCase {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
                 getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
 
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
         SOAPBody body = env.getBody();
@@ -147,7 +145,7 @@ public class OMSerializerTest extends AbstractTestCase {
         
         // Create an output stream
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
 
         // Now use StreamingOMSerializer to write the input stream to the output stream
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
@@ -199,7 +197,7 @@ public class OMSerializerTest extends AbstractTestCase {
         
         // Create an output stream
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
 
         // Now use StreamingOMSerializer to write the input stream to the output stream
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
@@ -247,7 +245,7 @@ public class OMSerializerTest extends AbstractTestCase {
         
         // Create an output stream
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
 
         // Now use StreamingOMSerializer to write the input stream to the output stream
         SOAPEnvelope env = (SOAPEnvelope) builder.getDocumentElement();
@@ -294,7 +292,7 @@ public class OMSerializerTest extends AbstractTestCase {
         
         StreamingOMSerializer serializer = new StreamingOMSerializer();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
+        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
 
         // Serializing the body should cause the usr prefix to be pulled down from the
         // envelope and written in the message.
