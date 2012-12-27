@@ -40,20 +40,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class OMSerializerTest extends AbstractTestCase {
-    public void testRawSerializer() throws Exception {
-        XMLStreamReader reader = StAXUtils.createXMLStreamReader(getTestResource(TestConstants.SOAP_SOAPMESSAGE));
-        StreamingOMSerializer serializer = new StreamingOMSerializer();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        XMLStreamWriter writer = StAXUtils.createXMLStreamWriter(byteArrayOutputStream);
-        //serializer.setNamespacePrefixStack(new Stack());
-        serializer.serialize(reader, writer);
-        writer.flush();
-
-        String outputString = new String(byteArrayOutputStream.toByteArray());
-        assertTrue(outputString != null && !"".equals(outputString) && outputString.length() > 1);
-
-    }
-
     public void testElementPullStream1() throws Exception {
         OMXMLParserWrapper builder = OMXMLBuilderFactory.createSOAPModelBuilder(
                 getTestResource(TestConstants.SOAP_SOAPMESSAGE), null);
