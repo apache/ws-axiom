@@ -16,25 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.axiom.util.stax.xop;
+package org.apache.axiom.ts.om.xop;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamReader;
 
-import junit.framework.TestCase;
-
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMMetaFactory;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.testutils.activation.TestDataSource;
+import org.apache.axiom.ts.AxiomTestCase;
+import org.apache.axiom.util.stax.xop.ContentIDGenerator;
+import org.apache.axiom.util.stax.xop.OptimizationPolicy;
+import org.apache.axiom.util.stax.xop.XOPDecodingStreamReader;
+import org.apache.axiom.util.stax.xop.XOPEncodingStreamReader;
 
-public class XOPRoundtripTest extends TestCase {
-    public void test() {
-        OMFactory factory = OMAbstractFactory.getOMFactory();
+public class XOPRoundtripTest extends AxiomTestCase {
+    public XOPRoundtripTest(OMMetaFactory metaFactory) {
+        super(metaFactory);
+    }
+
+    protected void runTest() throws Throwable {
+        OMFactory factory = metaFactory.getOMFactory();
         DataHandler dh = new DataHandler(new TestDataSource('x', Runtime.getRuntime().maxMemory()));
         OMElement element1 = factory.createOMElement(new QName("test"));
         element1.addChild(factory.createOMText(dh, true));
@@ -42,7 +48,7 @@ public class XOPRoundtripTest extends TestCase {
         XOPEncodingStreamReader encodedReader = new XOPEncodingStreamReader(originalReader,
                 ContentIDGenerator.DEFAULT, OptimizationPolicy.DEFAULT);
         XMLStreamReader decodedReader = new XOPDecodingStreamReader(encodedReader, encodedReader);
-        OMElement element2 = OMXMLBuilderFactory.createStAXOMBuilder(decodedReader).getDocumentElement();
+        OMElement element2 = OMXMLBuilderFactory.createStAXOMBuilder(factory, decodedReader).getDocumentElement();
         OMText child = (OMText)element2.getFirstOMChild();
         assertNotNull(child);
         assertTrue(child.isBinary());
